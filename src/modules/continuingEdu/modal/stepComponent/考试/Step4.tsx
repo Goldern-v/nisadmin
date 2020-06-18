@@ -29,6 +29,17 @@ import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/co
 export interface Props {}
 
 export default observer(function Step4() {
+    //学时
+    const studentTimeTypeList = [
+      { name: 0, code: 0 },
+      { name: 0.5, code: 0.5 },
+      { name: 1, code: 1 },
+      { name: 2, code: 2 },
+      { name: 3, code: 3 }
+    ];
+    //学时自由输入
+    const [studyTime, setStudyTime] = useState(0);
+  
   const testPage = createModal(TestPageModal); // 习题预览弹窗
 
   // 组织方式
@@ -273,6 +284,53 @@ export default observer(function Step4() {
               />
             </Form.Field>
           </Col>
+          {stepViewModal.stepData2.scorePersonList.length > 0 && ( <React.Fragment>
+            <Col span={2} />
+          <Col span={22}>
+            <Form.Field label={`评分人学时`} name="hasScorePersonClassHours">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          {stepViewModal.stepData2.hasScorePersonClassHours == 1 && (
+            <React.Fragment>
+          <Col span={2} />
+          <Col span={22}>
+                <Form.Field
+                  label={``}
+                  name="scorePersonClassHours"
+                  suffix="学时"
+                >
+                  <Select
+                    showSearch
+                    onSearch={(val: any) => setStudyTime(Number(val))}
+                  >
+                    {studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option value={studyTime} key={`${studyTime}-`}>
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
+                    {studentTimeTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
+
+
+          </React.Fragment>)}
         </React.Fragment>
       )}
         </Row>

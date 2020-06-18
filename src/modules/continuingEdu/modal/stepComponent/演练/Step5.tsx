@@ -25,9 +25,9 @@ export default observer(function Step5() {
     nurseOther: "其他"
   };
   const studentCreditTypeMap: any = {
-    1: "院级学分",
-    2: "片区学分",
-    3: "病区学分"
+    1: "国家级",
+    2: "省级",
+    3: "市级"
   };
 
   return (
@@ -72,23 +72,49 @@ export default observer(function Step5() {
             <td className="key">学习地址：</td>
             <td className="value">{ylStepViewModal.stepData2.address}</td>
           </tr>
-          <tr>
-            <td className="key">学&nbsp;&nbsp;分：</td>
-            <td className="value">
-              {
-                studentCreditTypeMap[
-                  ylStepViewModal.stepData2.studentCreditType
-                ]
-              }{" "}
-              {ylStepViewModal.stepData2.studentCredit} 分
-            </td>
-          </tr>
-          <tr>
-            <td className="key">学&nbsp;&nbsp;时：</td>
-            <td className="value">
-              {ylStepViewModal.stepData2.studentClassHours}
-            </td>
-          </tr>
+          {ylStepViewModal.stepData2.category == 1 ? (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">中医类</td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">非中医类</td>
+            </tr>
+          )}
+
+          {ylStepViewModal.stepData2.hasStudentCredit == 1 ? (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">
+                {
+                  studentCreditTypeMap[
+                    ylStepViewModal.stepData2.studentCreditType
+                  ]
+                }{" "}
+                {ylStepViewModal.stepData2.studentCredit} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {ylStepViewModal.stepData2.hasStudentClassHours == 1 ? (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">
+                {ylStepViewModal.stepData2.studentClassHours}
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">

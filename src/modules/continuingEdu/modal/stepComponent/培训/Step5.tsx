@@ -30,9 +30,9 @@ export default observer(function Step5() {
     nurseOther: "其他"
   };
   const studentCreditTypeMap: any = {
-    1: "院级学分",
-    2: "片区学分",
-    3: "病区学分"
+    1: "国家级",
+    2: "省级",
+    3: "市级"
   };
 
   // 习题预览弹窗
@@ -122,40 +122,79 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
-          <tr>
-            <td className="key">学员学分：</td>
-            <td className="value">
-              {
-                studentCreditTypeMap[
-                  pxStepViewModal.stepData2.studentCreditType
-                ]
-              }{" "}
-              {pxStepViewModal.stepData2.studentCredit} 分
-            </td>
-          </tr>
-          <tr>
-            <td className="key">讲师学分：</td>
-            <td className="value">
-              {
-                studentCreditTypeMap[
-                  pxStepViewModal.stepData2.teacherCreditType
-                ]
-              }{" "}
-              {pxStepViewModal.stepData2.teacherCredit} 分
-            </td>
-          </tr>
-          <tr>
-            <td className="key">学员学时：</td>
-            <td className="value">
-              {pxStepViewModal.stepData2.studentClassHours}
-            </td>
-          </tr>
-          <tr>
-            <td className="key">讲师学时：</td>
-            <td className="value">
-              {pxStepViewModal.stepData2.teacherClassHours}
-            </td>
-          </tr>
+          {pxStepViewModal.stepData2.category == 1 ? (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">中医类</td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">非中医类</td>
+            </tr>
+          )}
+          {pxStepViewModal.stepData2.hasStudentCredit == 1 ? (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">
+                {
+                  studentCreditTypeMap[
+                    pxStepViewModal.stepData2.studentCreditType
+                  ]
+                }{" "}
+                {pxStepViewModal.stepData2.studentCredit} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {pxStepViewModal.stepData2.hasTeacherCredit == 1 ? (
+            <tr>
+              <td className="key">讲师学分：</td>
+              <td className="value">
+                {
+                  studentCreditTypeMap[
+                    pxStepViewModal.stepData2.teacherCreditType
+                  ]
+                }{" "}
+                {pxStepViewModal.stepData2.teacherCredit} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">讲师学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {pxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">
+                {pxStepViewModal.stepData2.studentClassHours}
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {pxStepViewModal.stepData2.hasTeacherClassHours == 1 ? (
+            <tr>
+              <td className="key">讲师学时：</td>
+              <td className="value">
+                {pxStepViewModal.stepData2.teacherClassHours}
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">讲师学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">

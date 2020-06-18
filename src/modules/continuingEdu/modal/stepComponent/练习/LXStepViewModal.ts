@@ -30,7 +30,15 @@ const defaultStepData2: any = {
   bxNurse: [],
 
   /** 题目统计信息 */
-  questionStatList: []
+  questionStatList: [],
+
+  // 武汉中医类别
+  /** 1中医类；2非中医类*/
+  category: 1,
+  /** 是否有学员学分 1有 0无 */
+  hasStudentCredit: 1,
+  /** 是否有学员学时 1有 0无*/
+  hasStudentClassHours: 1
 };
 
 type DefaultStepData2 = typeof defaultStepData2;
@@ -137,10 +145,12 @@ class StepViewModal {
 
       noticeContent: this.stepData2.noticeContent,
       detailInfo: {
+        category: this.stepData2.category,
+        hasStudentCredit: this.stepData2.hasStudentCredit,
+        hasStudentClassHours: this.stepData2.hasStudentClassHours,
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
-
         questionStatList: this.stepData2.questionStatList
       }
     };

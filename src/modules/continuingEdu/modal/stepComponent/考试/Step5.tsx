@@ -30,9 +30,9 @@ export default observer(function Step5() {
     nurseOther: "其他"
   };
   const studentCreditTypeMap: any = {
-    1: "院级学分",
-    2: "片区学分",
-    3: "病区学分"
+    1: "国家级",
+    2: "省级",
+    3: "市级"
   };
 
   let totalNum =
@@ -141,26 +141,63 @@ export default observer(function Step5() {
               )}
             </td>
           </tr>
+          {ksStepViewModal.stepData2.hasScorePersonClassHours == 1 ? (
+            <tr>
+              <td className="key">评分人学分：</td>
+              <td className="value">
+                {ksStepViewModal.stepData2.scorePersonClassHours} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">评分人学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
 
-          <tr>
-            <td className="key">学员学分：</td>
-            <td className="value">
-              {
-                studentCreditTypeMap[
-                  ksStepViewModal.stepData2.studentCreditType
-                ]
-              }{" "}
-              {ksStepViewModal.stepData2.studentCredit} 分
-            </td>
-          </tr>
+          {ksStepViewModal.stepData2.category == 1 ? (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">中医类</td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">非中医类</td>
+            </tr>
+          )}
 
-          <tr>
-            <td className="key">学员学时：</td>
-            <td className="value">
-              {ksStepViewModal.stepData2.studentClassHours}
-            </td>
-          </tr>
-
+          {ksStepViewModal.stepData2.hasStudentCredit == 1 ? (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">
+                {
+                  studentCreditTypeMap[
+                    ksStepViewModal.stepData2.studentCreditType
+                  ]
+                }{" "}
+                {ksStepViewModal.stepData2.studentCredit} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {ksStepViewModal.stepData2.hasStudentClassHours == 1 ? (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">
+                {ksStepViewModal.stepData2.studentClassHours}
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           <tr>
             <td className="key">最大考试次数：</td>
             <td className="value">{ksStepViewModal.stepData2.maxExamTimes}</td>

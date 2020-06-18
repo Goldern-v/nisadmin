@@ -257,118 +257,156 @@ export default observer(function Step1() {
             </Form.Field>
           </Col>
 
-          <Col span={10}>
-            <Form.Field label={`学员学分`} name="studentCreditType">
-              <Select>
-                {studentCreditTypeList.map(item => (
-                  <Select.Option value={item.code} key={item.name}>
-                    {item.name}
-                  </Select.Option>
-                ))}
+          {appStore.HOSPITAL_ID == "wh" && (
+            <Col span={24}>
+              <Form.Field label={`类别`} name="category">
+                <Select style={{ width: 120 }}>
+                  <Select.Option value={1}>中医类</Select.Option>
+                  <Select.Option value={2}>非中医类</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
+          )}
+          <Col span={24}>
+            <Form.Field label={`学员学分`} name="hasStudentCredit">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-          <Col span={14}>
-            <Form.Field
-              label={``}
-              name="studentCredit"
-              suffix="分"
-              labelWidth={1}
-            >
-              <InputNumber />
-            </Form.Field>
-          </Col>
-
-          <Col span={10}>
-            <Form.Field label={`讲师学分`} name="teacherCreditType">
-              <Select>
-                {studentCreditTypeList.map(item => (
-                  <Select.Option value={item.code} key={item.name}>
-                    {item.name}
-                  </Select.Option>
-                ))}
+          {stepViewModal.stepData2.hasStudentCredit == 1 && (
+            <React.Fragment>
+              <Col span={10}>
+                <Form.Field label={``} name="studentCreditType">
+                  <Select>
+                    {studentCreditTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={14}>
+                <Form.Field
+                  label={``}
+                  name="studentCredit"
+                  suffix="分"
+                  labelWidth={1}
+                >
+                  <InputNumber />
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
+          <Col span={24}>
+            <Form.Field label={`学员学时`} name="hasStudentClassHours">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-
-          <Col span={14}>
-            <Form.Field
-              label={``}
-              name="teacherCredit"
-              suffix="分"
-              labelWidth={1}
-            >
-              <InputNumber />
-            </Form.Field>
-          </Col>
-
+          {stepViewModal.stepData2.hasStudentClassHours == 1 && (
+            <React.Fragment>
+              <Col span={24}>
+                <Form.Field label={``} name="studentClassHours" suffix="学时">
+                  <Select
+                    showSearch
+                    onSearch={(val: any) => setStudyTime(Number(val))}
+                  >
+                    {studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option value={studyTime} key={`${studyTime}-`}>
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
+                    {studentTimeTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
           <Col span={24}>
-            <Form.Field
-              label={`学员学时`}
-              name="studentClassHours"
-              suffix="学时"
-            >
-              {appStore.HOSPITAL_ID === "wh" ? (
-                <Select
-                  showSearch
-                  onSearch={(val: any) => setStudyTime(Number(val))}
-                >
-                  {studyTime &&
-                  studyTime !== 0.5 &&
-                  studyTime !== 1 &&
-                  studyTime !== 2 &&
-                  studyTime !== 3 ? (
-                    <Select.Option value={studyTime} key={`${studyTime}-`}>
-                      {studyTime}
-                    </Select.Option>
-                  ) : (
-                    ""
-                  )}
-                  {studentTimeTypeList.map(item => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              ) : (
-                <InputNumber />
-              )}
+            <Form.Field label={`讲师学分`} name="hasTeacherCredit">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
+              </Select>
             </Form.Field>
           </Col>
-
+          {stepViewModal.stepData2.hasTeacherCredit == 1 && (
+            <React.Fragment>
+              <Col span={10}>
+                <Form.Field label={``} name="teacherCreditType">
+                  <Select>
+                    {studentCreditTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={14}>
+                <Form.Field
+                  label={``}
+                  name="teacherCredit"
+                  suffix="分"
+                  labelWidth={1}
+                >
+                  <InputNumber />
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
           <Col span={24}>
-            <Form.Field
-              label={`讲师学时`}
-              name="teacherClassHours"
-              suffix="学时"
-            >
-              {appStore.HOSPITAL_ID === "wh" ? (
-                <Select
-                  showSearch
-                  onSearch={(val: any) => setStudyTime(Number(val))}
-                >
-                  {studyTime &&
-                  studyTime !== 0.5 &&
-                  studyTime !== 1 &&
-                  studyTime !== 2 &&
-                  studyTime !== 3 ? (
-                    <Select.Option value={studyTime} key={`${studyTime}-`}>
-                      {studyTime}
-                    </Select.Option>
-                  ) : (
-                    ""
-                  )}
-                  {studentTimeTypeList.map(item => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              ) : (
-                <InputNumber />
-              )}
+            <Form.Field label={`讲师学时`} name="hasTeacherClassHours">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
+              </Select>
             </Form.Field>
           </Col>
+          {stepViewModal.stepData2.hasTeacherClassHours == 1 && (
+            <React.Fragment>
+              <Col span={24}>
+                <Form.Field label={``} name="teacherClassHours" suffix="学时">
+                  <Select
+                    showSearch
+                    onSearch={(val: any) => setStudyTime(Number(val))}
+                  >
+                    {studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option value={studyTime} key={`${studyTime}-`}>
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
+                    {studentTimeTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
 
           <Col span={24}>
             <Form.Field

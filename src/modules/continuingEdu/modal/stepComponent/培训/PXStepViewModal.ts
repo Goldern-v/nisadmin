@@ -38,7 +38,19 @@ const defaultStepData2 = {
   /** 讲师学时 */
   teacherClassHours: 0,
   /** 签到负责人 */
-  sicPersonList: []
+  sicPersonList: [],
+
+  // 武汉中医类别
+  /** 1中医类；2非中医类*/
+  category: 1,
+  /** 是否有学员学分 1有 0无 */
+  hasStudentCredit: 1,
+  /** 是否有学员学时 1有 0无*/
+  hasStudentClassHours: 1,
+  /** 是否有讲师学分 1有 0无*/
+  hasTeacherCredit: 1,
+  /** 是否有讲师学时 1有 0无*/
+  hasTeacherClassHours: 1
 };
 
 const defaultStepData5 = {
@@ -153,6 +165,11 @@ class StepViewModal {
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
       detailInfo: {
+        category: this.stepData2.category,
+        hasStudentCredit: this.stepData2.hasStudentCredit,
+        hasStudentClassHours: this.stepData2.hasStudentClassHours,
+        hasTeacherCredit: this.stepData2.hasTeacherCredit,
+        hasTeacherClassHours: this.stepData2.hasTeacherClassHours,
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,

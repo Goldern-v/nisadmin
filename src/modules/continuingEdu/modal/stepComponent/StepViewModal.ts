@@ -181,7 +181,9 @@ class StepViewModal {
       //  Object.assign(target, source)
     } else {
       Object.assign(result, {
-        attachmentIds: this.stepData4.attachmentIds.map((item: any) => item.id)
+        attachmentIds: this.stepData4.attachmentIds
+          ? this.stepData4.attachmentIds.map((item: any) => item.id)
+          : []
       });
     }
 
