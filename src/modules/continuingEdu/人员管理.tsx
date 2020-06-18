@@ -12,9 +12,11 @@ import { observer } from "mobx-react-lite";
 import service from 'src/services/api'
 
 import FilterCon from "./components/FilterCon";
+import DeptCreditRecordExportModal from './components/DeptCreditRecordExportModal'
 import { empManageService } from "./views/empDetail/api/EmpManageService";
 import qs from "qs";
 import { message } from "antd/es";
+import createModal from "src/libs/createModal";
 
 const Option = Select.Option;
 
@@ -45,6 +47,8 @@ export default observer(function 人员管理(props: Props) {
   const [total, setTotal] = useState(0 as number);
   const [dataLoading, setDataLoading] = useState(false);
   const [filterConVisible, setFilterConVisible] = useState(true);
+
+  let creditRecordExport = createModal(DeptCreditRecordExportModal)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -324,6 +328,15 @@ export default observer(function 人员管理(props: Props) {
             搜索
           </Button>
         </span>
+        <span className="float-item">
+          <Button
+            onClick={() =>
+              creditRecordExport.show({
+                deptCode: query.deptCode
+              })}>
+            导出学分统计
+          </Button>
+        </span>
       </CommonHeader>
       <div className="main-contain">
         <div className="filter-contain">
@@ -358,6 +371,7 @@ export default observer(function 人员管理(props: Props) {
           />
         </div>
       </div>
+      <creditRecordExport.Component />
     </Wrapper>
   );
 });
