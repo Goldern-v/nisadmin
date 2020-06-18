@@ -121,9 +121,9 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
           <Input
             disabled={cellDisabled(record)}
             defaultValue={text}
-            onChange={value => {
+            onChange={(e: any) => {
               record.modified = true
-              record.recordDate = value;
+              record.recordDate = e.target.value;
             }}
             onKeyUp={handleNextIptFocus}
             onBlur={() => updateDataSource()}
