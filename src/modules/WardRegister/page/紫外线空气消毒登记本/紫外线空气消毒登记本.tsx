@@ -378,7 +378,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
               total: total
             }}
             rowClassName={(record: any, idx: number) => {
-              if (record.signerName) return 'disabled-row'
+              if (cellDisabled(record)) return 'disabled-row'
 
               return ''
             }}

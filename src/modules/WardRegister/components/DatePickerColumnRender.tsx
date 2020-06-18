@@ -79,14 +79,14 @@ export default function DatePickerColumnRender(props: Props) {
       ) {
 
         let sumItemCode = '总计天数'
-        let diffUnit = 'd' as 'd' | 'h'
+        let diffUnit = 'd' as 'd' | 'h' | 'm'
         if (registerCode == 'QCRG_11') {
           sumItemCode = '合计时间（小时）'
           diffUnit = 'h'
         }
         if (registerCode == 'QCRG_06') {
           sumItemCode = '使用时间'
-          diffUnit = 'h'
+          diffUnit = 'm'
         }
         //时间差计算
         let newSum = ''
@@ -104,7 +104,12 @@ export default function DatePickerColumnRender(props: Props) {
         ) {
           let m = endTimeDate.diff(currentDate, diffUnit)
           if (m >= 0 && diffUnit == 'd') m += 1
-          newSum = m.toString()
+
+          if (registerCode == 'QCRG_06') {
+            newSum = (parseInt((m / 60 * 100).toString()) / 100).toString()
+          } else {
+            newSum = m.toString()
+          }
         }
 
         if (newSum) {
