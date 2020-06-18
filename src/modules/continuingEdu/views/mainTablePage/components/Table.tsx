@@ -75,8 +75,14 @@ export default observer(function Table(props: Props) {
     {
       title: "类型",
       dataIndex: "thirdLevelMenuName",
-      width: 130,
-      align: "left"
+      width: 100,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "wh" && {
+      title: "类别",
+      dataIndex: "category",
+      width: 120,
+      align: "center"
     },
     {
       title: "标题",
@@ -188,7 +194,7 @@ export default observer(function Table(props: Props) {
     {
       title: "学分",
       dataIndex: "credit",
-      width: 130,
+      width: 150,
       align: "center"
     },
     {
