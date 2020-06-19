@@ -34,9 +34,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>
               <Input
                 value={TSGWContent.f00079}
-                onChange={(e: any) =>
-                  (TSGWContent.f00079 = Number(e.target.value))
-                }
+                onChange={(e: any) => (TSGWContent.f00079 = e.target.value)}
               />
             </td>
           </tr>

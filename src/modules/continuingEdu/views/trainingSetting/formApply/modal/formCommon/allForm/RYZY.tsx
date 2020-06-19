@@ -238,25 +238,19 @@ export default observer(function RYZY(props: Props) {
                 <Input
                   style={{ width: "80px" }}
                   value={rYZYContent.f00067}
-                  onChange={(e: any) =>
-                    (rYZYContent.f00067 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (rYZYContent.f00067 = e.target.value)}
                 />
                 例；一级护理患者数量
                 <Input
                   style={{ width: "80px" }}
                   value={rYZYContent.f00068}
-                  onChange={(e: any) =>
-                    (rYZYContent.f00068 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (rYZYContent.f00068 = e.target.value)}
                 />
                 例；二级护理患者数量
                 <Input
                   style={{ width: "80px" }}
                   value={rYZYContent.f00069}
-                  onChange={(e: any) =>
-                    (rYZYContent.f00069 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (rYZYContent.f00069 = e.target.value)}
                 />
                 例<span style={{ fontSize: "8px" }}>（以8小时计算）</span>
               </span>

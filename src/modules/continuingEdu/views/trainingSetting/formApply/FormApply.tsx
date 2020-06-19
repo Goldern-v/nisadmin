@@ -6,18 +6,18 @@ import ApplyTable from "./components/ApplyTable";
 import { formApplyModal } from "./FormApplyModal"; // 仓库数据
 
 interface Props {
-  getTitle: any;
+  getFormName: any;
   getFormCode: any;
 }
 
 export default observer(function FormApply(props: Props) {
   useLayoutEffect(() => {
     if (formApplyModal && Object.keys(formApplyModal).length > 0) {
-      formApplyModal.getTitle = props.getTitle;
+      formApplyModal.getTitle = props.getFormName;
       formApplyModal.getFormCode = props.getFormCode;
       formApplyModal.init();
     }
-  }, [props.getTitle]);
+  }, [props.getFormName]);
 
   return (
     <Wrapper>

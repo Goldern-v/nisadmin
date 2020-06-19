@@ -35,9 +35,7 @@ export default observer(function FormApply(props: Props) {
             <td colSpan={2}>
               <Input
                 value={GFXZLContent.f00079}
-                onChange={(e: any) =>
-                  (GFXZLContent.f00079 = Number(e.target.value))
-                }
+                onChange={(e: any) => (GFXZLContent.f00079 = e.target.value)}
               />
             </td>
           </tr>
@@ -62,18 +60,14 @@ export default observer(function FormApply(props: Props) {
             <td colSpan={2}>
               <Input
                 value={GFXZLContent.f00080}
-                onChange={(e: any) =>
-                  (GFXZLContent.f00080 = Number(e.target.value))
-                }
+                onChange={(e: any) => (GFXZLContent.f00080 = e.target.value)}
               />
             </td>
             <td>从事本专业工作年限</td>
             <td colSpan={2}>
               <Input
                 value={GFXZLContent.f00081}
-                onChange={(e: any) =>
-                  (GFXZLContent.f00081 = Number(e.target.value))
-                }
+                onChange={(e: any) => (GFXZLContent.f00081 = e.target.value)}
               />
             </td>
           </tr>

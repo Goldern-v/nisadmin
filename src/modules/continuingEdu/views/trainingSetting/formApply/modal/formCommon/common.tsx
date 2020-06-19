@@ -109,6 +109,9 @@ export const Wrapper = styled.div`
     height: 30px;
     width: 85px;
   }
+  // /deep/ textarea::-webkit-scrollbar {
+  //   display: none; //去滚动条
+  // }
 `;
 export const CJJSWrapper = styled.div`
   height: 100%;

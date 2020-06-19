@@ -136,25 +136,19 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "80px" }}
                   value={cJJSContent.f00067}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00067 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00067 = e.target.value)}
                 />
                 例；一级护理患者数量
                 <Input
                   style={{ width: "80px" }}
                   value={cJJSContent.f00068}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00068 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00068 = e.target.value)}
                 />
                 例；二级护理患者数量
                 <Input
                   style={{ width: "80px" }}
                   value={cJJSContent.f00069}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00069 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00069 = e.target.value)}
                 />
                 例<span style={{ fontSize: "8px" }}>（以8小时计算）</span>
               </span>
@@ -214,9 +208,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "40px" }}
                   value={cJJSContent.f00094}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00094 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00094 = e.target.value)}
                 />
                 次
               </SpanMax>
@@ -225,9 +217,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "40px" }}
                   value={cJJSContent.f00095}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00095 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00095 = e.target.value)}
                 />
                 次
               </Span>
@@ -236,9 +226,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "40px" }}
                   value={cJJSContent.f00096}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00096 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00096 = e.target.value)}
                 />
                 次
               </Span>
@@ -249,9 +237,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "30px" }}
                   value={cJJSContent.f00097}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00097 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00097 = e.target.value)}
                 />
                 例
               </span>
@@ -260,9 +246,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "30px" }}
                   value={cJJSContent.f00098}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00098 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00098 = e.target.value)}
                 />
                 例
               </Span>
@@ -271,9 +255,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "30px" }}
                   value={cJJSContent.f00099}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00099 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00099 = e.target.value)}
                 />
                 例
               </Span>
@@ -323,9 +305,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "35px" }}
                   value={cJJSContent.f00104}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00104 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00104 = e.target.value)}
                 />
                 例
               </span>
@@ -334,9 +314,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "35px" }}
                   value={cJJSContent.f00105}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00105 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00105 = e.target.value)}
                 />
                 篇
               </Span>
@@ -345,9 +323,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "35px" }}
                   value={cJJSContent.f00106}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00106 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00106 = e.target.value)}
                 />
                 项
               </Span>
@@ -356,9 +332,7 @@ export default observer(function CJJS(props: Props) {
                 <Input
                   style={{ width: "35px" }}
                   value={cJJSContent.f00107}
-                  onChange={(e: any) =>
-                    (cJJSContent.f00107 = Number(e.target.value))
-                  }
+                  onChange={(e: any) => (cJJSContent.f00107 = e.target.value)}
                 />
                 项
               </SpanMax>

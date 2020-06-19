@@ -52,18 +52,14 @@ export default observer(function YNJX(props: Props) {
             <td>
               <Input
                 value={YNJXContent.f00125}
-                onChange={(e: any) =>
-                  (YNJXContent.f00125 = Number(e.target.value))
-                }
+                onChange={(e: any) => (YNJXContent.f00125 = e.target.value)}
               />
             </td>
             <td>工作年限</td>
             <td>
               <Input
                 value={YNJXContent.f00126}
-                onChange={(e: any) =>
-                  (YNJXContent.f00126 = Number(e.target.value))
-                }
+                onChange={(e: any) => (YNJXContent.f00126 = e.target.value)}
               />
             </td>
           </tr>
