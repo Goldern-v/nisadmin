@@ -114,18 +114,20 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
-        return (
-          <Input
-            disabled={cellDisabled(record)}
-            defaultValue={text}
-            onKeyUp={handleNextIptFocus}
-            onChange={e => {
-              record.modified = true
-              record.recordDate = e.target.value;
-            }}
-            onBlur={() => updateDataSource()}
-          />
-        );
+        // return (
+        //   <Input
+        //     disabled={cellDisabled(record)}
+        //     defaultValue={text}
+        //     onKeyUp={handleNextIptFocus}
+        //     onChange={e => {
+        //       record.modified = true
+        //       record.recordDate = e.target.value;
+        //     }}
+        //     onBlur={() => updateDataSource()}
+        //   />
+        // );
+
+        return text
       }
     },
     ...itemConfigList.map((item: any) => {
@@ -144,25 +146,27 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             let recordMoment = moment(record.recordDate)
             if (itemCode.match(/每月/)) {
               //每月项目只能每月最后一周包含的日期填写
+              //每月项目 记录日期为最后一周内可填写 不限制填写日期
               let recordDate = recordMoment.format('YYYY-MM-DD')
               if (
-                record.recordDate &&
-                recordMoment.isValid() &&
-                lastWeekDatesThisMonth.indexOf(recordDate) >= 0 &&
-                currentInLastWeek
+                record.recordDate
+                && recordMoment.isValid()
+                && lastWeekDatesThisMonth.indexOf(recordDate) >= 0
+                // && currentInLastWeek
               )
                 return false
 
               return true
             } else if (itemCode == '监测报告') {
-              //监测报告只有3/6/9/12月的30日才能填写
+              //监测报告只有3/6/9/12月的30日才能填写(作废)
+              //检测报告 记录日期为最后一周内可填写 不限制填写日期
               let recordDate = recordMoment.format('YYYY-MM-DD')
               if (
-                record.recordDate &&
-                recordMoment.isValid() &&
-                lastWeekDatesThisMonth.indexOf(recordDate) >= 0 &&
-                [3, 6, 9, 12].indexOf(recordMoment.get('M') + 1) >= 0 &&
-                moment().get('date') == 30
+                record.recordDate
+                && recordMoment.isValid()
+                && lastWeekDatesThisMonth.indexOf(recordDate) >= 0
+                // && [3, 6, 9, 12].indexOf(recordMoment.get('M') + 1) >= 0
+                // &&moment().get('date') == 30
               )
                 return false
 
@@ -284,25 +288,25 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       },
       registerCode
     ),
-    {
-      title: "操作",
-      width: 50,
-      className: "",
-      render(text: string, record: any, index: number) {
-        return (
-          <DoCon>
-            {cellDisabled(record) ? (
-              <aside style={{ color: "#aaa" }}>删除</aside>
-            ) : (
-                <span
-                  onClick={() => handleDeleteRow(record, index)}>
-                  删除
-                </span>
-              )}
-          </DoCon>
-        );
-      }
-    }
+    // {
+    //   title: "操作",
+    //   width: 50,
+    //   className: "",
+    //   render(text: string, record: any, index: number) {
+    //     return (
+    //       <DoCon>
+    //         {cellDisabled(record) ? (
+    //           <aside style={{ color: "#aaa" }}>删除</aside>
+    //         ) : (
+    //             <span
+    //               onClick={() => handleDeleteRow(record, index)}>
+    //               删除
+    //             </span>
+    //           )}
+    //       </DoCon>
+    //     );
+    //   }
+    // }
   ];
 
   //预览附件
@@ -352,8 +356,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   }, [authStore.selectedDeptCode]);
 
   useEffect(() => {
-    // selectedBlockId && getPage();
-    selectedBlockId && throttler(getPage);
+    // selectedBlockId && getPage(undefined,{stopCreateRow:true});
+    selectedBlockId && throttler(() => {
+      getPage(undefined, { stopCreateRow: true })
+    });
   }, [
     pageOptions,
     date,
@@ -398,10 +404,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
 
         {selectedBlockId && (
           <React.Fragment>
-            <Button onClick={getPage}>查询</Button>
-            <Button type="primary" onClick={createRow}>
+            <Button onClick={() => getPage(undefined, { stopCreateRow: true })}>查询</Button>
+            {/* <Button type="primary" onClick={createRow}>
               新建
-            </Button>
+            </Button> */}
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
@@ -413,11 +419,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                   blockId: selectedBlockId,
                   registerCode,
                   onOkCallBack: () => {
-                    getPage();
+                    getPage(undefined, { stopCreateRow: true });
                   }
                 })
-              }
-            >
+              }>
               设置
             </Button>}
             {authStore.isNotANormalNurse && <Button onClick={onDelete}>删除</Button>}

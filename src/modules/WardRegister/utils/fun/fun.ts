@@ -120,7 +120,12 @@ export function getFun(context: any) {
   };
 
   /** 获取数据 */
-  const getPage = (blockId?: any) => {
+  const getPage = (
+    blockId?: any,
+    options?: {
+      stopCreateRow?: boolean
+    }
+  ) => {
     setPageLoading(true);
 
     setSelectedRowKeys && setSelectedRowKeys([])
@@ -159,7 +164,11 @@ export function getFun(context: any) {
         //清除table组件里面的表单组件残余的数值
         setDataSource([])
         setTimeout(() => {
-          if (newList.length == 0) {
+          let stopCreateRow = false
+          if (options && options.stopCreateRow) stopCreateRow = true
+
+          //默认返回空数组时新建一行记录
+          if (newList.length == 0 && !stopCreateRow) {
             setDataSource([
               { recordDate: moment().format("YYYY-MM-DD") }
             ])
