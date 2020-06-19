@@ -63,7 +63,6 @@ export default function InputColumnRender(porps: Props) {
       style={{
         lineHeight: 1.2,
         overflow: "hidden",
-        overflowY: "hidden",
         padding: "9px 2px",
         textAlign: "center"
       }}
