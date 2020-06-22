@@ -329,6 +329,18 @@ export default observer(function HandoverRegister(props: Props) {
                 handleNextIptFocus,
                 record,
                 updateDataSource,
+                multiple: (() => {
+                  if (registerCode == 'QCRG_18' && item.itemCode == '参加人员')
+                    return true
+                  else
+                    return false
+                })(),
+                showAll: (() => {
+                  if (registerCode == 'QCRG_18' && item.itemCode == '参加人员')
+                    return true
+                  else
+                    return false
+                })(),
                 options: (item.options || "")
                   .split(";")
                   .filter((item: any) => item)
@@ -724,7 +736,7 @@ export default observer(function HandoverRegister(props: Props) {
             }}
           />
         ) : (
-            <NullBox onClick={onAddBlock} />
+            <NullBox onClick={onAddBlock} registerName={registerName} />
           )}
       </TableCon>
       <settingModal.Component />
@@ -762,7 +774,7 @@ function NullBox(props: any) {
         className="file"
       />
       <Button type="primary" icon="file-add" size={"large"} onClick={onClick}>
-        创建物品交接登记本
+        创建{props.registerName || '登记本'}
       </Button>
     </Wrapper>
   );

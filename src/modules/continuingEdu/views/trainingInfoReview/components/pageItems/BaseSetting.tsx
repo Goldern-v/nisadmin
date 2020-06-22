@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import BaseInfo from 'src/modules/nurseFiles/view/nurseFiles-hj/views/exportNurseFile/page/BaseInfo'
+// import BaseInfo from 'src/modules/nurseFiles/view/nurseFiles-hj/views/exportNurseFile/page/BaseInfo'
+import { appStore } from 'src/stores'
+
 export interface Props {
   labelWidth?: number,
   info: any
@@ -12,7 +14,7 @@ export default function BaseSetting(props: Props) {
   const _labelWidth = labelWidth ? `${labelWidth}px` : '92px'
 
   const creditInfo = () => {
-    let credit = info.credit || info.studentCredit || '0'
+    let credit = info.credit || info.studentCredit || ''
     let creditType = info.creditType || info.studentCreditType || ''
     let classHours = info.classHours || info.studentClassHours || '0'
     let baseCredit = <React.Fragment>
@@ -62,17 +64,24 @@ export default function BaseSetting(props: Props) {
     switch (info.teachingMethodName) {
       case '考试':
       case '实操':
-        return <div className="row">
-          <div className="label" style={{ width: _labelWidth }}>评分负责人：</div>
-          <div className="content">{
-            !!(info.scorePersonList || []).length ?
-              `需要（${(info.scorePersonList || [])
-                .map((item: any) =>
-                  `${item.deptName}/${item.empName}`)
-                .join(', ')}）` :
-              '不需要'
-          }</div>
-        </div>
+        return <React.Fragment>
+          <div className="row">
+            <div className="label" style={{ width: _labelWidth }}>评分负责人：</div>
+            <div className="content">{
+              !!(info.scorePersonList || []).length ?
+                `需要（${(info.scorePersonList || [])
+                  .map((item: any) =>
+                    `${item.deptName}/${item.empName}`)
+                  .join(', ')}）` :
+                '不需要'
+            }</div>
+          </div>
+          {!!(info.scorePersonList || []).length &&
+            <div className="row">
+              <div className="label" style={{ width: _labelWidth }}>评分人学时：</div>
+              <div className="content">{info.scorePersonClassHours}</div>
+            </div>}
+        </React.Fragment>
       default:
         return <span></span>
     }
@@ -122,6 +131,11 @@ export default function BaseSetting(props: Props) {
       <div className="content">
         {info.teachingTypeName} ({info.teachingMethodName})
       </div>
+    </div>
+    <div className="row">
+      <div className="label" style={{ width: _labelWidth }}>类别：</div>
+      {appStore.HOSPITAL_ID === 'wh' &&
+        <div className="content">{info.categoryName}</div>}
     </div>
     <div className="row">
       <div className="label" style={{ width: _labelWidth }}>组织方式：</div>

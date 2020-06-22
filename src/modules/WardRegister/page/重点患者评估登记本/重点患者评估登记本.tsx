@@ -334,7 +334,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     if (registerCode == "QCRG_14_1") {
       itemCode = '失效日期'
     } else if (registerCode == 'QCRG_14_2') {
-      itemCode = '生产日期'
+      itemCode = '失效日期'
     }
 
     endTime = record[itemCode] || ''
@@ -610,22 +610,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 cellDisabled,
                 options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
                 record,
+                className: childrenClassName,
                 itemCode: item.itemCode,
                 updateDataSource,
                 handleNextIptFocus,
-                onSelect: (value: any) => {
+                multiple: (() => {
                   if (
                     registerCode == "QCRG_04" &&
                     item.itemCode == "组号及床号"
-                  ) {
-                    let prevValue = record[item.itemCode] || '';
-                    setTimeout(() => {
-                      record[item.itemCode] =
-                        prevValue + (prevValue ? ";" : "") + value;
-                      updateDataSource(true);
-                    }, 0);
-                  }
-                }
+                  )
+                    return true
+                  else
+                    return false
+                })(),
               }}
             />
           }

@@ -13,7 +13,9 @@ export interface Props {
   onSelect?: any,
   updateDataSource: any,
   handleNextIptFocus: any,
-  onBlur?: any
+  onBlur?: any,
+  multiple?: boolean,
+  selectAll?: boolean
 }
 
 export default function InputColumnRender(porps: Props) {
@@ -25,28 +27,41 @@ export default function InputColumnRender(porps: Props) {
     itemCode,
     updateDataSource,
     handleNextIptFocus,
+    selectAll,
     onBlur,
     onSelect,
+    multiple,
   } = porps
 
   const [editValue, setEditValue] = useState('')
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (record[itemCode] !== editValue)
       setEditValue(record[itemCode])
   }, [record[itemCode]])
 
+  let _options = undefined as any[] | undefined
+
+  if (options) {
+    if (multiple && selectAll && options.length > 0) _options = ['全部', ...options]
+    else _options = options
+  }
+
   return <AutoComplete
     className={className || ''}
     disabled={cellDisabled(record)}
-    dataSource={options || undefined}
+    dataSource={_options}
     value={editValue}
     onChange={value => {
       value = value ? value.toString().replace(/\n/g, '') : ''
       setEditValue(value)
     }}
+    onFocus={() => setOpen(true)}
 
     onBlur={() => {
+      setOpen(false)
+
       if (record[itemCode] !== editValue) {
         record.modified = true
         record[itemCode] = editValue;
@@ -54,12 +69,40 @@ export default function InputColumnRender(porps: Props) {
       }
       onBlur && onBlur(editValue)
     }}
-    onSelect={onSelect || undefined}
-  >
+    onSelect={(payload: any) => {
+      if (multiple) {
+        let newPayload = ''
+
+        if (payload == '全部') {
+          newPayload = options?.join(';') || ''
+        } else {
+          let editValueArr = editValue.split(';')
+          if (editValueArr.indexOf(payload) >= 0)
+            newPayload = editValue
+          else
+            newPayload = [...editValueArr, payload]
+              .filter((str: string) => str).join(';')
+        }
+
+        setTimeout(() => setEditValue(newPayload))
+
+        onSelect && onSelect(newPayload)
+      } else {
+        setOpen(false)
+        onSelect && onSelect(payload)
+      }
+    }}
+    open={open}>
     <TextArea
       autosize={{ minRows: 1 }}
       data-key={itemCode}
-      onKeyUp={handleNextIptFocus}
+      onKeyUp={(e) => {
+        if (e.keyCode == 40 || e.keyCode == 38)
+          setOpen(true)
+
+        if (!multiple)
+          handleNextIptFocus && handleNextIptFocus(e)
+      }}
       style={{
         lineHeight: 1.2,
         overflow: "hidden",
