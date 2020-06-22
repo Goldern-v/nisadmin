@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { Button, Icon } from 'antd'
 export interface Props { }
 import { trainingInfoReviewModel } from './../model/TrainingInfoReviewModel'
+import { observer } from 'mobx-react-lite'
 
-export default function AuditInfoPannel() {
+function AuditInfoPannel() {
   const { auditInfo, auditLoading, taskTypeName } = trainingInfoReviewModel
 
-  console.log(JSON.parse(JSON.stringify(auditInfo)))
+  // console.log(JSON.parse(JSON.stringify(auditInfo)))
 
   return <Wrapper>
     <div className="audit-title">审核过程</div>
@@ -32,6 +33,9 @@ export default function AuditInfoPannel() {
     </div>
   </Wrapper>
 }
+
+export default observer(AuditInfoPannel)
+
 const Wrapper = styled.div`
   background: #fff;
   border-left: 1px solid #ddd;

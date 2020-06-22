@@ -335,7 +335,7 @@ export default observer(function HandoverRegister(props: Props) {
                   else
                     return false
                 })(),
-                showAll: (() => {
+                selectAll: (() => {
                   if (registerCode == 'QCRG_18' && item.itemCode == '参加人员')
                     return true
                   else
