@@ -265,7 +265,6 @@ export default function WardRegisterRouter() {
       icon: <HHGT />,
       path: "/wardRegister/QCRG_17",
       component: { ...重点患者评估登记本 },
-      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_17",
         registerName: "护患沟通记录"
@@ -275,7 +274,6 @@ export default function WardRegisterRouter() {
       title: "健康教育授课登记表",
       path: "/wardRegister/QCRG_18",
       component: { ...物品交接登记本 },
-      hide: !appStore.isDev,
       icon: <JKJY />,
       payload: {
         registerCode: "QCRG_18",

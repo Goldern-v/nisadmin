@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
 
@@ -100,7 +100,10 @@ export default function InputColumnRender(porps: Props) {
         if (e.keyCode == 40 || e.keyCode == 38)
           setOpen(true)
 
-        if (!multiple)
+        if (e.keyCode == 27)
+          setOpen(false)
+
+        if (!multiple || !open)
           handleNextIptFocus && handleNextIptFocus(e)
       }}
       style={{

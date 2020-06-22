@@ -303,7 +303,7 @@ export function getFun(context: any) {
               iptList[i + 1].focus && iptList[i + 1].focus()
               iptList[i + 1].click && iptList[i + 1].click()
             }
-            if (e && e.target) e.target.value = e.target.value.replace(/\n/g, '')
+            // if (e && e.target) e.target.value = e.target.value.replace(/\n/g, '')
             break
           }
         }
