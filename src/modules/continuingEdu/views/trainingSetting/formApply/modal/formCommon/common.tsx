@@ -87,7 +87,6 @@ export const Wrapper = styled.div`
   }
   /deep/.ant-input {
     border: none;
-    height: 100%;
     word-break: break-all;
     word-wrap: break-word;
     text-align: center;
@@ -139,7 +138,6 @@ export const CJJSWrapper = styled.div`
   .marginTop {
     margin-top: 20px;
   }
-
   /deep/ .ant-radio-checked {
     .ant-radio-inner::after {
       background-color: transparent;
@@ -154,7 +152,6 @@ export const CJJSWrapper = styled.div`
     vertical-align: bottom !important;
     text-align: right !important;
   }
-
   .vailgnTop {
     vertical-align: top !important;
     text-align: left !important;
@@ -169,7 +166,6 @@ export const CJJSWrapper = styled.div`
   }
   /deep/.ant-input {
     border: none;
-    height: 100%;
     word-break: break-all;
     word-wrap: break-word;
     border-bottom: 1px solid #000 !important;
@@ -182,7 +178,6 @@ export const CJJSWrapper = styled.div`
   /deep/ .ant-input-disabled {
     background-color: #fff !important;
   }
-
   /deep/.ant-input:focus {
     border: none;
     box-shadow: none;

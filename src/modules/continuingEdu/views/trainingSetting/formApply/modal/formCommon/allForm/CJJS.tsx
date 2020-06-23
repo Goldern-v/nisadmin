@@ -24,6 +24,7 @@ export default observer(function CJJS(props: Props) {
               <span>
                 姓名：
                 <Input
+                  style={{ width: "60px" }}
                   value={cJJSContent.f00001}
                   onChange={(e: any) => (cJJSContent.f00001 = e.target.value)}
                 />
@@ -31,7 +32,7 @@ export default observer(function CJJS(props: Props) {
               <Span>
                 性别：
                 <Input
-                  style={{ width: "45px" }}
+                  style={{ width: "35px" }}
                   value={cJJSContent.f00003_1}
                   onChange={(e: any) => (cJJSContent.f00003_1 = e.target.value)}
                 />
@@ -39,6 +40,7 @@ export default observer(function CJJS(props: Props) {
               <Span>
                 技术职称：
                 <Input
+                  style={{ width: "60px" }}
                   value={cJJSContent.f00007}
                   onChange={(e: any) => (cJJSContent.f00007 = e.target.value)}
                 />
@@ -46,7 +48,7 @@ export default observer(function CJJS(props: Props) {
               <Span>
                 所在科室：
                 <Input
-                  style={{ width: "80px" }}
+                  style={{ width: "140px" }}
                   value={cJJSContent.f00005}
                   onChange={(e: any) => (cJJSContent.f00005 = e.target.value)}
                 />
@@ -288,7 +290,7 @@ export default observer(function CJJS(props: Props) {
                   <Radio value={0}>否</Radio>
                 </Radio.Group>
               </Span>
-              <SpanMax>承担科室二级质控工作</SpanMax>
+              <Span style={{ marginLeft: "126px" }}>承担科室二级质控工作</Span>
               <Span>
                 <Radio.Group
                   value={cJJSContent.f00103}

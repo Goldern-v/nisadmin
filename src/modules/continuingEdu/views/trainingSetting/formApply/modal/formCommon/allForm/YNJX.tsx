@@ -24,13 +24,13 @@ export default observer(function YNJX(props: Props) {
         <colgroup>
           <col width="6%" />
           <col width="10%" />
-          <col width="11%" />
-          <col width="11%" />
           <col width="12%" />
-          <col width="13%" />
+          <col width="10%" />
+          <col width="10%" />
+          <col width="12%" />
+          <col width="11%" />
           <col width="14%" />
-          <col width="12%" />
-          <col width="11%" />
+          <col width="15%" />
         </colgroup>
         <tbody>
           <tr>
@@ -71,14 +71,16 @@ export default observer(function YNJX(props: Props) {
                 onChange={(e: any) => (YNJXContent.f00006 = e.target.value)}
               />
             </td>
-            <td>技术职称</td>
-            <td>
+            <td colSpan={2}>技术职称</td>
+            <td colSpan={3}>
               <Input
                 value={YNJXContent.f00007}
                 onChange={(e: any) => (YNJXContent.f00007 = e.target.value)}
               />
             </td>
-            <td>指导老师</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>指导老师</td>
             <td colSpan={2}>
               <Select
                 value={YNJXContent.f00138}
@@ -104,24 +106,25 @@ export default observer(function YNJX(props: Props) {
                 )}
               </Select>
             </td>
-          </tr>
-          <tr>
             <td colSpan={2}>目前所在科室</td>
-            <td>
+            <td colSpan={3}>
               <Input
                 value={YNJXContent.f00005}
                 onChange={(e: any) => (YNJXContent.f00005 = e.target.value)}
               />
             </td>
-            <td>入科时间</td>
+          </tr>
+
+          <tr>
+            <td colSpan={2}>入科时间</td>
             <td colSpan={2}>
               <Input
                 value={YNJXContent.f00127}
                 onChange={(e: any) => (YNJXContent.f00127 = e.target.value)}
               />
             </td>
-            <td>拟进修科室</td>
-            <td colSpan={2}>
+            <td colSpan={2}>拟进修科室</td>
+            <td colSpan={3}>
               <Select
                 showArrow={false}
                 style={{ width: "100%" }}

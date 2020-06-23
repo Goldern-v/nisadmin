@@ -24,6 +24,7 @@ export default observer(function RYZY(props: Props) {
               <span>
                 姓名：
                 <Input
+                  style={{ width: "60px" }}
                   value={rYZYContent.f00001}
                   onChange={(e: any) => (rYZYContent.f00001 = e.target.value)}
                 />
@@ -31,7 +32,7 @@ export default observer(function RYZY(props: Props) {
               <Span>
                 性别：
                 <Input
-                  style={{ width: "45px" }}
+                  style={{ width: "35px" }}
                   value={rYZYContent.f00003_1}
                   onChange={(e: any) => (rYZYContent.f00003_1 = e.target.value)}
                 />
@@ -39,6 +40,7 @@ export default observer(function RYZY(props: Props) {
               <Span>
                 技术职称：
                 <Input
+                  style={{ width: "60px" }}
                   value={rYZYContent.f00007}
                   onChange={(e: any) => (rYZYContent.f00007 = e.target.value)}
                 />
@@ -46,7 +48,7 @@ export default observer(function RYZY(props: Props) {
               <Span>
                 所在科室：
                 <Input
-                  style={{ width: "80px" }}
+                  style={{ width: "140px" }}
                   value={rYZYContent.f00005}
                   onChange={(e: any) => (rYZYContent.f00005 = e.target.value)}
                 />
