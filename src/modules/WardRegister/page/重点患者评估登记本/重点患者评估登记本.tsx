@@ -787,10 +787,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_14_2: [
           signRowObj({
-            title: "责任护士签名",
+            title: "检查者签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "责任护士",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
