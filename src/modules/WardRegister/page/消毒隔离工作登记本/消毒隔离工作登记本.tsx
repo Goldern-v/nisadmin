@@ -34,8 +34,8 @@ import { getFun, ItemConfigItem, lastWeekDatesAMonth } from "../../utils/fun/fun
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
-import FileUploadColumnRender from './../../components/FileUploadColumnRender'
-import InputColumnRender from './../../components/InputColumnRender'
+import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
+import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 
 const TextArea = Input.TextArea
 

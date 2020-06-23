@@ -40,9 +40,9 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
-import FileUploadColumnRender from './../../components/FileUploadColumnRender'
-import DatePickerColumnRender from './../../components/DatePickerColumnRender'
-import InputColumnRender from './../../components/InputColumnRender'
+import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
+import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
+import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 
 export interface Props {
   payload: any;

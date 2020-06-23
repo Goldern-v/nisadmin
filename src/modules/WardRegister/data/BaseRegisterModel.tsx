@@ -1,10 +1,10 @@
 import { action, observable, computed } from 'mobx'
-import { wardRegisterService } from './../../services/WardRegisterService'
+import { wardRegisterService } from '../services/WardRegisterService'
 import { appStore, authStore } from 'src/stores'
 import { message, Modal } from 'antd'
 import { fileDownload } from "src/utils/file/file"
 import moment from 'moment'
-import { codeAdapter } from "../../utils/codeAdapter"
+import { codeAdapter } from "../utils/codeAdapter"
 import { globalModal } from "src/global/globalModal"
 
 const defaultQuery = function () {
@@ -331,6 +331,7 @@ export default class BaseRegisterModel {
   /**初始化筛选条件 */
   private initFilterQuery = () => {
     return codeAdapter({
+      QCRG_01: { '班次': '' },
       QCRG_08: { '转归': '' },
       other: {}
     }, this.registerCode)

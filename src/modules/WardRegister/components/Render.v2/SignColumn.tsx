@@ -4,7 +4,7 @@ import { globalModal } from "src/global/globalModal"
 import { message } from 'antd'
 import { DoCon } from "src/components/BaseTable"
 import { ColumnProps } from 'antd/es/table/interface'
-import { wardRegisterService } from "../../../services/WardRegisterService"
+import { wardRegisterService } from "../../services/WardRegisterService"
 
 export interface SignColumnProps {
   title: string, //列标题

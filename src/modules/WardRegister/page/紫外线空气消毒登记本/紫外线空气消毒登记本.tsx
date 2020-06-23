@@ -31,9 +31,9 @@ import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
-import DatePickerColumnRender from './../../components/DatePickerColumnRender'
-import InputColumnRender from './../../components/InputColumnRender'
-import { createFilterItem } from "../../components/FilterItem"
+import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
+import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import { createFilterItem } from "../../components/Render.v1/FilterItem"
 export interface Props {
   payload: any;
 }

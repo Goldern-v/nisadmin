@@ -24,17 +24,17 @@ import { PageHeader, Place } from "src/components/common"
 import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
 import SettingModal from "./components/SettingModal"
-import FileUploadRender from './components/FileUploadRender'
-import DatePickerRender from './components/DatePickerRender'
-import DefaultRender from './components/DefaultRender'
+import FileUploadRender from '../../components/Render.v2/FileUploadRender'
+import DatePickerRender from '../../components/Render.v2/DatePickerRender'
+import DefaultRender from '../../components/Render.v2/DefaultRender'
 import { codeAdapter } from "../../utils/codeAdapter"
 import FilterCon from './components/FilterCon'
-import SignColumn from './components/SignColumn'
+import SignColumn from '../../components/Render.v2/SignColumn'
 import { NullBox } from "../../components/NullBox"
 import { TableCon, Wrapper, LineCon, TextCon, Text, SvgCon } from "../../utils/style/style"
 //import SettingModal from "./modal/SettingModal"
 //import { createFilterItem } from "../../components/FilterItem"
-import { baseRegisterMode } from './BaseRegisterModel'
+import { baseRegisterMode } from '../../data/BaseRegisterModel'
 import classNames from "classnames"
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
@@ -250,7 +250,6 @@ export default observer(function 基础模板登记本(props: Props) {
                   index,
                   onChange: (val: any, itemCode: string, index: number) => {
                     setTableDataRowItem(val, 'description', index)
-                    setTableDataRowItem(val, 'range', index)
                   },
                   focusNextIpt,
                 }} />

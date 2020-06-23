@@ -25,18 +25,18 @@ import { signRowObj } from "../../utils/signRowObj";
 import { NullBox } from "../../components/NullBox";
 import { TableCon, Wrapper } from "../../utils/style/style";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
-import { createFilterItem } from "../../components/FilterItem";
+import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
-import { createFilterInput } from "../../components/FilterInput";
+import { createFilterInput } from "../../components/Render.v1/FilterInput";
 import TextArea from "antd/lib/input/TextArea";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { globalModal } from "src/global/globalModal";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
-import FileUploadColumnRender from './../../components/FileUploadColumnRender'
-import DatePickerColumnRender from './../../components/DatePickerColumnRender'
-import InputColumnRender from './../../components/InputColumnRender'
+import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
+import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
+import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 
 export interface Props {
   payload: any;
@@ -605,6 +605,18 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }} />
 
           } else {
+            const multiple = (() => {
+              if (
+                registerCode == "QCRG_04" &&
+                item.itemCode == "组号及床号"
+              )
+                return true
+
+              if (item.itemType == "multiple_select")
+                return true
+
+              return false
+            })()
             children = <InputColumnRender
               {...{
                 cellDisabled,
@@ -614,15 +626,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 itemCode: item.itemCode,
                 updateDataSource,
                 handleNextIptFocus,
-                multiple: (() => {
-                  if (
-                    registerCode == "QCRG_04" &&
-                    item.itemCode == "组号及床号"
-                  )
-                    return true
-                  else
-                    return false
-                })(),
+                multiple,
+                selectAll: multiple,
               }}
             />
           }

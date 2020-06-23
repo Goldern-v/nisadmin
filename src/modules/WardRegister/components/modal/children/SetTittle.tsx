@@ -138,11 +138,27 @@ export default observer(function SetTittle(props: Props) {
               return <Select
                 value={text}
                 onChange={(val: string) => {
+                  let oldType = record.itemType
                   record.itemType = val
-                  record.options = ''
+
+                  let ignoreTypes = ['multiple_select']
+
+                  if (
+                    (ignoreTypes.indexOf(oldType) >= 0 || !oldType) &&
+                    (ignoreTypes.indexOf(val) >= 0 || !val)
+                  ) {
+
+                  } else {
+                    record.options = ''
+                  }
+
                   updateDataSource()
                 }}>
                 <Option value="">下拉选项</Option>
+                {codeAdapter({
+                  QCRG_08: <Option value="multiple_select">多项选择</Option>,
+                  other: null,
+                }, registerCode, true)}
                 <Option value="ward_user">科室护士</Option>
                 <Option value="attachment">附件上传</Option>
                 {codeAdapter({
