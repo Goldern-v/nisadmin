@@ -304,14 +304,12 @@ export default observer(function HandoverRegister(props: Props) {
             </PTitleCon>
           </PTitleTh>
         ) : item.checkSize ? (
-          () => (
-            <ThBox>
-              <div className="title">
-                <span className="title-text">{item.itemCode}</span>
-              </div>
-              <div className="aside">{item.checkSize}</div>
-            </ThBox>
-          )
+          <ThBox>
+            <div className="title">
+              <span className="title-text">{item.itemCode}</span>
+            </div>
+            <div className="aside">{item.checkSize}</div>
+          </ThBox>
         ) : (
               item.itemCode
             )
