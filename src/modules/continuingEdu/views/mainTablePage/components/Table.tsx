@@ -40,7 +40,8 @@ export default observer(function Table(props: Props) {
       "#FCECE9",
       "#EEF1FF",
       "#F0F8F8",
-      "#FAEAFB"
+      "#FAEAFB",
+      "#DEF8FD"
     ];
     return background[data - 1];
   };
@@ -82,7 +83,10 @@ export default observer(function Table(props: Props) {
       title: "类别",
       dataIndex: "category",
       width: 120,
-      align: "center"
+      align: "center",
+      render(category: any) {
+        return category === 1 ? <span>中医类</span> : <span>非中医类</span>;
+      }
     },
     {
       title: "标题",
@@ -108,7 +112,8 @@ export default observer(function Table(props: Props) {
           "考试",
           "练习",
           "实操",
-          "演练"
+          "演练",
+          "实践"
         ];
         const color = [
           "#4CA21D",
@@ -116,7 +121,8 @@ export default observer(function Table(props: Props) {
           "#EA3838",
           "#2754A8",
           "#006667",
-          "#AB2892"
+          "#AB2892",
+          "#0F9790"
         ];
         return (
           <span
