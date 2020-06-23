@@ -114,18 +114,18 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
-        // return (
-        //   <Input
-        //     disabled={cellDisabled(record)}
-        //     defaultValue={text}
-        //     onKeyUp={handleNextIptFocus}
-        //     onChange={e => {
-        //       record.modified = true
-        //       record.recordDate = e.target.value;
-        //     }}
-        //     onBlur={() => updateDataSource()}
-        //   />
-        // );
+        if (appStore.isDev) return (
+          <Input
+            disabled={cellDisabled(record)}
+            defaultValue={text}
+            onKeyUp={handleNextIptFocus}
+            onChange={e => {
+              record.modified = true
+              record.recordDate = e.target.value;
+            }}
+            onBlur={() => updateDataSource()}
+          />
+        );
 
         return text
       }
@@ -288,25 +288,28 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       },
       registerCode
     ),
-    // {
-    //   title: "操作",
-    //   width: 50,
-    //   className: "",
-    //   render(text: string, record: any, index: number) {
-    //     return (
-    //       <DoCon>
-    //         {cellDisabled(record) ? (
-    //           <aside style={{ color: "#aaa" }}>删除</aside>
-    //         ) : (
-    //             <span
-    //               onClick={() => handleDeleteRow(record, index)}>
-    //               删除
-    //             </span>
-    //           )}
-    //       </DoCon>
-    //     );
-    //   }
-    // }
+    ...(appStore.isDev ?
+      [
+        {
+          title: "操作",
+          width: 50,
+          className: "",
+          render(text: string, record: any, index: number) {
+            return (
+              <DoCon>
+                {cellDisabled(record) ? (
+                  <aside style={{ color: "#aaa" }}>删除</aside>
+                ) : (
+                    <span
+                      onClick={() => handleDeleteRow(record, index)}>
+                      删除
+                    </span>
+                  )}
+              </DoCon>
+            );
+          }
+        }
+      ] : []),
   ];
 
   //预览附件
@@ -405,9 +408,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={() => getPage(undefined, { stopCreateRow: true })}>查询</Button>
-            {/* <Button type="primary" onClick={createRow}>
+            {appStore.isDev && <Button type="primary" onClick={createRow}>
               新建
-            </Button> */}
+            </Button>}
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
