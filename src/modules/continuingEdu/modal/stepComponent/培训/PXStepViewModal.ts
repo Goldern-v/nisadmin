@@ -42,15 +42,15 @@ const defaultStepData2 = {
 
   // 武汉中医类别
   /** 1中医类；2非中医类*/
-  category: 1,
+  category: 2,
   /** 是否有学员学分 1有 0无 */
-  hasStudentCredit: 1,
+  hasStudentCredit: 0,
   /** 是否有学员学时 1有 0无*/
-  hasStudentClassHours: 1,
+  hasStudentClassHours: 0,
   /** 是否有讲师学分 1有 0无*/
-  hasTeacherCredit: 1,
+  hasTeacherCredit: 0,
   /** 是否有讲师学时 1有 0无*/
-  hasTeacherClassHours: 1
+  hasTeacherClassHours: 0
 };
 
 const defaultStepData5 = {
