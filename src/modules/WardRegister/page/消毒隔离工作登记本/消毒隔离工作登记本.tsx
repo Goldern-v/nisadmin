@@ -36,6 +36,7 @@ import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import { TableCon, Wrapper } from "../../utils/style/style"
 
 const TextArea = Input.TextArea
 
@@ -67,6 +68,12 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     total: 0
   });
   const [total, setTotal] = useState(0);
+  //选中的条目
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+  const handleSelectedChange = (payload: any[]) => {
+    setSelectedRowKeys(payload)
+  }
+
   /** 选中的blockObj */
   const selectedBlockObj = blockList.find(
     (item: any) => item.id == selectedBlockId
@@ -335,7 +342,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     exportExcel,
     handleNextIptFocus,
     handleUpload,
-    handleDeleteRow
+    handleDeleteRow,
+    handleAuditAll,
   } = getFun({
     registerCode,
     registerName,
@@ -351,7 +359,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     date,
     selectedBlockId,
     dataSource,
-    paramMap: {}
+    paramMap: {},
+    selectedRowKeys,
+    setSelectedRowKeys,
   })
 
   useEffect(() => {
@@ -456,10 +466,33 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                 pageSize: pagination.pageSize
               });
             }}
+            rowSelection={{
+              selectedRowKeys,
+              onChange: handleSelectedChange,
+            }}
           />
         ) : (
             <NullBox onClick={onAddBlock} />
           )}
+
+        <div className="selected-operate-con">
+          <Button
+            disabled={
+              pageLoading ||
+              !authStore.isRoleManage ||
+              selectedRowKeys.length <= 0
+            }
+            type="primary"
+            onClick={() => handleAuditAll(
+              '护士长',
+              codeAdapter({
+                QCRG_03: 'sign',
+                other: 'audit'
+              }, registerCode)
+            )}>
+            护士长签名
+                    </Button>
+        </div>
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
@@ -499,93 +532,6 @@ function NullBox(props: any) {
     </Wrapper>
   );
 }
-
-const Wrapper = styled.div`
-  .label {
-    margin-left: 10px !important;
-    margin-right: 5px !important;
-  }
-  .ant-btn {
-    margin-left: 5px;
-    padding: 0 10px;
-  }
-  .warning-value {
-    input {
-      color: red;
-    }
-  }
-`;
-const TableCon = styled.div`
-  padding: 0 15px;
-  .ant-table-header-column {
-    height: 100%;
-    > div {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  .ant-table-column-title {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ant-select {
-    width: 100%;
-    border-radius: 0;
-  }
-  input {
-    border: 0;
-    border-radius: 0;
-    text-align: center;
-  }
-  .input-cell {
-    padding: 0 !important;
-  }
-  textarea {
-    border: 0;
-    border-radius: 0;
-    height: 100%;
-    width: 100%;
-    outline: none;
-    resize: none;
-    /* margin: 0 -8px; */
-  }
-  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
-  .ant-table-row-hover {
-    background: #fff !important;
-    > td {
-      background: #fff !important;
-    }
-  }
-  .sign-name {
-    cursor: pointer;
-  }
-  .checkSize-warning {
-    input {
-      color: red;
-    }
-  }
-  
-  .disabled-row{
-    td.input-cell{
-      background: rgba(0,0,0,0.03)!important;
-    }
-    .ant-input[disabled]{
-      color: #000!important;
-      background: rgba(0,0,0,0.0)!important;
-    }
-    .ant-select-disabled .ant-select-selection{
-      background: rgba(0,0,0,0.0)!important;
-    }
-  }
-  textarea.ant-input{
-    overflow:hidden!important;
-  }
-`;
 
 const ThBox = styled.div`
   height: 100%;
