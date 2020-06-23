@@ -96,6 +96,7 @@ export default function InputColumnRender(porps: Props) {
     <TextArea
       autosize={{ minRows: 1 }}
       data-key={itemCode}
+      onClick={() => setOpen(true)}
       onKeyUp={(e) => {
         if (e.keyCode == 40 || e.keyCode == 38)
           setOpen(true)

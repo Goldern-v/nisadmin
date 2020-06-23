@@ -79,7 +79,7 @@ export default observer(function HandoverRegister(props: Props) {
 
   const dateItemArr = codeAdapter({
     other: [],
-    QCRG_11: [{
+    [['QCRG_11', 'QCRG_11_2', 'QCRG_11_2'].join(',')]: [{
       itemCode: '开始时间',
       showTime: true,
       format: "YYYY-MM-DD HH:mm"
@@ -88,7 +88,7 @@ export default observer(function HandoverRegister(props: Props) {
       showTime: true,
       format: "YYYY-MM-DD HH:mm"
     }],
-  }, registerCode)
+  }, registerCode, true)
 
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal);
@@ -205,12 +205,13 @@ export default observer(function HandoverRegister(props: Props) {
       align: "center",
       className: 'input-cell',
       colSpan: codeAdapter({
-        QCRG_11: 1,
-        QCRG_18: 1,
-        QCRG_15_3: 1,
-        QCRG_16_3: 1,
+        [
+          ['QCRG_11', 'QCRG_11_2', 'QCRG_11_3',
+            'QCRG_18', 'QCRG_15_3', 'QCRG_16_3']
+            .join(',')
+        ]: 1,
         other: 2
-      }, registerCode),
+      }, registerCode, true),
       width: 107,
       fixed: false && surplusWidth && "left",
       render: (text: string, record: any) => {
@@ -233,10 +234,11 @@ export default observer(function HandoverRegister(props: Props) {
       }
     },
     ...codeAdapter({
-      QCRG_11: [],
-      QCRG_18: [],
-      QCRG_15_3: [],
-      QCRG_16_3: [],
+      [
+        ['QCRG_11', 'QCRG_11_2', 'QCRG_11_3',
+          'QCRG_18', 'QCRG_15_3', 'QCRG_16_3']
+          .join(',')
+      ]: [],
       other: [
         {
           title: "班次",
@@ -266,21 +268,58 @@ export default observer(function HandoverRegister(props: Props) {
           }
         },
       ]
-    }, registerCode),
+    }, registerCode, true),
     ...itemConfigList.map((item: any) => ({
       title(text: string, record: any, index: number) {
-        return (
-          <ThBox>
-            <div className="title">
-              <span className="title-text">{item.itemCode}</span>
-            </div>
-            {item.checkSize && <div className="aside">{item.checkSize}</div>}
-          </ThBox>
-        );
+        return item.children ? (
+          <PTitleTh>
+            <MergeTitle>{item.pTitle || item.itemCode}</MergeTitle>
+            <PTitleCon>
+              {item.children.map(
+                (cItem: ItemConfigItem, index: number, arr: any) => (
+                  <CTitleBox
+                    key={index}
+                    style={{
+                      ...{ flex: cItem.width, width: 0 },
+                      ...(index == arr.length - 1 ? { border: 0 } : {})
+                    }}
+                  >
+                    {cItem.checkSize ? (
+                      <ThBox>
+                        <div className="title">
+                          <span className="title-text">
+                            {cItem.label || cItem.itemCode}
+                          </span>
+                        </div>
+                        <div className="aside">{cItem.checkSize}</div>
+                      </ThBox>
+                    ) : (
+                        <span className="title-text">
+                          {cItem.label || cItem.itemCode}
+                        </span>
+                      )}
+                  </CTitleBox>
+                )
+              )}
+            </PTitleCon>
+          </PTitleTh>
+        ) : item.checkSize ? (
+          () => (
+            <ThBox>
+              <div className="title">
+                <span className="title-text">{item.itemCode}</span>
+              </div>
+              <div className="aside">{item.checkSize}</div>
+            </ThBox>
+          )
+        ) : (
+              item.itemCode
+            )
       },
       align: "center",
       dataIndex: item.itemCode,
       width: (15 * item.width || 50) + 8,
+      colSpan: item.colSpan,
       className: "input-cell input-cell-custom",
       render(text: string, record: any, index: number) {
         let className = ''
@@ -936,4 +975,31 @@ const Text = styled.div<{ x: string; y: string; deg: string }>`
   top: ${p => p.y};
   white-space: nowrap;
   transform: rotate(${p => p.deg}deg);
+`;
+
+const PTitleTh = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+const PTitleCon = styled.div`
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  .title-text {
+    display: block;
+    padding: 4px 0;
+  }
+`;
+const CTitleBox = styled.div`
+  flex: 1;
+  border-right: 1px solid #e8e8e8;
+  box-sizing: content-box;
+  /* padding: 4px 0; */
+`;
+
+const MergeTitle = styled.div`
+  padding: 4px 0;
+  border-bottom: 1px solid #e8e8e8;
 `;
