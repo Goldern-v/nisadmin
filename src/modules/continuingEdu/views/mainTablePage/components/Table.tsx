@@ -207,7 +207,14 @@ export default observer(function Table(props: Props) {
       title: "学时",
       dataIndex: "classHours",
       width: 50,
-      align: "center"
+      align: "center",
+      render(classHours: any) {
+        return classHours === null ? (
+          <span>无</span>
+        ) : (
+          <span>{classHours}</span>
+        );
+      }
     },
     {
       title: "备注",
