@@ -194,21 +194,22 @@ class StepViewModal {
 
     this.stepData5.ifSendMessage = !!data.ifSendMessage;
 
-    this.stepData2.hostPersonList =
-      data.hostPersonList?.map((item: any) => {
+    this.stepData2.hostPersonList = data.detailInfo.hostPersonList.map(
+      (item: any) => {
         return {
           label: item.empName,
           key: item.empNo
         };
-      });
-    this.stepData2.sicPersonList =
-      data.detailInfo.sicPersonList &&
-      data.detailInfo.sicPersonList.map((item: any) => {
+      }
+    );
+    this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
+      (item: any) => {
         return {
           label: item.empName,
           key: item.empNo
         };
-      });
+      }
+    );
   };
 }
 
