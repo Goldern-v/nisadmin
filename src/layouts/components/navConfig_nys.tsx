@@ -29,8 +29,8 @@ export const navConfig: navConfigItem[] = [
     path: "/nurseFile"
   },
   {
-    name: '不良事件',
-    path: '/badEventsNewList'
+    name: "不良事件",
+    path: "/badEventsNewList"
   },
   // {
   //   name: '不良事件分析报告',
@@ -97,7 +97,7 @@ export const navConfig: navConfigItem[] = [
     path: "/setting"
   },
   {
-    name: "护理人员管理",
+    name: "护理排班管理",
     path: "/personnelManagement"
   }
 ];
