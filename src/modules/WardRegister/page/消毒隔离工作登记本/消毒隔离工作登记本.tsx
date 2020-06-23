@@ -36,7 +36,6 @@ import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
-import { TableCon, Wrapper } from "../../utils/style/style"
 
 const TextArea = Input.TextArea
 
@@ -532,6 +531,98 @@ function NullBox(props: any) {
     </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  .label {
+    margin-left: 10px !important;
+    margin-right: 5px !important;
+  }
+  .ant-btn {
+    margin-left: 5px;
+    padding: 0 10px;
+  }
+  .warning-value {
+    input {
+      color: red;
+    }
+  }
+`;
+const TableCon = styled.div`
+  padding: 0 15px;
+  .selected-operate-con{
+    position: absolute;
+    bottom: 12px;
+    left: 24px;
+  }
+  .ant-table-header-column {
+    height: 100%;
+    > div {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .ant-table-column-title {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ant-select {
+    width: 100%;
+    border-radius: 0;
+  }
+  input {
+    border: 0;
+    border-radius: 0;
+    text-align: center;
+  }
+  .input-cell {
+    padding: 0 !important;
+  }
+  textarea {
+    border: 0;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    resize: none;
+    /* margin: 0 -8px; */
+  }
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+  .ant-table-row-hover {
+    background: #fff !important;
+    > td {
+      background: #fff !important;
+    }
+  }
+  .sign-name {
+    cursor: pointer;
+  }
+  .checkSize-warning {
+    input {
+      color: red;
+    }
+  }
+  
+  .disabled-row{
+    td.input-cell{
+      background: rgba(0,0,0,0.03)!important;
+    }
+    .ant-input[disabled]{
+      color: #000!important;
+      background: rgba(0,0,0,0.0)!important;
+    }
+    .ant-select-disabled .ant-select-selection{
+      background: rgba(0,0,0,0.0)!important;
+    }
+  }
+  textarea.ant-input{
+    overflow:hidden!important;
+  }
+`;
 
 const ThBox = styled.div`
   height: 100%;
