@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button, Radio, Input } from "antd";
-import { xxStepViewModal } from "./XXStepViewModal";
+import React from "react";
+import { Radio, Input } from "antd";
+import { sjStepViewModal } from "./SJStepViewModal";
 import { stepViewModal } from "../StepViewModal";
 import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
-import ShowTable from "../公共/table/ShowTable";
 
 export interface Props {}
 
@@ -16,7 +15,6 @@ export default observer(function Step5() {
     1: "线上",
     2: "线下"
   };
-
   const bxNursingMap: any = {
     nurse0: "N0",
     nurse1: "N1",
@@ -38,29 +36,29 @@ export default observer(function Step5() {
         <tbody>
           <tr>
             <td className="key">名&nbsp;&nbsp;称：</td>
-            <td className="value">{xxStepViewModal.stepData2.title}</td>
+            <td className="value">{sjStepViewModal.stepData2.title}</td>
           </tr>
           <tr>
-            <td className="key">学习开始时间：</td>
+            <td className="key">实践开始时间：</td>
             <td className="value">
-              {xxStepViewModal.stepData2.startTime &&
-                moment(xxStepViewModal.stepData2.startTime).format(
+              {sjStepViewModal.stepData2.startTime &&
+                moment(sjStepViewModal.stepData2.startTime).format(
                   "YYYY-MM-DD HH:mm"
                 )}
             </td>
           </tr>
           <tr>
-            <td className="key">学习开放时间：</td>
+            <td className="key">实践开放时间：</td>
             <td className="value">
-              {xxStepViewModal.stepData2.openTime}
-              {xxStepViewModal.stepData2.openTimeUnit}{" "}
-              <span className="aside">即：{xxStepViewModal.endTime} 结束</span>
+              {sjStepViewModal.stepData2.openTime}
+              {sjStepViewModal.stepData2.openTimeUnit}{" "}
+              <span className="aside">即：{sjStepViewModal.endTime} 结束</span>
             </td>
           </tr>
           <tr>
             <td className="key">组织方式：</td>
             <td className="value">
-              {organizationWayMap[xxStepViewModal.stepData2.organizationWay]}
+              {organizationWayMap[sjStepViewModal.stepData2.organizationWay]}
             </td>
           </tr>
           <tr>
@@ -71,10 +69,26 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">学习地址：</td>
-            <td className="value">{xxStepViewModal.stepData2.address}</td>
+            <td className="key">实践地址：</td>
+            <td className="value">{sjStepViewModal.stepData2.address}</td>
           </tr>
-          {xxStepViewModal.stepData2.category == 1 ? (
+          <tr>
+            <td className="key">签到负责人：</td>
+            <td className="value">
+              {sjStepViewModal.stepData2.sicPersonList
+                .map((item: any) => item.label)
+                .join("，")}
+            </td>
+          </tr>
+          <tr>
+            <td className="key">主持人：</td>
+            <td className="value">
+              {sjStepViewModal.stepData2.hostPersonList
+                .map((item: any) => item.label)
+                .join("，")}
+            </td>
+          </tr>
+          {sjStepViewModal.stepData2.category == 1 ? (
             <tr>
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">中医类</td>
@@ -86,16 +100,16 @@ export default observer(function Step5() {
             </tr>
           )}
 
-          {xxStepViewModal.stepData2.hasStudentCredit == 1 ? (
+          {sjStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
               <td className="key">学员学分：</td>
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    xxStepViewModal.stepData2.studentCreditType
+                    sjStepViewModal.stepData2.studentCreditType
                   ]
                 }{" "}
-                {xxStepViewModal.stepData2.studentCredit} 分
+                {sjStepViewModal.stepData2.studentCredit} 分
               </td>
             </tr>
           ) : (
@@ -104,11 +118,11 @@ export default observer(function Step5() {
               <td className="value">无</td>
             </tr>
           )}
-          {xxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
+          {sjStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
               <td className="value">
-                {xxStepViewModal.stepData2.studentClassHours}
+                {sjStepViewModal.stepData2.studentClassHours}
               </td>
             </tr>
           ) : (
@@ -120,25 +134,8 @@ export default observer(function Step5() {
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
-              {xxStepViewModal.stepData2.bxNurse
+              {sjStepViewModal.stepData2.bxNurse
                 .map((item: any) => bxNursingMap[item])
-                .join("，")}
-            </td>
-          </tr>
-          <tr>
-            <td className="key">参与人员：</td>
-            <td className="value">
-              {stepViewModal.stepData3.participantList
-                .reduce((total: any[], item: any) => {
-                  return [
-                    ...total,
-                    ...item.userList.map((item: any) => ({
-                      label: item.empName,
-                      key: item.empNo
-                    }))
-                  ];
-                }, [])
-                .map((item: any) => item.label)
                 .join("，")}
             </td>
           </tr>
@@ -177,22 +174,12 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">外网资料：</td>
-            <td className="value" />
-          </tr>
-          <tr>
-            <td className="key" />
-            <td className="value showTable">
-              <ShowTable />
-            </td>
-          </tr>
-          <tr>
             <td className="key">通知设置：</td>
             <td className="value">
               <Radio
-                checked={!!xxStepViewModal.stepData5.ifSendMessage}
+                checked={!!sjStepViewModal.stepData5.ifSendMessage}
                 onClick={() => {
-                  xxStepViewModal.stepData5.ifSendMessage = !xxStepViewModal
+                  sjStepViewModal.stepData5.ifSendMessage = !sjStepViewModal
                     .stepData5.ifSendMessage;
                 }}
               >
@@ -206,9 +193,9 @@ export default observer(function Step5() {
               <Input.TextArea
                 style={{ width: "100%" }}
                 placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送"
-                value={xxStepViewModal.stepData2.noticeContent}
+                value={sjStepViewModal.stepData2.noticeContent}
                 onChange={(e: any) =>
-                  (xxStepViewModal.stepData2.noticeContent = e.target.value)
+                  (sjStepViewModal.stepData2.noticeContent = e.target.value)
                 }
               />
             </td>

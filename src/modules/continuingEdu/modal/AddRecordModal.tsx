@@ -41,6 +41,9 @@ import Step2_sc from "./stepComponent/实操/Step2";
 import Step4_sc from "./stepComponent/实操/Step4";
 import Step5_sc from "./stepComponent/实操/Step5";
 
+import Step2_sj from "./stepComponent/实践/Step2";
+import Step5_sj from "./stepComponent/实践/Step5";
+
 import { ScrollBox } from "src/components/common";
 import {
   stepViewModal,
@@ -75,6 +78,8 @@ export default observer(function AddRecordModal(props: Props) {
       return <Step2_sc />;
     } else if (stepViewModal.stepData1.teachingMethod == 6) {
       return <Step2_yl />;
+    } else if (stepViewModal.stepData1.teachingMethod == 7) {
+      return <Step2_sj />;
     } else {
       return <Step2_xx />;
     }
@@ -106,6 +111,8 @@ export default observer(function AddRecordModal(props: Props) {
       return <Step5_sc />;
     } else if (stepViewModal.stepData1.teachingMethod == 6) {
       return <Step5_yl />;
+    } else if (stepViewModal.stepData1.teachingMethod == 7) {
+      return <Step5_sj />;
     } else {
       return <Step5_xx />;
     }

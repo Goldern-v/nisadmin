@@ -60,7 +60,7 @@ export default observer(function SelectPeopleModal(props: Props) {
       }
       setCheckedUserList([...checkedUserList, ...data]);
     } else {
-      let _user = checkedUserList.find((item: any) => item.key === user.key);
+      let _user = checkedUserList?.find((item: any) => item.key === user.key);
       if (!_user) {
         setCheckedUserList([...checkedUserList, user]);
       }
@@ -339,7 +339,9 @@ const CheckListCon = observer(function(props: any) {
           全选
         </Checkbox>
       </div>
-      <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
+      <Checkbox.Group
+        value={checkedUserList && checkedUserList.map((item: any) => item.key)}
+      >
         {selectPeopleViewModel.currentTreeData!.list.map(
           (item: any, index: number) => {
             return (

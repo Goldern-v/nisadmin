@@ -11,6 +11,7 @@ import moment from "moment";
 import { pxStepViewModal } from "./培训/PXStepViewModal";
 import { lxStepViewModal } from "./练习/LXStepViewModal";
 import { ylStepViewModal } from "./演练/YLStepViewModal";
+import { sjStepViewModal } from "./实践/SJStepViewModal";
 
 export let selfStepViewModalMap: any = {
   1: xxStepViewModal,
@@ -18,7 +19,8 @@ export let selfStepViewModalMap: any = {
   3: ksStepViewModal,
   4: lxStepViewModal,
   5: scStepViewModal,
-  6: ylStepViewModal
+  6: ylStepViewModal,
+  7: sjStepViewModal
 };
 
 export let teachingMethodMap: any = {
@@ -27,7 +29,8 @@ export let teachingMethodMap: any = {
   3: "考试",
   4: "练习",
   5: "实操",
-  6: "演练"
+  6: "演练",
+  7: "实践"
 };
 class StepViewModal {
   @observable public oldData: any = null;
@@ -198,7 +201,8 @@ class StepViewModal {
       3: "addTeachingPlanInfoExam",
       4: "addTeachingPlanInfoExercise",
       5: "addTeachingPlanInfoPractise",
-      6: "addTeachingPlanInfoWalkthrough"
+      6: "addTeachingPlanInfoWalkthrough",
+      7: "addTeachingPlanInfoSocialpractise"
     };
 
     return (stepServices as any)[

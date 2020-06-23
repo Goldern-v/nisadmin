@@ -482,7 +482,8 @@ export default observer(function Table(props: Props) {
       "testingResultReview",
       "practiceResultReview",
       "operateResultReview",
-      "simulateResultReview"
+      "simulateResultReview",
+      "socialpractiseResultReview"
     ];
     let router = teachingMethodArray[record.teachingMethod - 1];
     appStore.history.push(`/${router}?id=${record.id}`);

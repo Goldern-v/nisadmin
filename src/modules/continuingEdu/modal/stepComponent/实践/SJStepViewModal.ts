@@ -4,20 +4,22 @@ import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 const defaultStepData2 = {
-  /** 学习名称 **/
+  /** 实践名称 **/
   title: "",
-  /**  学习开始时间 */
+  /**  实践开始时间 */
   startTime: "",
   /**  开放时长 */
   openTime: 1,
   /**  开放时长单位（小时、天、周） */
   openTimeUnit: "小时",
-  /**  结束XX天后归档 */
-  daysToArchive: 2,
   /**  组织方式（1线上；2线下） */
-  organizationWay: 1,
-  /**  学习地址（如：护理app） */
+  organizationWay: 2,
+  /** 主持人 */
+  hostPersonList: [],
+  /**  实践地址（如：护理app） */
   address: "护士app",
+  /** 签到负责人*/
+  sicPersonList: [],
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: 1,
   /**  学员学分 */
@@ -30,11 +32,11 @@ const defaultStepData2 = {
 
   // 武汉中医类别
   /** 1中医类；2非中医类*/
-  category: 1,
+  category: 2,
   /** 是否有学员学分 1有 0无 */
-  hasStudentCredit: 1,
+  hasStudentCredit: 0,
   /** 是否有学员学时 1有 0无*/
-  hasStudentClassHours: 1
+  hasStudentClassHours: 0
 };
 const defaultStepData5 = {
   /**  是否发送通知（1发通知  0不发通知） */
@@ -136,13 +138,35 @@ class StepViewModal {
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
+      category: this.stepData2.category,
       detailInfo: {
-        category: this.stepData2.category,
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
-        studentClassHours: this.stepData2.studentClassHours
+        studentClassHours: this.stepData2.studentClassHours,
+        sicPersonList: this.stepData2.sicPersonList.reduce(
+          (total: any[], item: any) => {
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
+          },
+          []
+        ),
+        hostPersonList: this.stepData2.hostPersonList.reduce(
+          (total: any[], item: any) => {
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
+          },
+          []
+        )
       }
     };
     return result;
@@ -169,7 +193,23 @@ class StepViewModal {
     data.nurseOther && this.stepData2.bxNurse.push("nurseOther");
 
     this.stepData5.ifSendMessage = !!data.ifSendMessage;
+
+    this.stepData2.hostPersonList =
+      data.hostPersonList?.map((item: any) => {
+        return {
+          label: item.empName,
+          key: item.empNo
+        };
+      });
+    this.stepData2.sicPersonList =
+      data.detailInfo.sicPersonList &&
+      data.detailInfo.sicPersonList.map((item: any) => {
+        return {
+          label: item.empName,
+          key: item.empNo
+        };
+      });
   };
 }
 
-export const xxStepViewModal = new StepViewModal();
+export const sjStepViewModal = new StepViewModal();

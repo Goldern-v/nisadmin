@@ -31,7 +31,8 @@ export default withRouter(
         "#FCECE9",
         "#EEF1FF",
         "#F0F8F8",
-        "#FAEAFB"
+        "#FAEAFB",
+        "#DEF8FD"
       ];
       return background[data - 1];
     };
@@ -68,7 +69,8 @@ export default withRouter(
             "考试",
             "练习",
             "实操",
-            "演练"
+            "演练",
+            "实践"
           ];
           const color = [
             "#4CA21D",
@@ -76,7 +78,8 @@ export default withRouter(
             "#EA3838",
             "#2754A8",
             "#006667",
-            "#AB2892"
+            "#AB2892",
+            "#0F9790"
           ];
           return (
             <span

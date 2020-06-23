@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
-  Button,
   Row,
   Col,
-  DatePicker,
   Input,
   AutoComplete,
   Select,
@@ -13,18 +11,20 @@ import {
 } from "antd";
 import Form from "src/components/Form";
 import { Rules } from "src/components/Form/interfaces";
-import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
-import { xxStepViewModal as stepViewModal  } from "./XXStepViewModal";
+import { sjStepViewModal as stepViewModal  } from "./SJStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 import  { appStore } from 'src/stores'
+import createModal from "src/libs/createModal";
+import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
+import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 
 export interface Props {}
 
 export default observer(function Step2() {
-
+  const selectNurseModal = createModal(SelectPeopleModal);
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
@@ -47,7 +47,6 @@ export default observer(function Step2() {
   ]
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0)
-
   //必修全选
   const [selectedCheck, setSelectedCheck] = useState([] as any); 
   const bxNursing = [
@@ -71,6 +70,7 @@ export default observer(function Step2() {
     publicDate: val => !!val || "请填写发表日期"
   };
 
+  //表单变化函数
   const onFormChange = (name: string, value: any, from: Form) => {
     setSelectedCheck([...selectedCheck, value]);
     let isOk = selectedCheck.filter((item: any) => item);
@@ -83,43 +83,63 @@ export default observer(function Step2() {
     stepViewModal.stepData2 = data;
   };
 
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
-
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
+  /** 选择人员 */
+  const openSelectNurseModal = (name: string) => {
+    let checkedUserList = [];
+    if (name == "hostPersonList") {
+      checkedUserList = stepViewModal.stepData2.hostPersonList;
+    } else if (name == "sicPersonList") {
+      checkedUserList = stepViewModal.stepData2.sicPersonList;
+    }
+    selectNurseModal.show({
+      checkedUserList: checkedUserList,
+      onOkCallBack: (checkedUserList: CheckUserItem[]) => {
+        console.log(checkedUserList, "checkedUserList");
+        let userList = checkedUserList.reduce((total: any[], item: any) => {
+          return [
+            ...total,
+            ...item.userList.map((item: any) => ({
+              label: item.empName,
+              key: item.empNo
+            }))
+          ];
+        }, []);
+        refForm.current && refForm.current.setField(name, userList);
+      }
+    });
   };
 
-   useLayoutEffect(() => {
-     console.log( cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
-    refForm.current?.setFields(stepViewModal.stepData2)
-   }, [])
+  //初始化
+  useLayoutEffect(() => {
+    refForm.current && refForm.current.setFields(stepViewModal.stepData2);
+  }, []);
+  
+
+  useLayoutEffect(() => {
+    console.log( cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
+  refForm.current?.setFields(stepViewModal.stepData2)
+  }, [])
 
   return (
     <Wrapper>
       <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFormChange}>
         <Row>
+          {/* 实践名称 */}
           <Col span={24}>
-            <Form.Field label={`学习名称`} name="title">
+            <Form.Field label={`实践名称`} name="title">
               <Input />
             </Form.Field>
           </Col>
-
+          {/* 实践开始时间 */}
           <Col span={24}>
-            <Form.Field label={`学习开始时间`} name="startTime">
+            <Form.Field label={`实践开始时间`} name="startTime">
               <DateTimePicker />
             </Form.Field>
           </Col>
-
+          {/* 实践开放 */}
           <DateSelectCon>
             <div className="date-row">
-              <span className="date-label">学习开放</span>
+              <span className="date-label">实践开放</span>
               <Form.Field label={``} name="openTime" labelWidth={1}>
                   <InputNumber></InputNumber>
               </Form.Field>
@@ -142,10 +162,10 @@ export default observer(function Step2() {
               <span className="aside">天后进行归档 {stepViewModal.overTime ? `即：${stepViewModal.overTime}`: ''}</span>
             </div> */}
           </DateSelectCon>
-
+          {/* 组织方式 */}
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
-              <Select>
+              <Select disabled>
                 {zzfs.map(item => (
                   <Select.Option value={item.code} key={item.name}>
                     {item.name}
@@ -154,9 +174,32 @@ export default observer(function Step2() {
               </Select>
             </Form.Field>
           </Col>
-
+          {/* 主持人 */}
+          <Col span={4} />
+          <Col span={20}>
+            <Form.Field
+              label={`主持人`}
+              name="hostPersonList"
+              suffix={
+                <MoreBox
+                  onClick={() => {
+                    openSelectNurseModal("hostPersonList");
+                  }}
+                />
+              }
+            >
+              <Select
+                removeIcon={false}
+                labelInValue={true}
+                mode="tags"
+                style={{ width: "100%" }}
+                open={false}
+              />
+            </Form.Field>
+          </Col>
+          {/* 实践地址 */}
           <Col span={24}>
-            <Form.Field label={`学习地址`} name="address">
+            <Form.Field label={`实践地址`} name="address">
             <AutoComplete
                 dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
                   (item: any) => item.name
@@ -164,96 +207,119 @@ export default observer(function Step2() {
               />
             </Form.Field>
           </Col>
-          
+          {/* 签到负责人 */}
+          <Col span={24}>
+            <Form.Field
+              label={`签到负责人`}
+              name="sicPersonList"
+              suffix={
+                <MoreBox
+                  onClick={() => {
+                    openSelectNurseModal("sicPersonList");
+                  }}
+                />
+              }
+            >
+              <Select
+                removeIcon={false}
+                labelInValue={true}
+                mode="tags"
+                style={{ width: "100%" }}
+                open={false}
+              />
+            </Form.Field>
+          </Col>
+          {/* 类别 */}
           {appStore.HOSPITAL_ID == "wh" && (
-                      <Col span={24}>
-                      <Form.Field label={`类别`} name="category">
-                        <Select style={{ width: 120 }}>
-                          <Select.Option value={1}>中医类</Select.Option>
-                          <Select.Option value={2}>非中医类</Select.Option>
-                        </Select>
-                      </Form.Field>
-                </Col>
-      
+            <Col span={24}>
+              <Form.Field label={`类别`} name="category">
+                <Select style={{ width: 120 }}>
+                  <Select.Option value={1}>中医类</Select.Option>
+                  <Select.Option value={2}>非中医类</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
           )}
-              <Col span={24}>
-                <Form.Field label={`学员学分`} name="hasStudentCredit">
-                  <Select style={{ width: 120 }}>
-                    <Select.Option value={1}>有</Select.Option>
-                    <Select.Option value={0}>无</Select.Option>
+          {/* 学员学分 */}
+          <Col span={24}>
+            <Form.Field label={`学员学分`} name="hasStudentCredit">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          {stepViewModal.stepData2.hasStudentCredit == 1 && (
+            <React.Fragment>
+              <Col span={10}>
+                <Form.Field label={``} name="studentCreditType">
+                  <Select>
+                    {studentCreditTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Form.Field>
               </Col>
-              {stepViewModal.stepData2.hasStudentCredit == 1 && (
-                <React.Fragment>
-                  <Col span={10}>
-                    <Form.Field label={``} name="studentCreditType">
-                      <Select>
-                        {studentCreditTypeList.map(item => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                  <Col span={14}>
-                    <Form.Field
-                      label={``}
-                      name="studentCredit"
-                      suffix="分"
-                      labelWidth={1}
-                    >
-                      <InputNumber />
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              )}
-              <Col span={24}>
-                <Form.Field label={`学员学时`} name="hasStudentClassHours">
-                  <Select style={{ width: 120 }}>
-                    <Select.Option value={1}>有</Select.Option>
-                    <Select.Option value={0}>无</Select.Option>
-                  </Select>
+              <Col span={14}>
+                <Form.Field
+                  label={``}
+                  name="studentCredit"
+                  suffix="分"
+                  labelWidth={1}
+                >
+                  <InputNumber />
                 </Form.Field>
               </Col>
-              {stepViewModal.stepData2.hasStudentClassHours == 1 && (
-                <React.Fragment>
-                  <Col span={24}>
-                    <Form.Field
-                      label={``}
-                      name="studentClassHours"
-                      suffix="学时"
-                    >
-                      <Select
-                        showSearch
-                        onSearch={(val: any) => setStudyTime(Number(val))}
+            </React.Fragment>
+          )}
+          {/* 学员学时 */}
+          <Col span={24}>
+            <Form.Field label={`学员学时`} name="hasStudentClassHours">
+              <Select style={{ width: 120 }}>
+                <Select.Option value={1}>有</Select.Option>
+                <Select.Option value={0}>无</Select.Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          {stepViewModal.stepData2.hasStudentClassHours == 1 && (
+            <React.Fragment>
+              <Col span={24}>
+                <Form.Field
+                  label={``}
+                  name="studentClassHours"
+                  suffix="学时"
+                >
+                  <Select
+                    showSearch
+                    onSearch={(val: any) => setStudyTime(Number(val))}
+                  >
+                    {studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option
+                        value={studyTime}
+                        key={`${studyTime}-`}
                       >
-                        {studyTime &&
-                        studyTime !== 0.5 &&
-                        studyTime !== 1 &&
-                        studyTime !== 2 &&
-                        studyTime !== 3 ? (
-                          <Select.Option
-                            value={studyTime}
-                            key={`${studyTime}-`}
-                          >
-                            {studyTime}
-                          </Select.Option>
-                        ) : (
-                          ""
-                        )}
-                        {studentTimeTypeList.map(item => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              )}
-         
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
+                    {studentTimeTypeList.map(item => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </React.Fragment>
+          )}
+          {/* 必修 */}
           <Col span={24}>
             <Form.Field label={`必修`} name="bxNurse" aside="注：没有选择的默认为选修">
               <div>
@@ -307,13 +373,9 @@ export default observer(function Step2() {
               </div>
             </Form.Field>
           </Col>
-          {/* <Col span={24}>
-            <Form.Field label={`通知消息`} name="noticeContent">
-              <Input.TextArea  placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送"/>
-            </Form.Field>
-          </Col> */}
         </Row>
       </Form>
+      <selectNurseModal.Component />
     </Wrapper>
   );
 })
@@ -354,3 +416,24 @@ const DateSelectCon = styled.div`
     margin-right: 20px;
   }
 `;
+function MoreBox(props: any) {
+  const { onClick } = props;
+  const Wrapper = styled.div`
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+    &:hover {
+      border-color: #1db38b;
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
+    }
+  `;
+  return <Wrapper onClick={onClick}>...</Wrapper>;
+}

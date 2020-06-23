@@ -62,6 +62,14 @@ export default class StepServices extends BaseApiService {
     );
   }
 
+  /** 新建教学计划 实践 */
+  public addTeachingPlanInfoSocialpractise(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/socialpractise`,
+      obj
+    );
+  }
+
   /** 上传附件 */
   public uploadAttachment(obj: any, onUploadProgress?: any) {
     return this.post(`/file/uploadAttachment/studyAndTrain`, obj, {
