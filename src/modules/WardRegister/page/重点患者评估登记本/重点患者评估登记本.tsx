@@ -322,7 +322,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
     ...bfzlxFilterItem.value,
     ...jmlxFilterItem.value,
     ...zhpjlxFilterItem.value,
-    ...rylxFilterItem.value
+    ...rylxFilterItem.value,
+    ...yqmcFilterItem.value,
+    ...sbztFilterItem.value,
   };
 
   /** 判断是否快过期 */
