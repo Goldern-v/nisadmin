@@ -26,7 +26,7 @@ import { trainingResultModel } from './../../models/TrainingResultModel'
 export interface Props { }
 
 //查看培训结果
-export default observer(function TrainingResultReview() {
+export default observer(function SocialpractiseResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
@@ -257,11 +257,11 @@ export default observer(function TrainingResultReview() {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
-        <span> > </span>
+        <span> &gt; </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> &gt; 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>

@@ -263,7 +263,8 @@ export default observer(function MyCreateList() {
           selectedRowKeys,
           onChange: handleRowSelect,
           getCheckboxProps: (record: any) => ({
-            disabled: !deptSelect || !selectedTemplate,
+            // disabled: !deptSelect || !selectedTemplate,
+            disabled: !selectedTemplate,
             name: record.name
           })
         }}

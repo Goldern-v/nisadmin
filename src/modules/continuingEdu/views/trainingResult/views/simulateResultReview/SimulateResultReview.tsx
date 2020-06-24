@@ -79,7 +79,7 @@ export default observer(function SimulateResultReview() {
     },
     {
       dataIndex: 'empTitle',
-      title: '职位',
+      title: '职称',
       align: 'center',
       width: 80,
     },

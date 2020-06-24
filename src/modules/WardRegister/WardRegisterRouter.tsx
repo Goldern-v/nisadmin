@@ -189,7 +189,7 @@ export default function WardRegisterRouter() {
     {
       title: "库房物品登记本",
       icon: <KFWP />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       children: [
         {
           title: "库房物品入库登记",

@@ -59,7 +59,7 @@ export default observer(function TestingResultReview() {
     },
     {
       dataIndex: 'empTitle',
-      title: '职位',
+      title: '职称',
       align: 'center',
       width: 80,
     },
