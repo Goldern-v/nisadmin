@@ -316,6 +316,11 @@ const SimulateResultReview = lazy(() =>
     "src/modules/continuingEdu/views/trainingResult/views/simulateResultReview/SimulateResultReview"
   )
 );
+const SocialpractiseResultReview = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/trainingResult/views/socialpractiseResultReview/SocialpractiseResultReview"
+  )
+);
 //学习培训查看信息
 const TrainingInfoReview = lazy(() =>
   import(
@@ -397,6 +402,7 @@ const routes: RouteItem[] = [
   setLayout("/practiceResultReview", PracticeResultReview, layouts.MainLayout),
   setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
+  setLayout("/socialpractiseResultReview", SocialpractiseResultReview, layouts.MainLayout),
   setLayout(
     "/continuingEduFormCheck",
     ContinuingEduFormCheck,

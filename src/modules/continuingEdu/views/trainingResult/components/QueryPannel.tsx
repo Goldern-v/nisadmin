@@ -6,12 +6,12 @@ import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
 
-export interface Props { }
-
-export interface Props { }
+export interface Props {
+  className?: string
+}
 
 export default observer(function QueryPannel(props: Props) {
-  // const { query, onQueryChange, onSearch } = props
+  const { className } = props
   const { query, bigDeptList, deptList, titleList } = trainingResultModel
 
   const handleQueryChange = (newQuery: any) =>
@@ -26,7 +26,7 @@ export default observer(function QueryPannel(props: Props) {
     trainingResultModel
       .setQuery({ ...query }, true)
 
-  return <Wrapper>
+  return <Wrapper className={className || ''}>
     <div className="fr">
       <span className="label">片区:</span>
       <span className="content">

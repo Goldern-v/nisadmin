@@ -149,6 +149,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
 
           //是否符合操作的时间
           const timeDisabled = (() => {
+            if (!moment(record.recordDate).isValid()) return true
+            //当月最后一周
+            let lastWeek = lastWeekDatesAMonth(record.recordDate)
             let recordMoment = moment(record.recordDate)
             if (itemCode.match(/每月/)) {
               //每月项目只能每月最后一周包含的日期填写
@@ -157,7 +160,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               if (
                 record.recordDate
                 && recordMoment.isValid()
-                && lastWeekDatesThisMonth.indexOf(recordDate) >= 0
+                && lastWeek.indexOf(recordDate) >= 0
                 // && currentInLastWeek
               )
                 return false
@@ -170,7 +173,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               if (
                 record.recordDate
                 && recordMoment.isValid()
-                && lastWeekDatesThisMonth.indexOf(recordDate) >= 0
+                && lastWeek.indexOf(recordDate) >= 0
                 // && [3, 6, 9, 12].indexOf(recordMoment.get('M') + 1) >= 0
                 // &&moment().get('date') == 30
               )

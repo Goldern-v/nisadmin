@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message } from 'antd'
+import { Button, Checkbox, message, Tabs, Pagination } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -9,7 +9,7 @@ import {
   MainTitle,
   SubContent,
   ButtonGroups,
-  MainPannel,
+  // MainPannel,
   ActiveText,
 } from './../../components/common'
 import createModal from "src/libs/createModal";
@@ -23,6 +23,9 @@ import { observer } from 'mobx-react-lite'
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 
 import { trainingResultModel } from './../../models/TrainingResultModel'
+
+const TabPane = Tabs.TabPane
+
 export interface Props { }
 
 //查看培训结果
@@ -34,6 +37,18 @@ export default observer(function SocialpractiseResultReview() {
   const answerSheetModal = createModal(AnswerSheetModal)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
+
+  const [activeTab, setActiveTab] = useState('2')
+
+  //现场图片相关数据
+  const [imgList, setImgList] = useState([] as any[])
+  const [imgTotal, setImgTotal] = useState(0)
+  const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 15 })
+
+  //现场图片相关数据
+  const [convs, setConvs] = useState([] as any[])
+  const [convsTotal, setConvsTotal] = useState(0)
+  const [convstQuery, setConvsQuery] = useState({ pageIndex: 1, pageSize: 15 })
 
   const statusColumns = (() => {
     //根据线上还是线下判断展示学习情况还是签到情况
@@ -274,8 +289,8 @@ export default observer(function SocialpractiseResultReview() {
           {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
         </span>
         <span className="label"> 参与人员:</span>
-        <span className="content">{
-          (baseInfo.participantList && baseInfo.participantList.length) || 0}人
+        <span className="content">
+          {(baseInfo.participantList && baseInfo.participantList.length) || 0}人
         </span>
       </SubContent>
       <ButtonGroups>
@@ -286,56 +301,79 @@ export default observer(function SocialpractiseResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
-      <QueryPannel />
       <TableWrapper>
-        <BaseTable
-          loading={loading}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect
-          }}
-          rowKey='empNo'
-          surplusWidth={200}
-          surplusHeight={355}
-          dataSource={tableData}
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => handleDetail(record)
-            }
-          }}
-          pagination={{
-            pageSizeOptions: ['10', '15', '20', '30', '50'],
-            current: query.pageIndex,
-            pageSize: query.pageSize,
-            total: tableDataTotal,
-            onChange: handlePageChange,
-            onShowSizeChange: handleSizeChange
-          }}
-          columns={columns}
-        />
-        <SelectionOperate>
-          <Checkbox
-            indeterminate={(() => {
-              if (selectedRowKeys.length <= 0)
-                return false
-              if (selectedRowKeys.length >= tableData.length)
-                return false
-              return true
-            })()}
-            disabled={loading}
-            onChange={(e: any) => {
-              let checked = e.target.checked
-              if (checked)
-                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
-              else
-                setSelectedRowKeys([])
-            }}
-            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
-            全选
-          </Checkbox>
-          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
-          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate>
+        <Tabs
+          activeKey={activeTab}
+          onChange={(tab: any) => setActiveTab(tab)}
+          style={{ height: '100%' }}>
+          <TabPane tab="实践结果" key="1" >
+            <QueryPannel className="query-pannel" />
+            <BaseTable
+              loading={loading}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleRowSelect
+              }}
+              rowKey='empNo'
+              surplusWidth={200}
+              surplusHeight={385}
+              dataSource={tableData}
+              onRow={(record: any) => {
+                return {
+                  onDoubleClick: () => handleDetail(record)
+                }
+              }}
+              pagination={{
+                pageSizeOptions: ['10', '15', '20', '30', '50'],
+                current: query.pageIndex,
+                pageSize: query.pageSize,
+                total: tableDataTotal,
+                onChange: handlePageChange,
+                onShowSizeChange: handleSizeChange
+              }}
+              columns={columns}
+            />
+            <SelectionOperate>
+              <Checkbox
+                indeterminate={(() => {
+                  if (selectedRowKeys.length <= 0)
+                    return false
+                  if (selectedRowKeys.length >= tableData.length)
+                    return false
+                  return true
+                })()}
+                disabled={loading}
+                onChange={(e: any) => {
+                  let checked = e.target.checked
+                  if (checked)
+                    setSelectedRowKeys(tableData.map((item: any) => item.empNo))
+                  else
+                    setSelectedRowKeys([])
+                }}
+                checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
+                全选
+              </Checkbox>
+              <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
+              <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
+            </SelectionOperate>
+          </TabPane>
+          <TabPane tab="现场图片" key="2">
+            <FullContent>
+              <div className="imglist-con content scroll-con">
+                <div className="img-wrapper">
+                  <img src="http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg" alt="" />
+                </div>
+              </div>
+              <div className="footer">
+                <Pagination
+                  current={imgListQuery.pageIndex}
+                  pageSize={imgListQuery.pageSize}
+                  onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
+                  total={imgTotal} />
+              </div>
+            </FullContent>
+          </TabPane>
+        </Tabs>
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />
@@ -343,7 +381,65 @@ export default observer(function SocialpractiseResultReview() {
   </Wrapper>
 })
 
+const FullContent = styled.div`
+  width: calc(100% - 30px);
+  position: fixed;
+  height: calc(100% - 240px);
+  display:flex;
+  flex-direction: column;
+  .content{
+    flex:1;
+    margin: 0 1px;
+    padding: 0 15px;
+    overflow: auto;
+    
+  }
+  .scroll-con{
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: #eaeaea;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: #c2c2c2;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 50px;
+      background-color: #eaeaea;
+    }
+  }
+  .footer{
+    text-align: right;
+    padding:15px;
+  }
+  .imglist-con{
+    .img-wrapper{
+      width: 20%;
+    float: left;
+      display: inline-block;
+      padding: 0 15px;
+      margin: 10px  0;
+      height: 200px;
+      text-align: center;
+      img{
+        background-color: #eee;
+        max-width:100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+`
+
+export const MainPannel = styled.div`
+  flex: 1;
+  display: flex;
+  padding: 15px 0;
+`
+
 const TableWrapper = styled(TabledCon)`
+  width: 100%;
   position: relative;
   td{
     word-break: break-all;
@@ -353,6 +449,10 @@ const TableWrapper = styled(TabledCon)`
     text-overflow:ellipsis;
     white-space: nowrap;
     height: 19px;
+  }
+  .query-pannel{
+    padding-top: 0;
+    padding-bottom: 2px;
   }
   #baseTable{
     padding: 10px 15px;
