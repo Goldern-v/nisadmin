@@ -35,13 +35,13 @@ export default observer(function SocialpractiseResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
-  const setLoading = trainingResultModel.setLoading.bind(trainingResultModel)
+  // const setLoading = trainingResultModel.setLoading.bind(trainingResultModel)
 
   const answerSheetModal = createModal(AnswerSheetModal)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
-  const [activeTab, setActiveTab] = useState('3')
+  const [activeTab, setActiveTab] = useState('1')
 
   //现场图片相关数据
   const [imgList, setImgList] = useState([] as any[])
@@ -216,9 +216,10 @@ export default observer(function SocialpractiseResultReview() {
     ])
   }
 
-  const handleDetail = (record: any) => {
-    //查看详情
-  }
+  // const handleDetail = (record: any) => {
+  //   //查看详情
+  // }
+
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
     trainingResultModel
       .setQuery({ ...query, pageIndex }, true)
@@ -285,6 +286,26 @@ export default observer(function SocialpractiseResultReview() {
 
   const getConvList = () => {
     setConvsLoading(true)
+    trainingResultService
+      .getChatRecordPageList({
+        cetpId: appStore.queryObj.id,
+        ...convstQuery
+      })
+      .then(res => {
+        setConvsLoading(false)
+        if (res.data) {
+          setConvsTotal(res.data.totalCount || 0)
+          setConvs(res.data.list || [])
+        }
+      }, () => setConvsLoading(false))
+  }
+
+  const getSummary = () => {
+    trainingResultService
+      .getSummaryContent(appStore.queryObj.id || '')
+      .then(res => {
+        if (res.data) setSumaryInfo(res.data)
+      })
   }
 
   useEffect(() => {
@@ -297,6 +318,8 @@ export default observer(function SocialpractiseResultReview() {
 
   useEffect(() => {
     getImgList()
+    getConvList()
+    getSummary()
   }, [imgListQuery])
 
   return <Wrapper>
@@ -318,6 +341,7 @@ export default observer(function SocialpractiseResultReview() {
         <span className="label">类型:</span>
         <span className="content">
           {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
+          {appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">
@@ -349,11 +373,11 @@ export default observer(function SocialpractiseResultReview() {
               surplusWidth={200}
               surplusHeight={385}
               dataSource={tableData}
-              onRow={(record: any) => {
-                return {
-                  onDoubleClick: () => handleDetail(record)
-                }
-              }}
+              // onRow={(record: any) => {
+              //   return {
+              //     onDoubleClick: () => handleDetail(record)
+              //   }
+              // }}
               pagination={{
                 pageSizeOptions: ['10', '15', '20', '30', '50'],
                 current: query.pageIndex,
@@ -407,6 +431,7 @@ export default observer(function SocialpractiseResultReview() {
                   </div>
                   <div className="pagination-footer">
                     <Pagination
+                      size="small"
                       current={imgListQuery.pageIndex}
                       pageSize={imgListQuery.pageSize}
                       onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
@@ -421,7 +446,60 @@ export default observer(function SocialpractiseResultReview() {
             }
           </TabPane>
           <TabPane tab="讨论总结" key="3">
-            <div className="conv-wrapper"></div>
+            {!convsLoading ?
+              <FullContent>
+                <div className="content conv">
+                  <div className="sub-title">讨论区</div>
+                  <div className="conv-list-wrapper scroll-con">
+                    {convs.map((item: any, index: number) =>
+                      <div
+                        key={index}
+                        className="conv-item">
+                        <div className="conv-person-info">
+                          <img src={item.nearImageUrl} />
+                          <span>
+                            <span>{item.empName}({item.deptName})</span>
+                            <br />
+                            <span>{item.messageTime}</span>
+                          </span>
+                        </div>
+                        <div className="conv-content">
+                          <pre>{item.messageContent}</pre>
+                        </div>
+                      </div>)}
+                  </div>
+                  <div className="pagination-footer">
+                    <Pagination
+                      size="small"
+                      current={convstQuery.pageIndex}
+                      pageSize={convstQuery.pageSize}
+                      onChange={(pageIndex: number) => setConvsQuery({ ...convstQuery, pageIndex })}
+                      total={convsTotal} />
+                  </div>
+                </div>
+                <div className="footer summary-wrapper">
+                  <div className="sub-title">总结区</div>
+                  <div className="conv-item">
+                    {summaryInfo.empName &&
+                      <div className="conv-person-info">
+                        <img src={summaryInfo.nearImageUrl} />
+                        <span>
+                          <span>{summaryInfo.empName}({summaryInfo.deptName})</span>
+                          <br />
+                          <span>{summaryInfo.messageTime}</span>
+                        </span>
+                      </div>}
+                    <div className="conv-content">
+                      <pre>{summaryInfo.messageContent}</pre>
+                    </div>
+                  </div>
+                </div>
+              </FullContent> :
+              <div className="loading-wrapper">
+                <Spin spinning={convsLoading}>
+                  <div className="loading-wrapper"></div>
+                </Spin>
+              </div>}
           </TabPane>
         </Tabs>
       </TableWrapper>
@@ -435,16 +513,25 @@ const FullContent = styled.div`
   width: calc(100% - 30px);
   position: fixed;
   height: calc(100% - 240px);
-  &>div{
-    display:flex;
-    flex-direction: column;
-  }
+  display:flex;
+  flex-direction: column;
   .content{
     flex:1;
     margin: 0 1px;
     padding: 0 15px;
     overflow: auto;
     
+    &.conv{
+      display: flex;
+      flex-direction: column;
+      .conv-list-wrapper{
+        flex:1;
+        overflow: auto;
+      }
+      .pagination-footer{
+        padding: 5px 15px;
+      }
+    }
   }
   .scroll-con{
     ::-webkit-scrollbar {
@@ -468,7 +555,7 @@ const FullContent = styled.div`
   .imglist-con{
     .img-wrapper{
       width: 20%;
-    float: left;
+      float: left;
       display: inline-block;
       padding: 0 15px;
       margin: 10px  0;
@@ -481,6 +568,51 @@ const FullContent = styled.div`
         height: 100%;
         object-fit: cover;
       }
+    }
+  }
+  
+  .sub-title{
+    font-weight: bold;
+    font-size: 20px;
+    color: #000;
+  }
+
+  .conv-item{
+    .conv-person-info{
+      &>*{
+        vertical-align: top;
+      }
+      &>span{
+        display: inline-block;
+        margin-left: 12px;
+        font-size: 14px;
+        line-height: 25px;
+        vertical-align: top;
+      }
+    }
+    .conv-content{
+      pre{
+        word-break: break-all;
+        white-space: pre-wrap;
+        margin: 5px 0 0 0;
+      }
+    }
+  }
+  
+  .head-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: url('${require('src/assets/护士默认头像.png')}');
+    background-size: 100%;
+    object-fit: cover;
+  }
+  .summary-wrapper{
+    min-height: 150px;
+    padding: 0 20px;
+    border-top: 1px solid #eee;
+    .sub-title{
+      margin-bottom: 10px;
     }
   }
 `

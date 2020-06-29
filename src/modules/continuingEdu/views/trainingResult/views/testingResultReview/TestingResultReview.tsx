@@ -284,7 +284,7 @@ export default observer(function TestingResultReview() {
         </span>
         <span className="label">类型:</span>
         <span className="content">
-          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
         </span>
         <span className="label">总成绩:</span>
         <span className="content">{baseInfo.totalScores}</span>
