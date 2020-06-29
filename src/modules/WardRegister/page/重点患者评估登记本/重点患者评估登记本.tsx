@@ -1137,7 +1137,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     <Button
                       disabled={
                         pageLoading ||
-                        !authStore.isRoleManage ||
                         selectedRowKeys.length <= 0
                       }
                       type="primary"

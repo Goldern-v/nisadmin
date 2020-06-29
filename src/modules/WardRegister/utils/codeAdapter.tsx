@@ -6,7 +6,7 @@ export function codeAdapter(map: any, code: string, vague?: boolean) {
         return map[codeArr]
     }
   } else {
-    if (map[code]) return map[code]
+    if (Object.keys(map).indexOf(code) >= 0) return map[code]
   }
 
   return map["other"] || map["all"] || null

@@ -478,7 +478,6 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               <Button
                 disabled={
                   pageLoading ||
-                  !authStore.isRoleManage ||
                   selectedRowKeys.length <= 0
                 }
                 type="primary"

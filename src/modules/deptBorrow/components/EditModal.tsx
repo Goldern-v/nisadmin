@@ -25,6 +25,7 @@ export default observer(function DeptBorrow(props: Props) {
   const [startDate, setStartDate] = useState(null as any | null)
   const [endDate, setEndDate] = useState(null as any | null)
   const [deptList, setDeptlist] = useState([] as any)
+  const [empList, setEmpList] = useState([] as any)
   const [editLoading, setEditLoading] = useState(false);
 
   const rules: Rules = {
@@ -144,6 +145,11 @@ export default observer(function DeptBorrow(props: Props) {
     if (name == 'endDate') setEndDate(val);
 
     if (name == 'startDate' || name == 'endDate') setdaysTransferFrom();
+
+    if (name == 'deptNameTransferTo') {
+      // console.log(12321)
+    }
+
   }
 
   const setdaysTransferFrom = () => {
@@ -195,10 +201,19 @@ export default observer(function DeptBorrow(props: Props) {
           <Col span={5} className="label">借出科室：</Col>
           <Col span={19}>
             <Form.Field name="deptNameTransferTo">
-              <Select placeholder="请选择科室" showSearch filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }>
-                {deptList.map((item: any) => <Option value={item.name} key={item.code}>{item.name}</Option>)}
+              <Select
+                placeholder="请选择科室"
+                showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }>
+                {deptList.map((item: any) =>
+                  <Option
+                    value={item.name}
+                    key={item.code}>
+                    {item.name}
+                  </Option>)}
               </Select>
             </Form.Field>
           </Col>
