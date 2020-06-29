@@ -142,6 +142,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
     <TableCon>
       <BaseTable
         surplusHeight={255}
+        surplusWidth={200}
         loading={loading}
         dataSource={tableData}
         columns={columns}
