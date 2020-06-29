@@ -603,8 +603,8 @@ export default observer(function 基础模板登记本(props: Props) {
                         selectedRowKeys.length <= 0
                       }
                       type="primary"
-                      onClick={() => auditAll('护士长')}>
-                      护士长签名
+                      onClick={() => auditAll('检查者')}>
+                      检查者签名
                     </Button>
                     <Button
                       disabled={

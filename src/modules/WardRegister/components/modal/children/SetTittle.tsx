@@ -43,7 +43,7 @@ export default observer(function SetTittle(props: Props) {
   //   "人员调配",
   //   "责任组长",
   //   "签名",
-  //   "护士长签名",
+  //   "检查者签名",
   //   "责任人",
   //   "责护名字",
   //   "消毒液擦拭床单位执行者",

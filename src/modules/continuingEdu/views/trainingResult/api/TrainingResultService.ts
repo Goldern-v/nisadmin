@@ -115,7 +115,6 @@ export default class TrainingResultService extends BaseApiService {
   }
 
   /**查看结果-获取实践聊天总结*/
-  // /studyAndTrain/socialPractiseManage/getSummaryContent
   public getSummaryContent(cetpId: string) {
     return this.post(
       '/studyAndTrain/socialPractiseManage/getSummaryContent',

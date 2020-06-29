@@ -41,7 +41,7 @@ export default observer(function SocialpractiseResultReview() {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
-  const [activeTab, setActiveTab] = useState('2')
+  const [activeTab, setActiveTab] = useState('3')
 
   //现场图片相关数据
   const [imgList, setImgList] = useState([] as any[])
@@ -284,7 +284,7 @@ export default observer(function SocialpractiseResultReview() {
   }
 
   const getConvList = () => {
-
+    setConvsLoading(true)
   }
 
   useEffect(() => {
@@ -389,29 +389,39 @@ export default observer(function SocialpractiseResultReview() {
             </SelectionOperate>
           </TabPane>
           <TabPane tab="现场图片" key="2">
-            <FullContent>
-              <Spin spinning={loading}>
-                <div className="imglist-con content scroll-con">
-                  <div className="img-wrapper">
-                    <img
-                      src="http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg"
-                      onClick={() => {
-                        Zmage.browsing({
-                          src: 'http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg',
-                          backdrop: 'rgba(0,0,0, .8)'
-                        })
-                      }} alt="" />
+            {
+              !imgListLoading ?
+                <FullContent>
+                  <div className="imglist-con content scroll-con">
+                    <div className="img-wrapper">
+                      {imgList.map((item: any, idx: number) => <img
+                        key={idx}
+                        src={item.path || ''}
+                        onClick={() => {
+                          if (item.path) Zmage.browsing({
+                            src: item.path,
+                            backdrop: 'rgba(0,0,0, .8)'
+                          })
+                        }} alt="" />)}
+                    </div>
                   </div>
+                  <div className="pagination-footer">
+                    <Pagination
+                      current={imgListQuery.pageIndex}
+                      pageSize={imgListQuery.pageSize}
+                      onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
+                      total={imgTotal} />
+                  </div>
+                </FullContent> :
+                <div className="loading-wrapper">
+                  <Spin spinning={imgListLoading}>
+                    <div className="loading-wrapper"></div>
+                  </Spin>
                 </div>
-                <div className="footer">
-                  <Pagination
-                    current={imgListQuery.pageIndex}
-                    pageSize={imgListQuery.pageSize}
-                    onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
-                    total={imgTotal} />
-                </div>
-              </Spin>
-            </FullContent>
+            }
+          </TabPane>
+          <TabPane tab="讨论总结" key="3">
+            <div className="conv-wrapper"></div>
           </TabPane>
         </Tabs>
       </TableWrapper>
@@ -451,7 +461,7 @@ const FullContent = styled.div`
       background-color: #eaeaea;
     }
   }
-  .footer{
+  .pagination-footer{
     text-align: right;
     padding:15px;
   }
@@ -496,6 +506,11 @@ const TableWrapper = styled(TabledCon)`
   .query-pannel{
     padding-top: 0;
     padding-bottom: 2px;
+  }
+  .loading-wrapper{
+    width: calc(100% - 30px);
+    position: fixed;
+    height: calc(100% - 240px);
   }
   #baseTable{
     padding: 10px 15px;

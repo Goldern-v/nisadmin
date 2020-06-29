@@ -646,7 +646,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       {
         QCRG_03: [
           signRowObj({
-            title: "护士长",
+            title: "检查者",
             width: 70,
             dataIndex: "signerName",
             aside: "",
@@ -666,10 +666,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -708,10 +708,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -778,10 +778,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -822,10 +822,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         // QCRG_19_1: [
         //   signRowObj({
-        //     title: "护士长签名",
+        //     title: "检查者签名",
         //     width: 90,
         //     dataIndex: "signerName",
-        //     aside: "护士长",
+        //     aside: "检查者",
         //     registerCode,
         //     updateDataSource,
         //     selectedBlockId
@@ -833,10 +833,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         // ],
         QCRG_19_2: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -844,10 +844,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         // QCRG_19_3: [
         //   signRowObj({
-        //     title: "护士长签名",
+        //     title: "检查者签名",
         //     width: 90,
         //     dataIndex: "signerName",
-        //     aside: "护士长",
+        //     aside: "检查者",
         //     registerCode,
         //     updateDataSource,
         //     selectedBlockId
@@ -882,10 +882,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_15_1: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -904,10 +904,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_15_4: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -1142,13 +1142,13 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       }
                       type="primary"
                       onClick={() => handleAuditAll(
-                        '护士长',
+                        '检查者',
                         codeAdapter({
                           QCRG_03: 'sign',
                           other: 'audit'
                         }, registerCode)
                       )}>
-                      护士长签名
+                      检查者签名
                     </Button>
                     <Button
                       disabled={
