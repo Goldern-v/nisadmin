@@ -5,7 +5,7 @@ import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
 import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
-import Item from "antd/lib/list/Item";
+// import Item from "antd/lib/list/Item";
 
 export interface ItemConfigItem {
   blockId: number;
@@ -601,7 +601,9 @@ export function getFun(context: any) {
 /**获取当月最后一周的日期 */
 export const lastWeekDatesAMonth = (date?: any) => {
   const _date = date || undefined
-  let lastDate = moment(_date).endOf('M')
+  const _moment = moment(_date)
+  if (!_moment.isValid()) return []
+  let lastDate = _moment.endOf('M')
   //本月最后一周包含的日期
   let lastWeekDates = [lastDate.format('YYYY-MM-DD')]
   let prevDate = lastDate.subtract(1, 'd')

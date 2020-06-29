@@ -97,6 +97,31 @@ export default class TrainingResultService extends BaseApiService {
       { responseType: 'blob' }
     )
   }
+
+  /**查看结果-导出出勤率统计信息 实践类型 获取现场图片*/
+  public getPicturesByPage(query: any) {
+    return this.post(
+      '/studyAndTrain/socialPractiseManage/getPicturesByPage',
+      query
+    )
+  }
+
+  /**查看结果-获取实践聊天记录*/
+  public getChatRecordPageList(query: any) {
+    return this.post(
+      '/studyAndTrain/socialPractiseManage/getChatRecordPageList',
+      query
+    )
+  }
+
+  /**查看结果-获取实践聊天总结*/
+  // /studyAndTrain/socialPractiseManage/getSummaryContent
+  public getSummaryContent(cetpId: string) {
+    return this.post(
+      '/studyAndTrain/socialPractiseManage/getSummaryContent',
+      qs.stringify({ cetpId })
+    )
+  }
 }
 
 export const trainingResultService = new TrainingResultService()

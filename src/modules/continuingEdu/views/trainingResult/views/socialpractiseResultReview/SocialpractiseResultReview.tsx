@@ -16,13 +16,15 @@ import createModal from "src/libs/createModal";
 import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { ColumnProps, Spin } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 // import moment from 'moment'
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 
 import { trainingResultModel } from './../../models/TrainingResultModel'
+import { trainingResultService } from './../../api/TrainingResultService'
+import Zmage from 'react-zmage'
 
 const TabPane = Tabs.TabPane
 
@@ -33,6 +35,7 @@ export default observer(function SocialpractiseResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
+  const setLoading = trainingResultModel.setLoading.bind(trainingResultModel)
 
   const answerSheetModal = createModal(AnswerSheetModal)
 
@@ -42,13 +45,17 @@ export default observer(function SocialpractiseResultReview() {
 
   //现场图片相关数据
   const [imgList, setImgList] = useState([] as any[])
+  const [imgListLoading, setImgListLoading] = useState(false)
   const [imgTotal, setImgTotal] = useState(0)
   const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 15 })
 
-  //现场图片相关数据
+  //聊天记录相关数据
   const [convs, setConvs] = useState([] as any[])
+  const [convsLoading, setConvsLoading] = useState(false)
   const [convsTotal, setConvsTotal] = useState(0)
   const [convstQuery, setConvsQuery] = useState({ pageIndex: 1, pageSize: 15 })
+  //聊天总结
+  const [summaryInfo, setSumaryInfo] = useState({} as any)
 
   const statusColumns = (() => {
     //根据线上还是线下判断展示学习情况还是签到情况
@@ -260,6 +267,26 @@ export default observer(function SocialpractiseResultReview() {
     })
   }
 
+  const getImgList = () => {
+    setImgListLoading(true)
+    trainingResultService
+      .getPicturesByPage({
+        cetpId: appStore.queryObj.id,
+        ...imgListQuery
+      })
+      .then(res => {
+        setImgListLoading(false)
+        if (res.data) {
+          setImgTotal(res.data.totalCount || 0)
+          setImgList(res.data.list || [])
+        }
+      }, () => setImgListLoading(false))
+  }
+
+  const getConvList = () => {
+
+  }
+
   useEffect(() => {
     if (loading) setSelectedRowKeys([])
   }, [loading])
@@ -267,6 +294,10 @@ export default observer(function SocialpractiseResultReview() {
   useEffect(() => {
     trainingResultModel.init()
   }, [])
+
+  useEffect(() => {
+    getImgList()
+  }, [imgListQuery])
 
   return <Wrapper>
     <TopPannel>
@@ -359,18 +390,27 @@ export default observer(function SocialpractiseResultReview() {
           </TabPane>
           <TabPane tab="现场图片" key="2">
             <FullContent>
-              <div className="imglist-con content scroll-con">
-                <div className="img-wrapper">
-                  <img src="http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg" alt="" />
+              <Spin spinning={loading}>
+                <div className="imglist-con content scroll-con">
+                  <div className="img-wrapper">
+                    <img
+                      src="http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg"
+                      onClick={() => {
+                        Zmage.browsing({
+                          src: 'http://120.25.105.45:9864/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg',
+                          backdrop: 'rgba(0,0,0, .8)'
+                        })
+                      }} alt="" />
+                  </div>
                 </div>
-              </div>
-              <div className="footer">
-                <Pagination
-                  current={imgListQuery.pageIndex}
-                  pageSize={imgListQuery.pageSize}
-                  onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
-                  total={imgTotal} />
-              </div>
+                <div className="footer">
+                  <Pagination
+                    current={imgListQuery.pageIndex}
+                    pageSize={imgListQuery.pageSize}
+                    onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
+                    total={imgTotal} />
+                </div>
+              </Spin>
             </FullContent>
           </TabPane>
         </Tabs>
@@ -385,8 +425,10 @@ const FullContent = styled.div`
   width: calc(100% - 30px);
   position: fixed;
   height: calc(100% - 240px);
-  display:flex;
-  flex-direction: column;
+  &>div{
+    display:flex;
+    flex-direction: column;
+  }
   .content{
     flex:1;
     margin: 0 1px;
@@ -424,6 +466,7 @@ const FullContent = styled.div`
       text-align: center;
       img{
         background-color: #eee;
+        cursor: pointer;
         max-width:100%;
         height: 100%;
         object-fit: cover;

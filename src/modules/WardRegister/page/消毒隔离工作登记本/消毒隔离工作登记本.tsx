@@ -446,55 +446,56 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       </PageHeader>
       <TableCon>
         {selectedBlockId && itemConfigList.length ? (
-          <BaseTable
-            loading={pageLoading}
-            dataSource={dataSource.filter((item: any) => item)}
-            columns={columns}
-            surplusHeight={280}
-            surplusWidth={300}
-            pagination={{
-              current: pageOptions.pageIndex,
-              pageSize: pageOptions.pageSize,
-              total: total
-            }}
-            rowClassName={(record: any, idx: number) => {
-              if (cellDisabled(record)) return 'disabled-row'
+          <React.Fragment>
+            <BaseTable
+              loading={pageLoading}
+              dataSource={dataSource.filter((item: any) => item)}
+              columns={columns}
+              surplusHeight={280}
+              surplusWidth={300}
+              pagination={{
+                current: pageOptions.pageIndex,
+                pageSize: pageOptions.pageSize,
+                total: total
+              }}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
 
-              return ''
-            }}
-            onChange={(pagination: PaginationConfig) => {
-              setPageOptions({
-                pageIndex: pagination.current,
-                pageSize: pagination.pageSize
-              });
-            }}
-            rowSelection={{
-              selectedRowKeys,
-              onChange: handleSelectedChange,
-            }}
-          />
+                return ''
+              }}
+              onChange={(pagination: PaginationConfig) => {
+                setPageOptions({
+                  pageIndex: pagination.current,
+                  pageSize: pagination.pageSize
+                });
+              }}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleSelectedChange,
+              }}
+            />
+            <div className="selected-operate-con">
+              <Button
+                disabled={
+                  pageLoading ||
+                  !authStore.isRoleManage ||
+                  selectedRowKeys.length <= 0
+                }
+                type="primary"
+                onClick={() => handleAuditAll(
+                  '护士长',
+                  codeAdapter({
+                    QCRG_03: 'sign',
+                    other: 'audit'
+                  }, registerCode)
+                )}>
+                护士长签名
+                    </Button>
+            </div>
+          </React.Fragment>
         ) : (
             <NullBox onClick={onAddBlock} />
           )}
-
-        <div className="selected-operate-con">
-          <Button
-            disabled={
-              pageLoading ||
-              !authStore.isRoleManage ||
-              selectedRowKeys.length <= 0
-            }
-            type="primary"
-            onClick={() => handleAuditAll(
-              '护士长',
-              codeAdapter({
-                QCRG_03: 'sign',
-                other: 'audit'
-              }, registerCode)
-            )}>
-            护士长签名
-                    </Button>
-        </div>
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
@@ -552,6 +553,8 @@ const Wrapper = styled.div`
 `;
 const TableCon = styled.div`
   padding: 0 15px;
+  position: relative;
+
   .selected-operate-con{
     position: absolute;
     bottom: 12px;

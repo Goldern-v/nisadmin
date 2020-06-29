@@ -334,19 +334,25 @@ export default observer(function SetTittle(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            {selectedBlockObj && selectedBlockObj.itemSizeEditable && (
-              <span
-                onClick={() => {
-                  globalModal
-                    .confirm("删除确认", "你确定删除该配置项吗？")
-                    .then(res => {
-                      delRow(index);
-                    });
-                }}
-              >
-                删除
-              </span>
-            )}
+            {selectedBlockObj &&
+              selectedBlockObj.itemSizeEditable &&
+              codeAdapter({
+                QCRG_07: false,
+                other: true,
+              }, registerCode) &&
+              (
+                <span
+                  onClick={() => {
+                    globalModal
+                      .confirm("删除确认", "你确定删除该配置项吗？")
+                      .then(res => {
+                        delRow(index);
+                      });
+                  }}
+                >
+                  删除
+                </span>
+              )}
           </DoCon>
         );
       }
@@ -416,9 +422,15 @@ export default observer(function SetTittle(props: Props) {
           checked={moveAble}
           onChange={(value: any) => setMoveAble(value)}
         />
-        {selectedBlockObj && selectedBlockObj.itemSizeEditable && (
-          <Button onClick={addRow}>添加</Button>
-        )}
+        {selectedBlockObj &&
+          selectedBlockObj.itemSizeEditable &&
+          codeAdapter({
+            QCRG_07: false,
+            other: true,
+          }, registerCode) &&
+          (
+            <Button onClick={addRow}>添加</Button>
+          )}
         <Button onClick={onSave} type="primary">
           保存
         </Button>
