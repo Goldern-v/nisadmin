@@ -284,10 +284,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "检查者签名",
+            title: "护士长签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "检查者",
+            aside: "护士长",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -482,13 +482,13 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                 }
                 type="primary"
                 onClick={() => handleAuditAll(
-                  '检查者',
+                  '护士长',
                   codeAdapter({
                     QCRG_03: 'sign',
                     other: 'audit'
                   }, registerCode)
                 )}>
-                检查者签名
+                护士长签名
                     </Button>
             </div>
           </React.Fragment>

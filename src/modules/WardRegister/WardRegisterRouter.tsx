@@ -346,7 +346,7 @@ export default function WardRegisterRouter() {
     {
       title: "生命支持仪器管理",
       icon: <SMZC />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       children: [
         {
           title: "生命支持仪器交接登记",
