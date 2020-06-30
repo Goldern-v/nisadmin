@@ -614,6 +614,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
               )
                 return true
 
+              if (
+                registerCode == "QCRG_16_3" &&
+                item.itemCode == "参会人员"
+              )
+                return true
+
               if (item.itemType == "multiple_select")
                 return true
 
@@ -666,10 +672,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "负责人签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "负责人",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -708,10 +714,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "负责人签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "负责人",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -778,10 +784,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "负责人签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "负责人",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -1132,7 +1138,34 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     onClick={() => handleCopyCreateRow()}>
                     复制新增
                   </Button>,
-                'QCRG_14_1,QCRG_10,QCRG_03':
+                'QCRG_14_1,QCRG_10':
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleAuditAll(
+                        '负责人',
+                        codeAdapter({
+                          QCRG_03: 'sign',
+                          other: 'audit'
+                        }, registerCode)
+                      )}>
+                      负责人签名
+                  </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleCopyCreateRow()}>
+                      复制新增
+                  </Button>
+                  </React.Fragment>,
+                'QCRG_03':
                   <React.Fragment>
                     <Button
                       disabled={

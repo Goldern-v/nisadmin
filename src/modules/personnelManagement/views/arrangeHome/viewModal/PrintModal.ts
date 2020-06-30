@@ -321,7 +321,12 @@ class PrintModal {
       text-align: center;
     }
     pre{
-      word-break: all;
+      word-break: break-all;
+      white-space: pre-wrap;
+      line-height: 12px;
+      font-size: 12px;
+      margin-top: 5px;
+      color:#000;
     }
     .one-page{
       padding-top: 30px;
@@ -738,7 +743,12 @@ class PrintModal {
       text-align: center;
     }
     pre{
-      word-break: all;
+      word-break: break-all;
+      white-space: pre-wrap;
+      line-height: 12px;
+      font-size: 12px;
+      margin-top: 5px;
+      color:#000;
     }
     .one-page{
       padding-top: 30px;

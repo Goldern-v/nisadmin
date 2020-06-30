@@ -2,13 +2,24 @@ import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { Select, Button, Modal, message as Message } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BaseTable from 'src/components/BaseTable'
-import EditModal from './components/EditModal'
-import ViewOrAuditModal from './components/ViewOrAuditModal'
+import EditModalDefault from './components/EditModal'
+import EditModalNys from './components/EditModal_nys'
+import ViewOrAuditModalDefault from './components/ViewOrAuditModal'
+import ViewOrAuditModalNys from './components/ViewOrAuditModal_nys'
 import DeptBorrowService from './api/DeptBorrowService'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+
+let EditModal = EditModalDefault
+let ViewOrAuditModal = ViewOrAuditModalDefault
+
+switch (appStore.HOSPITAL_ID) {
+  case 'nys':
+    EditModal = EditModalNys
+    ViewOrAuditModal = ViewOrAuditModalNys
+}
 
 const Option = Select.Option
 

@@ -139,16 +139,6 @@ export default function WardRegisterRouter() {
         },
       ],
     },
-    // {
-    //   title: "备用药品管理登记本",
-    //   path: "/wardRegister/QCRG_10",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <BYYP />,
-    //   payload: {
-    //     registerCode: "QCRG_10",
-    //     registerName: "备用药品管理登记本"
-    //   }
-    // },
     {
       title: "仪器设备使用登记",
       path: "/wardRegister/QCRG_11",
@@ -200,20 +190,9 @@ export default function WardRegisterRouter() {
         registerName: "急救车使用登记本"
       }
     },
-    // {
-    //   title: "毒麻药品使用登记",
-    //   path: "/wardRegister/QCRG_13",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <DMYP />,
-    //   payload: {
-    //     registerCode: "QCRG_13",
-    //     registerName: "毒麻药品使用登记"
-    //   }
-    // },
     {
       title: "库房物品登记本",
       icon: <KFWP />,
-      // hide: !appStore.isDev,
       children: [
         {
           title: "库房物品入库登记",
@@ -346,7 +325,6 @@ export default function WardRegisterRouter() {
     {
       title: "生命支持仪器管理",
       icon: <SMZC />,
-      // hide: !appStore.isDev,
       children: [
         {
           title: "生命支持仪器交接登记",
