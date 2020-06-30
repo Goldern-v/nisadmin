@@ -536,25 +536,29 @@ export default observer(function 基础模板登记本(props: Props) {
         <Button onClick={() => setQuery({ ...baseQuery, pageIndex: 1 }, true)}>
           查询
         </Button>
-        <Button type="primary" onClick={() => createRow()}>新建行</Button>
-        <Button type="primary" onClick={() => save()}>保存</Button>
-        <Button onClick={() => exportExcel()}>导出</Button>
-        <Button
-          onClick={() =>
-            settingModal.show({
-              blockId: baseQuery.blockId,
-              selectedBlockObj: blockList.find(
-                (item: any) => item.id == baseQuery.blockId
-              ),
-              registerCode,
-              onOkCallBack: () => getTableData()
-            })}>
-          设置
-        </Button>
-        <Button onClick={() => deleteBlock()}>删除</Button>
+        {baseQuery.blockId && <React.Fragment>
+          <Button type="primary" onClick={() => createRow()}>新建行</Button>
+          <Button type="primary" onClick={() => save()}>保存</Button>
+          <Button onClick={() => exportExcel()}>导出</Button>
+          {isNotANormalNurse && <React.Fragment>
+            <Button
+              onClick={() =>
+                settingModal.show({
+                  blockId: baseQuery.blockId,
+                  selectedBlockObj: blockList.find(
+                    (item: any) => item.id == baseQuery.blockId
+                  ),
+                  registerCode,
+                  onOkCallBack: () => getTableData()
+                })}>
+              设置
+            </Button>
+            <Button onClick={() => deleteBlock()}>删除</Button>
+          </React.Fragment>}
+        </React.Fragment>}
       </PageHeader>
       <TableCon>
-        {(baseQuery.blockId && itemConfigList.length > 0) ?
+        {(baseQuery.blockId) ?
           <React.Fragment>
             <BaseTable
               columns={columns}

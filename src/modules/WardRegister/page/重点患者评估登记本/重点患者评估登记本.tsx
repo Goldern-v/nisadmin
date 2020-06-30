@@ -1092,8 +1092,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         )}
       </PageHeader>
       <TableCon>
-        {/* {JSON.stringify(columns)} */}
-        {selectedBlockId && itemConfigList.length ? (
+        {selectedBlockId ? (
           <React.Fragment>
             <BaseTable
               className="record-page-table"
@@ -1138,7 +1137,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     onClick={() => handleCopyCreateRow()}>
                     复制新增
                   </Button>,
-                'QCRG_14_1,QCRG_10':
+                'QCRG_14_1,QCRG_10,QCRG_03':
                   <React.Fragment>
                     <Button
                       disabled={
