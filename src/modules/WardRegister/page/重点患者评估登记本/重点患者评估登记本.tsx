@@ -677,10 +677,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_05: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -699,10 +699,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_10: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -789,10 +789,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_14_2: [
           signRowObj({
-            title: "护士长签名",
+            title: "检查者签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -1137,6 +1137,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     <Button
                       disabled={
                         pageLoading ||
+                        !authStore.isRoleManage ||
                         selectedRowKeys.length <= 0
                       }
                       type="primary"
