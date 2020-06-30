@@ -652,7 +652,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       {
         QCRG_03: [
           signRowObj({
-            title: "护士长",
+            title: "负责人",
             width: 70,
             dataIndex: "signerName",
             aside: "",
@@ -1164,34 +1164,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       onClick={() => handleCopyCreateRow()}>
                       复制新增
                   </Button>
-                  </React.Fragment>,
-                'QCRG_03':
-                  <React.Fragment>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        !authStore.isRoleManage ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleAuditAll(
-                        '护士长',
-                        codeAdapter({
-                          QCRG_03: 'sign',
-                          other: 'audit'
-                        }, registerCode)
-                      )}>
-                      护士长签名
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleCopyCreateRow()}>
-                      复制新增
-                    </Button>
                   </React.Fragment>,
                 other: <span></span>,
               }, registerCode, true)}
