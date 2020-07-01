@@ -253,6 +253,14 @@ export default class ArrangeService extends BaseApiService {
   public schInitialHourSaveOrUpdateList(list: any) {
     return this.post(`/schInitialHour/saveOrUpdateList`, list);
   }
+
+  // 批量修改班次
+  public schShiftRangeNanYiSanUpdateList(list: any) {
+    let obj: any = {
+      lists: list
+    };
+    return this.post(`/schShiftRangeNanYiSan/updateList`, obj);
+  }
 }
 
 export const arrangeService = new ArrangeService();

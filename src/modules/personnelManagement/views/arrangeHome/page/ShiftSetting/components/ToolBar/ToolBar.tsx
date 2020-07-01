@@ -26,6 +26,7 @@ import createModal from "src/libs/createModal";
 import AddShiftModal from "../../modal/AddShiftModal";
 import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
 import DeptSelect from "src/modules/statistic/common/DeptSelect";
+import UpdateAllModal from "../../modal/UpdateAllModal"; // 一级菜单弹窗
 
 // import emitter from 'src/libs/ev'
 
@@ -67,6 +68,7 @@ export default function ToolBar() {
   const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
   const [colorMap, setColorMap]: [any, any] = useState({});
   const [colorMapCN, setColorMapCN]: [any, any] = useState({});
+  const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -449,6 +451,14 @@ export default function ToolBar() {
             添加新班次
           </Button>
         )}
+        {appStore.HOSPITAL_ID == "nys" && (
+          <Button
+            onClick={() => setEditVisible(true)}
+            style={{ marginLeft: 6, marginRight: 3 }}
+          >
+            批量修改
+          </Button>
+        )}
 
         <Button
           onClick={() => emitter.emit("更新班次列表")}
@@ -470,6 +480,14 @@ export default function ToolBar() {
         >
           返回
         </Button> */}
+        <UpdateAllModal
+          visible={editVisible}
+          onCancel={() => setEditVisible(false)}
+          onOk={() => {
+            setEditVisible(false);
+            emitter.emit("更新班次列表");
+          }}
+        />
       </Wrapper>
       <addShiftModal.Component />
     </div>

@@ -32,7 +32,6 @@ class SheetViewModal {
   @observable public allCell: any[] = [];
   /** 加载状态 */
   @observable public tableLoading: boolean = false;
-
   /** 复制行 */
   @observable public copyRow: any[] = [];
   /** 复杂单个格子 */
@@ -74,7 +73,6 @@ class SheetViewModal {
         );
       }
     }
-
     return days;
   }
 

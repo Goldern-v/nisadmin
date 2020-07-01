@@ -120,8 +120,12 @@ export default observer(function ArrangeSheet(props: Props) {
       render(text: string, record: any) {
         return <TotalCell id={record.id} />;
       }
-    },
-    {
+    }
+  ];
+
+  /** 厚街特殊字段 */
+  if (appStore.HOSPITAL_ID == "hj") {
+    columns.push({
       title: (
         <div>
           <div>夜小时数</div>
@@ -133,11 +137,77 @@ export default observer(function ArrangeSheet(props: Props) {
       render(text: string, record: any) {
         return <NightHourCell id={record.id} />;
       }
-    }
-  ];
+    });
+  }
 
+  /** 南医三特殊字段 */
+  if (appStore.HOSPITAL_ID == "nys") {
+    columns.push(
+      {
+        title: (
+          <div>
+            <div>本周</div>
+            <div>积假</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        dataIndex: "thisWeekHoliday",
+        render: (text: string, record: any) => {
+          return (
+            <Input
+              style={{ background: "#fff" }}
+              disabled={!isEdit}
+              defaultValue={text}
+              onChange={(e: any) => {
+                record.thisWeekHoliday = e.target.value;
+              }}
+            />
+          );
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>累积</div>
+            <div>积假</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        dataIndex: "totalHoliday",
+        render: (text: string, record: any) => {
+          return (
+            <Input
+              style={{ background: "#fff" }}
+              disabled={!isEdit}
+              defaultValue={text}
+              onChange={(e: any) => {
+                record.totalHoliday = e.target.value;
+              }}
+            />
+          );
+        }
+      }
+    );
+  }
+
+  /** 武汉特殊字段*/
   if (appStore.HOSPITAL_ID == "wh") {
     columns.push(
+      {
+        title: (
+          <div>
+            <div>夜小时数</div>
+            <div>（小时）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <NightHourCell id={record.id} />;
+        }
+      },
       {
         title: (
           <div>
@@ -216,7 +286,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) *
+              appStore.hisAdapter({ nys: () => 4, hj: () => 3, wh: () => 6 })) *
               70 +
             250 +
             10 +
@@ -386,6 +456,22 @@ export default observer(function ArrangeSheet(props: Props) {
 });
 const Wrapper = styled.div`
   background: #fff;
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+  .ant-table-row-hover {
+    background: #fff !important;
+    > td {
+      background: #fff !important;
+    }
+  }
+  .ant-input {
+    border: 0;
+    border-radius: 0;
+    text-align: center;
+    outline: 0;
+    box-shadow: none !important;
+    padding: 4px;
+    height: 27px;
+  }
   #baseTable {
     /* margin: 10px;
     border-radius: 5px; */
