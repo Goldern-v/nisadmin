@@ -53,7 +53,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   //当月最后一周的日期
   const lastWeekDatesThisMonth = lastWeekDatesAMonth()
   //今日是否当月最后一周
-  const currentInLastWeek = lastWeekDatesThisMonth.indexOf(moment().format('YYYY-MM-DD')) >= 0
+  // const currentInLastWeek = lastWeekDatesThisMonth.indexOf(moment().format('YYYY-MM-DD')) >= 0
 
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
@@ -120,7 +120,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
-        if (appStore.isDev) return (
+        // if (appStore.isDev) 
+        return (
           <Input
             disabled={cellDisabled(record)}
             defaultValue={text}
@@ -133,7 +134,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           />
         );
 
-        return text
+        // return text
       }
     },
     ...itemConfigList.map((item: any) => {
@@ -297,28 +298,28 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       },
       registerCode
     ),
-    ...(appStore.isDev ?
-      [
-        {
-          title: "操作",
-          width: 50,
-          className: "",
-          render(text: string, record: any, index: number) {
-            return (
-              <DoCon>
-                {cellDisabled(record) ? (
-                  <aside style={{ color: "#aaa" }}>删除</aside>
-                ) : (
-                    <span
-                      onClick={() => handleDeleteRow(record, index)}>
-                      删除
-                    </span>
-                  )}
-              </DoCon>
-            );
-          }
-        }
-      ] : []),
+    // ...(appStore.isDev ?
+    //   [
+    {
+      title: "操作",
+      width: 50,
+      className: "",
+      render(text: string, record: any, index: number) {
+        return (
+          <DoCon>
+            {cellDisabled(record) ? (
+              <aside style={{ color: "#aaa" }}>删除</aside>
+            ) : (
+                <span
+                  onClick={() => handleDeleteRow(record, index)}>
+                  删除
+                </span>
+              )}
+          </DoCon>
+        );
+      }
+    }
+    // ] : []),
   ];
 
   //预览附件
@@ -420,9 +421,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={() => getPage(undefined, { stopCreateRow: true })}>查询</Button>
-            {appStore.isDev && <Button type="primary" onClick={createRow}>
-              新建
-            </Button>}
+            {/* {appStore.isDev &&  */}
+            <Button type="primary" onClick={createRow}>新建</Button>
+            {/* } */}
             <Button type="primary" onClick={onSave}>
               保存
             </Button>

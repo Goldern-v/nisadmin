@@ -337,10 +337,10 @@ export default observer(function SetTittle(props: Props) {
           <DoCon>
             {selectedBlockObj &&
               selectedBlockObj.itemSizeEditable &&
-              codeAdapter({
-                QCRG_07: false,
-                other: true,
-              }, registerCode) &&
+              // codeAdapter({
+              //   QCRG_07: false,
+              //   other: true,
+              // }, registerCode) &&
               (
                 <span
                   onClick={() => {
@@ -425,10 +425,10 @@ export default observer(function SetTittle(props: Props) {
         />
         {selectedBlockObj &&
           selectedBlockObj.itemSizeEditable &&
-          codeAdapter({
-            QCRG_07: false,
-            other: true,
-          }, registerCode) &&
+          // codeAdapter({
+          //   QCRG_07: false,
+          //   other: true,
+          // }, registerCode) &&
           (
             <Button onClick={addRow}>添加</Button>
           )}
