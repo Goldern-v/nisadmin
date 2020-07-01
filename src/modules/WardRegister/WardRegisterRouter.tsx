@@ -191,6 +191,17 @@ export default function WardRegisterRouter() {
       }
     },
     {
+      title: "急救车药品检查登记本",
+      path: "/wardRegister/QCRG_12_2",
+      component: { ...重点患者评估登记本 },
+      icon: <ZYHL />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_12_2",
+        registerName: "急救车药品检查登记本"
+      }
+    },
+    {
       title: "库房物品登记本",
       icon: <KFWP />,
       children: [

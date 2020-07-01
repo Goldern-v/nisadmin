@@ -47,13 +47,13 @@ export default observer(function SocialpractiseResultReview() {
   const [imgList, setImgList] = useState([] as any[])
   const [imgListLoading, setImgListLoading] = useState(false)
   const [imgTotal, setImgTotal] = useState(0)
-  const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 15 })
+  const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 20 })
 
   //聊天记录相关数据
   const [convs, setConvs] = useState([] as any[])
   const [convsLoading, setConvsLoading] = useState(false)
   const [convsTotal, setConvsTotal] = useState(0)
-  const [convstQuery, setConvsQuery] = useState({ pageIndex: 1, pageSize: 15 })
+  const [convstQuery, setConvsQuery] = useState({ pageIndex: 1, pageSize: 20 })
   //聊天总结
   const [summaryInfo, setSumaryInfo] = useState({} as any)
 
@@ -314,13 +314,17 @@ export default observer(function SocialpractiseResultReview() {
 
   useEffect(() => {
     trainingResultModel.init()
+    getSummary()
   }, [])
 
   useEffect(() => {
     getImgList()
-    getConvList()
-    getSummary()
   }, [imgListQuery])
+
+
+  useEffect(() => {
+    getConvList()
+  }, [convstQuery])
 
   return <Wrapper>
     <TopPannel>
@@ -456,7 +460,7 @@ export default observer(function SocialpractiseResultReview() {
                         key={index}
                         className="conv-item">
                         <div className="conv-person-info">
-                          <img src={item.nearImageUrl} />
+                          <img src={item.nearImageUrl} className="head-img" />
                           <span>
                             <span>{item.empName}({item.deptName})</span>
                             <br />
@@ -482,15 +486,15 @@ export default observer(function SocialpractiseResultReview() {
                   <div className="conv-item">
                     {summaryInfo.empName &&
                       <div className="conv-person-info">
-                        <img src={summaryInfo.nearImageUrl} />
+                        <img src={summaryInfo.nearImageUrl} className="head-img" />
                         <span>
                           <span>{summaryInfo.empName}({summaryInfo.deptName})</span>
                           <br />
-                          <span>{summaryInfo.messageTime}</span>
+                          <span>{summaryInfo.summaryTime}</span>
                         </span>
                       </div>}
                     <div className="conv-content">
-                      <pre>{summaryInfo.messageContent}</pre>
+                      <pre>{summaryInfo.summaryContent}</pre>
                     </div>
                   </div>
                 </div>
@@ -530,6 +534,28 @@ const FullContent = styled.div`
       }
       .pagination-footer{
         padding: 5px 15px;
+      }
+      .conv-item{
+        margin: 8px 0;
+        position: relative;
+        pre{
+          padding-bottom: 10px;
+        }
+        &::after{
+          content: '';
+          left: 0;
+          right: 24px;
+          position: absolute;
+          bottom: 0;
+          height: 1px;
+          background-color: #ddd;
+        }
+
+        &:last-child{
+          &::after{
+            display: none;
+          }
+        }
       }
     }
   }
@@ -583,6 +609,7 @@ const FullContent = styled.div`
         vertical-align: top;
       }
       &>span{
+        color: #666;
         display: inline-block;
         margin-left: 12px;
         font-size: 14px;
@@ -594,6 +621,8 @@ const FullContent = styled.div`
       pre{
         word-break: break-all;
         white-space: pre-wrap;
+        color: #000;
+        font-size: 14px;
         margin: 5px 0 0 0;
       }
     }

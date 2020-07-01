@@ -168,6 +168,7 @@ export default observer(function SetTittle(props: Props) {
                       'QCRG_11',
                       'QCRG_11_2',
                       'QCRG_11_3',
+                      'QCRG_12_2',
                     ].join(',')
                   ]: <Option value="date">日期选择</Option>,
                   other: null,
