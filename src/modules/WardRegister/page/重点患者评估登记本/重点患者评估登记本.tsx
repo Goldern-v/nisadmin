@@ -1179,7 +1179,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_03': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_03,QCRG_04': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1207,6 +1207,23 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
+                'QCRG_04': <React.Fragment>
+                  <Button
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => handleAuditAll(
+                      '负责人',
+                      codeAdapter({
+                        QCRG_03: 'sign',
+                        other: 'audit'
+                      }, registerCode)
+                    )}>
+                    负责人签名
+              </Button>
+                </React.Fragment>,
                 'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2':
                   <React.Fragment>
                     <Button
