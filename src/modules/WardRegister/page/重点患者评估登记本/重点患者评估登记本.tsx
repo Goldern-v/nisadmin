@@ -369,7 +369,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     <Text x="20%" y="75%" deg="0">
                       日期
                     </Text>
-                    <Text x="58%" y="70%" deg="0">
+                    <Text x="58%" y="67%" deg="0">
                       使用
                       <br />
                       及补充
@@ -393,15 +393,21 @@ export default observer(function 重点患者评估登记本(props: Props) {
             dataIndex: "recordDate",
             align: "center",
             colSpan: 1,
-            width: 160
+            width: 160,
+            render(text: string, record: any, index: number) {
+              return (
+                <Input
+                  disabled={cellDisabled(record)}
+                  defaultValue={text}
+                  onChange={value => {
+                    record.recordDate = value;
+                  }}
+                  onBlur={() => updateDataSource()}
+                  className={isEndTime(record) || ""}
+                />
+              );
+            }
           },
-          // {
-          //   title: "班次",
-          //   colSpan: 0,
-          //   width: 73,
-          //   dataIndex: "range",
-          //   align: "center"
-          // }
         ],
         QCRG_12_2: [
           {
@@ -867,6 +873,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
             registerCode,
             updateDataSource,
             selectedBlockId
+          }),
+          signRowObj({
+            title: "负责人签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "负责人",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
           })
         ],
         QCRG_16_1: [
@@ -1192,17 +1207,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_14_2':
-                  <Button
-                    disabled={
-                      pageLoading ||
-                      selectedRowKeys.length <= 0
-                    }
-                    type="primary"
-                    onClick={() => handleCopyCreateRow()}>
-                    复制新增
-                  </Button>,
-                'QCRG_14_1,QCRG_10,QCRG_03':
+                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2':
                   <React.Fragment>
                     <Button
                       disabled={
