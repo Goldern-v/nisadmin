@@ -21,6 +21,8 @@ import ExpectedRecordSelf from "./views/arrangeHome/page/expectedRecordSelf/Expe
 import NightHoursStatistics from "./views/arrangeHome/page/nightHoursStatistics/NightHoursStatistics";
 import StandardTime from "./views/arrangeHome/page/StandardTime/StandardTime";
 import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
+import DepartmentByShiftView from 'src/modules/statistic/views/departmentByShift/DepartmentByShiftView'
+
 
 export interface Props {}
 
@@ -134,6 +136,12 @@ export default function PersonnelManagementView() {
           title: "排班统计属性统计",
           path: "/personnelManagement/nurseByShiftView",
           component: NurseByShiftView,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "nys"
+        },
+        {
+          title: "科室排班统计",
+          path: "/personnelManagement/departmentByShiftView",
+          component: DepartmentByShiftView,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "nys"
         }
         // {
