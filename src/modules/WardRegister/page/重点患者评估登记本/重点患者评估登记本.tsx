@@ -541,6 +541,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           title: "班次",
           width: 73,
           dataIndex: "range",
+          className: "input-cell",
           align: "center",
           render(text: string, record: any, index: number) {
             let children = <InputColumnRender

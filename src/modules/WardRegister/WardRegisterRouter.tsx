@@ -68,7 +68,7 @@ export default function WardRegisterRouter() {
       path: "/wardRegister/QCRG_04",
       component: { ...重点患者评估登记本 },
       icon: <YZHD />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_04",
         registerName: "医嘱核对登记本"
@@ -99,7 +99,7 @@ export default function WardRegisterRouter() {
       path: "/wardRegister/QCRG_07",
       component: { ...消毒隔离工作登记本 },
       icon: <XDGL />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_07",
         registerName: "消毒隔离工作登记本"
@@ -128,15 +128,15 @@ export default function WardRegisterRouter() {
             registerName: "备用药品管理登记本"
           }
         },
-        {
-          title: "毒麻药品管理登记本",
-          path: "/wardRegister/QCRG_13",
-          component: { ...重点患者评估登记本 },
-          payload: {
-            registerCode: "QCRG_13",
-            registerName: "毒麻药品管理登记本"
-          }
-        },
+        // {
+        //   title: "毒麻药品管理登记本",
+        //   path: "/wardRegister/QCRG_13",
+        //   component: { ...重点患者评估登记本 },
+        //   payload: {
+        //     registerCode: "QCRG_13",
+        //     registerName: "毒麻药品管理登记本"
+        //   }
+        // },
       ],
     },
     {
