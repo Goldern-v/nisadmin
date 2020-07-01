@@ -448,15 +448,27 @@ class PrintModal {
           return totalCellContent(record.id)
         }
       },
+      // {
+      //   title: '夜小时数（小时）',
+      //   key: 'total2',
+      //   width: 60,
+      //   visible: colVisibleList.indexOf('total2') >= 0,
+      //   render: (record: any) => {
+      //     return nightHourCellContent(record.id)
+      //   }
+      // }
       {
-        title: '夜小时数（小时）',
-        key: 'total2',
+        title: '本周积假',
+        key: 'thisWeekHoliday',
         width: 60,
-        visible: colVisibleList.indexOf('total2') >= 0,
-        render: (record: any) => {
-          return nightHourCellContent(record.id)
-        }
-      }
+        visible: colVisibleList.indexOf('thisWeekHoliday') >= 0,
+      },
+      {
+        title: '累积积假',
+        key: 'totalHoliday',
+        width: 60,
+        visible: colVisibleList.indexOf('totalHoliday') >= 0,
+      },
     ] as column[]
     const colsAfterVisible = colsAfter.filter((item) => item.visible)
 
