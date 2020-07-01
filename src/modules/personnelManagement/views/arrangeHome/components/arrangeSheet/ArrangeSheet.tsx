@@ -179,7 +179,7 @@ export default observer(function ArrangeSheet(props: Props) {
         render: (text: string, record: any) => {
           return (
             <Input
-              style={{ background: "#fff" }}
+              style={{ background: "#fff", color: "#000" }}
               disabled={!isEdit}
               defaultValue={text}
               onChange={(e: any) => {

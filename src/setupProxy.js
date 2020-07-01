@@ -8,7 +8,7 @@ module.exports = function(app) {
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
       // target: 'http://120.197.141.41:9091',
-      target: "http://192.168.20.133:8062", //广豪
+      // target: "http://192.168.20.133:8062", //广豪
       //武汉正式环境
       // target: "http://nurse.cr-health.com:34001",
       // target: 'http://192.168.2.75:8080',
@@ -24,7 +24,7 @@ module.exports = function(app) {
 
       //南医三正式环境
       // target: "http://119.145.71.86:9098",
-      // target: "http://120.25.105.45:8062", //南医三测试
+      target: "http://120.25.105.45:8062", //南医三测试
       // target: "http://192.168.3.113:8062", //广豪南医三测试
       secure: false,
       changeOrigin: true

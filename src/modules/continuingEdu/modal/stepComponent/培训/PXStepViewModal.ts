@@ -164,8 +164,8 @@ class StepViewModal {
       ),
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
+      category: this.stepData2.category,
       detailInfo: {
-        category: this.stepData2.category,
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         hasTeacherCredit: this.stepData2.hasTeacherCredit,

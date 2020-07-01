@@ -152,10 +152,9 @@ class StepViewModal {
       nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
-
+      category: this.stepData2.category,
       noticeContent: this.stepData2.noticeContent,
       detailInfo: {
-        category: this.stepData2.category,
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         hasScorePersonClassHours: this.stepData2.hasScorePersonClassHours,
