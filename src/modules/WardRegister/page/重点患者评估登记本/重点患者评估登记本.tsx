@@ -1342,13 +1342,6 @@ const Container = styled(Wrapper)`
     color: #000!important;
       background: rgba(0,0,0,0.0)!important;
   }
-
-  pre{
-    word-break: break-all;
-    white-space: pre-wrap;
-    margin:0;
-    padding:0;
-  }
 `;
 
 const LineCon = styled.div`
