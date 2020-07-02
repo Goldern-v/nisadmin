@@ -569,7 +569,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
       return {
         title: item.children ? (
           <PTitleTh>
-            <MergeTitle>{item.pTitle || item.itemCode}</MergeTitle>
+            <MergeTitle>
+              <pre>{item.pTitle || item.itemCode}</pre>
+            </MergeTitle>
             <PTitleCon>
               {item.children.map(
                 (cItem: ItemConfigItem, index: number, arr: any) => (
@@ -584,14 +586,18 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       <ThBox>
                         <div className="title">
                           <span className="title-text">
-                            {cItem.label || cItem.itemCode}
+                            <pre>
+                              {cItem.label || cItem.itemCode}
+                            </pre>
                           </span>
                         </div>
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
                         <span className="title-text">
-                          {cItem.label || cItem.itemCode}
+                          <pre>
+                            {cItem.label || cItem.itemCode}
+                          </pre>
                         </span>
                       )}
                   </CTitleBox>
@@ -602,14 +608,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ) : item.checkSize ? (
           () => (
             <ThBox>
-              <div className="title">
-                <span className="title-text">{item.itemCode}</span>
+              <div className="title"><span className="title-text">
+                <pre>
+                  {item.itemCode}
+                </pre>
+              </span>
               </div>
               <div className="aside">{item.checkSize}</div>
             </ThBox>
           )
         ) : (
-              item.itemCode
+              <pre>
+                {item.label || item.itemCode}
+              </pre>
             ),
         align: "center",
         className: "input-cell",
@@ -1330,6 +1341,13 @@ const Container = styled(Wrapper)`
   .ant-input[disabled]{
     color: #000!important;
       background: rgba(0,0,0,0.0)!important;
+  }
+
+  pre{
+    word-break: break-all;
+    white-space: pre-wrap;
+    margin:0;
+    padding:0;
   }
 `;
 
