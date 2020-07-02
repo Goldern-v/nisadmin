@@ -45,7 +45,7 @@ export default function LabelsAppend(props: Props) {
   const LableList = () => {
     return labelsEdit.map((item: any, idx: number) => <Tag
       closable
-      key={idx}
+      key={item.labelContent}
       className="label-tag"
       color="green"
       onClose={() => {

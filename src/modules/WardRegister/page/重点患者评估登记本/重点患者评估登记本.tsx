@@ -418,10 +418,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     <Text x="20%" y="65%" deg="0">
                       日期
                     </Text>
-                    <Text x="83%" y="58%" deg="0">
+                    <Text x="70%" y="58%" deg="0">
                       属性
                     </Text>
-                    <Text x="82%" y="8%" deg="0">
+                    <Text x="70%" y="8%" deg="0">
                       名称
                     </Text>
                   </TextCon>
@@ -806,6 +806,42 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
+        QCRG_12_2: [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell",
+            render(text: string, record: any, index: number) {
+              return <InputColumnRender
+                {...{
+                  cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
+            }
+          },
+          signRowObj({
+            title: "签名",
+            width: 70,
+            dataIndex: "signerName",
+            aside: "",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          }),
+          signRowObj({
+            title: "负责人签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "负责人",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
         QCRG_13: [
           {
             title: "备注",
@@ -1180,7 +1216,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_03,QCRG_04': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1208,7 +1244,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_04': <React.Fragment>
+                'QCRG_04,QCRG_12_2': <React.Fragment>
                   <Button
                     disabled={
                       pageLoading ||
