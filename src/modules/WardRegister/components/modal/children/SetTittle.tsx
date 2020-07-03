@@ -367,18 +367,23 @@ export default observer(function SetTittle(props: Props) {
   const delRow = (index: number) => {
     let params = JSON.parse(JSON.stringify(dataSource))
 
-    params.splice(index, 1)
-
-    wardRegisterService
-      .saveOrUpdateItemConfig(registerCode, blockId, params)
-      .then(res => {
-        message.success('删除成功')
-        dataSource.splice(index, 1)
-        updateDataSource()
-      })
+    if (params[index].oldItemCode) {
+      params.splice(index, 1)
+      wardRegisterService
+        .saveOrUpdateItemConfig(registerCode, blockId,
+          params.filter((item: any) => item.oldItemCode))
+        .then(res => {
+          message.success('删除成功')
+          dataSource.splice(index, 1)
+          updateDataSource()
+        })
+    } else {
+      dataSource.splice(index, 1)
+      updateDataSource()
+    }
   };
   const addRow = () => {
-    dataSource.push({});
+    dataSource.push({ itemType: '', itemCode: '' });
     updateDataSource();
   };
 
@@ -438,7 +443,7 @@ export default observer(function SetTittle(props: Props) {
       </ToolCon>
       <EditTableCon>
         <BaseTable
-          rowKey="itemCode"
+          // rowKey="itemCode"
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}
@@ -506,6 +511,7 @@ const EditTableCon = styled.div`
   }
   textarea{
     resize:none;
+    overflow: hidden;
   }
 `;
 
