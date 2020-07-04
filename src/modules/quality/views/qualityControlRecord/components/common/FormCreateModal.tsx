@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Modal, Input, message } from 'antd'
+import { Modal, Input, message, Spin } from 'antd'
 const { Search } = Input
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -18,6 +18,7 @@ export interface Props {
 export default observer(function FormCreateModal(props: Props) {
   const { visible, onOk, onCancel, title, level } = props
   const [formList, setFormList] = useState([] as any)
+  const [formListLoading, setFormListLoaindg] = useState(false)
 
   const [filter, setFilter] = useState('')
   const [activeIdx, setActiveIdx] = useState(-1)
@@ -26,12 +27,14 @@ export default observer(function FormCreateModal(props: Props) {
     formList.filter((item: any) => item.qcName.indexOf(filter) >= 0) || []
 
   useEffect(() => {
+    setFormListLoaindg(true)
     qualityControlRecordApi.formTemplateList({
       level: Number(level),
       templateName: ''
     }).then(res => {
+      setFormListLoaindg(false)
       if (res.data) setFormList(res.data)
-    })
+    }, () => setFormListLoaindg(false))
   }, [level])
 
   useEffect(() => {
@@ -74,21 +77,24 @@ export default observer(function FormCreateModal(props: Props) {
           placeholder="请输入质控表单名称" />
       </div>
       <ContentArea className="content-area">
-        {filterList.map((item: any, idx: number) =>
-          <div
-            key={idx}
-            className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
-            onClick={() => setActiveIdx(idx)}
-            onDoubleClick={() => {
-              onOk && onOk()
-              handleOk(idx)
-            }}>
-            <div className="icon">
-              <img src={require('./../../assets/报告单@3x.png')} alt="" />
+        <Spin spinning={formListLoading} style={{ minHeight: 300 }}>
+          {filterList.map((item: any, idx: number) =>
+            <div
+              key={idx}
+              className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
+              onClick={() => setActiveIdx(idx)}
+              title={item.qcName}
+              onDoubleClick={() => {
+                onOk && onOk()
+                handleOk(idx)
+              }}>
+              <div className="icon">
+                <img src={require('./../../assets/报告单@3x.png')} alt="" />
+              </div>
+              <div className="qc-name">{item.qcName}</div>
             </div>
-            <div className="qc-name">{item.qcName}</div>
-          </div>
-        )}
+          )}
+        </Spin>
       </ContentArea>
     </Wrapper>
   </Modal>
@@ -142,6 +148,7 @@ const Wrapper = styled.div`
     left: 0;
     width: 100%;
     background: #fff;
+    z-index:1;
     &>*{
       width: 200px;
       margin-left: 10px;

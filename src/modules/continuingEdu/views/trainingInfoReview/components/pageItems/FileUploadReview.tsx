@@ -64,7 +64,7 @@ export default function StudyUpload(props: Props) {
                   teachingMethodName: info.teachingMethodName,
                   title: `${item.name} 视频题目`,
                   videoQuestionList: item.viQuestionList,
-                  hideAnwserInfo: true,
+                  // hideAnwserInfo: true,
                 })
               }}>
               题目查看

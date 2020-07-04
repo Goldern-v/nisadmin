@@ -36,7 +36,7 @@ export default function answerInfo(props: Props) {
             {singleChoiceArr.map((item: any) => (
               <span key={item.sort}>
                 {item.sort}.
-                {(item.answerList || [])
+                {(item.answerList || item.answersList || [])
                   .filter((answer: any) => answer.isRight)
                   .map((answer: any) => answer.optionLabel)
                   .join(",")}
@@ -53,7 +53,7 @@ export default function answerInfo(props: Props) {
             {multiChoiceArr.map((item: any) => (
               <span key={item.sort}>
                 {item.sort}.
-                {(item.answerList || [])
+                {(item.answerList || item.answersList || [])
                   .filter((answer: any) => answer.isRight)
                   .map((answer: any) => answer.optionLabel)
                   .join(",")}
@@ -70,7 +70,12 @@ export default function answerInfo(props: Props) {
             {fullArr.map((item: any, idx: number) => (
               <React.Fragment key={idx}>
                 <span>
-                  {item.sort}.{item.answer && item.answer.rightAnswer};
+                  {item.sort}.{
+                    item.answer ? `${item.answer.rightAnswer};` :
+                      item.answersList ? item.answersList
+                        .map((answerItem: any) => answerItem.rightAnswer)
+                        .join(';\n') : '(空)'
+                  }
                   <span> </span>
                 </span>
                 <br />
@@ -86,7 +91,12 @@ export default function answerInfo(props: Props) {
             {wendaArr.map((item: any, idx: number) => (
               <React.Fragment key={idx}>
                 <span>
-                  {item.sort}.{item.answer && item.answer.suggestedAnswer};
+                  {item.sort}.{
+                    item.answer ? `${item.answer.suggestedAnswer};` :
+                      item.answersList ? item.answersList
+                        .map((answerItem: any) => answerItem.suggestedAnswer)
+                        .join(';\n') : '(空)'
+                  }
                   <span> </span>
                 </span>
                 <br />

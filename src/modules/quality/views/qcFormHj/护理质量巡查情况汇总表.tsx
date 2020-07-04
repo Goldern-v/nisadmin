@@ -1,19 +1,32 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker } from 'antd'
+import { Button, DatePicker, Select } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormHjService } from './api/QcFormHjService'
 import { fileDownload } from "src/utils/file/file";
 import moment from 'moment'
+import { qualityControlRecordApi } from '../qualityControlRecord/api/QualityControlRecordApi'
+
+const Option = Select.Option
 
 export interface Props { }
 
 export default observer(function 护理质量巡查情况汇总表(props: Props) {
   const { queryObj } = appStore
-  const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
+  //科室列表
+  const { deptList } = authStore
+  //表单列表
+  const [formList, setFormList] = useState([] as any)
+  const [formListLoading, setFormListLoaindg] = useState(false)
+  const [query, setQuery] = useState({
+    wardCode: '',
+    qcCode: '',
+    beginDate: moment(moment().format('YYYY-MM') + '-01'),
+    endDate: moment()
+  })
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
@@ -59,8 +72,9 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
     setLoading(true)
     qcFormHjService.countResult({
       qcLevel: queryObj.qcLevel || '1',
-      beginDate: filterDate[0].format('YYYY-MM-DD'),
-      endDate: filterDate[1].format('YYYY-MM-DD'),
+      ...query,
+      beginDate: query.beginDate.format('YYYY-MM-DD'),
+      endDate: query.endDate.format('YYYY-MM-DD'),
     })
       .then(res => {
         setLoading(false)
@@ -91,8 +105,9 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
     qcFormHjService
       .countResultExport({
         qcLevel: queryObj.qcLevel || '1',
-        beginDate: filterDate[0].format('YYYY-MM-DD'),
-        endDate: filterDate[1].format('YYYY-MM-DD'),
+        ...query,
+        beginDate: query.beginDate.format('YYYY-MM-DD'),
+        endDate: query.endDate.format('YYYY-MM-DD'),
       })
       .then(res => {
         setLoading(false)
@@ -100,29 +115,80 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
       }, err => setLoading(false))
   }
 
-  // useEffect(() => {
-  //   getTableData()
-  // }, [])
+  const getFormList = () => {
+    setFormListLoaindg(true)
+    qualityControlRecordApi.formTemplateList({
+      level: Number(queryObj.level || '1'),
+      templateName: ''
+    })
+      .then(res => {
+        setFormListLoaindg(false)
+        if (res.data) setFormList(res.data)
+      }, () => setFormListLoaindg(false))
+  }
+
+  useEffect(() => {
+    getFormList()
+  }, [])
 
   useEffect(() => {
     getTableData()
-  }, [filterDate])
+  }, [query])
 
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
         <PageTitle>
-          {filterDate[0].format('YYYY')}年{queryObj.title || '护理质量巡查情况汇总表'}
+          {query.beginDate.format('YYYY')}年{queryObj.title || '护理质量巡查情况汇总表'}
         </PageTitle>
       </LeftIcon>
       <RightIcon>
+        <div className="item">
+          <div className="label">表单: </div>
+          <div className="content">
+            <Select
+              value={query.qcCode}
+              loading={formListLoading}
+              style={{ width: 180 }}
+              showSearch
+              onChange={(qcCode: string) => setQuery({ ...query, qcCode })}
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }>
+              <Option value="">全部</Option>
+              {formList.map((item: any, index: number) =>
+                <Option value={item.qcCode} key={index}>{item.qcName}</Option>)}
+            </Select>
+          </div>
+        </div>
+        <div className="item">
+          <div className="label">科室：</div>
+          <div className="content">
+            <Select
+              value={query.wardCode}
+              style={{ width: 180 }}
+              showSearch
+              onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }>
+              <Option value="">全部</Option>
+              {deptList.map((item: any, index: number) =>
+                <Option value={item.code} key={index}>{item.name}</Option>)}
+            </Select>
+          </div>
+        </div>
         <div className="item">
           <div className="label">时间：</div>
           <div className="content">
             <DatePicker.RangePicker
               allowClear={false}
-              value={[filterDate[0], filterDate[1]]}
-              onChange={(value: any) => setFilterDate(value)}
+              value={[query.beginDate, query.endDate]}
+              onChange={(value: any) => setQuery({
+                ...query,
+                beginDate: value[0],
+                endDate: value[1]
+              })}
               style={{ width: 220 }}
             />
           </div>
