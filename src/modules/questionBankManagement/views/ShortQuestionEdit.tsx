@@ -147,7 +147,7 @@ export default observer(function ChoiceQuestionEdit() {
             </div>
             <div className="label-list" style={{ width: '700px' }}>
               {editModel.questionLabels.map((item: any, idx: number) => <Tag
-                key={idx}
+                key={item.labelContent}
                 closable
                 className="label-tag"
                 color="green"
@@ -180,8 +180,11 @@ export default observer(function ChoiceQuestionEdit() {
 })
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  left: 200px;
+  top: 48px;
+  right: 0px;
+  bottom: 0px;
   padding-top: 80px;
   .header{
     padding: 10px 15px;

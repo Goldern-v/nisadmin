@@ -180,7 +180,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
               current: allData.pageIndex,
               showSizeChanger: true,
               showQuickJumper: true,
-              pageSizeOptions: ['10', '15', '20'],
+              pageSizeOptions: ['10', '20', '30', '40', '50'],
               pageSize: allData.pageSize
             }}
             onChange={onChange}

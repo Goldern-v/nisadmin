@@ -107,6 +107,7 @@ export default observer(function ChoiceQuestionEdit() {
   const handleLabelSelected = (label: any) => {
     let newNodel = { ...editModel };
     let { labelList } = newNodel;
+    console.log(newNodel)
     if (!label.labelContent) return
 
     let sameItems = labelList.filter((item: any) => item.labelContent == label.labelContent);
@@ -122,8 +123,12 @@ export default observer(function ChoiceQuestionEdit() {
   const handleTagDelete = (idx: number) => {
     let newNodel = { ...editModel };
     let { labelList } = newNodel;
-    labelList.splice(idx, 1);
 
+    let newList = labelList.concat()
+    newList.splice(idx, 1)
+
+    newNodel.labelList = newList
+    console.log(newNodel)
     setEditModel(newNodel);
   }
 
@@ -228,7 +233,7 @@ export default observer(function ChoiceQuestionEdit() {
             </div>
             <div className="label-list" style={{ width: '700px' }}>
               {editModel.labelList.map((item: any, idx: number) => <Tag
-                key={idx}
+                key={item.labelContent}
                 closable
                 className="label-tag"
                 color="green"
@@ -261,8 +266,11 @@ export default observer(function ChoiceQuestionEdit() {
 })
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  left: 200px;
+  top: 48px;
+  right: 0px;
+  bottom: 0px;
   padding-top: 80px;
   .header{
     padding: 10px 15px;

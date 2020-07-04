@@ -162,10 +162,12 @@ const Wrapper = styled.div`
   }
   
   .main-contain{
-    width: 100%;
-    height: 100%;
     overflow: auto;
-    position: relative;
+    position: fixed;
+    left: 200px;
+    top: 130px;
+    right: 0;
+    bottom: 0;
     .upload-box{
       width: 700px;
       height: 250px;

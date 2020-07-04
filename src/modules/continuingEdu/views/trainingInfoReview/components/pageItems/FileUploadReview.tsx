@@ -8,6 +8,7 @@ import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService
 
 import createModal from 'src/libs/createModal'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import TestPageModal from '../TestPageModal/TestPageModal'
 export interface Props {
   info: any
 }
@@ -16,6 +17,7 @@ export default function StudyUpload(props: Props) {
   const { info } = props
   const fileList = info.attachmentList || []
   const previewModal = createModal(PreviewModal)
+  const testPageModal = createModal(TestPageModal)
 
   const showReview = (file: any) => {
     previewModal.show({
@@ -32,16 +34,6 @@ export default function StudyUpload(props: Props) {
   return <Wrapper>
     <div className="content-item-title">上传文档</div>
     <div className="content-item-pannel">
-      {/* <div className="file-item">
-        <img
-          src={getFilePrevImg('abc.pdf')}
-          className='type-img'
-          style={{ cursor: 'pointer' }}
-          alt='' />
-        <div className="file-title">2019年新职工培训教学计划.doc</div>
-        <div className="file-size">1.3MB</div>
-        <Button className="preview-btn" size="small">预览</Button>
-      </div> */}
       {fileList.map((item: any, idx: number) =>
         <div key={idx} className="file-item">
           <img
@@ -49,7 +41,7 @@ export default function StudyUpload(props: Props) {
             className='type-img'
             style={{ cursor: 'pointer' }}
             alt='' />
-          <div className="file-title">{item.name}</div>
+          <div className="file-title" title={item.name}>{item.name}</div>
           <div className="file-size">{getFileSize(item.size)}</div>
           <Button
             className="download-btn"
@@ -63,9 +55,24 @@ export default function StudyUpload(props: Props) {
             onClick={() => showReview(item)}>
             预览
           </Button>
+          {(item.viQuestionList && item.viQuestionList.length > 0) &&
+            <Button
+              className="video-page-btn"
+              size="small"
+              onClick={() => {
+                testPageModal.show({
+                  teachingMethodName: info.teachingMethodName,
+                  title: `${item.name} 视频题目`,
+                  videoQuestionList: item.viQuestionList,
+                  // hideAnwserInfo: true,
+                })
+              }}>
+              题目查看
+          </Button>}
         </div>)}
     </div>
     <previewModal.Component />
+    <testPageModal.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`
@@ -90,7 +97,7 @@ const Wrapper = styled.div`
     position: absolute;
     top: 15px;
     left: 80px;
-    right: 122px;
+    right: 186px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
@@ -110,6 +117,11 @@ const Wrapper = styled.div`
   .download-btn{
     position: absolute;
     right: 10px;
+    top: 15px;
+  }
+  .video-page-btn{
+    position: absolute;
+    right: 122px;
     top: 15px;
   }
 `

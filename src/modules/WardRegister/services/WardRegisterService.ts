@@ -86,6 +86,18 @@ export default class WardRegisterService extends BaseApiService {
       list
     });
   }
+  /** 核对者签名 */
+  public checkAll(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/checkAll`, {
+      list
+    });
+  }
+  /** 取消核对签名 */
+  public cancelCheck(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/cancelCheck`, {
+      list
+    });
+  }
 
   /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {

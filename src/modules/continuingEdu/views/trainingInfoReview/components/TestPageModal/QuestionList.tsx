@@ -26,13 +26,11 @@ export default function QuestionList(props: Props) {
       case 2:
         return <div
           className="answer-content">
-          {item
-            .answerList
+          {(item.answerList || item.answersList || [])
             .map((answer: any, asIdx: number) =>
-              <React.Fragment>
+              <React.Fragment key={`${qsIdx}-${asIdx}`}>
                 <span
-                  className="choice-item"
-                  key={`${qsIdx}-${asIdx}`}>
+                  className="choice-item">
                   {!!answer.isRight && <span
                     className="correct-choice">
                     {correctImg}
@@ -47,16 +45,35 @@ export default function QuestionList(props: Props) {
             )}
         </div>
       case 3:
-        return <div
-          className="answer-content">
-          答案: {item.answer && item.answer.rightAnswer}
-        </div>
-      case 4:
-        return item.answer?.suggestedAnswer &&
-          <div
+        if (item.answer) {
+          return <div
             className="answer-content">
-            参考答案: {item.answer.suggestedAnswer}
+            答案: {item.answer && item.answer.rightAnswer}
           </div>
+        } else if (item.answersList) {
+          return <pre
+            className="answer-content">
+            参考答案: {item.answersList
+              .map((answerItem: any) => answerItem.rightAnswer)
+              .join('\n')}
+          </pre>
+        }
+      case 4:
+        if (item.answer) {
+          return item.answer?.suggestedAnswer &&
+            <div
+              className="answer-content">
+              参考答案: {item.answer.suggestedAnswer}
+            </div>
+        } else if (item.answersList) {
+          return <pre
+            className="answer-content">
+            参考答案: {item.answersList
+              .map((answerItem: any) => answerItem.suggestedAnswer)
+              .join('\n')}
+          </pre>
+        }
+
       default:
         return <span></span>
     }
@@ -147,6 +164,10 @@ const Wrapper = styled.div`
     }
     .answer-content{
       padding: 0 5px;
+      &pre{
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
     }
     .choice-item{
       position: relative;

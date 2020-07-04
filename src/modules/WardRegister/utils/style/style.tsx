@@ -13,6 +13,12 @@ export const Wrapper = styled.div`
 `;
 export const TableCon = styled.div`
   position:relative;
+  pre{
+    word-break: break-all;
+    white-space: pre-wrap;
+    margin:0;
+    padding:0;
+  }
   .selected-operate-con{
     position: absolute;
     bottom: 12px;

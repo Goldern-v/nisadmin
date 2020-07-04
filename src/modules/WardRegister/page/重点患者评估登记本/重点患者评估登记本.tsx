@@ -418,10 +418,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     <Text x="20%" y="65%" deg="0">
                       日期
                     </Text>
-                    <Text x="83%" y="58%" deg="0">
+                    <Text x="70%" y="58%" deg="0">
                       属性
                     </Text>
-                    <Text x="82%" y="8%" deg="0">
+                    <Text x="70%" y="8%" deg="0">
                       名称
                     </Text>
                   </TextCon>
@@ -541,6 +541,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           title: "班次",
           width: 73,
           dataIndex: "range",
+          className: "input-cell",
           align: "center",
           render(text: string, record: any, index: number) {
             let children = <InputColumnRender
@@ -568,7 +569,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
       return {
         title: item.children ? (
           <PTitleTh>
-            <MergeTitle>{item.pTitle || item.itemCode}</MergeTitle>
+            <MergeTitle>
+              <pre>{item.pTitle || item.itemCode}</pre>
+            </MergeTitle>
             <PTitleCon>
               {item.children.map(
                 (cItem: ItemConfigItem, index: number, arr: any) => (
@@ -583,14 +586,18 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       <ThBox>
                         <div className="title">
                           <span className="title-text">
-                            {cItem.label || cItem.itemCode}
+                            <pre>
+                              {cItem.label || cItem.itemCode}
+                            </pre>
                           </span>
                         </div>
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
                         <span className="title-text">
-                          {cItem.label || cItem.itemCode}
+                          <pre>
+                            {cItem.label || cItem.itemCode}
+                          </pre>
                         </span>
                       )}
                   </CTitleBox>
@@ -601,14 +608,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ) : item.checkSize ? (
           () => (
             <ThBox>
-              <div className="title">
-                <span className="title-text">{item.itemCode}</span>
+              <div className="title"><span className="title-text">
+                <pre>
+                  {item.itemCode}
+                </pre>
+              </span>
               </div>
               <div className="aside">{item.checkSize}</div>
             </ThBox>
           )
         ) : (
-              item.itemCode
+              <pre>
+                {item.label || item.itemCode}
+              </pre>
             ),
         align: "center",
         className: "input-cell",
@@ -742,6 +754,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           }),
+          // signRowObj({
+          //   title: "检查者签名",
+          //   width: 70,
+          //   dataIndex: "checkerName",
+          //   aside: "检查者",
+          //   registerCode,
+          //   updateDataSource,
+          //   selectedBlockId
+          // }),
           signRowObj({
             title: "负责人签名",
             width: 70,
@@ -800,6 +821,42 @@ export default observer(function 重点患者评估登记本(props: Props) {
             width: 70,
             dataIndex: "signerName",
             aside: "",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
+        QCRG_12_2: [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell",
+            render(text: string, record: any, index: number) {
+              return <InputColumnRender
+                {...{
+                  cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
+            }
+          },
+          signRowObj({
+            title: "签名",
+            width: 70,
+            dataIndex: "signerName",
+            aside: "",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          }),
+          signRowObj({
+            title: "负责人签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "负责人",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -1179,7 +1236,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_03': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1207,6 +1264,23 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
+                'QCRG_04,QCRG_12_2': <React.Fragment>
+                  <Button
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => handleAuditAll(
+                      '负责人',
+                      codeAdapter({
+                        QCRG_03: 'sign',
+                        other: 'audit'
+                      }, registerCode)
+                    )}>
+                    负责人签名
+              </Button>
+                </React.Fragment>,
                 'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2':
                   <React.Fragment>
                     <Button

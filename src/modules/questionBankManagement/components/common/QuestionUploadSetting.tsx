@@ -43,7 +43,7 @@ export default observer(function QuestionUploadSetting(props: Props) {
   const LableList = () => {
     return labelList.map((item: any, idx: number) => <Tag
       closable
-      key={idx}
+      key={item.labelContent}
       className="label-tag"
       color="green"
       onClose={() => {
