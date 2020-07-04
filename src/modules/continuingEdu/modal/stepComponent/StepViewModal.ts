@@ -46,7 +46,7 @@ class StepViewModal {
   @observable public stepData3 = {
     participantList: []
   };
-  @observable public stepData4 = {
+  @observable public stepData4: any = {
     attachmentIds: []
   };
   @observable public stepData4XX = {
@@ -242,7 +242,6 @@ class StepViewModal {
       this.taskCode = res.data;
     });
   }
-
   @observable public dictObj = {
     /** 学习地址 */
     studyAndTrainAddress: []

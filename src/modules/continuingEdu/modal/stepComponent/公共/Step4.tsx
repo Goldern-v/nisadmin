@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Button, Icon, message, Progress, Row, Col, Select } from "antd";
+import {
+  Button,
+  Icon,
+  message,
+  Progress,
+  Row,
+  Col,
+  Select,
+  DatePicker,
+  TimePicker
+} from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
 import { stepServices } from "../services/stepServices";
@@ -8,7 +18,8 @@ import { stepViewModal } from "../StepViewModal";
 import UpdateTable from "./table/UpdateTable";
 import PXUpdateTable from "./table/PXUpdateTable";
 import Form from "src/components/Form";
-
+import moment from "moment";
+import VideoInsertion from "./videoInsertion/VideoInsertion";
 export interface Props {}
 
 export default function Step4() {
@@ -30,7 +41,7 @@ export default function Step4() {
   let totalFileSize = 0;
   let loadedFileSize = 0;
 
-  console.log(progressEventMap, "progressEventMapprogressEventMap");
+  // console.log(progressEventMap, "progressEventMapprogressEventMap");
   for (let key in progressEventMap) {
     if (progressEventMap[key].total) {
       totalFileSize += progressEventMap[key].total;
@@ -39,12 +50,12 @@ export default function Step4() {
   }
 
   useEffect(() => {
-    console.log(
-      stepViewModal.stepData1.teachingMethod,
-      stepViewModal.stepData4.attachmentIds,
-      stepViewModal.stepData4XX.studyLinkList,
-      "stepViewModal.stepData4.attachmentIdsstepViewModal.stepData4.attachmentIds"
-    );
+    // console.log(
+    //   stepViewModal.stepData1.teachingMethod,
+    //   stepViewModal.stepData4.attachmentIds,
+    //   stepViewModal.stepData4XX.studyLinkList,
+    //   "stepViewModal.stepData4.attachmentIdsstepViewModal.stepData4.attachmentIds"
+    // );
     setFileList(stepViewModal.stepData4.attachmentIds);
     setStudyLinkList(stepViewModal.stepData4XX.studyLinkList);
     setIsNeedQuestionnaire(
@@ -99,6 +110,7 @@ export default function Step4() {
       message.warning("暂时只支持上传MP4格式视频！");
       return;
     }
+    // console.log(isOk, "isOkisOk");
 
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
@@ -110,7 +122,7 @@ export default function Step4() {
             ...progressEvent,
             [fileName]: progressEvent
           });
-          console.log(progressEvent, "progressEvent");
+          // console.log(progressEvent, "progressEvent");
         })
       );
     }
@@ -126,7 +138,7 @@ export default function Step4() {
               fileType: getFileType(res.data.path)
             };
             list.push(item);
-            console.log(list, "list");
+            // console.log(list, "list");
             /** 最后一项 */
             if (index == arr.length - 1) {
               return current().then((res: any) => {
@@ -249,6 +261,11 @@ export default function Step4() {
             ))}
           </FilesBox>
         )}
+        {/* {fileList && fileList.length > 0 && (
+          <FilesBox>
+            <VideoInsertion />
+          </FilesBox>
+        )} */}
         <input
           type="file"
           style={{ display: "none" }}
