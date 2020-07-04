@@ -754,6 +754,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           }),
+          // signRowObj({
+          //   title: "检查者签名",
+          //   width: 70,
+          //   dataIndex: "checkerName",
+          //   aside: "检查者",
+          //   registerCode,
+          //   updateDataSource,
+          //   selectedBlockId
+          // }),
           signRowObj({
             title: "负责人签名",
             width: 70,

@@ -8,6 +8,7 @@ import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService
 
 import createModal from 'src/libs/createModal'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import TestPageModal from '../TestPageModal/TestPageModal'
 export interface Props {
   info: any
 }
@@ -16,6 +17,7 @@ export default function StudyUpload(props: Props) {
   const { info } = props
   const fileList = info.attachmentList || []
   const previewModal = createModal(PreviewModal)
+  const testPageModal = createModal(TestPageModal)
 
   const showReview = (file: any) => {
     previewModal.show({
@@ -53,15 +55,24 @@ export default function StudyUpload(props: Props) {
             onClick={() => showReview(item)}>
             预览
           </Button>
-          <Button
-            className="video-page-btn"
-            size="small"
-            onClick={() => { }}>
-            题目查看
-          </Button>
+          {(item.viQuestionList && item.viQuestionList.length > 0) &&
+            <Button
+              className="video-page-btn"
+              size="small"
+              onClick={() => {
+                testPageModal.show({
+                  teachingMethodName: info.teachingMethodName,
+                  title: `${item.name} 视频题目`,
+                  videoQuestionList: item.viQuestionList,
+                  hideAnwserInfo: true,
+                })
+              }}>
+              题目查看
+          </Button>}
         </div>)}
     </div>
     <previewModal.Component />
+    <testPageModal.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`

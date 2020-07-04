@@ -41,6 +41,12 @@ export function signRowObj(obj: {
           wardRegisterService
         );
       }
+      if (dataIndex == "checkerName") {
+        signApi = wardRegisterService.checkAll.bind(wardRegisterService);
+        cancelSignApi = wardRegisterService.cancelCheck.bind(
+          wardRegisterService
+        );
+      }
 
       //新建行无法签名
       if (!record.id) return <span

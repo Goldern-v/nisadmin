@@ -17,6 +17,7 @@ export interface Props extends ModalComponentProps {
   obj?: any //修改添加弹窗入参
   questionIdList?: any //考试题库上传预览
   hideAnwserInfo?: boolean //是否隐藏侧边栏
+  videoQuestionList?: any[] //视频插题
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -33,10 +34,11 @@ export default observer(function TestPageModal(props: Props) {
     passScores,
     obj,
     questionIdList,
-    hideAnwserInfo
+    hideAnwserInfo,
+    videoQuestionList
   } = props
 
-  const [questionInfo, setQuestionInfo] = useState([] as any)
+  const [questionInfo, setQuestionInfo] = useState({} as any)
 
   const getInfo = () => {
     setLoading(true)
@@ -70,7 +72,13 @@ export default observer(function TestPageModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      getInfo()
+      if (videoQuestionList) {
+        setQuestionInfo({
+          questionList: videoQuestionList.concat()
+        })
+      } else {
+        getInfo()
+      }
     }
   }, [visible])
 
