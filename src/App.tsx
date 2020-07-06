@@ -11,7 +11,7 @@ import { theme } from './styles/theme'
 import './styles/iconfont.css'
 
 import zhCN from 'antd/lib/locale-provider/zh_CN'
-import { LocaleProvider } from 'antd'
+import { LocaleProvider, Icon } from 'antd'
 import ComponentDidCatch from './components/ComponentDidCatch'
 import moment from 'moment'
 import 'antd/dist/antd.less'
@@ -19,9 +19,9 @@ import 'moment/locale/zh-cn'
 import NavBar from './layouts/components/NavBar'
 import { Provider as KeepAliveProvider } from 'react-keep-alive'
 moment.locale('zh-cn')
-export interface Props {}
+export interface Props { }
 
-export interface State {}
+export interface State { }
 const NavBar2: any = NavBar
 export class App extends React.Component<Props, State> {
   public render() {
@@ -32,8 +32,15 @@ export class App extends React.Component<Props, State> {
             <KeepAliveProvider max={1}>
               <Wrapper>
                 <Inner>
-                  <Suspense fallback={<NavBar2 style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />}>
-                    {/* <Suspense fallback={<div>Loading...</div>}> */}
+                  <Suspense
+                    fallback={
+                      <React.Fragment>
+                        <NavBar2 style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />
+                        <LoadingCon>
+                          <Icon type="loading" />
+                        </LoadingCon>
+                      </React.Fragment>
+                    }>
                     <Router>
                       <RouterView routes={routes} />
                     </Router>
@@ -68,4 +75,22 @@ const Inner = styled.div`
     1px 3px 8px rgba(39, 44, 49, 0.03);
   border-radius: 3px;
   transform: translate(-50%, -50%); */
+`
+
+const LoadingCon = styled.div`
+  position: fixed;
+  left:0;
+  top:48px;
+  width: 100%;
+  bottom:0;
+  background-color: #eee;
+  color: #999;
+  cursor: wait;
+  .anticon{
+    font-size: 50px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
 `
