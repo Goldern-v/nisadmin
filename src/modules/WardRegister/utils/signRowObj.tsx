@@ -91,7 +91,7 @@ export function signRowObj(obj: {
                   .confirm(`${aside}签名确认`, `你确定${aside}签名吗？`)
                   .then(res => {
                     //如果是sign类型
-                    if (dataIndex !== "auditorName") {
+                    if (dataIndex === "signerName") {
                       signApi(registerCode, selectedBlockId, [record], true).then(
                         (res: any) => {
                           message.success(`${aside}签名成功`);
