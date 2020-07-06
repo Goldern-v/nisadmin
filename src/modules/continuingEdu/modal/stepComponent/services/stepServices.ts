@@ -184,6 +184,14 @@ export default class StepServices extends BaseApiService {
       file
     );
   }
+
+  // 查询（各视频附件插题数）
+  public async getAllVideoList(obj: any) {
+    return this.post(
+      `/studyAndTrain/videoInsertion/task/getQuestionStatInfoByTaskCode`,
+      obj
+    );
+  }
 }
 
 export const stepServices = new StepServices();

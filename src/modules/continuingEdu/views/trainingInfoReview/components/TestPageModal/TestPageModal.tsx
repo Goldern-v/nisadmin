@@ -18,6 +18,7 @@ export interface Props extends ModalComponentProps {
   questionIdList?: any //考试题库上传预览
   hideAnwserInfo?: boolean //是否隐藏侧边栏
   videoQuestionList?: any[] //视频插题
+  questionParams?: any // 视频插题预览
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -35,7 +36,8 @@ export default observer(function TestPageModal(props: Props) {
     obj,
     questionIdList,
     hideAnwserInfo,
-    videoQuestionList
+    videoQuestionList,
+    questionParams
   } = props
 
   const [questionInfo, setQuestionInfo] = useState({} as any)
@@ -59,6 +61,13 @@ export default observer(function TestPageModal(props: Props) {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)
         }, () => setLoading(false))
+    } else if (questionParams) {
+      trainingInfoReviewService
+        .getAllQuestionList(questionParams || {})
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+       }, () => setLoading(false))
     } else {
       //根据学习计划id获取试卷信息
       trainingInfoReviewService

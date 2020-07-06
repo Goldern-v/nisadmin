@@ -61,7 +61,7 @@ export default function QuestionContentModal(props: Props) {
   }, [visible]);
 
   // 保存
-  const checkForm = () => {
+  const checkForm = async () => {
     let obj: any = {
       id: params.id ? params.id : "",
       taskCode: stepViewModal.taskCode,
@@ -92,7 +92,7 @@ export default function QuestionContentModal(props: Props) {
     }
     if (!params.id) delete obj.id;
     setEditLoading(true);
-    videoInsertionApi.saveOrUpdateQuestion(obj).then((res: any) => {
+    await videoInsertionApi.saveOrUpdateQuestion(obj).then((res: any) => {
       setEditLoading(false);
       if (res.code == "200") message.success("保存成功！");
       message.warning(`${res.desc}`);
@@ -176,6 +176,7 @@ export default function QuestionContentModal(props: Props) {
       }
     });
   };
+
   return (
     <Question>
       <Modal
@@ -440,7 +441,6 @@ export default function QuestionContentModal(props: Props) {
               <div className="content">
                 <TimePicker
                   value={broadCastPoint}
-                  // minuteStep={1}
                   placeholder={"选择插入时间"}
                   format="mm:ss"
                   onChange={(time: any) =>

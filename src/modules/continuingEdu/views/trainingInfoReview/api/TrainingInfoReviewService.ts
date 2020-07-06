@@ -51,6 +51,15 @@ export default class TrainingInfoReviewService extends BaseApiService {
       .get(url, { responseType: "blob" })
       .then(res => fileDownload(res, name));
   }
+
+  //查看试卷(视频插入)
+  public async getAllQuestionList(obj: any) {
+    /** taskCode attachmentId*/
+    return this.post(
+      `/studyAndTrain/videoInsertion/task/queryAllQuestionList`,
+      obj
+    );
+  }
 }
 
 export const trainingInfoReviewService = new TrainingInfoReviewService();

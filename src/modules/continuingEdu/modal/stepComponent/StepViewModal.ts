@@ -35,6 +35,7 @@ export let teachingMethodMap: any = {
 class StepViewModal {
   @observable public oldData: any = null;
   @observable public taskCode: any = null;
+  @observable public videoList: any = []; // 视频插题列表数据
   @observable public stepData1: any = {
     teachingMethod: null,
     teachingMethodName: null,
@@ -242,6 +243,18 @@ class StepViewModal {
       this.taskCode = res.data;
     });
   }
+
+  /** 初始化视频插题列表 */
+  // initAllVideoList(id: any) {
+  //   let obj = {
+  //     ceptId: id,
+  //     taskCode: this.taskCode
+  //   };
+  //   stepServices.getAllVideoList(obj).then(res => {
+  //     if (res.code == 200) this.videoList = res.data;
+  //   });
+  // }
+
   @observable public dictObj = {
     /** 学习地址 */
     studyAndTrainAddress: []

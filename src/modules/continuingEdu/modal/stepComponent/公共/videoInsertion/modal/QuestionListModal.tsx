@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Modal, message as Message, Radio } from "antd";
+import { Button, Modal, message as Message, Radio, TimePicker } from "antd";
+import moment from "moment";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { getFilePrevImg } from "src/utils/file/file";
 import { stepViewModal } from "../../../StepViewModal";
@@ -55,7 +56,21 @@ export default function QuestionListModal(props: Props) {
       dataIndex: "broadcastPointName",
       key: "broadcastPointName",
       align: "center",
-      width: 100
+      width: 150,
+      render(text: any, record: any) {
+        return (
+          <TimePicker
+            defaultValue={text == "00" ? moment("00:00", "mm:ss") : text}
+            format="mm:ss"
+            allowClear={false}
+            onChange={(time: any) =>
+              setTimeout(() => {
+                saveBroadCastPoint(record,time)
+              },1000)
+            }
+          />
+        )
+      }
     },
     {
       title: "操作",
@@ -67,7 +82,7 @@ export default function QuestionListModal(props: Props) {
         return (
           <DoCon>
             <span>查看</span>
-            <span>修改</span>
+            {/* <span>修改</span> */}
             <span onClick={() => handleDelete(record)}>删除</span>
           </DoCon>
         );
@@ -85,6 +100,25 @@ export default function QuestionListModal(props: Props) {
     }
   }, [visible, query]);
 
+  //保存插入时间
+  const saveBroadCastPoint = (record: any,broadCastPoint: any) => {
+    let obj: any = {
+      id: record.id,
+      taskCode: stepViewModal.taskCode,
+      broadCastPoint: moment(broadCastPoint).format("mm:ss")
+    }
+    console.log(obj.broadCastPoint,'broadCastPoint')
+    videoInsertionApi.saveBroadcastPoint(obj).then((res: any) => {
+      console.log(res.code)
+      if (res.code == 200) {
+        Message.success("成功插入时间");
+        getTableData(record.attachmentId);
+      } else {
+        Message.warning(`${res.desc}`);
+      }
+    })
+  }
+
   // 查询表格数据
   const getTableData = (attachmentId?: any) => {
     setTableLoading(true);
@@ -95,9 +129,13 @@ export default function QuestionListModal(props: Props) {
       pageSize: query.pageSize
     };
     videoInsertionApi.getQuestionPageList(obj).then((res: any) => {
-      setTableLoading(false);
-      setTableList(res.data.list || []);
-      setDataTotal(res.data.totalCount || 0);
+      if(res.code == 200) {
+        setTableLoading(false);
+        setTableList(res.data.list || []);
+        setDataTotal(res.data.totalCount || 0);  
+      } else {
+        Message.warning(`${res.desc}`);
+      }
     });
   };
 
@@ -118,7 +156,7 @@ export default function QuestionListModal(props: Props) {
         Message.error("文件删除失败");
       });
   }
-  
+
   // 添加题目
   const handleOpenCreate = () => {
     let createType = "choiceQuestion"
@@ -241,6 +279,21 @@ const Wrapper = styled.div`
   background: red;
   #baseTable {
     padding: 15px 0 0 0 !important;
+  }
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+  .ant-table-row-hover {
+    background: #fff !important;
+    > td {
+      background: #fff !important;
+    }
+  }
+  .ant-time-picker-input {
+    padding-left: 38px!important;
+    border: none !important;
+    &:focus {
+      border: none !important;
+      box-shadow: none !important;
+    }
   }
 `;
 const Label = styled.div`

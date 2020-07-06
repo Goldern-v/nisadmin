@@ -261,11 +261,11 @@ export default function Step4() {
             ))}
           </FilesBox>
         )}
-        {/* {fileList && fileList.length > 0 && (
+        {fileList && fileList.length > 0 && (
           <FilesBox>
             <VideoInsertion />
           </FilesBox>
-        )} */}
+        )}
         <input
           type="file"
           style={{ display: "none" }}

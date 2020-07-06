@@ -5,9 +5,13 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { stepViewModal } from "../../StepViewModal";
 import { videoInsertionApi } from "./api/VideoInsertionApi";
 import QuestionListModal from "./modal/QuestionListModal";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+import createModal from "src/libs/createModal";
+
 export interface Props {}
 
 export default function VideoInsertion() {
+  const testPage = createModal(TestPageModal); // 预览弹窗
   const [tableList, setTableList] = useState([]); // 表格数据
   const [tableLoading, setTableLoading] = useState(false); //表格loading
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
@@ -19,7 +23,6 @@ export default function VideoInsertion() {
 
   // 获取表格数据
   const getData = () => {
-    let obj: any = {};
     setTableLoading(true),
       videoInsertionApi
         .getAllVideoList(stepViewModal.taskCode)
@@ -65,6 +68,23 @@ export default function VideoInsertion() {
     });
   };
 
+  // 查看
+  const handlePagePreview = (record: any) => {
+    let questionParams: any = {
+      taskCode: stepViewModal.taskCode,
+      attachmentId: record.attachmentId
+    };
+    testPage.show({
+      questionParams,
+      teachingMethodName: "",
+      title: "",
+      startTime: "",
+      endTime: "",
+      examDuration: "",
+      passScores: ""
+    });
+  };
+
   const columns: any = [
     {
       title: "序号",
@@ -96,7 +116,7 @@ export default function VideoInsertion() {
       render(text: any, record: any) {
         return (
           <DoCon>
-            <span>查看</span>
+            <span onClick={() => handlePagePreview(record)}>查看</span>
             <span onClick={() => setEditVisible(true)}>修改</span>
             <span onClick={() => handleDelete(record)}>删除</span>
           </DoCon>
@@ -125,7 +145,7 @@ export default function VideoInsertion() {
         loading={tableLoading}
         dataSource={tableList}
         columns={columns}
-        surplusHeight={200}
+        surplusHeight={600}
       />
       <QuestionListModal
         visible={editVisible}
@@ -135,6 +155,7 @@ export default function VideoInsertion() {
           getData();
         }}
       />
+      <testPage.Component />
     </Wrapper>
   );
 }
