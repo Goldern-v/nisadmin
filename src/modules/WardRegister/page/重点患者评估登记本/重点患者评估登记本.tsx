@@ -1245,7 +1245,14 @@ export default observer(function 重点患者评估登记本(props: Props) {
               columns={columns.filter((item: any) => item)}
               surplusHeight={surplusHeight}
               surplusWidth={300}
+              useOuterPagination
               pagination={{
+                onChange: (pageIndex: number) => {
+                  setPageOptions({ ...pageOptions, pageIndex })
+                },
+                onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                  setPageOptions({ ...pageOptions, pageSize })
+                },
                 current: pageOptions.pageIndex,
                 pageSize: pageOptions.pageSize,
                 total: total
@@ -1255,12 +1262,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
                 return ''
               }}
-              onChange={(pagination: PaginationConfig) => {
-                setPageOptions({
-                  pageIndex: pagination.current,
-                  pageSize: pagination.pageSize
-                });
-              }}
+            // onChange={(pagination: PaginationConfig) => {
+            //   setPageOptions({
+            //     pageIndex: pagination.current,
+            //     pageSize: pagination.pageSize
+            //   });
+            // }}
             />
             <div className="selected-operate-con">
               {codeAdapter({

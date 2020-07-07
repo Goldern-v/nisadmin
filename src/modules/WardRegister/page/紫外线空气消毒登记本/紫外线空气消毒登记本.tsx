@@ -372,7 +372,14 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
             columns={columns}
             surplusHeight={220}
             surplusWidth={300}
+            useOuterPagination
             pagination={{
+              onChange: (pageIndex: number) => {
+                setPageOptions({ ...pageOptions, pageIndex })
+              },
+              onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                setPageOptions({ ...pageOptions, pageSize })
+              },
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
               total: total
