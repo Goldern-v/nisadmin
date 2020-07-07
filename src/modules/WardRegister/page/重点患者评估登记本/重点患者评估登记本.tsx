@@ -356,6 +356,24 @@ export default observer(function 重点患者评估登记本(props: Props) {
     return "";
   };
 
+  const isEndTimeQCRG_12_2 = (record: any, item: any) => {
+    const { itemCode, itemType } = item
+
+    if (itemType == 'date' && record[itemCode]) {
+      var currentDate = moment()
+      var endDate = moment(record[itemCode])
+      if (
+        currentDate.isValid() &&
+        endDate.isValid()
+      ) {
+        let m = endDate.diff(currentDate, "d");
+        if (m <= 90) return "color-red";
+      }
+    }
+
+    return ''
+  }
+
   const columns: ColumnProps<any>[] | any = [
     //不同登记本固定的项目
     ...codeAdapter(
@@ -631,10 +649,16 @@ export default observer(function 重点患者评估登记本(props: Props) {
           let children: JSX.Element
           let childrenClassName = classNames({
             "warning-value": text == "未完成",
-            [isEndTime(record)]: isEndTime(record),
+            // [isEndTime(record)]: isEndTime(record),
             "checkSize-warning":
               item.checkSize && (text != item.checkSize && text != "√")
           })
+
+          childrenClassName +=
+            ` ${codeAdapter({
+              QCRG_12_2: isEndTimeQCRG_12_2(record, item),
+              other: isEndTime(record)
+            }, registerCode)}`
 
           let dateItemCodeArr = codeAdapter({
             QCRG_10: ['有效期'],
