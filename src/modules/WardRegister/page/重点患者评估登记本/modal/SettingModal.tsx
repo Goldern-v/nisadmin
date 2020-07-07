@@ -17,6 +17,7 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
 import SetTittle from "./../../../components/modal/children/SetTittle";
+import QCRG_12_2_SetTitle from "./../../../components/modal/children/QCRG_12_2_SetTitle"
 import SetRange from "./../../../components/modal/children/SetRange";
 import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 
@@ -64,12 +65,22 @@ export default function SettingModal(props: Props) {
       {
         title: "标题设置",
         component: (
-          <SetTittle
-            blockId={blockId}
-            selectedBlockObj={selectedBlockObj}
-            registerCode={registerCode}
-            onOkCallBack={onOkCallBack}
-          />
+          codeAdapter({
+            QCRG_12_2:
+              <QCRG_12_2_SetTitle
+                blockId={blockId}
+                selectedBlockObj={selectedBlockObj}
+                registerCode={registerCode}
+                onOkCallBack={onOkCallBack}
+              />,
+            other:
+              <SetTittle
+                blockId={blockId}
+                selectedBlockObj={selectedBlockObj}
+                registerCode={registerCode}
+                onOkCallBack={onOkCallBack}
+              />
+          }, registerCode)
         ),
         index: 1
       },

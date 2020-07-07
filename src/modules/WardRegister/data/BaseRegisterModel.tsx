@@ -149,7 +149,11 @@ export default class BaseRegisterModel {
         let titleMain = itemCode.split("：")[0]
         let titleSub = itemCode.split("：")[1]
 
-        let target = newCfgList.find(abc => abc.title == titleMain)
+        // let target = newCfgList.find(abc => abc.title == titleMain)
+        let target
+        let preParent = newCfgList[i - 1]
+        if (preParent && preParent.title == titleMain)
+          target = preParent
 
         if (target) {
           target.children.push({

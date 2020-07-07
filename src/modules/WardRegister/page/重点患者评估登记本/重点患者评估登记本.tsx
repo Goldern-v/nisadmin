@@ -1264,7 +1264,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_04,QCRG_12_2': <React.Fragment>
+                'QCRG_04': <React.Fragment>
                   <Button
                     disabled={
                       pageLoading ||
@@ -1281,7 +1281,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     负责人签名
               </Button>
                 </React.Fragment>,
-                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2':
+                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_12_2':
                   <React.Fragment>
                     <Button
                       disabled={
