@@ -5,6 +5,8 @@ import moment from "moment";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { getFilePrevImg } from "src/utils/file/file";
 import ResultModal from "src/modules/continuingEdu/modal/stepComponent/考试/modal/components/modal/ResultModal";
+import PreviewModal from "src/utils/file/modal/PreviewModal";
+import createModal from "src/libs/createModal";
 import { stepViewModal } from "../../../StepViewModal";
 import QuestionContentModal from "./QuestionContentModal";
 import { videoInsertionApi } from "../api/VideoInsertionApi";
@@ -17,6 +19,7 @@ export interface Props {
 }
 
 export default function QuestionListModal(props: Props) {
+  const PreviewModalWrapper = createModal(PreviewModal); //视频播放
   const { visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false); //弹窗loading
   const [attachmentId, setAttachmentId] = useState(""); // 附件id
@@ -194,6 +197,15 @@ export default function QuestionListModal(props: Props) {
     onOk()
   };
 
+  // 视频播放
+  const handlePreview = (attachmentId: any) => {
+    const attachmentData = stepViewModal.stepData4.attachmentIds.filter((item: any) => item.id == attachmentId)
+    PreviewModalWrapper.show({
+      path: attachmentData[0].path,
+      title: attachmentData[0].name || "文件预览"
+    });
+  };
+
   // 取消
   const handleCancel = () => {
     if (editLoading) return;
@@ -251,7 +263,7 @@ export default function QuestionListModal(props: Props) {
               </span>
             </div>
             <div style={{ float: "right" }}>
-              {/* <Button style={{ marginRight: "10px" }} onClick={() => window.open()}>播放视频</Button> */}
+              <Button style={{ marginRight: "10px" }} onClick={() => handlePreview(attachmentId)}>播放视频</Button>
               <Button onClick={handleOpenCreate}>添加题目</Button>
             </div>
           </Header>
@@ -284,6 +296,7 @@ export default function QuestionListModal(props: Props) {
         onOk={() => setVisibleCheck(false)}
         params={paramsCheck}
       />
+      <PreviewModalWrapper.Component />
       </Wrapper>
     </Modal>
   );
