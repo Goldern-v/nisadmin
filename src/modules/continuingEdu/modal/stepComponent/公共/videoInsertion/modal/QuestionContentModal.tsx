@@ -53,8 +53,24 @@ export default function QuestionContentModal(props: Props) {
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
-        console.log(editModel.broadCastPoint, "broadCastPoint");
         if (params.id) {
+        } else {
+          setBroadCastPoint(moment("00:00", "mm:ss"));
+          setEditModel({
+            id: "",
+            questionContent: "",
+            choiceQuestionAnswerList: [] as any
+          });
+          setShortQuestion({
+            id: "",
+            questionContent: "", //题目内容
+            answerContent: ""
+          });
+          setFillingQuestion({
+            id: "",
+            questionContent: "", //题目内容
+            answerContent: ""
+          });
         }
       }, 100);
     }
@@ -180,7 +196,7 @@ export default function QuestionContentModal(props: Props) {
   return (
     <Question>
       <Modal
-        width={850}
+        width={900}
         visible={visible}
         onCancel={handleCancel}
         onOk={checkForm}

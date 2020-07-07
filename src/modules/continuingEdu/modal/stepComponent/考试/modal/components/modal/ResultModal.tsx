@@ -33,8 +33,10 @@ export default function ResultModal(props: Props) {
   const Options = () => {
     return choiceList.map((item: any, idx: number) => {
       return (
-        <div className="option" key={idx}>{`${item.questionOption}. ${
-          item.answerContent
+        <div className="option" key={idx}>{`${
+          item.questionOption ? item.questionOption : item.optionLabel
+        }. ${
+          item.answerContent ? item.answerContent : item.optionContent
         }`}</div>
       );
     });
@@ -42,8 +44,8 @@ export default function ResultModal(props: Props) {
   const CorrectOptions = () => {
     let correctArr: any[] = [];
     correctArr = (choiceList || [])
-      .filter((item: any) => item.isRight == true)
-      .map((item: any) => item.questionOption);
+      .filter((item: any) => item.isRight === true || item.isRight === 1)
+      .map((item: any) => item.questionOption || item.optionLabel);
 
     return correctArr.join("、");
   };
@@ -107,7 +109,9 @@ export default function ResultModal(props: Props) {
         }
       >
         {questionType &&
-        (questionType === "单选题" || questionType === "多选题") ? (
+        (questionType === "单选题" ||
+          questionType === "多选题" ||
+          questionType === "选择题") ? (
           <Content>
             <div className="title">
               <WrapPre>{questionContent}</WrapPre>

@@ -154,6 +154,7 @@ export default observer(function TypeEditModal(props: Props) {
                   <Select.Option value="4">练习</Select.Option>
                   <Select.Option value="5">实操</Select.Option>
                   <Select.Option value="6">演练</Select.Option>
+                  <Select.Option value="7">实践</Select.Option>
                 </Select>
               </Form.Field>
             </Col>

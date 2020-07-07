@@ -63,7 +63,7 @@ export default function QuestionListModal(props: Props) {
       render(text: any, record: any) {
         return (
           <TimePicker
-            defaultValue={text == "00" ? moment("00:00", "mm:ss") : text}
+            defaultValue={text == "00" ? moment("00:00", "mm:ss") : moment(text, "mm:ss")}
             format="mm:ss"
             allowClear={false}
             onChange={(time: any) =>
@@ -228,7 +228,7 @@ export default function QuestionListModal(props: Props) {
           >
             {stepViewModal.stepData4.attachmentIds.map(
               (item: any, index: number) => (
-                <div className="file-box">
+                <div className="file-box" key={index}>
                   <Radio value={item.id} key={item.id}>
                     <img
                       src={getFilePrevImg(item.path)}

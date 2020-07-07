@@ -66,7 +66,6 @@ export const resetArrangeCount = (userId: number, arrangeName: string) => {
       .forEach((item: ArrangeItem, index: number) => {
         if (!item) return;
 
-        // TODO:排班跨年修改(吴敏)
         const timeData: any = item.workDate;
 
         if (
