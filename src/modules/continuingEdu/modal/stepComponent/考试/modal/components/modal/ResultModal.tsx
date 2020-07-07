@@ -84,8 +84,6 @@ export default function ResultModal(props: Props) {
     return <WrapPre>{formatContent}</WrapPre>;
   };
 
-  // 简答题
-
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
@@ -116,19 +114,23 @@ export default function ResultModal(props: Props) {
             </div>
             {Options()}
             <div className="answer">标准答案：{CorrectOptions()}</div>
-            <div className="label-con">
-              <span>标签：</span>
-              {Labels()}
-            </div>
+            {labelList && (
+              <span className="label-con">
+                <span>标签：</span>
+                {Labels()}
+              </span>
+            )}
           </Content>
         ) : questionType === "填空题" ? (
           <Content>
             <div className="title">{FormatQustionContent()}</div>
             <div className="answer">标准答案：{FormatAnswerContent()}</div>
-            <div className="label-con">
-              <span>标签：</span>
-              {TKLabels()}
-            </div>
+            {questionLabels && (
+              <div className="label-con">
+                <span>标签：</span>
+                {TKLabels()}
+              </div>
+            )}
           </Content>
         ) : questionType === "问答题" ? (
           <Content>
@@ -138,10 +140,12 @@ export default function ResultModal(props: Props) {
             <div className="answer">
               <WrapPre>标准答案：{answerContent || ""}</WrapPre>
             </div>
-            <div className="label-con">
-              <span>标签：</span>
-              {TKLabels()}
-            </div>
+            {questionLabels && (
+              <div className="label-con">
+                <span>标签：</span>
+                {TKLabels()}
+              </div>
+            )}
           </Content>
         ) : (
           ""

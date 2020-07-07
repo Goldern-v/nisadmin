@@ -25,7 +25,7 @@ export default function VideoInsertion() {
   const getData = () => {
     setTableLoading(true),
       videoInsertionApi
-        .getAllVideoList(stepViewModal.taskCode)
+        .getAllVideoList(stepViewModal.taskCode, stepViewModal.stepData1.ceptId)
         .then((res: any) => {
           setTableLoading(false);
           setTableList(res.data);

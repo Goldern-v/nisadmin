@@ -4,6 +4,7 @@ import { Button, Modal, message as Message, Radio, TimePicker } from "antd";
 import moment from "moment";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { getFilePrevImg } from "src/utils/file/file";
+import ResultModal from "src/modules/continuingEdu/modal/stepComponent/考试/modal/components/modal/ResultModal";
 import { stepViewModal } from "../../../StepViewModal";
 import QuestionContentModal from "./QuestionContentModal";
 import { videoInsertionApi } from "../api/VideoInsertionApi";
@@ -28,6 +29,8 @@ export default function QuestionListModal(props: Props) {
   const [dataTotal, setDataTotal] = useState(0 as number); // 总条数
   const [params, setParams] = useState({} as any); //弹窗参数
   const [editVisible, setEditVisible] = useState(false); // 弹窗状态
+  const [visibleCheck, setVisibleCheck] = useState(false);
+  const [paramsCheck, setParamsCheck] = useState({});
 
   const columns: any = [
     {
@@ -56,7 +59,7 @@ export default function QuestionListModal(props: Props) {
       dataIndex: "broadcastPointName",
       key: "broadcastPointName",
       align: "center",
-      width: 150,
+      width: 140,
       render(text: any, record: any) {
         return (
           <TimePicker
@@ -81,7 +84,7 @@ export default function QuestionListModal(props: Props) {
       render(text: any, record: any) {
         return (
           <DoCon>
-            <span>查看</span>
+            <span onClick={() => handleCheck(record)}>查看</span>
             {/* <span>修改</span> */}
             <span onClick={() => handleDelete(record)}>删除</span>
           </DoCon>
@@ -101,15 +104,13 @@ export default function QuestionListModal(props: Props) {
   }, [visible, query]);
 
   //保存插入时间
-  const saveBroadCastPoint = (record: any,broadCastPoint: any) => {
+  const saveBroadCastPoint = async (record: any,broadCastPoint: any) => {
     let obj: any = {
       id: record.id,
       taskCode: stepViewModal.taskCode,
-      broadCastPoint: moment(broadCastPoint).format("mm:ss")
+      broadCastPointName: moment(broadCastPoint).format("mm:ss")
     }
-    console.log(obj.broadCastPoint,'broadCastPoint')
-    videoInsertionApi.saveBroadcastPoint(obj).then((res: any) => {
-      console.log(res.code)
+    await videoInsertionApi.saveBroadcastPoint(obj).then((res: any) => {
       if (res.code == 200) {
         Message.success("成功插入时间");
         getTableData(record.attachmentId);
@@ -155,6 +156,16 @@ export default function QuestionListModal(props: Props) {
     }).catch(err => {
         Message.error("文件删除失败");
       });
+  }
+
+  // 查看
+  const handleCheck = (record: any) => {
+    setParamsCheck({
+      ...record,
+      choiceQuestionList: record.choiceQuestionAnswerList || [],
+      questionType: record.questionCategoryName || "",
+    })
+    setVisibleCheck(true)
   }
 
   // 添加题目
@@ -218,7 +229,7 @@ export default function QuestionListModal(props: Props) {
             {stepViewModal.stepData4.attachmentIds.map(
               (item: any, index: number) => (
                 <div className="file-box">
-                  <Radio value={item.id}>
+                  <Radio value={item.id} key={item.id}>
                     <img
                       src={getFilePrevImg(item.path)}
                       className="type-img"
@@ -240,7 +251,7 @@ export default function QuestionListModal(props: Props) {
               </span>
             </div>
             <div style={{ float: "right" }}>
-              <Button style={{ marginRight: "10px" }}>播放视频</Button>
+              {/* <Button style={{ marginRight: "10px" }} onClick={() => window.open()}>播放视频</Button> */}
               <Button onClick={handleOpenCreate}>添加题目</Button>
             </div>
           </Header>
@@ -267,7 +278,12 @@ export default function QuestionListModal(props: Props) {
             getTableData(attachmentId)
           }}
         />
-
+      <ResultModal
+        visible={visibleCheck}
+        onCancel={() => setVisibleCheck(false)}
+        onOk={() => setVisibleCheck(false)}
+        params={paramsCheck}
+      />
       </Wrapper>
     </Modal>
   );
@@ -288,12 +304,15 @@ const Wrapper = styled.div`
     }
   }
   .ant-time-picker-input {
-    padding-left: 38px!important;
+    padding-left: 42px !important;
     border: none !important;
     &:focus {
       border: none !important;
       box-shadow: none !important;
     }
+  }
+  .ant-time-picker-icon {
+    display: none !important;
   }
 `;
 const Label = styled.div`

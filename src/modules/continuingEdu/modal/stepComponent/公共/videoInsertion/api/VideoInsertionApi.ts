@@ -3,10 +3,10 @@ import qs from "qs";
 
 export default class VideoInsertionApi extends BaseApiService {
   // 查询（各视频附件插题数）
-  public async getAllVideoList(taskCode: any) {
+  public async getAllVideoList(taskCode: any, cetpId?: any) {
     return this.post(
       `/studyAndTrain/videoInsertion/task/getQuestionStatInfoByTaskCode`,
-      qs.stringify({ taskCode })
+      qs.stringify({ taskCode, cetpId })
     );
   }
 

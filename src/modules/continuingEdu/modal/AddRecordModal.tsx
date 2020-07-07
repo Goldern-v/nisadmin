@@ -168,7 +168,6 @@ export default observer(function AddRecordModal(props: Props) {
         setTitle("修改记录");
         stepServices.getCompleteInfo(props.id).then(res => {
           stepViewModal.initData(res.data);
-          // stepViewModal.initAllVideoList(res.data.id);
           console.log(
             selfStepViewModalMap,
             res.data.teachingMethod,
