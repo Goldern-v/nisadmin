@@ -73,8 +73,8 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].effectiveTimeOld = copyRow[i].effectiveTimeOld;
       list[i].shiftType = copyRow[i].shiftType;
       list[i].addSymbols = copyRow[i].addSymbols;
+      list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
-
       if (appStore.HOSPITAL_ID == "wh") {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
@@ -86,6 +86,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].nameColor = "";
         copyRow[i].effectiveTime = null;
         copyRow[i].effectiveTimeOld = null;
+        copyRow[i].settingNightHour = null;
         copyRow[i].shiftType = "";
         copyRow[i].settings = [];
         copyRow[i].addSymbols = [];
@@ -123,6 +124,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.effectiveTimeOld = copyCell.effectiveTimeOld;
     cell.shiftType = copyCell.shiftType;
     cell.addSymbols = copyCell.addSymbols;
+    cell.settingNightHour = copyCell.settingNightHour;
     cell.settings = cloneJson(copyCell.settings);
 
     if (appStore.HOSPITAL_ID == "wh") {
@@ -156,6 +158,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.nameColor = "";
   cellObj.effectiveTime = null;
   cellObj.effectiveTimeOld = null;
+  cellObj.settingNightHour = null;
   cellObj.shiftType = "";
   cellObj.settings = [];
   cellObj.addSymbols = [];
