@@ -55,22 +55,15 @@ export default function QuestionContentModal(props: Props) {
       setTimeout(() => {
         if (params.id) {
         } else {
+          // 清空数据
           setBroadCastPoint(moment("00:00", "mm:ss"));
           setEditModel({
             id: "",
             questionContent: "",
             choiceQuestionAnswerList: [] as any
           });
-          setShortQuestion({
-            id: "",
-            questionContent: "", //题目内容
-            answerContent: ""
-          });
-          setFillingQuestion({
-            id: "",
-            questionContent: "", //题目内容
-            answerContent: ""
-          });
+          setShortQuestion({});
+          setFillingQuestion({});
         }
       }, 100);
     }
@@ -199,14 +192,11 @@ export default function QuestionContentModal(props: Props) {
         width={900}
         visible={visible}
         onCancel={handleCancel}
-        onOk={checkForm}
         confirmLoading={editLoading}
         title={params.id ? "修改题目" : "添加题目"}
         footer={
           <div style={{ textAlign: "center" }}>
-            <Button onClick={handleCancel} loading={editLoading}>
-              取消
-            </Button>
+            <Button onClick={handleCancel}>取消</Button>
             <Button type="primary" onClick={checkForm} loading={editLoading}>
               保存
             </Button>

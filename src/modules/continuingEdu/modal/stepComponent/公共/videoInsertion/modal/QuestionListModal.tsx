@@ -21,7 +21,6 @@ export interface Props {
 export default function QuestionListModal(props: Props) {
   const PreviewModalWrapper = createModal(PreviewModal); //视频播放
   const { visible, onCancel, onOk } = props;
-  const [editLoading, setEditLoading] = useState(false); //弹窗loading
   const [attachmentId, setAttachmentId] = useState(""); // 附件id
   const [tableList, setTableList] = useState([]); //表格数据
   const [tableLoading, setTableLoading] = useState(false); //表格loading
@@ -192,11 +191,6 @@ export default function QuestionListModal(props: Props) {
     })
   }
 
-  // 保存
-  const checkForm = () => {
-    onOk()
-  };
-
   // 视频播放
   const handlePreview = (attachmentId: any) => {
     const attachmentData = stepViewModal.stepData4.attachmentIds.filter((item: any) => item.id == attachmentId)
@@ -206,23 +200,16 @@ export default function QuestionListModal(props: Props) {
     });
   };
 
-  // 取消
-  const handleCancel = () => {
-    if (editLoading) return;
-    onCancel && onCancel();
-  };
-
   return (
     <Modal
       width={1200}
       visible={visible}
-      onCancel={handleCancel}
-      onOk={handleCancel}
-      confirmLoading={editLoading}
+      onCancel={() => onCancel()}
+      onOk={() => onCancel()}
       title="添加视频插题"
       footer={
         <div style={{ textAlign: "center" }}>
-          <Button type="primary" onClick={checkForm} loading={editLoading}>
+          <Button type="primary" onClick={() => onOk()}>
             确定
           </Button>
         </div>

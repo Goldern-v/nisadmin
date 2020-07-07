@@ -125,14 +125,6 @@ export default function VideoInsertion() {
     }
   ];
 
-  useEffect(() => {
-    console.log(
-      stepViewModal.stepData4.attachmentIds,
-      stepViewModal.taskCode,
-      "attachmentIds"
-    );
-  }, [stepViewModal.stepData4.attachmentIds.length]);
-
   return (
     <Wrapper>
       <div>
