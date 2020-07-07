@@ -66,8 +66,21 @@ export default observer(function TestPageModal(props: Props) {
         .getAllQuestionList(questionParams || {})
         .then(res => {
           setLoading(false)
-          if (res.data) setQuestionInfo(res.data)
-       }, () => setLoading(false))
+          if (res.data)
+            setQuestionInfo({
+              questionList: (res.data || []).map((item: any, index: number) => {
+                return {
+                  ...item,
+                  sort: index + 1,
+                  answer: {
+                    rightAnswer: item.answerContent || '',
+                    suggestedAnswer: item.answerContent || '',
+                  },
+                  answersList: (item.choiceQuestionAnswerList || [])
+                }
+              })
+            })
+        }, () => setLoading(false))
     } else {
       //根据学习计划id获取试卷信息
       trainingInfoReviewService
