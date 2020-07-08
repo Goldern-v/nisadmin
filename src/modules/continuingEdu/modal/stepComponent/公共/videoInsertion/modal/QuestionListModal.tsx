@@ -65,8 +65,8 @@ export default function QuestionListModal(props: Props) {
       render(text: any, record: any) {
         return (
           <TimePicker
-            defaultValue={text == "00" ? moment("00:00", "mm:ss") : moment(text, "mm:ss")}
-            format="mm:ss"
+            defaultValue={text == "00" ? moment("00:00:00", "HH:mm:ss") : moment(text, "HH:mm:ss")}
+            format="HH:mm:ss"
             allowClear={false}
             onChange={(time: any) =>
               setTimeout(() => {
@@ -110,7 +110,7 @@ export default function QuestionListModal(props: Props) {
     let obj: any = {
       id: record.id,
       taskCode: stepViewModal.taskCode,
-      broadCastPointName: moment(broadCastPoint).format("mm:ss")
+      broadCastPointName: moment(broadCastPoint).format("HH:mm:ss")
     }
     await videoInsertionApi.saveBroadcastPoint(obj).then((res: any) => {
       if (res.code == 200) {
@@ -260,9 +260,13 @@ export default function QuestionListModal(props: Props) {
             columns={columns}
             surplusHeight={400}
             pagination={{
+              pageSizeOptions: ['10', '20', '30', '40', '50'],
               onChange: (pageIndex, pageSize) =>
                 setQuery({ ...query, pageIndex }),
+              onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
               total: dataTotal,
+              showSizeChanger: true,
+              showQuickJumper: true,
               pageSize: query.pageSize,
               current: query.pageIndex
             }}

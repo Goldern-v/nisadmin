@@ -26,7 +26,7 @@ export default function QuestionContentModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false); //弹窗loading
   const [broadCastPoint, setBroadCastPoint] = useState(
-    moment("00:00", "mm:ss")
+    moment("00:00:00", "HH:mm:ss")
   ); // 插入时间
   const [editModel, setEditModel]: any = useState({
     id: "",
@@ -56,7 +56,7 @@ export default function QuestionContentModal(props: Props) {
         if (params.id) {
         } else {
           // 清空数据
-          setBroadCastPoint(moment("00:00", "mm:ss"));
+          setBroadCastPoint(moment("00:00:00", "HH:mm:ss"));
           setEditModel({
             id: "",
             questionContent: "",
@@ -75,7 +75,7 @@ export default function QuestionContentModal(props: Props) {
       id: params.id ? params.id : "",
       taskCode: stepViewModal.taskCode,
       attachmentId: params.attachmentId,
-      broadcastPointName: moment(broadCastPoint).format("mm:ss"),
+      broadcastPointName: moment(broadCastPoint).format("HH:mm:ss"),
       broadcastPoint: "00",
       questionCategory: params.createType
     };
@@ -451,9 +451,9 @@ export default function QuestionContentModal(props: Props) {
                 <TimePicker
                   value={broadCastPoint}
                   allowClear={false}
-                  format="mm:ss"
+                  format="HH:mm:ss"
                   onChange={(time: any) =>
-                    setBroadCastPoint(moment(time, "mm:ss"))
+                    setBroadCastPoint(moment(time, "HH:mm:ss"))
                   }
                 />
               </div>
