@@ -196,7 +196,7 @@ export default function QuestionListModal(props: Props) {
     const attachmentData = stepViewModal.stepData4.attachmentIds.filter((item: any) => item.id == attachmentId)
     PreviewModalWrapper.show({
       path: attachmentData[0].path,
-      title: attachmentData[0].name || "文件预览"
+      title: attachmentData[0].name || "视频播放"
     });
   };
 

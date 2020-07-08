@@ -101,12 +101,16 @@ export default function QuestionContentModal(props: Props) {
     }
     if (!params.id) delete obj.id;
     setEditLoading(true);
-    await videoInsertionApi.saveOrUpdateQuestion(obj).then((res: any) => {
-      setEditLoading(false);
-      if (res.code == "200") message.success("保存成功！");
-      message.warning(`${res.desc}`);
-    });
-    onOk();
+    await videoInsertionApi.saveOrUpdateQuestion(obj).then(
+      (res: any) => {
+        if (res.code == "200") message.success("保存成功！");
+        setEditLoading(false);
+        onOk();
+      },
+      err => {
+        setEditLoading(false);
+      }
+    );
   };
 
   // 取消
@@ -178,7 +182,6 @@ export default function QuestionContentModal(props: Props) {
       let target = document.getElementById(
         "answerContent"
       ) as HTMLTextAreaElement;
-
       if (target) {
         target.focus();
         target.selectionStart = startIndex + 1;
@@ -447,7 +450,7 @@ export default function QuestionContentModal(props: Props) {
               <div className="content">
                 <TimePicker
                   value={broadCastPoint}
-                  placeholder={"选择插入时间"}
+                  allowClear={false}
                   format="mm:ss"
                   onChange={(time: any) =>
                     setBroadCastPoint(moment(time, "mm:ss"))
