@@ -3,7 +3,6 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { appStore } from "src/stores";
-
 import HealthPropagandaView from "./../healthPropaganda/HealthPropagandaView";
 import EditTable from "./components/EditTable";
 import settingViewModel from "./SettingViewModel";
@@ -80,7 +79,8 @@ const LEFT_MENU_CONFIG = [
     title: "节假日设置",
     icon: <JJRSZ />,
     path: "/setting/节假日设置",
-    component: 节假日设置
+    component: 节假日设置,
+    hide: appStore.HOSPITAL_ID == "nys"
   },
   {
     title: "科室偏好设置",
