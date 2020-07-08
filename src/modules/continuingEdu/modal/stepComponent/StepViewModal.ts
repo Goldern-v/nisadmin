@@ -47,7 +47,8 @@ class StepViewModal {
     participantList: []
   };
   @observable public stepData4: any = {
-    attachmentIds: []
+    attachmentIds: [],
+    videoList: []
   };
   @observable public stepData4XX = {
     studyLinkList: [] // 学习外网链接（吴敏）

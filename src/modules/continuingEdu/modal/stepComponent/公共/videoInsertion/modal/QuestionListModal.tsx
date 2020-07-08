@@ -99,8 +99,8 @@ export default function QuestionListModal(props: Props) {
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
-        setAttachmentId(stepViewModal.stepData4.attachmentIds[0]?.id)
-        getTableData(stepViewModal.stepData4.attachmentIds[0]?.id);
+        setAttachmentId(stepViewModal.stepData4.videoList[0]?.id)
+        getTableData(stepViewModal.stepData4.videoList[0]?.id);
       }, 100);
     }
   }, [visible, query]);
@@ -193,7 +193,7 @@ export default function QuestionListModal(props: Props) {
 
   // 视频播放
   const handlePreview = (attachmentId: any) => {
-    const attachmentData = stepViewModal.stepData4.attachmentIds.filter((item: any) => item.id == attachmentId)
+    const attachmentData = stepViewModal.stepData4.videoList.filter((item: any) => item.id == attachmentId)
     PreviewModalWrapper.show({
       path: attachmentData[0].path,
       title: attachmentData[0].name || "视频播放"
@@ -225,7 +225,7 @@ export default function QuestionListModal(props: Props) {
               getTableData(e.target.value);
             }}
           >
-            {stepViewModal.stepData4.attachmentIds.map(
+            {stepViewModal.stepData4.videoList.map(
               (item: any, index: number) => (
                 <div className="file-box" key={index}>
                   <Radio value={item.id} key={item.id}>

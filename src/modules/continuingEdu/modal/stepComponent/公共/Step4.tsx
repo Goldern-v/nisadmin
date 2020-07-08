@@ -57,6 +57,9 @@ export default function Step4() {
     //   "stepViewModal.stepData4.attachmentIdsstepViewModal.stepData4.attachmentIds"
     // );
     setFileList(stepViewModal.stepData4.attachmentIds);
+    stepViewModal.stepData4.videoList = stepViewModal.stepData4.attachmentIds.filter(
+      (item: any) => item.type == "video/mp4"
+    );
     setStudyLinkList(stepViewModal.stepData4XX.studyLinkList);
     setIsNeedQuestionnaire(
       stepViewModal.stepData4PX.isNeedQuestionnaire.toString()
@@ -74,6 +77,9 @@ export default function Step4() {
   const deleteFile = (index: number) => {
     fileList.splice(index, 1);
     setFileList([...fileList]);
+    stepViewModal.stepData4.videoList = fileList.filter(
+      (item: any) => item.type == "video/mp4"
+    );
   };
   const updateFile = () => {
     fileInputRef.current && fileInputRef.current.click();
@@ -110,8 +116,6 @@ export default function Step4() {
       message.warning("暂时只支持上传MP4格式视频！");
       return;
     }
-    // console.log(isOk, "isOkisOk");
-
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
       postData.append("file", files[i]);
@@ -170,6 +174,10 @@ export default function Step4() {
       }, 0)
       .then((res: any) => {
         setFileList(list);
+        stepViewModal.stepData4.videoList = list.filter(
+          (item: any) => item.type == "video/mp4"
+        );
+
         setProgressEventMap({});
         hideLoading();
       })
@@ -261,11 +269,13 @@ export default function Step4() {
             ))}
           </FilesBox>
         )}
-        {fileList && fileList.length > 0 && (
-          <FilesBox>
-            <VideoInsertion />
-          </FilesBox>
-        )}
+        {fileList &&
+          fileList.length > 0 &&
+          stepViewModal.stepData4.videoList.length > 0 && (
+            <FilesBox>
+              <VideoInsertion />
+            </FilesBox>
+          )}
         <input
           type="file"
           style={{ display: "none" }}
