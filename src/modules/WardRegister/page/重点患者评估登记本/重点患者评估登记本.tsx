@@ -88,8 +88,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const wzcdFilterItem = createFilterItem(
@@ -97,8 +97,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
 
@@ -107,8 +107,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
 
@@ -117,8 +117,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const yzlxFilterItem = createFilterItem(
@@ -126,8 +126,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const zgFilterItem = createFilterItem(
@@ -135,8 +135,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const ypglflFilterItem = createFilterItem(
@@ -144,8 +144,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const ymFilterItem = createFilterItem(
@@ -153,8 +153,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     itemConfigList,
     rangConfigList,
     () => {
-      setPopoverVisible(false);
-      getPage();
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const wpmcFilterItem = createFilterItem(
@@ -163,7 +163,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const bfzlxFilterItem = createFilterItem(
@@ -172,7 +172,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const jmlxFilterItem = createFilterItem(
@@ -181,7 +181,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const zhpjlxFilterItem = createFilterItem(
@@ -190,7 +190,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const rylxFilterItem = createFilterItem(
@@ -199,7 +199,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const yqmcFilterItem = createFilterItem(
@@ -208,7 +208,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const sbztFilterItem = createFilterItem(
@@ -217,12 +217,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
     rangConfigList,
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
   const chxmFilterItem = createFilterInput("床号或姓名", () => {
     setPopoverVisible(false);
-    getPage();
+    setPageOptions({ ...pageOptions, pageIndex: 1 })
   });
 
   const popoverContent = codeAdapter(
@@ -1186,7 +1186,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
         <Select
           value={selectedBlockId}
           onChange={(value: any) => {
-            setSelectedBlockId(value);
+            setSelectedBlockId(value)
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
           }}
         >
           {blockList.map((item: any) => (
@@ -1200,7 +1201,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
-          onChange={value => setDate(value)}
+          onChange={value => {
+            setDate(value)
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
+          }}
           allowClear={true}
           style={{ width: 220 }}
         />

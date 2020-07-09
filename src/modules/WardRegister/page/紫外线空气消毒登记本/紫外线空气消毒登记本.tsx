@@ -78,7 +78,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     [],
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   )
 
@@ -88,7 +88,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     [],
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   )
 
@@ -98,7 +98,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     [],
     () => {
       setPopoverVisible(false);
-      getPage();
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   )
 
@@ -295,6 +295,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
           }}
         >
           {blockList.map((item: any) => (
@@ -311,7 +312,10 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
-          onChange={value => setDate(value)}
+          onChange={value => {
+            setDate(value)
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
+          }}
           allowClear={true}
           style={{ width: 220 }}
         />

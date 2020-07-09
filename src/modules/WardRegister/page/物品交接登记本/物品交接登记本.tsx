@@ -655,6 +655,7 @@ export default observer(function HandoverRegister(props: Props) {
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
           }}
         >
           {blockList.map((item: any) => (
@@ -671,7 +672,10 @@ export default observer(function HandoverRegister(props: Props) {
         <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
-          onChange={value => setDate(value)}
+          onChange={value => {
+            setDate(value)
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
+          }}
           allowClear={true}
           style={{ width: 210 }}
         />
@@ -684,6 +688,7 @@ export default observer(function HandoverRegister(props: Props) {
             value={selectedRange}
             onChange={(value: any) => {
               setSelectedRange(value);
+              setPageOptions({ ...pageOptions, pageIndex: 1 })
             }}
           >
             <Select.Option value="">全部</Select.Option>

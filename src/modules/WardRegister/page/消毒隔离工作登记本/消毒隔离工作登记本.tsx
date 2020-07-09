@@ -394,6 +394,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
           }}
         >
           {blockList.map((item: any) => (
@@ -410,7 +411,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
-          onChange={value => setDate(value)}
+          onChange={value => {
+            setDate(value)
+            setPageOptions({ ...pageOptions, pageIndex: 1 })
+          }}
           allowClear={true}
           style={{ width: 220 }}
         />
