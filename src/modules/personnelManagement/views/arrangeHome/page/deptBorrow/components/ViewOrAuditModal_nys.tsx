@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Icon, Button, Row, Col, Modal, Input, Checkbox, message as Message } from 'antd'
+import { Icon, Button, Row, Col, Modal, Input, Checkbox, message as Message, DatePicker } from 'antd'
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import moment from 'moment';
 import { ReactComponent as YJS } from '../assets/yijiesu.svg'
 import { ReactComponent as YSQ } from '../assets/yishenqing.svg'
 import { ReactComponent as YJJ } from '../assets/yijujue.svg'
@@ -31,6 +33,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
   const [allowModalVisible, setAllowModalVisible] = useState(false)
   const [allowList, setAllowList] = useState([] as any)
   const [allowLoading, setAllowLoading] = useState(false)
+  const [endUpLoading, setEndUpLoading] = useState(false)
   const [deptEmpList, setDeptEmpList] = useState([] as any)
 
   const [detailInfo, setDetailInfo] = useState({
@@ -61,8 +64,21 @@ export default observer(function ViewOrAuditModal(props: Props) {
     let user = authStore.user
 
     // if (user && (user.post == '护长' || '护理部') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
-    if (user && user.post == '护长' && detailInfo.statusTransferFrom.value == '0') classList.push('auth')
-    // classList.push('auth');
+    if (
+      user
+      && user.post == '护长'
+      && detailInfo.statusTransferFrom.value == '0'
+    )
+      classList.push('auth')
+
+    if (
+      user
+      && user.post == '护长'
+      && detailInfo.deptCodeTransferFrom.value == authStore.defaultDeptCode
+      && detailInfo.statusTransferFrom.value == '1'
+    )
+      classList.push('end-up')
+
     return classList.join(' ')
   }
 
@@ -111,7 +127,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
         if (data.manyNameTransferFrom) {
           let empNameList = data.manyNameTransferFrom.split(',').filter((name: string) => name)
-          console.log(empNameList)
+          // console.log(empNameList)
           let newAllowList = res.data
             .filter((item: any) => empNameList.indexOf(item.empName) >= 0)
             .map((item: any) => item.empNo)
@@ -163,7 +179,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
         if (res.code == 200) {
           Message.success('审核操作成功')
           setRefuseModalVisible(false)
-          onCancel && onCancel(true)
+          handleCancel(true)
         }
       },
       (err) => {
@@ -226,7 +242,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
         if (res.code == 200) {
           Message.success('审核操作成功')
           setAllowModalVisible(false)
-          onCancel && onCancel(true)
+          handleCancel(true)
         }
       },
       (err) => {
@@ -237,6 +253,61 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   const handleAllowCancel = () => {
     if (!allowLoading) setAllowModalVisible(false)
+  }
+
+  const handleCancel = (flag?: boolean) => {
+    if (allowLoading) return
+    if (refuseLoading) return
+    if (endUpLoading) return
+
+    if (flag)
+      onCancel && onCancel(flag)
+    else
+      onCancel && onCancel()
+  }
+
+  const onEndUp = () => {
+    if (endUpLoading) return
+
+    let endDate = moment()
+    Modal.confirm({
+      centered: true,
+      title: '设置',
+      content: <Row>
+        <Col span={6}>
+          <span style={{ lineHeight: '30px' }}>结束时间:</span>
+        </Col>
+        <Col span={18}>
+          <DatePicker
+            locale={zh_CN.DatePicker}
+            defaultValue={endDate}
+            allowClear={false}
+            onChange={(val) => endDate = val}
+            disabledDate={(current: any) => current < moment().startOf('day')} />
+        </Col>
+      </Row>,
+      onOk: () => {
+        let endDateStr = endDate.format('YYYY-MM-DD')
+        let startDate = moment(data.startDate)
+        let daysTransferFrom = endDate.diff(startDate, 'd') + 1
+
+        let params = {
+          ...data,
+          endDate: endDateStr,
+          daysTransferFrom
+        }
+
+        setEndUpLoading(true)
+
+        api.setBorrow(params)
+          .then(res => {
+            setEndUpLoading(false)
+
+            Message.success('结束时间设置成功', 1, () => handleCancel(true))
+
+          }, () => setEndUpLoading(false))
+      }
+    })
   }
 
   const StatusPannel = () => {
@@ -301,11 +372,11 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   return (
     <Wrapper className={modalClassName()}>
-      <div className='mask' onClick={onCancel} />
+      <div className='mask' onClick={() => handleCancel()} />
       <div className='modal'>
         <div className='header'>
           <span className='title'>借用详情</span>
-          <div className='float-right' onClick={onCancel}>
+          <div className='float-right' onClick={() => handleCancel()}>
             <Icon type='close' />
           </div>
         </div>
@@ -325,7 +396,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
             {Object.keys(detailInfo).map((key: string) => {
               if (detailInfo[key].hide) return ''
               let val = detailInfo[key].value
-              if (key == 'daysTransferFrom') val += '天'
+              if (key == 'daysTransferFrom') val ? val += '天' : ''
               return (
                 <Row key={key} className='row-item'>
                   <Col span={5} className='label'>
@@ -339,12 +410,24 @@ export default observer(function ViewOrAuditModal(props: Props) {
           {StatusPannel()}
         </div>
         <div className='footer'>
-          <Button className='refuse' onClick={openRefuse}>
-            拒绝
-          </Button>
-          <Button type='primary' onClick={openAllow}>
-            同意
-          </Button>
+          {detailInfo.statusTransferFrom.value == '0' &&
+            <React.Fragment>
+              <Button className='refuse' onClick={openRefuse}>
+                拒绝
+              </Button>
+              <Button type='primary' onClick={openAllow}>
+                同意
+              </Button>
+            </React.Fragment>}
+          {detailInfo.statusTransferFrom.value == '1' &&
+            <React.Fragment>
+              <Button
+                type='primary'
+                onClick={onEndUp}
+                loading={endUpLoading}>
+                结束时间设置
+              </Button>
+            </React.Fragment>}
         </div>
       </div>
       <Modal
@@ -558,6 +641,14 @@ const Wrapper = styled.div`
   }
 
   &.auth {
+    .modal {
+      padding-bottom: 40px;
+      .footer {
+        display: block;
+      }
+    }
+  }
+  &.end-up {
     .modal {
       padding-bottom: 40px;
       .footer {

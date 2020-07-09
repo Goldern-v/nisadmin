@@ -596,7 +596,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   <CTitleBox
                     key={index}
                     style={{
-                      ...{ flex: cItem.width, width: 0 },
+                      ...{ flex: (15 * cItem.width || 50) + 8, width: 0 },
                       ...(index == arr.length - 1 ? { border: 0 } : {})
                     }}
                   >

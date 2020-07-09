@@ -196,8 +196,8 @@ export default observer(function DeptBorrow(props: Props) {
           <Col span={19}>
             <Form.Field name="deptNameTransferTo">
               <Select placeholder="请选择科室" showSearch filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }>
                 {deptList.map((item: any) => <Option value={item.name} key={item.code}>{item.name}</Option>)}
               </Select>
             </Form.Field>
@@ -239,7 +239,7 @@ export default observer(function DeptBorrow(props: Props) {
           <Col span={5} className="label">借用说明：</Col>
           <Col span={19}>
             <Form.Field name="detailTransferFrom">
-              <Input placeholder="请填写借用说明" />
+              <Input.TextArea placeholder="请填写借用说明" autosize={{ minRows: 1 }} />
             </Form.Field>
           </Col>
         </Row>

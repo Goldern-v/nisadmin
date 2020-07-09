@@ -45,7 +45,7 @@ export default observer(function DeptBorrow(props: Props) {
       return true
     },
     startDate: (val) => !!val || '请选择开始日期',
-    endDate: (val) => !!val || '请选择结束日期',
+    // endDate: (val) => !!val || '请选择结束日期',
     detailTransferFrom: (val) => !!val || '请填写借用说明'
   };
 
@@ -77,9 +77,9 @@ export default observer(function DeptBorrow(props: Props) {
             deptNameTransferTo,
             numTransferFrom,
             detailTransferFrom,
-            daysTransferFrom,
+            daysTransferFrom: endDate ? daysTransferFrom : '',
             startDate: Moment(startDate),
-            endDate: Moment(endDate),
+            endDate: endDate ? Moment(endDate) : '',
             manyNameTransferFrom
           });
           setStartDate(Moment(startDate));
@@ -137,7 +137,7 @@ export default observer(function DeptBorrow(props: Props) {
             deptCodeTransferTo,
             deptNameTransferTo,
             startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
             detailTransferFrom,
             daysTransferFrom,
             statusTransferFrom: '0', //状态：申请-0，借用中-1，结束-2，拒绝-3
@@ -184,7 +184,7 @@ export default observer(function DeptBorrow(props: Props) {
       if (target) getDeptEmpList(target.code)
     }
 
-    if (name == 'manyNameTransferFrom') console.log(val)
+    // if (name == 'manyNameTransferFrom') console.log(val)
   }
 
   const setdaysTransferFrom = () => {
@@ -302,7 +302,7 @@ export default observer(function DeptBorrow(props: Props) {
           <Col span={5} className="label">借用说明：</Col>
           <Col span={19}>
             <Form.Field name="detailTransferFrom">
-              <Input placeholder="请填写借用说明" />
+              <Input.TextArea placeholder="请填写借用说明" autosize={{ minRows: 1 }} />
             </Form.Field>
           </Col>
         </Row>

@@ -228,10 +228,14 @@ export default observer(function DeptBorrow(props: any) {
   const getTableData = (_query?: any) => {
     let reqQuery = Object.assign({}, query, _query || {})
     setLoading(true)
-    console.log(reqQuery)
 
     let callback = (res: any) => {
+      setLoading(false)
       setBorrowList(res.data || [])
+    }
+
+    let errCallback = (err: any) => {
+      setLoading(false)
     }
 
     let deptCode = ''
@@ -242,12 +246,10 @@ export default observer(function DeptBorrow(props: any) {
       statusTransferFrom: reqQuery.status
     }
 
-    if (reqQuery.type == '我科借入') api.getBorrowIn(params).then((res) => callback && callback(res))
-    else api.getBorrowOut(params).then((res) => callback && callback(res))
-
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
+    if (reqQuery.type == '我科借入') api.getBorrowIn(params)
+      .then(callback, errCallback)
+    else api.getBorrowOut(params)
+      .then(callback, errCallback)
   }
 
   return (
