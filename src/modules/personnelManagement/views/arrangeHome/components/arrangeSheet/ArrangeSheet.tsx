@@ -44,7 +44,19 @@ export default observer(function ArrangeSheet(props: Props) {
   );
   let editVacationCountModal = createModal(EditVacationCountModal);
 
-  let columns: ColumnProps<any>[] = [
+  const nysGroupName = [
+    appStore.HOSPITAL_ID == "nys"
+      ? {
+          title: "类别标题",
+          dataIndex: "groupName",
+          width: 70,
+          fixed: "left",
+          align: "center"
+        }
+      : {}
+  ];
+
+  let columns: any = [
     {
       title: "序号",
       render: (text: string, row: any, index: number) => index + 1,
@@ -52,6 +64,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 40,
       align: "center"
     },
+    ...nysGroupName,
     {
       title: "工号",
       dataIndex: "empNo",
@@ -286,7 +299,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => 4, hj: () => 3, wh: () => 6 })) *
+              appStore.hisAdapter({ nys: () => 5, hj: () => 3, wh: () => 6 })) *
               70 +
             250 +
             10 +
@@ -324,7 +337,9 @@ export default observer(function ArrangeSheet(props: Props) {
             return (
               <React.Fragment>
                 <div className={"remark-con real"}>
-                  <div className="remark-title">排班备注：</div>
+                  <div className="remark-title">
+                    {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                  </div>
                   <Input.TextArea
                     readOnly={!isEdit}
                     defaultValue={remark}
@@ -336,7 +351,9 @@ export default observer(function ArrangeSheet(props: Props) {
                   />
                 </div>
                 <div className={"remark-con space"}>
-                  <div className="remark-title">排班备注：</div>
+                  <div className="remark-title">
+                    {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                  </div>
                   <Input.TextArea
                     value={remark}
                     autosize={!isEdit}
