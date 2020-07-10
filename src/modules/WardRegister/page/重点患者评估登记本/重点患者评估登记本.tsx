@@ -1279,7 +1279,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   setPageOptions({ ...pageOptions, pageIndex })
                 },
                 onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                  setPageOptions({ ...pageOptions, pageSize })
+                  setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
                 },
                 current: pageOptions.pageIndex,
                 pageSize: pageOptions.pageSize,

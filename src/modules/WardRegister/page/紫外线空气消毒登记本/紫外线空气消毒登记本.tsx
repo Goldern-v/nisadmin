@@ -382,7 +382,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
                 setPageOptions({ ...pageOptions, pageIndex })
               },
               onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                setPageOptions({ ...pageOptions, pageSize })
+                setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
               },
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
@@ -521,6 +521,16 @@ const TableCon = styled.div`
   .checkSize-warning {
     input {
       color: red;
+    }
+  }
+  .ant-calendar-picker{
+    i{
+      opacity: 0;
+    }
+    &:hover{
+      i{
+        opacity: 1;
+      }
     }
   }
 `;

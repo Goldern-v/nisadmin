@@ -754,7 +754,7 @@ export default observer(function HandoverRegister(props: Props) {
                 setPageOptions({ ...pageOptions, pageIndex })
               },
               onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                setPageOptions({ ...pageOptions, pageSize })
+                setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
               },
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
@@ -920,6 +920,16 @@ const TableCon = styled.div`
   }
   textarea.ant-input{
     overflow:hidden!important;
+  }
+  .ant-calendar-picker{
+    i{
+      opacity: 0;
+    }
+    &:hover{
+      i{
+        opacity: 1;
+      }
+    }
   }
 `;
 

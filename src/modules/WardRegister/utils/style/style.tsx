@@ -129,6 +129,16 @@ export const TableCon = styled.div`
     color: #000!important;
       background: rgba(0,0,0,0.0)!important;
   }
+  .ant-calendar-picker{
+    i{
+      opacity: 0;
+    }
+    &:hover{
+      i{
+        opacity: 1;
+      }
+    }
+  }
 `;
 
 export const ThBox = styled.div`
