@@ -360,6 +360,16 @@ export default function WardRegisterRouter() {
         }
       ]
     },
+    {
+      title: "治疗室物品管理登记本",
+      path: "/wardRegister/QCRG_21",
+      icon: <SXJX />,
+      component: { ...重点患者评估登记本 },
+      payload: {
+        registerCode: "QCRG_21",
+        registerName: "治疗室物品管理登记本"
+      }
+    }
   ];
 
   return (
