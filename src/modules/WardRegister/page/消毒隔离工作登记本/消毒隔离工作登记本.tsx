@@ -426,9 +426,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           <React.Fragment>
             <Button onClick={() => getPage(undefined, { stopCreateRow: true })}>查询</Button>
             {/* {appStore.isDev &&  */}
-            <Button type="primary" onClick={createRow}>新建</Button>
+            <Button type="primary" onClick={createRow} disabled={pageLoading}>新建</Button>
             {/* } */}
-            <Button type="primary" onClick={onSave}>
+            <Button type="primary" onClick={onSave} disabled={pageLoading}>
               保存
             </Button>
             <Button onClick={exportExcel}>导出</Button>

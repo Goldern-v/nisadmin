@@ -340,10 +340,10 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
-            <Button type="primary" onClick={createRow}>
+            <Button type="primary" onClick={createRow} disabled={pageLoading}>
               新建行
             </Button>
-            <Button type="primary" onClick={onSave}>
+            <Button type="primary" onClick={onSave} disabled={pageLoading}>
               保存
             </Button>
             <Button onClick={exportExcel}>导出</Button>

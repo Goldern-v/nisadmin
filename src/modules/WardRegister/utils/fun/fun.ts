@@ -200,6 +200,7 @@ export function getFun(context: any) {
 
   /** 保存 */
   const onSave = () => {
+    setPageLoading && setPageLoading(true)
     let reqDataSorce = dataSource.filter((item: any) => !item.id || item.modified)
 
     console.log(JSON.parse(JSON.stringify(reqDataSorce)))
@@ -208,7 +209,7 @@ export function getFun(context: any) {
       .then(res => {
         message.success("保存成功");
         getPage();
-      });
+      }, () => setPageLoading && setPageLoading(false));
   };
 
   /** 删除修订版本 */
