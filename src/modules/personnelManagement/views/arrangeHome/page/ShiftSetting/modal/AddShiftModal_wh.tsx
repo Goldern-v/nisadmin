@@ -60,6 +60,12 @@ export default function AddShiftModal(props: Props) {
         ...value,
         shiftTypeNo: shiftList[0].shiftTypeNo - 1
       };
+      data.settingMorningHour
+        ? data.settingMorningHour
+        : (data.settingMorningHour = 0);
+      data.settingNightHour
+        ? data.settingNightHour
+        : (data.settingNightHour = 0);
       data.deptCode = authStore.selectedDeptCode;
       /** 保存接口 */
       arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
