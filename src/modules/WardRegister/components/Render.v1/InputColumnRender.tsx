@@ -76,7 +76,7 @@ export default function InputColumnRender(porps: Props) {
         if (payload == '全部') {
           newPayload = options?.join(';') || ''
         } else {
-          let editValueArr = editValue.split(';')
+          let editValueArr = (editValue || '').split(';')
           if (editValueArr.indexOf(payload) >= 0)
             newPayload = editValue
           else

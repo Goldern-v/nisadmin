@@ -133,7 +133,7 @@ export default observer(function SetTittle(props: Props) {
             title: "类型",
             dataIndex: "itemType",
             className: "input-cell",
-            width: 100,
+            width: 140,
             render: (text: any, record: any, index: any) => {
               return <Select
                 value={text}
@@ -164,14 +164,30 @@ export default observer(function SetTittle(props: Props) {
                 {codeAdapter({
                   [
                     [
-                      'QCRG_08',
-                      'QCRG_11',
-                      'QCRG_11_2',
-                      'QCRG_11_3',
-                      'QCRG_12_2',
+                      //   'QCRG_08',
+                      //   'QCRG_11',
+                      //   'QCRG_11_2',
+                      //   'QCRG_11_3',
+                      //   'QCRG_12_2',
+                      "QCRG_06",
+                      "QCRG_07"
                     ].join(',')
-                  ]: <Option value="date">日期选择</Option>,
-                  other: null,
+                  ]: null,
+                  other: <Option value="date">日期选择</Option>,
+                }, registerCode, true)}
+                {codeAdapter({
+                  [
+                    [
+                      //   'QCRG_08',
+                      //   'QCRG_11',
+                      //   'QCRG_11_2',
+                      //   'QCRG_11_3',
+                      //   'QCRG_12_2',
+                      "QCRG_06",
+                      "QCRG_07"
+                    ].join(',')
+                  ]: null,
+                  other: <Option value="date_time">日期时间选择</Option>,
                 }, registerCode, true)}
               </Select>
             }

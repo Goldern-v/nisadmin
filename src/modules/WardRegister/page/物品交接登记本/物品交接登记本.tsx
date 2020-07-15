@@ -79,15 +79,15 @@ export default observer(function HandoverRegister(props: Props) {
 
   const dateItemArr = codeAdapter({
     other: [],
-    [['QCRG_11', 'QCRG_11_2', 'QCRG_11_2'].join(',')]: [{
-      itemCode: '开始时间',
-      showTime: true,
-      format: "YYYY-MM-DD HH:mm"
-    }, {
-      itemCode: '结束时间',
-      showTime: true,
-      format: "YYYY-MM-DD HH:mm"
-    }],
+    // [['QCRG_11', 'QCRG_11_2', 'QCRG_11_2'].join(',')]: [{
+    //   itemCode: '开始时间',
+    //   showTime: true,
+    //   format: "YYYY-MM-DD HH:mm"
+    // }, {
+    //   itemCode: '结束时间',
+    //   showTime: true,
+    //   format: "YYYY-MM-DD HH:mm"
+    // }],
   }, registerCode, true)
 
   const settingModal = createModal(SettingModal);
@@ -328,7 +328,11 @@ export default observer(function HandoverRegister(props: Props) {
         //处理时间选择类型
         let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
 
-        if (target)
+        if (item.itemType == 'date' || item.itemType == 'date_time' || target) {
+          let format = 'YYYY-MM-DD'
+          if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
+          if (target?.format) format = target.format
+
           return <DatePickerColumnRender
             {...{
               className: '',
@@ -336,13 +340,15 @@ export default observer(function HandoverRegister(props: Props) {
               record,
               itemCfg: item,
               index,
-              format: target.format || '',
-              showTime: target.showTime || false,
+              format,
+              showTime: item.itemType == 'date_time' || target?.showTime || false,
               handleNextIptFocus,
               updateDataSource,
               registerCode
             }}
           />
+        }
+
 
         //处理上传附件类型
         if (item.itemType == "attachment")

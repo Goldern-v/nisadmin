@@ -664,15 +664,17 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }, registerCode)}`
 
           let dateItemCodeArr = codeAdapter({
-            QCRG_10: ['有效期'],
-            QCRG_14_1: ['生产日期', '失效日期'],
-            QCRG_14_2: ['失效日期'],
-            QCRG_19_2: ['开始时间', '结束时间'],
+            // QCRG_10: ['有效期'],
+            // QCRG_14_1: ['生产日期', '失效日期'],
+            // QCRG_14_2: ['失效日期'],
+            // QCRG_19_2: ['开始时间', '结束时间'],
             // QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
+          if (item.itemType == 'date' || item.itemType == 'dateTime' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+            let format = 'YYYY-MM-DD'
+            if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
 
-          if (item.itemType == 'date' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
             children = <DatePickerColumnRender
               {...{
                 className: childrenClassName,
@@ -680,6 +682,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 record,
                 itemCfg: item,
                 index,
+                format,
                 handleNextIptFocus,
                 updateDataSource,
                 registerCode,
