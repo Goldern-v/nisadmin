@@ -83,6 +83,16 @@ export default observer(function 重点患者评估登记本(props: Props) {
     }
   };
 
+  const flFilterItem = createFilterItem(
+    "分类",
+    itemConfigList,
+    rangConfigList,
+    () => {
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
+    }
+  );
+
   const bcFilterItem = createFilterItem(
     "班次",
     itemConfigList,
@@ -302,6 +312,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
         <div>
           <chxmFilterItem.Component />
         </div>
+      ),
+      QCRG_12_2: (
+        <div>
+          <flFilterItem.Component />
+        </div>
       )
     },
     registerCode
@@ -325,6 +340,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     ...rylxFilterItem.value,
     ...yqmcFilterItem.value,
     ...sbztFilterItem.value,
+    ...flFilterItem.value
   };
 
   /** 判断是否快过期 */
@@ -428,56 +444,56 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }
           },
         ],
-        QCRG_12_2: [
-          {
-            title() {
-              return (
-                <LineCon className="height-50">
-                  <TextCon>
-                    <Text x="20%" y="65%" deg="0">
-                      日期
-                    </Text>
-                    <Text x="70%" y="58%" deg="0">
-                      属性
-                    </Text>
-                    <Text x="70%" y="8%" deg="0">
-                      名称
-                    </Text>
-                  </TextCon>
-                  <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-                    <line x1="0" y1="0" x2="100%" y2="50%" />
-                    <line x1="0" y1="0" x2="100%" y2="100%" />
-                  </SvgCon>
-                </LineCon>
-              );
-            },
-            dataIndex: "recordDate",
-            align: "center",
-            colSpan: 1,
-            width: 120,
-            render(text: string, record: any, index: number) {
-              return (
-                <Input
-                  disabled={cellDisabled(record)}
-                  defaultValue={text}
-                  onChange={e => {
-                    record.recordDate = e.target.value
-                    record.modified = true
-                  }}
-                  onBlur={() => updateDataSource()}
-                  className={isEndTime(record) || ""}
-                />
-              );
-            }
-          },
-          // {
-          //   title: "班次",
-          //   colSpan: 0,
-          //   width: 73,
-          //   dataIndex: "range",
-          //   align: "center"
-          // }
-        ],
+        // QCRG_12_2: [
+        //   {
+        //     title() {
+        //       return (
+        //         <LineCon className="height-50">
+        //           <TextCon>
+        //             <Text x="20%" y="65%" deg="0">
+        //               日期
+        //             </Text>
+        //             <Text x="70%" y="58%" deg="0">
+        //               属性
+        //             </Text>
+        //             <Text x="70%" y="8%" deg="0">
+        //               名称
+        //             </Text>
+        //           </TextCon>
+        //           <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+        //             <line x1="0" y1="0" x2="100%" y2="50%" />
+        //             <line x1="0" y1="0" x2="100%" y2="100%" />
+        //           </SvgCon>
+        //         </LineCon>
+        //       );
+        //     },
+        //     dataIndex: "recordDate",
+        //     align: "center",
+        //     colSpan: 1,
+        //     width: 120,
+        //     render(text: string, record: any, index: number) {
+        //       return (
+        //         <Input
+        //           disabled={cellDisabled(record)}
+        //           defaultValue={text}
+        //           onChange={e => {
+        //             record.recordDate = e.target.value
+        //             record.modified = true
+        //           }}
+        //           onBlur={() => updateDataSource()}
+        //           className={isEndTime(record) || ""}
+        //         />
+        //       );
+        //     }
+        //   },
+        //   // {
+        //   //   title: "班次",
+        //   //   colSpan: 0,
+        //   //   width: 73,
+        //   //   dataIndex: "range",
+        //   //   align: "center"
+        //   // }
+        // ],
         QCRG_14_1: [
           {
             title: "入库日期",
@@ -659,7 +675,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
           childrenClassName +=
             ` ${codeAdapter({
-              QCRG_12_2: isEndTimeQCRG_12_2(record, item),
+              // QCRG_12_2: isEndTimeQCRG_12_2(record, item),
               other: isEndTime(record)
             }, registerCode)}`
 
