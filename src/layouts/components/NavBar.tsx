@@ -16,10 +16,10 @@ import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
-  return path ? () => appStore.history.push(path) : () => { };
+  return path ? () => appStore.history.push(path) : () => {};
 };
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const itemHidden = (hidden?: any) => {
   if (!hidden) return false;
@@ -30,7 +30,7 @@ const itemHidden = (hidden?: any) => {
   }
 };
 
-const MenuCon = observer(function (props: {
+const MenuCon = observer(function(props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -97,32 +97,34 @@ export default observer(function NavBar(props: any) {
         ? navConfig_wh
         : navConfig_whSelf
       : appStore.HOSPITAL_ID == "ys"
-        ? navConfig_ys
-        : appStore.HOSPITAL_ID == "nys"
-          ? navConfig_nys
-          : appStore.HOSPITAL_ID == "dzlc" ?
-            navConfig_dzlc :
-            navConfig;
+      ? navConfig_ys
+      : appStore.HOSPITAL_ID == "nys"
+      ? navConfig_nys
+      : appStore.HOSPITAL_ID == "dzlc"
+      ? navConfig_dzlc
+      : navConfig;
 
   let location = appStore.location;
 
   const LogoView = () => {
-    let view = <React.Fragment>
-      <img
-        src={require("../images/logo-white.png")}
-        alt=""
-        className="logo"
-      />
-      <img
-        src={require("../images/宸瑞护理管理系统.png")}
-        alt=""
-        className="name"
-      />
-    </React.Fragment>
+    let view = (
+      <React.Fragment>
+        <img
+          src={require("../images/logo-white.png")}
+          alt=""
+          className="logo"
+        />
+        <img
+          src={require("../images/宸瑞护理管理系统.png")}
+          alt=""
+          className="name"
+        />
+      </React.Fragment>
+    );
     // console.log(appStore.HOSPITAL_ID, 'appStore.HOSPITAL_ID')
     switch (appStore.HOSPITAL_ID) {
-      case 'wh':
-        view =
+      case "wh":
+        view = (
           <React.Fragment>
             <img
               src={require("../images/武汉logo.png")}
@@ -137,11 +139,30 @@ export default observer(function NavBar(props: any) {
               style={{ paddingRight: 30 }}
             />
           </React.Fragment>
-        break
+        );
+        break;
+      case "hj":
+        view = (
+          <React.Fragment>
+            <img
+              src={require("../images/厚街logo.png")}
+              alt=""
+              className="logo"
+              style={{ height: 30 }}
+            />
+            <img
+              src={require("../images/护理管理系统.png")}
+              alt=""
+              className="name"
+              style={{ paddingRight: 30 }}
+            />
+          </React.Fragment>
+        );
+        break;
     }
 
     if (appStore.onlyBadEvent)
-      view =
+      view = (
         <React.Fragment>
           <img
             src={require("../images/BadEventLogo.svg")}
@@ -156,9 +177,10 @@ export default observer(function NavBar(props: any) {
             style={{ paddingRight: 30 }}
           />
         </React.Fragment>
+      );
 
-    return <LogoCon>{view}</LogoCon>
-  }
+    return <LogoCon>{view}</LogoCon>;
+  };
 
   return (
     <Wrapper style={props.style || {}}>
@@ -171,8 +193,8 @@ export default observer(function NavBar(props: any) {
                 item.children ? (
                   <MenuCon list={item.children} style={item.menuStyle} />
                 ) : (
-                    <div />
-                  )
+                  <div />
+                )
               }
               key={index}
             >
@@ -204,15 +226,17 @@ export default observer(function NavBar(props: any) {
       )}
       <Place />
       <RightCon>
-        {!appStore.onlyBadEvent && <UserManual
-          onClick={() => {
-            appStore.history.push("/UserManual");
-          }}
-        >
-          <Tooltip placement="top" title="平台使用手册">
-            <SYSC />
-          </Tooltip>
-        </UserManual>}
+        {!appStore.onlyBadEvent && (
+          <UserManual
+            onClick={() => {
+              appStore.history.push("/UserManual");
+            }}
+          >
+            <Tooltip placement="top" title="平台使用手册">
+              <SYSC />
+            </Tooltip>
+          </UserManual>
+        )}
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
