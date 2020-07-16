@@ -194,7 +194,7 @@ export default function WardRegisterRouter() {
           }
         },
         {
-          title: "药品检查登记本",
+          title: "急救车物品、药品检查登记本",
           path: "/wardRegister/QCRG_12_2",
           component: { ...重点患者评估登记本 },
           payload: {
