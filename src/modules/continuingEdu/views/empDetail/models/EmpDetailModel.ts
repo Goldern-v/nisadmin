@@ -145,6 +145,14 @@ class EmpDetailModel {
               firstLevelMenuId: type,
             })
         break
+      case '实践记录':
+        reqMethod =
+          empManageService
+            .querySocialPractiseRecordPageListt({
+              ...params,
+              firstLevelMenuId: type,
+            })
+        break
       default:
         return
     }

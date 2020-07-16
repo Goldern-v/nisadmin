@@ -465,6 +465,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                 onShowSizeChange: (pageIndex: number, pageSize: number) => {
                   setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
                 },
+                pageSizeOptions: ['20', '30', '40', '50', '100'],
                 current: pageOptions.pageIndex,
                 pageSize: pageOptions.pageSize,
                 total: total

@@ -199,7 +199,7 @@ export default function WardRegisterRouter() {
           component: { ...重点患者评估登记本 },
           payload: {
             registerCode: "QCRG_12_2",
-            registerName: "药品检查登记本"
+            registerName: "急救车物品、药品检查登记本"
           }
         },
       ]

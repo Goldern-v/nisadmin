@@ -17,7 +17,8 @@ const Option = Select.Option
 
 export interface Props extends RouteComponentProps { }
 
-export default observer(function TableView() {
+export default observer(function TableView(props: any) {
+  const { shouldSorceAppendOpen } = props
   const { query, loading, dataTotal, tableData, classHoursDesc, creditsDesc } = empDetailModel
   const [menuTree, setMenuTree] = useState([] as any[])
   const [creditTypeList, setCreditTypeList] = useState([] as any[])
@@ -511,6 +512,59 @@ export default observer(function TableView() {
             }
           },
         ]
+      case '实践记录':
+        return [
+          indexColumn,
+          {
+            title: '类型',
+            dataIndex: 'firstLevelMenuName',
+            width: 120,
+            align: 'center',
+          },
+          titleColumn,
+          {
+            title: '时间',
+            dataIndex: 'startTime',
+            width: 140,
+            align: 'center',
+          },
+          {
+            title: '开放时间',
+            dataIndex: 'openTimeDesc',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '学分',
+            dataIndex: 'creditDesc',
+            width: 120,
+            align: 'center',
+          },
+          {
+            title: '学时',
+            dataIndex: 'classHours',
+            width: 70,
+            align: 'center',
+          },
+          {
+            title: '成绩有效',
+            dataIndex: 'isValidResultDesc',
+            width: 60,
+            align: 'center',
+          },
+          {
+            title: '实践情况',
+            width: 70,
+            dataIndex: 'taskStatusDesc',
+            align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
+          },
+        ]
       default:
         return []
     }
@@ -524,6 +578,7 @@ export default observer(function TableView() {
       case '练习记录':
       case '实操记录':
       case '演练记录':
+      case '实践记录':
         if (menuTree.length <= 0)
           getTypeList()
         else
@@ -549,6 +604,7 @@ export default observer(function TableView() {
           { id: "4", name: "练习" },
           { id: "5", name: "实操" },
           { id: "6", name: "演练" },
+          { id: "7", name: "实践" },
         ])
         break
       default:
@@ -683,6 +739,17 @@ export default observer(function TableView() {
             搜索
           </Button>
         </span>
+        {pannelName == '学分记录' && (
+          <span className="label">
+            <Button
+              onClick={() =>
+                shouldSorceAppendOpen &&
+                shouldSorceAppendOpen()
+              }>
+              添加学分
+            </Button>
+          </span>
+        )}
       </div>
     </div>
     <div style={{ position: 'relative' }}>

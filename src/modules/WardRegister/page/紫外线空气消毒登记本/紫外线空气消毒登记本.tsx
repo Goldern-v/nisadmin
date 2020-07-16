@@ -384,6 +384,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
               onShowSizeChange: (pageIndex: number, pageSize: number) => {
                 setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
               },
+              pageSizeOptions: ['20', '30', '40', '50', '100'],
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
               total: total

@@ -86,7 +86,12 @@ export default function SorceAppendModal(props: Props) {
                 {/* <Option value="1">院级学分</Option>
                 <Option value="2">片区学分</Option>
                 <Option value="3">病区学分</Option> */}
-                {creditTypeList.map((item: any) => <Option value={item.code.toString()}>{item.name}</Option>)}
+                {creditTypeList.map((item: any, idx: number) =>
+                  <Option
+                    value={item.code.toString()}
+                    key={idx}>
+                    {item.name}
+                  </Option>)}
               </Select>
             </Form.Field>
           </Col>

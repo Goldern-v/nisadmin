@@ -9,7 +9,7 @@ import { empManageService } from './api/EmpManageService'
 
 export interface Props extends RouteComponentProps { }
 
-export default observer(function BaseInfo() {
+export default observer(function BaseInfo(props: any) {
   const [loading, setLoading] = useState(false)
   const [sourceChange, setSourceChange] = useState(null as null | string)
   const [baseInfo, setBaseInfo] = useState({} as any)

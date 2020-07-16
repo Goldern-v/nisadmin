@@ -12,7 +12,7 @@ import SorceAppendModal from "./../../components/SorceAppendModal";
 import BaseInfo from "./BaseInfo";
 import TableView from "./TableView";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Routes_Config = [
   {
@@ -59,8 +59,22 @@ const Routes_Config = [
     name: "演练记录",
     title: "演练记录",
     component: TableView
-  }
+  },
+  // {
+  //   name: "实践记录",
+  //   title: "实践记录",
+  //   component: TableView
+  // },
 ];
+
+if (appStore.isDev)
+  Routes_Config.push(
+    {
+      name: "实践记录",
+      title: "实践记录",
+      component: TableView
+    }
+  )
 
 export default observer(function Main(props: any) {
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
@@ -143,7 +157,7 @@ export default observer(function Main(props: any) {
           </span>
         </div>
         <div className="btn-group">
-          <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button>
+          {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>
@@ -166,7 +180,7 @@ export default observer(function Main(props: any) {
           })}
         </div>
         <div className="route-view">
-          <TargetRoute.component />
+          <TargetRoute.component shouldSorceAppendOpen={() => setSorceAppendVisible(true)} />
         </div>
       </div>
       <SorceAppendModal
