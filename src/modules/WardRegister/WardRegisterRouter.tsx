@@ -182,7 +182,6 @@ export default function WardRegisterRouter() {
     {
       title: "急救车管理登记本",
       icon: <JJCSY />,
-      hide: !appStore.isDev,
       children: [
         {
           title: "急救车使用登记本",
@@ -350,12 +349,12 @@ export default function WardRegisterRouter() {
           }
         },
         {
-          title: "生命支持仪器检查登记",
+          title: "生命支持仪器检查登记（特殊科室）",
           path: "/wardRegister/QCRG_20_2",
           component: { ...重点患者评估登记本 },
           payload: {
             registerCode: "QCRG_20_2",
-            registerName: "生命支持仪器检查登记"
+            registerName: "生命支持仪器检查登记（特殊科室）"
           }
         }
       ]
