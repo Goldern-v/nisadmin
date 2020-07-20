@@ -317,7 +317,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
         <div>
           <flFilterItem.Component />
         </div>
-      )
+      ),
+      QCRG_21: (
+        <div>
+          <wpmcFilterItem.Component />
+        </div>
+      ),
     },
     registerCode
   );
@@ -349,9 +354,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
     let endTime = ''
     let itemCode = '有效期'
 
-    if (registerCode == "QCRG_14_1") {
-      itemCode = '失效日期'
-    } else if (registerCode == 'QCRG_14_2') {
+    if (
+      registerCode == "QCRG_14_1"
+      || registerCode == 'QCRG_14_2'
+      || registerCode == 'QCRG_21'
+    ) {
       itemCode = '失效日期'
     }
 
@@ -967,7 +974,26 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
-        QCRG_14_2: [
+        'QCRG_14_2,QCRG_21': [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell",
+            render(text: string, record: any, index: number) {
+              return <Input.TextArea
+                disabled={cellDisabled(record)}
+                autosize={true}
+                defaultValue={text}
+                onKeyUp={handleNextIptFocus}
+                onChange={e => {
+                  record.modified = true
+                  record.description = e.target.value.replace(/\n/g, '');
+                }}
+                onBlur={() => updateDataSource()}
+              />
+            }
+          },
           signRowObj({
             title: "检查者签名",
             width: 90,
