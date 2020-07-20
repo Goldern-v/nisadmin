@@ -149,7 +149,7 @@ export default observer(function TrainingResultReview() {
       }
     },
     {
-      dataIndex: 'classHours',
+      dataIndex: 'classHoursDesc',
       title: '学时',
       align: 'center',
       width: 100,

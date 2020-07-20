@@ -107,7 +107,7 @@ export default observer(function SimulateResultReview() {
       }
     },
     {
-      dataIndex: 'classHours',
+      dataIndex: 'classHoursDesc',
       title: '学时',
       align: 'center',
       width: 50,

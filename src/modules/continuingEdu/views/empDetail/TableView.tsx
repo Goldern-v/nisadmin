@@ -125,7 +125,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 60,
             align: 'center',
           },
@@ -160,7 +160,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },
@@ -242,7 +242,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 60,
             align: 'center',
           },
@@ -313,7 +313,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },
@@ -377,7 +377,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },
@@ -442,7 +442,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },
@@ -495,7 +495,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },
@@ -542,7 +542,7 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '学时',
-            dataIndex: 'classHours',
+            dataIndex: 'classHoursDesc',
             width: 70,
             align: 'center',
           },

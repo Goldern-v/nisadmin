@@ -60,11 +60,11 @@ const Routes_Config = [
     title: "演练记录",
     component: TableView
   },
-  // {
-  //   name: "实践记录",
-  //   title: "实践记录",
-  //   component: TableView
-  // },
+  {
+    name: "实践记录",
+    title: "实践记录",
+    component: TableView
+  },
 ];
 
 if (appStore.isDev)

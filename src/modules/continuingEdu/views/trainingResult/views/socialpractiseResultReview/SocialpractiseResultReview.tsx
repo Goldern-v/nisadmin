@@ -171,7 +171,7 @@ export default observer(function SocialpractiseResultReview() {
       }
     },
     {
-      dataIndex: 'classHours',
+      dataIndex: 'classHoursDesc',
       title: '学时',
       align: 'center',
       width: 100,

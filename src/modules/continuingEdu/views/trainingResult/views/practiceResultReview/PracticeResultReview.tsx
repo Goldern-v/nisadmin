@@ -135,7 +135,7 @@ export default observer(function PracticeResultReview(props: Props) {
       }
     },
     {
-      dataIndex: 'classHours',
+      dataIndex: 'classHoursDescDesc',
       title: '学时',
       align: 'center',
       width: 100,
