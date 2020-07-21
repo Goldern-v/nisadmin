@@ -14,12 +14,12 @@ export const navConfig: navConfigItem[] = [
   {
     name: "首页",
     path: "/home",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "排班管理",
     path: "/personnelManagement",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "病区登记本",
@@ -29,12 +29,12 @@ export const navConfig: navConfigItem[] = [
   {
     name: "一级质控",
     path: "/qcOne/nursingWorkPlainList",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "学习培训",
     path: "/continuingEdu",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   // {
   //   name: "不良事件",
@@ -61,28 +61,28 @@ export const navConfig: navConfigItem[] = [
   {
     name: "通知公告",
     path: "/notice",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "护理制度",
     path: "/nursingRulesNew",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "我的档案",
     path: "/selfNurseFile",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "病区管理",
     path: "/wardManagement",
-    hidden: () => authStore.user?.empNo.toUpperCase() == 'Y0001',
+    hidden: () => (authStore?.user?.empNo || '').toUpperCase() == 'Y0001',
   },
   {
     name: "进出感染区统计",
     path: "/InfectedAreasCount",
     hidden: () => {
-      if (authStore.user?.empNo.toUpperCase() == 'Y0001') return true
+      if ((authStore?.user?.empNo || '').toUpperCase() == 'Y0001') return true
       if (appStore.isDev) return false;
 
       if (
