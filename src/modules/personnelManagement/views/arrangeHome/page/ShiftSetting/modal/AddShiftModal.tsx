@@ -54,6 +54,11 @@ export default function AddShiftModal(props: Props) {
     if (err) return;
     let data = { ...(props.editData || {}), ...value };
     data.deptCode = authStore.selectedDeptCode;
+    data.settingMorningHour
+      ? data.settingMorningHour
+      : (data.settingMorningHour = 0);
+    data.settingNightHour ? data.settingNightHour : (data.settingNightHour = 0);
+    data.deptCode = authStore.selectedDeptCode;
     /** 保存接口 */
     arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
       message.success("保存成功");
