@@ -126,6 +126,22 @@ export default class WardRegisterService extends BaseApiService {
     });
   }
 
+  /** 导出全部科室登记本 */
+  public exportAllWard(
+    registerCode: string,
+    starDate: string,
+    endDate: string
+  ) {
+    return this.post(
+      `/qcRegisterData/${registerCode}/exportAllWard`,
+      {
+        starDate,
+        endDate
+      }, {
+      responseType: "blob"
+    });
+  }
+
   /** 提醒-保存 */
   public messageSaveOrUpdate(registerCode: string, obj: any) {
     return this.post(`/sign/qcRegister/${registerCode}/saveOrUpdate`, obj, {

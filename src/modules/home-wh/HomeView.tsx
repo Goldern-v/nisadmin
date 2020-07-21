@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 //引入组件
 import QuickButton from './components/QuickButton' //页面快捷键
@@ -7,9 +7,14 @@ import ExamineTable from './components/ExamineTable' //待我审核
 import NoticeTable from './components/NoticeTable' //通知公告
 import ContinuingEducation from './components/ContinuingEducation' //继续教育
 import NursingSystem from './components/NursingSystem' //护理制度
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 
 export default observer(function HomeView() {
+  useEffect(() => {
+    if ((authStore.user?.empNo || '').toUpperCase() == 'Y0001')
+      appStore.history.push('/wardRegister')
+  }, [])
+
   return (
     <Wrapper>
       <LeftContent>

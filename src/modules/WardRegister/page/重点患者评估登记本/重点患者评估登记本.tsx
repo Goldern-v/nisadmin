@@ -4,9 +4,9 @@ import { Button } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
-  PaginationConfig,
-  AutoComplete,
-  message,
+  // PaginationConfig,
+  // AutoComplete,
+  // message,
   Input,
   Select,
   DatePicker,
@@ -28,9 +28,9 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/Render.v1/FilterInput";
-import TextArea from "antd/lib/input/TextArea";
-import { wardRegisterService } from "../../services/WardRegisterService";
-import { globalModal } from "src/global/globalModal";
+// import TextArea from "antd/lib/input/TextArea";
+// import { wardRegisterService } from "../../services/WardRegisterService";
+// import { globalModal } from "src/global/globalModal";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
@@ -356,7 +356,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
     if (
       registerCode == "QCRG_14_1"
-      || registerCode == 'QCRG_14_2'
       || registerCode == 'QCRG_21'
     ) {
       itemCode = '失效日期'
@@ -379,18 +378,32 @@ export default observer(function 重点患者评估登记本(props: Props) {
     return "";
   };
 
-  const isEndTimeQCRG_12_2 = (record: any, item: any) => {
-    const { itemCode, itemType } = item
+  // const isEndTimeQCRG_12_2 = (record: any, item: any) => {
+  //   const { itemCode, itemType } = item
 
-    if (itemType == 'date' && record[itemCode]) {
+  //   if (itemType == 'date' && record[itemCode]) {
+  //     var currentDate = moment()
+  //     var endDate = moment(record[itemCode])
+  //     if (
+  //       currentDate.isValid() &&
+  //       endDate.isValid()
+  //     ) {
+  //       let m = endDate.diff(currentDate, "d");
+  //       if (m <= 90) return "color-red";
+  //     }
+  //   }
+
+  //   return ''
+  // }
+
+  const isEndTimeQCRG_14_2 = (record: any, item: any) => {
+    const { itemCode } = item
+    if (itemCode.indexOf('失效期日') && record[itemCode]) {
       var currentDate = moment()
       var endDate = moment(record[itemCode])
-      if (
-        currentDate.isValid() &&
-        endDate.isValid()
-      ) {
-        let m = endDate.diff(currentDate, "d");
-        if (m <= 90) return "color-red";
+      if (endDate.isValid()) {
+        let m = endDate.diff(currentDate, "d")
+        if (m <= 90) return "color-red"
       }
     }
 
@@ -675,21 +688,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
           let children: JSX.Element
           let childrenClassName = classNames({
             "warning-value": text == "未完成",
-            // [isEndTime(record)]: isEndTime(record),
             "checkSize-warning":
               item.checkSize && (text != item.checkSize && text != "√")
           })
 
           childrenClassName +=
             ` ${codeAdapter({
-              // QCRG_12_2: isEndTimeQCRG_12_2(record, item),
+              QCRG_14_2: isEndTimeQCRG_14_2(record, item),
               other: isEndTime(record)
             }, registerCode)}`
 
           let dateItemCodeArr = codeAdapter({
             // QCRG_10: ['有效期'],
             // QCRG_14_1: ['生产日期', '失效日期'],
-            // QCRG_14_2: ['失效日期'],
             // QCRG_19_2: ['开始时间', '结束时间'],
             // QCRG_08: ['入院时间'],
             other: []
@@ -1312,7 +1323,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04,QCRG_21': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1365,7 +1376,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     负责人签名
               </Button>
                 </React.Fragment>,
-                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_12_2':
+                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_12_2,QCRG_21':
                   <React.Fragment>
                     <Button
                       disabled={

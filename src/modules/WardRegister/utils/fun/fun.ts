@@ -260,6 +260,9 @@ export function getFun(context: any) {
   /** 行编辑禁用规则 */
   const cellDisabled = (record: any) => {
     // console.log(registerCode)
+    //库房物品管理登记任何状态可编辑
+    if (registerCode == 'QCRG_14_2') return false
+
     if (record.auditorNo) return true
     if (!record.signerNo) return false
     if (authStore.isNotANormalNurse) return false

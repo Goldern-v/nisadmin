@@ -67,15 +67,6 @@ const Routes_Config = [
   },
 ];
 
-if (appStore.isDev)
-  Routes_Config.push(
-    {
-      name: "实践记录",
-      title: "实践记录",
-      component: TableView
-    }
-  )
-
 export default observer(function Main(props: any) {
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
   const { history } = appStore;

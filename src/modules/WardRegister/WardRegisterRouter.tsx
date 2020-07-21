@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import LeftMenuPage from "src/components/LeftMenuPage";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { ReactComponent as WPJJ } from "./images/icon/WPJJ.svg";
 import { ReactComponent as TSWP } from "./images/icon/TSWP.svg";
 import { ReactComponent as ZDHZ } from "./images/icon/ZDHZ.svg";
@@ -26,12 +26,40 @@ import 物品交接登记本 from "./page/物品交接登记本/物品交接登�
 import 重点患者评估登记本 from "./page/重点患者评估登记本/重点患者评估登记本";
 import 紫外线空气消毒登记本 from "./page/紫外线空气消毒登记本/紫外线空气消毒登记本";
 import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消毒隔离工作登记本";
+import 登记本全科室导出 from "./page/登记本全科室导出/登记本全科室导出"
 // import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
-export interface Props { }
 
-export default function WardRegisterRouter() {
+import { observer } from "mobx-react-lite";
 
-  const leftMenuConfig = [
+// export interface Props { }
+
+function WardRegisterRouter() {
+
+  let leftMenuConfig = [
+    {
+      title: "缺少权限",
+      path: "/wardRegister",
+      component: function Nope() {
+        return <div></div>
+      },
+      icon: <BYYP />,
+    }
+  ] as any[]
+
+  const exportAllMenuConfig = [
+    {
+      title: "备用药品管理登记本导出",
+      path: "/wardRegister",
+      component: 登记本全科室导出,
+      icon: <BYYP />,
+      payload: {
+        registerCode: "QCRG_10",
+        registerName: "备用药品管理登记本"
+      }
+    }
+  ]
+
+  const editMenuConfig = [
     {
       title: "药品、物品、器械交接登记本",
       path: "/wardRegister",
@@ -370,7 +398,14 @@ export default function WardRegisterRouter() {
         registerName: "治疗室物品管理登记本"
       }
     }
-  ];
+  ]
+
+  if (authStore.user?.empNo) {
+    if ((authStore.user?.empNo || '').toUpperCase() == 'Y0001')
+      leftMenuConfig = exportAllMenuConfig
+    else
+      leftMenuConfig = editMenuConfig
+  }
 
   return (
     <Wrapper>
@@ -378,6 +413,9 @@ export default function WardRegisterRouter() {
     </Wrapper>
   );
 }
+
+export default observer(WardRegisterRouter)
+
 const Wrapper = styled.div`
   #left-menu-con {
     svg {
