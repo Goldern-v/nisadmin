@@ -35,21 +35,29 @@ const LEFT_MENU_CONFIG = [
       },
       {
         title: "科室排班统计（按班次）",
-        path: "/statistic/科室排班统计（按班次）"
+        path: "/statistic/科室排班统计（按班次）",
+        hide: appStore.HOSPITAL_ID == "nys"
       },
       {
         title: "科室白班统计（按月份）",
-        path: "/statistic/科室白班统计（按月份）"
+        path: "/statistic/科室白班统计（按月份）",
+        hide: appStore.HOSPITAL_ID == "nys"
       },
       {
         title: "科室夜班统计（按月份）",
-        path: "/statistic/科室夜班统计（按月份）"
+        path: "/statistic/科室夜班统计（按月份）",
+        hide: appStore.HOSPITAL_ID == "nys"
       },
       {
         title: "科室休假统计（按月份）",
-        path: "/statistic/科室休假统计（按月份）"
+        path: "/statistic/科室休假统计（按月份）",
+        hide: appStore.HOSPITAL_ID == "nys"
       },
-      { title: "科室节假日排班表", path: "/statistic/科室节假日排班表" }
+      {
+        title: "科室节假日排班表",
+        path: "/statistic/科室节假日排班表",
+        hide: appStore.HOSPITAL_ID == "nys"
+      }
     ]
   },
   {
