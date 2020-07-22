@@ -17,7 +17,7 @@ const defaultStepData2 = {
   /** 主持人 */
   hostPersonList: [],
   /**  实践地址（如：护理app） */
-  address: "护士app",
+  address: "",
   /** 签到负责人*/
   sicPersonList: [],
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
@@ -36,7 +36,17 @@ const defaultStepData2 = {
   /** 是否有学员学分 1有 0无 */
   hasStudentCredit: 0,
   /** 是否有学员学时 1有 0无*/
-  hasStudentClassHours: 0
+  hasStudentClassHours: 0,
+  /** 是否有主持人学分 1有 0无 */
+  hasHostCredit: 0,
+  /** 主持人学分类型（1院级学分 2片区学分 3病区学分） */
+  hostCreditType: 1,
+  /** 主持人学分 */
+  hostCredit: 0,
+  /** 是否有主持人学时 1有 0无*/
+  hasHostClassHours: 0,
+  /**  主持人学时 */
+  hostClassHours: 0
 };
 const defaultStepData5 = {
   /**  是否发送通知（1发通知  0不发通知） */
@@ -145,6 +155,11 @@ class StepViewModal {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
+        hasHostCredit: this.stepData2.hasHostCredit,
+        hostCreditType: this.stepData2.hostCreditType,
+        hostCredit: this.stepData2.hostCredit,
+        hasHostClassHours: this.stepData2.hasHostClassHours,
+        hostClassHours: this.stepData2.hostClassHours,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
             return [

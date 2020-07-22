@@ -197,14 +197,94 @@ export default observer(function Step2() {
               />
             </Form.Field>
           </Col>
+          {/* 主持人学分学时 */}
+          {stepViewModal.stepData2.hostPersonList.length > 0 && (
+            <React.Fragment>
+              {/* 主持人学分 */}
+              <Col span={24}>
+                <Form.Field label={`主持人学分`} name="hasHostCredit">
+                  <Select style={{ width: 120 }}>
+                    <Select.Option value={1}>有</Select.Option>
+                    <Select.Option value={0}>无</Select.Option>
+                  </Select>
+                </Form.Field>
+              </Col>
+              {stepViewModal.stepData2.hasHostCredit == 1 && (
+                <React.Fragment>
+                  <Col span={10}>
+                    <Form.Field label={``} name="hostCreditType">
+                      <Select>
+                        {studentCreditTypeList.map(item => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={14}>
+                    <Form.Field
+                      label={``}
+                      name="hostCredit"
+                      suffix="分"
+                      labelWidth={1}
+                    >
+                      <InputNumber />
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              )}
+              {/* 主持人学时 */}
+              <Col span={24}>
+                <Form.Field label={`主持人学时`} name="hasHostClassHours">
+                  <Select style={{ width: 120 }}>
+                    <Select.Option value={1}>有</Select.Option>
+                    <Select.Option value={0}>无</Select.Option>
+                  </Select>
+                </Form.Field>
+              </Col>
+              {stepViewModal.stepData2.hasHostClassHours == 1 && (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field
+                      label={``}
+                      name="hostClassHours"
+                      suffix="学时"
+                    >
+                      <Select
+                        showSearch
+                        onSearch={(val: any) => setStudyTime(Number(val))}
+                      >
+                        {studyTime &&
+                        studyTime !== 0.5 &&
+                        studyTime !== 1 &&
+                        studyTime !== 2 &&
+                        studyTime !== 3 ? (
+                          <Select.Option
+                            value={studyTime}
+                            key={`${studyTime}-`}
+                          >
+                            {studyTime}
+                          </Select.Option>
+                        ) : (
+                          ""
+                        )}
+                        {studentTimeTypeList.map(item => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )}
           {/* 实践地址 */}
           <Col span={24}>
             <Form.Field label={`实践地址`} name="address">
-            <AutoComplete
-                dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
-                  (item: any) => item.name
-                )}
-              />
+              <Input />
             </Form.Field>
           </Col>
           {/* 签到负责人 */}
