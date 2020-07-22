@@ -243,16 +243,16 @@ function WardRegisterRouter() {
       ]
     },
     {
-      title: "库房物品登记本",
+      title: "物品管理登记本",
       icon: <KFWP />,
       children: [
         {
-          title: "库房物品入库登记",
-          path: "/wardRegister/QCRG_14_1",
+          title: "治疗室物品管理登记",
+          path: "/wardRegister/QCRG_21",
           component: { ...重点患者评估登记本 },
           payload: {
-            registerCode: "QCRG_14_1",
-            registerName: "库房物品入库登记"
+            registerCode: "QCRG_21",
+            registerName: "治疗室物品管理登记"
           }
         },
         {
@@ -263,7 +263,7 @@ function WardRegisterRouter() {
             registerCode: "QCRG_14_2",
             registerName: "库房物品管理登记"
           }
-        }
+        },
       ]
     },
     {
@@ -398,17 +398,6 @@ function WardRegisterRouter() {
         }
       ]
     },
-    {
-      title: "治疗室物品管理登记本",
-      path: "/wardRegister/QCRG_21",
-      icon: <SXJX />,
-      hide: !appStore.isDev,
-      component: { ...重点患者评估登记本 },
-      payload: {
-        registerCode: "QCRG_21",
-        registerName: "治疗室物品管理登记本"
-      }
-    }
   ]
 
   if (authStore.user?.empNo) {
