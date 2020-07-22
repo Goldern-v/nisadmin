@@ -399,7 +399,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
   const isEndTimeQCRG_14_2 = (record: any, item: any) => {
     const { itemCode } = item
 
-    if ((itemCode.indexOf('失效日期') >= 0) && record[itemCode]) {
+    if
+      ((itemCode.indexOf('失效日期') >= 0
+        || itemCode.indexOf('失效期') >= 0)
+      && record[itemCode]
+    ) {
       console.log(itemCode)
       var currentDate = moment()
       var endDate = moment(record[itemCode])
