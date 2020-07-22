@@ -40,6 +40,7 @@ function WardRegisterRouter() {
       title: "缺少权限",
       path: "/wardRegister",
       component: function Nope() {
+        appStore.history.replace('/login')
         return <div></div>
       },
       icon: <BYYP />,
@@ -55,6 +56,16 @@ function WardRegisterRouter() {
       payload: {
         registerCode: "QCRG_10",
         registerName: "备用药品管理登记本"
+      }
+    },
+    {
+      title: "急救车物品、药品检查登记本",
+      path: "/wardRegister/QCRG_12_2",
+      component: 登记本全科室导出,
+      icon: <JJCSY />,
+      payload: {
+        registerCode: "QCRG_12_2",
+        registerName: "急救车物品、药品检查登记本"
       }
     }
   ]

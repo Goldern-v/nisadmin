@@ -10,17 +10,17 @@ import NursingSystem from './components/NursingSystem' //护理制度
 import { authStore, appStore } from 'src/stores'
 
 export default observer(function HomeView() {
-  console.log(authStore.user?.empNo)
-  useEffect(() => {
-    if (authStore?.user?.empNo) {
-      let empNo = authStore?.user?.empNo
-      if (empNo.toUpperCase() == 'Y0001') {
-        appStore.history.push('/wardRegister')
-      }
-    } else {
-      appStore.history.push('/login')
+  console.log(authStore?.user?.empNo, authStore?.user?.empNo == 'Y0001')
+  if (authStore?.user?.empNo) {
+    let empNo = authStore?.user?.empNo
+    if (empNo.toUpperCase() == 'Y0001') {
+      appStore.history.push('/wardRegister')
+      return <span></span>
     }
-  }, [])
+  } else {
+    appStore.history.push('/login')
+    return <span></span>
+  }
 
   return (
     <Wrapper>

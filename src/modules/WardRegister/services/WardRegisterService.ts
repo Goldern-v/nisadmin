@@ -129,13 +129,13 @@ export default class WardRegisterService extends BaseApiService {
   /** 导出全部科室登记本 */
   public exportAllWard(
     registerCode: string,
-    starDate: string,
+    startDate: string,
     endDate: string
   ) {
     return this.post(
       `/qcRegisterData/${registerCode}/exportAllWard`,
       {
-        starDate,
+        startDate,
         endDate
       }, {
       responseType: "blob"
