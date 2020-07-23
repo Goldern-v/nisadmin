@@ -92,7 +92,7 @@ class EmpDetailModel {
         empManageService
           .countClassHoursByParams({
             ...params,
-            creditType: type,
+            teachingMethod: type,
           }).then(res => {
             this.classHoursDesc = `合计： ${res.data.totalClassHours || 0}`
           })

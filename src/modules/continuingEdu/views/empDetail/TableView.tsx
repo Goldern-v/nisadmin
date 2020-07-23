@@ -129,6 +129,12 @@ export default observer(function TableView(props: any) {
             width: 60,
             align: 'center',
           },
+          {
+            title: '备注',
+            dataIndex: 'remark',
+            width: 180,
+            align: 'center',
+          },
         ]
       case '学习记录':
         return [
