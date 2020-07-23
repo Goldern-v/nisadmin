@@ -67,6 +67,7 @@ export default observer(function PushModal(props: Props) {
           Message.success("题库上传成功");
         })
         .catch(e => {
+          setEditLoading(false);
           console.log(e);
         });
     } else {

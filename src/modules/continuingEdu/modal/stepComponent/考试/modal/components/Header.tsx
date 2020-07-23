@@ -8,27 +8,21 @@ import { observer } from "mobx-react-lite";
 export default observer(function Header() {
   //加入试卷
   const handleAdd = () => {
+    let arr: any = [];
+    let arr1: any = [];
+    let obj: any = {};
     if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
-      quesBankView.questionList = [
-        ...quesBankView.questionList,
-        ...quesBankView.selectedRows
-      ];
+      arr1 = [...quesBankView.questionList, ...quesBankView.selectedRows];
+      //选中问题去重
+      quesBankView.questionList = arr1.reduce((item: any, next: any) => {
+        obj[next.id] ? " " : (obj[next.id] = true && item.push(next));
+        return item;
+      }, []);
       quesBankView.selectedRows.map((item: any) => {
-        quesBankView.questionIdList.push(item.id);
+        arr.push(item.id);
       });
-      quesBankView.allQuestionNum = quesBankView.questionList.length;
-      quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
-        (item: any) => item.questionType === "单选题"
-      ).length;
-      quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
-        (item: any) => item.questionType === "多选题"
-      ).length;
-      quesBankView.TKQuestionNum = quesBankView.questionList.filter(
-        (item: any) => item.questionType === "填空题"
-      ).length;
-      quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-        (item: any) => item.questionType === "问答题"
-      ).length;
+      quesBankView.questionIdList = Array.from(new Set(arr));
+      quesBankView.questionNum();
       if (quesBankView.questionList && quesBankView.questionList.length > 0) {
         quesBankView.onload();
         Message.success("已成功加入试卷");

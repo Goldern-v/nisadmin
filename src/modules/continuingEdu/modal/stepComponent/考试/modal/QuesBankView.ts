@@ -84,6 +84,23 @@ class QuesBankView {
     });
   }
 
+  // 获取各类型题目数量
+  questionNum() {
+    this.allQuestionNum = this.questionList.length;
+    this.RadioQuestionNum = this.questionList.filter(
+      (item: any) => item.questionType === "单选题"
+    ).length;
+    this.checkBoxQuestionNum = this.questionList.filter(
+      (item: any) => item.questionType === "多选题"
+    ).length;
+    this.TKQuestionNum = this.questionList.filter(
+      (item: any) => item.questionType === "填空题"
+    ).length;
+    this.JDQuestionNum = this.questionList.filter(
+      (item: any) => item.questionType === "问答题"
+    ).length;
+  }
+
   init() {
     this.initAllData();
     this.initData();

@@ -135,19 +135,7 @@ export default observer(function CheckedContent() {
     quesBankView.questionIdList = quesBankView.questionList.map(
       (o: any) => o.id
     );
-    quesBankView.allQuestionNum = quesBankView.questionList.length;
-    quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
-      (item: any) => item.questionType === "单选题"
-    ).length;
-    quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
-      (item: any) => item.questionType === "多选题"
-    ).length;
-    quesBankView.TKQuestionNum = quesBankView.questionList.filter(
-      (item: any) => item.questionType === "填空题"
-    ).length;
-    quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-      (item: any) => item.questionType === "问答题"
-    ).length;
+    quesBankView.questionNum();
     setSelectedRowKeys([]);
     getData();
     Message.success("已成功删除");
