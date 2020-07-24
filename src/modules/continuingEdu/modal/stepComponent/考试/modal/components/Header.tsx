@@ -13,7 +13,6 @@ export default observer(function Header() {
     let obj: any = {};
     if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
       arr1 = [...quesBankView.questionList, ...quesBankView.selectedRows];
-      //选中问题去重
       quesBankView.questionList = arr1.reduce((item: any, next: any) => {
         obj[next.id] ? " " : (obj[next.id] = true && item.push(next));
         return item;

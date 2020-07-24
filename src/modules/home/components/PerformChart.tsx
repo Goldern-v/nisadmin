@@ -1,150 +1,89 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-
-import service from 'src/services/api'
-import { authStore } from 'src/stores/index'
-import moment from 'moment'
-moment.locale('zh-cn')
-const dateFormat = 'YYYY-MM-DD 00:00:00'
-import { observer } from 'mobx-react-lite'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import BaseTable from 'src/components/BaseTable.tsx'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { authStore } from "src/stores/index";
+import moment from "moment";
+moment.locale("zh-cn");
+const dateFormat = "YYYY-MM-DD";
+import { observer } from "mobx-react-lite";
+import HomeApi from "src/modules/home/api/HomeApi.ts";
+import BaseTable from "src/components/BaseTable.tsx";
 export default observer(function PerformChart() {
-  const [dataSource, setDataSource] = useState([])
+  const [dataSource, setDataSource] = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
   useEffect(() => {
-    const postData = {
-      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
-      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
-      endTime: moment()
-        .add(1, 'd')
-        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
-    }
-    // console.log('===BedSituation', postData)
-    // service
+    let postData = {
+      wardCode:
+        authStore.selectedDeptCode == "全院" ? "" : authStore.selectedDeptCode, // 科室编码
+      startTime: moment().format(dateFormat), // 时间默认为当天
+      endTime: moment().format(dateFormat)
+    };
+    // 获取执行单情况数据
     if (authStore.selectedDeptCode) {
-      HomeApi.executeStatus(postData)
-        .then((res) => {
+      setTableLoading(true);
+      HomeApi.getWardExecuteHomeStatus(postData)
+        .then(res => {
           if (res.data) {
-            let cacheData = res.data
-            for (let i = 0; i < cacheData.length; i++) {
-              cacheData[i].finishCountN =
-                ((parseInt(cacheData[i].finishCount, 10) / parseInt(cacheData[i].totalCount, 10)) * 100).toFixed(2) +
-                '%'
-            }
-            // cacheData
-            setDataSource(cacheData)
-            // setDataSource(res.data)
-            // cacheData
+            setTableLoading(false);
+            setDataSource(res.data);
           }
         })
-        .catch(() => {
-          // for (let i = 0; i < cacheData.length; i++) {
-          //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
-          // }
-          // // cacheData
-          // setDataSource(cacheData)
-        })
+        .catch(err => {
+          setTableLoading(false);
+          console.log(err);
+        });
     }
-  }, [authStore.selectedDeptCode])
+  }, [authStore.selectedDeptCode]);
+
+  // 表格
   const columns: any = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '序号',
-    //   key: '序号',
-    //   render: (text: any, record: any, index: number) => index + 1,
-    //   align: 'center',
-    //   width: 50
-    // },
     {
-      title: '类型',
-      dataIndex: 'taskType',
-      key: '',
-      align: 'center',
+      title: "类型",
+      dataIndex: "executeType",
+      align: "center",
       width: 80
     },
     {
-      title: '已完成',
-      dataIndex: 'finishCount',
-      key: '',
-      align: 'center',
-      width: 100
+      title: "已完成",
+      dataIndex: "unExecute", //
+      align: "center",
+      width: 100,
+      render(text: any, record: any) {
+        return record.totalNum ? Number(record.totalNum) - Number(text) : "0";
+      }
     },
     {
-      title: '总计',
-      dataIndex: 'totalCount',
-      key: '',
-      align: 'center',
+      title: "总计",
+      dataIndex: "totalNum",
+      align: "center",
       width: 80
     },
 
     {
-      title: '完成率',
-      dataIndex: 'finishCountN',
-      key: '',
-      align: 'center'
+      title: "完成率",
+      dataIndex: "totalNum",
+      align: "center",
+      render(text: any, record: any) {
+        return text ? `${(record.unExecute / text).toFixed(2)}%` : "0%";
+      }
     }
-  ]
+  ];
   return (
     <div>
       <Head>
-        <div className='headLeft'>执行单情况</div>
-        <div className='headRight'>更多></div>
+        <div className="headLeft">执行单情况</div>
+        <div className="headRight">更多></div>
       </Head>
       <Mid>
-        <BaseTable dataSource={dataSource} columns={columns} scroll={{ y: 240 }} />
-        {/* <table>
-          <thead>
-            <tr>
-              <th>类型</th>
-              <th>总计</th>
-              <th>已完成</th>
-              <th>完成率</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-          </tbody>
-        </table> */}
+        <BaseTable
+          dataSource={dataSource}
+          columns={columns}
+          loading={tableLoading}
+          scroll={{ y: 240 }}
+        />
       </Mid>
     </div>
-  )
-})
+  );
+});
 const Head = styled.div`
   height: 37px;
   line-height: 37px;
@@ -164,7 +103,7 @@ const Head = styled.div`
     letter-spacing: 1px;
     color: #999999;
   }
-`
+`;
 const Mid = styled.div`
   .ant-table {
     border: none;
@@ -230,4 +169,4 @@ const Mid = styled.div`
     height: 36px;
     border: 1px solid #e5e5e5;
   }
-`
+`;
