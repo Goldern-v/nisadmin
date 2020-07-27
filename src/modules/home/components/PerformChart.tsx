@@ -12,8 +12,7 @@ export default observer(function PerformChart() {
   const [tableLoading, setTableLoading] = useState(false);
   useEffect(() => {
     let postData = {
-      wardCode:
-        authStore.selectedDeptCode == "全院" ? "" : authStore.selectedDeptCode, // 科室编码
+      wardCode: authStore.selectedDeptCode, // 科室编码
       startTime: moment().format(dateFormat), // 时间默认为当天
       endTime: moment().format(dateFormat)
     };
