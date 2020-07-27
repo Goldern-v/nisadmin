@@ -13,8 +13,8 @@ export default observer(function PerformChart() {
   useEffect(() => {
     let postData = {
       wardCode: authStore.selectedDeptCode, // 科室编码
-      startTime: moment().format(dateFormat), // 时间默认为当天
-      endTime: moment().format(dateFormat)
+      startDate: moment().format(dateFormat), // 时间默认为当天
+      endDate: moment().format(dateFormat)
     };
     // 获取执行单情况数据
     if (authStore.selectedDeptCode) {
