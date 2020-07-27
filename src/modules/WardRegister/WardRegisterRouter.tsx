@@ -188,35 +188,35 @@ function WardRegisterRouter() {
         registerCode: "QCRG_11",
         registerName: "仪器设备使用登记"
       },
-      // children: [
-      //   {
-      //     title: "仪器管理登记",
-      //     path: "/wardRegister/QCRG_11",
-      //     component: { ...物品交接登记本 },
-      //     payload: {
-      //       registerCode: "QCRG_11",
-      //       registerName: "仪器管理登记"
-      //     }
-      //   },
-      //   {
-      //     title: "仪器设备使用时间登记表",
-      //     path: "/wardRegister/QCRG_11_2",
-      //     component: { ...物品交接登记本 },
-      //     payload: {
-      //       registerCode: "QCRG_11_2",
-      //       registerName: "仪器设备使用时间登记表"
-      //     }
-      //   },
-      //   {
-      //     title: "仪器设备消毒保养登记表",
-      //     path: "/wardRegister/QCRG_11_3",
-      //     component: { ...物品交接登记本 },
-      //     payload: {
-      //       registerCode: "QCRG_11_3",
-      //       registerName: "仪器设备消毒保养登记表"
-      //     }
-      //   },
-      // ]
+      children: [
+        // {
+        //   title: "仪器管理登记",
+        //   path: "/wardRegister/QCRG_11",
+        //   component: { ...物品交接登记本 },
+        //   payload: {
+        //     registerCode: "QCRG_11",
+        //     registerName: "仪器管理登记"
+        //   }
+        // },
+        {
+          title: "仪器设备使用时间登记表",
+          path: "/wardRegister/QCRG_11_2",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_11_2",
+            registerName: "仪器设备使用时间登记表"
+          }
+        },
+        {
+          title: "仪器设备消毒保养登记表",
+          path: "/wardRegister/QCRG_11_3",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_11_3",
+            registerName: "仪器设备消毒保养登记表"
+          }
+        },
+      ]
     },
     {
       title: "急救车管理登记本",

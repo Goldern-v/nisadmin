@@ -711,7 +711,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             // QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
-          if (item.itemType == 'date' || item.itemType == 'dateTime' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+          if (item.itemType == 'date' || item.itemType == 'date_time' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
             let format = 'YYYY-MM-DD'
             if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
 
@@ -722,6 +722,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 record,
                 itemCfg: item,
                 index,
+                showTime: item.itemType == 'date_time',
                 format,
                 handleNextIptFocus,
                 updateDataSource,
@@ -884,6 +885,24 @@ export default observer(function 重点患者评估登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           })
+        ],
+        QCRG_11_3: [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell",
+            render(text: string, record: any, index: number) {
+              return <InputColumnRender
+                {...{
+                  cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
+            }
+          }
         ],
         QCRG_12: [
           signRowObj({

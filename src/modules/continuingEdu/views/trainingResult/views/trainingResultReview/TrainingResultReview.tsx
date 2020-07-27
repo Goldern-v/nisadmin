@@ -282,6 +282,7 @@ export default observer(function TrainingResultReview() {
         {isSignType &&
           <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
         <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+        <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

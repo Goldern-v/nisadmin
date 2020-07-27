@@ -121,6 +121,14 @@ export default class TrainingResultService extends BaseApiService {
       qs.stringify({ cetpId })
     )
   }
+
+  /**导出 */
+  public exportResults(cetpId: string) {
+    return this.post(
+      '/studyAndTrain/teachingPlanManage/exportResults',
+      qs.stringify({ cetpId })
+    )
+  }
 }
 
 export const trainingResultService = new TrainingResultService()

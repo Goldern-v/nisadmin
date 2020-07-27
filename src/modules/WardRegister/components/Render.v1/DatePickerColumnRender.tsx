@@ -48,17 +48,7 @@ export default function DatePickerColumnRender(props: Props) {
     format={_format}
     allowClear
     dropdownClassName="disable-date-ipt"
-    onOpenChange={(status) => {
-      // if (status) {
-      //   setTimeout(() => {
-      //     let el = document.querySelector('.disable-date-ipt')
-      //     if (el) {
-      //       let ipt = el.querySelector('.ant-calendar-input') as HTMLInputElement
-      //       if (ipt) ipt.readOnly = true
-      //     }
-      //   }, 300)
-      // }
-    }}
+    onOpenChange={(status) => { }}
     className={`${className} ${queryClassName}`}
     onChange={(val: any) => {
       let newVal = val ? val.format(_format) : ''
@@ -66,21 +56,16 @@ export default function DatePickerColumnRender(props: Props) {
       record[itemCode] = newVal
       record.modified = true
 
-      //跳转下一个输入框
-      // if (newVal && !showTime) setTimeout(() => {
-      //   let target = document.querySelector(`.${queryClassName} input`)
-      //   if (target) handleNextIptFocus&&handleNextIptFocus(null, target)
-      // }, 500)
-
       if (
         registerCode == 'QCRG_19_2' ||
         registerCode == 'QCRG_11' ||
-        registerCode == 'QCRG_06'
+        registerCode == 'QCRG_06' ||
+        registerCode == 'QCRG_11_2'
       ) {
 
         let sumItemCode = '总计天数'
         let diffUnit = 'd' as 'd' | 'h' | 'm'
-        if (registerCode == 'QCRG_11') {
+        if (registerCode == 'QCRG_11' || registerCode == 'QCRG_11_2') {
           sumItemCode = '合计时间（小时）'
           diffUnit = 'm'
         }
@@ -133,59 +118,6 @@ export default function DatePickerColumnRender(props: Props) {
         } else {
           updateDataSource()
         }
-
-        // } else if (registerCode == 'QCRG_06') {
-        //   //紫外线空气消毒登记本
-        //   //1.选择开始时间 默认结束时间为开始时间的后一小时
-        //   //2.时间选择后自动计算累计时间(单位:小时)
-        //   //累计时间为 起止时间加上上一条记录的累计时间
-        //   //更换灯光|酒精擦拭灯管 后累计时间为0
-        //   if (itemCode == '开始时间' && newVal) {
-        //     let endTime = moment(newVal)
-        //     endTime.add(1, 'h')
-        //     record['结束时间'] = endTime.format(_format)
-        //   }
-
-        //   let newSum = ''
-
-        //   let current = record['开始时间'] || ''
-        //   let endTime = record['结束时间'] || ''
-
-        //   var currentDate = moment(current)
-        //   var endTimeDate = moment(endTime)
-
-        //   if (
-        //     currentDate.isValid() &&
-        //     endTimeDate.isValid() &&
-        //     current && endTime
-        //   ) {
-        //     let m = endTimeDate.diff(currentDate, "h")
-
-        //     //计算并加上起止时间
-        //     newSum = m.toString()
-
-        //     if (newSum) {
-        //       record['累计时间'] = newSum
-        //       updateDataSource(true)
-
-        //       setTimeout(() => {
-        //         let dpEl = document.querySelector(`.${queryClassName}`)
-        //         let sumEl = null
-        //         if (dpEl) {
-        //           let trEl = dpEl?.parentElement?.parentElement
-        //           sumEl = trEl?.querySelector('[data-key="累计时间"]') as HTMLInputElement
-
-        //           if (sumEl) {
-        //             sumEl.value = newSum
-        //             sumEl.innerHTML = newSum
-        //           }
-        //         }
-
-        //       }, 600)
-        //     } else {
-        //       updateDataSource(true)
-        //     }
-        //   }
       } else {
         updateDataSource()
       }

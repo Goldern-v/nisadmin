@@ -214,6 +214,7 @@ export default observer(function PracticeResultReview(props: Props) {
         </span>
       </SubContent>
       <ButtonGroups>
+        <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

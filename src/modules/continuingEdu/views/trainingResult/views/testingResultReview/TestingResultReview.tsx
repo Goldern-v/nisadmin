@@ -317,6 +317,7 @@ export default observer(function TestingResultReview() {
               已发布
           </Button>}
           <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+          <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         </React.Fragment>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>

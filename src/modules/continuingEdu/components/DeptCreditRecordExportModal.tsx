@@ -15,6 +15,12 @@ export interface Props extends ModalComponentProps {
   deptCode?: string
 }
 
+let monthList = [] as string[]
+let monthLength = 12
+while (monthLength--) {
+  monthList.push((12 - monthLength).toString())
+}
+
 export default observer(function DeptCreditRecordExportModal(props: Props) {
   const { visible, onCancel, deptCode } = props
 
@@ -24,7 +30,8 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
 
   const [query, setQuery] = useState({
     year: moment().format('YYYY'),
-    deptCode: selectedDeptCode
+    deptCode: selectedDeptCode,
+    month: ''
   })
 
   const handleExport = () => {
@@ -43,6 +50,7 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
       setQuery({
         year: moment().format('YYYY'),
         deptCode: deptCode || selectedDeptCode,
+        month: ''
       })
     }
   }, [visible])
@@ -86,6 +94,17 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
             onChange={(_moment: any) =>
               setQuery({ ...query, year: _moment.format('YYYY') })} />
         </Col>
+      </Row>
+      <Row className="query-row">
+        <Col span={4} className="label">月份:</Col>
+        <Select
+          value={query.month}
+          style={{ width: '80px' }}
+          onChange={(month: string) =>
+            setQuery({ ...query, month })}>
+          <Option value="">全部</Option>
+          {monthList.map((month: string) => (<Option value={month}>{month}</Option>))}
+        </Select>
       </Row>
     </Wrapper>
   </Modal>

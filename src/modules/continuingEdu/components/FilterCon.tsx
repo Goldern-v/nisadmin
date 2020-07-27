@@ -4,22 +4,36 @@ import React, { useState, useEffect } from 'react'
 import { Button, Tag } from 'antd'
 import { theme } from 'src/styles/theme'
 
+console.log()
+
 const FILTER_MAP: any = {
   学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
   职称: ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
-  层级: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
-  职务: [
-    '全部',
-    '无',
-    '教学小组组长',
-    '教学秘书',
-    '护理组长',
-    '副护士长',
-    '护士长',
-    '科护士长',
-    '护理部副主任',
-    '护理部主任'
-  ]
+  层级: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
+    ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'] :
+    ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
+  职务: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
+    [
+      '全部',
+      '无',
+      '护士',
+      '护士长',
+      '护理部干事',
+      '护理部副主任',
+      '护理部主任',
+    ] :
+    [
+      '全部',
+      '无',
+      '教学小组组长',
+      '教学秘书',
+      '护理组长',
+      '副护士长',
+      '护士长',
+      '科护士长',
+      '护理部副主任',
+      '护理部主任'
+    ]
 }
 
 type FilterMap = typeof FILTER_MAP
@@ -92,14 +106,14 @@ export default function FilterCon(props: Props) {
         <div className='left'>
           选择：
           {Object.keys(FILTER_MAP).map(
-            (item: any) =>
-              getFilterAdapter(item) &&
-              getFilterAdapter(item) !== '全部' && (
-                <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
-                  {getFilterAdapter(item)}
-                </Tag>
-              )
-          )}
+          (item: any) =>
+            getFilterAdapter(item) &&
+            getFilterAdapter(item) !== '全部' && (
+              <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
+                {getFilterAdapter(item)}
+              </Tag>
+            )
+        )}
         </div>
         <div className='right'>
           <Button icon={isOpenFilter ? 'down' : 'left'} onClick={() => setOpen(!isOpenFilter)} size='small'>

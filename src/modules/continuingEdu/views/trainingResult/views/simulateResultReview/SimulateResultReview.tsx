@@ -156,10 +156,11 @@ export default observer(function SimulateResultReview() {
         </span>
       </SubContent>
       <ButtonGroups>
-        <Button onClick={() => history.goBack()}>返回</Button>
+        <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         {isSignType &&
           <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
         <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+        <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
     <MainPannel>

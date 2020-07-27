@@ -196,6 +196,13 @@ class TrainingResultModel {
       .exportAttendanceRateStatInfo(appStore.queryObj.id || '')
       .then(res => fileDownload(res))
   }
+
+  /**导出结果 */
+  @action public handleExportResults() {
+    trainingResultService
+      .exportResults(appStore.queryObj.id || '')
+      .then(res => fileDownload(res))
+  }
 }
 
 export const trainingResultModel = new TrainingResultModel()
