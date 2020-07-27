@@ -53,16 +53,24 @@ export default observer(function PerformChart() {
       title: "总计",
       dataIndex: "totalNum",
       align: "center",
-      width: 80
+      width: 80,
+      render(text: any) {
+        return Number(text);
+      }
     },
 
     {
       title: "完成率",
-      dataIndex: "totalNum",
+      dataIndex: "ok",
       align: "center",
       width: 100,
       render(text: any, record: any) {
-        return text ? `${(record.unExecute / text).toFixed(2)}%` : "0%";
+        let isOk = Number(record.totalNum) - Number(record.unExecute);
+        return record.totalNum && record.totalNum !== "0" && isOk
+          ? `${(Number(record.unExecute) / Number(record.totalNum)).toFixed(
+              2
+            )}%`
+          : "0%";
       }
     }
   ];
