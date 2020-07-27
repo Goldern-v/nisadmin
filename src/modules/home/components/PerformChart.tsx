@@ -38,14 +38,13 @@ export default observer(function PerformChart() {
     {
       title: "类型",
       dataIndex: "executeType",
-      align: "center",
-      width: 80
+      align: "center"
     },
     {
       title: "已完成",
       dataIndex: "unExecute", //
       align: "center",
-      width: 100,
+      width: 80,
       render(text: any, record: any) {
         return record.totalNum ? Number(record.totalNum) - Number(text) : "0";
       }
@@ -61,6 +60,7 @@ export default observer(function PerformChart() {
       title: "完成率",
       dataIndex: "totalNum",
       align: "center",
+      width: 100,
       render(text: any, record: any) {
         return text ? `${(record.unExecute / text).toFixed(2)}%` : "0%";
       }
