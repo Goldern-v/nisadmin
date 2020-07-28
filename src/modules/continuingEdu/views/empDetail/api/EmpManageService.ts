@@ -109,9 +109,14 @@ export default class EmpManageService extends BaseApiService {
     return this.post(`/studyAndTrain/personelManage/addCredit`, query)
   }
 
-  /** */
+  /**个人信息-导出年度记录 */
   public async exporCreditdetailInfoByYear(query: any) {
     return this.post('/studyAndTrain/personelManage/exporCreditdetailInfoByYear', query, { responseType: 'blob' })
+  }
+
+  /**个人信息-导出月度记录 */
+  public async exporCreditAndClassHoursCollect(query: any) {
+    return this.post('/studyAndTrain/personelManage/exporCreditAndClassHoursCollect', query, { responseType: 'blob' })
   }
 }
 

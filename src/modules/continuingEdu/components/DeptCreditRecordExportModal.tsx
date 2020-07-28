@@ -37,7 +37,7 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
   const handleExport = () => {
     setLoading(true)
     empManageService
-      .exporCreditdetailInfoByYear(query)
+      .exporCreditAndClassHoursCollect(query)
       .then(res => {
         setLoading(false)
         fileDownload(res)
@@ -56,7 +56,7 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
   }, [visible])
 
   return <Modal
-    title="导出科室学分统计"
+    title="导出科室学分学时汇总"
     visible={visible}
     width={400}
     confirmLoading={loading}
