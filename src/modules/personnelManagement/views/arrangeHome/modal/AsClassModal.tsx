@@ -75,9 +75,9 @@ export default observer(function AsClassModal(props: Props) {
       width: 100,
       align: "center",
       render: (text: any, record: any) => {
-        return `${moment(record.startDate).format("HH-mm")} - ${moment(
+        return `${moment(record.startDate).format("HH:mm")} - ${moment(
           record.endDate
-        ).format("HH-mm")}`;
+        ).format("HH:mm")}`;
       }
     },
     {
