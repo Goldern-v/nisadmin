@@ -143,14 +143,14 @@ export default observer(function Step5() {
           </tr>
           {ksStepViewModal.stepData2.hasScorePersonClassHours == 1 ? (
             <tr>
-              <td className="key">评分人学分：</td>
+              <td className="key">评分人学时：</td>
               <td className="value">
-                {ksStepViewModal.stepData2.scorePersonClassHours} 分
+                {ksStepViewModal.stepData2.scorePersonClassHours}
               </td>
             </tr>
           ) : (
             <tr>
-              <td className="key">评分人学分：</td>
+              <td className="key">评分人学时：</td>
               <td className="value">无</td>
             </tr>
           )}

@@ -88,6 +88,34 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
+          {sjStepViewModal.stepData2.hostCredit == 1 ? (
+            <tr>
+              <td className="key">主持人学分：</td>
+              <td className="value">
+                {studentCreditTypeMap[sjStepViewModal.stepData2.hostCreditType]}{" "}
+                {sjStepViewModal.stepData2.hostCredit} 分
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">主持人学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+          {sjStepViewModal.stepData2.hostClassHours == 1 ? (
+            <tr>
+              <td className="key">主持人学时：</td>
+              <td className="value">
+                {sjStepViewModal.stepData2.hostClassHours}
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td className="key">主持人学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
+
           {sjStepViewModal.stepData2.category == 1 ? (
             <tr>
               <td className="key">类&nbsp;&nbsp;别：</td>
