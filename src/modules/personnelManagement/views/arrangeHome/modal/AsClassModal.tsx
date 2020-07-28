@@ -137,7 +137,7 @@ export default observer(function AsClassModal(props: Props) {
         } else {
           return (
             <DoCon>
-              <div style={{ color: "#666" }}>时间不匹配</div>
+              <div style={{ color: "#666" }}>排班已发布</div>
             </DoCon>
           );
         }
