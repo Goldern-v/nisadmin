@@ -233,6 +233,7 @@ export default function TypeEditModal(props: Props) {
 
   // 确定保存
   const checkForm = () => {
+    setEditLoading(true);
     shiftList.map((item: any) => {
       item.settingMorningHour = item.settingMorningHour
         ? item.settingMorningHour
@@ -242,6 +243,7 @@ export default function TypeEditModal(props: Props) {
     arrangeService
       .schShiftRangeNanYiSanUpdateList(shiftList)
       .then((res: any) => {
+        setEditLoading(false);
         if (res.code == "200") {
           message.success("批量修改成功！");
         } else {
