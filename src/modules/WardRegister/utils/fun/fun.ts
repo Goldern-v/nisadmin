@@ -262,6 +262,7 @@ export function getFun(context: any) {
     // console.log(registerCode)
     //库房物品管理登记任何状态可编辑
     if (registerCode == 'QCRG_14_2') return false
+    if (registerCode == 'QCRG_16_2') return false
 
     if (record.auditorNo) return true
     if (!record.signerNo) return false

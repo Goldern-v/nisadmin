@@ -13,7 +13,7 @@ export interface Props {
   onSelect?: any,
   updateDataSource: any,
   handleNextIptFocus: any,
-  onBlur?: any,
+  onBlur?: Function,
   multiple?: boolean,
   selectAll?: boolean
 }
@@ -62,12 +62,14 @@ export default function InputColumnRender(porps: Props) {
     onBlur={() => {
       setOpen(false)
 
+      let oldVal = record[itemCode]
+
       if (record[itemCode] !== editValue) {
         record.modified = true
         record[itemCode] = editValue;
         updateDataSource()
       }
-      onBlur && onBlur(editValue)
+      onBlur && onBlur(editValue, oldVal)
     }}
     onSelect={(payload: any) => {
       if (multiple) {

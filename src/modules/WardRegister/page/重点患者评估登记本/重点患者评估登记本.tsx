@@ -284,6 +284,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       QCRG_16_2: (
         <div>
           <jmlxFilterItem.Component />
+          <bfzlxFilterItem.Component />
         </div>
       ),
       // QCRG_19_1: (
@@ -763,6 +764,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
               return false
             })()
+
             children = <InputColumnRender
               {...{
                 cellDisabled,
@@ -773,9 +775,25 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
+                onBlur: (newVal: string, oldVal: any) => {
+                  if (registerCode == 'QCRG_16_1' && item.itemCode == '并发症类型') {
+                    if (newVal != oldVal && (newVal == '感染' || oldVal == '感染')) {
+                      record['培养结果'] = ''
+                      record['检验结果粘贴处'] = ''
+                      updateDataSource()
+                    }
+                  }
+                },
                 selectAll: multiple,
               }}
             />
+          }
+
+          //特殊处理
+          if (registerCode == 'QCRG_16_1' && record['并发症类型'] == '感染') {
+            if (item.itemCode == '培养结果' || item.itemCode == '检验结果粘贴处') {
+              children = <DisableSpan />
+            }
           }
 
           let obj = {
@@ -1559,3 +1577,9 @@ const MergeTitle = styled.div`
   padding: 4px 0;
   border-bottom: 1px solid #e8e8e8;
 `;
+
+const DisableSpan = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #eee;
+`
