@@ -233,6 +233,12 @@ export default function TypeEditModal(props: Props) {
 
   // 确定保存
   const checkForm = () => {
+    shiftList.map((item: any) => {
+      item.settingMorningHour = item.settingMorningHour
+        ? item.settingMorningHour
+        : 0;
+      item.settingNightHour = item.settingNightHour ? item.settingNightHour : 0;
+    });
     arrangeService
       .schShiftRangeNanYiSanUpdateList(shiftList)
       .then((res: any) => {
