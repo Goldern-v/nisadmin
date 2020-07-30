@@ -312,7 +312,7 @@ function WardRegisterRouter() {
     {
       title: "静脉治疗登记",
       icon: <JMZL />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       children: [
         {
           title: "静脉治疗并发症登记本",
