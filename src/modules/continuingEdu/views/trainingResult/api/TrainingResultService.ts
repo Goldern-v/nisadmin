@@ -143,7 +143,8 @@ export default class TrainingResultService extends BaseApiService {
   public exportResults(cetpId: string) {
     return this.post("/studyAndTrain/teachingPlanManage/exportResults", {
       cetpId
-    });
+    },
+      { responseType: "blob" });
   }
 }
 

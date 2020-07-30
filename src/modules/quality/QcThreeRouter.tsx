@@ -92,7 +92,7 @@ export default function QcThreeRouter(props: Props) {
     }
   ]
 
-  if (appStore.HOSPITAL_ID == 'hj')
+  if (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys')
     extra_menu = [
       {
         title: "护理质量巡查情况汇总表",

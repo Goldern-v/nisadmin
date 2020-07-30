@@ -3,78 +3,48 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
-// import QueryStatistics from './views/queryStatistics/QueryStatistics'
-// import Analysis from './views/analysis/Analysis'
-// import SummaryReport from './views/summaryReport/SummaryReport'
+import QueryStatistics from './views/queryStatistics/QueryStatistics'
+import Analysis from './views/analysis/Analysis'
+import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
-import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
-// import ProblemSummary from './views/problemSummary/ProblemSummary'
+import ProblemSummary from './views/problemSummary/ProblemSummary'
 import { Provider, KeepAlive } from 'react-keep-alive'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
+import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import { appStore } from 'src/stores'
 
-export default function QcTwoRouter(props: Props) {
-
-  let extra_menu: any = [
-    {
-      title: '二级质控月度报告',
-      icon: <YDBG />,
-      path: '/qcTwo/workSummaryReportList',
-      component: WorkSummaryReportList,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    }
-  ]
-
-  if (appStore.HOSPITAL_ID == 'hj')
-    extra_menu = [
-      {
-        title: '护理质量巡查情况汇总表',
-        icon: <YDBG />,
-        path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
-        component: 护理质量巡查情况汇总表,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-      }
-    ]
-
-  if (appStore.HOSPITAL_ID == 'nys')
-    extra_menu = [
-      {
-        title: "护理质量巡查情况汇总表",
-        icon: <YDBG />,
-        path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
-        component: 护理质量巡查情况汇总表,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-      {
-        title: "护理质量检查小结",
-        icon: <YDBG />,
-        path: "/qcTwo/护理质量检查小结?qcLevel=2",
-        component: 护理质量检查小结,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-    ]
-
+export default function QcOneRouterHj(props: Props) {
   const LEFT_MENU_CONFIG: any = [
     {
-      title: '二级质控记录',
-      path: '/qcTwo',
+      title: '一级质控记录',
+      path: '/qcOneNys',
       icon: <EJZK />,
       component: { ...QualityControlRecord },
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
-    ...extra_menu
+    {
+      title: '护理质量巡查情况汇总表',
+      icon: <YDBG />,
+      path: '/qcOneNys/护理质量巡查情况汇总表?qcLevel=1',
+      component: 护理质量巡查情况汇总表,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
+    {
+      title: "护理质量检查小结",
+      icon: <YDBG />,
+      path: "/qcOneNys/护理质量检查小结?qcLevel=1",
+      component: 护理质量检查小结,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
   ]
   useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
