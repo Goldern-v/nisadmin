@@ -790,7 +790,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           }
 
           //特殊处理
-          if (registerCode == 'QCRG_16_1' && record['并发症类型'] == '感染') {
+          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '感染') {
             if (item.itemCode == '培养结果' || item.itemCode == '检验结果粘贴处') {
               children = <DisableSpan />
             }
