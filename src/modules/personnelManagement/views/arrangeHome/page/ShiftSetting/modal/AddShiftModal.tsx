@@ -191,7 +191,11 @@ export default function AddShiftModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`颜色标记`} name="nameColor">
+              <Form.Field
+                label={`颜色标记`}
+                name="nameColor"
+                required={appStore.HOSPITAL_ID == "hj"}
+              >
                 <Select>
                   {colorList.map((item: any, index: number) => (
                     <Select.Option key={index} value={item.code}>
