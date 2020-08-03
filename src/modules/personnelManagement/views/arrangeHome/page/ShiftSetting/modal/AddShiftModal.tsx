@@ -31,13 +31,21 @@ export interface Props extends ModalComponentProps {
 }
 
 /** 设置规则 */
-const rules: Rules = {
-  name: val => !!val || "请填写班次名称",
-  shiftType: val => !!val || "请填写班次类别",
-  workTime: val => !!val || "请填写上班时间",
-  effectiveTime: val => !!val || "请填写标准工时",
-  nameColor: val => !!val || "请填写颜色标记"
-};
+const rules: Rules =
+  appStore.HOSPITAL_ID == "hj"
+    ? {
+        name: val => !!val || "请填写班次名称",
+        shiftType: val => !!val || "请填写班次类别",
+        workTime: val => !!val || "请填写上班时间",
+        effectiveTime: val => !!val || "请填写标准工时",
+        nameColor: val => !!val || "请填写颜色标记"
+      }
+    : {
+        name: val => !!val || "请填写班次名称",
+        shiftType: val => !!val || "请填写班次类别",
+        workTime: val => !!val || "请填写上班时间",
+        effectiveTime: val => !!val || "请填写标准工时"
+      };
 
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
@@ -183,7 +191,7 @@ export default function AddShiftModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`颜色标记`} name="nameColor" required>
+              <Form.Field label={`颜色标记`} name="nameColor">
                 <Select>
                   {colorList.map((item: any, index: number) => (
                     <Select.Option key={index} value={item.code}>
