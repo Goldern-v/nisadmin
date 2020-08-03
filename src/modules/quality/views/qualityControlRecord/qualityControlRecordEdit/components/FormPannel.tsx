@@ -24,6 +24,9 @@ export default observer(function FormPannel() {
     causeList
   } = qcModel
 
+  let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
+  let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
+
   const handleUserListChange = (empNo: any) => {
     let target = userList.find((item: Emp) => item.empNo == empNo)
 
@@ -156,11 +159,11 @@ export default observer(function FormPannel() {
         </div>
       </div>
       <div className="item">
-        <div className="label">管床护士:</div>
+        <div className="label">{hushi}:</div>
         <div className={checkClass('bedNurseList')}>
           <Select
             mode="tags"
-            placeholder="请输入管床护士"
+            placeholder={`请输入${hushi}`}
             value={selectedBedNurse}
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -186,10 +189,10 @@ export default observer(function FormPannel() {
         </div>
       </div>
       <div className="item">
-        <div className="label">住院号:</div>
+        <div className="label">{zhuyuanhao}:</div>
         <div className={checkClass('inpNo')}>
           <Input
-            placeholder="请输入住院号"
+            placeholder={`请输入${zhuyuanhao}`}
             value={master.inpNo}
             onChange={(e: any) => {
               qcModel.setMasterErrObj('inpNo', false)

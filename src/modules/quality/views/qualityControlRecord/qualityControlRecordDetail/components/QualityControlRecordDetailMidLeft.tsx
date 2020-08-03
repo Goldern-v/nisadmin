@@ -9,6 +9,7 @@ import { numToChinese } from "src/utils/number/numToChinese";
 import { useRef } from "src/types/react";
 const { TextArea } = Input;
 import printing from "printing";
+import { appStore } from "src/stores";
 export interface Props {
   detailData: any;
 }
@@ -21,6 +22,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   let [bedNurseList, setBedNurseList]: any = useState([]);
   let [onlyReadError, setOnlyReadError]: any = useState(false);
   let [causeList, setCauseList]: any = useState([]);
+  let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
+  let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
   //
   const { detailData } = props;
@@ -129,9 +132,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     }
   };
 
-  const itemRadioChange = (e: any) => {};
+  const itemRadioChange = (e: any) => { };
   // 附件
-  const itemAttachmentCheck = () => {};
+  const itemAttachmentCheck = () => { };
 
   return (
     <Con ref={pageRef} className="print-page">
@@ -160,14 +163,14 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>
             质控人：
             {userList.map((item: any, index: number, arr: any) => (
-              <span key={index}>
-                {item.empName}
-                {index != arr.length - 1 ? "、" : ""}
-              </span>
-            ))}
+            <span key={index}>
+              {item.empName}
+              {index != arr.length - 1 ? "、" : ""}
+            </span>
+          ))}
           </div>
           <div>
-            管床护士：
+            {hushi}：
             {bedNurseList.map((item: any, index: number, arr: any) => (
               <span key={index}>
                 {item.empName}
@@ -176,7 +179,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
               </span>
             ))}
           </div>
-          <div>住院号：{messageBoxData.inpNo}</div>
+          <div>{zhuyuanhao}：{messageBoxData.inpNo}</div>
           <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
           <div>
             通过率：
