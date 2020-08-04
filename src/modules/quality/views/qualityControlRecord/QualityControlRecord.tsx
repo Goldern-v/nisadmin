@@ -25,7 +25,7 @@ export default observer(function QualityControlRecord() {
         ? 3
         : appStore.history.location.pathname.indexOf('qcTwo') >= 0
           ? 2
-          : appStore.history.location.pathname.indexOf('qcOneHj') >= 0
+          : (appStore.history.location.pathname.indexOf('qcOne')) >= 0
             ? 1
             : 3
 

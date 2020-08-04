@@ -6,6 +6,7 @@ import { Button, message, Modal } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import createModal from "src/libs/createModal";
 import BqclModal from "../modal/BqclModal";
+import BqclModalNys from "../modal/BqclModalNys";
 import HlbModal from "../modal/HlbModal";
 import EjkhszModal from "../modal/EjkhszModal";
 import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
@@ -42,6 +43,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   let nextNode = nodeDataList[currentNodeIndex - 1] || {};
 
   const bqclModal = createModal(BqclModal);
+  const bqclModalNys = createModal(BqclModalNys);
   const hlbModal = createModal(HlbModal);
   const ejkhszModal = createModal(EjkhszModal);
 
@@ -59,11 +61,19 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     }
     switch (nodeName) {
       case "病区处理":
-        bqclModal.show({
-          id: appStore.match.params.id,
-          nodeCode: nextNode.nodeCode,
-          onOkCallBack: props.onload
-        });
+        if (appStore.HOSPITAL_ID == 'nys')
+          bqclModalNys.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            onOkCallBack: props.onload,
+            list: props.detailData.itemGroupList || []
+          });
+        else
+          bqclModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            onOkCallBack: props.onload
+          });
         break;
       case "质控组组长审核":
         {
@@ -293,6 +303,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           状态：<span style={{ color: "#6767ff" }}>{statusText()}</span>
         </div>
       </TopHeader>
+      <bqclModalNys.Component />
       <bqclModal.Component />
       <hlbModal.Component />
       <ejkhszModal.Component />

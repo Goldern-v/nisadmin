@@ -112,7 +112,7 @@ export default observer(function TopCon(props: any) {
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
-      {qualityControlRecordVM.level == 2 && (
+      {(qualityControlRecordVM.level == 2 && appStore.HOSPITAL_ID !== 'nys') && (
         <Button
           onClick={handleCreate}
           style={{ marginLeft: 10 }}
@@ -121,6 +121,13 @@ export default observer(function TopCon(props: any) {
           新建
         </Button>
       )}
+      {appStore.HOSPITAL_ID == 'nys' && <Button
+        onClick={handleCreate}
+        style={{ marginLeft: 10 }}
+        disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}
+      >
+        新建
+        </Button>}
       {appStore.HOSPITAL_ID == 'hj' && <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport && props.refExport()}>导出</Button>}
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
