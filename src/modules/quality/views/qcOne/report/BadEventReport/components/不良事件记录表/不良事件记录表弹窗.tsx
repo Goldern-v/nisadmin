@@ -66,12 +66,12 @@ export default observer(function 星级考核表弹窗(props: Props) {
           value={record.eventType}
           onChange={(eventType: any) => {
             record.eventType = eventType
-            let target = eventTypeList.find((item: any) => item.code == eventType)
-            if (target) record.eventTypeName = target.name
+            let target = eventTypeList.find((item: any) => item.itemCode == eventType)
+            if (target) record.eventTypeName = target.itemName
             setData(cloneData)
           }}>
           {eventTypeList.map((item: any, idx: number) =>
-            <Option value={item.code} key={idx}>{item.name}</Option>
+            <Option value={item.itemCode} key={idx}>{item.itemName}</Option>
           )}
         </Select>
       }
@@ -148,7 +148,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
         dictCode: 'qc_bad_event_type'
       })
       .then((res: any) => {
-        if (res.data) setEventTypeList(res.data)
+        if (res.data) setEventTypeList(res.data.list || [])
       })
 
   }, [])

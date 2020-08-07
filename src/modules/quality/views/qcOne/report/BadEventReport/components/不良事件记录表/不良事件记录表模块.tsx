@@ -23,7 +23,7 @@ export default observer(function 星级考核表模块(props: Props) {
     totalSorce += list[i].deductScore || 0
   }
 
-  useEffect(() => {})
+  useEffect(() => { })
 
   return (
     <Wrapper>
