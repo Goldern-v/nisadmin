@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Steps, Icon, Spin } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import AuditModal from './components/AuditModal'
+import AuditModalNys from './components/AuditModal_nys'
 import badEventsNewService from './api/badEventsNewService'
 import service from 'src/services/api'
 import { authStore, appStore } from 'src/stores'
@@ -11,8 +11,7 @@ import qs from 'qs'
 const api = new badEventsNewService()
 
 const baseFormUrl = '/crNursing/formUrl'
-const formUrl =
-  process.env.NODE_ENV !== 'development' ? baseFormUrl : 'http://' + window.location.hostname + ':8088' + baseFormUrl
+const formUrl = baseFormUrl
 
 const { Step } = Steps
 
@@ -67,6 +66,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventType: eventType,
       badEventCode,
       operation: 'view',
+      isIndependent: 1,
       timeset: timeSet
     }
     for (let x in query) {
@@ -85,104 +85,108 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (eventId) {
       setIframeLoading(true)
 
-      Promise.all([api.getDetail(eventId), api.getTimeline(eventId)]).then((res) => {
-        let data = res[0].data.instance
-        let paramMap = res[0].data.paramMap
-        let timeData = res[1].data
-        let { badEventCode, badEventName, eventType, deptCode } = data
-        setDetailData({
-          ...detailData,
-          status: data.status || '',
-          badEventCode,
-          badEventName,
-          eventType,
-          deptCode,
-          paramMap
-        })
-
-        let newTimeline = [] as any[]
-
-        for (let i = 0; i < timeData.length; i++) {
-          let newItem = timeData[i]
-          let timeStatusAbs = Math.abs(timeData[i].operatorStatus)
-          if (timeStatusAbs > Math.abs(data.status)) break
-
-          let description
-          let title = timeData[i].operateName || ''
-          let operatorName = timeData[i].operatorName
-          let operatorWardName = timeData[i].operatorWardName
-          let operatorWardCode = timeData[i].operatorWardCode
-
-          let dateString = timeData[i].operateDate || ''
-          if (dateString) switch (new Date(dateString).getDay()) {
-            case 1:
-              dateString += ' (周一)'
-              break
-            case 2:
-              dateString += ' (周二)'
-              break
-            case 3:
-              dateString += ' (周三)'
-              break
-            case 4:
-              dateString += ' (周四)'
-              break
-            case 5:
-              dateString += ' (周五)'
-              break
-            case 6:
-              dateString += ' (周六)'
-              break
-            case 0:
-              dateString += ' (周日)'
-              break
-          }
-          let deptName = paramMap[`${badEventCode}_department_name`] || ''
-
-          let thExpain = '' as any
-
-          if (timeData[i].operatorStatus == 'save') {
-            operatorName = '***'
-            title = `保存：${data.badEventName}事件`
-          } else if (timeData[i].operatorStatus == 'nurse_submit') {
-            operatorName = '***'
-            setReportDept({
-              code: operatorWardCode,
-              name: operatorWardName
-            })
-          } else if (timeData[i].operatorStatus == 'quality_controller') {
-            if (deptName) title = `质控科审核：转发${deptName}`
-          } else if (timeData[i].allow == false) {
-            thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
-          }
-
-          let line1Text = `${operatorName} ${operatorWardName}`
-          if (!newItem.id) line1Text = '未完成'
-          description = (
-            <div>
-              <span>{line1Text}</span>
-              <br />
-              <span>{dateString}</span>
-              <br />
-              {thExpain}
-            </div>
-          )
-
-          if (title) {
-            newItem.title = title
-          } else {
-            newItem.title = operatorName
-          }
-
-          newTimeline.push({
-            ...newItem,
-            description
+      Promise.all([
+        api.getDetail(eventId),
+        api.getTimeline(eventId)
+      ])
+        .then((res) => {
+          let data = res[0].data.instance
+          let paramMap = res[0].data.paramMap
+          let timeData = res[1].data
+          let { badEventCode, badEventName, eventType, deptCode } = data
+          setDetailData({
+            ...detailData,
+            status: data.status || '',
+            badEventCode,
+            badEventName,
+            eventType,
+            deptCode,
+            paramMap
           })
-        }
 
-        setTimeLine(newTimeline)
-        setTimeset(new Date().getTime())
-      })
+          let newTimeline = [] as any[]
+
+          for (let i = 0; i < timeData.length; i++) {
+            let newItem = timeData[i]
+            let timeStatusAbs = Math.abs(timeData[i].operatorStatus)
+            if (timeStatusAbs > Math.abs(data.status)) break
+
+            let description
+            let title = timeData[i].operateName || ''
+            let operatorName = timeData[i].operatorName
+            let operatorWardName = timeData[i].operatorWardName
+            let operatorWardCode = timeData[i].operatorWardCode
+
+            let dateString = timeData[i].operateDate || ''
+            if (dateString) switch (new Date(dateString).getDay()) {
+              case 1:
+                dateString += ' (周一)'
+                break
+              case 2:
+                dateString += ' (周二)'
+                break
+              case 3:
+                dateString += ' (周三)'
+                break
+              case 4:
+                dateString += ' (周四)'
+                break
+              case 5:
+                dateString += ' (周五)'
+                break
+              case 6:
+                dateString += ' (周六)'
+                break
+              case 0:
+                dateString += ' (周日)'
+                break
+            }
+            let deptName = paramMap[`${badEventCode}_department_name`] || ''
+
+            let thExpain = '' as any
+
+            if (timeData[i].operatorStatus == 'save') {
+              operatorName = '***'
+              title = `保存：${data.badEventName}事件`
+            } else if (timeData[i].operatorStatus == 'nurse_submit') {
+              operatorName = '***'
+              setReportDept({
+                code: operatorWardCode,
+                name: operatorWardName
+              })
+            } else if (timeData[i].operatorStatus == 'quality_controller') {
+              if (deptName) title = `质控科审核：转发${deptName}`
+            } else if (timeData[i].allow == false) {
+              thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
+            }
+
+            let line1Text = `${operatorName} ${operatorWardName}`
+            if (!newItem.id) line1Text = '未完成'
+            description = (
+              <div>
+                <span>{line1Text}</span>
+                <br />
+                <span>{dateString}</span>
+                <br />
+                {thExpain}
+              </div>
+            )
+
+            if (title) {
+              newItem.title = title
+            } else {
+              newItem.title = operatorName
+            }
+
+            newTimeline.push({
+              ...newItem,
+              description
+            })
+          }
+
+          setTimeLine(newTimeline)
+          setTimeset(new Date().getTime())
+        }, err => setIframeLoading(false))
     }
   }
 
@@ -220,23 +224,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (!authStore.user) return ''
 
     switch (status) {
-      case 'nurse_submit':
-        btnText = '审核'
+      case 'dept_submit':
+        btnText = '护长审核'
         break
-      case 'quality_controller':
-        btnText = '科室审核'
-        let deptCode = detailData.paramMap[`${detailData.badEventCode}_department_code`] || ''
-        let userDeptCode = authStore.user && authStore.user.deptCode
-        if (!userDeptCode || (deptCode !== userDeptCode)) btnDisable = true
+      case 'nurse_auditor':
+        btnText = '护理部审核'
         break
-      case 'department_auditor':
-        btnText = '总结'
-        break
-      case 'qc_summary':
-        btnText = '质量委员会审核'
-
-        if (detailData.paramMap[`${detailData.badEventCode}_tjzlanwyh_option`] == '不提交') return ''
-
+      case 'pressure_auditor':
+        btnText = '压疮小组审核'
         break
       default:
         btnText = '无可用操作'
@@ -303,7 +298,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           <Spin size='large' spinning={iframeLoading} className='iframe-loading' />
         </div>
       </div>
-      <AuditModal
+      <AuditModalNys
         visible={auditModalvisible}
         onOk={handleOk}
         eventCode={detailData.badEventCode}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Modal, Input, message as Message, Row, Col } from 'antd'
 import badEventsNewService from './../api/badEventsNewService'
@@ -37,6 +37,10 @@ export default function UserCheckModal(props: Props) {
         Message.error('验证请求发送失败');
       });
   }
+
+  useEffect(() => {
+    if (!visible) setUserAudit({ empNo: '', password: '' })
+  }, [visible])
 
   return <Modal
     title="用户身份验证"

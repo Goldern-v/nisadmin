@@ -146,4 +146,30 @@ export default class AppStore {
       return hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds]();
     return "";
   }
+
+  /**适配医院和状态 返回对应的内容*/
+  public hisMatch(config: {
+    map: {
+      other?: any,
+      all?: any,
+      [p: string]: any
+    },
+    /**当前医院id或状态 默认为系统医院id*/
+    currentHospitalId?: string,
+    /**是否可以归类 */
+    vague?: boolean
+  }) {
+    const { map, currentHospitalId, vague } = config
+    let _currentHospitalId = currentHospitalId || this.HOSPITAL_ID as string
+    if (vague) {
+      for (let hospitalId in map) {
+        if (hospitalId.split(',').indexOf(hospitalId) >= 0)
+          return map[hospitalId]
+      }
+    } else {
+      if (Object.keys(map).indexOf(_currentHospitalId) >= 0) return map[_currentHospitalId]
+    }
+
+    return map["other"] || map["all"] || null
+  }
 }

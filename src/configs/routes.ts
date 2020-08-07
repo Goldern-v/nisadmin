@@ -8,6 +8,7 @@ import { setLayout } from "src/utils/route/route-utils";
 import layouts from "src/layouts";
 import demo from "src/demo";
 import { specialModule } from "./routerConfig/specialModule";
+import { appStore } from "src/stores";
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -83,6 +84,9 @@ const HealthPropagandaEdit = lazy(() =>
 // );
 const BadEventsNewDetail = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail")
+);
+const BadEventsNewDetailNys = lazy(() =>
+  import("src/modules/badEventsNew/BadEventsNewDetail_nys")
 );
 //培训考核
 const TrainingExamination = lazy(() =>
@@ -441,7 +445,12 @@ const routes: RouteItem[] = [
   // setLayout("/badEventsNewList", BadEventsNewList, layouts.MainLayout),
   setLayout(
     "/badEventsNewDetail/:id/:orderNo",
-    BadEventsNewDetail,
+    appStore.hisMatch({
+      map: {
+        nys: BadEventsNewDetailNys,
+        other: BadEventsNewDetail
+      }
+    }),
     layouts.MainLayout
   ),
   setLayout("/deptBorrow", DeptBorrow, layouts.BreadcrumbLayout, [
