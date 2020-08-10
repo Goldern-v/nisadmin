@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
@@ -124,6 +124,16 @@ export default function ContinuingEdu(props: Props) {
           path: "/continuingEdu/护理人员院内进修备案",
           formCode: "FQA00007",
           component: FormApply
+        },
+        {
+          title: "类型管理",
+          path: "/continuingEdu/TypeManagement",
+          component: 类型管理
+        },
+        {
+          title: "菜单设置",
+          path: "/continuingEdu/菜单设置",
+          component: 菜单设置
         }
       ]
     },
@@ -195,14 +205,16 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/TypeManagement",
       component: 类型管理,
-      hide: () => queyMenuAuthInfo("nm_lat_typemanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_typemanage") || appStore.HOSPITAL_ID == "hj"
     },
     {
       title: "菜单设置",
       icon: <KSGL />,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
-      hide: () => queyMenuAuthInfo("nm_lat_menusetting")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_menusetting") || appStore.HOSPITAL_ID == "hj"
     }
   ];
 
