@@ -71,7 +71,7 @@ export default observer(function LCDJ(props: Props) {
                 onChange={(e: any) => (lCDJContent.f00009 = e.target.value)}
               />
             </td>
-            <td colSpan={2}>参加临床时间</td>
+            <td colSpan={2}>参加临床带教时间</td>
             <td colSpan={2}>
               <Input
                 value={lCDJContent.f00010}

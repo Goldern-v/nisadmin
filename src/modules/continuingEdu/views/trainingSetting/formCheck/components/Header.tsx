@@ -59,15 +59,15 @@ export default observer(function Header(props: Props) {
               name: "培训设置管理"
             },
             {
-              name: title ? title : "资质准入审核",
+              name: title ? title : "资质准入管理",
               link: title
                 ? `/continuingEdu/${title}`
-                : "/continuingEdu/资质准入审核"
+                : "/continuingEdu/资质准入管理"
             }
           ]}
         />
         <div className="topHeaderTitle">
-          <div className="title">{title ? title : "资质准入审核"}</div>
+          <div className="title">{title ? title : "资质准入管理"}</div>
           <div className="topHeaderButton">
             {nextNode.taskTitle && !appStore.queryObj.checkResult && !title && (
               <Button onClick={() => onRole(nextNode.taskTitle)} type="primary">

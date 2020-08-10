@@ -200,6 +200,7 @@ export default observer(function ApplyTable(props: Props) {
   const checkResult = (record: any) => {
     let newQuery = {
       formId: record.formId,
+      code: record.formCode,
       haveHeader: false,
       title: formApplyModal.getTitle,
       statusName: record.statusName

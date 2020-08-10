@@ -447,34 +447,27 @@ class FormApplyModal {
   };
 
   // 用于查看表单对应字段
-  getForm() {
-    trainingSettingApi.field(this.getFormCode).then(res => {});
-  }
+  // getForm() {
+  //   trainingSettingApi.field(this.getFormCode).then(res => {});
+  // }
 
   // 判断回显哪张表单
   allData(data: any, formCode?: any) {
     switch (formCode) {
       case "FQA00001":
         return (this.LCDJFormContent = { ...this.LCDJFormContent, ...data });
-        break;
       case "FQA00002":
         return (this.RYZYFormContent = { ...this.LCDJFormContent, ...data });
-        break;
       case "FQA00003":
         return (this.GFXZLFormContent = { ...this.GFXZLFormContent, ...data });
-        break;
       case "FQA00004":
         return (this.RYZZFormContent = { ...this.RYZZFormContent, ...data });
-        break;
       case "FQA00005":
         return (this.CJJSFormContent = { ...this.CJJSFormContent, ...data });
-        break;
       case "FQA00006":
         return (this.TSGWFormContent = { ...this.TSGWFormContent, ...data });
-        break;
       default:
         return (this.YNJXFormContent = { ...this.YNJXFormContent, ...data });
-        break;
     }
   }
 

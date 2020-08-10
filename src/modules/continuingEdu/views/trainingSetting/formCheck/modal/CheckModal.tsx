@@ -34,7 +34,7 @@ export default observer(function CheckModal(props: Props) {
       res => {
         setLoading(false);
         message.success("审核操作成功");
-        appStore.history.push(`/continuingEdu/资质准入审核`);
+        appStore.history.push(`/continuingEdu/资质准入管理`);
         onOkCallBack && onOkCallBack();
       },
       () => setLoading(false)
@@ -50,6 +50,7 @@ export default observer(function CheckModal(props: Props) {
 
   const handleCancel = () => {
     if (loading) return;
+    setPassword("");
     onCancel && onCancel();
   };
 
@@ -79,9 +80,8 @@ export default observer(function CheckModal(props: Props) {
           <div className="label w-60">审核意见:</div>
           <div className="content">
             <Input.TextArea
-              autosize={{
-                minRows: 4
-              }}
+              rows={5}
+              maxLength={100}
               disabled={loading}
               value={auditRemark}
               onChange={(e: any) => setAuditRemark(e.target.value)}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, message as Message, Button } from "antd";
+import { Modal, message as Message, Button, Spin } from "antd";
 import FormCommon from "./formCommon/FormCommon";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import { formApplyModal } from "../FormApplyModal";
@@ -15,6 +15,8 @@ export interface Props {
 export default function FormEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const checkForm = () => {};
   const obj: any = {
     LCDJFormContent: "FQA00001",
@@ -29,8 +31,11 @@ export default function FormEditModal(props: Props) {
     if (visible) {
       setTimeout(() => {
         // 修改
+        setLoading(true);
         if (params && params.formId) {
+          formApplyModal.cleanAllStepData();
           trainingSettingApi.formData(params.formId).then((res: any) => {
+            setLoading(false);
             res.data.id = params.formId;
             formApplyModal.allData(res.data, formApplyModal.getFormCode);
             // for (let key in obj) {
@@ -109,7 +114,9 @@ export default function FormEditModal(props: Props) {
         </div>
       }
     >
-      <FormCommon />
+      <Spin spinning={loading}>
+        <FormCommon />
+      </Spin>
     </Modal>
   );
 }

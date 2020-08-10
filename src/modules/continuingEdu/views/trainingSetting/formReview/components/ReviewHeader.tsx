@@ -8,7 +8,7 @@ export default observer(function ReviewHeader() {
   return (
     <Wrapper>
       <LeftIcon>
-        <Title>资质准入审核</Title>
+        <Title>资质准入管理</Title>
       </LeftIcon>
       <RightIcon>
         <span>提交日期：</span>
