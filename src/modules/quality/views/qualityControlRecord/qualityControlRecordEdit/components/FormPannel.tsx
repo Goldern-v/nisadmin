@@ -158,48 +158,55 @@ export default observer(function FormPannel() {
           </Select>
         </div>
       </div>
-      <div className="item">
-        <div className="label">{hushi}:</div>
-        <div className={checkClass('bedNurseList')}>
-          <Select
-            mode="tags"
-            placeholder={`请输入${hushi}`}
-            value={selectedBedNurse}
-            filterOption={(input: any, option: any) =>
-              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-            onChange={(val: any) => {
-              qcModel.setMasterErrObj('bedNurseList', false)
-              handleBedNurseListChange(val)
-            }}>
-            {bedNurseList.map((item: any, idx: number) => <Option key={idx} value={item.empName}>{item.empName}</Option>)}
-          </Select>
-        </div>
-      </div>
-      <div className="item">
-        <div className="label">床号:</div>
-        <div className={checkClass('bedLabel')}>
-          <Input
-            placeholder="请输入床号"
-            value={master.bedLabel}
-            onChange={(e: any) => {
-              qcModel.setMasterErrObj('bedLabel', false)
-              qcModel.setMaster({ ...master, bedLabel: e.target.value })
-            }} />
-        </div>
-      </div>
-      <div className="item">
-        <div className="label">{zhuyuanhao}:</div>
-        <div className={checkClass('inpNo')}>
-          <Input
-            placeholder={`请输入${zhuyuanhao}`}
-            value={master.inpNo}
-            onChange={(e: any) => {
-              qcModel.setMasterErrObj('inpNo', false)
-              qcModel.setMaster({ ...master, inpNo: e.target.value })
-            }} />
-        </div>
-      </div>
+      {appStore.hisMatch({
+        map: {
+          nys: <span></span>,
+          other: <React.Fragment>
+            <div className="item">
+              <div className="label">{hushi}:</div>
+              <div className={checkClass('bedNurseList')}>
+                <Select
+                  mode="tags"
+                  placeholder={`请输入${hushi}`}
+                  value={selectedBedNurse}
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  onChange={(val: any) => {
+                    qcModel.setMasterErrObj('bedNurseList', false)
+                    handleBedNurseListChange(val)
+                  }}>
+                  {bedNurseList.map((item: any, idx: number) => <Option key={idx} value={item.empName}>{item.empName}</Option>)}
+                </Select>
+              </div>
+            </div>
+            <div className="item">
+              <div className="label">床号:</div>
+              <div className={checkClass('bedLabel')}>
+                <Input
+                  placeholder="请输入床号"
+                  value={master.bedLabel}
+                  onChange={(e: any) => {
+                    qcModel.setMasterErrObj('bedLabel', false)
+                    qcModel.setMaster({ ...master, bedLabel: e.target.value })
+                  }} />
+              </div>
+            </div>
+            <div className="item">
+              <div className="label">{zhuyuanhao}:</div>
+              <div className={checkClass('inpNo')}>
+                <Input
+                  placeholder={`请输入${zhuyuanhao}`}
+                  value={master.inpNo}
+                  onChange={(e: any) => {
+                    qcModel.setMasterErrObj('inpNo', false)
+                    qcModel.setMaster({ ...master, inpNo: e.target.value })
+                  }} />
+              </div>
+            </div>
+          </React.Fragment>
+        }
+      })}
     </div>
     <QuestionCon>
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
