@@ -320,9 +320,8 @@ export default observer(function ArrangeSheet(props: Props) {
         ".remark-con.real textarea"
       ).value = remark;
     } catch (error) {}
-  }, [sheetViewModal.sheetTableData, surplusWidth]);
+  }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
-  let remark = sheetViewModal.remark;
   return (
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
       {sheetViewModal.sheetTableData.length > 0 && (
@@ -341,8 +340,7 @@ export default observer(function ArrangeSheet(props: Props) {
                     {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
                   </div>
                   <Input.TextArea
-                    readOnly={!isEdit}
-                    defaultValue={remark}
+                    value={sheetViewModal.remark}
                     autosize={!isEdit}
                     onBlur={e => {
                       sheetViewModal.remark = e.target.value;
@@ -355,7 +353,7 @@ export default observer(function ArrangeSheet(props: Props) {
                     {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
                   </div>
                   <Input.TextArea
-                    value={remark}
+                    value={sheetViewModal.remark}
                     autosize={!isEdit}
                     style={{ minHeight: 100 }}
                   />
