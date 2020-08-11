@@ -393,8 +393,8 @@ export default observer(function RYZY(props: Props) {
                     value={rYZYContent.f00024}
                     onChange={(e: any) => (rYZYContent.f00024 = e.target.value)}
                   >
-                    <Radio value={1}>延期准入，仍需继续努力</Radio>
-                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
+                    <Radio value={-1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>
@@ -425,8 +425,8 @@ export default observer(function RYZY(props: Props) {
                     value={rYZYContent.f00049}
                     onChange={(e: any) => (rYZYContent.f00049 = e.target.value)}
                   >
-                    <Radio value={1}>延期准入，仍需继续努力</Radio>
-                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
+                    <Radio value={-1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>

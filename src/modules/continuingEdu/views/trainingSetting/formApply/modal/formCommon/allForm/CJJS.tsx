@@ -321,7 +321,7 @@ export default observer(function CJJS(props: Props) {
                 篇
               </Span>
               <Span>
-                主持参与课题项目
+                主持/参与课题项目
                 <Input
                   style={{ width: "35px" }}
                   value={cJJSContent.f00106}
@@ -439,8 +439,8 @@ export default observer(function CJJS(props: Props) {
                     value={cJJSContent.f00024}
                     onChange={(e: any) => (cJJSContent.f00024 = e.target.value)}
                   >
-                    <Radio value={1}>延期准入，仍需继续努力</Radio>
-                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
+                    <Radio value={-1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>

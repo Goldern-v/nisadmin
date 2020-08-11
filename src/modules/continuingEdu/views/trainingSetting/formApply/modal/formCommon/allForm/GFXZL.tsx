@@ -83,20 +83,20 @@ export default observer(function FormApply(props: Props) {
             </td>
           </tr>
           <tr>
-            <td colSpan={2}>申请高风险诊疗技术名称</td>
-            <td colSpan={3}>独立完成该项技术操作病例数</td>
+            <td colSpan={3}>申请高风险诊疗技术名称</td>
+            <td colSpan={2}>独立完成该项技术操作病例数</td>
             <td>科室是否批准开展</td>
           </tr>
           {GFXZLContent.f00082 &&
             GFXZLContent.f00082.map((item: any, index: any) => (
               <tr key={index}>
-                <td colSpan={2}>
+                <td colSpan={3}>
                   <Input
                     value={item.f00083}
                     onChange={(e: any) => (item.f00083 = e.target.value)}
                   />
                 </td>
-                <td colSpan={3}>
+                <td colSpan={2}>
                   <Input
                     value={item.f00084}
                     onChange={(e: any) => (item.f00084 = e.target.value)}
@@ -109,7 +109,7 @@ export default observer(function FormApply(props: Props) {
                     onChange={(e: any) => (item.f00085 = e.target.value)}
                   >
                     <Radio value={1}>是</Radio>
-                    <Radio value={2}>否</Radio>
+                    <Radio value={0}>否</Radio>
                   </RadioGroup>
                 </td>
               </tr>

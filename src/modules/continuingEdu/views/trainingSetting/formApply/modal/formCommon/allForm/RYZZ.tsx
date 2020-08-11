@@ -94,37 +94,45 @@ export default observer(function RYZZ(props: Props) {
             RYZZLContent.f00087.map((item: any, index: any) => (
               <tr key={index}>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    style={{ width: "130px" }}
+                    rows={2}
                     value={item.f00088}
                     onChange={(e: any) => (item.f00088 = e.target.value)}
                   />
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    style={{ width: "130px" }}
+                    rows={2}
                     value={item.f00089}
                     onChange={(e: any) => (item.f00089 = e.target.value)}
                   />
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    style={{ width: "130px" }}
+                    rows={2}
                     value={item.f00090}
                     onChange={(e: any) => (item.f00090 = e.target.value)}
                   />
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    style={{ width: "130px" }}
+                    rows={2}
                     value={item.f00091}
                     onChange={(e: any) => (item.f00091 = e.target.value)}
                   />
                 </td>
               </tr>
             ))}
-          <tr style={{ height: "200px" }}>
+          <tr style={{ height: "180px" }}>
             <td className="padding" colSpan={4}>
               <div className="vailgnTop">
                 <div>科室意见：</div>
                 <Input.TextArea
-                  rows={6}
+                  rows={5}
                   style={{ width: "100%" }}
                   disabled
                   value={RYZZLContent.f00025}
@@ -146,12 +154,12 @@ export default observer(function RYZZ(props: Props) {
               </div>
             </td>
           </tr>
-          <tr style={{ height: "250px" }}>
+          <tr style={{ height: "200px" }}>
             <td className="padding" colSpan={4}>
               <div className="vailgnTop">
                 <div>护理部审核意见：</div>
                 <Input.TextArea
-                  rows={8}
+                  rows={6}
                   style={{ width: "100%" }}
                   disabled
                   value={RYZZLContent.f00050}

@@ -16,17 +16,17 @@ export default function FormEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const checkForm = () => {};
-  const obj: any = {
-    LCDJFormContent: "FQA00001",
-    RYZYFormContent: "FQA00002",
-    GFXZLFormContent: "FQA00003",
-    RYZZFormContent: "FQA00004",
-    CJJSFormContent: "FQA00005",
-    TSGWFormContent: "FQA00006",
-    YNJXFormContent: "FQA00007"
-  };
+  // const obj: any = {
+  //   LCDJFormContent: "FQA00001",
+  //   RYZYFormContent: "FQA00002",
+  //   GFXZLFormContent: "FQA00003",
+  //   RYZZFormContent: "FQA00004",
+  //   CJJSFormContent: "FQA00005",
+  //   TSGWFormContent: "FQA00006",
+  //   YNJXFormContent: "FQA00007"
+  // };
+
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
