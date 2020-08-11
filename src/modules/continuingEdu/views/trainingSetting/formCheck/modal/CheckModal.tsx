@@ -51,6 +51,7 @@ export default observer(function CheckModal(props: Props) {
   const handleCancel = () => {
     if (loading) return;
     setPassword("");
+    setAuditRemark("");
     onCancel && onCancel();
   };
 

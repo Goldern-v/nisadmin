@@ -31,8 +31,8 @@ export default function FormEditModal(props: Props) {
     if (visible) {
       setTimeout(() => {
         // 修改
-        setLoading(true);
         if (params && params.formId) {
+          setLoading(true);
           formApplyModal.cleanAllStepData();
           trainingSettingApi.formData(params.formId).then((res: any) => {
             setLoading(false);
