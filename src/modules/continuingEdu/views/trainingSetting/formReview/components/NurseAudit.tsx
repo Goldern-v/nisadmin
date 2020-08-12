@@ -129,7 +129,7 @@ export default observer(function NurseAudit() {
       code: record.formCode,
       name: record.formName,
       submitterEmpNo: record.submitterEmpNo,
-      checkResult: checkResult ? checkResult : ""
+      checkResult: checkResult ? "查看" : "审核"
     } as any;
     appStore.history.push(`/continuingEduFormCheck?${qs.stringify(newQuery)}`);
   };

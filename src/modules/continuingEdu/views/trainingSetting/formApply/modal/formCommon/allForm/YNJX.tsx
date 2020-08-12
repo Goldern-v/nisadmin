@@ -84,6 +84,7 @@ export default observer(function YNJX(props: Props) {
             <td colSpan={2}>
               <Select
                 value={YNJXContent.f00138}
+                placeholder="请输入名字搜索"
                 onChange={(val: any) => {
                   YNJXContent.f00138 = val;
                 }}

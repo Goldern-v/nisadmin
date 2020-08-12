@@ -69,11 +69,16 @@ export default observer(function Header(props: Props) {
         <div className="topHeaderTitle">
           <div className="title">{title ? title : "资质准入管理"}</div>
           <div className="topHeaderButton">
-            {nextNode.taskTitle && !appStore.queryObj.checkResult && !title && (
-              <Button onClick={() => onRole(nextNode.taskTitle)} type="primary">
-                {nextNode.taskTitle}
-              </Button>
-            )}
+            {nextNode.taskTitle &&
+              appStore.queryObj.checkResult == "审核" &&
+              !title && (
+                <Button
+                  onClick={() => onRole(nextNode.taskTitle)}
+                  type="primary"
+                >
+                  {nextNode.taskTitle}
+                </Button>
+              )}
             <Button onClick={() => props.onPrint()}>打印</Button>
             <Button
               onClick={() => {

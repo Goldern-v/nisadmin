@@ -189,9 +189,7 @@ export default observer(function ApplyTable(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(err => {
-            Message.error("文件撤销失败");
-          });
+          .catch(err => {});
       }
     });
   };

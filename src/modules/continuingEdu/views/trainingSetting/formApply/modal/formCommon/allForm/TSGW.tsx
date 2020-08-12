@@ -4,12 +4,16 @@ import { observer } from "mobx-react-lite";
 import { Select, Input, Radio } from "antd";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Wrapper, SpanMiddle } from "../common";
+import { appStore } from "src/stores";
+
 const Option = Select.Option;
 
 interface Props {}
 
 export default observer(function TSGW(props: Props) {
   const TSGWContent = formApplyModal.TSGWFormContent;
+  let checkResult = appStore.queryObj.checkResult || "";
+
   return (
     <Wrapper>
       <table>
@@ -78,11 +82,20 @@ export default observer(function TSGW(props: Props) {
             </td>
           </tr>
           <tr>
-            <td colSpan={2}>专科准入培训起止时间</td>
+            <td colSpan={2}>专科工作开始时间</td>
             <td colSpan={4}>
               <Input
                 value={TSGWContent.f00117}
                 onChange={(e: any) => (TSGWContent.f00117 = e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={2}>专科准入培训起止时间</td>
+            <td colSpan={4}>
+              <Input
+                value={TSGWContent.f00118}
+                onChange={(e: any) => (TSGWContent.f00118 = e.target.value)}
               />
             </td>
           </tr>
@@ -145,6 +158,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>专科常见疾病护理常规</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00119}
                 onChange={(e: any) => (TSGWContent.f00119 = e.target.value)}
               >
@@ -153,6 +167,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00119}
                 onChange={(e: any) => (TSGWContent.f00119 = e.target.value)}
               >
@@ -161,6 +176,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00119}
                 onChange={(e: any) => (TSGWContent.f00119 = e.target.value)}
               >
@@ -169,6 +185,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00119}
                 onChange={(e: any) => (TSGWContent.f00119 = e.target.value)}
               >
@@ -180,6 +197,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>常见药物及专科药物使用</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00120}
                 onChange={(e: any) => (TSGWContent.f00120 = e.target.value)}
               >
@@ -188,6 +206,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00120}
                 onChange={(e: any) => (TSGWContent.f00120 = e.target.value)}
               >
@@ -196,6 +215,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00120}
                 onChange={(e: any) => (TSGWContent.f00120 = e.target.value)}
               >
@@ -204,6 +224,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00120}
                 onChange={(e: any) => (TSGWContent.f00120 = e.target.value)}
               >
@@ -215,6 +236,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>基础及专科常用护理技术</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00121}
                 onChange={(e: any) => (TSGWContent.f00121 = e.target.value)}
               >
@@ -223,6 +245,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00121}
                 onChange={(e: any) => (TSGWContent.f00121 = e.target.value)}
               >
@@ -231,6 +254,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00121}
                 onChange={(e: any) => (TSGWContent.f00121 = e.target.value)}
               >
@@ -239,6 +263,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00121}
                 onChange={(e: any) => (TSGWContent.f00121 = e.target.value)}
               >
@@ -250,6 +275,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>基础及专科护理评估</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00122}
                 onChange={(e: any) => (TSGWContent.f00122 = e.target.value)}
               >
@@ -258,6 +284,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00122}
                 onChange={(e: any) => (TSGWContent.f00122 = e.target.value)}
               >
@@ -266,6 +293,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00122}
                 onChange={(e: any) => (TSGWContent.f00122 = e.target.value)}
               >
@@ -274,6 +302,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00122}
                 onChange={(e: any) => (TSGWContent.f00122 = e.target.value)}
               >
@@ -285,6 +314,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>护理核心工作制度</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00123}
                 onChange={(e: any) => (TSGWContent.f00123 = e.target.value)}
               >
@@ -293,6 +323,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00123}
                 onChange={(e: any) => (TSGWContent.f00123 = e.target.value)}
               >
@@ -301,6 +332,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00123}
                 onChange={(e: any) => (TSGWContent.f00123 = e.target.value)}
               >
@@ -309,6 +341,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00123}
                 onChange={(e: any) => (TSGWContent.f00123 = e.target.value)}
               >
@@ -320,6 +353,7 @@ export default observer(function TSGW(props: Props) {
             <td colSpan={2}>一般护理问题的分析与处理能力</td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00124}
                 onChange={(e: any) => (TSGWContent.f00124 = e.target.value)}
               >
@@ -328,6 +362,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00124}
                 onChange={(e: any) => (TSGWContent.f00124 = e.target.value)}
               >
@@ -336,6 +371,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00124}
                 onChange={(e: any) => (TSGWContent.f00124 = e.target.value)}
               >
@@ -344,6 +380,7 @@ export default observer(function TSGW(props: Props) {
             </td>
             <td>
               <Radio.Group
+                disabled={checkResult !== "审核"}
                 value={TSGWContent.f00124}
                 onChange={(e: any) => (TSGWContent.f00124 = e.target.value)}
               >

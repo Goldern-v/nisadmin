@@ -4,6 +4,8 @@ import { Modal, Radio, Input, DatePicker, message } from "antd";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
+import { formApplyModal } from "../../formApply/FormApplyModal"; // 仓库数据
+
 import moment from "moment";
 
 export interface Props {
@@ -19,17 +21,18 @@ export default observer(function CheckModal(props: Props) {
   const [password, setPassword] = useState("");
   const [auditResult, setAuditResult] = useState(1);
   const [auditRemark, setAuditRemark] = useState("");
-
+  let code = appStore.queryObj.code || "";
   let userName = authStore.user ? authStore.user.empName : "";
 
   const handleOk = () => {
     setLoading(true);
-    let obj = {
+    let obj: any = {
       taskId: params.taskId,
       password,
       auditResult,
       auditRemark
     };
+    if (code === "FQA00006") obj.allDataMap = formApplyModal.TSGWFormContent;
     trainingSettingApi.auditForm(obj).then(
       res => {
         setLoading(false);
