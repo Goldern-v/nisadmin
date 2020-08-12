@@ -191,8 +191,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const handleOk = () => {
-    setAuditModalvisible(false)
-    getDetail()
+    setTimeout(() => appStore.history.goBack(), 1000)
   }
 
   const handleCancel = () => {
