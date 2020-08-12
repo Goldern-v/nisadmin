@@ -83,10 +83,11 @@ export default observer(function YNJX(props: Props) {
             <td colSpan={2}>指导老师</td>
             <td colSpan={2}>
               <Select
-                value={YNJXContent.f00138}
+                value={YNJXContent.f00139}
                 placeholder="请输入名字搜索"
-                onChange={(val: any) => {
+                onChange={(val: any, item: any) => {
                   YNJXContent.f00138 = val;
+                  YNJXContent.f00139 = item.props.children;
                 }}
                 showArrow={false}
                 style={{ width: "100%" }}
