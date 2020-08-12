@@ -307,6 +307,10 @@ export default observer(function OperateResultReview() {
         <span className="content">
           {(baseInfo.scorePersonList && baseInfo.scorePersonList.map((item: any) => item.empName).join(','))}
         </span>
+        <span className="label">总分:</span>
+        <span className="content">{baseInfo.totalScores || 0}</span>
+        <span className="label">及格分数:</span>
+        <span className="content">{baseInfo.passScores || 0}</span>
       </SubContent>
       <ButtonGroups>
         {baseInfo.isResultPublished === 0 &&
@@ -323,8 +327,15 @@ export default observer(function OperateResultReview() {
               disabled={true}>
               已发布
           </Button>}
-          {isSignType && (<Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>)}
-          <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+          {appStore.hisMatch({
+            map: {
+              wh: <span></span>,
+              other: <React.Fragment>
+                {isSignType && (<Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>)}
+                <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+              </React.Fragment>
+            }
+          })}
           <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         </React.Fragment>}
         <Button onClick={() => history.goBack()}>返回</Button>

@@ -1366,7 +1366,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04,QCRG_21': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04,QCRG_21,QCRG_20_2': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1402,6 +1402,17 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
+                'QCRG_20_2': <React.Fragment>
+                  <Button
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => handleCopyCreateRow()}>
+                    复制新增
+                  </Button>
+                </React.Fragment>,
                 'QCRG_04': <React.Fragment>
                   <Button
                     disabled={
