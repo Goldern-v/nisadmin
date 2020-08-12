@@ -43,7 +43,7 @@ export const SubContent = styled.div`
     &.content{
       margin-right: 15px;
       display: inline-block;
-      min-width: 60px;
+      /* min-width: 60px; */
     }
   }
 `

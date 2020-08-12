@@ -353,9 +353,16 @@ export default observer(function SocialpractiseResultReview() {
         </span>
       </SubContent>
       <ButtonGroups>
-        {isSignType &&
-          <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
-        <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+        {appStore.hisMatch({
+          map: {
+            wh: <span></span>,
+            other: <React.Fragment>
+              {isSignType &&
+                <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+              <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+            </React.Fragment>
+          }
+        })}
         <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
