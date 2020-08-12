@@ -102,7 +102,7 @@ export default observer(function YNJX(props: Props) {
                 {formApplyModal.teacherNameList.map(
                   (item: any, index: number) => (
                     <Select.Option value={item.empNo} key={index}>
-                      {item.empName}
+                      {`${item.empName}(${item.empNo})`}
                     </Select.Option>
                   )
                 )}
@@ -278,8 +278,8 @@ export default observer(function YNJX(props: Props) {
                   日期：
                   <Input
                     disabled
-                    value={YNJXContent.f00025}
-                    onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
+                    value={YNJXContent.f00046}
+                    onChange={(e: any) => (YNJXContent.f00046 = e.target.value)}
                   />
                 </SpanMiddle>
               </div>
