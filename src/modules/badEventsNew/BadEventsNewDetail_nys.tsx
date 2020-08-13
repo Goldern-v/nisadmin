@@ -37,6 +37,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const initTimeLine = [] as any[]
   //右侧时间轴
   const [timeLine, setTimeLine] = useState(initTimeLine.concat())
+  //下一步的审核状态
+  let nextStep = timeLine.find((item: any) => item.id == null)
+  if (nextStep) {
+    if (nextStep.operatorStatus == 'save' || nextStep.operatorStatus == 'dept_submit')
+      nextStep = null
+  }
   //用于刷新iframe的时间戳
   const [timeSet, setTimeset] = useState(new Date().getTime())
 
@@ -217,25 +223,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const AuditBtn = () => {
-    let status = detailData.status
     let btnDisable = iframeLoading
-    let btnText = ''
     if (!authStore.user) return ''
+    if (!nextStep) return ''
 
-    switch (status) {
-      case 'dept_submit':
-        btnText = '护长审核'
-        break
-      case 'nurse_auditor':
-        btnText = '护理部审核'
-        break
-      case 'pressure_auditor':
-        btnText = '压疮小组审核'
-        break
-      default:
-        btnText = '无可用操作'
-        return ''
-    }
+    let btnText = nextStep.operatorName
+
     return (
       <Button className='audit' type='primary' onClick={(e) => setAuditModalvisible(true)} disabled={btnDisable}>
         {btnText}
@@ -248,8 +241,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       <div className='topbar'>
         <div className='nav'>
           {appStore.onlyBadEvent ?
-            (<span><Link to='/'>不良事件</Link> > 事件详情</span>) :
-            (<span> <Link to='/badEventsNewlist'>不良事件</Link> > 事件详情</span>)
+            (<span><Link to='/'>不良事件</Link> &gt; 事件详情</span>) :
+            (<span> <Link to='/badEventsNewlist'>不良事件</Link> &gt; 事件详情</span>)
           }
         </div>
         <div className='title'>
@@ -302,7 +295,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         onOk={handleOk}
         eventCode={detailData.badEventCode}
         paramMap={detailData.paramMap}
-        status={detailData.status}
+        status={nextStep ? nextStep.operatorStatus : ''}
+        title={nextStep ? nextStep.operatorName : ''}
         id={props.match.params.id}
         reportDept={reportDept}
         onCancel={handleCancel}

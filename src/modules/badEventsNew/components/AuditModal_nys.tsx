@@ -18,6 +18,7 @@ export interface Props {
   onOk: any //审核操作完成回调
   paramMap?: any //不良事件表单数据
   status: string //当前不良事件状态
+  title?: string, //当前不良事件审核标题
   onCancel: any //窗口关闭回调
   eventCode: string //不良事件类型代码
   reportDept: any //上报人科室名称代码
@@ -25,7 +26,7 @@ export interface Props {
 }
 
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept } = props
+  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title } = props
   //用于操作和提交的不良事件表单数据
   let initFormMap: any = {}
   const [formMap, setFormMap] = useState(initFormMap)
@@ -147,19 +148,6 @@ export default observer(function AduitModal(props: Props) {
       }, () => setConfirmLoading(false))
   }
 
-  const AduitPannelTitle = () => {
-    switch (status) {
-      case 'dept_submit':
-        return '护长审核'
-      case 'pressure_auditor':
-        return '压疮小组审核'
-      case 'nurse_auditor':
-        return '护理部审核'
-      default:
-        return '审核'
-    }
-  }
-
   const ModalWidth = () => {
     switch (status) {
       case 'quality_controller':
@@ -190,7 +178,7 @@ export default observer(function AduitModal(props: Props) {
     </Row>
 
     switch (status) {
-      case 'dept_submit':
+      case 'nurse_auditor':
         return (
           <div className='form1'>
             {commonCon}
@@ -207,7 +195,7 @@ export default observer(function AduitModal(props: Props) {
             </Row>
           </div>
         )
-      case 'nurse_auditor':
+      case 'nusring_department_auditor':
         return (
           <div>
             {commonCon}
@@ -266,7 +254,7 @@ export default observer(function AduitModal(props: Props) {
     <Fragment>
       <Modal
         className='badevent-audit-modal'
-        title={AduitPannelTitle()}
+        title={title}
         width={ModalWidth()}
         onOk={handleOkBtn}
         confirmLoading={confirmLoading}
