@@ -254,8 +254,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       <div className='topbar'>
         <div className='nav'>
           {appStore.onlyBadEvent ?
-            (<span><Link to='/'>不良事件</Link> > 事件详情</span>) :
-            (<span> <Link to='/badEventsNewlist'>不良事件</Link> > 事件详情</span>)
+            (<span><Link to='/'>不良事件</Link> {">"} 事件详情</span>) :
+            (<span> <Link to='/badEventsNewlist'>不良事件</Link> {">"} 事件详情</span>)
           }
         </div>
         <div className='title'>

@@ -10,6 +10,8 @@ const MenuItemGroup = Menu.ItemGroup;
 export interface Props {
   config: any;
   menuTitle?: string;
+  /**菜单项目为hidden时是否匹配下一个项目 */
+  stopActiveNext?: boolean;
 }
 
 export default function LeftMenu(props: Props) {
@@ -85,7 +87,7 @@ export default function LeftMenu(props: Props) {
         if (currentPath) return currentPath;
       } else {
         if (item.path.split("?")[0] === path) {
-          if (isHide(item.hide)) {
+          if (isHide(item.hide) && !props.stopActiveNext) {
             for (let j = i; j < list.length; j++) {
               if (!list[j].hide) return [parentKeys, [list[j].path]];
             }

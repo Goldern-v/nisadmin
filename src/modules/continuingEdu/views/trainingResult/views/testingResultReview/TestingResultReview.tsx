@@ -298,10 +298,6 @@ export default observer(function TestingResultReview() {
         <span className="content">
           {(baseInfo.scorePersonList && baseInfo.scorePersonList.map((item: any) => item.empName).join(','))}
         </span>
-        <span className="label">总分:</span>
-        <span className="content">{baseInfo.totalScores || 0}</span>
-        <span className="label">及格分数:</span>
-        <span className="content">{baseInfo.passScores || 0}</span>
       </SubContent>
       <ButtonGroups>
         {baseInfo.isResultPublished === 0 &&

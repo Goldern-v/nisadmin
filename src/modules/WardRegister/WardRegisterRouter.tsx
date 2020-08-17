@@ -27,6 +27,7 @@ import 重点患者评估登记本 from "./page/重点患者评估登记本/重�
 import 紫外线空气消毒登记本 from "./page/紫外线空气消毒登记本/紫外线空气消毒登记本";
 import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消毒隔离工作登记本";
 import 登记本全科室导出 from "./page/登记本全科室导出/登记本全科室导出"
+import IndexPage from './page/IndexPage'
 // import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
 
 import { observer } from "mobx-react-lite";
@@ -50,7 +51,7 @@ function WardRegisterRouter() {
   const exportAllMenuConfig = [
     {
       title: "备用药品管理登记本导出",
-      path: "/wardRegister",
+      path: "/wardRegister/QCRG_10",
       component: 登记本全科室导出,
       icon: <BYYP />,
       payload: {
@@ -72,8 +73,14 @@ function WardRegisterRouter() {
 
   const editMenuConfig = [
     {
-      title: "药品、物品、器械交接登记本",
+      title: "首页",
       path: "/wardRegister",
+      hide: true,
+      component: IndexPage
+    },
+    {
+      title: "药品、物品、器械交接登记本",
+      path: "/wardRegister/QCRG_01",
       component: { ...物品交接登记本 },
       icon: <WPJJ />,
       payload: {
@@ -340,6 +347,16 @@ function WardRegisterRouter() {
             registerCode: "QCRG_16_3",
             registerName: "静脉治疗相关培训登记"
           }
+        },
+        {
+          title: "静脉治疗日统计表",
+          path: "/wardRegister/QCRG_16_4",
+          hide: !appStore.isDev,
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_16_4",
+            registerName: "静脉治疗日统计表"
+          }
         }
       ]
     },
@@ -409,7 +426,7 @@ function WardRegisterRouter() {
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={leftMenuConfig} />
+      <LeftMenuPage leftMenuConfig={leftMenuConfig} stopActiveNext={true} />
     </Wrapper>
   );
 }

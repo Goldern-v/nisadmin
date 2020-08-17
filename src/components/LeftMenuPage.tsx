@@ -8,6 +8,8 @@ import { KeepAlive } from "src/vendors/keep-alive";
 // 引入自动推送设置页面
 export interface Props {
   leftMenuConfig: any[];
+  /**菜单项目为hidden时是否匹配下一个项目 */
+  stopActiveNext?: boolean,
 }
 
 // const leftMenuConfig = []
@@ -47,7 +49,7 @@ export default function LeftMenuPage(props: Props) {
     <Wrapper>
       <LeftMenuCon>
         {currentRoute && currentRoute.component && (
-          <LeftMenu config={leftMenuConfig} />
+          <LeftMenu config={leftMenuConfig} stopActiveNext={!!props.stopActiveNext} />
         )}
       </LeftMenuCon>
       <MainCon
@@ -66,11 +68,11 @@ export default function LeftMenuPage(props: Props) {
               />
             </KeepAlive>
           ) : (
-            <currentRoute.component
-              getTitle={currentRoute && currentRoute.title}
-              payload={currentRoute && currentRoute.payload}
-            />
-          ))}
+              <currentRoute.component
+                getTitle={currentRoute && currentRoute.title}
+                payload={currentRoute && currentRoute.payload}
+              />
+            ))}
       </MainCon>
     </Wrapper>
   );

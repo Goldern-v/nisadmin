@@ -1122,7 +1122,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         //     selectedBlockId
         //   })
         // ],
-        'QCRG_20_1,QCRG_20_2': [
+        'QCRG_20_1,QCRG_20_2,QCRG_16_4': [
           {
             title: "备注",
             width: 150,
