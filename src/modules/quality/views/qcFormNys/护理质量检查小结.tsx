@@ -6,9 +6,11 @@ import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormNysService } from './api/QcFormNysService'
-import { Chart, Tooltip, Axis, Bar, Legend } from 'viser-react'
 import { fileDownload } from "src/utils/file/file";
-const DataSet = require('@antv/data-set')
+import BarChart from './components/BarChart'
+import ColumnChart from './components/ColumnChart'
+import CircleChart from './components/CircleChart'
+
 import moment from 'moment'
 
 export default observer(function 护理质量检查小结() {
@@ -27,51 +29,35 @@ export default observer(function 护理质量检查小结() {
   }
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
 
-  //柱状图相关数据
+  //图表相关数据
   const [chartData, setChartData] = useState([] as any[])
-  const label = {
-    textStyle: {
-      textBaseline: 'top',
-      fill: '#333',
-      fontSize: 14
+  //查看图表类型
+  const [chartType, setChartType] = useState('column' as 'bar' | 'circle' | 'ring' | 'column')
+  const chartTypeArr = [
+    {
+      name: '柱状',
+      type: 'column',
     },
-    // offset: 0,
-    // autoRotate: false,
-    rotate: 76.5,
-    formatter: (text: string) => {
-      let viewText = text
-      if (viewText.length > 8) viewText = `${viewText.substr(0, 7)}...`
-      return viewText
-    }
-    // htmlTemplate: (text: string, item: any, index: number) => {
-    //   return `<div style="width:40px;font-size:12px;position:fixed;top:458px;">${text}</div>`
-    // }
-  } as any
-
-  const labelFormat = {
-    textStyle: {
-      fill: '#333',
-      fontSize: 14
+    {
+      name: '条形',
+      type: 'bar',
     },
-    formatter: (text: string) => {
-      return text.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+    {
+      name: '饼状',
+      type: 'circle',
+    },
+    {
+      name: '圆环',
+      type: 'ring',
+    },
+  ]
+  //柱状图数据
+  const barChartData = chartData.map((item: any) => {
+    return {
+      type: item.itemName,
+      value: item.size
     }
-  } as any
-
-  const tickLine = {
-    alignWithLabel: true,
-    length: 1
-  }
-
-  const title = {
-    offset: 70
-  }
-
-  const style = {
-    text: {
-      fontSize: 14
-    }
-  }
+  })
 
   const columns: any[] = [
     {
@@ -201,16 +187,29 @@ export default observer(function 护理质量检查小结() {
       </RightIcon>
     </HeaderCon>
     <MidCon>
-      <span className="align-right">
-        <Radio.Group
-          size="small"
-          buttonStyle="solid"
-          value={viewType}
-          onChange={(e) => setViewType(e.target.value)}>
-          <Radio.Button value="table" >表格</Radio.Button>
-          <Radio.Button value="chart">图表</Radio.Button>
-        </Radio.Group>
-      </span>
+      <div className="switch-con">
+        <span className="align-left" style={{ display: viewType == 'chart' ? 'block' : 'none' }}>
+          <Radio.Group
+            size="small"
+            buttonStyle="solid"
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value)}>
+            {chartTypeArr.map((item: any, idx: number) => (
+              <Radio.Button value={item.type} key={idx}>{item.name}</Radio.Button>
+            ))}
+          </Radio.Group>
+        </span>
+        <span className="align-right">
+          <Radio.Group
+            size="small"
+            buttonStyle="solid"
+            value={viewType}
+            onChange={(e) => setViewType(e.target.value)}>
+            <Radio.Button value="table" >表格</Radio.Button>
+            <Radio.Button value="chart">图表</Radio.Button>
+          </Radio.Group>
+        </span>
+      </div>
       {viewType == 'table' && <TableCon>
         <BaseTable
           loading={loading}
@@ -222,42 +221,25 @@ export default observer(function 护理质量检查小结() {
       {viewType == 'chart' &&
         <Spin spinning={loading}>
           <ChartCon height={chartHeight}>
-            <Chart
-              forceFit
-              height={chartHeight}
-              data={chartData.map((item: any) => {
-                return {
-                  type: item.itemName,
-                  value: item.size
-                }
-              })}
-              padding={[40, 20, 160, 40]}
-              scale={[{
-                dataKey: 'value',
-                tickCount: 5,
-                alias: '频次'
-              }]}>
-              <Tooltip shared={true} />
-              <Axis
-                dataKey="type"
-                label={label}
-                tickLine={tickLine} />
-              <Axis dataKey="value" label={labelFormat} tickLine={tickLine} />
-              <Legend
-                custom
-                position="top-right"
-                items={[
-                  {
-                    value: '频次',
-                    marker: { symbol: 'square', fill: 'rgb(24, 144, 255)', radius: 5, lineWidth: 3 }
-                  }
-                ]}
+            {chartType === 'column' && (
+              <ColumnChart
+                chartHeight={chartHeight}
+                chartData={barChartData}
+                title="频次" />
+            )}
+            {chartType === 'bar' && (
+              <BarChart
+                chartHeight={chartHeight}
+                chartData={barChartData}
+                title="频次" />
+            )}
+            {(chartType === 'circle' || chartType === 'ring') && (
+              <CircleChart
+                isRing={chartType === 'ring'}
+                chartHeight={chartHeight}
+                sourceData={barChartData}
               />
-              <Bar
-                position="type*value"
-                opacity={1}
-              />
-            </Chart>
+            )}
             {chartData.length <= 0 && <div className="no-data">
               <img
                 style={{ width: '100px' }}
@@ -361,9 +343,18 @@ const MidCon = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  .align-right{
-    text-align:right;
-    padding-right: 20px;
+  .switch-con{
+    
+    .align-right{
+      float: right;
+      text-align:right;
+      padding-right: 20px;
+    }
+    .align-left{
+      float: left;
+      padding-left: 20px;
+      text-align: left;
+    }
   }
 `
 
