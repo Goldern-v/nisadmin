@@ -904,6 +904,28 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
+        QCRG_11_2: [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell",
+            render(text: string, record: any, index: number) {
+              const _cellDisabled = (record: any) => {
+                if (record['消毒处理'] !== '待消毒') return true
+                return cellDisabled(record)
+              }
+              return <InputColumnRender
+                {...{
+                  cellDisabled: _cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
+            }
+          }
+        ],
         QCRG_11_3: [
           {
             title: "备注",
@@ -1495,10 +1517,15 @@ const Container = styled(Wrapper)`
     td.input-cell{
       background: rgba(0,0,0,0.03)!important;
     }
+    .ant-input[disabled]{
+      color: #000!important;
+        background: rgba(0,0,0,0.0)!important;
+    }
   }
+  
   .ant-input[disabled]{
     color: #000!important;
-      background: rgba(0,0,0,0.0)!important;
+    background: rgba(0,0,0,0.03)!important;
   }
 `;
 

@@ -90,7 +90,7 @@ export default function DatePickerColumnRender(props: Props) {
           let m = endTimeDate.diff(currentDate, diffUnit)
           if (m >= 0 && diffUnit == 'd') m += 1
 
-          if (registerCode == 'QCRG_06' || registerCode == 'QCRG_11') {
+          if (['QCRG_06', 'QCRG_11', 'QCRG_11_2'].indexOf(registerCode) >= 0) {
             newSum = (parseInt((Math.round(m / 60 * 10)).toString()) / 10).toString()
           } else {
             newSum = m.toString()

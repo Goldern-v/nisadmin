@@ -124,11 +124,16 @@ export const TableCon = styled.div`
     .bg.disabled{
       background: rgba(0,0,0,0.0)!important;
     }
+    .ant-input[disabled]{
+      color: #000!important;
+      background: rgba(0,0,0,0.0)!important;
+    }
   }
   .ant-input[disabled]{
     color: #000!important;
-      background: rgba(0,0,0,0.0)!important;
+    background: rgba(0,0,0,0.3)!important;
   }
+  
   .ant-calendar-picker{
     i{
       opacity: 0;
