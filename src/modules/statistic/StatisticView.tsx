@@ -26,6 +26,8 @@ import DepartmentNightByMonthView from './views/departmentNightByMonth/Departmen
 import DepartmentVacationByMonthView from './views/departmentVacationByMonth/DepartmentVacationByMonthView'
 // 科室节假日排班统计
 import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/DepartmentHolidayScheduleView'
+//护理质量统计
+import 护理质量统计查询 from 'src/modules/quality/views/qcFormNys/护理质量统计查询'
 
 // 全院护理人员一览表
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
@@ -41,7 +43,7 @@ import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQuer
 
 export default function StatisticView() {
   const [shiftClass, setShiftClass] = useState(new Array())
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
   // }
@@ -83,7 +85,8 @@ export default function StatisticView() {
     { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
     { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
     //// 患者查询统计   大块
-    { name: '住院病人认知情况统计表', path: '/statistic/住院病人认知情况统计表', component: 住院病人认知情况统计表 }
+    { name: '护理质量统计', path: '/statistic/护理质量统计', component: 护理质量统计查询 },
+    { name: '' }
   ]
   const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

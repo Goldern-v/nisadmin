@@ -3,13 +3,13 @@ import React from 'react'
 
 import { Chart, Tooltip, Axis, Legend, Interval, Coord } from 'viser-react'
 export interface Props {
-  chartHeight?: number,
+  // chartHeight?: number,
   chartData?: any[],
   title?: string
 }
 
 export default function BarChart(props: Props) {
-  const { chartHeight, chartData, title } = props
+  const { chartData, title } = props
 
   const label = {
     textStyle: {
@@ -45,10 +45,10 @@ export default function BarChart(props: Props) {
     }
   } as any
 
-  return <Wrapper style={{ height: `${chartHeight || 0}px` }}>
+  return <Wrapper>
     <Chart
       forceFit
-      height={chartHeight}
+      height={(chartData || []).length * 30}
       data={chartData || []}
       padding={[40, 20, 20, 160]}
       scale={[{
@@ -80,4 +80,9 @@ export default function BarChart(props: Props) {
     </Chart>
   </Wrapper>
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  margin: 10px 0;
+`

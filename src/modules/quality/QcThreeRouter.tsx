@@ -119,15 +119,15 @@ export default function QcThreeRouter(props: Props) {
         // hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
-      {
-        title: "护理质量统计查询",
-        icon: <YDBG />,
-        path: "/qcThree/护理质量统计查询?qcLevel=3",
-        component: 护理质量统计查询,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
+      // {
+      //   title: "护理质量统计查询",
+      //   icon: <YDBG />,
+      //   path: "/qcThree/护理质量统计查询?qcLevel=3",
+      //   component: 护理质量统计查询,
+      //   keepAlive: true,
+      //   // hide: !appStore.isDev,
+      //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      // },
     ]
 
   const LEFT_MENU_CONFIG: any = [

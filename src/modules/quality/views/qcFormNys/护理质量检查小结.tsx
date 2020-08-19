@@ -220,7 +220,7 @@ export default observer(function 护理质量检查小结() {
       </TableCon>}
       {viewType == 'chart' &&
         <Spin spinning={loading}>
-          <ChartCon height={chartHeight}>
+          <ChartCon style={{ height: `${chartHeight || 0}px` }}>
             {chartType === 'column' && (
               <ColumnChart
                 chartHeight={chartHeight}
@@ -229,7 +229,6 @@ export default observer(function 护理质量检查小结() {
             )}
             {chartType === 'bar' && (
               <BarChart
-                chartHeight={chartHeight}
                 chartData={barChartData}
                 title="频次" />
             )}

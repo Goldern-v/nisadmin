@@ -90,10 +90,22 @@ const LEFT_MENU_CONFIG = [
       { title: "住院执行单统计表", path: "/statistic/住院执行单统计表" },
       { title: "患者分布统计表", path: "/statistic/患者分布统计表" }
     ]
-  }
+  },
+  ...appStore.hisMatch({
+    map: {
+      nys: [
+        {
+          title: "护理质量统计",
+          icon: <HZCXTJ />,
+          path: "/statistic/护理质量统计",
+        }
+      ],
+      other: []
+    }
+  })
 ];
 export default function BedSituation() {
-  useEffect(() => {});
+  useEffect(() => { });
   return (
     <Con>
       <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="统计查询" />

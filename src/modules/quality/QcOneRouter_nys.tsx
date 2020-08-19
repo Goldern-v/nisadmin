@@ -46,15 +46,15 @@ export default function QcOneRouterHj(props: Props) {
       // hide: !appStore.isDev,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     },
-    {
-      title: "护理质量统计查询",
-      icon: <YDBG />,
-      path: "/qcOneNys/护理质量统计查询?qcLevel=1",
-      component: 护理质量统计查询,
-      keepAlive: true,
-      // hide: !appStore.isDev,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
+    // {
+    //   title: "护理质量统计查询",
+    //   icon: <YDBG />,
+    //   path: "/qcOneNys/护理质量统计查询?qcLevel=1",
+    //   component: 护理质量统计查询,
+    //   keepAlive: true,
+    //   // hide: !appStore.isDev,
+    //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    // },
   ]
   useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''

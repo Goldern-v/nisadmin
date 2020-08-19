@@ -70,15 +70,15 @@ export default function QcTwoRouter(props: Props) {
         // hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
-      {
-        title: "护理质量统计查询",
-        icon: <YDBG />,
-        path: "/qcTwo/护理质量统计查询?qcLevel=2",
-        component: 护理质量统计查询,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
+      // {
+      //   title: "护理质量统计查询",
+      //   icon: <YDBG />,
+      //   path: "/qcTwo/护理质量统计查询?qcLevel=2",
+      //   component: 护理质量统计查询,
+      //   keepAlive: true,
+      //   // hide: !appStore.isDev,
+      //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      // },
     ]
 
   const LEFT_MENU_CONFIG: any = [

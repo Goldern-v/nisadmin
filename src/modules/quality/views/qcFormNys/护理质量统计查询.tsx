@@ -17,7 +17,7 @@ export default observer(function 护理质量检查小结() {
   const { queryObj } = appStore
   const { selectedDeptCode, deptList } = authStore
   const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
-  const [wardCode, setWardCode] = useState(selectedDeptCode)
+  const [wardCode, setWardCode] = useState(selectedDeptCode == '全院' ? '' : selectedDeptCode)
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
@@ -177,11 +177,9 @@ export default observer(function 护理质量检查小结() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>
+        {/* <PageTitle>
           {filterDate[0].format('YYYY')}年{queryObj.title || '护理质量统计查询'}
-        </PageTitle>
-      </LeftIcon>
-      <RightIcon>
+        </PageTitle> */}
         <div className="item">
           <div className="label">科室：</div>
           <div className="content">
@@ -223,6 +221,9 @@ export default observer(function 护理质量检查小结() {
             导出
           </Button>
         </div>
+      </LeftIcon>
+      <RightIcon>
+
       </RightIcon>
     </HeaderCon>
     <MidCon>
