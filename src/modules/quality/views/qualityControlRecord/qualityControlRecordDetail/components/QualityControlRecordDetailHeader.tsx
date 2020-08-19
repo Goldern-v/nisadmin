@@ -231,11 +231,10 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             {
               name: "质控记录",
               link:
-                master.qcLevel == "3"
-                  ? "/qcThree"
-                  : master.qcLevel == "2"
-                    ? "/qcTwo"
-                    : appStore.HOSPITAL_ID == 'hj' ? '/qcOneHj' : '/qcOne'
+                master.qcLevel == "3" ? "/qcThree" :
+                  master.qcLevel == "2" ? "/qcTwo" :
+                    appStore.HOSPITAL_ID == 'hj' ? '/qcOneHj' :
+                      appStore.HOSPITAL_ID == 'nys' ? '/qcOneNys' : '/qcOne'
             },
             {
               name: "记录详情"
@@ -255,7 +254,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               </Button>
             )}
             {master &&
-              master.qcLevel == "2" &&
+              appStore.hisMatch({
+                map: {
+                  nys: true,
+                  other: master.qcLevel == "2"
+                }
+              }) &&
               master.status == "-1" &&
               master.creatorNo == (authStore.user && authStore.user.empNo) && (
                 <React.Fragment>
@@ -273,7 +277,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </React.Fragment>
               )}
             {master &&
-              master.qcLevel == "2" &&
+              appStore.hisMatch({
+                map: {
+                  nys: true,
+                  other: master.qcLevel == "2"
+                }
+              }) &&
               master.canUpdate &&
               master.creatorNo == (authStore.user && authStore.user.empNo) && (
                 <React.Fragment>
@@ -295,7 +304,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   </Button>
                 </React.Fragment>
               )}
-            {appStore.HOSPITAL_ID == 'hj' && master.id && <Button onClick={exportQcItem}>导出</Button>}
+            {appStore.hisMatch({
+              map: {
+                wh: false,
+                other: true,
+              }
+            }) && master.id && <Button onClick={exportQcItem}>导出</Button>}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>

@@ -21,6 +21,8 @@ import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 
 
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
+import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
@@ -107,7 +109,21 @@ export default function QcThreeRouter(props: Props) {
         title: "护理质量检查小结",
         icon: <YDBG />,
         path: "/qcThree/护理质量检查小结?qcLevel=3",
-        component: 护理质量检查小结,
+        component: appStore.hisMatch({
+          map: {
+            nys: 护理质量检查小结Nys,
+            other: 护理质量检查小结
+          }
+        }),
+        keepAlive: true,
+        // hide: !appStore.isDev,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      },
+      {
+        title: "护理质量统计查询",
+        icon: <YDBG />,
+        path: "/qcThree/护理质量统计查询?qcLevel=3",
+        component: 护理质量统计查询,
         keepAlive: true,
         // hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"

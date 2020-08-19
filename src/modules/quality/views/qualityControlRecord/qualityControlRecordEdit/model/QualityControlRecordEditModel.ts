@@ -326,12 +326,19 @@ class QualityControlRecordEditModel {
       if (originItemList)
         for (let j = 0; j < originItemList.length; j++) {
           let item = originItemList[j]
-          itemList.push({
+
+          let newItem = {
             qcItemCode: item.qcItemCode,
             attachIds: item.attachIds,
             attachUrls: item.attachUrls,
             qcItemValue: item.qcItemValue
-          })
+          } as any
+
+          /**南医三加入remark字段 */
+          if (appStore.HOSPITAL_ID === 'nys')
+            newItem.remark = item.remark
+
+          itemList.push(newItem)
         }
     }
 

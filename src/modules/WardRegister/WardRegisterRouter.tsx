@@ -351,7 +351,6 @@ function WardRegisterRouter() {
         {
           title: "静脉治疗日统计表",
           path: "/wardRegister/QCRG_16_4",
-          hide: !appStore.isDev,
           component: { ...重点患者评估登记本 },
           payload: {
             registerCode: "QCRG_16_4",

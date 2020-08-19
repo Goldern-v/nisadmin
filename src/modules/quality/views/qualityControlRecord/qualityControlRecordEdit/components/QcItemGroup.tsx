@@ -7,6 +7,7 @@ const { TextArea } = Input
 // import Zimage from 'src/components/Zimage'
 import { observer } from 'mobx-react-lite'
 import { numToChinese } from 'src/utils/number/numToChinese'
+import { appStore } from 'src/stores'
 
 export interface Props {
   itemGroup: any
@@ -29,6 +30,13 @@ export default observer(function QcItemGroup(props: Props) {
     let newItemGroup = { ...itemGroup }
     let newItem = newItemGroup.itemList[idx]
     newItem.qcItemValue = val
+    qcModel.upadteItemGroup(newItemGroup, index)
+  }
+
+  const handleItemRemarkChange = (val: any, idx: number) => {
+    let newItemGroup = { ...itemGroup }
+    let newItem = newItemGroup.itemList[idx]
+    newItem.remark = val
     qcModel.upadteItemGroup(newItemGroup, index)
   }
 
@@ -102,6 +110,21 @@ export default observer(function QcItemGroup(props: Props) {
               }
               onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
           </div>
+          {appStore.hisMatch({
+            map: {
+              nys: <div className='notesCon' style={{ borderBottom: 'none' }}>
+                <div className='notesLeftCon'>备注</div>
+                <div className='notesRightCon'>
+                  <TextArea
+                    rows={4}
+                    value={item.remark}
+                    autosize
+                    onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
+                </div>
+              </div>,
+              other: '',
+            }
+          })}
           {/* <div className='itemAttachmentCon'>
             {item.attachUrls && (
               <Zimage
@@ -117,16 +140,21 @@ export default observer(function QcItemGroup(props: Props) {
         </div>
       </div>
     ))}
-    <div className='notesCon'>
-      <div className='notesLeftCon'>备注</div>
-      <div className='notesRightCon'>
-        <TextArea
-          rows={4}
-          value={itemGroup.remark}
-          autosize
-          onChange={(e) => handleRemarkChange(e.target.value)} />
-      </div>
-    </div>
+    {appStore.hisMatch({
+      map: {
+        nys: '',
+        other: <div className='notesCon'>
+          <div className='notesLeftCon'>备注</div>
+          <div className='notesRightCon'>
+            <TextArea
+              rows={4}
+              value={itemGroup.remark}
+              autosize
+              onChange={(e) => handleRemarkChange(e.target.value)} />
+          </div>
+        </div>
+      }
+    })}
   </QuestionItem>
 })
 

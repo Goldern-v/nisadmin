@@ -248,7 +248,6 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       不适用
                     </Radio>
                   </Radio.Group>
-                  {}
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (
                       <Zimage
@@ -262,23 +261,42 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       />
                     )}
                   </div>
+                  {appStore.hisMatch({
+                    map: {
+                      nys: <div className="notesCon" style={{ borderBottom: 'none' }}>
+                        <div className="notesLeftCon">备注</div>
+                        <div className="notesRightCon">
+                          <TextArea
+                            readOnly
+                            autosize={{ minRows: 1 }}
+                            value={item.remark}
+                          />
+                        </div>
+                      </div>,
+                      other: ''
+                    }
+                  })}
                 </div>
               </div>
             ))}
-
-            {((onlyReadError && itemGroup.remark) || !onlyReadError) && (
-              <div className="notesCon">
-                <div className="notesLeftCon">备注</div>
-                <div className="notesRightCon">
-                  <TextArea
-                    rows={4}
-                    readOnly
-                    value={itemGroup.remark}
-                    autosize
-                  />
-                </div>
-              </div>
-            )}
+            {appStore.hisMatch({
+              map: {
+                nys: '',
+                other: ((onlyReadError && itemGroup.remark) || !onlyReadError) && (
+                  <div className="notesCon">
+                    <div className="notesLeftCon">备注</div>
+                    <div className="notesRightCon">
+                      <TextArea
+                        rows={4}
+                        readOnly
+                        value={itemGroup.remark}
+                        autosize
+                      />
+                    </div>
+                  </div>
+                )
+              }
+            })}
           </QuestionItem>
         ))}
 

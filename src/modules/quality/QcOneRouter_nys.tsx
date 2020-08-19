@@ -14,7 +14,8 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
+import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import { appStore } from 'src/stores'
 
 export default function QcOneRouterHj(props: Props) {
@@ -40,7 +41,16 @@ export default function QcOneRouterHj(props: Props) {
       title: "护理质量检查小结",
       icon: <YDBG />,
       path: "/qcOneNys/护理质量检查小结?qcLevel=1",
-      component: 护理质量检查小结,
+      component: 护理质量检查小结Nys,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
+    {
+      title: "护理质量统计查询",
+      icon: <YDBG />,
+      path: "/qcOneNys/护理质量统计查询?qcLevel=1",
+      component: 护理质量统计查询,
       keepAlive: true,
       // hide: !appStore.isDev,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"

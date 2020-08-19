@@ -1,8 +1,13 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-export default class QcFormHjService extends BaseApiService {
+export default class QcFormNysService extends BaseApiService {
   /**护理质量巡查情况汇总表 */
   public countResult(params: any) {
     return this.post(`/qcCount/countResult`, params)
+  }
+
+  /**质控项目问题频次统计 */
+  public countNoItem(params: any) {
+    return this.post(`/qcCount/countNoItem`, params)
   }
 
   /**护理质量检查小结 */
@@ -19,6 +24,11 @@ export default class QcFormHjService extends BaseApiService {
   public countDetailExport(params: any) {
     return this.post(`/qcCount/countDetail/export`, params, { responseType: 'blob' })
   }
+
+  /**导出质控项目问题频次统计 */
+  public countNoItemExport(params: any) {
+    return this.post(`/qcCount/countNoItem/export`, params, { responseType: 'blob' })
+  }
 }
 
-export const qcFormHjService = new QcFormHjService()
+export const qcFormNysService = new QcFormNysService()
