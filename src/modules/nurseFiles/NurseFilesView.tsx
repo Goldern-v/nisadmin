@@ -16,29 +16,33 @@ import StatisticsViews from "./view/statistics-hj/StatisticsView";
 import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 
 //护士调动
-import HumanResource from './view/nurseFiles-nys/views/humanResource/HumanResource'
+import HumanResource from "./view/nurseFiles-nys/views/humanResource/HumanResource";
 //院级小组
-import NurseGroupManage from './view/nurseFiles-nys/views/nurseGroupManage/NurseGroupManage'
+import NurseGroupManage from "./view/nurseFiles-nys/views/nurseGroupManage/NurseGroupManage";
+//厚街实习生进修
+import TraineeFiles from "./view/traineeFiles/TraineeFiles";
+//厚街护理进修花名册
+import NursingEduFiles from "./view/nursingEduFiles/NursingEduFiles";
 
 import { ReactComponent as ZZHSDA } from "./images/ZZHSDA.svg";
 import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
 import { ReactComponent as CXTJ } from "./images/CXTJ.svg";
 
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const OnTheJobComponent = (() => {
   switch (appStore.HOSPITAL_ID) {
-    case 'wh':
-      return NurseFilesListView_wh
-    case 'hj':
-      return NurseFilesListView_hj
-    case 'nys':
-      return NurseFilesListView_nys
+    case "wh":
+      return NurseFilesListView_wh;
+    case "hj":
+      return NurseFilesListView_hj;
+    case "nys":
+      return NurseFilesListView_nys;
     default:
-      return NurseFilesListView_hj
+      return NurseFilesListView_hj;
   }
-})()
+})();
 
 const LEFT_MENU_CONFIG_NYS = [
   {
@@ -65,7 +69,7 @@ const LEFT_MENU_CONFIG_NYS = [
     path: "/nurseFile/retiredRetirees",
     component: RetiredRetireesNys,
     icon: <TXHSCX />
-  },
+  }
   // {
   //   title: "查询统计",
   //   icon: <CXTJ />,
@@ -77,7 +81,7 @@ const LEFT_MENU_CONFIG_NYS = [
   //     }
   //   ]
   // }
-]
+];
 
 const LEFT_MENU_CONFIG_HJ = [
   {
@@ -90,6 +94,18 @@ const LEFT_MENU_CONFIG_HJ = [
     title: "离职/退休人员查询",
     path: "/nurseFile/retiredRetirees",
     component: RetiredRetirees,
+    icon: <TXHSCX />
+  },
+  {
+    title: "护理进修花名册",
+    path: "/nurseFile/nursingEduFiles",
+    component: NursingEduFiles,
+    icon: <TXHSCX />
+  },
+  {
+    title: "护理实习生花名册",
+    path: "/nurseFile/traineeFiles",
+    component: TraineeFiles,
     icon: <TXHSCX />
   }
   // {
@@ -259,24 +275,20 @@ const LEFT_MENU_CONFIG_WH = [
 
 const menuConfig = () => {
   switch (appStore.HOSPITAL_ID) {
-    case 'wh':
-      return LEFT_MENU_CONFIG_WH
-    case 'hj':
-      return LEFT_MENU_CONFIG_HJ
-    case 'nys':
-      return LEFT_MENU_CONFIG_NYS
+    case "wh":
+      return LEFT_MENU_CONFIG_WH;
+    case "hj":
+      return LEFT_MENU_CONFIG_HJ;
+    case "nys":
+      return LEFT_MENU_CONFIG_NYS;
     default:
-      return LEFT_MENU_CONFIG_HJ
+      return LEFT_MENU_CONFIG_HJ;
   }
-}
+};
 
 export default function NurseFilesView(props: Props) {
   let currentRoutePath = props.match.url || "";
-  let currentRoute = getTargetObj(
-    menuConfig(),
-    "path",
-    currentRoutePath
-  );
+  let currentRoute = getTargetObj(menuConfig(), "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -299,10 +311,7 @@ export default function NurseFilesView(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu
-          config={menuConfig()}
-          menuTitle="系统设置"
-        />
+        <LeftMenu config={menuConfig()} menuTitle="系统设置" />
       </LeftMenuCon>
       <MainCon>
         {currentRoute && currentRoute.component && <currentRoute.component />}
