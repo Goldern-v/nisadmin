@@ -169,6 +169,7 @@ export default observer(function TraineeFiles(props: Props) {
           .then(res => {
             if (res.code == 200) {
               Message.success("记录删除成功");
+              traineeFilesModal.pageIndex = 1;
               traineeFilesModal.onload();
             } else {
               Message.error(`${res.dec}`);

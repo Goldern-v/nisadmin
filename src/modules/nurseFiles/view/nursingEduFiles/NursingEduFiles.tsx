@@ -183,6 +183,7 @@ export default observer(function NursingEduFiles(props: Props) {
           .then(res => {
             if (res.code == 200) {
               Message.success("记录删除成功");
+              nursingEduFilesModal.pageIndex = 1;
               nursingEduFilesModal.onload();
             } else {
               Message.error(`${res.dec}`);
