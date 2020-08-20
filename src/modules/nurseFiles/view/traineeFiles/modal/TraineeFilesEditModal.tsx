@@ -12,10 +12,10 @@ import {
   Spin
 } from "antd";
 import Form from "src/components/Form/Form";
-import { Rules } from "src/components/Form/interfaces";
-import { traineeFilesApi } from "../api/TraineeFilesApi";
-import service from "src/services/api"; //获取科室公共接口
 import moment from "moment";
+import { Rules } from "src/components/Form/interfaces";
+import service from "src/services/api"; //获取科室公共接口
+import { traineeFilesApi } from "../api/TraineeFilesApi"; // 接口
 
 export interface Props {
   visible: boolean;
@@ -27,11 +27,9 @@ export interface Props {
 
 export default function TraineeFilesEditModal(props: Props) {
   const [deptList, setDeptList]: any = useState([]); // 科室
-  const [dataObj, setDataobj]: any = useState([]); // 科室
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
-  const [loading, setLoading] = useState(false);
 
   // 弹窗必填项
   const rules: Rules = {
@@ -55,6 +53,7 @@ export default function TraineeFilesEditModal(props: Props) {
     }
   }, [visible]);
 
+  // 初始化 判断是否修改回显数据
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -128,8 +127,9 @@ export default function TraineeFilesEditModal(props: Props) {
         }
       }, 100);
     }
-  }, [visible, dataObj.identifier]);
+  }, [visible]);
 
+  // 保存
   const checkForm = () => {
     let current: any = formRef.current;
     if (current) {
@@ -177,10 +177,13 @@ export default function TraineeFilesEditModal(props: Props) {
         });
     }
   };
+
+  // 关闭取消
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
   };
+
   return (
     <Modal
       visible={visible}
@@ -189,206 +192,204 @@ export default function TraineeFilesEditModal(props: Props) {
       confirmLoading={editLoading}
       title={params.identifier ? "修改" : "添加"}
     >
-      <Spin spinning={loading}>
-        <Wrapper>
-          <Form ref={formRef} rules={rules}>
-            {params.identifier && (
-              <Row>
-                <Col span={6} className="label">
-                  实习编号:
-                </Col>
-                <Col span={16}>
-                  <Form.Field name="identifier">
-                    <Input disabled />
-                  </Form.Field>
-                </Col>
-              </Row>
-            )}
+      <Wrapper>
+        <Form ref={formRef} rules={rules}>
+          {params.identifier && (
             <Row>
               <Col span={6} className="label">
-                姓名:
+                实习编号:
               </Col>
               <Col span={16}>
-                <Form.Field name="name">
-                  <Input />
+                <Form.Field name="identifier">
+                  <Input disabled />
                 </Form.Field>
               </Col>
             </Row>
-            <Row>
-              <Col span={6} className="label">
-                性别:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="sex">
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="0">男</Radio.Button>
-                    <Radio.Button value="1">女</Radio.Button>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                院校:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="schoolName">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                专业:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="major">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                学历:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="education">
-                  <Select defaultValue="7">
-                    <Select.Option value="9">博士</Select.Option>
-                    <Select.Option value="8">研究生</Select.Option>
-                    <Select.Option value="7">本科</Select.Option>
-                    <Select.Option value="6">大专</Select.Option>
-                    <Select.Option value="5">中专</Select.Option>
-                  </Select>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                联系电话:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="phone">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                是否住宿:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="isResident">
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="1">是</Radio.Button>
-                    <Radio.Button value="0">否</Radio.Button>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                宿舍编号:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="dormitoryNumber">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                实习时间:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="studyTime">
-                  <DatePicker.RangePicker />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                实习科室:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="studyDeptCode">
-                  <Select
-                    style={{ width: 180 }}
-                    allowClear
-                    showSearch
-                    filterOption={(input: any, option: any) =>
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {deptList.map((item: any) => {
-                      return (
-                        <Select.Option value={item.code} key={item}>
-                          {item.name}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                是否组长:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="isGroupLeader">
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="1">是</Radio.Button>
-                    <Radio.Button value="0">否</Radio.Button>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                家庭住址:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="address">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                紧急联系人:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="emergencyContactPerson">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                紧急联系人电话:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="emergencyContactPhone">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6} className="label">
-                备注:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="remark">
-                  <Input.TextArea rows={5} maxLength={100} />
-                </Form.Field>
-              </Col>
-            </Row>
-          </Form>
-        </Wrapper>
-      </Spin>
+          )}
+          <Row>
+            <Col span={6} className="label">
+              姓名:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="name">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              性别:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="sex">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="0">男</Radio.Button>
+                  <Radio.Button value="1">女</Radio.Button>
+                </Radio.Group>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              院校:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="schoolName">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              专业:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="major">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              学历:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="education">
+                <Select defaultValue="7">
+                  <Select.Option value="9">博士</Select.Option>
+                  <Select.Option value="8">研究生</Select.Option>
+                  <Select.Option value="7">本科</Select.Option>
+                  <Select.Option value="6">大专</Select.Option>
+                  <Select.Option value="5">中专</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              联系电话:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="phone">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              是否住宿:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="isResident">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="1">是</Radio.Button>
+                  <Radio.Button value="0">否</Radio.Button>
+                </Radio.Group>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              宿舍编号:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="dormitoryNumber">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              实习时间:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="studyTime">
+                <DatePicker.RangePicker />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              实习科室:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="studyDeptCode">
+                <Select
+                  style={{ width: 180 }}
+                  allowClear
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {deptList.map((item: any) => {
+                    return (
+                      <Select.Option value={item.code} key={item}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              是否组长:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="isGroupLeader">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="1">是</Radio.Button>
+                  <Radio.Button value="0">否</Radio.Button>
+                </Radio.Group>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              家庭住址:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="address">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              紧急联系人:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="emergencyContactPerson">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              紧急联系人电话:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="emergencyContactPhone">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              备注:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="remark">
+                <Input.TextArea rows={5} maxLength={100} />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Wrapper>
     </Modal>
   );
 }

@@ -11,8 +11,8 @@ import {
   Modal
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { traineeFilesModal } from "./TraineeFilesModal";
-import { traineeFilesApi } from "./api/TraineeFilesApi";
+import { traineeFilesModal } from "./TraineeFilesModal"; // 仓库数据
+import { traineeFilesApi } from "./api/TraineeFilesApi"; // 接口
 import TraineeFilesEditModal from "./modal/TraineeFilesEditModal"; // 添加修改弹窗
 
 interface Props {}
@@ -24,6 +24,7 @@ export default observer(function TraineeFiles(props: Props) {
   useEffect(() => {
     traineeFilesModal.onload();
   }, []);
+
   //表格数据
   const columns: any = [
     {

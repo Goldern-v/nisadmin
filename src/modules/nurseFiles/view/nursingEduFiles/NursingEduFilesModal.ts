@@ -14,7 +14,6 @@ class NursingEduFilesModal {
   @observable public total: any = 0; //总条数
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
-  @observable public deptList: any = [];
   @computed
   get postObj() {
     return {
@@ -43,17 +42,6 @@ class NursingEduFilesModal {
     nursingEduFilesApi.exportPageList(this.postObj).then(res => {
       fileDownload(res);
     });
-  }
-
-  getDeptList() {
-    service.commonApiService.getNursingUnitAll().then(res => {
-      this.deptList = res.data.deptList;
-    });
-  }
-
-  async init() {
-    await this.getDeptList();
-    this.onload();
   }
 }
 

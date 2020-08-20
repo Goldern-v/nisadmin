@@ -11,8 +11,8 @@ import {
   Modal
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { nursingEduFilesModal } from "./NursingEduFilesModal";
-import { nursingEduFilesApi } from "./api/NursingEduFilesApi";
+import { nursingEduFilesModal } from "./NursingEduFilesModal"; // 仓库数据
+import { nursingEduFilesApi } from "./api/NursingEduFilesApi"; // 接口
 import NursingEditModal from "./modal/NursingEditModal"; // 添加修改弹窗
 
 interface Props {}

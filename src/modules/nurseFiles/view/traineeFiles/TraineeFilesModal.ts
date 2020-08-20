@@ -43,10 +43,6 @@ class TraineeFilesModal {
       fileDownload(res);
     });
   }
-
-  init() {
-    this.onload();
-  }
 }
 
 export const traineeFilesModal = new TraineeFilesModal();
