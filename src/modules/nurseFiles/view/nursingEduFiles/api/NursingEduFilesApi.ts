@@ -36,10 +36,14 @@ export default class NursingEduFilesApi extends BaseApiService {
   }
 
   // 导出
-  // public exportMainData(obj?: any) {
-  //   return this.post(`/studyAndTrain/teachingPlanManage/exportPageList`, obj, {
-  //     responseType: "blob"
-  //   });
-  // }
+  public exportPageList(obj?: any) {
+    return this.post(
+      `/nursefile/otherPersonInfo/refresherStudent/exportPageList`,
+      obj,
+      {
+        responseType: "blob"
+      }
+    );
+  }
 }
 export const nursingEduFilesApi = new NursingEduFilesApi();

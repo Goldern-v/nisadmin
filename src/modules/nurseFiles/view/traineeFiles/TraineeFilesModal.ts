@@ -39,9 +39,9 @@ class TraineeFilesModal {
 
   //导出Excel
   export() {
-    // mainPageApi.exportMainData(this.postObj).then(res => {
-    //   fileDownload(res);
-    // });
+    traineeFilesApi.exportPageList(this.postObj).then(res => {
+      fileDownload(res);
+    });
   }
 
   init() {

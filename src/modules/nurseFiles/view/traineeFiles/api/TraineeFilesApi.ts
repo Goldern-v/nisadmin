@@ -36,10 +36,14 @@ export default class TraineeFilesApi extends BaseApiService {
   }
 
   // 导出
-  // public exportMainData(obj?: any) {
-  //   return this.post(`/studyAndTrain/teachingPlanManage/exportPageList`, obj, {
-  //     responseType: "blob"
-  //   });
-  // }
+  public exportPageList(obj?: any) {
+    return this.post(
+      `/nursefile/otherPersonInfo/graduateIntern/exportPageList`,
+      obj,
+      {
+        responseType: "blob"
+      }
+    );
+  }
 }
 export const traineeFilesApi = new TraineeFilesApi();

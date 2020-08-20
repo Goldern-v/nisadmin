@@ -97,7 +97,7 @@ const LEFT_MENU_CONFIG_HJ = [
     icon: <TXHSCX />
   },
   {
-    title: "护理进修花名册",
+    title: "护理进修生花名册",
     path: "/nurseFile/nursingEduFiles",
     component: NursingEduFiles,
     icon: <TXHSCX />

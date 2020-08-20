@@ -40,9 +40,9 @@ class NursingEduFilesModal {
 
   //导出Excel
   export() {
-    // mainPageApi.exportMainData(this.postObj).then(res => {
-    //   fileDownload(res);
-    // });
+    nursingEduFilesApi.exportPageList(this.postObj).then(res => {
+      fileDownload(res);
+    });
   }
 
   getDeptList() {

@@ -77,7 +77,11 @@ export default function TraineeFilesEditModal(props: Props) {
           if (params.education) {
             params.education = educationList.find(
               (item: any) => item.name === params.education
-            ).num;
+            )
+              ? educationList.find(
+                  (item: any) => item.name === params.education
+                ).num
+              : "";
           }
           const {
             identifier,
@@ -135,12 +139,12 @@ export default function TraineeFilesEditModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            newParams.internshipBegin = newParams.studyTime[0].format(
-              "YYYY-MM-DD"
-            );
-            newParams.internshipEnd = newParams.studyTime[1].format(
-              "YYYY-MM-DD"
-            );
+            newParams.internshipBegin = newParams.studyTime
+              ? newParams.studyTime[0].format("YYYY-MM-DD")
+              : "";
+            newParams.internshipEnd = newParams.studyTime
+              ? newParams.studyTime[1].format("YYYY-MM-DD")
+              : "";
             newParams.studyDeptName = newParams.studyDeptName
               ? deptList.find(
                   (item: any) => item.code === newParams.studyDeptCode
@@ -154,6 +158,7 @@ export default function TraineeFilesEditModal(props: Props) {
                 let msg = "修改成功";
                 Message.success(msg);
                 onOk();
+                current.clear();
               });
             } else {
               traineeFilesApi.saveOrUpdateInfo(newParams).then(res => {
@@ -161,12 +166,14 @@ export default function TraineeFilesEditModal(props: Props) {
                 let msg = "添加成功";
                 Message.success(msg);
                 onOk();
+                current.clear();
               });
             }
           }
         })
         .catch((e: any) => {
           console.log(e);
+          setEditLoading(false);
         });
     }
   };
@@ -188,7 +195,7 @@ export default function TraineeFilesEditModal(props: Props) {
             {params.identifier && (
               <Row>
                 <Col span={6} className="label">
-                  进修编码:
+                  实习编号:
                 </Col>
                 <Col span={16}>
                   <Form.Field name="identifier">
@@ -301,12 +308,13 @@ export default function TraineeFilesEditModal(props: Props) {
             </Row>
             <Row>
               <Col span={6} className="label">
-                进修科室一:
+                实习科室:
               </Col>
               <Col span={16}>
                 <Form.Field name="studyDeptCode">
                   <Select
                     style={{ width: 180 }}
+                    allowClear
                     showSearch
                     filterOption={(input: any, option: any) =>
                       option.props.children

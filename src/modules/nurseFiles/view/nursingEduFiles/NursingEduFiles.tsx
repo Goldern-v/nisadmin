@@ -38,62 +38,62 @@ export default observer(function NursingEduFiles(props: Props) {
     {
       title: "进修编号",
       dataIndex: "identifier",
-      width: 150,
+      width: 100,
       align: "center"
     },
     {
       title: "姓名",
       dataIndex: "name",
-      width: 120,
+      width: 80,
       align: "center"
     },
     {
       title: "性别",
       dataIndex: "sex",
-      width: 80,
+      width: 60,
       align: "center"
     },
     {
       title: "年龄",
       dataIndex: "age",
-      width: 100,
+      width: 70,
       align: "center"
     },
 
     {
       title: "职称",
       dataIndex: "title",
-      width: 200,
+      width: 100,
       align: "center"
     },
     {
       title: "学历",
       dataIndex: "education",
-      width: 100,
+      width: 80,
       align: "center"
     },
     {
       title: "原单位名称",
       dataIndex: "originalWorkUnit",
-      width: 200,
+      width: 150,
       align: "center"
     },
     {
       title: "原科室",
       dataIndex: "originalDepartment",
-      width: 220,
+      width: 180,
       align: "center"
     },
     {
       title: "联系电话",
       dataIndex: "phone",
-      width: 180,
+      width: 120,
       align: "center"
     },
     {
       title: "是否住宿",
       dataIndex: "isResident",
-      width: 100,
+      width: 80,
       align: "center"
     },
     {
@@ -105,7 +105,7 @@ export default observer(function NursingEduFiles(props: Props) {
     {
       title: "进修时间",
       dataIndex: "进修时间",
-      width: 150,
+      width: 210,
       align: "center",
       render(text: string, record: any) {
         return `${record.studyTimeBegin} ~ ${record.studyTimeEnd}`;
@@ -114,13 +114,13 @@ export default observer(function NursingEduFiles(props: Props) {
     {
       title: "进修科室一",
       dataIndex: "studyDeptName01",
-      width: 220,
+      width: 200,
       align: "center"
     },
     {
       title: "进修科室二",
       dataIndex: "studyDeptName02",
-      width: 220,
+      width: 200,
       align: "center"
     },
     {
@@ -132,13 +132,13 @@ export default observer(function NursingEduFiles(props: Props) {
     {
       title: "紧急联系人",
       dataIndex: "emergencyContactPerson",
-      width: 120,
+      width: 100,
       align: "center"
     },
     {
       title: "紧急联系人电话",
       dataIndex: "emergencyContactPhone",
-      width: 180,
+      width: 150,
       align: "center"
     },
     {
@@ -238,6 +238,7 @@ export default observer(function NursingEduFiles(props: Props) {
               nursingEduFilesModal.onload();
             }}
           >
+            <Select.Option value="">全部</Select.Option>
             <Select.Option value="9">博士</Select.Option>
             <Select.Option value="8">研究生</Select.Option>
             <Select.Option value="7">本科</Select.Option>
@@ -254,6 +255,7 @@ export default observer(function NursingEduFiles(props: Props) {
               nursingEduFilesModal.onload();
             }}
           >
+            <Select.Option value="">全部</Select.Option>
             <Select.Option value="0">男</Select.Option>
             <Select.Option value="1">女</Select.Option>
           </Select>
@@ -274,9 +276,9 @@ export default observer(function NursingEduFiles(props: Props) {
             查询
           </Button>
           <Button
-          // onClick={() => {
-          //   nursingEduFilesModal.export();
-          // }}
+            onClick={() => {
+              nursingEduFilesModal.export();
+            }}
           >
             导出
           </Button>

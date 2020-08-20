@@ -75,7 +75,11 @@ export default function NursingEditModal(props: Props) {
           if (params.education) {
             params.education = educationList.find(
               (item: any) => item.name === params.education
-            ).num;
+            )
+              ? educationList.find(
+                  (item: any) => item.name === params.education
+                ).num
+              : "";
           }
           const {
             identifier,
@@ -128,11 +132,11 @@ export default function NursingEditModal(props: Props) {
   }, [visible]);
 
   const checkForm = () => {
-    let current = formRef.current;
+    let current: any = formRef.current;
     if (current) {
       current
         .validateFields()
-        .then(res => {
+        .then((res: any) => {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
@@ -160,6 +164,7 @@ export default function NursingEditModal(props: Props) {
                 let msg = "修改成功";
                 Message.success(msg);
                 onOk();
+                current.clear();
               });
             } else {
               nursingEduFilesApi.saveOrUpdateInfo(newParams).then(res => {
@@ -167,12 +172,14 @@ export default function NursingEditModal(props: Props) {
                 let msg = "添加成功";
                 Message.success(msg);
                 onOk(res);
+                current.clear();
               });
             }
           }
         })
-        .catch(e => {
+        .catch((e: any) => {
           console.log(e);
+          setEditLoading(false);
         });
     }
   };
@@ -246,6 +253,8 @@ export default function NursingEditModal(props: Props) {
                     <Select.Option value="见习护士">见习护士</Select.Option>
                     <Select.Option value="护士">护士</Select.Option>
                     <Select.Option value="主管护师">主管护师</Select.Option>
+                    <Select.Option value="副主任护师">副主任护师</Select.Option>
+                    <Select.Option value="主任护师">主任护师</Select.Option>
                   </Select>
                 </Form.Field>
               </Col>
@@ -337,6 +346,7 @@ export default function NursingEditModal(props: Props) {
                 <Form.Field name="studyDeptCode01">
                   <Select
                     style={{ width: 180 }}
+                    allowClear
                     showSearch
                     filterOption={(input: any, option: any) =>
                       option.props.children
@@ -363,6 +373,7 @@ export default function NursingEditModal(props: Props) {
                 <Form.Field name="studyDeptCode02">
                   <Select
                     style={{ width: 180 }}
+                    allowClear
                     showSearch
                     filterOption={(input: any, option: any) =>
                       option.props.children
