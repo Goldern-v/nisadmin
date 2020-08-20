@@ -168,10 +168,10 @@ export default observer(function TraineeFiles(props: Props) {
           .deleteInfoByIdentifier(record.identifier)
           .then(res => {
             if (res.code == 200) {
-              Message.success("文件删除成功");
+              Message.success("记录删除成功");
               traineeFilesModal.onload();
             } else {
-              Message.error("文件删除失败");
+              Message.error(`${res.dec}`);
             }
           })
           .catch(e => {});
