@@ -52,7 +52,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
-  const [date, setDate]: any = useState([null, null]);
+  const [date, setDate]: any = useState(getCurrentMonth());
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,

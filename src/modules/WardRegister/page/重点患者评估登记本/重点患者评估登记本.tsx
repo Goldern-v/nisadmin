@@ -32,6 +32,7 @@ import { createFilterInput } from "../../components/Render.v1/FilterInput";
 // import { wardRegisterService } from "../../services/WardRegisterService";
 // import { globalModal } from "src/global/globalModal";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
@@ -54,7 +55,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
-  const [date, setDate]: any = useState([null, null]);
+  const [date, setDate]: any = useState(getCurrentMonth());
   const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(220);
   const [pageOptions, setPageOptions]: any = useState({

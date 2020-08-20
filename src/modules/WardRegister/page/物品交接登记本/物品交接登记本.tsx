@@ -38,6 +38,7 @@ import { createContextMenu } from "src/modules/personnelManagement/views/arrange
 import TdCell from "./components/TdCell";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
@@ -63,7 +64,7 @@ export default observer(function HandoverRegister(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId] = useState(null);
-  const [date, setDate]: any = useState([null, null]);
+  const [date, setDate]: any = useState(getCurrentMonth());
   const [surplusWidth, setSurplusWidth]: any = useState(false);
   const [surplusHeight, setSurplusHeight] = useState(200)
   const [pageOptions, setPageOptions]: any = useState({

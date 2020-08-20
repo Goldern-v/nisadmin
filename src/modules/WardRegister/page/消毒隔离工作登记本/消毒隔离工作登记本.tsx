@@ -60,7 +60,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
-  const [date, setDate]: any = useState([null, null]);
+  const [date, setDate]: any = useState(getCurrentMonth());
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
