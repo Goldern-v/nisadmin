@@ -153,13 +153,19 @@ export default function TraineeFilesEditModal(props: Props) {
             if (params.identifier) {
               newParams.identifier = params.identifier;
               setEditLoading(true);
-              traineeFilesApi.saveOrUpdateInfo(newParams).then(res => {
-                setEditLoading(false);
-                let msg = "修改成功";
-                Message.success(msg);
-                onOk();
-                current.clear();
-              });
+              traineeFilesApi
+                .saveOrUpdateInfo(newParams)
+                .then(res => {
+                  setEditLoading(false);
+                  let msg = "修改成功";
+                  Message.success(msg);
+                  onOk();
+                  current.clear();
+                })
+                .catch((e: any) => {
+                  console.log(e);
+                  setEditLoading(false);
+                });
             } else {
               traineeFilesApi.saveOrUpdateInfo(newParams).then(res => {
                 setEditLoading(false);

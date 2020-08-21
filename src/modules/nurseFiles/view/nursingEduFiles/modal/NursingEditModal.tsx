@@ -137,6 +137,7 @@ export default function NursingEditModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
+            console.log(newParams, "newParams1111");
             newParams.studyTimeBegin = newParams.studyTime
               ? newParams.studyTime[0].format("YYYY-MM-DD")
               : "";
@@ -156,13 +157,19 @@ export default function NursingEditModal(props: Props) {
             if (params.identifier) {
               newParams.identifier = params.identifier;
               setEditLoading(true);
-              nursingEduFilesApi.saveOrUpdateInfo(newParams).then(res => {
-                setEditLoading(false);
-                let msg = "修改成功";
-                Message.success(msg);
-                onOk();
-                current.clear();
-              });
+              nursingEduFilesApi
+                .saveOrUpdateInfo(newParams)
+                .then(res => {
+                  setEditLoading(false);
+                  let msg = "修改成功";
+                  Message.success(msg);
+                  onOk();
+                  current.clear();
+                })
+                .catch((e: any) => {
+                  console.log(e);
+                  setEditLoading(false);
+                });
             } else {
               nursingEduFilesApi.saveOrUpdateInfo(newParams).then(res => {
                 setEditLoading(false);
