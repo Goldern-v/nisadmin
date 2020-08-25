@@ -13,7 +13,7 @@ export default observer(function Header() {
   return (
     <Wrapper>
       <LeftIcon>
-        <span>推送时间：</span>
+        <span>发布时间：</span>
         <DatePicker.RangePicker
           allowClear={false}
           style={{ width: 220 }}
