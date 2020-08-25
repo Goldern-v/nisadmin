@@ -61,6 +61,7 @@ export default function TraineeFilesEditModal(props: Props) {
         if (!current) return;
         if (params.identifier) {
           current.clear();
+          let data: any = { ...params };
           // setLoading(true);
           // traineeFilesApi.queryInfoByIdentifier(params.identifier).then(res => {
           //   setLoading(false);
@@ -73,13 +74,12 @@ export default function TraineeFilesEditModal(props: Props) {
             { name: "大专", num: "6" },
             { name: "中专", num: "5" }
           ];
-          if (params.education) {
-            params.education = educationList.find(
-              (item: any) => item.name === params.education
+          if (data.education) {
+            data.education = educationList.find(
+              (item: any) => item.name === data.education
             )
-              ? educationList.find(
-                  (item: any) => item.name === params.education
-                ).num
+              ? educationList.find((item: any) => item.name === data.education)
+                  .num
               : "";
           }
           const {
@@ -102,7 +102,7 @@ export default function TraineeFilesEditModal(props: Props) {
             emergencyContactPerson,
             emergencyContactPhone,
             remark
-          } = params;
+          } = data;
           current.setFields({
             identifier,
             name,
@@ -127,7 +127,7 @@ export default function TraineeFilesEditModal(props: Props) {
         }
       }, 100);
     }
-  }, [visible]);
+  }, [visible, formRef]);
 
   // 保存
   const checkForm = () => {
@@ -194,6 +194,7 @@ export default function TraineeFilesEditModal(props: Props) {
     <Modal
       visible={visible}
       onCancel={handleCancel}
+      forceRender={true}
       onOk={checkForm}
       confirmLoading={editLoading}
       title={params.identifier ? "修改" : "添加"}
