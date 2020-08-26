@@ -1425,35 +1425,33 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_20_2': <React.Fragment>
-                  <Button
-                    disabled={
-                      pageLoading ||
-                      selectedRowKeys.length <= 0
-                    }
-                    type="primary"
-                    onClick={() => handleCopyCreateRow()}>
-                    复制新增
-                  </Button>
-                </React.Fragment>,
-                'QCRG_04': <React.Fragment>
-                  <Button
-                    disabled={
-                      pageLoading ||
-                      selectedRowKeys.length <= 0
-                    }
-                    type="primary"
-                    onClick={() => handleAuditAll(
-                      '负责人',
-                      codeAdapter({
-                        QCRG_03: 'sign',
-                        other: 'audit'
-                      }, registerCode)
-                    )}>
-                    负责人签名
-              </Button>
-                </React.Fragment>,
-                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_12_2,QCRG_21':
+                'QCRG_20_2': (
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleCopyCreateRow()}>
+                      复制新增
+                    </Button>
+                  </React.Fragment>
+                ),
+                'QCRG_04': (
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleAuditAll('负责人', 'audit')}>
+                      负责人签名
+                    </Button>
+                  </React.Fragment>
+                ),
+                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_21': (
                   <React.Fragment>
                     <Button
                       disabled={
@@ -1479,8 +1477,40 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       onClick={() => handleCopyCreateRow()}>
                       复制新增
                   </Button>
-                  </React.Fragment>,
-                other: <span></span>,
+                  </React.Fragment>
+                ),
+                'QCRG_12_2': (
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleAuditAll('护士', 'sign')}>
+                      签名
+                    </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleAuditAll('负责人', 'audit')}>
+                      负责人签名
+                    </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleCopyCreateRow()}>
+                      复制新增
+                    </Button>
+                  </React.Fragment>
+                ),
+                other: (<span></span>),
               }, registerCode, true)}
             </div>
           </React.Fragment>
