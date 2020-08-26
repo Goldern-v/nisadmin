@@ -109,7 +109,7 @@ export default observer(function RevisionBtn(props: Props) {
     })
   }
 
-  if (authStore.isDepartment)
+  if (authStore.isDepartment || authStore.selectedDeptName == '护理部')
     return (<Button
       onClick={handleRevision}
       disabled={loading}
