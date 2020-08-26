@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, message, Input, Tooltip, Modal, Icon } from 'antd'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { nursingRulesApiService } from './../../api/nursingRulesNewService'
 
@@ -109,12 +109,15 @@ export default observer(function RevisionBtn(props: Props) {
     })
   }
 
-  return <Button
-    onClick={handleRevision}
-    disabled={loading}
-    style={{ display: viewType ? 'none' : 'block' }}>
-    修订本章节
-  </Button>
+  if (authStore.isDepartment)
+    return (<Button
+      onClick={handleRevision}
+      disabled={loading}
+      style={{ display: viewType ? 'none' : 'block' }}>
+      修订本章节
+    </Button>)
+  else
+    return (<span></span>)
 })
 
 const RevisionCon = styled.div`
