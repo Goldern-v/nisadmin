@@ -79,8 +79,8 @@ const LEFT_MENU_CONFIG = [
     title: "节假日设置",
     icon: <JJRSZ />,
     path: "/setting/节假日设置",
-    component: 节假日设置,
-    hide: appStore.HOSPITAL_ID == "nys"
+    component: 节假日设置
+    // hide: appStore.HOSPITAL_ID == "nys"
   },
   {
     title: "科室偏好设置",
