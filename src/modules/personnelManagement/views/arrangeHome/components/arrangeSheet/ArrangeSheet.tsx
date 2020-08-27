@@ -340,7 +340,8 @@ export default observer(function ArrangeSheet(props: Props) {
                     {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
                   </div>
                   <Input.TextArea
-                    value={sheetViewModal.remark}
+                    readOnly={!isEdit}
+                    defaultValue={sheetViewModal.remark}
                     autosize={!isEdit}
                     onBlur={e => {
                       sheetViewModal.remark = e.target.value;
