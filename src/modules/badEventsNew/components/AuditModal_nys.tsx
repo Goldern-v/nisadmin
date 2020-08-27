@@ -245,6 +245,27 @@ export default observer(function AduitModal(props: Props) {
             </Row>
           </div>
         )
+      case 'department_back':
+        return (
+          <div className='form1'>
+            <Row>
+              <Col span={6}>
+                <div style={{ lineHeight: '30px', fontSize: '14px' }}>转归(病区填写)：</div>
+              </Col>
+              <Col span={18}>
+                <Radio.Group
+                  value={formMap[`${eventCode}_zgbqtx_explain`]}
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_zgbqtx_explain`]: e.target.value })
+                  }>
+                  <Radio value="愈合">愈合</Radio>
+                  <Radio value="好转">好转</Radio>
+                  <Radio value="无效">无效</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>
+          </div>
+        )
       default:
         return <span>未知审核流程</span>
     }
