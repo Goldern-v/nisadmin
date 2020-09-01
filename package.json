@@ -67,7 +67,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "2.1.8",
     "react-zmage": "^0.8.5",
-    "styled-components": "4.2.0",
+    "styled-components": "5.1.1",
     "tinymce": "5.0.4",
     "viser-react": "2.4.5"
   },

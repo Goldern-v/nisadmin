@@ -604,5 +604,6 @@ const SelectionOperate = styled.div`
 
 const NoPicCon = styled.div`
   font-size:16px;
-  line-height: 100px;
+  line-height: 200px;
+  text-align: center;
 `
