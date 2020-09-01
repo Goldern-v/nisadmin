@@ -1,8 +1,8 @@
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import Form from "src/components/Form";
+// import Form from "src/components/Form";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { Button, DatePicker, Select, Pagination } from "antd";
+import { Button, DatePicker, Select } from "antd";
 import service from 'src/services/api'
 // import { Link } from "react-router-dom";
 import { ColumnProps } from "antd/lib/table";
@@ -111,26 +111,33 @@ export default observer(function BadEventNewList() {
       align: "center",
       width: 60
     },
-    {
-      title: "SAC",
-      dataIndex: "sac",
-      key: "sac",
-      align: "center",
-      width: 40
-    },
-    {
-      title: "提交医院质量安全管理委员会",
-      dataIndex: "commitToQC",
-      key: "commitToQC",
-      align: "center",
-      width: 110,
-      render: (commitToQC: any, item: any) => {
-        if (!commitToQC || commitToQC == '不提交')
-          return '不提交'
-        else
-          return '提交'
+    ...appStore.hisMatch({
+      map: {
+        'nys': [],
+        'other': [
+          {
+            title: "SAC",
+            dataIndex: "sac",
+            key: "sac",
+            align: "center",
+            width: 40
+          },
+          {
+            title: "提交医院质量安全管理委员会",
+            dataIndex: "commitToQC",
+            key: "commitToQC",
+            align: "center",
+            width: 110,
+            render: (commitToQC: any, item: any) => {
+              if (!commitToQC || commitToQC == '不提交')
+                return '不提交'
+              else
+                return '提交'
+            }
+          },
+        ]
       }
-    },
+    }),
     {
       title: "事件状态",
       dataIndex: "status",
@@ -143,9 +150,18 @@ export default observer(function BadEventNewList() {
         let target = eventStatusList.filter(
           (item1: any) => item1.code == item.status
         );
-        if (!item.allow) return <span style={{ color: "red" }}>退回</span>
+        let color = '#000'
+
+        if (!item.allow) {
+          if (appStore.HOSPITAL_ID !== 'nys') {
+            return <span style={{ color: "red" }}>退回</span>
+          } else {
+            color = '#f00'
+          }
+        }
+
         if (target.length > 0) statusText = target[0].name;
-        return <span style={{ wordBreak: "break-word" }}>{statusText}</span>
+        return <span style={{ wordBreak: "break-word", color }}>{statusText}</span>
       }
     },
     {

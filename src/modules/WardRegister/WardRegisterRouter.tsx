@@ -189,7 +189,7 @@ function WardRegisterRouter() {
       title: "仪器设备使用登记",
       path: "/wardRegister/QCRG_11",
       icon: <YQSB />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       component: { ...物品交接登记本 },
       payload: {
         registerCode: "QCRG_11",

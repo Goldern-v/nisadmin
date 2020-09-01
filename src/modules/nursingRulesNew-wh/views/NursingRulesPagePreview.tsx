@@ -101,7 +101,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         (res) => {
           callback(res[0].data)
 
-          setAuditInfo(res[1].data)
+          if (res[0].data && res[0].data.length > 0)
+            setAuditInfo(res[0].data[0])
         },
         (err) => callback()
       )
@@ -395,9 +396,9 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       <div className='topbar'>
         <NavCon>
           <Link to='/nursingRulesNew'>护理制度</Link>
-          <span> > </span>
+          <span> &gt; </span>
           <a onClick={() => history.goBack()}>{bookName || '书籍名称'}</a>
-          <span> > </span>
+          <span> &gt; </span>
           <span>{chapterTitle()}</span>
         </NavCon>
         <div className='fl-right'>
@@ -417,7 +418,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       </div>
       <div className='main-contain'>
         <div className='audit-content' style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
-          <AuditInfo upLoadTime={auditInfo.upLoadTime} upLoaderEmpName={auditInfo.upLoaderEmpName} />
+          <AuditInfo upLoadTime={auditInfo.upLoadTimeB} upLoaderEmpName={auditInfo.upLoaderEmpNameB} />
         </div>
         <div className='preview-content'>
           <div

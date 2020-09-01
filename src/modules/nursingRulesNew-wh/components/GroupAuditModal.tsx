@@ -53,7 +53,7 @@ export default observer(function GroupAuditModal(props: Props) {
 
     let reqParams = {
       remark: params.remark,
-      auditResult: params.audit ? 1 : -1,
+      auditResult: params.audit ? '1' : '-1',
       nodeNums,
       bookId
     }
@@ -87,7 +87,7 @@ export default observer(function GroupAuditModal(props: Props) {
         <Col span={20}>
           <RadioGroup value={params.audit} onChange={(e: any) => setParams({ ...params, audit: e.target.value })}>
             <Radio value={true}>通过</Radio>
-            {/* <Radio value={false}>退回</Radio> */}
+            {(authStore.user?.empNo || '').toLowerCase() === 'admin' && <Radio value={false}>退回</Radio>}
           </RadioGroup>
         </Col>
       </Row>
