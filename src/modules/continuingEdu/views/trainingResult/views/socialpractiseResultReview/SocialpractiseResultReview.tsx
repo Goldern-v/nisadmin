@@ -429,17 +429,18 @@ export default observer(function SocialpractiseResultReview() {
               !imgListLoading ?
                 <FullContent>
                   <div className="imglist-con content scroll-con">
-                    <div className="img-wrapper">
-                      {imgList.map((item: any, idx: number) => <img
-                        key={idx}
-                        src={item.path || ''}
-                        onClick={() => {
-                          if (item.path) Zmage.browsing({
-                            src: item.path,
-                            backdrop: 'rgba(0,0,0, .8)'
-                          })
-                        }} alt="" />)}
-                    </div>
+                    {imgList.map((item: any, idx: number) =>
+                      <div className="img-wrapper" key={idx}>
+                        <img
+                          src={item.path || ''}
+                          onClick={() => {
+                            if (item.path) Zmage.browsing({
+                              src: item.path,
+                              backdrop: 'rgba(0,0,0, .8)'
+                            })
+                          }} alt="" />
+                      </div>
+                    )}
                   </div>
                   <div className="pagination-footer">
                     <Pagination

@@ -61,6 +61,7 @@ export const ButtonGroups = styled.div`
 export const MainPannel = styled.div`
   flex: 1;
   padding-top: 15px;
+  padding-bottom: 15px;
 `
 
 export const ActiveText = styled.span`

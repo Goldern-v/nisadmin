@@ -146,6 +146,14 @@ export default class TrainingResultService extends BaseApiService {
     },
       { responseType: "blob" });
   }
+
+  /**查看结果-导出出勤率统计信息 培训类型 获取现场图片*/
+  public trainManagePictures(query: any) {
+    return this.post(
+      "/studyAndTrain/trainManage/getPicturesByPage",
+      query
+    );
+  }
 }
 
 export const trainingResultService = new TrainingResultService();

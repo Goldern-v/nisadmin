@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message } from 'antd'
+import { Button, Checkbox, message, Tabs, Pagination, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -19,10 +19,15 @@ import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import Zmage from 'react-zmage'
 // import moment from 'moment'
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 
 import { trainingResultModel } from './../../models/TrainingResultModel'
+import { trainingResultService } from '../../api/TrainingResultService'
+
+const TabPane = Tabs.TabPane
+
 export interface Props { }
 
 //查看培训结果
@@ -34,6 +39,13 @@ export default observer(function TrainingResultReview() {
   const answerSheetModal = createModal(AnswerSheetModal)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
+
+  const [activeTab, setActiveTab] = useState('1')
+  //现场图片相关数据
+  const [imgList, setImgList] = useState([] as any[])
+  const [imgListLoading, setImgListLoading] = useState(false)
+  const [imgTotal, setImgTotal] = useState(0)
+  const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 20 })
 
   const statusColumns = (() => {
     //根据线上还是线下判断展示学习情况还是签到情况
@@ -72,6 +84,14 @@ export default observer(function TrainingResultReview() {
         width: 100
       },
     ] as ColumnProps<any>[]
+  })()
+
+  /**是否显示线下培训的现场图片 */
+  const pictrueVisible = (() => {
+    if (appStore.HOSPITAL_ID === 'hj') {
+      if (baseInfo.organizationWay == '线下') return true
+    }
+    return false
   })()
 
   let columns: ColumnProps<any>[] = [
@@ -245,6 +265,26 @@ export default observer(function TrainingResultReview() {
     })
   }
 
+  const getImgList = () => {
+    setImgListLoading(true)
+    trainingResultService
+      .trainManagePictures({
+        cetpId: appStore.queryObj.id,
+        ...imgListQuery
+      })
+      .then(res => {
+        setImgListLoading(false)
+        if (res.data) {
+          setImgTotal(res.data.totalCount || 0)
+          setImgList(res.data.list || [])
+        }
+      }, () => setImgListLoading(false))
+  }
+
+  useEffect(() => {
+    getImgList()
+  }, [imgListQuery])
+
   useEffect(() => {
     if (loading) setSelectedRowKeys([])
   }, [loading])
@@ -257,11 +297,11 @@ export default observer(function TrainingResultReview() {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
-        <span> > </span>
+        <span> &gt; </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> &gt; 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
@@ -294,56 +334,103 @@ export default observer(function TrainingResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
-      <QueryPannel />
       <TableWrapper>
-        <BaseTable
-          loading={loading}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect
-          }}
-          rowKey='empNo'
-          surplusWidth={200}
-          surplusHeight={355}
-          dataSource={tableData}
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => handleDetail(record)
-            }
-          }}
-          pagination={{
-            pageSizeOptions: ['10', '15', '20', '30', '50'],
-            current: query.pageIndex,
-            pageSize: query.pageSize,
-            total: tableDataTotal,
-            onChange: handlePageChange,
-            onShowSizeChange: handleSizeChange
-          }}
-          columns={columns}
-        />
-        <SelectionOperate>
-          <Checkbox
-            indeterminate={(() => {
-              if (selectedRowKeys.length <= 0)
-                return false
-              if (selectedRowKeys.length >= tableData.length)
-                return false
-              return true
-            })()}
-            disabled={loading}
-            onChange={(e: any) => {
-              let checked = e.target.checked
-              if (checked)
-                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
-              else
-                setSelectedRowKeys([])
-            }}
-            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
-            全选
-          </Checkbox>
-          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
-          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate>
+        <Tabs
+          activeKey={activeTab}
+          onChange={(tab: any) => setActiveTab(tab)}
+          style={{ height: '100%' }}>
+          <TabPane tab="实践结果" key="1" >
+            <QueryPannel />
+            <BaseTable
+              loading={loading}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleRowSelect
+              }}
+              rowKey='empNo'
+              surplusWidth={200}
+              surplusHeight={385}
+              dataSource={tableData}
+              onRow={(record: any) => {
+                return {
+                  onDoubleClick: () => handleDetail(record)
+                }
+              }}
+              pagination={{
+                pageSizeOptions: ['10', '15', '20', '30', '50'],
+                current: query.pageIndex,
+                pageSize: query.pageSize,
+                total: tableDataTotal,
+                onChange: handlePageChange,
+                onShowSizeChange: handleSizeChange
+              }}
+              columns={columns}
+            />
+            {activeTab == '1' && (
+              <SelectionOperate>
+                <Checkbox
+                  indeterminate={(() => {
+                    if (selectedRowKeys.length <= 0)
+                      return false
+                    if (selectedRowKeys.length >= tableData.length)
+                      return false
+                    return true
+                  })()}
+                  disabled={loading}
+                  onChange={(e: any) => {
+                    let checked = e.target.checked
+                    if (checked)
+                      setSelectedRowKeys(tableData.map((item: any) => item.empNo))
+                    else
+                      setSelectedRowKeys([])
+                  }}
+                  checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
+                  全选
+            </Checkbox>
+                <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
+                <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
+              </SelectionOperate>
+            )}
+          </TabPane>
+          {pictrueVisible && (
+            <TabPane tab="现场图片" key="2">
+              {
+                !imgListLoading ?
+                  <FullContent>
+                    <div className="imglist-con content scroll-con">
+                      {imgList.map((item: any, idx: number) =>
+                        <div className="img-wrapper" key={idx}>
+                          <img
+
+                            src={item.path || ''}
+                            onClick={() => {
+                              if (item.path) Zmage.browsing({
+                                src: item.path,
+                                backdrop: 'rgba(0,0,0, .8)'
+                              })
+                            }} alt="" />
+                        </div>
+                      )}
+                      {<NoPicCon>暂无图片</NoPicCon>}
+                    </div>
+                    <div className="pagination-footer">
+                      <Pagination
+                        size="small"
+                        current={imgListQuery.pageIndex}
+                        pageSize={imgListQuery.pageSize}
+                        onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
+                        total={imgTotal} />
+                    </div>
+                  </FullContent> :
+                  <div className="loading-wrapper">
+                    <Spin spinning={imgListLoading}>
+                      <div className="loading-wrapper"></div>
+                    </Spin>
+                  </div>
+              }
+            </TabPane>
+          )}
+        </Tabs>
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />
@@ -353,6 +440,7 @@ export default observer(function TrainingResultReview() {
 
 const TableWrapper = styled(TabledCon)`
   position: relative;
+  height: 100%;
   td{
     word-break: break-all;
   }
@@ -371,7 +459,139 @@ const TableWrapper = styled(TabledCon)`
     }
   }
 `
+const FullContent = styled.div`
+  width: calc(100% - 30px);
+  position: fixed;
+  height: calc(100% - 240px);
+  display:flex;
+  flex-direction: column;
+  background: #fff;
+  .content{
+    flex:1;
+    margin: 0 1px;
+    padding: 0 15px;
+    overflow: auto;
+    
+    &.conv{
+      display: flex;
+      flex-direction: column;
+      .conv-list-wrapper{
+        flex:1;
+        overflow: auto;
+      }
+      .pagination-footer{
+        padding: 5px 15px;
+      }
+      .conv-item{
+        margin: 8px 0;
+        position: relative;
+        pre{
+          padding-bottom: 10px;
+        }
+        &::after{
+          content: '';
+          left: 0;
+          right: 24px;
+          position: absolute;
+          bottom: 0;
+          height: 1px;
+          background-color: #ddd;
+        }
 
+        &:last-child{
+          &::after{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .scroll-con{
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: #eaeaea;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: #c2c2c2;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 50px;
+      background-color: #eaeaea;
+    }
+  }
+  .pagination-footer{
+    text-align: right;
+    padding:15px;
+  }
+  .imglist-con{
+    .img-wrapper{
+      width: 20%;
+      float: left;
+      display: inline-block;
+      padding: 0 15px;
+      margin: 10px  0;
+      height: 200px;
+      text-align: center;
+      img{
+        background-color: #eee;
+        cursor: pointer;
+        max-width:100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  .sub-title{
+    font-weight: bold;
+    font-size: 20px;
+    color: #000;
+  }
+
+  .conv-item{
+    .conv-person-info{
+      &>*{
+        vertical-align: top;
+      }
+      &>span{
+        color: #666;
+        display: inline-block;
+        margin-left: 12px;
+        font-size: 14px;
+        line-height: 25px;
+        vertical-align: top;
+      }
+    }
+    .conv-content{
+      pre{
+        word-break: break-all;
+        white-space: pre-wrap;
+        color: #000;
+        font-size: 14px;
+        margin: 5px 0 0 0;
+      }
+    }
+  }
+  
+  .head-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: url('${require('src/assets/护士默认头像.png')}');
+    background-size: 100%;
+    object-fit: cover;
+  }
+  .summary-wrapper{
+    min-height: 150px;
+    padding: 0 20px;
+    border-top: 1px solid #eee;
+    .sub-title{
+      margin-bottom: 10px;
+    }
+  }
+`
 const SelectionOperate = styled.div`
   position: absolute;
   bottom: 15px;
@@ -380,4 +600,9 @@ const SelectionOperate = styled.div`
   span{
     vertical-align: middle;
   }
+`
+
+const NoPicCon = styled.div`
+  font-size:16px;
+  line-height: 100px;
 `
