@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { Modal, Input, Select, Button, message as Message, Row, Col, Radio } from 'antd'
 import { authStore } from 'src/stores'
+import services from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import badEventsNewService from '../api/badEventsNewService'
 import Moment from 'moment'
@@ -9,6 +10,7 @@ import Moment from 'moment'
 import UserCheckModal from './UserCheckModal'
 
 const api = new badEventsNewService()
+const commonApiService = services.commonApiService
 
 const { TextArea } = Input
 const { Option } = Select
@@ -17,6 +19,7 @@ export interface Props {
   visible: boolean //审核窗口显示
   onOk: any //审核操作完成回调
   paramMap?: any //不良事件表单数据
+  instanceOrign?: any //不良事件表单基本数据
   status: string //当前不良事件状态
   title?: string, //当前不良事件审核标题
   onCancel: any //窗口关闭回调
@@ -26,7 +29,7 @@ export interface Props {
 }
 
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title } = props
+  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign } = props
   //用于操作和提交的不良事件表单数据
   let initFormMap: any = {}
   const [formMap, setFormMap] = useState(initFormMap)
@@ -40,6 +43,8 @@ export default observer(function AduitModal(props: Props) {
 
   //转发科室列表
   const [dealerDepts, setDealerDepts] = useState([] as any)
+  //转发科室护士列表
+  const [returnDeptNurseList, setReturnDeptNurseList] = useState([] as any[])
 
   useEffect(() => {
     if (visible) {
@@ -74,6 +79,11 @@ export default observer(function AduitModal(props: Props) {
     }
   }, [visible])
 
+  useEffect(() => {
+    if (instanceOrign.deptCode)
+      getReturnDeptNurseList()
+  }, [instanceOrign])
+
   const getDealerDepts = () => {
     api.getDeptList().then((res) => {
       let data = res.data
@@ -87,6 +97,13 @@ export default observer(function AduitModal(props: Props) {
           })
         )
     })
+  }
+
+  const getReturnDeptNurseList = () => {
+    commonApiService.userDictInfo(instanceOrign.deptCode)
+      .then(res => {
+        if (res.data) setReturnDeptNurseList(res.data)
+      })
   }
 
   // const handleDeptChange = (name: any) => {
@@ -132,6 +149,14 @@ export default observer(function AduitModal(props: Props) {
       sac: formMap[`${eventCode}_sac_option`],
     }
 
+    /**转归科室推送护士 */
+    if (formMap.nurseList)
+      params.nurseList = formMap.nurseList.map((item: any) => ({
+        empName: item.label,
+        empNo: item.key
+      }))
+
+    delete params.paramMap.nurseList
     delete params.operatorStatus
 
     setConfirmLoading(true)
@@ -249,19 +274,25 @@ export default observer(function AduitModal(props: Props) {
         return (
           <div className='form1'>
             <Row>
-              <Col span={6}>
-                <div style={{ lineHeight: '30px', fontSize: '14px' }}>转归(病区填写)：</div>
+              <Col span={4}>
+                <div style={{ lineHeight: '30px', fontSize: '14px' }}>推送护士：</div>
               </Col>
-              <Col span={18}>
-                <Radio.Group
-                  value={formMap[`${eventCode}_zgbqtx_explain`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_zgbqtx_explain`]: e.target.value })
-                  }>
-                  <Radio value="愈合">愈合</Radio>
-                  <Radio value="好转">好转</Radio>
-                  <Radio value="无效">无效</Radio>
-                </Radio.Group>
+              <Col span={20}>
+                <Select
+                  value={formMap.nurseList || []}
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  onChange={(val: any[]) => {
+                    if (val.length > 0)
+                      setFormMap({ ...formMap, nurseList: [val[val.length - 1]] })
+                    else
+                      setFormMap({ ...formMap, nurseList: [] })
+                  }}
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  labelInValue>
+                  {returnDeptNurseList.map((item: any) => <Option value={item.empNo} key={item.empNo}>{item.empName}</Option>)}
+                </Select>
               </Col>
             </Row>
           </div>

@@ -12,6 +12,7 @@ import { observer } from "mobx-react-lite";
 import BadEventsNewService from "./api/badEventsNewService";
 // import CustomPagination from './components/CustomPagination'
 import moment from "moment";
+import { useKeepAliveEffect } from "react-keep-alive";
 
 const api = new BadEventsNewService();
 
@@ -222,6 +223,13 @@ export default observer(function BadEventNewList() {
 
     getTypeList()
   }, []);
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP')
+      getEventList()
+
+    // return () => { }
+  })
 
   // useEffect(() => {
   //   setDataLoading(true)

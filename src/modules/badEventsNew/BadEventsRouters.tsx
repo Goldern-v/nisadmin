@@ -23,8 +23,8 @@ export default function BadEventsRouters(props: Props) {
       // icon: <SJZK />,
       path: "/home",
       component: BadEventsNewList,
-      // keepAlive: true,
-      // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     },
     {
       title: '不良事件统计',

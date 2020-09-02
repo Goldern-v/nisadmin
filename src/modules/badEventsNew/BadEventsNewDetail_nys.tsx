@@ -24,6 +24,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     badEventName: '',
     eventType: '',
     deptCode: '',
+    instance: {} as any,
     paramMap: {} as any
   })
 
@@ -107,6 +108,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             badEventName,
             eventType,
             deptCode,
+            instance: { ...data },
             paramMap
           })
 
@@ -163,7 +165,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             } else if (timeData[i].operatorStatus == 'quality_controller') {
               if (deptName) title = `质控科审核：转发${deptName}`
             } else if (timeData[i].allow == false) {
-              thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
+              // thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
             }
 
             let line1Text = `${operatorName} ${operatorWardName}`
@@ -280,7 +282,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
               if (!item.id)
                 icon = <Icon type='minus-circle' className='icon-step default' />
               // icon = <Icon type='right-circle' className='icon-step default' />
-              console.log(item.title)
+              // console.log(item.title)
               return <Step title={item.title} icon={icon} description={item.description} key={idx} />
             })}
           </Steps>
@@ -295,6 +297,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         onOk={handleOk}
         eventCode={detailData.badEventCode}
         paramMap={detailData.paramMap}
+        instanceOrign={detailData.instance}
         status={nextStep ? nextStep.operatorStatus : ''}
         title={nextStep ? nextStep.operatorName : ''}
         id={props.match.params.id}
