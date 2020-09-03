@@ -23,7 +23,7 @@ export default observer(function AddSubClass() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [selectedStatusType, setSelectedStatusType] = useState("");
-  const [publishType, setPublishType]: any = useState(0); // 状态
+  const [publishType, setPublishType]: any = useState(1); // 状态
   const [date, setDate]: any = useState(getCurrentMonthNow());
   const columns: ColumnProps<any>[] = [
     {
@@ -77,10 +77,7 @@ export default observer(function AddSubClass() {
     {
       title: "夜小时数",
       dataIndex: "settingNightHour",
-      align: "center",
-      render(text: string, record: any, index: number) {
-        return text || "";
-      }
+      align: "center"
     },
     {
       title: "备注",
