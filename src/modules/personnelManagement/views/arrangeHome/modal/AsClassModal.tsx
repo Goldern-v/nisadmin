@@ -102,6 +102,13 @@ export default observer(function AsClassModal(props: Props) {
       align: "center"
     },
     {
+      title: "备注",
+      dataIndex: "remark",
+      key: "remark",
+      width: 200,
+      align: "left"
+    },
+    {
       title: "操作",
       dataIndex: "操作",
       width: 100,
@@ -201,7 +208,7 @@ export default observer(function AsClassModal(props: Props) {
       <Modal
         className="modal"
         title="申请加减班"
-        width="1000px"
+        width="1200px"
         okText="全部填入"
         cancelText="返回"
         onOk={handleOk}

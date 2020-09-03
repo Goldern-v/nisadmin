@@ -17,12 +17,13 @@ import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
 import { getCurrentMonthNow } from "src/utils/date/currentMonth";
 import moment from "moment";
-export interface Props { }
+export interface Props {}
 export default observer(function AddSubClass() {
   const [searchWord, setSearchWord] = useState("");
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [selectedStatusType, setSelectedStatusType] = useState("");
+  const [publishType, setPublishType]: any = useState(0); // 状态
   const [date, setDate]: any = useState(getCurrentMonthNow());
   const columns: ColumnProps<any>[] = [
     {
@@ -121,26 +122,27 @@ export default observer(function AddSubClass() {
         wardCode: authStore.selectedDeptCode,
         statusType: selectedStatusType,
         empNo: searchWord,
+        publishType,
         startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
         endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
       })
       .then(res => {
         setDataSource(res.data.list);
-        setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 })
+        setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 });
         setPageLoading(false);
       });
   };
 
-  const onDetail = (record: any) => { };
+  const onDetail = (record: any) => {};
 
   useEffect(() => {
     getData();
-  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, selectedStatusType, date, searchWord]);
+  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, selectedStatusType, date, searchWord, publishType]);
 
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>加减班记录查询</PageTitle>
+        <PageTitle maxWidth={1450}>加减班记录查询</PageTitle>
         <Place />
         <span className="label">日期:</span>
         <DatePicker.RangePicker
@@ -150,7 +152,7 @@ export default observer(function AddSubClass() {
           onChange={value => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => { }} />
+        <DeptSelect onChange={() => {}} />
         <span className="label">工号姓名:</span>
         <Input
           value={searchWord}
@@ -167,6 +169,15 @@ export default observer(function AddSubClass() {
               {item.name}
             </Select.Option>
           ))}
+        </Select>
+        <span className="label">状态</span>
+        <Select
+          style={{ width: 120 }}
+          onChange={(value: number) => setPublishType(value)}
+          value={publishType}
+        >
+          <Select.Option value={0}>全部</Select.Option>
+          <Select.Option value={1}>暂存发布</Select.Option>
         </Select>
         <Button type="primary" onClick={() => getData()}>
           查询
