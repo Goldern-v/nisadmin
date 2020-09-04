@@ -88,6 +88,14 @@ export default observer(function AddSubClass() {
       width: 100,
       dataIndex: "hour",
       align: "center"
+    },
+    {
+      title: "状态",
+      dataIndex: "publishType",
+      align: "center",
+      render(text: string) {
+        return text === "1" ? "已填入" : "未填入";
+      }
     }
   ];
   const statusTypeList = [
@@ -168,14 +176,14 @@ export default observer(function AddSubClass() {
           ))}
         </Select>
         <span className="label">状态</span>
-        <Select
+        {/* <Select
           style={{ width: 120 }}
           onChange={(value: number) => setPublishType(value)}
           value={publishType}
         >
           <Select.Option value={0}>全部</Select.Option>
           <Select.Option value={1}>暂存发布</Select.Option>
-        </Select>
+        </Select> */}
         <Button type="primary" onClick={() => getData()}>
           查询
         </Button>
