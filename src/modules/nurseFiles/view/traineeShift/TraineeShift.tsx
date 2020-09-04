@@ -1,0 +1,286 @@
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { TabledCon } from "src/components/BaseTable";
+import {
+  Input,
+  Button,
+  message as Message,
+  Modal,
+  Tooltip
+} from "src/vendors/antd";
+import { PageTitle, Place } from "src/components/common";
+import BaseTable, { DoCon } from "src/components/BaseTable";
+import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
+import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
+
+interface Props {
+  getTitle: any;
+  getId: any;
+}
+export default observer(function TraineeShift(props: Props) {
+  const { getTitle, getId } = props; //获取当前页面标题
+  const [tableList, setTableList] = useState(new Array()); //保存轮科时间表单入参
+
+  // 初始化数据
+  useEffect(() => {
+    traineeShiftModal.sheetId = getId;
+    traineeShiftModal.onload();
+  }, [getId]);
+
+  // 表格姓名函数分装
+  const setTextData = (data: any) => {
+    if (data && data.length) {
+      let str = "";
+      let str1 = "";
+      let semicolon = "";
+      data.map((item: any, i: any) => {
+        let text = item.empName || "";
+        let semicolon1 = text && i !== data.length - 1 ? "、" : "";
+        if (data.length < 4) {
+          semicolon = text && i !== data.length - 1 ? "、" : "";
+        } else {
+          semicolon = text && i < 2 ? "、" : "";
+        }
+        if (i < 3) {
+          str1 += text + semicolon;
+        }
+        str += text + semicolon1;
+      });
+      return data.length > 3 ? (
+        <Tooltip placement="top" title={str}>
+          {`${str1}...`}
+        </Tooltip>
+      ) : (
+        str
+      );
+    } else {
+      return "";
+    }
+  };
+
+  // 动态科室对应的列
+  const rotateList = [] as any;
+  if (
+    traineeShiftModal.tableList[0] &&
+    traineeShiftModal.tableList[0].rotateTimesList
+  ) {
+    let rotateTimesList = traineeShiftModal.tableList[0].rotateTimesList;
+    rotateTimesList.length &&
+      rotateTimesList.map((item: any, index: number) => {
+        rotateList.push({
+          title: item.deptName,
+          dataIndex: index,
+          width: 120,
+          align: "center",
+          render: (text: any, record: any) => {
+            return (
+              <Input
+                defaultValue={`${item.beginTime} ~ ${item.endTime}`}
+                onChange={(e: any) => {
+                  let time = e.target.value;
+                  item.beginTime = time.substring(0, time.indexOf("~")).trim();
+                  item.endTime = time.substring(time.indexOf("~") + 1).trim();
+                  setTableList([...traineeShiftModal.tableList]);
+                }}
+              />
+            );
+          }
+        });
+      });
+  }
+
+  //表格数据
+  const columns: any = [
+    {
+      title: "组别",
+      dataIndex: "groupNum",
+      width: 50,
+      align: "center"
+    },
+    {
+      title: "姓名",
+      dataIndex: "rotatePersonsList",
+      width: 120,
+      align: "center",
+      render(text: any) {
+        return setTextData(text);
+      }
+    },
+    ...rotateList,
+    {
+      title: "教学查房时间",
+      key: "teachingRoundTime",
+      width: 80,
+      align: "center"
+    },
+    {
+      title: "操作",
+      key: "cz",
+      width: 60,
+      render(text: any, record: any) {
+        return (
+          <DoCon>
+            <span onClick={() => handleDelete(record)}>删除</span>
+          </DoCon>
+        );
+      }
+    }
+  ];
+
+  //删除计划表单条数据
+  const handleDelete = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要删除选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        traineeShiftApi
+          .deleteGroup(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("删除成功");
+              traineeShiftModal.onload();
+            } else {
+              Message.error(`${res.dec}`);
+            }
+          })
+          .catch(e => {});
+      }
+    });
+  };
+
+  // 保存轮科时间
+  const saveAllRotateTimes = () => {
+    let obj: any = {
+      sheetId: getId,
+      rotateGroupList: tableList
+    };
+    traineeShiftApi
+      .saveAllRotateTimes(obj)
+      .then(res => {
+        if (res.code == 200) {
+          Message.success("保存成功");
+          traineeShiftModal.onload();
+        } else {
+          Message.error(`${res.dec}`);
+        }
+      })
+      .catch(e => {});
+  };
+
+  return (
+    <Wrapper>
+      <PageHeader>
+        <LeftIcon>
+          <PageTitle maxWidth={1300}>{getTitle}</PageTitle>
+        </LeftIcon>
+        <RightIcon>
+          <Input
+            style={{ width: 280, marginLeft: 5, marginRight: -5 }}
+            placeholder="请输入姓名、电话或编号关键字进行检索"
+            value={traineeShiftModal.keyWord}
+            onChange={e => {
+              traineeShiftModal.keyWord = e.target.value;
+            }}
+          />
+          <Button
+            type="primary"
+            onClick={() => {
+              traineeShiftModal.onload();
+            }}
+          >
+            查询
+          </Button>
+          <Button>编辑实习小组</Button>
+          <Button>添加实习科室</Button>
+          <Button
+            onClick={() => {
+              traineeShiftModal.export();
+            }}
+          >
+            导出
+          </Button>
+          <Button>显示周数</Button>
+          <Button type="primary" onClick={() => saveAllRotateTimes()}>
+            保存
+          </Button>
+        </RightIcon>
+      </PageHeader>
+      <Content>
+        <BaseTable
+          loading={traineeShiftModal.tableLoading}
+          dataSource={traineeShiftModal.tableList}
+          columns={columns}
+          surplusWidth={300}
+          surplusHeight={230}
+        />
+      </Content>
+    </Wrapper>
+  );
+});
+const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+`;
+const PageHeader = styled.div`
+  width: calc(100vw-200px);
+  justify-content: space-between;
+  height: 55px;
+  font-size: 13px;
+  color: #333;
+  padding: 12px 20px 0 20px;
+  .ant-select {
+    width: 150px;
+    margin-right: 15px;
+  }
+  .ant-calendar-picker {
+    margin-right: 15px;
+  }
+  button {
+    margin-left: 10px;
+  }
+  .checkButton {
+    margin-left: 0px;
+  }
+  .ant-select-selection-selected-value span {
+    color: #000 !important;
+  }
+`;
+const LeftIcon = styled.div`
+  padding: 0;
+  float: left;
+`;
+
+const RightIcon = styled.div`
+  padding: 0 0 0 15px;
+  float: right;
+`;
+
+const Content = styled(TabledCon)`
+  box-sizing: border-box;
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+  .ant-table-row-hover {
+    background: #fff !important;
+    > td {
+      background: #fff !important;
+    }
+  }
+  .ant-input {
+    border: 0;
+    border-radius: 0;
+    text-align: center;
+    outline: 0;
+    box-shadow: none !important;
+    padding: 4px;
+  }
+  && :hover {
+  }
+`;

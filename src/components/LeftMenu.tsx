@@ -4,6 +4,8 @@ import { RouteComponentProps } from "react-router";
 import { Icon, Menu } from "antd";
 import { appStore } from "src/stores";
 import { toJS } from "mobx";
+import { traineeShiftModal } from "../modules/nurseFiles/view/traineeShift/TraineeShiftModal";
+import { observer } from "mobx-react-lite";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -14,7 +16,7 @@ export interface Props {
   stopActiveNext?: boolean;
 }
 
-export default function LeftMenu(props: Props) {
+export default observer(function LeftMenu(props: Props) {
   const [openKeys, setOpenKeys]: any = useState("");
   const handleSelect = (e: any) => {
     appStore.history.push(e.key);
@@ -25,13 +27,12 @@ export default function LeftMenu(props: Props) {
 
   //判断是否隐藏 兼容Function类型
   const isHide = (hide: any): boolean => {
-    if (typeof hide === 'boolean')
-      return hide
-    if (Object.prototype.toString.call(hide) === '[object Function]')
-      return !!hide()
+    if (typeof hide === "boolean") return hide;
+    if (Object.prototype.toString.call(hide) === "[object Function]")
+      return !!hide();
 
-    return !!hide
-  }
+    return !!hide;
+  };
 
   const renderMenu = (list: any) => {
     return list
@@ -47,6 +48,16 @@ export default function LeftMenu(props: Props) {
                 <span>
                   {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
                   <span>{item.title}</span>
+                  {item.addIcon && (
+                    <AddIcon
+                      onClick={(e: any) => {
+                        e.stopPropagation();
+                        traineeShiftModal.isOkBtn = true;
+                      }}
+                    >
+                      +
+                    </AddIcon>
+                  )}
                 </span>
               }
             >
@@ -59,6 +70,16 @@ export default function LeftMenu(props: Props) {
               <span>
                 {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
                 <span>{item.title}</span>
+                {item.addIcon && (
+                  <AddIcon
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      traineeShiftModal.isOkBtn = true;
+                    }}
+                  >
+                    +
+                  </AddIcon>
+                )}
                 <span className="selected-arrow">
                   <img src={require("./images/菜单选中右箭头.png")} alt="" />
                 </span>
@@ -86,7 +107,7 @@ export default function LeftMenu(props: Props) {
         );
         if (currentPath) return currentPath;
       } else {
-        if (item.path.split("?")[0] === path) {
+        if (item.path && item.path.split("?")[0] === path) {
           if (isHide(item.hide) && !props.stopActiveNext) {
             for (let j = i; j < list.length; j++) {
               if (!list[j].hide) return [parentKeys, [list[j].path]];
@@ -125,7 +146,7 @@ export default function LeftMenu(props: Props) {
       </Menu>
     </Wrapper>
   );
-}
+});
 
 const menu_bg_color = "#F2F2F2"; // 背景色
 const item_bg_color = "#F9F9F9"; // item背景色
@@ -338,4 +359,13 @@ const MenuIcon = styled.span`
       fill: ${normal_text_color};
     }
   }
+`;
+const AddIcon = styled.div`
+  font-size: 18px !important;
+  font-weight: bold !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  right: 45px;
 `;
