@@ -172,6 +172,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             if (!newItem.id) line1Text = '未完成'
             description = (
               <div>
+                {timeData[i].auditMind && (
+                  <div>
+                    <span>{timeData[i].auditMind}</span>
+                  </div>
+                )}
                 <span>{line1Text}</span>
                 <br />
                 <span>{dateString}</span>

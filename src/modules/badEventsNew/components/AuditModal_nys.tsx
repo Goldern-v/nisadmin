@@ -155,6 +155,19 @@ export default observer(function AduitModal(props: Props) {
         empName: item.label,
         empNo: item.key
       }))
+    
+    // 流程审核意见
+    const auditMind = () => {
+      switch (status) {
+        case "nurse_auditor":
+          return formMap[`${eventCode}_khszshyj_explain`];
+        case "nusring_department_auditor":
+          return formMap[`${eventCode}_hkbshyj_explain`];
+        case "pressure_auditor":
+          return formMap[`${eventCode}_skzkxzyj_explain`];
+      }
+    };
+    params.auditMind = auditMind();
 
     delete params.paramMap.nurseList
     delete params.operatorStatus
