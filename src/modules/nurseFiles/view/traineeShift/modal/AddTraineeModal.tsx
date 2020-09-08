@@ -69,9 +69,7 @@ export default observer(function AddTraineeModal(props: Props) {
 
   //初始化表格数据
   useEffect(() => {
-    if (visible) {
-      traineeShiftModal.allGroupOnload();
-    }
+    if (visible) traineeShiftModal.allGroupOnload();
   }, [visible, traineeShiftModal.sheetId]);
 
   // 保存

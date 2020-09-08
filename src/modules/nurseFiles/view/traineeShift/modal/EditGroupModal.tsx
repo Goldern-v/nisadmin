@@ -70,10 +70,8 @@ export default observer(function EditGroupModal(props: Props) {
 
   //初始化表格数据
   useEffect(() => {
-    if (visible) {
-      traineeShiftModal.groupOnload();
-    }
-  }, [visible, traineeShiftModal.sheetId]);
+    if (visible) traineeShiftModal.groupOnload();
+  }, [visible]);
 
   // 筛选展示数据
   const showTableData = () => {

@@ -28,9 +28,6 @@ export default observer(function EditDeptModal(props: Props) {
     keyWord: undefined,
     checkValue: "全部"
   });
-  const [tableList, setTableList] = useState([]);
-  const [tableCopyList, setTableCopyList] = useState([]);
-  const [tableLoading, setTableLoading] = useState(false);
 
   // 表格数据
   const columns: any = [
@@ -89,22 +86,8 @@ export default observer(function EditDeptModal(props: Props) {
 
   //初始化表格数据
   useEffect(() => {
-    if (visible) {
-      traineeShiftModal.deptOnload();
-    }
-  }, [visible, traineeShiftModal.sheetId]);
-
-  //获取表格数据
-  const getData = () => {
-    setTableLoading(true);
-    traineeShiftApi
-      .queryAllDeptsAndRotateDepts(traineeShiftModal.sheetId)
-      .then((res: any) => {
-        setTableLoading(false);
-        setTableList(res.data || []);
-        setTableCopyList(res.data || []);
-      });
-  };
+    if (visible) traineeShiftModal.deptOnload();
+  }, [visible]);
 
   // 筛选展示数据
   const showTableData = () => {

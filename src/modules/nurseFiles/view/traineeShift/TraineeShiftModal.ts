@@ -13,23 +13,23 @@ class TraineeShiftModal {
   @observable public tableLoading = false; //表格loading
 
   // 科室信息
-  @observable public deptTableList: any = []; //表格科室对应的列
-  @observable public deptTableCopyList: any = []; //表格科室对应的列
-  @observable public deptTableLoading = false; //表格loading
+  @observable public deptTableList: any = [];
+  @observable public deptTableCopyList: any = [];
+  @observable public deptTableLoading = false;
 
   // 实习生全部信息初始化
-  @observable public allGroupKeyWord: any = undefined; //关键字
-  @observable public selectedYear: any = moment(); //关键字
-  @observable public pageIndex: any = 1; //页码
-  @observable public pageSize: any = 20; //每页大小
-  @observable public total: any = 0; //总条数
-  @observable public allGroupTableList: any = []; //表格内容
-  @observable public allGroupTableLoading = false; //表格loading
+  @observable public allGroupKeyWord: any = undefined;
+  @observable public selectedYear: any = moment();
+  @observable public pageIndex: any = 1;
+  @observable public pageSize: any = 20;
+  @observable public total: any = 0;
+  @observable public allGroupTableList: any = [];
+  @observable public allGroupTableLoading = false;
 
   // 实习生绑定信息
-  @observable public groupTableList: any = []; //表格内容
-  @observable public groupTableCopyList: any = []; //表格内容
-  @observable public groupTableLoading = false; //表格
+  @observable public groupTableList: any = [];
+  @observable public groupTableCopyList: any = [];
+  @observable public groupTableLoading = false;
 
   @computed
   get postObj() {

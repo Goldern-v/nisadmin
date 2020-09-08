@@ -7,8 +7,11 @@ import {
   Button,
   message as Message,
   Modal,
-  Tooltip
+  Tooltip,
+  DatePicker
 } from "src/vendors/antd";
+import moment from "moment";
+
 import { PageTitle, Place } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
@@ -66,6 +69,53 @@ export default observer(function TraineeShift(props: Props) {
 
   // 动态科室对应的列
   const rotateList = [] as any;
+  if (traineeShiftModal.tableDeptList.length) {
+    let tableDeptList = traineeShiftModal.tableDeptList;
+    tableDeptList.map((item: any, index: number) => {
+      rotateList.push({
+        title: item.deptName,
+        dataIndex: "rotateGroupsList",
+        width: 250,
+        align: "center",
+        render: (text: any, record: any) => {
+          const rotateTimesList: any = record.rotateTimesList || [];
+          const dataIndex = rotateTimesList.findIndex(
+            (obj: any) => record.deptCode === item.deptCode
+          );
+          const { beginTime = "", endTime = "" } =
+            rotateTimesList[dataIndex] || {};
+          return (
+            <DatePicker.RangePicker
+              allowClear={false}
+              style={{ width: 220 }}
+              defaultValue={[beginTime, endTime]}
+              onChange={(date: any) => {
+                if (dataIndex >= 0) {
+                  record.rotateTimesList[dataIndex].beginTime = date[0].format(
+                    "YYYY-MM-DD"
+                  );
+                  record.rotateTimesList[dataIndex].endTime = date[1].format(
+                    "YYYY-MM-DD"
+                  );
+                } else {
+                  const { deptCode, sheetId, deptName } = item;
+                  rotateTimesList.push({
+                    beginTime: date[0].format("YYYY-MM-DD"),
+                    endTime: date[1].format("YYYY-MM-DD"),
+                    deptCode,
+                    sheetId,
+                    deptName
+                  });
+                }
+                setTableList(traineeShiftModal.tableList);
+              }}
+            />
+          );
+        }
+      });
+    });
+  }
+  // input输入
   // if (traineeShiftModal.tableDeptList.length) {
   //   let tableDeptList = traineeShiftModal.tableDeptList;
   //   tableDeptList.map((item: any, index: number) => {
@@ -75,23 +125,46 @@ export default observer(function TraineeShift(props: Props) {
   //       width: 120,
   //       align: "center",
   //       render: (text: any, record: any) => {
-  //         let times: any = record.rotateTimesList
-  //           ? record.rotateTimesList[index]
-  //           : { beginTime: "", endTime: "" };
+  //         const rotateTimesList: any = record.rotateTimesList || [];
+  //         let dataIndex = rotateTimesList.findIndex(
+  //           (obj: any) => item.deptCode === obj.deptCode
+  //         );
+  //         const { beginTime = "", endTime = "" } =
+  //           rotateTimesList[dataIndex] || {};
   //         return (
   //           <Input
-  //             value={times ? `${times.beginTime} ~ ${times.endTime}` : ""}
+  //             defaultValue={beginTime ? `${beginTime} ~ ${endTime}` : ""}
   //             onChange={(e: any) => {
-  //               let time = e.target.value;
-  //               if (times) {
-  //                 times.beginTime = time.substring(0, time.indexOf("~")).trim();
-  //                 times.endTime = time.substring(time.indexOf("~") + 1).trim();
+  //               const time = e.target.value;
+  //               if (!time.trim()) return;
+  //               const rotateTimesList: any = record.rotateTimesList || [];
+  //               let dataIndex = rotateTimesList.findIndex(
+  //                 (obj: any) => item.deptCode === obj.deptCode
+  //               );
+  //               const beginTime = time.substring(0, time.indexOf("~")).trim();
+  //               const endTime = time.substring(time.indexOf("~") + 1).trim();
+  //               if (dataIndex >= 0) {
+  //                 record.rotateTimesList[dataIndex].beginTime = beginTime;
+  //                 record.rotateTimesList[dataIndex].endTime = endTime;
+  //               } else {
+  //                 const { deptCode, sheetId, deptName } = item;
+  //                 record.rotateTimesList.push({
+  //                   deptCode,
+  //                   sheetId,
+  //                   beginTime,
+  //                   endTime,
+  //                   deptName,
+  //                 });
   //               }
-  //               setTableList([...traineeShiftModal.tableList]);
+  //               const recordIndex = traineeShiftModal.tableList.findIndex(
+  //                 (o: any) => record.id === o.id
+  //               );
+  //               traineeShiftModal.tableList[recordIndex] = record;
+  //               setTableList(traineeShiftModal.tableList);
   //             }}
   //           />
   //         );
-  //       }
+  //       },
   //     });
   //   });
   // }
@@ -101,13 +174,13 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "组别",
       dataIndex: "groupNum",
-      width: 50,
+      width: 60,
       align: "center"
     },
     {
       title: "姓名",
       dataIndex: "rotatePersonsList",
-      width: 120,
+      width: 180,
       align: "center",
       render(text: any) {
         return setTextData(text);
@@ -117,13 +190,13 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "教学查房时间",
       key: "teachingRoundTime",
-      width: 80,
+      width: 150,
       align: "center"
     },
     {
       title: "操作",
       key: "cz",
-      width: 60,
+      width: 80,
       render(text: any, record: any) {
         return (
           <DoCon>
