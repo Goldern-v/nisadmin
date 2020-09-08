@@ -59,9 +59,8 @@ export default observer(function EditGroupModal(props: Props) {
             key={record.empNo}
             onChange={(e: any) => {
               record.groupNum = e.target.value;
-              traineeShiftModal.groupTableList = [
-                ...traineeShiftModal.groupTableCopyList
-              ];
+              traineeShiftModal.groupTableList =
+                traineeShiftModal.groupTableCopyList;
             }}
           />
         );

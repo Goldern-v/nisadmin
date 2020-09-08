@@ -59,10 +59,8 @@ export default observer(function EditDeptModal(props: Props) {
             defaultChecked={text}
             onChange={(e: any) => {
               record.sort = e.target.value;
-              traineeShiftModal.deptTableList = [
-                ...traineeShiftModal.deptTableCopyList
-              ];
-              // setTableCopyList([...tableCopyList]);
+              traineeShiftModal.deptTableList =
+                traineeShiftModal.deptTableCopyList;
             }}
           />
         );
@@ -80,10 +78,8 @@ export default observer(function EditDeptModal(props: Props) {
             defaultChecked={text === 1 ? true : false}
             onChange={(e: any) => {
               record.isChecked = e.target.checked ? 1 : 0;
-              traineeShiftModal.deptTableList = [
-                ...traineeShiftModal.deptTableCopyList
-              ];
-              // setTableCopyList([...tableCopyList]);
+              traineeShiftModal.deptTableList =
+                traineeShiftModal.deptTableCopyList;
             }}
           />
         );
