@@ -214,13 +214,13 @@ export default observer(function NurseFilesView(props: Props) {
       path: "/nurseFile/traineeFiles",
       component: TraineeFiles,
       icon: <TXHSCX />
+    },
+    {
+      title: "护理实习生轮科",
+      icon: <TXHSCX />,
+      addIcon: true,
+      children: dataList
     }
-    // {
-    //   title: "护理实习生轮科",
-    //   icon: <TXHSCX />,
-    //   addIcon: true,
-    //   children: dataList
-    // }
   ];
 
   const menuConfig = () => {
@@ -259,7 +259,7 @@ export default observer(function NurseFilesView(props: Props) {
 
   // 初始化动态菜单 菜单权限
   useLayoutEffect(() => {
-    getList();
+    if (appStore.HOSPITAL_ID === "hj") getList();
   }, [props.history.location.pathname]);
 
   // 厚街实习生轮班动态菜单列表
@@ -289,7 +289,7 @@ export default observer(function NurseFilesView(props: Props) {
     traineeShiftModal.isOkBtn = false;
   };
   const handleEditOk = () => {
-    // traineeFilesModal.onload();
+    getList();
     handleEditCancel();
   };
 

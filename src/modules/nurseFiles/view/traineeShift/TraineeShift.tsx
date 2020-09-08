@@ -11,8 +11,10 @@ import {
 } from "src/vendors/antd";
 import { PageTitle, Place } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
 import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
+import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
+import EditDeptModal from "./modal/EditDeptModal"; // 添加修改弹窗
+import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
 
 interface Props {
   getTitle: any;
@@ -21,6 +23,9 @@ interface Props {
 export default observer(function TraineeShift(props: Props) {
   const { getTitle, getId } = props; //获取当前页面标题
   const [tableList, setTableList] = useState(new Array()); //保存轮科时间表单入参
+  const [showWeek, setShowWeek] = useState(false); //保存轮科时间表单入参
+  const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
+  const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
 
   // 初始化数据
   useEffect(() => {
@@ -61,34 +66,35 @@ export default observer(function TraineeShift(props: Props) {
 
   // 动态科室对应的列
   const rotateList = [] as any;
-  if (
-    traineeShiftModal.tableList[0] &&
-    traineeShiftModal.tableList[0].rotateTimesList
-  ) {
-    let rotateTimesList = traineeShiftModal.tableList[0].rotateTimesList;
-    rotateTimesList.length &&
-      rotateTimesList.map((item: any, index: number) => {
-        rotateList.push({
-          title: item.deptName,
-          dataIndex: index,
-          width: 120,
-          align: "center",
-          render: (text: any, record: any) => {
-            return (
-              <Input
-                defaultValue={`${item.beginTime} ~ ${item.endTime}`}
-                onChange={(e: any) => {
-                  let time = e.target.value;
-                  item.beginTime = time.substring(0, time.indexOf("~")).trim();
-                  item.endTime = time.substring(time.indexOf("~") + 1).trim();
-                  setTableList([...traineeShiftModal.tableList]);
-                }}
-              />
-            );
-          }
-        });
-      });
-  }
+  // if (traineeShiftModal.tableDeptList.length) {
+  //   let tableDeptList = traineeShiftModal.tableDeptList;
+  //   tableDeptList.map((item: any, index: number) => {
+  //     rotateList.push({
+  //       title: item.deptName,
+  //       dataIndex: "rotateGroupsList",
+  //       width: 120,
+  //       align: "center",
+  //       render: (text: any, record: any) => {
+  //         let times: any = record.rotateTimesList
+  //           ? record.rotateTimesList[index]
+  //           : { beginTime: "", endTime: "" };
+  //         return (
+  //           <Input
+  //             value={times ? `${times.beginTime} ~ ${times.endTime}` : ""}
+  //             onChange={(e: any) => {
+  //               let time = e.target.value;
+  //               if (times) {
+  //                 times.beginTime = time.substring(0, time.indexOf("~")).trim();
+  //                 times.endTime = time.substring(time.indexOf("~") + 1).trim();
+  //               }
+  //               setTableList([...traineeShiftModal.tableList]);
+  //             }}
+  //           />
+  //         );
+  //       }
+  //     });
+  //   });
+  // }
 
   //表格数据
   const columns: any = [
@@ -176,6 +182,16 @@ export default observer(function TraineeShift(props: Props) {
       .catch(e => {});
   };
 
+  // 创建实习生轮科弹窗
+  const handleEditCancel = () => {
+    setEditDeptBtn(false);
+    setEditGroupBtn(false);
+  };
+  const handleEditOk = () => {
+    traineeShiftModal.onload();
+    handleEditCancel();
+  };
+
   return (
     <Wrapper>
       <PageHeader>
@@ -199,8 +215,8 @@ export default observer(function TraineeShift(props: Props) {
           >
             查询
           </Button>
-          <Button>编辑实习小组</Button>
-          <Button>添加实习科室</Button>
+          <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button>
+          <Button onClick={() => setEditDeptBtn(true)}>添加实习科室</Button>
           <Button
             onClick={() => {
               traineeShiftModal.export();
@@ -208,7 +224,11 @@ export default observer(function TraineeShift(props: Props) {
           >
             导出
           </Button>
-          <Button>显示周数</Button>
+          {showWeek ? (
+            <Button onClick={() => setShowWeek(false)}>显示日期</Button>
+          ) : (
+            <Button onClick={() => setShowWeek(true)}>显示周数</Button>
+          )}
           <Button type="primary" onClick={() => saveAllRotateTimes()}>
             保存
           </Button>
@@ -223,6 +243,16 @@ export default observer(function TraineeShift(props: Props) {
           surplusHeight={230}
         />
       </Content>
+      <EditDeptModal
+        visible={editDeptBtn}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <EditGroupModal
+        visible={editGroupBtn}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 });
@@ -280,7 +310,5 @@ const Content = styled(TabledCon)`
     outline: 0;
     box-shadow: none !important;
     padding: 4px;
-  }
-  && :hover {
   }
 `;

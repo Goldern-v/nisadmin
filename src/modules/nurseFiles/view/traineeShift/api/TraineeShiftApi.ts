@@ -47,10 +47,6 @@ export default class TraineeShiftApi extends BaseApiService {
 
   // 查询全部实习生
   public async queryGraduateInternPageList(obj: any) {
-    // "year":"2020",
-    // "keyWord":"",
-    // "pageIndex":1,
-    // "pageSize":2
     return this.post(
       `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternPageList`,
       obj
@@ -58,12 +54,8 @@ export default class TraineeShiftApi extends BaseApiService {
   }
   // 查询已有实习生
   public async queryAllRotatePersonsBySheetId(sheetId: any) {
-    // "year":"2020",
-    // "keyWord":"",
-    // "pageIndex":1,
-    // "pageSize":2
     return this.post(
-      `/ studyAndTrain/intern/deptRotationSchedule/queryAllRotatePersonsBySheetId`,
+      `/studyAndTrain/intern/deptRotationSchedule/queryAllRotatePersonsBySheetId`,
       qs.stringify({ sheetId })
     );
   }
@@ -96,26 +88,6 @@ export default class TraineeShiftApi extends BaseApiService {
   }
   //保存轮换科室
   public async saveAllRotateDepts(obj: any) {
-    //   {
-    //     "sheetId": 19,
-    //     "rotateDeptList": [{
-    //         "sort":1,
-    //         "deptName": "外科",
-    //         "deptCode": "030702",
-    //         "isChecked":1
-    //     },
-    //     {
-    //         "sort": 2,
-    //         "deptName": "内科",
-    //         "deptCode": "030701",
-    //         "isChecked":1
-    //     }, {
-    //         "sort": 3,
-    //         "deptName": "综合科",
-    //         "deptCode": "901693",
-    //         "isChecked":1
-    //     }]
-    // }
     return this.post(
       `/studyAndTrain/intern/deptRotationSchedule/saveAllRotateDepts`,
       obj
