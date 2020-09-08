@@ -163,7 +163,4 @@ const Wrapper = styled.div`
   width: 98%;
   margin: 0 auto;
 `;
-const ModalHeader = styled.div`
-  float: right;
-  height: 50px;
-`;
+const ModalHeader = styled.div``;

@@ -175,7 +175,6 @@ export default observer(function EditDeptModal(props: Props) {
       visible={visible}
       onCancel={handleCancel}
       onOk={checkForm}
-      forceRender={true}
       confirmLoading={editLoading}
       title="编辑实习科室"
     >
@@ -234,7 +233,4 @@ const Wrapper = styled.div`
     padding: 4px !important;
   }
 `;
-const ModalHeader = styled.div`
-  float: left;
-  height: 50px;
-`;
+const ModalHeader = styled.div``;

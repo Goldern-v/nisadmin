@@ -56,6 +56,7 @@ export default observer(function EditGroupModal(props: Props) {
           <Input
             className="specialInput"
             defaultValue={text}
+            key={record.empNo}
             onChange={(e: any) => {
               record.groupNum = e.target.value;
               traineeShiftModal.groupTableList = [
@@ -83,19 +84,20 @@ export default observer(function EditGroupModal(props: Props) {
         if (groupName === "全部") {
           return true;
         }
-        return item.groupNum === groupName;
+        return item.groupNum == groupName;
       } else if (groupStype === "已分组") {
         if (groupName === "全部") {
           return item.groupNum;
         }
-        return item.groupNum && item.groupNum === groupName;
+        return item.groupNum && item.groupNum == groupName;
       } else {
         if (groupName === "全部") {
           return !item.groupNum;
         }
+        return !item.groupNum && item.groupNum == groupName;
       }
     });
-    setTableCopyList(showData);
+    traineeShiftModal.groupTableCopyList = showData;
     setEditLoading(false);
   };
 
@@ -160,30 +162,33 @@ export default observer(function EditGroupModal(props: Props) {
             }}
           >
             <Select.Option value="全部">全部</Select.Option>
-            <Select.Option value={1}>已分组</Select.Option>
-            <Select.Option value={0}>未分组</Select.Option>
+            <Select.Option value="已分组">已分组</Select.Option>
+            <Select.Option value="未分组">未分组</Select.Option>
           </Select>
-          <span style={{ marginLeft: "20px" }}>小组：</span>
-          <Select
-            style={{ width: 80 }}
-            value={groupName}
-            onChange={(value: any) => {
-              setGroupName(value);
-            }}
-          >
-            <Select.Option value="全部">全部</Select.Option>
-            <Select.Option value="无">无</Select.Option>
-            <Select.Option value={1}>1</Select.Option>
-            <Select.Option value={2}>2</Select.Option>
-            <Select.Option value={3}>3</Select.Option>
-            <Select.Option value={4}>4</Select.Option>
-            <Select.Option value={5}>5</Select.Option>
-            <Select.Option value={6}>6</Select.Option>
-            <Select.Option value={7}>7</Select.Option>
-            <Select.Option value={8}>8</Select.Option>
-            <Select.Option value={9}>9</Select.Option>
-            <Select.Option value={10}>10</Select.Option>
-          </Select>
+          {groupStype !== "未分组" && (
+            <span>
+              <span style={{ marginLeft: "20px" }}>小组：</span>
+              <Select
+                style={{ width: 80 }}
+                value={groupName}
+                onChange={(value: any) => {
+                  setGroupName(value);
+                }}
+              >
+                <Select.Option value="全部">全部</Select.Option>
+                <Select.Option value={1}>1</Select.Option>
+                <Select.Option value={2}>2</Select.Option>
+                <Select.Option value={3}>3</Select.Option>
+                <Select.Option value={4}>4</Select.Option>
+                <Select.Option value={5}>5</Select.Option>
+                <Select.Option value={6}>6</Select.Option>
+                <Select.Option value={7}>7</Select.Option>
+                <Select.Option value={8}>8</Select.Option>
+                <Select.Option value={9}>9</Select.Option>
+                <Select.Option value={10}>10</Select.Option>
+              </Select>
+            </span>
+          )}
           <Button
             type="primary"
             style={{ marginLeft: "15px" }}
@@ -192,7 +197,9 @@ export default observer(function EditGroupModal(props: Props) {
             查询
           </Button>
           <Button
-            style={{ marginLeft: "120px" }}
+            className={
+              groupStype === "未分组" ? "specialMargin" : "normalMargin"
+            }
             onClick={() => setEditTraineeBtn(true)}
           >
             添加实习生
@@ -231,8 +238,11 @@ const Wrapper = styled.div`
     box-shadow: none !important;
     padding: 4px !important;
   }
+  .specialMargin {
+    margin-left: 255px;
+  }
+  .normalMargin {
+    margin-left: 115px;
+  }
 `;
-const ModalHeader = styled.div`
-  float: left;
-  height: 50px;
-`;
+const ModalHeader = styled.div``;
