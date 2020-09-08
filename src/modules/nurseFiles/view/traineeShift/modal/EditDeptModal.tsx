@@ -53,11 +53,10 @@ export default observer(function EditDeptModal(props: Props) {
         return (
           <Input
             className="specialInput"
-            defaultChecked={text}
+            value={record.sort}
             onChange={(e: any) => {
               record.sort = e.target.value;
-              traineeShiftModal.deptTableList =
-                traineeShiftModal.deptTableCopyList;
+              updateData(record);
             }}
           />
         );
@@ -72,11 +71,10 @@ export default observer(function EditDeptModal(props: Props) {
         return (
           <Checkbox
             key={record.deptCode}
-            defaultChecked={text === 1 ? true : false}
+            checked={!!record.isChecked}
             onChange={(e: any) => {
               record.isChecked = e.target.checked ? 1 : 0;
-              traineeShiftModal.deptTableList =
-                traineeShiftModal.deptTableCopyList;
+              updateData(record);
             }}
           />
         );
@@ -111,6 +109,19 @@ export default observer(function EditDeptModal(props: Props) {
     traineeShiftModal.deptTableCopyList = showData;
     setEditLoading(false);
   };
+
+  // 函数
+  const updateData = (record: any) => {
+    const dataIndexOne: any = traineeShiftModal.deptTableList.findIndex(
+      (obj: any) => record.deptCode === obj.deptCode
+    );
+    traineeShiftModal.deptTableList[dataIndexOne] = record;
+    const arrOne = traineeShiftModal.deptTableList.slice();
+    traineeShiftModal.deptTableList = [];
+    traineeShiftModal.deptTableList = arrOne;
+    showTableData();
+  };
+
   // 保存
   const checkForm = () => {
     let dataList: any = traineeShiftModal.deptTableList.filter(

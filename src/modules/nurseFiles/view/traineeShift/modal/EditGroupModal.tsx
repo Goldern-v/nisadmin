@@ -20,9 +20,6 @@ export default observer(function EditGroupModal(props: Props) {
   const [groupStype, setGroupStype] = useState("全部");
   const [groupName, setGroupName] = useState("全部");
   const [editLoading, setEditLoading] = useState(false);
-  const [tableList, setTableList] = useState([]);
-  const [tableCopyList, setTableCopyList] = useState([]);
-  const [tableLoading, setTableLoading] = useState(false);
   const [editTraineeBtn, setEditTraineeBtn] = useState(false); //科室弹窗
 
   // 表格数据
@@ -55,12 +52,11 @@ export default observer(function EditGroupModal(props: Props) {
         return (
           <Input
             className="specialInput"
-            defaultValue={text}
+            value={text}
             key={record.empNo}
             onChange={(e: any) => {
               record.groupNum = e.target.value;
-              traineeShiftModal.groupTableList =
-                traineeShiftModal.groupTableCopyList;
+              updateData(record);
             }}
           />
         );
@@ -96,6 +92,18 @@ export default observer(function EditGroupModal(props: Props) {
     });
     traineeShiftModal.groupTableCopyList = showData;
     setEditLoading(false);
+  };
+
+  // 函数
+  const updateData = (record: any) => {
+    const dataIndexOne: any = traineeShiftModal.groupTableList.findIndex(
+      (obj: any) => record.empNo === obj.empNo
+    );
+    traineeShiftModal.groupTableList[dataIndexOne] = record;
+    const arrOne = traineeShiftModal.groupTableList.slice();
+    traineeShiftModal.groupTableList = [];
+    traineeShiftModal.groupTableList = arrOne;
+    showTableData();
   };
 
   // 保存
