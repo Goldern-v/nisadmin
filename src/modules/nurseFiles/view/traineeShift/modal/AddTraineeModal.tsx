@@ -28,9 +28,15 @@ export default observer(function AddTraineeModal(props: Props) {
       width: 50
     },
     {
+      title: "实习编号",
+      dataIndex: "empNo",
+      width: 90,
+      align: "center"
+    },
+    {
       title: "姓名",
       dataIndex: "empName",
-      width: 100,
+      width: 90,
       align: "center"
     },
     {
@@ -51,7 +57,7 @@ export default observer(function AddTraineeModal(props: Props) {
     {
       title: "操作",
       dataIndex: "操作",
-      width: 100,
+      width: 70,
       align: "center",
       render(text: any, record: any, index: number) {
         return (
@@ -137,10 +143,10 @@ export default observer(function AddTraineeModal(props: Props) {
           </Button>
         </ModalHeader>
         <BaseTable
-          loading={traineeShiftModal.tableLoading}
+          loading={traineeShiftModal.groupTableLoading}
           dataSource={traineeShiftModal.allGroupTableList}
           columns={columns}
-          surplusHeight={230}
+          surplusHeight={370}
           pagination={{
             current: traineeShiftModal.pageIndex,
             total: traineeShiftModal.total,

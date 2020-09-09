@@ -17,11 +17,10 @@ export interface Props {
 
 export default observer(function EditGroupModal(props: Props) {
   const { visible, onCancel, onOk } = props;
-  const [groupStype, setGroupStype] = useState("全部");
-  const [groupName, setGroupName] = useState("全部");
+  const [groupStype, setGroupStype] = useState("全部"); //分组情况
+  const [groupName, setGroupName] = useState("全部"); //小组
   const [editLoading, setEditLoading] = useState(false);
-  const [editTraineeBtn, setEditTraineeBtn] = useState(false); //科室弹窗
-  //小组
+  const [editTraineeBtn, setEditTraineeBtn] = useState(false); //添加实习生弹窗
   const groupTypeList = [
     { name: "全部", code: "全部" },
     { name: 1, code: 1 },
@@ -55,7 +54,7 @@ export default observer(function EditGroupModal(props: Props) {
     { name: 28, code: 28 },
     { name: 29, code: 29 },
     { name: 30, code: 30 }
-  ];
+  ]; //小组下拉选项
 
   // 表格数据
   const columns: any = [
@@ -173,7 +172,7 @@ export default observer(function EditGroupModal(props: Props) {
     onCancel && onCancel();
   };
 
-  // 创建实习生轮科弹窗
+  // 取消实习生轮科弹窗
   const handleEditCancel = () => {
     setEditTraineeBtn(false);
   };
@@ -243,7 +242,7 @@ export default observer(function EditGroupModal(props: Props) {
           loading={traineeShiftModal.groupTableLoading}
           dataSource={traineeShiftModal.groupTableCopyList}
           columns={columns}
-          surplusHeight={230}
+          surplusHeight={370}
         />
         <AddTraineeModal
           visible={editTraineeBtn}

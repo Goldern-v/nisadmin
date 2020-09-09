@@ -4,32 +4,33 @@ import { fileDownload } from "src/utils/file/file";
 import moment from "moment";
 
 class TraineeShiftModal {
+  @observable public sheetId: any = undefined; //轮科表id
+
   // 主列表信息
-  @observable public isOkBtn: any = false; //二级菜单弹窗开关
-  @observable public keyWord: any = undefined; //主页信息关键字
-  @observable public sheetId: any = undefined; //主页信息关键字
-  @observable public tableList: any = []; //表格内容
+  @observable public isOkBtn: any = false; //增加二级菜单弹窗开关
+  @observable public keyWord: any = undefined; //关键字
+  @observable public tableList: any = []; //表格数据
   @observable public tableDeptList: any = []; //表格科室对应的列
   @observable public tableLoading = false; //表格loading
 
   // 科室信息
-  @observable public deptTableList: any = [];
-  @observable public deptTableCopyList: any = [];
-  @observable public deptTableLoading = false;
+  @observable public deptTableList: any = []; //表格数据
+  @observable public deptTableCopyList: any = []; // 表格展示数据
+  @observable public deptTableLoading = false; //表格loading
 
   // 实习生全部信息初始化
-  @observable public allGroupKeyWord: any = undefined;
-  @observable public selectedYear: any = moment();
-  @observable public pageIndex: any = 1;
-  @observable public pageSize: any = 20;
-  @observable public total: any = 0;
-  @observable public allGroupTableList: any = [];
-  @observable public allGroupTableLoading = false;
+  @observable public allGroupKeyWord: any = undefined; //关键字
+  @observable public selectedYear: any = moment(); //选中年份
+  @observable public pageIndex: any = 1; //页码
+  @observable public pageSize: any = 20; //每页条数
+  @observable public total: any = 0; //总条数
+  @observable public allGroupTableList: any = []; //表格数据
+  @observable public allGroupTableLoading = false; //表格loading
 
   // 实习生绑定信息
-  @observable public groupTableList: any = [];
-  @observable public groupTableCopyList: any = [];
-  @observable public groupTableLoading = false;
+  @observable public groupTableList: any = []; //表格数据
+  @observable public groupTableCopyList: any = []; // 表格展示数据
+  @observable public groupTableLoading = false; //表格loading
 
   @computed
   get postObj() {

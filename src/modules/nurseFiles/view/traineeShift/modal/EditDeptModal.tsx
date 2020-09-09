@@ -198,7 +198,7 @@ export default observer(function EditDeptModal(props: Props) {
           loading={traineeShiftModal.deptTableLoading}
           dataSource={traineeShiftModal.deptTableCopyList}
           columns={columns}
-          surplusHeight={230}
+          surplusHeight={370}
         />
       </Wrapper>
     </Modal>

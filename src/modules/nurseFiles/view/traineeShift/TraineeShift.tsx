@@ -12,13 +12,12 @@ import {
 } from "src/vendors/antd";
 import moment from "moment";
 
-import { PageTitle, Place } from "src/components/common";
+import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
 import EditDeptModal from "./modal/EditDeptModal"; // 添加修改弹窗
 import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
-
 interface Props {
   getTitle: any;
   getId: any;
@@ -26,7 +25,7 @@ interface Props {
 export default observer(function TraineeShift(props: Props) {
   const { getTitle, getId } = props; //获取当前页面标题
   const [tableList, setTableList] = useState(new Array()); //保存轮科时间表单入参
-  const [showWeek, setShowWeek] = useState(false); //保存轮科时间表单入参
+  const [showWeek, setShowWeek] = useState(false); //日期、周切换开关（true——周）
   const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
   const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
 
@@ -87,7 +86,7 @@ export default observer(function TraineeShift(props: Props) {
           return !showWeek ? (
             <DatePicker.RangePicker
               allowClear={false}
-              style={{ width: 220 }}
+              style={{ width: 230 }}
               value={beginTime ? [moment(beginTime), moment(endTime)] : []}
               onChange={(date: any) => {
                 if (dataIndex >= 0) {
@@ -115,7 +114,11 @@ export default observer(function TraineeShift(props: Props) {
             />
           ) : (
             <Input
-              style={{ background: "#fff", color: "#000" }}
+              style={{
+                background: "#fff",
+                color: "rgb(0,0,0,0.65)",
+                fontWeight: "normal"
+              }}
               disabled
               value={intervalOfWeeks ? intervalOfWeeks : "-- --"}
             />
@@ -198,9 +201,28 @@ export default observer(function TraineeShift(props: Props) {
     ...rotateList,
     {
       title: "教学查房时间",
-      key: "teachingRoundTime",
-      width: 150,
-      align: "center"
+      dataIndex: "teachingRoundTime",
+      width: 190,
+      align: "center",
+      render(text: any, record: any) {
+        return (
+          <DatePicker
+            size="small"
+            showTime
+            allowClear={false}
+            value={text ? moment(text) : undefined}
+            format="YYYY-MM-DD HH:mm"
+            style={{ width: "150px", minWidth: "150px!important" }}
+            onChange={(value: any) => {
+              record.teachingRoundTime = value.format("YYYY-MM-DD HH:mm");
+              setTableList(traineeShiftModal.tableList);
+              const arrOne = traineeShiftModal.tableList.slice();
+              traineeShiftModal.tableList = [];
+              traineeShiftModal.tableList = arrOne;
+            }}
+          />
+        );
+      }
     },
     {
       title: "操作",
@@ -264,7 +286,7 @@ export default observer(function TraineeShift(props: Props) {
       .catch(e => {});
   };
 
-  // 创建实习生轮科弹窗
+  // 取消弹窗
   const handleEditCancel = () => {
     setEditDeptBtn(false);
     setEditGroupBtn(false);
