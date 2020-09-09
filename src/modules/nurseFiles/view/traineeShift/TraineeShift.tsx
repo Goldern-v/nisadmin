@@ -202,7 +202,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "教学查房时间",
       dataIndex: "teachingRoundTime",
-      width: 190,
+      width: 200,
       align: "center",
       render(text: any, record: any) {
         return (
@@ -214,8 +214,8 @@ export default observer(function TraineeShift(props: Props) {
             value={text ? moment(text) : undefined}
             format="YYYY-MM-DD HH:mm"
             style={{
-              width: "150px",
-              minWidth: "150px!important"
+              width: "170px",
+              minWidth: "170px!important"
             }}
             onChange={(value: any) => {
               record.teachingRoundTime = value.format("YYYY-MM-DD HH:mm");
