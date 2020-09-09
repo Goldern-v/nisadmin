@@ -2,44 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import { observer } from 'mobx-react-lite'
 import { Button, Tag } from 'antd'
-import { theme } from 'src/styles/theme'
-
-console.log()
-
-const FILTER_MAP: any = {
-  学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
-  职称: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
-    ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'] :
-    ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
-  层级: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
-    ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'] :
-    ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
-  职务: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
-    [
-      '全部',
-      '无',
-      '护士',
-      '护士长',
-      '科护士长',
-      '护理部干事',
-      '护理部副主任',
-      '护理部主任',
-    ] :
-    [
-      '全部',
-      '无',
-      '教学小组组长',
-      '教学秘书',
-      '护理组长',
-      '副护士长',
-      '护士长',
-      '科护士长',
-      '护理部副主任',
-      '护理部主任'
-    ]
-}
-
-type FilterMap = typeof FILTER_MAP
+import { empManageService } from "./../views/empDetail/api/EmpManageService";
+import { observer } from 'mobx-react-lite'
+import { appStore } from 'src/stores'
 
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string, callback: any) => {
@@ -73,8 +38,45 @@ export interface Props {
     Zw: string
   }
 }
-export default function FilterCon(props: Props) {
+export default observer(function FilterCon(props: Props) {
   const { isOpenFilter, onVisibleChange, filter, filterAdapterChange } = props;
+
+  const [filterMap, setFilterMap] = useState({
+    学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
+    职称: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
+      ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'] :
+      ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
+    层级: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
+      ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'] :
+      ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
+    职务: appStore.hisMatch({
+      map: {
+        'wh': [
+          '全部',
+          '无',
+          '护士',
+          '护士长',
+          '科护士长',
+          '护理部干事',
+          '护理部副主任',
+          '护理部主任',
+        ],
+        'nys': ['全部'],
+        other: [
+          '全部',
+          '无',
+          '教学小组组长',
+          '教学秘书',
+          '护理组长',
+          '副护士长',
+          '护士长',
+          '科护士长',
+          '护理部副主任',
+          '护理部主任'
+        ]
+      }
+    })
+  } as any)
 
   const setOpen = (value: boolean) => {
     onVisibleChange && onVisibleChange(value);
@@ -103,12 +105,26 @@ export default function FilterCon(props: Props) {
     }
   }
 
+  useEffect(() => {
+    empManageService.getJob()
+      .then((res) => {
+        if (res.data)
+          setFilterMap({
+            ...filterMap,
+            职务: [
+              '全部',
+              ...res.data.map((item: any) => item.code),
+            ]
+          })
+      })
+  }, [])
+
   return (
     <Wrapper>
       <Head>
         <div className='left'>
           选择：
-          {Object.keys(FILTER_MAP).map(
+          {Object.keys(filterMap).map(
           (item: any) =>
             getFilterAdapter(item) &&
             getFilterAdapter(item) !== '全部' && (
@@ -125,13 +141,13 @@ export default function FilterCon(props: Props) {
         </div>
       </Head>
       <Inner isOpenFilter={isOpenFilter}>
-        {Object.keys(FILTER_MAP).map((item, index) => {
-          return <FilterItem handleSetFilterAdapter={filterAdapterChange} key={index} label={item} selected={getFilterAdapter(item)} options={FILTER_MAP[item]} />
+        {Object.keys(filterMap).map((item: string, index: number) => {
+          return <FilterItem handleSetFilterAdapter={filterAdapterChange} key={index} label={item} selected={getFilterAdapter(item)} options={filterMap[item] || []} />
         })}
       </Inner>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div``
 const Inner = styled.div<{ isOpenFilter: Boolean }>`
@@ -161,7 +177,7 @@ const Head = styled.div`
 interface FilterItemProps {
   label: string
   selected: string
-  options: string[],
+  options: any,
   handleSetFilterAdapter?: any
 }
 
@@ -190,7 +206,7 @@ const FilterItem = (props: FilterItemProps) => {
   return (
     <ItemStyl>
       <div className='label'>{label}：</div>
-      {options.map((item, index) => (
+      {options.map((item: any, index: number) => (
         <Option className='option' active={item === selected} key={index} onClick={() => setFilterAdapter(label, item, handleSetFilterAdapter)}>
           {item}
         </Option>

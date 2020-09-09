@@ -118,6 +118,11 @@ export default class EmpManageService extends BaseApiService {
   public async exporCreditAndClassHoursCollect(query: any) {
     return this.post('/studyAndTrain/personelManage/exporCreditAndClassHoursCollect', query, { responseType: 'blob' })
   }
+
+  /**职务列表 */
+  public async getJob() {
+    return this.post('/dept/dictInfo', qs.stringify({ code: 'user_new_job' }))
+  }
 }
 
 export const empManageService = new EmpManageService()

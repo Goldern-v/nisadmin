@@ -11,63 +11,86 @@ import qs from "qs";
 import SorceAppendModal from "./../../components/SorceAppendModal";
 import BaseInfo from "./BaseInfo";
 import TableView from "./TableView";
+import Writings from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/Writings"
+import SpecialCard from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/SpecialCard"
+import EducationalExperience from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/EducationalExperience"
 
 export interface Props extends RouteComponentProps { }
 
-const Routes_Config = [
-  {
-    name: "基本信息",
-    title: "基本信息",
-    component: BaseInfo
-  },
-  {
-    name: "学分记录",
-    title: "学分记录",
-    component: TableView
-  },
-  {
-    name: "学时记录",
-    title: "学时记录",
-    component: TableView
-  },
-  {
-    name: "学习记录",
-    title: "学习记录",
-    component: TableView
-  },
-  {
-    name: "培训记录",
-    title: "培训记录",
-    component: TableView
-  },
-  {
-    name: "考试记录",
-    title: "考试记录",
-    component: TableView
-  },
-  {
-    name: "练习记录",
-    title: "练习记录",
-    component: TableView
-  },
-  {
-    name: "实操记录",
-    title: "实操记录",
-    component: TableView
-  },
-  {
-    name: "演练记录",
-    title: "演练记录",
-    component: TableView
-  },
-  {
-    name: "实践记录",
-    title: "实践记录",
-    component: TableView
-  },
-];
-
 export default observer(function Main(props: any) {
+  let Routes_Config = [
+    {
+      name: "基本信息",
+      title: "基本信息",
+      component: BaseInfo
+    },
+    {
+      name: "学分记录",
+      title: "学分记录",
+      component: TableView
+    },
+    {
+      name: "学时记录",
+      title: "学时记录",
+      component: TableView
+    },
+    {
+      name: "学习记录",
+      title: "学习记录",
+      component: TableView
+    },
+    {
+      name: "培训记录",
+      title: "培训记录",
+      component: TableView
+    },
+    {
+      name: "考试记录",
+      title: "考试记录",
+      component: TableView
+    },
+    {
+      name: "练习记录",
+      title: "练习记录",
+      component: TableView
+    },
+    {
+      name: "实操记录",
+      title: "实操记录",
+      component: TableView
+    },
+    {
+      name: "演练记录",
+      title: "演练记录",
+      component: TableView
+    },
+    {
+      name: "实践记录",
+      title: "实践记录",
+      component: TableView
+    },
+  ] as any[]
+
+  if (appStore.HOSPITAL_ID === 'nys') {
+    Routes_Config = Routes_Config.concat([
+      {
+        name: "特殊资格证",
+        title: "特殊资格证",
+        component: SpecialCard
+      },
+      {
+        name: "教育经历",
+        title: "教育经历",
+        component: EducationalExperience
+      },
+      {
+        name: "著作译文论文",
+        title: "著作译文论文",
+        component: Writings
+      },
+    ])
+  }
+
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
   const { history } = appStore;
   const [data, setData] = useState({
@@ -171,7 +194,7 @@ export default observer(function Main(props: any) {
           })}
         </div>
         <div className="route-view">
-          <TargetRoute.component shouldSorceAppendOpen={() => setSorceAppendVisible(true)} />
+          <TargetRoute.component shouldSorceAppendOpen={() => setSorceAppendVisible(true)} addBtnHide={true} />
         </div>
       </div>
       <SorceAppendModal

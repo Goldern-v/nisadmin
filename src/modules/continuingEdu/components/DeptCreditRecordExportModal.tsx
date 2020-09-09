@@ -103,7 +103,7 @@ export default observer(function DeptCreditRecordExportModal(props: Props) {
           onChange={(month: string) =>
             setQuery({ ...query, month })}>
           <Option value="">全部</Option>
-          {monthList.map((month: string) => (<Option value={month}>{month}</Option>))}
+          {monthList.map((month: string) => <Option value={month} key={month}>{month}</Option>)}
         </Select>
       </Row>
     </Wrapper>

@@ -13,10 +13,14 @@ import { globalModal } from 'src/global/globalModal'
 import { Button } from 'antd'
 import Zimage from 'src/components/Zimage'
 import limitUtils from '../utils/limit'
-export interface Props extends RouteComponentProps {}
-export default function SpecialCard() {
+export interface Props {
+  addBtnHide?: boolean
+}
+export default function SpecialCard(props: Props) {
+  let { addBtnHide } = props
+
   const editSpecialCardModal = createModal(EditSpecialCardModal)
-  const btnList = [
+  const btnList = addBtnHide ? [] : [
     {
       label: '添加',
       onClick: () =>
@@ -82,8 +86,8 @@ export default function SpecialCard() {
                 修改
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
 
             <span
               onClick={() => {
@@ -103,10 +107,10 @@ export default function SpecialCard() {
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
+                      return {
+                        ['附件' + (index + 1)]: item
+                      }
+                    })
                     : [],
                   allData: row
                 })

@@ -110,7 +110,7 @@ export default observer(function PracticeResultReview(props: Props) {
       align: 'center',
       width: 60,
       render: (text: any, record: any) => {
-        if (text) return `${Number(text) * 100}%`
+        if (text) return `${(Number(text) * 100).toFixed(2)}%`
         return '0%'
       }
     },
@@ -120,7 +120,7 @@ export default observer(function PracticeResultReview(props: Props) {
       align: 'center',
       width: 60,
       render: (text: any, record: any) => {
-        if (text) return `${Number(text) * 100}%`
+        if (text) return `${(Number(text) * 100).toFixed(2)}%`
         return '0%'
       }
     },
@@ -192,11 +192,11 @@ export default observer(function PracticeResultReview(props: Props) {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
-        <span> > </span>
+        <span> &gt; </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> &gt; 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>

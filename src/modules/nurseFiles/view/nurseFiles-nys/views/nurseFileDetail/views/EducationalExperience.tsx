@@ -12,10 +12,13 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-export interface Props extends RouteComponentProps {}
-export default observer(function EducationalExperience() {
+export interface Props {
+  addBtnHide?: boolean
+}
+export default observer(function EducationalExperience(props: Props) {
+  const { addBtnHide } = props
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
-  const btnList = [
+  const btnList = addBtnHide ? [] : [
     {
       label: '添加',
       onClick: () =>
@@ -91,8 +94,8 @@ export default observer(function EducationalExperience() {
                 修改
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
             <span
               onClick={() => {
                 globalModal.auditModal.show({
@@ -115,10 +118,10 @@ export default observer(function EducationalExperience() {
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
+                      return {
+                        ['附件' + (index + 1)]: item
+                      }
+                    })
                     : [],
                   allData: row
                 })

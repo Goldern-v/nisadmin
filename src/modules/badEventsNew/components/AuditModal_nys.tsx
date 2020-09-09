@@ -155,7 +155,7 @@ export default observer(function AduitModal(props: Props) {
         empName: item.label,
         empNo: item.key
       }))
-    
+
     // 流程审核意见
     const auditMind = () => {
       switch (status) {
