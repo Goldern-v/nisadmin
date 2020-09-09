@@ -207,12 +207,16 @@ export default observer(function TraineeShift(props: Props) {
       render(text: any, record: any) {
         return (
           <DatePicker
+            disabled={showWeek}
             size="small"
             showTime
             allowClear={false}
             value={text ? moment(text) : undefined}
             format="YYYY-MM-DD HH:mm"
-            style={{ width: "150px", minWidth: "150px!important" }}
+            style={{
+              width: "150px",
+              minWidth: "150px!important"
+            }}
             onChange={(value: any) => {
               record.teachingRoundTime = value.format("YYYY-MM-DD HH:mm");
               setTableList(traineeShiftModal.tableList);
@@ -331,11 +335,13 @@ export default observer(function TraineeShift(props: Props) {
           {showWeek ? (
             <Button onClick={() => setShowWeek(false)}>显示日期</Button>
           ) : (
-            <Button onClick={() => setShowWeek(true)}>显示周数</Button>
+            <span>
+              <Button onClick={() => setShowWeek(true)}>显示周数</Button>
+              <Button type="primary" onClick={() => saveAllRotateTimes()}>
+                保存
+              </Button>
+            </span>
           )}
-          <Button type="primary" onClick={() => saveAllRotateTimes()}>
-            保存
-          </Button>
         </RightIcon>
       </PageHeader>
       <Content>
@@ -414,5 +420,9 @@ const Content = styled(TabledCon)`
     outline: 0;
     box-shadow: none !important;
     padding: 4px;
+  }
+  .ant-input-disabled {
+    background: #fff !important;
+    color: rgb(0, 0, 0, 0.65) !important;
   }
 `;
