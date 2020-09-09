@@ -77,18 +77,18 @@ export default observer(function TraineeShift(props: Props) {
         dataIndex: "rotateGroupsList",
         width: 250,
         align: "center",
-        render: (text: any, record: any) => {
+        render: (text: any, record: any, idx: any) => {
           const rotateTimesList: any = record.rotateTimesList || [];
           const dataIndex = rotateTimesList.findIndex(
-            (obj: any) => record.deptCode === item.deptCode
+            (obj: any) => obj.deptCode === item.deptCode
           );
-          const { beginTime = "", endTime = "" } =
+          const { beginTime = "", endTime = "", intervalOfWeeks = "" } =
             rotateTimesList[dataIndex] || {};
-          return (
+          return !showWeek ? (
             <DatePicker.RangePicker
               allowClear={false}
               style={{ width: 220 }}
-              defaultValue={[beginTime, endTime]}
+              value={beginTime ? [moment(beginTime), moment(endTime)] : []}
               onChange={(date: any) => {
                 if (dataIndex >= 0) {
                   record.rotateTimesList[dataIndex].beginTime = date[0].format(
@@ -108,7 +108,16 @@ export default observer(function TraineeShift(props: Props) {
                   });
                 }
                 setTableList(traineeShiftModal.tableList);
+                const arrOne = traineeShiftModal.tableList.slice();
+                traineeShiftModal.tableList = [];
+                traineeShiftModal.tableList = arrOne;
               }}
+            />
+          ) : (
+            <Input
+              style={{ background: "#fff", color: "#000" }}
+              disabled
+              value={intervalOfWeeks ? intervalOfWeeks : "-- --"}
             />
           );
         }

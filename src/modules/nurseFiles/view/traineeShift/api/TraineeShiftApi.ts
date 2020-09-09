@@ -61,18 +61,6 @@ export default class TraineeShiftApi extends BaseApiService {
   }
   // 保存轮科实习生
   public async saveAllRotatePersons(obj: any) {
-    //   {
-    //     "sheetId": 19,
-    //     "rotatePersonsList": [{
-    //         "empName": "333",
-    //         "groupNum": 1,
-    //         "empNo": "admin"
-    //     },{
-    //         "empName": "333",
-    //         "groupNum": 1,
-    //         "empNo": "6859"
-    //     }]
-    // }
     return this.post(
       `/studyAndTrain/intern/deptRotationSchedule/saveAllRotatePersons`,
       obj

@@ -21,6 +21,41 @@ export default observer(function EditGroupModal(props: Props) {
   const [groupName, setGroupName] = useState("全部");
   const [editLoading, setEditLoading] = useState(false);
   const [editTraineeBtn, setEditTraineeBtn] = useState(false); //科室弹窗
+  //小组
+  const groupTypeList = [
+    { name: "全部", code: "全部" },
+    { name: 1, code: 1 },
+    { name: 2, code: 2 },
+    { name: 3, code: 3 },
+    { name: 4, code: 4 },
+    { name: 5, code: 5 },
+    { name: 6, code: 6 },
+    { name: 7, code: 7 },
+    { name: 8, code: 8 },
+    { name: 9, code: 9 },
+    { name: 10, code: 10 },
+    { name: 11, code: 11 },
+    { name: 12, code: 12 },
+    { name: 13, code: 13 },
+    { name: 13, code: 13 },
+    { name: 14, code: 14 },
+    { name: 15, code: 15 },
+    { name: 16, code: 16 },
+    { name: 17, code: 17 },
+    { name: 18, code: 18 },
+    { name: 19, code: 19 },
+    { name: 20, code: 20 },
+    { name: 21, code: 21 },
+    { name: 22, code: 22 },
+    { name: 23, code: 23 },
+    { name: 24, code: 24 },
+    { name: 25, code: 25 },
+    { name: 26, code: 26 },
+    { name: 27, code: 27 },
+    { name: 28, code: 28 },
+    { name: 29, code: 29 },
+    { name: 30, code: 30 }
+  ];
 
   // 表格数据
   const columns: any = [
@@ -180,17 +215,11 @@ export default observer(function EditGroupModal(props: Props) {
                   setGroupName(value);
                 }}
               >
-                <Select.Option value="全部">全部</Select.Option>
-                <Select.Option value={1}>1</Select.Option>
-                <Select.Option value={2}>2</Select.Option>
-                <Select.Option value={3}>3</Select.Option>
-                <Select.Option value={4}>4</Select.Option>
-                <Select.Option value={5}>5</Select.Option>
-                <Select.Option value={6}>6</Select.Option>
-                <Select.Option value={7}>7</Select.Option>
-                <Select.Option value={8}>8</Select.Option>
-                <Select.Option value={9}>9</Select.Option>
-                <Select.Option value={10}>10</Select.Option>
+                {groupTypeList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </span>
           )}
