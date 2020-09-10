@@ -8,7 +8,8 @@ import {
   Input,
   Button,
   Select,
-  Checkbox
+  Checkbox,
+  InputNumber
 } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
@@ -51,11 +52,12 @@ export default observer(function EditDeptModal(props: Props) {
       width: 70,
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <InputNumber
             className="specialInput"
+            min={1}
             value={record.sort}
-            onChange={(e: any) => {
-              record.sort = e.target.value;
+            onChange={(val: any) => {
+              record.sort = val;
               updateData(record);
             }}
           />
@@ -151,12 +153,14 @@ export default observer(function EditDeptModal(props: Props) {
       .catch(e => {
         setEditLoading(false);
       });
+    setQuery({ keyWord: undefined, checkValue: "全部" });
   };
 
   // 关闭取消
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (editLoading) return;
-    onCancel && onCancel();
+    await (onCancel && onCancel());
+    setQuery({ keyWord: undefined, checkValue: "全部" });
   };
 
   return (
@@ -164,9 +168,19 @@ export default observer(function EditDeptModal(props: Props) {
       width="800px"
       visible={visible}
       onCancel={handleCancel}
-      onOk={checkForm}
-      confirmLoading={editLoading}
-      title="编辑实习科室"
+      title="添加实习科室"
+      footer={
+        <div style={{ textAlign: "center" }}>
+          <Button onClick={() => handleCancel()}>取消</Button>
+          <Button
+            type="primary"
+            loading={editLoading}
+            onClick={() => checkForm()}
+          >
+            保存
+          </Button>
+        </div>
+      }
     >
       <Wrapper>
         <ModalHeader>
@@ -221,6 +235,14 @@ const Wrapper = styled.div`
     outline: 0 !important;
     box-shadow: none !important;
     padding: 4px !important;
+  }
+  .ant-input-number-input {
+    text-align: center !important;
+    height: 25px;
+  }
+
+  .ant-input-number-handler-up:hover {
+    height: 50% !important;
   }
 `;
 const ModalHeader = styled.div``;

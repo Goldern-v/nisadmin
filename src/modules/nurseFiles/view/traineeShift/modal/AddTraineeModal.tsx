@@ -16,7 +16,7 @@ export interface Props {
 export default observer(function AddTraineeModal(props: Props) {
   const { visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const editDataList: any = [];
+  const [editDataList, setEditDataList]: any = useState([]);
 
   // 表格数据
   const columns: any = [
@@ -56,16 +56,25 @@ export default observer(function AddTraineeModal(props: Props) {
     },
     {
       title: "操作",
-      dataIndex: "操作",
+      dataIndex: "isChecked",
       width: 70,
       align: "center",
       render(text: any, record: any, index: number) {
         return (
           <Checkbox
             key={record.allGroupCode}
-            defaultChecked={false}
+            checked={text}
             onChange={(e: any) => {
-              if (e.target.checked) editDataList.push(record);
+              record.isChecked = e.target.checked;
+              setEditDataList(
+                traineeShiftModal.allGroupTableList.filter(
+                  (item: any) => item.isChecked
+                )
+              );
+              const arrOne = traineeShiftModal.allGroupTableList;
+              arrOne.map((item: any) => (item.isCheck = false));
+              traineeShiftModal.allGroupTableList = [];
+              traineeShiftModal.allGroupTableList = arrOne;
             }}
           />
         );
@@ -98,9 +107,10 @@ export default observer(function AddTraineeModal(props: Props) {
   };
 
   // 关闭取消
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (editLoading) return;
-    onCancel && onCancel();
+    await (onCancel && onCancel());
+    traineeShiftModal.allGroupKeyWord = "";
   };
 
   return (
@@ -108,9 +118,19 @@ export default observer(function AddTraineeModal(props: Props) {
       width="800px"
       visible={visible}
       onCancel={handleCancel}
-      onOk={checkForm}
-      confirmLoading={editLoading}
       title="添加实习生"
+      footer={
+        <div style={{ textAlign: "center" }}>
+          <Button onClick={() => handleCancel()}>取消</Button>
+          <Button
+            type="primary"
+            loading={editLoading}
+            onClick={() => checkForm()}
+          >
+            保存
+          </Button>
+        </div>
+      }
     >
       <Wrapper>
         <ModalHeader>
@@ -126,7 +146,7 @@ export default observer(function AddTraineeModal(props: Props) {
           />
           <Input
             style={{ width: 280, marginLeft: 20 }}
-            placeholder="请输关键字进行检索"
+            placeholder="请输入姓名关键字进行检索"
             value={traineeShiftModal.allGroupKeyWord}
             onChange={(e: any) => {
               traineeShiftModal.allGroupKeyWord = e.target.value;

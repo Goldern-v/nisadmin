@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Modal, message as Message, Input, Button, Select } from "antd";
+import { Modal, message as Message, InputNumber, Button, Select } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
@@ -84,15 +84,28 @@ export default observer(function EditGroupModal(props: Props) {
       width: 80,
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <InputNumber
             className="specialInput"
+            min={1}
             value={text}
             key={record.empNo}
-            onChange={(e: any) => {
-              record.groupNum = e.target.value;
+            onChange={(val: any) => {
+              record.groupNum = val;
               updateData(record);
             }}
           />
+        );
+      }
+    },
+    {
+      title: "操作",
+      key: "cz",
+      width: 80,
+      render(text: any, record: any) {
+        return (
+          <DoCon>
+            <span onClick={() => handleDelete(record.empNo)}>删除</span>
+          </DoCon>
         );
       }
     }
@@ -102,6 +115,12 @@ export default observer(function EditGroupModal(props: Props) {
   useEffect(() => {
     if (visible) traineeShiftModal.groupOnload();
   }, [visible]);
+
+  //初始化筛选条件
+  const initValue = () => {
+    setGroupStype("全部"); //分组情况
+    setGroupName("全部");
+  };
 
   // 筛选展示数据
   const showTableData = () => {
@@ -140,8 +159,40 @@ export default observer(function EditGroupModal(props: Props) {
     showTableData();
   };
 
+  // 删除
+  const handleDelete = (empNo: any) => {
+    traineeShiftModal.groupTableList = traineeShiftModal.groupTableList.filter(
+      (item: any) => item.empNo != empNo
+    );
+    showTableData();
+    Message.success("删除成功！");
+  };
+
   // 保存
-  const checkForm = () => {
+  const checkForm = async () => {
+    let content = (
+      <div>
+        <div> 未进行分组的实习生将不存入轮科小组</div>确认保存吗？
+      </div>
+    );
+    let isHaveNoGroup: any = traineeShiftModal.groupTableList.find(
+      (item: any) => !item.groupNum
+    );
+    if (isHaveNoGroup) {
+      Modal.confirm({
+        title: "提示",
+        content,
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk: () => saveData()
+      });
+    } else {
+      saveData();
+    }
+    initValue();
+  };
+  const saveData = () => {
     const realData: any = traineeShiftModal.groupTableList.filter(
       (item: any) => item.groupNum
     );
@@ -167,9 +218,10 @@ export default observer(function EditGroupModal(props: Props) {
   };
 
   // 关闭取消
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (editLoading) return;
-    onCancel && onCancel();
+    await (onCancel && onCancel());
+    initValue();
   };
 
   // 取消实习生轮科弹窗
@@ -182,61 +234,73 @@ export default observer(function EditGroupModal(props: Props) {
 
   return (
     <Modal
-      width="700px"
+      width="600px"
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
-      onOk={checkForm}
-      confirmLoading={editLoading}
-      title="编辑实习科室"
+      title="编辑实习小组"
+      footer={
+        <div style={{ textAlign: "center" }}>
+          <Button onClick={() => handleCancel()}>取消</Button>
+          <Button
+            type="primary"
+            loading={editLoading}
+            onClick={() => checkForm()}
+          >
+            保存
+          </Button>
+        </div>
+      }
     >
       <Wrapper>
         <ModalHeader>
-          <span style={{ marginLeft: "20px" }}>分组情况：</span>
-          <Select
-            style={{ width: 100 }}
-            value={groupStype}
-            onChange={(value: any) => {
-              setGroupStype(value);
-            }}
-          >
-            <Select.Option value="全部">全部</Select.Option>
-            <Select.Option value="已分组">已分组</Select.Option>
-            <Select.Option value="未分组">未分组</Select.Option>
-          </Select>
-          {groupStype !== "未分组" && (
-            <span>
-              <span style={{ marginLeft: "20px" }}>小组：</span>
-              <Select
-                style={{ width: 80 }}
-                value={groupName}
-                onChange={(value: any) => {
-                  setGroupName(value);
-                }}
-              >
-                {groupTypeList.map(item => (
-                  <Select.Option value={item.code} key={item.name}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </span>
-          )}
-          <Button
-            type="primary"
-            style={{ marginLeft: "15px" }}
-            onClick={() => showTableData()}
-          >
-            查询
-          </Button>
-          <Button
-            className={
-              groupStype === "未分组" ? "specialMargin" : "normalMargin"
-            }
-            onClick={() => setEditTraineeBtn(true)}
-          >
-            添加实习生
-          </Button>
+          <LeftIcon>
+            <span style={{ marginLeft: "15px" }}>分组情况：</span>
+            <Select
+              style={{ width: 90 }}
+              value={groupStype}
+              onChange={(value: any) => {
+                setGroupStype(value);
+              }}
+            >
+              <Select.Option value="全部">全部</Select.Option>
+              <Select.Option value="已分组">已分组</Select.Option>
+              <Select.Option value="未分组">未分组</Select.Option>
+            </Select>
+            {groupStype !== "未分组" && (
+              <div style={{ display: "inline-block" }}>
+                <span style={{ marginLeft: "15px" }}>小组：</span>
+                <Select
+                  style={{ width: 80 }}
+                  value={groupName}
+                  onChange={(value: any) => {
+                    setGroupName(value);
+                  }}
+                >
+                  {groupTypeList.map(item => (
+                    <Select.Option value={item.code} key={item.name}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </div>
+            )}
+            <Button
+              type="primary"
+              style={{ marginLeft: "10px" }}
+              onClick={() => showTableData()}
+            >
+              查询
+            </Button>
+          </LeftIcon>
+          <RightIcon>
+            <Button
+              style={{ marginRight: "15px" }}
+              onClick={() => setEditTraineeBtn(true)}
+            >
+              添加实习生
+            </Button>
+          </RightIcon>
         </ModalHeader>
         <BaseTable
           loading={traineeShiftModal.groupTableLoading}
@@ -277,5 +341,21 @@ const Wrapper = styled.div`
   .normalMargin {
     margin-left: 115px;
   }
+  .ant-input-number-input {
+    text-align: center !important;
+    height: 25px;
+  }
+
+  .ant-input-number-handler-up:hover {
+    height: 50% !important;
+  }
 `;
-const ModalHeader = styled.div``;
+const ModalHeader = styled.div`
+  height: 35px;
+`;
+const LeftIcon = styled.div`
+  float: left;
+`;
+const RightIcon = styled.div`
+  float: right;
+`;

@@ -48,7 +48,6 @@ export default function VideoInsertion() {
       title: "提示",
       content,
       okText: "确定",
-      okType: "danger",
       cancelText: "取消",
       onOk: () => {
         videoInsertionApi

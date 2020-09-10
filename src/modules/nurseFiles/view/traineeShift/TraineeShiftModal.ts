@@ -66,6 +66,7 @@ class TraineeShiftModal {
     traineeShiftApi
       .queryGraduateInternPageList(this.postAllGroupObj)
       .then(res => {
+        res.data.list.map((item: any) => (item.isCheck = false));
         this.allGroupTableLoading = false;
         this.allGroupTableList = res.data.list;
         this.total = res.data.totalCount;

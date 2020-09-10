@@ -309,7 +309,7 @@ export default observer(function TraineeShift(props: Props) {
         <RightIcon>
           <Input
             style={{ width: 280, marginLeft: 5, marginRight: -5 }}
-            placeholder="请输入姓名、电话或编号关键字进行检索"
+            placeholder="请输入姓名关键字进行检索"
             value={traineeShiftModal.keyWord}
             onChange={e => {
               traineeShiftModal.keyWord = e.target.value;
@@ -335,13 +335,15 @@ export default observer(function TraineeShift(props: Props) {
           {showWeek ? (
             <Button onClick={() => setShowWeek(false)}>显示日期</Button>
           ) : (
-            <span>
-              <Button onClick={() => setShowWeek(true)}>显示周数</Button>
-              <Button type="primary" onClick={() => saveAllRotateTimes()}>
-                保存
-              </Button>
-            </span>
+            <Button onClick={() => setShowWeek(true)}>显示周数</Button>
           )}
+          <Button
+            disabled={showWeek}
+            type="primary"
+            onClick={() => saveAllRotateTimes()}
+          >
+            保存
+          </Button>
         </RightIcon>
       </PageHeader>
       <Content>
@@ -369,6 +371,15 @@ export default observer(function TraineeShift(props: Props) {
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
+  // .ant-calendar-time-picker-column-3
+  //   .ant-calendar-time-picker-combobox
+  //   /deep/.ant-calendar-time-picker-select {
+  //   width: 50% !important;
+  // }
+  // .ant-calendar-time-picker-combobox
+  //   /deep/.ant-calendar-time-picker-select:last-child {
+  //   display: none !important;
+  // }
 `;
 const PageHeader = styled.div`
   width: calc(100vw-200px);
