@@ -69,6 +69,11 @@ export default observer(function Main(props: any) {
       title: "实践记录",
       component: TableView
     },
+    {
+      name: "讲课记录",
+      title: "讲课记录",
+      component: TableView
+    },
   ] as any[]
 
   if (appStore.HOSPITAL_ID === 'nys') {

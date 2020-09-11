@@ -369,7 +369,8 @@ export default observer(function TableView(props: any) {
             width: 80,
             dataIndex: 'correctRateDesc',
             align: 'center',
-          }, {
+          },
+          {
             title: '成绩有效',
             dataIndex: 'isValidResultDesc',
             width: 60,
@@ -569,6 +570,53 @@ export default observer(function TableView(props: any) {
               else
                 return <span>{text}</span>
             }
+          },
+        ]
+      case '讲课记录':
+        return [
+          indexColumn,
+          {
+            title: '类型',
+            dataIndex: 'firstLevelMenuName',
+            width: 120,
+            align: 'center',
+          },
+          titleColumn,
+          {
+            title: '时间',
+            dataIndex: 'startTime',
+            width: 140,
+            align: 'center',
+          },
+          {
+            title: '开放时间',
+            dataIndex: 'openTimeDesc',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '组织方式',
+            dataIndex: 'oranizationWayName',
+            width: 70,
+            align: 'center',
+          },
+          {
+            title: '地址',
+            dataIndex: 'address',
+            width: 120,
+            align: 'left',
+          },
+          {
+            title: '学分',
+            dataIndex: 'creditDesc',
+            width: 120,
+            align: 'center',
+          },
+          {
+            title: '学时',
+            dataIndex: 'classHoursDesc',
+            width: 70,
+            align: 'center',
           },
         ]
       default:

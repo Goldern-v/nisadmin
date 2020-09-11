@@ -94,6 +94,11 @@ export default class EmpManageService extends BaseApiService {
     return this.post(`/studyAndTrain/personelManage/querySocialPractiseRecordPageList`, query)
   }
 
+  /**人员管理- 获取讲课记录-分页查询 */
+  public async queryTeachingRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryTeachingRecordPageList`, query)
+  }
+
   /** 个人信息-学分合计 */
   public async countCreditByParams(query: any) {
     return this.post(`/studyAndTrain/personelManage/countCreditByParams`, query)

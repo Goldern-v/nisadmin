@@ -153,11 +153,16 @@ class EmpDetailModel {
               firstLevelMenuId: type,
             })
         break
+      case '讲课记录':
+        reqMethod = empManageService.
+          queryTeachingRecordPageList({
+            ...params,
+            firstLevelMenuId: type,
+          })
+        break
       default:
         return
     }
-
-
 
     this.loading = true
     reqMethod?.then(res => {
