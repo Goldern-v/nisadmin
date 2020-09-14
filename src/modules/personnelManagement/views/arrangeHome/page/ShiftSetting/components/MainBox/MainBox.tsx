@@ -187,12 +187,9 @@ export default function MainBox() {
   let promise =
     appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
-      : appStore.HOSPITAL_ID == "nys"
-      ? (authStore.user && authStore.user.post) == "护理部" ||
-        (authStore.user && authStore.user.empName) == "管理员" ||
-        authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
-        (authStore.user && authStore.user.empName) == "管理员";
+        (authStore.user && authStore.user.empName) == "管理员" ||
+        authStore.isRoleManage;
 
   if (promise) {
     columns.push({
