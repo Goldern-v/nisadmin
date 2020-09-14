@@ -90,6 +90,7 @@ export default function TraineeFilesEditModal(props: Props) {
             schoolName,
             major,
             education,
+            idCardNo,
             phone,
             isResident,
             dormitoryNumber,
@@ -111,6 +112,7 @@ export default function TraineeFilesEditModal(props: Props) {
             schoolName,
             major,
             education,
+            idCardNo,
             phone,
             isResident: isResident === "否" ? "0" : "1",
             dormitoryNumber,
@@ -269,6 +271,16 @@ export default function TraineeFilesEditModal(props: Props) {
                   <Select.Option value="6">大专</Select.Option>
                   <Select.Option value="5">中专</Select.Option>
                 </Select>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              身份证号码:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="idCardNo">
+                <Input />
               </Form.Field>
             </Col>
           </Row>

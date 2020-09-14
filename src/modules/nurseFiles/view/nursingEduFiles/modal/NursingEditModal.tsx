@@ -87,6 +87,7 @@ export default function NursingEditModal(props: Props) {
             education,
             originalWorkUnit,
             originalDepartment,
+            idCardNo,
             phone,
             isResident,
             dormitoryNumber,
@@ -110,6 +111,7 @@ export default function NursingEditModal(props: Props) {
             education,
             originalWorkUnit,
             originalDepartment,
+            idCardNo,
             phone,
             isResident: isResident === "否" ? "0" : "1",
             dormitoryNumber,
@@ -299,6 +301,16 @@ export default function NursingEditModal(props: Props) {
             </Col>
             <Col span={16}>
               <Form.Field name="originalDepartment">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              身份证号码:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="idCardNo">
                 <Input />
               </Form.Field>
             </Col>

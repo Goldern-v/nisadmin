@@ -85,6 +85,12 @@ export default observer(function NursingEduFiles(props: Props) {
       align: "center"
     },
     {
+      title: "身份证号码",
+      dataIndex: "idCardNo",
+      width: 180,
+      align: "center"
+    },
+    {
       title: "联系电话",
       dataIndex: "phone",
       width: 120,
