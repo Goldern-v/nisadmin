@@ -879,7 +879,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             title: "登记人签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "责护",
+            aside: "登记人",
             registerCode,
             updateDataSource,
             selectedBlockId

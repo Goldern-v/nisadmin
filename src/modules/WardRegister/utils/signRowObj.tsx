@@ -35,13 +35,16 @@ export function signRowObj(obj: {
       let cancelSignApi = wardRegisterService.cancelSign.bind(
         wardRegisterService
       );
+      let signerNo = record.signerNo
       if (dataIndex == "auditorName") {
+        signerNo = record.auditorNo
         signApi = wardRegisterService.auditAll.bind(wardRegisterService);
         cancelSignApi = wardRegisterService.cancelAudit.bind(
           wardRegisterService
         );
       }
       if (dataIndex == "checkerName") {
+        signerNo = record.checkerNo
         signApi = wardRegisterService.checkAll.bind(wardRegisterService);
         cancelSignApi = wardRegisterService.cancelCheck.bind(
           wardRegisterService
@@ -55,29 +58,43 @@ export function signRowObj(obj: {
         签名
       </span>
 
-      return text ? (
-        <div
-          className="sign-name"
-          onClick={() => {
-            if (title.match('护士长') && !authStore.isRoleManage) {
-              message.error('非护士长无法取消签名')
-              return
-            }
+      /**出院患者登记本QCRG_08允许其他人签名已签名条目 */
+      let isSigner = false
+      let operator = authStore.user?.empNo
+      if (operator && (signerNo || '').toLowerCase() == operator.toLowerCase()) isSigner = true
 
-            globalModal
-              .confirm(`${aside}签名取消`, `你确定取消${aside}签名吗？`)
-              .then(res => {
-                cancelSignApi(registerCode, [{ id: record.id }]).then(res => {
-                  message.success(`取消${aside}签名成功`);
-                  Object.assign(record, res.data.list[0]);
-                  updateDataSource();
+      if (
+        text && (
+          registerCode !== 'QCRG_08'
+          || isSigner
+          // || (registerCode === 'QCRG_08' && authStore.isNotANormalNurse)
+        )
+      ) {
+        return (
+          <div
+            className="sign-name"
+            onClick={() => {
+              if (title.match('护士长') && !authStore.isRoleManage) {
+                message.error('非护士长无法取消签名')
+                return
+              }
+
+              globalModal
+                .confirm(`${aside}签名取消`, `你确定取消${aside}签名吗？`)
+                .then(res => {
+                  cancelSignApi(registerCode, [{ id: record.id }]).then(res => {
+                    message.success(`取消${aside}签名成功`);
+                    Object.assign(record, res.data.list[0]);
+                    updateDataSource();
+                  });
                 });
-              });
-          }}
-        >
-          {text}
-        </div>
-      ) : (
+            }}
+          >
+            {text}
+          </div>
+        )
+      } else {
+        return (
           <DoCon>
             <span
               onClick={() => {
@@ -110,10 +127,11 @@ export function signRowObj(obj: {
                   });
               }}
             >
-              签名
-          </span>
+              {text || '签名'}
+            </span>
           </DoCon>
-        );
+        )
+      }
     }
   };
 }

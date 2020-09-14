@@ -106,7 +106,7 @@ export default observer(function FilterCon(props: Props) {
   }
 
   useEffect(() => {
-    empManageService.getJob()
+    if (appStore.HOSPITAL_ID == 'nys') empManageService.getJob()
       .then((res) => {
         if (res.data)
           setFilterMap({

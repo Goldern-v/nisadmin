@@ -10,6 +10,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (['/', '', '\\', undefined, null].indexOf(folderSrc) > -1) {
     folderSrc = '/crdata/webProject/manage'
   }
+
+  //南医三护理管理测试环境
+  if (process.env.npm_lifecycle_event.indexOf('8062') >= 0) {
+    folderSrc = '/crdata/webProject/nanyisanmanage'
+  }
   // localSrc = './build'
 
   let serverInfo = {
@@ -17,8 +22,8 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     port: '50022',
     username: 'root',
     privateKey: path.resolve(__dirname, "./keys/cr_web_rsa") //fs.readFileSync('keys/cr_web_rsa')
-  }
 
+  }
 
   var spinner = ora(`正在同步上传至${serverInfo.host}服务器...`);
 
