@@ -7,12 +7,12 @@ module.exports = function (app) {
       // target: "http://120.25.105.45:9866", //厚街测试 兆大锅
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
-      // target: 'http://120.197.141.41:9091',
+      // target: 'https://crnursinghj.cr-health.com',
       // target: "http://192.168.20.133:8062", //广豪
       //武汉正式环境
       // target: "http://nurse.cr-health.com:34001",
       // target: 'http://192.168.2.75:8080',
-      // target: "http://nurse.cr-health.com:34002", //武汉测试
+      target: "http://nurse.cr-health.com:34002", //武汉测试
       // target: "http://120.25.105.45:9864", //武汉继续教育接口测试
       // target: 'http://192.168.2.144:8062',
       // target: "http://192.168.20.90:8080", //广旭
@@ -24,7 +24,7 @@ module.exports = function (app) {
 
       //南医三正式环境
       // target: "http://119.145.71.86:9098",
-      target: "http://120.25.105.45:8062", //南医三测试
+      // target: "http://120.25.105.45:8062", //南医三测试
       // target: "http://192.168.3.113:8062", //广豪南医三测试
       secure: false,
       changeOrigin: true

@@ -115,9 +115,9 @@ export default observer(function WrongQuestionBank() {
     <Wrapper>
       <NavCon>
         <Link to="/continuingEdu">学习培训</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <Link to="/continuingEdu/questionBankManagement">题库管理</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>错题反馈</span>
       </NavCon>
       <HeadCon>
