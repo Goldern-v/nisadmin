@@ -1,7 +1,7 @@
 import { globalModal } from "src/global/globalModal";
 import { wardRegisterService } from "../services/WardRegisterService";
 import { message } from "src/vendors/antd";
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { DoCon } from "src/components/BaseTable";
 import React, { useState, useEffect } from "react";
 export function signRowObj(obj: {
@@ -64,11 +64,11 @@ export function signRowObj(obj: {
       if (operator && (signerNo || '').toLowerCase() == operator.toLowerCase()) isSigner = true
 
       if (
-        text && (
-          registerCode !== 'QCRG_08'
-          || isSigner
-          // || (registerCode === 'QCRG_08' && authStore.isNotANormalNurse)
-        )
+        // text && (
+        //   registerCode !== 'QCRG_08'
+        //   || isSigner
+        // )
+        text
       ) {
         return (
           <div
@@ -109,12 +109,22 @@ export function signRowObj(obj: {
                   .then(res => {
                     //如果是sign类型
                     if (dataIndex === "signerName") {
-                      signApi(registerCode, selectedBlockId, [record], true).then(
-                        (res: any) => {
-                          message.success(`${aside}签名成功`);
-                          Object.assign(record, { ...res.data.itemDataList[0], modified: false });
-                          updateDataSource()
-                        })
+                      signApi(
+                        registerCode,
+                        selectedBlockId,
+                        [{
+                          ...record,
+                          signerName: authStore.user?.empName,
+                          signerNo: authStore.user?.empNo
+                        }],
+                        true
+                      )
+                        .then(
+                          (res: any) => {
+                            message.success(`${aside}签名成功`);
+                            Object.assign(record, { ...res.data.itemDataList[0], modified: false });
+                            updateDataSource()
+                          })
                     } else {
                       signApi(registerCode, [{ id: record.id }]).then(
                         (res: any) => {

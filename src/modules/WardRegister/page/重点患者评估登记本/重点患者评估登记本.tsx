@@ -1529,18 +1529,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
 });
 
 const Container = styled(Wrapper)`
-  .color-red,
-  .color-red *,
-  .disabled-row .color-red[disabled],
-  .disabled-row .color-red *[disabled] {
-    color: red !important;
-  }
-  .color-orange,
-  .color-orange *,
-  .disabled-row .color-orange[disabled],
-  .disabled-row .color-orange *[disabled] {
-    color: orange !important;
-  }
   .ant-select-disabled .ant-select-selection{
       background: rgba(0,0,0,0.0)!important;
   }
@@ -1557,6 +1545,20 @@ const Container = styled(Wrapper)`
   .ant-input[disabled]{
     color: #000!important;
     background: rgba(0,0,0,0.03)!important;
+  }
+
+  .color-red,
+  .color-red *,
+  .disabled-row .color-red[disabled],
+  .disabled-row .color-red *[disabled] {
+    color: red !important;
+  }
+
+  .color-orange,
+  .color-orange *,
+  .disabled-row .color-orange[disabled],
+  .disabled-row .color-orange *[disabled] {
+    color: orange !important;
   }
 `;
 

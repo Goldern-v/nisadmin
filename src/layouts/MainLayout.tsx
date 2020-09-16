@@ -14,7 +14,7 @@ import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
 import SignModal from 'src/global/modal/SignModal'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function MainLayout(props: Props) {
   const { payload } = props
