@@ -103,7 +103,23 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='身份证号'>
-          {getFieldDecorator('cardNumber')(<Input />)}
+          {getFieldDecorator(
+            'cardNumber',
+            {
+              rules: [{
+                validator(rule: any, value: any) {
+                  if (!value) return Promise.resolve()
+                  //身份证验证
+                  let idCardNumberReg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+
+                  if (idCardNumberReg.test(value))
+                    return Promise.resolve()
+                  else
+                    return Promise.reject('请输入正确的身份证号码')
+                },
+                message: '请输入正确的身份证号码'
+              }]
+            })(<Input />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='出生年月'>
