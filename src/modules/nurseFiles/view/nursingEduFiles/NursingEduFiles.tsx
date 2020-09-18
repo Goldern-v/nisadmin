@@ -15,10 +15,17 @@ import { nursingEduFilesModal } from "./NursingEduFilesModal"; // 仓库数据
 import { nursingEduFilesApi } from "./api/NursingEduFilesApi"; // 接口
 import NursingEditModal from "./modal/NursingEditModal"; // 添加修改弹窗
 
-interface Props {}
+import createModal from "src/libs/createModal";
+import QrcodeSbmitModal from "./modal/QrcodeSbmitModal";//二维码扫描弹窗
+import RefresherCheckModal from "./modal/RefresherCheckModal";//检查进修生填写资料
+
+interface Props { }
 export default observer(function NursingEduFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
+
+  const qrcodeSbmitModal = createModal(QrcodeSbmitModal)
+  const refresherCheckModal = createModal(RefresherCheckModal)
 
   // 初始化数据
   useEffect(() => {
@@ -195,7 +202,7 @@ export default observer(function NursingEduFiles(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
@@ -290,6 +297,16 @@ export default observer(function NursingEduFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => saveOrUpload()}>添加护士</Button>
+          <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
+          <Button
+            onClick={() =>
+              refresherCheckModal.show({
+                closeCallback: () =>
+                  nursingEduFilesModal.onload()
+              })
+            }>
+            待检查
+          </Button>
         </RightIcon>
       </PageHeader>
       <Content>
@@ -318,6 +335,8 @@ export default observer(function NursingEduFiles(props: Props) {
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
+      <qrcodeSbmitModal.Component />
+      <refresherCheckModal.Component />
     </Wrapper>
   );
 });

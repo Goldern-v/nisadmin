@@ -15,7 +15,8 @@ import { Icon } from 'antd'
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN'
 import moment from 'moment'
 import { educationList } from './data/education'
-import { traineeInfoSubmitService } from './api/TraineeInfoSubmitService'
+import { titleList } from './data/title'
+import { refresherInfoSubmitService } from './api/RefresherInfoSubmitService'
 import { message } from 'antd'
 
 export interface Props { }
@@ -24,22 +25,25 @@ export default function TraineeInfoSubmit() {
   const [params, setParams] = useState({
     name: '',
     sex: '1',
+    age: '',
+    originalWorkUnit: '',
+    originalDepartment: '',
     idCardNo: '',
     phone: '',
-    schoolName: '',
-    major: '',
+    title: '',
     education: '',
     isResident: '1',
     dormitoryNumber: '',
-    internshipBegin: '',
-    internshipEnd: '',
-    isGroupLeader: '0',
+    studyTimeBegin: '',
+    studyTimeEnd: '',
+    studyDeptCode01: '',
+    studyDeptName01: '',
+    studyDeptCode02: '',
+    studyDeptName02: '',
     address: '',
     emergencyContactPerson: '',
     emergencyContactPhone: '',
     remark: '',
-    studyDeptName: '',
-    studyDeptCode: '',
   })
 
   const [deptList, setDeptList] = useState([] as any[])
@@ -47,7 +51,7 @@ export default function TraineeInfoSubmit() {
   const [finished, setFinished] = useState(false)
 
   const getDeptList = () => {
-    traineeInfoSubmitService
+    refresherInfoSubmitService
       .nursingUnitWithOutLogin()
       .then(res => {
         if (res.data)
@@ -65,7 +69,7 @@ export default function TraineeInfoSubmit() {
     setLoading(true)
     console.log(saveParams)
 
-    traineeInfoSubmitService
+    refresherInfoSubmitService
       .submitInfoToAudit(saveParams)
       .then(res => (
         setFinished(true)
@@ -76,7 +80,7 @@ export default function TraineeInfoSubmit() {
   }
 
   useEffect(() => {
-    document.title = "实习生资料上报"
+    document.title = "进修生资料上报"
     getDeptList()
   }, [])
 
@@ -104,31 +108,22 @@ export default function TraineeInfoSubmit() {
           <ListMb.Item className="sex-row" arrow="horizontal">性别</ListMb.Item>
         </Picker>
         <InputItem
-          value={params.idCardNo}
+          value={params.age}
           placeholder="请输入"
-          onChange={(idCardNo: string) => setParams({ ...params, idCardNo })}>
-          身份证号
+          onChange={(age: string) => setParams({ ...params, age })}>
+          年龄
         </InputItem>
-        <InputItem
-          value={params.phone}
-          placeholder="请输入"
-          onChange={(phone: string) => setParams({ ...params, phone })}>
-          联系电话
-        </InputItem>
-      </ListMb>
-      <ListMb>
-        <InputItem
-          value={params.schoolName}
-          placeholder="请输入"
-          onChange={(schoolName: string) => setParams({ ...params, schoolName })}>
-          院校
-        </InputItem>
-        <InputItem
-          value={params.major}
-          placeholder="请输入"
-          onChange={(major: string) => setParams({ ...params, major })}>
-          专业
-        </InputItem>
+        <Picker
+          extra="请选择"
+          data={titleList}
+          style={{ textAlign: 'center' }}
+          value={[params.title]}
+          cols={1}
+          onChange={(payload: any) => {
+            if (payload[0]) setParams({ ...params, title: payload[0] })
+          }}>
+          <ListMb.Item className="title-row" arrow="horizontal">职称</ListMb.Item>
+        </Picker>
         <Picker
           extra="请选择"
           data={educationList.map((item: any) => ({ label: item.name, value: item.code }))}
@@ -142,6 +137,32 @@ export default function TraineeInfoSubmit() {
         </Picker>
       </ListMb>
       <ListMb>
+        <InputItem
+          value={params.originalWorkUnit}
+          placeholder="请输入"
+          onChange={(originalWorkUnit: string) => setParams({ ...params, originalWorkUnit })}>
+          原单位名称
+        </InputItem>
+        <InputItem
+          value={params.originalDepartment}
+          placeholder="请输入"
+          onChange={(originalDepartment: string) => setParams({ ...params, originalDepartment })}>
+          原科室
+        </InputItem>
+      </ListMb>
+      <ListMb>
+        <InputItem
+          value={params.idCardNo}
+          placeholder="请输入"
+          onChange={(idCardNo: string) => setParams({ ...params, idCardNo })}>
+          身份证号
+        </InputItem>
+        <InputItem
+          value={params.phone}
+          placeholder="请输入"
+          onChange={(phone: string) => setParams({ ...params, phone })}>
+          联系电话
+        </InputItem>
         <Picker
           extra="请选择"
           data={[
@@ -163,25 +184,25 @@ export default function TraineeInfoSubmit() {
           住宿编号
         </InputItem>
       </ListMb>
-      <div className="sub-title">实习时间</div>
+      <div className="sub-title">进修时间</div>
       <ListMb>
         <DatePickerMb
-          value={params.internshipBegin ? moment(params.internshipBegin).toDate() : undefined}
+          value={params.studyTimeBegin ? moment(params.studyTimeBegin).toDate() : undefined}
           mode="date"
           locale={zhCN}
           onChange={(date) => setParams({
             ...params,
-            internshipBegin: moment(date).format('YYYY-MM-DD')
+            studyTimeBegin: moment(date).format('YYYY-MM-DD')
           })}>
           <ListMb.Item arrow="horizontal">开始时间</ListMb.Item>
         </DatePickerMb>
         <DatePickerMb
-          value={params.internshipEnd ? moment(params.internshipEnd).toDate() : undefined}
+          value={params.studyTimeEnd ? moment(params.studyTimeEnd).toDate() : undefined}
           mode="date"
           locale={zhCN}
           onChange={(date) => setParams({
             ...params,
-            internshipEnd: moment(date).format('YYYY-MM-DD')
+            studyTimeEnd: moment(date).format('YYYY-MM-DD')
           })}>
           <ListMb.Item arrow="horizontal">结束时间</ListMb.Item>
         </DatePickerMb>
@@ -190,33 +211,36 @@ export default function TraineeInfoSubmit() {
         <Picker
           extra="请选择"
           data={deptList}
-          value={[params.studyDeptCode]}
+          value={[params.studyDeptCode01]}
           cols={1}
           onChange={(payload: any) => {
             if (payload[0]) {
               let target = deptList.find((item: any) => item.value == payload[0])
               setParams({
                 ...params,
-                studyDeptCode: target.value,
-                studyDeptName: target.label
+                studyDeptCode01: target.value,
+                studyDeptName01: target.label
               })
             }
           }}>
-          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">实习科室</ListMb.Item>
+          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">进修科室1</ListMb.Item>
         </Picker>
         <Picker
           extra="请选择"
-          data={[
-            { label: '是', value: '1', },
-            { label: '否', value: '0', },
-          ]}
-          style={{ textAlign: 'center' }}
-          value={[params.isGroupLeader]}
+          data={deptList}
+          value={[params.studyDeptCode02]}
           cols={1}
           onChange={(payload: any) => {
-            if (payload[0]) setParams({ ...params, isGroupLeader: payload[0] })
+            if (payload[0]) {
+              let target = deptList.find((item: any) => item.value == payload[0])
+              setParams({
+                ...params,
+                studyDeptCode02: target.value,
+                studyDeptName02: target.label
+              })
+            }
           }}>
-          <ListMb.Item className="isGroupLeader-row" arrow="horizontal">是否组长</ListMb.Item>
+          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">进修科室2</ListMb.Item>
         </Picker>
       </ListMb>
       <ListMb>
