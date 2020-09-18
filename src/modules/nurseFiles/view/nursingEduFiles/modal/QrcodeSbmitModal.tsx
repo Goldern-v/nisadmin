@@ -12,7 +12,7 @@ export interface Props extends ModalComponentProps {
 export default observer(function QrcodeSbmitModal(props: Props) {
   const { visible, onCancel } = props
   const targetUrl = appStore.isDev ?
-    'http://192.168.3.196:3000/#/refresherInfoSubmit' :
+    'http://120.25.105.45:9864/crNursing/manage/#/refresherInfoSubmit' :
     'https://crnursinghj.cr-health.com/crNursing/manage/#/refresherInfoSubmit'
 
   function screenShot() {
