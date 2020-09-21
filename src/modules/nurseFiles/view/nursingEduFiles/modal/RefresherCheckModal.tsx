@@ -158,7 +158,7 @@ export default function RefresherCheckModal(props: Props) {
   return (
     <React.Fragment>
       <Modal
-        title="检查实习生资料"
+        title="检查进修生资料"
         visible={visible}
         width={1000}
         centered
