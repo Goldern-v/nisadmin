@@ -11,7 +11,6 @@ import {
   DatePicker
 } from "src/vendors/antd";
 import moment from "moment";
-
 import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
@@ -116,11 +115,10 @@ export default observer(function TraineeShift(props: Props) {
             <Input
               style={{
                 background: "#fff",
-                color: "rgb(0,0,0,0.65)",
-                fontWeight: "normal"
+                color: "rgb(0,0,0,0.65)"
               }}
               disabled
-              value={intervalOfWeeks ? intervalOfWeeks : "-- --"}
+              value={intervalOfWeeks || "-- --"}
             />
           );
         }

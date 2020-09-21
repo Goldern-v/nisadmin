@@ -6,6 +6,7 @@ import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../types/Sheet";
 import { cloneJson } from "src/utils/json/clone";
 import { message as Message } from "antd";
+import { appStore } from "src/stores";
 
 import moment from "moment";
 export interface Props {
@@ -83,11 +84,14 @@ export const totalCellContent = (id: any) => {
   sheetViewModal.standardTimeList;
   for (let key in weekObj) {
     if (weekObj[key].length == 7) {
-      let real_week = sheetViewModal.getStandTime(
-        moment()
-          .week(Number(key))
-          .format("YYYY-MM-DD")
-      );
+      let real_week =
+        appStore.HOSPITAL_ID === "nys"
+          ? 0
+          : sheetViewModal.getStandTime(
+              moment()
+                .week(Number(key))
+                .format("YYYY-MM-DD")
+            );
       // console.log(
       //   real_week,
       //   moment()
