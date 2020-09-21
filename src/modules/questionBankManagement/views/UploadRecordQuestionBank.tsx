@@ -129,9 +129,9 @@ export default observer(function QuestionBankManagement() {
     <Wrapper>
       <NavCon>
         <Link to="/continuingEdu">学习培训</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <Link to="/continuingEdu/questionBankManagement">题库管理</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>文件题库</span>
       </NavCon>
       <HeadCon>

@@ -1,3 +1,4 @@
+import qs from "qs";
 import BaseApiService from "src/services/api/BaseApiService";
 
 export default class NursingEduFilesApi extends BaseApiService {
@@ -42,6 +43,26 @@ export default class NursingEduFilesApi extends BaseApiService {
         responseType: "blob"
       }
     );
+  }
+
+  /**护理进修生花名册-获取待审核的记录-分页查询 */
+  public queryToAuditPageList(query: any) {
+    return this.post('/nursefile/otherPersonInfo/refresherStudent/queryToAuditPageList', query)
+  }
+
+  /**护理进修生花名册-根据id获取待审核记录的详细信息 */
+  public queryToAuditInfoById(id: string | number) {
+    return this.post('/nursefile/otherPersonInfo/refresherStudent/queryToAuditInfoById', qs.stringify({ id }))
+  }
+
+  /**护理进修生花名册-保存信息至花名册 */
+  public auditInfo(params: any) {
+    return this.post('/nursefile/otherPersonInfo/refresherStudent/auditInfo', params)
+  }
+
+  /**护理进修生花名册-保存信息至花名册 */
+  public deleteToAuditInfoByIds(ids: any[]) {
+    return this.post('/nursefile/otherPersonInfo/refresherStudent/deleteToAuditInfoByIds', qs.stringify({ ids: ids.join(',') }))
   }
 }
 export const nursingEduFilesApi = new NursingEduFilesApi();

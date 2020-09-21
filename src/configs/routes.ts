@@ -347,9 +347,15 @@ const BadEventReportView = lazy(() =>
   import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView")
 );
 
+//移动端界面
+const TraineeInfoSubmit = lazy(() => import('src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit'))
+const RefresherInfoSubmit = lazy(() => import('src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit'))
+
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/login", LoginView),
+  setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
+  setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   ...specialModule,
   setLayout("/scheduleHome", ScheduleHomeView, layouts.MainLayout),
 

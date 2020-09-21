@@ -263,6 +263,8 @@ export function getFun(context: any) {
     //库房物品管理登记任何状态可编辑
     if (registerCode == 'QCRG_14_2') return false
     if (registerCode == 'QCRG_16_2') return false
+    //出院患者登记本放开编辑
+    if (registerCode == 'QCRG_08') return false
 
     if (record.auditorNo) return true
     if (!record.signerNo) return false

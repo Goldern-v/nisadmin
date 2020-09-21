@@ -71,9 +71,9 @@ export default observer(function QuestionBankManagement() {
       <div className="header">
         <NavCon className="nav">
           <Link to="/continuingEdu">学习培训</Link>
-          <span> > </span>
+          <span> &gt; </span>
           <Link to="/continuingEdu/questionBankManagement">题库管理</Link>
-          <span> > </span>
+          <span> &gt; </span>
           <span>导入题库</span>
         </NavCon>
         <div className="topbar">

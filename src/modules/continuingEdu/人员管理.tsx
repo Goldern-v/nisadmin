@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Input, Select } from "antd";
+import { Button, Icon, Input, Popover, Select } from "antd";
 import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { RouteComponentProps } from "react-router";
@@ -13,6 +13,7 @@ import service from 'src/services/api'
 
 import FilterCon from "./components/FilterCon";
 import DeptCreditRecordExportModal from './components/DeptCreditRecordExportModal'
+import RuleInstsEditModal from './components/RuleInstsEditModal'
 import { empManageService } from "./views/empDetail/api/EmpManageService";
 import qs from "qs";
 import { message } from "antd/es";
@@ -48,7 +49,10 @@ export default observer(function 人员管理(props: Props) {
   const [dataLoading, setDataLoading] = useState(false);
   const [filterConVisible, setFilterConVisible] = useState(true);
 
+  const [ruleInsts, setRuleInsts] = useState([])
+
   let creditRecordExport = createModal(DeptCreditRecordExportModal)
+  let ruleInstsEditModal = createModal(RuleInstsEditModal)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -131,6 +135,48 @@ export default observer(function 人员管理(props: Props) {
       align: "center",
       render: (text: any) => text || '0',
     },
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            title: <span>
+              <span>学分督导</span>
+              <Popover content={<MinTableCon>
+                <table>
+                  <tbody>
+                    <tr className="header">
+                      <td>层级</td>
+                      <td>最低学时要求</td>
+                    </tr>
+                    {ruleInsts.map((item: any) =>
+                      <tr key={item.ruleItem}>
+                        <td>{item.ruleItem}</td>
+                        <td>{item.minimumCredit}</td>
+                      </tr>)}
+                  </tbody>
+                </table>
+              </MinTableCon>}>
+                <Icon
+                  type="question-circle"
+                  theme="filled"
+                  style={{
+                    marginLeft: "5px",
+                    cursor: 'pointer',
+                  }}
+                />
+              </Popover>
+            </span>,
+            key: "creditSpv",
+            dataIndex: "creditSpv",
+            width: 50,
+            align: "center",
+            render: (text: any) =>
+              <span style={{ color: text === '未达标' ? "red" : "" }}>{text}</span>,
+          },
+        ],
+        other: []
+      }
+    }),
     {
       title: "学时",
       key: "classHours",
@@ -139,6 +185,48 @@ export default observer(function 人员管理(props: Props) {
       align: "center",
       render: (text: any) => text || '0',
     },
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            title: <span>
+              <span>学时督导</span>
+              <Popover content={<MinTableCon>
+                <table>
+                  <tbody>
+                    <tr className="header">
+                      <td>层级</td>
+                      <td>最低学时要求</td>
+                    </tr>
+                    {ruleInsts.map((item: any) =>
+                      <tr key={item.ruleItem}>
+                        <td>{item.ruleItem}</td>
+                        <td>{item.minimumClassHours}</td>
+                      </tr>)}
+                  </tbody>
+                </table>
+              </MinTableCon>}>
+                <Icon
+                  type="question-circle"
+                  theme="filled"
+                  style={{
+                    marginLeft: "5px",
+                    cursor: 'pointer',
+                  }}
+                />
+              </Popover>
+            </span>,
+            key: "classHourSpv",
+            dataIndex: "classHourSpv",
+            width: 50,
+            align: "center",
+            render: (text: any) =>
+              <span style={{ color: text === '未达标' ? "red" : "" }}>{text}</span>,
+          },
+        ],
+        other: []
+      }
+    }),
     {
       title: "状态",
       key: "status",
@@ -168,6 +256,9 @@ export default observer(function 人员管理(props: Props) {
     getTableData()
     //护理部能查看所有科室
     if (authStore.isDepartment) getDeptAll()
+    //南医三学分学时督导规则
+    if (appStore.HOSPITAL_ID === 'nys')
+      queryRuleInstsCurrentYear()
   }, []);
 
   const handleReview = (record: any) => {
@@ -295,6 +386,15 @@ export default observer(function 人员管理(props: Props) {
     })
   }
 
+  /**获取当年的学分学时督导规则 */
+  const queryRuleInstsCurrentYear = () => {
+    empManageService
+      .queryRuleInstsCurrentYear()
+      .then(res => {
+        if (res.data) setRuleInsts(res.data.instDtoList || [])
+      })
+  }
+
   return (
     <Wrapper className={switchWrapperName()}>
       <CommonHeader title={"人员管理"}>
@@ -337,6 +437,17 @@ export default observer(function 人员管理(props: Props) {
             导出学分统计
           </Button>
         </span>
+        {appStore.HOSPITAL_ID === 'nys' && (
+          <span className="float-item">
+            <Button
+              onClick={() =>
+                ruleInstsEditModal.show({
+                  okCallback: () => getTableData()
+                })}>
+              编辑学分学时督导
+            </Button>
+          </span>
+        )}
       </CommonHeader>
       <div className="main-contain">
         <div className="filter-contain">
@@ -372,6 +483,7 @@ export default observer(function 人员管理(props: Props) {
         </div>
       </div>
       <creditRecordExport.Component />
+      <ruleInstsEditModal.Component />
     </Wrapper>
   );
 });
@@ -434,3 +546,20 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+const MinTableCon = styled.div`
+  table,table tr th, table tr td { 
+    border:1px solid #ccc;
+  }
+  td{
+    padding: 5px 10px;
+  }
+  table { 
+    text-align: center; 
+    border-collapse: collapse;
+  }
+  .header{
+    background: #eee;
+    font-weight: bold;
+  }
+`

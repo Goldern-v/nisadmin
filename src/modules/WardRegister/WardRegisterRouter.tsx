@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React, {
+  // useState, useEffect 
+} from "react";
+// import { Button } from "antd";
 import LeftMenuPage from "src/components/LeftMenuPage";
 import { appStore, authStore } from "src/stores";
 import { ReactComponent as WPJJ } from "./images/icon/WPJJ.svg";
@@ -93,7 +95,7 @@ function WardRegisterRouter() {
       path: "/wardRegister/QCRG_02",
       component: { ...物品交接登记本 },
       icon: <TSWP />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_02",
         registerName: "特殊交接登记本"
@@ -276,7 +278,7 @@ function WardRegisterRouter() {
     {
       title: "中医护理登记本",
       icon: <ZYHL />,
-      hide: !appStore.isDev,
+      // hide: !appStore.isDev,
       children: [
         {
           title: "中医护理登记本",

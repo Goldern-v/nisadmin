@@ -128,6 +128,22 @@ export default class EmpManageService extends BaseApiService {
   public async getJob() {
     return this.post('/dept/dictInfo', qs.stringify({ code: 'user_new_job' }))
   }
+
+  /**学习培训-学分学时督导 -获取某一年的学分学时督导规则 */
+  public async queryRuleInsts(year: string) {
+    return this.post('/studyAndTrain/creditAndHours/creditHoursSupervison/queryRuleInsts', { year })
+  }
+
+  /**学习培训-学分学时督导 -获取当年的学分学时督导规则 */
+  public async queryRuleInstsCurrentYear() {
+    return this.get('/studyAndTrain/creditAndHours/creditHoursSupervison/queryRuleInsts/CurrentYear')
+  }
+
+  /**学习培训-学分学时督导 -获取某一年的学分学时督导规则 */
+  public async saveOrUpdateRuleInsts(params: any) {
+    return this.post('/studyAndTrain/creditAndHours/creditHoursSupervison/saveOrUpdateRuleInsts', params)
+  }
+
 }
 
 export const empManageService = new EmpManageService()

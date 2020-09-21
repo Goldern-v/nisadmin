@@ -133,7 +133,7 @@ export default observer(function ChoiceQuestionEdit() {
   }
 
   const handleSave = () => {
-    let params = { ...editModel, bankName: '医院题库' };
+    let params = { ...editModel, bankName: '医院题库' } as any;
 
     params.choiceQuestionList = params.choiceQuestionList.map((item: any, idx: number) => {
       return {
@@ -161,9 +161,9 @@ export default observer(function ChoiceQuestionEdit() {
     <div className="header">
       <NavCon>
         <Link to="/continuingEdu">学习培训</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <Link to="/continuingEdu/questionBankManagement?choiceType=选择题">题库管理</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>选择题维护</span>
       </NavCon>
       <div className="topbar">
