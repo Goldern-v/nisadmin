@@ -109,6 +109,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
                       value={record.totalP}
                       onChange={(e: any) => {
                         record.totalP = e.target.value;
+                        addAllMoney(record);
                         setData(cloneData);
                       }}
                     />
@@ -148,6 +149,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
                       value={record.totalN}
                       onChange={(e: any) => {
                         record.totalN = e.target.value;
+                        addAllMoney(record);
                         setData(cloneData);
                       }}
                     />
@@ -187,6 +189,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
                       value={record.totalNight}
                       onChange={(e: any) => {
                         record.totalNight = e.target.value;
+                        addAllMoney(record);
                         setData(cloneData);
                       }}
                     />
@@ -226,6 +229,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
                       value={record.totalWan}
                       onChange={(e: any) => {
                         record.totalWan = e.target.value;
+                        addAllMoney(record);
                         setData(cloneData);
                       }}
                     />
@@ -265,6 +269,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
                       value={record.totalSecondLine}
                       onChange={(e: any) => {
                         record.totalSecondLine = e.target.value;
+                        addAllMoney(record);
                         setData(cloneData);
                       }}
                     />
@@ -278,15 +283,9 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
             dataIndex: "总金额",
             width: 70,
             render(text: any, record: any, index: number) {
-              let allMoney: any =
-                Number(record.totalP) +
-                Number(record.totalN) +
-                Number(record.totalNight) +
-                Number(record.totalWan) +
-                Number(record.totalSecondLine);
               return (
                 <Input
-                  value={allMoney}
+                  value={record.totalAll}
                   onChange={(e: any) => {
                     record.totalAll = e.target.value;
                     setData(cloneData);
@@ -424,6 +423,15 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
             }
           }
         ];
+
+  const addAllMoney = (record: any) => {
+    record.totalAll =
+      Number(record.totalP) +
+      Number(record.totalN) +
+      Number(record.totalNight) +
+      Number(record.totalWan) +
+      Number(record.totalSecondLine);
+  };
 
   const addItem = () => {
     appStore.HOSPITAL_ID === "nys"
