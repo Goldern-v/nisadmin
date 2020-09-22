@@ -5,6 +5,7 @@ import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
 import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
+import Item from "antd/lib/list/Item";
 // import Item from "antd/lib/list/Item";
 
 export interface ItemConfigItem {
@@ -149,11 +150,11 @@ export function getFun(context: any) {
         setPageLoading(false)
         if (!res.data) return
 
-        console.log(
-          thMerge(res.data.itemConfigList),
-          "thMerge(res.data.itemConfigList)"
-        );
-        console.log(res, "res");
+        // console.log(
+        //   thMerge(res.data.itemConfigList),
+        //   "thMerge(res.data.itemConfigList)"
+        // );
+        // console.log(res, "res");
 
         let newList = res.data.itemDataPage.list || []
 
@@ -565,6 +566,46 @@ export function getFun(context: any) {
       })
   }
 
+  /**批量删除 */
+  const deleteSelectedRows = () => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+
+
+    let restList = dataSource.filter((item: any) =>
+      selectedRowKeys.indexOf(item.key) < 0)
+
+    let deleteIds = dataSource.filter((item: any) => {
+      return selectedRowKeys.indexOf(item.key) >= 0 && item.id
+    }).map((item: any) => ({ id: item.id }))
+
+    globalModal
+      .confirm("删除确认", "确定要删除吗？")
+      .then((res: any) => {
+
+        const successCallback = () => {
+          message.success('删除成功')
+          setDataSource(restList.concat())
+          setSelectedRowKeys([])
+        }
+
+        if (deleteIds.length > 0) {
+          setPageLoading(true)
+
+          wardRegisterService
+            .deleteAll(registerCode, deleteIds)
+            .then(res => {
+              setPageLoading(false)
+              successCallback()
+            }, err => setPageLoading(false))
+        } else {
+          successCallback()
+        }
+      })
+  }
+
   /**修复AutoComplete获取焦点时 赋值错误的问题 */
   const fixInputValue = (record: any, itemCodeArr: string[], index: number, timeout?: number) => {
     if (itemCodeArr.length > 0)
@@ -602,7 +643,8 @@ export function getFun(context: any) {
     handleDeleteRow,
     handleAuditAll,
     handleCopyCreateRow,
-    fixInputValue
+    fixInputValue,
+    deleteSelectedRows
   };
 }
 /**获取当月最后一周的日期 */

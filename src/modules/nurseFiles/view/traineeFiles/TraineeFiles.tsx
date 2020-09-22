@@ -259,8 +259,8 @@ export default observer(function TraineeFiles(props: Props) {
             <Select.Option value="1">女</Select.Option>
           </Select>
           <Input
-            style={{ width: 280, marginLeft: 5, marginRight: -5 }}
-            placeholder="请输入姓名、电话或编号关键字进行检索"
+            style={{ width: 180, marginLeft: 5, marginRight: -5 }}
+            placeholder="请输入"
             value={traineeFilesModal.keyWord}
             onChange={e => {
               traineeFilesModal.keyWord = e.target.value;

@@ -1262,7 +1262,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     handleDeleteRow,
     handleAuditAll,
     fixInputValue,
-    handleCopyCreateRow
+    handleCopyCreateRow,
+    deleteSelectedRows
   } = getFun({
     registerCode,
     registerName,
@@ -1388,13 +1389,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
               className="record-page-table"
               loading={pageLoading}
               dataSource={dataSource}
-              rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_12_2,QCRG_03,QCRG_04,QCRG_21,QCRG_20_2': {
-                  selectedRowKeys,
-                  onChange: handleSelectedChange,
-                },
-                other: undefined
-              }, registerCode, true)}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleSelectedChange,
+              }}
               columns={columns.filter((item: any) => item)}
               surplusHeight={surplusHeight}
               surplusWidth={300}
@@ -1436,6 +1434,14 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       onClick={() => handleCopyCreateRow()}>
                       复制新增
                     </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      } type="primary"
+                      onClick={() => deleteSelectedRows()}>
+                      删除
+                    </Button>
                   </React.Fragment>
                 ),
                 'QCRG_04': (
@@ -1448,6 +1454,14 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       type="primary"
                       onClick={() => handleAuditAll('负责人', 'audit')}>
                       负责人签名
+                    </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      } type="primary"
+                      onClick={() => deleteSelectedRows()}>
+                      删除
                     </Button>
                   </React.Fragment>
                 ),
@@ -1467,7 +1481,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         }, registerCode)
                       )}>
                       负责人签名
-                  </Button>
+                    </Button>
                     <Button
                       disabled={
                         pageLoading ||
@@ -1476,7 +1490,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       type="primary"
                       onClick={() => handleCopyCreateRow()}>
                       复制新增
-                  </Button>
+                    </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      } type="primary"
+                      onClick={() => deleteSelectedRows()}>
+                      删除
+                    </Button>
                   </React.Fragment>
                 ),
                 'QCRG_12_2': (
@@ -1508,9 +1530,26 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       onClick={() => handleCopyCreateRow()}>
                       复制新增
                     </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      } type="primary"
+                      onClick={() => deleteSelectedRows()}>
+                      删除
+                    </Button>
                   </React.Fragment>
                 ),
-                other: (<span></span>),
+                other: (<React.Fragment>
+                  <Button
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    } type="primary"
+                    onClick={() => deleteSelectedRows()}>
+                    删除
+                  </Button>
+                </React.Fragment>),
               }, registerCode, true)}
             </div>
           </React.Fragment>

@@ -146,7 +146,7 @@ export default observer(function 人员管理(props: Props) {
                   <tbody>
                     <tr className="header">
                       <td>层级</td>
-                      <td>最低学时要求</td>
+                      <td>最低学分要求</td>
                     </tr>
                     {ruleInsts.map((item: any) =>
                       <tr key={item.ruleItem}>

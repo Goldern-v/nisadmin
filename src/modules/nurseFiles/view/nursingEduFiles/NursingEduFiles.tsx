@@ -274,8 +274,8 @@ export default observer(function NursingEduFiles(props: Props) {
             <Select.Option value="1">女</Select.Option>
           </Select>
           <Input
-            style={{ width: 280, marginLeft: 5, marginRight: -5 }}
-            placeholder="请输入姓名、电话或编号关键字进行检索"
+            style={{ width: 180, marginLeft: 5, marginRight: -5 }}
+            placeholder="请输入"
             value={nursingEduFilesModal.keyWord}
             onChange={e => {
               nursingEduFilesModal.keyWord = e.target.value;

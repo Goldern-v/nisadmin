@@ -44,13 +44,22 @@ export default observer(function QualityControlRecordEdit() {
 
     for (let x in master) {
       if (x == 'inpNo') {
-        //床号必须为7位整数
+        //床号必须为整数
+        //默认为7位
+        //武汉要支持8位数
         if (master[x].length > 0) {
           let inpNo = Number(master[x])
-          if (isNaN(inpNo) || master[x].length !== 7) {
+          let inpNoLengthArr = appStore.hisMatch({
+            map: {
+              'wh': [7, 8],
+              other: [7],
+            }
+          })
+
+          if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
             qcModel.setMasterErrObj(x, true)
             masterErr = true
-            errMsg = '住院号必须为7位数字'
+            errMsg = `住院号必须为${inpNoLengthArr.join(',')}位数字`
           }
         }
       } else if (master[x] instanceof Array) {
