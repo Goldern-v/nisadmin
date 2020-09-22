@@ -1,6 +1,11 @@
 import BaseApiService from "src/services/api/BaseApiService";
 // import qs from 'qs'
 import { starRatingReportEditModel } from "./../model/StarRatingReportEditModel";
+import { appStore } from "src/stores";
+const nysHis: string =
+  appStore.HOSPITAL_ID === "nys"
+    ? "schNightTotalContentNys"
+    : "schNightTotalContent";
 
 export interface ListQuery {
   wardCode: string;
@@ -23,12 +28,12 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**获取报告 */
   public getReport(query: any) {
-    return this.post("/schNightTotalContent/getList", query);
+    return this.post(`/${nysHis}/getList`, query);
   }
 
   /**修改报告 */
   public editReport(query: any) {
-    return this.post("/schNightTotalContent/saveOrUpdate", query);
+    return this.post(`/${nysHis}/saveOrUpdate`, query);
   }
 
   /**更新夜班费上报表 */

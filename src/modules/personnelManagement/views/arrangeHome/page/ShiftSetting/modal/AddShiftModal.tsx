@@ -44,7 +44,7 @@ const rules: Rules =
         name: val => !!val || "请填写班次名称",
         shiftType: val => !!val || "请填写班次类别",
         workTime: val => !!val || "请填写上班时间",
-        effectiveTime: val => !!val || "请填写标准工时"
+        effectiveTime: val => (!!val || val == "0" ? "" : "请填写标准工时")
       };
 
 export default function AddShiftModal(props: Props) {

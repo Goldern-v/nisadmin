@@ -147,12 +147,15 @@ export default observer(function StarRatingReportEdit() {
             // <Button onClick={onPublish}>提交</Button>
           )} */}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
-          <Button onClick={onExport}>导出</Button>
+          {/* <Button onClick={onExport}>导出</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
-        <Page ref={pageRef} className="print-page">
+        <Page
+          ref={pageRef}
+          className={appStore.HOSPITAL_ID === "nys" ? "nysWidth" : ""}
+        >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
               let Components = starRatingReportEditModel.getSection(
@@ -181,6 +184,9 @@ export default observer(function StarRatingReportEdit() {
 const Wrapper = styled.div`
   * {
     font-size: 14px;
+  }
+  .nysWidth {
+    width: 1350px !important;
   }
 `;
 

@@ -13,6 +13,9 @@ export interface Props {
 
 export default observer(function Table(props: Props) {
   let { list, totalSorce } = props;
+  let allMoney: any = list.reduce((total: any, current: any) => {
+    return Number(total) + Number(current.totalAll);
+  }, 0);
   // let report: Report = starRatingReportEditModel.getDataInAllData('report') || {}
 
   const formatNum = (num: number | string) => {
@@ -52,31 +55,110 @@ export default observer(function Table(props: Props) {
 
   return (
     <Wrapper>
-      <table>
-        <colgroup>
-          <col width="120" />
-          <col width="120" />
-        </colgroup>
-        <tbody>
-          <tr className="header">
-            <td>工号</td>
-            <td>姓名</td>
-            <td>金额</td>
-            <td>数量</td>
-            <td>标准</td>
-          </tr>
-
-          {list.map((item, index) => (
-            <tr key={index}>
-              <td style={{ textAlign: "center" }}>{item.empNo}</td>
-              <td style={{ textAlign: "center" }}>{item.empName}</td>
-              <td style={{ textAlign: "center" }}>{item.total}</td>
-              <td style={{ textAlign: "center" }}>{item.num}</td>
-              <td style={{ textAlign: "center" }}>{item.standard}</td>
+      {appStore.HOSPITAL_ID === "nys" ? (
+        <table>
+          <colgroup>
+            <col width="80" />
+            <col width="80" />
+            <col width="80" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+            <col width="70" />
+          </colgroup>
+          <tbody>
+            <tr className="header">
+              <td rowSpan={2}>序号</td>
+              <td rowSpan={2}>工号</td>
+              <td rowSpan={2}>姓名</td>
+              <td colSpan={2}>P班</td>
+              <td colSpan={2}>N班</td>
+              <td colSpan={2}>夜班</td>
+              <td colSpan={2}>晚班</td>
+              <td colSpan={2}>二线</td>
+              <td rowSpan={2}>总金额</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            <tr className="header">
+              <td>数量</td>
+              <td>金额</td>
+              <td>数量</td>
+              <td>金额</td>
+              <td>数量</td>
+              <td>金额</td>
+              <td>数量</td>
+              <td>金额</td>
+              <td>数量</td>
+              <td>金额</td>
+            </tr>
+            {list.map((item, index) => (
+              <tr key={index}>
+                <td style={{ textAlign: "center" }}>{index + 1}</td>
+                <td style={{ textAlign: "center" }}>{item.empNo}</td>
+                <td style={{ textAlign: "center" }}>{item.empName}</td>
+                <td style={{ textAlign: "center" }}>{item.numP}</td>
+                <td style={{ textAlign: "center" }}>{item.totalP}</td>
+                <td style={{ textAlign: "center" }}>{item.numN}</td>
+                <td style={{ textAlign: "center" }}>{item.totalN}</td>
+                <td style={{ textAlign: "center" }}>{item.numNight}</td>
+                <td style={{ textAlign: "center" }}>{item.totalNight}</td>
+                <td style={{ textAlign: "center" }}>{item.numWan}</td>
+                <td style={{ textAlign: "center" }}>{item.totalWan}</td>
+                <td style={{ textAlign: "center" }}>{item.numSecondLine}</td>
+                <td style={{ textAlign: "center" }}>{item.totalSecondLine}</td>
+                <td style={{ textAlign: "center" }}>{item.totalAll}</td>
+              </tr>
+            ))}
+            <tr>
+              <td style={{ textAlign: "center" }}>总计金额</td>
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }} />
+              <td style={{ textAlign: "center" }}>{allMoney}</td>
+            </tr>
+          </tbody>
+        </table>
+      ) : (
+        <table>
+          <colgroup>
+            <col width="120" />
+            <col width="120" />
+          </colgroup>
+          <tbody>
+            <tr className="header">
+              <td>工号</td>
+              <td>姓名</td>
+              <td>金额</td>
+              <td>数量</td>
+              <td>标准</td>
+            </tr>
+            {list.map((item, index) => (
+              <tr key={index}>
+                <td style={{ textAlign: "center" }}>{item.empNo}</td>
+                <td style={{ textAlign: "center" }}>{item.empName}</td>
+                <td style={{ textAlign: "center" }}>{item.total}</td>
+                <td style={{ textAlign: "center" }}>{item.num}</td>
+                <td style={{ textAlign: "center" }}>{item.standard}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </Wrapper>
   );
 });
