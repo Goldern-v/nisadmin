@@ -1423,7 +1423,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_20_2': (
+                'QCRG_20_2,QCRG_11_3,QCRG_11_2': (
                   <React.Fragment>
                     <Button
                       disabled={
