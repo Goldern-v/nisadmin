@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { Select, Input } from "src/vendors/antd";
-export interface Props {}
+export interface Props { }
 
 export default function FilterInput(props: any) {
   const { value, setValue, keyWord } = props;
@@ -22,6 +22,7 @@ export default function FilterInput(props: any) {
       <Input
         style={{ width: 150, minWidth: 150 }}
         defaultValue={value}
+        allowClear
         onPressEnter={(e: any) => setValue(e.target.value)}
         onBlur={(e: any) => setValue(e.target.value)}
       />

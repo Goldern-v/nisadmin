@@ -231,10 +231,28 @@ export default observer(function 重点患者评估登记本(props: Props) {
       setPageOptions({ ...pageOptions, pageIndex: 1 })
     }
   );
-  const chxmFilterItem = createFilterInput("床号或姓名", () => {
-    setPopoverVisible(false);
-    setPageOptions({ ...pageOptions, pageIndex: 1 })
-  });
+  const chFilterItem = createFilterInput(
+    "床号",
+    () => {
+      setPopoverVisible(false);
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
+    });
+
+  const xmFilterItem = createFilterInput(
+    "姓名",
+    () => {
+      setPopoverVisible(false);
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
+    });
+  const zyzdFilterItem = createFilterItem(
+    "中医诊断",
+    itemConfigList,
+    rangConfigList,
+    () => {
+      setPopoverVisible(false);
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
+    }
+  )
 
   const popoverContent = codeAdapter(
     {
@@ -312,7 +330,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
       ),
       QCRG_15_1: (
         <div>
-          <chxmFilterItem.Component />
+          <chFilterItem.Component />
+          <xmFilterItem.Component />
+          <zyzdFilterItem.Component />
         </div>
       ),
       QCRG_12_2: (
@@ -347,7 +367,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
     ...rylxFilterItem.value,
     ...yqmcFilterItem.value,
     ...sbztFilterItem.value,
-    ...flFilterItem.value
+    ...flFilterItem.value,
+    ...chFilterItem.value,
+    ...xmFilterItem.value,
+    ...zyzdFilterItem.value,
   };
 
   /** 判断是否快过期 */
