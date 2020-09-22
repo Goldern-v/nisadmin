@@ -64,6 +64,8 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     (item: any) => item.id == selectedBlockId
   );
   const [popoverVisible, setPopoverVisible]: any = useState(false);
+  /**表格勾选 */
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 
   const settingModal = createModal(SettingModal);
   const updateDataSource = () => {
@@ -239,6 +241,11 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     }
   ];
 
+  const handleSelectedChange = (payload: any[]) => {
+    setSelectedRowKeys(payload)
+    // console.log(payload)
+  }
+
   const {
     onInitData,
     getPage,
@@ -250,7 +257,8 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     exportExcel,
     handleNextIptFocus,
     handleDeleteRow,
-    fixInputValue
+    fixInputValue,
+    deleteSelectedRows,
   } = getFun({
     registerCode,
     registerName,
@@ -266,7 +274,9 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     date,
     selectedBlockId,
     dataSource,
-    paramMap
+    paramMap,
+    selectedRowKeys,
+    setSelectedRowKeys,
   })
 
   useEffect(() => {
@@ -369,38 +379,54 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
       </PageHeader>
       <TableCon>
         {selectedBlockId && itemConfigList.length ? (
-          <BaseTable
-            className="record-page-table"
-            loading={pageLoading}
-            dataSource={dataSource}
-            columns={columns}
-            surplusHeight={220}
-            surplusWidth={300}
-            useOuterPagination
-            pagination={{
-              onChange: (pageIndex: number) => {
-                setPageOptions({ ...pageOptions, pageIndex })
-              },
-              onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-              },
-              pageSizeOptions: ['20', '30', '40', '50', '100'],
-              current: pageOptions.pageIndex,
-              pageSize: pageOptions.pageSize,
-              total: total
-            }}
-            rowClassName={(record: any, idx: number) => {
-              if (cellDisabled(record)) return 'disabled-row'
+          <React.Fragment>
+            <BaseTable
+              className="record-page-table"
+              loading={pageLoading}
+              dataSource={dataSource}
+              columns={columns}
+              surplusHeight={220}
+              surplusWidth={300}
+              useOuterPagination
+              pagination={{
+                onChange: (pageIndex: number) => {
+                  setPageOptions({ ...pageOptions, pageIndex })
+                },
+                onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                  setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
+                },
+                pageSizeOptions: ['20', '30', '40', '50', '100'],
+                current: pageOptions.pageIndex,
+                pageSize: pageOptions.pageSize,
+                total: total
+              }}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
 
-              return ''
-            }}
-            onChange={(pagination: PaginationConfig) => {
-              setPageOptions({
-                pageIndex: pagination.current,
-                pageSize: pagination.pageSize
-              });
-            }}
-          />
+                return ''
+              }}
+              onChange={(pagination: PaginationConfig) => {
+                setPageOptions({
+                  pageIndex: pagination.current,
+                  pageSize: pagination.pageSize
+                });
+              }}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleSelectedChange,
+              }}
+            />
+            <div className="selected-operate-con">
+              <Button
+                disabled={
+                  pageLoading ||
+                  selectedRowKeys.length <= 0
+                } type="primary"
+                onClick={() => deleteSelectedRows()}>
+                删除
+              </Button>
+            </div>
+          </React.Fragment>
         ) : (
             <NullBox onClick={onAddBlock} />
           )}
@@ -471,6 +497,7 @@ const Wrapper = styled.div`
   }
 `;
 const TableCon = styled.div`
+  position:relative;
   padding: 0 15px;
   .ant-table-header-column {
     height: 100%;
@@ -533,6 +560,11 @@ const TableCon = styled.div`
         opacity: 1;
       }
     }
+  }
+  .selected-operate-con{
+    position: absolute;
+    bottom: 12px;
+    left: 24px;
   }
 `;
 

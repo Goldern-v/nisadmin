@@ -78,6 +78,9 @@ export default observer(function HandoverRegister(props: Props) {
     (item: any) => item.id == selectedBlockId
   )
 
+  /**表格勾选 */
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+
   const dateItemArr = codeAdapter({
     other: [],
     // [['QCRG_11', 'QCRG_11_2', 'QCRG_11_2'].join(',')]: [{
@@ -562,6 +565,11 @@ export default observer(function HandoverRegister(props: Props) {
     }
   }
 
+  const handleSelectedChange = (payload: any[]) => {
+    setSelectedRowKeys(payload)
+    // console.log(payload)
+  }
+
   /** 公共函数 */
   const {
     handleNextIptFocus,
@@ -575,6 +583,7 @@ export default observer(function HandoverRegister(props: Props) {
     onAddBlock,
     getPage,
     fixInputValue,
+    deleteSelectedRows,
   } = getFun({
     registerCode,
     registerName,
@@ -591,7 +600,9 @@ export default observer(function HandoverRegister(props: Props) {
     rangeConfigList,
     selectedBlockId,
     dataSource,
-    paramMap: { '班次': selectedRange }
+    paramMap: { '班次': selectedRange },
+    selectedRowKeys,
+    setSelectedRowKeys,
   });
 
   useEffect(() => {
@@ -743,48 +754,63 @@ export default observer(function HandoverRegister(props: Props) {
       </PageHeader>
       <TableCon>
         {selectedBlockId ? (
-          <BaseTable
-            rowKey={"id"}
-            loading={pageLoading}
-            dataSource={dataSource}
-            columns={columns}
-            surplusWidth={300}
-            surplusHeight={surplusHeight}
-            useOuterPagination={true}
-            rowClassName={(record: any, idx: number) => {
-              if (cellDisabled(record)) return 'disabled-row'
+          <React.Fragment>
+            <BaseTable
+              loading={pageLoading}
+              dataSource={dataSource}
+              columns={columns}
+              surplusWidth={300}
+              surplusHeight={surplusHeight}
+              useOuterPagination={true}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
 
-              return ''
-            }}
-            pagination={{
-              onChange: (pageIndex: number) => {
-                setPageOptions({ ...pageOptions, pageIndex })
-              },
-              onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-              },
-              pageSizeOptions: ['20', '30', '40', '50', '100'],
-              current: pageOptions.pageIndex,
-              pageSize: pageOptions.pageSize,
-              total: total
-            }}
-            // onChange={(pagination: PaginationConfig) => {
-            //   setPageOptions({
-            //     pageIndex: pagination.current,
-            //     pageSize: pagination.pageSize
-            //   });
-            // }}
-            onRow={record => {
-              return appStore.isDev && registerCode == "QCRG_02"
-                ? {
-                  onContextMenu: (e: any) => {
-                    console.log(e, "eeeeeeeeee");
-                    onContextMenu(e, record);
+                return ''
+              }}
+              pagination={{
+                onChange: (pageIndex: number) => {
+                  setPageOptions({ ...pageOptions, pageIndex })
+                },
+                onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                  setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
+                },
+                pageSizeOptions: ['20', '30', '40', '50', '100'],
+                current: pageOptions.pageIndex,
+                pageSize: pageOptions.pageSize,
+                total: total
+              }}
+              // onChange={(pagination: PaginationConfig) => {
+              //   setPageOptions({
+              //     pageIndex: pagination.current,
+              //     pageSize: pagination.pageSize
+              //   });
+              // }}
+              onRow={record => {
+                return appStore.isDev && registerCode == "QCRG_02"
+                  ? {
+                    onContextMenu: (e: any) => {
+                      console.log(e, "eeeeeeeeee");
+                      onContextMenu(e, record);
+                    }
                   }
-                }
-                : {};
-            }}
-          />
+                  : {};
+              }}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleSelectedChange,
+              }}
+            />
+            <div className="selected-operate-con">
+              <Button
+                disabled={
+                  pageLoading ||
+                  selectedRowKeys.length <= 0
+                } type="primary"
+                onClick={() => deleteSelectedRows()}>
+                删除
+              </Button>
+            </div>
+          </React.Fragment>
         ) : (
             <NullBox onClick={onAddBlock} registerName={registerName} />
           )}
@@ -846,6 +872,7 @@ const Wrapper = styled.div`
 `;
 const TableCon = styled.div`
   padding: 0 15px;
+  position: relative;
   .ant-table-header-column {
     height: 100%;
     > div {
@@ -938,6 +965,11 @@ const TableCon = styled.div`
         opacity: 1;
       }
     }
+  }
+  .selected-operate-con{
+    position: absolute;
+    bottom: 12px;
+    left: 24px;
   }
 `;
 

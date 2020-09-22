@@ -347,6 +347,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     handleUpload,
     handleDeleteRow,
     handleAuditAll,
+    deleteSelectedRows
   } = getFun({
     registerCode,
     registerName,
@@ -502,7 +503,15 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                   }, registerCode)
                 )}>
                 负责人签名
-                    </Button>
+              </Button>
+              <Button
+                disabled={
+                  pageLoading ||
+                  selectedRowKeys.length <= 0
+                } type="primary"
+                onClick={() => deleteSelectedRows()}>
+                删除
+              </Button>
             </div>
           </React.Fragment>
         ) : (
