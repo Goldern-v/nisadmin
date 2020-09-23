@@ -347,6 +347,7 @@ export default observer(function ArrangeSheet(props: Props) {
                       sheetViewModal.remark = e.target.value;
                     }}
                     style={{ minHeight: 100 }}
+                    className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
                   />
                 </div>
                 <div className={"remark-con space"}>
@@ -357,6 +358,7 @@ export default observer(function ArrangeSheet(props: Props) {
                     value={sheetViewModal.remark}
                     autosize={!isEdit}
                     style={{ minHeight: 100 }}
+                    className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
                   />
                 </div>
               </React.Fragment>
@@ -575,6 +577,11 @@ const Wrapper = styled.div`
         /* pointer-events: none; */
       }
     }
+  }
+  .nysCss {
+    text-align: left !important;
+    padding: 0 20px;
+    box-sizing: border-box;
   }
 `;
 
