@@ -147,7 +147,7 @@ export default observer(function StarRatingReportEdit() {
             // <Button onClick={onPublish}>提交</Button>
           )} */}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
-          {/* <Button onClick={onExport}>导出</Button> */}
+          <Button onClick={onExport}>导出</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>

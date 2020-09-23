@@ -83,7 +83,7 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**导出 */
   public export(query: any) {
-    return this.post("/schNightTotalContent/excel", query, {
+    return this.post(`/${nysHis}/excel`, query, {
       responseType: "blob"
     });
   }
