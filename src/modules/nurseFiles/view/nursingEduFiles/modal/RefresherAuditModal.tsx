@@ -96,10 +96,6 @@ export default function RefresherAuditModal(props: Props) {
             <Col span={16}>{info.title}</Col>
           </Row>
           <Row>
-            <Col span={8} className="label">职称：</Col>
-            <Col span={16}>{info.title}</Col>
-          </Row>
-          <Row>
             <Col span={8} className="label">学历：</Col>
             <Col span={16}>{educationText()}</Col>
           </Row>
@@ -136,10 +132,6 @@ export default function RefresherAuditModal(props: Props) {
           <Row>
             <Col span={8} className="label">进修科室1：</Col>
             <Col span={16}>{info.studyDeptName01}</Col>
-          </Row>
-          <Row>
-            <Col span={8} className="label">进修科室2：</Col>
-            <Col span={16}>{info.studyDeptName02}</Col>
           </Row>
           <Row>
             <Col span={8} className="label">进修科室2：</Col>

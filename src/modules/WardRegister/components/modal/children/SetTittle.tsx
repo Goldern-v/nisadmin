@@ -156,7 +156,7 @@ export default observer(function SetTittle(props: Props) {
                 }}>
                 <Option value="">下拉选项</Option>
                 {codeAdapter({
-                  QCRG_08: <Option value="multiple_select">多项选择</Option>,
+                  'QCRG_08,QCRG_15_1': <Option value="multiple_select">多项选择</Option>,
                   other: null,
                 }, registerCode, true)}
                 <Option value="ward_user">科室护士</Option>

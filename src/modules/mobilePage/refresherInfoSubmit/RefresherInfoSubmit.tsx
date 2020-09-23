@@ -46,6 +46,114 @@ export default function TraineeInfoSubmit() {
     remark: '',
   })
 
+  /**表单校验 */
+  const [rules, setRules] = useState({
+    name: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '姓名不能为空'
+      ]
+    },
+    title: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '职称不能为空'
+      ]
+    },
+    education: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '学历不能为空'
+      ]
+    },
+    originalWorkUnit: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '原单位名称不能为空'
+      ]
+    },
+    originalDepartment: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '原科室不能为空'
+      ]
+    },
+    idCardNo: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '身份证号不能为空'
+      ]
+    },
+    phone: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '联系电话不能为空'
+      ]
+    },
+    studyTimeBegin: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '实习开始时间不能为空'
+      ]
+    },
+    studyTimeEnd: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '实习结束时间不能为空'
+      ]
+    },
+    studyDeptCode01: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '进修科室一不能为空'
+      ]
+    },
+    address: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '家庭住址不能为空'
+      ]
+    },
+    emergencyContactPerson: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '紧急联系人不能为空'
+      ]
+    },
+    emergencyContactPhone: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '联系人电话不能为空'
+      ]
+    },
+  })
+
   const [deptList, setDeptList] = useState([] as any[])
   const [loading, setLoading] = useState(false)
   const [finished, setFinished] = useState(false)
@@ -62,7 +170,38 @@ export default function TraineeInfoSubmit() {
       })
   }
 
+  const checkForm = () => {
+    let errMsg = ''
+    let rulesTotal = { ...rules } as any
+    let formData = { ...params } as any
+    for (let key in rulesTotal) {
+      if (rulesTotal[key].rules && rulesTotal[key].rules.length > 0) {
+
+        let result = rulesTotal[key].rules
+          .reduce((prev: any, current: Function, idx: number) => {
+            if (prev === true || idx === 0)
+              return current(formData[key])
+            else
+              return prev
+          })
+
+        if (result instanceof Function) {
+          result = result(formData[key])
+        }
+
+        if (typeof result !== 'boolean') {
+          message.error(result)
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
   const handleSubmit = () => {
+    if (!checkForm()) return
+
     // console.log('ok')
     let saveParams = { ...params }
 
