@@ -17,7 +17,7 @@ export default observer(function Header() {
         obj[next.id] ? " " : (obj[next.id] = true && item.push(next));
         return item;
       }, []);
-      quesBankView.selectedRows.map((item: any) => {
+      quesBankView.questionList.map((item: any) => {
         arr.push(item.id);
       });
       quesBankView.questionIdList = Array.from(new Set(arr));
