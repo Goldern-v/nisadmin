@@ -33,12 +33,21 @@ export default function NursingEditModal(props: Props) {
 
   // 弹窗必填项
   const rules: Rules = {
-    // name: val => !!val || "名称不能为空",
-    // teachingMethod: val => !!val || "教学方式不能为空",
-    // sort: val =>
-    //   isNaN(Number(val)) || val === "" || Number(val) < 0
-    //     ? "排序必填且为正整数"
-    //     : ""
+    name: val => !!val || "姓名不能为空",
+    sex: val => !!val || "性别不能为空",
+    age: val => !!val || "年龄不能为空",
+    title: val => !!val || "职称不能为空",
+    education: val => !!val || "学历不能为空",
+    originalWorkUnit: val => !!val || "原单位名称不能为空",
+    originalDepartment: val => !!val || "原科室不能为空",
+    idCardNo: val => !!val || "身份证号码不能为空",
+    phone: val => !!val || "联系电话不能为空",
+    isResident: val => !!val || "是否住宿不能为空",
+    studyTime: val => !!val || "进修时间不能为空",
+    studyDeptCode01: val => !!val || "进修科室一不能为空",
+    address: val => !!val || "家庭住址不能为空",
+    emergencyContactPerson: val => !!val || "紧急联系人不能为空",
+    emergencyContactPhone: val => !!val || "紧急联系人电话不能为空"
   };
 
   // 初始化科室
@@ -211,7 +220,7 @@ export default function NursingEditModal(props: Props) {
           {params.identifier && (
             <Row>
               <Col span={6} className="label">
-                进修编码:
+                <span className="mustWrite">*</span> 进修编码:
               </Col>
               <Col span={16}>
                 <Form.Field name="identifier">
@@ -222,7 +231,7 @@ export default function NursingEditModal(props: Props) {
           )}
           <Row>
             <Col span={6} className="label">
-              姓名:
+              <span className="mustWrite">*</span> 姓名:
             </Col>
             <Col span={16}>
               <Form.Field name="name">
@@ -232,7 +241,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              性别:
+              <span className="mustWrite">*</span> 性别:
             </Col>
             <Col span={16}>
               <Form.Field name="sex">
@@ -245,7 +254,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              年龄:
+              <span className="mustWrite">*</span> 年龄:
             </Col>
             <Col span={16}>
               <Form.Field name="age">
@@ -255,7 +264,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              职称:
+              <span className="mustWrite">*</span> 职称:
             </Col>
             <Col span={16}>
               <Form.Field name="title">
@@ -271,7 +280,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              学历:
+              <span className="mustWrite">*</span> 学历:
             </Col>
             <Col span={16}>
               <Form.Field name="education">
@@ -287,7 +296,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              原单位名称:
+              <span className="mustWrite">*</span> 原单位名称:
             </Col>
             <Col span={16}>
               <Form.Field name="originalWorkUnit">
@@ -297,7 +306,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              原科室:
+              <span className="mustWrite">*</span> 原科室:
             </Col>
             <Col span={16}>
               <Form.Field name="originalDepartment">
@@ -307,7 +316,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              身份证号码:
+              <span className="mustWrite">*</span> 身份证号码:
             </Col>
             <Col span={16}>
               <Form.Field name="idCardNo">
@@ -317,7 +326,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              联系电话:
+              <span className="mustWrite">*</span> 联系电话:
             </Col>
             <Col span={16}>
               <Form.Field name="phone">
@@ -327,7 +336,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              是否住宿:
+              <span className="mustWrite">*</span> 是否住宿:
             </Col>
             <Col span={16}>
               <Form.Field name="isResident">
@@ -350,7 +359,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              进修时间:
+              <span className="mustWrite">*</span> 进修时间:
             </Col>
             <Col span={16}>
               <Form.Field name="studyTime">
@@ -360,7 +369,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              进修科室一:
+              <span className="mustWrite">*</span> 进修科室一:
             </Col>
             <Col span={16}>
               <Form.Field name="studyDeptCode01">
@@ -414,7 +423,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              家庭住址:
+              <span className="mustWrite">*</span> 家庭住址:
             </Col>
             <Col span={16}>
               <Form.Field name="address">
@@ -424,7 +433,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              紧急联系人:
+              <span className="mustWrite">*</span> 紧急联系人:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPerson">
@@ -434,7 +443,7 @@ export default function NursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              紧急联系人电话:
+              <span className="mustWrite">*</span> 紧急联系人电话:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPhone">
@@ -468,5 +477,9 @@ const Wrapper = styled.div`
   .ant-switch {
     margin-left: 10px;
     margin-top: 8px;
+  }
+  .mustWrite {
+    color: red !important;
+    margin-top: 2px;
   }
 `;

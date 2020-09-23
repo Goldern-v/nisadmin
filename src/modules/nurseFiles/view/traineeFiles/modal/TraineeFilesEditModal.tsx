@@ -33,12 +33,20 @@ export default function TraineeFilesEditModal(props: Props) {
 
   // 弹窗必填项
   const rules: Rules = {
-    // name: val => !!val || "名称不能为空",
-    // teachingMethod: val => !!val || "教学方式不能为空",
-    // sort: val =>
-    //   isNaN(Number(val)) || val === "" || Number(val) < 0
-    //     ? "排序必填且为正整数"
-    //     : ""
+    name: val => !!val || "姓名不能为空",
+    sex: val => !!val || "性别不能为空",
+    schoolName: val => !!val || "院校不能为空",
+    major: val => !!val || "专业不能为空",
+    education: val => !!val || "学历不能为空",
+    idCardNo: val => !!val || "身份证号码不能为空",
+    phone: val => !!val || "联系电话不能为空",
+    isResident: val => !!val || "是否住宿不能为空",
+    studyTime: val => !!val || "实习时间不能为空",
+    studyDeptCode: val => !!val || "实习科室不能为空",
+    isGroupLeader: val => !!val || "是否组长不能为空",
+    address: val => !!val || "家庭住址不能为空",
+    emergencyContactPerson: val => !!val || "紧急联系人不能为空",
+    emergencyContactPhone: val => !!val || "紧急联系人电话不能为空"
   };
 
   // 初始化科室
@@ -206,7 +214,7 @@ export default function TraineeFilesEditModal(props: Props) {
           {params.identifier && (
             <Row>
               <Col span={6} className="label">
-                实习编号:
+                <span className="mustWrite">*</span> 实习编号:
               </Col>
               <Col span={16}>
                 <Form.Field name="identifier">
@@ -217,7 +225,7 @@ export default function TraineeFilesEditModal(props: Props) {
           )}
           <Row>
             <Col span={6} className="label">
-              姓名:
+              <span className="mustWrite">*</span> 姓名:
             </Col>
             <Col span={16}>
               <Form.Field name="name">
@@ -227,7 +235,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              性别:
+              <span className="mustWrite">*</span> 性别:
             </Col>
             <Col span={16}>
               <Form.Field name="sex">
@@ -240,7 +248,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              院校:
+              <span className="mustWrite">*</span> 院校:
             </Col>
             <Col span={16}>
               <Form.Field name="schoolName">
@@ -250,7 +258,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              专业:
+              <span className="mustWrite">*</span> 专业:
             </Col>
             <Col span={16}>
               <Form.Field name="major">
@@ -260,7 +268,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              学历:
+              <span className="mustWrite">*</span> 学历:
             </Col>
             <Col span={16}>
               <Form.Field name="education">
@@ -276,7 +284,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              身份证号码:
+              <span className="mustWrite">*</span> 身份证号码:
             </Col>
             <Col span={16}>
               <Form.Field name="idCardNo">
@@ -286,7 +294,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              联系电话:
+              <span className="mustWrite">*</span> 联系电话:
             </Col>
             <Col span={16}>
               <Form.Field name="phone">
@@ -296,7 +304,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              是否住宿:
+              <span className="mustWrite">*</span> 是否住宿:
             </Col>
             <Col span={16}>
               <Form.Field name="isResident">
@@ -319,7 +327,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              实习时间:
+              <span className="mustWrite">*</span> 实习时间:
             </Col>
             <Col span={16}>
               <Form.Field name="studyTime">
@@ -329,7 +337,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              实习科室:
+              <span className="mustWrite">*</span> 实习科室:
             </Col>
             <Col span={16}>
               <Form.Field name="studyDeptCode">
@@ -356,7 +364,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              是否组长:
+              <span className="mustWrite">*</span> 是否组长:
             </Col>
             <Col span={16}>
               <Form.Field name="isGroupLeader">
@@ -369,7 +377,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              家庭住址:
+              <span className="mustWrite">*</span> 家庭住址:
             </Col>
             <Col span={16}>
               <Form.Field name="address">
@@ -379,7 +387,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              紧急联系人:
+              <span className="mustWrite">*</span> 紧急联系人:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPerson">
@@ -389,7 +397,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              紧急联系人电话:
+              <span className="mustWrite">*</span> 紧急联系人电话:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPhone">
@@ -423,5 +431,9 @@ const Wrapper = styled.div`
   .ant-switch {
     margin-left: 10px;
     margin-top: 8px;
+  }
+  .mustWrite {
+    color: red !important;
+    margin-top: 2px;
   }
 `;
