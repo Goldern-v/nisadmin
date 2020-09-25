@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Steps, Icon, Spin } from 'antd'
+import { Button, Steps, Icon, Spin, Modal } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import AuditModalNys from './components/AuditModal_nys'
@@ -7,6 +7,7 @@ import badEventsNewService from './api/badEventsNewService'
 import service from 'src/services/api'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
+import { message } from 'antd/es'
 
 const api = new badEventsNewService()
 
@@ -72,7 +73,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName,
       badEventType: eventType,
       badEventCode,
-      operation: 'view',
+      operation: 'edit',
       isIndependent: 1,
       timeset: timeSet
     }
@@ -85,7 +86,46 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   useEffect(() => {
     getDetail()
     getTypeList()
+    initSetting()
+    return () => {
+      removeSetting()
+    }
   }, [])
+
+  const initSetting = () => {
+    /**配置好与不良事件表单页面的api交互 */
+    const $message = (config: any) => {
+      let timeout = null as any
+
+      let cancelCallback = () => {
+        setIframeLoading(false)
+        Modal.destroyAll()
+        clearTimeout(timeout)
+        getDetail()
+      }
+
+      Modal.info({
+        content: config.message,
+        onCancel: () => cancelCallback()
+      })
+
+      if (config.duration) setTimeout(() => {
+        cancelCallback()
+      }, config.duration)
+    }
+
+    $message.success = (text: string) => message.success(text)
+    $message.close = (text: string) => Modal.destroyAll()
+
+    window.app = {
+      $message
+    }
+  }
+
+  /**清除配置 */
+  const removeSetting = () => {
+    window.app = undefined
+  }
 
   const getDetail = () => {
     let eventId = props.match.params.id
@@ -237,10 +277,24 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let btnText = nextStep.operatorName
 
     return (
-      <Button className='audit' type='primary' onClick={(e) => setAuditModalvisible(true)} disabled={btnDisable}>
+      <Button
+        className='audit'
+        type='primary'
+        onClick={(e) => setAuditModalvisible(true)}
+        disabled={btnDisable}>
         {btnText}
       </Button>
     )
+  }
+
+  const iframeRef = React.createRef<any>()
+
+  const handleSave = () => {
+    let iframeEl = iframeRef.current
+    if (iframeEl) {
+      setIframeLoading(true)
+      iframeEl.contentWindow.CRForm.controller.saveForm()
+    }
   }
 
   return (
@@ -258,11 +312,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </span>
           <Button
             className='audit'
-            style={{ marginLeft: 10 }}
             onClick={() => appStore.history.goBack()}>
             返回
           </Button>
           {AuditBtn()}
+          <Button
+            disabled={iframeLoading}
+            className='audit'
+            onClick={handleSave}>
+            保存
+          </Button>
         </div>
         <div className='status'>状态：{statusText()}</div>
       </div>
@@ -288,13 +347,28 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                 icon = <Icon type='minus-circle' className='icon-step default' />
               // icon = <Icon type='right-circle' className='icon-step default' />
               // console.log(item.title)
-              return <Step title={item.title} icon={icon} description={item.description} key={idx} />
+              return (
+                <Step
+                  title={item.title}
+                  icon={icon}
+                  description={item.description}
+                  key={idx} />
+              )
             })}
           </Steps>
         </div>
         <div className='event-detail'>
-          <iframe src={iframeUrl()} width='100%' height='100%' style={{ border: '0' }} onLoad={handleIframeLoad} />
-          <Spin size='large' spinning={iframeLoading} className='iframe-loading' />
+          <iframe
+            src={iframeUrl()}
+            ref={iframeRef}
+            width='100%'
+            height='100%'
+            style={{ border: '0' }}
+            onLoad={handleIframeLoad} />
+          <Spin
+            size='large'
+            spinning={iframeLoading}
+            className='iframe-loading' />
         </div>
       </div>
       <AuditModalNys
@@ -333,6 +407,10 @@ const Wrapper = styled.div`
       }
       .audit{
         float: right;
+        margin-left: 10px;
+        &:last-of-type{
+          margin-left: 0;
+        }
       }
     }
     .status{

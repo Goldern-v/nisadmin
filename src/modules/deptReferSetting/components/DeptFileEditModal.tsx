@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { Modal, Input, Select, Button, message as Message } from 'antd';
+import { Modal, Input, Select, Button, message } from 'antd';
 import Form from 'src/components/Form'
 import { authStore } from 'src/stores'
 
@@ -97,14 +97,14 @@ export default function NewNursingRulesAddModal(props: Props) {
         file = fileEL.files[0]
 
       if (!formData.fileName)
-        return Message.error('未填写文件名称');
+        return message.error('未填写文件名称');
 
       if (!formData.catalog)
-        return Message.error('未选择目录');
+        return message.error('未选择目录');
 
       if (!params.id) {
         if (!(file && nameEl.value))
-          return Message.error('未选择上传文件');
+          return message.error('未选择上传文件');
       }
 
       data.append('file', file);
@@ -118,14 +118,14 @@ export default function NewNursingRulesAddModal(props: Props) {
       setUploadLoading(true)
 
       let successCallback = (res?: any, msg?: any) => {
-        Message.success(msg || '上传成功');
+        message.success(msg || '上传成功');
 
         setUploadLoading(false)
         onOk();
       }
 
       let failedCallback = (err?: any, msg?: any) => {
-        Message.error(msg || '上传失败');
+        message.error(msg || '上传失败');
         setUploadLoading(false)
       }
 

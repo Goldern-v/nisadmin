@@ -66,14 +66,18 @@ export default observer(function AduitModal(props: Props) {
         })
 
       let newMap: any = {}
-      // switch (status) {
-      //   case 'dept_submit':
-      //     newMap[`${eventCode}_khszshyj_explain`] = ''
-      //     break
-      //   case 'nurse_auditor':
-      //     newMap[`${eventCode}_hkbshyj_explain`] = ''
-      //     break
-      // }
+      /**清空审核意见 */
+      switch (status) {
+        case 'nurse_auditor':
+          newMap[`${eventCode}_khszshyj_explain`] = ''
+          break
+        case 'nusring_department_auditor':
+          newMap[`${eventCode}_hkbshyj_explain`] = ''
+          break
+        case 'pressure_auditor':
+          newMap[`${eventCode}_skzkxzyj_explain`] = ''
+          break
+      }
 
       setFormMap({ ...paramMap, ...newMap })
     }
