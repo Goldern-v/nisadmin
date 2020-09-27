@@ -10,6 +10,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/badeventM
   if (['/', '', '\\', undefined, null].indexOf(folderSrc) > -1) {
     folderSrc = '/crdata/webProject/badeventManage'
   }
+
+  if (process.env.npm_lifecycle_event.indexOf('nys-be') >= 0) {
+    console.log('南医三不良事件管理系统')
+    folderSrc = '/crdata/webProject/badeventManage/nys'
+  }
   // localSrc = './build'
 
   let serverInfo = {

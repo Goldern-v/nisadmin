@@ -8,6 +8,7 @@ import service from 'src/services/api'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
 import { message } from 'antd/es'
+import { info } from 'console'
 
 const api = new badEventsNewService()
 
@@ -73,7 +74,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName,
       badEventType: eventType,
       badEventCode,
-      operation: 'edit',
+      operation: detailData.status == 'nurse_auditor' ? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet
     }
@@ -323,12 +324,15 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             返回
           </Button>
           {AuditBtn()}
+          {detailData.status == 'nurse_auditor' && (
+            <Button
+              disabled={iframeLoading}
+              className='audit'
+              onClick={handleSave}>
+              保存
+            </Button>
+          )}
           <Button
-            disabled={iframeLoading}
-            className='audit'
-            onClick={handleSave}>
-            保存
-          </Button><Button
             disabled={iframeLoading}
             className='audit'
             onClick={handlePrint}>

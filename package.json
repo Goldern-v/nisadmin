@@ -106,7 +106,8 @@
     "deploy": "yarn build && node publish.js",
     "publish:45": "npm run build:hj && node publish.js",
     "publish:8062": "npm run build:nys && node publish.js",
-    "publish:be": "npm run build:hj-be && node publish.js",
+    "publish:be": "npm run build:hj-be && node publish-be.js",
+    "publish:nys-be": "npm run build:nys-be && node publish-be.js",
     "test": "react-app-rewired test --env=jsdom",
     "lint:ts": "tslint --fix",
     "lint:style": "stylelint ./src/**/*.{ts,tsx}"
