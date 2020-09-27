@@ -300,7 +300,6 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const handlePrint = () => {
     let iframeEl = iframeRef.current
     if (iframeEl) {
-      setIframeLoading(true)
       iframeEl.contentWindow.print()
     }
   }
