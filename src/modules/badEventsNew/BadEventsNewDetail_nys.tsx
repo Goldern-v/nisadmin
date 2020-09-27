@@ -297,6 +297,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     }
   }
 
+  const handlePrint = () => {
+    let iframeEl = iframeRef.current
+    if (iframeEl) {
+      setIframeLoading(true)
+      iframeEl.contentWindow.print()
+    }
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -321,6 +329,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             className='audit'
             onClick={handleSave}>
             保存
+          </Button><Button
+            disabled={iframeLoading}
+            className='audit'
+            onClick={handlePrint}>
+            打印
           </Button>
         </div>
         <div className='status'>状态：{statusText()}</div>
