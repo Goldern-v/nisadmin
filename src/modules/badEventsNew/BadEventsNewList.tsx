@@ -16,7 +16,6 @@ import { useKeepAliveEffect } from "react-keep-alive";
 
 const api = new BadEventsNewService();
 
-// export interface Props { }
 const { RangePicker } = DatePicker;
 
 export default observer(function BadEventNewList() {
@@ -27,7 +26,7 @@ export default observer(function BadEventNewList() {
 
     return [startDate, ednDate] as [moment.Moment, moment.Moment];
   };
-  // const queryForm = React.createRef<Form>()
+
   let dateRange = defaultDateRange()
   //列表请求参数
   const [query, setQuery] = useState({
@@ -38,7 +37,7 @@ export default observer(function BadEventNewList() {
     eventType: "",
     eventStatus: ""
   });
-  //
+
   const [warNameSelected, setWaeNameSelected] = useState("" as string);
   const [deptList, setDeptList] = useState([] as any);
   //列表数据
@@ -52,6 +51,10 @@ export default observer(function BadEventNewList() {
     current: 1,
     size: 20
   });
+
+  //不良事件状态对应的文本显示
+  const [eventStatusList, setEventStatusList] = useState([] as any[])
+
   //列表Table组件columns配置
   const columns: ColumnProps<any>[] = [
     {
@@ -179,15 +182,6 @@ export default observer(function BadEventNewList() {
       }
     }
   ];
-  //不良事件状态对应的文本显示
-  const [eventStatusList, setEventStatusList] = useState([] as any[])
-  const getTypeList = () => {
-    service.commonApiService
-      .dictInfo('badEvent_status')
-      .then((res: any) => {
-        setEventStatusList(res.data)
-      })
-  }
 
   useEffect(() => {
     api.getDeptList("2")
@@ -204,38 +198,42 @@ export default observer(function BadEventNewList() {
           );
       });
 
+    getEventTypeList()
+    getEventStatusList()
+  }, []);
+
+  useEffect(() => {
+    getEventList()
+  }, [query, page])
+
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP')
+      getEventList()
+    if (eventTypeList.length <= 0) getEventTypeList()
+    if (eventStatusList.length <= 0) getEventStatusList()
+    // return () => { }
+  })
+
+  const getEventStatusList = () => {
+    service.commonApiService
+      .dictInfo('badEvent_status')
+      .then((res: any) => {
+        setEventStatusList(res.data)
+      })
+  }
+
+  const getEventTypeList = () => {
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
+
     api.getEvetTypetList(deptCode).then(res => {
       let data = res.data;
 
       if (data instanceof Array)
         setEventTypeList(data.map((item: any) => item.name));
     });
-
-    // let dateRange = defaultDateRange();
-    // let newQuery = {
-    //   ...query,
-    //   dateBegin: dateRange[0].format("YYYY-MM-DD"),
-    //   dateEnd: dateRange[1].format("YYYY-MM-DD")
-    // };
-    // setQuery(newQuery);
-
-    getTypeList()
-  }, []);
-
-  useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP')
-      getEventList()
-
-    // return () => { }
-  })
-
-  // useEffect(() => {
-  //   setDataLoading(true)
-  //   setPage({ ...page, current: 1 })
-
-  // }, [query])
+  }
 
   const getEventList = (newQuery?: any) => {
     setDataLoading(true);
@@ -300,10 +298,6 @@ export default observer(function BadEventNewList() {
         }
       }
   };
-
-  useEffect(() => {
-    getEventList()
-  }, [query, page])
 
   return (
     <Wrapper>
@@ -416,22 +410,6 @@ export default observer(function BadEventNewList() {
             }}
           />
         </div>
-        {/* <div className="custom-pagination">
-          <Pagination
-            showQuickJumper
-            total={data.length - 1}
-            current={page.current}
-            pageSize={page.size}
-            onChange={(current: number) => setPage({ ...page, current })}
-          />
-        </div> */}
-        {/* <CustomPagination
-          page={page.current}
-          size={page.size}
-          total={data.length - 1}
-          hideSizeInput={true}
-          onChange={(current: number) => setPage({ ...page, current })}
-        /> */}
       </div>
     </Wrapper>
   );
