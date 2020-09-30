@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
-import { Button, Modal, message as Message, Select } from "antd";
+import { Button, Modal, message as Message, Select, message } from "antd";
 import { Link } from "react-router-dom";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
@@ -13,6 +13,7 @@ import createModal from "src/libs/createModal";
 
 import DeptFielShareService from "./../api/DeptFielShareService";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
+import moment from 'moment'
 
 const api = new DeptFielShareService();
 
@@ -127,10 +128,17 @@ export default function DeptFileShare() {
   ];
 
   const handlePreview = (record: any) => {
-    let typeArr = record.originalFileName.split(".");
+    // let typeArr = record.originalFileName.split(".");
+    if (!record.path) {
+      message.error('上传文件路径为空')
+      return
+    }
+    let path = `/crNursing/asset/deptShareFile${record.path}`
+    let useNewPath = moment(record.uploadTime).diff(moment('2020/9/30 00:00')) >= 0
+    if (useNewPath) path = `/crNursing/asset${record.path}`
 
     PreviewModalWrapper.show({
-      path: `/crNursing/asset${record.path}`,
+      path,
       // type: typeArr[typeArr.length - 1],
       title: record.fileName
     });
