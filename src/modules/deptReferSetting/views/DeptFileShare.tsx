@@ -16,7 +16,7 @@ import PreviewModal from "src/utils/file/modal/PreviewModal";
 
 const api = new DeptFielShareService();
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option;
 
@@ -130,7 +130,7 @@ export default function DeptFileShare() {
     let typeArr = record.originalFileName.split(".");
 
     PreviewModalWrapper.show({
-      path: `/crNursing/asset/deptShareFile${record.path}`,
+      path: `/crNursing/asset${record.path}`,
       // type: typeArr[typeArr.length - 1],
       title: record.fileName
     });
