@@ -593,7 +593,22 @@ export default observer(function 重点患者评估登记本(props: Props) {
             },
             dataIndex: "recordDate",
             align: "center",
-            width: 107
+            width: 107,
+            render(text: string, record: any, index: number) {
+              return (
+                <Input
+                  disabled={cellDisabled(record)}
+                  defaultValue={text}
+                  onKeyUp={handleNextIptFocus}
+                  onChange={e => {
+                    record.modified = true
+                    record.recordDate = e.target.value
+                  }}
+                  onBlur={() => updateDataSource()}
+                  className={isEndTime(record) || ""}
+                />
+              );
+            }
           }
         ],
         other: [
