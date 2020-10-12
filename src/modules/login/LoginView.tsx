@@ -7,11 +7,17 @@ import loginViewModel from "./LoginViewModel";
 import service from "src/services/api";
 import { appStore } from "src/stores";
 import { Button } from "src/vendors/antd";
-import { AutoComplete } from "antd";
+import { AutoComplete, message } from "antd";
+import { withRouter } from 'react-router-dom'
+
+import { compileStr, uncompileStr } from 'src/utils/encode/encode'
+import qs from "qs";
 
 export interface Props extends RouteComponentProps { }
 
-export default function LoginView() {
+export default withRouter(function LoginView(props: Props) {
+
+  const { location } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
@@ -24,6 +30,8 @@ export default function LoginView() {
     if (localStorage.lastLoginUserName) {
       setUsername(localStorage.lastLoginUserName);
     }
+
+    autoLogin()
   }, []);
 
   useEffect(() => {
@@ -47,26 +55,68 @@ export default function LoginView() {
     };
   }, []);
 
-  function login() {
+  function login(options?: {
+    username: string,
+    password: string
+  }) {
+    let _username: string, _password: string
+    if (!options) {
+      _username = username
+      _password = password
+    } else {
+      _username = options.username
+      _password = options.password
+    }
+
     setLoginLoading(true);
 
     service.authApiService
-      .login(username, password)
+      .login(_username, _password)
       .then(() => {
         if (isSavePassword) {
           const userLoginInfoMap = JSON.parse(
             localStorage.userLoginInfoMap || "{}"
           );
-          userLoginInfoMap[username.toLowerCase()] = password;
+          userLoginInfoMap[_username.toLowerCase()] = _password;
           localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap);
           /** 最后登录的用户 */
-          localStorage.lastLoginUserName = username.toLowerCase();
+          localStorage.lastLoginUserName = _username.toLowerCase();
         }
         setLoginLoading(false);
       })
       .catch(() => {
         setLoginLoading(false);
       });
+  }
+
+  const autoLogin = () => {
+    let search = qs.parse(location.search.replace('?', ''))
+    if (search.formatInfo) {
+      console.log(search.formatInfo)
+      try {
+        let formatInfo = JSON.parse(uncompileStr(search.formatInfo))
+
+        if (!formatInfo.timeset || new Date().getTime() - formatInfo.timeset < 300000) {
+          message.error('登录超时，已取消自动登录')
+          return
+        }
+
+        login({
+          username: formatInfo.empNo,
+          password: formatInfo.password
+        })
+      } catch (e) {
+        message.error('登录信息错误，已取消自动登录')
+        console.error(e)
+      }
+    } else {
+      //南医三
+      //如果是未登录状态则自动跳转护理信息系统不良事件
+      // if (appStore.HOSPITAL_ID === 'nys' && appStore.onlyBadEvent) {
+      // window.location
+      //   .replace(window.location.origin + '/crNursing/badevents/')
+      // }
+    }
   }
 
   const userEnter = (e: any) => {
@@ -149,7 +199,7 @@ export default function LoginView() {
 
           <Button
             type="primary"
-            onClick={login}
+            onClick={() => login()}
             block
             loading={loginLoading}
             style={{ marginTop: 20, height: 36 }}
@@ -165,7 +215,7 @@ export default function LoginView() {
       </BottomContent>
     </Wrapper>
   );
-}
+})
 
 const Wrapper = styled.div`
   position: fixed;

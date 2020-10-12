@@ -237,7 +237,14 @@ export default observer(function BadEventNewList() {
 
   const getEventList = (newQuery?: any) => {
     setDataLoading(true);
-    api.getList(newQuery || query).then(
+    api.getList(
+      newQuery ||
+      {
+        ...query,
+        pageIndex: page.current,
+        pageSize: page.size
+      }
+    ).then(
       res => {
         setDataLoading(false);
         let data = res.data.list;
@@ -406,6 +413,7 @@ export default observer(function BadEventNewList() {
               total: data.length,
               current: page.current,
               pageSize: page.size,
+              onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
               onChange: (current: number) => setPage({ ...page, current })
             }}
           />
@@ -484,7 +492,7 @@ height: 100%;
       top: 0;
       right: 0;
       bottom: 0;
-      overflow: hidden;
+      /* overflow: hidden; */
       td.align-left{
         padding-left: 10px!important;
       }
