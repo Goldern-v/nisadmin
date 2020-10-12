@@ -424,8 +424,10 @@ export default observer(function BadEventNewList() {
 });
 
 const Wrapper = styled.div`
-position:relative;
-height: 100%;
+  /* position:relative; */
+  display:flex;
+  flex-direction: column;
+  height: 100%;
   .topbar{
     padding: 10px 15px;
     height: 55px;
@@ -481,17 +483,19 @@ height: 100%;
     }
   }
   .main-contain{
-    position: absolute;
+    flex: 1;
+    padding: 0 15px;
+    /* position: absolute;
     left: 10px;
     top: 60px;
     right: 10px;
-    bottom: 10px;
+    bottom: 10px; */
     .table-content{
-      position: absolute;
+      /* position: absolute;
       left: 0;
       top: 0;
       right: 0;
-      bottom: 0;
+      bottom: 0; */
       /* overflow: hidden; */
       td.align-left{
         padding-left: 10px!important;
