@@ -15,16 +15,16 @@ import { traineeFilesModal } from "./TraineeFilesModal"; // 仓库数据
 import { traineeFilesApi } from "./api/TraineeFilesApi"; // 接口
 import TraineeFilesEditModal from "./modal/TraineeFilesEditModal"; // 添加修改弹窗
 import createModal from "src/libs/createModal";
-import QrcodeSbmitModal from "./modal/QrcodeSbmitModal";//二维码扫描弹窗
-import TraineeCheckModal from "./modal/TraineeCheckModal";//检查实习生填写资料
+import QrcodeSbmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
+import TraineeCheckModal from "./modal/TraineeCheckModal"; //检查实习生填写资料
 
-interface Props { }
+interface Props {}
 export default observer(function TraineeFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
 
-  const qrcodeSbmitModal = createModal(QrcodeSbmitModal)
-  const traineeCheckModal = createModal(TraineeCheckModal)
+  const qrcodeSbmitModal = createModal(QrcodeSbmitModal);
+  const traineeCheckModal = createModal(TraineeCheckModal);
 
   // 初始化数据
   useEffect(() => {
@@ -187,18 +187,14 @@ export default observer(function TraineeFiles(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => { });
+          .catch(e => {});
       }
     });
   };
 
   // 保存
-  const saveOrUpload = (record?: any) => {
-    if (record) {
-      setEditParams(record);
-    } else {
-      setEditParams({});
-    }
+  const saveOrUpload = (record: any) => {
+    setEditParams(record);
     setEditVisible(true);
   };
 
@@ -281,15 +277,15 @@ export default observer(function TraineeFiles(props: Props) {
           >
             导出
           </Button>
-          <Button onClick={() => saveOrUpload()}>添加实习生</Button>
+          <Button onClick={() => setEditVisible(true)}>添加实习生</Button>
           <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
           <Button
             onClick={() =>
               traineeCheckModal.show({
-                closeCallback: () =>
-                  traineeFilesModal.onload()
+                closeCallback: () => traineeFilesModal.onload()
               })
-            }>
+            }
+          >
             待检查
           </Button>
         </RightIcon>

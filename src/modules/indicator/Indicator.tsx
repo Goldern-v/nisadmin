@@ -61,6 +61,9 @@ import 无图 from "src/modules/indicator/chartView/无图.tsx";
 
 // 护理质量相关数据
 import NursingData from "./mainView/nursingData/NursingData";
+// 护理质控指标
+import NursingCharges from "./mainView/nursingCharges/NursingCharges";
+
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 const widthChar = "280%";
 // surplusHeight: 280,
@@ -913,14 +916,21 @@ export default function Indicator(props: Props) {
   const [templateShow, setTemplateShow] = useState(true);
   const [timeData, setTimeData]: any = useState(crrentMonth());
   const [nursingData, setNursingData] = useState(false); //是否展示护理主质量相关数据页面（--true展示）
+  const [nursingCharges, setNursingCharges] = useState(false); //是否展示护理质控指标页面（--true展示）
+
   let topRef: any = React.createRef();
   useLayoutEffect(() => {
     setShowType("详情");
     // 护理质量相关数据（吴敏）
     if (props.match.params.name === "护理质量相关数据") {
       setNursingData(true);
+      setNursingCharges(false);
+    } else if (props.match.params.name === "护理质控指标") {
+      setNursingCharges(true);
+      setNursingData(false);
     } else {
       setNursingData(false);
+      setNursingCharges(false);
       onload();
     }
   }, [props.match.params.name, timeData]);
@@ -1130,6 +1140,11 @@ export default function Indicator(props: Props) {
           )}
         </MainCon>
       )}
+      {nursingCharges && (
+        <div className="nursingCharges">
+          <NursingCharges getTitle={props.match.params.name} />
+        </div>
+      )}
     </Wrapper>
   );
 }
@@ -1141,6 +1156,12 @@ const Wrapper = styled.div`
   .nursingData {
     height: 100%;
     width: 100%;
+    padding: 0 15px 0 40px;
+    box-sizing: border-box;
+  }
+  .nursingCharges {
+    height: 100%;
+    width: 88%;
     padding: 0 15px 0 40px;
     box-sizing: border-box;
   }

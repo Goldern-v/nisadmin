@@ -138,5 +138,10 @@ export const LEFT_MENU = [
       { title: "包装合格率", path: "/indicator/包装合格率" },
       { title: "湿包发生率", path: "/indicator/湿包发生率" }
     ]
+  },
+  {
+    title: "护理质控指标",
+    icon: <ZKHL />,
+    path: "/indicator/护理质控指标"
   }
 ];
