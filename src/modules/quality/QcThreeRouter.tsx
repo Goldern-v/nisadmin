@@ -19,6 +19,7 @@ import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 
+import { qcThreeTitle } from './data/qcTitle'
 
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
@@ -132,7 +133,7 @@ export default function QcThreeRouter(props: Props) {
 
   const LEFT_MENU_CONFIG: any = [
     {
-      title: "三级质控记录",
+      title: qcThreeTitle.leftNavTitle,
       icon: <SJZK />,
       path: "/qcThree",
       component: { ...QualityControlRecord },

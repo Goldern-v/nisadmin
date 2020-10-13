@@ -15,6 +15,8 @@ import { PageTitle, Place } from 'src/components/common'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import FormCreateModal from './common/FormCreateModal'
 
+import { qcOneTitle, qcThreeTitle } from './../../../data/qcTitle'
+
 export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
@@ -27,9 +29,26 @@ export default observer(function TopCon(props: any) {
     setFormCreateVisible(true)
   }
 
+  const title = () => {
+    let defaultTitle = `${numToChinese(qualityControlRecordVM.level)}级质控`
+    if (appStore.HOSPITAL_ID == 'nys') {
+      switch (qualityControlRecordVM.level) {
+        case 1:
+          return qcOneTitle.listViewTitle
+        case 3:
+          return qcThreeTitle.listViewTitle
+        default:
+          return defaultTitle
+      }
+      return ''
+    } else {
+      return defaultTitle
+    }
+  }
+
   return (
     <Wrapper>
-      <PageTitle>{numToChinese(qualityControlRecordVM.level)}级质控</PageTitle>
+      <PageTitle>{title()}</PageTitle>
       <Place />
       <span style={{ margin: '0 3px 0 0' }}>日期:</span>
       <DatePicker.RangePicker

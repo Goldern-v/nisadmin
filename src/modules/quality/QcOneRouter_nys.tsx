@@ -17,11 +17,12 @@ import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡�
 import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
 import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import { appStore } from 'src/stores'
+import { qcOneTitle } from './data/qcTitle'
 
 export default function QcOneRouterHj(props: Props) {
   const LEFT_MENU_CONFIG: any = [
     {
-      title: '一级质控记录',
+      title: qcOneTitle.leftNavTitle,
       path: '/qcOneNys',
       icon: <EJZK />,
       component: { ...QualityControlRecord },

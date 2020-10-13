@@ -1,5 +1,6 @@
 import { action, observable, computed } from 'mobx'
 import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
+import service from 'src/services/api'
 import { appStore, authStore } from 'src/stores'
 import moment from 'moment'
 import qs from 'qs'
@@ -221,11 +222,27 @@ class QualityControlRecordEditModel {
   //获取质控病区科室
   @action private getDeptList = () => {
     this.deptlist = []
-    qualityControlRecordApi
-      .formTemplateDeptList(this.query.qcCode)
-      .then(res => {
-        if (res.data) this.deptlist = res.data
-      })
+
+    if (appStore.HOSPITAL_ID === 'nys')
+      //南医三获取用户权限科室
+      service.homeDataApiServices
+        .getListDepartment()
+        .then(res => {
+          console.log(res)
+          if (res.data) {
+            this.deptlist = res.data.deptList
+            if (!this.query.id) {
+              this.master.wardCode = res.data.defaultDept
+            }
+          }
+        })
+    else
+      //获取表单关联科室
+      qualityControlRecordApi
+        .formTemplateDeptList(this.query.qcCode)
+        .then(res => {
+          if (res.data) this.deptlist = res.data
+        })
   }
 
   //获取质控人员
