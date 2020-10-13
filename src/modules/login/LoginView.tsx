@@ -96,7 +96,7 @@ export default withRouter(function LoginView(props: Props) {
       try {
         let formatInfo = JSON.parse(uncompileStr(search.formatInfo))
 
-        if (!formatInfo.timeset || new Date().getTime() - formatInfo.timeset < 300000) {
+        if (!formatInfo.timeset || new Date().getTime() - formatInfo.timeset > 300000) {
           message.error('登录超时，已取消自动登录')
           return
         }
