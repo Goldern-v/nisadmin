@@ -16,6 +16,7 @@ import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
+import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
 import 菜单设置 from "./views/menuSettings/MenuSettings";
@@ -42,6 +43,12 @@ export default function ContinuingEdu(props: Props) {
 
   // 菜单列表
   const LEFT_MENU_CONFIG = [
+    // {
+    //   title: "在线学习",
+    //   icon: <JSGL />,
+    //   path: "/continuingEdu/在线学习",
+    //   component: 在线学习
+    // },
     {
       title: "人员管理",
       icon: <RYGL />,
