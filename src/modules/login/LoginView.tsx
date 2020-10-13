@@ -112,10 +112,10 @@ export default withRouter(function LoginView(props: Props) {
     } else {
       //南医三
       //如果是未登录状态则自动跳转护理信息系统不良事件
-      // if (appStore.HOSPITAL_ID === 'nys' && appStore.onlyBadEvent) {
-      // window.location
-      //   .replace(window.location.origin + '/crNursing/badevents/')
-      // }
+      if (appStore.HOSPITAL_ID === 'nys' && appStore.onlyBadEvent) {
+        window.location
+          .replace(window.location.origin + '/crNursing/badevents/')
+      }
     }
   }
 
