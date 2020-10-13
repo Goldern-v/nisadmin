@@ -35,7 +35,25 @@ export const totalCellContent = (id: any) => {
   }
 
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
-    return total + Number(current.effectiveTime);
+    const arr: any = [
+      "公休",
+      "产假",
+      "事假",
+      "丧假",
+      "陪产假",
+      "探亲假",
+      "计生假",
+      "进修",
+      "借调",
+      "婚假",
+      "放射假 ",
+      "病假",
+      "节休"
+    ];
+    let isOk: any = arr.find((item: any) => item === current.rangeName);
+    return isOk && appStore.HOSPITAL_ID === "wh"
+      ? total
+      : total + Number(current.effectiveTime);
   }, 0);
 
   // 超过周工作时长给提示
