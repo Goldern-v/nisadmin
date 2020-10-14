@@ -13,7 +13,7 @@ export default observer(function QrcodeSbmitModal(props: Props) {
   const { visible, onCancel } = props
   const targetUrl = appStore.isDev ?
     'http://120.25.105.45:9864/crNursing/manage/#/traineeInfoSubmit' :
-    'https://crnursinghj.cr-health.com/crNursing/manage/#/traineeInfoSubmit'
+    'http://120.197.141.41:9091/crNursing/manage/#/traineeInfoSubmit'
 
   function screenShot() {
     var type = 'png';

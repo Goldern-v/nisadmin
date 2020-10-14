@@ -7,7 +7,7 @@ module.exports = function (app) {
       // target: "http://120.25.105.45:9866", //厚街测试 兆大锅
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
-      // target: 'https://crnursinghj.cr-health.com',
+      // target: 'http://120.197.141.41:9091',
       // target: "http://192.168.20.133:8062", //广豪
       //武汉正式环境
       // target: "http://nurse.cr-health.com:34001",
