@@ -18,7 +18,7 @@ import { Place } from 'src/components/common'
 import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const navListWH: any = [
   {
@@ -231,11 +231,11 @@ export default observer(function NavBar(props: Props) {
             <img src={require('../images/护理管理系统.png')} alt='' className='name' style={{ paddingRight: 30 }} />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <img src={require('../images/logo-white.png')} alt='' className='logo' />
-            <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <img src={require('../images/logo-white.png')} alt='' className='logo' />
+              <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
+            </React.Fragment>
+          )}
       </LogoCon>
       {(appStore.HOSPITAL_ID == 'wh'
         ? authStore.user && authStore.user.roleManage == '1'
@@ -263,7 +263,7 @@ export default observer(function NavBar(props: Props) {
         )}
         <span className='name'>{authStore.user && authStore.user.empName}</span>
         <span className='line'>|</span>
-        <span className='logout' onClick={service.authApiService.logout}>
+        <span className='logout' onClick={() => service.authApiService.logout()}>
           退出
         </span>
       </RightCon>

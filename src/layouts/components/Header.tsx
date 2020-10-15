@@ -7,7 +7,7 @@ import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import { message } from 'antd'
 
-function Header () {
+function Header() {
   // 登陆判断
   const adminNurse = sessionStorage.getItem('adminNurse') || ''
   const authToken = sessionStorage.getItem('authToken') || ''
@@ -35,7 +35,7 @@ function Header () {
         <Text>消息</Text>
       </span>
       <BreakLine />
-      <span style={{ display: 'contents', cursor: 'pointer' }} onClick={service.authApiService.logout}>
+      <span style={{ display: 'contents', cursor: 'pointer' }} onClick={() => service.authApiService.logout()}>
         <Icon src={require('../images/退出.png')} />
         <Text>注销</Text>
       </span>

@@ -46,7 +46,7 @@ export default class AuthApiService extends BaseApiService {
 
     })
   }
-  public logout() {
+  public logout(stopComfirm?: boolean) {
     const userLoginInfoMap: any = JSON.parse(
       localStorage.userLoginInfoMap || "{}"
     );
@@ -55,17 +55,26 @@ export default class AuthApiService extends BaseApiService {
     let empNo = authStore.user?.empNo
     if (empNo) empNo = empNo.toLowerCase()
 
-    if (userLoginInfoMap[empNo || '']) {
-      globalModal.confirm('是否清除登录信息', '是否清除记住账号密码, 再次登录将不再自动补全此账号密码').then(res => {
-        delete userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']
-        localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap)
-        localStorage.lastLoginUserName = ''
-        _this.clearUser()
-      }).catch(res => {
-        _this.clearUser()
-      })
-    } else {
+    if (stopComfirm) {
+      delete userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']
+      localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap)
+      localStorage.lastLoginUserName = ''
       _this.clearUser()
+    } else {
+
+      if (userLoginInfoMap[empNo || '']) {
+        globalModal.confirm('是否清除登录信息', '是否清除记住账号密码, 再次登录将不再自动补全此账号密码').then(res => {
+          delete userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']
+          localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap)
+          localStorage.lastLoginUserName = ''
+          _this.clearUser()
+        }).catch(res => {
+          _this.clearUser()
+        })
+      } else {
+        _this.clearUser()
+      }
+
     }
 
   }
