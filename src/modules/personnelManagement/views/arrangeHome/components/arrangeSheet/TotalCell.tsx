@@ -25,6 +25,21 @@ export const totalCellContent = (id: any) => {
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == id;
   });
+  const arr: any = [
+    "公休",
+    "产假",
+    "事假",
+    "丧假",
+    "陪产假",
+    "探亲假",
+    "计生假",
+    "进修",
+    "借调",
+    "婚假",
+    "放射假 ",
+    "病假",
+    "节休"
+  ]; // 工时小计为0的班次
 
   if (user) {
     list = user.settingDtos;
@@ -34,22 +49,9 @@ export const totalCellContent = (id: any) => {
     // sheetViewModal.timeLimit = user.timeLimit;
   }
 
+  // 武汉
+
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
-    const arr: any = [
-      "公休",
-      "产假",
-      "事假",
-      "丧假",
-      "陪产假",
-      "探亲假",
-      "计生假",
-      "进修",
-      "借调",
-      "婚假",
-      "放射假 ",
-      "病假",
-      "节休"
-    ];
     let isOk: any = arr.find((item: any) => item === current.rangeName);
     return isOk && appStore.HOSPITAL_ID === "wh"
       ? total
@@ -96,29 +98,22 @@ export const totalCellContent = (id: any) => {
       }
     }
   }
-  // console.log(list, "list");
 
   /** 标准周工时 */
   sheetViewModal.standardTimeList;
+
   for (let key in weekObj) {
     if (weekObj[key].length == 7) {
+      let makeZero = list.find((item: any) => arr.includes(item.rangeName));
       let real_week =
-        appStore.HOSPITAL_ID === "nys"
+        appStore.HOSPITAL_ID === "nys" || makeZero
           ? 0
           : sheetViewModal.getStandTime(
               moment()
                 .week(Number(key))
                 .format("YYYY-MM-DD")
             );
-      // console.log(
-      //   real_week,
-      //   moment()
-      //     .week(Number(key))
-      //     .format("YYYY-MM-DD"),
-      //   "real_week"
-      // );
       total -= (real_week / 5) * 2;
-      // total = real_week;
     }
   }
 
