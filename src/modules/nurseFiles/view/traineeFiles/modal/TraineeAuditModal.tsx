@@ -85,7 +85,7 @@ export default function TraineeAuditModal(props: Props) {
           </Row>
           <Row>
             <Col span={8} className="label">性别：</Col>
-            <Col span={16}>{info.sex ? "男" : "女"}</Col>
+            <Col span={16}>{info.sex === 0 ? "男" : "女"}</Col>
           </Row>
           <Row>
             <Col span={8} className="label">院校：</Col>

@@ -25,7 +25,7 @@ import { PageHeader, Place } from "src/components/common";
 import DeptSelect from "src/components/DeptSelect";
 import createModal from "src/libs/createModal";
 import SettingModal from "./modal/SettingModal";
-import AddMessageModal from "./modal/AddMessageModal";
+// import AddMessageModal from "./modal/AddMessageModal";
 import { wardLogService } from "src/modules/wardLog/services/WardLogService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import { useLayoutEffect } from "src/types/react";
@@ -44,6 +44,8 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+
+import MessageListEditModal from './../../components/modal/MessageListEditModal'
 
 export interface Props {
   payload: any;
@@ -96,40 +98,49 @@ export default observer(function HandoverRegister(props: Props) {
 
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal);
-
-  const addMessageModal = useMemo(() => createModal(AddMessageModal), []);
-  const MemoAddMessageModal = addMessageModal.Component;
+  //提醒设置相关参数
+  const [msgListEditVisible, setMsgListEditVisible] = useState(false)
+  const [selectedMsgList, setSelectedMsgList] = useState([] as any[])
+  const [selectedRowData, setSelectedRowData] = useState({} as any)
+  const [selectedDataIndex, setSelectedDataIndex] = useState('')
 
   const onContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    record: any
+    record: any,
+    dataIndex: string,
   ) => {
     event.persist();
-    (event as any).target.blur();
     event.preventDefault();
+
     let target = (event as any).target;
+    target.blur();
+
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
-    contextMenu.show(
-      [
-        {
-          icon: require("../../images/提醒@2x.png"),
-          label: "添加提醒",
-          type: "text",
-          onClick: () => {
-            addMessageModal.show({
-              registerCode,
-              record,
-              fieldEn: target.getAttribute("data-key")
-            });
-          }
-        }
-      ],
-      {
-        x: x + width,
-        y: y + height / 2
-      }
-    );
+
+    return
+    // if (record.id)
+    //   contextMenu.show(
+    //     [
+    //       {
+    //         icon: require("../../images/提醒@2x.png"),
+    //         label: "添加提醒",
+    //         type: "text",
+    //         onClick: () => {
+    //           setSelectedDataIndex(dataIndex)
+    //           setSelectedRowData(record)
+    //           setSelectedMsgList([])
+    //           setMsgListEditVisible(true)
+    //         }
+    //       }
+    //     ],
+    //     {
+    //       x: x + width,
+    //       y: y + height / 2,
+    //       menuHeight: 34,
+    //     }
+    //   );
   };
+
   const updateDataSource = () => {
     setDataSource([...dataSource]);
   };
@@ -323,6 +334,13 @@ export default observer(function HandoverRegister(props: Props) {
       width: (15 * item.width || 50) + 8,
       colSpan: item.colSpan,
       className: "input-cell input-cell-custom",
+      onCell: (record: any) => ({
+        onContextMenu: (e: any) => {
+          if (registerCode === 'QCRG_02') {
+            onContextMenu(e, record, item.itemCode)
+          }
+        }
+      }),
       render(text: string, record: any, index: number) {
         let className = ''
         if (item.checkSize) className = text != item.checkSize && text != "√"
@@ -779,22 +797,6 @@ export default observer(function HandoverRegister(props: Props) {
                 pageSize: pageOptions.pageSize,
                 total: total
               }}
-              // onChange={(pagination: PaginationConfig) => {
-              //   setPageOptions({
-              //     pageIndex: pagination.current,
-              //     pageSize: pagination.pageSize
-              //   });
-              // }}
-              onRow={record => {
-                return appStore.isDev && registerCode == "QCRG_02"
-                  ? {
-                    onContextMenu: (e: any) => {
-                      console.log(e, "eeeeeeeeee");
-                      onContextMenu(e, record);
-                    }
-                  }
-                  : {};
-              }}
               rowSelection={{
                 selectedRowKeys,
                 onChange: handleSelectedChange,
@@ -817,7 +819,16 @@ export default observer(function HandoverRegister(props: Props) {
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
-      <MemoAddMessageModal />
+      {/* <messageListEditModal.Component /> */}
+      <MessageListEditModal
+        dataIndex={selectedDataIndex}
+        registerCode={registerCode}
+        blockId={selectedBlockId || ''}
+        visible={msgListEditVisible}
+        originList={selectedMsgList}
+        rowData={selectedRowData}
+        onCancel={() => { }} />
+      {/* <MemoAddMessageModal /> */}
       <MemoContextMenu />
     </Wrapper>
   );

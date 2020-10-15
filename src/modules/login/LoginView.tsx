@@ -17,7 +17,9 @@ export interface Props extends RouteComponentProps { }
 
 export default withRouter(function LoginView(props: Props) {
 
-  const { location } = props;
+  const { location, history } = props;
+  const search = qs.parse(location.search.replace('?', ''))
+  let formatInfoStr = search.formatInfo
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
@@ -85,18 +87,19 @@ export default withRouter(function LoginView(props: Props) {
         setLoginLoading(false);
       })
       .catch(() => {
+        if (formatInfoStr) history.replace('/login')
         setLoginLoading(false);
       });
   }
 
   const autoLogin = () => {
-    let search = qs.parse(location.search.replace('?', ''))
-    if (search.formatInfo) {
-      console.log(search.formatInfo)
+    if (formatInfoStr) {
+
       try {
-        let formatInfo = JSON.parse(uncompileStr(search.formatInfo))
+        let formatInfo = JSON.parse(uncompileStr(formatInfoStr))
 
         if (!formatInfo.timeset || new Date().getTime() - formatInfo.timeset > 300000) {
+          history.replace('/login')
           message.error('登录超时，已取消自动登录')
           return
         }
@@ -106,16 +109,17 @@ export default withRouter(function LoginView(props: Props) {
           password: formatInfo.password
         })
       } catch (e) {
+        history.replace('/login')
         message.error('登录信息错误，已取消自动登录')
         console.error(e)
       }
     } else {
       //南医三
       //如果是未登录状态则自动跳转护理信息系统不良事件
-      if (appStore.HOSPITAL_ID === 'nys' && appStore.onlyBadEvent) {
-        window.location
-          .replace(window.location.origin + '/crNursing/badevents/')
-      }
+      // if (appStore.HOSPITAL_ID === 'nys' && appStore.onlyBadEvent) {
+      //   window.location
+      //     .replace(window.location.origin + '/crNursing/badevents/')
+      // }
     }
   }
 
@@ -147,7 +151,10 @@ export default withRouter(function LoginView(props: Props) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        display: formatInfoStr ? 'none' : 'block'
+      }}>
       <BgImg>
         <BoxInput
         // onKeyUp={(e) => {

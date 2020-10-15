@@ -2,6 +2,7 @@ import React from "react";
 import { appStore } from "src/stores";
 
 export interface navConfigItem {
+  onClick?: any;
   name: string;
   path?: string;
   children?: navConfigItem[];

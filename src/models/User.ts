@@ -56,4 +56,5 @@ export default interface User {
   nativePlace: string
   nearImageUrl: string //头像
   roleManage: string //是否有权限进入管理系统
+  wsp?: string
 }

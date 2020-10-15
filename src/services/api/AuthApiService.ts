@@ -5,14 +5,17 @@ import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
 
 import { authStore, scheduleStore, appStore } from 'src/stores'
+import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfoBe/toNisInfoBe_nys'
 
 import BaseApiService from './BaseApiService'
+import { compileStr } from 'src/utils/encode/encode';
 
 export default class AuthApiService extends BaseApiService {
   public login(username: string, password: string) {
     return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password })).then((res) => {
       // console.log('登陆成功',res)
       let { adminNurse, authToken, user } = res.data
+      user = { ...user, wsp: compileStr(password) }
       sessionStorage.setItem('adminNurse', adminNurse)
       sessionStorage.setItem('authToken', authToken)
       sessionStorage.setItem('user', JSON.stringify(user))
@@ -29,7 +32,18 @@ export default class AuthApiService extends BaseApiService {
         // }
       }
 
-      window.location.href = '#/home'
+      if (appStore.HOSPITAL_ID == 'nys' && appStore.onlyBadEvent) {
+        //普通护士无权限进入南医三不良事件审核系统
+        if (user.roleManageCodeList.length <= 0) {
+          message.warning('无审核权限', 3, () => autoLoginTnNisInfoBe())
+        } else {
+          window.location.href = '#/home'
+        }
+      } else {
+        window.location.href = '#/home'
+      }
+
+
     })
   }
   public logout() {

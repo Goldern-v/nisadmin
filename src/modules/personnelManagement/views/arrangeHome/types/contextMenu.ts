@@ -1,6 +1,7 @@
 export interface Options {
   x: number;
   y: number;
+  menuHeight?: number;
 }
 
 export interface MenuListItem {

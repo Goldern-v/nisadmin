@@ -13,6 +13,12 @@ export interface Props {
 
 export default function ContextMenu(props: Props) {
   let { menuList, options, show, setShow } = props;
+
+  //默认菜单高度
+  let menuHeight = 310
+  if (options.menuHeight && typeof options.menuHeight === 'number')
+    menuHeight = options.menuHeight
+
   let { x, y } = options;
   let elRef = useRef(null);
   useEffect(() => {
@@ -37,8 +43,8 @@ export default function ContextMenu(props: Props) {
   };
 
   let max_y = window.innerHeight;
-  if (max_y - y < 310) {
-    y = max_y - 310;
+  if (max_y - y < menuHeight) {
+    y = max_y - menuHeight;
   }
   return (
     <div ref={elRef}>
@@ -98,7 +104,7 @@ export function createContextMenu() {
       const [options, setOptions] = useState({
         x: 0,
         y: 0
-      });
+      } as Options);
       const [show, setShow] = useState(false);
 
       _setShow = setShow;
