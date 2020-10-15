@@ -20,12 +20,12 @@ export default observer(function Table(props: Props) {
       title: "标题",
       dataIndex: "title",
       width: 200,
-      align: "center"
+      align: "left"
     },
     {
       title: "类型",
       dataIndex: "teachingTypeName",
-      width: 150,
+      width: 120,
       align: "center"
     },
     {
@@ -83,8 +83,12 @@ export default observer(function Table(props: Props) {
     {
       title: "剩余时间",
       dataIndex: "remainingTimeDes",
-      width: 80,
-      align: "center"
+      width: 100,
+      align: "center",
+      render(text: any) {
+        let color: any = text.includes("天") ? "rgba(0, 0, 0, 0.65)" : "red";
+        return <span style={{ color }}>{text}</span>;
+      }
     },
     {
       title: "课件",
@@ -143,7 +147,9 @@ export default observer(function Table(props: Props) {
   ];
 
   //查看 学习
-  const handleStudy = (record: any) => {};
+  const handleStudy = (record: any) => {
+    appStore.history.push(`/onlineLearningReview?id=${record.cetpId}`);
+  };
 
   return (
     <Wrapper>

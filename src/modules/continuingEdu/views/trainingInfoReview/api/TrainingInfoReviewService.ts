@@ -5,10 +5,10 @@ import qs from "qs";
 
 export default class TrainingInfoReviewService extends BaseApiService {
   //获取信息
-  public getBaseInfo(id: string) {
+  public getBaseInfo(id: string, taskRoleCode?: number) {
     return this.post(
       "/studyAndTrain/teachingPlanManage/viewSummaryInfo",
-      qs.stringify({ id })
+      qs.stringify({ id, taskRoleCode })
     );
   }
 

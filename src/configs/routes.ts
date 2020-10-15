@@ -211,7 +211,9 @@ const HealthPropagandaEditNew = lazy(() =>
 );
 const QcOneRouter = lazy(() => import("src/modules/quality/QcOneRouter"));
 const QcOneRouterHj = lazy(() => import("src/modules/quality/QcOneRouter_hj"));
-const QcOneRouterNys = lazy(() => import("src/modules/quality/QcOneRouter_nys"));
+const QcOneRouterNys = lazy(() =>
+  import("src/modules/quality/QcOneRouter_nys")
+);
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
 const CheckWardRouter = lazy(() =>
@@ -332,6 +334,12 @@ const TrainingInfoReview = lazy(() =>
     "src/modules/continuingEdu/views/trainingInfoReview/TrainingInfoReview"
   )
 );
+//学习培训-在线学习信息查看
+const OnlineLearningReview = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/onlineLearning/view/OnlineLearningReview"
+  )
+);
 
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
@@ -348,8 +356,12 @@ const BadEventReportView = lazy(() =>
 );
 
 //移动端界面
-const TraineeInfoSubmit = lazy(() => import('src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit'))
-const RefresherInfoSubmit = lazy(() => import('src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit'))
+const TraineeInfoSubmit = lazy(() =>
+  import("src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit")
+);
+const RefresherInfoSubmit = lazy(() =>
+  import("src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit")
+);
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -413,7 +425,13 @@ const routes: RouteItem[] = [
   setLayout("/practiceResultReview", PracticeResultReview, layouts.MainLayout),
   setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
-  setLayout("/socialpractiseResultReview", SocialpractiseResultReview, layouts.MainLayout),
+  setLayout("/onlineLearningReview", OnlineLearningReview, layouts.MainLayout),
+
+  setLayout(
+    "/socialpractiseResultReview",
+    SocialpractiseResultReview,
+    layouts.MainLayout
+  ),
   setLayout(
     "/continuingEduFormCheck",
     ContinuingEduFormCheck,

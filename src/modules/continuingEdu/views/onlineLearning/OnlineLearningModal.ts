@@ -27,6 +27,7 @@ class OnlineLearningModal {
         };
   }
 
+  // 初始化表格
   onload() {
     this.tableLoading = true;
     onlineLearningApi.queryPageList(this.postObj).then(res => {
@@ -38,11 +39,24 @@ class OnlineLearningModal {
     });
   }
 
+  // 获取任务数
   getTaskCount() {
     onlineLearningApi.getTaskCount().then(res => {
       this.taskCount = res.data;
-      console.log("taskCount", this.taskCount);
     });
+  }
+
+  //tabs变化函数
+  tabsChanged(key: any) {
+    const arr: any = [null, 1, 2, 3, 4, 5, 6, 7, "finished"];
+    let res = arr[key];
+    if (res === "finished") {
+      this.tpStatus = "finished";
+    } else {
+      this.teachingMethod = res;
+      this.tpStatus = "tobeginAndongoing";
+    }
+    this.onload();
   }
 
   init() {

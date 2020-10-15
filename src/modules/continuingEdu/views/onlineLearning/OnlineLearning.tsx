@@ -71,19 +71,6 @@ export default observer(function OnlineLearning(props: Props) {
     }
   ];
 
-  //tabs变化函数
-  const tabsChanged = (key: any) => {
-    const arr: any = [null, 1, 2, 3, 4, 5, 6, 7, "finished"];
-    let res = arr[key];
-    if (res === "finished") {
-      onlineLearningModal.tpStatus = "finished";
-    } else {
-      onlineLearningModal.teachingMethod = res;
-      onlineLearningModal.tpStatus = "tobeginAndongoing";
-    }
-    onlineLearningModal.onload();
-  };
-
   return (
     <Wrapper>
       <HeadCon>
@@ -92,7 +79,7 @@ export default observer(function OnlineLearning(props: Props) {
       <MainCon>
         <BaseTabs
           config={TABS_LIST_NURSE}
-          onChange={(key: any) => tabsChanged(key)}
+          onChange={(key: any) => onlineLearningModal.tabsChanged(key)}
         />
       </MainCon>
     </Wrapper>
