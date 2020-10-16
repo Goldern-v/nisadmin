@@ -16,7 +16,8 @@ import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
-  return path ? () => appStore.history.push(path) : () => { };
+  if (path) appStore.history.push(path)
+  // return path ? () => appStore.history.push(path) : () => { };
 };
 
 export interface Props extends RouteComponentProps { }
@@ -75,6 +76,7 @@ const MenuCon = observer(function (props: {
             style={itemHidden(item.hidden) ? { display: "none" } : {}}
             key={index}
             onClick={() => {
+              console.log('12321')
               toNavLink(item.path)
               item.onClick && item.onClick()
             }}
