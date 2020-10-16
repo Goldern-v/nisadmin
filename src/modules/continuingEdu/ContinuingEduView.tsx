@@ -50,13 +50,13 @@ export default function ContinuingEdu(props: Props) {
       component: 人员管理,
       hide: () => queyMenuAuthInfo("nm_lat_personelManage")
     },
-    {
-      title: "在线学习",
-      icon: <JSGL />,
-      path: "/continuingEdu/在线学习",
-      component: 在线学习,
-      hide: appStore.HOSPITAL_ID !== "wh"
-    },
+    // {
+    //   title: "在线学习",
+    //   icon: <JSGL />,
+    //   path: "/continuingEdu/在线学习",
+    //   component: 在线学习,
+    //   hide: appStore.HOSPITAL_ID !== "wh"
+    // },
     {
       title: "审核发布",
       icon: <YNXXB />,
