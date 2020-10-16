@@ -29,10 +29,14 @@ export default observer(function OnlineLearningReview(props: Props) {
       ? "进行中"
       : "待开始" || "";
   const attachmentList = baseInfo.attachmentList || [];
+  const arr = ["实操", "实践"];
+  let isOk =
+    arr.find((item: any) => item === baseInfo.teachingMethodName) ||
+    (baseInfo.teachingMethodName === "培训" &&
+      baseInfo.organizationWay === "线下");
 
   useEffect(() => {
     onlineLearningReviewModel.init();
-    console.log("baseInfobaseInfobaseInfo", baseInfo);
   }, [queryObj.id]);
 
   // 完成
@@ -56,20 +60,19 @@ export default observer(function OnlineLearningReview(props: Props) {
     });
   };
 
-  // 获取按钮状态名
-  const getTaskStatusName = () => {
-    const arr = ["实操", "演练", "培训"];
-    let isOk = arr.find(
-      (item: any) =>
-        item === baseInfo.teachingMethodName &&
-        baseInfo.organizationWay === "线下"
-    );
-    if (isOk) {
-      return baseInfo.taskStatus ? "您已签到" : "您未签到";
-    } else {
-      return baseInfo.taskStatus ? "您已完成" : "您未完成";
-    }
-  };
+  // // 获取按钮状态名
+  // const getTaskStatusName = () => {
+  //   let isOk = arr.find(
+  //     (item: any) =>
+  //       item === baseInfo.teachingMethodName &&
+  //       baseInfo.organizationWay === "线下"
+  //   );
+  //   if (isOk) {
+  //     return baseInfo.taskStatus ? "您已签到" : "您未签到";
+  //   } else {
+  //     return baseInfo.taskStatus ? "您已完成" : "您未完成";
+  //   }
+  // };
 
   return (
     <Wrapper>
@@ -86,13 +89,26 @@ export default observer(function OnlineLearningReview(props: Props) {
           <span>{tpStatusName}</span>
         </SubContent>
         <ButtonGroups>
-          {attachmentList.length > 0 && (
+          {isOk && (
+            <span
+              style={{
+                marginRight: "25px",
+                fontSize: "13px",
+                color: baseInfo.taskStatus ? "blue" : "red"
+              }}
+            >
+              {baseInfo.taskStatus
+                ? "您已完成签到!"
+                : "您尚未签到，请通过护理助手app进行签到!"}
+            </span>
+          )}
+          {attachmentList.length > 0 && !isOk && (
             <Button
               type="primary"
               disabled={baseInfo.taskStatus || baseInfo.tpStatus === "finished"}
               onClick={() => handleFinish()}
             >
-              {getTaskStatusName()}
+              {baseInfo.taskStatus ? "您已完成" : "您未完成"}
             </Button>
           )}
           <Button

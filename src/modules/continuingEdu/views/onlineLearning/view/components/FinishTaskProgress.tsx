@@ -12,8 +12,8 @@ import { onlineLearningReviewApi } from "../api/OnlineLearningReviewApi";
 export interface Props {}
 
 export default observer(function finishTaskProgress() {
-  const attachmentList =
-    onlineLearningReviewModel.baseInfo.attachmentList || [];
+  const { baseInfo } = onlineLearningReviewModel;
+  const attachmentList = baseInfo.attachmentList || [];
   const previewModal = createModal(PreviewModal);
 
   const showReview = (file: any) => {
@@ -58,9 +58,10 @@ export default observer(function finishTaskProgress() {
                   className={item.alreadyRead ? "file-finish" : "file-unFinish"}
                   title={item.name}
                 >
-                  {item.alreadyRead ? "已完成" : "未完成"}
+                  {item.alreadyRead ? "已读" : "未读"}
                 </div>
                 <Button
+                  disabled={baseInfo.tpStatus === "finished"}
                   className="download-btn"
                   onClick={() => showReview(item)}
                 >
