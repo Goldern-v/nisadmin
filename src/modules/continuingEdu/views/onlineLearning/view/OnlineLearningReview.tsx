@@ -89,7 +89,7 @@ export default observer(function OnlineLearningReview(props: Props) {
           {attachmentList.length > 0 && (
             <Button
               type="primary"
-              disabled={baseInfo.taskStatus}
+              disabled={baseInfo.taskStatus || baseInfo.tpStatus === "finished"}
               onClick={() => handleFinish()}
             >
               {getTaskStatusName()}
