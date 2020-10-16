@@ -12,6 +12,7 @@ export default observer(function OnlineLearning(props: Props) {
   // 初始化
   useEffect(() => {
     getNowHour();
+    onlineLearningModal.tpStatus = "tobeginAndongoing";
     onlineLearningModal.init();
   }, []);
 
@@ -32,41 +33,44 @@ export default observer(function OnlineLearning(props: Props) {
 
   const TABS_LIST_NURSE = [
     {
-      title: `全部（${onlineLearningModal.taskCount.unFinishedTaskCount}）`,
+      title: `全部（${onlineLearningModal.taskCount.unFinishedTaskCount ||
+        0}）`,
       component: <Table />
     },
     {
-      title: `待学习（${onlineLearningModal.taskCount.toStudyTaskCount}）`,
+      title: `待学习（${onlineLearningModal.taskCount.toStudyTaskCount || 0}）`,
       component: <Table />
     },
     {
-      title: `待培训（${onlineLearningModal.taskCount.toTrainTaskCount}）`,
+      title: `待培训（${onlineLearningModal.taskCount.toTrainTaskCount || 0}）`,
       component: <Table />
     },
     {
-      title: `待考试（${onlineLearningModal.taskCount.toExamTaskCount}）`,
+      title: `待考试（${onlineLearningModal.taskCount.toExamTaskCount || 0}）`,
       component: <Table />
     },
     {
-      title: `待练习（${onlineLearningModal.taskCount.toExerciseTaskCount}）`,
+      title: `待练习（${onlineLearningModal.taskCount.toExerciseTaskCount ||
+        0}）`,
       component: <Table />
     },
     {
-      title: `待实操（${onlineLearningModal.taskCount.toPractiseTaskCount}）`,
+      title: `待实操（${onlineLearningModal.taskCount.toPractiseTaskCount ||
+        0}）`,
       component: <Table />
     },
     {
-      title: `待演练（${onlineLearningModal.taskCount.toWtTaskCount}）`,
+      title: `待演练（${onlineLearningModal.taskCount.toWtTaskCount || 0}）`,
       component: <Table />
     },
     {
-      title: `待实践（${
-        onlineLearningModal.taskCount.toSocialPractiseTaskCount
-      }）`,
+      title: `待实践（${onlineLearningModal.taskCount
+        .toSocialPractiseTaskCount || 0}）`,
       component: <Table />
     },
     {
-      title: `已结束（${onlineLearningModal.taskCount.finishedTaskCount}）`,
+      title: `已结束（${onlineLearningModal.taskCount.finishedTaskCount ||
+        0}）`,
       component: <Table />
     }
   ];

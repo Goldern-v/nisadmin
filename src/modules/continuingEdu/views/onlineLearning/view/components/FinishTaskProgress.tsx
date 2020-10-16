@@ -21,6 +21,7 @@ export default observer(function finishTaskProgress() {
       title: file.name,
       path: file.path,
       id: file.id,
+      finish: file.alreadyRead,
       learningFunc: finishTaskFun
     });
   };
@@ -28,7 +29,6 @@ export default observer(function finishTaskProgress() {
   const finishTaskFun = (attachmentId: any) => {
     onlineLearningReviewApi.readAttachment(attachmentId).then(res => {
       if (res.code === "200") {
-        message.success("该任务已完成学习！");
         onlineLearningReviewModel.getBaseInfo(appStore.queryObj.id);
       } else {
         message.error(`${res.desc}`);

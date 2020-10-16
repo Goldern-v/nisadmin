@@ -26,6 +26,7 @@ const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   learningFunc?: any;
   id?: any;
+  finish?: string;
   path: string;
   title: string;
   modalWidth?: number;
@@ -50,7 +51,8 @@ export default function PreviewModal(props: Props) {
     modalWidth,
     attachmentList,
     learningFunc,
-    id
+    id,
+    finish
   } = props;
   let [modalLoading, setModalLoading] = useState(false);
   let [filePath, setFilePath] = useState("");
@@ -140,7 +142,7 @@ export default function PreviewModal(props: Props) {
 
   const onSave = async () => {
     onCancel();
-    learningFunc(id);
+    if (!finish && learningFunc) learningFunc(id);
   };
 
   const devPath = (path: string) => {

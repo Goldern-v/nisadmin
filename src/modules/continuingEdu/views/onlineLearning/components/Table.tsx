@@ -132,11 +132,12 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "操作",
-      dataIndex: "taskStatusDesc",
+      dataIndex: "tpStatus",
       width: 100,
       align: "center",
       render(text: any, record: any) {
-        let btnName = text === "完成" ? "查看" : "去学习";
+        let btnName =
+          text === "finished" ? "查看" : `去${record.teachingMethodName}`;
         return (
           <DoCon>
             <span onClick={() => handleStudy(record)}>{btnName}</span>

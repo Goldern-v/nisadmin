@@ -56,6 +56,21 @@ export default observer(function OnlineLearningReview(props: Props) {
     });
   };
 
+  // 获取按钮状态名
+  const getTaskStatusName = () => {
+    const arr = ["实操", "演练", "培训"];
+    let isOk = arr.find(
+      (item: any) =>
+        item === baseInfo.teachingMethodName &&
+        baseInfo.organizationWay === "线下"
+    );
+    if (isOk) {
+      return baseInfo.taskStatus ? "您已签到" : "您未签到";
+    } else {
+      return baseInfo.taskStatus ? "您已完成" : "您未完成";
+    }
+  };
+
   return (
     <Wrapper>
       <TopPannel>
@@ -77,7 +92,7 @@ export default observer(function OnlineLearningReview(props: Props) {
               disabled={baseInfo.taskStatus}
               onClick={() => handleFinish()}
             >
-              我已完成
+              {getTaskStatusName()}
             </Button>
           )}
           <Button
