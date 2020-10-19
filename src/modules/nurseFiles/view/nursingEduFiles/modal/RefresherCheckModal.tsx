@@ -174,7 +174,7 @@ export default function RefresherCheckModal(props: Props) {
               onChange={(status: string) => setQuery({ ...query, status })}>
               <Option value="">全部</Option>
               <Option value="1">已保存</Option>
-              <Option value="2">未保存</Option>
+              <Option value="0">未保存</Option>
             </Select>
             <span className="label">
               <Button type="primary" onClick={handleSearch}>查询</Button>

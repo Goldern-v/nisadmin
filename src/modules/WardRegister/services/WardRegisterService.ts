@@ -148,6 +148,25 @@ export default class WardRegisterService extends BaseApiService {
       responseType: "blob"
     });
   }
+
+  /**提醒：获取整表提醒 */
+  public getBlockMsgList(registerCode: string, blockId: string) {
+    const formType = 'qcRegister'
+    return this.get(`/sign/${formType}/${registerCode}/list/${blockId}`)
+  }
+
+  /**提醒：根据字段批量保存或者修改 */
+  public saveBlockMsgList(list: any[], registerCode: string | number) {
+    const formType = 'qcRegister'
+    return this.post(`/sign/${formType}/${registerCode}/saveOrUpdateWholeByField`, { list })
+  }
+
+  /**提醒：删除 */
+  public deleteMsgItem(id: string | number, registerCode: string | number) {
+    const formType = 'qcRegister'
+
+    return this.post(`/sign/${formType}/${registerCode}/delete`, { id })
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();

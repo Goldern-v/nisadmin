@@ -28,7 +28,8 @@ export interface ItemConfigItem {
   children?: ItemConfigItem[];
   rangeConfigList?: any[],
   selectedRowKeys?: any[],
-  setSelectedRowKeys?: Function
+  setSelectedRowKeys?: Function,
+  setMsgMap?: Function
 }
 
 export function getFun(context: any) {
@@ -50,7 +51,8 @@ export function getFun(context: any) {
     paramMap,
     rangeConfigList,
     selectedRowKeys,
-    setSelectedRowKeys
+    setSelectedRowKeys,
+    setMsgMap
   } = context;
 
   /** 初始化 */
@@ -178,7 +180,48 @@ export function getFun(context: any) {
           }
         })
       });
+
+    if (registerCode === 'QCRG_02')
+      getMsgList()
   };
+
+  /**获取提醒列表 */
+  const getMsgList = (showLoading = false) => {
+    setMsgMap({})
+    if (showLoading) setPageLoading(true)
+    wardRegisterService
+      .getBlockMsgList(registerCode, selectedBlockId)
+      .then(res => {
+        if (showLoading) setPageLoading(false)
+
+        let list = res.data.list
+        let newMap = {} as any
+        // console.log(res)
+        for (let i = 0; i < list.length; i++) {
+          let item = list[i]
+          let recordId = item.recordId
+          let fieldEn = item.fieldEn
+          let keys0 = Object.keys(newMap)
+
+          if (fieldEn)
+            if (keys0.indexOf(recordId.toString()) >= 0) {
+              let parent = newMap[recordId]
+              let keys1 = Object.keys(parent)
+
+              if (keys1.indexOf(fieldEn) >= 0) {
+                parent[fieldEn].push(item)
+              } else {
+                parent[fieldEn] = [item]
+              }
+            } else {
+              newMap[recordId] = {} as any
+              newMap[recordId][fieldEn] = [item]
+            }
+        }
+
+        setMsgMap(newMap)
+      })
+  }
 
   /**新增修订 */
   const onAddBlock = () => {
@@ -644,7 +687,8 @@ export function getFun(context: any) {
     handleAuditAll,
     handleCopyCreateRow,
     fixInputValue,
-    deleteSelectedRows
+    deleteSelectedRows,
+    getMsgList
   };
 }
 /**获取当月最后一周的日期 */

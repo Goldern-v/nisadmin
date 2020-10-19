@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Button } from "antd";
+import { Button, Popover } from "antd";
 import BaseTable from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -99,6 +99,7 @@ export default observer(function HandoverRegister(props: Props) {
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal);
   //提醒设置相关参数
+  const [msgMap, setMsgMap] = useState({} as any)
   const [msgListEditVisible, setMsgListEditVisible] = useState(false)
   const [selectedMsgList, setSelectedMsgList] = useState([] as any[])
   const [selectedRowData, setSelectedRowData] = useState({} as any)
@@ -117,28 +118,33 @@ export default observer(function HandoverRegister(props: Props) {
 
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
 
-    return
-    // if (record.id)
-    //   contextMenu.show(
-    //     [
-    //       {
-    //         icon: require("../../images/提醒@2x.png"),
-    //         label: "添加提醒",
-    //         type: "text",
-    //         onClick: () => {
-    //           setSelectedDataIndex(dataIndex)
-    //           setSelectedRowData(record)
-    //           setSelectedMsgList([])
-    //           setMsgListEditVisible(true)
-    //         }
-    //       }
-    //     ],
-    //     {
-    //       x: x + width,
-    //       y: y + height / 2,
-    //       menuHeight: 34,
-    //     }
-    //   );
+    // return
+    if (record.id) {
+      contextMenu.show(
+        [
+          {
+            icon: require("../../images/提醒@2x.png"),
+            label: "提醒设置",
+            type: "text",
+            onClick: () => {
+              let msgList = []
+              if (msgMap[record.id] && msgMap[record.id][dataIndex])
+                msgList = msgMap[record.id][dataIndex]
+
+              setSelectedDataIndex(dataIndex)
+              setSelectedRowData(record)
+              setSelectedMsgList(msgList)
+              setMsgListEditVisible(true)
+            }
+          }
+        ],
+        {
+          x: x + width,
+          y: y + height / 2,
+          menuHeight: 34,
+        }
+      );
+    }
   };
 
   const updateDataSource = () => {
@@ -350,12 +356,14 @@ export default observer(function HandoverRegister(props: Props) {
         //处理时间选择类型
         let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
 
+        let child = <span></span>
+
         if (item.itemType == 'date' || item.itemType == 'date_time' || target) {
           let format = 'YYYY-MM-DD'
           if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
           if (target?.format) format = target.format
 
-          return <DatePickerColumnRender
+          child = <DatePickerColumnRender
             {...{
               className: '',
               cellDisabled,
@@ -374,7 +382,7 @@ export default observer(function HandoverRegister(props: Props) {
 
         //处理上传附件类型
         if (item.itemType == "attachment")
-          return <FileUploadColumnRender
+          child = <FileUploadColumnRender
             {...{
               record,
               itemCfg: item,
@@ -385,8 +393,8 @@ export default observer(function HandoverRegister(props: Props) {
               updateDataSource
             }} />
 
-        return (
-          <TdCell>
+        if (item.itemType == "")
+          child = <TdCell>
             <InputColumnRender
               {...{
                 cellDisabled,
@@ -411,7 +419,28 @@ export default observer(function HandoverRegister(props: Props) {
                   .filter((item: any) => item)
               }} />
           </TdCell>
-        );
+
+        if (registerCode == 'QCRG_02') {
+          if (!record.id || !msgMap[record.id] || !msgMap[record.id][item.itemCode])
+            return child
+
+          return <Popover
+            placement="bottomRight"
+            title="提醒设置"
+            content={<React.Fragment>
+              {msgMap[record.id][item.itemCode].map((msg: any, msgIdx: number) => <MsgRow key={msgIdx}>
+                <span className="msg-content">{msg.content}</span>
+                <span className="msg-appointHandleTime">{msg.appointHandleTime}({msg.appointRange})</span>
+                <span className="msg-vsUserList">{msg.vsUserList.map((emp: any) => emp.empName).join('、')}</span>
+              </MsgRow>)}
+            </React.Fragment>}
+            trigger="hover">
+            <MsgCard>{msgMap[record.id][item.itemCode].length}</MsgCard>
+            <div>{child}</div>
+          </Popover>
+        } else {
+          return child
+        }
       }
     })),
 
@@ -602,6 +631,7 @@ export default observer(function HandoverRegister(props: Props) {
     getPage,
     fixInputValue,
     deleteSelectedRows,
+    getMsgList,
   } = getFun({
     registerCode,
     registerName,
@@ -621,6 +651,7 @@ export default observer(function HandoverRegister(props: Props) {
     paramMap: { '班次': selectedRange },
     selectedRowKeys,
     setSelectedRowKeys,
+    setMsgMap,
   });
 
   useEffect(() => {
@@ -827,7 +858,10 @@ export default observer(function HandoverRegister(props: Props) {
         visible={msgListEditVisible}
         originList={selectedMsgList}
         rowData={selectedRowData}
-        onCancel={() => { }} />
+        onCancel={(reload: boolean) => {
+          if (reload) getMsgList(true)
+          setMsgListEditVisible(false)
+        }} />
       {/* <MemoAddMessageModal /> */}
       <MemoContextMenu />
     </Wrapper>
@@ -911,6 +945,7 @@ const TableCon = styled.div`
   }
   .input-cell {
     padding: 0 !important;
+    position: relative;
   }
   input,textarea {
     border: 0;
@@ -1067,3 +1102,49 @@ const MergeTitle = styled.div`
   padding: 4px 0;
   border-bottom: 1px solid #e8e8e8;
 `;
+
+const MsgCard = styled.div`
+  position: absolute;
+  z-index: 1;
+  display: inline-block;
+  background: red;
+  height: 16px;
+  border-radius: 50%;
+  min-width: 16px;
+  color: #fff;
+  line-height: 16px;
+  font-size: 12px;
+  right: -4px;
+  top: 0px;
+  padding: 0 4px;
+`
+
+const MsgRow = styled.div`
+  border-bottom: 1px solid #eee;
+
+  &:last-of-type{
+    border-bottom:0;
+  }
+
+  &>span{
+    margin-right: 5px;
+    word-break: break-all;
+    vertical-align: middle;
+    display: inline-block;
+    &:last-of-type{
+      margin-right:0;
+    }
+  }
+
+  .msg-content{
+    width: 150px;
+  }
+  .msg-appointHandleTime{
+    width: 120px;
+    text-align: center;
+  }
+  .msg-vsUserList{
+    width: 100px;
+    text-align: center;
+  }
+`
