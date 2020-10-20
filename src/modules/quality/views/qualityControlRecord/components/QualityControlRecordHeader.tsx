@@ -46,6 +46,17 @@ export default observer(function TopCon(props: any) {
     }
   }
 
+  /**科室下拉列表 */
+  const filterDeptList = appStore.hisMatch({
+    map: {
+      'nys': [
+        { code: '', name: '全部' },
+        ...authStore.deptList
+      ],
+      other: qualityControlRecordVM.filterDeptList
+    }
+  })
+
   return (
     <Wrapper>
       <PageTitle>{title()}</PageTitle>
@@ -110,7 +121,7 @@ export default observer(function TopCon(props: any) {
               props.refreshData()
             }}
           >
-            {qualityControlRecordVM.filterDeptList.map((item: any) => (
+            {filterDeptList.map((item: any) => (
               <Select.Option value={item.code} key={item.code}>
                 {item.name}
               </Select.Option>
@@ -143,7 +154,6 @@ export default observer(function TopCon(props: any) {
       {appStore.HOSPITAL_ID == 'nys' && <Button
         onClick={handleCreate}
         style={{ marginLeft: 10 }}
-        disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}
       >
         新建
         </Button>}
