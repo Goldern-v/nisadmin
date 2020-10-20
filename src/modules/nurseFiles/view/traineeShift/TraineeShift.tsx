@@ -17,6 +17,8 @@ import { traineeShiftApi } from "./api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
 import EditDeptModal from "./modal/EditDeptModal"; // 添加修改弹窗
 import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
+import AddGroupModal from "./modal/AddGroupModal"; // 添加分组弹窗
+
 interface Props {
   getTitle: any;
   getId: any;
@@ -27,6 +29,7 @@ export default observer(function TraineeShift(props: Props) {
   const [showWeek, setShowWeek] = useState(false); //日期、周切换开关（true——周）
   const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
   const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
+  const [addGroupBtn, setAddGroupBtn] = useState(false); //新建分组
 
   // 初始化数据
   useEffect(() => {
@@ -84,22 +87,22 @@ export default observer(function TraineeShift(props: Props) {
             rotateTimesList[dataIndex] || {};
           return !showWeek ? (
             <DatePicker.RangePicker
-              allowClear={false}
+              allowClear
               style={{ width: 230 }}
               value={beginTime ? [moment(beginTime), moment(endTime)] : []}
               onChange={(date: any) => {
                 if (dataIndex >= 0) {
-                  record.rotateTimesList[dataIndex].beginTime = date[0].format(
-                    "YYYY-MM-DD"
-                  );
-                  record.rotateTimesList[dataIndex].endTime = date[1].format(
-                    "YYYY-MM-DD"
-                  );
+                  record.rotateTimesList[dataIndex].beginTime = date[0]
+                    ? date[0].format("YYYY-MM-DD")
+                    : null;
+                  record.rotateTimesList[dataIndex].endTime = date[1]
+                    ? date[1].format("YYYY-MM-DD")
+                    : null;
                 } else {
                   const { deptCode, sheetId, deptName } = item;
                   rotateTimesList.push({
-                    beginTime: date[0].format("YYYY-MM-DD"),
-                    endTime: date[1].format("YYYY-MM-DD"),
+                    beginTime: date[0] ? date[0].format("YYYY-MM-DD") : null,
+                    endTime: date[1] ? date[1].format("YYYY-MM-DD") : null,
                     deptCode,
                     sheetId,
                     deptName
@@ -208,7 +211,7 @@ export default observer(function TraineeShift(props: Props) {
             disabled={showWeek}
             size="small"
             showTime
-            allowClear={false}
+            allowClear
             value={text ? moment(text) : undefined}
             format="YYYY-MM-DD HH:mm"
             style={{
@@ -216,7 +219,9 @@ export default observer(function TraineeShift(props: Props) {
               minWidth: "170px!important"
             }}
             onChange={(value: any) => {
-              record.teachingRoundTime = value.format("YYYY-MM-DD HH:mm");
+              record.teachingRoundTime = value
+                ? value.format("YYYY-MM-DD HH:mm")
+                : null;
               setTableList(traineeShiftModal.tableList);
               const arrOne = traineeShiftModal.tableList.slice();
               traineeShiftModal.tableList = [];
@@ -292,6 +297,7 @@ export default observer(function TraineeShift(props: Props) {
   const handleEditCancel = () => {
     setEditDeptBtn(false);
     setEditGroupBtn(false);
+    setAddGroupBtn(false);
   };
   const handleEditOk = () => {
     traineeShiftModal.onload();
@@ -302,7 +308,7 @@ export default observer(function TraineeShift(props: Props) {
     <Wrapper>
       <PageHeader>
         <LeftIcon>
-          <PageTitle maxWidth={1300}>{getTitle}</PageTitle>
+          <PageTitle maxWidth={1500}>{getTitle}</PageTitle>
         </LeftIcon>
         <RightIcon>
           <Input
@@ -323,6 +329,7 @@ export default observer(function TraineeShift(props: Props) {
           </Button>
           <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button>
           <Button onClick={() => setEditDeptBtn(true)}>添加实习科室</Button>
+          {/* <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button> */}
           <Button
             onClick={() => {
               traineeShiftModal.export();
@@ -360,6 +367,11 @@ export default observer(function TraineeShift(props: Props) {
       />
       <EditGroupModal
         visible={editGroupBtn}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <AddGroupModal
+        visible={addGroupBtn}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
