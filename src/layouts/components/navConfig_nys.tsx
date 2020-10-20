@@ -52,11 +52,11 @@ const baseConfig: navConfigItem[] = [
         path: "/qcThree",
         icon: require("../images/menu-icon/三级质控@2x.png")
       },
-      {
-        name: "二级质量",
-        path: "/qcTwo",
-        icon: require("../images/menu-icon/二级质控@2x.png")
-      },
+      // {
+      //   name: "二级质量",
+      //   path: "/qcTwo",
+      //   icon: require("../images/menu-icon/二级质控@2x.png")
+      // },
       {
         name: qcOneTitle.listViewTitle,
         path: "/qcOneNys",
