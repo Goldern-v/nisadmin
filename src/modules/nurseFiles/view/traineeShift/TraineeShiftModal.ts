@@ -21,9 +21,9 @@ class TraineeShiftModal {
   // 实习生全部信息初始化
   @observable public allGroupKeyWord: any = undefined; //关键字
   @observable public selectedYear: any = moment(); //选中年份
-  @observable public pageIndex: any = 1; //页码
-  @observable public pageSize: any = 20; //每页条数
-  @observable public total: any = 0; //总条数
+  // @observable public pageIndex: any = 1; //页码
+  // @observable public pageSize: any = 20; //每页条数
+  // @observable public total: any = 0; //总条数
   @observable public allGroupTableList: any = []; //表格数据
   @observable public allGroupTableLoading = false; //表格loading
 
@@ -44,9 +44,9 @@ class TraineeShiftModal {
   get postAllGroupObj() {
     return {
       keyWord: this.allGroupKeyWord,
-      year: moment(this.selectedYear).format("YYYY"),
-      pageIndex: this.pageIndex,
-      pageSize: this.pageSize
+      year: moment(this.selectedYear).format("YYYY")
+      // pageIndex: this.pageIndex,
+      // pageSize: this.pageSize
     };
   }
 
@@ -66,13 +66,24 @@ class TraineeShiftModal {
     traineeShiftApi
       .queryGraduateInternPageList(this.postAllGroupObj)
       .then(res => {
-        res.data.list.map((item: any) => (item.isCheck = false));
+        // res.data.list.map((item: any) => (item.isCheck = false));
+        // this.allGroupTableLoading = false;
+        // this.allGroupTableList = res.data.list;
+        // this.total = res.data.totalCount;
+        // this.pageIndex = res.data.pageIndex;
+        // this.pageSize = res.data.pageSize;
+        res.data.map((item: any) => (item.isCheck = false));
         this.allGroupTableLoading = false;
-        this.allGroupTableList = res.data.list;
-        this.total = res.data.totalCount;
-        this.pageIndex = res.data.pageIndex;
-        this.pageSize = res.data.pageSize;
+        this.allGroupTableList = res.data;
       });
+    // let arr: any = [];
+    // this.groupTableCopyList.map((item: any) => arr.push(item.empNo));
+    // this.allGroupTableList.filter((item: any) => {
+    //   if (arr.includes(item.empNo)) {
+    //     console.log(item.empNo, "1111111111111");
+    //     item.isCheck = true;
+    //   }
+    // });
   }
 
   //绑定实习生

@@ -1,4 +1,5 @@
 import BaseApiService from "src/services/api/BaseApiService";
+import { traineeShiftModal } from "../TraineeShiftModal";
 import qs from "qs";
 
 export default class TraineeShiftApi extends BaseApiService {
@@ -9,10 +10,24 @@ export default class TraineeShiftApi extends BaseApiService {
       obj
     );
   }
+
   // 查询二级子菜单
   public async queryAllRotationScheduleSheets() {
     return this.get(
       `/studyAndTrain/intern/deptRotationSchedule/queryAllRotationScheduleSheets`
+    );
+  }
+
+  // 添加分组
+  public async createRotateGroup(groupNum: any) {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      groupNum
+    };
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/createRotateGroup
+      `,
+      obj
     );
   }
 
@@ -48,7 +63,7 @@ export default class TraineeShiftApi extends BaseApiService {
   // 查询全部实习生
   public async queryGraduateInternPageList(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternPageList`,
+      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternList`,
       obj
     );
   }

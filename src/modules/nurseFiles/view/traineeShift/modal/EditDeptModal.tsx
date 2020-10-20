@@ -16,6 +16,7 @@ import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
 
 export interface Props {
+  groupId: any;
   visible: boolean;
   onCancel: any;
   onOk: any;
@@ -23,7 +24,7 @@ export interface Props {
 }
 
 export default observer(function EditDeptModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { groupId, visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [query, setQuery] = useState({
     keyWord: undefined,
@@ -135,6 +136,7 @@ export default observer(function EditDeptModal(props: Props) {
       return;
     }
     let obj: any = {
+      groupId,
       sheetId: traineeShiftModal.sheetId,
       rotateDeptList: dataList
     };

@@ -167,17 +167,17 @@ export default observer(function AddTraineeModal(props: Props) {
           dataSource={traineeShiftModal.allGroupTableList}
           columns={columns}
           surplusHeight={370}
-          pagination={{
-            current: traineeShiftModal.pageIndex,
-            total: traineeShiftModal.total,
-            pageSize: traineeShiftModal.pageSize
-          }}
-          onChange={(pagination: any) => {
-            traineeShiftModal.pageIndex = pagination.current;
-            traineeShiftModal.total = pagination.total;
-            traineeShiftModal.pageSize = pagination.pageSize;
-            traineeShiftModal.allGroupOnload();
-          }}
+          // pagination={{
+          //   current: traineeShiftModal.pageIndex,
+          //   total: traineeShiftModal.total,
+          //   pageSize: traineeShiftModal.pageSize
+          // }}
+          // onChange={(pagination: any) => {
+          //   traineeShiftModal.pageIndex = pagination.current;
+          //   traineeShiftModal.total = pagination.total;
+          //   traineeShiftModal.pageSize = pagination.pageSize;
+          //   traineeShiftModal.allGroupOnload();
+          // }}
         />
       </Wrapper>
     </Modal>

@@ -30,7 +30,7 @@ export default observer(function TraineeShift(props: Props) {
   const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
   const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
   const [addGroupBtn, setAddGroupBtn] = useState(false); //新建分组
-
+  const [groupId, setGroupId] = useState("");
   // 初始化数据
   useEffect(() => {
     traineeShiftModal.sheetId = getId;
@@ -304,6 +304,16 @@ export default observer(function TraineeShift(props: Props) {
     handleEditCancel();
   };
 
+  //双击表单
+  const handleEdit = (record: any) => {
+    console.log(
+      record,
+      "record.groupIdrecord.groupIdrecord.groupIdrecord.groupId"
+    );
+    setEditGroupBtn(true);
+    setGroupId(record.groupNum);
+  };
+
   return (
     <Wrapper>
       <PageHeader>
@@ -329,7 +339,7 @@ export default observer(function TraineeShift(props: Props) {
           </Button>
           <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button>
           <Button onClick={() => setEditDeptBtn(true)}>添加实习科室</Button>
-          {/* <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button> */}
+          <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button>
           <Button
             onClick={() => {
               traineeShiftModal.export();
@@ -358,9 +368,15 @@ export default observer(function TraineeShift(props: Props) {
           columns={columns}
           surplusWidth={300}
           surplusHeight={230}
+          onRow={(record: any) => {
+            return {
+              onDoubleClick: () => handleEdit(record)
+            };
+          }}
         />
       </Content>
       <EditDeptModal
+        groupId={groupId}
         visible={editDeptBtn}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
