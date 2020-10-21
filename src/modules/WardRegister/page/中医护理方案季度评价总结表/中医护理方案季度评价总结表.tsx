@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Button } from "antd";
+import { Button, Pagination } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -27,6 +27,7 @@ import classNames from "classnames";
 // import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import { getSeaonsStartAndEnd } from 'src/utils/date/season'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import SubTable from './components/SubTable'
 
 export interface Props {
   payload: any;
@@ -40,12 +41,13 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList]: any = useState([]);
+  const [rangeConfigList, setRangeConfigList]: any = useState([]);
   const [dataMap, setDataMap]: any = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [popoverVisible, setPopoverVisible]: any = useState(false);
-  const [surplusHeight, setSurplusHeight]: any = useState(220);
+  const [surplusHeight, setSurplusHeight]: any = useState(540);
   const [date, setDate]: any = useState(getSeaonsStartAndEnd());
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
@@ -230,7 +232,10 @@ export default observer(function 中医护理方案季度评价总结表(props: 
     dataSource,
     selectedRowKeys,
     setSelectedRowKeys,
-    paramMap: {}
+    paramMap: {},
+    setRangeConfigList,
+    dataMap,
+    setDataMap
   });
 
   useEffect(() => {
@@ -245,7 +250,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
     if (tableHead) {
-      setSurplusHeight(tableHead.offsetHeight + 180);
+      setSurplusHeight(tableHead.offsetHeight + 400);
     }
   });
 
@@ -284,6 +289,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
       />
       <span className="label">科室</span>
       <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+      <Place />
       {selectedBlockId && (
         <React.Fragment>
           <Button onClick={getPage}>查询</Button>
@@ -300,40 +306,57 @@ export default observer(function 中医护理方案季度评价总结表(props: 
         </React.Fragment>
       )}
     </PageHeader>
-    <Place />
     <TableCon>
       {selectedBlockId ? (
         <React.Fragment>
-          <BaseTable
-            className="record-page-table"
-            loading={pageLoading}
-            dataSource={dataSource}
-            rowSelection={{
-              selectedRowKeys,
-              onChange: handleSelectedChange,
-            }}
-            columns={columns.filter((item: any) => item)}
-            surplusHeight={surplusHeight}
-            surplusWidth={300}
-            useOuterPagination
-            pagination={{
-              onChange: (pageIndex: number) => {
-                setPageOptions({ ...pageOptions, pageIndex })
-              },
-              onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-              },
-              pageSizeOptions: ['20', '30', '40', '50', '100'],
-              current: pageOptions.pageIndex,
-              pageSize: pageOptions.pageSize,
-              total: total
-            }}
-            rowClassName={(record: any, idx: number) => {
-              if (cellDisabled(record)) return 'disabled-row'
+          <div className="main-table">
+            <BaseTable
+              className="record-page-table"
+              loading={pageLoading}
+              dataSource={dataSource}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: handleSelectedChange,
+              }}
+              columns={columns.filter((item: any) => item)}
+              surplusHeight={surplusHeight}
+              surplusWidth={300}
+              useOuterPagination
+              // pagination={{
+              //   onChange: (pageIndex: number) => {
+              //     setPageOptions({ ...pageOptions, pageIndex })
+              //   },
+              //   onShowSizeChange: (pageIndex: number, pageSize: number) => {
+              //     setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
+              //   },
+              //   pageSizeOptions: ['20', '30', '40', '50', '100'],
+              //   current: pageOptions.pageIndex,
+              //   pageSize: pageOptions.pageSize,
+              //   total: total
+              // }}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
 
-              return ''
-            }}
-          />
+                return ''
+              }}
+            />
+          </div>
+          <div className="sub-part">
+            <SubTable
+              data={dataMap}
+              onDataChange={(newDataMap: any) => setDataMap(newDataMap)} />
+            <div style={{ textAlign: 'right' }}>
+              <Pagination
+                onChange={(pageIndex: number) =>
+                  setPageOptions({ ...pageOptions, pageIndex })}
+                onShowSizeChange={(pageIndex: number, pageSize: number) =>
+                  setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })}
+                pageSizeOptions={['20', '30', '40', '50', '100']}
+                current={pageOptions.pageIndex}
+                pageSize={pageOptions.pageSize}
+                total={total} />
+            </div>
+          </div>
           <div className="selected-operate-con">
             <Button
               disabled={
@@ -396,6 +419,10 @@ const Container = styled(Wrapper)`
   .disabled-row .color-orange[disabled],
   .disabled-row .color-orange *[disabled] {
     color: orange !important;
+  }
+  .sub-part{
+    background: #fff;
+    padding: 0 15px 15px 15px;
   }
 `;
 

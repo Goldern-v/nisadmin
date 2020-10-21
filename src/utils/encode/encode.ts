@@ -1,17 +1,11 @@
+const CryptoJS = require("crypto-js")
+const SecretKey = 'chenrui2020'
+
 //对字符串进行加密
 export function compileStr(code: string) {
-  var c = String.fromCharCode(code.charCodeAt(0) + code.length);
-  for (var i = 1; i < code.length; i++) {
-    c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
-  }
-  return escape(c);
+  return encodeURIComponent(CryptoJS.AES.encrypt(code, SecretKey).toString());
 }
 //字符串进行解密
 export function uncompileStr(code: string) {
-  code = unescape(code);
-  var c = String.fromCharCode(code.charCodeAt(0) - code.length);
-  for (var i = 1; i < code.length; i++) {
-    c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
-  }
-  return c;
+  return CryptoJS.AES.decrypt(decodeURIComponent(code), SecretKey).toString(CryptoJS.enc.Utf8);
 } 

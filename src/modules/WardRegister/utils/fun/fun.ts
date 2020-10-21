@@ -29,7 +29,9 @@ export interface ItemConfigItem {
   rangeConfigList?: any[],
   selectedRowKeys?: any[],
   setSelectedRowKeys?: Function,
-  setMsgMap?: Function
+  setMsgMap?: Function,
+  setDataMap?: Function,
+  dataMap?: any,
 }
 
 export function getFun(context: any) {
@@ -52,7 +54,9 @@ export function getFun(context: any) {
     rangeConfigList,
     selectedRowKeys,
     setSelectedRowKeys,
-    setMsgMap
+    setMsgMap,
+    setDataMap,
+    dataMap
   } = context;
 
   /** 初始化 */
@@ -164,6 +168,8 @@ export function getFun(context: any) {
         setItemConfigList(thMerge(res.data.itemConfigList));
         setRangeConfigList(res.data.rangeConfigList);
 
+        setDataMap && setDataMap(res.data.dataMap || {})
+
         //清除table组件里面的表单组件残余的数值
         setDataSource([])
         setTimeout(() => {
@@ -249,7 +255,7 @@ export function getFun(context: any) {
 
     console.log(JSON.parse(JSON.stringify(reqDataSorce)))
     wardRegisterService
-      .saveAndSignAll(registerCode, selectedBlockId, reqDataSorce, false)
+      .saveAndSignAll(registerCode, selectedBlockId, reqDataSorce, false, dataMap)
       .then(res => {
         message.success("保存成功");
         getPage();

@@ -25,12 +25,14 @@ export default class WardRegisterService extends BaseApiService {
     registerCode: string,
     blockId: any,
     itemDataList: any[],
-    sign: boolean = false
+    sign: boolean = false,
+    dataMap?: any
   ) {
     return this.post(`/qcRegisterData/${registerCode}/saveAndSignAll`, {
       blockId,
       itemDataList,
-      sign
+      sign,
+      dataMap
     });
   }
   /** 获取 block 配置项 */
