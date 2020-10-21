@@ -12,6 +12,7 @@ import EjkhszModal from "../modal/EjkhszModal";
 import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file"
+import { navTitle } from "src/modules/quality/data/qcTitle";
 
 interface Props {
   detailData: any;
@@ -229,7 +230,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           }}
           data={[
             {
-              name: "质控记录",
+              name: navTitle(master.qcLevel),
               link:
                 master.qcLevel == "3" ? "/qcThree" :
                   master.qcLevel == "2" ? "/qcTwo" :

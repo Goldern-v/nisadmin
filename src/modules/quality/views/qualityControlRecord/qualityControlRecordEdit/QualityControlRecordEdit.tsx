@@ -11,6 +11,7 @@ import { ScrollBox } from 'src/components/common'
 import FormPannel from './components/FormPannel'
 import PreviewPannel from './components/PreviewPannel'
 import { globalModal } from 'src/global/globalModal'
+import { navTitle } from 'src/modules/quality/data/qcTitle'
 
 export interface Props { }
 
@@ -169,7 +170,7 @@ export default observer(function QualityControlRecordEdit() {
           }}
           data={[
             {
-              name: '质控记录',
+              name: navTitle(baseInfo.qcLevel),
               link: baseInfo.qcLevel == '3' ? '/qcThree' : baseInfo.qcLevel == '2' ? '/qcTwo' : '3'
             },
             {
