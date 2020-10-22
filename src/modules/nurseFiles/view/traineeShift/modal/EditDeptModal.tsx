@@ -1,22 +1,14 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-
-import {
-  Modal,
-  message as Message,
-  Input,
-  Button,
-  Select,
-  Checkbox,
-  InputNumber
-} from "antd";
+import { Modal, message as Message, Button, Icon } from "antd";
+import update from "immutability-helper";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
+import AddDeptModal from "./AddDeptModal"; // 添加修改弹窗
 
 export interface Props {
-  groupId: any;
   visible: boolean;
   onCancel: any;
   onOk: any;
@@ -24,17 +16,20 @@ export interface Props {
 }
 
 export default observer(function EditDeptModal(props: Props) {
-  const { groupId, visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [query, setQuery] = useState({
-    keyWord: undefined,
-    checkValue: "全部"
-  });
+  const [editDeptBtn, setEditDeptBtn] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
+  const [idArr, setIdArr]: any = useState([]); // 选中id
+  // const [query, setQuery] = useState({
+  //   keyWord: undefined,
+  //   checkValue: "全部"
+  // });
 
   // 表格数据
   const columns: any = [
     {
-      title: "序号",
+      title: "排序",
       dataIndex: "",
       render: (text: any, record: any, index: number) => index + 1,
       align: "center",
@@ -43,43 +38,24 @@ export default observer(function EditDeptModal(props: Props) {
     {
       title: "科室",
       dataIndex: "deptName",
-      width: 250,
+      width: 300,
       align: "center"
     },
     {
-      title: "排序",
-      dataIndex: "sort",
-      align: "center",
-      width: 70,
-      render(text: any, record: any, index: number) {
-        return (
-          <InputNumber
-            className="specialInput"
-            min={1}
-            value={record.sort}
-            onChange={(val: any) => {
-              record.sort = val;
-              updateData(record);
-            }}
-          />
-        );
-      }
-    },
-    {
       title: "操作",
-      dataIndex: "isChecked",
-      width: 100,
-      align: "center",
-      render(text: any, record: any, index: number) {
+      key: "cz",
+      width: 80,
+      render(text: any, record: any) {
         return (
-          <Checkbox
-            key={record.deptCode}
-            checked={!!record.isChecked}
-            onChange={(e: any) => {
-              record.isChecked = e.target.checked ? 1 : 0;
-              updateData(record);
-            }}
-          />
+          <DoCon>
+            <span
+              onClick={() => {
+                handleDel(1, record);
+              }}
+            >
+              删除
+            </span>
+          </DoCon>
         );
       }
     }
@@ -87,66 +63,67 @@ export default observer(function EditDeptModal(props: Props) {
 
   //初始化表格数据
   useEffect(() => {
-    if (visible) traineeShiftModal.deptOnload();
+    if (visible) traineeShiftModal.queryAllRorateDepts();
   }, [visible]);
 
-  // 筛选展示数据
-  const showTableData = () => {
-    setEditLoading(true);
-    let showData: any = traineeShiftModal.deptTableList.filter((item: any) => {
-      if (query.checkValue === "全部") {
-        if (query.keyWord === "" || query.keyWord === undefined) {
-          return true;
-        }
-        return item.deptName.includes(query.keyWord);
-      } else {
-        if (query.keyWord === "" || query.keyWord === undefined) {
-          return item.isChecked === query.checkValue;
-        }
-        return (
-          item.deptName.includes(query.keyWord) &&
-          item.isChecked === query.checkValue
-        );
+  // 拖拽排序
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
+    const dragRow = traineeShiftModal.existingDeptTableList[dragIndex];
+    if (!dragRow) return;
+    traineeShiftModal.existingDeptTableList = update(
+      traineeShiftModal.existingDeptTableList,
+      {
+        $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
       }
-    });
-    traineeShiftModal.deptTableCopyList = showData;
-    setEditLoading(false);
+    );
   };
 
-  // 函数
-  const updateData = (record: any) => {
-    const dataIndexOne: any = traineeShiftModal.deptTableList.findIndex(
-      (obj: any) => record.deptCode === obj.deptCode
-    );
-    traineeShiftModal.deptTableList[dataIndexOne] = record;
-    const arrOne = traineeShiftModal.deptTableList.slice();
-    traineeShiftModal.deptTableList = [];
-    traineeShiftModal.deptTableList = arrOne;
-    showTableData();
+  // 表格选中操作
+  const rowSelection: any = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      setSelectedRowKeys(selectedRowKeys);
+      let arr: any = [];
+      selectedRows.map((item: any) => {
+        arr.push(item.deptCode);
+      });
+      setIdArr(arr);
+    }
+  };
+
+  // 删除 current---1删除单条  2批量删除
+  const handleDel = (current: any, record?: any) => {
+    let empNoList: any = [];
+    if (current === 1) {
+      empNoList = [record.deptCode];
+    } else if (current === 2) {
+      empNoList = idArr.slice();
+    }
+    traineeShiftApi
+      .deleteRotateDepts(empNoList)
+      .then((res: any) => {
+        if (res.code == 200) {
+          Message.success("删除成功！");
+          traineeShiftModal.queryAllRorateDepts();
+          setSelectedRowKeys([]);
+        } else {
+          Message.error(`${res.dec}`);
+        }
+      })
+      .catch(e => {});
   };
 
   // 保存
   const checkForm = () => {
-    let dataList: any = traineeShiftModal.deptTableList.filter(
-      (item: any) => item.isChecked === 1
-    );
-    let isOk = dataList.find((item: any) => !item.sort);
-    if (isOk) {
-      Message.warning("已勾选的科室请填写顺序");
-      return;
-    }
-    let obj: any = {
-      groupId,
-      sheetId: traineeShiftModal.sheetId,
-      rotateDeptList: dataList
-    };
+    let deptSortList: any = traineeShiftModal.existingDeptTableList.slice();
+    deptSortList.map((item: any, idx: any) => (item.sort = idx + 1));
     setEditLoading(true);
     traineeShiftApi
-      .saveAllRotateDepts(obj)
+      .saveRotateDeptSorts(deptSortList)
       .then(res => {
         setEditLoading(false);
         if (res.code == 200) {
-          Message.success("保存成功");
+          Message.success("科室排序保存成功！");
           onOk();
         } else {
           Message.error(`${res.dec}`);
@@ -155,14 +132,21 @@ export default observer(function EditDeptModal(props: Props) {
       .catch(e => {
         setEditLoading(false);
       });
-    setQuery({ keyWord: undefined, checkValue: "全部" });
+    // setQuery({ keyWord: undefined, checkValue: "全部" });
   };
 
   // 关闭取消
   const handleCancel = async () => {
     if (editLoading) return;
     await (onCancel && onCancel());
-    setQuery({ keyWord: undefined, checkValue: "全部" });
+    onOk();
+    // setQuery({ keyWord: undefined, checkValue: "全部" });
+  };
+
+  // 取消实习生轮科弹窗
+  const handleEditOk = () => {
+    setEditDeptBtn(false);
+    traineeShiftModal.queryAllRorateDepts();
   };
 
   return (
@@ -170,7 +154,7 @@ export default observer(function EditDeptModal(props: Props) {
       width="800px"
       visible={visible}
       onCancel={handleCancel}
-      title="添加实习科室"
+      title="编辑实习科室"
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>
@@ -179,42 +163,51 @@ export default observer(function EditDeptModal(props: Props) {
             loading={editLoading}
             onClick={() => checkForm()}
           >
-            保存
+            保存科室排序
           </Button>
         </div>
       }
     >
       <Wrapper>
         <ModalHeader>
-          <span style={{ marginLeft: "20px" }}>勾选筛选：</span>
-          <Select
-            style={{ width: 130 }}
-            value={query.checkValue}
-            onChange={(value: any) => {
-              setQuery({ ...query, checkValue: value });
-            }}
+          <Button
+            style={{ marginLeft: "15px", float: "left" }}
+            onClick={() => setEditDeptBtn(true)}
           >
-            <Select.Option value="全部">全部</Select.Option>
-            <Select.Option value={1}>已勾选</Select.Option>
-            <Select.Option value={0}>未勾选</Select.Option>
-          </Select>
-          <Input
-            style={{ width: 280, marginLeft: 15, marginRight: 10 }}
-            placeholder="请输入科室关键字"
-            value={query.keyWord}
-            onChange={(e: any) => {
-              setQuery({ ...query, keyWord: e.target.value });
+            + 添加科室
+          </Button>
+          <Button
+            className="checkButton"
+            onClick={() => {
+              handleDel(2);
             }}
-          />
-          <Button type="primary" onClick={() => showTableData()}>
-            查询
+            disabled={idArr && idArr.length === 0}
+          >
+            删除
           </Button>
         </ModalHeader>
         <BaseTable
-          loading={traineeShiftModal.deptTableLoading}
-          dataSource={traineeShiftModal.deptTableCopyList}
+          loading={traineeShiftModal.existingDeptTableLoading}
+          dataSource={traineeShiftModal.existingDeptTableList}
           columns={columns}
-          surplusHeight={370}
+          // surplusHeight={446}
+          moveRow={moveRow}
+          rowSelection={rowSelection}
+          type={["diagRow"]}
+          footer={() => (
+            <span>
+              <Icon
+                type="info-circle"
+                style={{ color: "#fa8c16", marginRight: "5px" }}
+              />
+              可以通过拖拽排序,修改数据后需保存!
+            </span>
+          )}
+        />
+        <AddDeptModal
+          visible={editDeptBtn}
+          onCancel={() => setEditDeptBtn(false)}
+          onOk={handleEditOk}
         />
       </Wrapper>
     </Modal>
@@ -246,5 +239,11 @@ const Wrapper = styled.div`
   .ant-input-number-handler-up:hover {
     height: 50% !important;
   }
+  .checkButton {
+    margin-right: 15px;
+    float: right;
+  }
 `;
-const ModalHeader = styled.div``;
+const ModalHeader = styled.div`
+  height: 35px;
+`;

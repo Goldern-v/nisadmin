@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Modal, message as Message, Row, Col, Button, Input } from "antd";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
-import AddTraineeModal from "./AddTraineeModal"; // 添加修改弹窗
 
 export interface Props {
   visible: boolean;
@@ -21,7 +20,14 @@ export default observer(function AddGroupModal(props: Props) {
   // 保存
   const checkForm = async () => {
     let isOk: any = /^[1-9]\d*$/.test(groupName.replace(/(^\s+)|(\s+$)/g, ""));
+    let isHavedGroupName: any = traineeShiftModal.tableList.find(
+      (item: any) => item.groupNum == groupName
+    );
     if (groupName) {
+      if (isHavedGroupName) {
+        Message.warning("该小组名称已存在，请重新命名！");
+        return;
+      }
       if (!isOk) {
         Message.warning("小组名称必须为正整数！");
         return;
@@ -32,7 +38,7 @@ export default observer(function AddGroupModal(props: Props) {
         .then((res: any) => {
           setEditLoading(false);
           if (res.code == 200) {
-            Message.success("已成功保存");
+            Message.success("已成功添加分组！");
             onOk();
             traineeShiftModal.onload();
           } else {

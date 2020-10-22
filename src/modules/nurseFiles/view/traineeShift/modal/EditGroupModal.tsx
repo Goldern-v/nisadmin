@@ -21,6 +21,8 @@ export default observer(function EditGroupModal(props: Props) {
   const [groupName, setGroupName] = useState("全部"); //小组
   const [editLoading, setEditLoading] = useState(false);
   const [editTraineeBtn, setEditTraineeBtn] = useState(false); //添加实习生弹窗
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
+  const [idArr, setIdArr]: any = useState([]); // 选中id
   const groupTypeList = [
     { name: "全部", code: "全部" },
     { name: 1, code: 1 },
@@ -66,6 +68,12 @@ export default observer(function EditGroupModal(props: Props) {
       width: 50
     },
     {
+      title: "实习编号",
+      dataIndex: "empNo",
+      width: 90,
+      align: "center"
+    },
+    {
       title: "姓名",
       dataIndex: "empName",
       width: 120,
@@ -77,26 +85,26 @@ export default observer(function EditGroupModal(props: Props) {
       width: 60,
       align: "center"
     },
-    {
-      title: "分组",
-      dataIndex: "groupNum",
-      align: "center",
-      width: 80,
-      render(text: any, record: any, index: number) {
-        return (
-          <InputNumber
-            className="specialInput"
-            min={1}
-            value={text}
-            key={record.empNo}
-            onChange={(val: any) => {
-              record.groupNum = val;
-              updateData(record);
-            }}
-          />
-        );
-      }
-    },
+    // {
+    //   title: "分组",
+    //   dataIndex: "groupNum",
+    //   align: "center",
+    //   width: 80
+    //   render(text: any, record: any, index: number) {
+    //     return (
+    //       <InputNumber
+    //         className="specialInput"
+    //         min={1}
+    //         value={text}
+    //         key={record.empNo}
+    //         onChange={(val: any) => {
+    //           record.groupNum = val;
+    //           updateData(record);
+    //         }}
+    //       />
+    //     );
+    //   }
+    // },
     {
       title: "操作",
       key: "cz",
@@ -104,7 +112,13 @@ export default observer(function EditGroupModal(props: Props) {
       render(text: any, record: any) {
         return (
           <DoCon>
-            <span onClick={() => handleDelete(record.empNo)}>删除</span>
+            <span
+              onClick={() => {
+                handleDel(1, record);
+              }}
+            >
+              删除
+            </span>
           </DoCon>
         );
       }
@@ -120,116 +134,150 @@ export default observer(function EditGroupModal(props: Props) {
   const initValue = () => {
     setGroupStype("全部"); //分组情况
     setGroupName("全部");
+    setSelectedRowKeys([]);
   };
 
   // 筛选展示数据
-  const showTableData = () => {
-    setEditLoading(true);
-    let showData: any = traineeShiftModal.groupTableList.filter((item: any) => {
-      if (groupStype === "全部") {
-        if (groupName === "全部") {
-          return true;
-        }
-        return item.groupNum == groupName;
-      } else if (groupStype === "已分组") {
-        if (groupName === "全部") {
-          return item.groupNum;
-        }
-        return item.groupNum && item.groupNum == groupName;
-      } else {
-        if (groupName === "全部") {
-          return !item.groupNum;
-        }
-        return !item.groupNum && item.groupNum == groupName;
-      }
-    });
-    traineeShiftModal.groupTableCopyList = showData;
-    setEditLoading(false);
-  };
+  // const showTableData = () => {
+  //   setEditLoading(true);
+  //   let showData: any = traineeShiftModal.groupTableList.filter((item: any) => {
+  //     if (groupStype === "全部") {
+  //       if (groupName === "全部") {
+  //         return true;
+  //       }
+  //       return item.groupNum == groupName;
+  //     } else if (groupStype === "已分组") {
+  //       if (groupName === "全部") {
+  //         return item.groupNum;
+  //       }
+  //       return item.groupNum && item.groupNum == groupName;
+  //     } else {
+  //       if (groupName === "全部") {
+  //         return !item.groupNum;
+  //       }
+  //       return !item.groupNum && item.groupNum == groupName;
+  //     }
+  //   });
+  //   traineeShiftModal.groupTableCopyList = showData;
+  //   setEditLoading(false);
+  // };
 
   // 函数
-  const updateData = (record: any) => {
-    const dataIndexOne: any = traineeShiftModal.groupTableList.findIndex(
-      (obj: any) => record.empNo === obj.empNo
-    );
-    traineeShiftModal.groupTableList[dataIndexOne] = record;
-    const arrOne = traineeShiftModal.groupTableList.slice();
-    traineeShiftModal.groupTableList = [];
-    traineeShiftModal.groupTableList = arrOne;
-    showTableData();
-  };
+  // const updateData = (record: any) => {
+  //   const dataIndexOne: any = traineeShiftModal.groupTableList.findIndex(
+  //     (obj: any) => record.empNo === obj.empNo
+  //   );
+  //   traineeShiftModal.groupTableList[dataIndexOne] = record;
+  //   const arrOne = traineeShiftModal.groupTableList.slice();
+  //   traineeShiftModal.groupTableList = [];
+  //   traineeShiftModal.groupTableList = arrOne;
+  //   showTableData();
+  // };
 
-  // 删除
-  const handleDelete = (empNo: any) => {
-    traineeShiftModal.groupTableList = traineeShiftModal.groupTableList.filter(
-      (item: any) => item.empNo != empNo
-    );
-    showTableData();
-    Message.success("删除成功！");
-  };
-
-  // 保存
-  const checkForm = async () => {
-    let content = (
-      <div>
-        <div> 未进行分组的实习生将不存入轮科小组</div>确认保存吗？
-      </div>
-    );
-    let isHaveNoGroup: any = traineeShiftModal.groupTableList.find(
-      (item: any) => !item.groupNum
-    );
-    if (isHaveNoGroup) {
-      Modal.confirm({
-        title: "提示",
-        content,
-        okText: "确定",
-        okType: "danger",
-        cancelText: "取消",
-        onOk: () => saveData()
+  // 表格选中操作
+  const rowSelection: any = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      setSelectedRowKeys(selectedRowKeys);
+      let arr: any = [];
+      selectedRows.map((item: any) => {
+        arr.push(item.empNo);
       });
-    } else {
-      saveData();
+      setIdArr(arr);
     }
-    initValue();
   };
-  const saveData = () => {
-    const realData: any = traineeShiftModal.groupTableList.filter(
-      (item: any) => item.groupNum
-    );
-    let obj: any = {
-      sheetId: traineeShiftModal.sheetId,
-      rotatePersonsList: realData
-    };
-    setEditLoading(true);
+
+  // 删除 current---1删除单条  2批量删除
+  const handleDel = (current: any, record?: any) => {
+    let empNoList: any = [];
+    if (current === 1) {
+      empNoList = [record.empNo];
+    } else if (current === 2) {
+      empNoList = idArr.slice();
+    }
     traineeShiftApi
-      .saveAllRotatePersons(obj)
-      .then(res => {
-        setEditLoading(false);
+      .deleteRotatePersonsFromRotateGroup(empNoList)
+      .then((res: any) => {
         if (res.code == 200) {
-          Message.success("保存成功");
-          onOk();
+          Message.success("删除成功！");
+          traineeShiftModal.groupOnload();
+          setSelectedRowKeys([]);
         } else {
           Message.error(`${res.dec}`);
         }
       })
-      .catch(e => {
-        setEditLoading(false);
-      });
+      .catch(e => {});
   };
+
+  // 保存
+  // const checkForm = async () => {
+  //   // let content = (
+  //   //   <div>
+  //   //     <div> 未进行分组的实习生将不存入轮科小组</div>确认保存吗？
+  //   //   </div>
+  //   // );
+  //   // let isHaveNoGroup: any = traineeShiftModal.groupTableList.find(
+  //   //   (item: any) => !item.groupNum
+  //   // );
+  //   // if (isHaveNoGroup) {
+  //   //   Modal.confirm({
+  //   //     title: "提示",
+  //   //     content,
+  //   //     okText: "确定",
+  //   //     okType: "danger",
+  //   //     cancelText: "取消",
+  //   //     onOk: () => saveData()
+  //   //   });
+  //   // } else {
+  //   //   saveData();
+  //   // }
+  //   saveData();
+  //   initValue();
+  // };
+  // 保存接口
+  // const saveData = () => {
+  //   const realData: any = traineeShiftModal.groupTableList.filter(
+  //     (item: any) => item.groupNum
+  //   );
+  //   console.log(
+  //     traineeShiftModal.groupTableList,
+  //     "traineeShiftModal.groupTableList"
+  //   );
+  //   let obj: any = {
+  //     groupId,
+  //     sheetId: traineeShiftModal.sheetId,
+  //     rotatePersonsList: traineeShiftModal.groupTableList
+  //   };
+  //   setEditLoading(true);
+  //   traineeShiftApi
+  //     .saveAllRotatePersons(obj)
+  //     .then(res => {
+  //       setEditLoading(false);
+  //       if (res.code == 200) {
+  //         Message.success("保存成功");
+  //         onOk();
+  //         setSelectedRowKeys([]);
+  //       } else {
+  //         Message.error(`${res.dec}`);
+  //       }
+  //     })
+  //     .catch(e => {
+  //       setEditLoading(false);
+  //     });
+  // };
 
   // 关闭取消
   const handleCancel = async () => {
     if (editLoading) return;
     await (onCancel && onCancel());
     initValue();
+    onOk();
   };
 
   // 取消实习生轮科弹窗
-  const handleEditCancel = () => {
-    setEditTraineeBtn(false);
-  };
   const handleEditOk = () => {
-    handleEditCancel();
+    setEditTraineeBtn(false);
+    traineeShiftModal.groupOnload();
   };
 
   return (
@@ -241,20 +289,20 @@ export default observer(function EditGroupModal(props: Props) {
       title="编辑实习小组"
       footer={
         <div style={{ textAlign: "center" }}>
-          <Button onClick={() => handleCancel()}>取消</Button>
-          <Button
+          <Button onClick={() => handleCancel()}>关闭</Button>
+          {/* <Button
             type="primary"
             loading={editLoading}
             onClick={() => checkForm()}
           >
             保存
-          </Button>
+          </Button> */}
         </div>
       }
     >
       <Wrapper>
         <ModalHeader>
-          <LeftIcon>
+          {/* <LeftIcon>
             <span style={{ marginLeft: "15px" }}>分组情况：</span>
             <Select
               style={{ width: 90 }}
@@ -292,25 +340,36 @@ export default observer(function EditGroupModal(props: Props) {
             >
               查询
             </Button>
-          </LeftIcon>
-          <RightIcon>
-            <Button
-              style={{ marginRight: "15px" }}
-              onClick={() => setEditTraineeBtn(true)}
-            >
-              添加实习生
-            </Button>
-          </RightIcon>
+          </LeftIcon> */}
+          {/* <RightIcon> */}
+          <Button
+            style={{ marginLeft: "15px", float: "left" }}
+            onClick={() => setEditTraineeBtn(true)}
+          >
+            + 添加实习生
+          </Button>
+          <Button
+            className="checkButton"
+            onClick={() => {
+              handleDel(2);
+            }}
+            disabled={idArr && idArr.length === 0}
+          >
+            删除
+          </Button>
+
+          {/* </RightIcon> */}
         </ModalHeader>
         <BaseTable
           loading={traineeShiftModal.groupTableLoading}
           dataSource={traineeShiftModal.groupTableCopyList}
           columns={columns}
-          surplusHeight={370}
+          surplusHeight={420}
+          rowSelection={rowSelection}
         />
         <AddTraineeModal
           visible={editTraineeBtn}
-          onCancel={handleEditCancel}
+          onCancel={() => setEditTraineeBtn(false)}
           onOk={handleEditOk}
         />
       </Wrapper>
@@ -348,6 +407,10 @@ const Wrapper = styled.div`
 
   .ant-input-number-handler-up:hover {
     height: 50% !important;
+  }
+  .checkButton {
+    margin-right: 15px;
+    float: right;
   }
 `;
 const ModalHeader = styled.div`

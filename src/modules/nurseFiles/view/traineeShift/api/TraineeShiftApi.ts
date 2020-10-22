@@ -63,21 +63,26 @@ export default class TraineeShiftApi extends BaseApiService {
   // 查询全部实习生
   public async queryGraduateInternPageList(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternList`,
+      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternListWithGoupInfo`,
       obj
     );
   }
   // 查询已有实习生
-  public async queryAllRotatePersonsBySheetId(sheetId: any) {
+  public async queryAllRotatePersonsBySheetId() {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      groupId: traineeShiftModal.groupId
+    };
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/queryAllRotatePersonsBySheetId`,
-      qs.stringify({ sheetId })
+      `/studyAndTrain/intern/deptRotationSchedule/queryAllRotatePersonsByGroupId`,
+      obj
     );
   }
+
   // 保存轮科实习生
   public async saveAllRotatePersons(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/saveAllRotatePersons`,
+      `/studyAndTrain/intern/deptRotationSchedule/addRotatePersonsToRotateGroup`,
       obj
     );
   }
@@ -89,13 +94,54 @@ export default class TraineeShiftApi extends BaseApiService {
       qs.stringify({ sheetId })
     );
   }
-  //保存轮换科室
-  public async saveAllRotateDepts(obj: any) {
+  // 获取所有的已选科室
+  public async queryAllRorateDepts() {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/saveAllRotateDepts`,
+      `/studyAndTrain/intern/deptRotationSchedule/queryAllRorateDepts`,
+      qs.stringify({ sheetId: traineeShiftModal.sheetId })
+    );
+  }
+  // 增加科室
+  public async addRotateDepts(rotateDeptList: any) {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      rotateDeptList
+    };
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/addRotateDepts`,
       obj
     );
   }
+  // 保存轮换科室的排序
+  public async saveRotateDeptSorts(deptSortList: any) {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      deptSortList
+    };
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/saveRotateDeptSorts`,
+      obj
+    );
+  }
+  // 删除科室
+  public async deleteRotateDepts(deptCodeList: any) {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      deptCodeList
+    };
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/deleteRotateDepts`,
+      obj
+    );
+  }
+
+  // //保存轮换科室
+  // public async saveAllRotateDepts(obj: any) {
+  //   return this.post(
+  //     `/studyAndTrain/intern/deptRotationSchedule/saveAllRotateDepts`,
+  //     obj
+  //   );
+  // }
 
   // 导出
   public exportSheetCompleteInfo(obj?: any) {
@@ -105,6 +151,19 @@ export default class TraineeShiftApi extends BaseApiService {
       {
         responseType: "blob"
       }
+    );
+  }
+
+  // 删除某个轮科小组的实习生
+  public async deleteRotatePersonsFromRotateGroup(empNoList: any) {
+    let obj: any = {
+      sheetId: traineeShiftModal.sheetId,
+      groupId: traineeShiftModal.groupId,
+      empNoList
+    };
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/deleteRotatePersonsFromRotateGroup`,
+      obj
     );
   }
 }

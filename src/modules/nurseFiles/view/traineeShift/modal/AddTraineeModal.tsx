@@ -5,6 +5,7 @@ import { Modal, message as Message, Button, Input, Checkbox } from "antd";
 import YearPicker from "src/components/YearPicker";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftModal } from "../TraineeShiftModal";
+import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 
 export interface Props {
   visible: boolean;
@@ -55,20 +56,27 @@ export default observer(function AddTraineeModal(props: Props) {
       }
     },
     {
+      title: "组别",
+      dataIndex: "groupNum",
+      align: "center",
+      width: 80
+    },
+    {
       title: "操作",
-      dataIndex: "isChecked",
+      dataIndex: "isGrouped",
       width: 70,
       align: "center",
       render(text: any, record: any, index: number) {
         return (
           <Checkbox
             key={record.allGroupCode}
+            disabled={record.groupId}
             checked={text}
             onChange={(e: any) => {
-              record.isChecked = e.target.checked;
+              record.isGrouped = e.target.checked ? 1 : 0;
               setEditDataList(
                 traineeShiftModal.allGroupTableList.filter(
-                  (item: any) => item.isChecked
+                  (item: any) => item.isGrouped && !item.groupId
                 )
               );
               const arrOne = traineeShiftModal.allGroupTableList;
@@ -89,21 +97,28 @@ export default observer(function AddTraineeModal(props: Props) {
 
   // 保存
   const checkForm = () => {
-    let arr: any = [];
-    let obj: any = {};
     setEditLoading(true);
-    arr = [...traineeShiftModal.groupTableCopyList, ...editDataList].reduce(
-      (item: any, next: any) => {
-        obj[next.empNo] ? " " : (obj[next.empNo] = true && item.push(next));
-        return item;
-      },
-      []
-    );
-    traineeShiftModal.groupTableList = arr;
-    traineeShiftModal.groupTableCopyList = arr;
-    setEditLoading(false);
-    Message.success("添加成功");
-    onOk();
+    let obj: any = {
+      groupId: traineeShiftModal.groupId,
+      sheetId: traineeShiftModal.sheetId,
+      rotatePersonsList: editDataList
+    };
+    setEditLoading(true);
+    traineeShiftApi
+      .saveAllRotatePersons(obj)
+      .then(res => {
+        setEditLoading(false);
+        if (res.code == 200) {
+          Message.success("保存成功");
+          onOk();
+          traineeShiftModal.groupOnload();
+        } else {
+          Message.error(`${res.dec}`);
+        }
+      })
+      .catch(e => {
+        setEditLoading(false);
+      });
   };
 
   // 关闭取消
@@ -166,7 +181,7 @@ export default observer(function AddTraineeModal(props: Props) {
           loading={traineeShiftModal.groupTableLoading}
           dataSource={traineeShiftModal.allGroupTableList}
           columns={columns}
-          surplusHeight={370}
+          surplusHeight={380}
           // pagination={{
           //   current: traineeShiftModal.pageIndex,
           //   total: traineeShiftModal.total,

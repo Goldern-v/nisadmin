@@ -30,7 +30,6 @@ export default observer(function TraineeShift(props: Props) {
   const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
   const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
   const [addGroupBtn, setAddGroupBtn] = useState(false); //新建分组
-  const [groupId, setGroupId] = useState("");
   // 初始化数据
   useEffect(() => {
     traineeShiftModal.sheetId = getId;
@@ -187,14 +186,31 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "组别",
       dataIndex: "groupNum",
-      width: 60,
-      align: "center"
+      width: 80,
+      align: "center",
+      fixed: "left",
+      render: (text: any, record: any) => {
+        return (
+          <Input
+            value={text ? text : undefined}
+            onChange={(e: any) => {
+              record.groupNum = Number(e.target.value);
+              setTableList(traineeShiftModal.tableList);
+              const arrOne = traineeShiftModal.tableList.slice();
+              traineeShiftModal.tableList = [];
+              traineeShiftModal.tableList = arrOne;
+            }}
+          />
+        );
+      }
     },
     {
       title: "姓名",
       dataIndex: "rotatePersonsList",
       width: 180,
       align: "center",
+      fixed: "left",
+      className: "rotatePersonsList",
       render(text: any) {
         return setTextData(text);
       }
@@ -203,7 +219,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "教学查房时间",
       dataIndex: "teachingRoundTime",
-      width: 200,
+      width: traineeShiftModal.tableDeptList.length ? 200 : 830,
       align: "center",
       render(text: any, record: any) {
         return (
@@ -306,12 +322,8 @@ export default observer(function TraineeShift(props: Props) {
 
   //双击表单
   const handleEdit = (record: any) => {
-    console.log(
-      record,
-      "record.groupIdrecord.groupIdrecord.groupIdrecord.groupId"
-    );
     setEditGroupBtn(true);
-    setGroupId(record.groupNum);
+    traineeShiftModal.groupId = record.id;
   };
 
   return (
@@ -337,8 +349,8 @@ export default observer(function TraineeShift(props: Props) {
           >
             查询
           </Button>
-          <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button>
-          <Button onClick={() => setEditDeptBtn(true)}>添加实习科室</Button>
+          {/* <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button> */}
+          <Button onClick={() => setEditDeptBtn(true)}>编辑实习科室</Button>
           <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button>
           <Button
             onClick={() => {
@@ -376,7 +388,6 @@ export default observer(function TraineeShift(props: Props) {
         />
       </Content>
       <EditDeptModal
-        groupId={groupId}
         visible={editDeptBtn}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
@@ -397,15 +408,9 @@ export default observer(function TraineeShift(props: Props) {
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
-  // .ant-calendar-time-picker-column-3
-  //   .ant-calendar-time-picker-combobox
-  //   /deep/.ant-calendar-time-picker-select {
-  //   width: 50% !important;
-  // }
-  // .ant-calendar-time-picker-combobox
-  //   /deep/.ant-calendar-time-picker-select:last-child {
-  //   display: none !important;
-  // }
+  .rotatePersonsList {
+    cursor: pointer;
+  }
 `;
 const PageHeader = styled.div`
   width: calc(100vw-200px);

@@ -5,6 +5,7 @@ import moment from "moment";
 
 class TraineeShiftModal {
   @observable public sheetId: any = undefined; //轮科表id
+  @observable public groupId: any = undefined; //轮科表id
 
   // 主列表信息
   @observable public isOkBtn: any = false; //增加二级菜单弹窗开关
@@ -21,9 +22,6 @@ class TraineeShiftModal {
   // 实习生全部信息初始化
   @observable public allGroupKeyWord: any = undefined; //关键字
   @observable public selectedYear: any = moment(); //选中年份
-  // @observable public pageIndex: any = 1; //页码
-  // @observable public pageSize: any = 20; //每页条数
-  // @observable public total: any = 0; //总条数
   @observable public allGroupTableList: any = []; //表格数据
   @observable public allGroupTableLoading = false; //表格loading
 
@@ -31,6 +29,10 @@ class TraineeShiftModal {
   @observable public groupTableList: any = []; //表格数据
   @observable public groupTableCopyList: any = []; // 表格展示数据
   @observable public groupTableLoading = false; //表格loading
+
+  // 已有科室
+  @observable public existingDeptTableList: any = []; //表格数据
+  @observable public existingDeptTableLoading = false; //表格loading
 
   @computed
   get postObj() {
@@ -43,10 +45,10 @@ class TraineeShiftModal {
   @computed
   get postAllGroupObj() {
     return {
+      sheetId: this.sheetId,
       keyWord: this.allGroupKeyWord,
-      year: moment(this.selectedYear).format("YYYY")
-      // pageIndex: this.pageIndex,
-      // pageSize: this.pageSize
+      year: moment(this.selectedYear).format("YYYY"),
+      groupId: this.groupId
     };
   }
 
@@ -66,43 +68,38 @@ class TraineeShiftModal {
     traineeShiftApi
       .queryGraduateInternPageList(this.postAllGroupObj)
       .then(res => {
-        // res.data.list.map((item: any) => (item.isCheck = false));
-        // this.allGroupTableLoading = false;
-        // this.allGroupTableList = res.data.list;
-        // this.total = res.data.totalCount;
-        // this.pageIndex = res.data.pageIndex;
-        // this.pageSize = res.data.pageSize;
         res.data.map((item: any) => (item.isCheck = false));
         this.allGroupTableLoading = false;
         this.allGroupTableList = res.data;
       });
-    // let arr: any = [];
-    // this.groupTableCopyList.map((item: any) => arr.push(item.empNo));
-    // this.allGroupTableList.filter((item: any) => {
-    //   if (arr.includes(item.empNo)) {
-    //     console.log(item.empNo, "1111111111111");
-    //     item.isCheck = true;
-    //   }
-    // });
   }
 
-  //绑定实习生
+  //获取已有绑定实习生
   groupOnload() {
     this.groupTableLoading = true;
-    traineeShiftApi.queryAllRotatePersonsBySheetId(this.sheetId).then(res => {
+    traineeShiftApi.queryAllRotatePersonsBySheetId().then(res => {
       this.groupTableLoading = false;
-      this.groupTableList = res.data;
-      this.groupTableCopyList = res.data;
+      this.groupTableList = res.data.rotatePersonsList;
+      this.groupTableCopyList = res.data.rotatePersonsList;
     });
   }
 
-  //科室
+  //全部科室
   deptOnload() {
     this.deptTableLoading = true;
     traineeShiftApi.queryAllDeptsAndRotateDepts(this.sheetId).then(res => {
       this.deptTableLoading = false;
       this.deptTableList = res.data;
       this.deptTableCopyList = res.data;
+    });
+  }
+
+  // 已有科室
+  queryAllRorateDepts() {
+    this.existingDeptTableLoading = true;
+    traineeShiftApi.queryAllRorateDepts().then(res => {
+      this.existingDeptTableLoading = false;
+      this.existingDeptTableList = res.data;
     });
   }
 

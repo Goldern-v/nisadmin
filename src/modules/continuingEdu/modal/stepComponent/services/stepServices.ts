@@ -130,7 +130,6 @@ export default class StepServices extends BaseApiService {
     );
   }
 
-  /***  wumin   */
   /***.题库管理--查询初始化数据 */
   public queryQuestionsByPage(obj: any) {
     // "bankType" questionType" keyWord" questionLabelIdList pageSize pageIndex
