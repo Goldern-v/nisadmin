@@ -6,9 +6,9 @@ import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
-import { summaryReportService as api } from './api/SummaryReportService'
+import { badEventReportListService as api } from './api/BadEventReportListService'
 import { numToChinese } from 'src/utils/number/numToChinese'
-import CreateSummaryReport from './components/CreateSummaryReport'
+import CreateBadEventReport from './components/CreateBadEventReport'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
@@ -24,7 +24,8 @@ export default observer(function BadEventReportList() {
     year: Moment() as null | Moment.Moment,
     pageIndex: 1,
     pageSize: 20,
-    type: 'month',
+    timeSection: '',
+    timeType: 'month',
     status: ''
   } as any)
 
@@ -38,6 +39,9 @@ export default observer(function BadEventReportList() {
     }
     return () => { }
   })
+
+  const monthList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+
   const [dataTotal, setDataTotal] = useState(0 as number)
 
   const [tableData, setTableData] = useState([] as any)
@@ -54,53 +58,26 @@ export default observer(function BadEventReportList() {
     },
     {
       title: '报告名称',
-      key: 'reportName',
-      dataIndex: 'reportName',
+      key: 'name',
+      dataIndex: 'name',
       className: 'align-left',
       align: 'left',
       width: 200,
       render: (name: string) => <div title={name}>{name}</div>
     },
     {
-      title: '汇总类型',
-      key: 'type',
-      dataIndex: 'type',
-      width: 90,
-      align: 'center',
-      render: (type: string) => {
-        switch (type) {
-          case 'month':
-            return '月度报告'
-          case 'season':
-            return '季度报告'
-          default:
-            return ''
-        }
-      }
-    },
-    {
       title: '报告年度',
       key: 'year',
       dataIndex: 'year',
       width: 90,
-      align: 'center',
-      render: (year: string) => `${year}年`
+      align: 'center'
     },
     {
-      title: query.type == 'month' ? '汇总月份' : '汇总季度',
-      key: 'indexInType',
-      dataIndex: 'indexInType',
+      title: query.timeType == 'month' ? '汇总月份' : '汇总季度',
+      key: 'timeSection',
+      dataIndex: 'timeSection',
       width: 90,
       align: 'center',
-      render: (text: string, item: any) => {
-        if (item.type == 'month') {
-          return `${text}月`
-        } else if (item.type == 'season' && item.indexInType) {
-          return `第${numToChinese(item.indexInType)}季度`
-        } else {
-          return ''
-        }
-      }
     },
     {
       title: '创建人',
@@ -111,8 +88,8 @@ export default observer(function BadEventReportList() {
     },
     {
       title: '创建时间',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'createDate',
+      dataIndex: 'createDate',
       width: 120,
       align: 'center'
     },
@@ -194,11 +171,21 @@ export default observer(function BadEventReportList() {
   const getTableData = () => {
     setTableLoading(true)
     let year = ''
-    if (query.year !== null) year = query.year.format('YYYY')
+    if (query.year !== null) year = `${query.year.format('YYYY')}年`
 
     let reqQuery = {
       ...query,
-      year
+      year,
+      statuss: (() => {
+        switch (query.status) {
+          case '1':
+            return ['1']
+          case '0':
+            return ['0']
+          default:
+            return ['1', '0']
+        }
+      })()
     }
     api
       .getPage(reqQuery)
@@ -248,7 +235,7 @@ export default observer(function BadEventReportList() {
               />
             </div>
           </div>
-          <div className='item'>
+          {/* <div className='item'>
             <div className='label'>汇总类型：</div>
             <div className='content'>
               <Select
@@ -259,7 +246,21 @@ export default observer(function BadEventReportList() {
                 }}
               >
                 <Option value='month'>月度报告</Option>
-                {/* <Option value='season'>季度报告</Option> */}
+              </Select>
+            </div>
+          </div> */}
+          <div className="item">
+            <div className='label'>月份：</div>
+            <div className="content">
+              <Select
+                style={{ width: 100 }}
+                value={query.timeSection}
+                onChange={(timeSection: any) => {
+                  setQuery({ ...query, timeSection })
+                }}
+              >
+                <Option value="">全部</Option>
+                {monthList.map((item) => <Option value={`${item}月`} key={item}>{item}月</Option>)}
               </Select>
             </div>
           </div>
@@ -297,7 +298,7 @@ export default observer(function BadEventReportList() {
           surplusHeight={230}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => record.reportName && handleReview(record)
+              onDoubleClick: () => record.name && handleReview(record)
             }
           }}
           pagination={{
@@ -312,7 +313,7 @@ export default observer(function BadEventReportList() {
           }}
         />
       </div>
-      <CreateSummaryReport
+      <CreateBadEventReport
         // allowClear={createClear}
         visible={createAnalysisVisible}
         onOk={handleCreateOk}

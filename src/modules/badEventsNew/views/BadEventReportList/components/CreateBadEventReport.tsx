@@ -5,7 +5,7 @@ import { Modal, Row, Col, Radio, Select, DatePicker, Input, message as Message }
 // import { appStore } from 'src/stores'
 // import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
-import { summaryReportService as api } from '../api/SummaryReportService'
+import { badEventReportListService as api } from '../api/BadEventReportListService'
 import { numToChinese } from 'src/utils/number/numToChinese'
 
 const Option = Select.Option
@@ -25,6 +25,8 @@ export default function CreateSummearyReportModal(props: Props) {
     year: nowMoment,
     indexInType: nowMoment.format('M'),
     type: 'month',
+    dateBegin: Moment(`${nowMoment.format('YYYY-MM')}-1`),
+    dateEnd: Moment(`${nowMoment.format('YYYY-MM')}-${nowMoment.daysInMonth()}`),
     reportName: `${nowMoment.format('YYYY')}年${nowMoment.format('M')}月不良事件分析报告`
   }
   const [params, setParams] = useState(initedParams as any)
@@ -35,8 +37,19 @@ export default function CreateSummearyReportModal(props: Props) {
 
   const handleOk = () => {
     // console.log(params);
-    if (!params.indexInType) return Message.error('未选择汇总月份/季度')
+    if (!params.indexInType) return Message.error('未选择月份/季度')
     if (!params.reportName) return Message.error('未填写报告名称')
+
+    let createParams = {
+      name: params.reportName,
+      year: params.year.format('YYYY年'),
+      dateBegin: params.dateBegin.format('YYYY-MM-DD'),
+      dateEnd: params.dateEnd.format('YYYY-MM-DD'),
+      timeType: params.type,
+      timeSection: params.indexInType + (params.type == "month" ? '月' : '季')
+    }
+
+    console.log(createParams)
 
     setLoadingState(true)
     api.createReport({ ...params, year: params.year.format('YYYY') }).then(
@@ -63,6 +76,12 @@ export default function CreateSummearyReportModal(props: Props) {
     let newParams = { ...params, year: value }
     let newReportName = setReportName(newParams)
     newParams.reportName = newReportName
+
+    if (newParams.type == 'month' && newParams.indexInType) {
+      let currentMoment = Moment(`${newParams.year.format('YYYY')}-${newParams.indexInType}`)
+      newParams.dateBegin = Moment(`${currentMoment.format('YYYY-MM')}-1`)
+      newParams.dateEnd = Moment(`${currentMoment.format('YYYY-MM')}-${currentMoment.daysInMonth()}`)
+    }
 
     setParams(newParams)
   }
@@ -119,6 +138,12 @@ export default function CreateSummearyReportModal(props: Props) {
     let newParams = { ...params, indexInType }
 
     let newReportName = setReportName(newParams)
+
+    if (newParams.type == 'month') {
+      let currentMoment = Moment(`${newParams.year.format('YYYY')}-${newParams.indexInType}`)
+      newParams.dateBegin = Moment(`${currentMoment.format('YYYY-MM')}-1`)
+      newParams.dateEnd = Moment(`${currentMoment.format('YYYY-MM')}-${currentMoment.daysInMonth()}`)
+    }
     newParams.reportName = newReportName
     setParams(newParams)
   }
@@ -135,12 +160,12 @@ export default function CreateSummearyReportModal(props: Props) {
       <Wrapper>
         <Row>
           <Col span={5} className='label'>
-            汇总类型：
+            报告类型：
           </Col>
           <Col span={18}>
             <Radio.Group value={params.type} onChange={handleTypeChange}>
-              <Radio value='month'>月度汇总</Radio>
-              {/* <Radio value="season">季度汇总</Radio> */}
+              <Radio value='month'>月度报告</Radio>
+              {/* <Radio value="season">季度报告</Radio> */}
             </Radio.Group>
           </Col>
         </Row>
@@ -164,12 +189,34 @@ export default function CreateSummearyReportModal(props: Props) {
         </Row>
         <Row>
           <Col span={5} className='label'>
-            汇总{params.type == 'month' ? '月份：' : '季度：'}
+            报告{params.type == 'month' ? '月份：' : '季度：'}
           </Col>
           <Col span={18}>
             <Select value={params.indexInType} onChange={handleIndexInTypeChange}>
               {IndexInTypeOptions()}
             </Select>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className='label'>
+            开始时间：
+          </Col>
+          <Col span={18}>
+            <DatePicker
+              allowClear={false}
+              value={params.dateBegin}
+              onChange={(dateBegin: any) => setParams({ ...params, dateBegin })} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className='label'>
+            结束时间：
+          </Col>
+          <Col span={18}>
+            <DatePicker
+              allowClear={false}
+              value={params.dateEnd}
+              onChange={(dateEnd: any) => setParams({ ...params, dateEnd })} />
           </Col>
         </Row>
         <Row>
