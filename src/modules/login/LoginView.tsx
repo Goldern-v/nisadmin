@@ -20,6 +20,7 @@ export default withRouter(function LoginView(props: Props) {
   const { location, history } = props;
   const search = qs.parse(location.search.replace('?', ''))
   let formatInfoStr = search.formatInfo
+  console.log(formatInfoStr)
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
@@ -94,9 +95,12 @@ export default withRouter(function LoginView(props: Props) {
 
   const autoLogin = () => {
     if (formatInfoStr) {
-
       try {
-        let formatInfo = JSON.parse(uncompileStr(formatInfoStr))
+        let formatInfo = JSON.parse(
+          uncompileStr(
+            decodeURIComponent(formatInfoStr)
+          )
+        )
 
         if (!formatInfo.timeset || new Date().getTime() - formatInfo.timeset > 300000) {
           history.replace('/login')
@@ -109,9 +113,9 @@ export default withRouter(function LoginView(props: Props) {
           password: formatInfo.password
         })
       } catch (e) {
+        console.error(e)
         history.replace('/login')
         message.error('登录信息错误，已取消自动登录')
-        console.error(e)
       }
     } else {
       //南医三
