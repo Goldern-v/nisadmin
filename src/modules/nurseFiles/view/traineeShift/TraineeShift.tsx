@@ -30,6 +30,9 @@ export default observer(function TraineeShift(props: Props) {
   const [editDeptBtn, setEditDeptBtn] = useState(false); //科室弹窗
   const [editGroupBtn, setEditGroupBtn] = useState(false); //小组弹窗
   const [addGroupBtn, setAddGroupBtn] = useState(false); //新建分组
+  const [rowId, setRowId] = useState(""); //新建分组
+  const [groupNum, setGroupNum] = useState(null); //小组名称
+
   // 初始化数据
   useEffect(() => {
     traineeShiftModal.sheetId = getId;
@@ -75,7 +78,7 @@ export default observer(function TraineeShift(props: Props) {
       rotateList.push({
         title: item.deptName,
         dataIndex: "rotateGroupsList",
-        width: 250,
+        width: 300,
         align: "center",
         render: (text: any, record: any, idx: any) => {
           const rotateTimesList: any = record.rotateTimesList || [];
@@ -87,7 +90,7 @@ export default observer(function TraineeShift(props: Props) {
           return !showWeek ? (
             <DatePicker.RangePicker
               allowClear
-              style={{ width: 230 }}
+              style={{ width: 250 }}
               value={beginTime ? [moment(beginTime), moment(endTime)] : []}
               onChange={(date: any) => {
                 if (dataIndex >= 0) {
@@ -219,7 +222,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "教学查房时间",
       dataIndex: "teachingRoundTime",
-      width: traineeShiftModal.tableDeptList.length ? 200 : 830,
+      width: traineeShiftModal.tableDeptList.length ? 260 : 800,
       align: "center",
       render(text: any, record: any) {
         return (
@@ -230,10 +233,6 @@ export default observer(function TraineeShift(props: Props) {
             allowClear
             value={text ? moment(text) : undefined}
             format="YYYY-MM-DD HH:mm"
-            style={{
-              width: "170px",
-              minWidth: "170px!important"
-            }}
             onChange={(value: any) => {
               record.teachingRoundTime = value
                 ? value.format("YYYY-MM-DD HH:mm")
@@ -311,6 +310,7 @@ export default observer(function TraineeShift(props: Props) {
 
   // 取消弹窗
   const handleEditCancel = () => {
+    // setRowId("");
     setEditDeptBtn(false);
     setEditGroupBtn(false);
     setAddGroupBtn(false);
@@ -323,6 +323,7 @@ export default observer(function TraineeShift(props: Props) {
   //双击表单
   const handleEdit = (record: any) => {
     setEditGroupBtn(true);
+    setGroupNum(record.groupNum);
     traineeShiftModal.groupId = record.id;
   };
 
@@ -382,8 +383,15 @@ export default observer(function TraineeShift(props: Props) {
           surplusHeight={230}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => handleEdit(record)
+              onDoubleClick: () => {
+                setRowId(record.id);
+                handleEdit(record);
+              }
             };
+          }}
+          rowClassName={(record: any, index: any): string => {
+            if (record.id == rowId) return "row__bg__color";
+            return "";
           }}
         />
       </Content>
@@ -393,6 +401,7 @@ export default observer(function TraineeShift(props: Props) {
         onOk={handleEditOk}
       />
       <EditGroupModal
+        groupNum={groupNum}
         visible={editGroupBtn}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
@@ -448,13 +457,39 @@ const RightIcon = styled.div`
 
 const Content = styled(TabledCon)`
   box-sizing: border-box;
-  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
-  .ant-table-row-hover {
+  .ant-table-tbody > .ant-table-row-hover {
     background: #fff !important;
     > td {
       background: #fff !important;
     }
   }
+
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    background: #fff !important;
+  }
+
+  .ant-table-tbody > .row__bg__color:hover:not(.ant-table-expanded-row) > td {
+    background: #d4e5dd !important;
+  }
+
+  .ant-table-tbody > .row__bg__color.ant-table-row-hover {
+    background: #d4e5dd !important;
+    > td {
+      background: #d4e5dd !important;
+    }
+  }
+
+  .row__bg__color {
+    td {
+      background-color: #d4e5dd;
+
+      .ant-calendar-picker-input,
+      .ant-input {
+        background-color: #d4e5dd;
+      }
+    }
+  }
+
   .ant-input {
     border: 0;
     border-radius: 0;

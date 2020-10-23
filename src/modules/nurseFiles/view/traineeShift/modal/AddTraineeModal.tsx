@@ -71,7 +71,7 @@ export default observer(function AddTraineeModal(props: Props) {
           <Checkbox
             key={record.allGroupCode}
             disabled={record.groupId}
-            checked={text}
+            checked={!!text}
             onChange={(e: any) => {
               record.isGrouped = e.target.checked ? 1 : 0;
               setEditDataList(

@@ -53,12 +53,12 @@ export default observer(function AddDeptModal(props: Props) {
         return (
           <Checkbox
             key={record.deptCode}
-            checked={text}
+            checked={!!text}
             disabled={record.sort}
             onChange={(e: any) => {
               record.isChecked = e.target.checked ? 1 : 0;
               setEditDataList(
-                traineeShiftModal.deptTableList.filter(
+                traineeShiftModal.deptTableCopyList.filter(
                   (item: any) => item.isChecked && !item.sort
                 )
               );

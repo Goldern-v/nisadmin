@@ -9,6 +9,7 @@ import { traineeShiftModal } from "../TraineeShiftModal";
 import AddTraineeModal from "./AddTraineeModal"; // 添加修改弹窗
 
 export interface Props {
+  groupNum: any;
   visible: boolean;
   onCancel: any;
   onOk: any;
@@ -16,7 +17,7 @@ export interface Props {
 }
 
 export default observer(function EditGroupModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk, groupNum } = props;
   const [groupStype, setGroupStype] = useState("全部"); //分组情况
   const [groupName, setGroupName] = useState("全部"); //小组
   const [editLoading, setEditLoading] = useState(false);
@@ -195,18 +196,32 @@ export default observer(function EditGroupModal(props: Props) {
     } else if (current === 2) {
       empNoList = idArr.slice();
     }
-    traineeShiftApi
-      .deleteRotatePersonsFromRotateGroup(empNoList)
-      .then((res: any) => {
-        if (res.code == 200) {
-          Message.success("删除成功！");
-          traineeShiftModal.groupOnload();
-          setSelectedRowKeys([]);
-        } else {
-          Message.error(`${res.dec}`);
-        }
-      })
-      .catch(e => {});
+    let content = (
+      <div>
+        <div>删除数据后将无法恢复</div>确认删除选中数据吗？
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        traineeShiftApi
+          .deleteRotatePersonsFromRotateGroup(empNoList)
+          .then((res: any) => {
+            if (res.code == 200) {
+              Message.success("删除成功！");
+              traineeShiftModal.groupOnload();
+              setSelectedRowKeys([]);
+            } else {
+              Message.error(`${res.dec}`);
+            }
+          })
+          .catch(e => {});
+      }
+    });
   };
 
   // 保存
@@ -286,7 +301,14 @@ export default observer(function EditGroupModal(props: Props) {
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
-      title="编辑实习小组"
+      title={
+        <span>
+          编辑实习小组
+          <span style={{ color: "blue", fontSize: "12px" }}>
+            （目前所在组别：{groupNum}）
+          </span>
+        </span>
+      }
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>关闭</Button>

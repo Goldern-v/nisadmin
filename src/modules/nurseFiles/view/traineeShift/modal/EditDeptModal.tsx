@@ -99,18 +99,32 @@ export default observer(function EditDeptModal(props: Props) {
     } else if (current === 2) {
       empNoList = idArr.slice();
     }
-    traineeShiftApi
-      .deleteRotateDepts(empNoList)
-      .then((res: any) => {
-        if (res.code == 200) {
-          Message.success("删除成功！");
-          traineeShiftModal.queryAllRorateDepts();
-          setSelectedRowKeys([]);
-        } else {
-          Message.error(`${res.dec}`);
-        }
-      })
-      .catch(e => {});
+    let content = (
+      <div>
+        <div>删除数据后将无法恢复</div>确认删除选中数据吗？
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        traineeShiftApi
+          .deleteRotateDepts(empNoList)
+          .then((res: any) => {
+            if (res.code == 200) {
+              Message.success("删除成功！");
+              traineeShiftModal.queryAllRorateDepts();
+              setSelectedRowKeys([]);
+            } else {
+              Message.error(`${res.dec}`);
+            }
+          })
+          .catch(e => {});
+      }
+    });
   };
 
   // 保存
