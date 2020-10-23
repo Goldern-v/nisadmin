@@ -72,7 +72,14 @@ export default observer(function QcItemGroup(props: Props) {
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">
           <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>
-          <Button type="danger" size="small" onClick={() => setAllQcItemValue('否')}>全否</Button>
+          {appStore.HOSPITAL_ID !== 'nys' && (
+            <Button
+              type="danger"
+              size="small"
+              onClick={() => setAllQcItemValue('否')}>
+              全否
+            </Button>
+          )}
         </div>
       </div>
     </div>

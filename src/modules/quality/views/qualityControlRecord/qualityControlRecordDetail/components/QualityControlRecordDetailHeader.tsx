@@ -13,6 +13,7 @@ import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file"
 import { navTitle } from "src/modules/quality/data/qcTitle";
+import QcPrint from './QcPrint'
 
 interface Props {
   detailData: any;
@@ -47,6 +48,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   const bqclModalNys = createModal(BqclModalNys);
   const hlbModal = createModal(HlbModal);
   const ejkhszModal = createModal(EjkhszModal);
+
+  const [printing, setPrinting] = useState(false)
 
   const onAduit = (nodeName: string) => {
     if (!nodeName) return
@@ -310,7 +313,15 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 wh: false,
                 other: true,
               }
-            }) && master.id && <Button onClick={exportQcItem}>导出</Button>}
+            }) &&
+              master.id && (
+                <React.Fragment>
+                  <Button onClick={exportQcItem}>导出</Button>
+                  {appStore.HOSPITAL_ID == 'nys' && (
+                    <Button onClick={() => setPrinting(true)}>打印</Button>
+                  )}
+                </React.Fragment>
+              )}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>
@@ -322,6 +333,10 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       <bqclModal.Component />
       <hlbModal.Component />
       <ejkhszModal.Component />
+      <QcPrint
+        printing={printing}
+        data={props.detailData}
+        afterPrinting={() => setPrinting(false)} />
     </Con>
   );
 }
