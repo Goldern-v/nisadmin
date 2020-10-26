@@ -78,7 +78,7 @@ export default observer(function TraineeShift(props: Props) {
       rotateList.push({
         title: item.deptName,
         dataIndex: "rotateGroupsList",
-        width: 300,
+        width: 320,
         align: "center",
         render: (text: any, record: any, idx: any) => {
           const rotateTimesList: any = record.rotateTimesList || [];
@@ -222,7 +222,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "教学查房时间",
       dataIndex: "teachingRoundTime",
-      width: traineeShiftModal.tableDeptList.length ? 260 : 800,
+      width: traineeShiftModal.tableDeptList.length ? 280 : 850,
       align: "center",
       render(text: any, record: any) {
         return (
@@ -249,7 +249,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "操作",
       key: "cz",
-      width: 80,
+      width: 100,
       render(text: any, record: any) {
         return (
           <DoCon>
