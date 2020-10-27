@@ -161,7 +161,7 @@ export default class AuthStore {
   }
   /** 是否实习生 */
   public get isOnlyInternsManage() {
-    return this.user && this.user.userType == "1";
+    return this.user && this.user.userType == "1" ? true : false;
   }
 
   /** 用户初始化 */
