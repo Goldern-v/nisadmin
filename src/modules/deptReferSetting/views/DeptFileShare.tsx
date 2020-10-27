@@ -133,9 +133,8 @@ export default function DeptFileShare() {
       message.error('上传文件路径为空')
       return
     }
-    let path = `/crNursing/asset/deptShareFile${record.path}`
-    let useNewPath = moment(record.uploadTime).diff(moment('2020/9/30 00:00')) >= 0
-    if (useNewPath) path = `/crNursing/asset${record.path}`
+
+    let path = `/crNursing/asset${record.path}`
 
     PreviewModalWrapper.show({
       path,
