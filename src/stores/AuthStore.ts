@@ -159,6 +159,11 @@ export default class AuthStore {
   public get isNotANormalNurse() {
     return this.isRoleManage || this.isDepartment || this.isSupervisorNurse;
   }
+  /** 是否实习生 */
+  public get isOnlyInternsManage() {
+    return this.user && this.user.userType == "1";
+  }
+
   /** 用户初始化 */
   @action
   public initUser() {
