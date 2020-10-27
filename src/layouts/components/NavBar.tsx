@@ -7,6 +7,7 @@ import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
 import { Menu, Dropdown, Tooltip } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
+import { navConfig as navConfig_hjInterns } from "./navConfig_hjInterns";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
@@ -16,11 +17,11 @@ import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
-  if (path) appStore.history.push(path)
+  if (path) appStore.history.push(path);
   // return path ? () => appStore.history.push(path) : () => { };
 };
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const itemHidden = (hidden?: any) => {
   if (!hidden) return false;
@@ -31,7 +32,7 @@ const itemHidden = (hidden?: any) => {
   }
 };
 
-const MenuCon = observer(function (props: {
+const MenuCon = observer(function(props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -76,9 +77,9 @@ const MenuCon = observer(function (props: {
             style={itemHidden(item.hidden) ? { display: "none" } : {}}
             key={index}
             onClick={() => {
-              console.log('12321')
-              toNavLink(item.path)
-              item.onClick && item.onClick()
+              console.log("12321");
+              toNavLink(item.path);
+              item.onClick && item.onClick();
             }}
             className={
               appStore.location.pathname.indexOf(item.path || "") > -1
@@ -98,20 +99,20 @@ const MenuCon = observer(function (props: {
 export default observer(function NavBar(props: any) {
   const realNavConfig = (() => {
     if (appStore.HOSPITAL_ID == "wh") {
-      if (authStore.isRoleManage)
-        return navConfig_wh
-      else
-        return navConfig_whSelf
+      if (authStore.isRoleManage) return navConfig_wh;
+      else return navConfig_whSelf;
     } else if (appStore.HOSPITAL_ID == "ys") {
-      return navConfig_ys
+      return navConfig_ys;
     } else if (appStore.HOSPITAL_ID == "nys") {
-      return navConfig_nys
+      return navConfig_nys;
     } else if (appStore.HOSPITAL_ID == "dzlc") {
-      return navConfig_dzlc
+      return navConfig_dzlc;
+    } else if (authStore.isOnlyInternsManage) {
+      return navConfig_hjInterns;
     }
 
-    return navConfig
-  })()
+    return navConfig;
+  })();
 
   let location = appStore.location;
 
@@ -202,15 +203,15 @@ export default observer(function NavBar(props: any) {
                 item.children ? (
                   <MenuCon list={item.children} style={item.menuStyle} />
                 ) : (
-                    <div />
-                  )
+                  <div />
+                )
               }
               key={index}
             >
               <NavItem
                 onClick={() => {
-                  toNavLink(item.path)
-                  item.onClick && item.onClick()
+                  toNavLink(item.path);
+                  item.onClick && item.onClick();
                 }}
                 active={
                   (item.path !== "" &&
