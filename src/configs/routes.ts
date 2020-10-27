@@ -8,7 +8,7 @@ import { setLayout } from "src/utils/route/route-utils";
 import layouts from "src/layouts";
 import demo from "src/demo";
 import { specialModule } from "./routerConfig/specialModule";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -676,7 +676,9 @@ const routes: RouteItem[] = [
   },
   {
     path: "/continuingEdu",
-    redirect: "/continuingEdu/人员管理"
+    redirect: authStore.isOnlyInternsManage
+      ? "/continuingEdu/在线学习"
+      : "/continuingEdu/人员管理"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {
