@@ -35,8 +35,8 @@ export default function Table(props: Props) {
             <td>占比例</td>
           </tr>
           {list.map((item: any, idx: number) => <tr key={idx}>
-            <td className="bad-event-title">{item.badEventName}</td>
-            <td>{item.happenedTimes}</td>
+            <td className="bad-event-title">{item.eventType}</td>
+            <td>{item.happenNum}</td>
             <td>{getRate(item.times, total)}</td>
           </tr>)}
           <tr className="sum">

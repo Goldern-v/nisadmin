@@ -31,12 +31,12 @@ export default function 不良事件分类弹窗(props: Props) {
     },
     {
       title: '事件分类',
-      dataIndex: 'badEventName',
+      dataIndex: 'eventType',
       align: 'left',
     },
     {
       title: '发生次数',
-      dataIndex: 'happenedTimes',
+      dataIndex: 'happenNum',
       align: 'center',
       width: 100,
       render: (text: any, record: any, idx: number) => {
@@ -45,7 +45,7 @@ export default function 不良事件分类弹窗(props: Props) {
           min={0}
           precision={0}
           onChange={(val) => {
-            cloneData.list[idx].happenedTimes = val
+            cloneData.list[idx].happenNum = val
             setData(cloneData)
           }} />
       }
@@ -77,7 +77,8 @@ export default function 不良事件分类弹窗(props: Props) {
       itemCode: '',
       itemName: '',
       itemImproveDesc: '',
-      result: ''
+      eventType: '',
+      happenNum: ''
     })
     setData(cloneData)
   }

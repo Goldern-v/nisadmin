@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
@@ -19,6 +19,9 @@ export default function 上报例数比较弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = badEventReportModel.getDataInAllData('report')
+
+  console.log(cloneData)
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -30,23 +33,41 @@ export default function 上报例数比较弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '操作',
-      key: '操作',
-      width: 80,
+      title: '月份',
+      dataIndex: 'timeSection',
+      width: 50,
+      align: 'center'
+    },
+    {
+      title: '不良事件例次',
+      className: "cell-input",
+      dataIndex: 'happenNum',
       render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
+        return <InputNumber
+          value={text}
+          style={{ width: '100%' }}
+          min={0}
+          precision={0}
+          onChange={(val) => {
+            cloneData.list[index].happenNum = val
+            setData(cloneData)
+          }} />
+      },
+      align: 'center'
+    },
+    {
+      title: '对比',
+      className: "cell-input",
+      dataIndex: 'contrastPercent',
+      render(text: any, record: any, index: number) {
+        return <Input
+          value={text}
+          onChange={(val) => {
+            cloneData.list[index].contrastPercent = val
+            setData(cloneData)
+          }} />
+      },
+      align: 'center'
     }
   ]
 
@@ -56,22 +77,24 @@ export default function 上报例数比较弹窗(props: Props) {
       itemCode: '',
       itemName: '',
       itemImproveDesc: '',
-      result: ''
+      contrastPercent: '',
+      happenNum: '',
+      timeSection: '',
     })
     setData(cloneData)
   }
   useEffect(() => { }, [])
   return (
     <Wrapper>
-      <div className='button-con'>
+      {/* <div className='button-con'>
         <Button icon='plus' size='small' onClick={addItem}>
           添加
         </Button>
-      </div>
+      </div> */}
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={cloneData.list || []}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

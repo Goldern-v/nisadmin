@@ -17,7 +17,7 @@ export default observer(function 标题模块(props: Props) {
   useEffect(() => { })
   return (
     <Wrapper className='page-title'>
-      <div className='title'>{text}</div>
+      <div className='title'>{text || '报告标题'}</div>
       <EditButton border={true} onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑名称
       </EditButton>

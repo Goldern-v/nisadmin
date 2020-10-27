@@ -20,17 +20,15 @@ export interface Props {
 export default observer(function 上报情况比较图表模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
-  let report: Report = badEventReportModel.getDataInAllData('report')
+  // let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
 
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <TwoLevelTitle text={`4.分析第二季度上报情况`} />
-      <TableCon list={list} />
       <ChartCon list={list} />
+      <TableCon list={list} />
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

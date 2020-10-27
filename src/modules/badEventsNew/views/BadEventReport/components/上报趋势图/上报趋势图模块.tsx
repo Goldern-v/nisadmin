@@ -18,17 +18,15 @@ export interface Props {
 
 export default observer(function 上报趋势图模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = badEventReportModel.getSectionData(sectionId)
+  let data = badEventReportModel.getSectionData(sectionId)?.obj || {}
   let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-  const timeStr = '一月'
 
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <TwoLevelTitle text={`3.2017和2018年护理不良事件上报趋势图`} />
-      <ChartCon list={list} />
+      <TwoLevelTitle text={`3.不良事件上报趋势图`} />
+      <ChartCon data={data} />
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

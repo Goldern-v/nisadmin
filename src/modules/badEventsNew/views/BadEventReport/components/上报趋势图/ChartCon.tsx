@@ -8,7 +8,7 @@ import { Chart, Tooltip, Axis, Legend, Line, Point } from 'viser-react'
 const DataSet = require('@antv/data-set')
 
 export interface Props {
-  list: DeptItem[]
+  data: any
 }
 
 const sourceData = [
@@ -22,10 +22,10 @@ const dv = new DataSet.View().source(sourceData);
 dv.transform({
   type: 'fold',
   fields: ['Tokyo', 'London'],
-  key: 'city',
-  value: 'temperature',
+  key: 'year',
+  value: 'happenNum',
 });
-const data = dv.rows;
+const _data = dv.rows;
 
 const scale = [{
   dataKey: 'month',
@@ -34,11 +34,45 @@ const scale = [{
 }]
 
 export default function ChartCon(props: Props) {
-  let { list } = props
+  let { data } = props
   const { chartColors } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report') || {}
 
   const [dataUrl, setDataUrl] = useState('' as string)
+
+  let chartDataSet = []
+  let beforeYearKey = ''
+  let lastYearKey = ''
+  let curYearKey = ''
+
+  if (data.beforeYearList) {
+    for (let i = 0; i < data.beforeYearList.length; i++) {
+      let beforeYearItem = data.beforeYearList[i]
+      let lastYearListItem = data.lastYearList[i] || {}
+      let curYearListItem = data.curYearList[i] || {}
+      beforeYearKey = beforeYearItem.timeSection.split('年')[0] + '年'
+      lastYearKey = lastYearListItem.timeSection.split('年')[0] + '年'
+      curYearKey = curYearListItem.timeSection.split('年')[0] + '年'
+
+      chartDataSet.push({
+        month: beforeYearItem.timeSection.split('年')[1],
+        [beforeYearKey]: beforeYearItem.happenNum,
+        [lastYearKey]: lastYearListItem.happenNum,
+        [curYearKey]: curYearListItem.happenNum,
+      })
+    }
+  }
+
+  console.log(chartDataSet, JSON.parse(JSON.stringify(data)))
+
+  const dv = new DataSet.View().source(chartDataSet);
+
+  dv.transform({
+    type: 'fold',
+    fields: [beforeYearKey, lastYearKey, curYearKey],
+    key: 'year',
+    value: 'happenNum',
+  });
 
   useEffect(() => {
     //数据改变时将canvas的画面用img保存用于打印
@@ -49,16 +83,16 @@ export default function ChartCon(props: Props) {
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [list])
+  }, [data])
 
   return (
     <Wrapper className="shang-bao-qv-shi-tu chart-con">
-      <Chart forceFit height={400} data={data} scale={scale}>
+      <Chart forceFit height={400} data={dv.rows} scale={scale}>
         <Tooltip />
         <Axis />
         <Legend />
-        <Line position="month*temperature" color={['city', chartColors]} />
-        <Point position="month*temperature" color={['city', chartColors]} size={4} style={{ stroke: '#fff', lineWidth: 1 }} shape="circle" />
+        <Line position="month*happenNum" color={['year', chartColors]} />
+        <Point position="month*happenNum" color={['year', chartColors]} size={4} style={{ stroke: '#fff', lineWidth: 1 }} shape="circle" />
       </Chart>
       <img src={dataUrl} className="chart-con-img" />
     </Wrapper>

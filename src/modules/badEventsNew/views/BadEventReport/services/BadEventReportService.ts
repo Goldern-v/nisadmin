@@ -4,7 +4,7 @@ import { badEventReportModel } from '../BadEventReportModel'
 export default class BadEventReportService extends BaseApiService {
   /** 获取病区护理工作报表 */
   public getReport(obj?: any) {
-    return this.post(`/qcAnalysis/wn/getReport`, obj || appStore.queryObj)
+    return this.post(`/beReport/list/${obj.id}`)
   }
   public deleteReport(obj?: any) {
     return this.post(`/qcAnalysis/wn/deleteReport`, appStore.queryObj)

@@ -10,6 +10,7 @@ import { badEventReportService } from './services/BadEventReportService'
 import { AllData, DeptItem, DetailItem } from './types'
 import qs from 'qs'
 import { numToChinese } from 'src/utils/number/numToChinese'
+import moment from 'moment'
 
 export interface SectionListItem {
   sectionId?: string
@@ -76,6 +77,13 @@ class BadEventReportModel {
     '#A6A6A6',
   ]
 
+  @observable timeObj = {
+    currentYear: '' as string | number,
+    currentMonth: '' as string | number,
+    nextMonth: '' as string | number,
+    prevMonth: '' as string | number,
+  }
+
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {
@@ -133,40 +141,51 @@ class BadEventReportModel {
 
   /** 数据初始化 */
   async initData(query?: any) {
-    // let { data } = await badEventReportService.getReport(query)
-    let data = { report: {} }
+    let { data } = await badEventReportService.getReport({ id: query.id })
+
     this.allData = data
     /** 本月 */
-    let currentYear: any = this.allData!.report!.year
-    let currentMonth: any = this.allData!.report!.month
+    let currentYear: any = parseInt(this.allData!.report!.year || ''.replace('年', '') || moment().format('YYYY'))
+    let currentMonth: any = parseInt(this.allData!.report!.timeSection.replace('月', '') || '1')
     /** 下月 */
     let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
     /** 上月 */
-    let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
+    let prevMonth = currentMonth == 1 ? 12 : currentMonth - 1
 
-    this.getSectionData('报告名称')!.text = this.allData.report!.reportName || '报告名称'
+    this.timeObj = {
+      currentYear,
+      nextMonth,
+      currentMonth,
+      prevMonth
+    }
 
-    this.getSectionData('不良事件分类')!.list = [
-      { badEventName: '不良事件1', happenedTimes: '10' },
-      { badEventName: '不良事件2', happenedTimes: '12' },
-      { badEventName: '不良事件3', happenedTimes: '14' },
-      { badEventName: '不良事件4', happenedTimes: '16' },
-    ]
+    this.getSectionData('报告名称')!.text = this.allData.report!.name || '报告名称'
 
-    this.getSectionData('上报例数比较')!.list = [
-      { type: 'month', code: 1, happenedTimes: '12', rate: '12' },
-      { type: 'month', code: 2, happenedTimes: '14', rate: '16.67' },
-      { type: 'month', code: 3, happenedTimes: '16', rate: '14.29' },
-      { type: 'month', code: 4, happenedTimes: '18', rate: '12.5' },
-      { type: 'month', code: 5, happenedTimes: '20', rate: '11.11' },
-      { type: 'month', code: 6, happenedTimes: '22', rate: '10' },
-      { type: 'month', code: 7, happenedTimes: '22', rate: '0' },
-      { type: 'month', code: 8, happenedTimes: '20', rate: '-9.09' },
-      { type: 'month', code: 9, happenedTimes: '18', rate: '-10' },
-      { type: 'month', code: 10, happenedTimes: '16', rate: '-11.11' },
-      { type: 'month', code: 11, happenedTimes: '14', rate: '-12.5' },
-      { type: 'month', code: 12, happenedTimes: '12', rate: '-14.29' },
-    ]
+    this.getSectionData('不良事件分类')!.list = this.allData.beClassifyContrastList || []
+
+    this.getSectionData('上报例数比较')!.list = this.allData.beContrastBeforeList || []
+
+    let beTrendChart = this.allData.beTrendChartDto
+
+    this.getSectionData('上报趋势图')!.obj = {
+      beforeYearList: beTrendChart.beforeYearList || [],
+      lastYearList: beTrendChart.lastYearList || [],
+      curYearList: beTrendChart.curYearList || [],
+    }
+
+    let beReportSituation = this.allData.beReportSituationDto
+
+    let rateMapText = ''
+    if (beReportSituation.rateMap) {
+      let keyArr = Object.keys(beReportSituation.rateMap)
+      let key = keyArr[0]
+      rateMapText = `，主要为${key}上报总数${beReportSituation.rateMap[key]}，其他事件基本持平`
+    }
+
+    this.getSectionData('上报情况比较')!.text =
+      beReportSituation.reportDesc || `${currentYear}年${currentMonth}月不良事件上报总数与去年同期相比${beReportSituation.lastYearCompare}，与上月相比${beReportSituation.lastSectionCompare}${rateMapText}。`
+
+    this.getSectionData('不良事件分类比较')!.list = this.allData.beClassifyContrastList || []
   }
   async init(query?: any) {
     await this.initData(query)

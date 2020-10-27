@@ -17,36 +17,27 @@ export default function Table(props: Props) {
 
   let unit = '月'
 
-  const Title = (code: number) => {
-    if (unit == '季度') return `第${numToChinese(code)}${unit}`
-    return `${numToChinese(code)}${unit}`
-  }
-
   return (
     <Wrapper>
       <table>
         <colgroup>
-          {/* <col width='12.5%' />
-          <col width='12.5%' />
-          <col width='15%' />
-          <col width='27.5%' />
-          <col width='27.5%' /> */}
+          <col width='100px' />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td></td>
             {list.map((item: any, idx: number) =>
-              <td key={idx}>{Title(item.code)}</td>)}
+              <td key={idx}>{item.timeSection}</td>)}
           </tr>
           <tr>
-            <td></td>
+            <td>不良事件例次</td>
             {list.map((item: any, idx: number) =>
-              <td key={idx}>{item.happenedTimes}</td>)}
+              <td key={idx}>{item.happenNum}</td>)}
           </tr>
           <tr>
-            <td></td>
+            <td>与前一月比较</td>
             {list.map((item: any, idx: number) =>
-              <td key={idx}>{item.rate}</td>)}
+              <td key={idx}>{item.contrastPercent}</td>)}
           </tr>
         </tbody>
       </table>

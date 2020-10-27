@@ -18,18 +18,15 @@ export interface Props {
 export default observer(function 上报情况比较模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
-  let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-  const timeStr = '一月'
-  const dataStr = `2019年第二季度不良事件上报总数与去年同期相比上升260%，与今年第一季度总数相比下降了40.6%，主要为检查/检验/病理标本事件上报总数下降了53.2%，其他事件基本持平。`
-
+  // let report: Report = badEventReportModel.getDataInAllData('report')
+  let text = data.text || ''
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <TwoLevelTitle text={`4.分析第二季度上报情况`} />
-      <div className="text-con" style={{ textIndent: 12 }}>  (1)与上季度比较</div>
-      <div className="text-con">{dataStr}</div>
+      <TwoLevelTitle text={`4.分析${badEventReportModel.timeObj.currentMonth}月上报情况`} />
+      <div className="text-con">(1)与上月度比较</div>
+      <div className="text-con">{text}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑
@@ -54,6 +51,7 @@ const Wrapper = styled.div`
     right: 20px;
   }
   .text-con{
+    text-indent: 12px;
     padding: 0 30px;
   }
 `

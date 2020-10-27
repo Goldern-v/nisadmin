@@ -22,14 +22,14 @@ export default observer(function 不良事件分类模块(props: Props) {
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
+  const timeStr = report.timeSection || ''
 
 
   let viewList = JSON.parse(JSON.stringify(list))
   let total = 0
 
   for (let i = 0; i < viewList.length; i++) {
-    let times = Number(viewList[i].happenedTimes)
+    let times = Number(viewList[i].happenNum)
     if (isNaN(times)) times = 0
     viewList[i].times = times
     total += times

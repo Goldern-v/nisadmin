@@ -140,12 +140,13 @@ export default observer(function BadEventReportList() {
 
   const handleReview = (record: any) => {
     const obj = {
+      id: record.id,
       year: record.year,
-      type: record.type,
-      indexInType: record.indexInType
+      type: record.timeType,
+      indexInType: record.timeSection
     }
 
-    history.push(`/qualityAnalysisReportPool?${qs.stringify(obj)}`)
+    history.push(`/BadEventReportView?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
@@ -158,10 +159,17 @@ export default observer(function BadEventReportList() {
 
   const handleCreateOk = (info: any) => {
     //汇总报告创建成功
-    let { type, year, indexInType } = info
+    let { timeType, year, timeSection, id } = info
     getTableData()
     setCreateAnalysisVisible(false)
-    history.push(`/qualityAnalysisReportPool?${qs.stringify({ type, year, indexInType })}`)
+
+    history.push(`/BadEventReportView?${qs.stringify({
+      id,
+      year,
+      type: timeType,
+      indexInType: timeSection,
+      isNew: true
+    })}`)
   }
 
   const handleCreateCancel = () => {
@@ -187,13 +195,13 @@ export default observer(function BadEventReportList() {
         }
       })()
     }
+
     api
       .getPage(reqQuery)
       .then((res) => {
         setTableLoading(false)
 
-        if (res.data.totalPage) setDataTotal(res.data.totalPage)
-        else setDataTotal(0)
+        setDataTotal(res.data.totalCount || 0)
 
         if (res.data.list instanceof Array)
           setTableData(

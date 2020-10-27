@@ -9,6 +9,7 @@ import { Report } from '../../types'
 import moment from 'moment'
 import OneLevelTitle from '../common/OneLevelTitle'
 import TwoLevelTitle from '../common/TwoLevelTitle'
+import { numToChinese } from 'src/utils/number/numToChinese'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -18,16 +19,15 @@ export interface Props {
 export default observer(function 不良事件分类比较模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
-  let report: Report = badEventReportModel.getDataInAllData('report')
+  // let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
 
   useEffect(() => { })
 
   return (
     <Wrapper>
       <OneLevelTitle text="二、结果分析" />
-      <TwoLevelTitle text={`1.不良事件分类比较。本季度护理不良事件归为五大类`} />
+      <TwoLevelTitle text={`1.不良事件分类比较。本月护理不良事件归为${numToChinese(list.length)}大类`} />
       <ChartCon list={list} />
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>

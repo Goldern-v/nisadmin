@@ -39,7 +39,7 @@ export default observer(function BaseModal(props: Props) {
       //   onCancel()
       // })
     } else if (sectionData.sectionId == '不良事件分类') {
-      console.log(data)
+      console.log(data.list)
       // badEventReportService.updateWorkScheduleList(data.list).then((res) => {
       //   badEventReportModel.setSectionData(sectionData.sectionId, {
       //     list: res.data

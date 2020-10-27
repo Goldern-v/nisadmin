@@ -18,16 +18,20 @@ export interface Props extends RouteComponentProps { }
 export default observer(function NursingReportDetailView() {
   const { isRoleManage, isDepartment, isSupervisorNurse, isOnlyRoleManage } = authStore
   const pageRef: any = useRef<HTMLElement>()
+
   useEffect(() => {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
     badEventReportModel.init(query)
   }, [])
+
   let report: Report = badEventReportModel.getDataInAllData('report')
+
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
     document.title = report.reportName
+
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -71,6 +75,7 @@ export default observer(function NursingReportDetailView() {
         }
       `
     })
+
     setTimeout(() => {
       document.title = title
     }, 500)
@@ -109,7 +114,7 @@ export default observer(function NursingReportDetailView() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb data={[{ name: '不良事件分析报告', link: '/home/不良事件分析报告' }, { name: '报告详情', link: '' }]} />
-        <div className='title'>{report.reportName}</div>
+        <div className='title'>{report.name || '报告标题'}</div>
         <div className='aside'>
           <span>
             由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
