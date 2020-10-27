@@ -35,7 +35,7 @@ import LabelQuestionBank from "../questionBankManagement/views/LabelQuestionBank
 import UploadRecordQuestionBank from "../questionBankManagement/views/UploadRecordQuestionBank";
 import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBank";
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -48,7 +48,9 @@ export default function ContinuingEdu(props: Props) {
       icon: <RYGL />,
       path: "/continuingEdu/人员管理",
       component: 人员管理,
-      hide: () => queyMenuAuthInfo("nm_lat_personelManage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_personelManage") ||
+        authStore.isOnlyInternsManage
     },
     // {
     //   title: "在线学习",
@@ -62,21 +64,23 @@ export default function ContinuingEdu(props: Props) {
       icon: <YNXXB />,
       path: "/continuingEdu/审核发布",
       component: 审核发布,
-      hide: () => queyMenuAuthInfo("nm_lat_auditmanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
     },
     {
       title: "评分管理",
       icon: <LXGL />,
       path: "/continuingEdu/评分管理",
       component: 评分管理,
-      hide: () => queyMenuAuthInfo("nm_lat_scoremanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage
     },
     ...dataList,
     {
       title: "培训设置管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide: appStore.HOSPITAL_ID != "hj",
+      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
         {
           title: "资质准入管理",
@@ -150,14 +154,17 @@ export default function ContinuingEdu(props: Props) {
       icon: <TZGL />,
       path: "/continuingEdu/通知管理",
       component: 通知管理,
-      hide: () => queyMenuAuthInfo("nm_lat_noticemanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_noticemanage") || authStore.isOnlyInternsManage
     },
     {
       title: "晋升管理",
       icon: <JSGL />,
       path: "/continuingEdu/晋升管理",
       component: 晋升管理,
-      hide: () => queyMenuAuthInfo("nm_lat_promotemanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_promotemanage") ||
+        authStore.isOnlyInternsManage
     },
     {
       title: "选择题新建和编辑",
@@ -206,7 +213,9 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/questionBankManagement",
       component: 题库管理,
-      hide: () => queyMenuAuthInfo("nm_lat_questionbankmanage")
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+        authStore.isOnlyInternsManage
     },
     {
       title: "类型管理",
@@ -214,7 +223,9 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/TypeManagement",
       component: 类型管理,
       hide: () =>
-        queyMenuAuthInfo("nm_lat_typemanage") || appStore.HOSPITAL_ID == "hj"
+        queyMenuAuthInfo("nm_lat_typemanage") ||
+        appStore.HOSPITAL_ID == "hj" ||
+        authStore.isOnlyInternsManage
     },
     {
       title: "菜单设置",
@@ -222,7 +233,9 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
       hide: () =>
-        queyMenuAuthInfo("nm_lat_menusetting") || appStore.HOSPITAL_ID == "hj"
+        queyMenuAuthInfo("nm_lat_menusetting") ||
+        appStore.HOSPITAL_ID == "hj" ||
+        authStore.isOnlyInternsManage
     }
   ];
 
@@ -239,8 +252,8 @@ export default function ContinuingEdu(props: Props) {
               title: item.name,
               icon: getIcon(item.sort),
               component: 无权限,
-              path: `/continuingEdu/${item.name}?Pid=${item.id}`
-              // hide: false
+              path: `/continuingEdu/${item.name}?Pid=${item.id}`,
+              hide: authStore.isOnlyInternsManage
             };
             if (item.childList && item.childList.length) {
               let Pid = item.id;

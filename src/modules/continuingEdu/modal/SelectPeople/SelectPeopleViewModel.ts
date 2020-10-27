@@ -1,5 +1,5 @@
 import { observable, computed, action } from "mobx";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 class SelectPeopleViewModel {
@@ -7,7 +7,7 @@ class SelectPeopleViewModel {
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
-  @observable public selectTreeDataAll = [
+  @observable public selectTreeDataAll: any = [
     {
       step: "按片区选择",
       label: "按片区选择",
@@ -44,7 +44,19 @@ class SelectPeopleViewModel {
       label: "按层级选择",
       data: [],
       dataLabel: "level"
-    }
+    },
+    ...appStore.hisAdapter({
+      hj: () => [
+        {
+          step: "按实习生选择",
+          label: "按实习生选择",
+          data: [],
+          dataLabel: "year"
+        }
+      ],
+      wh: () => [],
+      nys: () => []
+    })
   ];
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
@@ -129,6 +141,10 @@ class SelectPeopleViewModel {
               { showAuthDept: false }
             )).data
           };
+        } else if (this.stepState[0] == "按实习生选择") {
+          this.currentData = {
+            list: (await ser.groupByInternsInDeptList()).data
+          };
         }
       } else if (this.stepState.length == 2) {
         if (this.stepState[0] == "按片区选择") {
@@ -170,6 +186,10 @@ class SelectPeopleViewModel {
               "",
               { showAuthDept: false }
             )).data
+          };
+        } else if (this.stepState[0] == "按实习生选择") {
+          this.currentData = {
+            list: (await ser.groupByInternsInDeptList()).data
           };
         }
       }
