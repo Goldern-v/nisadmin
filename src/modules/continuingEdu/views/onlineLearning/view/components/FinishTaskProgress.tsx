@@ -12,6 +12,7 @@ import { onlineLearningReviewApi } from "../api/OnlineLearningReviewApi";
 export interface Props {}
 
 export default observer(function finishTaskProgress() {
+  const { queryObj } = appStore;
   const { baseInfo } = onlineLearningReviewModel;
   const attachmentList = baseInfo.attachmentList || [];
   const previewModal = createModal(PreviewModal);
@@ -40,7 +41,6 @@ export default observer(function finishTaskProgress() {
     <Wrapper>
       {attachmentList.length ? (
         <div>
-          {" "}
           <div className="title">完成进度</div>
           <div className="content-item-pannel">
             {attachmentList.map((item: any, idx: number) => (
@@ -65,14 +65,16 @@ export default observer(function finishTaskProgress() {
                   className="download-btn"
                   onClick={() => showReview(item)}
                 >
-                  学习
+                  {queryObj.teachingMethodName}
                 </Button>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <div>暂时没有需要学习的文件！</div>
+        <div className="no_conetent">
+          暂时没有需要{queryObj.teachingMethodName}的文件！
+        </div>
       )}
       <previewModal.Component />
     </Wrapper>
@@ -158,5 +160,9 @@ const Wrapper = styled.div`
     position: absolute;
     right: 10px;
     top: 24px;
+  }
+  .no_conetent {
+    text-align: center;
+    margin-top: 40px;
   }
 `;

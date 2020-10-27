@@ -149,7 +149,11 @@ export default observer(function Table(props: Props) {
 
   //查看 学习
   const handleStudy = (record: any) => {
-    appStore.history.push(`/onlineLearningReview?id=${record.cetpId}`);
+    appStore.history.push(
+      `/onlineLearningReview?id=${record.cetpId}&teachingMethodName=${
+        record.teachingMethodName
+      }`
+    );
   };
 
   return (
