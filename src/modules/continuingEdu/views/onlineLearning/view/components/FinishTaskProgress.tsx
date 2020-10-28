@@ -61,7 +61,6 @@ export default observer(function finishTaskProgress() {
                   {item.alreadyRead ? "已读" : "未读"}
                 </div>
                 <Button
-                  disabled={baseInfo.tpStatus === "finished"}
                   className="download-btn"
                   onClick={() => showReview(item)}
                 >

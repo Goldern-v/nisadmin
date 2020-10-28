@@ -98,6 +98,9 @@ const MenuCon = observer(function(props: {
 
 export default observer(function NavBar(props: any) {
   const realNavConfig = (() => {
+    if (authStore.isOnlyInternsManage) {
+      return navConfig_hjInterns;
+    }
     if (appStore.HOSPITAL_ID == "wh") {
       if (authStore.isRoleManage) return navConfig_wh;
       else return navConfig_whSelf;
@@ -107,10 +110,7 @@ export default observer(function NavBar(props: any) {
       return navConfig_nys;
     } else if (appStore.HOSPITAL_ID == "dzlc") {
       return navConfig_dzlc;
-    } else if (authStore.isOnlyInternsManage) {
-      return navConfig_hjInterns;
     }
-
     return navConfig;
   })();
 

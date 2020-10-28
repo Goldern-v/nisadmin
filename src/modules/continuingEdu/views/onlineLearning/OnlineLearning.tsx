@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { Button } from "antd";
 import BaseTabs from "src/components/BaseTabs";
 import Table from "./components/Table";
 import { onlineLearningModal } from "./OnlineLearningModal";
-interface Props {}
+interface Props {
+  getId: any;
+}
 export default observer(function OnlineLearning(props: Props) {
+  const { getId } = props; //获取当前页面标题
   const user = JSON.parse(sessionStorage.getItem("user") || "[]"); // 获取登录人员信息
   const [hourName, setHourName] = useState(""); // 当前时间段对应名称
 
@@ -13,8 +17,9 @@ export default observer(function OnlineLearning(props: Props) {
   useEffect(() => {
     getNowHour();
     onlineLearningModal.tpStatus = "tobeginAndongoing";
+    onlineLearningModal.teachingMethod = null;
     onlineLearningModal.init();
-  }, []);
+  }, [getId]);
 
   // 获取当前时间段对应名称
   const getNowHour = () => {
@@ -78,7 +83,14 @@ export default observer(function OnlineLearning(props: Props) {
   return (
     <Wrapper>
       <HeadCon>
-        {user.empName}，{hourName}
+        <div style={{ float: "left" }}>
+          {user.empName}，{hourName}
+        </div>
+        <div style={{ float: "right" }}>
+          <Button type="primary" onClick={() => onlineLearningModal.onload()}>
+            刷新
+          </Button>
+        </div>
       </HeadCon>
       <MainCon>
         <BaseTabs
@@ -100,6 +112,7 @@ const HeadCon = styled.div`
   font-size: 22px;
   font-weight: bold;
   height： 40px;
+  overflow: hidden
 `;
 const MainCon = styled.div`
   height: calc(100vh - 120px);

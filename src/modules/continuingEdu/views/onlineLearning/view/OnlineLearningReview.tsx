@@ -60,19 +60,31 @@ export default observer(function OnlineLearningReview(props: Props) {
     });
   };
 
-  // // 获取按钮状态名
-  // const getTaskStatusName = () => {
-  //   let isOk = arr.find(
-  //     (item: any) =>
-  //       item === baseInfo.teachingMethodName &&
-  //       baseInfo.organizationWay === "线下"
-  //   );
-  //   if (isOk) {
-  //     return baseInfo.taskStatus ? "您已签到" : "您未签到";
-  //   } else {
-  //     return baseInfo.taskStatus ? "您已完成" : "您未完成";
-  //   }
-  // };
+  // 获取按钮状态名
+  const getTaskStatusNameWorld = () => {
+    if (baseInfo.taskStatus) {
+      return "您已签到";
+    } else {
+      if (baseInfo.tpStatus === "finished") {
+        return "您未签到";
+      } else {
+        return "您尚未签到，请通过护理助手app进行签到!";
+      }
+    }
+  };
+
+  // 获取文字状态名
+  const getTaskStatusNameBtn = () => {
+    if (baseInfo.taskStatus) {
+      return "您已完成";
+    } else {
+      if (baseInfo.tpStatus === "finished") {
+        return "您未完成";
+      } else {
+        return "完成";
+      }
+    }
+  };
 
   return (
     <Wrapper>
@@ -97,9 +109,7 @@ export default observer(function OnlineLearningReview(props: Props) {
                 color: baseInfo.taskStatus ? "blue" : "red"
               }}
             >
-              {baseInfo.taskStatus
-                ? "您已完成签到!"
-                : "您尚未签到，请通过护理助手app进行签到!"}
+              {getTaskStatusNameWorld()}
             </span>
           )}
           {attachmentList.length > 0 && !isOk && (
@@ -108,7 +118,7 @@ export default observer(function OnlineLearningReview(props: Props) {
               disabled={baseInfo.taskStatus || baseInfo.tpStatus === "finished"}
               onClick={() => handleFinish()}
             >
-              {baseInfo.taskStatus ? "您已完成" : "您未完成"}
+              {getTaskStatusNameBtn()}
             </Button>
           )}
           <Button

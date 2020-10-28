@@ -676,7 +676,9 @@ const routes: RouteItem[] = [
   },
   {
     path: "/continuingEdu",
-    redirect: "/continuingEdu/人员管理"
+    redirect: authStore.isOnlyInternsManage
+      ? "/continuingEdu/在线学习"
+      : "/continuingEdu/人员管理"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

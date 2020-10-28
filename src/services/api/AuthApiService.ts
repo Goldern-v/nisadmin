@@ -31,7 +31,8 @@ export default class AuthApiService extends BaseApiService {
         //   return message.warn('你没有权限进入管理系统')
         // }
       }
-      if (appStore.HOSPITAL_ID == 'hj' && authStore.isOnlyInternsManage) {
+      // 实习生直接跳转学习培训在线学习
+      if (authStore.isOnlyInternsManage) {
         return window.location.href = '#/continuingEdu/在线学习'
        } 
 
