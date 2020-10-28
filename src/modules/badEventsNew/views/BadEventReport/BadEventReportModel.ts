@@ -161,7 +161,7 @@ class BadEventReportModel {
 
     this.getSectionData('报告名称')!.text = this.allData.report!.name || '报告名称'
 
-    this.getSectionData('不良事件分类')!.list = this.allData.beClassifyContrastList || []
+    this.getSectionData('不良事件分类')!.list = this.allData.beTotalHappenList || []
 
     this.getSectionData('上报例数比较')!.list = this.allData.beContrastBeforeList || []
 
@@ -179,11 +179,14 @@ class BadEventReportModel {
     if (beReportSituation.rateMap) {
       let keyArr = Object.keys(beReportSituation.rateMap)
       let key = keyArr[0]
-      rateMapText = `，主要为${key}上报总数${beReportSituation.rateMap[key]}，其他事件基本持平`
+      if (keyArr.length > 0)
+        rateMapText = `，主要为${key}上报总数${beReportSituation.rateMap[key]}，其他事件基本持平`
     }
 
     this.getSectionData('上报情况比较')!.text =
       beReportSituation.reportDesc || `${currentYear}年${currentMonth}月不良事件上报总数与去年同期相比${beReportSituation.lastYearCompare}，与上月相比${beReportSituation.lastSectionCompare}${rateMapText}。`
+
+    this.getSectionData('上报情况比较图表')!.list = beReportSituation.list || []
 
     this.getSectionData('不良事件分类比较')!.list = this.allData.beClassifyContrastList || []
   }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
@@ -17,7 +17,9 @@ export interface Props {
 export default function 上报情况比较图表弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
+  let { timeObj } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report')
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -29,68 +31,15 @@ export default function 上报情况比较图表弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '时间',
+      title: '事件类型',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.eventDate}
-            onChange={(e) => {
-              record.eventDate = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `当事人`,
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventEmpNames}
-            onChange={(e) => {
-              record.eventEmpNames = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情种类`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Select
             value={record.eventType}
-            onChange={(value: any) => {
-              record.eventType = value
-              setData(cloneData)
-            }}
-          >
-
-          </Select>
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情简要经过`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.briefCourseEvent}
             onChange={(e) => {
-              record.briefCourseEvent = e.target.value
+              record.eventType = e.target.value
               setData(cloneData)
             }}
           />
@@ -99,16 +48,14 @@ export default function 上报情况比较图表弹窗(props: Props) {
       width: 100
     },
     {
-      title: `后果`,
-      className: 'cell-input',
+      title: timeObj.prevMonth + '月',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.result}
-            onChange={(e) => {
-              record.result = e.target.value
+          <InputNumber
+            style={{ width: '100%' }}
+            value={record.lastNum}
+            onChange={(val: any) => {
+              record.lastNum = val
               setData(cloneData)
             }}
           />
@@ -116,7 +63,22 @@ export default function 上报情况比较图表弹窗(props: Props) {
       },
       width: 100
     },
-
+    {
+      title: timeObj.currentMonth + '月',
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <InputNumber
+            style={{ width: '100%' }}
+            value={record.curNum}
+            onChange={(val: any) => {
+              record.curNum = val
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
     {
       title: '操作',
       key: '操作',
@@ -141,14 +103,15 @@ export default function 上报情况比较图表弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      eventType: '',
+      lastNum: '',
+      curNum: '',
     })
     setData(cloneData)
   }
+
   useEffect(() => { }, [])
+
   return (
     <Wrapper>
       <div className='button-con'>
@@ -159,7 +122,7 @@ export default function 上报情况比较图表弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={(cloneData.list || [])}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

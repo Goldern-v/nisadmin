@@ -21,7 +21,7 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='100px' />
+          <col width='90px' />
         </colgroup>
         <tbody>
           <tr className='header'>

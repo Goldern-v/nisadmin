@@ -10,28 +10,27 @@ export interface Props {
 }
 export default function Table(props: Props) {
   let { list } = props
+  const { timeObj } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report') || {}
 
   return (
     <Wrapper>
       <table>
         <colgroup>
+          <col width="40px" />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td></td>
-            <td>不良事件1</td>
-            <td>不良事件2</td>
+            {list.map((item: any, idx: number) => <td key={idx}>{item.eventType}</td>)}
           </tr>
           <tr>
-            <td>第一季度</td>
-            <td>1</td>
-            <td>2</td>
+            <td>{(timeObj.prevMonth || '...') + '月'}</td>
+            {list.map((item: any, idx: number) => <td key={idx}>{item.lastNum}</td>)}
           </tr>
           <tr>
-            <td>第二季度</td>
-            <td>1</td>
-            <td>2</td>
+            <td>{(timeObj.currentMonth || '...') + '月'}</td>
+            {list.map((item: any, idx: number) => <td key={idx}>{item.curNum}</td>)}
           </tr>
         </tbody>
       </table>
