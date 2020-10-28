@@ -43,12 +43,6 @@ export default function ContinuingEdu(props: Props) {
 
   // 菜单列表
   const LEFT_MENU_CONFIG = [
-    // {
-    //   title: "在线学习",
-    //   icon: <JSGL />,
-    //   path: "/continuingEdu/在线学习",
-    //   component: 在线学习
-    // },
     {
       title: "人员管理",
       icon: <RYGL />,
@@ -57,6 +51,12 @@ export default function ContinuingEdu(props: Props) {
       hide: () =>
         queyMenuAuthInfo("nm_lat_personelManage") ||
         authStore.isOnlyInternsManage
+    },
+    {
+      title: "在线学习",
+      icon: <JSGL />,
+      path: "/continuingEdu/在线学习",
+      component: 在线学习
     },
     {
       title: "审核发布",
