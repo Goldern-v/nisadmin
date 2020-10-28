@@ -11,29 +11,6 @@ export interface Props {
   list: DeptItem[]
 }
 
-const sourceData = [
-  { country: '中国', population: 131744 },
-  { country: '印度', population: 104970 },
-  { country: '美国', population: 29034 },
-  { country: '印尼', population: 23489 },
-  { country: '巴西', population: 18203 },
-];
-
-const dv = new DataSet.View().source(sourceData);
-// dv.transform({
-//   type: 'sort',
-//   callback(a: any, b: any) {
-//     return a.population - b.population > 0;
-//   },
-// });
-let data = [
-  { country: '印度', population: 104970 },
-  { country: '中国', population: 131744 },
-  { country: '美国', population: 29034 },
-  { country: '印尼', population: 23489 },
-  { country: '巴西', population: 18203 },
-]
-
 export default function ChartCon(props: Props) {
   let { list } = props
   const { chartColors } = badEventReportModel
@@ -59,11 +36,11 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper className="bu-liang-shi-jian-fen-lei-bi-jiao chart-con">
-      <Chart forceFit height={400} data={data}>
+      <Chart forceFit height={400} data={list}>
         <Coord type="rect" direction="LB" />
         <Tooltip />
-        <Axis dataKey="country" label={{ offset: 12 }} />
-        <Bar position="country*population" color={['country', chartColors]} />
+        <Axis dataKey="eventType" label={{ offset: 12 }} />
+        <Bar position="eventType*happenNum" color={['eventType', chartColors]} />
       </Chart>
       <img src={dataUrl} className="chart-con-img" />
     </Wrapper>

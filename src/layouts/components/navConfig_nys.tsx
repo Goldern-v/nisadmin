@@ -67,16 +67,16 @@ const baseConfig: navConfigItem[] = [
       //   path: '',
       //   icon: require('../images/menu-icon/病区登记本@2x.png')
       // },
-      {
-        name: "查询统计",
-        path: "/queryStatistics",
-        icon: require("../images/menu-icon/护理查房@2x.png")
-      },
-      {
-        name: "护理查房",
-        path: "/checkWard",
-        icon: require("../images/menu-icon/护理查房@2x.png")
-      }
+      // {
+      //   name: "查询统计",
+      //   path: "/queryStatistics",
+      //   icon: require("../images/menu-icon/护理查房@2x.png")
+      // },
+      // {
+      //   name: "护理查房",
+      //   path: "/checkWard",
+      //   icon: require("../images/menu-icon/护理查房@2x.png")
+      // }
     ]
   },
   {

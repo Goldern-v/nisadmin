@@ -34,14 +34,14 @@ export default class AuthApiService extends BaseApiService {
       // 实习生直接跳转学习培训在线学习
       if (authStore.isOnlyInternsManage) {
         return window.location.href = '#/continuingEdu/在线学习'
-       } 
+      }
 
       if (appStore.HOSPITAL_ID == 'nys' && appStore.onlyBadEvent) {
         //普通护士无权限进入南医三不良事件审核系统
-        if (user.roleManageCodeList.length <= 0 || user.roleManage == '1') {
-          message.warning('无审核权限', 3, () => autoLoginTnNisInfoBe())
-        } else {
+        if (user.roleManageCodeList.length > 0 || user.roleManage == '1') {
           window.location.href = '#/home'
+        } else {
+          message.warning('无审核权限', 3, () => autoLoginTnNisInfoBe())
         }
       } else {
         window.location.href = '#/home'

@@ -5,33 +5,42 @@ import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { badEventReportModel } from '../../BadEventReportModel'
 import { Chart, Tooltip, Axis, Legend, Bar } from 'viser-react'
+import { observer } from 'mobx-react'
 const DataSet = require('@antv/data-set')
 
 export interface Props {
   list: DeptItem[]
 }
 
-const sourceData = [
-  { name: 'London', 'Jan.': 18.9, 'Feb.': 28.8, 'Mar.': 39.3, 'Apr.': 81.4, 'May': 47, 'Jun.': 20.3, 'Jul.': 24, 'Aug.': 35.6 },
-  { name: 'Berlin', 'Jan.': 12.4, 'Feb.': 23.2, 'Mar.': 34.5, 'Apr.': 99.7, 'May': 52.6, 'Jun.': 35.5, 'Jul.': 37.4, 'Aug.': 42.4 },
-];
-
-const dv = new DataSet.View().source(sourceData);
-dv.transform({
-  type: 'fold',
-  fields: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.'],
-  key: '月份',
-  value: '月均降雨量',
-});
-
-const data = dv.rows
-
-export default function ChartCon(props: Props) {
+export default observer(function ChartCon(props: Props) {
   let { list } = props
-  const { chartColors } = badEventReportModel
+  const { chartColors, timeObj } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report') || {}
 
   const [dataUrl, setDataUrl] = useState('' as string)
+
+  let chartData = [
+    { name: timeObj.prevMonth + '月' },
+    { name: timeObj.currentMonth + '月' },
+  ] as any[]
+  let fields = []
+
+  for (let i = 0; i < list.length; i++) {
+    let item = list[i]
+    fields.push(item.eventType)
+    chartData[0][item.eventType] = item.lastNum || 0
+    chartData[1][item.eventType] = item.curNum || 0
+  }
+
+  if (list.length <= 0) chartData = []
+
+  const dv = new DataSet.View().source(chartData)
+  dv.transform({
+    type: 'fold',
+    fields,
+    key: 'eventType',
+    value: 'happenNum',
+  })
 
   useEffect(() => {
     //数据改变时将canvas的画面用img保存用于打印
@@ -46,16 +55,20 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper className="shang-bao-qing-luang-bi-jiao-tu chart-con">
-      <Chart forceFit height={400} data={data}>
+      <Chart forceFit height={400} data={dv.rows}>
         <Tooltip />
         <Axis />
         <Legend />
-        <Bar position="月份*月均降雨量" color={["name", chartColors]} adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
+        <Bar
+          position="eventType*happenNum"
+          color={["name", chartColors]}
+          adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
       </Chart>
       <img src={dataUrl} className="chart-con-img" />
     </Wrapper>
   )
-}
+})
+
 const Wrapper = styled.div`
   margin: 5px 50px;
   table {

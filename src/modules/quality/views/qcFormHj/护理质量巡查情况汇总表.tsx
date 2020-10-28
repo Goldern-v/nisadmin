@@ -22,7 +22,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   const [formList, setFormList] = useState([] as any)
   const [formListLoading, setFormListLoaindg] = useState(false)
   const [query, setQuery] = useState({
-    wardCode: '',
+    wardCode: (authStore.isDepartment || authStore.isSupervisorNurse) ? '' : authStore.defaultDeptCode,
     qcCode: '',
     beginDate: moment(moment().format('YYYY-MM') + '-01'),
     endDate: moment()
@@ -144,7 +144,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
       </LeftIcon>
       <RightIcon>
         <div className="item">
-          <div className="label">表单: </div>
+          <div className="label">表单：</div>
           <div className="content">
             <Select
               value={query.qcCode}
@@ -172,7 +172,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
               filterOption={(input: any, option: any) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }>
-              <Option value="">全部</Option>
+              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
               {deptList.map((item: any, index: number) =>
                 <Option value={item.code} key={index}>{item.name}</Option>)}
             </Select>
