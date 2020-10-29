@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
+import { Button, message, Spin } from "antd";
 import { Link } from "react-router-dom";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { onlineLearningReviewModel } from "./OnlineLearningReviewModel";
-import { onlineLearningModal } from "../OnlineLearningModal";
+import { onlineLearningModal } from "../../OnlineLearningModal";
 import {
   Wrapper,
   TopPannel,
@@ -21,7 +21,7 @@ import { onlineLearningReviewApi } from "./api/OnlineLearningReviewApi";
 export interface Props {}
 export default observer(function OnlineLearningReview(props: Props) {
   const { history, queryObj } = appStore;
-  const { baseInfo } = onlineLearningReviewModel;
+  const { baseInfo, baseLoading } = onlineLearningReviewModel;
   const tpStatusName =
     baseInfo.tpStatus === "finished"
       ? "已结束"
@@ -88,52 +88,56 @@ export default observer(function OnlineLearningReview(props: Props) {
 
   return (
     <Wrapper>
-      <TopPannel>
-        <NavCon>
-          <Link to="/home">当前位置</Link>
-          <span> ： </span>
-          <Link to="/continuingEdu/在线学习">在线学习</Link>
-          <span> >> 查看详情</span>
-        </NavCon>
-        <MainTitle>{baseInfo.title || " "}</MainTitle>
-        <SubContent>
-          <span className="label"> 状态:</span>
-          <span>{tpStatusName}</span>
-        </SubContent>
-        <ButtonGroups>
-          {isOk && (
-            <span
-              style={{
-                marginRight: "25px",
-                fontSize: "13px",
-                color: baseInfo.taskStatus ? "blue" : "red"
+      <Spin spinning={baseLoading}>
+        <TopPannel>
+          <NavCon>
+            <Link to="/home">当前位置</Link>
+            <span> ： </span>
+            <Link to="/continuingEdu/在线学习">在线学习</Link>
+            <span> >> 查看详情</span>
+          </NavCon>
+          <MainTitle>{baseInfo.title || " "}</MainTitle>
+          <SubContent>
+            <span className="label"> 状态:</span>
+            <span>{tpStatusName}</span>
+          </SubContent>
+          <ButtonGroups>
+            {isOk && (
+              <span
+                style={{
+                  marginRight: "25px",
+                  fontSize: "13px",
+                  color: baseInfo.taskStatus ? "blue" : "red"
+                }}
+              >
+                {getTaskStatusNameWorld()}
+              </span>
+            )}
+            {attachmentList.length > 0 && !isOk && (
+              <Button
+                type="primary"
+                disabled={
+                  baseInfo.taskStatus || baseInfo.tpStatus === "finished"
+                }
+                onClick={() => handleFinish()}
+              >
+                {getTaskStatusNameBtn()}
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                history.goBack(), onlineLearningModal.tabsChanged(0);
               }}
             >
-              {getTaskStatusNameWorld()}
-            </span>
-          )}
-          {attachmentList.length > 0 && !isOk && (
-            <Button
-              type="primary"
-              disabled={baseInfo.taskStatus || baseInfo.tpStatus === "finished"}
-              onClick={() => handleFinish()}
-            >
-              {getTaskStatusNameBtn()}
+              返回
             </Button>
-          )}
-          <Button
-            onClick={() => {
-              history.goBack(), onlineLearningModal.tabsChanged(0);
-            }}
-          >
-            返回
-          </Button>
-        </ButtonGroups>
-      </TopPannel>
-      <MainPannel>
-        <FinishTaskProgress />
-        <BaseInfoPannel />
-      </MainPannel>
+          </ButtonGroups>
+        </TopPannel>
+        <MainPannel>
+          <FinishTaskProgress />
+          <BaseInfoPannel />
+        </MainPannel>
+      </Spin>
     </Wrapper>
   );
 });

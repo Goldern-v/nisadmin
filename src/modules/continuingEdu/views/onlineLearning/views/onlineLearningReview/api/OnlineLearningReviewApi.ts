@@ -1,5 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import { authStore } from "src/stores/index";
 import qs from "qs";
 
 export default class OnlineLearningReviewApi extends BaseApiService {
@@ -13,6 +12,14 @@ export default class OnlineLearningReviewApi extends BaseApiService {
     return this.post(
       `/studyAndTrain/teachingPlanManage/readAttachment`,
       qs.stringify({ attachmentId })
+    );
+  }
+
+  // 考试--开始考试/重考
+  public async startExam(cetpId: any) {
+    return this.post(
+      `/studyAndTrain/examManage/startExam`,
+      qs.stringify({ cetpId })
     );
   }
 }

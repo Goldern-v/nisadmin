@@ -16,8 +16,6 @@ export default observer(function OnlineLearning(props: Props) {
   // 初始化
   useEffect(() => {
     getNowHour();
-    onlineLearningModal.tpStatus = "tobeginAndongoing";
-    onlineLearningModal.teachingMethod = null;
     onlineLearningModal.init();
   }, [getId]);
 

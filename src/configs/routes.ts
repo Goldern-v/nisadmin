@@ -337,7 +337,13 @@ const TrainingInfoReview = lazy(() =>
 //学习培训-在线学习信息查看
 const OnlineLearningReview = lazy(() =>
   import(
-    "src/modules/continuingEdu/views/onlineLearning/view/OnlineLearningReview"
+    "src/modules/continuingEdu/views/onlineLearning/views/onlineLearningReview/OnlineLearningReview"
+  )
+);
+//学习培训-在线学习考试 练习
+const ExamOrExercise = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/onlineLearning/views/examOrExercise/ExamOrExercise"
   )
 );
 
@@ -426,6 +432,7 @@ const routes: RouteItem[] = [
   setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
   setLayout("/onlineLearningReview", OnlineLearningReview, layouts.MainLayout),
+  setLayout("/examOrExercise", ExamOrExercise, layouts.MainLayout),
 
   setLayout(
     "/socialpractiseResultReview",
@@ -676,9 +683,10 @@ const routes: RouteItem[] = [
   },
   {
     path: "/continuingEdu",
-    redirect: authStore.isOnlyInternsManage
-      ? "/continuingEdu/在线学习"
-      : "/continuingEdu/人员管理"
+    redirect:
+      appStore.HOSPITAL_ID === "wh"
+        ? "/continuingEdu/在线学习"
+        : "/continuingEdu/人员管理"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

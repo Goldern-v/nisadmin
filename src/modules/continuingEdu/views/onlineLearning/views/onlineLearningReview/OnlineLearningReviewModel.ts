@@ -21,7 +21,6 @@ class OnlineLearningReviewModel {
       message.error("缺少详情ID");
       return;
     }
-
     this.baseLoading = true;
     trainingInfoReviewService.getBaseInfo(id, 1).then(
       res => {

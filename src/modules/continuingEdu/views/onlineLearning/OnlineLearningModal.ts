@@ -59,7 +59,13 @@ class OnlineLearningModal {
     this.onload();
   }
 
+  clean() {
+    this.tpStatus = "tobeginAndongoing";
+    this.teachingMethod = null;
+  }
+
   init() {
+    this.clean();
     this.getTaskCount();
     this.onload();
   }

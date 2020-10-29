@@ -15,6 +15,11 @@ export default observer(function finishTaskProgress() {
   const { queryObj } = appStore;
   const { baseInfo } = onlineLearningReviewModel;
   const attachmentList = baseInfo.attachmentList || [];
+  let isExamOrExercise =
+    baseInfo.teachingMethodName === "考试" ||
+    baseInfo.teachingMethodName === "练习"
+      ? true
+      : false;
   const previewModal = createModal(PreviewModal);
 
   const showReview = (file: any) => {
@@ -30,7 +35,7 @@ export default observer(function finishTaskProgress() {
   const finishTaskFun = (attachmentId: any) => {
     onlineLearningReviewApi.readAttachment(attachmentId).then(res => {
       if (res.code === "200") {
-        onlineLearningReviewModel.getBaseInfo(appStore.queryObj.id);
+        onlineLearningReviewModel.getBaseInfo(queryObj.id);
       } else {
         message.error(`${res.desc}`);
       }
@@ -39,7 +44,7 @@ export default observer(function finishTaskProgress() {
 
   return (
     <Wrapper>
-      {attachmentList.length ? (
+      {attachmentList.length > 0 && (
         <div>
           <div className="title">完成进度</div>
           <div className="content-item-pannel">
@@ -64,17 +69,38 @@ export default observer(function finishTaskProgress() {
                   className="download-btn"
                   onClick={() => showReview(item)}
                 >
-                  {queryObj.teachingMethodName}
+                  {baseInfo.teachingMethodName}
                 </Button>
               </div>
             ))}
           </div>
         </div>
-      ) : (
+      )}
+      {!attachmentList.length && (
         <div className="no_conetent">
-          暂时没有需要{queryObj.teachingMethodName}的文件！
+          暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
       )}
+      {/* {isExamOrExercise && (
+        <div className="file-item">
+          <div className="file-title">
+            {baseInfo.teachingMethodName === "考试" ? "试卷" : "习题"}
+          </div>
+          <Button
+            className="download-btn"
+            onClick={() =>
+              appStore.history.push(`/examOrExercise?id=${queryObj.id}`)
+            }
+          >
+            {baseInfo.teachingMethodName}
+          </Button>
+        </div>
+      )}
+      {!attachmentList.length && !isExamOrExercise && (
+        <div className="no_conetent">
+          暂时没有需要{baseInfo.teachingMethodName}的文件！
+        </div>
+      )} */}
       <previewModal.Component />
     </Wrapper>
   );
