@@ -46,6 +46,10 @@ export default class BadEventsNewService extends BaseApiService {
   public async badEventHappenPercentExport(params: any) {
     return this.post(`/badEventM/badEventHappenPercent/export`, params);
   }
+  //获取病人信息
+  public async getPatientInfo(patientId: string | number, visitId: string | number) {
+    return this.get(`/patient/info/${patientId}/${visitId}`)
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()

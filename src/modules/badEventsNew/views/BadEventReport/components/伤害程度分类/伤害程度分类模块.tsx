@@ -19,16 +19,14 @@ export default observer(function 伤害程度分类模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-
-  const dataStr = `按护理不良事件上报指引，发生护理不良事件后对病人造成的影响程度和伤害分类，本季度共126次不良事件，造成伤害共107例，占84.9%，其中无伤害的19例，占15%，轻度伤害107例，占84.9%。`
+  let text = data ? data.text || "" : ""
 
   useEffect(() => { })
 
   return (
     <Wrapper>
       <TwoLevelTitle text={`2.不良事件伤害程度分类`} />
-      <div className="text-con">{dataStr}</div>
+      <div className="text-con">{text}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

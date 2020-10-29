@@ -19,16 +19,14 @@ export default observer(function 不良事件发生时段模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-
-  const dataStr = `本季度护理不良事件上报科室主要为检验科为主，共上报108例次，主要发生事件段在8:00-12:00时间段`
+  let text = data ? data.text || '' : ''
 
   useEffect(() => { })
 
   return (
     <Wrapper>
       <TwoLevelTitle text={`3.不良事件发生时段`} />
-      <div className="text-con">{dataStr}</div>
+      <div className="text-con">{text}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

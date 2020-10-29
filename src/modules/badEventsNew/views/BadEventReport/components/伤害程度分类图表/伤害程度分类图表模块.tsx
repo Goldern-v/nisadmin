@@ -21,7 +21,6 @@ export default observer(function 伤害程度分类图表模块(props: Props) {
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
 
   useEffect(() => { })
 

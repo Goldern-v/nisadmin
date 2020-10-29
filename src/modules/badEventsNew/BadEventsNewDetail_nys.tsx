@@ -48,6 +48,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
   //用于刷新iframe的时间戳
   const [timeSet, setTimeset] = useState(new Date().getTime())
+  //转科信息
+  const [zhuanKe, setZhuanKe] = useState(false)
+  const [patientInfoLoading, setPatientInfoLoading] = useState(false)
+  const [patientInfo, setPatientInfo] = useState({} as any)
 
   interface stringObj {
     [key: string]: string
@@ -74,7 +78,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName,
       badEventType: eventType,
       badEventCode,
-      operation: detailData.status == 'nurse_auditor' ? 'edit' : 'view',
+      operation: nextStep && nextStep.operatorStatus == 'nurse_auditor' ? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet
     }
@@ -142,6 +146,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           let paramMap = res[0].data.paramMap
           let timeData = res[1].data
           let { badEventCode, badEventName, eventType, deptCode } = data
+
           setDetailData({
             ...detailData,
             status: data.status || '',
@@ -240,8 +245,33 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
           setTimeLine(newTimeline)
           setTimeset(new Date().getTime())
+
+          //南医三压力性损伤事件
+          let patientId = paramMap[`${badEventCode}_patient_id`] || '1048880'
+          let visitId = paramMap[`${badEventCode}_visit_id`] || '1'
+          // if (badEventCode === 'badevent_nys_pressure' && patientId && visitId) 
+          let recordWardcode = data.wardCode
+          recordWardcode = '123456'
+          getZhunKeInfo(patientId, visitId, recordWardcode)
         }, err => setIframeLoading(false))
     }
+  }
+
+  //判断是否转科，确定对应的流转科室流程
+  const getZhunKeInfo = (patientId: string | number, visitId: string | number, reportWardCode: string | number) => {
+    setPatientInfoLoading(true)
+    api
+      .getPatientInfo(patientId, visitId)
+      .then(res => {
+        setPatientInfoLoading(false)
+        if (res.data) {
+          setPatientInfo(res.data)
+
+          //如果用户当前科室和报告科室不同，认为已转科
+          if (res.data.wardCode != reportWardCode)
+            setZhuanKe(true)
+        }
+      }, () => setPatientInfoLoading(false))
   }
 
   const handleOk = () => {
@@ -281,7 +311,27 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       <Button
         className='audit'
         type='primary'
-        onClick={(e) => setAuditModalvisible(true)}
+        onClick={(e) => {
+          if (
+            nextStep &&
+            nextStep.operatorStatus === 'department_back'
+          ) {
+
+            if (patientInfoLoading) {
+              message.warning('获取用户转科信息，请稍后再操作...')
+              return
+            }
+
+            if (!patientInfoLoading && Object.keys(patientInfo).length <= 0) {
+              message.error('用户转科信息获取失败')
+              return
+            }
+
+            setAuditModalvisible(true)
+          } else {
+            setAuditModalvisible(true)
+          }
+        }}
         disabled={btnDisable}>
         {btnText}
       </Button>
@@ -324,7 +374,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             返回
           </Button>
           {AuditBtn()}
-          {detailData.status == 'nurse_auditor' && (
+          {nextStep && nextStep.operatorStatus == 'nurse_auditor' && (
             <Button
               disabled={iframeLoading}
               className='audit'
@@ -397,6 +447,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         title={nextStep ? nextStep.operatorName : ''}
         id={props.match.params.id}
         reportDept={reportDept}
+        isZhuanke={zhuanKe}
+        patientInfo={patientInfo}
         onCancel={handleCancel}
       />
     </Wrapper>

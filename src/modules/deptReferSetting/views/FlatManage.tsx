@@ -123,13 +123,13 @@ export default observer(function DeptFileShare() {
     let typeArr = record.filePath.split('.')
 
     PreviewModalWrapper.show({
-      path: `/crNursing/asset/flatManageSetting${record.filePath}`,
+      path: `/crNursing${record.filePath}`,
       title: record.manageType || '文件预览',
     })
   }
 
   const handleDownload = (record: any) => {
-    service.commonApiService.getFileAndDown(`/crNursing/asset/flatManageSetting${record.filePath}`, record.fileName, true)
+    service.commonApiService.getFileAndDown(`/crNursing${record.filePath}`, record.fileName, true)
   }
 
   const reUpload = (record: any) => {

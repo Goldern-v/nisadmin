@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
@@ -29,15 +29,15 @@ export default function 伤害程度分类图表弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '时间',
+      title: '伤害程度',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.eventDate}
+            value={record.injuryType}
             onChange={(e) => {
-              record.eventDate = e.target.value
+              record.injuryType = e.target.value
               setData(cloneData)
             }}
           />
@@ -46,15 +46,14 @@ export default function 伤害程度分类图表弹窗(props: Props) {
       width: 100
     },
     {
-      title: `当事人`,
+      title: '数量',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventEmpNames}
-            onChange={(e) => {
-              record.eventEmpNames = e.target.value
+          <InputNumber
+            style={{ width: '100%' }}
+            value={record.injuryType}
+            onChange={(val: any) => {
+              record.injuryType = val
               setData(cloneData)
             }}
           />
@@ -62,61 +61,6 @@ export default function 伤害程度分类图表弹窗(props: Props) {
       },
       width: 100
     },
-    {
-      title: `事情种类`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Select
-            value={record.eventType}
-            onChange={(value: any) => {
-              record.eventType = value
-              setData(cloneData)
-            }}
-          >
-
-          </Select>
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情简要经过`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.briefCourseEvent}
-            onChange={(e) => {
-              record.briefCourseEvent = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `后果`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.result}
-            onChange={(e) => {
-              record.result = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-
     {
       title: '操作',
       key: '操作',
@@ -141,10 +85,8 @@ export default function 伤害程度分类图表弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      injuryType: '',
+      happenNum: '',
     })
     setData(cloneData)
   }

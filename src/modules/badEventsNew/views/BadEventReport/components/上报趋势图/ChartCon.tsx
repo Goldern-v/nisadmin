@@ -11,22 +11,6 @@ export interface Props {
   data: any
 }
 
-const sourceData = [
-  { month: '第一季度', Tokyo: 7.0, London: 3.9 },
-  { month: '第二季度', Tokyo: 6.9, London: 4.2 },
-  { month: '第三季度', Tokyo: 9.5, London: 5.7 },
-  { month: '第四季度', Tokyo: 14.5, London: 8.5 },
-]
-
-const dv = new DataSet.View().source(sourceData);
-dv.transform({
-  type: 'fold',
-  fields: ['Tokyo', 'London'],
-  key: 'year',
-  value: 'happenNum',
-});
-const _data = dv.rows;
-
 const scale = [{
   dataKey: 'month',
   min: 0,
@@ -62,8 +46,6 @@ export default function ChartCon(props: Props) {
       })
     }
   }
-
-  console.log(chartDataSet, JSON.parse(JSON.stringify(data)))
 
   const dv = new DataSet.View().source(chartDataSet);
 

@@ -15,7 +15,7 @@ let zipPath = `publish/护理管理_${hospitalName}_${moment().format(
 console.log(process.env.REACT_APP_ONLY_BAD_EVENT)
 
 if (process.env.REACT_APP_ONLY_BAD_EVENT)
-  zipPath = `publish/不良事件_${hospitalName}_${moment().format(
+  zipPath = `publish/不良事件审核_${hospitalName}_${moment().format(
     "YYYY_MM_DD_HH_mm"
   )}.zip`;
 

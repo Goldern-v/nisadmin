@@ -189,7 +189,70 @@ class BadEventReportModel {
     this.getSectionData('上报情况比较图表')!.list = beReportSituation.list || []
 
     this.getSectionData('不良事件分类比较')!.list = this.allData.beClassifyContrastList || []
+
+    const beInjuryDegree = this.allData.beInjuryDegreeDto
+
+    let beCount = beInjuryDegree.beCount || 0
+    //造成伤害例数，比例
+    let causeInjury = beInjuryDegree.dataMap.causeInjury || 0
+    let causeInjuryRate = beInjuryDegree.dataMap.causeInjuryRate || '0%'
+    //轻度伤害例数，比例
+    let minorInjury = beInjuryDegree.dataMap.minorInjury || 0
+    let minorInjuryRate = beInjuryDegree.dataMap.minorInjuryRate || '0%'
+    //无伤害伤害例数，比例
+    let noInjury = beInjuryDegree.dataMap.noInjury || 0
+    let noInjuryRate = beInjuryDegree.dataMap.noInjuryRate || '0%'
+    //伤害程度分类描述
+    let beInjuryDegreeDesc = beInjuryDegree.reportDesc || ''
+    //伤害程度列表
+    let beInjuryDegreeList = beInjuryDegree.beInjuryDegreeList || []
+
+    if (beInjuryDegreeDesc) {
+      this.getSectionData('伤害程度分类')!.text = beInjuryDegreeDesc
+    } else {
+      this.getSectionData('伤害程度分类')!.text = `按护理不良事件上报指引，发生护理不良事件后对病人造成的影响程度和伤害分类，本月共${beCount}次不良事件，造成伤害共${causeInjury}例，占${causeInjuryRate}，其中无伤害的${noInjury}例，占${noInjuryRate}，轻度伤害${minorInjury}例，占${minorInjuryRate}。`
+    }
+
+    this.getSectionData('伤害程度分类图表')!.list = beInjuryDegreeList
+
+    //发生时间段
+    let beHappenTime = this.allData.beHappenTimeDto
+    let beHappenTimeDesc = beHappenTime.reportDesc || ''
+    if (!beHappenTimeDesc) {
+      beHappenTimeDesc = `本月护理不良事件上报科室主要${beHappenTime.wardName || '...'}为主，共上报${beHappenTime.happenNum || '...'}例次，主要发生事件段在${beHappenTime.timeSection || '...'}时间段`
+    }
+    this.getSectionData('不良事件发生时段').text = beHappenTimeDesc
+
+
+    //发生科室分布
+    let beDeptDistribution = this.allData.beDeptDistributionDto
+    let beDeptDistributionList = beDeptDistribution.beDeptDistributionList || []
+    let beDeptDistributionDesc = beDeptDistribution.reportDesc || ''
+    if (!beDeptDistributionDesc) {
+      beDeptDistributionDesc = '按发生不良事件的科室进行分类，'
+      let moreThan5WardName = beDeptDistribution.moreThan5WardName.join('、') || ''
+      if (moreThan5WardName.length > 0) {
+        beDeptDistributionDesc += `其中大于5例的有${moreThan5WardName || ''}等科室。`
+      } else {
+        beDeptDistributionDesc += '没有大于5例的科室。'
+      }
+    }
+
+    this.getSectionData('科室分布')!.text = beDeptDistributionDesc
+
+    this.getSectionData('科室分布图表')!.list = beDeptDistributionList
+
+    //相关人员
+    let beRelevantPerson = this.allData.beRelevantPersonDto
+    let beRelevantPersonDesc = beRelevantPerson.reportDesc
+    if (!beRelevantPersonDesc) {
+      beRelevantPersonDesc = beRelevantPerson.rePerson
+    }
+    this.getSectionData('相关人员')!.text = beRelevantPersonDesc
+    //发生阶段及可能原因
+    this.getSectionData('发生阶段及可能原因')
   }
+
   async init(query?: any) {
     await this.initData(query)
     this.baseModal = createModal(BaseModal)

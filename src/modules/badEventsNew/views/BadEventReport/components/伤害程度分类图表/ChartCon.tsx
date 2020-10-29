@@ -11,13 +11,6 @@ export interface Props {
   list: DeptItem[]
 }
 
-const data = [
-  { range: '轻度伤害', rangeValue: 38 },
-  { range: '中度伤害', rangeValue: 52 },
-  { range: '重度伤害', rangeValue: 61 },
-  { range: '极重度伤害', rangeValue: 145 },
-]
-
 export default function ChartCon(props: Props) {
   let { list } = props
   const { chartColors } = badEventReportModel
@@ -38,11 +31,11 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper className="shang-hai-cheng-du-fen-lei chart-con">
-      <Chart forceFit height={400} data={data}>
+      <Chart forceFit height={400} data={list}>
         <Tooltip />
         <Axis />
         {/* <Legend /> */}
-        <Bar position="range*rangeValue" color={["range", chartColors]} />
+        <Bar position="injuryType*happenNum" color={["injuryType", chartColors]} />
       </Chart>
       <img src={dataUrl} className="chart-con-img" />
     </Wrapper>

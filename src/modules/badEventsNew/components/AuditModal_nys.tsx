@@ -26,10 +26,12 @@ export interface Props {
   eventCode: string //不良事件类型代码
   reportDept: any //上报人科室名称代码
   id: any //不良事件id
+  isZhuanke?: boolean //是否转科
+  patientInfo?: any //病人信息
 }
 
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign } = props
+  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign, isZhuanke, patientInfo } = props
   //用于操作和提交的不良事件表单数据
   let initFormMap: any = {}
   const [formMap, setFormMap] = useState(initFormMap)
@@ -48,6 +50,7 @@ export default observer(function AduitModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
+      console.log(isZhuanke, patientInfo)
       let user = authStore.user
       if (user)
         setInstance({
