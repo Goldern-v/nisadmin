@@ -1,5 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import qs from "qs";
 
 export default class NursingChargesApi extends BaseApiService {
   //获取全部科室单元

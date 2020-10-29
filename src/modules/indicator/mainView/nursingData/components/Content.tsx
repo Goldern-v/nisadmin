@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { observer } from "src/vendors/mobx-react-lite";
-import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Input, Spin } from "src/vendors/antd";
 import { nursingDataModal } from "../NursingDataModal";
 

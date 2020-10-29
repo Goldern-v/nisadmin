@@ -1,7 +1,6 @@
 import { observable, computed } from "mobx";
 import { nursingDataApi } from "./api/NursingDataApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
-import { fileDownload } from "src/utils/file/file";
 
 class NursingDataModal {
   @observable public selectedDeptType = ""; //科室
@@ -104,13 +103,6 @@ class NursingDataModal {
       this.dataLoading = false;
       this.dataList = res.data;
     });
-  }
-
-  //导出Excel
-  export() {
-    // nursingDataApi.exportData(this.postObj).then(res => {
-    //   fileDownload(res);
-    // });
   }
 
   async init() {

@@ -1,12 +1,11 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import qs from "qs";
 
 export default class NursingDataApi extends BaseApiService {
   //获取查房科室
   public getNursingUnit(nursingUnit: any) {
     return this.get(`/user/${nursingUnit}`);
   }
-  // nursingUnitPub
+
   //查询数据
   public getData(obj: any) {
     return this.post(`/nursingQuality/countAll`, obj);

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";

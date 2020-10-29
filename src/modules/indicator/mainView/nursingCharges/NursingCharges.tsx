@@ -1,15 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { TabledCon } from "src/components/BaseTable";
 import { nursingChargesModal } from "./NursingChargesModal";
-import {
-  DatePicker,
-  Select,
-  Button,
-  message as Message
-} from "src/vendors/antd";
-import BaseTable, { DoCon } from "src/components/BaseTable";
+import { DatePicker, Select, Button } from "src/vendors/antd";
+import BaseTable from "src/components/BaseTable";
 interface Props {
   getTitle: any;
 }
@@ -33,9 +27,6 @@ export default observer(function NursingCharges(props: Props) {
         width: item === "序号" ? 70 : 200,
         align: "center",
         render: (text: any, record: any, idx: any) => {
-          // for (let i in record) {
-          //   return record[index];
-          // }
           return record[index];
         }
       });
@@ -45,7 +36,7 @@ export default observer(function NursingCharges(props: Props) {
   return (
     <Wrapper>
       <PageHeader>
-        <LeftIcon>{}</LeftIcon>
+        <LeftIcon>{getTitle}</LeftIcon>
         <RightIcon>
           <span>开始时间：</span>
           <DatePicker.RangePicker
@@ -167,6 +158,9 @@ const PageHeader = styled.div`
 const LeftIcon = styled.div`
   padding: 0;
   float: left;
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
 `;
 
 const RightIcon = styled.div`
