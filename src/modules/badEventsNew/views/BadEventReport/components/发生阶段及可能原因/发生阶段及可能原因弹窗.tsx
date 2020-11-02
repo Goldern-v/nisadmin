@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
@@ -29,77 +29,15 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '时间',
+      title: '事件类型',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.eventDate}
-            onChange={(e) => {
-              record.eventDate = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `当事人`,
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventEmpNames}
-            onChange={(e) => {
-              record.eventEmpNames = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情种类`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Select
             value={record.eventType}
-            onChange={(value: any) => {
-              record.eventType = value
-              setData(cloneData)
-            }}
-          >
-
-          </Select>
-          // <input
-          //   type='text'
-          //   className='cell-input'
-          //   value={record.eventType}
-          //   onChange={(e) => {
-          //     record.eventType = e.target.value
-          //     setData(cloneData)
-          //   }}
-          // />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情简要经过`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.briefCourseEvent}
             onChange={(e) => {
-              record.briefCourseEvent = e.target.value
+              record.eventType = e.target.value
               setData(cloneData)
             }}
           />
@@ -108,16 +46,14 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       width: 100
     },
     {
-      title: `后果`,
-      className: 'cell-input',
+      title: '数量',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.result}
-            onChange={(e) => {
-              record.result = e.target.value
+          <InputNumber
+            style={{ width: '100%' }}
+            value={record.happenNum}
+            onChange={(val: any) => {
+              record.happenNum = val
               setData(cloneData)
             }}
           />
@@ -125,7 +61,36 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       },
       width: 100
     },
-
+    {
+      title: '发生阶段',
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <Input.TextArea
+            className='cell-input'
+            value={record.happenStage}
+            onChange={(e) => {
+              record.happenStage = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      }
+    },
+    {
+      title: '可能原因',
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <Input.TextArea
+            className='cell-input'
+            value={record.happenReason}
+            onChange={(e) => {
+              record.happenReason = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      }
+    },
     {
       title: '操作',
       key: '操作',

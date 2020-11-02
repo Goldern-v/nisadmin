@@ -250,7 +250,7 @@ class BadEventReportModel {
     }
     this.getSectionData('相关人员')!.text = beRelevantPersonDesc
     //发生阶段及可能原因
-    this.getSectionData('发生阶段及可能原因')
+    this.getSectionData('发生阶段及可能原因')!.list = this.allData.beDeptDistributionList || []
   }
 
   async init(query?: any) {

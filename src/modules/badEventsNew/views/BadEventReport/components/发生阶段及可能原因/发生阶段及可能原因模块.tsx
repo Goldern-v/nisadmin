@@ -21,19 +21,15 @@ export default observer(function 发生阶段及可能原因模块(props: Props)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
 
-  list = [
-    { title: '输血事件110件', stage: '以验血错误为主80件，备血错误11件,传送错误8件', reason: '以与人员个人因素相关为主，表现为人员技术不当，医嘱书写模糊难辨识' }
-  ]
-
   useEffect(() => { })
 
   return (
     <Wrapper>
       <OneLevelTitle text={`三、发生阶段及可能原因`} />
       {list.map((item: any, idx: number) => <div key={idx} className="list-item">
-        <TwoLevelTitle text={`${idx + 1}.${item.title || ''}`} />
-        <div className="text-con">1) 错误发生阶段: {item.stage || ''}</div>
-        <div className="text-con">2) 发生原因: {item.reason || ''}</div>
+        <TwoLevelTitle text={`${idx + 1}.${item.eventType || ''}${item.happenNum || 0}件`} />
+        <div className="text-con">1) 错误发生阶段: {item.happenStage || ''}</div>
+        <div className="text-con">2) 发生原因: {item.happenReason || ''}</div>
       </div>)}
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
@@ -43,7 +39,7 @@ export default observer(function 发生阶段及可能原因模块(props: Props)
   )
 })
 const Wrapper = styled.div`
-  min-height: 60px;
+  min-height: 120px;
   padding: 5px 0;
   position: relative;
 

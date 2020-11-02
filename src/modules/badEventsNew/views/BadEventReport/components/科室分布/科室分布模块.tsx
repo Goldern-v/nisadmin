@@ -19,16 +19,14 @@ export default observer(function 科室分布模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-
-  const dataStr = `按发生不良事件的科室进行分类，其中大于5例的有新生儿、ICU、儿内、产科、普外、呼吸、健康体检中心、内分泌、感染等科室。`
+  let text = data ? data.text || '' : ''
 
   useEffect(() => { })
 
   return (
     <Wrapper>
       <TwoLevelTitle text={`4.不良事件科室分布`} />
-      <div className="text-con">{dataStr}</div>
+      <div className="text-con">{text}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

@@ -19,16 +19,14 @@ export default observer(function 相关人员模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-
-  const dataStr = `以护理人员为主，主要表现在护士、护师。`
+  let text = data ? data.text || '' : ''
 
   useEffect(() => { })
 
   return (
     <Wrapper>
       <TwoLevelTitle text={`5.不良事件相关人员`} />
-      <div className="text-con">{dataStr}</div>
+      <div className="text-con">{text}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑

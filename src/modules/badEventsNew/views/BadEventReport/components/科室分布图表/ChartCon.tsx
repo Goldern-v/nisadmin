@@ -5,7 +5,7 @@ import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { badEventReportModel } from '../../BadEventReportModel'
 import { Chart, Tooltip, Axis, Legend, Bar } from 'viser-react'
-const DataSet = require('@antv/data-set')
+// const DataSet = require('@antv/data-set')
 
 export interface Props {
   list: DeptItem[]
@@ -28,13 +28,6 @@ const label = {
   }
 } as any
 
-const data = [
-  { range: '轻度伤害', rangeValue: 38 },
-  { range: '中度伤害', rangeValue: 52 },
-  { range: '重度伤害', rangeValue: 61 },
-  { range: '极重度伤害', rangeValue: 145 },
-]
-
 export default function ChartCon(props: Props) {
   let { list } = props
   const { chartColors } = badEventReportModel
@@ -55,19 +48,20 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper className="ke-shi-fen-bu-tu chart-con">
-      <Chart forceFit height={400} data={data}>
+      <Chart forceFit height={400} data={list}>
         <Tooltip />
-        <Axis label={label} dataKey="range" />
+        <Axis label={label} dataKey="wardName" />
         {/* <Legend /> */}
         <Bar
-          position="range*rangeValue"
-          color={["range", chartColors]}
-          label="rangeValue" />
+          position="wardName*happenNum"
+          color={["wardName", chartColors]}
+          label="happenNum" />
       </Chart>
       <img src={dataUrl} className="chart-con-img" />
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div`
   margin: 5px 50px;
   table {
