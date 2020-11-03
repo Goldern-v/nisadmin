@@ -78,6 +78,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     (item: any) => item.id == selectedBlockId
   );
 
+  /**表格高度控制 */
+  const [surplusHeight, setSurplusHeight] = useState(280)
+
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal);
 
@@ -384,6 +387,13 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     selectedBlockId
   ]);
 
+  useLayoutEffect(() => {
+    let tableHead: any = document.querySelector(".ant-table-thead");
+    if (tableHead) {
+      setSurplusHeight(tableHead.offsetHeight + 180);
+    }
+  });
+
   return (
     <Wrapper>
       <PageHeader>
@@ -457,7 +467,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource.filter((item: any) => item)}
               columns={columns}
-              surplusHeight={280}
+              surplusHeight={surplusHeight}
               surplusWidth={300}
               pagination={{
                 onChange: (pageIndex: number) => {

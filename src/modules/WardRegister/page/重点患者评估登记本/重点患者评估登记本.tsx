@@ -403,6 +403,42 @@ export default observer(function 重点患者评估登记本(props: Props) {
     return "";
   };
 
+  //实习进修新职工登记 计算综合成绩
+  const colcTotalScore = (record: any, item: any) => {
+    let sumItemCodeArr = ['理论成绩', '操作成绩', '实践能力', '平时表现']
+    let percentArr = [0.3, 0.3, 0.2, 0.2]
+    let needColc = false
+
+    for (let i = 0; i < sumItemCodeArr.length; i++) {
+      if (item.itemCode.indexOf(sumItemCodeArr[i]) >= 0) {
+        needColc = true
+        break
+      }
+    }
+
+    if (needColc) {
+      let keys = Object.keys(record)
+      let totalSum = 0
+
+      for (let i = 0; i < sumItemCodeArr.length; i++) {
+        let itemCodePart = sumItemCodeArr[i]
+        let score = 0
+        let target0 = keys.find((key) => {
+          return key.indexOf(itemCodePart) >= 0 &&
+            key.indexOf('综合成绩') < 0
+        })
+        if (target0) score = Number(record[target0])
+
+        if (!isNaN(score)) totalSum += score * percentArr[i]
+      }
+
+      let sunTarget = '综合成绩（理论成绩30%+操作成绩30%+实践能力20%+平时表现20%）'
+
+      record[sunTarget] = (Math.round(totalSum * 100) / 100).toString()
+      updateDataSource()
+    }
+  }
+
   // const isEndTimeQCRG_12_2 = (record: any, item: any) => {
   //   const { itemCode, itemType } = item
 
@@ -822,6 +858,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       updateDataSource()
                     }
                   }
+                  if (registerCode == 'QCRG_19_2')
+                    colcTotalScore(record, item)
                 },
                 selectAll: multiple,
               }}
