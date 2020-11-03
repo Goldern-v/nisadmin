@@ -32,9 +32,8 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       title: '事件类型',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
-            className='cell-input'
+          <Input.TextArea
+            autosize={{ minRows: 1 }}
             value={record.eventType}
             onChange={(e) => {
               record.eventType = e.target.value
@@ -66,7 +65,7 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       render(text: any, record: DeptItem, index: number) {
         return (
           <Input.TextArea
-            className='cell-input'
+            autosize={{ minRows: 1 }}
             value={record.happenStage}
             onChange={(e) => {
               record.happenStage = e.target.value
@@ -81,7 +80,7 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
       render(text: any, record: DeptItem, index: number) {
         return (
           <Input.TextArea
-            className='cell-input'
+            autosize={{ minRows: 1 }}
             value={record.happenReason}
             onChange={(e) => {
               record.happenReason = e.target.value
@@ -115,10 +114,11 @@ export default function 发生阶段及可能原因弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      reportId: report.id,
+      happenReason: '',
+      happenStage: '',
+      happenNum: '',
+      eventType: ''
     })
     setData(cloneData)
   }

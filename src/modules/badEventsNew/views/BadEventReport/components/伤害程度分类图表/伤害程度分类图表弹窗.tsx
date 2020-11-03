@@ -51,9 +51,9 @@ export default function 伤害程度分类图表弹窗(props: Props) {
         return (
           <InputNumber
             style={{ width: '100%' }}
-            value={record.injuryType}
+            value={record.happenNum}
             onChange={(val: any) => {
-              record.injuryType = val
+              record.happenNum = val
               setData(cloneData)
             }}
           />
@@ -84,6 +84,7 @@ export default function 伤害程度分类图表弹窗(props: Props) {
 
   const addItem = () => {
     cloneData.list.push({
+      reportId: report.id,
       id: '',
       injuryType: '',
       happenNum: '',

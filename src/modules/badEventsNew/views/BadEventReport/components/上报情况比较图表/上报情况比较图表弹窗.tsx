@@ -103,6 +103,7 @@ export default function 上报情况比较图表弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
+      reportId: report.id,
       eventType: '',
       lastNum: '',
       curNum: '',

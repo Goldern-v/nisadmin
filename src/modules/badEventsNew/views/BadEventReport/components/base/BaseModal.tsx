@@ -29,24 +29,226 @@ export default observer(function BaseModal(props: Props) {
   const [data, setData]: any = useState(null)
 
   const onSave = async () => {
+    const successCallback = () => {
+      message.success('保存成功')
+      onCancel()
+    }
+
     if (sectionData.sectionId == '报告名称') {
-      console.log('onOk', data.text)
-      // badEventReportService.updateReportName(data.text).then((res) => {
-      //   badEventReportModel.setSectionData(sectionData.sectionId, {
-      //     text: res.data.reportName
-      //   })
-      //   message.success('保存成功')
-      //   onCancel()
-      // })
+      badEventReportService
+        .updateReportName(data.text)
+        .then((res) => {
+          badEventReportModel.report.name = data.text
+
+          badEventReportModel
+            .setSectionData(
+              sectionData.sectionId,
+              {
+                text: data.text
+              }
+            )
+
+          successCallback()
+        })
     } else if (sectionData.sectionId == '不良事件分类') {
-      console.log(data.list)
-      // badEventReportService.updateWorkScheduleList(data.list).then((res) => {
-      //   badEventReportModel.setSectionData(sectionData.sectionId, {
-      //     list: res.data
-      //   })
-      //   message.success('保存成功')
-      //   onCancel()
-      // })
+
+      let reqData = JSON.stringify(data.list)
+      badEventReportService
+        .updateReport({
+          reportType: 'be_total_happen',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '上报例数比较') {
+      let reqData = JSON.stringify(data.list)
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_contrast_before',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '上报趋势图') {
+      let reqData = JSON.stringify(data.obj)
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_trend_chart',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              obj: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '上报情况比较') {
+
+      badEventReportService
+        .updateReportDesc({
+          reportType: 'be_report_situation',
+          reportDesc: data.text
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              text: data.text
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '上报情况比较图表') {
+      let reqData = JSON.stringify(data.list)
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_report_situation',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '上报情况比较图表') {
+      let reqData = JSON.stringify(data.list)
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_classify_contrast',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '伤害程度分类') {
+      badEventReportService
+        .updateReportDesc({
+          reportType: 'be_injury_degree',
+          reportDesc: data.text
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              text: data.text
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '伤害程度分类图表') {
+      let reqData = JSON.stringify({ beInjuryDegreeList: data.list })
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_injury_degree',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(JSON.stringify(data.list))
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '不良事件发生时段') {
+      badEventReportService
+        .updateReportDesc({
+          reportType: 'be_happen_time',
+          reportDesc: data.text
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              text: data.text
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '科室分布') {
+      badEventReportService
+        .updateReportDesc({
+          reportType: 'be_dept_distribution',
+          reportDesc: data.text
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              text: data.text
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '科室分布图表') {
+      let reqData = JSON.stringify({ beDeptDistributionList: data.list })
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_dept_distribution',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(JSON.stringify(data.list))
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '相关人员') {
+      badEventReportService
+        .updateReportDesc({
+          reportType: 'be_relevant_person',
+          reportDesc: data.text
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              text: data.text
+            })
+
+          successCallback()
+        })
+    } else if (sectionData.sectionId == '发生阶段及可能原因') {
+      let reqData = JSON.stringify(data.list)
+
+      badEventReportService
+        .updateReport({
+          reportType: 'be_happen_reason',
+          data: reqData
+        })
+        .then(res => {
+          badEventReportModel
+            .setSectionData(sectionData.sectionId, {
+              list: JSON.parse(reqData)
+            })
+
+          successCallback()
+        })
     }
   }
 

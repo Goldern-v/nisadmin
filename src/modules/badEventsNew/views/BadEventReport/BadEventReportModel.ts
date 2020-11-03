@@ -191,17 +191,18 @@ class BadEventReportModel {
     this.getSectionData('不良事件分类比较')!.list = this.allData.beClassifyContrastList || []
 
     const beInjuryDegree = this.allData.beInjuryDegreeDto
+    const beInjuryDegreeDataMap = beInjuryDegree.DataMap || {}
 
     let beCount = beInjuryDegree.beCount || 0
     //造成伤害例数，比例
-    let causeInjury = beInjuryDegree.dataMap.causeInjury || 0
-    let causeInjuryRate = beInjuryDegree.dataMap.causeInjuryRate || '0%'
+    let causeInjury = beInjuryDegreeDataMap?.causeInjury || 0
+    let causeInjuryRate = beInjuryDegreeDataMap?.causeInjuryRate || '0%'
     //轻度伤害例数，比例
-    let minorInjury = beInjuryDegree.dataMap.minorInjury || 0
-    let minorInjuryRate = beInjuryDegree.dataMap.minorInjuryRate || '0%'
+    let minorInjury = beInjuryDegreeDataMap?.minorInjury || 0
+    let minorInjuryRate = beInjuryDegreeDataMap?.minorInjuryRate || '0%'
     //无伤害伤害例数，比例
-    let noInjury = beInjuryDegree.dataMap.noInjury || 0
-    let noInjuryRate = beInjuryDegree.dataMap.noInjuryRate || '0%'
+    let noInjury = beInjuryDegreeDataMap?.noInjury || 0
+    let noInjuryRate = beInjuryDegreeDataMap?.noInjuryRate || '0%'
     //伤害程度分类描述
     let beInjuryDegreeDesc = beInjuryDegree.reportDesc || ''
     //伤害程度列表
@@ -228,7 +229,7 @@ class BadEventReportModel {
     let beDeptDistribution = this.allData.beDeptDistributionDto
     let beDeptDistributionList = beDeptDistribution.beDeptDistributionList || []
     let beDeptDistributionDesc = beDeptDistribution.reportDesc || ''
-    if (!beDeptDistributionDesc) {
+    if (!beDeptDistributionDesc && beDeptDistribution.moreThan5WardName) {
       beDeptDistributionDesc = '按发生不良事件的科室进行分类，'
       let moreThan5WardName = beDeptDistribution.moreThan5WardName.join('、') || ''
       if (moreThan5WardName.length > 0) {
@@ -250,7 +251,7 @@ class BadEventReportModel {
     }
     this.getSectionData('相关人员')!.text = beRelevantPersonDesc
     //发生阶段及可能原因
-    this.getSectionData('发生阶段及可能原因')!.list = this.allData.beDeptDistributionList || []
+    this.getSectionData('发生阶段及可能原因')!.list = this.allData.beHappenReasonList || []
   }
 
   async init(query?: any) {

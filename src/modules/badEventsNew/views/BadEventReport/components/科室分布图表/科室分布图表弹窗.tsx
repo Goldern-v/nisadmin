@@ -51,7 +51,7 @@ export default function 科室分布图表弹窗(props: Props) {
         return (
           <InputNumber
             style={{ width: '100%' }}
-            value={record.eventDate}
+            value={record.happenNum}
             onChange={(val: any) => {
               record.happenNum = val
               setData(cloneData)
@@ -85,10 +85,9 @@ export default function 科室分布图表弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      reportId: report.id,
+      wardName: '',
+      happenNum: '',
     })
     setData(cloneData)
   }

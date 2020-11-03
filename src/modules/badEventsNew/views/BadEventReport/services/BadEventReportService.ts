@@ -7,66 +7,37 @@ export default class BadEventReportService extends BaseApiService {
     return this.post(`/beReport/list/${obj.id}`)
   }
   public deleteReport(obj?: any) {
-    return this.post(`/qcAnalysis/wn/deleteReport`, appStore.queryObj)
+    let { id } = badEventReportModel.report
+    return this.get(`/beReport/deleteReport/${id}`)
   }
   public publishReport(obj?: any) {
-    return this.post(`/qcAnalysis/wn/publish`, appStore.queryObj)
+    let { id } = badEventReportModel.report
+    return this.post(`/beReport/release/${id}`)
   }
   public cancelPublishReport(obj?: any) {
     return this.post(`/qcAnalysis/wn/cancelPublish`, appStore.queryObj)
   }
 
   /** 更新报告名称 */
-  public updateReportName(reportName?: any) {
-    let { year, month, wardCode } = badEventReportModel.report
+  public updateReportName(name?: any) {
+    let { id } = badEventReportModel.report
     let obj = {
-      year,
-      month,
-      wardCode,
-      reportName
+      id,
+      name
     }
-    return this.post(`/qcAnalysis/wn/update/report`, obj)
+    return this.post(`/beReport/updateInstance`, obj)
   }
 
-  /** 更新护理工作计划 */
-  public updateWorkScheduleList(itemList?: any) {
-    let obj = {
-      ...badEventReportModel.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/wn/update/workScheduleList`, obj)
+  /**更新报告 */
+  public updateReport(obj: any) {
+    let { id } = badEventReportModel.report
+    return this.post('/beReport/updateReport', { ...obj, reportId: id })
   }
-  /** 更新病区检查 */
-  public updateWardCheckList(itemList?: any) {
-    let obj = {
-      ...badEventReportModel.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/wn/update/wardCheckList`, obj)
-  }
-  /** 更新护士会议 */
-  public updateNurseMeetingList(itemList?: any) {
-    let obj = {
-      ...badEventReportModel.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/wn/update/nurseMeetingList`, obj)
-  }
-  /** 更新不良事件 */
-  public updateBadEventList(itemList?: any) {
-    let obj = {
-      ...badEventReportModel.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/wn/update/badEventList`, obj)
-  }
-  /** 更新人力资源调配 */
-  public updateHrAllocationList(itemList?: any) {
-    let obj = {
-      ...badEventReportModel.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/wn/update/hrAllocationList`, obj)
+
+  /**编辑分析报告文字描述 */
+  public updateReportDesc(obj: any) {
+    let { id } = badEventReportModel.report
+    return this.post('/beReport/updateReportDesc', { ...obj, reportId: id })
   }
 }
 

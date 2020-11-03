@@ -86,11 +86,10 @@ export default function 不良事件分类比较弹窗(props: Props) {
 
   const addItem = () => {
     cloneData.list.push({
+      reportId: report.id,
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      eventType: '',
+      happenNum: '',
     })
     setData(cloneData)
   }

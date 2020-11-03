@@ -16,7 +16,7 @@ export interface Props {
 
 export default function 上报例数比较弹窗(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || {
+  let cloneData: any = cloneJson(data.obj ? data : {
     obj: {
       beforeYearList: [],
       lastYearList: [],
@@ -31,7 +31,7 @@ export default function 上报例数比较弹窗(props: Props) {
   for (let i = 0; i < keyArr.length; i++) {
     let rowArr = cloneData.obj[keyArr[i]]
 
-    if (rowArr) {
+    if (rowArr && rowArr.length > 0) {
       let keysVal = rowArr[0].timeSection.split('年')[0] + '年'
       keys[keyArr[i]] = keysVal
       let rowObj = {} as any

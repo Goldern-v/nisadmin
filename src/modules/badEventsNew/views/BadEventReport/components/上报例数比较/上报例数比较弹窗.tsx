@@ -40,7 +40,6 @@ export default function 上报例数比较弹窗(props: Props) {
     },
     {
       title: '不良事件例次',
-      className: "cell-input",
       dataIndex: 'happenNum',
       render(text: any, record: any, index: number) {
         return <InputNumber
@@ -62,8 +61,8 @@ export default function 上报例数比较弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return <Input
           value={text}
-          onChange={(val) => {
-            cloneData.list[index].contrastPercent = val
+          onChange={(e: any) => {
+            cloneData.list[index].contrastPercent = e.target.value
             setData(cloneData)
           }} />
       },
@@ -74,9 +73,7 @@ export default function 上报例数比较弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
+      reportId: report.id,
       contrastPercent: '',
       happenNum: '',
       timeSection: '',

@@ -33,6 +33,15 @@ export default function 不良事件分类弹窗(props: Props) {
       title: '事件分类',
       dataIndex: 'eventType',
       align: 'left',
+      render: (text: any, record: any, idx: number) => {
+        return <input
+          className='cell-input'
+          value={text}
+          onChange={(e: any) => {
+            cloneData.list[idx].eventType = e.target.value
+            setData(cloneData)
+          }} />
+      }
     },
     {
       title: '发生次数',
@@ -74,9 +83,7 @@ export default function 不良事件分类弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
+      reportId: report.id,
       eventType: '',
       happenNum: ''
     })
@@ -86,9 +93,9 @@ export default function 不良事件分类弹窗(props: Props) {
   return (
     <Wrapper>
       <div className='button-con'>
-        {/* <Button icon='plus' size='small' onClick={addItem}>
+        <Button icon='plus' size='small' onClick={addItem}>
           添加
-        </Button> */}
+        </Button>
       </div>
 
       <BaseTable

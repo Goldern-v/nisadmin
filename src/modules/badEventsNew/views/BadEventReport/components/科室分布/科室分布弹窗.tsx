@@ -13,7 +13,7 @@ export default function 科室分布弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let text = data ? data.text : ''
 
-  const updateData = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateData = (e: any) => {
     if (setData) {
       setData({
         text: e.target.value
@@ -23,7 +23,7 @@ export default function 科室分布弹窗(props: Props) {
   useEffect(() => { }, [])
   return (
     <Wrapper>
-      <Input value={text} onChange={updateData} />
+      <Input.TextArea value={text} autosize={{ minRows: 2 }} onChange={updateData} />
     </Wrapper>
   )
 }
