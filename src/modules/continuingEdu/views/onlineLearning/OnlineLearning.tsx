@@ -16,7 +16,8 @@ export default observer(function OnlineLearning(props: Props) {
   // 初始化
   useEffect(() => {
     getNowHour();
-    onlineLearningModal.init();
+    onlineLearningModal.getTaskCount();
+    onlineLearningModal.onload();
   }, [getId]);
 
   // 获取当前时间段对应名称
@@ -114,6 +115,7 @@ export default observer(function OnlineLearning(props: Props) {
             <Select.Option value="">全部</Select.Option>
           </Select>
           <Button
+            type="primary"
             onClick={() => {
               onlineLearningModal.getTaskCount();
               onlineLearningModal.onload();
@@ -125,8 +127,12 @@ export default observer(function OnlineLearning(props: Props) {
       </HeadCon>
       <MainCon>
         <BaseTabs
+          defaultActiveKey={onlineLearningModal.key}
           config={TABS_LIST_NURSE}
-          onChange={(key: any) => onlineLearningModal.tabsChanged(key)}
+          onChange={(key: any) => {
+            onlineLearningModal.tabsChanged(key);
+            onlineLearningModal.key = key;
+          }}
         />
       </MainCon>
     </Wrapper>

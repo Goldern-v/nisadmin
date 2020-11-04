@@ -13,6 +13,7 @@ class OnlineLearningModal {
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
   @observable public taskCount: any = {}; //数量统计
+  @observable public key: any = null; //状态
 
   @computed
   get postObj() {
