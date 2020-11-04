@@ -1,13 +1,14 @@
 import { appStore } from 'src/stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { badEventReportModel } from '../BadEventReportModel'
+import qs from 'qs'
 export default class BadEventReportService extends BaseApiService {
   /** 获取病区护理工作报表 */
   public getReport(obj?: any) {
     return this.post(`/beReport/list/${obj.id}`)
   }
   public deleteReport(obj?: any) {
-    let { id } = badEventReportModel.report
+    let { id } = appStore.queryObj
     return this.get(`/beReport/deleteReport/${id}`)
   }
   public publishReport(obj?: any) {
@@ -38,6 +39,16 @@ export default class BadEventReportService extends BaseApiService {
   public updateReportDesc(obj: any) {
     let { id } = badEventReportModel.report
     return this.post('/beReport/updateReportDesc', { ...obj, reportId: id })
+  }
+
+  /**获取不良事件类型 */
+  public getEventTypeList() {
+    return this.post('/dept/dictInfo', qs.stringify({ code: 'badEvent_eventType' }))
+  }
+
+  // 获取所有科室
+  public getAllDeptList() {
+    return this.get(`/dept/nursingUnit/all`);
   }
 }
 

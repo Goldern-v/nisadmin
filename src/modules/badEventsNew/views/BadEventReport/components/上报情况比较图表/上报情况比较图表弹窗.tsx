@@ -17,7 +17,7 @@ export interface Props {
 export default function 上报情况比较图表弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let { timeObj } = badEventReportModel
+  let { timeObj, eventTypeList } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report')
 
   const columns: ColumnProps<any>[] = [
@@ -32,17 +32,25 @@ export default function 上报情况比较图表弹窗(props: Props) {
     },
     {
       title: '事件类型',
-      render(text: any, record: DeptItem, index: number) {
+      render(text: any, record: DeptItem, idx: number) {
         return (
-          <input
-            type='text'
-            className='cell-input'
+          <Select
+            style={{ width: '100%' }}
             value={record.eventType}
-            onChange={(e) => {
-              record.eventType = e.target.value
+            showSearch
+            onSearch={(val: any) => {
+              cloneData.list[idx].eventType = val
               setData(cloneData)
             }}
-          />
+            filterOption={(input: string, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            onChange={(val: any) => {
+              cloneData.list[idx].eventType = val
+              setData(cloneData)
+            }}>
+            {eventTypeList.map((item: any, index: number) => <Select.Option key={index} value={item.name}>{item.name}</Select.Option>)}
+          </Select>
         )
       },
       width: 100

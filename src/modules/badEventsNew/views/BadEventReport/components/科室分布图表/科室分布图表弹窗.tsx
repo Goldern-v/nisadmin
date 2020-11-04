@@ -17,6 +17,7 @@ export interface Props {
 export default function 科室分布图表弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
+  const { deptList } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report')
   const columns: ColumnProps<any>[] = [
     {
@@ -30,17 +31,25 @@ export default function 科室分布图表弹窗(props: Props) {
     },
     {
       title: '科室',
-      render(text: any, record: DeptItem, index: number) {
+      render(text: any, record: DeptItem, idx: number) {
         return (
-          <input
-            type='text'
-            className='cell-input'
+          <Select
+            style={{ width: '100%' }}
             value={record.wardName}
-            onChange={(e) => {
-              record.wardName = e.target.value
+            showSearch
+            onSearch={(val: any) => {
+              cloneData.list[idx].wardName = val
               setData(cloneData)
             }}
-          />
+            filterOption={(input: string, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            onChange={(val: any) => {
+              cloneData.list[idx].wardName = val
+              setData(cloneData)
+            }}>
+            {deptList.map((item: any, index: number) => <Select.Option key={index} value={item.name}>{item.name}</Select.Option>)}
+          </Select>
         )
       },
       width: 100
@@ -87,11 +96,14 @@ export default function 科室分布图表弹窗(props: Props) {
       id: '',
       reportId: report.id,
       wardName: '',
+      wardCode: '',
       happenNum: '',
     })
     setData(cloneData)
   }
+
   useEffect(() => { }, [])
+
   return (
     <Wrapper>
       <div className='button-con'>

@@ -49,14 +49,12 @@ export default function CreateSummearyReportModal(props: Props) {
       timeSection: params.indexInType + (params.type == "month" ? '月' : '季')
     }
 
-    console.log(createParams)
-
     setLoadingState(true)
-    api.createReport({ ...params, year: params.year.format('YYYY') }).then(
+    api.createReport(createParams).then(
       (res) => {
         if (res.code == 200) {
           Message.success('创建成功')
-          onOk && onOk(res.data.report)
+          onOk && onOk(res.data)
         }
         setLoadingState(false)
       },

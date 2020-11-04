@@ -21,11 +21,11 @@ const label = {
   offset: 10,
   autoRotate: false,
   rotate: 90,
-  formatter: (text: string) => {
-    let viewText = text
-    if (viewText.length > 9) viewText = `${viewText.substr(0, 9)}...`
-    return viewText
-  }
+  // formatter: (text: string) => {
+  //   let viewText = text
+  //   if (viewText.length > 9) viewText = `${viewText.substr(0, 9)}...`
+  //   return viewText
+  // }
 } as any
 
 export default function ChartCon(props: Props) {
@@ -48,7 +48,7 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper className="ke-shi-fen-bu-tu chart-con">
-      <Chart forceFit height={400} data={list}>
+      <Chart forceFit height={450} data={list} padding={[30, 30, 200, 30]}>
         <Tooltip />
         <Axis label={label} dataKey="wardName" />
         {/* <Legend /> */}

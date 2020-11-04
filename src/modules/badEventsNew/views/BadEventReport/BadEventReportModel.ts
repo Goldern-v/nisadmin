@@ -84,6 +84,10 @@ class BadEventReportModel {
     prevMonth: '' as string | number,
   }
 
+  @observable public deptList = [] as any[]
+
+  @observable public eventTypeList = [] as any[]
+
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {
@@ -139,8 +143,19 @@ class BadEventReportModel {
     return this.getDataInAllData('report') || {}
   }
 
+  /**获取一些下拉或字典数据 */
+  @action
+  private getDictInfo() {
+    badEventReportService.getAllDeptList()
+      .then((res: any) => this.deptList = res.data.deptList || [])
+
+    badEventReportService.getEventTypeList()
+      .then((res: any) => this.eventTypeList = res.data || [])
+  }
+
   /** 数据初始化 */
   async initData(query?: any) {
+    this.getDictInfo()
     let { data } = await badEventReportService.getReport({ id: query.id })
 
     this.allData = data

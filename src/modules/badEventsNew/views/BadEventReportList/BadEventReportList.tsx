@@ -159,15 +159,18 @@ export default observer(function BadEventReportList() {
 
   const handleCreateOk = (info: any) => {
     //汇总报告创建成功
-    let { timeType, year, timeSection, id } = info
+    let {
+      // timeType, year, timeSection, 
+      id
+    } = info
     getTableData()
     setCreateAnalysisVisible(false)
 
     history.push(`/BadEventReportView?${qs.stringify({
       id,
-      year,
-      type: timeType,
-      indexInType: timeSection,
+      // year,
+      // type: timeType,
+      // indexInType: timeSection,
       isNew: true
     })}`)
   }

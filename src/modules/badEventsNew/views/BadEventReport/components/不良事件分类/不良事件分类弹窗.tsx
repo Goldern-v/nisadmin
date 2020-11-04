@@ -18,6 +18,7 @@ export interface Props {
 export default function 不良事件分类弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
+  const { eventTypeList } = badEventReportModel
   let report: Report = badEventReportModel.getDataInAllData('report')
   const columns: ColumnProps<any>[] = [
     {
@@ -34,13 +35,25 @@ export default function 不良事件分类弹窗(props: Props) {
       dataIndex: 'eventType',
       align: 'left',
       render: (text: any, record: any, idx: number) => {
-        return <input
-          className='cell-input'
-          value={text}
-          onChange={(e: any) => {
-            cloneData.list[idx].eventType = e.target.value
-            setData(cloneData)
-          }} />
+        return (
+          <Select
+            style={{ width: '100%' }}
+            value={record.eventType}
+            showSearch
+            onSearch={(val: any) => {
+              cloneData.list[idx].eventType = val
+              setData(cloneData)
+            }}
+            filterOption={(input: string, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            onChange={(val: any) => {
+              cloneData.list[idx].eventType = val
+              setData(cloneData)
+            }}>
+            {eventTypeList.map((item: any, index: number) => <Select.Option key={index} value={item.name}>{item.name}</Select.Option>)}
+          </Select>
+        )
       }
     },
     {
@@ -109,6 +122,7 @@ export default function 不良事件分类弹窗(props: Props) {
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div`
   position: relative;
   text {
