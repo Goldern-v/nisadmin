@@ -9,8 +9,8 @@ export default class OnlineLearningApi extends BaseApiService {
   }
 
   // 统计任务数
-  public async getTaskCount() {
-    return this.post(`/studyAndTrain/onlineLearn/pc/getTaskCount`);
+  public async getTaskCount(obj: any) {
+    return this.post(`/studyAndTrain/onlineLearn/pc/getTaskCount`, obj);
   }
 }
 export const onlineLearningApi = new OnlineLearningApi();

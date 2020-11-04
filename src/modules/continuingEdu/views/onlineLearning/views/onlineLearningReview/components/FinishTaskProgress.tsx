@@ -76,31 +76,51 @@ export default observer(function finishTaskProgress() {
           </div>
         </div>
       )}
-      {!attachmentList.length && (
+      {/* {!attachmentList.length && (
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )}
-      {/* {isExamOrExercise && (
+      )} */}
+      {isExamOrExercise && (
         <div className="file-item">
           <div className="file-title">
             {baseInfo.teachingMethodName === "考试" ? "试卷" : "习题"}
           </div>
           <Button
-            className="download-btn"
+            className={
+              !baseInfo.ongoingPaperList ? "newBegin-btn" : "begin-btn"
+            }
             onClick={() =>
               appStore.history.push(`/examOrExercise?id=${queryObj.id}`)
             }
           >
-            {baseInfo.teachingMethodName}
+            {baseInfo.alReadyAnswerTimes === 0
+              ? `开始${baseInfo.teachingMethodName}`
+              : `重新${baseInfo.teachingMethodName}(剩余${
+                  baseInfo.remainingAnswerTimes
+                }次)`}
           </Button>
+          {baseInfo.ongoingPaperList && (
+            <Button
+              className="again-btn"
+              onClick={() =>
+                appStore.history.push(
+                  `/examOrExercise?id=${queryObj.id}&paperCode=${
+                    baseInfo.ongoingPaperList[0]
+                  }`
+                )
+              }
+            >
+              {`继续${baseInfo.teachingMethodName}`}
+            </Button>
+          )}
         </div>
       )}
       {!attachmentList.length && !isExamOrExercise && (
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )} */}
+      )}
       <previewModal.Component />
     </Wrapper>
   );
@@ -110,7 +130,7 @@ const Wrapper = styled.div`
   background: #fff;
   border-left: 1px solid #ddd;
   padding: 10px 15px;
-  width: 380px;
+  width: 450px;
   height: 100%;
   float: right;
   overflow-y: auto;
@@ -181,7 +201,22 @@ const Wrapper = styled.div`
     top: 30px;
     left: 160px;
   }
+  .begin-btn {
+    position: absolute;
+    right: 100px;
+    top: 24px;
+  }
+  .again-btn {
+    position: absolute;
+    right: 10px;
+    top: 24px;
+  }
   .download-btn {
+    position: absolute;
+    right: 10px;
+    top: 24px;
+  }
+  .newBegin-btn {
     position: absolute;
     right: 10px;
     top: 24px;

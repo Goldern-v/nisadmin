@@ -37,6 +37,15 @@ class OnlineLearningModal {
         };
   }
 
+  @computed
+  get getTaskCountObj() {
+    return {
+      beginTime: this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
+      endTime: this.selectedDate[1].format("YYYY-MM-DD"), // 结束时间
+      taskStatus: this.taskStatus
+    };
+  }
+
   // 初始化表格
   onload() {
     this.tableLoading = true;
@@ -51,7 +60,7 @@ class OnlineLearningModal {
 
   // 获取任务数
   getTaskCount() {
-    onlineLearningApi.getTaskCount().then(res => {
+    onlineLearningApi.getTaskCount(this.getTaskCountObj).then(res => {
       this.taskCount = res.data;
     });
   }

@@ -6,6 +6,8 @@ import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { onlineLearningReviewModel } from "./OnlineLearningReviewModel";
 import { onlineLearningModal } from "../../OnlineLearningModal";
+import { examOrExerciseApi } from "../examOrExercise/api/ExamOrExerciseApi";
+
 import {
   Wrapper,
   TopPannel,
@@ -86,6 +88,20 @@ export default observer(function OnlineLearningReview(props: Props) {
     }
   };
 
+  const checkExam = () => {
+    examOrExerciseApi
+      .reviewMyScores(queryObj.id)
+      .then((res: any) => {
+        if (res.code === "200") {
+          onlineLearningReviewModel.examScore = res.data || [];
+          history.push(`/examScore?id=${queryObj.id}`);
+        } else {
+          message.error(`${res.desc}`);
+        }
+      })
+      .catch(err => {});
+  };
+
   return (
     <Wrapper>
       <Spin spinning={baseLoading}>
@@ -124,9 +140,15 @@ export default observer(function OnlineLearningReview(props: Props) {
                 {getTaskStatusNameBtn()}
               </Button>
             )}
+            {baseInfo.taskStatus === 1 &&
+              baseInfo.teachingMethodName === "考试" && (
+                <Button type="primary" onClick={() => checkExam()}>
+                  查看成绩
+                </Button>
+              )}
             <Button
               onClick={() => {
-                history.goBack(), onlineLearningModal.tabsChanged(0);
+                history.goBack();
               }}
             >
               返回

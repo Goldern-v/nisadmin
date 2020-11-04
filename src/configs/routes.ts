@@ -347,6 +347,13 @@ const ExamOrExercise = lazy(() =>
   )
 );
 
+//学习培训-在线学习考试(查看试卷)
+const ExamScore = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/onlineLearning/views/examScore/ExamScore"
+  )
+);
+
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
   import("src/modules/infectedAreasCount/InfectedAreasCount")
@@ -433,6 +440,7 @@ const routes: RouteItem[] = [
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
   setLayout("/onlineLearningReview", OnlineLearningReview, layouts.MainLayout),
   setLayout("/examOrExercise", ExamOrExercise, layouts.MainLayout),
+  setLayout("/examScore", ExamScore, layouts.MainLayout),
 
   setLayout(
     "/socialpractiseResultReview",

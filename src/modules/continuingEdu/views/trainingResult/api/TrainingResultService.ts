@@ -141,18 +141,26 @@ export default class TrainingResultService extends BaseApiService {
 
   /**导出 */
   public exportResults(cetpId: string) {
-    return this.post("/studyAndTrain/teachingPlanManage/exportResults", {
-      cetpId
-    },
-      { responseType: "blob" });
+    return this.post(
+      "/studyAndTrain/teachingPlanManage/exportResults",
+      {
+        cetpId
+      },
+      { responseType: "blob" }
+    );
   }
 
   /**查看结果-导出出勤率统计信息 培训类型 获取现场图片*/
   public trainManagePictures(query: any) {
-    return this.post(
-      "/studyAndTrain/trainManage/getPicturesByPage",
-      query
-    );
+    return this.post("/studyAndTrain/trainManage/getPicturesByPage", query);
+  }
+
+  // 考试--查看我的答卷
+  public async reviewMyExamPaper(cetpId: any) {
+    let obj: any = {
+      cetpId
+    };
+    return this.post(`/studyAndTrain/examManage/reviewMyExamPaper`, obj);
   }
 }
 

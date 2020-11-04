@@ -6,6 +6,7 @@ import { message } from "antd";
 class OnlineLearningReviewModel {
   @observable baseInfo = {} as any;
   @observable baseLoading = false;
+  @observable examScore = {} as any;
 
   @action public init() {
     this.clean();

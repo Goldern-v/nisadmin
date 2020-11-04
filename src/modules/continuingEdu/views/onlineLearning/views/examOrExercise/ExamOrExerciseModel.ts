@@ -27,6 +27,14 @@ class ExamOrExerciseModel {
       res => {
         this.examLoading = false;
         if (res.data) this.examInfo = res.data;
+        this.examInfo.questionList.map((item: any) => {
+          if (item.questionType === 1 || item.questionType === 2) {
+            item.isSelected = item.questionType === 1 ? "" : [];
+            item.answersList.map((asItem: any) => (asItem.isSelected = 0));
+          } else {
+            item.answerContent = "";
+          }
+        });
       },
       () => (this.examLoading = false)
     );

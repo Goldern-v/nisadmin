@@ -23,6 +23,18 @@ export default observer(function Table(props: Props) {
       align: "left"
     },
     {
+      title: "开始时间",
+      dataIndex: "startTime",
+      width: 150,
+      align: "center"
+    },
+    {
+      title: "结束时间",
+      dataIndex: "endTime",
+      width: 150,
+      align: "center"
+    },
+    {
       title: "类型",
       dataIndex: "teachingTypeName",
       width: 120,
