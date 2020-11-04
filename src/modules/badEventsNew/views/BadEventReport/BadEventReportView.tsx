@@ -30,7 +30,7 @@ export default observer(function NursingReportDetailView() {
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
-    document.title = report.reportName
+    document.title = report.name
 
     printFun(pageRef.current, {
       injectGlobalCss: true,
@@ -71,6 +71,7 @@ export default observer(function NursingReportDetailView() {
           display: none;
         }
         .chart-con .chart-con-img{
+          max-width: 100%;
           display: inline!important;
         }
       `
