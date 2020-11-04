@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, Radio, Spin } from 'antd'
+import { Button, DatePicker, Radio, Select, Spin } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormNysService } from './api/QcFormNysService'
 import { fileDownload } from "src/utils/file/file";
@@ -13,9 +13,18 @@ import CircleChart from './components/CircleChart'
 
 import moment from 'moment'
 
+const Option = Select.Option
+
 export default observer(function 护理质量检查小结() {
   const { queryObj } = appStore
+  const { deptList } = authStore
+
   const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
+  const [wardCode, setWardCode] = useState(
+    (authStore.isDepartment || authStore.isSupervisorNurse) ?
+      '' :
+      authStore.defaultDeptCode
+  )
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
@@ -116,6 +125,7 @@ export default observer(function 护理质量检查小结() {
       qcLevel: queryObj.qcLevel || '1',
       beginDate: filterDate[0].format('YYYY-MM-DD'),
       endDate: filterDate[1].format('YYYY-MM-DD'),
+      wardCode,
     })
       .then(res => {
         setLoading(false)
@@ -135,6 +145,7 @@ export default observer(function 护理质量检查小结() {
         qcLevel: queryObj.qcLevel || '1',
         beginDate: filterDate[0].format('YYYY-MM-DD'),
         endDate: filterDate[1].format('YYYY-MM-DD'),
+        wardCode,
       })
       .then(res => {
         setLoading(false)
@@ -153,7 +164,7 @@ export default observer(function 护理质量检查小结() {
 
   useEffect(() => {
     getTableData()
-  }, [filterDate])
+  }, [filterDate, wardCode])
 
   return <Wrapper>
     <HeaderCon>
@@ -163,6 +174,26 @@ export default observer(function 护理质量检查小结() {
         </PageTitle>
       </LeftIcon>
       <RightIcon>
+        <div className="item">
+          <div className="label">科室：</div>
+          <div className="content">
+            <Select
+              value={wardCode}
+              style={{ width: 180 }}
+              showSearch
+              onChange={(wardCode: string) => {
+                setWardCode(wardCode)
+                if (wardCode) authStore.selectDeptCode(wardCode)
+              }}
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }>
+              <Option value="">全部</Option>
+              {deptList.map((item: any, index: number) =>
+                <Option value={item.code} key={index}>{item.name}</Option>)}
+            </Select>
+          </div>
+        </div>
         <div className="item">
           <div className="label">时间：</div>
           <div className="content">

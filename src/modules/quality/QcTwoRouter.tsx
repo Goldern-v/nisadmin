@@ -8,9 +8,9 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 // import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
-import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
-import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
+// import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+// import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
+// import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 // import ProblemSummary from './views/problemSummary/ProblemSummary'
 import { Provider, KeepAlive } from 'react-keep-alive'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
@@ -45,41 +45,41 @@ export default function QcTwoRouter(props: Props) {
       }
     ]
 
-  if (appStore.HOSPITAL_ID == 'nys')
-    extra_menu = [
-      {
-        title: "护理质量巡查情况汇总表",
-        icon: <YDBG />,
-        path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
-        component: 护理质量巡查情况汇总表,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-      {
-        title: "护理质量检查小结",
-        icon: <YDBG />,
-        path: "/qcTwo/护理质量检查小结?qcLevel=2",
-        component: appStore.hisMatch({
-          map: {
-            nys: 护理质量检查小结Nys,
-            other: 护理质量检查小结
-          }
-        }),
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-      // {
-      //   title: "护理质量统计查询",
-      //   icon: <YDBG />,
-      //   path: "/qcTwo/护理质量统计查询?qcLevel=2",
-      //   component: 护理质量统计查询,
-      //   keepAlive: true,
-      //   // hide: !appStore.isDev,
-      //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      // },
-    ]
+  // if (appStore.HOSPITAL_ID == 'nys')
+  //   extra_menu = [
+  //     {
+  //       title: "护理质量巡查情况汇总表",
+  //       icon: <YDBG />,
+  //       path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
+  //       component: 护理质量巡查情况汇总表,
+  //       keepAlive: true,
+  //       // hide: !appStore.isDev,
+  //       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+  //     },
+  //     {
+  //       title: "护理质量检查小结",
+  //       icon: <YDBG />,
+  //       path: "/qcTwo/护理质量检查小结?qcLevel=2",
+  //       component: appStore.hisMatch({
+  //         map: {
+  //           nys: 护理质量检查小结Nys,
+  //           other: 护理质量检查小结
+  //         }
+  //       }),
+  //       keepAlive: true,
+  //       // hide: !appStore.isDev,
+  //       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+  //     },
+  //     // {
+  //     //   title: "护理质量统计查询",
+  //     //   icon: <YDBG />,
+  //     //   path: "/qcTwo/护理质量统计查询?qcLevel=2",
+  //     //   component: 护理质量统计查询,
+  //     //   keepAlive: true,
+  //     //   // hide: !appStore.isDev,
+  //     //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+  //     // },
+  //   ]
 
   const LEFT_MENU_CONFIG: any = [
     {
