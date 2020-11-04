@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import { Button, DatePicker, Select } from "antd";
 import BaseTabs from "src/components/BaseTabs";
 import Table from "./components/Table";
 import { onlineLearningModal } from "./OnlineLearningModal";
@@ -82,11 +82,44 @@ export default observer(function OnlineLearning(props: Props) {
     <Wrapper>
       <HeadCon>
         <div style={{ float: "left" }}>
-          {user.empName}，{hourName}
+          <span className="empName">
+            {user.empName}，{hourName}
+          </span>
         </div>
         <div style={{ float: "right" }}>
-          <Button type="primary" onClick={() => onlineLearningModal.onload()}>
-            刷新
+          <span>开始时间：</span>
+          <DatePicker.RangePicker
+            allowClear={false}
+            style={{ width: 220, marginRight: 15 }}
+            value={onlineLearningModal.selectedDate}
+            onChange={date => {
+              onlineLearningModal.selectedDate = date;
+              onlineLearningModal.getTaskCount();
+              onlineLearningModal.onload();
+            }}
+          />
+          <span>任务状态：</span>
+          <Select
+            style={{ width: 140, marginRight: 15 }}
+            value={onlineLearningModal.taskStatus}
+            onChange={(val: string) => {
+              onlineLearningModal.taskStatus = val;
+              onlineLearningModal.pageIndex = 1;
+              onlineLearningModal.getTaskCount();
+              onlineLearningModal.onload();
+            }}
+          >
+            <Select.Option value={0}>未完成</Select.Option>
+            <Select.Option value={1}>已完成</Select.Option>
+            <Select.Option value="">全部</Select.Option>
+          </Select>
+          <Button
+            onClick={() => {
+              onlineLearningModal.getTaskCount();
+              onlineLearningModal.onload();
+            }}
+          >
+            查询
           </Button>
         </div>
       </HeadCon>
@@ -104,11 +137,13 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 20px 10px 10px;
   box-sizing: border-box;
+  .empName {
+    font-size: 22px;
+    font-weight: bold;
+  }
 `;
 const HeadCon = styled.div`
   margin: 0 10px 10px 0;
-  font-size: 22px;
-  font-weight: bold;
   height： 40px;
   overflow: hidden
 `;

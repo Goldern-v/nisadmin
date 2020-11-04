@@ -1,7 +1,10 @@
 import { observable, computed } from "mobx";
 import { onlineLearningApi } from "./api/OnlineLearningApi";
+import { crrentMonth } from "src/utils/moment/crrentMonth";
 
 class OnlineLearningModal {
+  @observable public selectedDate: any = crrentMonth(); //日期
+  @observable public taskStatus: any = ""; //状态
   @observable public teachingMethod = null; //类型
   @observable public tpStatus = "tobeginAndongoing"; //状态
   @observable public pageIndex: any = 1; //页码
@@ -15,11 +18,17 @@ class OnlineLearningModal {
   get postObj() {
     return this.tpStatus === "finished"
       ? {
+          beginTime: this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
+          endTime: this.selectedDate[1].format("YYYY-MM-DD"), // 结束时间
+          taskStatus: this.taskStatus,
           tpStatus: this.tpStatus,
           pageIndex: this.pageIndex, //页码
           pageSize: this.pageSize //每页大小
         }
       : {
+          beginTime: this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
+          endTime: this.selectedDate[1].format("YYYY-MM-DD"), // 结束时间
+          taskStatus: this.taskStatus,
           teachingMethod: this.teachingMethod,
           tpStatus: this.tpStatus,
           pageIndex: this.pageIndex,
