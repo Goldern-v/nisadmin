@@ -76,12 +76,12 @@ export default observer(function finishTaskProgress() {
           </div>
         </div>
       )}
-      {/* {!attachmentList.length && (
+      {!attachmentList.length && (
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )} */}
-      {isExamOrExercise && (
+      )}
+      {/* {isExamOrExercise && (
         <div className="file-item">
           <div className="file-title">
             {baseInfo.teachingMethodName === "考试" ? "试卷" : "习题"}
@@ -120,7 +120,7 @@ export default observer(function finishTaskProgress() {
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )}
+      )} */}
       <previewModal.Component />
     </Wrapper>
   );
