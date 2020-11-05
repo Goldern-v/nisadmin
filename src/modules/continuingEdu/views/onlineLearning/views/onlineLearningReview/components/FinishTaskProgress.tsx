@@ -76,29 +76,74 @@ export default observer(function finishTaskProgress() {
           </div>
         </div>
       )}
-      {!attachmentList.length && (
+      {/* {!attachmentList.length && (
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )}
-      {/* {isExamOrExercise && (
+      )} */}
+      {baseInfo.teachingMethodName === "练习" && (
         <div className="file-item">
-          <div className="file-title">
-            {baseInfo.teachingMethodName === "考试" ? "试卷" : "习题"}
-          </div>
+          <img
+            src={require("../images/exercise.jpg")}
+            className="type-img"
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
+          <div className="file-title">习题</div>
+          <Button
+            className={
+              !baseInfo.existProcessInfo ? "newBegin-btn" : "begin-btn"
+            }
+            onClick={() =>
+              appStore.history.push(
+                `/examOrExercise?id=${queryObj.id}&name=${
+                  baseInfo.teachingMethodName
+                }&status="true"`
+              )
+            }
+          >
+            {baseInfo.taskStatus === 1 ? "重新练习" : "开始练习"}
+          </Button>
+          {baseInfo.existProcessInfo === 1 && (
+            <Button
+              className="again-btn"
+              onClick={() =>
+                appStore.history.push(
+                  `/examOrExercise?id=${queryObj.id}&name=${
+                    baseInfo.teachingMethodName
+                  }`
+                )
+              }
+            >
+              继续练习
+            </Button>
+          )}
+        </div>
+      )}
+      {baseInfo.teachingMethodName === "考试" && (
+        <div className="file-item">
+          <img
+            src={require("../images/exam.jpg")}
+            className="type-img"
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
+          <div className="file-title">试卷</div>
           <Button
             className={
               !baseInfo.ongoingPaperList ? "newBegin-btn" : "begin-btn"
             }
             onClick={() =>
-              appStore.history.push(`/examOrExercise?id=${queryObj.id}`)
+              appStore.history.push(
+                `/examOrExercise?id=${queryObj.id}&name=${
+                  baseInfo.teachingMethodName
+                }`
+              )
             }
           >
             {baseInfo.alReadyAnswerTimes === 0
-              ? `开始${baseInfo.teachingMethodName}`
-              : `重新${baseInfo.teachingMethodName}(剩余${
-                  baseInfo.remainingAnswerTimes
-                }次)`}
+              ? "开始考试"
+              : `重新考试(剩余${baseInfo.remainingAnswerTimes}次)`}
           </Button>
           {baseInfo.ongoingPaperList && (
             <Button
@@ -107,11 +152,11 @@ export default observer(function finishTaskProgress() {
                 appStore.history.push(
                   `/examOrExercise?id=${queryObj.id}&paperCode=${
                     baseInfo.ongoingPaperList[0]
-                  }`
+                  }&name=${baseInfo.teachingMethodName}`
                 )
               }
             >
-              {`继续${baseInfo.teachingMethodName}`}
+              继续考试
             </Button>
           )}
         </div>
@@ -120,7 +165,7 @@ export default observer(function finishTaskProgress() {
         <div className="no_conetent">
           暂时没有需要{baseInfo.teachingMethodName}的文件！
         </div>
-      )} */}
+      )}
       <previewModal.Component />
     </Wrapper>
   );

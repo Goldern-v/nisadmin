@@ -62,10 +62,14 @@ export default observer(function ExamScore(props: Props) {
       <Exam>
         <div className="main-title">
           <div className={Number(examScore.totalScores) < 60 ? "red" : "green"}>
-            {" "}
             {examScore.totalScores && examScore.tittotalScoresle}
           </div>
           <div style={{ fontSize: "12px" }}>考试得分</div>
+          {/* <span className='checkExam'>
+            <Button type="primary" onClick={() => handleAnwserSheetReview()}>
+              查看试卷
+            </Button>
+          </span> */}
         </div>
         <div className="test-info">
           <div className="test-info-item">名称: {examScore.title}</div>

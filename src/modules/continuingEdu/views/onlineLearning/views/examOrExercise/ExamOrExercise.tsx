@@ -10,9 +10,16 @@ const CheckboxGroup = Checkbox.Group;
 export interface Props {}
 export default observer(function OnlineLearningReview(props: Props) {
   const { queryObj } = appStore;
-  const { examInfo, examLoading } = examOrExerciseModel;
+  const {
+    examInfo,
+    examLoading,
+    exerciseInfo,
+    exerciseLoading
+  } = examOrExerciseModel;
   const questionList = (examInfo && examInfo.questionList) || [];
+  const exerciseQuesList = (exerciseInfo && exerciseInfo) || [];
   const [btnLoading, setBtnLoading] = useState(false);
+  const [exerciseSaveLoading, setExerciseSaveLoading] = useState(false);
 
   useEffect(() => {
     examOrExerciseModel.init();
@@ -95,17 +102,26 @@ export default observer(function OnlineLearningReview(props: Props) {
                 : "请输入你的答案"
             }
             style={{ width: "100%" }}
-            value={item.answerContent}
-            onChange={(e: any) => (item.answerContent = e.target.value)}
+            value={
+              queryObj.name === "考试"
+                ? item.answerContent
+                : item.answersList[0].answerContent
+            }
+            onChange={(e: any) => {
+              if (queryObj.name === "考试") {
+                item.answerContent = e.target.value;
+              } else {
+                item.answersList[0].answerContent = e.target.value;
+              }
+            }}
           />
         );
     }
   };
 
-  // 交卷
-  const handInExamPaper = () => {
-    // 处理单选 多选入参
-    questionList.map((item: any) => {
+  // 处理入参
+  const handleSaveData = (list: any) => {
+    list.map((item: any) => {
       if (item.isSelected) {
         if (item.questionType === 1) {
           item.answersList.find(
@@ -119,6 +135,11 @@ export default observer(function OnlineLearningReview(props: Props) {
       }
       return;
     });
+  };
+
+  // 提交试卷
+  const handInExamPaper = async () => {
+    await handleSaveData(questionList);
     let obj: any = {
       paperCode: queryObj.paperCode ? queryObj.paperCode : examInfo.paperCode,
       questionList
@@ -138,67 +159,146 @@ export default observer(function OnlineLearningReview(props: Props) {
       .catch(err => setBtnLoading(false));
   };
 
+  // 提交练习题
+  const handInExercisePaper = async (status: boolean) => {
+    await handleSaveData(exerciseInfo);
+    let obj: any = {
+      cetpId: queryObj.id,
+      questionList: exerciseInfo
+    };
+    if (status) {
+      setBtnLoading(true);
+    } else {
+      setExerciseSaveLoading(true);
+    }
+    examOrExerciseApi
+      .saveExerciseProcessInfo(obj, status)
+      .then((res: any) => {
+        setBtnLoading(false);
+        setExerciseSaveLoading(false);
+        if (res.code === "200") {
+          message.success(status ? "已完成练习！" : "已成功暂存练习题");
+          appStore.history.goBack();
+        } else {
+          message.error(`${res.desc}`);
+        }
+      })
+      .catch(err => setBtnLoading(false));
+  };
+
   return (
     <Wrapper>
-      <Exam style={{ overflowY: examLoading ? "hidden" : "scroll" }}>
-        <Spin spinning={examLoading}>
-          <div className="main-title">
-            {examInfo.title && `《${examInfo.title}》`}
-          </div>
-          <div className="test-info">
-            <div className="test-info-item">
-              开始时间: {examInfo.answerBeginTime}
-            </div>
-            <div className="test-info-item">
-              结束时间: {examInfo.answerEndTime}
-            </div>
-            <div className="test-info-item">
-              考试时间: {examInfo.examDuration}分钟
-            </div>
-            <div className="test-info-item">
-              及格分数线: {examInfo.passScores}
-            </div>
-            <div className="test-info-item">
-              题目数量: {examInfo.questionCount}题
-            </div>
-            <div className="test-info-item">
-              考试时长: {examInfo.examDuration}分钟
-            </div>
-            <div className="test-info-item">总分: {examInfo.totalScores}分</div>
-          </div>
-          <div className="question-list">
-            {(questionList || []).map((item: any, qsIdx: number) => (
-              <div className="question-item" key={qsIdx}>
-                <div className="question-content">
-                  <span className="index">{qsIdx + 1}、</span>
-                  <span className="question-type">
-                    [{typeName(item.questionType)}]
-                  </span>
-                  <span>（{item.scores}分）</span>
-                  <span
-                    className="question-desc"
-                    dangerouslySetInnerHTML={{
-                      __html: item.questionContent.replace(
-                        /##/g,
-                        '<span class="fill">____</span>'
-                      )
-                    }}
-                  />
-                </div>
-                {answerCon(item, qsIdx)}
+      <Exam
+        style={{
+          overflowY: examLoading || exerciseLoading ? "hidden" : "scroll"
+        }}
+      >
+        <Spin
+          spinning={queryObj.name === "考试" ? examLoading : exerciseLoading}
+        >
+          {queryObj.name === "考试" && (
+            <div>
+              <div className="main-title">
+                {examInfo.title && `《${examInfo.title}》`}
               </div>
-            ))}
-          </div>
+              <div className="test-info">
+                <div className="test-info-item">
+                  开始时间: {examInfo.answerBeginTime}
+                </div>
+                <div className="test-info-item">
+                  结束时间: {examInfo.answerEndTime}
+                </div>
+                <div className="test-info-item">
+                  考试时间: {examInfo.examDuration}分钟
+                </div>
+                <div className="test-info-item">
+                  及格分数线: {examInfo.passScores}
+                </div>
+                <div className="test-info-item">
+                  题目数量: {examInfo.questionCount}题
+                </div>
+                <div className="test-info-item">
+                  考试时长: {examInfo.examDuration}分钟
+                </div>
+                <div className="test-info-item">
+                  总分: {examInfo.totalScores}分
+                </div>
+              </div>
+              <div className="question-list">
+                {(questionList || []).map((item: any, qsIdx: number) => (
+                  <div className="question-item" key={qsIdx}>
+                    <div className="question-content">
+                      <span className="index">{qsIdx + 1}、</span>
+                      <span className="question-type">
+                        [{typeName(item.questionType)}]
+                      </span>
+                      <span>（{item.scores}分）</span>
+                      <span
+                        className="question-desc"
+                        dangerouslySetInnerHTML={{
+                          __html: item.questionContent.replace(
+                            /##/g,
+                            '<span class="fill">____</span>'
+                          )
+                        }}
+                      />
+                    </div>
+                    {answerCon(item, qsIdx)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {queryObj.name === "练习" && (
+            <div>
+              <div className="main-title">练习题</div>
+              <div className="question-list">
+                {(exerciseQuesList || []).map((item: any, qsIdx: number) => (
+                  <div className="question-item" key={qsIdx}>
+                    <div className="question-content">
+                      <span className="index">{qsIdx + 1}、</span>
+                      <span className="question-type">
+                        [{typeName(item.questionType)}]
+                      </span>
+                      <span
+                        className="question-desc"
+                        dangerouslySetInnerHTML={{
+                          __html: item.questionContent.replace(
+                            /##/g,
+                            '<span class="fill">____</span>'
+                          )
+                        }}
+                      />
+                    </div>
+                    {answerCon(item, qsIdx)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </Spin>
       </Exam>
       <Footer>
         <Button
           type="primary"
           loading={btnLoading}
-          onClick={() => handInExamPaper()}
+          onClick={() =>
+            queryObj.name === "考试"
+              ? handInExamPaper()
+              : handInExercisePaper(true)
+          }
         >
-          提交试卷
+          {queryObj.name === "考试" ? "提交试卷" : "完成练习"}
         </Button>
+        {queryObj.name === "练习" && (
+          <Button
+            style={{ marginLeft: "10px" }}
+            loading={exerciseSaveLoading}
+            onClick={() => handInExercisePaper(false)}
+          >
+            暂存练习
+          </Button>
+        )}
       </Footer>
     </Wrapper>
   );

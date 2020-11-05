@@ -11,7 +11,6 @@ export default class ExamOrExerciseApi extends BaseApiService {
       qs.stringify({ cetpId, paperCode })
     );
   }
-
   // // 考试--继续考试
   // public async continueExam(cetpId: any, paperCode: any) {
   //   return this.post(
@@ -19,13 +18,10 @@ export default class ExamOrExerciseApi extends BaseApiService {
   //     qs.stringify({ cetpId, paperCode })
   //   );
   // }
-
   // 考试--交卷
   public async handInExamPaper(obj: any) {
-    //paperCode  questionList([])
     return this.post(`/studyAndTrain/examManage/handInExamPaper`, obj);
   }
-
   // 考试--查看我的成绩
   public async reviewMyScores(cetpId: any) {
     let obj: any = {
@@ -33,7 +29,6 @@ export default class ExamOrExerciseApi extends BaseApiService {
     };
     return this.post(`/studyAndTrain/examManage/reviewMyScores`, obj);
   }
-
   // 考试--查看我的答卷
   public async reviewMyExamPaper(cetpId: any) {
     let obj: any = {
@@ -43,36 +38,37 @@ export default class ExamOrExerciseApi extends BaseApiService {
   }
 
   // 练习--开始练习或重新练习
-  public async createExercisePaper(cetpId: any) {
+  public async createExercisePaper(cetpId: any, status?: string) {
     return this.post(
-      `/studyAndTrain/exerciseManage/createExercisePaper`,
+      status
+        ? `/studyAndTrain/exerciseManage/createExercisePaper`
+        : `/studyAndTrain/exerciseManage/getExerciseProcessInfo`,
       qs.stringify({ cetpId })
     );
   }
-
-  // 练习--继续练习
-  public async getExerciseProcessInfo(cetpId: any) {
-    return this.post(
-      `/studyAndTrain/exerciseManage/getExerciseProcessInfo`,
-      qs.stringify({ cetpId })
-    );
-  }
-
+  // // 练习--继续练习
+  // public async getExerciseProcessInfo(cetpId: any) {
+  //   return this.post(
+  //     `/studyAndTrain/exerciseManage/getExerciseProcessInfo`,
+  //     qs.stringify({ cetpId })
+  //   );
+  // }
   // 练习--保存练习进程
-  public async saveExerciseProcessInfo(obj: any) {
-    //cetpId  questionList([])
+  public async saveExerciseProcessInfo(obj: any, status: boolean) {
     return this.post(
-      `/studyAndTrain/exerciseManage/saveExerciseProcessInfo`,
+      status
+        ? `/studyAndTrain/exerciseManage/finishExercise`
+        : `/studyAndTrain/exerciseManage/saveExerciseProcessInfo`,
       obj
     );
   }
   // 完成练习
-  public async finishExercise(cetpId: any) {
-    //cetpId  questionList([])
-    return this.post(
-      `/studyAndTrain/exerciseManage/finishExercise`,
-      qs.stringify({ cetpId })
-    );
-  }
+  // public async finishExercise(cetpId: any) {
+  //   //cetpId  questionList([])
+  //   return this.post(
+  //     `/studyAndTrain/exerciseManage/finishExercise`,
+  //     qs.stringify({ cetpId })
+  //   );
+  // }
 }
 export const examOrExerciseApi = new ExamOrExerciseApi();
