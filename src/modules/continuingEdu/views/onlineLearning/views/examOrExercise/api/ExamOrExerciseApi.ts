@@ -3,20 +3,22 @@ import qs from "qs";
 
 export default class ExamOrExerciseApi extends BaseApiService {
   // 考试--开始考试/重考
-  public async startExam(cetpId: any) {
+  public async startExam(cetpId: any, paperCode?: any) {
     return this.post(
-      `/studyAndTrain/examManage/startExam`,
-      qs.stringify({ cetpId })
-    );
-  }
-
-  // 考试--继续考试
-  public async continueExam(cetpId: any, paperCode: any) {
-    return this.post(
-      `/studyAndTrain/examManage/continueExam`,
+      paperCode
+        ? `/studyAndTrain/examManage/continueExam`
+        : `/studyAndTrain/examManage/startExam`,
       qs.stringify({ cetpId, paperCode })
     );
   }
+
+  // // 考试--继续考试
+  // public async continueExam(cetpId: any, paperCode: any) {
+  //   return this.post(
+  //     `/studyAndTrain/examManage/continueExam`,
+  //     qs.stringify({ cetpId, paperCode })
+  //   );
+  // }
 
   // 考试--交卷
   public async handInExamPaper(obj: any) {

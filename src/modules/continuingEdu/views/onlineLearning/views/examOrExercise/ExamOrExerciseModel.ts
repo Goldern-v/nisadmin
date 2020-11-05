@@ -23,7 +23,7 @@ class ExamOrExerciseModel {
       return;
     }
     this.examLoading = true;
-    examOrExerciseApi.startExam(id).then(
+    examOrExerciseApi.startExam(id, appStore.queryObj.paperCode).then(
       res => {
         this.examLoading = false;
         if (res.data) this.examInfo = res.data;

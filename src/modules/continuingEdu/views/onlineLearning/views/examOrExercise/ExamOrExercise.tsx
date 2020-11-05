@@ -106,15 +106,18 @@ export default observer(function OnlineLearningReview(props: Props) {
   const handInExamPaper = () => {
     // 处理单选 多选入参
     questionList.map((item: any) => {
-      if (item.questionType === 1) {
-        item.answersList.find(
-          (o: any) => o.optionLabel === item.isSelected
-        ).isSelected = 1;
-      } else if (item.questionType === 2) {
-        item.answersList
-          .filter((o: any) => item.isSelected.includes(o.optionLabel))
-          .map((o: any) => (o.isSelected = 1));
+      if (item.isSelected) {
+        if (item.questionType === 1) {
+          item.answersList.find(
+            (o: any) => o.optionLabel === item.isSelected
+          ).isSelected = 1;
+        } else if (item.questionType === 2) {
+          item.answersList
+            .filter((o: any) => item.isSelected.includes(o.optionLabel))
+            .map((o: any) => (o.isSelected = 1));
+        }
       }
+      return;
     });
     let obj: any = {
       paperCode: queryObj.paperCode ? queryObj.paperCode : examInfo.paperCode,
