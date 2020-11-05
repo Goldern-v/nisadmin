@@ -119,6 +119,32 @@ export default observer(function OnlineLearningReview(props: Props) {
     }
   };
 
+  // 正确答案
+  const rightAnswerCon = (item: any, qsIdx: number) => {
+    switch (item.questionType) {
+      case 1: {
+        const radioAightAnswer = (item.answersList || []).find(
+          (answer: any) => answer.isRight === 1
+        ).optionLabel;
+        return <span>正确答案：{radioAightAnswer}</span>;
+      }
+      case 2: {
+        let checkBoxAightAnswer: any = "";
+        (item.answersList || [])
+          .filter((answer: any) => answer.isRight === 1)
+          .map((o: any) => {
+            return (checkBoxAightAnswer += o.optionLabel);
+          });
+        return <span>正确答案：{checkBoxAightAnswer}</span>;
+      }
+      case 3: {
+        return <span>正确答案：{item.answersList[0].rightAnswer}</span>;
+      }
+      default:
+        return <span>正确答案：{item.answersList[0].suggestedAnswer}</span>;
+    }
+  };
+
   // 处理入参
   const handleSaveData = (list: any) => {
     list.map((item: any) => {
@@ -271,6 +297,9 @@ export default observer(function OnlineLearningReview(props: Props) {
                       />
                     </div>
                     {answerCon(item, qsIdx)}
+                    <div className="rightAnswer">
+                      {rightAnswerCon(item, qsIdx)}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -343,6 +372,10 @@ const Exam = styled.div`
   }
   .question-list {
     margin-bottom: 15px;
+    .rightAnswer {
+      color: blue;
+      margin: 5px 0 0 20px
+    }
   }
   .question-item{
     padding-left: 10px;
@@ -373,7 +406,6 @@ const Exam = styled.div`
         }
       }
     }
-
     .refer{
       margin-right:15px;
       cursor: pointer;
@@ -381,7 +413,6 @@ const Exam = styled.div`
       display: inline-block;
       text-decoration: underline;
     }
-
     .de-score{
       .de-score-ipt{
         margin: 0 2px;
