@@ -20,8 +20,7 @@ export default observer(function OnlineLearningReview(props: Props) {
   const exerciseQuesList = (exerciseInfo && exerciseInfo) || [];
   const [btnLoading, setBtnLoading] = useState(false);
   const [exerciseSaveLoading, setExerciseSaveLoading] = useState(false);
-  const [isOk, setIsOk] = useState(true);
-  const [data, setData] = useState([] as any[]);
+  // const [isOk, setIsOk] = useState(true);
 
   useEffect(() => {
     examOrExerciseModel.init();
@@ -63,9 +62,6 @@ export default observer(function OnlineLearningReview(props: Props) {
             onChange={(e: any) => {
               item.isSelected = e.target.value;
               rightAnswerCon(item, qsIdx);
-              // item.answersList.find(
-              //   (o: any) => o.optionLabel === e.target.value
-              // ).isSelected = 1;
             }}
           >
             {(item.answersList || []).map((answer: any, asIdx: any) => {
@@ -88,9 +84,6 @@ export default observer(function OnlineLearningReview(props: Props) {
             onChange={(checkedValue: any) => {
               item.isSelected = checkedValue;
               rightAnswerCon(item, qsIdx);
-              // item.answersList
-              //   .filter((o: any) => item.isSelected.includes(o.optionLabel))
-              //   .map((o: any) => (o.isSelected = 1));
             }}
           >
             {(item.answersList || []).map((answer: any, asIdx: any) => {
@@ -213,7 +206,7 @@ export default observer(function OnlineLearningReview(props: Props) {
   };
 
   // 提交练习题
-  const handInExercisePaper = async (status: boolean, isBack?: any) => {
+  const handInExercisePaper = async (status: boolean) => {
     await handleSaveData(exerciseInfo);
     let obj: any = {
       cetpId: queryObj.id,
@@ -230,11 +223,8 @@ export default observer(function OnlineLearningReview(props: Props) {
         setBtnLoading(false);
         setExerciseSaveLoading(false);
         if (res.code === "200") {
-          // if (!isBack) {
-          //   setIsOk(false);
           message.success(status ? "已完成练习！" : "已成功暂存练习题");
           appStore.history.goBack();
-          // }
         } else {
           message.error(`${res.desc}`);
           setBtnLoading(false);
