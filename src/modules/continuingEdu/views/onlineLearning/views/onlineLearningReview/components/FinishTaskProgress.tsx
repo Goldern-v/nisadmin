@@ -130,6 +130,7 @@ export default observer(function finishTaskProgress() {
           />
           <div className="file-title">试卷</div>
           <Button
+            disabled={!!(baseInfo.tpStatus == "finished")}
             className={
               !baseInfo.ongoingPaperList ? "newBegin-btn" : "begin-btn"
             }
