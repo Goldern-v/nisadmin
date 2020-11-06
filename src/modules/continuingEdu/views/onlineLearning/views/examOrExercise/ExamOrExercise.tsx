@@ -20,10 +20,23 @@ export default observer(function OnlineLearningReview(props: Props) {
   const exerciseQuesList = (exerciseInfo && exerciseInfo) || [];
   const [btnLoading, setBtnLoading] = useState(false);
   const [exerciseSaveLoading, setExerciseSaveLoading] = useState(false);
+  const [isOk, setIsOk] = useState(true);
+  const [data, setData] = useState([] as any[]);
 
   useEffect(() => {
     examOrExerciseModel.init();
+    // window.addEventListener("popstate", handleBack, false);
+    // return () => {
+    //   window.removeEventListener("popstate", handleBack, false);
+    // };
   }, [queryObj.id]);
+
+  // 浏览器返回函数
+  // const handleBack = (value: any) => {
+  //   if (isOk) {
+  //     handInExercisePaper(false, true);
+  //   }
+  // };
 
   // 题目类型名称
   const typeName = (type: number) => {
@@ -40,7 +53,6 @@ export default observer(function OnlineLearningReview(props: Props) {
         return "";
     }
   };
-
   // 题目类容类型
   const answerCon = (item: any, qsIdx: number) => {
     switch (item.questionType) {
@@ -50,6 +62,7 @@ export default observer(function OnlineLearningReview(props: Props) {
             value={item.isSelected}
             onChange={(e: any) => {
               item.isSelected = e.target.value;
+              rightAnswerCon(item, qsIdx);
               // item.answersList.find(
               //   (o: any) => o.optionLabel === e.target.value
               // ).isSelected = 1;
@@ -74,6 +87,7 @@ export default observer(function OnlineLearningReview(props: Props) {
             value={item.isSelected}
             onChange={(checkedValue: any) => {
               item.isSelected = checkedValue;
+              rightAnswerCon(item, qsIdx);
               // item.answersList
               //   .filter((o: any) => item.isSelected.includes(o.optionLabel))
               //   .map((o: any) => (o.isSelected = 1));
@@ -113,6 +127,7 @@ export default observer(function OnlineLearningReview(props: Props) {
               } else {
                 item.answersList[0].answerContent = e.target.value;
               }
+              rightAnswerCon(item, qsIdx);
             }}
           />
         );
@@ -126,7 +141,7 @@ export default observer(function OnlineLearningReview(props: Props) {
         const radioAightAnswer = (item.answersList || []).find(
           (answer: any) => answer.isRight === 1
         ).optionLabel;
-        return <span>正确答案：{radioAightAnswer}</span>;
+        return item.isSelected && <span>正确答案：{radioAightAnswer}</span>;
       }
       case 2: {
         let checkBoxAightAnswer: any = "";
@@ -135,13 +150,25 @@ export default observer(function OnlineLearningReview(props: Props) {
           .map((o: any) => {
             return (checkBoxAightAnswer += o.optionLabel);
           });
-        return <span>正确答案：{checkBoxAightAnswer}</span>;
+        return item.isSelected && item.isSelected.length ? (
+          <span>正确答案：{checkBoxAightAnswer}</span>
+        ) : (
+          ""
+        );
       }
       case 3: {
-        return <span>正确答案：{item.answersList[0].rightAnswer}</span>;
+        return (
+          item.answersList[0].answerContent && (
+            <span>正确答案：{item.answersList[0].rightAnswer}</span>
+          )
+        );
       }
       default:
-        return <span>正确答案：{item.answersList[0].suggestedAnswer}</span>;
+        return (
+          item.answersList[0].answerContent && (
+            <span>正确答案：{item.answersList[0].suggestedAnswer}</span>
+          )
+        );
     }
   };
 
@@ -186,7 +213,7 @@ export default observer(function OnlineLearningReview(props: Props) {
   };
 
   // 提交练习题
-  const handInExercisePaper = async (status: boolean) => {
+  const handInExercisePaper = async (status: boolean, isBack?: any) => {
     await handleSaveData(exerciseInfo);
     let obj: any = {
       cetpId: queryObj.id,
@@ -203,10 +230,14 @@ export default observer(function OnlineLearningReview(props: Props) {
         setBtnLoading(false);
         setExerciseSaveLoading(false);
         if (res.code === "200") {
+          // if (!isBack) {
+          //   setIsOk(false);
           message.success(status ? "已完成练习！" : "已成功暂存练习题");
           appStore.history.goBack();
+          // }
         } else {
           message.error(`${res.desc}`);
+          setBtnLoading(false);
         }
       })
       .catch(err => setBtnLoading(false));
