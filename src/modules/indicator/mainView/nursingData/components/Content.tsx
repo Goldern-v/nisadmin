@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import React from "react";
-import { observer } from "src/vendors/mobx-react-lite";
-import { Input, Spin } from "src/vendors/antd";
-import { nursingDataModal } from "../NursingDataModal";
+import {observer} from "src/vendors/mobx-react-lite";
+import {Input, Spin} from "src/vendors/antd";
+import {nursingDataModal} from "../NursingDataModal";
 
-interface Props {}
+interface Props {
+}
 
 export default observer(function Content(props: Props) {
   // 配置数据
@@ -84,7 +85,7 @@ export default observer(function Content(props: Props) {
         {
           name: "时段初护师人数",
           value:
-            nursingDataModal.dataList.nurseTitleCount.nursePractitionerInBegin
+          nursingDataModal.dataList.nurseTitleCount.nursePractitionerInBegin
         },
         {
           name: "时段初主管护师人数",
@@ -93,12 +94,12 @@ export default observer(function Content(props: Props) {
         {
           name: "时段初副主任护师职称人数",
           value:
-            nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInBegin
+          nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInBegin
         },
         {
           name: "时段初主任护师人数",
           value:
-            nursingDataModal.dataList.nurseTitleCount.professorOfNursingInBegin
+          nursingDataModal.dataList.nurseTitleCount.professorOfNursingInBegin
         },
         {
           name: "时段初各职称护士总人数",
@@ -111,7 +112,7 @@ export default observer(function Content(props: Props) {
         {
           name: "时段末护师人数 ",
           value:
-            nursingDataModal.dataList.nurseTitleCount.nursePractitionerInEnd
+          nursingDataModal.dataList.nurseTitleCount.nursePractitionerInEnd
         },
         {
           name: "时段末主管护师人数",
@@ -120,12 +121,12 @@ export default observer(function Content(props: Props) {
         {
           name: "时段末副主任护师职称人数",
           value:
-            nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInEnd
+          nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInEnd
         },
         {
           name: "时段末主任护师人数",
           value:
-            nursingDataModal.dataList.nurseTitleCount.professorOfNursingInEnd
+          nursingDataModal.dataList.nurseTitleCount.professorOfNursingInEnd
         },
         {
           name: "时段末各职称护士总人数",
@@ -200,7 +201,7 @@ export default observer(function Content(props: Props) {
         {
           name: "时段初2≤y<5年资护士人数",
           value:
-            nursingDataModal.dataList.workYearsCount.lessThanFiveYearInBegin
+          nursingDataModal.dataList.workYearsCount.lessThanFiveYearInBegin
         },
         {
           name: "时段初5≤y<10年资护士人数",
@@ -209,12 +210,12 @@ export default observer(function Content(props: Props) {
         {
           name: "本时段白班护时段初10≤y<20年资护士人数",
           value:
-            nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInBegin
+          nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInBegin
         },
         {
           name: "时段初≥20年资护士人数",
           value:
-            nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInBegin
+          nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInBegin
         },
         {
           name: "时段初各工作年限护士总人数",
@@ -239,12 +240,12 @@ export default observer(function Content(props: Props) {
         {
           name: "时段末10≤y<20年资护士人数",
           value:
-            nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInEnd
+          nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInEnd
         },
         {
           name: "时段末≥20年资护士人数",
           value:
-            nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInEnd
+          nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInEnd
         },
         {
           name: "时段时段末各工作年限护士总人数",
@@ -389,7 +390,7 @@ export default observer(function Content(props: Props) {
       <Spin spinning={nursingDataModal.dataLoading} className="spinLoad">
         <Wrapper>
           {data.map((item: any, index: number) => (
-            <Cont className="specialCont">
+            <Cont className="specialCont" key={index}>
               <Title>{item.title}</Title>
               <Data>
                 {item.data.map((item: any, index: number) => (
@@ -398,7 +399,7 @@ export default observer(function Content(props: Props) {
                     <Input
                       value={item.value || item.value === 0 ? item.value : ""}
                       disabled
-                      style={{ width: "300px", color: "#666" }}
+                      style={{width: "300px", color: "#666"}}
                     />
                   </div>
                 ))}
