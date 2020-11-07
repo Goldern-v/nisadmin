@@ -18,10 +18,11 @@ export interface Props {
 
 export default observer(function LeftMenu(props: Props) {
   const [openKeys, setOpenKeys]: any = useState("");
-
   const handleSelect = (e: any) => {
     appStore.history.push(e.key);
-
+    if (e.item.props.level === 1) {
+      setOpenKeys("");
+    }
   };
 
   //判断是否隐藏 兼容Function类型
