@@ -142,9 +142,14 @@ const SafetyHazardsDetail = lazy(() =>
     "src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail"
   )
 );
+// 病区登记本
 const WardRegisterRouter = lazy(() =>
   import("src/modules/WardRegister/WardRegisterRouter")
 );
+//厚街敏感指标登记本
+// const SensitiveRegisterRouter = lazy(() =>
+//   import("src/modules/SensitiveRegister/SensitiveRegisterRouter")
+// );
 const DetailsView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/details/DetailsView")
 );
@@ -628,8 +633,9 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
-  /**一级质控 */
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
+  // setLayout("/sensitiveRegister", SensitiveRegisterRouter, layouts.MainLayout),
+  /**一级质控 */
   setLayout(
     "/nursingQualityCheckEdit",
     NursingQualityCheckEdit,

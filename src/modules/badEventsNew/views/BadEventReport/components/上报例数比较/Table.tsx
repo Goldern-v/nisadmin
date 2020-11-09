@@ -37,7 +37,7 @@ export default function Table(props: Props) {
           <tr>
             <td>与前一月比较</td>
             {list.map((item: any, idx: number) =>
-              <td key={idx}>{item.contrastPercent}</td>)}
+              <td key={idx} className="font-12">{item.contrastPercent}</td>)}
           </tr>
         </tbody>
       </table>
@@ -67,6 +67,10 @@ const Wrapper = styled.div`
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
+      word-break: break-all;
+      &.font-12{
+        font-size: 12px;
+      }
     }
   }
   .lm-arrow {
