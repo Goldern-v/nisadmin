@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 import { onlineLearningModal } from "../OnlineLearningModal";
-
 export interface Props {}
 
 export default observer(function Table(props: Props) {

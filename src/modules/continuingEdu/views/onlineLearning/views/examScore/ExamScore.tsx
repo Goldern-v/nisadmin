@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "antd";
 import BaseTable from "src/components/BaseTable";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import { examOrExerciseModel } from "../examOrExercise/ExamOrExerciseModel";
-import { examOrExerciseApi } from "../examOrExercise/api/ExamOrExerciseApi";
 import { onlineLearningReviewModel } from "../onlineLearningReview/OnlineLearningReviewModel";
 import AnswerSheetModal from "src/modules/continuingEdu/views/trainingResult/components/AnswerSheetModal/AnswerSheetModal";
 import createModal from "src/libs/createModal";
@@ -15,19 +13,6 @@ export default observer(function ExamScore(props: Props) {
   const answerSheet = createModal(AnswerSheetModal);
   const { queryObj } = appStore;
   const { examScore } = onlineLearningReviewModel;
-
-  useEffect(() => {
-    console.log(examScore, "examScoreexamScore");
-  }, [queryObj.id]);
-
-  const handleAnwserSheetReview = () => {
-    answerSheet.show({
-      title: `${examScore.title}考卷`,
-      type: "view",
-      cetpId: queryObj.id,
-      dataType: "在线考试"
-    });
-  };
 
   const columns: any = [
     {
@@ -57,19 +42,30 @@ export default observer(function ExamScore(props: Props) {
       align: "center"
     }
   ];
+
+  // 查看试卷
+  const handleAnwserSheetReview = () => {
+    answerSheet.show({
+      title: `${examScore.title}考卷`,
+      type: "view",
+      cetpId: queryObj.id,
+      dataType: "在线考试"
+    });
+  };
+
   return (
     <Wrapper>
       <Exam>
         <div className="main-title">
           <div className={Number(examScore.totalScores) < 60 ? "red" : "green"}>
-            {examScore.totalScores && examScore.tittotalScoresle}
+            {examScore.totalScores && examScore.totalScores}
           </div>
           <div style={{ fontSize: "12px" }}>考试得分</div>
-          {/* <span className='checkExam'>
+          <span className="checkExam">
             <Button type="primary" onClick={() => handleAnwserSheetReview()}>
               查看试卷
             </Button>
-          </span> */}
+          </span>
         </div>
         <div className="test-info">
           <div className="test-info-item">名称: {examScore.title}</div>
@@ -82,14 +78,14 @@ export default observer(function ExamScore(props: Props) {
         <BaseTable
           dataSource={examScore.scoresList}
           columns={columns}
-          surplusHeight={450}
+          surplusHeight={410}
         />
       </Exam>
-      <Footer>
+      {/* <Footer>
         <Button type="primary" onClick={() => handleAnwserSheetReview()}>
           查看试卷
         </Button>
-      </Footer>
+      </Footer> */}
       <answerSheet.Component />
     </Wrapper>
   );
@@ -111,7 +107,7 @@ const Footer = styled.div`
 `;
 const Exam = styled.div` 
   width: 750px;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 80px);
   margin: 15px auto;
   background: #fff;
   padding: 25px;
@@ -137,11 +133,17 @@ const Exam = styled.div`
     font-weight: bold;
     text-align: center;
     margin-bottom: 15px;
+    position: relative;
     .red {
       color: red
     }
     .green {
       color: green
+    }
+    .checkExam {
+      position: absolute;
+      right: 0;
+      top: 20px;
     }
   }
   .question-list {

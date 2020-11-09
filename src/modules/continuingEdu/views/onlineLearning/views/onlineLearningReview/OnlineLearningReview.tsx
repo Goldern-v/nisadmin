@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, message, Spin } from "antd";
 import { Link } from "react-router-dom";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { onlineLearningReviewModel } from "./OnlineLearningReviewModel";
-import { onlineLearningModal } from "../../OnlineLearningModal";
 import { examOrExerciseApi } from "../examOrExercise/api/ExamOrExerciseApi";
 
 import {
@@ -21,6 +20,7 @@ import BaseInfoPannel from "./components/BaseInfoPannel";
 import FinishTaskProgress from "./components/FinishTaskProgress";
 import { onlineLearningReviewApi } from "./api/OnlineLearningReviewApi";
 export interface Props {}
+
 export default observer(function OnlineLearningReview(props: Props) {
   const { history, queryObj } = appStore;
   const { baseInfo, baseLoading } = onlineLearningReviewModel;
@@ -88,6 +88,7 @@ export default observer(function OnlineLearningReview(props: Props) {
     }
   };
 
+  // 查看成绩
   const checkExam = () => {
     examOrExerciseApi
       .reviewMyScores(queryObj.id)

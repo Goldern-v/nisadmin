@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Radio, message, Spin, Checkbox, Input, Button } from "antd";
+import { Radio, message, Spin, Checkbox, Input, Button, Modal } from "antd";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { examOrExerciseModel } from "./ExamOrExerciseModel";
@@ -22,6 +22,7 @@ export default observer(function OnlineLearningReview(props: Props) {
   const [exerciseSaveLoading, setExerciseSaveLoading] = useState(false);
   // const [isOk, setIsOk] = useState(true);
 
+  // 确定从练习中退出 退出将会保存此次练习的进程
   useEffect(() => {
     examOrExerciseModel.init();
     // window.addEventListener("popstate", handleBack, false);
@@ -52,6 +53,7 @@ export default observer(function OnlineLearningReview(props: Props) {
         return "";
     }
   };
+
   // 题目类容类型
   const answerCon = (item: any, qsIdx: number) => {
     switch (item.questionType) {
@@ -205,18 +207,12 @@ export default observer(function OnlineLearningReview(props: Props) {
       .catch(err => setBtnLoading(false));
   };
 
-  // 提交练习题
-  const handInExercisePaper = async (status: boolean) => {
-    await handleSaveData(exerciseInfo);
+  // 保存练习题
+  const saveExerciseProcessInfo = (status: boolean) => {
     let obj: any = {
       cetpId: queryObj.id,
       questionList: exerciseInfo
     };
-    if (status) {
-      setBtnLoading(true);
-    } else {
-      setExerciseSaveLoading(true);
-    }
     examOrExerciseApi
       .saveExerciseProcessInfo(obj, status)
       .then((res: any) => {
@@ -231,6 +227,32 @@ export default observer(function OnlineLearningReview(props: Props) {
         }
       })
       .catch(err => setBtnLoading(false));
+  };
+  // 提交练习题
+  const handInExercisePaper = async (status: boolean) => {
+    await handleSaveData(exerciseInfo);
+    setBtnLoading(true);
+    saveExerciseProcessInfo(status);
+  };
+  // 暂存练习题
+  const temporarySaveExercisePaper = async (status: boolean) => {
+    await handleSaveData(exerciseInfo);
+    let content = (
+      <div>
+        <div>退出将会保存此次练习的进程</div>
+        <div>您确定从练习中退出？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      cancelText: "取消",
+      onOk: () => {
+        setExerciseSaveLoading(true);
+        saveExerciseProcessInfo(status);
+      }
+    });
   };
 
   return (
@@ -344,9 +366,9 @@ export default observer(function OnlineLearningReview(props: Props) {
           <Button
             style={{ marginLeft: "10px" }}
             loading={exerciseSaveLoading}
-            onClick={() => handInExercisePaper(false)}
+            onClick={() => temporarySaveExercisePaper(false)}
           >
-            暂存练习
+            返回
           </Button>
         )}
       </Footer>

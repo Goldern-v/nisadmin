@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React from "react";
-import { Spin } from "antd";
 import StudyContent from "src/modules/continuingEdu/views/trainingInfoReview/components/pageContents/StudyContent";
 import { observer } from "mobx-react-lite";
 import { onlineLearningReviewModel } from "../OnlineLearningReviewModel";
@@ -11,12 +10,10 @@ export default observer(function BaseInfoPannel() {
   const { baseInfo, baseLoading } = onlineLearningReviewModel;
 
   return (
-    <Wrapper style={{ overflowY: baseLoading ? "hidden" : "auto" }}>
-      {/* <Spin spinning={baseLoading}> */}
+    <Wrapper>
       <BaseInfoPage>
         <StudyContent data={baseInfo} />
       </BaseInfoPage>
-      {/* </Spin> */}
     </Wrapper>
   );
 });

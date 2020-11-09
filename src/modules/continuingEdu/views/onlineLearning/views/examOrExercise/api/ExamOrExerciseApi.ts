@@ -11,13 +11,6 @@ export default class ExamOrExerciseApi extends BaseApiService {
       qs.stringify({ cetpId, paperCode })
     );
   }
-  // // 考试--继续考试
-  // public async continueExam(cetpId: any, paperCode: any) {
-  //   return this.post(
-  //     `/studyAndTrain/examManage/continueExam`,
-  //     qs.stringify({ cetpId, paperCode })
-  //   );
-  // }
   // 考试--交卷
   public async handInExamPaper(obj: any) {
     return this.post(`/studyAndTrain/examManage/handInExamPaper`, obj);
@@ -46,13 +39,6 @@ export default class ExamOrExerciseApi extends BaseApiService {
       qs.stringify({ cetpId })
     );
   }
-  // // 练习--继续练习
-  // public async getExerciseProcessInfo(cetpId: any) {
-  //   return this.post(
-  //     `/studyAndTrain/exerciseManage/getExerciseProcessInfo`,
-  //     qs.stringify({ cetpId })
-  //   );
-  // }
   // 练习--保存练习进程
   public async saveExerciseProcessInfo(obj: any, status: boolean) {
     return this.post(
@@ -62,13 +48,5 @@ export default class ExamOrExerciseApi extends BaseApiService {
       obj
     );
   }
-  // 完成练习
-  // public async finishExercise(cetpId: any) {
-  //   //cetpId  questionList([])
-  //   return this.post(
-  //     `/studyAndTrain/exerciseManage/finishExercise`,
-  //     qs.stringify({ cetpId })
-  //   );
-  // }
 }
 export const examOrExerciseApi = new ExamOrExerciseApi();

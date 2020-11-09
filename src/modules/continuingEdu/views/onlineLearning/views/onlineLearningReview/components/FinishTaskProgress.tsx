@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button, Spin, message } from "antd";
+import React from "react";
+import { Button, message } from "antd";
 import { observer } from "mobx-react-lite";
 import { getFileSize, getFileType, getFilePrevImg } from "src/utils/file/file";
 import { appStore } from "src/stores";
@@ -22,12 +22,14 @@ export default observer(function finishTaskProgress() {
       : false;
   const previewModal = createModal(PreviewModal);
 
+  // 预览文件
   const showReview = (file: any) => {
     previewModal.show({
       title: file.name,
       path: file.path,
       id: file.id,
       finish: file.alreadyRead,
+      // videoQuestionList: baseInfo.attachmentList,
       learningFunc: finishTaskFun
     });
   };
