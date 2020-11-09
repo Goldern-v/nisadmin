@@ -55,12 +55,6 @@ export default observer(function SetTittle(props: Props) {
   //不允许删除的选项
   const staticOptions: { [p: string]: string[] } =
     codeAdapter({
-      QCRG_06: {
-        '消毒类别': [
-          '无水酒精擦拭灯管',
-          '更换灯管'
-        ]
-      },
       other: {}
     }, registerCode)
 
@@ -88,10 +82,6 @@ export default observer(function SetTittle(props: Props) {
   }
 
   const defaultOptions = codeAdapter({
-    'QCRG_01,QCRG_02,QCRG_07,QCRG_20_1,QCRG_20_2': [
-      { name: '√', value: '√' },
-      { name: '×', value: '×' },
-    ],
     other: []
   }, registerCode, true)
 
@@ -127,7 +117,6 @@ export default observer(function SetTittle(props: Props) {
     },
     ...codeAdapter(
       {
-        QCRG_01: [],
         other: [
           {
             title: "类型",
@@ -155,40 +144,11 @@ export default observer(function SetTittle(props: Props) {
                   updateDataSource()
                 }}>
                 <Option value="">下拉选项</Option>
-                {codeAdapter({
-                  'QCRG_08,QCRG_15_1': <Option value="multiple_select">多项选择</Option>,
-                  other: null,
-                }, registerCode, true)}
+                <Option value="multiple_select">多项选择</Option>
                 <Option value="ward_user">科室护士</Option>
                 <Option value="attachment">附件上传</Option>
-                {codeAdapter({
-                  [
-                    [
-                      //   'QCRG_08',
-                      //   'QCRG_11',
-                      //   'QCRG_11_2',
-                      //   'QCRG_11_3',
-                      //   'QCRG_12_2',
-                      "QCRG_06",
-                      "QCRG_07"
-                    ].join(',')
-                  ]: null,
-                  other: <Option value="date">日期选择</Option>,
-                }, registerCode, true)}
-                {codeAdapter({
-                  [
-                    [
-                      //   'QCRG_08',
-                      //   'QCRG_11',
-                      //   'QCRG_11_2',
-                      //   'QCRG_11_3',
-                      //   'QCRG_12_2',
-                      "QCRG_06",
-                      "QCRG_07"
-                    ].join(',')
-                  ]: null,
-                  other: <Option value="date_time">日期时间选择</Option>,
-                }, registerCode, true)}
+                <Option value="date">日期选择</Option>
+                <Option value="date_time">日期时间选择</Option>
               </Select>
             }
           },
@@ -215,8 +175,6 @@ export default observer(function SetTittle(props: Props) {
     },
     ...codeAdapter(
       {
-        QCRG_01: [baseNumCol],
-        QCRG_12: [baseNumCol],
         other: []
       },
       registerCode
@@ -353,10 +311,6 @@ export default observer(function SetTittle(props: Props) {
           <DoCon>
             {selectedBlockObj &&
               selectedBlockObj.itemSizeEditable &&
-              // codeAdapter({
-              //   QCRG_07: false,
-              //   other: true,
-              // }, registerCode) &&
               (
                 <span
                   onClick={() => {
@@ -446,10 +400,6 @@ export default observer(function SetTittle(props: Props) {
         />
         {selectedBlockObj &&
           selectedBlockObj.itemSizeEditable &&
-          // codeAdapter({
-          //   QCRG_07: false,
-          //   other: true,
-          // }, registerCode) &&
           (
             <Button onClick={addRow}>添加</Button>
           )}

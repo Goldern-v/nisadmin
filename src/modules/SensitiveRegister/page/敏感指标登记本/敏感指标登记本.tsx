@@ -84,293 +84,293 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   };
 
-  const flFilterItem = createFilterItem(
-    "分类",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
+  // const flFilterItem = createFilterItem(
+  //   "分类",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
 
-  const bcFilterItem = createFilterItem(
-    "班次",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const wzcdFilterItem = createFilterItem(
-    "危重程度",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
+  // const bcFilterItem = createFilterItem(
+  //   "班次",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const wzcdFilterItem = createFilterItem(
+  //   "危重程度",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
 
-  const hljbFilterItem = createFilterItem(
-    "护理级别",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
+  // const hljbFilterItem = createFilterItem(
+  //   "护理级别",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
 
-  const zlnlFilterItem = createFilterItem(
-    "自理能力",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const yzlxFilterItem = createFilterItem(
-    "医嘱类型",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const zgFilterItem = createFilterItem(
-    "转归",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const ypglflFilterItem = createFilterItem(
-    "药品管理分类",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const ymFilterItem = createFilterItem(
-    "药名",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false)
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const wpmcFilterItem = createFilterItem(
-    "物品名称",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const bfzlxFilterItem = createFilterItem(
-    "并发症类型",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const jmlxFilterItem = createFilterItem(
-    "静脉类型",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const zhpjlxFilterItem = createFilterItem(
-    "综合评价类型",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const rylxFilterItem = createFilterItem(
-    "人员类别",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const yqmcFilterItem = createFilterItem(
-    "仪器名称",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const sbztFilterItem = createFilterItem(
-    "设备状态",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  );
-  const chFilterItem = createFilterInput(
-    "床号",
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    });
+  // const zlnlFilterItem = createFilterItem(
+  //   "自理能力",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const yzlxFilterItem = createFilterItem(
+  //   "医嘱类型",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const zgFilterItem = createFilterItem(
+  //   "转归",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const ypglflFilterItem = createFilterItem(
+  //   "药品管理分类",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const ymFilterItem = createFilterItem(
+  //   "药名",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false)
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const wpmcFilterItem = createFilterItem(
+  //   "物品名称",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const bfzlxFilterItem = createFilterItem(
+  //   "并发症类型",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const jmlxFilterItem = createFilterItem(
+  //   "静脉类型",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const zhpjlxFilterItem = createFilterItem(
+  //   "综合评价类型",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const rylxFilterItem = createFilterItem(
+  //   "人员类别",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const yqmcFilterItem = createFilterItem(
+  //   "仪器名称",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const sbztFilterItem = createFilterItem(
+  //   "设备状态",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // );
+  // const chFilterItem = createFilterInput(
+  //   "床号",
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   });
 
-  const xmFilterItem = createFilterInput(
-    "姓名",
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    });
-  const zyzdFilterItem = createFilterItem(
-    "中医诊断",
-    itemConfigList,
-    rangConfigList,
-    () => {
-      setPopoverVisible(false);
-      setPageOptions({ ...pageOptions, pageIndex: 1 })
-    }
-  )
+  // const xmFilterItem = createFilterInput(
+  //   "姓名",
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   });
+  // const zyzdFilterItem = createFilterItem(
+  //   "中医诊断",
+  //   itemConfigList,
+  //   rangConfigList,
+  //   () => {
+  //     setPopoverVisible(false);
+  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
+  //   }
+  // )
 
-  const popoverContent = codeAdapter(
-    {
-      QCRG_03: (
-        <div>
-          <wzcdFilterItem.Component />
-          <hljbFilterItem.Component />
-          <zlnlFilterItem.Component />
-        </div>
-      ),
-      QCRG_04: (
-        <div>
-          <bcFilterItem.Component />
-          <yzlxFilterItem.Component />
-        </div>
-      ),
-      QCRG_05: null,
-      QCRG_08: (
-        <div>
-          <zgFilterItem.Component />
-        </div>
-      ),
-      QCRG_10: (
-        <div>
-          <ypglflFilterItem.Component />
-        </div>
-      ),
-      QCRG_13: (
-        <div>
-          <ymFilterItem.Component />
-        </div>
-      ),
-      QCRG_14_1: (
-        <div>
-          <wpmcFilterItem.Component />
-        </div>
-      ),
-      QCRG_14_2: (
-        <div>
-          <wpmcFilterItem.Component />
-        </div>
-      ),
-      QCRG_16_1: (
-        <div>
-          <bfzlxFilterItem.Component />
-        </div>
-      ),
-      QCRG_16_2: (
-        <div>
-          <jmlxFilterItem.Component />
-          <bfzlxFilterItem.Component />
-        </div>
-      ),
-      // QCRG_19_1: (
-      //   <div>
-      //     <jmlxFilterItem.Component />
-      //   </div>
-      // ),
-      QCRG_19_2: (
-        <div>
-          <rylxFilterItem.Component />
-          {/* <jmlxFilterItem.Component /> */}
-        </div>
-      ),
-      QCRG_19_3: (
-        <div>
-          <jmlxFilterItem.Component />
-        </div>
-      ),
-      QCRG_20_2: (
-        <div>
-          <yqmcFilterItem.Component />
-          <sbztFilterItem.Component />
-        </div>
-      ),
-      QCRG_15_1: (
-        <div>
-          <chFilterItem.Component />
-          <xmFilterItem.Component />
-          <zyzdFilterItem.Component />
-        </div>
-      ),
-      QCRG_12_2: (
-        <div>
-          <flFilterItem.Component />
-        </div>
-      ),
-      QCRG_21: (
-        <div>
-          <wpmcFilterItem.Component />
-        </div>
-      ),
-    },
-    registerCode
-  );
+  // const popoverContent = codeAdapter(
+  //   {
+  //     QCRG_03: (
+  //       <div>
+  //         <wzcdFilterItem.Component />
+  //         <hljbFilterItem.Component />
+  //         <zlnlFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_04: (
+  //       <div>
+  //         <bcFilterItem.Component />
+  //         <yzlxFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_05: null,
+  //     QCRG_08: (
+  //       <div>
+  //         <zgFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_10: (
+  //       <div>
+  //         <ypglflFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_13: (
+  //       <div>
+  //         <ymFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_14_1: (
+  //       <div>
+  //         <wpmcFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_14_2: (
+  //       <div>
+  //         <wpmcFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_16_1: (
+  //       <div>
+  //         <bfzlxFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_16_2: (
+  //       <div>
+  //         <jmlxFilterItem.Component />
+  //         <bfzlxFilterItem.Component />
+  //       </div>
+  //     ),
+  //     // QCRG_19_1: (
+  //     //   <div>
+  //     //     <jmlxFilterItem.Component />
+  //     //   </div>
+  //     // ),
+  //     QCRG_19_2: (
+  //       <div>
+  //         <rylxFilterItem.Component />
+  //         {/* <jmlxFilterItem.Component /> */}
+  //       </div>
+  //     ),
+  //     QCRG_19_3: (
+  //       <div>
+  //         <jmlxFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_20_2: (
+  //       <div>
+  //         <yqmcFilterItem.Component />
+  //         <sbztFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_15_1: (
+  //       <div>
+  //         <chFilterItem.Component />
+  //         <xmFilterItem.Component />
+  //         <zyzdFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_12_2: (
+  //       <div>
+  //         <flFilterItem.Component />
+  //       </div>
+  //     ),
+  //     QCRG_21: (
+  //       <div>
+  //         <wpmcFilterItem.Component />
+  //       </div>
+  //     ),
+  //   },
+  //   registerCode
+  // );
 
   /** 查询参数 */
   const paramMap = {
-    ...wzcdFilterItem.value,
-    ...hljbFilterItem.value,
-    ...zlnlFilterItem.value,
-    ...bcFilterItem.value,
-    ...hljbFilterItem.value,
-    ...yzlxFilterItem.value,
-    ...zgFilterItem.value,
-    ...ypglflFilterItem.value,
-    ...ymFilterItem.value,
-    ...wpmcFilterItem.value,
-    ...bfzlxFilterItem.value,
-    ...jmlxFilterItem.value,
-    ...zhpjlxFilterItem.value,
-    ...rylxFilterItem.value,
-    ...yqmcFilterItem.value,
-    ...sbztFilterItem.value,
-    ...flFilterItem.value,
-    ...chFilterItem.value,
-    ...xmFilterItem.value,
-    ...zyzdFilterItem.value,
+    // ...wzcdFilterItem.value,
+    // ...hljbFilterItem.value,
+    // ...zlnlFilterItem.value,
+    // ...bcFilterItem.value,
+    // ...hljbFilterItem.value,
+    // ...yzlxFilterItem.value,
+    // ...zgFilterItem.value,
+    // ...ypglflFilterItem.value,
+    // ...ymFilterItem.value,
+    // ...wpmcFilterItem.value,
+    // ...bfzlxFilterItem.value,
+    // ...jmlxFilterItem.value,
+    // ...zhpjlxFilterItem.value,
+    // ...rylxFilterItem.value,
+    // ...yqmcFilterItem.value,
+    // ...sbztFilterItem.value,
+    // ...flFilterItem.value,
+    // ...chFilterItem.value,
+    // ...xmFilterItem.value,
+    // ...zyzdFilterItem.value,
   };
 
   /** 判断是否快过期 */
@@ -402,42 +402,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
     return "";
   };
-
-  //实习进修新职工登记 计算综合成绩
-  const colcTotalScore = (record: any, item: any) => {
-    let sumItemCodeArr = ['理论成绩', '操作成绩', '实践能力', '平时表现']
-    let percentArr = [0.3, 0.3, 0.2, 0.2]
-    let needColc = false
-
-    for (let i = 0; i < sumItemCodeArr.length; i++) {
-      if (item.itemCode.indexOf(sumItemCodeArr[i]) >= 0) {
-        needColc = true
-        break
-      }
-    }
-
-    if (needColc) {
-      let keys = Object.keys(record)
-      let totalSum = 0
-
-      for (let i = 0; i < sumItemCodeArr.length; i++) {
-        let itemCodePart = sumItemCodeArr[i]
-        let score = 0
-        let target0 = keys.find((key) => {
-          return key.indexOf(itemCodePart) >= 0 &&
-            key.indexOf('综合成绩') < 0
-        })
-        if (target0) score = Number(record[target0])
-
-        if (!isNaN(score)) totalSum += score * percentArr[i]
-      }
-
-      let sunTarget = '综合成绩（理论成绩30%+操作成绩30%+实践能力20%+平时表现20%）'
-
-      record[sunTarget] = (Math.round(totalSum * 100) / 100).toString()
-      updateDataSource()
-    }
-  }
 
   // const isEndTimeQCRG_12_2 = (record: any, item: any) => {
   //   const { itemCode, itemType } = item
@@ -478,231 +442,57 @@ export default observer(function 敏感指标登记本(props: Props) {
   }
 
   const columns: ColumnProps<any>[] | any = [
-    //不同登记本固定的项目
-    ...codeAdapter(
-      {
-        QCRG_12: [
-          {
-            title() {
-              return (
-                <LineCon>
-                  <TextCon>
-                    <Text x="20%" y="75%" deg="0">
-                      日期
-                    </Text>
-                    <Text x="58%" y="67%" deg="0">
-                      使用
-                      <br />
-                      及补充
-                    </Text>
-                    <Text x="83%" y="63%" deg="0">
-                      基数
-                    </Text>
-                    <Text x="82%" y="8%" deg="0">
-                      名称
-                    </Text>
-                  </TextCon>
-                  <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-                    <line x1="0" y1="0" x2="60%" y2="100%" />
-                    <line x1="0" y1="0" x2="100%" y2="100%" />
-                    <line x1="0" y1="0" x2="100%" y2="60%" />
-                    <line x1="0" y1="0" x2="100%" y2="100%" />
-                  </SvgCon>
-                </LineCon>
-              );
-            },
-            dataIndex: "recordDate",
-            align: "center",
-            colSpan: 1,
-            width: 160,
-            render(text: string, record: any, index: number) {
-              return (
-                <Input
-                  disabled={cellDisabled(record)}
-                  defaultValue={text}
-                  onChange={e => {
-                    record.recordDate = e.target.value
-                    record.modified = true
-                  }}
-                  onBlur={() => updateDataSource()}
-                  className={isEndTime(record) || ""}
-                />
-              );
-            }
-          },
-        ],
-        // QCRG_12_2: [
-        //   {
-        //     title() {
-        //       return (
-        //         <LineCon className="height-50">
-        //           <TextCon>
-        //             <Text x="20%" y="65%" deg="0">
-        //               日期
-        //             </Text>
-        //             <Text x="70%" y="58%" deg="0">
-        //               属性
-        //             </Text>
-        //             <Text x="70%" y="8%" deg="0">
-        //               名称
-        //             </Text>
-        //           </TextCon>
-        //           <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-        //             <line x1="0" y1="0" x2="100%" y2="50%" />
-        //             <line x1="0" y1="0" x2="100%" y2="100%" />
-        //           </SvgCon>
-        //         </LineCon>
-        //       );
-        //     },
-        //     dataIndex: "recordDate",
-        //     align: "center",
-        //     colSpan: 1,
-        //     width: 120,
-        //     render(text: string, record: any, index: number) {
-        //       return (
-        //         <Input
-        //           disabled={cellDisabled(record)}
-        //           defaultValue={text}
-        //           onChange={e => {
-        //             record.recordDate = e.target.value
-        //             record.modified = true
-        //           }}
-        //           onBlur={() => updateDataSource()}
-        //           className={isEndTime(record) || ""}
-        //         />
-        //       );
-        //     }
-        //   },
-        //   // {
-        //   //   title: "班次",
-        //   //   colSpan: 0,
-        //   //   width: 73,
-        //   //   dataIndex: "range",
-        //   //   align: "center"
-        //   // }
-        // ],
-        QCRG_14_1: [
-          {
-            title: "入库日期",
-            dataIndex: "recordDate",
-            align: "center",
-            className: "input-cell",
-            width: 100,
-            render(text: string, record: any, index: number) {
-              return (
-                <Input
-                  disabled={cellDisabled(record)}
-                  defaultValue={text}
-                  onChange={e => {
-                    record.recordDate = e.target.value
-                    record.modified = true
-                  }}
-                  onBlur={() => updateDataSource()}
-                  className={isEndTime(record) || ""}
-                />
-              );
-            }
-          }
-        ],
-        QCRG_15_2: [
-          {
-            title() {
-              return (
-                <LineCon>
-                  <TextCon>
-                    <Text x="20%" y="75%" deg="0">
-                      时间
-                    </Text>
-                    <Text x="73%" y="68%" deg="0">
-                      例数
-                    </Text>
-                    <Text x="62%" y="12%" deg="0">
-                      项目名称
-                    </Text>
-                  </TextCon>
-                  <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-                    <line x1="0" y1="0" x2="70%" y2="100%" />
-                    <line x1="0" y1="0" x2="100%" y2="60%" />
-                  </SvgCon>
-                </LineCon>
-              );
-            },
-            dataIndex: "recordDate",
-            align: "center",
-            width: 107,
-            render(text: string, record: any, index: number) {
-              return (
-                <Input
-                  disabled={cellDisabled(record)}
-                  defaultValue={text}
-                  onKeyUp={handleNextIptFocus}
-                  onChange={e => {
-                    record.modified = true
-                    record.recordDate = e.target.value
-                  }}
-                  onBlur={() => updateDataSource()}
-                  className={isEndTime(record) || ""}
-                />
-              );
-            }
-          }
-        ],
-        other: [
-          {
-            title: "日期",
-            dataIndex: "recordDate",
-            align: "center",
-            className: "input-cell",
-            width: 100,
-            render(text: string, record: any, index: number) {
-              return (
-                <Input
-                  disabled={cellDisabled(record)}
-                  defaultValue={text}
-                  onKeyUp={handleNextIptFocus}
-                  onChange={e => {
-                    record.modified = true
-                    record.recordDate = e.target.value
-                  }}
-                  onBlur={() => updateDataSource()}
-                  className={isEndTime(record) || ""}
-                />
-              );
-            }
-          }
-        ]
-      },
-      registerCode
-    ),
-    codeAdapter(
-      {
-        'QCRG_04,QCRG_20_1': {
-          title: "班次",
-          width: 73,
-          dataIndex: "range",
-          className: "input-cell",
-          align: "center",
-          render(text: string, record: any, index: number) {
-            let children = <InputColumnRender
-              {...{
-                cellDisabled,
-                options: rangConfigList.map((item: any) => item.itemCode),
-                record,
-                itemCode: 'range',
-                updateDataSource,
-                handleNextIptFocus
-              }}
-            />
-            let obj = {
-              children
-            };
-            return obj;
-          }
-        }
-      },
-      registerCode,
-      true
-    ),
+    {
+      title: "日期",
+      dataIndex: "recordDate",
+      align: "center",
+      className: "input-cell",
+      width: 100,
+      render(text: string, record: any, index: number) {
+        return (
+          <Input
+            disabled={cellDisabled(record)}
+            defaultValue={text}
+            onKeyUp={handleNextIptFocus}
+            onChange={e => {
+              record.modified = true
+              record.recordDate = e.target.value
+            }}
+            onBlur={() => updateDataSource()}
+            className={isEndTime(record) || ""}
+          />
+        );
+      }
+    },
+    // codeAdapter(
+    //   {
+    //     'QCRG_04,QCRG_20_1': {
+    //       title: "班次",
+    //       width: 73,
+    //       dataIndex: "range",
+    //       className: "input-cell",
+    //       align: "center",
+    //       render(text: string, record: any, index: number) {
+    //         let children = <InputColumnRender
+    //           {...{
+    //             cellDisabled,
+    //             options: rangConfigList.map((item: any) => item.itemCode),
+    //             record,
+    //             itemCode: 'range',
+    //             updateDataSource,
+    //             handleNextIptFocus
+    //           }}
+    //         />
+    //         let obj = {
+    //           children
+    //         };
+    //         return obj;
+    //       }
+    //     }
+    //   },
+    //   registerCode,
+    //   true
+    // ),
     //后端返回的自定义项目
     ...itemConfigList.map((item: any) => {
       return {
@@ -776,18 +566,10 @@ export default observer(function 敏感指标登记本(props: Props) {
 
           childrenClassName +=
             ` ${codeAdapter({
-              QCRG_14_2: isEndTimeQCRG_14_2(record, item),
               other: isEndTime(record)
             }, registerCode)}`
 
-          let dateItemCodeArr = codeAdapter({
-            // QCRG_10: ['有效期'],
-            // QCRG_14_1: ['生产日期', '失效日期'],
-            // QCRG_19_2: ['开始时间', '结束时间'],
-            // QCRG_08: ['入院时间'],
-            other: []
-          }, registerCode)
-          if (item.itemType == 'date' || item.itemType == 'date_time' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+          if (item.itemType == 'date' || item.itemType == 'date_time') {
             let format = 'YYYY-MM-DD'
             if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
 
@@ -822,18 +604,6 @@ export default observer(function 敏感指标登记本(props: Props) {
 
           } else {
             const multiple = (() => {
-              if (
-                registerCode == "QCRG_04" &&
-                item.itemCode == "组号及床号"
-              )
-                return true
-
-              if (
-                registerCode == "QCRG_16_3" &&
-                item.itemCode == "参会人员"
-              )
-                return true
-
               if (item.itemType == "multiple_select")
                 return true
 
@@ -850,437 +620,66 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
-                onBlur: (newVal: string, oldVal: any) => {
-                  if (registerCode == 'QCRG_16_1' && item.itemCode == '并发症类型') {
-                    if (newVal != oldVal && (newVal == '导管相关感染' || oldVal == '导管相关感染')) {
-                      record['培养结果'] = ''
-                      record['检验结果粘贴处'] = ''
-                      updateDataSource()
-                    }
-                  }
-                  if (registerCode == 'QCRG_19_2')
-                    colcTotalScore(record, item)
-                },
+                onBlur: (newVal: string, oldVal: any) => { },
                 selectAll: multiple,
               }}
             />
           }
 
-          //特殊处理
-          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '导管相关感染') {
-            if (item.itemCode == '培养结果' || item.itemCode == '检验结果粘贴处') {
-              children = <DisableSpan />
-            }
-          }
+          let obj = { children }
 
-          let obj = {
-            children
-          };
-          return obj;
+          return obj
         }
       };
     }),
     //不同登记本固定的项目
     ...codeAdapter(
       {
-        QCRG_03: [
-          signRowObj({
-            title: "负责人",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_04: [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <InputColumnRender
-                {...{
-                  cellDisabled,
-                  itemCode: 'description',
-                  handleNextIptFocus,
-                  record,
-                  updateDataSource,
-                }} />
-            }
-          },
-          signRowObj({
-            title: "签名",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "核对者签名",
-            width: 70,
-            dataIndex: "checkerName",
-            aside: "核对者",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "负责人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "负责人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_05: [
-          signRowObj({
-            title: "检查者签名",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "检查者",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_08: [
-          signRowObj({
-            title: "登记人签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "登记人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_10: [
-          signRowObj({
-            title: "检查者签名",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "检查者",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "负责人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "负责人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_11_2: [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              const _cellDisabled = (record: any) => {
-                if (record['消毒处理'] !== '待消毒') return true
-                return cellDisabled(record)
-              }
-              return <InputColumnRender
-                {...{
-                  cellDisabled: _cellDisabled,
-                  itemCode: 'description',
-                  handleNextIptFocus,
-                  record,
-                  updateDataSource,
-                }} />
-            }
-          }
-        ],
-        QCRG_11_3: [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <InputColumnRender
-                {...{
-                  cellDisabled,
-                  itemCode: 'description',
-                  handleNextIptFocus,
-                  record,
-                  updateDataSource,
-                }} />
-            }
-          }
-        ],
-        QCRG_12: [
-          signRowObj({
-            title: "签名",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_12_2: [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <InputColumnRender
-                {...{
-                  cellDisabled,
-                  itemCode: 'description',
-                  handleNextIptFocus,
-                  record,
-                  updateDataSource,
-                }} />
-            }
-          },
-          signRowObj({
-            title: "签名",
-            width: 70,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "负责人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "负责人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_13: [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <Input.TextArea
-                disabled={cellDisabled(record)}
-                autosize={true}
-                defaultValue={text}
-                onKeyUp={handleNextIptFocus}
-                onChange={e => {
-                  record.modified = true
-                  record.description = e.target.value.replace(/\n/g, '');
-                }}
-                onBlur={() => updateDataSource()}
-              />
-            }
-          },
-          signRowObj({
-            title: "执行人签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "执行人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "核对人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "核对人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_14_1: [
-          signRowObj({
-            title: "责任护士签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "责任护士",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "负责人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "负责人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        'QCRG_14_2,QCRG_21': [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <Input.TextArea
-                disabled={cellDisabled(record)}
-                autosize={true}
-                defaultValue={text}
-                onKeyUp={handleNextIptFocus}
-                onChange={e => {
-                  record.modified = true
-                  record.description = e.target.value.replace(/\n/g, '');
-                }}
-                onBlur={() => updateDataSource()}
-              />
-            }
-          },
-          signRowObj({
-            title: "检查者签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "检查者",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          }),
-          signRowObj({
-            title: "负责人签名",
-            width: 70,
-            dataIndex: "auditorName",
-            aside: "负责人",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_16_1: [
-          signRowObj({
-            title: "签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_16_2: [
-          signRowObj({
-            title: "签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        // QCRG_19_1: [
+        // QCRG_04: [
+        //   {
+        //     title: "备注",
+        //     width: 150,
+        //     dataIndex: "description",
+        //     className: "input-cell",
+        //     render(text: string, record: any, index: number) {
+        //       return <InputColumnRender
+        //         {...{
+        //           cellDisabled,
+        //           itemCode: 'description',
+        //           handleNextIptFocus,
+        //           record,
+        //           updateDataSource,
+        //         }} />
+        //     }
+        //   },
         //   signRowObj({
-        //     title: "护士长签名",
-        //     width: 90,
+        //     title: "签名",
+        //     width: 70,
         //     dataIndex: "signerName",
-        //     aside: "护士长",
+        //     aside: "",
+        //     registerCode,
+        //     updateDataSource,
+        //     selectedBlockId
+        //   }),
+        //   signRowObj({
+        //     title: "核对者签名",
+        //     width: 70,
+        //     dataIndex: "checkerName",
+        //     aside: "核对者",
+        //     registerCode,
+        //     updateDataSource,
+        //     selectedBlockId
+        //   }),
+        //   signRowObj({
+        //     title: "负责人签名",
+        //     width: 70,
+        //     dataIndex: "auditorName",
+        //     aside: "负责人",
         //     registerCode,
         //     updateDataSource,
         //     selectedBlockId
         //   })
         // ],
-        QCRG_19_2: [
-          signRowObj({
-            title: "护士长签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "护士长",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        // QCRG_19_3: [
-        //   signRowObj({
-        //     title: "护士长签名",
-        //     width: 90,
-        //     dataIndex: "signerName",
-        //     aside: "护士长",
-        //     registerCode,
-        //     updateDataSource,
-        //     selectedBlockId
-        //   })
-        // ],
-        'QCRG_20_1,QCRG_20_2,QCRG_16_4': [
-          {
-            title: "备注",
-            width: 150,
-            dataIndex: "description",
-            className: "input-cell",
-            render(text: string, record: any, index: number) {
-              return <InputColumnRender
-                {...{
-                  cellDisabled,
-                  itemCode: 'description',
-                  handleNextIptFocus,
-                  record,
-                  updateDataSource,
-                }} />
-            }
-          },
-          signRowObj({
-            title: "签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_15_1: [
-          signRowObj({
-            title: "护士长签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "护士长",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_15_2: [
-          signRowObj({
-            title: "签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_15_4: [
-          signRowObj({
-            title: "护士长签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "护士长",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
         other: []
       },
       registerCode,
@@ -1412,7 +811,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-        {popoverContent && (
+        {/* {popoverContent && (
           <Popover
             placement="bottom"
             title={"筛选条件"}
@@ -1423,7 +822,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           >
             <Button>筛选</Button>
           </Popover>
-        )}
+        )} */}
 
         <Place />
 
@@ -1499,123 +898,42 @@ export default observer(function 敏感指标登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_20_2,QCRG_11_3,QCRG_11_2': (
-                  <React.Fragment>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleCopyCreateRow()}>
-                      复制新增
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      } type="primary"
-                      onClick={() => deleteSelectedRows()}>
-                      删除
-                    </Button>
-                  </React.Fragment>
-                ),
-                'QCRG_04': (
-                  <React.Fragment>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleAuditAll('负责人', 'audit')}>
-                      负责人签名
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      } type="primary"
-                      onClick={() => deleteSelectedRows()}>
-                      删除
-                    </Button>
-                  </React.Fragment>
-                ),
-                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_21': (
-                  <React.Fragment>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleAuditAll(
-                        '负责人',
-                        codeAdapter({
-                          QCRG_03: 'sign',
-                          other: 'audit'
-                        }, registerCode)
-                      )}>
-                      负责人签名
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleCopyCreateRow()}>
-                      复制新增
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      } type="primary"
-                      onClick={() => deleteSelectedRows()}>
-                      删除
-                    </Button>
-                  </React.Fragment>
-                ),
-                'QCRG_12_2': (
-                  <React.Fragment>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleAuditAll('护士', 'sign')}>
-                      签名
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleAuditAll('负责人', 'audit')}>
-                      负责人签名
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      }
-                      type="primary"
-                      onClick={() => handleCopyCreateRow()}>
-                      复制新增
-                    </Button>
-                    <Button
-                      disabled={
-                        pageLoading ||
-                        selectedRowKeys.length <= 0
-                      } type="primary"
-                      onClick={() => deleteSelectedRows()}>
-                      删除
-                    </Button>
-                  </React.Fragment>
-                ),
+                // 'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_21': (
+                //   <React.Fragment>
+                //     <Button
+                //       disabled={
+                //         pageLoading ||
+                //         selectedRowKeys.length <= 0
+                //       }
+                //       type="primary"
+                //       onClick={() => handleAuditAll(
+                //         '负责人',
+                //         codeAdapter({
+                //           QCRG_03: 'sign',
+                //           other: 'audit'
+                //         }, registerCode)
+                //       )}>
+                //       负责人签名
+                //     </Button>
+                //     <Button
+                //       disabled={
+                //         pageLoading ||
+                //         selectedRowKeys.length <= 0
+                //       }
+                //       type="primary"
+                //       onClick={() => handleCopyCreateRow()}>
+                //       复制新增
+                //     </Button>
+                //     <Button
+                //       disabled={
+                //         pageLoading ||
+                //         selectedRowKeys.length <= 0
+                //       } type="primary"
+                //       onClick={() => deleteSelectedRows()}>
+                //       删除
+                //     </Button>
+                //   </React.Fragment>
+                // ),
                 other: (<React.Fragment>
                   <Button
                     disabled={

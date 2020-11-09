@@ -17,7 +17,7 @@ import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
 
-  const LEFT_MENU_CONFIG: any = [
+  let LEFT_MENU_CONFIG: any[] = [
     {
       title: " 不良事件查询",
       // icon: <SJZK />,
@@ -36,15 +36,22 @@ export default function BadEventsRouters(props: Props) {
       path: '/home/不良事件发生率',
       component: 不良事件发生率,
     },
-    {
-      title: '不良事件分析报告',
-      path: '/home/不良事件分析报告',
-      component: BadEventReportList,
-      hide: appStore.isDev ? false : true,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    }
+
   ];
+
+  if (appStore.HOSPITAL_ID === 'hj') {
+    LEFT_MENU_CONFIG = LEFT_MENU_CONFIG.concat([
+      {
+        title: '不良事件分析报告',
+        path: '/home/不良事件分析报告',
+        component: BadEventReportList,
+        // hide: appStore.isDev ? false : true,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      }
+    ])
+  }
+
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
