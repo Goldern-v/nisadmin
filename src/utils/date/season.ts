@@ -6,12 +6,12 @@ export const getSeaonsStartAndEnd = (year?: number, season?: number) => {
 
   switch (_season) {
     case 1:
-      return [moment(`${year}-1-1`), moment(`${year}-3-31`)]
+      return [moment(`${_year}-1-1`), moment(`${_year}-3-31`)]
     case 2:
-      return [moment(`${year}-4-1`), moment(`${year}-6-30`)]
+      return [moment(`${_year}-4-1`), moment(`${_year}-6-30`)]
     case 3:
-      return [moment(`${year}-7-1`), moment(`${year}-9-30`)]
+      return [moment(`${_year}-7-1`), moment(`${_year}-9-30`)]
     case 4:
-      return [moment(`${year}-10-1`), moment(`${year}-12-31`)]
+      return [moment(`${_year}-10-1`), moment(`${_year}-12-31`)]
   }
 }
