@@ -697,10 +697,7 @@ const routes: RouteItem[] = [
   },
   {
     path: "/continuingEdu",
-    redirect:
-      appStore.HOSPITAL_ID === "wh"
-        ? "/continuingEdu/在线学习"
-        : "/continuingEdu/人员管理"
+    redirect: "/continuingEdu/在线学习"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

@@ -47,8 +47,7 @@ export default function ContinuingEdu(props: Props) {
       title: "在线学习",
       icon: <JSGL />,
       path: "/continuingEdu/在线学习",
-      component: 在线学习,
-      hide: appStore.HOSPITAL_ID !== "wh"
+      component: 在线学习
     },
     {
       title: "人员管理",
