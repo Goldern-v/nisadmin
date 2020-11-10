@@ -1,29 +1,29 @@
-import styled from 'styled-components'
-import React from 'react'
-import Zimage from 'src/components/Zimage'
-import { Radio, Icon, Input } from 'antd'
-const { TextArea } = Input
+import styled from "styled-components";
+import React from "react";
+import Zimage from "src/components/Zimage";
+import { Radio, Icon, Input } from "antd";
+const { TextArea } = Input;
 
 interface Props {
-  detailData: any
+  detailData: any;
 }
 
 export default function Left(props: Props) {
-  const { detailData } = props
-  let messageBoxData = detailData.record || {}
-  let pageItem = detailData.pageItem || {}
-  let attachment = detailData.attachment || []
-  let srUserDataList = detailData.srUserDataList || []
+  const { detailData } = props;
+  let messageBoxData = detailData.record || {};
+  let pageItem = detailData.pageItem || {};
+  let attachment = detailData.attachment || [];
+  let srUserDataList = detailData.srUserDataList || [];
 
   return (
     <Wrapper>
       <MessageBox>
-        <div className='boxLeft'>
+        <div className="boxLeft">
           <div>查房时间：{messageBoxData.srDate}</div>
           <div>查检病区：{messageBoxData.wardName}</div>
           <div>查房类型：{messageBoxData.type}</div>
         </div>
-        <div className='boxRight'>
+        <div className="boxRight">
           <div>检查者：{messageBoxData.srName}</div>
           <div>状态：{messageBoxData.nextNodePendingName}</div>
         </div>
@@ -31,51 +31,78 @@ export default function Left(props: Props) {
       <ContentCon>
         <QuestionItem>
           {/* -------值班人员 */}
-          <div className='titleCon'>
-            <div className='titleLeftCon'>一、值班人员</div>
+          <div className="titleCon">
+            <div className="titleLeftCon">一、值班人员</div>
           </div>
-          <div className='itemCon'>值班人员：
-              {/* {srUserDataList.map((item: any, k: any) => ( */}
+          <div className="itemCon">
+            值班人员：
+            {/* {srUserDataList.map((item: any, k: any) => ( */}
             <span>{messageBoxData.onDutyEmpName}</span>
-          {/* ))} */}
+            {/* ))} */}
           </div>
 
           {/* -------护士在岗情况 */}
-          <div className='titleCon'>
-            <div className='titleLeftCon'>二、护士在岗情况</div>
+          <div className="titleCon">
+            <div className="titleLeftCon">二、护士在岗情况</div>
           </div>
-          <div className='itemCon'>
-            <div className='itemQuestionCon'>
+          <div className="itemCon">
+            <div className="itemQuestionCon">
               {/* 选择项 */}
-              <Radio.Group value={pageItem.nurseStatus} disabled buttonStyle='solid'>
-                <span className='problemPro'>有无问题：</span>
-                <Radio value={'0'} style={{ marginLeft: '15px', marginRight: '25px' }}>
+              <Radio.Group
+                value={pageItem.nurseStatus}
+                disabled
+                buttonStyle="solid"
+              >
+                <span className="problemPro">有无问题：</span>
+                <Radio
+                  value={"0"}
+                  style={{ marginLeft: "15px", marginRight: "25px" }}
+                >
                   无问题
-                  </Radio>
-                <Radio value={'1'} style={{ marginLeft: '15px', marginRight: '25px' }}>
+                </Radio>
+                <Radio
+                  value={"1"}
+                  style={{ marginLeft: "15px", marginRight: "25px" }}
+                >
                   有问题
-                  </Radio>
+                </Radio>
               </Radio.Group>
               {/* //问题详情+附件 */}
-              {pageItem.nurseStatus == '1' && (
+              {pageItem.nurseStatus == "1" && (
                 <div>
-                  <div className='notesCon'>
-                    <div className='notesLeftCon'>问题详情</div>
-                    <div className='notesRightCon'>
-                      <TextArea rows={4} readOnly value={pageItem.nurseProblem} autosize disabled />
+                  <div className="notesCon">
+                    <div className="notesLeftCon">问题详情</div>
+                    <div className="notesRightCon">
+                      <TextArea
+                        rows={4}
+                        readOnly
+                        value={pageItem.nurseProblem}
+                        autosize
+                        disabled
+                      />
                     </div>
                   </div>
-                  <div className='fujian'>
-                    <span className='problemPro'>附件：</span>
+                  <div className="fujian">
+                    <span className="problemPro">附件：</span>
                     {/* {attachment.map((item: any, itemIndex: number) => ( */}
-                    <div className='imgCon'>
+                    <div className="imgCon">
                       <Zimage
                         text={
-                          <span style={{ fontSize: '13px' }}>
-                            <Icon type='paper-clip' style={{ fontSize: '13px' }} />{attachment.filter((item: any) => item.type === '0').length}
+                          <span style={{ fontSize: "13px" }}>
+                            <Icon
+                              type="paper-clip"
+                              style={{ fontSize: "13px" }}
+                            />
+                            {
+                              attachment.filter(
+                                (item: any) => item.type === "0"
+                              ).length
+                            }
                           </span>
                         }
-                        list={attachment.filter((item: any) => item.type === '0').map((item: any) => item.path)}
+                        list={attachment
+                          .filter((item: any) => item.type === "0")
+                          .map((item: any) => item.path)}
                       />
                     </div>
                     {/* ))} */}
@@ -86,42 +113,141 @@ export default function Left(props: Props) {
           </div>
 
           {/* -------病人情况 */}
-          <div className='titleCon'>
-            <div className='titleLeftCon'>三、病人情况</div>
+          <div className="titleCon">
+            <div className="titleLeftCon">三、病人情况</div>
           </div>
-          <div className='itemCon itemCon1'>
-            <div className='itemQuestionCon'>
+          <div className="itemCon itemCon1">
+            <div className="itemQuestionCon">
               {/* 选择项 */}
-              <Radio.Group value={pageItem.patientStatus} disabled buttonStyle='solid'>
-                <span className='problemPro'>有无问题：</span>
-                <Radio value={'0'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+              <Radio.Group
+                value={pageItem.patientStatus}
+                disabled
+                buttonStyle="solid"
+              >
+                <span className="problemPro">有无问题：</span>
+                <Radio
+                  value={"0"}
+                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                >
                   无问题
-                  </Radio>
-                <Radio value={'1'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                </Radio>
+                <Radio
+                  value={"1"}
+                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                >
                   有问题
-                  </Radio>
+                </Radio>
               </Radio.Group>
               {/* //问题详情+附件 */}
-              {pageItem.patientStatus == '1' && (
+              {pageItem.patientStatus == "1" && (
                 <div>
-                  <div className='notesCon'>
-                    <div className='notesLeftCon'>问题详情</div>
-                    <div className='notesRightCon'>
-                      <TextArea rows={4} readOnly value={pageItem.patientProblem} autosize disabled />
+                  <div className="notesCon">
+                    <div className="notesLeftCon">问题详情</div>
+                    <div className="notesRightCon">
+                      <TextArea
+                        rows={4}
+                        readOnly
+                        value={pageItem.patientProblem}
+                        autosize
+                        disabled
+                      />
                     </div>
                   </div>
-                  <div className='fujian'>
-                    <span className='problemPro'>附件：</span>
+                  <div className="fujian">
+                    <span className="problemPro">附件：</span>
                     {/* {attachment.map((item: any, itemIndex: number) => ( */}
-                    <div className='imgCon' >
+                    <div className="imgCon">
                       {
                         <Zimage
                           text={
-                            <span style={{ fontSize: '13px' }}>
-                              <Icon type='paper-clip' style={{ fontSize: '13px' }} />{attachment.filter((item: any) => item.type === '1').length}
+                            <span style={{ fontSize: "13px" }}>
+                              <Icon
+                                type="paper-clip"
+                                style={{ fontSize: "13px" }}
+                              />
+                              {
+                                attachment.filter(
+                                  (item: any) => item.type === "1"
+                                ).length
+                              }
                             </span>
                           }
-                          list={attachment.filter((item: any) => item.type === '1').map((item: any) => item.path)}
+                          list={attachment
+                            .filter((item: any) => item.type === "1")
+                            .map((item: any) => item.path)}
+                        />
+                      }
+                    </div>
+                    {/* ))} */}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* -------疫情防控落实 */}
+          <div className="titleCon">
+            <div className="titleLeftCon">四、疫情防控落实</div>
+          </div>
+          <div className="itemCon itemCon1">
+            <div className="itemQuestionCon">
+              {/* 选择项 */}
+              <Radio.Group
+                value={pageItem.epidemicStatus}
+                disabled
+                buttonStyle="solid"
+              >
+                <span className="problemPro">有无问题：</span>
+                <Radio
+                  value={"0"}
+                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                >
+                  无问题
+                </Radio>
+                <Radio
+                  value={"1"}
+                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                >
+                  有问题
+                </Radio>
+              </Radio.Group>
+              {/* //问题详情+附件 */}
+              {pageItem.epidemicStatus == "1" && (
+                <div>
+                  <div className="notesCon">
+                    <div className="notesLeftCon">问题详情</div>
+                    <div className="notesRightCon">
+                      <TextArea
+                        rows={4}
+                        readOnly
+                        value={pageItem.epidemicProblem}
+                        autosize
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  <div className="fujian">
+                    <span className="problemPro">附件：</span>
+                    {/* {attachment.map((item: any, itemIndex: number) => ( */}
+                    <div className="imgCon">
+                      {
+                        <Zimage
+                          text={
+                            <span style={{ fontSize: "13px" }}>
+                              <Icon
+                                type="paper-clip"
+                                style={{ fontSize: "13px" }}
+                              />
+                              {
+                                attachment.filter(
+                                  (item: any) => item.type === "2"
+                                ).length
+                              }
+                            </span>
+                          }
+                          list={attachment
+                            .filter((item: any) => item.type === "2")
+                            .map((item: any) => item.path)}
                         />
                       }
                     </div>
@@ -134,24 +260,24 @@ export default function Left(props: Props) {
         </QuestionItem>
       </ContentCon>
     </Wrapper>
-  )
+  );
 }
 
-const Wrapper = styled.div` 
+const Wrapper = styled.div`
   margin: 0 auto;
   width: 760px;
   padding: 10px 20px;
   color: #000000;
   background: #fff;
   border: 1px solid #ddd;
-  .imgCon{
+  .imgCon {
     display: inline-block;
     margin-right: 6px;
   }
-  .fujian{
+  .fujian {
     margin-bottom: 10px;
   }
-`
+`;
 const MessageBox = styled.div`
   margin-top: 10px;
   min-height: 60px;
@@ -168,12 +294,12 @@ const MessageBox = styled.div`
     flex: 1;
     width: 0;
   }
-`
+`;
 const ContentCon = styled.div`
   margin-top: 10px;
   font-size: 12px;
   padding-bottom: 20px;
-`
+`;
 const QuestionItem = styled.div`
   .titleCon {
     margin: 10px 0 0 0;
@@ -195,7 +321,7 @@ const QuestionItem = styled.div`
     .itemQuestionCon {
       margin-top: 5px;
       font-size: 12px;
-      .problemPro{
+      .problemPro {
         color: #000;
       }
       .itemAttachmentCon {
@@ -204,7 +330,7 @@ const QuestionItem = styled.div`
         span {
           color: #333;
           &:hover {
-            color: ${(p) => p.theme.$mtc};
+            color: ${p => p.theme.$mtc};
           }
         }
       }
@@ -219,7 +345,7 @@ const QuestionItem = styled.div`
       }
     }
   }
-  .itemCon1{
+  .itemCon1 {
     border-bottom: none !important;
   }
   .notesCon {
@@ -244,4 +370,4 @@ const QuestionItem = styled.div`
       }
     }
   }
-`
+`;
