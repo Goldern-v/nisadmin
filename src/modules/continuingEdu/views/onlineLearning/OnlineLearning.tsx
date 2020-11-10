@@ -90,7 +90,7 @@ export default observer(function OnlineLearning(props: Props) {
         <div style={{ float: "right" }}>
           <span>开始时间：</span>
           <DatePicker.RangePicker
-            allowClear={false}
+            allowClear
             style={{ width: 220, marginRight: 15 }}
             value={onlineLearningModal.selectedDate}
             onChange={date => {
