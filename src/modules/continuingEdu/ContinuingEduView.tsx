@@ -16,6 +16,7 @@ import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
+import 人员分组设置 from "./views/人员分组设置/人员分组设置"
 import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -50,15 +51,47 @@ export default function ContinuingEdu(props: Props) {
       component: 在线学习,
       hide: appStore.HOSPITAL_ID == "nys"
     },
-    {
-      title: "人员管理",
-      icon: <RYGL />,
-      path: "/continuingEdu/人员管理",
-      component: 人员管理,
-      hide: () =>
-        queyMenuAuthInfo("nm_lat_personelManage") ||
-        authStore.isOnlyInternsManage
-    },
+    ...appStore.hisMatch({
+      map: {
+        'hj': [
+          {
+            title: "人员管理",
+            icon: <RYGL />,
+            // path: "/continuingEdu/人员管理",
+            // component: 人员管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_personelManage") ||
+              authStore.isOnlyInternsManage,
+            children: [
+              {
+                title: "正式人员",
+                icon: <RYGL />,
+                path: "/continuingEdu/人员管理",
+                component: 人员管理,
+              },
+              {
+                title: "分组设置",
+                icon: <RYGL />,
+                path: "/continuingEdu/人员分组设置",
+                component: 人员分组设置,
+                hide: true
+              },
+            ]
+          },
+        ],
+        other: [
+          {
+            title: "人员管理",
+            icon: <RYGL />,
+            path: "/continuingEdu/人员管理",
+            component: 人员管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_personelManage") ||
+              authStore.isOnlyInternsManage
+          },
+        ]
+      }
+    }),
     {
       title: "审核发布",
       icon: <YNXXB />,
