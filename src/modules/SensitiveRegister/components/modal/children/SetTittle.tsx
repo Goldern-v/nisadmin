@@ -339,17 +339,20 @@ export default observer(function SetTittle(props: Props) {
 
     if (params[index].oldItemCode) {
       params.splice(index, 1)
+
       sensitiveRegisterService
         .saveOrUpdateItemConfig(registerCode, blockId,
           params.filter((item: any) => item.oldItemCode))
         .then(res => {
           message.success('删除成功')
-          dataSource.splice(index, 1)
-          updateDataSource()
+
+          setDataSource([])
+          setTimeout(() => setDataSource(params))
         })
     } else {
-      dataSource.splice(index, 1)
-      updateDataSource()
+      params.splice(index, 1)
+      setDataSource([])
+      setTimeout(() => setDataSource(params))
     }
   };
   const addRow = () => {

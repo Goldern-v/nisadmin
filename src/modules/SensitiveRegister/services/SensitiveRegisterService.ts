@@ -169,6 +169,10 @@ export default class SensitiveRegisterService extends BaseApiService {
 
     return this.post(`/sign/${formType}/${registerCode}/delete`, { id })
   }
+  /**获取模板列表 */
+  public getRegisterList() {
+    return this.get(`qcRegisterBlock/QCR_0001/getTemplateList`)
+  }
 }
 
 export const sensitiveRegisterService = new SensitiveRegisterService();

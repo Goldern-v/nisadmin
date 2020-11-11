@@ -395,6 +395,11 @@ export default observer(function 人员管理(props: Props) {
       })
   }
 
+  /**分组设置 */
+  const toGroupSetting = () => {
+    appStore.history.push('/continuingEdu/人员分组设置')
+  }
+
   return (
     <Wrapper className={switchWrapperName()}>
       <CommonHeader title={"人员管理"}>
@@ -428,6 +433,11 @@ export default observer(function 人员管理(props: Props) {
             搜索
           </Button>
         </span>
+        {appStore.HOSPITAL_ID === 'hj' && appStore.isDev && (
+          <span className="float-item">
+            <Button onClick={() => toGroupSetting()}>分组设置</Button>
+          </span>
+        )}
         <span className="float-item">
           <Button
             onClick={() =>
