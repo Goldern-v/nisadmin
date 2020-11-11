@@ -98,6 +98,7 @@ class RecordViewModal {
         res.data.page.list.map((item: any, index: any) => {
           item.nurseProblem = res.data.srPageItemlist[index].nurseProblem;
           item.patientProblem = res.data.srPageItemlist[index].patientProblem;
+          item.epidemicProblem = res.data.srPageItemlist[index].epidemicProblem;
           array.push(item);
         });
       // if (code === '科护士长审核') {
