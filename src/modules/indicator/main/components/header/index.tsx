@@ -1,32 +1,33 @@
 import styled from "styled-components";
 import React, {useEffect} from "react";
 import {observer} from "mobx-react-lite";
-import {modal} from "../../modal";
-import {Button, DatePicker, Select} from "src/vendors/antd";
+import {Button, Select} from "src/vendors/antd";
+import {IModal} from "src/modules/indicator/main/interface";
+import YearPicker from 'src/components/YearPicker'
+import moment from "moment";
 
 interface Props {
-  title: string,
+  modal: IModal
 }
 
 export default observer(function Header(props: Props) {
-  const {title} = props; //获取当前页面标题
+  const title = props.modal.name; //获取当前页面标题
 
   return (
     <Wrapper>
       <PageTitle maxWidth={1000}>{title}</PageTitle>
       <RightCon>
-        {/* 日期 */}
+        {/* 年份 */}
         <div className="con-item">
-          <span>日期：</span>
-          <DatePicker.RangePicker
+          <span>年份：</span>
+          <YearPicker
+            style={{width: '100px'}}
             allowClear={false}
-            style={{width: 220}}
-            value={modal.selectedDate}
-            onChange={date => {
-              modal.selectedDate = date;
-              modal.onload();
-            }}
-          />
+            value={moment(`${props.modal.selectedDate}-01-01`) || undefined}
+            onChange={(val: any) => {
+              props.modal.selectedDate = val.format('YYYY')
+              props.modal.search()
+            }}/>
         </div>
 
         {/* 科室 */}
@@ -34,30 +35,29 @@ export default observer(function Header(props: Props) {
           <span>科室：</span>
           <Select
             style={{width: 200}}
-            value={modal.selectedDeptType}
+            value={props.modal.selectedDeptType}
             onChange={(val: string) => {
-              modal.selectedDeptType = val;
-              modal.onload();
+              props.modal.selectedDeptType = val
+              props.modal.search()
             }}
           >
-            <Select.Option value="">全部</Select.Option>
-            {modal.deptList.map((item: any, index: number) => (
+            {props.modal.deptList.map((item: any, index: number) => (
               <Select.Option value={item.code} key={item.code}>
                 {item.name}
               </Select.Option>
             ))}
-            <Select.Option value="-1">其他</Select.Option>
           </Select>
         </div>
 
 
         {/* 查询按钮 */}
         <Button type="primary" className="con-item" onClick={() => {
+          props.modal.search()
         }}>查询</Button>
 
         {/* 导出按钮 */}
-        <Button className="con-item" onClick={() => {
-        }}>导出</Button>
+        {/*<Button className="con-item" onClick={() => {*/}
+        {/*}}>导出</Button>*/}
       </RightCon>
     </Wrapper>
   );

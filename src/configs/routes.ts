@@ -708,7 +708,7 @@ const routes: RouteItem[] = [
   // },
   {
     path: "/indicator",
-    redirect: "/indicator/护理质量相关数据"
+    redirect: "/indicator/专科季度统计表"
   },
   {
     path: "/setting",

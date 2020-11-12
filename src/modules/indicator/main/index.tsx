@@ -3,19 +3,31 @@ import React, {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import Header from "./components/header/index";
 import Content from "./components/content/index";
+import {IModal} from "src/modules/indicator/main/interface";
+import {Modal} from "./modal";
 
-export interface Props {
+export default observer(function main(props: { name: string }) {
+    let modal: IModal = new Modal(props.name)
 
-}
+    useEffect(() => {
+      if (modal.name !== props.name) {
+        modal = new Modal(props.name)
+      }
+      modal.init()
+    }, [props.name])
 
-export default observer(function main(props: Props) {
-  return (
-    <Wrapper>
-      <Header title={'sss'}/>
-      <Content/>
-    </Wrapper>
-  );
-});
+    const onSearch = () => {
+    }
+
+    return (
+      <Wrapper>
+        <Header modal={modal}/>
+        <Content modal={modal}/>
+      </Wrapper>
+    );
+  }
+)
+;
 
 const Wrapper = styled.div`
   width: 100%;

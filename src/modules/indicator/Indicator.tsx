@@ -14,23 +14,11 @@ export interface Props extends RouteComponentProps<{ name?: string }> {
 }
 
 export default function Indicator(props: Props) {
-  const [templateShow, setTemplateShow] = useState(true);
-  const [timeData, setTimeData]: any = useState(crrentMonth());
-  const [nursingData, setNursingData] = useState(false); //是否展示护理主质量相关数据页面（--true展示）
+  const [nursingData, setNursingData] = useState(false);
 
   useLayoutEffect(() => {
-    // 护理质量相关数据（吴敏）
-    if (props.match.params.name === "护理质量相关数据") {
-      setNursingData(true);
-    } else {
-      setNursingData(false);
-    }
-  }, [props.match.params.name, timeData]);
 
-  const onload = async () => {
-  };
-  const onExport = async () => {
-  };
+  }, [props.match.params.name]);
 
   return (
     <Wrapper>
@@ -38,7 +26,7 @@ export default function Indicator(props: Props) {
         <LeftMenu config={LEFT_MENU} menuTitle="敏感指标"/>
       </MenuWrapper>
       <MainWrapper>
-        <Main/>
+        <Main name={props.match.params.name || ''}/>
       </MainWrapper>
       {/*{nursingData ? (*/}
       {/*  <div className="nursingData">*/}
