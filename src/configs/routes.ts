@@ -147,9 +147,9 @@ const WardRegisterRouter = lazy(() =>
   import("src/modules/WardRegister/WardRegisterRouter")
 );
 //厚街敏感指标登记本
-// const SensitiveRegisterRouter = lazy(() =>
-//   import("src/modules/SensitiveRegister/SensitiveRegisterRouter")
-// );
+const SensitiveRegisterRouter = lazy(() =>
+  import("src/modules/SensitiveRegister/SensitiveRegisterRouter")
+);
 const DetailsView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/details/DetailsView")
 );
@@ -634,7 +634,7 @@ const routes: RouteItem[] = [
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
-  // setLayout("/sensitiveRegister", SensitiveRegisterRouter, layouts.MainLayout),
+  setLayout("/sensitiveRegister", SensitiveRegisterRouter, layouts.MainLayout),
   /**一级质控 */
   setLayout(
     "/nursingQualityCheckEdit",

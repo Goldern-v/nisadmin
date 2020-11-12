@@ -4,18 +4,20 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { appStore } from "src/stores";
 import { KeepAlive } from "src/vendors/keep-alive";
+import { Spin } from "antd";
 
 // 引入自动推送设置页面
 export interface Props {
   leftMenuConfig: any[];
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean,
+  loading?: boolean,
 }
 
 // const leftMenuConfig = []
 
 export default function LeftMenuPage(props: Props) {
-  let { leftMenuConfig } = props;
+  let { leftMenuConfig, loading } = props;
   let currentRoutePath = appStore.location.pathname || "";
   let currentRoute = getTargetObj(leftMenuConfig, "path", currentRoutePath);
   // 筛选目标对象
@@ -48,7 +50,14 @@ export default function LeftMenuPage(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        {currentRoute && currentRoute.component && (
+        {loading && (
+          <Spin
+            spinning={true}
+            className="spining-wrapper">
+            <FullCon></FullCon>
+          </Spin>
+        )}
+        {!loading && currentRoute && currentRoute.component && (
           <LeftMenu config={leftMenuConfig} stopActiveNext={!!props.stopActiveNext} />
         )}
       </LeftMenuCon>
@@ -82,6 +91,10 @@ const Wrapper = styled.div`
   height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
+  .spining-wrapper{
+    border-right: 1px solid #ddd;
+    background: #eee;
+  }
 `;
 
 const LeftMenuCon = styled.div`
@@ -116,3 +129,8 @@ const TableCon = styled.div`
   background: #fff;
   border: 1px solid rgba(228, 228, 228, 1);
 `;
+
+const FullCon = styled.div`
+  width: 100%;
+  height: 100%;
+`
