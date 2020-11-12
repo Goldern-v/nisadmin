@@ -133,12 +133,14 @@ export default observer(function OnlineLearningReview(props: Props) {
   const rightAnswerCon = (item: any, qsIdx: number) => {
     switch (item.questionType) {
       case 1: {
+        if (!item.answersList[0].isRight) return;
         const radioAightAnswer = (item.answersList || []).find(
           (answer: any) => answer.isRight === 1
         ).optionLabel;
         return item.isSelected && <span>正确答案：{radioAightAnswer}</span>;
       }
       case 2: {
+        if (!item.answersList[0].isRight) return;
         let checkBoxAightAnswer: any = "";
         (item.answersList || [])
           .filter((answer: any) => answer.isRight === 1)
@@ -152,6 +154,7 @@ export default observer(function OnlineLearningReview(props: Props) {
         );
       }
       case 3: {
+        if (!item.answersList) return;
         return (
           item.answersList[0].answerContent && (
             <span>正确答案：{item.answersList[0].rightAnswer}</span>
@@ -159,6 +162,7 @@ export default observer(function OnlineLearningReview(props: Props) {
         );
       }
       default:
+        if (!item.answersList) return;
         return (
           item.answersList[0].answerContent && (
             <span>正确答案：{item.answersList[0].suggestedAnswer}</span>
@@ -340,9 +344,11 @@ export default observer(function OnlineLearningReview(props: Props) {
                       />
                     </div>
                     {answerCon(item, qsIdx)}
-                    <div className="rightAnswer">
-                      {rightAnswerCon(item, qsIdx)}
-                    </div>
+                    {queryObj.name === "练习" && (
+                      <div className="rightAnswer">
+                        {rightAnswerCon(item, qsIdx)}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

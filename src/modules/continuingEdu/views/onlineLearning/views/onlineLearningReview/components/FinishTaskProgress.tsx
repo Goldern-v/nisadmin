@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { getFileSize, getFileType, getFilePrevImg } from "src/utils/file/file";
 import { appStore } from "src/stores";
 import createModal from "src/libs/createModal";
-import PreviewModal from "src/utils/file/modal/PreviewModal"; // 学习预览
+import PreviewModal from "../../../modal/PreviewModal"; // 学习预览
 import { onlineLearningReviewModel } from "../OnlineLearningReviewModel";
 import { onlineLearningReviewApi } from "../api/OnlineLearningReviewApi";
 
@@ -29,7 +29,7 @@ export default observer(function finishTaskProgress() {
       path: file.path,
       id: file.id,
       finish: file.alreadyRead,
-      // videoQuestionList: baseInfo.attachmentList,
+      videoQuestionList: baseInfo.attachmentList,
       learningFunc: finishTaskFun
     });
   };
