@@ -146,13 +146,26 @@ export default observer(function Table(props: Props) {
       width: 100,
       align: "center",
       render(text: any, record: any) {
-        let btnName =
-          text === "finished" ? "查看" : `去${record.teachingMethodName}`;
-        return (
-          <DoCon>
-            <span onClick={() => handleStudy(record)}>{btnName}</span>
-          </DoCon>
-        );
+        switch (text) {
+          case "tobegin":
+            return (
+              <span style={{ color: "#ccc", fontSize: "12px" }}>待开始</span>
+            );
+          case "ongoing":
+            return (
+              <DoCon>
+                <span onClick={() => handleStudy(record)}>
+                  去{record.teachingMethodName}
+                </span>
+              </DoCon>
+            );
+          case "finished":
+            return (
+              <DoCon>
+                <span onClick={() => handleStudy(record)}>查看</span>
+              </DoCon>
+            );
+        }
       }
     }
   ];
