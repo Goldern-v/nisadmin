@@ -20,23 +20,11 @@ export default observer(function OnlineLearningReview(props: Props) {
   const exerciseQuesList = (exerciseInfo && exerciseInfo) || [];
   const [btnLoading, setBtnLoading] = useState(false);
   const [exerciseSaveLoading, setExerciseSaveLoading] = useState(false);
-  // const [isOk, setIsOk] = useState(true);
 
   // 确定从练习中退出 退出将会保存此次练习的进程
   useEffect(() => {
     examOrExerciseModel.init();
-    // window.addEventListener("popstate", handleBack, false);
-    // return () => {
-    //   window.removeEventListener("popstate", handleBack, false);
-    // };
   }, [queryObj.id]);
-
-  // 浏览器返回函数
-  // const handleBack = (value: any) => {
-  //   if (isOk) {
-  //     handInExercisePaper(false, true);
-  //   }
-  // };
 
   // 题目类型名称
   const typeName = (type: number) => {
@@ -174,6 +162,7 @@ export default observer(function OnlineLearningReview(props: Props) {
   // 处理入参
   const handleSaveData = (list: any) => {
     list.map((item: any) => {
+      // 单选 多选
       if (item.isSelected) {
         if (item.questionType === 1) {
           item.answersList.find(
@@ -183,6 +172,16 @@ export default observer(function OnlineLearningReview(props: Props) {
           item.answersList
             .filter((o: any) => item.isSelected.includes(o.optionLabel))
             .map((o: any) => (o.isSelected = 1));
+        }
+      }
+      // 考试填空 问答
+      if (queryObj.name === "考试") {
+        if (item.questionType === 3 || item.questionType === 4) {
+          item.answersList = [
+            {
+              answerContent: item.answerContent
+            }
+          ];
         }
       }
       return;
