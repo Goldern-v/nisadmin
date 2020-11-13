@@ -166,9 +166,16 @@ const Wrapper = styled.div`
       margin: 5px 0 0 20px
     }
   }
-  .ant-modal-close-x {
-    display: none !important;
+  .answerModal {
+    /deep/ .ant-modal-close {
+      display: none !important; 
+    }
+    /deep/ .ant-modal-close-x {
+      display: none !important;
+    }
   }
+  
+  
   .question-item{
     padding-left: 10px;
     font-size: 13px;

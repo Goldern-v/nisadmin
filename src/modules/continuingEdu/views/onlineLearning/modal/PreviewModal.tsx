@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useLayoutEffect } from "react";
-import { Modal, Icon } from "antd";
+import { Modal, Icon, Button } from "antd";
 import reactZmage from "react-zmage";
 import { ModalComponentProps } from "src/libs/createModal";
 import { Rules } from "src/components/Form/interfaces";
@@ -48,7 +48,7 @@ export default function PreviewModal(props: Props) {
   let [noFile, setNoFile] = useState(false);
   const [answerModalvisible, setAnswerModalVisible] = useState(false);
   const [answerModalparams, setAnswerModalParams] = useState({});
-
+  const [finished, setFinished] = useState(true);
   const changeFilePath = (path: string, _visible?: boolean) => {
     if (_visible === undefined) _visible = visible;
     let fileType = getFileType(path);
@@ -76,6 +76,12 @@ export default function PreviewModal(props: Props) {
               videoRef.currentTime = last;
             } else {
               last = current;
+            }
+            // 判断视频是否看完（看完显示完成按钮）
+            if (this.currentTime == videoRef.duration) {
+              setFinished(false);
+            } else {
+              setFinished(true);
             }
             // 判断是否插题
             if (
@@ -212,10 +218,21 @@ export default function PreviewModal(props: Props) {
         title={currentTitle}
         visible={visible}
         onCancel={onCancel}
-        onOk={onSave}
-        okText="确定"
+        // onOk={onSave}
         forceRender
         centered
+        footer={
+          <div style={{ textAlign: "center" }}>
+            <span>
+              <Button onClick={onCancel}>取消</Button>
+            </span>
+            <span style={{ marginLeft: "10px" }}>
+              <Button type="primary" onClick={onSave} disabled={finished}>
+                完成
+              </Button>
+            </span>
+          </div>
+        }
       >
         <Wrapper>
           {getFileType(filePath) == "video" ? (
