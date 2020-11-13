@@ -54,9 +54,7 @@ export default observer(function Content(props: Props) {
           />
         )}
         {showType === "图表" && (
-          <ChartComponent
-
-          />
+          <ChartComponent dataSource={props.modal.dataList}/>
         )}
       </ContentBody>
     </Wrapper>

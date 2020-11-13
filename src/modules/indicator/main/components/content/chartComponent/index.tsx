@@ -6,7 +6,7 @@ const DataSet = require('@antv/data-set')
 
 
 export interface Props {
-
+  dataSource: any[]
 }
 
 export default function ChartComponent(props: Props) {
@@ -22,38 +22,48 @@ export default function ChartComponent(props: Props) {
     }
   })
 
-
-  const sourceData = [
-    {name:'ceshi',firstPercent: 20, secondPercent: 30, thirdPercent: 50},
-  ];
-
-  const dv = new DataSet.View().source(sourceData)
+  const dv = new DataSet.View().source(props.dataSource);
   dv.transform({
     type: 'fold',
-    fields: ['firstPercent', 'secondPercent', 'thirdPercent'],
+    fields: ['firstPercent', 'secondPercent', 'thirdPercent', 'fourthPercent', 'yearPercent'],
     key: 'type',
-    value: 'value'
+    value: 'value',
+    retains: ['indicatorName']
   })
-  const data = dv.rows
 
-  console.log(data, 'data')
+  const labelMap = {
+    firstPercent: '第一季度',
+    secondPercent: '第二季度',
+    thirdPercent: '第三季度',
+    fourthPercent: '第四季度',
+    yearPercent: '年度',
+  }
+
+  dv.transform({
+    type: 'map',
+    callback(row: any) {
+      row.label = labelMap[row.type]
+      return row;
+    }
+  });
+
+  const data = dv.rows
 
   return (
     <Wrapper id='chartWrapper'>
       <Chart forceFit height={chartHeight} data={data}>
-        {/* 坐标系组件 */}
-        <Coord type='rect'/>
         {/* 提示信息组件 鼠标悬停在图表上的某点时展示该点的数据 */}
         <Tooltip/>
+        {/* 坐标值配置 */}
+        <Axis/>
         {/* 图例  */}
         <Legend position='top-left'/>
 
-        {/* 坐标值配置 */}
-        <Axis dataKey='name' label={{offset: 12}} grid={{align: 'center'}}/>
+        {/* 线 */}
+        <Line position="label*value" color="indicatorName"/>
 
-        {/* 坐标值配置 */}
-        <Axis dataKey='value' grid={{align: 'center'}}/>
-
+        {/* 点 */}
+        <Point position="label*value" color="indicatorName" shape="circle"/>
       </Chart>
     </Wrapper>
   )
