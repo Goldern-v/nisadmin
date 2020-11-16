@@ -131,7 +131,7 @@ export default function Step1() {
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
         <Row>
           <Row>
-            <Col span={appStore.HOSPITAL_ID == "wh" ? 24 : 20}>
+            <Col span={24}>
               <Form.Field label={`类型`} name="id" required>
                 <Select
                   disabled={!!stepViewModal.oldData}
@@ -152,7 +152,7 @@ export default function Step1() {
                 </Select>
               </Form.Field>
             </Col>
-            {appStore.HOSPITAL_ID !== "wh" && (
+            {/* {appStore.HOSPITAL_ID !== "wh" && (
               <Col span={4} style={{ textAlign: "right" }}>
                 <Button
                   disabled={stepViewModal.oldData}
@@ -163,7 +163,7 @@ export default function Step1() {
                   其他类型
                 </Button>
               </Col>
-            )}
+            )} */}
           </Row>
           <Col span={24}>
             <Form.Field label={`教学方式`} name="teachingMethodName">

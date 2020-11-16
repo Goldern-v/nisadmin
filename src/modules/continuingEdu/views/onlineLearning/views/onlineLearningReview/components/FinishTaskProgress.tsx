@@ -70,6 +70,7 @@ export default observer(function finishTaskProgress() {
                 <Button
                   className="download-btn"
                   onClick={() => showReview(item)}
+                  disabled={baseInfo.tpStatus != "ongoing"}
                 >
                   {baseInfo.teachingMethodName}
                 </Button>
@@ -103,6 +104,7 @@ export default observer(function finishTaskProgress() {
                 }&status="true"`
               )
             }
+            disabled={baseInfo.tpStatus != "ongoing"}
           >
             {baseInfo.taskStatus === 1 ? "重新练习" : "开始练习"}
           </Button>
@@ -133,7 +135,7 @@ export default observer(function finishTaskProgress() {
           <div className="file-title">试卷</div>
           <Button
             disabled={
-              baseInfo.tpStatus == "finished" ||
+              baseInfo.tpStatus != "ongoing" ||
               baseInfo.remainingAnswerTimes == 0
             }
             className={

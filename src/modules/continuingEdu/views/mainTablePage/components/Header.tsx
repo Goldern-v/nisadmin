@@ -42,24 +42,28 @@ export default observer(function Header(props: Props) {
             mainPageModal.onload();
           }}
         />
-        <span>类型：</span>
-        <Select
-          style={{ width: 120 }}
-          value={mainPageModal.selectedType}
-          onChange={(val: string) => {
-            mainPageModal.selectedType = val;
-            mainPageModal.pageIndex = 1;
-            mainPageModal.onload();
-          }}
-        >
-          <Select.Option value="">全部</Select.Option>
-          {mainPageModal.selectTypeList.map((item: any, index: number) => (
-            <Select.Option value={item.id} key={index}>
-              {item.name}
-            </Select.Option>
-          ))}
-          <Select.Option value="-1">其他</Select.Option>
-        </Select>
+        {appStore.HOSPITAL_ID === "wh" && (
+          <span>
+            <span>类型：</span>
+            <Select
+              style={{ width: 120 }}
+              value={mainPageModal.selectedType}
+              onChange={(val: string) => {
+                mainPageModal.selectedType = val;
+                mainPageModal.pageIndex = 1;
+                mainPageModal.onload();
+              }}
+            >
+              <Select.Option value="">全部</Select.Option>
+              {mainPageModal.selectTypeList.map((item: any, index: number) => (
+                <Select.Option value={item.id} key={index}>
+                  {item.name}
+                </Select.Option>
+              ))}
+              <Select.Option value="-1">其他</Select.Option>
+            </Select>
+          </span>
+        )}
         <span>状态：</span>
         <Select
           style={{ width: 120 }}
