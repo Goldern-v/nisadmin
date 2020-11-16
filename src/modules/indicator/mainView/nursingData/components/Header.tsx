@@ -67,7 +67,7 @@ export default observer(function Header(props: Props) {
   );
 });
 const Wrapper = styled.div`
-  width: calc(100vw-200px);
+  width: calc(100vw - 200px);
   justify-content: space-between;
   height: 55px;
   font-size: 13px;
