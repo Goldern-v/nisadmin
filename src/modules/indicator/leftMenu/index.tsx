@@ -100,7 +100,6 @@ export default observer(function LeftMenu(props: Props) {
 
   // 点击节点
   const handleItemClick: any = (params: ClickParams) => {
-    console.log(params.key, 'itemitem')
     const path = params.key
     appStore.history.push(path);
   }
@@ -344,12 +343,4 @@ const MenuIcon = styled.span`
     }
   }
 `;
-const AddIcon = styled.div`
-                font-size: 18px !important;
-                font-weight: bold !important;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                margin: auto 0;
-                right: 45px;
-                `;
+

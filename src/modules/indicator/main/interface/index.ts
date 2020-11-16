@@ -10,3 +10,8 @@ export interface IModal {
   init: Function, // 初始化方法
   search: Function, // 查询方法
 }
+
+export interface IDataSource {
+  denominatorDesc: string | undefined,
+  indicatorCode: string| undefined,
+}

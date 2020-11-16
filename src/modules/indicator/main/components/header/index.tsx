@@ -2,15 +2,11 @@ import styled from "styled-components";
 import React, {useEffect} from "react";
 import {observer} from "mobx-react-lite";
 import {Button, Select} from "src/vendors/antd";
-import {IModal} from "src/modules/indicator/main/interface";
+import {IModal} from "../../interface";
 import YearPicker from 'src/components/YearPicker'
 import moment from "moment";
 
-interface Props {
-  modal: IModal
-}
-
-export default observer(function Header(props: Props) {
+export default observer(function Header(props: { modal: IModal }) {
   const title = props.modal.name; //获取当前页面标题
 
   return (
@@ -34,21 +30,22 @@ export default observer(function Header(props: Props) {
         <div className="con-item">
           <span>科室：</span>
           <Select
+            showSearch
             style={{width: 200}}
             value={props.modal.selectedDeptType}
             onChange={(val: string) => {
               props.modal.selectedDeptType = val
               props.modal.search()
             }}
+            filterOption={(input: string, option: any) => option.props.children.includes(input)}
           >
             {props.modal.deptList.map((item: any, index: number) => (
-              <Select.Option value={item.code} key={item.code}>
+              <Select.Option value={item.code} key={index}>
                 {item.name}
               </Select.Option>
             ))}
           </Select>
         </div>
-
 
         {/* 查询按钮 */}
         <Button type="primary" className="con-item" onClick={() => {

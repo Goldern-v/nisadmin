@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {observer} from "mobx-react-lite";
 import {Radio} from "antd";
 import BaseTable from "src/components/BaseTable";
-import {crrentMonth} from "src/utils/moment/crrentMonth";
-import {IModal} from "src/modules/indicator/main/interface";
+import {IModal} from "../../interface";
 import ChartComponent from './chartComponent'
 
 interface Props {
@@ -13,11 +12,6 @@ interface Props {
 
 export default observer(function Content(props: Props) {
   let [showType, setShowType] = useState('详情');
-
-  const onLoad = async () => {
-    let currentRouteName = props.modal.name;
-
-  }
 
   return (
     <Wrapper>
@@ -44,7 +38,7 @@ export default observer(function Content(props: Props) {
       <ContentBody>
         {showType === "详情" && (
           <BaseTable
-            rowKey="index"
+            rowKey="indicatorCode"
             loading={props.modal.isLoading}
             wrapperStyle={{padding: 0}}
             dataSource={props.modal.dataList}
@@ -53,9 +47,10 @@ export default observer(function Content(props: Props) {
             surplusWidth={0}
           />
         )}
-        {showType === "图表" && (
-          <ChartComponent dataSource={props.modal.dataList}/>
-        )}
+        {showType === "图表" && props.modal.dataList.length > 0 ?
+          (<ChartComponent dataSource={props.modal.dataList} />) :
+          (<div style={{marginTop: "200px", textAlign: "center", fontSize: "30px"}}>暂无数据</div>)
+        }
       </ContentBody>
     </Wrapper>
   );

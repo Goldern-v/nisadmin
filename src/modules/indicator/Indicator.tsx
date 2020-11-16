@@ -1,74 +1,21 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
+import React, {useLayoutEffect} from "react";
 import LeftMenu from "./leftMenu";
 import Main from "./main";
 import styled from "styled-components";
 import {LEFT_MENU} from "./config";
-import {Radio, Button, DatePicker} from "antd";
 import {RouteComponentProps} from "src/components/RouterView";
-import {crrentMonth} from "src/utils/moment/crrentMonth";
 
-// 护理质量相关数据
-import NursingData from "./mainView/nursingData/NursingData";
-
-export interface Props extends RouteComponentProps<{ name?: string }> {
-}
-
-export default function Indicator(props: Props) {
-  const [nursingData, setNursingData] = useState(false);
-
-  useLayoutEffect(() => {
-
-  }, [props.match.params.name]);
-
+export default function Indicator(props: RouteComponentProps<{ name?: string }>) {
   return (
     <Wrapper>
+      {/* 左侧菜单 */}
       <MenuWrapper>
         <LeftMenu config={LEFT_MENU} menuTitle="敏感指标"/>
       </MenuWrapper>
+      {/* 右侧主要信息 */}
       <MainWrapper>
         <Main name={props.match.params.name || ''}/>
       </MainWrapper>
-      {/*{nursingData ? (*/}
-      {/*  <div className="nursingData">*/}
-      {/*    <NursingData getTitle={props.match.params.name}/>*/}
-      {/*  </div>*/}
-      {/*) : (*/}
-      {/*  <MainCon>*/}
-      {/*    <HeaderCon>*/}
-      {/*      <span>日期:</span>*/}
-      {/*      <DatePicker.RangePicker*/}
-      {/*        value={timeData}*/}
-      {/*        onChange={data => {*/}
-      {/*          setTimeData(data);*/}
-      {/*        }}*/}
-      {/*        style={{width: 220, margin: "0 10px"}}*/}
-      {/*      />*/}
-      {/*      <Button*/}
-      {/*        type="primary"*/}
-      {/*        style={{marginRight: 10}}*/}
-      {/*        onClick={() => onload()}*/}
-      {/*      >*/}
-      {/*        查询*/}
-      {/*      </Button>*/}
-      {/*      <Button onClick={() => onExport()}>导出excl</Button>*/}
-      {/*    </HeaderCon>*/}
-      {/*    {templateShow ? (*/}
-      {/*      <MainScroll>*/}
-
-      {/*      </MainScroll>*/}
-      {/*    ) : (*/}
-      {/*      <div*/}
-      {/*        style={{*/}
-      {/*          marginTop: "200px",*/}
-      {/*          textAlign: "center",*/}
-      {/*          fontSize: "30px"*/}
-      {/*        }}*/}
-      {/*      >*/}
-      {/*        暂无数据*/}
-      {/*      </div>*/}
-      {/*    )}*/}
-      {/*  </MainCon>*/}
-      {/*)}*/}
     </Wrapper>
   );
 }
@@ -86,38 +33,3 @@ const MenuWrapper = styled.div`
 const MainWrapper = styled.div`
   flex:1;
 `
-
-const MainCon = styled.div`
-  box-sizing: border-box;
-  flex: 1;
-  width: 0;
-  align-items: stretch;
-  display: flex;
-  height: 100%;
-  overflow: hidden;
-  flex-direction: column;
-  padding: 5px 15px;
-`;
-const MainScroll = styled.div`
-  flex: 1;
-  height: 0;
-  /* overflow-x: hidden;
-  overflow-y: auto; */
-  overflow: hidden;
-  /* padding: 5px 15px; */
-`;
-
-const HeaderCon = styled.div`
-  height: 50px;
-  /* background: rgba(248, 248, 248, 1);
-  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid #dbe0e4; */
-  font-size: 13px;
-  position: relative;
-  font-size: 13px;
-  color: #333333;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  z-index: 1;
-`;

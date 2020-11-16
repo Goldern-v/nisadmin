@@ -7,7 +7,7 @@ export class Modal {
   @observable public selectedDate: string = String(new Date().getFullYear()); //年份
   @observable public selectedDeptType = ""; //科室
   @observable public deptList: any[] = []; //科室列表
-  @observable public isLoading = false; //内容loading
+  @observable public isLoading = false; //内容loading状态
   @observable public tableColumn: any[] = []; //表头
   @observable public dataList: any[] = []; //返回的数据
 

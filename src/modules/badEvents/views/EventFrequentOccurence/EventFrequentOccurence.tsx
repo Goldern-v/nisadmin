@@ -5,11 +5,11 @@ import BaseLayout from 'src/modules/badEvents/views/components/BaseLayout'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
-import BaseTable from 'src/modules/indicator/components/BaseTable'
+import BaseTable from '../../components/BaseTable'
 // import createModal from 'src/libs/createModal'
 // import EditAwardsModal from '../modal/EditAwardsModal'
 import { Radio } from 'antd'
-import BaseChart from 'src/modules/indicator/components/BaseChart'
+import BaseChart from '../../components/BaseChart'
 import moment from 'moment'
 export interface Props extends RouteComponentProps {}
 export default observer(function EventReport(props: Props) {

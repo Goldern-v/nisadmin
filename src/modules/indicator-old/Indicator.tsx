@@ -1,3 +1,7 @@
+/**
+ * 该文件夹的内容没有在使用，代码保留用作参考
+ */
+
 import moment from "moment";
 import BaseTable from "src/components/BaseTable";
 import LeftMenu from "src/components/LeftMenu";
@@ -56,8 +60,8 @@ import {湿包发生率} from "./views2/湿包发生率";
 import {LEFT_MENU} from "./config";
 import {indicatorService} from "./services/IndicatorService";
 // 图
-import 护患比统计图 from "src/modules/indicator/chartView/护患比统计图.tsx";
-import 无图 from "src/modules/indicator/chartView/无图.tsx";
+import 护患比统计图 from "src/modules/indicator-old/chartView/护患比统计图.tsx";
+import 无图 from "src/modules/indicator-old/chartView/无图.tsx";
 
 // 护理质量相关数据
 import NursingData from "./mainView/nursingData/NursingData";
