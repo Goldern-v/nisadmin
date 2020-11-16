@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default observer(function Content(props: Props) {
-  let [showType, setShowType] = useState('图表');
+  let [showType, setShowType] = useState('详情');
 
   const onLoad = async () => {
     let currentRouteName = props.modal.name;

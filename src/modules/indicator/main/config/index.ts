@@ -13,6 +13,24 @@ export const defaultTableColumn: any[] = [
     width: 200
   },
   {
+    title: '阈值',
+    dataIndex: 'valve',
+    key: 'valve',
+    align: 'center',
+  },
+  {
+    title: '分子描述',
+    dataIndex: 'numeratorDesc',
+    key: 'numeratorDesc',
+    align: 'center',
+  },
+  {
+    title: '分母描述',
+    dataIndex: 'denominatorDesc',
+    key: 'denominatorDesc',
+    align: 'center',
+  },
+  {
     title: '第一季度',
     children: [
       {
