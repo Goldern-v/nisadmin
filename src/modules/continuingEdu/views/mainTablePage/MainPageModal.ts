@@ -2,13 +2,15 @@ import { observable, computed } from "mobx";
 import { mainPageApi } from "./api/MainPageApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
+import { appStore } from "src/stores/index";
 
 class MainPageModal {
   @observable public id = ""; //菜单id
   @observable public keyWord = ""; //菜单名
   @observable public selectedType = ""; //类型
-  @observable public selectTypeList = []; //类型
+  @observable public selectTypeList: any = []; //类型
   @observable public selectedState = ""; //状态
+  @observable public key: any = 0; //状态
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
@@ -29,10 +31,15 @@ class MainPageModal {
       endTime: this.selectedDate[1].format("YYYY-MM-DD") // 结束时间
     };
   }
+
   async initData() {
     await Promise.all([
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
+        if (appStore.HOSPITAL_ID === "hj") {
+          this.selectedType = res.data[0].id;
+          this.key = 0;
+        }
         this.selectTypeList = res.data;
       })
     ]);
@@ -54,6 +61,12 @@ class MainPageModal {
     mainPageApi.exportMainData(this.postObj).then(res => {
       fileDownload(res);
     });
+  }
+
+  //tabs变化函数
+  tabsChanged(key: any) {
+    this.selectedType = this.selectTypeList[key].id;
+    this.key = key;
   }
 
   async init() {
