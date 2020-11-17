@@ -36,7 +36,7 @@ export default observer(function MainPage(props: Props) {
       res.data.map((item: any, index: number) => {
         obj = {
           title: item.name,
-          component: <HjTable addRecordModal={addRecordModal} />
+          component: <HjTable />
         };
         arr.push(obj);
       });
@@ -52,9 +52,7 @@ export default observer(function MainPage(props: Props) {
         addRecordModal={addRecordModal}
       />
       <Content>
-        {appStore.HOSPITAL_ID === "wh" ? (
-          <Table getId={getId} addRecordModal={addRecordModal} />
-        ) : (
+        {appStore.HOSPITAL_ID === "hj" && getParentsName === "在线学习" ? (
           <BaseTabs
             defaultActiveKey={mainPageModal.key}
             config={dataList}
@@ -64,6 +62,8 @@ export default observer(function MainPage(props: Props) {
               mainPageModal.onload();
             }}
           />
+        ) : (
+          <Table getId={getId} addRecordModal={addRecordModal} />
         )}
       </Content>
       <addRecordModal.Component />

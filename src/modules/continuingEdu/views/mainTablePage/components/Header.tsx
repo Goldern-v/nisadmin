@@ -7,6 +7,8 @@ import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
 import { selectPeopleViewModel } from "../../../modal/SelectPeople/SelectPeopleViewModel";
 import qs from "qs";
+import { stepViewModal } from "../../../modal/stepComponent/StepViewModal";
+
 interface Props {
   getTitle: any;
   getId: any;
@@ -42,7 +44,8 @@ export default observer(function Header(props: Props) {
             mainPageModal.onload();
           }}
         />
-        {appStore.HOSPITAL_ID === "wh" && (
+        {(appStore.HOSPITAL_ID === "wh" ||
+          stepViewModal.getParentsName !== "在线学习") && (
           <span>
             <span>类型：</span>
             <Select

@@ -556,7 +556,6 @@ export default observer(function Table(props: Props) {
         columns={columns}
         surplusWidth={300}
         surplusHeight={270}
-        // scroll={{ x: 895 }}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,

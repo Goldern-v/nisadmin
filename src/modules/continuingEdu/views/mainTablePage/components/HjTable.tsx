@@ -7,13 +7,13 @@ import { mainPageModal } from "../MainPageModal";
 import { mainPageApi } from "../api/MainPageApi";
 import { appStore, authStore } from "src/stores";
 import { stepServices } from "../../../modal/stepComponent/services/stepServices";
+import AddRecordModal from "../../../modal/AddRecordModal";
+import createModal from "src/libs/createModal";
 
-interface Props {
-  addRecordModal: any;
-}
+interface Props {}
 
 export default observer(function HjTable(props: Props) {
-  useEffect(() => {}, []);
+  const addRecordModal = createModal(AddRecordModal); // 添加弹窗
 
   //培训对象函数封装
   const setTableConfig = () => {
@@ -167,7 +167,7 @@ export default observer(function HjTable(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 200,
+      width: 230,
       align: "center",
       // fixed: "right",
       render(text: any, record: any, index: number) {
@@ -411,7 +411,7 @@ export default observer(function HjTable(props: Props) {
 
   // 修改
   const handReWrite = (record: any) => {
-    props.addRecordModal.show({
+    addRecordModal.show({
       id: record.id,
       onOkCallBack: () => {
         Message.success("修改成功");
@@ -489,6 +489,7 @@ export default observer(function HjTable(props: Props) {
           mainPageModal.onload();
         }}
       />
+      <addRecordModal.Component />
     </Wrapper>
   );
 });
