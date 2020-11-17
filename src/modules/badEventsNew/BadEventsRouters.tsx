@@ -10,6 +10,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { appStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
+import BadEventsNewListNys from './BadEventsNewList_nys'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
@@ -18,14 +19,30 @@ export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
 
   let LEFT_MENU_CONFIG: any[] = [
-    {
-      title: " 不良事件查询",
-      // icon: <SJZK />,
-      path: "/home",
-      component: BadEventsNewList,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
+    ...appStore.hisMatch({
+      map: {
+        'nys': [
+          {
+            title: " 不良事件查询",
+            // icon: <SJZK />,
+            path: "/home",
+            component: BadEventsNewListNys,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+        ],
+        other: [
+          {
+            title: " 不良事件查询",
+            // icon: <SJZK />,
+            path: "/home",
+            component: BadEventsNewList,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+        ]
+      }
+    }),
     {
       title: '不良事件统计',
       path: '/home/不良事件统计',

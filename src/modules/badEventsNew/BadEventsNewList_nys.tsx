@@ -28,7 +28,7 @@ export default observer(function BadEventNewList() {
   };
 
   let dateRange = defaultDateRange()
-  const defaultWardCode = ''
+  const defaultWardCode = authStore.isDepartment ? '' : authStore.defaultDeptCode
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: defaultWardCode,
@@ -312,7 +312,7 @@ export default observer(function BadEventNewList() {
                     wardCode: wardCode || ''
                   })}
                   showSearch
-                  allowClear
+                  allowClear={authStore.isDepartment ? true : false}
                   filterOption={(input: any, option: any) =>
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >

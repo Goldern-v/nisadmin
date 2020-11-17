@@ -6,11 +6,15 @@ import { ColumnProps } from "antd/lib/table";
 import { appStore } from 'src/stores';
 import { Link } from 'react-router-dom';
 import { Place } from 'src/components/common';
+import EditModal from './components/editModal'
+import UserListEditModal from './components/userListEditModal'
 
 export interface Props { }
 
 export default function 人员分组设置() {
   const { queryObj } = appStore
+  const [editVisible, setEditVisible] = useState(false)
+  const [userListVisible, setUserListVisible] = useState(false)
 
   // console.log(queryObj)
 
@@ -65,13 +69,23 @@ export default function 人员分组设置() {
       width: 150,
       render: (text: any, record: any) => {
         return <DoCon>
-          <span>添加人员</span>
-          <span>修改</span>
+          <span onClick={() => handleUserEdit(record)}>添加人员</span>
+          <span onClick={() => handleEdit(record)}>修改</span>
           <span>删除</span>
         </DoCon>
       }
     }
   ]
+
+  const handleUserEdit = (record: any) => {
+    console.log(record)
+    setUserListVisible(true)
+  }
+
+  const handleEdit = (record: any) => {
+    console.log(record)
+    setEditVisible(true)
+  }
 
   useEffect(() => {
 
@@ -94,6 +108,14 @@ export default function 人员分组设置() {
       surplusHeight={150}
       dataSource={groupData}
       columns={columns} />
+    <EditModal
+      visible={editVisible}
+      onOk={() => setEditVisible(false)}
+      onCancel={() => setEditVisible(false)} />
+    <UserListEditModal
+      visible={userListVisible}
+      onOk={() => setUserListVisible(false)}
+      onCancel={() => setUserListVisible(false)} />
   </Wrapper>
 }
 
