@@ -11,18 +11,21 @@ import AddRecordModal from "../../modal/AddRecordModal";
 import BaseTabs from "src/components/BaseTabs";
 import { mainPageModal } from "./MainPageModal";
 import { mainPageApi } from "./api/MainPageApi";
+import { stepViewModal } from "../../modal/stepComponent/StepViewModal";
 
 interface Props {
   getTitle: any;
   getId: any;
+  getParentsName: any;
 }
 export default observer(function MainPage(props: Props) {
-  const { getTitle, getId } = props; //获取当前页面标题
+  const { getTitle, getId, getParentsName } = props; //获取当前页面标题
   const addRecordModal = createModal(AddRecordModal); // 添加弹窗
   const [dataList, setDataList] = useState([] as any); // 动态TAbs
 
   useEffect(() => {
     getTabs();
+    stepViewModal.getParentsName = getParentsName || "";
   }, [getId, getTitle]);
 
   // 获取动态选项卡

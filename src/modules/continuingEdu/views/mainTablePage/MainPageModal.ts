@@ -17,12 +17,14 @@ class MainPageModal {
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
+  @observable public hjSelectedType = ""; //状态
 
   @computed
   get postObj() {
     return {
       secondLevelMenuId: this.id, //二级菜单id
-      thirdLevelMenuId: this.selectedType, //三级菜单id(类型)
+      thirdLevelMenuId:
+        appStore.HOSPITAL_ID === "wh" ? this.selectedType : this.hjSelectedType, //三级菜单id(类型)
       status: this.selectedState, //状态
       keyWord: this.keyWord, //菜单名
       pageIndex: this.pageIndex, //页码
@@ -37,8 +39,7 @@ class MainPageModal {
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
         if (appStore.HOSPITAL_ID === "hj") {
-          this.selectedType = res.data[0].id;
-          this.key = 0;
+          this.hjSelectedType = res.data[this.key].id;
         }
         this.selectTypeList = res.data;
       })
@@ -65,8 +66,7 @@ class MainPageModal {
 
   //tabs变化函数
   tabsChanged(key: any) {
-    this.selectedType = this.selectTypeList[key].id;
-    this.key = key;
+    this.hjSelectedType = this.selectTypeList[key].id;
   }
 
   async init() {

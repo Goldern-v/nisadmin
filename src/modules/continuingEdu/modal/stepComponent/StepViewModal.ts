@@ -33,6 +33,7 @@ export let teachingMethodMap: any = {
   7: "实践"
 };
 class StepViewModal {
+  @observable public getParentsName: any = ""; //二级菜单名
   @observable public oldData: any = null;
   @observable public taskCode: any = null;
   @observable public stepData1: any = {

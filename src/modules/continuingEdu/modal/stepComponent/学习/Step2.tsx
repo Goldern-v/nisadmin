@@ -26,7 +26,8 @@ export interface Props {}
 export default observer(function Step2() {
 
   // 组织方式
-  const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
+  const zzfs = (appStore.HOSPITAL_ID === 'hj' && allStepViewModal.getParentsName === '在线学习') ? [{ name: "线上", code: 1 }] : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
+
   // 学分
   const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' ? [
     { name: "国家级", code: 1 },
@@ -145,7 +146,7 @@ export default observer(function Step2() {
 
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
-              <Select>
+              <Select disabled={appStore.HOSPITAL_ID === 'hj' && allStepViewModal.getParentsName === '在线学习'}>
                 {zzfs.map(item => (
                   <Select.Option value={item.code} key={item.name}>
                     {item.name}

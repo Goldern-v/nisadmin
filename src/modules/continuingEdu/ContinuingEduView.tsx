@@ -16,7 +16,7 @@ import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
-import 人员分组设置 from "./views/人员分组设置/人员分组设置"
+import 人员分组设置 from "./views/人员分组设置/人员分组设置";
 import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -53,7 +53,7 @@ export default function ContinuingEdu(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'hj': [
+        hj: [
           {
             title: "人员管理",
             icon: <RYGL />,
@@ -67,7 +67,7 @@ export default function ContinuingEdu(props: Props) {
                 title: "正式人员",
                 icon: <RYGL />,
                 path: "/continuingEdu/人员管理",
-                component: 人员管理,
+                component: 人员管理
               },
               {
                 title: "分组设置",
@@ -75,9 +75,9 @@ export default function ContinuingEdu(props: Props) {
                 path: "/continuingEdu/人员分组设置",
                 component: 人员分组设置,
                 hide: true
-              },
+              }
             ]
-          },
+          }
         ],
         other: [
           {
@@ -88,7 +88,7 @@ export default function ContinuingEdu(props: Props) {
             hide: () =>
               queyMenuAuthInfo("nm_lat_personelManage") ||
               authStore.isOnlyInternsManage
-          },
+          }
         ]
       }
     }),
@@ -291,13 +291,14 @@ export default function ContinuingEdu(props: Props) {
             if (item.childList && item.childList.length) {
               let Pid = item.id;
               let arr: any = [];
-              item.childList.map((item: any, index: any) => {
+              item.childList.map((childItem: any, index: any) => {
                 var obj2: any = {
-                  id: item.id,
-                  title: item.name,
+                  parentsName: item.name,
+                  id: childItem.id,
+                  title: childItem.name,
                   component: 主列表页,
-                  path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
-                    item.id
+                  path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${
+                    childItem.id
                   }`
                 };
                 arr.push(obj2);
@@ -396,6 +397,7 @@ export default function ContinuingEdu(props: Props) {
             getFormCode={currentRoute && currentRoute.formCode} //表单code值
             getFormName={currentRoute && currentRoute.formName} //表单code值
             getList={getList} // 动态菜单树
+            getParentsName={currentRoute && currentRoute.parentsName}
           />
         )}
       </MainWrapper>
