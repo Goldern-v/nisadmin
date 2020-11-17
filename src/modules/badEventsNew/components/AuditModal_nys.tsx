@@ -317,6 +317,21 @@ export default observer(function AduitModal(props: Props) {
             </Row>
           </div>
         )
+      // case 'nurse_comfirm':
+      //   return (
+      //     <div className='form1'>
+      //       <Row>
+      //         <Col span={4}>
+      //           <div style={{ lineHeight: '30px', fontSize: '14px' }}>确认护士长：</div>
+      //         </Col>
+      //         <Col span={20}>
+      //           <Select value={''}>
+      //             <Option></Option>
+      //           </Select>
+      //         </Col>
+      //       </Row>
+      //     </div>
+      //   )
       default:
         return <span>未知审核流程</span>
     }
