@@ -120,7 +120,7 @@ export default function RightContent(props: Props) {
   // 预览
   const handlePreview = (record: any) => {
     PreviewModalWrapper.show({
-      path: `asset/${record.path}`,
+      path: `/crNursing/asset${record.path}`,
       title: record.fileName || "文件预览"
     });
   };
