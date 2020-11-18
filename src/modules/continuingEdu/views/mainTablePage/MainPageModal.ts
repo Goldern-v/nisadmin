@@ -10,7 +10,7 @@ class MainPageModal {
   @observable public selectedType = ""; //类型
   @observable public selectTypeList: any = []; //类型
   @observable public selectedState = ""; //状态
-  @observable public key: any = 0; //状态
+  @observable public key: string = "0"; //状态
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
@@ -39,7 +39,8 @@ class MainPageModal {
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
         if (appStore.HOSPITAL_ID === "hj") {
-          this.hjSelectedType = res.data[this.key].id;
+          this.key = "0";
+          this.hjSelectedType = res.data[this.key].id || "";
         }
         this.selectTypeList = res.data;
       })
@@ -66,7 +67,7 @@ class MainPageModal {
 
   //tabs变化函数
   tabsChanged(key: any) {
-    this.hjSelectedType = this.selectTypeList[key].id;
+    this.hjSelectedType = this.selectTypeList[Number(key)].id;
   }
 
   async init() {

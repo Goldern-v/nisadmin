@@ -14,6 +14,7 @@ export interface Props {
   onChange?: (activeKey: string) => void;
   defaultActiveKey?: any;
   style?: React.CSSProperties;
+  activeKey?: any;
 }
 
 export default function BaseTabs(props: Props) {
@@ -22,6 +23,7 @@ export default function BaseTabs(props: Props) {
       <Tabs
         type="card"
         defaultActiveKey={props.defaultActiveKey || "0"}
+        activeKey={props.activeKey}
         onChange={props.onChange}
       >
         {props.config.map((item: any, index: number) => {

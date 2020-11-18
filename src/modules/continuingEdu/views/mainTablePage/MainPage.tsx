@@ -54,9 +54,9 @@ export default observer(function MainPage(props: Props) {
       <Content>
         {appStore.HOSPITAL_ID === "hj" && getParentsName === "在线学习" ? (
           <BaseTabs
-            defaultActiveKey={mainPageModal.key}
+            activeKey={mainPageModal.key}
             config={dataList}
-            onChange={(key: any) => {
+            onChange={(key: string) => {
               mainPageModal.tabsChanged(key);
               mainPageModal.key = key;
               mainPageModal.onload();
