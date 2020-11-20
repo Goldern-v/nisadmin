@@ -309,8 +309,9 @@ export default observer(function Step1() {
                 <Form.Field label={``} name="studentCreditType">
                   <Select
                     disabled={
-                      allStepViewModal.getThirdName == "院级" ||
-                      allStepViewModal.getThirdName == "科级"
+                      appStore.HOSPITAL_ID == "hj" &&
+                      (allStepViewModal.getThirdName == "院级" ||
+                        allStepViewModal.getThirdName == "科级")
                     }
                   >
                     {studentCreditTypeList.map((item: any) => (
@@ -384,8 +385,9 @@ export default observer(function Step1() {
                 <Form.Field label={``} name="teacherCreditType">
                   <Select
                     disabled={
-                      allStepViewModal.getThirdName == "院级" ||
-                      allStepViewModal.getThirdName == "科级"
+                      appStore.HOSPITAL_ID == "hj" &&
+                      (allStepViewModal.getThirdName == "院级" ||
+                        allStepViewModal.getThirdName == "科级")
                     }
                   >
                     {studentCreditTypeList.map((item: any) => (
@@ -504,13 +506,14 @@ export default observer(function Step1() {
               </div>
             </Form.Field>
           </Col>
-          {allStepViewModal.getParentsName == "集中培训" && (
-            <Col span={24}>
-              <Form.Field label={`注意事项`} name="pointsForAttention">
-                <TextArea maxLength={300} rows={5} />
-              </Form.Field>
-            </Col>
-          )}
+          {appStore.HOSPITAL_ID == "hj" &&
+            allStepViewModal.getParentsName == "集中培训" && (
+              <Col span={24}>
+                <Form.Field label={`注意事项`} name="pointsForAttention">
+                  <TextArea maxLength={300} rows={5} />
+                </Form.Field>
+              </Col>
+            )}
           {/* <Col span={24}>
             <Form.Field label={`通知消息`} name="noticeContent">
               <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
