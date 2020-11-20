@@ -111,7 +111,7 @@ export default class CommonApiService extends BaseApiService {
   public groupByRoleInDeptList() {
     return this.get(`/studyAndTrain/menuManage/getAllRoles`);
   }
-  /** 根据实习生获取人员列表 ---学习培训 新建类型*/
+  /** 根据实习生获取人员列表 ---厚街学习培训 新建类型*/
   public groupByInternsInDeptList() {
     let obj: any = {
       years: [],
@@ -119,6 +119,17 @@ export default class CommonApiService extends BaseApiService {
     };
     return this.post(
       `/studyAndTrain/basicInformation/user/queryGraduateInternInfoListGroupByYear`,
+      obj
+    );
+  }
+  /** 根据进修生获取人员列表 ---厚街学习培训 新建类型*/
+  public queryRefresherStudentInfoListGroupByYear() {
+    let obj: any = {
+      years: [],
+      keyWord: ""
+    };
+    return this.post(
+      `/studyAndTrain/basicInformation/user/queryRefresherStudentInfoListGroupByYear`,
       obj
     );
   }
@@ -142,7 +153,7 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => { })
+      onUploadProgress: onUploadProgress || (() => {})
     });
   }
   /** 下载文件并导出 */

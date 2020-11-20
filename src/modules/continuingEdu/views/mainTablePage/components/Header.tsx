@@ -44,7 +44,11 @@ export default observer(function Header(props: Props) {
             mainPageModal.onload();
           }}
         />
-        {appStore.HOSPITAL_ID === "wh" && (
+        {appStore.HOSPITAL_ID === "hj" &&
+        (stepViewModal.getParentsName == "在线学习" ||
+          stepViewModal.getParentsName == "集中培训") ? (
+          ""
+        ) : (
           <span>
             <span>类型：</span>
             <Select

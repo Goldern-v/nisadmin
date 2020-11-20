@@ -3,6 +3,7 @@ import { mainPageApi } from "./api/MainPageApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
+import { stepViewModal } from "../../modal/stepComponent/StepViewModal";
 
 class MainPageModal {
   @observable public id = ""; //菜单id
@@ -24,7 +25,11 @@ class MainPageModal {
     return {
       secondLevelMenuId: this.id, //二级菜单id
       thirdLevelMenuId:
-        appStore.HOSPITAL_ID === "wh" ? this.selectedType : this.hjSelectedType, //三级菜单id(类型)
+        appStore.HOSPITAL_ID === "hj" &&
+        (stepViewModal.getParentsName == "在线学习" ||
+          stepViewModal.getParentsName == "集中培训")
+          ? this.hjSelectedType
+          : this.selectedType, //三级菜单id(类型)
       status: this.selectedState, //状态
       keyWord: this.keyWord, //菜单名
       pageIndex: this.pageIndex, //页码
@@ -38,7 +43,11 @@ class MainPageModal {
     await Promise.all([
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
-        if (appStore.HOSPITAL_ID === "hj") {
+        if (
+          appStore.HOSPITAL_ID === "hj" &&
+          (stepViewModal.getParentsName == "在线学习" ||
+            stepViewModal.getParentsName == "集中培训")
+        ) {
           this.hjSelectedType = res.data[this.key]
             ? res.data[this.key].id
             : res.data[0].id;

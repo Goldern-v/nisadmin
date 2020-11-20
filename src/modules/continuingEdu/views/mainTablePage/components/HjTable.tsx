@@ -485,7 +485,7 @@ export default observer(function HjTable(props: Props) {
         dataSource={mainPageModal.tableList}
         columns={columns}
         surplusWidth={300}
-        surplusHeight={appStore.HOSPITAL_ID === "wh" ? 270 : 320}
+        surplusHeight={stepViewModal.getParentsName == "集中培训" ? 270 : 320}
         // scroll={{ x: 895 }}
         pagination={{
           current: mainPageModal.pageIndex,
