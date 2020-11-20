@@ -16,8 +16,8 @@ import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
-import 其他人员 from "./views/其他人员/其他人员"
-import 人员分组设置 from "./views/人员分组设置/人员分组设置"
+import 其他人员 from "./views/其他人员/其他人员";
+import 人员分组设置 from "./views/人员分组设置/人员分组设置";
 import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -50,37 +50,45 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/在线学习",
       component: 在线学习,
-      hide: appStore.HOSPITAL_ID == "nys"
+      hide: appStore.HOSPITAL_ID !== "wh"
+    },
+    {
+      title: "学习培训任务",
+      icon: <JSGL />,
+      path: "/continuingEdu/学习培训任务",
+      component: 在线学习,
+      hide: appStore.HOSPITAL_ID !== "hj"
     },
     ...appStore.hisMatch({
       map: {
-        'hj': [
+        hj: [
           {
             title: "人员管理",
             icon: <RYGL />,
             // path: "/continuingEdu/人员管理",
             // component: 人员管理,
-            hide: () => queyMenuAuthInfo("nm_lat_personelManage") ||
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_personelManage") ||
               authStore.isOnlyInternsManage,
             children: [
               {
                 title: "正式人员",
                 path: "/continuingEdu/人员管理",
-                component: 人员管理,
+                component: 人员管理
               },
               {
                 title: "其他人员",
                 path: "/continuingEdu/其他人员",
-                component: 其他人员,
+                component: 其他人员
               },
               {
                 title: "分组设置",
                 path: "/continuingEdu/人员分组设置",
                 component: 人员分组设置,
                 hide: true
-              },
+              }
             ]
-          },
+          }
         ],
         other: [
           {

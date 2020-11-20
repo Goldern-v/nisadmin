@@ -700,7 +700,9 @@ const routes: RouteItem[] = [
     redirect:
       appStore.HOSPITAL_ID == "nys"
         ? "/continuingEdu/人员管理"
-        : "/continuingEdu/在线学习"
+        : appStore.HOSPITAL_ID == "wh"
+        ? "/continuingEdu/在线学习"
+        : "/continuingEdu/学习培训任务"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {
