@@ -2,62 +2,13 @@ import { observable, computed, action } from "mobx";
 import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import { stepViewModal } from "../stepComponent/StepViewModal";
 class SelectPeopleViewModel {
   @observable modalLoading: boolean = false;
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
-  @observable public selectTreeDataAll: any = [
-    {
-      step: "按片区选择",
-      label: "按片区选择",
-      data: [],
-      dataLabel: "deptName",
-      stepLabel: "deptCode"
-    },
-    {
-      step: "默认科室",
-      label: "",
-      data: []
-    },
-    {
-      step: "按护理单元选择",
-      label: "按护理单元选择",
-      data: [],
-      dataLabel: "deptName"
-    },
-
-    {
-      step: "按职务选择",
-      label: "按职务选择",
-      data: [],
-      dataLabel: "job"
-    },
-    {
-      step: "按职称选择",
-      label: "按职称选择",
-      data: [],
-      dataLabel: "title"
-    },
-    {
-      step: "按层级选择",
-      label: "按层级选择",
-      data: [],
-      dataLabel: "level"
-    },
-    ...appStore.hisAdapter({
-      hj: () => [
-        {
-          step: "按实习生选择",
-          label: "按实习生选择",
-          data: [],
-          dataLabel: "year"
-        }
-      ],
-      wh: () => [],
-      nys: () => []
-    })
-  ];
+  @observable public selectTreeDataAll: any = [];
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
     {
@@ -145,6 +96,10 @@ class SelectPeopleViewModel {
           this.currentData = {
             list: (await ser.groupByInternsInDeptList()).data
           };
+        } else if (this.stepState[0] == "按进修生选择") {
+          this.currentData = {
+            list: (await ser.queryRefresherStudentInfoListGroupByYear()).data
+          };
         }
       } else if (this.stepState.length == 2) {
         if (this.stepState[0] == "按片区选择") {
@@ -190,6 +145,10 @@ class SelectPeopleViewModel {
         } else if (this.stepState[0] == "按实习生选择") {
           this.currentData = {
             list: (await ser.groupByInternsInDeptList()).data
+          };
+        } else if (this.stepState[0] == "按进修生选择") {
+          this.currentData = {
+            list: (await ser.queryRefresherStudentInfoListGroupByYear()).data
           };
         }
       }
