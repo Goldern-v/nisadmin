@@ -39,8 +39,9 @@ class MainPageModal {
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
         if (appStore.HOSPITAL_ID === "hj") {
-          this.key = "0";
-          this.hjSelectedType = res.data[this.key].id || "";
+          this.hjSelectedType = res.data[this.key]
+            ? res.data[this.key].id
+            : res.data[0].id;
         }
         this.selectTypeList = res.data;
       })

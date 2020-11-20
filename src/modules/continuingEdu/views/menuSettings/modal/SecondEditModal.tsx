@@ -6,6 +6,7 @@ import { Rules } from "src/components/Form/interfaces";
 import { meunSettingApi } from "../api/MeunSettingApi";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
+import { appStore } from "src/stores";
 
 export interface Props {
   secondVisible: boolean;
@@ -30,6 +31,7 @@ export default function SecondEditModal(props: Props) {
   const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [orgLevelName, setOrgLevelName] = useState("");
   const [sortValue, setSortValue] = useState(Number);
   const [errorMessage, setErrorMessage]: any = useState("");
   const [isThirdAudit, setIsThirdAudit]: any = useState(false);
@@ -154,6 +156,7 @@ export default function SecondEditModal(props: Props) {
           setErrorMessage("");
           const {
             name,
+            orgLevel,
             submitterType,
             firstAuditorType,
             secondAuditorType,
@@ -162,6 +165,7 @@ export default function SecondEditModal(props: Props) {
           } = params;
           setInputValue(name);
           setSortValue(sort);
+          setOrgLevelName(orgLevel);
           let submit = submitterType
             ? submitterType === 1
               ? params.submitEmployees
@@ -194,6 +198,7 @@ export default function SecondEditModal(props: Props) {
           getData(thirdAuditorType, thirdAudit, setThirdAudit);
           current.setFields({
             name,
+            orgLevel,
             submit,
             firstAudit,
             secondAudit,
@@ -274,6 +279,7 @@ export default function SecondEditModal(props: Props) {
           setParamsProperty(typeList, "secondAudit", "secondAuditorType");
           setParamsProperty(typeList, "thirdAudit", "thirdAuditorType");
           let newParams = {
+            orgLevel: orgLevelName,
             name: inputValue,
             id: params.id,
             sort: sortValue,
@@ -331,6 +337,29 @@ export default function SecondEditModal(props: Props) {
                   </Form.Field>
                 </Col>
               </Row>
+              {appStore.HOSPITAL_ID == "hj" && (
+                <Row>
+                  <Col span={4} className="label required-label">
+                    级别:
+                  </Col>
+                  <Col span={20}>
+                    <Form.Field name="orgLevel">
+                      <Select
+                        placeholder="选择级别"
+                        value={orgLevelName}
+                        onBlur={(val: any) => {
+                          console.log(val, "val222222222222");
+                          setOrgLevelName(val);
+                        }}
+                      >
+                        <Select.Option value={""}>无</Select.Option>
+                        <Select.Option value={1}>院级</Select.Option>
+                        <Select.Option value={3}>科级</Select.Option>
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col span={4} className="label required-label">
                   提交人:

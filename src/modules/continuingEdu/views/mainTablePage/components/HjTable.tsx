@@ -9,6 +9,7 @@ import { appStore, authStore } from "src/stores";
 import { stepServices } from "../../../modal/stepComponent/services/stepServices";
 import AddRecordModal from "../../../modal/AddRecordModal";
 import createModal from "src/libs/createModal";
+import { stepViewModal } from "../../../modal/stepComponent/StepViewModal";
 
 interface Props {}
 
@@ -162,6 +163,15 @@ export default observer(function HjTable(props: Props) {
             color = "#000000";
         }
         return <span style={{ color }}>{statusDesc}</span>;
+      }
+    },
+    stepViewModal.getParentsName === "集中培训" && {
+      title: "通知",
+      dataIndex: "ifSendMessage",
+      width: 50,
+      align: "center",
+      render(ifSendMessage: any) {
+        return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
       }
     },
     {

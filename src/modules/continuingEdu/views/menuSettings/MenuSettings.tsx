@@ -3,13 +3,13 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message, Tooltip } from "antd";
-import { authStore } from "src/stores";
 import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
 import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
 import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
 import PermissionSettingsModal from "./modal/PermissionSettingsModal"; // 菜单设置权限弹窗
 import { selectPeopleViewModel } from "./modal/modal-two/SelectPeopleViewModel";
+import { appStore, authStore } from "src/stores";
 
 interface Props {
   getList: any;
@@ -110,6 +110,19 @@ export default observer(function MenuSettings(props: Props) {
           color: colorType(record.key)
         }
       })
+    },
+    appStore.HOSPITAL_ID == "hj" && {
+      title: "级别",
+      dataIndex: "orgLevel",
+      align: "center",
+      width: 80,
+      render: (text: any) => {
+        // if (text) {
+        return <span>{text == 1 ? "院级" : text == 3 ? "科级" : "无"}</span>;
+        // } else {
+        //   return "--";
+        // }
+      }
     },
     {
       title: "提交人",

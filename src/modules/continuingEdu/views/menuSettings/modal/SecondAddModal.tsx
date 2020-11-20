@@ -14,6 +14,7 @@ import Form from "src/components/Form/Form";
 import { meunSettingApi } from "../api/MeunSettingApi";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
+import { appStore } from "src/stores/index";
 
 export interface Props {
   visible: boolean;
@@ -229,6 +230,7 @@ export default function SecondAddModal(props: Props) {
       return {
         ...typeList,
         name: item.childrenName,
+        orgLevel: item.orgLevel,
         pId: item.id
       };
     });
@@ -263,6 +265,7 @@ export default function SecondAddModal(props: Props) {
         firstAuditorType: null,
         secondAuditorType: null,
         thirdAuditorType: null,
+        orgLevel: "",
         submit: [],
         firstAudit: [],
         secondAudit: [],
@@ -288,6 +291,8 @@ export default function SecondAddModal(props: Props) {
         setCurrent(current + 1);
       }
     } else {
+      console.log(allDataList, "allDataListallDataList");
+
       let isOk = true;
       allDataList.map((item: any) => {
         if (item.submit.length === 0 || item.firstAudit.length === 0) {
@@ -313,6 +318,17 @@ export default function SecondAddModal(props: Props) {
       setCheckedId(params[0].id);
     }
   }, [params]);
+
+  const getOrgLevel = (type: string) => {
+    switch (type) {
+      case "":
+        return "无";
+      case "1":
+        return "院级";
+      default:
+        return "科级";
+    }
+  };
 
   return (
     <Spin>
@@ -436,6 +452,31 @@ export default function SecondAddModal(props: Props) {
                     </Form.Field>
                   </Col>
                 </Row>
+                {appStore.HOSPITAL_ID == "hj" && (
+                  <Row>
+                    <Col span={4} className="label required-label">
+                      级别名称:
+                    </Col>
+                    <Col span={20}>
+                      <Form.Field name="orgLevel">
+                        <div className="divStyle">
+                          <Select
+                            placeholder="选择级别"
+                            value={item.orgLevel}
+                            onChange={(val: any) => {
+                              item.orgLevel = val;
+                              setAllDataList([...allDataList]);
+                            }}
+                          >
+                            <Select.Option value={""}>无</Select.Option>
+                            <Select.Option value={"1"}>院级</Select.Option>
+                            <Select.Option value={"3"}>科级</Select.Option>
+                          </Select>
+                        </div>
+                      </Form.Field>
+                    </Col>
+                  </Row>
+                )}
                 <Row>
                   <Col span={4} className="label required-label">
                     提交人:
@@ -589,6 +630,10 @@ export default function SecondAddModal(props: Props) {
                 <Row>
                   <Col span={20} className="peopleName">
                     <Form.Field name="submit">
+                      <div>
+                        <span style={{ marginRight: "10px" }}>级别名称:</span>
+                        <span>{getOrgLevel(item.orgLevel)}</span>
+                      </div>
                       {item.submit.length !== 0 && (
                         <div>
                           <span style={{ marginRight: "10px" }}>提交人:</span>

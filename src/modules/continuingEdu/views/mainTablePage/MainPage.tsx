@@ -26,6 +26,7 @@ export default observer(function MainPage(props: Props) {
   useEffect(() => {
     getTabs();
     stepViewModal.getParentsName = getParentsName || "";
+    stepViewModal.getThirdName = getTitle || "";
   }, [getId, getTitle]);
 
   // 获取动态选项卡
@@ -52,7 +53,7 @@ export default observer(function MainPage(props: Props) {
         addRecordModal={addRecordModal}
       />
       <Content>
-        {appStore.HOSPITAL_ID === "hj" && getParentsName === "在线学习" ? (
+        {appStore.HOSPITAL_ID === "hj" && getParentsName === "在线学习" && (
           <BaseTabs
             defaultActiveKey={mainPageModal.key}
             config={dataList}
@@ -62,7 +63,11 @@ export default observer(function MainPage(props: Props) {
               mainPageModal.onload();
             }}
           />
-        ) : (
+        )}
+        {appStore.HOSPITAL_ID === "hj" && getParentsName === "集中培训" && (
+          <HjTable />
+        )}
+        {appStore.HOSPITAL_ID === "wh" && (
           <Table getId={getId} addRecordModal={addRecordModal} />
         )}
       </Content>

@@ -21,7 +21,7 @@ const defaultStepData2 = {
   /**  培训地址（如：护理app） */
   address: "护士app",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
-  studentCreditType: 1,
+  studentCreditType: null,
   /**  学员学分 */
   studentCredit: 0,
   /**  学员学时 */
@@ -32,7 +32,7 @@ const defaultStepData2 = {
   /** 讲师 */
   teacherList: [],
   /** 讲师学分类型 1院级学分 2片区学分 3病区学分 */
-  teacherCreditType: 1,
+  teacherCreditType: null,
   /** 讲师学分 */
   teacherCredit: 0,
   /** 讲师学时 */
@@ -50,7 +50,11 @@ const defaultStepData2 = {
   /** 是否有讲师学分 1有 0无*/
   hasTeacherCredit: 0,
   /** 是否有讲师学时 1有 0无*/
-  hasTeacherClassHours: 0
+  hasTeacherClassHours: 0,
+
+  // 厚街集中培训添加注意事项
+  pointsForAttention:
+    "1、严格执行《东莞市厚街医院会议纪律管理办法（试行）》制度，并按照该制度提前十分钟进行签到。2、进出会场时保持有序，避免喧哗嘈杂等不良行为。3、听课期间将手机调至震动状态，保持会场安静。4、请参加听课人员携带学分卡，不得代刷卡行为。5、听课结束时将产生的纸屑、外包装等垃圾带离会场。"
 };
 
 const defaultStepData5 = {
@@ -165,6 +169,7 @@ class StepViewModal {
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
       category: this.stepData2.category,
+      pointsForAttention: this.stepData2.pointsForAttention,
       detailInfo: {
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,

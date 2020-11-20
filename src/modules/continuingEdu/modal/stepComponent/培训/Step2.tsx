@@ -24,23 +24,24 @@ import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 export interface Props {}
 import { appStore } from "src/stores";
+const { TextArea } = Input;
 
 export default observer(function Step1() {
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
-  const studentCreditTypeList =
-    appStore.HOSPITAL_ID === "wh"
-      ? [
-          { name: "国家级", code: 1 },
-          { name: "省级", code: 2 },
-          { name: "市级", code: 3 }
-        ]
-      : [
-          { name: "院级学分", code: 1 },
-          { name: "片区学分", code: 2 },
-          { name: "病区学分", code: 3 }
-        ];
+  // const studentCreditTypeList =
+  //   appStore.HOSPITAL_ID === "wh"
+  //     ? [
+  //         { name: "国家级", code: 1 },
+  //         { name: "省级", code: 2 },
+  //         { name: "市级", code: 3 }
+  //       ]
+  //     : [
+  //         { name: "院级学分", code: 1 },
+  //         { name: "片区学分", code: 2 },
+  //         { name: "病区学分", code: 3 }
+  //       ];
   //学时
   const studentTimeTypeList = [
     { name: 0, code: 0 },
@@ -51,7 +52,7 @@ export default observer(function Step1() {
   ];
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
-
+  const [studentCreditTypeList, setStudentCreditTypeList]: any = useState([]);
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
   const bxNursing = [
     { name: "N0", code: "nurse0" },
@@ -73,6 +74,32 @@ export default observer(function Step1() {
   /** 设置规则 */
   const rules: Rules = {
     publicDate: val => !!val || "请填写发表日期"
+  };
+
+  const getStudentCreditTypeList = () => {
+    if (appStore.HOSPITAL_ID === "wh") {
+      setStudentCreditTypeList([
+        { name: "国家级", code: 1 },
+        { name: "省级", code: 2 },
+        { name: "市级", code: 3 }
+      ]);
+    } else {
+      if (allStepViewModal.getThirdName == "院级") {
+        setStudentCreditTypeList([{ name: "院级学分", code: 1 }]);
+      } else if (allStepViewModal.getThirdName == "科级") {
+        setStudentCreditTypeList([{ name: "病区学分", code: 3 }]);
+      } else {
+        setStudentCreditTypeList([
+          { name: "院级学分", code: 1 },
+          { name: "片区学分", code: 2 },
+          { name: "病区学分", code: 3 }
+        ]);
+      }
+    }
+    stepViewModal.stepData2.studentCreditType =
+      studentCreditTypeList.length && studentCreditTypeList[0].code;
+    stepViewModal.stepData2.teacherCreditType =
+      studentCreditTypeList.length && studentCreditTypeList[0].code;
   };
 
   const onFormChange = (name: string, value: any, from: Form) => {
@@ -130,8 +157,9 @@ export default observer(function Step1() {
   };
 
   useLayoutEffect(() => {
+    getStudentCreditTypeList();
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
-  }, []);
+  }, [studentCreditTypeList.length]);
 
   return (
     <Wrapper>
@@ -279,8 +307,13 @@ export default observer(function Step1() {
             <React.Fragment>
               <Col span={10}>
                 <Form.Field label={``} name="studentCreditType">
-                  <Select>
-                    {studentCreditTypeList.map(item => (
+                  <Select
+                    disabled={
+                      allStepViewModal.getThirdName == "院级" ||
+                      allStepViewModal.getThirdName == "科级"
+                    }
+                  >
+                    {studentCreditTypeList.map((item: any) => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
                       </Select.Option>
@@ -349,8 +382,13 @@ export default observer(function Step1() {
             <React.Fragment>
               <Col span={10}>
                 <Form.Field label={``} name="teacherCreditType">
-                  <Select>
-                    {studentCreditTypeList.map(item => (
+                  <Select
+                    disabled={
+                      allStepViewModal.getThirdName == "院级" ||
+                      allStepViewModal.getThirdName == "科级"
+                    }
+                  >
+                    {studentCreditTypeList.map((item: any) => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
                       </Select.Option>
@@ -466,6 +504,13 @@ export default observer(function Step1() {
               </div>
             </Form.Field>
           </Col>
+          {allStepViewModal.getParentsName == "集中培训" && (
+            <Col span={24}>
+              <Form.Field label={`注意事项`} name="pointsForAttention">
+                <TextArea maxLength={300} rows={5} />
+              </Form.Field>
+            </Col>
+          )}
           {/* <Col span={24}>
             <Form.Field label={`通知消息`} name="noticeContent">
               <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
