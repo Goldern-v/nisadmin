@@ -1,52 +1,92 @@
 import { observable, computed, action } from "mobx";
 import { authStore } from "src/stores";
 import service from "src/services/api";
+import { groupSettingService } from './../../api/GroupSettingService'
+import { Emp } from "src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/model/QualityControlRecordEditModel";
+
 class SelectPeopleViewModel {
+  @observable isOtherEmp: boolean = false
   @observable modalLoading: boolean = false;
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
 
-  @observable public selectTreeDataAll = [
-    {
-      step: "按片区选择",
-      label: "按片区选择",
-      data: [],
-      dataLabel: "deptName",
-      stepLabel: "deptCode"
-    },
-    {
-      step: "默认科室",
-      label: authStore.defaultDeptName,
-      data: []
-    },
+  @observable public selectTreeDataAll = () => {
+    if (!this.isOtherEmp) return [
+      {
+        step: "按片区选择",
+        label: "按片区选择",
+        data: [],
+        dataLabel: "deptName",
+        stepLabel: "deptCode"
+      },
+      {
+        step: "默认科室",
+        label: authStore.defaultDeptName,
+        data: []
+      },
 
-    {
-      step: "按护理单元选择",
-      label: "按护理单元选择",
-      data: [],
-      dataLabel: "deptName"
-    },
+      {
+        step: "按护理单元选择",
+        label: "按护理单元选择",
+        data: [],
+        dataLabel: "deptName"
+      },
 
-    {
-      step: "按职务选择",
-      label: "按职务选择",
-      data: [],
-      dataLabel: "job"
-    },
-    {
-      step: "按职称选择",
-      label: "按职称选择",
-      data: [],
-      dataLabel: "title"
-    },
-    {
-      step: "按层级选择",
-      label: "按层级选择",
-      data: [],
-      dataLabel: "level"
-    }
-  ];
+      {
+        step: "按职务选择",
+        label: "按职务选择",
+        data: [],
+        dataLabel: "job"
+      },
+      {
+        step: "按职称选择",
+        label: "按职称选择",
+        data: [],
+        dataLabel: "title"
+      },
+      {
+        step: "按层级选择",
+        label: "按层级选择",
+        data: [],
+        dataLabel: "level"
+      }
+    ]
+
+    return [
+      {
+        step: "实习生",
+        label: "实习生",
+        data: [],
+        dataLabel: "year"
+      },
+      {
+        step: "进修生",
+        label: "进修生",
+        data: [],
+        dataLabel: "year"
+      },
+      {
+        step: "试用人员",
+        label: "试用人员",
+        data: [],
+        dataLabel: "year"
+      },
+      {
+        step: "文员",
+        label: "文员",
+        data: [],
+        dataLabel: "year"
+      },
+      {
+        step: "其它人员",
+        label: "其它人员",
+        data: [],
+        dataLabel: "year"
+      },
+    ]
+  }
+
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
     {
@@ -130,6 +170,61 @@ class SelectPeopleViewModel {
               { showAuthDept: true }
             )).data
           };
+        } else if (this.stepState[0] == "实习生") {
+          let res = await groupSettingService.graduateInternGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '实习生',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "进修生") {
+          let res = await groupSettingService.fresherStudentGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '进修生',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "试用人员") {
+          let res = await groupSettingService.probationaryPersonGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '试用人员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "文员") {
+          let res = await groupSettingService.officeClerkGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '文员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "其它人员") {
+          let res = await groupSettingService.otherPersonGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '其它人员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
         }
       } else if (this.stepState.length == 2) {
         if (this.stepState[0] == "按片区选择") {
@@ -172,6 +267,61 @@ class SelectPeopleViewModel {
               { showAuthDept: true }
             )).data
           };
+        } else if (this.stepState[0] == "实习生") {
+          let res = await groupSettingService.graduateInternGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '实习生',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "进修生") {
+          let res = await groupSettingService.fresherStudentGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '进修生',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "试用人员") {
+          let res = await groupSettingService.probationaryPersonGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '试用人员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "文员") {
+          let res = await groupSettingService.officeClerkGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '文员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
+        } else if (this.stepState[0] == "其它人员") {
+          let res = await groupSettingService.otherPersonGroupByYear()
+          this.currentData = {
+            list: (res.data || []).map((item: any) => ({
+              year: item.year + '其它人员',
+              userList: (item.userList || []).map((emp: any) => ({
+                empName: emp.name,
+                empNo: emp.personIdentifier
+              }))
+            }))
+          }
         }
       }
     }
@@ -190,7 +340,7 @@ class SelectPeopleViewModel {
   @computed get selectTreeData(): any {
     return this.selectedBigDeptCode
       ? this.selectTreeHasBigDept
-      : this.selectTreeDataAll;
+      : this.selectTreeDataAll();
   }
   @computed get currentTreeData() {
     if (this.stepState.length == 1) {
@@ -254,8 +404,9 @@ class SelectPeopleViewModel {
   }
 
   /** 初始化数据 */
-  initData() {
+  initData(isOtherEmp?: boolean) {
     // this.modalLoading = true
+    this.isOtherEmp = !!isOtherEmp
     let ser = service.commonApiService;
     this.stepState = [];
     this.selectedBigDeptCode = "";

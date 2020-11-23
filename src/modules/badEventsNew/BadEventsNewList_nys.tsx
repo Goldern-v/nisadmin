@@ -206,10 +206,15 @@ export default observer(function BadEventNewList() {
     getEventList()
   }, [query, page])
 
-
   useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP')
-      getEventList()
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      if (!authStore.isDepartment && !query.wardCode) {
+        setQuery({ ...query, wardCode: defaultWardCode })
+      } else {
+        getEventList()
+      }
+    }
+
     if (eventTypeList.length <= 0) getEventTypeList()
     if (eventStatusList.length <= 0) getEventStatusList()
     // return () => { }
@@ -317,7 +322,7 @@ export default observer(function BadEventNewList() {
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                   {authStore.isDepartment && <Select.Option value="">全部</Select.Option>}
-                  {deptList.map((item: any, idx: number) => {
+                  {(authStore.isDepartment ? deptList : authStore.deptList).map((item: any, idx: number) => {
                     return (
                       <Select.Option value={item.code} key={idx}>
                         {item.name}

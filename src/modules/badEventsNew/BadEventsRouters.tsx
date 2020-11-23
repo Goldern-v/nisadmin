@@ -8,7 +8,7 @@ import { Provider, KeepAlive } from "react-keep-alive";
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import BadEventsNewListNys from './BadEventsNewList_nys'
 import 不良事件发生率 from './views/不良事件发生率'

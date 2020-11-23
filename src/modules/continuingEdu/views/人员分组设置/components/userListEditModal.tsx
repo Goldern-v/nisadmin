@@ -1,39 +1,61 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal } from 'antd'
+import { Button, message, Modal } from 'antd'
 import BaseTable, { DoCon } from "src/components/BaseTable"
 import { ColumnProps } from "antd/lib/table"
 import SelectPeopleModal from './selectNurseModal/SelectPeopleModal'
+import { groupSettingService } from './../api/GroupSettingService'
 
 export interface Props {
   visible: boolean,
+  groupId?: string | number,
   onOk: Function,
   onCancel: Function,
+  isOtherEmp?: boolean
 }
 
 export default function userListEditModal(props: Props) {
-  const { visible, onOk, onCancel } = props
+  const { visible, onOk, onCancel, isOtherEmp, groupId } = props
+
+  const [query, setQuery] = useState({
+    groupId: '' as any,
+    pageSize: 20,
+    pageIndex: 1,
+  })
+  const [totalCount, setTotalCount] = useState(0)
+
   const [userList, setUserList] = useState([] as any[])
   const [addVisible, setAddVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rowSelected, setRowSelected] = useState([] as any[])
+
+  let listReq = groupSettingService.personPageListOfGroup.bind(groupSettingService)
+  let deleteReq = groupSettingService.deletePersonsfromGroup.bind(groupSettingService)
+  let addReq = groupSettingService.addPersonsForGroup.bind(groupSettingService)
+
+  if (isOtherEmp) {
+    listReq = groupSettingService.otherEmpGroupUserList.bind(groupSettingService)
+    deleteReq = groupSettingService.deleteOtherPersonsfromGroup.bind(groupSettingService)
+    addReq = groupSettingService.addOtherPersonsForGroup.bind(groupSettingService)
+  }
 
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
       width: 80,
       align: 'center',
-      render: (text: any, record: any, index: number) => index + 1
+      render: (text: any, record: any, index: number) =>
+        query.pageSize * (query.pageIndex - 1) + index + 1
     },
     {
       title: '姓名',
-      dataIndex: 'empName',
+      dataIndex: 'name',
       align: 'center',
       width: 150,
     },
     {
       title: '工号',
-      dataIndex: 'empNo',
+      dataIndex: isOtherEmp ? 'personIdentifier' : 'empNo',
       align: 'center',
       width: 150,
     },
@@ -43,18 +65,32 @@ export default function userListEditModal(props: Props) {
       width: 150,
       render: (text: any, record: any) => {
         return <DoCon>
-          <span>删除</span>
+          <span onClick={() => handleDelete([record.id])}>删除</span>
         </DoCon>
       }
     }
   ]
 
   const handleDelete = (arr: any[]) => {
-    console.log(arr.length)
-  }
+    if (arr.length <= 0) return
 
-  const handleOk = () => {
+    let deleteText = `确定要删除选中的${arr.length}项吗？`
+    if (arr.length == 1) deleteText = `确定要删除当前项目吗？`
 
+    Modal.confirm({
+      title: '删除',
+      content: deleteText,
+      onOk: () => {
+        setLoading(true)
+        deleteReq(groupId, {
+          ids: arr
+        })
+          .then(res => {
+            message.success('操作成功')
+            setQuery({ ...query, pageIndex: 1 })
+          }, () => setLoading(false))
+      }
+    })
   }
 
   const saveAddEmpList = (empGroup: any[]) => {
@@ -93,18 +129,61 @@ export default function userListEditModal(props: Props) {
       }
     }
 
-    console.log(addEmpList)
-    setUserList(addEmpList.concat(userList))
+    if (addEmpList.length <= 0) return
+
+    let saveParams = {
+      groupId,
+      personList: isOtherEmp ? addEmpList.map((item: any) => ({
+        personIdentifier: item.empNo,
+        name: item.empName
+      })) : addEmpList
+    }
+
+    setLoading(true)
+
+    addReq(saveParams)
+      .then(res => {
+        message.success('添加成功')
+        getUserList()
+      }, () => setLoading(false))
   }
+
+  const getUserList = () => {
+    setLoading(true)
+    setRowSelected([])
+    listReq(query)
+      .then(res => {
+        setLoading(false)
+        setUserList(res.data.list || [])
+        setTotalCount(res.data.totalCount || 0)
+      }, () => setLoading(false))
+  }
+
+  useEffect(() => {
+    if (query.groupId !== (undefined || ''))
+      getUserList()
+  }, [query])
+
+  useEffect(() => {
+    if (visible) {
+      console.log(groupId)
+      setQuery({
+        ...query,
+        groupId: groupId || '',
+        pageIndex: 1,
+      })
+    }
+  }, [visible])
 
   return <React.Fragment>
     <Modal
       title="编辑人员"
       centered
+      confirmLoading={loading}
       forceRender
       width={800}
       visible={visible}
-      onOk={() => handleOk()}
+      onOk={() => onCancel()}
       onCancel={() => onCancel()}>
       <Wrapper>
         <div className="top-bar">
@@ -112,19 +191,31 @@ export default function userListEditModal(props: Props) {
           <Button onClick={() => setAddVisible(true)} type="primary">新增人员</Button>
         </div>
         <BaseTable
-          surplusHeight={300}
+          surplusHeight={350}
+          rowKey={'id'}
           rowSelection={{
             selections: rowSelected,
             onChange: (payload: any) => setRowSelected(payload)
           }}
+          loading={loading}
           dataSource={userList}
-          columns={columns} />
+          columns={columns}
+          pagination={{
+            current: query.pageIndex,
+            pageSize: query.pageSize,
+            total: totalCount,
+            onChange: (pageIndex: number) =>
+              setQuery({ ...query, pageIndex }),
+            onShowSizeChange: (pageIndex: number, pageSize: number) =>
+              setQuery({ ...query, pageIndex: 1, pageSize })
+          }} />
       </Wrapper>
     </Modal>
     <SelectPeopleModal
       visible={addVisible}
       checkedUserList={[]}
       onOk={() => console.log('onOk')}
+      isOtherEmp={isOtherEmp}
       onCancel={() => setAddVisible(false)}
       onClose={() => setAddVisible(false)}
       onOkCallBack={(payload: any) => {

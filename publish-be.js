@@ -19,7 +19,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/badeventM
 
   let serverInfo = {
     host: '120.25.105.45',
-    port: '50022',
+    port: '50289',
     username: 'root',
     privateKey: path.resolve(__dirname, "./keys/cr_web_rsa") //fs.readFileSync('keys/cr_web_rsa')
   }

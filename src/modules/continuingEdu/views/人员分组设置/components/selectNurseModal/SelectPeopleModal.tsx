@@ -34,6 +34,7 @@ export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: (checkedUserList: CheckUserItem[]) => void;
   checkedUserList: CheckUserItem[];
+  isOtherEmp?: boolean
 }
 
 interface User {
@@ -41,7 +42,7 @@ interface User {
   key: string;
 }
 export default observer(function SelectPeopleModal(props: Props) {
-  let { visible, onCancel, onOkCallBack, onClose } = props;
+  let { visible, onCancel, onOkCallBack, onClose, isOtherEmp } = props;
 
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
@@ -99,7 +100,7 @@ export default observer(function SelectPeopleModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      selectPeopleViewModel.initData();
+      selectPeopleViewModel.initData(isOtherEmp);
       setCheckedUserList(props.checkedUserList);
       setSearchWord("");
     }
@@ -177,56 +178,60 @@ export default observer(function SelectPeopleModal(props: Props) {
                   </div>
                 </ListCon>
               ) : (
-                <div>
-                  {selectPeopleViewModel.selectedBigDeptCode ? (
-                    <div
-                      className="title"
-                      onClick={() => selectPeopleViewModel.popStep()}
-                      style={{
-                        color: "#333",
-                        marginBottom: "10px",
-                        marginLeft: "-3px",
-                        cursor: "pointer"
-                      }}
-                    >
-                      <Icon type="left" />
-                      <span style={{ paddingLeft: 5 }}>
-                        {selectPeopleViewModel.selectedBigDeptName}
-                      </span>
-                    </div>
-                  ) : (
-                    <AutoComplete
-                      dataSource={searchUserList}
-                      style={{ width: "100%" }}
-                      onSelect={onSelect}
-                      onSearch={handleSearch}
-                      value={searchWord}
-                    >
-                      <Search placeholder="请输入搜索关键字" />
-                    </AutoComplete>
-                  )}
+                  <div>
+                    {selectPeopleViewModel.selectedBigDeptCode ? (
+                      <div
+                        className="title"
+                        onClick={() => selectPeopleViewModel.popStep()}
+                        style={{
+                          color: "#333",
+                          marginBottom: "10px",
+                          marginLeft: "-3px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <Icon type="left" />
+                        <span style={{ paddingLeft: 5 }}>
+                          {selectPeopleViewModel.selectedBigDeptName}
+                        </span>
+                      </div>
+                    ) :
+                      isOtherEmp ?
+                        <span></span> :
+                        (
+                          <AutoComplete
+                            dataSource={searchUserList}
+                            style={{ width: "100%" }}
+                            onSelect={onSelect}
+                            onSearch={handleSearch}
+                            value={searchWord}
+                          >
+                            <Search placeholder="请输入搜索关键字" />
+                          </AutoComplete>
+                        )
+                    }
 
-                  <FileList>
-                    {selectPeopleViewModel.selectTreeData.map(
-                      (item: any, index: any) => (
-                        <div
-                          className="item-box"
-                          onClick={() =>
-                            selectPeopleViewModel.pushStep(item.step)
-                          }
-                          key={index}
-                        >
-                          <img
-                            src={require("../../../../images/文件夹.png")}
-                            alt=""
-                          />
-                          <span>{item.label}</span>
-                        </div>
-                      )
-                    )}
-                  </FileList>
-                </div>
-              )}
+                    <FileList>
+                      {selectPeopleViewModel.selectTreeData.map(
+                        (item: any, index: any) => (
+                          <div
+                            className="item-box"
+                            onClick={() =>
+                              selectPeopleViewModel.pushStep(item.step)
+                            }
+                            key={index}
+                          >
+                            <img
+                              src={require("../../../../images/文件夹.png")}
+                              alt=""
+                            />
+                            <span>{item.label}</span>
+                          </div>
+                        )
+                      )}
+                    </FileList>
+                  </div>
+                )}
             </Spin>
           </div>
           <div className="right-part">
@@ -255,7 +260,7 @@ export default observer(function SelectPeopleModal(props: Props) {
     </Modal>
   );
 });
-const CheckListCon = observer(function(props: any) {
+const CheckListCon = observer(function (props: any) {
   let {
     checkedUserList,
     setCheckedUserList,
@@ -286,7 +291,7 @@ const CheckListCon = observer(function(props: any) {
       }
       return false;
     })();
-  } catch (error) {}
+  } catch (error) { }
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
     if (e.target.checked) {
@@ -351,40 +356,38 @@ const CheckListCon = observer(function(props: any) {
                 </Checkbox>
                 {selectPeopleViewModel!.currentTreeData!.type !==
                   "userList" && (
-                  <div style={{ minWidth: 54 }}>
-                    <span style={{ padding: "0 4px" }}>|</span>
-                    <span
-                      className={classNames({
-                        open: true,
-                        inChecked: inCheckedUser(item)
-                      })}
-                      onClick={() =>
-                        selectPeopleViewModel.pushStep(
-                          item[
-                            selectPeopleViewModel!.currentTreeData!.stepLabel
-                          ]
-                            ? `${
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .stepLabel
-                                ]
-                              }-${
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel
-                                ]
-                              }`
-                            : item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel || ""
+                    <div style={{ minWidth: 54 }}>
+                      <span style={{ padding: "0 4px" }}>|</span>
+                      <span
+                        className={classNames({
+                          open: true,
+                          inChecked: inCheckedUser(item)
+                        })}
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(
+                            item[
+                              selectPeopleViewModel!.currentTreeData!.stepLabel
+                            ]
+                              ? `${item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .stepLabel
                               ]
-                        )
-                      }
-                    >
-                      展开
+                              }-${item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .dataLabel
+                              ]
+                              }`
+                              : item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .dataLabel || ""
+                              ]
+                          )
+                        }
+                      >
+                        展开
                     </span>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
             );
           }

@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Button, Tag } from 'antd'
 // import { empManageService } from "./../../../views/empDetail/api/EmpManageService";
 import { observer } from 'mobx-react-lite'
-import { appStore } from 'src/stores'
+// import { appStore } from 'src/stores'
+import { educationList } from './../data/options'
 
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string, callback: any) => {
@@ -21,6 +22,9 @@ const setFilterAdapter = (label: string, value: string, callback: any) => {
     case '职务':
       name = 'Zw'
       break
+    case '分组':
+      name = 'Fz'
+      break
     default:
   }
   if (name) callback && callback(name, value)
@@ -30,18 +34,19 @@ export interface Props {
   isOpenFilter: Boolean,
   onVisibleChange: any,
   filterAdapterChange: any,
+  groupList?: any[],
   filter: {
     Xl: string,
     Fz: string
   }
 }
 export default observer(function FilterCon(props: Props) {
-  const { isOpenFilter, onVisibleChange, filter, filterAdapterChange } = props;
+  const { isOpenFilter, onVisibleChange, filter, filterAdapterChange, groupList } = props;
 
-  const [filterMap, setFilterMap] = useState({
-    学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
-    分组: []
-  } as any)
+  const filterMap = {
+    学历: ['全部', ...educationList.map((item: any) => item.name).reverse()],
+    分组: groupList ? ['全部', ...groupList.map((item) => item.groupName)] : ['全部']
+  } as any
 
   const setOpen = (value: boolean) => {
     onVisibleChange && onVisibleChange(value);

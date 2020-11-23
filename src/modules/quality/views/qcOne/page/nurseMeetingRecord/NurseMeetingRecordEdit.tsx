@@ -92,10 +92,9 @@ export default observer(function NurseMeetingRecordEdit() {
     nurseMeetingRecordService
       .saveOrUpdate(params)
       .then(res => {
-        setLoading(false)
         message.success(`${cache ? '暂存' : '发布'}成功`, 1, () => {
-          history.goBack()
           setLoading(false)
+          history.goBack()
         })
       }, () => setLoading(false))
   }
