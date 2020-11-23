@@ -75,7 +75,7 @@ export default observer(function AduitModal(props: Props) {
           newMap[`${eventCode}_khszshyj_explain`] = ''
           break
         case 'nusring_department_auditor':
-          newMap[`${eventCode}_hkbshyj_explain`] = ''
+          newMap[`${eventCode}_hlzlglwyh_explain`] = ''
           break
         case 'pressure_auditor':
           newMap[`${eventCode}_skzkxzyj_explain`] = ''
@@ -169,7 +169,7 @@ export default observer(function AduitModal(props: Props) {
         case "nurse_auditor":
           return formMap[`${eventCode}_khszshyj_explain`];
         case "nusring_department_auditor":
-          return formMap[`${eventCode}_hkbshyj_explain`];
+          return formMap[`${eventCode}_hlzlglwyh_explain`];
         case "pressure_auditor":
           return formMap[`${eventCode}_skzkxzyj_explain`];
       }
@@ -265,9 +265,9 @@ export default observer(function AduitModal(props: Props) {
               <Col span={20}>
                 <TextArea
                   autosize={{ minRows: 2 }}
-                  value={formMap[`${eventCode}_hkbshyj_explain`]}
+                  value={formMap[`${eventCode}_hlzlglwyh_explain`]}
                   onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_hkbshyj_explain`]: e.target.value })
+                    setFormMap({ ...formMap, [`${eventCode}_hlzlglwyh_explain`]: e.target.value })
                   } />
               </Col>
             </Row>

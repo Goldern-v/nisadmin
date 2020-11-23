@@ -5,6 +5,7 @@ import { Button, Tag } from 'antd'
 import { empManageService } from "./../views/empDetail/api/EmpManageService";
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
+import { set } from 'mobx';
 
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string, callback: any) => {
@@ -22,6 +23,9 @@ const setFilterAdapter = (label: string, value: string, callback: any) => {
     case '职务':
       name = 'Zw'
       break
+    case '分组':
+      name = 'Fz'
+      break
     default:
   }
   if (name) callback && callback(name, value)
@@ -31,17 +35,20 @@ export interface Props {
   isOpenFilter: Boolean,
   onVisibleChange: any,
   filterAdapterChange: any,
+  groupList?: any[],
   filter: {
     Xl: string,
     Zc: string,
     Cj: string,
-    Zw: string
+    Zw: string,
+    Fz?: string
   }
 }
 export default observer(function FilterCon(props: Props) {
-  const { isOpenFilter, onVisibleChange, filter, filterAdapterChange } = props;
+  const { isOpenFilter, onVisibleChange, filter, filterAdapterChange, groupList } = props;
+  const [jobList, setJobList] = useState([] as any)
 
-  const [filterMap, setFilterMap] = useState({
+  let filterMap = {
     学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
     职称: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
       ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'] :
@@ -61,7 +68,7 @@ export default observer(function FilterCon(props: Props) {
           '护理部副主任',
           '护理部主任',
         ],
-        'nys': ['全部'],
+        'nys': ['全部', ...jobList],
         other: [
           '全部',
           '无',
@@ -76,7 +83,10 @@ export default observer(function FilterCon(props: Props) {
         ]
       }
     })
-  } as any)
+  } as any
+
+  if (appStore.HOSPITAL_ID === 'hj')
+    filterMap['分组'] = groupList ? ['全部', ...groupList.map((item) => item.groupName)] : ['全部']
 
   const setOpen = (value: boolean) => {
     onVisibleChange && onVisibleChange(value);
@@ -99,6 +109,9 @@ export default observer(function FilterCon(props: Props) {
       case '职务': {
         return filter.Zw
       }
+      case '分组': {
+        return filter.Fz || ''
+      }
       default: {
         return ''
       }
@@ -109,13 +122,7 @@ export default observer(function FilterCon(props: Props) {
     if (appStore.HOSPITAL_ID == 'nys') empManageService.getJob()
       .then((res) => {
         if (res.data)
-          setFilterMap({
-            ...filterMap,
-            职务: [
-              '全部',
-              ...res.data.map((item: any) => item.code),
-            ]
-          })
+          setJobList(res.data.map((item: any) => item.code))
       })
   }, [])
 

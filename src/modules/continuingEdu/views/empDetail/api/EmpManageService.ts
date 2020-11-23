@@ -144,6 +144,15 @@ export default class EmpManageService extends BaseApiService {
     return this.post('/studyAndTrain/creditAndHours/creditHoursSupervison/saveOrUpdateRuleInsts', params)
   }
 
+  /**正式人员-获取人员分组列表(附带小组人员信息 */
+  public async queryPersonGroupList() {
+    return this.get('/studyAndTrain/personelManage/onPayRollPerson/queryPersonGroupList')
+  }
+
+  /**其它人员- 根据人员编号获取人员信息 */
+  public async getPersonInfoByIdentifier(identifier: string) {
+    return this.post('/studyAndTrain/personelManage/otherperson/getPersonInfoByIdentifier', { identifier })
+  }
 }
 
 export const empManageService = new EmpManageService()

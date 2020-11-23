@@ -492,7 +492,7 @@ const Wrapper = styled.div`
     left: 0;
     top: 100px;
     right: 0;
-    bottom: 0;
+    height: calc(100vh - 150px);
     .status-line{
       float: right;
       width: 250px;

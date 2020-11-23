@@ -10,19 +10,39 @@ import qs from "qs";
 
 import SorceAppendModal from "./../../components/SorceAppendModal";
 import BaseInfo from "./BaseInfo";
+import 实习生详情 from "./实习生详情";
+import 进修生详情 from "./进修生详情";
+import 其他人员详情 from "./其他人员详情";
 import TableView from "./TableView";
 import Writings from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/Writings"
 import SpecialCard from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/SpecialCard"
 import EducationalExperience from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/EducationalExperience"
+import { userTypeList } from "../其他人员/data/options";
 
 export interface Props extends RouteComponentProps { }
 
 export default observer(function Main(props: any) {
+  const { history, queryObj } = appStore;
+  let userType = queryObj.userType || ''
+
   let Routes_Config = [
     {
       name: "基本信息",
       title: "基本信息",
-      component: BaseInfo
+      component: (() => {
+        switch (userType) {
+          case '1':
+            return 实习生详情
+          case '2':
+            return 进修生详情
+          case '3':
+          case '4':
+          case '5':
+            return 其他人员详情
+          default:
+            return BaseInfo
+        }
+      })()
     },
     {
       name: "学分记录",
@@ -97,7 +117,7 @@ export default observer(function Main(props: any) {
   }
 
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
-  const { history } = appStore;
+
   const [data, setData] = useState({
     id: "",
     empCode: "",
@@ -159,7 +179,15 @@ export default observer(function Main(props: any) {
         <div className="nav">
           <Link to="/continuingEdu">学习培训</Link>
           <span> / </span>
-          <Link to="/continuingEdu/人员管理">人员管理</Link>
+          {appStore.hisMatch({
+            map: {
+              'hj': <React.Fragment>
+                {queryObj.userTypeName && <Link to="/continuingEdu/其他人员">其他人员</Link>}
+                {!queryObj.userTypeName && <Link to="/continuingEdu/人员管理">正式人员</Link>}
+              </React.Fragment>,
+              other: <Link to="/continuingEdu/人员管理">人员管理</Link>
+            }
+          })}
           <span> / {data.empName}</span>
         </div>
         <div className="emp-info">
@@ -169,10 +197,13 @@ export default observer(function Main(props: any) {
           <span>
             <span className="emp-name">{data.empName}</span>
             <br />
-            <span className="emp-sub">
+            {queryObj.userTypeName && <span className="emp-sub">
+              {queryObj.userTypeName}
+            </span>}
+            {!queryObj.userTypeName && <span className="emp-sub">
               {data.newTitle} | {data.nurseHierarchy} | {data.deptName} |{" "}
               {data.status}
-            </span>
+            </span>}
           </span>
         </div>
         <div className="btn-group">

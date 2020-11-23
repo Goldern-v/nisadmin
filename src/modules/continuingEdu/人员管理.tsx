@@ -33,21 +33,27 @@ export default observer(function 人员管理(props: Props) {
     education: "", //学历
     title: "", //职称
     currentLevel: "", //层级
-    job: "" //职务
+    job: "", //职务
+    groupId: "", //分组
   });
 
   const [queryFilter, setQueryFilter] = useState({
     Xl: "全部",
     Zc: "全部",
     Cj: "全部",
-    Zw: "全部"
+    Zw: "全部",
+    Fz: "全部"
   });
+
+  const tableSupHeight = appStore.HOSPITAL_ID == 'hj' ? 450 : 420
+  const tableHidenSupHeight = appStore.HOSPITAL_ID == 'hj' ? 160 : 130
 
   const [tableData, setTableData] = useState([] as any);
   const [deptAllList, setDeptAllList] = useState([] as any);
   const [total, setTotal] = useState(0 as number);
   const [dataLoading, setDataLoading] = useState(false);
   const [filterConVisible, setFilterConVisible] = useState(true);
+  const [groupList, setGroupList] = useState([] as any)
 
   const [ruleInsts, setRuleInsts] = useState([])
 
@@ -91,6 +97,20 @@ export default observer(function 人员管理(props: Props) {
       width: 50,
       align: "center"
     },
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "分组",
+            key: "groupNames",
+            dataIndex: "groupNames",
+            width: 120,
+            align: "center"
+          },
+        ],
+        other: []
+      }
+    }),
     {
       title: "科室",
       key: "deptName",
@@ -250,16 +270,26 @@ export default observer(function 人员管理(props: Props) {
   ];
 
   useEffect(() => {
-    // empManageService.findAllAreas().then(res => {
-    //   console.log(res)
-    // })
+
     getTableData()
+
     //护理部能查看所有科室
     if (authStore.isDepartment) getDeptAll()
-    //南医三学分学时督导规则
-    if (appStore.HOSPITAL_ID === 'nys')
+
+    if (appStore.HOSPITAL_ID === 'nys') {
+      //南医三学分学时督导规则
       queryRuleInstsCurrentYear()
+    } else if (appStore.HOSPITAL_ID === 'hj') {
+      getGroupList()
+    }
   }, []);
+
+  const getGroupList = () => {
+    empManageService.queryPersonGroupList()
+      .then(res => {
+        setGroupList(res.data ? res.data.sort((a: any, b: any) => a.sort - b.sort) : [])
+      })
+  }
 
   const handleReview = (record: any) => {
     if (!authStore.isNotANormalNurse) {
@@ -348,6 +378,13 @@ export default observer(function 人员管理(props: Props) {
       case "Zw":
         newQuery.job = value;
         break;
+      case "Fz":
+        let target = groupList.find((item: any) => item.groupName === value)
+        if (target)
+          newQuery.groupId = target.id;
+        else
+          newQuery.groupId = ''
+        break;
     }
     setQuery(newQuery);
     getTableData(newQuery);
@@ -433,7 +470,7 @@ export default observer(function 人员管理(props: Props) {
             搜索
           </Button>
         </span>
-        {appStore.HOSPITAL_ID === 'hj' && appStore.isDev && (
+        {appStore.HOSPITAL_ID === 'hj' && authStore.isDepartment && (
           <span className="float-item">
             <Button onClick={() => toGroupSetting()}>分组设置</Button>
           </span>
@@ -462,6 +499,7 @@ export default observer(function 人员管理(props: Props) {
       <div className="main-contain">
         <div className="filter-contain">
           <FilterCon
+            groupList={groupList}
             filter={queryFilter}
             isOpenFilter={filterConVisible}
             onVisibleChange={handleFilterConVisibleChange}
@@ -472,7 +510,8 @@ export default observer(function 人员管理(props: Props) {
           <BaseTable
             loading={dataLoading}
             columns={columns}
-            surplusHeight={queryFilter ? 420 : 130}
+            surplusWidth={200}
+            surplusHeight={queryFilter ? tableSupHeight : tableHidenSupHeight}
             onRow={(record: any) => {
               return {
                 onDoubleClick: () => handleReview(record)

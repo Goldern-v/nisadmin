@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, message, Modal } from 'antd'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { appStore } from 'src/stores';
@@ -8,38 +8,30 @@ import { Link } from 'react-router-dom';
 import { Place } from 'src/components/common';
 import EditModal from './components/editModal'
 import UserListEditModal from './components/userListEditModal'
+import { groupSettingService } from './api/GroupSettingService'
 
 export interface Props { }
 
 export default function 人员分组设置() {
   const { queryObj } = appStore
+  const [loading, setLoading] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
+  const [recordSelected, setRecordSelected] = useState({} as any)
+  const [isAdd, setIsAdd] = useState(false)
+  const [groupIdSelected, setGroupIdSelected] = useState('')
   const [userListVisible, setUserListVisible] = useState(false)
+  const isOtherEmp = queryObj.type == 'other' ? true : false
 
-  // console.log(queryObj)
+  const [groupData, setGroupData] = useState([] as any[])
 
-  const [groupData, setGroupData] = useState([
-    {
-      itemIndex: 1, name: '护理实习生组', userList: [
-        { empName: '张三', empNo: 'H1234561' },
-        { empName: '李四', empNo: 'H1234562' },
-      ]
-    },
-    {
-      itemIndex: 3, name: '护理进修生组', userList: [
-        { empName: '王五', empNo: 'H1234563' },
-        { empName: '刘大', empNo: 'H1234564' },
-      ]
-    },
-    {
-      itemIndex: 2, name: '基地学员组', userList: [
-        { empName: '关二', empNo: 'H1234565' },
-        { empName: '刘大', empNo: 'H1234566' },
-      ]
-    },
-  ] as any[])
+  let listReq = groupSettingService.queryPersonGroupList.bind(groupSettingService)
+  let deleteReq = groupSettingService.deletePersonGroup.bind(groupSettingService)
 
-  console.log(queryObj)
+  if (isOtherEmp) {
+    listReq = groupSettingService.otherEmpGroupList.bind(groupSettingService)
+    deleteReq = groupSettingService.deleteOhterPersonGroup.bind(groupSettingService)
+    groupSettingService
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -50,16 +42,22 @@ export default function 人员分组设置() {
     },
     {
       title: '小组名称',
-      dataIndex: 'name',
+      dataIndex: 'groupName',
       align: 'center',
       width: 150,
     },
     {
+      title: '排序',
+      dataIndex: 'sort',
+      width: 80,
+      align: 'center',
+    },
+    {
       title: '成员',
-      dataIndex: 'userList',
+      dataIndex: 'groupPersonNameList',
       render: (list: any[]) => {
         return <div>
-          {(list || []).map((item: any) => item.empName).join('、')}
+          {(list || []).join('、')}
         </div>
       }
     },
@@ -71,24 +69,56 @@ export default function 人员分组设置() {
         return <DoCon>
           <span onClick={() => handleUserEdit(record)}>添加人员</span>
           <span onClick={() => handleEdit(record)}>修改</span>
-          <span>删除</span>
+          <span onClick={() => handleDelete(record)}>删除</span>
         </DoCon>
       }
     }
   ]
 
+  const getGroupData = () => {
+    setLoading(true)
+
+    listReq().then(res => {
+      setLoading(false)
+
+      setGroupData(res.data ? res.data.sort((a: any, b: any) => a.sort - b.sort) : [])
+    }, err => setLoading(false))
+  }
+
   const handleUserEdit = (record: any) => {
-    console.log(record)
+    setGroupIdSelected(record.id)
     setUserListVisible(true)
   }
 
-  const handleEdit = (record: any) => {
-    console.log(record)
+  const handleAddGroup = () => {
+    setIsAdd(true)
     setEditVisible(true)
   }
 
-  useEffect(() => {
+  const handleEdit = (record: any) => {
+    setRecordSelected(record)
+    setIsAdd(false)
+    setEditVisible(true)
+  }
 
+  const handleDelete = (record: any) => {
+    Modal.confirm({
+      title: '删除',
+      content: '是否删除该分组?',
+      onOk: () => {
+        setLoading(true)
+
+        deleteReq(record.id)
+          .then(res => {
+            message.success('删除成功')
+            getGroupData()
+          }, () => setLoading(false))
+      }
+    })
+  }
+
+  useEffect(() => {
+    getGroupData()
   }, [])
 
   return <Wrapper>
@@ -96,26 +126,43 @@ export default function 人员分组设置() {
       <div className="nav">
         <Link to="/continuingEdu">学习培训</Link>
         <span> / </span>
-        <Link to="/continuingEdu/人员管理">正式人员</Link>
+        {isOtherEmp && <Link to="/continuingEdu/其他人员">其他人员</Link>}
+        {!isOtherEmp && <Link to="/continuingEdu/人员管理">正式人员</Link>}
         <span> / 分组设置</span>
       </div>
       <Place />
       <div className="btn-group">
+        <Button onClick={() => handleAddGroup()} type="primary">添加</Button>
         <Button onClick={() => appStore.history.goBack()}>返回</Button>
       </div>
     </div>
     <BaseTable
-      surplusHeight={150}
+      loading={loading}
+      surplusHeight={180}
       dataSource={groupData}
       columns={columns} />
     <EditModal
+      params={recordSelected}
+      isAdd={isAdd}
       visible={editVisible}
-      onOk={() => setEditVisible(false)}
+      isOtherEmp={isOtherEmp}
+      onOk={() => {
+        getGroupData()
+        setEditVisible(false)
+      }}
       onCancel={() => setEditVisible(false)} />
     <UserListEditModal
+      groupId={groupIdSelected}
       visible={userListVisible}
-      onOk={() => setUserListVisible(false)}
-      onCancel={() => setUserListVisible(false)} />
+      isOtherEmp={isOtherEmp}
+      onOk={() => {
+        getGroupData()
+        setUserListVisible(false)
+      }}
+      onCancel={() => {
+        getGroupData()
+        setUserListVisible(false)
+      }} />
   </Wrapper>
 }
 
@@ -130,6 +177,11 @@ const Wrapper = styled.div`
       a {
         color: #666;
       }
+    }
+  }
+  .btn-group{
+    &>*{
+      margin-left: 10px;
     }
   }
 `
