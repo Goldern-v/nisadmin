@@ -732,7 +732,7 @@ const routes: RouteItem[] = [
   // },
   {
     path: "/indicator",
-    redirect: "/indicator/专科季度统计表"
+    redirect: "/indicator/护理质量相关数据"
   },
   {
     path: "/setting",
