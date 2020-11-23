@@ -72,7 +72,7 @@ export default function EidtModal(props: Props) {
         }
       case '3':
       case '4':
-      case '5':
+      case '99':
         newParams = {
           ...defaultParams,
           isResident: '0',
@@ -674,7 +674,7 @@ export default function EidtModal(props: Props) {
         </div>
       case '3':
       case '4':
-      case '5':
+      case '99':
         return <div>
           <Row>
             <Col span={4}>*姓名：</Col>

@@ -97,6 +97,20 @@ export default observer(function 人员管理(props: Props) {
       width: 50,
       align: "center"
     },
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "分组",
+            key: "groupNames",
+            dataIndex: "groupNames",
+            width: 120,
+            align: "center"
+          },
+        ],
+        other: []
+      }
+    }),
     {
       title: "科室",
       key: "deptName",
@@ -456,7 +470,7 @@ export default observer(function 人员管理(props: Props) {
             搜索
           </Button>
         </span>
-        {appStore.HOSPITAL_ID === 'hj' && appStore.isDev && (
+        {appStore.HOSPITAL_ID === 'hj' && authStore.isDepartment && (
           <span className="float-item">
             <Button onClick={() => toGroupSetting()}>分组设置</Button>
           </span>
@@ -496,6 +510,7 @@ export default observer(function 人员管理(props: Props) {
           <BaseTable
             loading={dataLoading}
             columns={columns}
+            surplusWidth={200}
             surplusHeight={queryFilter ? tableSupHeight : tableHidenSupHeight}
             onRow={(record: any) => {
               return {

@@ -73,8 +73,8 @@ export default class GroupSettingService extends BaseApiService {
   }
 
   /**正式人员-删除分组 */
-  public async deletePersonGroup(query: any) {
-    return this.post('/studyAndTrain/personelManage/onPayRollPerson/deletePersonGroup', query)
+  public async deletePersonGroup(id: any) {
+    return this.post('/studyAndTrain/personelManage/onPayRollPerson/deletePersonGroup', qs.stringify({ id }))
   }
 
   /**正式人员-获取小组成员列表-分页 */

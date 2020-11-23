@@ -285,7 +285,7 @@ export default observer(function 其他人员(props: Props) {
       deptName: record.deptName,
       status: record.status,
       nearImageUrl: record.nearImageUrl,
-      userTypeName: record.userType
+      userType: record.userType
     };
     appStore.history.push(
       `/continuingEduEmpDetail/baseInfo?${qs.stringify(search)}`
