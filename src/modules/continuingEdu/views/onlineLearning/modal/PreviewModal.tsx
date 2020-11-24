@@ -48,7 +48,7 @@ export default function PreviewModal(props: Props) {
   let [noFile, setNoFile] = useState(false);
   const [answerModalvisible, setAnswerModalVisible] = useState(false);
   const [answerModalparams, setAnswerModalParams] = useState({});
-  const [finished, setFinished] = useState(true);
+  const [finished, setFinished] = useState(true); // 判断当前是否可点击确认按钮完成学习
   const changeFilePath = (path: string, _visible?: boolean) => {
     if (_visible === undefined) _visible = visible;
     let fileType = getFileType(path);
@@ -67,8 +67,12 @@ export default function PreviewModal(props: Props) {
           ) as HTMLVideoElement;
           videoRef.play();
           var last = 0;
-          // videoRef.currentTime = 0; 设定视频开始播放时间
-          // 获取当前视频播放时间点
+          // 视频没插题  可快进 可直接确定已读
+          if (!questionList.viQuestionList) {
+            setFinished(false);
+            return;
+          }
+          // 视频插题——获取当前视频播放时间点
           videoRef.ontimeupdate = function() {
             // 禁止快进（退）
             var current = videoRef.currentTime;
@@ -83,6 +87,7 @@ export default function PreviewModal(props: Props) {
             } else {
               setFinished(true);
             }
+
             // 判断是否插题
             if (
               answerList &&
@@ -98,8 +103,10 @@ export default function PreviewModal(props: Props) {
           };
         }, 500);
       } else if (fileType == "img") {
+        setFinished(false);
         setFilePath(path);
       } else if (fileType == "word" || fileType == "excel") {
+        setFinished(false);
         setModalLoading(true);
         setNoFile(true);
 
@@ -122,13 +129,13 @@ export default function PreviewModal(props: Props) {
             setModalLoading(false);
           });
       } else if (fileType == "pdf") {
+        setFinished(false);
         setNoFile(false);
         setFilePath(path);
       }
     } else {
       let videoRef = document.getElementById("videoRef") as HTMLVideoElement;
       if (fileType == "video" && videoRef) {
-        console.log(videoRef);
         videoRef.pause();
       }
       setFilePath("");

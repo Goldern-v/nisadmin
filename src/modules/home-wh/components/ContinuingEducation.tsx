@@ -29,7 +29,7 @@ export default observer(function ContinuingEducation() {
     return tableData.map((item: any) => {
       return (
         <Li onClick={() => OnDetailCheck(item)}>
-          <Content className="content">
+          <Content>
             <Tooltip placement="top" title={item.title}>
               <span className="title">{item.title}</span>
             </Tooltip>
@@ -122,8 +122,6 @@ const Li = styled.li`
   line-height: 36px;
   &:hover {
     cursor: pointer;
-  }
-  &:hover .content {
     color: #00a65a;
   }
 `;
