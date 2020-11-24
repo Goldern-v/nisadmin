@@ -38,13 +38,13 @@ export default function ImportEditModal(props: Props) {
       {
         title: '类型',
         dataIndex: 'userType',
-        width: 60,
+        width: 90,
         align: 'center'
       },
       {
         title: '姓名',
         dataIndex: 'name',
-        width: 60,
+        width: 90,
         className: 'ipt-cell',
         align: 'center',
         render: (text: any, record: any, idx: number) =>

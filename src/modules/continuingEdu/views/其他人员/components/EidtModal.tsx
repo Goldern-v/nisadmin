@@ -178,7 +178,10 @@ export default function EidtModal(props: Props) {
       case '1':
         return <div>
           <Row>
-            <Col span={4}>*姓名：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              姓名：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.name}
@@ -207,7 +210,10 @@ export default function EidtModal(props: Props) {
             )}
           </Row>
           <Row>
-            <Col span={4}>毕业院校：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              毕业院校：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.schoolName}
@@ -217,7 +223,10 @@ export default function EidtModal(props: Props) {
                     schoolName: e.target.value
                   })} />
             </Col>
-            <Col span={4}>*性别：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              性别：
+              </Col>
             <Col span={8}>
               <Radio.Group
                 buttonStyle="solid"
@@ -232,7 +241,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>最高学历：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              最高学历：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -244,7 +256,10 @@ export default function EidtModal(props: Props) {
                 {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)}
               </Select>
             </Col>
-            <Col span={4}>专业：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              专业：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.major}
@@ -268,7 +283,9 @@ export default function EidtModal(props: Props) {
                 <Radio.Button value="0">否</Radio.Button>
               </Radio.Group>
             </Col>
-            <Col span={4}>*联系方式：</Col>
+            <Col span={4}>
+              <span className="star">*</span>联系方式：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.phone}
@@ -280,7 +297,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>实习时间：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              实习时间：
+            </Col>
             <Col span={12}>
               <RangePicker
                 value={[
@@ -297,7 +317,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>实习科室：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              实习科室：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -334,7 +357,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*紧急联系人：</Col>
+            <Col span={4}>
+              <span className="star">*</span>紧急联系人：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.emergencyContactPerson}
@@ -356,7 +381,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*身份证号：</Col>
+            <Col span={4}>
+              <span className="star">*</span>身份证号：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.idCardNo}
@@ -368,7 +395,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*家庭住址：</Col>
+            <Col span={4}>
+              <span className="star">*</span>家庭住址：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.address}
@@ -380,7 +409,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={6}>*紧急联系人电话：</Col>
+            <Col span={6}>
+              <span className="star">*</span>紧急联系人电话：
+            </Col>
             <Col span={10}>
               <Input
                 value={editParams.emergencyContactPhone}
@@ -408,7 +439,9 @@ export default function EidtModal(props: Props) {
       case '2':
         return <div>
           <Row>
-            <Col span={4}>*姓名：</Col>
+            <Col span={4}>
+              <span className="star">*</span>姓名：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.name}
@@ -437,7 +470,9 @@ export default function EidtModal(props: Props) {
             )}
           </Row>
           <Row>
-            <Col span={4}>*性别：</Col>
+            <Col span={4}>
+              <span className="star">*</span>性别：
+            </Col>
             <Col span={8}>
               <Radio.Group
                 buttonStyle="solid"
@@ -450,7 +485,10 @@ export default function EidtModal(props: Props) {
                 <Radio.Button value="1">女</Radio.Button>
               </Radio.Group>
             </Col>
-            <Col span={4}>年龄：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              年龄：
+            </Col>
             <Col span={8}>
               <InputNumber
                 style={{ width: '100%' }}
@@ -465,7 +503,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>职称：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              职称：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -477,7 +518,10 @@ export default function EidtModal(props: Props) {
                 {titleList.map((item: any) => <Option value={item.value} key={item.value}>{item.value}</Option>)}
               </Select>
             </Col>
-            <Col span={4}>最高学历：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              最高学历：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -491,7 +535,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>原单位名称：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              原单位名称：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.originalWorkUnit}
@@ -500,7 +547,10 @@ export default function EidtModal(props: Props) {
                   originalWorkUnit: e.target.value
                 })} />
             </Col>
-            <Col span={4}>原科室：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              原科室：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.originalDepartment}
@@ -511,7 +561,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>进修时间：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              进修时间：
+            </Col>
             <Col span={12}>
               <RangePicker
                 value={[
@@ -528,7 +581,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>进修科室一：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              进修科室一：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -599,7 +655,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*联系方式：</Col>
+            <Col span={4}>
+              <span className="star">*</span>联系方式：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.phone}
@@ -611,7 +669,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*身份证号：</Col>
+            <Col span={4}>
+              <span className="star">*</span>身份证号：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.idCardNo}
@@ -623,7 +683,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*家庭住址：</Col>
+            <Col span={4}>
+              <span className="star">*</span>家庭住址：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.address}
@@ -635,7 +697,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*紧急联系人：</Col>
+            <Col span={4}>
+              <span className="star">*</span>紧急联系人：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.emergencyContactPerson}
@@ -647,7 +711,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={6}>*紧急联系人电话：</Col>
+            <Col span={6}>
+              <span className="star">*</span>紧急联系人电话：
+            </Col>
             <Col span={10}>
               <Input
                 value={editParams.emergencyContactPhone}
@@ -677,7 +743,9 @@ export default function EidtModal(props: Props) {
       case '99':
         return <div>
           <Row>
-            <Col span={4}>*姓名：</Col>
+            <Col span={4}>
+              <span className="star">*</span>姓名：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.name}
@@ -706,7 +774,10 @@ export default function EidtModal(props: Props) {
             )}
           </Row>
           <Row>
-            <Col span={4}>毕业院校：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              毕业院校：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.schoolName}
@@ -716,7 +787,10 @@ export default function EidtModal(props: Props) {
                     schoolName: e.target.value
                   })} />
             </Col>
-            <Col span={4}>*性别：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              性别：
+            </Col>
             <Col span={8}>
               <Radio.Group
                 buttonStyle="solid"
@@ -731,7 +805,10 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>最高学历：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              最高学历：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -743,7 +820,10 @@ export default function EidtModal(props: Props) {
                 {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)}
               </Select>
             </Col>
-            <Col span={4}>专业：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              专业：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.major}
@@ -767,7 +847,9 @@ export default function EidtModal(props: Props) {
                 <Radio.Button value="0">否</Radio.Button>
               </Radio.Group>
             </Col>
-            <Col span={4}>*联系方式：</Col>
+            <Col span={4}>
+              <span className="star">*</span>联系方式：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.phone}
@@ -779,13 +861,19 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>入职时间：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              入职时间：
+            </Col>
             <Col span={8}>
               <DatePicker
                 value={editParams.entryDate ? moment(editParams.entryDate) : undefined}
                 onChange={(_moment: any) => setEidtParams({ ...editParams, entryDate: _moment.format('YYYY-MM-DD') })} />
             </Col>
-            <Col span={4}>所在科室：</Col>
+            <Col span={4}>
+              <span className="star">*</span>
+              所在科室：
+            </Col>
             <Col span={8}>
               <Select
                 style={{ width: '100%' }}
@@ -834,7 +922,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*紧急联系人：</Col>
+            <Col span={4}>
+              <span className="star">*</span>紧急联系人：
+            </Col>
             <Col span={8}>
               <Input
                 value={editParams.emergencyContactPerson}
@@ -846,7 +936,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*身份证号：</Col>
+            <Col span={4}>
+              <span className="star">*</span>身份证号：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.idCardNo}
@@ -858,7 +950,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*家庭住址：</Col>
+            <Col span={4}>
+              <span className="star">*</span>家庭住址：
+            </Col>
             <Col span={12}>
               <Input
                 value={editParams.address}
@@ -870,7 +964,9 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={6}>*紧急联系人电话：</Col>
+            <Col span={6}>
+              <span className="star">*</span>紧急联系人电话：
+            </Col>
             <Col span={10}>
               <Input
                 value={editParams.emergencyContactPhone}
@@ -928,6 +1024,9 @@ const Wrapper = styled.div`
     .ant-col:nth-of-type(2n-1){
       text-align: right;
       padding-right: 5px;
+    }
+    .star{
+      color: red;
     }
   }
   
