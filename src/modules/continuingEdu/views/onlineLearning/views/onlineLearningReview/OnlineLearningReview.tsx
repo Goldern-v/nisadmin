@@ -155,7 +155,7 @@ export default observer(function OnlineLearningReview(props: Props) {
           </ButtonGroups>
         </TopPannel>
         <MainPannel>
-          <FinishTaskProgress />
+          {!queryObj.taskRoleCode && <FinishTaskProgress />}
           <BaseInfoPannel />
         </MainPannel>
       </Spin>

@@ -166,6 +166,10 @@ const NotificationManagementView = lazy(() =>
     "src/modules/continuingEdu/views/notificationManagement/view/CheckResults"
   )
 );
+// 武汉首页——学习培训
+const AllEduData = lazy(() =>
+  import("src/modules/home-wh/components/AllEduData")
+);
 
 // 平台使用手册
 const UserManualRouter = lazy(() =>
@@ -531,6 +535,7 @@ const routes: RouteItem[] = [
     NotificationManagementView,
     layouts.MainLayout
   ),
+  setLayout("/allEduData", AllEduData, layouts.MainLayout),
 
   setLayout(
     "/qualityAnalysisDetail/:id",

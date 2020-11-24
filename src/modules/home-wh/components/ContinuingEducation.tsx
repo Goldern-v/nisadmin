@@ -1,85 +1,102 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { ScrollUl } from 'src/components/common'
-import { ReactComponent as JXJY } from '../images/icon/JXJY.svg'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { ScrollUl } from "src/components/common";
+import { Spin, Tooltip } from "antd";
+import { appStore } from "src/stores/index";
+import { observer } from "mobx-react-lite";
+import { ReactComponent as JXJY } from "../images/icon/JXJY.svg";
+import HomeApi from "src/modules/home-wh/api/HomeApi.ts";
+import OnDetailCheck from "../common/OnDetailCheck";
+
 export interface Props extends RouteComponentProps {}
 
-export default function ContinuingEducation() {
-  const [count] = useState([
-    {
-      type: '考试',
-      content: '中国广东省深圳市宝山区村307号',
-      time: '11:32'
-    },
-    {
-      type: '考试',
-      content: '中国福建省厦门市莲花坞村龙昌里344号',
-      time: '11:32'
-    },
-    {
-      type: '考试',
-      content: '中国河南南阳市卧龙区八一路272号',
-      time: '11:32'
-    }
-  ])
+export default observer(function ContinuingEducation() {
+  const [loadingTable, setLoadingTable] = useState(false); //loading
+  const [tableData, setTableData] = useState([]); //表格数据
+
+  //初始化 获取表格数据内容
+  useEffect(() => {
+    setLoadingTable(true);
+    HomeApi.getMyNotificationList().then((res: any) => {
+      setLoadingTable(false);
+      setTableData(res.data || []);
+    });
+  }, []);
 
   //封装函数
   const renderSubMenu = () => {
-    return ([] || count).map((item: any) => {
+    return tableData.map((item: any) => {
       return (
-        <Li>
-          <Type>{item.type}</Type>
-          <Content className='content'>{item.content}</Content>
-          <Time>{item.time}</Time>
+        <Li
+          // className={item.alreadyRead == 1 ? "notRead" : ""}
+          onClick={() => OnDetailCheck(item)}
+        >
+          <Content className="content">
+            <Tooltip placement="top" title={item.title}>
+              {item.title}
+            </Tooltip>
+            <span className={item.alreadyRead != 1 ? "redIcon" : ""} />
+          </Content>
+          <Time>{item.createTime}</Time>
         </Li>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <Wrapper>
+      <Spin className="loading" spinning={loadingTable} />
       <Title>
         <I>
           <JXJY />
         </I>
         <World>继续教育通知</World>
-        <More>更多 ></More>
+        <More onClick={() => appStore.history.push(`/allEduData`)}>更多 ></More>
       </Title>
       <Ul>{renderSubMenu()}</Ul>
     </Wrapper>
-  )
-}
+  );
+});
 const Wrapper = styled.div`
   width: 335px;
   height: calc(50vh - 47px);
   margin-bottom: 15px;
   width: 335px;
   background: rgba(255, 255, 255, 1);
-  /* box-shadow: 0px -1px 0px 0px rgba(51, 122, 183, 1); */
   border-radius: 2px;
   border: 1px solid rgba(221, 221, 221, 1);
   box-sizing: border-box;
-`
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+  }
+`;
 const Title = styled.div`
-  /* border-bottom: 1px solid #ddd; */
   width: 335px;
   height: 45px;
   padding: 0 15px;
   box-sizing: border-box;
   background: #7bbc9b;
-`
+`;
 const Ul = styled(ScrollUl)`
   height: calc(50vh - 95px);
   width: 335px;
   overflow: auto;
   padding-inline-start: 0 !important;
-`
+  color: #333;
+  /* .notRead {
+    color: #333 !important; */
+  }
+`;
 const I = styled.span`
   display: inline-block;
   margin-top: 15px;
   vertical-align: middle;
-`
+`;
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
@@ -89,7 +106,7 @@ const World = styled.span`
   color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
-`
+`;
 const More = styled.span`
   float: right;
   height: 17px;
@@ -98,11 +115,10 @@ const More = styled.span`
   color: #fff;
   line-height: 17px;
   margin-top: 15px;
-  /* &:hover {
+  &:hover {
     cursor: pointer;
-    color: #00a65a;
-  } */
-`
+  }
+`;
 const Li = styled.li`
   padding: 7px 15px 7px 15px;
   border-bottom: 1px solid #ddd;
@@ -114,36 +130,32 @@ const Li = styled.li`
   &:hover .content {
     color: #00a65a;
   }
-`
-const Type = styled.span`
-  display: inline-block;
-  width: 30px;
-  height: 19px;
-  margin-right: 8px;
-  background: #00a65a;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-  line-height: 17px;
-  vertical-align: middle;
-  box-sizing: border-box;
-  padding: 1px 2px;
-`
+`;
 const Content = styled.span`
+  position: relative;
   display: inline-block;
-  width: 220px;
+  width: 210px;
   font-size: 13px;
   font-weight: 400;
-  color: rgba(51, 51, 51, 1);
   line-height: 18px;
   vertical-align: middle;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`
+  .redIcon {
+    display: inline-block;
+    background: red;
+    border-radius: 50%;
+    height: 5px;
+    width: 5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+`;
 const Time = styled.span`
   float: right;
   vertical-align: middle;
   font-size: 12px;
   margin-top: 3px;
-`
+`;

@@ -1,50 +1,49 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { ScrollUl } from 'src/components/common'
-import { appStore } from 'src/stores/index'
-import { Spin } from 'antd'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { ReactComponent as HLZD } from '../images/icon/HLZD.svg'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { ScrollUl } from "src/components/common";
+import { appStore } from "src/stores/index";
+import { Spin } from "antd";
+import HomeApi from "src/modules/home/api/HomeApi.ts";
+import { ReactComponent as HLZD } from "../images/icon/HLZD.svg";
 
 export interface Props extends RouteComponentProps {}
 
 export default function NursingSystem() {
-  const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
   const getMealList = () => {
-    setLoadingTable(true)
-    HomeApi.getCatalogByType('').then((res) => {
-      setLoadingTable(false)
-      console.log(res.data.list)
-      setTableData(res.data.list)
-    })
-  }
+    setLoadingTable(true);
+    HomeApi.getCatalogByType("").then(res => {
+      setLoadingTable(false);
+      setTableData(res.data.list);
+    });
+  };
 
   useEffect(() => {
-    getMealList()
-  }, [])
+    getMealList();
+  }, []);
 
   const toDetails = (item: any) => {
-    appStore.history.push(`/nursingRulesNewDetail?bookId=${item.id}`)
-  }
+    appStore.history.push(`/nursingRulesNewDetail?bookId=${item.id}`);
+  };
 
   //封装函数
   const renderSubMenu = () => {
     return tableData.map((item: any, index: any) => {
       return (
         <Li key={index} onClick={() => toDetails(item)}>
-          <img src={require('../images/list.png')} alt='' className='img' />
-          <Content className='content'>{item.bookName}</Content>
+          <img src={require("../images/list.png")} alt="" className="img" />
+          <Content className="content">{item.bookName}</Content>
         </Li>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <Wrapper>
-      <Spin className='loading' spinning={loadingTable} />
+      <Spin className="loading" spinning={loadingTable} />
       <Title>
         <I>
           <HLZD />
@@ -52,7 +51,7 @@ export default function NursingSystem() {
         <World>护理制度</World>
         <More
           onClick={() => {
-            appStore.history.push('/nursingRulesNew')
+            appStore.history.push("/nursingRulesNew");
           }}
         >
           更多 >
@@ -60,7 +59,7 @@ export default function NursingSystem() {
       </Title>
       <Ul>{renderSubMenu()}</Ul>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -80,7 +79,7 @@ const Wrapper = styled.div`
     margin-left: -10px;
     margin-top: -10px;
   }
-`
+`;
 const Title = styled.div`
   /* border-bottom: 1px solid #ddd; */
   width: 335px;
@@ -88,18 +87,18 @@ const Title = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
   background: #7bbc9b;
-`
+`;
 const Ul = styled(ScrollUl)`
   height: calc(50vh - 95px);
   width: 335px;
   overflow: auto;
   padding-inline-start: 0 !important;
-`
+`;
 const I = styled.span`
   display: inline-block;
   margin-top: 15px;
   vertical-align: middle;
-`
+`;
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
@@ -108,7 +107,7 @@ const World = styled.span`
   color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
-`
+`;
 const More = styled.span`
   float: right;
   height: 17px;
@@ -121,7 +120,7 @@ const More = styled.span`
     cursor: pointer;
     color: #00a65a;
   }
-`
+`;
 const Li = styled.li`
   padding: 7px 15px 7px 15px;
   border-bottom: 1px solid #ddd;
@@ -140,7 +139,7 @@ const Li = styled.li`
     margin-right: 8px;
     vertical-align: middle;
   }
-`
+`;
 const Content = styled.span`
   display: inline-block;
   max-width: 250px;
@@ -152,4 +151,4 @@ const Content = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`
+`;
