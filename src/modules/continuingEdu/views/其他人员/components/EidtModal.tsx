@@ -25,7 +25,7 @@ export default function EidtModal(props: Props) {
   const [editParams, setEidtParams] = useState({} as any)
   const [deptList, setDeptList] = useState([] as any[])
 
-  //1实习生、2进修生、3试用期人员、4文员、5其它人员
+  //1实习生、2进修生、3试用期人员、4文员、99其它人员
   let userType = isAdd ? editUserType : editParams.userType
 
   const defaultAddData = () => {
@@ -72,7 +72,7 @@ export default function EidtModal(props: Props) {
         }
       case '3':
       case '4':
-      case '5':
+      case '99':
         newParams = {
           ...defaultParams,
           isResident: '0',
@@ -392,7 +392,7 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*备注：</Col>
+            <Col span={4}>备注：</Col>
             <Col span={12}>
               <Input.TextArea
                 autosize={{ minRows: 3 }}
@@ -659,7 +659,7 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*备注：</Col>
+            <Col span={4}>备注：</Col>
             <Col span={12}>
               <Input.TextArea
                 autosize={{ minRows: 3 }}
@@ -674,7 +674,7 @@ export default function EidtModal(props: Props) {
         </div>
       case '3':
       case '4':
-      case '5':
+      case '99':
         return <div>
           <Row>
             <Col span={4}>*姓名：</Col>
@@ -882,7 +882,7 @@ export default function EidtModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>*备注：</Col>
+            <Col span={4}>备注：</Col>
             <Col span={12}>
               <Input.TextArea
                 autosize={{ minRows: 3 }}

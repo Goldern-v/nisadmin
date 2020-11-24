@@ -34,7 +34,7 @@ export const rules = (userType: string) => {
       }
     case '3':
     case '4':
-    case '5':
+    case '99':
       return {
         ...defaultRules
       }

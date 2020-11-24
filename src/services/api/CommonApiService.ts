@@ -138,6 +138,8 @@ export default class CommonApiService extends BaseApiService {
   public searchUser(empName: string, postData: any = {}) {
     //是否只查看权限科室 默认否
     let showAuthDept = false;
+    if (postData && Object.keys(postData).indexOf('showAuthDept') >= 0)
+      showAuthDept = postData.showAuthDept
     // if (appStore.HOSPITAL_ID == 'wh') showAuthDept = true
     return this.post(`/user/search`, { empName, ...postData, showAuthDept });
   }
@@ -153,7 +155,7 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => {})
+      onUploadProgress: onUploadProgress || (() => { })
     });
   }
   /** 下载文件并导出 */

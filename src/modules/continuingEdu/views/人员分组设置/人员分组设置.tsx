@@ -47,6 +47,12 @@ export default function 人员分组设置() {
       width: 150,
     },
     {
+      title: '排序',
+      dataIndex: 'sort',
+      width: 80,
+      align: 'center',
+    },
+    {
       title: '成员',
       dataIndex: 'groupPersonNameList',
       render: (list: any[]) => {

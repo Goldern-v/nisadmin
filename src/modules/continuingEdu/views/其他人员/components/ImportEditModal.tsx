@@ -478,7 +478,7 @@ export default function ImportEditModal(props: Props) {
         ]
       case '3':
       case '4':
-      case '5':
+      case '99':
         return [
           ...defaultColumns0,
           {

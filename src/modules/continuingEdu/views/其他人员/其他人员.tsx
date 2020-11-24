@@ -76,7 +76,7 @@ export default observer(function 其他人员(props: Props) {
     },
     {
       title: "类型",
-      dataIndex: "userType",
+      dataIndex: "userTypeName",
       width: 90,
       align: "center"
     },
@@ -100,7 +100,7 @@ export default observer(function 其他人员(props: Props) {
       width: 50,
       align: "center",
       render: (text: any, record: any) => {
-        if (record.userType == '进修生') return text
+        if (record.userType == '2') return text
         return ''
       }
     },
@@ -285,7 +285,7 @@ export default observer(function 其他人员(props: Props) {
       deptName: record.deptName,
       status: record.status,
       nearImageUrl: record.nearImageUrl,
-      userTypeName: record.userType
+      userType: record.userType
     };
     appStore.history.push(
       `/continuingEduEmpDetail/baseInfo?${qs.stringify(search)}`

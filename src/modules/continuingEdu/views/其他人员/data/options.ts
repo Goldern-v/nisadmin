@@ -4,7 +4,7 @@ export const userTypeList = [
   { type: '2', name: '进修生' },
   { type: '3', name: '试用人员' },
   { type: '4', name: '文员' },
-  { type: '5', name: '其他人员' },
+  { type: '99', name: '其他人员' },
 ]
 
 export const educationList = [

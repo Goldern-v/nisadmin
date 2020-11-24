@@ -23,9 +23,7 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function Main(props: any) {
   const { history, queryObj } = appStore;
-  let userType = ''
-  let target = userTypeList.find((item: any) => item.name == queryObj.userTypeName)
-  if (target) userType = target.type
+  let userType = queryObj.userType || ''
 
   let Routes_Config = [
     {
