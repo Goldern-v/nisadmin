@@ -76,7 +76,7 @@ export default observer(function 其他人员(props: Props) {
     },
     {
       title: "类型",
-      dataIndex: "userType",
+      dataIndex: "userTypeName",
       width: 90,
       align: "center"
     },

@@ -103,7 +103,7 @@ export default observer(function SelectPeopleModal(props: Props) {
   const handleSearch = (value: any) => {
     setSearchWord(value)
     value &&
-      service.commonApiService.searchUser(value).then((res) => {
+      service.commonApiService.searchUser(value, { showAuthDept: true }).then((res) => {
         setSearchUserList(
           res.data.userList.map((item: any) => ({
             ...item,
@@ -167,43 +167,43 @@ export default observer(function SelectPeopleModal(props: Props) {
                   </div>
                 </ListCon>
               ) : (
-                <div>
-                  {selectPeopleViewModel.selectedBigDeptCode ? (
-                    <div
-                      className='title'
-                      onClick={() => selectPeopleViewModel.popStep()}
-                      style={{
-                        color: '#333',
-                        marginBottom: '10px',
-                        marginLeft: '-3px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <Icon type='left' />
-                      <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.selectedBigDeptName}</span>
-                    </div>
-                  ) : (
-                    <AutoComplete
-                      dataSource={searchUserList}
-                      style={{ width: '100%' }}
-                      onSelect={onSelect}
-                      onSearch={handleSearch}
-                      value={searchWord}
-                    >
-                      <Search placeholder='请输入搜索关键字' />
-                    </AutoComplete>
-                  )}
-
-                  <FileList>
-                    {selectPeopleViewModel.selectTreeData.map((item: any, index: any) => (
-                      <div className='item-box' onClick={() => selectPeopleViewModel.pushStep(item.step)} key={index}>
-                        <img src={require('../../images/文件夹.png')} alt='' />
-                        <span>{item.label}</span>
+                  <div>
+                    {selectPeopleViewModel.selectedBigDeptCode ? (
+                      <div
+                        className='title'
+                        onClick={() => selectPeopleViewModel.popStep()}
+                        style={{
+                          color: '#333',
+                          marginBottom: '10px',
+                          marginLeft: '-3px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Icon type='left' />
+                        <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.selectedBigDeptName}</span>
                       </div>
-                    ))}
-                  </FileList>
-                </div>
-              )}
+                    ) : (
+                        <AutoComplete
+                          dataSource={searchUserList}
+                          style={{ width: '100%' }}
+                          onSelect={onSelect}
+                          onSearch={handleSearch}
+                          value={searchWord}
+                        >
+                          <Search placeholder='请输入搜索关键字' />
+                        </AutoComplete>
+                      )}
+
+                    <FileList>
+                      {selectPeopleViewModel.selectTreeData.map((item: any, index: any) => (
+                        <div className='item-box' onClick={() => selectPeopleViewModel.pushStep(item.step)} key={index}>
+                          <img src={require('../../images/文件夹.png')} alt='' />
+                          <span>{item.label}</span>
+                        </div>
+                      ))}
+                    </FileList>
+                  </div>
+                )}
             </Spin>
           </div>
           <div className='right-part'>
@@ -232,7 +232,7 @@ export default observer(function SelectPeopleModal(props: Props) {
     </Modal>
   )
 })
-const CheckListCon = observer(function(props: any) {
+const CheckListCon = observer(function (props: any) {
   let { checkedUserList, setCheckedUserList, insertUser, deleteUser, inCheckedUser } = props
   let checkAll = false
   let indeterminate = false
@@ -255,7 +255,7 @@ const CheckListCon = observer(function(props: any) {
       }
       return false
     })()
-  } catch (error) {}
+  } catch (error) { }
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
     if (e.target.checked) {
@@ -322,9 +322,8 @@ const CheckListCon = observer(function(props: any) {
                     onClick={() =>
                       selectPeopleViewModel.pushStep(
                         item[selectPeopleViewModel!.currentTreeData!.stepLabel]
-                          ? `${item[selectPeopleViewModel!.currentTreeData!.stepLabel]}-${
-                              item[selectPeopleViewModel!.currentTreeData!.dataLabel]
-                            }`
+                          ? `${item[selectPeopleViewModel!.currentTreeData!.stepLabel]}-${item[selectPeopleViewModel!.currentTreeData!.dataLabel]
+                          }`
                           : item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']
                       )
                     }
