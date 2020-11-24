@@ -100,7 +100,7 @@ export default observer(function 其他人员(props: Props) {
       width: 50,
       align: "center",
       render: (text: any, record: any) => {
-        if (record.userType == '进修生') return text
+        if (record.userType == '2') return text
         return ''
       }
     },

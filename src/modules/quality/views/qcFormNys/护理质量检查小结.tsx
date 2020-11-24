@@ -188,7 +188,7 @@ export default observer(function 护理质量检查小结() {
               filterOption={(input: any, option: any) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }>
-              <Option value="">全部</Option>
+              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
               {deptList.map((item: any, index: number) =>
                 <Option value={item.code} key={index}>{item.name}</Option>)}
             </Select>
