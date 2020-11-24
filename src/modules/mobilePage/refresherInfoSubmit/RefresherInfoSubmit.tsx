@@ -366,7 +366,10 @@ export default function TraineeInfoSubmit() {
         </Picker>
         <Picker
           extra="请选择"
-          data={deptList}
+          data={[
+            { label: '无', value: '' },
+            ...deptList
+          ]}
           value={[params.studyDeptCode02]}
           cols={1}
           onChange={(payload: any) => {
@@ -374,8 +377,14 @@ export default function TraineeInfoSubmit() {
               let target = deptList.find((item: any) => item.value == payload[0])
               setParams({
                 ...params,
-                studyDeptCode02: target.value,
-                studyDeptName02: target.label
+                studyDeptCode02: target.value || '',
+                studyDeptName02: target.label || ''
+              })
+            } else {
+              setParams({
+                ...params,
+                studyDeptCode02: '',
+                studyDeptName02: ''
               })
             }
           }}>

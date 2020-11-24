@@ -615,13 +615,14 @@ export default function EidtModal(props: Props) {
                 filterOption={(input: any, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                allowClear
                 onChange={(refresherDeptCode02: any) => {
                   let refresherDeptName02 = ''
                   let target = deptList.find((item: any) => item.code == refresherDeptCode02)
                   if (target) refresherDeptName02 = target.name
                   setEidtParams({
                     ...editParams,
-                    refresherDeptCode02,
+                    refresherDeptCode02: refresherDeptCode02 || '',
                     refresherDeptName02
                   })
                 }}>

@@ -182,6 +182,9 @@ export default function userListEditModal(props: Props) {
       confirmLoading={loading}
       forceRender
       width={800}
+      footer={<div>
+        <Button loading={loading} onClick={() => onCancel()}>关闭</Button>
+      </div>}
       visible={visible}
       onOk={() => onCancel()}
       onCancel={() => onCancel()}>
