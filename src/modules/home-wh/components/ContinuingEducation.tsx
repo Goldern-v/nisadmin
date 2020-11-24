@@ -28,13 +28,10 @@ export default observer(function ContinuingEducation() {
   const renderSubMenu = () => {
     return tableData.map((item: any) => {
       return (
-        <Li
-          // className={item.alreadyRead == 1 ? "notRead" : ""}
-          onClick={() => OnDetailCheck(item)}
-        >
+        <Li onClick={() => OnDetailCheck(item)}>
           <Content className="content">
             <Tooltip placement="top" title={item.title}>
-              {item.title}
+              <span className="title">{item.title}</span>
             </Tooltip>
             <span className={item.alreadyRead != 1 ? "redIcon" : ""} />
           </Content>
@@ -88,9 +85,6 @@ const Ul = styled(ScrollUl)`
   overflow: auto;
   padding-inline-start: 0 !important;
   color: #333;
-  /* .notRead {
-    color: #333 !important; */
-  }
 `;
 const I = styled.span`
   display: inline-block;
@@ -120,10 +114,12 @@ const More = styled.span`
   }
 `;
 const Li = styled.li`
-  padding: 7px 15px 7px 15px;
+  height: 36px;
+  padding: 0 15px;
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   list-style-type: none;
+  line-height: 36px;
   &:hover {
     cursor: pointer;
   }
@@ -131,31 +127,30 @@ const Li = styled.li`
     color: #00a65a;
   }
 `;
-const Content = styled.span`
+const Content = styled.div`
   position: relative;
-  display: inline-block;
-  width: 210px;
+  float: left;
   font-size: 13px;
   font-weight: 400;
-  line-height: 18px;
-  vertical-align: middle;
+  width: calc(100% - 110px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  .title {
+    margin-left: 5px;
+  }
   .redIcon {
     display: inline-block;
     background: red;
     border-radius: 50%;
-    height: 5px;
-    width: 5px;
+    height: 8px;
+    width: 8px;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 6px;
   }
 `;
-const Time = styled.span`
+const Time = styled.div`
   float: right;
-  vertical-align: middle;
   font-size: 12px;
-  margin-top: 3px;
 `;

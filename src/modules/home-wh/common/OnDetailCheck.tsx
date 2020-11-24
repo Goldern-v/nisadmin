@@ -5,7 +5,7 @@ import { examOrExerciseApi } from "src/modules/continuingEdu/views/onlineLearnin
 import { onlineLearningReviewModel } from "src/modules/continuingEdu/views/onlineLearning/views/onlineLearningReview/OnlineLearningReviewModel";
 
 export default function OnDetailCheck(item: any) {
-  HomeApi.readNotification(item.cetpId)
+  HomeApi.readNotification(item.id)
     .then((res: any) => {
       if (res.code === "200") {
         switch (item.noticeType) {
