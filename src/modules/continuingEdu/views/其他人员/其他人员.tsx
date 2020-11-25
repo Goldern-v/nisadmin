@@ -107,13 +107,13 @@ export default observer(function 其他人员(props: Props) {
     {
       title: "院校",
       dataIndex: "schoolName",
-      width: 120,
+      width: 150,
       align: "center"
     },
     {
       title: "原单位",
       dataIndex: "originalWorkUnit",
-      width: 120,
+      width: 150,
       align: "center"
     },
     {
@@ -131,14 +131,19 @@ export default observer(function 其他人员(props: Props) {
     {
       title: "学历",
       dataIndex: "education",
-      width: 60,
+      width: 80,
       align: "center"
     },
     {
       title: "分组",
+      key: "groupNames",
       dataIndex: "groupNames",
-      width: 120,
-      align: "center"
+      width: 150,
+      className: 'elips-td',
+      align: "center",
+      render: (text: any) => {
+        return <div title={text}>{text}</div>
+      }
     },
     {
       title: "科室",
@@ -587,21 +592,21 @@ const Wrapper = styled.div`
       }
     }
   }
-`;
 
-const MinTableCon = styled.div`
-  table,table tr th, table tr td { 
-    border:1px solid #ccc;
+  .elips-td{
+    position: relative;
+    &>div{
+      text-align: left;
+      width: 100%;
+      padding: 0 8px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
+    }
   }
-  td{
-    padding: 5px 10px;
-  }
-  table { 
-    text-align: center; 
-    border-collapse: collapse;
-  }
-  .header{
-    background: #eee;
-    font-weight: bold;
-  }
-`
+`;
