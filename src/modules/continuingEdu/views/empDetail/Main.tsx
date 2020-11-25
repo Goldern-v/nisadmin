@@ -17,7 +17,7 @@ import TableView from "./TableView";
 import Writings from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/Writings"
 import SpecialCard from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/SpecialCard"
 import EducationalExperience from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/EducationalExperience"
-import { userTypeList } from "../其他人员/data/options";
+// import { userTypeList } from "../其他人员/data/options";
 
 export interface Props extends RouteComponentProps { }
 
@@ -37,7 +37,7 @@ export default observer(function Main(props: any) {
             return 进修生详情
           case '3':
           case '4':
-          case '5':
+          case '99':
             return 其他人员详情
           default:
             return BaseInfo
@@ -182,8 +182,8 @@ export default observer(function Main(props: any) {
           {appStore.hisMatch({
             map: {
               'hj': <React.Fragment>
-                {queryObj.userTypeName && <Link to="/continuingEdu/其他人员">其他人员</Link>}
-                {!queryObj.userTypeName && <Link to="/continuingEdu/人员管理">正式人员</Link>}
+                {queryObj.userType && <Link to="/continuingEdu/其他人员">其他人员</Link>}
+                {!queryObj.userType && <Link to="/continuingEdu/人员管理">正式人员</Link>}
               </React.Fragment>,
               other: <Link to="/continuingEdu/人员管理">人员管理</Link>
             }

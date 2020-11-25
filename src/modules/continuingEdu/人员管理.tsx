@@ -105,7 +105,11 @@ export default observer(function 人员管理(props: Props) {
             key: "groupNames",
             dataIndex: "groupNames",
             width: 120,
-            align: "center"
+            className: 'elips-td',
+            align: "center",
+            render: (text: any) => {
+              return <div title={text}>{text}</div>
+            }
           },
         ],
         other: []
@@ -592,6 +596,22 @@ const Wrapper = styled.div`
         margin-top: -225px;
         margin-bottom: 10px;
       }
+    }
+  }
+  .elips-td{
+    position: relative;
+    &>div{
+      text-align: left;
+      width: 100%;
+      padding: 0 8px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
     }
   }
 `;
