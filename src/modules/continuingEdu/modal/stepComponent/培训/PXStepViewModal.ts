@@ -17,7 +17,7 @@ const defaultStepData2 = {
   /**  结束XX天后归档 */
   daysToArchive: 2,
   /**  组织方式（1线上；2线下） */
-  organizationWay: 1,
+  organizationWay: 2,
   /**  培训地址（如：护理app） */
   address: "护士app",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
