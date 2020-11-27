@@ -778,7 +778,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   return (
     <Container>
       <PageHeader>
-        {authStore.isNotANormalNurse && (
+        {authStore.isAdmin && (
           <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
             修订
           </Button>
@@ -836,7 +836,7 @@ export default observer(function 敏感指标登记本(props: Props) {
               保存
             </Button>
             <Button onClick={exportExcel}>导出</Button>
-            {authStore.isNotANormalNurse && (
+            {authStore.isAdmin && (
               <Button
                 onClick={() =>
                   settingModal.show({
