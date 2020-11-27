@@ -3,7 +3,7 @@ export const defaultTableColumn: any[] = [
     title: '序号',
     render: (text: any, record: any, index: number) => index + 1,
     align: 'center',
-    width: 50
+    width: 40
   },
   {
     title: '检测项目',
@@ -14,8 +14,8 @@ export const defaultTableColumn: any[] = [
   },
   {
     title: '阈值',
-    dataIndex: 'valve',
-    key: 'valve',
+    dataIndex: 'valveDesc',
+    key: 'valveDesc',
     align: 'center',
   },
   {
@@ -23,12 +23,14 @@ export const defaultTableColumn: any[] = [
     dataIndex: 'numeratorDesc',
     key: 'numeratorDesc',
     align: 'center',
+    width: 150
   },
   {
     title: '分母描述',
     dataIndex: 'denominatorDesc',
     key: 'denominatorDesc',
     align: 'center',
+    width: 100
   },
   {
     title: '第一季度',
