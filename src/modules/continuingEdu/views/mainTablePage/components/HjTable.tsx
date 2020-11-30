@@ -84,6 +84,21 @@ export default observer(function HjTable(props: Props) {
     } else {
       return setDataList([
         {
+          title: "培训对象（必修√/选修△）",
+          children: setTableConfig()
+        },
+        {
+          title: "管理人员",
+          children: [
+            {
+              title: "讲师",
+              dataIndex: "teachers",
+              width: 130,
+              align: "center"
+            }
+          ]
+        },
+        {
           title: "通知",
           dataIndex: "ifSendMessage",
           width: 50,
@@ -134,21 +149,6 @@ export default observer(function HjTable(props: Props) {
       dataIndex: "title",
       width: 300,
       align: "left"
-    },
-    {
-      title: "培训对象（必修√/选修△）",
-      children: setTableConfig()
-    },
-    {
-      title: "管理人员",
-      children: [
-        {
-          title: "讲师",
-          dataIndex: "teachers",
-          width: 130,
-          align: "center"
-        }
-      ]
     },
     {
       title: "学习资料",
