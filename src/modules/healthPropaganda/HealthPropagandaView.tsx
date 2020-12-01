@@ -4,6 +4,7 @@ import { Button, message as Message, Modal, Icon } from 'antd'
 import { withRouter } from 'react-router-dom'
 import HealthProgandaService from './api/healthProgandaService'
 import qs from 'qs'
+import printing from "printing"
 
 const api = new HealthProgandaService()
 
@@ -50,6 +51,16 @@ export default withRouter(function HealthPropagandaView(props: any) {
     })
   }
 
+  const printToPdf = () => {
+    let prtintFn = printing as any
+    // if (appStore.isDev) prtintFn = printing.preview
+    prtintFn(document.getElementById('health-content') as HTMLElement, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: ''
+    })
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -65,12 +76,13 @@ export default withRouter(function HealthPropagandaView(props: any) {
         <div className='base-info'>
           <span className='title'>{data.name}</span>
           <span className='sub'>
+            <Button onClick={() => printToPdf()}>导出</Button>
             <Button onClick={() => history.push(`/healthPropagandaEditNew/${match.id}`)}>编辑</Button>
             <Button onClick={handleDelete}>删除</Button>
           </span>
         </div>
       </div>
-      <div className='main-contain'>
+      <div className='main-contain' id="health-content">
         <div className='content' dangerouslySetInnerHTML={{ __html: data.content || '' }} />
       </div>
     </Wrapper>

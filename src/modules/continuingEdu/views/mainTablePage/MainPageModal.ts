@@ -26,9 +26,10 @@ class MainPageModal {
       secondLevelMenuId: this.id, //二级菜单id
       thirdLevelMenuId:
         appStore.HOSPITAL_ID === "hj" &&
-        (stepViewModal.getParentsName == "在线学习" ||
-          stepViewModal.getParentsName == "集中培训")
+        stepViewModal.getParentsName == "在线学习"
           ? this.hjSelectedType
+          : stepViewModal.getParentsName == "集中培训"
+          ? ""
           : this.selectedType, //三级菜单id(类型)
       status: this.selectedState, //状态
       keyWord: this.keyWord, //菜单名

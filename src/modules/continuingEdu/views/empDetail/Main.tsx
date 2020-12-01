@@ -17,13 +17,16 @@ import TableView from "./TableView";
 import Writings from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/Writings"
 import SpecialCard from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/SpecialCard"
 import EducationalExperience from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/EducationalExperience"
-// import { userTypeList } from "../其他人员/data/options";
+import { userTypeList } from "../其他人员/data/options";
 
 export interface Props extends RouteComponentProps { }
 
 export default observer(function Main(props: any) {
   const { history, queryObj } = appStore;
   let userType = queryObj.userType || ''
+  let userTypeName = ''
+  let usetTypeTarget = userTypeList.find((item: any) => item.type == userType)
+  if (usetTypeTarget) userTypeName = usetTypeTarget.name
 
   let Routes_Config = [
     {
@@ -197,10 +200,10 @@ export default observer(function Main(props: any) {
           <span>
             <span className="emp-name">{data.empName}</span>
             <br />
-            {queryObj.userTypeName && <span className="emp-sub">
-              {queryObj.userTypeName}
+            {userType && <span className="emp-sub">
+              {userTypeName}
             </span>}
-            {!queryObj.userTypeName && <span className="emp-sub">
+            {!userType && <span className="emp-sub">
               {data.newTitle} | {data.nurseHierarchy} | {data.deptName} |{" "}
               {data.status}
             </span>}

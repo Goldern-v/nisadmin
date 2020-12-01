@@ -15,6 +15,11 @@ interface Props {}
 
 export default observer(function HjTable(props: Props) {
   const addRecordModal = createModal(AddRecordModal); // 添加弹窗
+  const [dataList, setDataList] = useState([] as any); // 分类别特殊菜单
+
+  useEffect(() => {
+    dataInit();
+  }, [stepViewModal.getThirdName]);
 
   //培训对象函数封装
   const setTableConfig = () => {
@@ -31,6 +36,79 @@ export default observer(function HjTable(props: Props) {
       });
     }
     return array;
+  };
+
+  const dataInit = () => {
+    if (stepViewModal.getThirdName === "考试设置") {
+      return setDataList([
+        {
+          title: "通知",
+          dataIndex: "ifSendMessage",
+          width: 50,
+          align: "center",
+          render(ifSendMessage: any) {
+            return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
+          }
+        },
+        {
+          title: "总题量",
+          dataIndex: "总题量",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "题数",
+          dataIndex: "题数",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "总分",
+          dataIndex: "总分",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "答题次数",
+          dataIndex: "答题次数",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "补考",
+          dataIndex: "补考",
+          width: 80,
+          align: "center"
+        }
+      ]);
+    } else {
+      return setDataList([
+        {
+          title: "培训对象（必修√/选修△）",
+          children: setTableConfig()
+        },
+        {
+          title: "管理人员",
+          children: [
+            {
+              title: "讲师",
+              dataIndex: "teachers",
+              width: 130,
+              align: "center"
+            }
+          ]
+        },
+        {
+          title: "通知",
+          dataIndex: "ifSendMessage",
+          width: 50,
+          align: "center",
+          render(ifSendMessage: any) {
+            return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
+          }
+        }
+      ]);
+    }
   };
 
   const columns: any = [
@@ -71,21 +149,6 @@ export default observer(function HjTable(props: Props) {
       dataIndex: "title",
       width: 300,
       align: "left"
-    },
-    {
-      title: "培训对象（必修√/选修△）",
-      children: setTableConfig()
-    },
-    {
-      title: "管理人员",
-      children: [
-        {
-          title: "讲师",
-          dataIndex: "teachers",
-          width: 130,
-          align: "center"
-        }
-      ]
     },
     {
       title: "学习资料",
@@ -165,15 +228,7 @@ export default observer(function HjTable(props: Props) {
         return <span style={{ color }}>{statusDesc}</span>;
       }
     },
-    stepViewModal.getParentsName === "集中培训" && {
-      title: "通知",
-      dataIndex: "ifSendMessage",
-      width: 50,
-      align: "center",
-      render(ifSendMessage: any) {
-        return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
-      }
-    },
+    ...dataList,
     {
       title: "操作",
       dataIndex: "",

@@ -24,9 +24,9 @@ export default observer(function MainPage(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 动态TAbs
 
   useEffect(() => {
-    getTabs();
     stepViewModal.getParentsName = getParentsName || "";
     stepViewModal.getThirdName = getTitle || "";
+    getTabs();
   }, [getId, getTitle]);
 
   // 获取动态选项卡
@@ -63,7 +63,9 @@ export default observer(function MainPage(props: Props) {
               mainPageModal.onload();
             }}
           />
-        ) : appStore.HOSPITAL_ID === "hj" && getParentsName === "集中培训" ? (
+        ) : appStore.HOSPITAL_ID === "hj" &&
+          (getParentsName === "集中培训" ||
+            getParentsName === "在线练习考试") ? (
           <HjTable />
         ) : (
           <Table getId={getId} addRecordModal={addRecordModal} />

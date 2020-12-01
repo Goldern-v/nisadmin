@@ -27,7 +27,11 @@ import { appStore } from "src/stores";
 
 export default observer(function Step1() {
   // 组织方式
-  const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
+  const zzfs =
+    appStore.HOSPITAL_ID === "hj" &&
+    allStepViewModal.getParentsName === "在线练习考试"
+      ? [{ name: "线上", code: 1 }]
+      : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
   const studentCreditTypeList =
     appStore.HOSPITAL_ID === "wh"
@@ -187,7 +191,12 @@ export default observer(function Step1() {
 
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
-              <Select>
+              <Select
+                disabled={
+                  appStore.HOSPITAL_ID === "hj" &&
+                  allStepViewModal.getParentsName === "在线练习考试"
+                }
+              >
                 {zzfs.map(item => (
                   <Select.Option value={item.code} key={item.name}>
                     {item.name}

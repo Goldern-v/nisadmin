@@ -84,7 +84,7 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "敏感指标登记本",
-    path: "/sensitiveRegister"
+    path: "/sensitiveRegister",
     // hidden: !appStore.isDev
   },
   {
