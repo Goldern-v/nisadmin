@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { workSummaryReportViewModal } from '../../ReportModal'
+import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import Table from './Table'
@@ -14,7 +14,7 @@ export interface Props {
 
 export default observer(function ChartTableSection(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = workSummaryReportViewModal.getSectionData(sectionId)
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let text = data ? data.text : ''
   useEffect(() => { })
   return (
@@ -22,7 +22,7 @@ export default observer(function ChartTableSection(props: Props) {
       <div className='title'>{sectionTitle}</div>
       <Table />
       <Chart />
-      <EditButton onClick={() => workSummaryReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
+      <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
 })

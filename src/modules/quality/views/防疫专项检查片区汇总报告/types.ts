@@ -17,12 +17,11 @@ export interface Report {
   updateTime: string
   checkDeptSize: string
   deductDeptSize: string
-  checkDeptDesc: ''
+  checkDeptDesc: string
+  archiveDesc: string
   keyCheckItemDesc: string
   followUpDeptDesc: string
   suggestions: string
-  checkWardDesc: string
-  [p: string]: any
 }
 /** 追踪科室 */
 interface FollowUpDept {
@@ -54,7 +53,6 @@ export interface DeptItem {
   wardName: string
   itemCode: string
   itemBadDesc: string
-  [p: string]: any
   deductScore: number | string
 }
 /** 主要质量问题 */
@@ -72,19 +70,13 @@ export interface DetailItem {
   deductDeptSize: string | number
   attachUrls: string
   highlightItem: string
-  content: string,
-  year: number,
-  type: string,
-  indexInType: number,
-  qcGroupCode: string,
-  qcGroupName: string,
-  itemImproveDesc: string
-  childrenItemList: any[]
+  content: string
+  detailList: any[]
 }
 /** 检查亮点 */
-interface HighlightItem extends DetailItem { }
+interface HighlightItem extends DetailItem {}
 /** 重点问题 */
-interface keyItem extends DetailItem { }
+interface keyItem extends DetailItem {}
 
 /** 4.2、持续改进 5.1.检查重点 */
 export interface CurrentImproveItem {

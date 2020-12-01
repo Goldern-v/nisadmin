@@ -1,24 +1,31 @@
-import { SectionListItem } from '../ReportModal'
+import { SectionListItem } from '../ReportViewModal'
 import Line from '../components/common/Line'
-
+import 上月质量问题弹窗 from '../components/上月质量问题/上月质量问题弹窗'
+import 上月质量问题模块 from '../components/上月质量问题/上月质量问题模块'
+import 本月质量检查扣分情况弹窗 from '../components/本月质量检查扣分情况/本月质量检查扣分情况弹窗'
+import 本月质量检查扣分情况模块 from '../components/本月质量检查扣分情况/本月质量检查扣分情况模块'
+import 质量扣分比较弹窗 from '../components/质量扣分比较/质量扣分比较弹窗'
+import 质量扣分比较模块 from '../components/质量扣分比较/质量扣分比较模块'
+import 本月质量扣分科室排序模块 from '../components/本月质量扣分科室排序/本月质量扣分科室排序模块'
+import 本月质量扣分科室排序弹窗 from '../components/本月质量扣分科室排序/本月质量扣分科室排序弹窗'
+import 本月主要质量问题模块 from '../components/本月主要质量问题/本月主要质量问题模块'
+import 本月主要质量问题弹窗 from '../components/本月主要质量问题/本月主要质量问题弹窗'
+import 本月质量检查亮点模块 from '../components/本月质量检查亮点/本月质量检查亮点模块'
+import 本月质量检查亮点弹窗 from '../components/本月质量检查亮点/本月质量检查亮点弹窗'
+import 重点问题模块 from '../components/重点问题/重点问题模块'
+import 重点问题弹窗 from '../components/重点问题/重点问题弹窗'
+import 持续改进模块 from '../components/持续改进/持续改进模块'
+import 持续改进弹窗 from '../components/持续改进/持续改进弹窗'
+import 追踪督导模块 from '../components/追踪督导/追踪督导模块'
+import 追踪督导弹窗 from '../components/追踪督导/追踪督导弹窗'
+import 检查重点模块 from '../components/检查重点/检查重点模块'
+import 检查重点弹窗 from '../components/检查重点/检查重点弹窗'
+import 问题及建议弹窗 from '../components/问题及建议/问题及建议弹窗'
+import 问题及建议模块 from '../components/问题及建议/问题及建议模块'
 import 标题模块 from '../components/标题/标题模块'
 import 标题弹窗 from '../components/标题/标题弹窗'
-// import 一级标题模块 from '../components/一级标题/一级标题模块'
-// import 统一标题列表模块 from '../components/统一标题列表/统一标题列表模块'
-// import 统一标题列表弹窗 from '../components/统一标题列表/统一标题列表弹窗'
-import 本月片区人力资源调配模块 from '../components/本月片区人力资源调配/本月片区人力资源调配模块'
-import 本月片区人力资源调配弹窗 from '../components/本月片区人力资源调配/本月片区人力资源调配弹窗'
-import 本月片区不良事件汇总表弹窗 from '../components/本月片区不良事件汇总表/本月片区不良事件汇总表弹窗'
-import 本月片区不良事件汇总表模块 from '../components/本月片区不良事件汇总表/本月片区不良事件汇总表模块'
-import 本月护理质量检查问题及持续改进弹窗 from '../components/本月护理质量检查问题及持续改进/本月护理质量检查问题及持续改进弹窗'
-import 本月护理质量检查问题及持续改进模块 from '../components/本月护理质量检查问题及持续改进/本月护理质量检查问题及持续改进模块'
-import 下月工作重点弹窗 from '../components/下月工作重点/下月工作重点弹窗'
-import 下月工作重点模块 from '../components/下月工作重点/下月工作重点模块'
-import 本月片区团队建设活动模块 from '../components/本月片区团队建设活动/本月片区团队建设活动模块'
-import 本月片区团队建设活动弹窗 from '../components/本月片区团队建设活动/本月片区团队建设活动弹窗'
-import 片区团队建设活动附件弹窗 from '../components/片区团队建设活动附件/片区团队建设活动附件弹窗'
-import 片区团队建设活动附件模块 from '../components/片区团队建设活动附件/片区团队建设活动附件模块'
-
+import 文本弹窗 from '../components/2-1/文本弹窗'
+import 文本模块 from '../components/2-1/文本模块'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -29,55 +36,106 @@ export const sectionList: SectionListItem[] = [
     modal: 标题弹窗
   },
   {
-    sectionId: '本月片区人力资源调配',
-    sectionTitle: '本月片区人力资源调配',
-    modalTitle: '编辑本月片区人力资源调配',
-    data: {},
-    section: 本月片区人力资源调配模块,
-    modal: 本月片区人力资源调配弹窗,
-    modalWidth: 900
+    section: Line
   },
   {
-    sectionId: '本月片区不良事件汇总表',
-    sectionTitle: '本月片区不良事件汇总表',
-    modalTitle: '编辑本月片区不良事件汇总表',
+    sectionId: '上月质量问题',
+    sectionTitle: '一、上月质量问题，持续改进效果评价',
+    modalTitle: '编辑上月质量问题',
     data: {},
-    section: 本月片区不良事件汇总表模块,
-    modal: 本月片区不良事件汇总表弹窗,
-    modalWidth: 900
+    section: 上月质量问题模块,
+    modal: 上月质量问题弹窗
   },
   {
-    sectionId: '本月护理质量检查问题及持续改进',
-    sectionTitle: '本月护理质量检查问题及持续改进',
-    modalTitle: '编辑本月护理质量检查问题及持续改进',
-    data: {},
-    section: 本月护理质量检查问题及持续改进模块,
-    modal: 本月护理质量检查问题及持续改进弹窗,
-    modalWidth: 900
+    section: Line
   },
   {
-    sectionId: '下月工作重点',
-    sectionTitle: '下月工作重点',
-    modalTitle: '编辑下月工作重点',
+    sectionId: '本月质量检查扣分情况',
+    sectionTitle: '二、本月质量检查扣分情况',
+    modalTitle: '编辑本月质量检查扣分情况',
     data: {},
-    section: 下月工作重点模块,
-    modal: 下月工作重点弹窗,
-    modalWidth: 900
+    section: 本月质量检查扣分情况模块,
+    modal: 本月质量检查扣分情况弹窗
   },
   {
-    sectionId: '本月片区团队建设活动',
-    sectionTitle: '本月片区团队建设活动',
-    modalTitle: '编辑本月片区团队建设活动',
+    sectionId: '2-1',
+    sectionTitle: '2-1',
+    modalTitle: '编辑',
     data: {},
-    section: 本月片区团队建设活动模块,
-    modal: 本月片区团队建设活动弹窗
+    section: 文本模块,
+    modal: 文本弹窗
   },
   {
-    sectionId: '片区团队建设活动附件',
-    sectionTitle: '片区团队建设活动附件',
-    modalTitle: '编辑片区团队建设活动附件',
+    sectionId: '质量扣分比较',
+    sectionTitle: '质量扣分比较',
+    modalTitle: '编辑质量扣分比较',
     data: {},
-    section: 片区团队建设活动附件模块,
-    modal: 片区团队建设活动附件弹窗
+    section: 质量扣分比较模块,
+    modal: 质量扣分比较弹窗
+  },
+  {
+    sectionId: '本月质量扣分科室排序',
+    sectionTitle: '本月质量扣分科室排序',
+    modalTitle: '编辑本月质量扣分科室排序',
+    modalWidth: 900,
+    data: {},
+    section: 本月质量扣分科室排序模块,
+    modal: 本月质量扣分科室排序弹窗
+  },
+  {
+    sectionId: '本月主要质量问题',
+    sectionTitle: '本月主要质量问题',
+    modalTitle: '编辑本月主要质量问题',
+    data: {},
+    section: 本月主要质量问题模块,
+    modal: 本月主要质量问题弹窗
+  },
+  {
+    sectionId: '本月质量检查亮点',
+    sectionTitle: '本月质量检查亮点',
+    modalTitle: '编辑本月质量检查亮点',
+    data: {},
+    section: 本月质量检查亮点模块,
+    modal: 本月质量检查亮点弹窗
+  },
+  {
+    sectionId: '重点问题',
+    sectionTitle: '重点问题',
+    modalTitle: '编辑重点问题',
+    data: {},
+    section: 重点问题模块,
+    modal: 重点问题弹窗
+  },
+  {
+    sectionId: '持续改进',
+    sectionTitle: '持续改进',
+    modalTitle: '编辑持续改进',
+    data: {},
+    section: 持续改进模块,
+    modal: 持续改进弹窗
+  },
+  {
+    sectionId: '追踪督导',
+    sectionTitle: '追踪督导',
+    modalTitle: '编辑追踪督导',
+    data: {},
+    section: 追踪督导模块,
+    modal: 追踪督导弹窗
+  },
+  {
+    sectionId: '检查重点',
+    sectionTitle: '检查重点',
+    modalTitle: '编辑检查重点',
+    data: {},
+    section: 检查重点模块,
+    modal: 检查重点弹窗
+  },
+  {
+    sectionId: '问题及建议',
+    sectionTitle: '问题及建议',
+    modalTitle: '编辑问题及建议',
+    data: {},
+    section: 问题及建议模块,
+    modal: 问题及建议弹窗
   }
 ]

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { workSummaryReportViewModal } from '../../ReportModal'
+import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 export interface Props {
@@ -12,7 +12,7 @@ export interface Props {
 
 export default observer(function 一级标题模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = workSummaryReportViewModal.getSectionData(sectionId)
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   useEffect(() => { })
   return (
     // <Wrapper className='page-title'>

@@ -23,6 +23,9 @@ export default observer(function 防疫专项检查片区汇总列表() {
   const [groupRoleList, setGroupRolelist] = useState([])
   const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
+  // let currentWeekDay = moment().week(1)
+  // console.log(currentWeekDay.startOf('week').format('YYYY-MM-DD'), currentWeekDay.endOf('week').format('YYYY-MM-DD'))
+
   const [query, setQuery] = useState({
     year: moment() as null | moment.Moment,
     pageIndex: 1,

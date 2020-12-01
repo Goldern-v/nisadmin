@@ -5,6 +5,8 @@ import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+import 防疫专项检查片区汇总 from './views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表'
+import 防疫专项检查汇总 from './views/防疫专项检查汇总列表/防疫专项检查汇总列表'
 
 import { Provider, KeepAlive } from 'react-keep-alive'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
@@ -28,7 +30,7 @@ export default function QcTwoRouter(props: Props) {
       title: '防疫专项检查片区汇总',
       icon: <YDBG />,
       path: '/qcTwo/防疫专项检查片区汇总',
-      component: WorkSummaryReportList,
+      component: 防疫专项检查片区汇总,
       hide: !appStore.isDev,
       keepAlive: true,
       // hide: !appStore.isDev,
@@ -38,7 +40,7 @@ export default function QcTwoRouter(props: Props) {
       title: '防疫专项检查汇总',
       icon: <YDBG />,
       path: '/qcTwo/防疫专项检查汇总',
-      component: WorkSummaryReportList,
+      component: 防疫专项检查汇总,
       hide: !appStore.isDev,
       keepAlive: true,
       // hide: !appStore.isDev,

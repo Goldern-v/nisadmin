@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { workSummaryReportViewModal } from '../../ReportModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -13,14 +13,14 @@ export interface Props {
 
 export default observer(function TitleTextareaSection(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = workSummaryReportViewModal.getSectionData(sectionId)
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let textarea = data ? data.textarea : ''
 
   return (
     <Wrapper>
       <OneLevelTitle text={sectionTitle} />
       <TextCon>{textarea}</TextCon>
-      <EditButton onClick={() => workSummaryReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
+      <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
 })

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { workSummaryReportViewModal } from '../../ReportModal'
+import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -14,7 +14,7 @@ export interface Props {
 
 export default observer(function 检查形式模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = workSummaryReportViewModal.getSectionData(sectionId)
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = data ? data.report || {} : {}
   let contentKey: any = data.contentKey || ''
@@ -36,7 +36,7 @@ export default observer(function 检查形式模块(props: Props) {
         </div>
       ))}
       {list.length == 0 && <div className='null-text'>无</div>}
-      <EditButton onClick={() => workSummaryReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
+      <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
 })
@@ -56,7 +56,7 @@ const Wrapper = styled.div`
   button {
     /* display: none; */
     position: absolute;
-    top: 0px;
+    top: -25px;
     right: 20px;
   }
   .aside {
