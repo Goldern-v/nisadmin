@@ -145,15 +145,15 @@ export const LEFT_MENU = [
     path: "/indicator/护理质控指标"
   },
   {
-    title: "专科季度统计表",
-    icon: <ZKHL />,
-    path: "/indicator/专科季度统计表",
-    hide: appStore.isDev
-  },
-  {
     title: "公共季度统计表",
     icon: <HLGZZL />,
     path: "/indicator/公共季度统计表",
-    hide: appStore.isDev
-  }
+    // hide: appStore.isDev
+  },
+  {
+    title: "专科季度统计表",
+    icon: <ZKHL />,
+    path: "/indicator/专科季度统计表",
+    // hide: appStore.isDev
+  },
 ];
