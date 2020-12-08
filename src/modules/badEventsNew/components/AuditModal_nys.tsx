@@ -50,7 +50,7 @@ export default observer(function AduitModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
-      console.log(isZhuanke, patientInfo)
+      // console.log(isZhuanke, patientInfo)
       let user = authStore.user
       if (user)
         setInstance({
