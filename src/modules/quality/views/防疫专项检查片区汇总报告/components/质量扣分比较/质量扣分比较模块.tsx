@@ -19,20 +19,32 @@ export default observer(function 质量扣分比较模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
+  let currentTimeText = (() => {
+    if (!report.beginDate || !report.endDate) return '...'
+    let beginMoment = moment(report.beginDate)
+    let endMoment = moment(report.endDate)
+    let yearText1 = `${beginMoment.format('YYYY')}年`
+    let yearText2 = `${endMoment.format('YYYY')}年`
+    if (yearText1 == yearText2) yearText2 = ''
+    return `${yearText1}${beginMoment.format('MM.DD')}至${yearText2}${endMoment.format('MM.DD')}`
+  })()
+
+  let lastTimeText = (() => {
+    if (!report.lastBeginDate || !report.lastEndDate) return '...'
+    let beginMoment = moment(report.lastBeginDate)
+    let endMoment = moment(report.lastEndDate)
+    let yearText1 = `${beginMoment.format('YYYY')}年`
+    let yearText2 = `${endMoment.format('YYYY')}年`
+    if (yearText1 == yearText2) yearText2 = ''
+    return `${yearText1}${beginMoment.format('MM.DD')}至${yearText2}${endMoment.format('MM.DD')}`
+  })()
 
   useEffect(() => { })
-  let title =
-    report &&
-    `${moment(report.endDate).format('YYYY年')}${report.indexInType}月与${report.indexInType == 1
-      ? moment(report.beginDate)
-        .subtract(1, 'year')
-        .format('YYYY年')
-      : moment(report.beginDate).format('YYYY年')
-    }${report.indexInType == 1 ? 12 : report.indexInType - 1}月护理质量扣分比较`
+  let title = `1.${currentTimeText}与${lastTimeText}检查扣分比较`
   return (
     <Wrapper>
       <div className='title'>
-        2.{report.groupRoleCode == 'QCR0010' ? '2' : '1'}.{title}
+        {title}
       </div>
       <Table list={list} />
       <Chart list={list} title={title} />

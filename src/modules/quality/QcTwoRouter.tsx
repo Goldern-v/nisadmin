@@ -27,25 +27,25 @@ export default function QcTwoRouter(props: Props) {
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
     {
-      title: '防疫专项检查片区汇总',
+      title: '防疫专项检查分析报告',
       icon: <YDBG />,
-      path: '/qcTwo/防疫专项检查片区汇总',
+      path: '/qcTwo/防疫专项检查分析报告',
       component: 防疫专项检查片区汇总,
       hide: !appStore.isDev,
       keepAlive: true,
       // hide: !appStore.isDev,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
-    {
-      title: '防疫专项检查汇总',
-      icon: <YDBG />,
-      path: '/qcTwo/防疫专项检查汇总',
-      component: 防疫专项检查汇总,
-      hide: !appStore.isDev,
-      keepAlive: true,
-      // hide: !appStore.isDev,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    },
+    // {
+    //   title: '防疫专项检查汇总',
+    //   icon: <YDBG />,
+    //   path: '/qcTwo/防疫专项检查汇总',
+    //   component: 防疫专项检查汇总,
+    //   hide: !appStore.isDev,
+    //   keepAlive: true,
+    //   // hide: !appStore.isDev,
+    //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    // },
   ]
 
   if (appStore.HOSPITAL_ID == 'hj')

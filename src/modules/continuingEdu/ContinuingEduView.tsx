@@ -14,7 +14,7 @@ import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 其他人员 from "./views/其他人员/其他人员";
 import 人员分组设置 from "./views/人员分组设置/人员分组设置";
@@ -30,6 +30,7 @@ import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import FormReview from "./views/trainingSetting/formReview/FormReview";
 import FormApply from "./views/trainingSetting/formApply/FormApply";
+//题库管理
 import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
 import FillingQuestionEdit from "../questionBankManagement/views/FillingQuestionEdit";
 import ShortQuestionEdit from "../questionBankManagement/views/ShortQuestionEdit";
@@ -37,6 +38,24 @@ import LabelQuestionBank from "../questionBankManagement/views/LabelQuestionBank
 import UploadRecordQuestionBank from "../questionBankManagement/views/UploadRecordQuestionBank";
 import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBank";
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
+//厚街院级共享考试资源库
+import ChoiceQustionEdit_hj1 from "../院级共享考试资源库/views/ChoiceQuestionEdit";
+import FillingQuestionEdit_hj1 from "../院级共享考试资源库/views/FillingQuestionEdit";
+import ShortQuestionEdit_hj1 from "../院级共享考试资源库/views/ShortQuestionEdit";
+import LabelQuestionBank_hj1 from "../院级共享考试资源库/views/LabelQuestionBank";
+import UploadRecordQuestionBank_hj1 from "../院级共享考试资源库/views/UploadRecordQuestionBank";
+import UploadQuestionBank_hj1 from "../院级共享考试资源库/views/UploadQuestionBank";
+import WrongQuestionBank_hj1 from "../院级共享考试资源库/views/WrongQuestionBank";
+import 院级共享考试资源库 from "src/modules/院级共享考试资源库/QuestionBankManagement";
+//厚街科室考试资源库
+import ChoiceQustionEdit_hj2 from "../科室考试资源库/views/ChoiceQuestionEdit";
+import FillingQuestionEdit_hj2 from "../科室考试资源库/views/FillingQuestionEdit";
+import ShortQuestionEdit_hj2 from "../科室考试资源库/views/ShortQuestionEdit";
+import LabelQuestionBank_hj2 from "../科室考试资源库/views/LabelQuestionBank";
+import UploadRecordQuestionBank_hj2 from "../科室考试资源库/views/UploadRecordQuestionBank";
+import UploadQuestionBank_hj2 from "../科室考试资源库/views/UploadQuestionBank";
+import WrongQuestionBank_hj2 from "../科室考试资源库/views/WrongQuestionBank";
+import 科室考试资源库 from "src/modules/科室考试资源库/QuestionBankManagement";
 import { appStore, authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -210,57 +229,171 @@ export default function ContinuingEdu(props: Props) {
         queyMenuAuthInfo("nm_lat_promotemanage") ||
         authStore.isOnlyInternsManage
     },
-    {
-      title: "选择题新建和编辑",
-      hide: true,
-      path: "/continuingEdu/choiceQuestionEdit",
-      component: ChoiceQustionEdit
-    },
-    {
-      title: "填空题新建和编辑",
-      hide: true,
-      path: "/continuingEdu/fillingQuestionEdit",
-      component: FillingQuestionEdit
-    },
-    {
-      title: "问答题新建和编辑",
-      hide: true,
-      path: "/continuingEdu/shortQuestionEdit",
-      component: ShortQuestionEdit
-    },
-    {
-      title: "标签题库",
-      hide: true,
-      path: "/continuingEdu/labelQuestionBank",
-      component: LabelQuestionBank
-    },
-    {
-      title: "导入题库",
-      hide: true,
-      path: "/continuingEdu/uploadRecordQuestionBank",
-      component: UploadRecordQuestionBank
-    },
-    {
-      title: "上传新题库",
-      hide: true,
-      path: "/continuingEdu/uploadQuestionBank",
-      component: UploadQuestionBank
-    },
-    {
-      title: "错题反馈",
-      hide: true,
-      path: "/continuingEdu/wrongQuestionBank",
-      component: WrongQuestionBank
-    },
-    {
-      title: "题库管理",
-      icon: <TKGL />,
-      path: "/continuingEdu/questionBankManagement",
-      component: 题库管理,
-      hide: () =>
-        queyMenuAuthInfo("nm_lat_questionbankmanage") ||
-        authStore.isOnlyInternsManage
-    },
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "资源库",
+            icon: <TKGL />,
+            children: [
+              {
+                title: "选择题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/choiceQuestionEdit_hj1",
+                component: ChoiceQustionEdit_hj1
+              },
+              {
+                title: "填空题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/fillingQuestionEdit_hj1",
+                component: FillingQuestionEdit_hj1
+              },
+              {
+                title: "问答题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/shortQuestionEdit_hj1",
+                component: ShortQuestionEdit_hj1
+              },
+              {
+                title: "标签题库",
+                hide: true,
+                path: "/continuingEdu/labelQuestionBank_hj1",
+                component: LabelQuestionBank_hj1
+              },
+              {
+                title: "导入题库",
+                hide: true,
+                path: "/continuingEdu/uploadRecordQuestionBank_hj1",
+                component: UploadRecordQuestionBank_hj1
+              },
+              {
+                title: "上传新题库",
+                hide: true,
+                path: "/continuingEdu/uploadQuestionBank_hj1",
+                component: UploadQuestionBank_hj1
+              },
+              {
+                title: "错题反馈",
+                hide: true,
+                path: "/continuingEdu/wrongQuestionBank_hj1",
+                component: WrongQuestionBank_hj1
+              },
+              {
+                title: "院级共享考试资源库",
+                path: "/continuingEdu/院级共享考试资源库",
+                component: 院级共享考试资源库,
+                hide: () =>
+                  queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+                  authStore.isOnlyInternsManage
+              },
+              {
+                title: "选择题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/choiceQuestionEdit_hj2",
+                component: ChoiceQustionEdit_hj2
+              },
+              {
+                title: "填空题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/fillingQuestionEdit_hj2",
+                component: FillingQuestionEdit_hj2
+              },
+              {
+                title: "问答题新建和编辑",
+                hide: true,
+                path: "/continuingEdu/shortQuestionEdit_hj2",
+                component: ShortQuestionEdit_hj2
+              },
+              {
+                title: "标签题库",
+                hide: true,
+                path: "/continuingEdu/labelQuestionBank_hj2",
+                component: LabelQuestionBank_hj2
+              },
+              {
+                title: "导入题库",
+                hide: true,
+                path: "/continuingEdu/uploadRecordQuestionBank_hj2",
+                component: UploadRecordQuestionBank_hj2
+              },
+              {
+                title: "上传新题库",
+                hide: true,
+                path: "/continuingEdu/uploadQuestionBank_hj2",
+                component: UploadQuestionBank_hj2
+              },
+              {
+                title: "错题反馈",
+                hide: true,
+                path: "/continuingEdu/wrongQuestionBank_hj2",
+                component: WrongQuestionBank_hj2
+              },
+              {
+                title: "科室考试资源库",
+                path: "/continuingEdu/科室考试资源库",
+                component: 科室考试资源库,
+                hide: () =>
+                  queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+                  authStore.isOnlyInternsManage
+              },
+            ]
+          }
+        ],
+        other: [
+          {
+            title: "选择题新建和编辑",
+            hide: true,
+            path: "/continuingEdu/choiceQuestionEdit",
+            component: ChoiceQustionEdit
+          },
+          {
+            title: "填空题新建和编辑",
+            hide: true,
+            path: "/continuingEdu/fillingQuestionEdit",
+            component: FillingQuestionEdit
+          },
+          {
+            title: "问答题新建和编辑",
+            hide: true,
+            path: "/continuingEdu/shortQuestionEdit",
+            component: ShortQuestionEdit
+          },
+          {
+            title: "标签题库",
+            hide: true,
+            path: "/continuingEdu/labelQuestionBank",
+            component: LabelQuestionBank
+          },
+          {
+            title: "导入题库",
+            hide: true,
+            path: "/continuingEdu/uploadRecordQuestionBank",
+            component: UploadRecordQuestionBank
+          },
+          {
+            title: "上传新题库",
+            hide: true,
+            path: "/continuingEdu/uploadQuestionBank",
+            component: UploadQuestionBank
+          },
+          {
+            title: "错题反馈",
+            hide: true,
+            path: "/continuingEdu/wrongQuestionBank",
+            component: WrongQuestionBank
+          },
+          {
+            title: "题库管理",
+            icon: <TKGL />,
+            path: "/continuingEdu/questionBankManagement",
+            component: 题库管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+              authStore.isOnlyInternsManage
+          },
+        ]
+      }
+    }),
     {
       title: "类型管理",
       icon: <TKGL />,
@@ -308,9 +441,8 @@ export default function ContinuingEdu(props: Props) {
                   id: childItem.id,
                   title: childItem.name,
                   component: 主列表页,
-                  path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${
-                    childItem.id
-                  }`
+                  path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${childItem.id
+                    }`
                 };
                 arr.push(obj2);
                 obj1.children = arr;

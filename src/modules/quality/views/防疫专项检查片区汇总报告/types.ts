@@ -22,6 +22,8 @@ export interface Report {
   keyCheckItemDesc: string
   followUpDeptDesc: string
   suggestions: string
+  lastBeginDate?: string
+  lastEndDate?: string
 }
 /** 追踪科室 */
 interface FollowUpDept {
@@ -74,11 +76,11 @@ export interface DetailItem {
   detailList: any[]
 }
 /** 检查亮点 */
-interface HighlightItem extends DetailItem {}
+interface HighlightItem extends DetailItem { }
 /** 重点问题 */
-interface keyItem extends DetailItem {}
+interface keyItem extends DetailItem { }
 
-/** 4.2、持续改进 5.1.检查重点 */
+/** 2、持续改进 5.1.检查重点 */
 export interface CurrentImproveItem {
   id: number
   itemCode: string

@@ -196,6 +196,8 @@ const QualityAnalysisReportPoolView = lazy(() =>
 const WorkSummaryReportView = lazy(() =>
   import("src/modules/quality/views/workSummaryReport/WorkSummaryReportView")
 );
+//二级质控防疫专项检查片区汇总
+const 防疫专项检查片区汇总 = lazy(() => import("src/modules/quality/views/防疫专项检查片区汇总报告/防疫专项检查片区汇总报告"))
 
 //病区管理
 const WardManagementView = lazy(() =>
@@ -592,6 +594,11 @@ const routes: RouteItem[] = [
     WorkSummaryReportView,
     layouts.MainLayout
   ),
+  setLayout(
+    "/防疫专项检查片区汇总",
+    防疫专项检查片区汇总,
+    layouts.MainLayout
+  ),
   /** 档案模块 */
   setLayout("/nurseFile/:path", NurseFilesView, layouts.MainLayout),
   setLayout("/wardManagement/:name", WardManagementView, layouts.MainLayout),
@@ -706,8 +713,8 @@ const routes: RouteItem[] = [
       appStore.HOSPITAL_ID == "nys"
         ? "/continuingEdu/人员管理"
         : appStore.HOSPITAL_ID == "wh"
-        ? "/continuingEdu/在线学习"
-        : "/continuingEdu/学习培训任务"
+          ? "/continuingEdu/在线学习"
+          : "/continuingEdu/学习培训任务"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

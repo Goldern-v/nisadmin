@@ -103,8 +103,8 @@ class QualityAnalysisReportViewModal {
     this.allData = data
     this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
     this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
-    this.getSectionData(`2-1`).report = this.allData!.report || {}
-    this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
+
+    this.getSectionData(`本周检查扣分情况`).report = this.allData!.report || {}
     this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
       return Object.assign(item, {
         currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
@@ -113,17 +113,20 @@ class QualityAnalysisReportViewModal {
         compareScorePercent: Number(item.compareScorePercent.toFixed(2))
       })
     })
-    this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+    this.getSectionData(`本周防疫专项检查扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
       return Object.assign(item, {
         deductScore: Number(Number(item.deductScore).toFixed(2))
       })
     })
-    this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
+    this.getSectionData(`本周主要防疫专项检查问题反馈`).list = (this.allData!.detailItemList || []).map((item: any) => {
       return Object.assign(item, {
         totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
       })
     })
     this.getSectionData(`本月质量检查亮点`).list = this.allData!.highlightItemList || []
+
+    this.getSectionData(`本周防疫专项检查整改措施`).list = this.allData!.measureList || []
+
     this.getSectionData(`重点问题`).list = this.allData!.keyItemList || []
     this.getSectionData(`持续改进`).list = this.allData!.currentImproveItemList || []
     this.getSectionData(`追踪督导`).report = data!.report || {}

@@ -22,9 +22,9 @@ import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 import { qcThreeTitle } from './data/qcTitle'
 
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
-import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+// import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
 
-import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
+// import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
 import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import 护理质量巡查情况汇总表Nys from './views/qcFormNys/护理质量巡查情况汇总表'
 

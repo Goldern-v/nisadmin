@@ -12,7 +12,8 @@ export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {}
   nodeCode: any
-  id: any
+  id: any,
+  title?: string
 }
 
 /** 设置规则 */
@@ -22,9 +23,8 @@ const rules: Rules = {
 }
 
 export default function BqclModal(props: Props) {
-  const [title, setTitle] = useState('')
 
-  let { visible, onCancel } = props
+  let { visible, onCancel, title } = props
   let refForm = React.createRef<Form>()
 
   const onSave = async () => {
@@ -60,7 +60,13 @@ export default function BqclModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={'病区处理'} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal
+      title={title || '病区处理'}
+      visible={visible}
+      onCancel={onCancel}
+      onOk={onSave}
+      okText='保存'
+      forceRender>
       <Form ref={refForm} labelWidth={80} rules={rules}>
         <Row>
           <Col span={24}>
@@ -68,7 +74,6 @@ export default function BqclModal(props: Props) {
               <Input.TextArea />
             </Form.Field>
           </Col>
-
           <Col span={24}>
             <Form.Field label={`整改措施`} name='handleContent' required>
               <Input.TextArea />

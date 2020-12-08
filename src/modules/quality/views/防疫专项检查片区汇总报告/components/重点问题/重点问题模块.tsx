@@ -19,12 +19,12 @@ export default observer(function 重点问题模块(props: Props) {
 
   return (
     <Wrapper>
-      <OneLevelTitle text='四、本月质量问题分析及持续改进' />
-      <div className='title'>4.1.重点问题</div>
+      <OneLevelTitle text='五、本周防疫专项检查问题分析及持续改进' />
+      <div className='title'>1.重点问题</div>
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           <div className='label'>
-            4.1.{index + 1}
+            1.{index + 1}
             {item.itemTypeName}
           </div>
           <pre className='textarea'>{item.content}</pre>

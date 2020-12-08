@@ -22,7 +22,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcAnalysis/update/improveItemCompareList`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/improveItemCompareList`, obj)
   }
   /** 更新检查科室描述语 */
   public updateCheckDeptDesc(checkDeptDesc?: any) {
@@ -30,7 +30,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       checkDeptDesc: checkDeptDesc
     }
-    return this.post(`/qcAnalysis/update/checkDeptDesc`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/checkDeptDesc`, obj)
   }
   /** 更新质量扣分比 */
   public updateTypeCompareList(itemList?: any) {
@@ -38,7 +38,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcAnalysis/update/typeCompareList`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/typeCompareList`, obj)
   }
   /** 更新本月质量扣分科室排序 */
   public updateDeptItemList(itemList?: any) {
@@ -46,7 +46,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcAnalysis/update/deptItemList`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/deptItemList`, obj)
   }
   /** 更新持续改进问题 */
   public updateCurrentImproveItemList(itemList?: any) {
@@ -54,7 +54,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcAnalysis/update/currentImproveItemList`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/currentImproveItemList`, obj)
   }
   /** 更新追踪科室 */
   public updateFollowUpDeptDesc(followUpDeptDesc?: any) {
@@ -62,7 +62,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       followUpDeptDesc: followUpDeptDesc
     }
-    return this.post(`/qcAnalysis/update/followUpDeptDesc`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/followUpDeptDesc`, obj)
   }
   /** 更新下个月重点检查 */
   public updateKeyCheckItemDesc(keyCheckItemDesc?: any) {
@@ -70,7 +70,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       keyCheckItemDesc: keyCheckItemDesc
     }
-    return this.post(`/qcAnalysis/update/keyCheckItemDesc`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/keyCheckItemDesc`, obj)
   }
   /** 更新建议 */
   public updateSuggestions(suggestions?: any) {
@@ -78,7 +78,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
       ...qualityAnalysisReportViewModal.report,
       suggestions: suggestions
     }
-    return this.post(`/qcAnalysis/update/suggestions`, obj)
+    return this.post(`/qcAnalysis2L/ep/update/suggestions`, obj)
   }
 
   /** 更新报告名称 */

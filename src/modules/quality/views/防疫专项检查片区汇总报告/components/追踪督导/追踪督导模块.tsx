@@ -22,10 +22,10 @@ export default observer(function 追踪督导模块(props: Props) {
   // }
   return (
     <Wrapper>
-      <div className='title'>4.3.追踪督导</div>
-      <div className='text-box'> 4.3.1 护理部病区综合管理小组{report.indexInType}月追踪以下科室的整改效果:</div>
+      <div className='title'>3.追踪督导</div>
+      <div className='text-box'> 3.1 护理部防疫专项检查小组下周追踪以下科室的整改效果:</div>
       <TextCon>{report.followUpDeptDesc}</TextCon>
-      {report.followUpDeptDesc && <div className='text-box'>4.3.2 科护士长督导以上科室问题整改。</div>}
+      {report.followUpDeptDesc && <div className='text-box'>3.2 科护士长督导以上科室问题整改。</div>}
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

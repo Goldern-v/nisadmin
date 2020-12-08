@@ -78,9 +78,11 @@ export function onResponseFulfilled(response: AxiosResponse) {
     case StatusCode.logout: {
       // message.destroy()
       // message.warning('登录超时，请重新登录')
-      sessionStorage.setItem("adminNurse", "");
-      sessionStorage.setItem("authToken", "");
-      sessionStorage.setItem("user", "");
+      // sessionStorage.setItem("adminNurse", "");
+      // sessionStorage.setItem("authToken", "");
+      // sessionStorage.setItem("user", "");
+      sessionStorage.clear()
+      localStorage.clear()
       window.location.href = loginURL;
       return Promise.reject(desc);
     }

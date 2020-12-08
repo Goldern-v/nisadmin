@@ -37,16 +37,8 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
-    } else if (sectionData.sectionId == '本月质量检查扣分情况') {
+    } else if (sectionData.sectionId == '本周检查扣分情况') {
       qualityAnalysisReportService.updateCheckDeptDesc(data.report.checkDeptDesc).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '2-1') {
-      qualityAnalysisReportService.updateReport(data.report).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           report: res.data
         })
@@ -68,7 +60,7 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
-    } else if (sectionData.sectionId == '本月质量扣分科室排序') {
+    } else if (sectionData.sectionId == '本周防疫专项检查扣分科室排序') {
       qualityAnalysisReportService.updateDeptItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
@@ -80,7 +72,7 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
-    } else if (sectionData.sectionId == '本月主要质量问题') {
+    } else if (sectionData.sectionId == '本周主要防疫专项检查问题反馈') {
       qualityAnalysisReportService.updateDetailItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
@@ -94,6 +86,14 @@ export default observer(function BaseModal(props: Props) {
       })
     } else if (sectionData.sectionId == '本月质量检查亮点') {
       qualityAnalysisReportService.updateHighlightItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '本周防疫专项检查整改措施') {
+      qualityAnalysisReportService.updateMeasureList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })

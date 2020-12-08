@@ -84,10 +84,11 @@ export default class AuthApiService extends BaseApiService {
   }
 
   clearUser() {
-    sessionStorage.removeItem('adminNurse')
-    sessionStorage.removeItem('authToken')
-    sessionStorage.removeItem('user')
-    sessionStorage.removeItem('selectedDeptCode')
+    // sessionStorage.removeItem('adminNurse')
+    // sessionStorage.removeItem('authToken')
+    // sessionStorage.removeItem('user')
+    // sessionStorage.removeItem('selectedDeptCode')
+    sessionStorage.clear()
     authStore.delUser()
     statisticsViewModal.hadData = false
     window.location.href = '#/login'

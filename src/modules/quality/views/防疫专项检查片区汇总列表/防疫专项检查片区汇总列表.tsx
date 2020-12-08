@@ -30,7 +30,9 @@ export default observer(function 防疫专项检查片区汇总列表() {
     year: moment() as null | moment.Moment,
     pageIndex: 1,
     pageSize: 20,
-    type: 'month',
+    type: 'day',
+    beginDate: '',
+    endDate: '',
     // indexInType: moment().month() + 1,
     indexInType: '',
     status: '',
@@ -87,14 +89,6 @@ export default observer(function 防疫专项检查片区汇总列表() {
       width: 90,
       align: 'center',
       render: (year: string) => `${year}年`
-    },
-    {
-      title: '报告月份',
-      key: 'indexInType',
-      dataIndex: 'indexInType',
-      width: 90,
-      align: 'center',
-      render: (month: string) => `${month}月`
     },
     {
       title: '质控开始日期',
@@ -181,7 +175,7 @@ export default observer(function 防疫专项检查片区汇总列表() {
     }
 
     // console.log(record)
-    history.push(`/workSummaryReportView?${qs.stringify(obj)}`)
+    history.push(`/防疫专项检查片区汇总?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
@@ -234,28 +228,28 @@ export default observer(function 防疫专项检查片区汇总列表() {
       })
   }
 
-  const MonthList = () => {
-    let options = []
-    for (let i = 12; i > 0; i--) {
-      let month = i
-      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
-    }
+  // const MonthList = () => {
+  //   let options = []
+  //   for (let i = 12; i > 0; i--) {
+  //     let month = i
+  //     options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
+  //   }
 
-    return options
-  }
+  //   return options
+  // }
 
   return (
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>防疫专项检查片区汇总</PageTitle>
+          <PageTitle>防疫专项检查分析报告</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>
             <div className='label'>报告年度：</div>
             <div className='content'>
               <DatePicker
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 value={query.year}
                 open={yearPickerIsOpen}
                 mode='year'
@@ -268,20 +262,23 @@ export default observer(function 防疫专项检查片区汇总列表() {
               />
             </div>
           </div>
-          <div className='item'>
-            <div className='label'>报告月份：</div>
-            <div className='content'>
-              <Select
-                style={{ width: 100 }}
-                className='month-select'
-                value={query.indexInType}
-                onChange={(month: any) => {
-                  setQuery({ ...query, indexInType: month })
+          <div className="item">
+            <div className="label">日期：</div>
+            <div className="content">
+              <DatePicker.RangePicker
+                allowClear={true}
+                style={{ width: 210 }}
+                value={[query.beginDate ? moment(query.beginDate) : undefined, query.endDate ? moment(query.endDate) : undefined] as any}
+                onChange={(_moments: any[]) => {
+                  let newQuery = {
+                    ...query,
+                    pageIndex: 1,
+                    beginDate: _moments[0] ? _moments[0].format('YYYY-MM-DD') : '',
+                    endDate: _moments[1] ? _moments[1].format('YYYY-MM-DD') : '',
+                  }
+                  setQuery(newQuery)
                 }}
-              >
-                <Option value=''>全部</Option>
-                {MonthList()}
-              </Select>
+              />
             </div>
           </div>
           <div className='item'>

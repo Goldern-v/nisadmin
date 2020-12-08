@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { TypeCompare, Report } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
+import moment from 'moment'
 export interface Props {
   list: TypeCompare[]
 }
@@ -11,6 +12,11 @@ export interface Props {
 export default function Table(props: Props) {
   let { list } = props
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
+
+  let th1 = '...'
+  if (report.beginDate && report.endDate) th1 = `${moment(report.beginDate).format('MM.DD')}-${moment(report.endDate).format('MM.DD')}`
+
+  let th2 = '...'
 
   return (
     <Wrapper>
@@ -25,10 +31,10 @@ export default function Table(props: Props) {
         <tbody>
           <tr className='header'>
             <td />
-            <td>{report.indexInType}月(分)</td>
-            <td>{report.indexInType - 1 || 12}月(分)</td>
+            <td>{th1}</td>
+            <td>{th2}</td>
             <td>扣分增减(分)</td>
-            <td>增减百分比(分)</td>
+            <td>增减百分比(%)</td>
           </tr>
 
           {list.map((item, index) => (

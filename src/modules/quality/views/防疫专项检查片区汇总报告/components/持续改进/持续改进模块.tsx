@@ -19,15 +19,15 @@ export default observer(function 持续改进模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>4.2.持续改进</div>
+      <div className='title'>2.持续改进</div>
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           {/* <div className='label'>
-            4.1.{index + 1}
+            1.{index + 1}
             {item.itemName}
           </div> */}
           <pre className='textarea'>
-            4.2.{index + 1} {item.itemImproveDesc}
+            2.{index + 1} {item.itemImproveDesc}
           </pre>
         </div>
       ))}

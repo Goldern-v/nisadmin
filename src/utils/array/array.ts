@@ -5,7 +5,7 @@ export function numberToArray(min: number, max?: number) {
     min = 0
   }
   let array = []
-  for (let i = min; i <= max; i++) {
+  for (let i = min; i < max; i++) {
     array.push(i)
   }
   return array

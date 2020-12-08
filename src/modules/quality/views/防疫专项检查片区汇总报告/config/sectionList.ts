@@ -2,14 +2,14 @@ import { SectionListItem } from '../ReportViewModal'
 import Line from '../components/common/Line'
 import 上月质量问题弹窗 from '../components/上月质量问题/上月质量问题弹窗'
 import 上月质量问题模块 from '../components/上月质量问题/上月质量问题模块'
-import 本月质量检查扣分情况弹窗 from '../components/本月质量检查扣分情况/本月质量检查扣分情况弹窗'
-import 本月质量检查扣分情况模块 from '../components/本月质量检查扣分情况/本月质量检查扣分情况模块'
+import 本周检查扣分情况弹窗 from '../components/本周检查扣分情况/本周检查扣分情况弹窗'
+import 本周检查扣分情况模块 from '../components/本周检查扣分情况/本周检查扣分情况模块'
 import 质量扣分比较弹窗 from '../components/质量扣分比较/质量扣分比较弹窗'
 import 质量扣分比较模块 from '../components/质量扣分比较/质量扣分比较模块'
-import 本月质量扣分科室排序模块 from '../components/本月质量扣分科室排序/本月质量扣分科室排序模块'
-import 本月质量扣分科室排序弹窗 from '../components/本月质量扣分科室排序/本月质量扣分科室排序弹窗'
-import 本月主要质量问题模块 from '../components/本月主要质量问题/本月主要质量问题模块'
-import 本月主要质量问题弹窗 from '../components/本月主要质量问题/本月主要质量问题弹窗'
+import 本周防疫专项检查扣分科室排序模块 from '../components/本周防疫专项检查扣分科室排序/本周防疫专项检查扣分科室排序模块'
+import 本周防疫专项检查扣分科室排序弹窗 from '../components/本周防疫专项检查扣分科室排序/本周防疫专项检查扣分科室排序弹窗'
+import 本周主要防疫专项检查问题反馈模块 from '../components/本周主要防疫专项检查问题反馈/本周主要防疫专项检查问题反馈模块'
+import 本周主要防疫专项检查问题反馈弹窗 from '../components/本周主要防疫专项检查问题反馈/本周主要防疫专项检查问题反馈弹窗'
 import 本月质量检查亮点模块 from '../components/本月质量检查亮点/本月质量检查亮点模块'
 import 本月质量检查亮点弹窗 from '../components/本月质量检查亮点/本月质量检查亮点弹窗'
 import 重点问题模块 from '../components/重点问题/重点问题模块'
@@ -24,8 +24,9 @@ import 问题及建议弹窗 from '../components/问题及建议/问题及建议
 import 问题及建议模块 from '../components/问题及建议/问题及建议模块'
 import 标题模块 from '../components/标题/标题模块'
 import 标题弹窗 from '../components/标题/标题弹窗'
-import 文本弹窗 from '../components/2-1/文本弹窗'
-import 文本模块 from '../components/2-1/文本模块'
+import 本周防疫专项检查整改措施模块 from '../components/本周防疫专项检查整改措施/本周防疫专项检查整改措施模块'
+import 本周防疫专项检查整改措施弹窗 from '../components/本周防疫专项检查整改措施/本周防疫专项检查整改措施弹窗'
+
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -40,8 +41,8 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: '上月质量问题',
-    sectionTitle: '一、上月质量问题，持续改进效果评价',
-    modalTitle: '编辑上月质量问题',
+    sectionTitle: '一、上周防疫专项检查问题，持续改进效果评价',
+    modalTitle: '编辑上周防疫专项检查问题',
     data: {},
     section: 上月质量问题模块,
     modal: 上月质量问题弹窗
@@ -50,45 +51,37 @@ export const sectionList: SectionListItem[] = [
     section: Line
   },
   {
-    sectionId: '本月质量检查扣分情况',
-    sectionTitle: '二、本月质量检查扣分情况',
-    modalTitle: '编辑本月质量检查扣分情况',
+    sectionId: '本周检查扣分情况',
+    sectionTitle: '二、本周检查扣分情况',
+    modalTitle: '编辑本周检查扣分情况',
     data: {},
-    section: 本月质量检查扣分情况模块,
-    modal: 本月质量检查扣分情况弹窗
-  },
-  {
-    sectionId: '2-1',
-    sectionTitle: '2-1',
-    modalTitle: '编辑',
-    data: {},
-    section: 文本模块,
-    modal: 文本弹窗
+    section: 本周检查扣分情况模块,
+    modal: 本周检查扣分情况弹窗
   },
   {
     sectionId: '质量扣分比较',
     sectionTitle: '质量扣分比较',
-    modalTitle: '编辑质量扣分比较',
+    modalTitle: '编辑检查扣分比较',
     data: {},
     section: 质量扣分比较模块,
     modal: 质量扣分比较弹窗
   },
   {
-    sectionId: '本月质量扣分科室排序',
-    sectionTitle: '本月质量扣分科室排序',
-    modalTitle: '编辑本月质量扣分科室排序',
+    sectionId: '本周防疫专项检查扣分科室排序',
+    sectionTitle: '本周防疫专项检查扣分科室排序',
+    modalTitle: '编辑本周防疫专项检查扣分科室排序',
     modalWidth: 900,
     data: {},
-    section: 本月质量扣分科室排序模块,
-    modal: 本月质量扣分科室排序弹窗
+    section: 本周防疫专项检查扣分科室排序模块,
+    modal: 本周防疫专项检查扣分科室排序弹窗
   },
   {
-    sectionId: '本月主要质量问题',
-    sectionTitle: '本月主要质量问题',
-    modalTitle: '编辑本月主要质量问题',
+    sectionId: '本周主要防疫专项检查问题反馈',
+    sectionTitle: '本周主要防疫专项检查问题反馈',
+    modalTitle: '编辑本周主要防疫专项检查问题反馈',
     data: {},
-    section: 本月主要质量问题模块,
-    modal: 本月主要质量问题弹窗
+    section: 本周主要防疫专项检查问题反馈模块,
+    modal: 本周主要防疫专项检查问题反馈弹窗
   },
   {
     sectionId: '本月质量检查亮点',
@@ -97,6 +90,14 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 本月质量检查亮点模块,
     modal: 本月质量检查亮点弹窗
+  },
+  {
+    sectionId: '本周防疫专项检查整改措施',
+    sectionTitle: '本周防疫专项检查整改措施',
+    modalTitle: '编辑本周防疫专项检查整改措施',
+    data: {},
+    section: 本周防疫专项检查整改措施模块,
+    modal: 本周防疫专项检查整改措施弹窗
   },
   {
     sectionId: '重点问题',

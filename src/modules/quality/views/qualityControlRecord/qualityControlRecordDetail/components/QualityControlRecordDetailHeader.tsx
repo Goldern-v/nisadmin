@@ -51,82 +51,40 @@ export default function qualityControlRecordDetailHeader(props: Props) {
 
   const [printing, setPrinting] = useState(false)
 
-  const onAduit = (nodeName: string) => {
-    if (!nodeName) return
+  const onAduit = (handleType: string) => {
+    switch (handleType) {
+      case "2":
+        bqclModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          title: nextNode.nodeName,
+          onOkCallBack: props.onload
+        });
+        break;
 
-    if (master.qcLevel == "2" && nodeName == "科护士长审核") {
-      return ejkhszModal.show({
-        id: appStore.match.params.id,
-        qcLevel: master.qcLevel,
-        nodeCode: nextNode.nodeCode,
-        title: "科护士长审核",
-        onOkCallBack: props.onload
-      });
-    }
-    switch (nodeName) {
-      case "病区处理":
-        if (appStore.HOSPITAL_ID == 'nys')
-          bqclModalNys.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            onOkCallBack: props.onload,
-            list: props.detailData.itemGroupList || []
-          });
-        else
-          bqclModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            onOkCallBack: props.onload
-          });
-        break;
-      case "质控组组长审核":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "质控组组长审核",
-            onOkCallBack: props.onload
-          });
-        }
-        break;
-      case "科护士长审核":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "科护士长审核",
-            onOkCallBack: props.onload
-          });
-        }
-        break;
-      case "护理部审核":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "护理部审核",
-            onOkCallBack: props.onload
-          });
-        }
+      case "21":
+        bqclModalNys.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          onOkCallBack: props.onload,
+          list: props.detailData.itemGroupList || []
+        });
 
-        break;
-      case "追踪评价":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "追踪评价",
-            onOkCallBack: props.onload
-          });
-        }
-
+      case "3":
+        ejkhszModal.show({
+          id: appStore.match.params.id,
+          qcLevel: master.qcLevel,
+          nodeCode: nextNode.nodeCode,
+          title: nextNode.nodeName,
+          onOkCallBack: props.onload
+        });
         break;
       default:
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: nodeName,
+            title: nextNode.nodeName,
             onOkCallBack: props.onload
           });
         }
@@ -180,8 +138,6 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       message.error("缺少质控ID");
       return;
     }
-
-    // console.log(currentNode)
 
     Modal.confirm({
       title: "提示",
@@ -250,7 +206,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           <div className="topHeaderButton">
             {nextNode.nodeName && (
               <Button
-                onClick={() => onAduit(nextNode.nodeName)}
+                onClick={() => onAduit(nextNode.handleType)}
                 type="primary"
                 disabled={!nextNode.canHandle}
               >
