@@ -1,5 +1,11 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import qs from "qs";
+import { appStore } from "src/stores";
+
+const viewResultsURL =
+  appStore.HOSPITAL_ID == "wh"
+    ? `/studyAndTrain/teachingPlanManage/viewResults`
+    : `studyAndTrain/teachingPlanManage/hj/queryExamResultDetailsByPage`;
 
 export default class TrainingResultService extends BaseApiService {
   /**获取概要信息 */
@@ -11,7 +17,7 @@ export default class TrainingResultService extends BaseApiService {
   }
   /** 查看结果列表 */
   public getTableData(query: any) {
-    return this.post(`/studyAndTrain/teachingPlanManage/viewResults`, query);
+    return this.post(`${viewResultsURL}`, query);
   }
 
   /** 查看结果列表 */

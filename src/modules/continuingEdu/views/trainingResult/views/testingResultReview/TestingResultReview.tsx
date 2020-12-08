@@ -13,18 +13,17 @@ import {
   ActiveText,
 } from './../../components/common'
 import createModal from "src/libs/createModal"
-
+import BaseTabs from "src/components/BaseTabs";
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
-
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-// import moment from 'moment'
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from './../../api/TrainingResultService'
+import HjExamResultAnalyse from '../hjExamResultAnalyse/HjExamResultAnalyse'
 export interface Props { }
 
 //查看考试结果
@@ -35,8 +34,8 @@ export default observer(function TestingResultReview() {
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
-  const editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
-    return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
+  const editScoreAuth = baseInfo.scorePersonList ?.find((item: any) => {
+    return item.empNo.toLowerCase() == authStore.user ?.empNo.toLowerCase()
   })
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
@@ -107,69 +106,96 @@ export default observer(function TestingResultReview() {
           </span>
       }
     },
-    {
-      dataIndex: 'totalScores',
-      title: '最终成绩',
-      align: 'center',
-      width: 70,
-    },
-    {
-      dataIndex: 'passedDesc',
-      title: '及格',
-      align: 'center',
-      width: 70,
-      render: (text: string) => {
-        if (text == '不及格')
-          return <span style={{ color: 'red' }}>{text}</span>
-        else
-          return <span>{text}</span>
+    ...appStore.hisMatch({
+      map: {
+        'hj': [
+          {
+            dataIndex: 'totalScores',
+            title: '答题',
+            align: 'center',
+            width: 70,
+          },
+          {
+            dataIndex: 'totalScores',
+            title: '成绩/补考成绩',
+            align: 'center',
+            width: 70,
+          },
+          {
+            dataIndex: 'totalScores',
+            title: '最终成绩',
+            align: 'center',
+            width: 70,
+          }
+        ],
+        'other': [
+          {
+            dataIndex: 'totalScores',
+            title: '最终成绩',
+            align: 'center',
+            width: 70,
+          },
+          {
+            dataIndex: 'passedDesc',
+            title: '及格',
+            align: 'center',
+            width: 70,
+            render: (text: string) => {
+              if (text == '不及格')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
+          },
+          {
+            dataIndex: 'finishTime',
+            title: '答题时间',
+            align: 'center',
+            width: 180,
+            render: (finishTime: string) => {
+              if (finishTime) return finishTime
+              return '未答题'
+            }
+          },
+          {
+            dataIndex: 'resultPublishDesc',
+            title: '发布成绩',
+            align: 'center',
+            width: 60
+          },
+          {
+            dataIndex: 'creditDesc',
+            title: '学分',
+            align: 'center',
+            width: 120,
+            render: (text: string) => {
+              if (text) return text
+              return '0'
+            }
+          },
+          {
+            dataIndex: 'classHoursDesc',
+            title: '学时',
+            align: 'center',
+            width: 100,
+          },
+          {
+            dataIndex: 'scoreEmpName',
+            title: '评分人',
+            align: 'center',
+            width: 80,
+          }
+        ]
       }
-    },
+    }),
     {
-      dataIndex: 'finishTime',
-      title: '答题时间',
-      align: 'center',
-      width: 180,
-      render: (finishTime: string) => {
-        if (finishTime) return finishTime
-        return '未答题'
-      }
-    },
-    {
-      dataIndex: 'resultPublishDesc',
-      title: '发布成绩',
-      align: 'center',
-      width: 60
-    },
-    {
-      dataIndex: 'creditDesc',
-      title: '学分',
-      align: 'center',
-      width: 120,
-      render: (text: string) => {
-        if (text) return text
-        return '0'
-      }
-    },
-    {
-      dataIndex: 'classHoursDesc',
-      title: '学时',
-      align: 'center',
-      width: 100,
-    },
-    {
-      dataIndex: 'scoreEmpName',
-      title: '评分人',
-      align: 'center',
-      width: 80,
-    },
-    {
-      dataIndex: 'oparate',
       title: '操作',
+      dataIndex: 'resitCetpId',
       width: 100,
-      render: (status: string, record: any) => {
+      render: (text: string, record: any) => {
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span>
+          {appStore.HOSPITAL_ID === 'hj' && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
         </DoCon>
       }
     }
@@ -204,7 +230,7 @@ export default observer(function TestingResultReview() {
     })
   }
 
-  const handleAnwserSheetReview = (record: any) => {
+  const handleAnwserSheetReview = (record: any, resitCetpId?: any) => {
     if (!record.finishTime) {
       Modal.warning({
         title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
@@ -224,7 +250,7 @@ export default observer(function TestingResultReview() {
       title: `${baseInfo.title}考卷`,
       empNo: record.empNo,
       type: appStore.queryObj.editable ? 'edit' : 'view',
-      cetpId: appStore.queryObj.id,
+      cetpId: resitCetpId ? resitCetpId : appStore.queryObj.id,
       onOkCallBack: () => {
         trainingResultModel.getTableData()
       }
@@ -265,6 +291,111 @@ export default observer(function TestingResultReview() {
   useEffect(() => {
     trainingResultModel.init()
   }, [])
+
+  // 针对不同医院打开不同界面
+  const getPage = () => {
+    if (appStore.HOSPITAL_ID === 'hj') {
+      return (
+        <BaseTabs
+          config={
+            [
+              {
+                title: '考试详情',
+                index: "0",
+                component: <HjExaminationDetails />
+              },
+              {
+                title: '考试情况统计与分析',
+                index: "1",
+                component: <HjExamResultAnalyse />
+              }
+            ]
+          }
+        />
+      )
+    } else {
+      return (
+        <MainPannel>
+          <QueryPannel />
+          <ExaminationDetails />
+        </MainPannel>
+      )
+    }
+  }
+
+  // 普通表格考试详情
+  function ExaminationDetails() {
+    return (
+      <TableWrapper>
+        <BaseTable
+          loading={loading}
+          rowSelection={{
+            selectedRowKeys,
+            onChange: handleRowSelect
+          }}
+          rowKey='empNo'
+          surplusWidth={200}
+          surplusHeight={315}
+          dataSource={tableData}
+          onRow={(record: any) => {
+            return {
+              onDoubleClick: () => handleAnwserSheetReview(record)
+            }
+          }}
+          pagination={{
+            pageSizeOptions: ['10', '15', '20', '30', '50'],
+            current: query.pageIndex,
+            pageSize: query.pageSize,
+            total: tableDataTotal,
+            onChange: handlePageChange,
+            onShowSizeChange: handleSizeChange
+          }}
+          columns={columns}
+        />
+        <SelectionOperate>
+          <Checkbox
+            indeterminate={(() => {
+              if (selectedRowKeys.length <= 0)
+                return false
+              if (selectedRowKeys.length >= tableData.length)
+                return false
+              return true
+            })()}
+            disabled={loading}
+            onChange={(e: any) => {
+              let checked = e.target.checked
+              if (checked)
+                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
+              else
+                setSelectedRowKeys([])
+            }}
+            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
+            全选
+          </Checkbox>
+          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
+          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
+        </SelectionOperate>
+      </TableWrapper>
+    )
+  }
+
+  // 厚街表格考试详情
+  function HjExaminationDetails() {
+    const Page = styled.div`
+      position: relative;
+      .spcialNav {
+        position: absolute;
+        top: -35px;
+        right: 0
+      }
+    `
+    return (
+      <Page>
+        <QueryPannel className="spcialNav" />
+        <ExaminationDetails />
+      </Page>
+    )
+  }
 
   return <Wrapper>
     <TopPannel>
@@ -325,59 +456,7 @@ export default observer(function TestingResultReview() {
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
-    <MainPannel>
-      <QueryPannel />
-      <TableWrapper>
-        <BaseTable
-          loading={loading}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect
-          }}
-          rowKey='empNo'
-          surplusWidth={200}
-          surplusHeight={315}
-          dataSource={tableData}
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => handleAnwserSheetReview(record)
-            }
-          }}
-          pagination={{
-            pageSizeOptions: ['10', '15', '20', '30', '50'],
-            current: query.pageIndex,
-            pageSize: query.pageSize,
-            total: tableDataTotal,
-            onChange: handlePageChange,
-            onShowSizeChange: handleSizeChange
-          }}
-          columns={columns}
-        />
-        <SelectionOperate>
-          <Checkbox
-            indeterminate={(() => {
-              if (selectedRowKeys.length <= 0)
-                return false
-              if (selectedRowKeys.length >= tableData.length)
-                return false
-              return true
-            })()}
-            disabled={loading}
-            onChange={(e: any) => {
-              let checked = e.target.checked
-              if (checked)
-                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
-              else
-                setSelectedRowKeys([])
-            }}
-            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
-            全选
-          </Checkbox>
-          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
-          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate>
-      </TableWrapper>
-    </MainPannel>
+    <div style={{ padding: "10px", boxSizing: "border-box" }}>{getPage()}</div>
     <scorceConfirm.Component />
     <answerSheet.Component />
   </Wrapper>
