@@ -59,12 +59,12 @@ export default observer(function ScoresSectionExamReport() {
     tickInterval: 20,
   }];
 
+  // 数据可视化饼状图设置
   const scaleTheta = [{
     dataKey: 'percent',
     min: 0,
     formatter: '.0%',
   }];
-
   const dv = new DataSet.View().source(hjExamModal.excelTableListByScoresSection);
   dv.transform({
     type: 'percent',

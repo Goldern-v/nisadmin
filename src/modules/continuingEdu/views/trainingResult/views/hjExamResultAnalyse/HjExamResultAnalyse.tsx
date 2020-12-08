@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { appStore } from "src/stores";
 import { hjExamApi } from './api/HjExamApi'
 import { hjExamModal } from './HjExamModal'
-
 import ExamStatistics from './components/ExamStatistics'
 import ExamAnalyse from './components/ExamAnalyse'
 import ExamExcel from './components/ExamExcel'
@@ -15,8 +14,9 @@ export interface Props { }
 
 //查看考试结果
 export default observer(function HjExamResultAnalyse() {
-  const [headCont, setHeadCont]: any = useState([])
+  const [headCont, setHeadCont]: any = useState([])// tabs顶部数据
 
+  // 初始化tabs顶部数据
   useEffect(() => {
     hjExamApi.getInfo(appStore.queryObj.id).then(res => {
       if (res.data) setHeadCont(res.data || [])

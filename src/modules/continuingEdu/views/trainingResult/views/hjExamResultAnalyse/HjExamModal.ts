@@ -1,4 +1,4 @@
-import { action, observable, computed } from "mobx";
+import { observable, computed } from "mobx";
 import { appStore } from "src/stores";
 import { fileDownload } from "src/utils/file/file";
 import { hjExamApi } from "./api/HjExamApi";

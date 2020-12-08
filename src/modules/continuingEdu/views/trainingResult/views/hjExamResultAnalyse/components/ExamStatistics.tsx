@@ -1,16 +1,13 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message, Modal } from 'antd'
-import BaseTable, { DoCon } from "src/components/BaseTable";
+import React, { useEffect } from 'react'
+import BaseTable from "src/components/BaseTable";
 import { observer } from 'mobx-react-lite'
 import { hjExamModal } from '../HjExamModal'
-
-
 export interface Props { }
 
-//查看考试结果
 export default observer(function ExamAnalyse() {
 
+  // 初始化表格数据
   useEffect(() => {
     hjExamModal.statisticsOnload()
   }, [])
