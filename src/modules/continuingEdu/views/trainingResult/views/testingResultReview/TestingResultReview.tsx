@@ -24,6 +24,7 @@ import { observer } from 'mobx-react-lite'
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from './../../api/TrainingResultService'
 import HjExamResultAnalyse from '../hjExamResultAnalyse/HjExamResultAnalyse'
+import { stepViewModal } from '../../../../modal/stepComponent/StepViewModal'
 export interface Props { }
 
 //查看考试结果
@@ -294,7 +295,7 @@ export default observer(function TestingResultReview() {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    if (appStore.HOSPITAL_ID === 'hj') {
+    if (appStore.HOSPITAL_ID === 'hj' && stepViewModal.getThirdName === '考试设置') {
       return (
         <BaseTabs
           config={
