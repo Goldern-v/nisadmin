@@ -43,19 +43,28 @@ export default observer(function HierarchyExamReport() {
       title: '参与率',
       dataIndex: 'participateRate',
       width: 80,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => {
+        return <span>{text * 100}%</span>
+      }
     },
     {
       title: '未参与率',
       dataIndex: 'unParticipateRate',
       width: 80,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => {
+        return <span>{text * 100}%</span>
+      }
     },
     {
       title: '科室平均正确率',
       dataIndex: 'avgCorrectRate',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => {
+        return <span>{text * 100}%</span>
+      }
     },
     {
       title: '科室平均分',

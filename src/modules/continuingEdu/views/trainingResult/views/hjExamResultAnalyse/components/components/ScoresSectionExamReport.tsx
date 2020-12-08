@@ -31,13 +31,19 @@ export default observer(function ScoresSectionExamReport() {
       title: '人数占比',
       dataIndex: 'personRatio',
       width: 80,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => {
+        return <span>{text * 100}%</span>
+      }
     },
     {
       title: '该分数段平均正确率',
       dataIndex: 'avgCorrectRate',
       width: 80,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => {
+        return <span>{text * 100}%</span>
+      }
     },
     {
       title: '该分数段平均分',
