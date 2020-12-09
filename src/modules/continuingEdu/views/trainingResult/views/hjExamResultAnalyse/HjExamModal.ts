@@ -19,9 +19,18 @@ class HjExamModal {
   @observable public analyseTotal: any = 0;
 
   @observable public excelTableListByScoresSection = [];
+  @observable public scoresSectionImgYuan = "";
+  @observable public scoresSectionImgZhu = "";
+
   @observable public excelTableListByHierarchy = [];
+  @observable public hierarchyImg = "";
+
   @observable public excelTableListByTitle = [];
+  @observable public titleImg = "";
+
   @observable public excelTableListByDept = [];
+  @observable public deptImg = "";
+
   @observable public excelTableLoading = false;
 
   @computed
@@ -101,6 +110,17 @@ class HjExamModal {
           "this.excelTableListByDeptthis.excelTableListByDept"
         );
       });
+  }
+  excelAll() {
+    this.excelOnloadByDept();
+    this.excelOnloadByTitle();
+    this.excelOnloadByHierarchy();
+    this.excelOnloadByScoresSection();
+  }
+  async excelInit() {
+    this.excelTableLoading = true;
+    await this.excelAll();
+    this.excelTableLoading = false;
   }
 
   //导出Excel

@@ -12,6 +12,13 @@ export default observer(function DeptExamReport() {
   //初始化数据
   useEffect(() => {
     hjExamModal.excelOnloadByDept()
+    //数据改变时将canvas的画面用img保存用于打印
+    let timer = setTimeout(() => {
+      let canvasEl =
+        document.querySelector('.hj-exam-report-dept canvas') as HTMLCanvasElement
+      if (canvasEl) hjExamModal.deptImg = canvasEl.toDataURL()
+    }, 500)
+    return () => clearTimeout(timer)
   }, [hjExamModal.excelTableListByDept.length])
 
   const columns: any = [
@@ -19,7 +26,7 @@ export default observer(function DeptExamReport() {
       title: '科室',
       dataIndex: 'deptName',
       width: 160,
-      align: 'left'
+      align: 'center'
     },
     {
       title: '应参与人数',
@@ -101,7 +108,7 @@ export default observer(function DeptExamReport() {
   return (
     <Content>
       <Title>《科室参与人数柱状图》</Title>
-      <ChartCon>
+      <ChartCon className='hj-exam-report-dept'>
         <Chart
           forceFit
           data={data}

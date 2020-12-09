@@ -4,6 +4,26 @@ export const Content = styled.div`
   text-align: center;
   width: 100%;
 `
+export const ContentSpecial = styled.div`
+  text-align: center;
+  width: 100%;
+  table {
+    width: 95%;
+    margin: 5px 0 0 20px;    
+    box-sizing: border-box;
+  }
+  th,
+  td {
+    border: 1px solid #000;
+    padding: 3px 4px;
+    box-sizing: border-box;
+    text-align: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 11px !important;
+  }
+`
+
 export const Title = styled.div`
   font-weight: bold;
   font-size: 16px;

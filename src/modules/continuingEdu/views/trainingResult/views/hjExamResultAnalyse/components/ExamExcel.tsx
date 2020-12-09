@@ -7,13 +7,14 @@ import DeptExamReport from './components/DeptExamReport'
 import TitleExamReport from './components/TitleExamReport'
 import HierarchyExamReport from './components/HierarchyExamReport'
 import ScoresSectionExamReport from './components/ScoresSectionExamReport'
-export interface Props { }
+export interface Props {
+}
 
 export default observer(function ExamExcel() {
 
   return (
     <Wrapper>
-      <Spin spinning={hjExamModal.excelTableLoading}>
+      <Spin spinning={hjExamModal.excelTableLoading} >
         <Report>
           <DeptExamReport />
         </Report>
@@ -36,7 +37,7 @@ const Wrapper = styled.div`
   padding: 30px 20px;
   margin: 40px auto 20px;
   background: rgb(255, 255, 255);
-  width: 820px;
+  width: 900px;
   box-sizing: border-box;
 `
 const Report = styled.div`

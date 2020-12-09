@@ -9,12 +9,16 @@ import { hjExamModal } from './HjExamModal'
 import ExamStatistics from './components/ExamStatistics'
 import ExamAnalyse from './components/ExamAnalyse'
 import ExamExcel from './components/ExamExcel'
+import printing from "printing";
+import { useRef } from "src/types/react";
+import ExamPrint from './components/ExamPrint'
 
 export interface Props { }
 
 //查看考试结果
 export default observer(function HjExamResultAnalyse() {
   const [headCont, setHeadCont]: any = useState([])// tabs顶部数据
+  const printRef: any = useRef(null);
 
   // 初始化tabs顶部数据
   useEffect(() => {
@@ -22,6 +26,24 @@ export default observer(function HjExamResultAnalyse() {
       if (res.data) setHeadCont(res.data || [])
     }).catch(err => console.log(err))
   }, [])
+
+  // 打印表单
+  const onPrint = async () => {
+    await printing(printRef.current, {
+      scanStyles: false,
+      injectGlobalCss: true,
+      css: `
+           @page {
+             margin: 10mm;
+           }
+           #wardLogPrintPage {
+             display: inline!important;
+             margin: 0;
+             border: 0;
+           }
+        `
+    });
+  };
 
 
   return (
@@ -33,7 +55,7 @@ export default observer(function HjExamResultAnalyse() {
       </HeadCont>
       <HeadBtn>
         <Button style={{ marginRight: '20px' }} onClick={() => hjExamModal.export}>导出</Button>
-        <Button type="primary" style={{ marginRight: '20px' }}>打印当前页</Button>
+        <Button type="primary" style={{ marginRight: '20px' }} onClick={() => onPrint()}>打印当前页</Button>
         <Button>刷新</Button>
       </HeadBtn>
       <BaseTabs
@@ -61,6 +83,7 @@ export default observer(function HjExamResultAnalyse() {
           hjExamModal.keyIdx = key;
         }}
       />
+      <ExamPrint printRef={printRef} />
     </Wrapper>
   )
 })

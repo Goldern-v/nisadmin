@@ -12,6 +12,13 @@ export default observer(function HierarchyExamReport() {
   //初始化数据
   useEffect(() => {
     hjExamModal.excelOnloadByHierarchy()
+    //数据改变时将canvas的画面用img保存用于打印
+    let timer = setTimeout(() => {
+      let canvasEl =
+        document.querySelector('.hj-exam-report-hierarchy canvas') as HTMLCanvasElement
+      if (canvasEl) hjExamModal.hierarchyImg = canvasEl.toDataURL()
+    }, 500)
+    return () => clearTimeout(timer)
   }, [hjExamModal.excelTableListByHierarchy.length])
 
   const columns: any = [
@@ -101,7 +108,7 @@ export default observer(function HierarchyExamReport() {
   return (
     <Content>
       <Title>《层级参与人数柱状图》</Title>
-      <ChartCon>
+      <ChartCon className='hj-exam-report-hierarchy'>
         <Chart
           forceFit
           data={data}

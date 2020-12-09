@@ -12,6 +12,13 @@ export default observer(function TitleExamReport() {
   //初始化数据
   useEffect(() => {
     hjExamModal.excelOnloadByTitle()
+    //数据改变时将canvas的画面用img保存用于打印
+    let timer = setTimeout(() => {
+      let canvasEl =
+        document.querySelector('.hj-exam-report-title canvas') as HTMLCanvasElement
+      if (canvasEl) hjExamModal.titleImg = canvasEl.toDataURL()
+    }, 500)
+    return () => clearTimeout(timer)
   }, [hjExamModal.excelTableListByTitle.length])
 
   const columns: any = [
@@ -101,7 +108,7 @@ export default observer(function TitleExamReport() {
   return (
     <Content>
       <Title>《各职称参与人数柱状图》</Title>
-      <ChartCon>
+      <ChartCon className='hj-exam-report-title'>
         <Chart
           forceFit
           data={data}

@@ -12,6 +12,16 @@ export default observer(function ScoresSectionExamReport() {
   //初始化数据
   useEffect(() => {
     hjExamModal.excelOnloadByScoresSection()
+        //数据改变时将canvas的画面用img保存用于打印
+        let timer = setTimeout(() => {
+          let canvasEl =
+            document.querySelector('.hj-exam-report-scoresSection1 canvas') as HTMLCanvasElement
+          if (canvasEl) hjExamModal.scoresSectionImgYuan = canvasEl.toDataURL()
+          let canvasEl2 =
+          document.querySelector('.hj-exam-report-scoresSection2 canvas') as HTMLCanvasElement
+        if (canvasEl2) hjExamModal.scoresSectionImgZhu = canvasEl2.toDataURL()
+        }, 500)
+        return () => clearTimeout(timer)
   }, [hjExamModal.excelTableListByScoresSection.length])
 
   const columns: any = [
@@ -19,7 +29,7 @@ export default observer(function ScoresSectionExamReport() {
       title: '分数段',
       dataIndex: 'scoresSection',
       width: 120,
-      align: 'left'
+      align: 'center'
     },
     {
       title: '人数',
@@ -79,7 +89,7 @@ export default observer(function ScoresSectionExamReport() {
     <Content>
       <Title>《各分数段人数数据图》</Title>
       <ChartCon>
-        <PartOne>
+        <PartOne className='hj-exam-report-scoresSection1'>
           <Chart
             forceFit
             data={hjExamModal.excelTableListByScoresSection}
@@ -91,7 +101,7 @@ export default observer(function ScoresSectionExamReport() {
             <Bar position="scoresSection*personCount" />
           </Chart>
         </PartOne>
-        <Part>
+        <Part   className='hj-exam-report-scoresSection2'>
           <Chart forceFit height={300} data={data} scale={scaleTheta}>
             <Tooltip showTitle={false} />
             <Axis />

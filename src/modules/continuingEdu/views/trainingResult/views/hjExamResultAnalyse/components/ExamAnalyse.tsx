@@ -9,7 +9,7 @@ export default observer(function HjExamResultAnalyse() {
   // 初始化表格数据
   useEffect(() => {
     hjExamModal.analyseOnload()
-  }, [])
+  }, [hjExamModal.keyIdx])
 
   const columns: any = [
     {
