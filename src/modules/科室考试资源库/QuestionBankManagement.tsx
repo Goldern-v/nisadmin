@@ -12,7 +12,7 @@ import LabelTable from './components/labels/LabelTable'
 import UploadRecordTable from './components/uploadRecord/UploadRecordTable'
 import RecycleTable from './components/recycle/RecycleTable'
 
-import { questionBankManageModel } from './model/QuestionBankManageModel'
+import { questionBankManageModel_hj2 } from './model/QuestionBankManageModel'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
@@ -25,7 +25,7 @@ const Option = Select.Option
 export interface Props extends RouteComponentProps { }
 
 export default observer(function QuestionBankManagement() {
-  let { bankType, searchingContent } = questionBankManageModel.query;
+  let { bankType, searchingContent } = questionBankManageModel_hj2.query;
   let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
@@ -48,16 +48,16 @@ export default observer(function QuestionBankManagement() {
     }
 
     setActiveKey(activeIdx)
-    questionBankManageModel.setQuery(newQuery)
+    questionBankManageModel_hj2.setQuery(newQuery)
 
     getCountMenu()
-    questionBankManageModel.getList()
+    questionBankManageModel_hj2.getList()
   }, [])
 
   const getCountMenu = () => {
     questionBankManageService.getCountMenu({
-      bankType: questionBankManageModel.query.bankType || '',
-      deptCode: getKskszyDefaultDeptCode(),
+      bankType: questionBankManageModel_hj2.query.bankType || '',
+      deptCode: questionBankManageModel_hj2.query.deptCode,
       status: '',
       id: ''
 
@@ -71,37 +71,37 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={questionBankManageModel} />
+      component: <ChoiceQuestionsTable model={questionBankManageModel_hj2} />
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={questionBankManageModel} />
+      component: <FillingQuestionTable model={questionBankManageModel_hj2} />
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={questionBankManageModel} />
+      component: <ShortQuestionTable model={questionBankManageModel_hj2} />
     },
     {
       title: `标签查看(${menuNum['标签查看'] || '-'})`,
       orginTitle: '标签查看',
       size: '',
-      component: <LabelTable model={questionBankManageModel} />
+      component: <LabelTable model={questionBankManageModel_hj2} />
     },
     {
       title: `导入记录(${menuNum['导入记录'] || '-'})`,
       orginTitle: '导入记录',
       size: '',
-      component: <UploadRecordTable model={questionBankManageModel} />
+      component: <UploadRecordTable model={questionBankManageModel_hj2} />
     },
     {
       title: `回收站(${menuNum['回收站'] || '-'})`,
       orginTitle: '回收站',
       size: '',
-      component: <RecycleTable model={questionBankManageModel} />
+      component: <RecycleTable model={questionBankManageModel_hj2} />
     },
     {
       title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
@@ -113,14 +113,14 @@ export default observer(function QuestionBankManagement() {
 
   const handleBankTypeChange = (e: any) => {
     let newQuery = {
-      ...questionBankManageModel.query,
+      ...questionBankManageModel_hj2.query,
       bankType: e.target.value,
       pageIndex: 1
     }
 
-    questionBankManageModel.setQuery(newQuery)
+    questionBankManageModel_hj2.setQuery(newQuery)
     getCountMenu()
-    questionBankManageModel.getList()
+    questionBankManageModel_hj2.getList()
   }
 
   const onTabsChange = (activeKey: string) => {
@@ -133,13 +133,13 @@ export default observer(function QuestionBankManagement() {
     }
 
     let newQuery = {
-      ...questionBankManageModel.query,
+      ...questionBankManageModel_hj2.query,
       choiceType: choiceType || '选择题',
       pageIndex: 1
     }
 
-    questionBankManageModel.setQuery(newQuery);
-    questionBankManageModel.getList();
+    questionBankManageModel_hj2.setQuery(newQuery);
+    questionBankManageModel_hj2.getList();
     //更新url
     let url = appStore.match.url;
     let search: any = appStore.location.search;
@@ -153,26 +153,26 @@ export default observer(function QuestionBankManagement() {
 
   const handleSearchInputBlur = (e: any) => {
     let newQuery = {
-      ...questionBankManageModel.query,
+      ...questionBankManageModel_hj2.query,
       searchingContent: e.target.value,
       pageIndex: 1
     }
 
-    questionBankManageModel.setQuery(newQuery);
-    questionBankManageModel.getList();
+    questionBankManageModel_hj2.setQuery(newQuery);
+    questionBankManageModel_hj2.getList();
   }
 
   const handleSearchBtnClick = () => {
     let newQuery = {
-      ...questionBankManageModel.query,
+      ...questionBankManageModel_hj2.query,
       pageIndex: 1
     }
-    questionBankManageModel.setQuery(newQuery);
-    questionBankManageModel.getList();
+    questionBankManageModel_hj2.setQuery(newQuery);
+    questionBankManageModel_hj2.getList();
   }
 
   const handleOpenCreate = () => {
-    if (!questionBankManageModel.query.deptCode) {
+    if (!questionBankManageModel_hj2.query.deptCode) {
       message.warning('未选择科室')
       return
     }
@@ -210,10 +210,15 @@ export default observer(function QuestionBankManagement() {
   }
 
   const handleUpload = () => {
-    if (questionBankManageModel.query.deptCode)
+    if (questionBankManageModel_hj2.query.deptCode)
       history.push('/continuingEdu/uploadQuestionBank_hj2')
     else
       message.warning('未选择科室')
+  }
+
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(questionBankManageModel_hj2.query)
   }
 
   return (
@@ -232,15 +237,15 @@ export default observer(function QuestionBankManagement() {
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
-          value={questionBankManageModel.query.deptCode}
+          value={questionBankManageModel_hj2.query.deptCode}
           onChange={(deptCode: any) => {
-            questionBankManageModel.setQuery({
-              ...questionBankManageModel.query,
+            questionBankManageModel_hj2.setQuery({
+              ...questionBankManageModel_hj2.query,
               deptCode,
               pageIndex: 1,
             })
             getCountMenu()
-            questionBankManageModel.getList();
+            questionBankManageModel_hj2.getList();
 
             setKskszyDefaultCode(deptCode)
           }}>
@@ -255,6 +260,9 @@ export default observer(function QuestionBankManagement() {
         <Button onClick={handleSearchBtnClick}>查询</Button>
         <Button onClick={handleOpenCreate}>创建</Button>
         <Button onClick={handleUpload}>导入</Button>
+        {['选择题', '填空题', '问答题']
+          .indexOf(questionBankManageModel_hj2.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
       </HeadCon>
 
       <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />

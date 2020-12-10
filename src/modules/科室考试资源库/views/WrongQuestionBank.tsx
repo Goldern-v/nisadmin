@@ -6,7 +6,7 @@ import { Radio, Input, Button } from 'src/vendors/antd'
 import BaseTabs from '../components/common/BaseTabs'
 import NavCon from '../components/common/NavCon'
 
-import { wrongQuestionBankModel } from '../model/WrongQuestionBankModel'
+import { wrongQuestionBankModel_hj2 } from '../model/WrongQuestionBankModel'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
@@ -20,7 +20,7 @@ import { Select } from 'antd'
 const Option = Select.Option
 
 export default observer(function WrongQuestionBank() {
-  let { searchingContent } = wrongQuestionBankModel.query;
+  let { searchingContent } = wrongQuestionBankModel_hj2.query;
   let { location, history, match } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   // const [menuNum, setMenuNum] = useState({} as any);
@@ -45,17 +45,17 @@ export default observer(function WrongQuestionBank() {
     }
 
     setActiveKey(activeIdx);
-    wrongQuestionBankModel.setStatus(search.status || '待处理');
-    wrongQuestionBankModel.setQuery(newQuery);
-    wrongQuestionBankModel.getList();
+    wrongQuestionBankModel_hj2.setStatus(search.status || '待处理');
+    wrongQuestionBankModel_hj2.setQuery(newQuery);
+    wrongQuestionBankModel_hj2.getList();
   }, []);
 
   // useEffect(() => {
-  //   if (wrongQuestionBankModel.tableData.length == 0 && wrongQuestionBankModel.tableLoading) return
+  //   if (wrongQuestionBankModel_hj2.tableData.length == 0 && wrongQuestionBankModel_hj2.tableLoading) return
   //   questionBankManageService.getCountMenu().then(res => {
   //     setMenuNum(res.data)
   //   })
-  // }, [wrongQuestionBankModel.tableData])
+  // }, [wrongQuestionBankModel_hj2.tableData])
 
   const surplusHeight = 308;
 
@@ -64,13 +64,13 @@ export default observer(function WrongQuestionBank() {
       title: '待处理',
       orginTitle: '待处理',
       size: '',
-      component: <WrongQuestionTable model={wrongQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <WrongQuestionTable model={wrongQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     },
     {
       title: '已处理',
       orginTitle: '已处理',
       size: '',
-      component: <WrongQuestionTable model={wrongQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <WrongQuestionTable model={wrongQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     }
   ]
 
@@ -79,14 +79,14 @@ export default observer(function WrongQuestionBank() {
     let status = TAB_CONFIG[Number(activeKey)].orginTitle;
 
     let newQuery = {
-      ...wrongQuestionBankModel.query,
+      ...wrongQuestionBankModel_hj2.query,
       status: status || '待处理',
       pageIndex: 1
     }
 
-    wrongQuestionBankModel.setQuery(newQuery);
-    wrongQuestionBankModel.setStatus(status)
-    wrongQuestionBankModel.getList();
+    wrongQuestionBankModel_hj2.setQuery(newQuery);
+    wrongQuestionBankModel_hj2.setStatus(status)
+    wrongQuestionBankModel_hj2.getList();
     //更新url
     let url = match.url;
     let search: any = location.search;
@@ -100,22 +100,22 @@ export default observer(function WrongQuestionBank() {
 
   const handleSearchInputBlur = (e: any) => {
     let newQuery = {
-      ...wrongQuestionBankModel.query,
+      ...wrongQuestionBankModel_hj2.query,
       searchingContent: e.target.value,
       pageIndex: 1
     }
 
-    wrongQuestionBankModel.setQuery(newQuery);
-    wrongQuestionBankModel.getList();
+    wrongQuestionBankModel_hj2.setQuery(newQuery);
+    wrongQuestionBankModel_hj2.getList();
   }
 
   const handleSearchBtnClick = () => {
     let newQuery = {
-      ...wrongQuestionBankModel.query,
+      ...wrongQuestionBankModel_hj2.query,
       pageIndex: 1
     }
-    wrongQuestionBankModel.setQuery(newQuery);
-    wrongQuestionBankModel.getList();
+    wrongQuestionBankModel_hj2.setQuery(newQuery);
+    wrongQuestionBankModel_hj2.getList();
   }
 
   return (
@@ -133,15 +133,15 @@ export default observer(function WrongQuestionBank() {
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
-          value={wrongQuestionBankModel.query.deptCode}
+          value={wrongQuestionBankModel_hj2.query.deptCode}
           onChange={(deptCode: any) => {
-            wrongQuestionBankModel.setQuery({
-              ...wrongQuestionBankModel.query,
+            wrongQuestionBankModel_hj2.setQuery({
+              ...wrongQuestionBankModel_hj2.query,
               deptCode,
               pageIndex: 1,
             })
 
-            wrongQuestionBankModel.getList();
+            wrongQuestionBankModel_hj2.getList();
 
             setKskszyDefaultCode(deptCode)
           }}>

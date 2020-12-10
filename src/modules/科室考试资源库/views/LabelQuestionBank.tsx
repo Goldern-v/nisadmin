@@ -9,7 +9,7 @@ import FillingQuestionTable from './../components/fillingQuestion/FillingQuestio
 import ShortQuestionTable from './../components/shortQuestion/ShortQuestionTable'
 import NavCon from './../components/common/NavCon'
 
-import { labelQuestionBankModel } from './../model/LabelQuestionBankModel'
+import { labelQuestionBankModel_hj2 } from './../model/LabelQuestionBankModel'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
@@ -21,7 +21,7 @@ import { Select } from 'antd'
 const Option = Select.Option
 
 export default observer(function LabelQuestionBank() {
-  let { bankType, searchingContent } = labelQuestionBankModel.query;
+  let { bankType, searchingContent } = labelQuestionBankModel_hj2.query;
   let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
@@ -48,15 +48,15 @@ export default observer(function LabelQuestionBank() {
     }
 
     setActiveKey(activeIdx);
-    labelQuestionBankModel.setLabel(newLabel);
-    labelQuestionBankModel.setQuery(newQuery);
-    labelQuestionBankModel.getList();
+    labelQuestionBankModel_hj2.setLabel(newLabel);
+    labelQuestionBankModel_hj2.setQuery(newQuery);
+    labelQuestionBankModel_hj2.getList();
   }, []);
 
   useEffect(() => {
     let search: any = location.search.replace('?', '');
     search = qs.parse(search);
-    if (labelQuestionBankModel.tableData.length == 0 && labelQuestionBankModel.tableLoading) return
+    if (labelQuestionBankModel_hj2.tableData.length == 0 && labelQuestionBankModel_hj2.tableLoading) return
     questionBankManageService.getCountMenu({
       status: '标签查看',
       bankType: '2',
@@ -65,7 +65,7 @@ export default observer(function LabelQuestionBank() {
     }).then(res => {
       setMenuNum(res.data)
     })
-  }, [labelQuestionBankModel.tableData])
+  }, [labelQuestionBankModel_hj2.tableData])
 
   const surplusHeight = 308;
 
@@ -74,19 +74,19 @@ export default observer(function LabelQuestionBank() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={labelQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <ChoiceQuestionsTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={labelQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <FillingQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={labelQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <ShortQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     }
   ]
 
@@ -95,13 +95,13 @@ export default observer(function LabelQuestionBank() {
     let choiceType = TAB_CONFIG[Number(activeKey)].orginTitle;
 
     let newQuery = {
-      ...labelQuestionBankModel.query,
+      ...labelQuestionBankModel_hj2.query,
       choiceType: choiceType || '选择题',
       pageIndex: 1
     }
 
-    labelQuestionBankModel.setQuery(newQuery);
-    labelQuestionBankModel.getList();
+    labelQuestionBankModel_hj2.setQuery(newQuery);
+    labelQuestionBankModel_hj2.getList();
     //更新url
     let url = appStore.match.url;
     let search: any = appStore.location.search;
@@ -115,22 +115,27 @@ export default observer(function LabelQuestionBank() {
 
   const handleSearchInputBlur = (e: any) => {
     let newQuery = {
-      ...labelQuestionBankModel.query,
+      ...labelQuestionBankModel_hj2.query,
       searchingContent: e.target.value,
       pageIndex: 1
     }
 
-    labelQuestionBankModel.setQuery(newQuery);
-    labelQuestionBankModel.getList();
+    labelQuestionBankModel_hj2.setQuery(newQuery);
+    labelQuestionBankModel_hj2.getList();
   }
 
   const handleSearchBtnClick = () => {
     let newQuery = {
-      ...labelQuestionBankModel.query,
+      ...labelQuestionBankModel_hj2.query,
       pageIndex: 1
     }
-    labelQuestionBankModel.setQuery(newQuery);
-    labelQuestionBankModel.getList();
+    labelQuestionBankModel_hj2.setQuery(newQuery);
+    labelQuestionBankModel_hj2.getList();
+  }
+
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(labelQuestionBankModel_hj2.query)
   }
 
   return (
@@ -143,20 +148,20 @@ export default observer(function LabelQuestionBank() {
         <span>标签题库</span>
       </NavCon>
       <HeadCon>
-        <div className='title'>标签题库: {labelQuestionBankModel.label.labelContent}</div>
+        <div className='title'>标签题库: {labelQuestionBankModel_hj2.label.labelContent}</div>
         <Place />
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
-          value={labelQuestionBankModel.query.deptCode}
+          value={labelQuestionBankModel_hj2.query.deptCode}
           onChange={(deptCode: any) => {
-            labelQuestionBankModel.setQuery({
-              ...labelQuestionBankModel.query,
+            labelQuestionBankModel_hj2.setQuery({
+              ...labelQuestionBankModel_hj2.query,
               deptCode,
               pageIndex: 1,
             })
 
-            labelQuestionBankModel.getList();
+            labelQuestionBankModel_hj2.getList();
 
             setKskszyDefaultCode(deptCode)
           }}>
@@ -170,6 +175,9 @@ export default observer(function LabelQuestionBank() {
           defaultValue={searchingContent}
           onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
+        {['选择题', '填空题', '问答题']
+          .indexOf(labelQuestionBankModel_hj2.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </HeadCon>
 

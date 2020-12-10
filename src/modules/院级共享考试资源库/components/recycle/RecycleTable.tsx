@@ -9,6 +9,7 @@ import { Modal, message as Message } from 'antd'
 import WrapPre from './../common/WrapPre'
 
 import { questionBankManageService } from '../../api/QuestionBankManageService'
+import { checkIsDeparment } from '../../utils/checkIsDeparment'
 interface Props {
   active?: boolean,
   model: any
@@ -95,6 +96,8 @@ export default observer(function RecycleTable(props: Props) {
   }
 
   const handleRecover = (questionList: any[]) => {
+    if (!checkIsDeparment()) return
+
     let params = {
       questionIdList: questionList.map((item) => item.id)
     }
@@ -119,6 +122,8 @@ export default observer(function RecycleTable(props: Props) {
   }
 
   const handleDelete = (questionList: any[]) => {
+    if (!checkIsDeparment()) return
+
     let params = {
       questionIdList: questionList.map((item) => item.id)
     }

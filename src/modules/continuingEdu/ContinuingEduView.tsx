@@ -290,9 +290,6 @@ export default function ContinuingEdu(props: Props) {
                 title: "院级共享考试资源库",
                 path: "/continuingEdu/院级共享考试资源库",
                 component: 院级共享考试资源库,
-                hide: () =>
-                  queyMenuAuthInfo("nm_lat_questionbankmanage") ||
-                  authStore.isOnlyInternsManage
               },
               {
                 title: "选择题新建和编辑",
@@ -340,9 +337,6 @@ export default function ContinuingEdu(props: Props) {
                 title: "科室考试资源库",
                 path: "/continuingEdu/科室考试资源库",
                 component: 科室考试资源库,
-                hide: () =>
-                  queyMenuAuthInfo("nm_lat_questionbankmanage") ||
-                  authStore.isOnlyInternsManage
               },
             ]
           }

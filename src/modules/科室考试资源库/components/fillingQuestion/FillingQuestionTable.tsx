@@ -141,11 +141,12 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       title: '操作',
       dataIndex: '操作',
       key: '操作',
-      width: 100,
+      width: 120,
       render(text: string, record: any) {
         return (
           <DoCon>
             <span onClick={() => handleEdit(record)}>编辑</span>
+            <span onClick={() => handleExportRecord(record)}>下载</span>
             <span onClick={() => handleDeleteQuestion(record)}>删除</span>
           </DoCon>
         )
@@ -191,6 +192,11 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         })
       }
     })
+  }
+
+  const handleExportRecord = (record: any) => {
+    questionBankManageService
+      .exportQuestionsByIds([record.id])
   }
 
   const handleSizeChange = (page: number, size: number) => {

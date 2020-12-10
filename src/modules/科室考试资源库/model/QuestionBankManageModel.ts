@@ -61,4 +61,4 @@ export default class QuestionBankManageModel {
   }
 }
 
-export const questionBankManageModel = new QuestionBankManageModel();
+export const questionBankManageModel_hj2 = new QuestionBankManageModel();

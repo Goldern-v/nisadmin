@@ -126,6 +126,11 @@ export default observer(function QuestionBankManagement() {
     uploadQuestionBankModel_hj1.getList();
   }
 
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(uploadQuestionBankModel_hj1.query)
+  }
+
   return (
     <Wrapper>
       <NavCon>
@@ -140,6 +145,9 @@ export default observer(function QuestionBankManagement() {
         <Place />
         <Input style={{ width: 200 }} placeholder='输入题目进行搜索' allowClear defaultValue={searchingContent} onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
+        {['选择题', '填空题', '问答题']
+          .indexOf(uploadQuestionBankModel_hj1.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </HeadCon>
 

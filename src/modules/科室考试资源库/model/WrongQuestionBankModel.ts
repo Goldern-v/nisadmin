@@ -34,4 +34,4 @@ class WrongQuestionBankModel extends QuestionBankManageModel {
   }
 }
 
-export const wrongQuestionBankModel = new WrongQuestionBankModel();
+export const wrongQuestionBankModel_hj2 = new WrongQuestionBankModel();
