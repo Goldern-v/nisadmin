@@ -126,6 +126,11 @@ export default observer(function LabelQuestionBank() {
     labelQuestionBankModel_hj1.getList();
   }
 
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(labelQuestionBankModel_hj1.query)
+  }
+
   return (
     <Wrapper>
       <NavCon>
@@ -144,6 +149,9 @@ export default observer(function LabelQuestionBank() {
           allowClear
           defaultValue={searchingContent}
           onBlur={handleSearchInputBlur} />
+        {['选择题', '填空题', '问答题']
+          .indexOf(labelQuestionBankModel_hj1.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
         <Button onClick={handleSearchBtnClick}>查询</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </HeadCon>

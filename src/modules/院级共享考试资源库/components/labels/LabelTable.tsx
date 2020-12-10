@@ -11,6 +11,7 @@ import LabelTableDelete from './LabelTableDelete'
 import qs from 'qs'
 
 import { questionBankManageService } from './../../api/QuestionBankManageService'
+import { checkIsDeparment } from '../../utils/checkIsDeparment'
 interface Props {
   active?: boolean,
   model: any
@@ -111,6 +112,8 @@ export default observer(function LabelTable(props: Props) {
   }
 
   const handleEdit = (record: any) => {
+    if (!checkIsDeparment()) return
+
     setLabelEditCfg({
       label: {
         id: record.id,
@@ -121,6 +124,8 @@ export default observer(function LabelTable(props: Props) {
   }
 
   const handleToogleHides = (labels: any[], hide: boolean) => {
+    if (!checkIsDeparment()) return
+
     let params = {
       labelIdList: labels.map((item) => item.id),
       hide
@@ -154,6 +159,8 @@ export default observer(function LabelTable(props: Props) {
   }
 
   const handleDelete = (labels: any[]) => {
+    if (!checkIsDeparment()) return
+
     setLabelDeleteCfg({
       labels,
       visible: true

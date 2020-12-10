@@ -13,7 +13,7 @@ import UploadRecordTable from './components/uploadRecord/UploadRecordTable'
 import RecycleTable from './components/recycle/RecycleTable'
 
 import { questionBankManageModel_hj1 } from './model/QuestionBankManageModel'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
 import { questionBankManageService } from './api/QuestionBankManageService';
@@ -164,6 +164,11 @@ export default observer(function QuestionBankManagement() {
     questionBankManageModel_hj1.getList();
   }
 
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(questionBankManageModel_hj1.query)
+  }
+
   const handleOpenCreate = () => {
     let createType = '选择题';
     let modalContent = <div style={{ marginTop: '30px' }}>
@@ -220,8 +225,11 @@ export default observer(function QuestionBankManagement() {
           allowClear defaultValue={searchingContent}
           onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
-        <Button onClick={handleOpenCreate}>创建</Button>
-        <Button onClick={handleUpload}>导入</Button>
+        <Button onClick={handleOpenCreate} disabled={!authStore.isDepartment}>创建</Button>
+        <Button onClick={handleUpload} disabled={!authStore.isDepartment}>导入</Button>
+        {['选择题', '填空题', '问答题']
+          .indexOf(questionBankManageModel_hj1.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
       </HeadCon>
 
       <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />

@@ -179,7 +179,7 @@ export default observer(function BankTable(props: Props) {
       id: record.id,
       bankName: record.bankName
     }
-    history.push(`/continuingEdu/uploadRecordQuestionBank?${qs.stringify(newQuery)}`)
+    history.push(`/continuingEdu/uploadRecordQuestionBank_hj2?${qs.stringify(newQuery)}`)
   }
 
   const handleSizeChange = (page: number, size: number) => {

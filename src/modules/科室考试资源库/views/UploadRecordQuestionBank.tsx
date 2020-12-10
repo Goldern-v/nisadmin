@@ -9,7 +9,7 @@ import FillingQuestionTable from './../components/fillingQuestion/FillingQuestio
 import ShortQuestionTable from './../components/shortQuestion/ShortQuestionTable'
 import NavCon from './../components/common/NavCon'
 
-import { uploadQuestionBankModel } from './../model/UploadRecordQuestionBankModel'
+import { uploadQuestionBankModel_hj2 } from './../model/UploadRecordQuestionBankModel'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
@@ -21,7 +21,7 @@ import { Select } from 'antd'
 const Option = Select.Option
 
 export default observer(function QuestionBankManagement() {
-  let { bankType, searchingContent } = uploadQuestionBankModel.query;
+  let { bankType, searchingContent } = uploadQuestionBankModel_hj2.query;
   let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
@@ -48,15 +48,15 @@ export default observer(function QuestionBankManagement() {
     }
 
     setActiveKey(activeIdx);
-    uploadQuestionBankModel.setBank(newBank);
-    uploadQuestionBankModel.setQuery(newQuery);
-    uploadQuestionBankModel.getList();
+    uploadQuestionBankModel_hj2.setBank(newBank);
+    uploadQuestionBankModel_hj2.setQuery(newQuery);
+    uploadQuestionBankModel_hj2.getList();
   }, []);
 
   useEffect(() => {
     let search: any = location.search.replace('?', '');
     search = qs.parse(search);
-    if (uploadQuestionBankModel.tableData.length == 0 && uploadQuestionBankModel.tableLoading) return
+    if (uploadQuestionBankModel_hj2.tableData.length == 0 && uploadQuestionBankModel_hj2.tableLoading) return
     questionBankManageService.getCountMenu({
       status: '导入记录',
       bankType: '2',
@@ -65,7 +65,7 @@ export default observer(function QuestionBankManagement() {
     }).then(res => {
       setMenuNum(res.data)
     })
-  }, [uploadQuestionBankModel.tableData])
+  }, [uploadQuestionBankModel_hj2.tableData])
 
   const surplusHeight = 308;
 
@@ -74,19 +74,19 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={uploadQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <ChoiceQuestionsTable model={uploadQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={uploadQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <FillingQuestionTable model={uploadQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={uploadQuestionBankModel} surplusHeight={surplusHeight} />
+      component: <ShortQuestionTable model={uploadQuestionBankModel_hj2} surplusHeight={surplusHeight} />
     }
   ]
 
@@ -95,13 +95,13 @@ export default observer(function QuestionBankManagement() {
     let choiceType = TAB_CONFIG[Number(activeKey)].orginTitle;
 
     let newQuery = {
-      ...uploadQuestionBankModel.query,
+      ...uploadQuestionBankModel_hj2.query,
       choiceType: choiceType || '选择题',
       pageIndex: 1
     }
 
-    uploadQuestionBankModel.setQuery(newQuery);
-    uploadQuestionBankModel.getList();
+    uploadQuestionBankModel_hj2.setQuery(newQuery);
+    uploadQuestionBankModel_hj2.getList();
     //更新url
     let url = appStore.match.url;
     let search: any = appStore.location.search;
@@ -115,22 +115,27 @@ export default observer(function QuestionBankManagement() {
 
   const handleSearchInputBlur = (e: any) => {
     let newQuery = {
-      ...uploadQuestionBankModel.query,
+      ...uploadQuestionBankModel_hj2.query,
       searchingContent: e.target.value,
       pageIndex: 1
     }
 
-    uploadQuestionBankModel.setQuery(newQuery);
-    uploadQuestionBankModel.getList();
+    uploadQuestionBankModel_hj2.setQuery(newQuery);
+    uploadQuestionBankModel_hj2.getList();
   }
 
   const handleSearchBtnClick = () => {
     let newQuery = {
-      ...uploadQuestionBankModel.query,
+      ...uploadQuestionBankModel_hj2.query,
       pageIndex: 1
     }
-    uploadQuestionBankModel.setQuery(newQuery);
-    uploadQuestionBankModel.getList();
+    uploadQuestionBankModel_hj2.setQuery(newQuery);
+    uploadQuestionBankModel_hj2.getList();
+  }
+
+  const handleExport = () => {
+    questionBankManageService
+      .exportQuestionsBySearchParams(uploadQuestionBankModel_hj2.query)
   }
 
   return (
@@ -143,10 +148,13 @@ export default observer(function QuestionBankManagement() {
         <span>文件题库</span>
       </NavCon>
       <HeadCon>
-        <div className='title'>文件题库: {uploadQuestionBankModel.bank.bankName}</div>
+        <div className='title'>文件题库: {uploadQuestionBankModel_hj2.bank.bankName}</div>
         <Place />
         <Input style={{ width: 200 }} placeholder='输入题目进行搜索' allowClear defaultValue={searchingContent} onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
+        {['选择题', '填空题', '问答题']
+          .indexOf(uploadQuestionBankModel_hj2.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </HeadCon>
 

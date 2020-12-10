@@ -39,4 +39,4 @@ class LabelQuestionBankModel extends QuestionBankManageModel {
   }
 }
 
-export const labelQuestionBankModel = new LabelQuestionBankModel();
+export const labelQuestionBankModel_hj2 = new LabelQuestionBankModel();

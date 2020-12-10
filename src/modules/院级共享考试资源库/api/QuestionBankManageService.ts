@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs';
+import { fileDownload } from 'src/utils/file/file';
 
 export default class QuestionBankManageService extends BaseApiService {
   /**院级共享考试资源库--查询列表 */
@@ -122,6 +123,25 @@ export default class QuestionBankManageService extends BaseApiService {
       ...params,
       nodeCode: "pending_audit"
     });
+  }
+  /**厚街 (新建接口)20201202-按照查询条件导出题目 */
+  public exportQuestionsBySearchParams(query: any) {
+    return this.post(
+      '/studyAndTrain/questionBankManage/exportQuestionsBySearchParams',
+      query,
+      { responseType: 'blob' }
+    )
+      .then(res => fileDownload(res));
+  }
+
+  /**厚街 (新建接口)20201202-根据题目id导出题目 */
+  public exportQuestionsByIds(ids: any[]) {
+    return this.post(
+      '/studyAndTrain/questionBankManage/exportQuestionsByIds',
+      { ids },
+      { responseType: 'blob' }
+    )
+      .then(res => fileDownload(res));
   }
 }
 

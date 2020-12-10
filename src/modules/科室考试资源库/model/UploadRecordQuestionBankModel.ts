@@ -39,4 +39,4 @@ class UploadQuestionBankModel extends QuestionBankManageModel {
   }
 }
 
-export const uploadQuestionBankModel = new UploadQuestionBankModel();
+export const uploadQuestionBankModel_hj2 = new UploadQuestionBankModel();

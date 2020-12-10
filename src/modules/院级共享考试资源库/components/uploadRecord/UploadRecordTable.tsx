@@ -11,6 +11,7 @@ import BankTableDelete from './BankTableDelete'
 import qs from 'qs'
 
 import { questionBankManageService } from '../../api/QuestionBankManageService'
+import { checkIsDeparment } from '../../utils/checkIsDeparment'
 interface Props {
   active?: boolean,
   model: any
@@ -125,6 +126,8 @@ export default observer(function BankTable(props: Props) {
   }
 
   const handleEdit = (record: any) => {
+    if (!checkIsDeparment()) return
+
     setBankEditCfg({
       bank: {
         id: record.id,
@@ -135,6 +138,8 @@ export default observer(function BankTable(props: Props) {
   }
 
   const handleToogleHides = (banks: any[], isHided: boolean) => {
+    if (!checkIsDeparment()) return
+
     let params = {
       bankIdList: banks.map((item) => item.id),
       isHided
@@ -168,6 +173,8 @@ export default observer(function BankTable(props: Props) {
   }
 
   const handleDelete = (banks: any[]) => {
+    if (!checkIsDeparment()) return
+
     setBankDeleteCfg({
       banks,
       visible: true
@@ -179,7 +186,7 @@ export default observer(function BankTable(props: Props) {
       id: record.id,
       bankName: record.bankName
     }
-    history.push(`/continuingEdu/uploadRecordQuestionBank?${qs.stringify(newQuery)}`)
+    history.push(`/continuingEdu/ploadQuestionBank_hj1?${qs.stringify(newQuery)}`)
   }
 
   const handleSizeChange = (page: number, size: number) => {
