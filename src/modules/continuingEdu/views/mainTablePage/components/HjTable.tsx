@@ -11,14 +11,18 @@ import AddRecordModal from "../../../modal/AddRecordModal";
 import createModal from "src/libs/createModal";
 import { stepViewModal } from "../../../modal/stepComponent/StepViewModal";
 
-interface Props {}
+interface Props { }
 
 export default observer(function HjTable(props: Props) {
   const addRecordModal = createModal(AddRecordModal); // 添加弹窗
   const [dataList, setDataList] = useState([] as any); // 分类别特殊菜单
+  const [tableHeight, setTableHeight] = useState(320); // 表格高度
 
   useEffect(() => {
     dataInit();
+    if (stepViewModal.getParentsName == "集中培训" || stepViewModal.getParentsName == "在线练习考试" || stepViewModal.getParentsName == "培训统计分析") {
+      setTableHeight(270)
+    }
   }, [stepViewModal.getThirdName]);
 
   //培训对象函数封装
@@ -188,8 +192,8 @@ export default observer(function HjTable(props: Props) {
         return classHours === null ? (
           <span>无</span>
         ) : (
-          <span>{classHours}</span>
-        );
+            <span>{classHours}</span>
+          );
       }
     },
     {
@@ -238,11 +242,11 @@ export default observer(function HjTable(props: Props) {
       render(text: any, record: any, index: number) {
         let data: any = authStore.isAd
           ? [
-              {
-                text: "删除",
-                function: handleDelete
-              }
-            ]
+            {
+              text: "删除",
+              function: handleDelete
+            }
+          ]
           : [];
         switch (record.statusDesc) {
           case "待开始":
@@ -423,7 +427,7 @@ export default observer(function HjTable(props: Props) {
               Message.error("文件删除失败");
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
@@ -540,8 +544,7 @@ export default observer(function HjTable(props: Props) {
         dataSource={mainPageModal.tableList}
         columns={columns}
         surplusWidth={300}
-        surplusHeight={stepViewModal.getParentsName == "集中培训" ? 270 : 320}
-        // scroll={{ x: 895 }}
+        surplusHeight={tableHeight}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,
