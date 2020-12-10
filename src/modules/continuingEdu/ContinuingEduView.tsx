@@ -28,6 +28,7 @@ import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
+import 培训统计分析 from './views/allMenus/AllMenus'
 import FormReview from "./views/trainingSetting/formReview/FormReview";
 import FormApply from "./views/trainingSetting/formApply/FormApply";
 //题库管理
@@ -137,6 +138,13 @@ export default function ContinuingEdu(props: Props) {
       component: 评分管理,
       hide: () =>
         queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage
+    },
+    {
+      title: "培训统计分析",
+      icon: <JSGL />,
+      path: "/continuingEdu/培训统计分析",
+      component: 培训统计分析,
+      hide: appStore.HOSPITAL_ID !== "hj"
     },
     ...dataList,
     {
