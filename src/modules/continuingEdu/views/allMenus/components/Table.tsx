@@ -56,7 +56,7 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "一级分类",
-      dataIndex: "",
+      dataIndex: "firstLevelMenuName",
       width: 130,
       align: "center"
     },

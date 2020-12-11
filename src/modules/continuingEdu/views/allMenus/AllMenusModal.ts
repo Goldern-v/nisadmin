@@ -74,7 +74,7 @@ class AllMenusModal {
 
   async init() {
     await this.initData();
-    this.clearData();
+    // this.clearData();
     this.onload();
   }
 }
