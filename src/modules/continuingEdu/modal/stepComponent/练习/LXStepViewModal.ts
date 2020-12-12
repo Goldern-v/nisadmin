@@ -31,6 +31,8 @@ const defaultStepData2: any = {
 
   /** 题目统计信息 */
   questionStatList: [],
+  /** 总成绩 */
+  totalScores: 0,
 
   // 武汉中医类别
   /** 1中医类；2非中医类*/
@@ -145,6 +147,7 @@ class StepViewModal {
       category: this.stepData2.category,
       noticeContent: this.stepData2.noticeContent,
       detailInfo: {
+        totalScores: this.stepData2.totalScores,
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         studentCreditType: this.stepData2.studentCreditType,

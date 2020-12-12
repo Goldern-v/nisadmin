@@ -8,6 +8,7 @@ import { fileDownload } from "src/utils/file/file";
 import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
+import { appStore } from "src/stores";
 import { lxStepViewModal } from "./LXStepViewModal";
 export interface Props {
   value?: any;
@@ -23,6 +24,13 @@ export default observer(function UpdateTable(props: Props) {
   let totalNum = dataSource.reduce((total: any, current: any) => {
     return total + current.questionCount;
   }, 0);
+
+  /** 总分 */
+  let totalScore = dataSource.reduce((total: any, current: any) => {
+    return total + current.totalScores;
+  }, 0);
+  lxStepViewModal.stepData2.totalScores = totalScore;
+
 
   const columns: ColumnProps<any>[] = [
     {
@@ -63,7 +71,24 @@ export default observer(function UpdateTable(props: Props) {
         if (index == 0) return `卷面总题数：${totalNum} 题`;
         return text;
       }
-    }
+    },
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "总分",
+            width: 100,
+            align: "center",
+            dataIndex: "totalScores",
+            render(text: any, record: any, index: number) {
+              if (index == 0) return <span>{totalScore}</span>;
+              return text;
+            }
+          }
+        ],
+        other: []
+      }
+    })
   ];
   const downFileWith = () => {
     stepServices.downLoadQueUploadTemplate().then(res => {
