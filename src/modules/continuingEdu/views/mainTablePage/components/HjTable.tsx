@@ -85,6 +85,36 @@ export default observer(function HjTable(props: Props) {
           align: "center"
         }
       ]);
+    } else if (stepViewModal.getThirdName === "练习设置") {
+      return setDataList([
+        {
+          title: "通知",
+          dataIndex: "ifSendMessage",
+          width: 50,
+          align: "center",
+          render(ifSendMessage: any) {
+            return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
+          }
+        },
+        {
+          title: "总题量",
+          dataIndex: "总题量",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "题数",
+          dataIndex: "题数",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "总分",
+          dataIndex: "总分",
+          width: 80,
+          align: "center"
+        }
+      ])
     } else {
       return setDataList([
         {
@@ -156,6 +186,7 @@ export default observer(function HjTable(props: Props) {
     },
     {
       title: "学习资料",
+      width: 250,
       children: [
         {
           title: "课件",
@@ -196,10 +227,11 @@ export default observer(function HjTable(props: Props) {
           );
       }
     },
+    ...dataList,
     {
       title: "备注",
       dataIndex: "auditRemark",
-      width: 150,
+      width: 120,
       align: "left"
     },
     {
@@ -232,7 +264,6 @@ export default observer(function HjTable(props: Props) {
         return <span style={{ color }}>{statusDesc}</span>;
       }
     },
-    ...dataList,
     {
       title: "操作",
       dataIndex: "",
