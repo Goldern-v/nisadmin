@@ -21,7 +21,12 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { trainingResultModel } from './../../models/TrainingResultModel'
+import HjExerciseResultAnalyse from '../hjExerciseResultAnalyse/HjExerciseResultAnalyse'
+import { stepViewModal } from '../../../../modal/stepComponent/StepViewModal'
+import BaseTabs from "src/components/BaseTabs";
+import HjQuestionAnalyse from '../hjQuestionAnalyse/HjQuestionAnalyse'
 export interface Props { }
+
 
 //查看培训结果
 export default observer(function PracticeResultReview(props: Props) {
@@ -188,6 +193,91 @@ export default observer(function PracticeResultReview(props: Props) {
     trainingResultModel.init()
   }, [])
 
+  // 针对不同医院打开不同界面
+  const getPage = () => {
+    // if (appStore.HOSPITAL_ID === 'hj' && stepViewModal.getThirdName === '练习设置') {
+    if (appStore.HOSPITAL_ID === 'hj') {
+      return (
+        <BaseTabs
+          config={
+            [
+              {
+                title: '练习详情',
+                index: "0",
+                component: <HjExerciseDetails />
+              },
+              {
+                title: '练习情况统计与分析',
+                index: "1",
+                component: <HjExerciseResultAnalyse />
+              },
+              {
+                title: '试题分析',
+                index: "2",
+                component: <HjQuestionAnalyse />
+              }
+            ]
+          }
+        />
+      )
+    } else {
+      return (
+        <MainPannel>
+          <QueryPannel />
+          <ExerciseDetails />
+        </MainPannel>
+      )
+    }
+  }
+
+  // 普通表格考试详情
+  function ExerciseDetails() {
+    return (
+      <TableWrapper>
+        <BaseTable
+          loading={loading}
+          rowKey='empNo'
+          surplusWidth={200}
+          surplusHeight={320}
+          dataSource={tableData}
+          onRow={(record: any) => {
+            return {
+              onDoubleClick: () => handleDetail(record)
+            }
+          }}
+          pagination={{
+            pageSizeOptions: ['10', '15', '20', '30', '50'],
+            current: query.pageIndex,
+            pageSize: query.pageSize,
+            total: tableDataTotal,
+            onChange: handlePageChange,
+            onShowSizeChange: handleSizeChange
+          }}
+          columns={columns}
+        />
+      </TableWrapper>
+    )
+  }
+
+  // 厚街表格考试详情
+  function HjExerciseDetails() {
+    const Page = styled.div`
+        position: relative;
+        .spcialNav {
+          position: absolute;
+          top: -35px;
+          right: 0
+        }
+      `
+    return (
+      <Page>
+        <QueryPannel className="spcialNav" />
+        <ExerciseDetails />
+      </Page>
+    )
+  }
+
+
   return <Wrapper>
     <TopPannel>
       <NavCon>
@@ -219,57 +309,8 @@ export default observer(function PracticeResultReview(props: Props) {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
-      <QueryPannel />
-      <TableWrapper>
-        <BaseTable
-          loading={loading}
-          // rowSelection={{
-          //   selectedRowKeys,
-          //   onChange: handleRowSelect
-          // }}
-          rowKey='empNo'
-          surplusWidth={200}
-          surplusHeight={315}
-          dataSource={tableData}
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => handleDetail(record)
-            }
-          }}
-          pagination={{
-            pageSizeOptions: ['10', '15', '20', '30', '50'],
-            current: query.pageIndex,
-            pageSize: query.pageSize,
-            total: tableDataTotal,
-            onChange: handlePageChange,
-            onShowSizeChange: handleSizeChange
-          }}
-          columns={columns}
-        />
-        {/* <SelectionOperate>
-          <Checkbox
-            indeterminate={(() => {
-              if (selectedRowKeys.length <= 0)
-                return false
-              if (selectedRowKeys.length >= tableData.length)
-                return false
-              return true
-            })()}
-            disabled={loading}
-            onChange={(e: any) => {
-              let checked = e.target.checked
-              if (checked)
-                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
-              else
-                setSelectedRowKeys([])
-            }}
-            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
-            全选
-          </Checkbox>
-          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
-          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate> */}
-      </TableWrapper>
+      {/* <QueryPannel /> */}
+      <div style={{ padding: "0 10px", boxSizing: "border-box" }}>{getPage()}</div>
     </MainPannel>
     <scorceConfirm.Component />
   </Wrapper>

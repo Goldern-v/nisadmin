@@ -87,24 +87,24 @@ class TrainingResultModel {
     this.loading = true;
 
     const successCallback = (res: any) => {
-      let empNoObj: object = {}; //特定搜索成员信息
-      let obj: any = {}; // 去重对象
+      // let empNoObj: object = {}; //特定搜索成员信息
+      // let obj: any = {}; // 去重对象
       this.loading = false;
       if (res.data) {
         this.tableDataTotal = res.data.totalCount || 0;
-        let newList = res.data.list.slice();
+        // let newList = res.data.list.slice();
         // 若有特定搜索成员时，优先展示该成员数据
-        if (allMenusModal.empNo && res.data.list) {
-          empNoObj = res.data.list.find(
-            (item: any) => item.empNo === allMenusModal.empNo
-          );
-          newList.unshift(empNoObj);
-          newList = newList.reduce((item: any, next: any) => {
-            obj[next.empNo] ? "" : (obj[next.empNo] = true && item.push(next));
-            return item;
-          }, []);
-        }
-        this.tableData = newList;
+        // if (allMenusModal.empNo && res.data.list) {
+        //   empNoObj = res.data.list.find(
+        //     (item: any) => item.empNo === allMenusModal.empNo
+        //   );
+        //   newList.unshift(empNoObj);
+        //   newList = newList.reduce((item: any, next: any) => {
+        //     obj[next.empNo] ? "" : (obj[next.empNo] = true && item.push(next));
+        //     return item;
+        //   }, []);
+        // }
+        this.tableData = res.data.list;
         success && success(res.data);
       }
     };
