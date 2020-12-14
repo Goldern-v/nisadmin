@@ -64,6 +64,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
   const handleOk = () => {
     let current = refForm.current
     if (current) {
+      setLoading(true)
       let formData = current.getFields()
       current
         .validateFields()
@@ -83,10 +84,11 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
 
           return workSummaryReportListService.createReport(params)
         }).then(res => {
+          setLoading(false)
           onOk && onOk()
-          if (res.code == 200) appStore.history.push(`/防疫专项检查分析报告?${qs.stringify(res.data.report)}`)
+          if (res.code == 200) appStore.history.push(`/防疫专项检查片区汇总?${qs.stringify(res.data.report)}`)
         })
-        .catch((e) => { })
+        .catch((e) => setLoading(false))
     }
   }
 

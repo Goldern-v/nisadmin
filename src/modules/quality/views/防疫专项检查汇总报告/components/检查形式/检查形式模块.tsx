@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -15,14 +15,15 @@ export interface Props {
 export default observer(function 检查形式模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let report: Report = data ? data.report || {} : {}
+  let text = data ? data.text : ''
 
   return (
     <Wrapper>
-      <TextCon>
-        <div className='sup-title'>二、检查形式：</div>
-        {report.checkWayDesc}
-      </TextCon>
+      <OneLevelTitle
+        text={<TextCon>
+          <span className='sup-title'>二、检查形式：</span>
+          <span style={{ fontWeight: 'normal' }}>{text}</span>
+        </TextCon>} />
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
@@ -60,6 +61,7 @@ const Wrapper = styled.div`
 
 const TextCon = styled.pre`
   margin: 10px 50px;
+  margin-left: 0px;
   min-height: 40px;
   white-space: pre-wrap;
 `

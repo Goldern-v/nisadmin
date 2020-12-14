@@ -45,7 +45,9 @@ export default observer(function 本周防疫专项检查整改措施模块(prop
           <div className="wardname">{viewObj[key].wardName}：</div>
           <div className="measure-group">
             {viewObj[key].measureList.map((text: string, idx: number) =>
-              <div key={`${key}-${idx}`}>{idx + 1}.{text}</div>)}
+              <div key={`${key}-${idx}`}>
+                {idx + 1}.{text}
+              </div>)}
           </div>
         </div>
       })}
@@ -77,17 +79,16 @@ const Wrapper = styled.div`
     padding-top: 5px;
   }
   .wardname-group{
-    display: flex;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 5px;
-    padding-top: 5px;
     .wardname{
-      width:150px;
-      text-align: right;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 65px;
+      margin-right: 50px;
     }
     .measure-group{
-      flex: 1;
+      margin-left: 87px;
+      margin-right: 50px;
+      margin-bottom: 10px;
     }
   }
 `

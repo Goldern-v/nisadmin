@@ -5,7 +5,8 @@ import { Input, Radio, ColumnProps, AutoComplete, message } from 'src/vendors/an
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare } from '../../types'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
+import moment from 'moment'
 
 export interface Props {
   sectionId: string
@@ -17,6 +18,11 @@ export default function 质量扣分比较弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let th1 = '...'
+  if (report.beginDate && report.endDate) th1 = `${moment(report.beginDate).format('MM.DD')}-${moment(report.endDate).format('MM.DD')}`
+
+  let th2 = '...'
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -35,7 +41,7 @@ export default function 质量扣分比较弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.itemTypeName}
+            value={record.itemTypeName || ''}
             onChange={(e) => {
               record.itemTypeName = e.target.value
               setData(cloneData)
@@ -46,7 +52,7 @@ export default function 质量扣分比较弹窗(props: Props) {
       width: 200
     },
     {
-      title: `${report.indexInType}月（分）`,
+      title: th1,
       key: 'currentDeductScore',
       render(text: any, record: TypeCompare, index: number) {
         return (
@@ -71,7 +77,7 @@ export default function 质量扣分比较弹窗(props: Props) {
       width: 100
     },
     {
-      title: `${report.indexInType - 1}月（分）`,
+      title: th2,
       key: 'lastDeductScore',
       render(text: any, record: TypeCompare, index: number) {
         return (
@@ -120,10 +126,9 @@ export default function 质量扣分比较弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      itemTypeName: '',
+      currentDeductScore: '',
+      lastDeductScore: ''
     })
     setData(cloneData)
   }

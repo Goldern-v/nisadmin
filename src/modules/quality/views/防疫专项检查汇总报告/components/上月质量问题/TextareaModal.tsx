@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { Input } from 'src/vendors/antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 const { TextArea } = Input
 export interface Props {
   sectionId: string

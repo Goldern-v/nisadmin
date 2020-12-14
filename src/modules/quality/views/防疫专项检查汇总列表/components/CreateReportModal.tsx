@@ -27,7 +27,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
     reportName: (val) => !!val || '请填写报告名称',
     groupRoleCode: (val) => !!val || '请选择片区',
     year: (val) => !!val || '请选择年度',
-    indexInType: (val) => !!val || '请选择月份',
+    // indexInType: (val) => !!val || '请选择月份',
     beginDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间'
   }
@@ -43,15 +43,16 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
     setTimeout(_ => {
       if (refForm.current) {
         let nowMoment = Moment();
-        let month = nowMoment.format('M');
+        // let month = nowMoment.format('M');
+        let currentWeek = weekStartAndEnd(nowMoment)
 
         refForm.current.setFields({
           year: nowMoment,
-          beginDate: null,
-          endDate: null,
+          beginDate: Moment(currentWeek.beginDate),
+          endDate: Moment(currentWeek.endDate),
           reportName: '',
           groupRoleCode: '',
-          indexInType: month
+          indexInType: ''
         })
       }
     }, 300)
@@ -63,27 +64,31 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
   const handleOk = () => {
     let current = refForm.current
     if (current) {
+      setLoading(true)
       let formData = current.getFields()
       current
         .validateFields()
         .then((res) => {
-          let { reportName, groupRoleCode, year, beginDate, endDate, indexInType } = formData
+          let { reportName, groupRoleCode, year, beginDate, endDate } = formData
+          let indexInType = beginDate.dayOfYear()
+
           let params: any = {
             reportName: reportName,
             groupRoleCode: groupRoleCode,
             year: year ? year.format('YYYY') : '',
             beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
             endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
-            type: 'month',
+            type: 'day',
             indexInType
           }
 
           return workSummaryReportListService.createReport(params)
         }).then(res => {
+          setLoading(false)
           onOk && onOk()
-          if (res.code == 200) appStore.history.push(`/workSummaryReportView?${qs.stringify(res.data.report)}`)
+          if (res.code == 200) appStore.history.push(`/防疫专项检查汇总报告?${qs.stringify(res.data.report)}`)
         })
-        .catch((e) => { })
+        .catch((e) => setLoading(false))
     }
   }
 
@@ -93,7 +98,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
 
     if (refForm.current) {
 
-      setBeginDateAndEndDate(value, Number(refForm.current.getField('indexInType')) - 1)
+      setBeginDateAndEndDate(value)
     }
   }
 
@@ -109,15 +114,15 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
     if (refForm.current) refForm.current.setField(key, value)
   }
 
-  const MonthList = () => {
-    let options = []
-    for (let i = 12; i > 0; i--) {
-      let month = i
-      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
-    }
+  // const MonthList = () => {
+  //   let options = []
+  //   for (let i = 12; i > 0; i--) {
+  //     let month = i
+  //     options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
+  //   }
 
-    return options
-  }
+  //   return options
+  // }
 
   const moreThanStart = (date: any) => {
     if (!beginDate) return false
@@ -136,10 +141,10 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
   const handleFormChange = (key: any, val: any) => {
     if (key == 'beginDate') setBeginDate(val)
 
-    if (key == 'indexInType') {
+    if (key == 'year') {
       if (refForm.current) {
         let year = refForm.current.getField('year');
-        setBeginDateAndEndDate(year, Number(val) - 1)
+        setBeginDateAndEndDate(year)
       }
     }
 
@@ -148,40 +153,32 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
     if (key !== 'reportName') setReportName()
   }
 
-  const setBeginDateAndEndDate = (year: any, month: number) => {
+  const setBeginDateAndEndDate = (year: any) => {
     if (year) {
-      year = Moment(year);
-      year.month(month);
+      let currentDate = Moment().set('year', year.year())
+      let currentWeek = weekStartAndEnd(currentDate)
 
-      let beginDate = Moment(year);
-      let endDate: any = new Date(year.format('YYYY/MM/DD'));
+      setBeginDate(Moment(currentWeek.beginDate))
+      setFormItem('beginDate', Moment(currentWeek.beginDate))
+      setEndDate(Moment(currentWeek.endDate))
+      setFormItem('endDate', Moment(currentWeek.endDate))
+    }
+  }
 
-      beginDate.date(1);
-
-      endDate.setMonth(endDate.getMonth() + 1);
-      endDate.setDate(0);
-      endDate = Moment(endDate);
-
-      setBeginDate(beginDate)
-      setEndDate(endDate)
-      setFormItem('beginDate', beginDate)
-      setFormItem('endDate', endDate)
-    } else {
-      setBeginDate(null)
-      setEndDate(null)
-      setFormItem('beginDate', null)
-      setFormItem('endDate', null)
+  const weekStartAndEnd = (currentDate: Moment.Moment) => {
+    let currentWeekDay = Moment(currentDate).week(currentDate.weeks())
+    return {
+      beginDate: currentWeekDay.startOf('week').format('YYYY-MM-DD'),
+      endDate: currentWeekDay.endOf('week').format('YYYY-MM-DD')
     }
   }
 
   const setReportName = () => {
     let current = refForm.current
     if (current) {
-      let { year, indexInType, groupRoleCode } = current.getFields()
-      if (!year || !indexInType || !groupRoleCode) return
-
-      let yearStr = year.format('YYYY')
-      let monthStr = indexInType
+      let fields = current.getFields()
+      let { year, groupRoleCode, } = fields
+      if (!year || !groupRoleCode) return
       let groupRoleName: any = ''
 
       for (let i = 0; i < groupRoleList.length; i++) {
@@ -194,14 +191,26 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
         groupRoleName = groupRoleName.join('、')
       }
 
-      let reportName = `${yearStr}年${monthStr}月${groupRoleName}护理工作汇总`
+      let year1Str = fields.beginDate.format('YYYY') + '年'
+      let year2Str = fields.endDate.format('YYYY') + '年'
+      if (year1Str === year2Str) year2Str = ''
+
+      let reportName = `${year1Str}${fields.beginDate.format('MM.DD')}至${year2Str}${fields.endDate.format('MM.DD')}${groupRoleName}防疫专项检查汇总报告`
 
       setFormItem('reportName', reportName)
     }
   }
 
   return (
-    <Modal title='创建报告' visible={visible} onCancel={onCancel} onOk={handleOk} confirmLoading={loading || false} centered>
+    <Modal
+      title='创建报告'
+      visible={visible}
+      onCancel={onCancel}
+      onOk={handleOk}
+      width={600}
+      confirmLoading={loading || false}
+      centered
+      forceRender>
       <Wrapper>
         <Form ref={refForm} onChange={handleFormChange} rules={rules}>
           <Row>
@@ -223,7 +232,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col span={5} className='label'>
               报告月份：
             </Col>
@@ -232,20 +241,20 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
                 <Select>{MonthList()}</Select>
               </Form.Field>
             </Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col span={5} className='label'>
               质控日期：
             </Col>
             <Col span={9}>
               <Form.Field name='beginDate'>
-                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} />
+                <DatePicker placeholder='开始时间' allowClear={false} disabledDate={lessThanEnd} />
               </Form.Field>
             </Col>
             <Col span={1}>至</Col>
             <Col span={9}>
               <Form.Field name='endDate'>
-                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} />
+                <DatePicker placeholder='结束时间' allowClear={false} disabledDate={moreThanStart} />
               </Form.Field>
             </Col>
           </Row>

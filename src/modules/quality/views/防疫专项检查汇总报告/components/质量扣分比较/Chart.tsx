@@ -2,8 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { TypeCompare, Report } from '../../types'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { numberToArray } from 'src/utils/array/array'
+import moment from 'moment'
 export interface Props {
   list: TypeCompare[]
   title: string
@@ -16,10 +17,16 @@ export default function Chart(props: Props) {
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let filterList = list.filter((item) => item.itemTypeName !== '总扣分')
   let colSpan = filterList.length
+  // console.log(colSpan)
   let largeNum = Math.max(
     ...filterList.map((item) => Number(item.currentDeductScore)),
     ...filterList.map((item) => Number(item.lastDeductScore))
   )
+  let th1 = '...'
+  if (report.beginDate && report.endDate) th1 = `${moment(report.beginDate).format('MM.DD')}-${moment(report.endDate).format('MM.DD')}`
+
+  let th2 = '...'
+  if (report.lastBeginDate && report.lastEndDate) th2 = `${moment(report.lastBeginDate).format('MM.DD')}-${moment(report.lastEndDate).format('MM.DD')}`
   // let measureList = [1, 2, 3, 4, 5, 6]
   let measureList = [5, 10, 15, 20, 25, 30]
 
@@ -55,7 +62,7 @@ export default function Chart(props: Props) {
       <div className='title'>{title}</div>
       <table>
         <colgroup>
-          <col width='20' />
+          <col width='30' />
           {numberToArray(colSpan).map((item: any, index) => (
             <col width='20' key={index} />
           ))}
@@ -121,7 +128,7 @@ export default function Chart(props: Props) {
           <tr className='score'>
             <td style={{ whiteSpace: 'nowrap' }}>
               <span className='block type-1' />
-              {report.indexInType}月{' '}
+              {th1}
             </td>
             {filterList.map((item, index) => (
               <td key={index}>{item.currentDeductScore}</td>
@@ -131,7 +138,7 @@ export default function Chart(props: Props) {
           <tr className='score'>
             <td style={{ whiteSpace: 'nowrap' }}>
               <span className='block type-2' />
-              {report.indexInType == 1 ? 12 : report.indexInType}月{' '}
+              {th2}
             </td>
             {filterList.map((item, index) => (
               <td key={index}>{item.lastDeductScore}</td>

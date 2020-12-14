@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import Table from './Table'

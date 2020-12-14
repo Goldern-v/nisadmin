@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
-import { Modal, Input, Select, Button, message as Message, Row, Col, Radio } from 'antd'
+import { Modal, Input, Select, Button, message as Message, Row, Col, Radio, message } from 'antd'
 import { authStore } from 'src/stores'
 import services from 'src/services/api'
 import { observer } from 'mobx-react-lite'
@@ -136,6 +136,14 @@ export default observer(function AduitModal(props: Props) {
   // }
 
   const handleOkBtn = () => {
+    if (
+      status === 'nurse_auditor' &&
+      formMap[`${eventCode}_khszshyj_explain`].trim() === ''
+    ) {
+      message.warn('审核意见不能为空')
+      return
+    }
+
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
@@ -180,6 +188,7 @@ export default observer(function AduitModal(props: Props) {
     delete params.operatorStatus
 
     setConfirmLoading(true)
+
     api
       .aduit(params)
       .then((res) => {
@@ -228,7 +237,10 @@ export default observer(function AduitModal(props: Props) {
           <div className='form1'>
             {commonCon}
             <Row>
-              <Col span={4}>审核意见：</Col>
+              <Col span={4}>
+                <span style={{ color: 'red', marginLeft: '-7px' }}>*</span>
+                审核意见：
+              </Col>
               <Col span={20}>
                 <TextArea
                   autosize={{ minRows: 2 }}

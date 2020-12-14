@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -20,7 +20,7 @@ export default observer(function 检查重点模块(props: Props) {
 
   return (
     <Wrapper>
-      <OneLevelTitle text={`五、${report.indexInType == 12 ? 1 : report.indexInType + 1}月检查重点`} />
+      <OneLevelTitle text={`六、检查重点`} />
       <TextCon>{report.keyCheckItemDesc}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
@@ -36,7 +36,7 @@ const Wrapper = styled.div`
   }
   button {
     position: absolute;
-    top: 20px;
+    top: 0px;
     right: 20px;
   }
   .aside {
@@ -45,7 +45,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 50px;
+    padding-right: 15px;
     padding-bottom: 2px;
     padding-top: 2px;
   }

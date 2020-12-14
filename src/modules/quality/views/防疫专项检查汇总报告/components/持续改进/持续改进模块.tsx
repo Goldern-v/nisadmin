@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -19,15 +19,15 @@ export default observer(function 持续改进模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>4.2.持续改进</div>
+      <div className='title'>2.持续改进</div>
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           {/* <div className='label'>
-            4.1.{index + 1}
+            1.{index + 1}
             {item.itemName}
           </div> */}
           <pre className='textarea'>
-            4.2.{index + 1} {item.itemImproveDesc}
+            2.{index + 1} {item.itemImproveDesc}
           </pre>
         </div>
       ))}
@@ -57,7 +57,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 50px;
+    padding-right: 15px;
     padding-bottom: 5px;
     padding-top: 5px;
     .label {
@@ -70,7 +70,7 @@ const Wrapper = styled.div`
       padding-left: 22px;
     }
     .img {
-      width: 450px;
+      /* width: 450px; */
       margin-bottom: 15px;
       margin-left: 15px;
     }

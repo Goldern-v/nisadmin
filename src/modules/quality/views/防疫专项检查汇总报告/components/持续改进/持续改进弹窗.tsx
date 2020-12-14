@@ -47,7 +47,7 @@ export default function 持续改进弹窗(props: Props) {
     setData(cloneData)
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
       {/* <div className='button-con'>
@@ -66,7 +66,7 @@ export default function 持续改进弹窗(props: Props) {
               style={{ width: 200 }}
               onChange={(e) => updateText(e, item, 'itemTypeName')}
             /> */}
-            4.2.{index + 1}
+            2.{index + 1}
           </div>
           <Input.TextArea
             value={item.itemImproveDesc}

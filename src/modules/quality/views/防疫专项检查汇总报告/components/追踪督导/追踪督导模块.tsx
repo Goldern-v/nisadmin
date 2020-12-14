@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
@@ -17,12 +17,15 @@ export default observer(function 追踪督导模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = (data ? data.report : {}) || {}
 
+  // if (!report.followUpDeptDesc) {
+  //   return <div />
+  // }
   return (
     <Wrapper>
-      <div className='title'>4.3.追踪督导</div>
-      <div className='text-box'> 4.3.1 护理部病区综合管理小组{report.indexInType}月追踪以下科室的整改效果:</div>
+      <div className='title'>3.追踪督导</div>
+      <div className='text-box'> 3.1 护理部防疫专项检查小组下周追踪以下科室的整改效果:</div>
       <TextCon>{report.followUpDeptDesc}</TextCon>
-      <div className='text-box'>4.3.2 科护士长督导以上科室问题整改。</div>
+      {report.followUpDeptDesc && <div className='text-box'>3.2 科护士长督导以上科室问题整改。</div>}
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
@@ -47,7 +50,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 50px;
+    padding-right: 15px;
     padding-bottom: 5px;
     padding-top: 5px;
   }

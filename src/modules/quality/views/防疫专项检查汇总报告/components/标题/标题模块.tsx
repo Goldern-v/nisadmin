@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 export interface Props {
@@ -19,7 +19,7 @@ export default observer(function 标题模块(props: Props) {
     <Wrapper className='page-title'>
       <div className='title'>{text}</div>
       <EditButton border={true} onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>
-        编辑名称
+        编辑
       </EditButton>
     </Wrapper>
   )

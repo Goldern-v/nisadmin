@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { Input } from 'src/vendors/antd'
-import { qualityAnalysisReportViewModal } from '../../ReportPoolViewModal'
+import { qualityAnalysisReportViewModal } from '../../ReportViewModal'
 import { Report } from '../../types'
 const { TextArea } = Input
 export interface Props {
@@ -13,22 +13,19 @@ export interface Props {
 
 export default function 查房内容弹窗(props: Props) {
   let { sectionId, setData, data } = props
-  let report: Report = data ? data.report || {} : {}
+  let text = data ? data.text : ''
 
-  const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const updateData = (e: any) => {
     if (setData) {
       setData({
-        report: {
-          ...report,
-          checkWardDesc: e.target.value
-        }
+        text: e.target.value
       })
     }
   }
   useEffect(() => { }, [])
   return (
     <Wrapper>
-      <TextArea value={report.checkWardDesc} onChange={updateData} autosize={true} />
+      <TextArea value={text} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }

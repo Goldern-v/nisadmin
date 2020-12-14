@@ -198,6 +198,7 @@ const WorkSummaryReportView = lazy(() =>
 );
 //二级质控防疫专项检查片区汇总
 const 防疫专项检查片区汇总 = lazy(() => import("src/modules/quality/views/防疫专项检查片区汇总报告/防疫专项检查片区汇总报告"))
+const 防疫专项检查汇总报告 = lazy(() => import("src/modules/quality/views/防疫专项检查汇总报告/防疫专项检查汇总报告"))
 
 //病区管理
 const WardManagementView = lazy(() =>
@@ -597,6 +598,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/防疫专项检查片区汇总",
     防疫专项检查片区汇总,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/防疫专项检查汇总报告",
+    防疫专项检查汇总报告,
     layouts.MainLayout
   ),
   /** 档案模块 */
