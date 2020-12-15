@@ -43,7 +43,7 @@ export default observer(function DeptSelect(props: Props) {
       "/auditsManagement",
       "/quality/:name"
     ];
-    if (authStore.post === "护理部" || authStore.isAdmin) {
+    if (authStore.post === "护理部" || authStore.isAdmin || authStore.isDepartment) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         // alert(123)
         setHasAllDept(true);

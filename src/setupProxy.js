@@ -22,10 +22,10 @@ module.exports = function (app) {
       // target: 'http://192.168.3.166:8080', //晨昊
       // target: "http://192.168.20.40:8080", //大双
       //花都环境
-      target: "http://120.25.105.45:9868", //花都测试
+      // target: "http://120.25.105.45:9868", //花都测试
       //南医三正式环境
       // target: "http://119.145.71.86:9098",
-      // target: "http://120.25.105.45:8062", //南医三测试
+      target: "http://120.25.105.45:8062", //南医三测试
       // target: "http://192.168.3.113:8062", //广豪南医三测试
       secure: false,
       changeOrigin: true

@@ -72,7 +72,7 @@ export default class AppStore {
     } else if (this.HOSPITAL_ID == "nys") {
       return require("src/assets/images/南医三logo.png");
     } else {
-      return require("src/assets/images/厚街logo.png");
+      return require("src/assets/images/logo.png");
     }
   }
   /** url 参数 */
