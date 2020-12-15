@@ -103,7 +103,7 @@ export default observer(function Header(props: Props) {
         >
           {allMenusModal.empNoList.map((item: any) => (
             <Select.Option key={item.empName} value={item.empNo}>
-              {item.empName}
+              {item.empName} {item.empNo}
             </Select.Option>
           ))}
         </Select>
