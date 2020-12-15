@@ -19,7 +19,7 @@ export default observer(function Header(props: Props) {
   let Title = props.getTitle || "";
   useEffect(() => {
     allMenusModal.init();
-  }, [Title]);
+  }, []);
 
   return (
     <Wrapper>

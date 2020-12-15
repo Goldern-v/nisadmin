@@ -37,7 +37,7 @@ class AllMenusModal {
   async initData() {
     await Promise.all([
       //人员
-      allMenusApi.getAllEmpName(this.empNo).then(res => {
+      allMenusApi.getAllEmpName("").then(res => {
         this.empNoList = res.data.list || [];
       })
     ]);
@@ -74,7 +74,7 @@ class AllMenusModal {
 
   async init() {
     await this.initData();
-    this.clearData();
+    // this.clearData();
     this.onload();
   }
 }
