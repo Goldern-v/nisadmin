@@ -7,7 +7,7 @@ import { getFileSize } from 'src/utils/file/file'
 import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 
 import createModal from 'src/libs/createModal'
-import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import PreviewModal from 'src/modules/continuingEdu/views/onlineLearning/modal/PreviewModal'
 import TestPageModal from '../TestPageModal/TestPageModal'
 export interface Props {
   info: any
@@ -22,7 +22,9 @@ export default function StudyUpload(props: Props) {
   const showReview = (file: any) => {
     previewModal.show({
       title: file.name,
-      path: file.path
+      path: file.path,
+      videoQuestionList: fileList,
+      id: file.id,
     })
   }
 

@@ -68,12 +68,12 @@ export default function PreviewModal(props: Props) {
           videoRef.play();
           var last = 0;
           // 视频没插题  可快进 可直接确定已读
-          if (!questionList.viQuestionList) {
+          if (!questionList || !questionList.viQuestionList) {
             setFinished(false);
             return;
           }
           // 视频插题——获取当前视频播放时间点
-          videoRef.ontimeupdate = function() {
+          videoRef.ontimeupdate = function () {
             // 禁止快进（退）
             var current = videoRef.currentTime;
             if (current - last > 2) {
@@ -93,7 +93,7 @@ export default function PreviewModal(props: Props) {
               answerList &&
               answerList.length >= answerIndex + 1 &&
               parseInt(this.currentTime) * 1000 ==
-                answerList[answerIndex].broadcastPoint
+              answerList[answerIndex].broadcastPoint
             ) {
               videoRef.pause();
               setAnswerModalParams(answerList[answerIndex]);
@@ -260,14 +260,14 @@ export default function PreviewModal(props: Props) {
               />
             </div>
           ) : (
-            <Spin spinning={modalLoading}>
-              {!noFile ? (
-                <PdfPrview path={filePath} />
-              ) : (
-                <NoPrview loading={modalLoading} />
+                <Spin spinning={modalLoading}>
+                  {!noFile ? (
+                    <PdfPrview path={filePath} />
+                  ) : (
+                      <NoPrview loading={modalLoading} />
+                    )}
+                </Spin>
               )}
-            </Spin>
-          )}
         </Wrapper>
         {fileList.length > 1 && (
           <IndexSelect>
