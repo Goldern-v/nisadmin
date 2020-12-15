@@ -249,7 +249,7 @@ export default observer(function QuestionBankManagement() {
 
             setKskszyDefaultCode(deptCode)
           }}>
-          <Option value=''>全部</Option>
+          {authStore.isDepartment && <Option value=''>全部</Option>}
           {authStore.deptList.map((item: any, idx: number) => <Option key={idx} value={item.code}>{item.name}</Option>)}
         </Select>
         <Input

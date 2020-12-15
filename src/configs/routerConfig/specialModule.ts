@@ -70,7 +70,8 @@ const homeRouter = (view: any): any[] => {
 if (
   process.env.REACT_APP_HOSPITAL_ID == "hj" ||
   process.env.REACT_APP_HOSPITAL_ID == "ys" ||
-  process.env.REACT_APP_HOSPITAL_ID == "gyd"
+  process.env.REACT_APP_HOSPITAL_ID == "gyd" ||
+  process.env.REACT_APP_HOSPITAL_ID == "gzhd"
 ) {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),

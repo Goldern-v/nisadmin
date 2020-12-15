@@ -170,7 +170,7 @@ export default observer(function 防疫专项检查片区汇总列表() {
       indexInType: record.indexInType,
       beginDate: record.beginDate,
       endDate: record.endDate,
-      // groupRoleCode: record.groupRoleCode,
+      groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
 
