@@ -219,6 +219,7 @@ export default observer(function RequestEditModal(props: Props) {
       onOk={handleOk}
       okText="确定"
       centered
+      forceRender
     >
       <Wrapper>
         <Tabs

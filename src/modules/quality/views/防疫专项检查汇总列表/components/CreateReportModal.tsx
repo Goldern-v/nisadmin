@@ -16,7 +16,6 @@ export interface Props {
   visible: boolean
   onOk: any
   onCancel: any
-  groupRoleList: any
 }
 
 export default observer(function CreateWorkSummaryReportModal(props: Props) {
@@ -25,14 +24,13 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    groupRoleCode: (val) => !!val || '请选择片区',
     year: (val) => !!val || '请选择年度',
     // indexInType: (val) => !!val || '请选择月份',
     beginDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间'
   }
 
-  const { visible, onCancel, onOk, groupRoleList, } = props
+  const { visible, onCancel, onOk, } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
   const [beginDate, setBeginDate] = useState(null as any | null)
@@ -51,7 +49,6 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
           beginDate: Moment(currentWeek.beginDate),
           endDate: Moment(currentWeek.endDate),
           reportName: '',
-          groupRoleCode: '',
           indexInType: ''
         })
       }
@@ -69,16 +66,16 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
       current
         .validateFields()
         .then((res) => {
-          let { reportName, groupRoleCode, year, beginDate, endDate } = formData
+          let { reportName, year, beginDate, endDate } = formData
           let indexInType = beginDate.dayOfYear()
 
           let params: any = {
             reportName: reportName,
-            groupRoleCode: groupRoleCode,
             year: year ? year.format('YYYY') : '',
             beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
             endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
             type: 'day',
+            groupRoleCode: '1',
             indexInType
           }
 
@@ -177,25 +174,15 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
     let current = refForm.current
     if (current) {
       let fields = current.getFields()
-      let { year, groupRoleCode, } = fields
-      if (!year || !groupRoleCode) return
-      let groupRoleName: any = ''
+      let { year, } = fields
 
-      for (let i = 0; i < groupRoleList.length; i++) {
-        if (groupRoleList[i].code == groupRoleCode) groupRoleName = groupRoleList[i].name
-      }
-
-      if (groupRoleName.split('、').length > 1) {
-        groupRoleName = groupRoleName.split('、')
-        groupRoleName.shift()
-        groupRoleName = groupRoleName.join('、')
-      }
+      if (!year || !fields.beginDate || !fields.endDate) return
 
       let year1Str = fields.beginDate.format('YYYY') + '年'
       let year2Str = fields.endDate.format('YYYY') + '年'
       if (year1Str === year2Str) year2Str = ''
 
-      let reportName = `${year1Str}${fields.beginDate.format('MM.DD')}至${year2Str}${fields.endDate.format('MM.DD')}${groupRoleName}防疫专项检查汇总报告`
+      let reportName = `${year1Str}${fields.beginDate.format('MM.DD')}至${year2Str}${fields.endDate.format('MM.DD')}防疫专项检查汇总报告`
 
       setFormItem('reportName', reportName)
     }
@@ -255,22 +242,6 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
             <Col span={9}>
               <Form.Field name='endDate'>
                 <DatePicker placeholder='结束时间' allowClear={false} disabledDate={moreThanStart} />
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={5} className='label'>
-              片区：
-            </Col>
-            <Col span={19}>
-              <Form.Field name='groupRoleCode'>
-                <Select>
-                  {groupRoleList.map((item: any) => (
-                    <Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
               </Form.Field>
             </Col>
           </Row>

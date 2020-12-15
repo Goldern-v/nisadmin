@@ -20,8 +20,8 @@ export default observer(function 防疫专项检查片区汇总列表() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
-  const [groupRoleList, setGroupRolelist] = useState([])
-  const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
+  // const [groupRoleList, setGroupRolelist] = useState([])
+  // const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
   // let currentWeekDay = moment().week(1)
   // console.log(currentWeekDay.startOf('week').format('YYYY-MM-DD'), currentWeekDay.endOf('week').format('YYYY-MM-DD'))
@@ -36,16 +36,16 @@ export default observer(function 防疫专项检查片区汇总列表() {
     // indexInType: moment().month() + 1,
     indexInType: '',
     status: '',
-    groupRoleCode: ''
+    // groupRoleCode: ''
   } as any)
 
   useEffect(() => {
-    api.qcBigDeptList().then((res) => {
-      if (res.data instanceof Array) setGroupRolelist(res.data)
-    })
-    api.qcBigDeptListSelf().then((res) => {
-      if (res.data instanceof Array) setGroupRolelistSelf(res.data)
-    })
+    // api.qcBigDeptList().then((res) => {
+    //   if (res.data instanceof Array) setGroupRolelist(res.data)
+    // })
+    // api.qcBigDeptListSelf().then((res) => {
+    //   if (res.data instanceof Array) setGroupRolelistSelf(res.data)
+    // })
   }, [])
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export default observer(function 防疫专项检查片区汇总列表() {
       indexInType: record.indexInType,
       beginDate: record.beginDate,
       endDate: record.endDate,
-      groupRoleCode: record.groupRoleCode,
+      // groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
 
@@ -297,7 +297,7 @@ export default observer(function 防疫专项检查片区汇总列表() {
               </Select>
             </div>
           </div>
-          <div className='item'>
+          {/* <div className='item'>
             <div className='label'>片区：</div>
             <div className='content'>
               <Select
@@ -315,7 +315,7 @@ export default observer(function 防疫专项检查片区汇总列表() {
                 ))}
               </Select>
             </div>
-          </div>
+          </div> */}
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
@@ -356,7 +356,6 @@ export default observer(function 防疫专项检查片区汇总列表() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        groupRoleList={groupRoleListSelf}
       />
     </Wrapper>
   )
