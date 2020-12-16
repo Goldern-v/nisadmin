@@ -112,7 +112,7 @@ export default observer(function HierarchyExamReport() {
         <Chart
           forceFit
           data={data}
-          height={500}
+          height={400}
         >
           <Tooltip />
           <Legend />
