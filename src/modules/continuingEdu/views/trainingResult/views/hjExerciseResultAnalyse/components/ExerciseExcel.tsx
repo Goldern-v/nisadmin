@@ -31,13 +31,11 @@ export default observer(function ExamExcel() {
 })
 
 const Wrapper = styled.div`
-  height: calc(100vh - 320px);
+  height: calc(100vh - 310px);
   overflow-y: scroll;
-  box-shadow: 4px 4px 6px 4px rgba(0, 0, 0, 0.15);
   padding: 30px 20px;
   margin: 40px auto 20px;
   background: rgb(255, 255, 255);
-  width: 900px;
   box-sizing: border-box;
 `
 const Report = styled.div`
