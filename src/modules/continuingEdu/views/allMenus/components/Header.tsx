@@ -89,7 +89,7 @@ export default observer(function Header(props: Props) {
         <Select
           placeholder="请输入成员姓名"
           style={{ width: 130 }}
-          value={allMenusModal.empNo}
+          value={allMenusModal.empNo as any}
           onChange={(val: string) => {
             allMenusModal.empNo = val;
             allMenusModal.pageIndex = 1;
@@ -99,11 +99,10 @@ export default observer(function Header(props: Props) {
           allowClear
           filterOption={(input: any, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-
         >
           {allMenusModal.empNoList.map((item: any) => (
             <Select.Option key={item.empName} value={item.empNo}>
-              {item.empName} {item.empNo}
+              {`${item.empName} ${item.empNo}`}
             </Select.Option>
           ))}
         </Select>
