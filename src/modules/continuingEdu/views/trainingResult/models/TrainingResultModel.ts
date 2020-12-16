@@ -114,13 +114,21 @@ class TrainingResultModel {
       this.loading = false;
     };
 
+    const viewResultsUrlName =
+      appStore.HOSPITAL_ID == "hj" && appStore.queryObj.teachingMethod == "练习"
+        ? "queryExerciseResultDetailsByPage"
+        : appStore.HOSPITAL_ID == "hj" &&
+          appStore.queryObj.teachingMethod == "考试"
+        ? "queryExamResultDetailsByPage"
+        : null;
+
     if (appStore.queryObj.editable) {
       trainingResultService
         .queryToScoreDetailList(this.query)
         .then(res => successCallback(res), () => errorCallback());
     } else {
       trainingResultService
-        .getTableData(this.query)
+        .getTableData(this.query, viewResultsUrlName)
         .then(res => successCallback(res), () => errorCallback());
     }
   }

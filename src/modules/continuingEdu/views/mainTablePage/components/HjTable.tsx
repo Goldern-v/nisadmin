@@ -506,7 +506,7 @@ export default observer(function HjTable(props: Props) {
       "socialpractiseResultReview"
     ];
     let router = teachingMethodArray[record.teachingMethod - 1];
-    appStore.history.push(`/${router}?id=${record.id}`);
+    appStore.history.push(`/${router}?id=${record.id}&teachingMethod=${record.teachingMethodName}`);
   };
 
   // 修改

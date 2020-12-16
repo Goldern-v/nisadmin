@@ -295,7 +295,7 @@ export default observer(function TestingResultReview() {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    if (appStore.HOSPITAL_ID === 'hj' && stepViewModal.getThirdName === '考试设置') {
+    if (appStore.HOSPITAL_ID === 'hj') {
       return (
         <BaseTabs
           config={
