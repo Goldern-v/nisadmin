@@ -6,9 +6,6 @@ import { appStore, authStore } from "src/stores";
 import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
 import { allMenusModal } from "../AllMenusModal";
 import { allMenusApi } from "../api/AllMenusApi";
-import { selectPeopleViewModel } from "../../../modal/SelectPeople/SelectPeopleViewModel";
-import qs from "qs";
-import { stepViewModal } from "../../../modal/stepComponent/StepViewModal";
 
 interface Props {
   getTitle: any;
@@ -95,14 +92,17 @@ export default observer(function Header(props: Props) {
             allMenusModal.pageIndex = 1;
             allMenusModal.onload();
           }}
-          showSearch
           allowClear
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          showSearch
+          filterOption={false}
+          onSearch={(value: any) => {
+            allMenusModal.empNoSearch = value;
+            allMenusModal.initData();
+          }}
         >
           {allMenusModal.empNoList.map((item: any) => (
             <Select.Option key={item.empName} value={item.empNo}>
-              {`${item.empName} ${item.empNo}`}
+              {`${item.empName}(${item.empNo})`}
             </Select.Option>
           ))}
         </Select>

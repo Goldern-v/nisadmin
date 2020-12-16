@@ -18,6 +18,7 @@ class AllMenusModal {
   @observable public total: any = 0; //总条数
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
+  @observable public empNoSearch: any = null; //成员
 
   @computed
   get postObj() {
@@ -37,7 +38,7 @@ class AllMenusModal {
   async initData() {
     await Promise.all([
       //人员
-      allMenusApi.getAllEmpName("").then(res => {
+      allMenusApi.getAllEmpName(this.empNoSearch).then(res => {
         this.empNoList = res.data.list || [];
       })
     ]);
