@@ -12,6 +12,13 @@ const Option = Select.Option
 export interface Props { }
 
 export default observer(function FormPannel() {
+  const { queryObj } = appStore
+  const qcCode = queryObj.qcCode
+  //匹配展示对应编辑模块的code
+  //默认医院ID
+  let qcMatchCode = appStore.HOSPITAL_ID as string
+  if (appStore.HOSPITAL_ID == 'wh' && qcCode == 'QCTP209') qcMatchCode = 'QCTP209'
+
   const {
     itemGroupList,
     master,
@@ -161,6 +168,7 @@ export default observer(function FormPannel() {
       {appStore.hisMatch({
         map: {
           nys: <span></span>,
+          QCTP209: <span></span>,
           other: <React.Fragment>
             <div className="item">
               <div className="label">{hushi}:</div>
@@ -205,7 +213,8 @@ export default observer(function FormPannel() {
               </div>
             </div>
           </React.Fragment>
-        }
+        },
+        currentHospitalId: qcMatchCode
       })}
     </div>
     <QuestionCon>

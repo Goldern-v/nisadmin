@@ -28,6 +28,10 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   //
   const { detailData } = props;
 
+  const qcCode = detailData?.master?.qcCode || ''
+  let qcMatchCode = appStore.HOSPITAL_ID as string
+  if (appStore.HOSPITAL_ID == 'wh' && qcCode == 'QCTP209') qcMatchCode = 'QCTP209'
+
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview;
     let title = document.title;
@@ -149,10 +153,12 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {appStore.hisMatch({
             map: {
               nys: <span></span>,
+              QCTP209: <span></span>,
               other: <div>
                 床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
               </div>
-            }
+            },
+            currentHospitalId: qcMatchCode
           })}
           <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
           <div>
@@ -177,20 +183,23 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {appStore.hisMatch({
             map: {
               nys: <span></span>,
+              QCTP209: <span></span>,
               other: <React.Fragment>
                 <div>
                   {hushi}：
-            {bedNurseList.map((item: any, index: number, arr: any) => (
-                    <span key={index}>
-                      {item.empName}
-                      {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
-                      {index != arr.length - 1 ? "、" : ""}
-                    </span>
-                  ))}
+                  {bedNurseList
+                    .map((item: any, index: number, arr: any) => (
+                      <span key={index}>
+                        {item.empName}
+                        {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
+                        {index != arr.length - 1 ? "、" : ""}
+                      </span>
+                    ))}
                 </div>
                 <div>{zhuyuanhao}：{messageBoxData.inpNo}</div>
               </React.Fragment>
-            }
+            },
+            currentHospitalId: qcMatchCode
           })}
           <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
           <div>
@@ -274,7 +283,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                         </div>
                       </div>,
                       other: ''
-                    }
+                    },
                   })}
                 </div>
               </div>
