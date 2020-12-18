@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import NurseFilesListView_hj from "./view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_wh from "./view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_nys from "./view/nurseFiles-nys/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_gzhd from "./view/nurseFiles-gzhd/views/nurseFilesList/NurseFilesListView";
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
 import StatisticsView from "./view/statistics/StatisticsView";
@@ -30,7 +31,7 @@ import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
 import { ReactComponent as CXTJ } from "./images/CXTJ.svg";
 
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function NurseFilesView(props: Props) {
   const [dataList, setDataList]: any = useState([]); // 实习生动态菜单树
   const OnTheJobComponent = (() => {
@@ -41,6 +42,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_hj;
       case "nys":
         return NurseFilesListView_nys;
+      case "gzhd":
+        return NurseFilesListView_gzhd;
       default:
         return NurseFilesListView_hj;
     }

@@ -13,9 +13,15 @@ import AuditModal from "./components/AuditModal";
 
 const Option = Select.Option;
 
-export interface Props { }
+export interface Props {
+  btntop?: string | number,
+  height?: string | number,
+  surplusHeight?: number,
+  handleRefresh?: Function,
+}
 
 export default observer(function AuditEduPlan(props: Props) {
+  const { surplusHeight, handleRefresh, height, btntop } = props
   const auditModal = createModal(AuditModal);
 
   const { queryObj } = appStore;
@@ -210,14 +216,21 @@ export default observer(function AuditEduPlan(props: Props) {
 
   const AuditPannel = (
     <div>
-      <GroupPostBtn onClick={() => getTableData(query)}>刷新</GroupPostBtn>
+      <GroupPostBtn
+        btntop={btntop || ''}
+        onClick={() => getTableData(query)}>
+        刷新
+        </GroupPostBtn>
       {activeKey == 0 && (
-        <GroupPostBtn onClick={handleAuditOpen} style={{ right: 110 }}>
+        <GroupPostBtn
+          btntop={btntop || ''}
+          onClick={handleAuditOpen}
+          style={{ right: 110 }}>
           批量审核
         </GroupPostBtn>
       )}
       <BaseTable
-        surplusHeight={280}
+        surplusHeight={surplusHeight || 280}
         dataSource={tableData}
         loading={loading}
         columns={columns}
@@ -260,7 +273,8 @@ export default observer(function AuditEduPlan(props: Props) {
       `/continuingEdu/审核发布?${qs.stringify({
         ...appStore.queryObj,
         ...query,
-        activeKey
+        activeKey,
+        tagId: '1'
       })}`
     );
     let req = (query: any) => {
@@ -311,11 +325,15 @@ export default observer(function AuditEduPlan(props: Props) {
   }, [query, activeKey]);
 
   useEffect(() => {
+    handleRefresh && handleRefresh()
+  }, [tableData])
+
+  useEffect(() => {
     getMenuInfo();
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper height={height || ''}>
       <HeaderCon>
         <Title>审核发布</Title>
         <Place />
@@ -394,10 +412,10 @@ export default observer(function AuditEduPlan(props: Props) {
   );
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ height?: string | number }>`
   padding: ${p => p.theme.$mcp};
   padding-bottom: 0;
-  height: calc(100% - 49px);
+  height: ${p => p.height || 'calc(100% - 49px)'};
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -451,14 +469,13 @@ const BodyWarpper = styled.div`
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 137px);
   align-items: stretch;
   display: flex;
   margin: 20px;
 `;
 
-const GroupPostBtn = styled(Button)`
+const GroupPostBtn = styled(Button) <{ btntop?: string | number }>`
   position: fixed !important;
-  top: 121px;
+  top: ${p => p.btntop || '121px'};
   right: 33px;
 `;

@@ -18,6 +18,7 @@ import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurse
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -178,6 +179,31 @@ if (
   // }
 } else if (appStore.HOSPITAL_ID == 'dzlc') {
   specialModule = [...homeRouter(SettingView)]
+} else if (appStore.HOSPITAL_ID == 'gzhd') {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_gzhd,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    ...homeRouter(HomeView_wh),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
 }
 
 export { specialModule };

@@ -31,6 +31,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0px;
     height: 100%;
     font-size: 13px;
+    overflow: hidden;
   }
   #root {
     height: 100%;

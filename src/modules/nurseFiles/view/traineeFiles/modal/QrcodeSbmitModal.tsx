@@ -11,9 +11,25 @@ export interface Props extends ModalComponentProps {
 
 export default observer(function QrcodeSbmitModal(props: Props) {
   const { visible, onCancel } = props
+  const testIp = appStore.hisMatch({
+    map: {
+      hj: 'http://120.25.105.45:9864',
+      gzhd: 'http://120.25.105.45:9868',
+      other: ''
+    },
+  })
+
+  const productIp = appStore.hisMatch({
+    map: {
+      hj: 'http://120.197.141.41:9091',
+      gzhd: 'http://http://120.238.239.27:9094',
+      other: ''
+    },
+  })
+
   const targetUrl = appStore.isDev ?
-    'http://120.25.105.45:9864/crNursing/manage/#/traineeInfoSubmit' :
-    'http://120.197.141.41:9091/crNursing/manage/#/traineeInfoSubmit'
+    `${testIp}/crNursing/manage/#/traineeInfoSubmit` :
+    `${productIp}/crNursing/manage/#/traineeInfoSubmit`
 
   function screenShot() {
     var type = 'png';

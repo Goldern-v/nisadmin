@@ -29,7 +29,7 @@ import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import 培训统计分析 from './views/allMenus/AllMenus'
-import FormReview from "./views/trainingSetting/formReview/FormReview";
+// import FormReview from "./views/trainingSetting/formReview/FormReview";
 import FormApply from "./views/trainingSetting/formApply/FormApply";
 //题库管理
 import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
@@ -57,6 +57,9 @@ import UploadRecordQuestionBank_hj2 from "../科室考试资源库/views/UploadR
 import UploadQuestionBank_hj2 from "../科室考试资源库/views/UploadQuestionBank";
 import WrongQuestionBank_hj2 from "../科室考试资源库/views/WrongQuestionBank";
 import 科室考试资源库 from "src/modules/科室考试资源库/QuestionBankManagement";
+//厚街审核管理
+import 审核集中管理 from './views/审核集中管理/审核集中管理'
+
 import { appStore, authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -123,14 +126,30 @@ export default function ContinuingEdu(props: Props) {
         ]
       }
     }),
-    {
-      title: "审核发布",
-      icon: <YNXXB />,
-      path: "/continuingEdu/审核发布",
-      component: 审核发布,
-      hide: () =>
-        queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
-    },
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "审核发布",
+            icon: <YNXXB />,
+            path: "/continuingEdu/审核发布",
+            component: 审核集中管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
+          },
+        ],
+        other: [
+          {
+            title: "审核发布",
+            icon: <YNXXB />,
+            path: "/continuingEdu/审核发布",
+            component: 审核发布,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
+          },
+        ]
+      }
+    }),
     {
       title: "评分管理",
       icon: <LXGL />,
@@ -153,12 +172,12 @@ export default function ContinuingEdu(props: Props) {
       icon: <JXJH />,
       hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
-        {
-          title: "资质准入管理",
-          formName: "资质准入管理",
-          path: "/continuingEdu/资质准入管理",
-          component: FormReview
-        },
+        // {
+        //   title: "资质准入管理",
+        //   formName: "资质准入管理",
+        //   path: "/continuingEdu/资质准入管理",
+        //   component: FormReview
+        // },
         {
           title: "临床带教资质准入",
           formName: "护理临床带教资质准入申请表",

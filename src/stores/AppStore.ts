@@ -12,7 +12,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {

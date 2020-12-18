@@ -59,8 +59,8 @@ export default observer(function NurseAudit() {
             {activeKey == "0" ? (
               <span onClick={() => handleDetail(record)}>审核</span>
             ) : (
-              <span onClick={() => handleDetail(record, true)}>查看</span>
-            )}
+                <span onClick={() => handleDetail(record, true)}>查看</span>
+              )}
           </DoCon>
         );
       }
@@ -82,7 +82,7 @@ export default observer(function NurseAudit() {
         loading={formReviewModal.tableLoading}
         dataSource={formReviewModal.tableList}
         columns={columns}
-        surplusHeight={270}
+        surplusHeight={300}
         // rowSelection={needAudit ? rowSelection : false}
         pagination={{
           current: formReviewModal.pageIndex,
@@ -150,20 +150,19 @@ export default observer(function NurseAudit() {
 });
 
 const Wrapper = styled.div`
-  height: calc(100vh - 55px)
+  height: calc(100vh - 195px);
   display: flex;
   flex-direction: column;
 `;
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 115px);
   align-items: stretch;
   display: flex;
   margin: 0 15px;
 `;
 const PostBtn = styled(Button)`
   position: fixed !important;
-  top: 109px;
+  top: 144px;
   right: 33px;
 `;
