@@ -107,13 +107,13 @@ export default function SecondEditModal(props: Props) {
     setdData(
       employees
         ? employees.map((item: any, index: any) => {
-            return {
-              key: type == 1 ? item.empNo : item.roleCode,
-              value: type == 1 ? item.empNo : item.roleCode,
-              type: type,
-              label: type == 1 ? item.empName : item.roleName
-            };
-          })
+          return {
+            key: type == 1 ? item.empNo : item.roleCode,
+            value: type == 1 ? item.empNo : item.roleCode,
+            type: type,
+            label: type == 1 ? item.empName : item.roleName
+          };
+        })
         : []
     );
   };
@@ -293,20 +293,31 @@ export default function SecondEditModal(props: Props) {
               let msg = "二级菜单修改成功";
               Message.success(msg);
               onOk();
+              clearData()
             })
             .catch(e => {
               Message.warning("修改失败！添加三级审核人，请先添加二级审核人");
               setEditLoading(false);
             });
         })
-        .catch(e => {});
+        .catch(e => { });
     }
   };
 
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
+    clearData()
   };
+
+  const clearData = () => {
+    setSubmit([]);
+    setFirstAudit([]);
+    setSecondAudit([]);
+    setThirdAudit([]);
+    setInputValue('');
+    setOrgLevelName('');
+  }
 
   return (
     <ModalSpin>
@@ -428,10 +439,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                      <EditClickBtn onClick={editSecondAudit}>
-                        + 添加二级审核人
+                        <EditClickBtn onClick={editSecondAudit}>
+                          + 添加二级审核人
                       </EditClickBtn>
-                    )}
+                      )}
                   </Form.Field>
                 </Col>
               </Row>
@@ -457,10 +468,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                      <EditClickBtn onClick={editThirdAudit}>
-                        + 添加三级审核人
+                        <EditClickBtn onClick={editThirdAudit}>
+                          + 添加三级审核人
                       </EditClickBtn>
-                    )}
+                      )}
                   </Form.Field>
                 </Col>
               </Row>
