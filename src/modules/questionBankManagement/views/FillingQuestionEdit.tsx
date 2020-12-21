@@ -80,7 +80,7 @@ export default observer(function ChoiceQuestionEdit() {
 
   //保存修改
   const handleSave = () => {
-    let params = { ...editModel, bankName: '医院题库' } as any;
+    let params = { ...editModel, bankType: '2' } as any;
 
     if (search.id) params.id = search.id;
 

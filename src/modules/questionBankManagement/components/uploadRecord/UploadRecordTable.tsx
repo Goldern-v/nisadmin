@@ -60,7 +60,7 @@ export default observer(function BankTable(props: Props) {
       }
     },
     {
-      title: `导入${query.bankType == '系统题库' ? '书籍名称' : '文件名称'}`,
+      title: `导入${query.bankType == '1' ? '书籍名称' : '文件名称'}`,
       dataIndex: 'bankName',
       key: 'bankName',
       align: 'left'

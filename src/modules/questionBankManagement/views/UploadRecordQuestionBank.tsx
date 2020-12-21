@@ -27,7 +27,7 @@ export default observer(function QuestionBankManagement() {
     const { choiceType } = search;
     let activeIdx = '0';
     let newQuery = {
-      bankType: '医院题库',
+      bankType: '2',
       pageIndex: 1,
       pageSize: 20,
       searchingContent: '',

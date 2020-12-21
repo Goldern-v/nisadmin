@@ -31,7 +31,7 @@ export default observer(function QuestionBankManagement() {
     const { choiceType } = search;
     let activeIdx = '0';
     let newQuery = {
-      bankType: '医院题库',
+      bankType: '2',
       pageIndex: 1,
       pageSize: 20,
       searchingContent: '',
@@ -210,8 +210,8 @@ export default observer(function QuestionBankManagement() {
           <span className='label'>选择类型：</span>
 
           <Radio.Group name='radiogroup' value={bankType} onChange={handleBankTypeChange}>
-            <Radio value={'系统题库'}>系统题库</Radio>
-            <Radio value={'医院题库'}>医院自建</Radio>
+            <Radio value={'1'}>系统题库</Radio>
+            <Radio value={'2'}>医院自建</Radio>
           </Radio.Group>
         </SelectBox>
         <Input

@@ -74,7 +74,7 @@ export default observer(function ChoiceQuestionEdit() {
   }
 
   const handleSave = () => {
-    let params = { ...editModel, bankName: '医院题库' } as any;
+    let params = { ...editModel, bankType: '2' } as any;
 
     if (search.id) params.id = search.id;
 

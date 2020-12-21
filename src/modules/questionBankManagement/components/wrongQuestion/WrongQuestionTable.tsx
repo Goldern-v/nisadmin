@@ -132,8 +132,8 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
   // }
 
   const handleEdit = (record: any) => {
-    // if (record.bankType == '系统题库') {
-    //   message.warning('系统题库无法修改')
+    // if (record.bankType == '1') {
+    //   message.warning('1无法修改')
     //   return
     // }
     let type = 'choice';

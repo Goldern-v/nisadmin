@@ -161,15 +161,15 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
   }
 
   const handleEdit = (record: any) => {
-    // if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
-    //   Message.warning('系统题库无法修改')
+    // if (record.bankType == '1' || model.query.bankType == '1') {
+    //   Message.warning('1无法修改')
     //   return
     // }
     history.push(`/continuingEdu/fillingQuestionEdit?id=${record.id}`)
   }
 
   const handleDeleteQuestion = (record: any) => {
-    if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
+    if (record.bankType == '1' || model.query.bankType == '1') {
       Message.warning('系统题库无法删除')
       return
     }
@@ -278,7 +278,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         let errText = '';
 
         if (rows.length <= 0) errText = '未选择题目';
-        if (query.bankType == '系统题库' || model.query.bankType == '系统题库') errText = '无法修改系统题库'
+        if (query.bankType == '1' || model.query.bankType == '1') errText = '无法修改系统题库'
 
         if (errText.length) {
           Message.warning(errText)

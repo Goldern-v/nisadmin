@@ -4,7 +4,7 @@ import { questionBankManageService } from '../api/QuestionBankManageService'
 export default class QuestionBankManageModel {
   //查询参数
   @observable query: any = {
-    bankType: '医院题库',
+    bankType: '2',
     choiceType: '选择题',
     pageIndex: 1,
     pageSize: 20,
