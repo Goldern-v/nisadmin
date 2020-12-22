@@ -169,6 +169,13 @@ export default class WardRegisterService extends BaseApiService {
 
     return this.post(`/sign/${formType}/${registerCode}/delete`, { id })
   }
+
+  /**获取科室排班 */
+  public getShiftListByDate(params: { endDate: string, startDate: string, wardCode: string }) {
+    const formType = 'qcRegister'
+
+    return this.post(`/schShiftSetting/getListByDate`, params)
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();

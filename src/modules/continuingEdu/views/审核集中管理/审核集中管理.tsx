@@ -45,7 +45,12 @@ export default observer(function 审核集中管理() {
           key={item.id}
           className={[
             'tag-item',
-            item.id == queryObj.tabId ? 'active' : ''
+            (() => {
+              if (item.id == '1' && !queryObj.tabId)
+                return 'active'
+
+              return item.id == queryObj.tabId ? 'active' : ''
+            })()
           ].join(' ')}
           onClick={() => handleTagChange(item.id)}>
           {item.name}

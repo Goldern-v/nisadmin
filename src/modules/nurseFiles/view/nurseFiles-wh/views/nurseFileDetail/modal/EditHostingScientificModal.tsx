@@ -26,6 +26,16 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
+  approvalNumber: (val) => {
+    if (val) {
+      if (/^〔.*〕$/.test(val))
+        return true
+
+      return '括号统一为六角括号〔〕'
+    } else {
+      return true
+    }
+  },
   // time: (val) => !!val || '请填写时间',
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -38,7 +48,7 @@ export default function EditPersonWinningModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {

@@ -26,6 +26,16 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
+  pressNumber: (val) => {
+    if (val) {
+      if (/^ISBN ([0-9]*-)+[0-9]*$/.test(val))
+        return true
+
+      return '例：ISBN 978-7-117-27226-1(前面字母必须为大写，ISBN与后面978开始的数字之间有一个空格，后面数字与数字之间为一个减号，一般四个减号)'
+    } else {
+      return true
+    }
+  }
   // time: (val) => !!val || '请填写时间',
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -38,7 +48,7 @@ export default function EditMonographModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -106,49 +116,57 @@ export default function EditMonographModal(props: Props) {
         </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`年份`} name='year'>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`专著名称`} name='monographName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`出版社名称`} name='pressName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`出版号`} name='pressNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`出版日期`} name='pressDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`著者`} name='participation'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader
-                text='添加图片'
-                tip={'上传专著封面页、有自己参编名称一页，有出版号一页、目录页共四页的扫描件'}
-              />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
+      <Wrapper>
+        <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`年份`} name='year'>
+                <YearPicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`专著名称`} name='monographName'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`出版社名称`} name='pressName'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`出版号`} name='pressNumber'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`出版日期`} name='pressDate'>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`著者`} name='participation'>
+                <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`附件`} name='urlImageOne'>
+                <MultipleImageUploader
+                  text='添加图片'
+                  tip={'上传专著封面页、有自己参编名称一页，有出版号一页、目录页共四页的扫描件'}
+                />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Wrapper>
     </Modal>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .formField-container.has-error{
+    &>div:last-of-type{
+      position: static;
+    }
+  }
+`

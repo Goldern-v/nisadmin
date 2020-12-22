@@ -339,7 +339,12 @@ export default observer(function HandoverRegister(props: Props) {
       dataIndex: item.itemCode,
       width: (15 * item.width || 50) + 8,
       colSpan: item.colSpan,
-      className: "input-cell input-cell-custom",
+      className: (() => {
+        let tdClassName = "input-cell input-cell-custom"
+        if (registerCode === 'QCRG_02') tdClassName += ' QCRG_02'
+
+        return tdClassName
+      })(),
       onCell: (record: any) => ({
         onContextMenu: (e: any) => {
           if (registerCode === 'QCRG_02') {
@@ -378,7 +383,6 @@ export default observer(function HandoverRegister(props: Props) {
             }}
           />
         }
-
 
         //处理上传附件类型
         if (item.itemType == "attachment")
@@ -421,23 +425,34 @@ export default observer(function HandoverRegister(props: Props) {
           </TdCell>
 
         if (registerCode == 'QCRG_02') {
-          if (!record.id || !msgMap[record.id] || !msgMap[record.id][item.itemCode])
-            return child
+          let msgList = []
+          if (record.id && msgMap[record.id] && msgMap[record.id][item.itemCode])
+            msgList = msgMap[record.id][item.itemCode]
+          // return child
 
-          return <Popover
-            placement="bottomRight"
-            title="提醒设置"
-            content={<React.Fragment>
-              {msgMap[record.id][item.itemCode].map((msg: any, msgIdx: number) => <MsgRow key={msgIdx}>
-                <span className="msg-content">{msg.content}</span>
-                <span className="msg-appointHandleTime">{msg.appointHandleTime}({msg.appointRange})</span>
-                <span className="msg-vsUserList">{msg.vsUserList.map((emp: any) => emp.empName).join('、')}</span>
-              </MsgRow>)}
-            </React.Fragment>}
-            trigger="hover">
-            <MsgCard>{msgMap[record.id][item.itemCode].length}</MsgCard>
-            <div>{child}</div>
-          </Popover>
+          // return <Popover
+          //   placement="bottomRight"
+          //   title="提醒设置"
+          //   content={<React.Fragment>
+          //     {msgMap[record.id][item.itemCode].map((msg: any, msgIdx: number) => <MsgRow key={msgIdx}>
+          //       <span className="msg-content">{msg.content}</span>
+          //       <span className="msg-appointHandleTime">{msg.appointHandleTime}({msg.appointRange})</span>
+          //       <span className="msg-vsUserList">{msg.vsUserList.map((emp: any) => emp.empName).join('、')}</span>
+          //     </MsgRow>)}
+          //   </React.Fragment>}
+          //   trigger="hover">
+          //   <MsgCard>{msgMap[record.id][item.itemCode].length}</MsgCard>
+          //   <div>{child}</div>
+          // </Popover>
+
+          return <div>
+            {msgList.map((msg: any, msgIdx: number) =>
+              <MsgGroup key={msgIdx}>
+                <span className="msg-content">{msgList.length > 1 ? `${msgIdx + 1}.` : ''}{msg.content} </span>
+                <span className="msg-appointHandleTime">[{msg.appointRange}]</span>
+                <span className="msg-vsUserList"> [{msg.vsUserList.map((emp: any) => emp.empName).join('、')}]</span>
+              </MsgGroup>)}
+          </div>
         } else {
           return child
         }
@@ -946,6 +961,11 @@ const TableCon = styled.div`
   .input-cell {
     padding: 0 !important;
     position: relative;
+    &.QCRG_02.input-cell-custom{
+      &:hover{
+        background: #eee!important;
+      }
+    }
   }
   input,textarea {
     border: 0;
@@ -1146,5 +1166,12 @@ const MsgRow = styled.div`
   .msg-vsUserList{
     width: 100px;
     text-align: center;
+  }
+`
+
+const MsgGroup = styled.div`
+  text-align: left;
+  .msg-appointHandleTime,.msg-vsUserList{
+    color: #aaa;
   }
 `

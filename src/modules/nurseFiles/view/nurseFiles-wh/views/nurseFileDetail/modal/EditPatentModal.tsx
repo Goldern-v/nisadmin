@@ -26,6 +26,26 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
+  patentLevel: (val) => {
+    if (val) {
+      if (/^第[零一二三四五六七八九十百千万亿兆]*$/.test(val))
+        return true
+
+      return '填写为“第三”，不能为3或者第3'
+    } else {
+      return true
+    }
+  },
+  patentNumber: (val) => {
+    if (val) {
+      if (/^ZL [0-9]{4} [0-9] [0-9]{7}\.[0-9]$/.test(val))
+        return true
+
+      return '例：ZL 2019 2 1585466.2(ZL均为大写，ZL与后面数字之间有一个空格，第四个数与第五个数之间一个空格，第五位数与第六位数之间一个空格，后面的.为英文状态下的点)'
+    } else {
+      return true
+    }
+  },
   // time: (val) => !!val || '请填写时间',
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -38,7 +58,7 @@ export default function EditPatentModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign?: boolean) => {
     let obj = {
@@ -106,62 +126,70 @@ export default function EditPatentModal(props: Props) {
         </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`专利名称`} name='patentName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`专利排名`} name='patentLevel'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`专利号`} name='patentNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`专利类型`} name='patentType'>
-              {/* <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利类型').map((item) => item.name)} /> */}
-              <Select>
-                {nurseFileDetailViewModal.getDict('专利类型').map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`是否成果转化`} name='isResultTransfor'>
-              <Select>
-                <Select.Option value='是'>是</Select.Option>
-                <Select.Option value='否'>否</Select.Option>
-              </Select>
-            </Form.Field>
-          </Col>
+      <Wrapper>
+        <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`专利名称`} name='patentName'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`专利排名`} name='patentLevel'>
+                <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`专利号`} name='patentNumber'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`发证单位`} name='cardUnit'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`发证时间`} name='cardDate'>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`专利类型`} name='patentType'>
+                {/* <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利类型').map((item) => item.name)} /> */}
+                <Select>
+                  {nurseFileDetailViewModal.getDict('专利类型').map((item) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`是否成果转化`} name='isResultTransfor'>
+                <Select>
+                  <Select.Option value='是'>是</Select.Option>
+                  <Select.Option value='否'>否</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
 
-          <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' tip={'上传专利证书扫描件'} />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
+            <Col span={24}>
+              <Form.Field label={`附件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传专利证书扫描件'} />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Wrapper>
     </Modal>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .formField-container.has-error{
+    &>div:last-of-type{
+      position: static;
+    }
+  }
+`

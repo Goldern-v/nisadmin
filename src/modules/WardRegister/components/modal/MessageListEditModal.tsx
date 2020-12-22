@@ -26,6 +26,7 @@ export default function MessageListEditModal(props: Props) {
   const [rangeDictMap, setRangeDictMap]: any = useState([])
   const [empList, setEmpList]: any = useState([])
   const [loading, setLoading] = useState(false)
+  const [currentShitList, setCurrentShitList]: any = useState([])
   //判断是否有调用删除接口，调用过关闭时刷新病区登记本
   const [delected, setDelected] = useState(false)
 
@@ -38,6 +39,8 @@ export default function MessageListEditModal(props: Props) {
           vsUserList: (item.vsUserList || []).map((emp: any) => ({ label: emp.empName, key: emp.empNo }))
         }))
       }))
+
+      refreshShiftList()
     }
   }, [visible, originList])
 
@@ -52,6 +55,18 @@ export default function MessageListEditModal(props: Props) {
       .userDictInfo(authStore.selectedDeptCode)
       .then(res => setEmpList(res.data));
   }, [])
+
+  const refreshShiftList = () => {
+    const { recordDate, wardCode } = rowData
+    wardRegisterService.getShiftListByDate({
+      wardCode,
+      startDate: recordDate,
+      endDate: recordDate
+    })
+      .then(res => {
+        setCurrentShitList(res.data || [])
+      })
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -92,7 +107,7 @@ export default function MessageListEditModal(props: Props) {
           style={{ width: "100%" }}
           value={text}
           onChange={(val: any) =>
-            handleRowEidt({ ...record, appointRange: val }, idx)}>
+            handleAppointRangeChange(record, val, idx)}>
           {rangeDictMap.map((item: any, itemIdx: number) => (
             <Select.Option
               value={item.name}
@@ -197,6 +212,15 @@ export default function MessageListEditModal(props: Props) {
     let _hasChange = hasChange || delected
 
     onCancel && onCancel(_hasChange)
+  }
+
+  const handleAppointRangeChange = (record: any, val: any, idx: number) => {
+    let newEmpList = currentShitList.filter((item: any) => item.rangeName == val)
+    console.log(newEmpList)
+    let newRecord = { ...record, appointRange: val }
+    if (newEmpList.length > 0) newRecord.vsUserList =
+      newEmpList.map((emp: any) => ({ label: emp.empName, key: emp.empNo }))
+    handleRowEidt(newRecord, idx)
   }
 
   const handleSave = () => {

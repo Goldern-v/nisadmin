@@ -17,6 +17,7 @@ export default function Table(props: Props) {
   if (report.beginDate && report.endDate) th1 = `${moment(report.beginDate).format('MM.DD')}-${moment(report.endDate).format('MM.DD')}`
 
   let th2 = '...'
+  if (report.lastBeginDate && report.lastEndDate) th2 = `${moment(report.lastBeginDate).format('MM.DD')}-${moment(report.lastEndDate).format('MM.DD')}`
 
   return (
     <Wrapper>

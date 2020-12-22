@@ -26,6 +26,20 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
+  periodicalNumber: (val) => {
+    if (val) {
+      if (
+        /^ISSN [0-9]{4}-[0-9]{4}$/.test(val)
+        || /^CN.+$/.test(val)
+        || /^ISSN [0-9]{4}-[0-9]{4}、CN.+$/.test(val)
+      )
+        return true
+
+      return '字母均为大写，不要出现中文字，如“国际刊号”等。例：ISSN 1003-8914、CN 11-1592/R（统一为国际在前、国内在后）'
+    } else {
+      return true
+    }
+  }
   // time: (val) => !!val || '请填写时间',
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -38,7 +52,7 @@ export default function EditArticleModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -55,6 +69,7 @@ export default function EditArticleModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
+
     value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
@@ -105,61 +120,69 @@ export default function EditArticleModal(props: Props) {
         </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`发表年份`} name='publicYear'>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('文章类别').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`论文收录网站`} name='influencingFactors'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('论文收录网站').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章扫描件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`网络下载件`} name='urlImageTwo'>
-              <MultipleImageUploader text='添加图片' tip={'上传从收录网站下载的完整版文章内容'} />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
+      <Wrapper>
+        <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`发表年份`} name='publicYear'>
+                <YearPicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`杂志名称`} name='magazineName'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`文章名称`} name='articleName'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`期刊号`} name='periodicalNumber'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`卷号`} name='volumeNumber'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`起止页码`} name='pageNumber'>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`文章类别`} name='articleType'>
+                <AutoComplete dataSource={nurseFileDetailViewModal.getDict('文章类别').map((item) => item.name)} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`论文收录网站`} name='influencingFactors'>
+                <AutoComplete dataSource={nurseFileDetailViewModal.getDict('论文收录网站').map((item) => item.name)} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`文章扫描件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`网络下载件`} name='urlImageTwo'>
+                <MultipleImageUploader text='添加图片' tip={'上传从收录网站下载的完整版文章内容'} />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Wrapper>
     </Modal>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .formField-container.has-error{
+    &>div:last-of-type{
+      position: static;
+    }
+  }
+`
