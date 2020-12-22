@@ -2,8 +2,10 @@ import { observable, computed } from "mobx";
 import { stepServices } from "../../services/stepServices";
 
 class QuesBankView {
+  @observable public deptCode: any = ""; //厚街所选科室
+  @observable public deptCodeList: any = []; //厚街所有科室
   @observable public selectedLabel: any = []; //选中标签
-  @observable public bankType: any = "系统题库"; //题库类型
+  @observable public bankType: any = 1; //题库类型
   @observable public questionType = "单选题"; //题目类型
   @observable public keyWord = ""; //关键字查询
   @observable public checkLabelList = []; // 选题搜索所需数据
@@ -25,9 +27,7 @@ class QuesBankView {
   @observable public JDQuestionNum: any = 0; // 简答条数
   @observable public saveData: any = []; // 保存数据
 
-  @computed
-  // 获取所需数据入参
-  get checkObj() {
+  @computed get checkObj() {
     return {
       keyWord: this.keyWordSelect,
       pageIndex: 1,
@@ -35,8 +35,7 @@ class QuesBankView {
     };
   }
 
-  // 获取全部数据入参
-  get allCheckObj() {
+  @computed get allCheckObj() {
     return {
       keyWord: "",
       pageIndex: 1,
@@ -45,15 +44,27 @@ class QuesBankView {
     };
   }
 
-  get postObj() {
+  @computed get postObj() {
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       bankType: this.bankType,
+      deptCode: this.deptCode,
       questionType: this.questionType,
       keyWord: this.keyWord,
       questionLabelIdList: this.selectedLabel
     };
+  }
+
+  async initAllData() {
+    await Promise.all([
+      stepServices.getAllDeptList().then(res => {
+        this.deptCodeList = res.data.deptList || [];
+      }),
+      stepServices.searchLabels(this.allCheckObj).then(res => {
+        this.allData = res.data.list || [];
+      })
+    ]);
   }
 
   // 初始化查询数据（题库所有数据）
@@ -78,11 +89,19 @@ class QuesBankView {
   }
 
   //获取所有标签数据
-  initAllData() {
-    stepServices.searchLabels(this.allCheckObj).then(res => {
-      this.allData = res.data.list || [];
-    });
-  }
+  // initAllData() {
+  //   stepServices.searchLabels(this.allCheckObj).then(res => {
+  //     this.allData = res.data.list || [];
+  //   });
+  // }
+
+  // // 获取所有科室
+  // getAllDeptList() {
+  //   stepServices.getAllDeptList().then(res => {
+  //     this.deptCodeList = res.data.deptList || [];
+  //     console.log(res.data.deptList, "1111111111111", this.deptCodeList);
+  //   });
+  // }
 
   // 获取各类型题目数量
   questionNum() {
@@ -101,8 +120,8 @@ class QuesBankView {
     ).length;
   }
 
-  init() {
-    this.initAllData();
+  async init() {
+    await this.initAllData();
     this.initData();
     this.onload();
   }

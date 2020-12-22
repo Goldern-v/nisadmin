@@ -4,6 +4,7 @@ import { TableHeadCon } from "src/components/BaseTable";
 import { Radio, Select, Input, Button, Modal, message as Message } from "antd";
 import { quesBankView } from "../QuesBankView";
 import { observer } from "mobx-react-lite";
+import { appStore } from "src/stores";
 
 export default observer(function Header() {
   //加入试卷
@@ -56,9 +57,32 @@ export default observer(function Header() {
             quesBankView.onload();
           }}
         >
-          <Radio.Button value="系统题库">系统题库</Radio.Button>
-          <Radio.Button value="医院题库">医院自建</Radio.Button>
+          <Radio.Button value={1}>系统题库</Radio.Button>
+          <Radio.Button value={2}>科室题库</Radio.Button>
         </Radio.Group>
+        {quesBankView.bankType == 2 && appStore.HOSPITAL_ID == 'hj' && (
+          <span>
+            <span>科室：</span>
+            <Select
+              style={{ width: 120 }}
+              value={quesBankView.deptCode}
+              onChange={(val: string) => {
+                quesBankView.deptCode = val;
+                quesBankView.pageIndex = 1;
+                quesBankView.onload();
+              }}
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              <Select.Option value="">全部</Select.Option>
+              {quesBankView.deptCodeList.length && quesBankView.deptCodeList.map((item: any) => (
+                <Select.Option value={item.code} key={item.name}>{item.name}</Select.Option>
+              ))}
+            </Select>
+          </span>
+        )}
         <span>类型：</span>
         <Select
           style={{ width: 120 }}
@@ -95,13 +119,13 @@ export default observer(function Header() {
   );
 });
 const Wrapper = styled(TableHeadCon)`
-  height: 31px !important;
-  justify-content: space-between;
+      height: 31px !important;
+      justify-content: space-between;
   .ant-select {
-    width: 150px;
-    margin-right: 15px;
-  }
-  .ant-calendar-picker {
+        width: 150px;
+      margin-right: 15px;
+    }
+    .ant-calendar-picker {
     margin-right: 15px;
   }
   button {

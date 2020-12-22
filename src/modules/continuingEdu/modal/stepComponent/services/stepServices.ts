@@ -191,6 +191,13 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+
+  // 获取所有科室
+  public getAllDeptList() {
+    return this.get(`/dept/nursingUnit/all`);
+  }
+
+  /** 厚街考试特殊处理（多套试卷 添加题目题库修改） */
 }
 
 export const stepServices = new StepServices();

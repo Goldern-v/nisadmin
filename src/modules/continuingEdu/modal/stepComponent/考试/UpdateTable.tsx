@@ -131,7 +131,7 @@ export default observer(function UpdateTable(props: Props) {
       setQuesVisible(true);
       // 再次打开题库上传 初始化数据
       quesBankView.selectedLabel = [];
-      quesBankView.bankType = "系统题库";
+      quesBankView.bankType = 1;
       quesBankView.questionType = "单选题";
       quesBankView.keyWord = "";
       quesBankView.questionIdList = [];
@@ -145,7 +145,7 @@ export default observer(function UpdateTable(props: Props) {
       quesBankView.TKQuestionNum = 0;
       quesBankView.JDQuestionNum = 0;
       quesBankView.tableList = [];
-      quesBankView.init();
+      // quesBankView.init();
     } else {
       fileInputRef.current && fileInputRef.current.click();
     }
