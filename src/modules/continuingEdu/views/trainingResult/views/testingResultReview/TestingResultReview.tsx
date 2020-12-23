@@ -44,6 +44,84 @@ export default observer(function TestingResultReview() {
   //发布功能的loading状态
   const [publishLoading, setPublishLoading] = useState(false)
 
+  const tableDateSpecial: any = appStore.HOSPITAL_ID == 'hj' && !appStore.queryObj.editable ? [
+    {
+      dataIndex: 'answerCountsAndTotalCounts',
+      title: '答题',
+      align: 'center',
+      width: 70,
+    },
+    {
+      dataIndex: 'scoresAndResitScores',
+      title: '成绩/补考成绩',
+      align: 'center',
+      width: 70,
+    },
+    {
+      dataIndex: 'finalTotalScoresDesc',
+      title: '最终成绩',
+      align: 'center',
+      width: 70,
+    }
+  ] : [
+      {
+        dataIndex: 'totalScores',
+        title: '最终成绩',
+        align: 'center',
+        width: 70,
+      },
+      {
+        dataIndex: 'passedDesc',
+        title: '及格',
+        align: 'center',
+        width: 70,
+        render: (text: string) => {
+          if (text == '不及格')
+            return <span style={{ color: 'red' }}>{text}</span>
+          else
+            return <span>{text}</span>
+        }
+      },
+      {
+        dataIndex: 'finishTime',
+        title: '答题时间',
+        align: 'center',
+        width: 180,
+        render: (finishTime: string) => {
+          if (finishTime) return finishTime
+          return '未答题'
+        }
+      },
+      {
+        dataIndex: 'resultPublishDesc',
+        title: '发布成绩',
+        align: 'center',
+        width: 60
+      },
+      {
+        dataIndex: 'creditDesc',
+        title: '学分',
+        align: 'center',
+        width: 120,
+        render: (text: string) => {
+          if (text) return text
+          return '0'
+        }
+      },
+      {
+        dataIndex: 'classHoursDesc',
+        title: '学时',
+        align: 'center',
+        width: 100,
+      },
+      {
+        dataIndex: 'scoreEmpName',
+        title: '评分人',
+        align: 'center',
+        width: 80,
+      }
+    ]
+
   const columns: ColumnProps<any>[] = [
     {
       dataIndex: 'empName',
@@ -107,96 +185,16 @@ export default observer(function TestingResultReview() {
           </span>
       }
     },
-    ...appStore.hisMatch({
-      map: {
-        'hj': [
-          {
-            dataIndex: 'totalScores',
-            title: '答题',
-            align: 'center',
-            width: 70,
-          },
-          {
-            dataIndex: 'totalScores',
-            title: '成绩/补考成绩',
-            align: 'center',
-            width: 70,
-          },
-          {
-            dataIndex: 'totalScores',
-            title: '最终成绩',
-            align: 'center',
-            width: 70,
-          }
-        ],
-        'other': [
-          {
-            dataIndex: 'totalScores',
-            title: '最终成绩',
-            align: 'center',
-            width: 70,
-          },
-          {
-            dataIndex: 'passedDesc',
-            title: '及格',
-            align: 'center',
-            width: 70,
-            render: (text: string) => {
-              if (text == '不及格')
-                return <span style={{ color: 'red' }}>{text}</span>
-              else
-                return <span>{text}</span>
-            }
-          },
-          {
-            dataIndex: 'finishTime',
-            title: '答题时间',
-            align: 'center',
-            width: 180,
-            render: (finishTime: string) => {
-              if (finishTime) return finishTime
-              return '未答题'
-            }
-          },
-          {
-            dataIndex: 'resultPublishDesc',
-            title: '发布成绩',
-            align: 'center',
-            width: 60
-          },
-          {
-            dataIndex: 'creditDesc',
-            title: '学分',
-            align: 'center',
-            width: 120,
-            render: (text: string) => {
-              if (text) return text
-              return '0'
-            }
-          },
-          {
-            dataIndex: 'classHoursDesc',
-            title: '学时',
-            align: 'center',
-            width: 100,
-          },
-          {
-            dataIndex: 'scoreEmpName',
-            title: '评分人',
-            align: 'center',
-            width: 80,
-          }
-        ]
-      }
-    }),
+    ...tableDateSpecial,
     {
       title: '操作',
       dataIndex: 'resitCetpId',
       width: 100,
       render: (text: string, record: any) => {
+        const btnText = editable ? '立即评分' : '查看成绩'
         return <DoCon>
-          <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span>
-          {appStore.HOSPITAL_ID === 'hj' && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
+          <span onClick={() => handleAnwserSheetReview(record)}>{btnText}</span>
+          {appStore.HOSPITAL_ID == 'hj' && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
         </DoCon>
       }
     }
@@ -295,7 +293,7 @@ export default observer(function TestingResultReview() {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    if (appStore.HOSPITAL_ID === 'hj') {
+    if (appStore.HOSPITAL_ID === 'hj' && !appStore.queryObj.editable) {
       return (
         <BaseTabs
           config={

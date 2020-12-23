@@ -68,7 +68,7 @@ export default observer(function ExamAnalyse() {
       width: 200,
       align: "center",
       render: (text: any, record: any) => {
-        return <span>{`${text} — ${record.endTime}`}</span>
+        return <span>{text ? `${text} — ${record.endTime}` : '--'}</span>
       }
     }
   ]
