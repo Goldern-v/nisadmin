@@ -200,10 +200,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             let thExpain = '' as any
 
             if (timeData[i].operatorStatus == 'save') {
-              operatorName = '***'
+              if (data.anonymous == true)
+                operatorName = '***'
+
               title = `保存：${data.badEventName}事件`
             } else if (timeData[i].operatorStatus == 'nurse_submit') {
-              operatorName = '***'
+              if (data.anonymous == true)
+                operatorName = '***'
+
               setReportDept({
                 code: operatorWardCode,
                 name: operatorWardName
