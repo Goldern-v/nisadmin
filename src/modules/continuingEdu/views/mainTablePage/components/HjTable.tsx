@@ -115,6 +115,39 @@ export default observer(function HjTable(props: Props) {
           align: "center"
         }
       ])
+    }  else if (stepViewModal.getParentsName === "集中培训") {
+      return setDataList([
+        {
+          title: "培训对象（必修√/选修△）",
+          children: setTableConfig()
+        },
+        {
+          title: "管理人员",
+          children: [
+            {
+              title: "讲师",
+              dataIndex: "teachers",
+              width: 130,
+              align: "center"
+            }
+          ]
+        },
+        {
+          title: "地址",
+          dataIndex: "address",
+          width: 130,
+          align: "center"
+        },
+        {
+          title: "通知",
+          dataIndex: "ifSendMessage",
+          width: 50,
+          align: "center",
+          render(ifSendMessage: any) {
+            return <span>{ifSendMessage == 1 ? "自动" : "无"}</span>;
+          }
+        }
+      ])
     } else {
       return setDataList([
         {
@@ -338,6 +371,10 @@ export default observer(function HjTable(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
+                },
+                {
+                  text: "修改",
+                  function: handReWrite
                 },
                 {
                   text: "复制",
