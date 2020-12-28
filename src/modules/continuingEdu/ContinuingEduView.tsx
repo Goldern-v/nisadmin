@@ -59,6 +59,10 @@ import WrongQuestionBank_hj2 from "../科室考试资源库/views/WrongQuestionB
 import 科室考试资源库 from "src/modules/科室考试资源库/QuestionBankManagement";
 //厚街审核管理
 import 审核集中管理 from './views/审核集中管理/审核集中管理'
+//厚街学习资源
+import 学习的网站链接 from './views/学习资源/学习的网站链接/学习的网站链接'
+import 循证护理实践证据集合 from './views/学习资源/循证护理实践证据集合/循证护理实践证据集合'
+import 应急预案学习 from './views/学习资源/应急预案学习/应急预案学习'
 
 import { appStore, authStore } from "src/stores";
 
@@ -259,6 +263,27 @@ export default function ContinuingEdu(props: Props) {
     ...appStore.hisMatch({
       map: {
         hj: [
+          // {
+          //   title: "学习资源+",
+          //   icon: <TKGL />,
+          //   children: [
+          //     {
+          //       title: "学习的网站链接",
+          //       path: "/continuingEdu/学习的网站链接",
+          //       component: 学习的网站链接
+          //     },
+          //     {
+          //       title: "循证护理实践证据集合",
+          //       path: "/continuingEdu/循证护理实践证据集合",
+          //       component: 循证护理实践证据集合
+          //     },
+          //     {
+          //       title: "应急预案学习",
+          //       path: "/continuingEdu/应急预案学习",
+          //       component: 应急预案学习
+          //     }
+          //   ]
+          // },
           {
             title: "资源库",
             icon: <TKGL />,

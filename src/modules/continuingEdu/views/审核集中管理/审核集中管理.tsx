@@ -21,8 +21,8 @@ export default observer(function 审核集中管理() {
   const tabList = [
     { name: '学习计划审核', id: '1' },
     { name: '资质准入审核', id: '2' },
-    { name: '学员笔记审核', id: '3' },
-    { name: '经典案例审核', id: '4' },
+    // { name: '学员笔记审核', id: '3' },
+    // { name: '经典案例审核', id: '4' },
   ]
 
   const currentView = () => {
