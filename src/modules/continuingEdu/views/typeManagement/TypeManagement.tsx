@@ -3,7 +3,7 @@ import React, { useState, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Tooltip } from "antd";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import TypeAddModal from "./modal/TypeAddModal";
 import { typeManagementModal } from "./TypeManagementModal";
 interface Props {}
@@ -51,7 +51,7 @@ export default observer(function TypeManagement(props: Props) {
       align: "center",
       render(text: any, record: any) {
         return (
-          record.level == 2 && (
+          record.level !== 2 ? '' : appStore.HOSPITAL_ID !== 'hj' && record.level == 2 || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment && record.level == 2) ? (
             <DoCon>
               <span
                 onClick={() => {
@@ -74,7 +74,7 @@ export default observer(function TypeManagement(props: Props) {
                 管理
               </span>
             </DoCon>
-          )
+          ) : <span>暂无操作权限</span>
         );
       }
     }
@@ -127,7 +127,7 @@ export default observer(function TypeManagement(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">类型管理</div>
             <div className="topHeaderButton">
-              <Button onClick={() => setEditVisible(true)}>添加类型</Button>
+            {(appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) &&<Button onClick={() => setEditVisible(true)}>添加类型</Button>}
             </div>
           </div>
         </TopHeader>

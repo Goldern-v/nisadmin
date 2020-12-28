@@ -69,8 +69,8 @@ export default observer(function MenuSettings(props: Props) {
           {`${str1}...`}
         </Tooltip>
       ) : (
-        str
-      );
+          str
+        );
     } else {
       return "--";
     }
@@ -179,10 +179,11 @@ export default observer(function MenuSettings(props: Props) {
       align: "center",
       render(text: any, record: any, index: number) {
         return (
-          <DoCon>
-            <span onClick={() => saveOrUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-          </DoCon>
+          (appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) ?
+            (<DoCon>
+              <span onClick={() => saveOrUpload(record)}>修改</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </DoCon>) : <span>暂无操作权限</span>
         );
       }
     }
@@ -293,12 +294,16 @@ export default observer(function MenuSettings(props: Props) {
                 </Button>
               )}
               <Button onClick={getTableData}>刷新</Button>
-              <Button type="primary" onClick={() => saveOrUpload()}>
-                添加一级菜单
+              {(appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) && (
+                <span>
+                  <Button type="primary" onClick={() => saveOrUpload()}>
+                    添加一级菜单
               </Button>
-              <Button type="primary" onClick={addSecond}>
-                添加二级菜单
+                  <Button type="primary" onClick={addSecond}>
+                    添加二级菜单
               </Button>
+                </span>
+              )}
             </div>
           </div>
         </TopHeader>
