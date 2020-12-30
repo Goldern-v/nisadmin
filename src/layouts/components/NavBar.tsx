@@ -13,6 +13,7 @@ import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { navConfig as navConfig_nys } from "./navConfig_nys";
 import { navConfig as navConfig_dzlc } from "./navConfig_dzlc";
+import { navConfig as navConfig_gzhd } from "./navConfig_gzhd";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -21,7 +22,7 @@ const toNavLink = (path: string | undefined) => {
   // return path ? () => appStore.history.push(path) : () => { };
 };
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const itemHidden = (hidden?: any) => {
   if (!hidden) return false;
@@ -32,7 +33,7 @@ const itemHidden = (hidden?: any) => {
   }
 };
 
-const MenuCon = observer(function(props: {
+const MenuCon = observer(function (props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -110,6 +111,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_nys;
     } else if (appStore.HOSPITAL_ID == "dzlc") {
       return navConfig_dzlc;
+    } else if (appStore.HOSPITAL_ID == 'gzhd') {
+      return navConfig_gzhd
     }
     return navConfig;
   })();
@@ -203,8 +206,8 @@ export default observer(function NavBar(props: any) {
                 item.children ? (
                   <MenuCon list={item.children} style={item.menuStyle} />
                 ) : (
-                  <div />
-                )
+                    <div />
+                  )
               }
               key={index}
             >

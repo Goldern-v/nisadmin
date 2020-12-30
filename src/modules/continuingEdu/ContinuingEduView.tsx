@@ -263,27 +263,27 @@ export default function ContinuingEdu(props: Props) {
     ...appStore.hisMatch({
       map: {
         hj: [
-          // {
-          //   title: "学习资源+",
-          //   icon: <TKGL />,
-          //   children: [
-          //     {
-          //       title: "学习的网站链接",
-          //       path: "/continuingEdu/学习的网站链接",
-          //       component: 学习的网站链接
-          //     },
-          //     {
-          //       title: "循证护理实践证据集合",
-          //       path: "/continuingEdu/循证护理实践证据集合",
-          //       component: 循证护理实践证据集合
-          //     },
-          //     {
-          //       title: "应急预案学习",
-          //       path: "/continuingEdu/应急预案学习",
-          //       component: 应急预案学习
-          //     }
-          //   ]
-          // },
+          {
+            title: "学习资源+",
+            icon: <TKGL />,
+            children: [
+              {
+                title: "学习的网站链接",
+                path: "/continuingEdu/学习的网站链接",
+                component: 学习的网站链接
+              },
+              {
+                title: "循证护理实践证据集合",
+                path: "/continuingEdu/循证护理实践证据集合",
+                component: 循证护理实践证据集合
+              },
+              {
+                title: "应急预案学习",
+                path: "/continuingEdu/应急预案学习",
+                component: 应急预案学习
+              }
+            ]
+          },
           {
             title: "资源库",
             icon: <TKGL />,

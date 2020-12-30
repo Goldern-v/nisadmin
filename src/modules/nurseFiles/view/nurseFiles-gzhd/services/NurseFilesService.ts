@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
+import { isSelf } from "../views/nurseFileDetail/utils/isSelf";
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -38,8 +39,21 @@ export default class NurseFilesService extends BaseApiService {
       return res;
     });
   }
+  // 1查找护士基本信息 个人
+  public async nurseInformationSelf(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    console.log(this, 'thisthis')
+    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
+    return this.post(`/nurseInformation/saveOrUpdate`, obj)
+  }
+  // 1-1护士基本信息信息更新PC
+  public async saveOrUpdatePc(obj: any) {
     return this.post(`/nurseInformation/saveOrUpdatePC`, obj);
   }
   // 2 查找护士工作经历 //护长
@@ -291,6 +305,30 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/auditeNurseList/excel`, this.stringify(obj), {
       responseType: "blob"
     });
+  }
+
+  /** 统一列表 */
+  public commonfindByEmpNoSubmit(type: string, empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    if (isSelf()) {
+      return this.get(`/${type}/findByEmpNo/${empNo}`).then((res) => {
+        nurseFileDetailViewModal.pageSpinning = false
+        return res
+      })
+    } else {
+      return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
+        nurseFileDetailViewModal.pageSpinning = false
+        return res
+      })
+    }
+  }
+  /** 统一更新 */
+  public async commonSaveOrUpdate(type: string, obj: any) {
+    return this.post(`/${type}/saveOrUpdate`, obj)
+  }
+  /** 统一删除 */
+  public async commonDelById(type: string, id: any) {
+    return this.get(`/${type}/delById/${id}`)
   }
 }
 

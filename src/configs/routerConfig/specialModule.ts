@@ -71,8 +71,7 @@ const homeRouter = (view: any): any[] => {
 if (
   process.env.REACT_APP_HOSPITAL_ID == "hj" ||
   process.env.REACT_APP_HOSPITAL_ID == "ys" ||
-  process.env.REACT_APP_HOSPITAL_ID == "gyd" ||
-  process.env.REACT_APP_HOSPITAL_ID == "gzhd"
+  process.env.REACT_APP_HOSPITAL_ID == "gyd"
 ) {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
@@ -188,8 +187,13 @@ if (
       NurseFileDetailView_gzhd,
       layouts.MainLayout
     ),
+    setLayout(
+      "/selfNurseFile/:type",
+      NurseFileDetailView_gzhd,
+      layouts.MainLayout
+    ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
-    ...homeRouter(HomeView_wh),
+    ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
     setLayout(

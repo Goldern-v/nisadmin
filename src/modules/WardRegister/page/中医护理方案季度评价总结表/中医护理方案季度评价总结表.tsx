@@ -68,6 +68,25 @@ export default observer(function 中医护理方案季度评价总结表(props: 
     }
   };
 
+  const zyzdFilterItem = createFilterItem(
+    "中医诊断",
+    itemConfigList,
+    [],
+    () => {
+      setPopoverVisible(false)
+      setPageOptions({ ...pageOptions, pageIndex: 1 })
+    }
+  )
+
+  const popoverContent = <div>
+    <zyzdFilterItem.Component />
+  </div>
+
+  /** 查询参数 */
+  const paramMap = {
+    ...zyzdFilterItem.value
+  }
+
   /** 选中的blockObj */
   const selectedBlockObj = blockList.find(
     (item: any) => item.id == selectedBlockId
@@ -232,7 +251,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
     dataSource,
     selectedRowKeys,
     setSelectedRowKeys,
-    paramMap: {},
+    paramMap,
     setRangeConfigList,
     dataMap,
     setDataMap
@@ -289,6 +308,18 @@ export default observer(function 中医护理方案季度评价总结表(props: 
       />
       <span className="label">科室</span>
       <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+      {/* {popoverContent && (
+        <Popover
+          placement="bottom"
+          title={"筛选条件"}
+          visible={popoverVisible}
+          content={popoverContent}
+          trigger="hover"
+          onVisibleChange={visible => setPopoverVisible(visible)}
+        >
+          <Button>筛选</Button>
+        </Popover>
+      )} */}
       <Place />
       {selectedBlockId && (
         <React.Fragment>
@@ -321,24 +352,24 @@ export default observer(function 中医护理方案季度评价总结表(props: 
               columns={columns.filter((item: any) => item)}
               surplusHeight={surplusHeight}
               surplusWidth={300}
-              useOuterPagination
-              // pagination={{
-              //   onChange: (pageIndex: number) => {
-              //     setPageOptions({ ...pageOptions, pageIndex })
-              //   },
-              //   onShowSizeChange: (pageIndex: number, pageSize: number) => {
-              //     setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-              //   },
-              //   pageSizeOptions: ['20', '30', '40', '50', '100'],
-              //   current: pageOptions.pageIndex,
-              //   pageSize: pageOptions.pageSize,
-              //   total: total
-              // }}
-              rowClassName={(record: any, idx: number) => {
-                if (cellDisabled(record)) return 'disabled-row'
+            // useOuterPagination
+            // pagination={{
+            //   onChange: (pageIndex: number) => {
+            //     setPageOptions({ ...pageOptions, pageIndex })
+            //   },
+            //   onShowSizeChange: (pageIndex: number, pageSize: number) => {
+            //     setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
+            //   },
+            //   pageSizeOptions: ['20', '30', '40', '50', '100'],
+            //   current: pageOptions.pageIndex,
+            //   pageSize: pageOptions.pageSize,
+            //   total: total
+            // }}
+            // rowClassName={(record: any, idx: number) => {
+            //   if (cellDisabled(record)) return 'disabled-row'
 
-                return ''
-              }}
+            //   return ''
+            // }}
             />
           </div>
           <div className="sub-part">
@@ -347,6 +378,8 @@ export default observer(function 中医护理方案季度评价总结表(props: 
               onDataChange={(newDataMap: any) => setDataMap(newDataMap)} />
             <div style={{ textAlign: 'right' }}>
               <Pagination
+                size="small"
+                showSizeChanger
                 onChange={(pageIndex: number) =>
                   setPageOptions({ ...pageOptions, pageIndex })}
                 onShowSizeChange={(pageIndex: number, pageSize: number) =>
