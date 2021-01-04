@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Col, Input, InputNumber, Modal, Row } from 'antd'
+import { Col, Input, InputNumber, message, Modal, Row } from 'antd'
+import { localityService } from './../api/LocalityService'
 
 const TextArea = Input.TextArea
 
@@ -15,28 +16,70 @@ export default function EditModal(props: Props) {
   const { visible, onOk, onCancel, originParams } = props
   const [editParams, setEditParams] = useState({
     name: '',
-    link: '',
+    websideUrl: '',
     sort: 1,
-    remark: ''
+    briefIntroduction: ''
   } as any)
 
   const [loading, setLoading] = useState(false)
 
   const handleOk = () => {
-    console.log('saving data...')
+    let errMsg = [] as string[]
+    Object.keys(editParams).map((key: string) => {
+      let val = editParams[key]
+      if (typeof val === 'string' && val.trim() === '') {
+        switch (key) {
+          case 'name':
+            errMsg.push('名称不能为空')
+            break
+          case 'websideUrl':
+            errMsg.push('网址不能为空')
+            break
+        }
+      }
+    })
+
+    if (errMsg.length > 0) {
+      Modal.warn({
+        title: '提示',
+        content: <div>
+          <React.Fragment>
+            {errMsg.map((str: string, idx: number) => <div key={idx}>{str}</div>)}
+          </React.Fragment>
+        </div>
+      })
+      return
+    }
+
+    setLoading(true)
+    localityService
+      .addOrUpdate(editParams)
+      .then(res => {
+        setLoading(false)
+        message.success('操作成功')
+        onOk && onOk()
+      },
+        () => setLoading(false))
+
+    setLoading(false)
   }
 
   useEffect(() => {
     if (visible) {
       if (Object.keys(originParams).length > 0) {
-        setEditParams(originParams)
+        const {
+          id, name, websideUrl, briefIntroduction, sort,
+        } = originParams
+        setEditParams({
+          id, name, websideUrl, briefIntroduction, sort,
+        })
       }
     } else {
       setEditParams({
         name: '',
-        link: '',
+        websideUrl: '',
         sort: 1,
-        remark: ''
+        briefIntroduction: ''
       })
     }
   }, [visible])
@@ -62,9 +105,9 @@ export default function EditModal(props: Props) {
         <Col span={4}>网址：</Col>
         <Col span={20}>
           <Input
-            value={editParams.link}
+            value={editParams.websideUrl}
             onChange={(e) =>
-              setEditParams({ ...editParams, link: e.target.value })} />
+              setEditParams({ ...editParams, websideUrl: e.target.value })} />
         </Col>
       </Row>
       <Row className="edit-row">
@@ -80,9 +123,9 @@ export default function EditModal(props: Props) {
         <Col span={4}>简介：</Col>
         <Col span={20}>
           <TextArea
-            value={editParams.remark}
+            value={editParams.briefIntroduction}
             onChange={(e) =>
-              setEditParams({ ...editParams, remark: e.target.value })} />
+              setEditParams({ ...editParams, briefIntroduction: e.target.value })} />
         </Col>
       </Row>
     </Wrapper>
@@ -91,6 +134,9 @@ export default function EditModal(props: Props) {
 const Wrapper = styled.div`
   .edit-row{
     margin-bottom: 10px;
+    &>*{
+      line-height: 32px;
+    }
     &:last-of-type{
       margin-bottom: 0;
     }

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { Select } from "src/vendors/antd";
-export interface Props {}
+export interface Props { }
 
 export default function FilterItem(props: any) {
   const { configList, setSelectedItem, selectedItem, keyWord } = props;
@@ -42,30 +42,40 @@ export function createFilterItem(
   rangConfigList: any[],
   changeCallBack: () => void
 ) {
-  let list = [];
+
+  let list = []
+
   if (keyWord == "班次") {
     list = rangConfigList.map((item: any) => item.itemCode);
   } else {
     try {
-      list = itemConfigList
+      let target = itemConfigList
         .find((item: any) => item.itemCode == keyWord)
-        .options.split(";");
-    } catch (error) {}
+
+      if (target.filterMap && target.filterMap.length >= 0) {
+        list = target.filterMap
+      } else {
+        list = target.options.split(";")
+      }
+    } catch (error) { }
   }
 
   const configList = [
     { label: "全部", value: "全部" },
     ...list.map((item: string) => ({ label: item, value: item }))
-  ];
-  const [selectedItem, setSelectedItem] = useState("全部");
-  const [initEd, setInitEd] = useState(false);
+  ]
+
+  const [selectedItem, setSelectedItem] = useState("全部")
+  const [initEd, setInitEd] = useState(false)
 
   useEffect(() => {
-    setInitEd(true);
-  }, []);
+    setInitEd(true)
+  }, [])
+
   useEffect(() => {
-    initEd && changeCallBack && changeCallBack();
-  }, [selectedItem]);
+    initEd && changeCallBack && changeCallBack()
+  }, [selectedItem])
+
   return {
     Component: () => (
       <FilterItem

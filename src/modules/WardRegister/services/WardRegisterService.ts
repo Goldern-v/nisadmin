@@ -176,6 +176,19 @@ export default class WardRegisterService extends BaseApiService {
 
     return this.post(`/schShiftSetting/getListByDate`, params)
   }
+
+  /**QCRF.2.12、登记本数据：获取对应项目的已填写数据列表 */
+  public distinctItemData(
+    registerCode: string,
+    params: {
+      startDate: string,
+      endDate: string,
+      blockId: string | number,
+      itemCodes: string[]
+    }
+  ) {
+    return this.post(`/qcRegisterData/${registerCode}/distinctItemData`, params)
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();

@@ -308,7 +308,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
       />
       <span className="label">科室</span>
       <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-      {/* {popoverContent && (
+      {popoverContent && (
         <Popover
           placement="bottom"
           title={"筛选条件"}
@@ -319,7 +319,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
         >
           <Button>筛选</Button>
         </Popover>
-      )} */}
+      )}
       <Place />
       {selectedBlockId && (
         <React.Fragment>

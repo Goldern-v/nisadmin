@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input } from 'antd'
+import { Button, Input, Modal } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import EditModal from './components/EditModal'
+import { localityService } from './api/LocalityService'
+import { message } from 'antd/es'
+import { authStore } from 'src/stores'
 
 export interface Props { }
 
@@ -15,12 +18,10 @@ export default function 学习的网站链接() {
     pageIndex: 1,
   })
 
-  const [tableData, setTableData] = useState([
-    { name: 'ok' }
-  ] as any[])
+  const [tableData, setTableData] = useState([] as any[])
 
   const [totalCount, setTotalCount] = useState(0)
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
 
   const [editVisible, setEditVisible] = useState(false)
   const [editRecord, setEditRecord] = useState({} as any)
@@ -36,23 +37,29 @@ export default function 学习的网站链接() {
     },
     {
       title: '目录',
-      dataIndex: '目录',
+      dataIndex: 'name',
       align: "left",
       width: 280,
       render: (text: any, record: any, index: number) => {
         return <div>
-          <div className="">Cochrane图书馆（CL）</div>
+          <div className="">{record.name}</div>
           <div>
             <span>网址：</span>
-            <a href="https://www.baidu.com" target="_blank" style={{ display: 'inline' }}>www.baidu.com</a>
+            <a href={record.websideUrl} target="_blank" style={{ display: 'inline' }}>{record.websideUrl}</a>
           </div>
         </div>
       }
     },
     {
       title: '简介',
-      dataIndex: '简介',
+      dataIndex: 'briefIntroduction',
       align: "left",
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      align: "center",
+      width: 80,
     },
     {
       title: '操作',
@@ -60,10 +67,13 @@ export default function 学习的网站链接() {
       align: "center",
       width: 100,
       render: (text: any, record: any, index: number) => {
-        return <DoCon>
-          <span>删除</span>
-          <span>编辑</span>
-        </DoCon>
+        if (authStore.isNotANormalNurse)
+          return <DoCon>
+            <span onClick={() => handleEdit(record)}>编辑</span>
+            <span onClick={() => handleDelete(record)}>删除</span>
+          </DoCon>
+
+        return <span></span>
       }
     }
   ]
@@ -77,12 +87,42 @@ export default function 学习的网站链接() {
   }
 
   const getTableData = (newQuery: any) => {
-    console.log('query data')
+    setLoading(true)
+
+    localityService
+      .queryPageList(newQuery)
+      .then(res => {
+        setLoading(false)
+        if (res.data) {
+          setTotalCount(res.data.totalCount || 0)
+          setTableData(res.data.list)
+        }
+      }, () => setLoading(false))
   }
 
-  useEffect(() => {
-    getTableData(query)
-  }, [query])
+  const handleEdit = (record: any) => {
+    setEditRecord(record)
+    setEditVisible(true)
+  }
+
+  const handleDelete = (record: any) => {
+    if (record.id)
+      Modal.confirm({
+        title: '删除',
+        content: '是否删除选中项目？',
+        onOk: () => {
+          setLoading(true)
+          localityService
+            .deleteById(record.id)
+            .then(res => {
+              setLoading(false)
+              message.success('操作成功')
+              getTableData(query)
+            }, () => setLoading(false))
+
+        }
+      })
+  }
 
   const handleSearch = () => {
     setQuery({ ...query, pageIndex: 1 })
@@ -91,6 +131,10 @@ export default function 学习的网站链接() {
   const handleAdd = () => {
     setEditVisible(true)
   }
+
+  useEffect(() => {
+    getTableData(query)
+  }, [query])
 
   return <Wrapper>
     <HeaderCon>
@@ -113,7 +157,7 @@ export default function 学习的网站链接() {
       >
         搜索
       </Button>
-      <Button className="sub" onClick={handleAdd}>添加</Button>
+      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTable

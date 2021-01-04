@@ -266,6 +266,7 @@ export default function ContinuingEdu(props: Props) {
           {
             title: "学习资源+",
             icon: <TKGL />,
+            hide: !appStore.isDev,
             children: [
               {
                 title: "学习的网站链接",

@@ -15,9 +15,9 @@ import { ScrollBox, PageTitle } from 'src/components/common'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function ProblemSummary(props: any) {
-  const [tableData, setTableData] = useState([])
+  // const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  const [showType, setShowType] = useState(false)
+  // const [showType, setShowType] = useState(false)
   const [effect, setEffect] = useState(true)
 
   const [filterObj, setFilterObj] = useState({
@@ -72,13 +72,13 @@ export default observer(function ProblemSummary(props: any) {
             <div className='label'>月份：</div>
             <div className='content'>
               <Select
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 value={filterObj.month}
                 onChange={(value: any) => setFilterObj({ ...filterObj, month: value })}
               >
-                {numberToArray(11).map((item) => (
+                {numberToArray(12).map((item) => (
                   <Select.Option value={item + 1} key={item}>
-                    {item + 1}
+                    {item + 1}月
                   </Select.Option>
                 ))}
               </Select>

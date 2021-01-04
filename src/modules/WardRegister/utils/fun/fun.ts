@@ -140,15 +140,18 @@ export function getFun(context: any) {
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
 
+    let startDate = date[0] ? date[0].format("YYYY-MM-DD") : ""
+    let endDate = date[1] ? date[1].format("YYYY-MM-DD") : ""
+    let _blockId = selectedBlockId || blockId
+
     let params = {
-      startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-      endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+      startDate,
+      endDate,
       range: paramMap["班次"] || '',
-      blockId: selectedBlockId || blockId,
+      blockId: _blockId,
       paramMap: _paramsMap,
       ...pageOptions
     } as any
-
 
     wardRegisterService
       .getPage(registerCode, params)
@@ -156,16 +159,15 @@ export function getFun(context: any) {
         setPageLoading(false)
         if (!res.data) return
 
-        // console.log(
-        //   thMerge(res.data.itemConfigList),
-        //   "thMerge(res.data.itemConfigList)"
-        // );
-        // console.log(res, "res");
-
         let newList = res.data.itemDataPage.list || []
 
         setTotal(res.data.itemDataPage.totalCount);
-        setItemConfigList(thMerge(res.data.itemConfigList));
+
+        settingItemConfigList(
+          res.data.itemConfigList,
+          { startDate, endDate, blockId: _blockId }
+        )
+
         setRangeConfigList(res.data.rangeConfigList);
 
         setDataMap && setDataMap(res.data.dataMap || {})
@@ -185,11 +187,52 @@ export function getFun(context: any) {
             setDataSource(newList.map((item: any) => ({ ...item, modified: false })))
           }
         })
-      });
+      })
 
     if (registerCode === 'QCRG_02')
       getMsgList()
   };
+
+  /**设置itemConfigList
+   * 有时需要获取异步的筛选数据
+   */
+  const settingItemConfigList = (newItemConfigList: any, baseParams: any) => {
+    let filterAsyncList = {
+      'QCRG_15_3': ['中医诊断']
+    } as any
+
+    let filterCode = Object.keys(filterAsyncList)
+      .find((code: string) => registerCode == code)
+
+    if (filterCode) {
+      let filterList = filterAsyncList[filterCode]
+      setPageLoading(true)
+      wardRegisterService
+        .distinctItemData(
+          registerCode, {
+          ...baseParams,
+          itemCodes: filterList
+        })
+        .then(res => {
+          let finalItemCfg = JSON.parse(JSON.stringify(newItemConfigList))
+          if (res.data) {
+            for (let i = 0; i < filterList.length; i++) {
+              let key = filterList[i]
+              if (Object.keys(res.data).indexOf(key) >= 0) {
+                let target = finalItemCfg.find((cfgItem: any) => cfgItem.itemCode === key)
+                if (target) target.filterMap = res.data[key] || null
+              }
+            }
+          }
+
+          setItemConfigList(thMerge(finalItemCfg))
+          setPageLoading(false)
+        }, () => setPageLoading(false))
+
+    } else {
+      setItemConfigList(thMerge(newItemConfigList))
+    }
+  }
 
   /**获取提醒列表 */
   const getMsgList = (showLoading = false) => {
