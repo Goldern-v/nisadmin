@@ -9,8 +9,9 @@ import { observer } from "mobx-react-lite";
 import moment from "moment";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
+import { appStore } from "src/stores";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
@@ -114,6 +115,16 @@ export default observer(function Step5() {
               </tr>
             </React.Fragment>
           )}
+          {appStore.HOSPITAL_ID == 'hj' &&
+            <tr>
+              <td className="key">院外讲师：</td>
+              <td className="value">
+                {pxStepViewModal.stepData2.ywTeacherList
+                  .map((item: any) => item.label)
+                  .join("，")}
+              </td>
+            </tr>
+          }
           <tr>
             <td className="key">讲师：</td>
             <td className="value">
@@ -128,47 +139,47 @@ export default observer(function Step5() {
               <td className="value">中医类</td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">类&nbsp;&nbsp;别：</td>
-              <td className="value">非中医类</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">类&nbsp;&nbsp;别：</td>
+                <td className="value">非中医类</td>
+              </tr>
+            )}
           {pxStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
               <td className="key">学员学分：</td>
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    pxStepViewModal.stepData2.studentCreditType
+                  pxStepViewModal.stepData2.studentCreditType
                   ]
                 }{" "}
                 {pxStepViewModal.stepData2.studentCredit} 分
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学分：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学分：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           {pxStepViewModal.stepData2.hasTeacherCredit == 1 ? (
             <tr>
               <td className="key">讲师学分：</td>
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    pxStepViewModal.stepData2.teacherCreditType
+                  pxStepViewModal.stepData2.teacherCreditType
                   ]
                 }{" "}
                 {pxStepViewModal.stepData2.teacherCredit} 分
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">讲师学分：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">讲师学分：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           {pxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
@@ -177,11 +188,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学时：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学时：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           {pxStepViewModal.stepData2.hasTeacherClassHours == 1 ? (
             <tr>
               <td className="key">讲师学时：</td>
@@ -190,11 +201,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">讲师学时：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">讲师学时：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
@@ -238,12 +249,12 @@ export default observer(function Step5() {
                                 alt=""
                               />
                             ) : (
-                              <img
-                                src={getFilePrevImg(item.path)}
-                                className="type-img"
-                                alt=""
-                              />
-                            )}
+                                <img
+                                  src={getFilePrevImg(item.path)}
+                                  className="type-img"
+                                  alt=""
+                                />
+                              )}
 
                             <div className="name">{item.name}</div>
                             <div className="size">{item.size}</div>

@@ -22,7 +22,7 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
-export interface Props {}
+export interface Props { }
 import { appStore } from "src/stores";
 const { TextArea } = Input;
 
@@ -30,7 +30,7 @@ export default observer(function Step1() {
   // 组织方式
   const zzfs =
     appStore.HOSPITAL_ID === "hj" &&
-    allStepViewModal.getParentsName === "集中培训"
+      allStepViewModal.getParentsName === "集中培训"
       ? [{ name: "线下", code: 2 }]
       : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
 
@@ -143,14 +143,13 @@ export default observer(function Step1() {
     selectNurseModal.show({
       checkedUserList: checkedUserList,
       onOkCallBack: (checkedUserList: CheckUserItem[]) => {
-        console.log(checkedUserList, "checkedUserList");
         let userList = checkedUserList.reduce((total: any[], item: any) => {
           return [
             ...total,
-            ...item.userList.map((item: any) => ({
-              label: item.empName,
-              key: item.empNo
-            }))
+            ...item.userList ? item.userList.map((userListItem: any) => ({
+              label: userListItem.empName,
+              key: userListItem.empNo
+            })) : [{ label: item.label, key: item.key }]
           ];
         }, []);
         if (userList.length > 3) {
@@ -294,6 +293,22 @@ export default observer(function Step1() {
             </Form.Field>
           </Col>
 
+          {appStore.HOSPITAL_ID == "hj" && (
+            <Col span={24}>
+              <Form.Field
+                label={`院外讲师`}
+                name="ywTeacherList"
+              >
+                <Select
+                  labelInValue={true}
+                  mode="tags"
+                  style={{ width: "100%" }}
+                  open={false}
+                />
+              </Form.Field>
+            </Col>
+          )}
+
           {appStore.HOSPITAL_ID == "wh" && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
@@ -360,16 +375,16 @@ export default observer(function Step1() {
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
                     {studyTime &&
-                    studyTime !== 0.5 &&
-                    studyTime !== 1 &&
-                    studyTime !== 2 &&
-                    studyTime !== 3 ? (
-                      <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        {studyTime}
-                      </Select.Option>
-                    ) : (
-                      ""
-                    )}
+                      studyTime !== 0.5 &&
+                      studyTime !== 1 &&
+                      studyTime !== 2 &&
+                      studyTime !== 3 ? (
+                        <Select.Option value={studyTime} key={`${studyTime}-`}>
+                          {studyTime}
+                        </Select.Option>
+                      ) : (
+                        ""
+                      )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
@@ -436,16 +451,16 @@ export default observer(function Step1() {
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
                     {studyTime &&
-                    studyTime !== 0.5 &&
-                    studyTime !== 1 &&
-                    studyTime !== 2 &&
-                    studyTime !== 3 ? (
-                      <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        {studyTime}
-                      </Select.Option>
-                    ) : (
-                      ""
-                    )}
+                      studyTime !== 0.5 &&
+                      studyTime !== 1 &&
+                      studyTime !== 2 &&
+                      studyTime !== 3 ? (
+                        <Select.Option value={studyTime} key={`${studyTime}-`}>
+                          {studyTime}
+                        </Select.Option>
+                      ) : (
+                        ""
+                      )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
@@ -485,7 +500,7 @@ export default observer(function Step1() {
                   }}
                   checked={
                     stepViewModal.stepData2.bxNurse.length >=
-                      bxNursing.length && bxNursing.length > 0
+                    bxNursing.length && bxNursing.length > 0
                   }
                 >
                   全选

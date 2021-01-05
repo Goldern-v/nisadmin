@@ -52,9 +52,12 @@ const defaultStepData2 = {
   /** 是否有讲师学时 1有 0无*/
   hasTeacherClassHours: 0,
 
-  // 厚街集中培训添加注意事项
+  // 厚街集中培训
+  /** 添加注意事项*/
   pointsForAttention:
-    "1、严格执行《东莞市厚街医院会议纪律管理办法（试行）》制度，并按照该制度提前十分钟进行签到。2、进出会场时保持有序，避免喧哗嘈杂等不良行为。3、听课期间将手机调至震动状态，保持会场安静。4、请参加听课人员携带学分卡，不得代刷卡行为。5、听课结束时将产生的纸屑、外包装等垃圾带离会场。"
+    "1、严格执行《东莞市厚街医院会议纪律管理办法（试行）》制度，并按照该制度提前十分钟进行签到。2、进出会场时保持有序，避免喧哗嘈杂等不良行为。3、听课期间将手机调至震动状态，保持会场安静。4、请参加听课人员携带学分卡，不得代刷卡行为。5、听课结束时将产生的纸屑、外包装等垃圾带离会场。",
+  /** 院外讲师 */
+  ywTeacherList: []
 };
 
 const defaultStepData5 = {
@@ -166,6 +169,16 @@ class StepViewModal {
         },
         []
       ),
+      ywTeacherList:
+        this.stepData2.ywTeacherList &&
+        this.stepData2.ywTeacherList.reduce((total: any[], item: any) => {
+          return [
+            ...total,
+            {
+              name: item.key
+            }
+          ];
+        }, []),
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
       category: this.stepData2.category,
@@ -226,6 +239,15 @@ class StepViewModal {
         key: item.empNo
       };
     });
+    this.stepData2.ywTeacherList =
+      data.ywTeacherList &&
+      data.ywTeacherList.map((item: any) => {
+        return {
+          label: item.name,
+          key: item.name
+        };
+      });
+
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {
         return {
