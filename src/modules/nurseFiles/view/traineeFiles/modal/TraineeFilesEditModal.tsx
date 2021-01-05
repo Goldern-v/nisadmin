@@ -16,6 +16,7 @@ import moment from "moment";
 import { Rules } from "src/components/Form/interfaces";
 import service from "src/services/api"; //获取科室公共接口
 import { traineeFilesApi } from "../api/TraineeFilesApi"; // 接口
+import { appStore } from "src/stores";
 
 export interface Props {
   visible: boolean;
@@ -41,8 +42,9 @@ export default function TraineeFilesEditModal(props: Props) {
     idCardNo: val => !!val || "身份证号码不能为空",
     phone: val => !!val || "联系电话不能为空",
     isResident: val => !!val || "是否住宿不能为空",
-    studyTime: val => !!val || "实习时间不能为空",
-    studyDeptCode: val => !!val || "实习科室不能为空",
+    studyTime: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习时间不能为空"),
+    studyDeptCode: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习科室不能为空"),
+    是否党员: val => appStore.HOSPITAL_ID == 'gzhd' && (!!val || "党员不能为空"),
     isGroupLeader: val => !!val || "是否组长不能为空",
     address: val => !!val || "家庭住址不能为空",
     emergencyContactPerson: val => !!val || "紧急联系人不能为空",
@@ -87,7 +89,7 @@ export default function TraineeFilesEditModal(props: Props) {
               (item: any) => item.name === data.education
             )
               ? educationList.find((item: any) => item.name === data.education)
-                  .num
+                .num
               : "";
           }
           const {
@@ -157,8 +159,8 @@ export default function TraineeFilesEditModal(props: Props) {
               : "";
             newParams.studyDeptName = newParams.studyDeptName
               ? deptList.find(
-                  (item: any) => item.code === newParams.studyDeptCode
-                ).name
+                (item: any) => item.code === newParams.studyDeptCode
+              ).name
               : "";
             if (params.identifier) {
               newParams.identifier = params.identifier;
@@ -282,6 +284,21 @@ export default function TraineeFilesEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
+          {appStore.HOSPITAL_ID == 'gzhd' &&
+            <Row>
+              <Col span={6} className="label">
+                <span className="mustWrite">*</span> 是否党员:
+              </Col>
+              <Col span={16}>
+                <Form.Field name="是否党员">
+                  <Radio.Group buttonStyle="solid">
+                    <Radio.Button value="1">是</Radio.Button>
+                    <Radio.Button value="0">否</Radio.Button>
+                  </Radio.Group>
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 身份证号码:
@@ -327,7 +344,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 实习时间:
+              <span className={appStore.HOSPITAL_ID == 'gzhd' ? 'displayNone' : "mustWrite"}>*</span> 实习时间:
             </Col>
             <Col span={16}>
               <Form.Field name="studyTime">
@@ -435,5 +452,8 @@ const Wrapper = styled.div`
   .mustWrite {
     color: red !important;
     margin-top: 2px;
+  }
+  .displayNone {
+    display: none;
   }
 `;

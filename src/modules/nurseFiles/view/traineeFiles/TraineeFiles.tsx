@@ -17,6 +17,7 @@ import TraineeFilesEditModal from "./modal/TraineeFilesEditModal"; // 添加修�
 import createModal from "src/libs/createModal";
 import QrcodeSbmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
 import TraineeCheckModal from "./modal/TraineeCheckModal"; //检查实习生填写资料
+import { appStore } from "src/stores";
 
 interface Props {}
 export default observer(function TraineeFiles(props: Props) {
@@ -74,6 +75,12 @@ export default observer(function TraineeFiles(props: Props) {
     {
       title: "学历",
       dataIndex: "education",
+      width: 80,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "是否党员",
+      dataIndex: "是否党员",
       width: 80,
       align: "center"
     },
