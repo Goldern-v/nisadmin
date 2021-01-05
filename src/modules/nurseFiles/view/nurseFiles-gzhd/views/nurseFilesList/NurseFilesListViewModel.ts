@@ -5,6 +5,7 @@ import {
   NurseQuery
 } from "../../services/NurseFilesService";
 import { authStore } from "src/stores";
+import { crrentMonth } from "src/utils/moment/crrentMonth";
 
 const kssxMap: any = {
   全部: "",
@@ -40,7 +41,8 @@ class NurseFilesListViewModel {
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
   @observable public isOpenFilter: boolean = true;
-
+  @observable public jobDate: any = crrentMonth(); //日期
+  @observable public hospitalDate: any = crrentMonth(); //日期
   @action
   public loadNursingList = () => {
     // this.title = newTitle

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Place } from "src/components/common";
-import { Select, Input, Button } from "antd";
+import { Select, Input, Button, DatePicker } from "antd";
 import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import AddNursingModal from "../modal/AddNursingModal";
 import DeptSelect from "src/components/DeptSelect";
@@ -41,14 +41,35 @@ export default observer(function SelectCon(props: any, context: any) {
   return (
     <React.Fragment>
       <Wrapper>
-        <Title>护士档案</Title>
+        {/* <Title>护士档案</Title> */}
         <Place />
+        <span>参加工作时间：</span>
+        <DatePicker.RangePicker
+          allowClear={false}
+          style={{ width: 190, marginRight: "10px" }}
+          value={nurseFilesListViewModel.jobDate}
+          onChange={date => {
+            nurseFilesListViewModel.jobDate = date;
+            nurseFilesListViewModel.loadNursingList();
+          }}
+        />
+        <span>来院时间：</span>
+        <DatePicker.RangePicker
+          allowClear={false}
+          style={{ width: 190, marginRight: "10px" }}
+          value={nurseFilesListViewModel.hospitalDate}
+          onChange={date => {
+            nurseFilesListViewModel.hospitalDate = date;
+            nurseFilesListViewModel.loadNursingList();
+          }}
+        />
+
         <span>科室：</span>
-        <DeptSelect onChange={onChange} />
+        <DeptSelect onChange={onChange} style={{ width: 160, marginRight: "10px" }} />
         <Input
           placeholder="请输入搜索关键字"
           value={nurseFilesListViewModel.filterText}
-          style={{ width: 160 }}
+          style={{ width: 150 }}
           onChange={SearchByText}
         />
         <Button type="primary" onClick={onSearch}>
@@ -70,7 +91,6 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: #333;
   margin-bottom: 15px;
-  input,
   button {
     margin-left: 10px;
   }

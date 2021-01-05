@@ -206,6 +206,12 @@ function AddNursingModal(props: Props) {
             </Select>
           )}
         </Form.Item>
+        <Form.Item {...formItemLayout} label='来院工作时间'>
+          {getFieldDecorator('来院工作时间')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label='职业证书截止日期'>
+          {getFieldDecorator('职业证书截止日期')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
+        </Form.Item>
 
         {/*
         <Form.Item {...formItemLayout}>
