@@ -253,9 +253,8 @@ export default observer(function Step1() {
                   aside="签到时间从 培训开始前半个小时  至 培训结束"
                 >
                   <Select
-                    removeIcon={false}
                     labelInValue={true}
-                    mode="tags"
+                    mode="multiple"
                     style={{ width: "100%" }}
                     open={false}
                   />
