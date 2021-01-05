@@ -3,8 +3,11 @@ import moment from "moment";
 import { fileDownload } from "src/utils/file/file";
 import { nursingEduFilesApi } from "./api/NursingEduFilesApi";
 import service from "src/services/api"; //获取科室公共接口
+import { appStore } from "src/stores";
 
 class NursingEduFilesModal {
+  @observable public showType = 1; //花都小弹窗类型选择
+  @observable public selectdType = ""; //花都类型
   @observable public selectedYear: any = moment(); //年份
   @observable public selectdEdu = ""; //学历
   @observable public selectdSex = ""; //性别
@@ -22,7 +25,8 @@ class NursingEduFilesModal {
       sex: this.selectdSex,
       keyWord: this.keyWord,
       pageIndex: this.pageIndex,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      type: appStore.HOSPITAL_ID == "gzhd" ? this.selectdType : null
     };
   }
 

@@ -8,29 +8,51 @@ import {
   Input,
   Button,
   message as Message,
-  Modal
+  Modal,
+  Radio
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { nursingEduFilesModal } from "./NursingEduFilesModal"; // 仓库数据
 import { nursingEduFilesApi } from "./api/NursingEduFilesApi"; // 接口
 import NursingEditModal from "./modal/NursingEditModal"; // 添加修改弹窗
-
+import { appStore } from "src/stores";
+import HdNursingEditModal from "./modal/HdNursingEditModal"; // 花都添加修改弹窗
 import createModal from "src/libs/createModal";
 import QrcodeSbmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
 import RefresherCheckModal from "./modal/RefresherCheckModal"; //检查进修生填写资料
 
-interface Props {}
+interface Props { }
 export default observer(function NursingEduFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
-
   const qrcodeSbmitModal = createModal(QrcodeSbmitModal);
   const refresherCheckModal = createModal(RefresherCheckModal);
+  const [visible, setVisible] = useState(false);
+  const [hdParams, setHdParams] = useState({} as any);
+  const [hdVisible, setHdVisible] = useState(false);
 
   // 初始化数据
   useEffect(() => {
     nursingEduFilesModal.onload();
   }, []);
+
+  const handleOk = () => {
+    setVisible(true);
+    onCancel();
+  };
+  const onCancel = () => {
+    setHdVisible(false);
+  };
+
+
+  // 添加护士
+  const addNurse = () => {
+    if (appStore.HOSPITAL_ID == "gzhd") {
+      setHdVisible(true)
+    } else {
+      setEditVisible(true)
+    }
+  }
 
   //表格数据
   const columns: any = [
@@ -46,6 +68,12 @@ export default observer(function NursingEduFiles(props: Props) {
       title: "进修编号",
       dataIndex: "identifier",
       width: 100,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "类型",
+      dataIndex: "类型",
+      width: 80,
       align: "center"
     },
     {
@@ -72,9 +100,21 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 100,
       align: "center"
     },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "层级",
+      dataIndex: "层级",
+      width: 80,
+      align: "center"
+    },
     {
       title: "学历",
       dataIndex: "education",
+      width: 80,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "来自单位",
+      dataIndex: "来自单位",
       width: 80,
       align: "center"
     },
@@ -122,6 +162,24 @@ export default observer(function NursingEduFiles(props: Props) {
       render(text: string, record: any) {
         return `${record.studyTimeBegin} ~ ${record.studyTimeEnd}`;
       }
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "项目名称",
+      dataIndex: "项目名称",
+      width: 80,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "进修科目",
+      dataIndex: "进修科目",
+      width: 80,
+      align: "center"
+    },
+    appStore.HOSPITAL_ID == "gzhd" && {
+      title: "进修地点",
+      dataIndex: "进修地点",
+      width: 80,
+      align: "center"
     },
     {
       title: "进修科室一",
@@ -201,7 +259,7 @@ export default observer(function NursingEduFiles(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
@@ -210,12 +268,16 @@ export default observer(function NursingEduFiles(props: Props) {
   const saveOrUpload = (record: any) => {
     setEditParams(record);
     setEditVisible(true);
+    setHdParams(record)
+    setVisible(true);
   };
 
   // 弹窗
   const handleEditCancel = () => {
     setEditVisible(false);
     setEditParams({});
+    setHdParams({})
+    setVisible(false);
   };
   const handleEditOk = () => {
     nursingEduFilesModal.onload();
@@ -227,10 +289,28 @@ export default observer(function NursingEduFiles(props: Props) {
       <PageHeader>
         <LeftIcon> </LeftIcon>
         <RightIcon>
+          {appStore.HOSPITAL_ID == 'gzhd' &&
+            <span>
+              <span>类型：</span>
+              <Select
+                style={{ width: 100 }}
+                value={nursingEduFilesModal.selectdType}
+                onChange={(val: string) => {
+                  nursingEduFilesModal.selectdType = val;
+                  nursingEduFilesModal.pageIndex = 1;
+                  nursingEduFilesModal.onload();
+                }}
+              >
+                <Select.Option value="">全部</Select.Option>
+                <Select.Option value={1}>外出进修生</Select.Option>
+                <Select.Option value={2}>外来进修生</Select.Option>
+              </Select>
+            </span>
+          }
           <span>年份：</span>
           <YearPicker
             allowClear={false}
-            style={{ width: 120 }}
+            style={{ width: 90 }}
             value={nursingEduFilesModal.selectedYear}
             onChange={(year: any) => {
               nursingEduFilesModal.selectedYear = year;
@@ -239,7 +319,7 @@ export default observer(function NursingEduFiles(props: Props) {
           />
           <span>学历：</span>
           <Select
-            style={{ width: 120 }}
+            style={{ width: 90 }}
             value={nursingEduFilesModal.selectdEdu}
             onChange={(val: string) => {
               nursingEduFilesModal.selectdEdu = val;
@@ -256,7 +336,7 @@ export default observer(function NursingEduFiles(props: Props) {
           </Select>
           <span>性别：</span>
           <Select
-            style={{ width: 120 }}
+            style={{ width: 80 }}
             value={nursingEduFilesModal.selectdSex}
             onChange={(val: string) => {
               nursingEduFilesModal.selectdSex = val;
@@ -291,7 +371,7 @@ export default observer(function NursingEduFiles(props: Props) {
           >
             导出
           </Button>
-          <Button onClick={() => setEditVisible(true)}>添加护士</Button>
+          <Button onClick={() => addNurse()}>添加护士</Button>
           <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
           <Button
             onClick={() =>
@@ -324,9 +404,32 @@ export default observer(function NursingEduFiles(props: Props) {
           }}
         />
       </Content>
+      <Modal
+          visible={hdVisible}
+          title='添加进修生'
+          width="460px"
+          onOk={handleOk}
+          onCancel={onCancel}
+        >
+          <Radio.Group
+            value={nursingEduFilesModal.showType}
+            onChange={(e: any) => nursingEduFilesModal.showType = e.target.value}
+          >
+            <Radio value={1} style={{ margin: " 20px 80px 20px 70px" }}>
+              外出进修生
+            </Radio>
+            <Radio value={2}>外来进修生</Radio>
+          </Radio.Group>
+        </Modal>
       <NursingEditModal
         visible={editVisible}
         params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <HdNursingEditModal
+        visible={visible}
+        params={hdParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
