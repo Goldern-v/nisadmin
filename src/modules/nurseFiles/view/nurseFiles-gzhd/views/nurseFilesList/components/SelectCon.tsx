@@ -45,7 +45,7 @@ export default observer(function SelectCon(props: any, context: any) {
         <Place />
         <span>参加工作时间：</span>
         <DatePicker.RangePicker
-          allowClear={false}
+          allowClear
           style={{ width: 190, marginRight: "10px" }}
           value={nurseFilesListViewModel.jobDate}
           onChange={date => {
@@ -55,7 +55,7 @@ export default observer(function SelectCon(props: any, context: any) {
         />
         <span>来院时间：</span>
         <DatePicker.RangePicker
-          allowClear={false}
+          allowClear
           style={{ width: 190, marginRight: "10px" }}
           value={nurseFilesListViewModel.hospitalDate}
           onChange={date => {
