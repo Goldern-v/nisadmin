@@ -65,7 +65,7 @@ function AddNursingModal(props: Props) {
       if (value.goHospitalWorkDate) value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD')
       if (value.zyzsEffectiveUpDate) value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD')
       if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
-      nurseFilesService.saveOrUpdate(value).then((res) => {
+      nurseFilesService.saveOrUpdatePc(value).then((res) => {
         message.success('操作成功')
         nurseFilesListViewModel.loadNursingList()
         handleOk()
