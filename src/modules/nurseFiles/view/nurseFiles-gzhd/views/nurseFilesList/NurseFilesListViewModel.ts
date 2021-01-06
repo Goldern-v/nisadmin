@@ -41,8 +41,8 @@ class NurseFilesListViewModel {
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
   @observable public isOpenFilter: boolean = true;
-  @observable public jobDate: any = crrentMonth(); //日期
-  @observable public hospitalDate: any = crrentMonth(); //日期
+  @observable public jobDate: any = []; //日期
+  @observable public hospitalDate: any = []; //日期
   @action
   public loadNursingList = () => {
     // this.title = newTitle
@@ -57,19 +57,27 @@ class NurseFilesListViewModel {
       pageSize: this.pageSize /**   每页页数 */,
       empName: this.filterText /**   工号 */,
       goHospitalWorkDateStartTime:
-        appStore.HOSPITAL_ID == "gzhd"
+        appStore.HOSPITAL_ID == "gzhd" &&
+        this.hospitalDate &&
+        this.hospitalDate.length > 0
           ? this.hospitalDate[0].format("YYYY-MM-DD")
           : null,
       goHospitalWorkDateEndTime:
-        appStore.HOSPITAL_ID == "gzhd"
+        appStore.HOSPITAL_ID == "gzhd" &&
+        this.hospitalDate &&
+        this.hospitalDate.length > 0
           ? this.hospitalDate[1].format("YYYY-MM-DD")
           : null,
       goWorkTimeStartTime:
-        appStore.HOSPITAL_ID == "gzhd"
+        appStore.HOSPITAL_ID == "gzhd" &&
+        this.jobDate &&
+        this.jobDate.length > 0
           ? this.jobDate[0].format("YYYY-MM-DD")
           : null,
       goWorkTimeEndTime:
-        appStore.HOSPITAL_ID == "gzhd"
+        appStore.HOSPITAL_ID == "gzhd" &&
+        this.jobDate &&
+        this.jobDate.length > 0
           ? this.jobDate[1].format("YYYY-MM-DD")
           : null
     };

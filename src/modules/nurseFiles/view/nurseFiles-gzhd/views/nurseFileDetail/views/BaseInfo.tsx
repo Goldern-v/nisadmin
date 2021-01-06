@@ -13,7 +13,7 @@ import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
@@ -124,10 +124,10 @@ export default observer(function BaseInfo() {
                 },
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                      return {
-                        ['执业证书' + (index + 1)]: item
-                      }
-                    })
+                    return {
+                      ['执业证书' + (index + 1)]: item
+                    }
+                  })
                   : [])
               ],
               allData: info
@@ -184,6 +184,14 @@ export default observer(function BaseInfo() {
         {
           手机号: data.phone,
           家庭住址: data.address
+        },
+        {
+          毕业院校: data.graduateSchool,
+          来院作时间: data.goHospitalWorkDate
+        },
+        {
+          职业证书截止日期: data.zyzsEffectiveUpDate,
+          资格名称: data.qualificationName
         }
       ])
     })
@@ -215,8 +223,8 @@ export default observer(function BaseInfo() {
                 {info && info.nearImageUrl ? (
                   <Zimage className='head-img' src={info && info.nearImageUrl} alt='' />
                 ) : (
-                  <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
-                )}
+                    <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
+                  )}
               </td>
             </tr>
             {tableData.map((obj: any, index: number) => (
@@ -239,8 +247,8 @@ export default observer(function BaseInfo() {
             {info.zyzsUrl ? (
               info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
             ) : (
-              <img src={require('../../../images/证件空态度.png')} alt='' />
-            )}
+                <img src={require('../../../images/证件空态度.png')} alt='' />
+              )}
           </div>
         </ZyzsCon>
       </ScrollCon>
