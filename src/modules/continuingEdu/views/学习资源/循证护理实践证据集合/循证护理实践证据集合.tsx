@@ -6,10 +6,13 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { localityService } from './api/LocalityService'
 import { fileDownload, getFilePrevImg } from 'src/utils/file/file'
+import { appStore, authStore } from 'src/stores'
+import Axios from 'axios'
 
 export interface Props { }
 
 export default function 循证护理实践证据集合() {
+  const { history } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
@@ -53,7 +56,7 @@ export default function 循证护理实践证据集合() {
       align: "left",
       width: 200,
       render: (obj: any, record: any, index: number) => {
-        if (obj.id)
+        if (obj && obj.id)
           return <div
             className="download-item"
             title={`下载 ${obj.name}`}
@@ -61,7 +64,7 @@ export default function 循证护理实践证据集合() {
             <img
               className="file-icon"
               src={getFilePrevImg(obj.path)} />
-            {obj.name}
+            <span>{obj.name}</span>
           </div>
         else
           return <span></span>
@@ -75,9 +78,9 @@ export default function 循证护理实践证据集合() {
       render: (status: number) => {
         switch (status) {
           case 0:
-            return '保存'
-          case 1:
-            return '发布'
+            return '编辑中'
+          case 2:
+            return '已发布'
           default:
             return ''
         }
@@ -87,11 +90,16 @@ export default function 循证护理实践证据集合() {
       title: '操作',
       dataIndex: 'operate',
       align: "center",
-      width: 100,
+      width: 120,
       render: (text: any, record: any, index: number) => {
         return <DoCon>
-          <span onClick={() => handleEdit(record)}>编辑</span>
-          <span onClick={() => handleDelete(record)}>删除</span>
+          <span onClick={() => handleDetail(record)}>查看</span>
+          {authStore.isNotANormalNurse && (
+            <React.Fragment>
+              <span onClick={() => handleEdit(record)}>编辑</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </React.Fragment>
+          )}
         </DoCon>
       }
     }
@@ -117,8 +125,13 @@ export default function 循证护理实践证据集合() {
       .finally(() => setLoading(false))
   }
 
-  const handleEdit = (record: any) => {
+  const handleDetail = (record: any) => {
+    history.push(`/continuingEdu/循证护理记录集合详情?id=${record.id}&title=${record.title}`)
+  }
 
+  const handleEdit = (record: any) => {
+    if (record.id)
+      history.push(`/continuingEdu/循证护理记录集合修改?id=${record.id}`)
   }
 
   const handleDelete = (record: any) => {
@@ -141,16 +154,11 @@ export default function 循证护理实践证据集合() {
   }
 
   const handleDownload = (obj: any) => {
-    console.log(obj)
-    let a = document.createElement("a");
-    let href = obj.path // 创建链接对象
-    a.href = href
-    a.target = '_blank'
-    a.download = obj.name // 自定义文件名
-    document.body.appendChild(a)
-    a.click()
-    window.URL.revokeObjectURL(href)
-    document.body.removeChild(a)// 移除a元素
+    Axios.get(obj.path, { responseType: 'blob' })
+      .then(
+        res => fileDownload(res, obj.name),
+        err => message.error(`${err.name}：${err.message}`)
+      )
   }
 
   useEffect(() => {
@@ -162,7 +170,7 @@ export default function 循证护理实践证据集合() {
   }
 
   const handleAdd = () => {
-
+    history.push('/continuingEdu/循证护理记录集合修改')
   }
 
   return <Wrapper>
@@ -186,7 +194,7 @@ export default function 循证护理实践证据集合() {
       >
         搜索
       </Button>
-      <Button className="sub" onClick={handleAdd}>添加</Button>
+      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTable
@@ -218,10 +226,12 @@ const Wrapper = styled.div`
     cursor: pointer;
     color: #00A680;
     word-break: break-all;
+    &>*{
+      vertical-align: middle;
+    }
   }
   .file-icon{
     width: 12px; 
-    vertical-align: middle;
     margin-right: 5px;
   }
 `
