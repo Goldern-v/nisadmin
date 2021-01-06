@@ -13,6 +13,10 @@ export interface NurseQuery {
   pageIndex: number /**  职务  */;
   pageSize: number /**   每页页数 */;
   empName: string /**   每页页数 */;
+  goHospitalWorkDateStartTime: any;
+  goHospitalWorkDateEndTime: any;
+  goWorkTimeStartTime: any;
+  goWorkTimeEndTime: any;
 }
 
 export default class NurseFilesService extends BaseApiService {
@@ -41,16 +45,16 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 1查找护士基本信息 个人
   public async nurseInformationSelf(empNo: any) {
-    nurseFileDetailViewModal.pageSpinning = true
-    console.log(this, 'thisthis')
-    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`).then((res) => {
-      nurseFileDetailViewModal.pageSpinning = false
-      return res
-    })
+    nurseFileDetailViewModal.pageSpinning = true;
+    console.log(this, "thisthis");
+    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`).then(res => {
+      nurseFileDetailViewModal.pageSpinning = false;
+      return res;
+    });
   }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
-    return this.post(`/nurseInformation/saveOrUpdate`, obj)
+    return this.post(`/nurseInformation/saveOrUpdate`, obj);
   }
   // 1-1护士基本信息信息更新PC
   public async saveOrUpdatePc(obj: any) {
@@ -309,26 +313,26 @@ export default class NurseFilesService extends BaseApiService {
 
   /** 统一列表 */
   public commonfindByEmpNoSubmit(type: string, empNo: any) {
-    nurseFileDetailViewModal.pageSpinning = true
+    nurseFileDetailViewModal.pageSpinning = true;
     if (isSelf()) {
-      return this.get(`/${type}/findByEmpNo/${empNo}`).then((res) => {
-        nurseFileDetailViewModal.pageSpinning = false
-        return res
-      })
+      return this.get(`/${type}/findByEmpNo/${empNo}`).then(res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      });
     } else {
-      return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
-        nurseFileDetailViewModal.pageSpinning = false
-        return res
-      })
+      return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then(res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      });
     }
   }
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
-    return this.post(`/${type}/saveOrUpdate`, obj)
+    return this.post(`/${type}/saveOrUpdate`, obj);
   }
   /** 统一删除 */
   public async commonDelById(type: string, id: any) {
-    return this.get(`/${type}/delById/${id}`)
+    return this.get(`/${type}/delById/${id}`);
   }
 }
 

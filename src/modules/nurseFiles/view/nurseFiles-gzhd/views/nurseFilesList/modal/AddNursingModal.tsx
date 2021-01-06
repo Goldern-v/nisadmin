@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Modal, Form, Input, Button, Radio, DatePicker, Select, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
-import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import service from 'src/services/api'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { appStore, authStore } from 'src/stores'
+
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
@@ -61,6 +62,8 @@ function AddNursingModal(props: Props) {
       }
 
       if (value.birthday) value.birthday = value.birthday.format('YYYY-MM-DD')
+      if (value.goHospitalWorkDate) value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD')
+      if (value.zyzsEffectiveUpDate) value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD')
       if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
       nurseFilesService.saveOrUpdate(value).then((res) => {
         message.success('操作成功')
@@ -206,12 +209,16 @@ function AddNursingModal(props: Props) {
             </Select>
           )}
         </Form.Item>
-        <Form.Item {...formItemLayout} label='来院工作时间'>
-          {getFieldDecorator('来院工作时间')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label='职业证书截止日期'>
-          {getFieldDecorator('职业证书截止日期')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
-        </Form.Item>
+        {appStore.HOSPITAL_ID == 'gzhd' &&
+          <Form.Item {...formItemLayout} label='来院工作时间'>
+            {getFieldDecorator('goHospitalWorkDate')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
+          </Form.Item>
+        }
+        {appStore.HOSPITAL_ID == 'gzhd' &&
+          <Form.Item {...formItemLayout} label='职业证书截止日期'>
+            {getFieldDecorator('zyzsEffectiveUpDate')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
+          </Form.Item>
+        }
 
         {/*
         <Form.Item {...formItemLayout}>

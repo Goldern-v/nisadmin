@@ -4,7 +4,7 @@ import {
   nurseFilesService,
   NurseQuery
 } from "../../services/NurseFilesService";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 
 const kssxMap: any = {
@@ -55,7 +55,23 @@ class NurseFilesListViewModel {
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       pageIndex: this.pageIndex /**  当前页数 */,
       pageSize: this.pageSize /**   每页页数 */,
-      empName: this.filterText /**   工号 */
+      empName: this.filterText /**   工号 */,
+      goHospitalWorkDateStartTime:
+        appStore.HOSPITAL_ID == "gzhd"
+          ? this.hospitalDate[0].format("YYYY-MM-DD")
+          : null,
+      goHospitalWorkDateEndTime:
+        appStore.HOSPITAL_ID == "gzhd"
+          ? this.hospitalDate[1].format("YYYY-MM-DD")
+          : null,
+      goWorkTimeStartTime:
+        appStore.HOSPITAL_ID == "gzhd"
+          ? this.jobDate[0].format("YYYY-MM-DD")
+          : null,
+      goWorkTimeEndTime:
+        appStore.HOSPITAL_ID == "gzhd"
+          ? this.jobDate[1].format("YYYY-MM-DD")
+          : null
     };
     this.listSpinning = true;
     nurseFilesService.getByFormCodePC(obj).then(res => {
