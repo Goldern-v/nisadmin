@@ -1,32 +1,34 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, Select } from 'antd'
+import { Button, Input, message, Modal, Select } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import BaseTabs from "src/components/BaseTabs"
 import { ColumnProps } from 'antd/lib/table'
-import { authStore } from 'src/stores'
+import { localityService } from './api/LocalityService'
+import { appStore, authStore } from 'src/stores'
+import Axios from 'axios'
+import { fileDownload, getFilePrevImg } from 'src/utils/file/file'
 
 const Option = Select.Option
 
 export interface Props { }
 
 export default function 应急预案学习() {
+  const { history } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
-    type: '0',
+    type: '1',
     deptCode: '',
     pageSize: 20,
     pageIndex: 1,
   })
 
-  const [tableData, setTableData] = useState([
-    { name: 'ok' }
-  ] as any[])
+  const [tableData, setTableData] = useState([] as any[])
 
   const [totalCount, setTotalCount] = useState(0)
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -39,42 +41,84 @@ export default function 应急预案学习() {
     },
     {
       title: '预案名称',
-      dataIndex: '预案名称',
+      dataIndex: 'planName',
       width: 220,
       align: "left",
       render: (text: any, record: any, index: number) => {
-        return <div className="">预案名称</div>
+        return <div className="">{text}</div>
       }
     },
     {
       title: '预案信息',
-      dataIndex: '预案信息',
+      dataIndex: 'briefIntroduction',
       align: "left",
       render: (text: any, record: any, index: number) => {
-        return <div className="">预案信息</div>
+        return <div className="">{text}</div>
       }
     },
+    ...(() => {
+      if (query.type == '2')
+        return [
+          {
+            title: '科室',
+            dataIndex: 'deptName',
+            align: "center",
+            width: 200
+          } as ColumnProps<any>
+        ]
+
+      return []
+    })(),
     {
       title: '学习附件',
-      dataIndex: '学习附件',
+      dataIndex: 'attachment',
       align: "left",
       width: 200,
+      render: (obj: any, record: any, index: number) => {
+        if (obj && obj.id)
+          return <div
+            className="download-item"
+            title={`下载 ${obj.name}`}
+            onClick={() => handleDownload(obj)}>
+            <img
+              className="file-icon"
+              src={getFilePrevImg(obj.path)} />
+            <span>{obj.name}</span>
+          </div>
+        else
+          return <span></span>
+      }
     },
     {
       title: '状态',
       dataIndex: 'status',
       align: "left",
       width: 80,
+      render: (status: number) => {
+        switch (status) {
+          case 0:
+            return '编辑中'
+          case 2:
+            return '已发布'
+          default:
+            return ''
+        }
+      }
     },
     {
       title: '操作',
       dataIndex: 'operate',
       align: "center",
-      width: 100,
+      width: 120,
       render: (text: any, record: any, index: number) => {
         return <DoCon>
-          <span>删除</span>
-          <span>编辑</span>
+          <span onClick={() => handleDetail(record)}>查看</span>
+          {authStore.isNotANormalNurse && (
+            <React.Fragment>
+              <span onClick={() => handleEdit(record)}>编辑</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </React.Fragment>
+          )}
         </DoCon>
       }
     }
@@ -89,7 +133,50 @@ export default function 应急预案学习() {
   }
 
   const getTableData = (newQuery: any) => {
-    console.log('query data')
+    setLoading(true)
+    localityService.queryPageList(newQuery)
+      .then(res => {
+        if (res.data) {
+          setTotalCount(res.data.totalCount)
+          setTableData(res.data.list)
+        }
+      }, () => { })
+      .finally(() => setLoading(false))
+  }
+
+  const handleDetail = (record: any) => {
+    history.push(`/continuingEdu/应急预案学习详情?id=${record.id}&title=${record.planName}`)
+  }
+
+  const handleEdit = (record: any) => {
+    if (record.id)
+      history.push(`/continuingEdu/应急预案学习修改?id=${record.id}`)
+  }
+
+  const handleDelete = (record: any) => {
+    if (record.id)
+      Modal.confirm({
+        title: '删除',
+        content: '是否删除选中项目？',
+        onOk: () => {
+          setLoading(true)
+          localityService
+            .deleteById(record.id)
+            .then(res => {
+              setLoading(false)
+              message.success('操作成功')
+              getTableData(query)
+            }, () => setLoading(false))
+
+        }
+      })
+  }
+
+  const handleDownload = (obj: any) => {
+    Axios.get(obj.path, { responseType: 'blob' })
+      .then(res => fileDownload(res, obj.name),
+        err => message.error(`${err.name}：${err.message}`)
+      )
   }
 
   useEffect(() => {
@@ -101,7 +188,7 @@ export default function 应急预案学习() {
   }
 
   const handleAdd = () => {
-
+    history.push('/continuingEdu/应急预案学习修改')
   }
 
   const handleTypeChange = (key: any) => {
@@ -138,7 +225,7 @@ export default function 应急预案学习() {
     <HeaderCon>
       <Title>应急预案学习</Title>
       <Place />
-      {query.type == '1' && (
+      {query.type == '2' && (
         <React.Fragment>
           <span className="sub">科室：</span>
           <Select
@@ -168,7 +255,7 @@ export default function 应急预案学习() {
       >
         搜索
       </Button>
-      <Button className="sub" onClick={handleAdd}>添加</Button>
+      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTabs
@@ -177,10 +264,12 @@ export default function 应急预案学习() {
           {
             title: "医院应急预案",
             component: TableCon,
+            index: '1',
           },
           {
             title: "专科应急预案",
             component: TableCon,
+            index: '2',
           }
         ]}
         onChange={(key: any) => handleTypeChange(key)}
@@ -195,6 +284,18 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
+  .download-item{
+    cursor: pointer;
+    color: #00A680;
+    word-break: break-all;
+    &>*{
+      vertical-align: middle;
+    }
+  }
+  .file-icon{
+    width: 12px; 
+    margin-right: 5px;
+  }
 `
 const HeaderCon = styled.div`
   display: flex;

@@ -27,19 +27,18 @@ export default observer(function FormCreateModal(props: Props) {
     formList.filter((item: any) => item.qcName.indexOf(filter) >= 0) || []
 
   useEffect(() => {
-    setFormListLoaindg(true)
-    qualityControlRecordApi.formTemplateList({
-      level: Number(level),
-      templateName: ''
-    }).then(res => {
-      setFormListLoaindg(false)
-      if (res.data) setFormList(res.data)
-    }, () => setFormListLoaindg(false))
-  }, [level])
-
-  useEffect(() => {
-    if (visible) setActiveIdx(-1)
-  }, [visible])
+    if (visible) {
+      setActiveIdx(-1)
+      setFormListLoaindg(true)
+      qualityControlRecordApi.formTemplateList({
+        level: Number(level),
+        templateName: ''
+      }).then(res => {
+        setFormListLoaindg(false)
+        if (res.data) setFormList(res.data)
+      }, () => setFormListLoaindg(false))
+    }
+  }, [visible, level])
 
   const handleOk = (activeIdx: number) => {
     if (activeIdx < 0) {
@@ -72,6 +71,7 @@ export default observer(function FormCreateModal(props: Props) {
       <div className="filter-area">
         <Search
           allowClear
+          disabled={formListLoading}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="请输入质控表单名称" />

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, lazy, Suspense } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
@@ -59,12 +59,21 @@ import WrongQuestionBank_hj2 from "../科室考试资源库/views/WrongQuestionB
 import 科室考试资源库 from "src/modules/科室考试资源库/QuestionBankManagement";
 //厚街审核管理
 import 审核集中管理 from './views/审核集中管理/审核集中管理'
-//厚街学习资源
-import 学习的网站链接 from './views/学习资源/学习的网站链接/学习的网站链接'
-import 循证护理实践证据集合 from './views/学习资源/循证护理实践证据集合/循证护理实践证据集合'
-import 应急预案学习 from './views/学习资源/应急预案学习/应急预案学习'
+/**厚街学习资源 */
+//学习的网站链接
+const 学习的网站链接 = lazy(() => import('./views/学习资源/学习的网站链接/学习的网站链接'))
+//循证护理实践证据集合
+const 循证护理实践证据集合 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理实践证据集合'))
+const 循证护理记录集合详情 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理记录集合详情'))
+const 循证护理记录集合修改 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理记录集合修改'))
+//应急预案学习
+const 应急预案学习 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习'))
+const 应急预案学习详情 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习详情'))
+const 应急预案学习修改 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习修改'))
 
 import { appStore, authStore } from "src/stores";
+import NavBar from "src/layouts/components/NavBar";
+import { Icon } from "antd";
 
 export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -274,15 +283,39 @@ export default function ContinuingEdu(props: Props) {
                 component: 学习的网站链接
               },
               {
+                title: "循证护理记录集合详情",
+                path: "/continuingEdu/循证护理记录集合详情",
+                hide: true,
+                component: 循证护理记录集合详情
+              },
+              {
+                title: "循证护理记录集合修改",
+                path: "/continuingEdu/循证护理记录集合修改",
+                hide: true,
+                component: 循证护理记录集合修改
+              },
+              {
                 title: "循证护理实践证据集合",
                 path: "/continuingEdu/循证护理实践证据集合",
                 component: 循证护理实践证据集合
               },
               {
+                title: "应急预案学习修改",
+                path: "/continuingEdu/应急预案学习修改",
+                hide: true,
+                component: 应急预案学习修改
+              },
+              {
+                title: "应急预案学习详情",
+                path: "/continuingEdu/应急预案学习详情",
+                hide: true,
+                component: 应急预案学习详情
+              },
+              {
                 title: "应急预案学习",
                 path: "/continuingEdu/应急预案学习",
                 component: 应急预案学习
-              }
+              },
             ]
           },
           {
@@ -581,14 +614,24 @@ export default function ContinuingEdu(props: Props) {
       </LeftWrapper>
       <MainWrapper>
         {currentRoute && currentRoute.component && (
-          <currentRoute.component
-            getTitle={currentRoute && currentRoute.title} //菜单标题
-            getId={currentRoute && currentRoute.id} //菜单id
-            getFormCode={currentRoute && currentRoute.formCode} //表单code值
-            getFormName={currentRoute && currentRoute.formName} //表单code值
-            getList={getList} // 动态菜单树
-            getParentsName={currentRoute && currentRoute.parentsName}
-          />
+          <Suspense
+            fallback={
+              <React.Fragment>
+                <NavBar style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />
+                <LoadingCon>
+                  <Icon type="loading" />
+                </LoadingCon>
+              </React.Fragment>
+            }>
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title} //菜单标题
+              getId={currentRoute && currentRoute.id} //菜单id
+              getFormCode={currentRoute && currentRoute.formCode} //表单code值
+              getFormName={currentRoute && currentRoute.formName} //表单code值
+              getList={getList} // 动态菜单树
+              getParentsName={currentRoute && currentRoute.parentsName}
+            />
+          </Suspense>
         )}
       </MainWrapper>
     </Wrapper>
@@ -611,3 +654,20 @@ const MainWrapper = styled.div`
   right: 0;
   bottom: 0;
 `;
+const LoadingCon = styled.div`
+  position: fixed;
+  left:0;
+  top:48px;
+  width: 100%;
+  bottom:0;
+  background-color: #eee;
+  color: #999;
+  cursor: wait;
+  .anticon{
+    font-size: 50px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+`

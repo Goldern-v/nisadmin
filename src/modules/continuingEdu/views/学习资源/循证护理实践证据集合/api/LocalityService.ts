@@ -15,7 +15,7 @@ class LocalityService extends BaseApiService {
       title: string,
       detailContent: string,
       articleUrl: string,
-      status: 0 | 1,
+      status: 0 | 2,
       attachmentList: any[]
     }
   ) {

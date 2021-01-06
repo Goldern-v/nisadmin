@@ -22,11 +22,13 @@ export interface Props {
   type?: string,
   onChange?: any,
   readOnly?: boolean,
+  style?: any,
+  size?: number,
   data?: FileItem[]
 }
 
 export default function MultiFileUploader(props: Props) {
-  const { accept, type, onChange, data, readOnly } = props
+  const { accept, type, onChange, data, readOnly, size, style } = props
 
   const [iptVisible, setIptVisible] = useState(true)
 
@@ -104,6 +106,17 @@ export default function MultiFileUploader(props: Props) {
     return <span className="file-input"></span>
   }
 
+  const notOverSize = () => {
+    if (size !== undefined) {
+      if ((data || []).length >= size)
+        return false
+
+      return true
+    } else {
+      return true
+    }
+  }
+
   const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
     previewModal.show({
       title: file.name,
@@ -112,7 +125,7 @@ export default function MultiFileUploader(props: Props) {
     e.stopPropagation()
   }
 
-  return <Wrapper>
+  return <Wrapper style={style}>
     {data && data.map((item: any, idx: number) => <div className="list-item" key={idx}>
       {getFileType(item.path) == 'img' ? (
         <Zimage src={item.path} className='type-img' alt='' />
@@ -128,7 +141,7 @@ export default function MultiFileUploader(props: Props) {
       {!readOnly && <div className="delete" onClick={() => handleDelete(idx)} title="删除">X</div>}
       {item.name && <span className="file-name" title={item.name}>{item.name}</span>}
     </div>)}
-    {!readOnly && <div className="add-btn" title="添加文件" onClick={handleUploadOpen}>
+    {!readOnly && notOverSize() && <div className="add-btn" title="添加文件" onClick={handleUploadOpen}>
       <StyledIcon type={loading ? 'loading' : 'plus'} />
     </div>}
     {FileEl()}
