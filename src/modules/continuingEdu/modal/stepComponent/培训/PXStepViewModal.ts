@@ -169,16 +169,16 @@ class StepViewModal {
         },
         []
       ),
-      ywTeacherList:
-        this.stepData2.ywTeacherList &&
-        this.stepData2.ywTeacherList.reduce((total: any[], item: any) => {
-          return [
-            ...total,
-            {
-              name: item.key
-            }
-          ];
-        }, []),
+      ywTeacherList: this.stepData2.ywTeacherList
+        ? this.stepData2.ywTeacherList.reduce((total: any[], item: any) => {
+            return [
+              ...total,
+              {
+                name: item.key
+              }
+            ];
+          }, [])
+        : [],
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
       category: this.stepData2.category,
@@ -239,14 +239,14 @@ class StepViewModal {
         key: item.empNo
       };
     });
-    this.stepData2.ywTeacherList =
-      data.ywTeacherList &&
-      data.ywTeacherList.map((item: any) => {
-        return {
-          label: item.name,
-          key: item.name
-        };
-      });
+    this.stepData2.ywTeacherList = data.ywTeacherList
+      ? data.ywTeacherList.map((item: any) => {
+          return {
+            label: item.name,
+            key: item.name
+          };
+        })
+      : [];
 
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {
