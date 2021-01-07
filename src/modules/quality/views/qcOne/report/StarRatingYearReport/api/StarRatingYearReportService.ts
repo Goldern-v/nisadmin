@@ -1,6 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 // import qs from 'qs'
-import { starRatingReportEditModel } from './../model/StarRatingReportEditModel'
+import { starRatingReportEditModel } from '../model/StarRatingReportEditModel'
 
 export interface ListQuery {
   wardCode: string,
@@ -10,45 +10,45 @@ export interface ListQuery {
   pageIndex: number,
   pageSize: number
 }
-export default class StarRatingReportService extends BaseApiService {
+export default class StarRatingYearReportService extends BaseApiService {
   /**列表接口 */
   public getPage(query: ListQuery) {
-    return this.post('/qcAnalysis/sr/getPage', query)
+    return this.post('/qcAnalysis/sry/getPage', query)
   }
 
   /**新建编辑 */
   public createReport(query: any) {
-    return this.post('/qcAnalysis/sr/createReport', query)
+    return this.post('/qcAnalysis/sry/createReport', query)
   }
 
   /**获取报告 */
   public getReport(query: any) {
-    return this.post('/qcAnalysis/sr/getReport', query)
+    return this.post('/qcAnalysis/sry/getReport', query)
   }
 
   /**修改报告 */
   public editReport(query: any) {
-    return this.post('/qcAnalysis/sr/update/report', query)
+    return this.post('/qcAnalysis/sry/update/report', query)
   }
 
   /**更新星级考核 */
   public update(query: any) {
-    return this.post('/qcAnalysis/sr/update/workScheduleList', query)
+    return this.post('/qcAnalysis/sry/update/workScheduleList', query)
   }
 
   /**删除 */
   public delete(query: any) {
-    return this.post('/qcAnalysis/sr/deleteReport', query)
+    return this.post('/qcAnalysis/sry/deleteReport', query)
   }
 
   /**提交报告 */
   public publish(query: any) {
-    return this.post('/qcAnalysis/sr/publish', query)
+    return this.post('/qcAnalysis/sry/publish', query)
   }
 
   /**撤销报告 */
   public cancelPublish(query: any) {
-    return this.post('/qcAnalysis/sr/cancelPublish', query)
+    return this.post('/qcAnalysis/sry/cancelPublish', query)
   }
 
   /** 更新报告名称 */
@@ -60,7 +60,7 @@ export default class StarRatingReportService extends BaseApiService {
       wardCode,
       reportName
     }
-    return this.post('/qcAnalysis/sr/update/report', query)
+    return this.post('/qcAnalysis/sry/update/report', query)
   }
 
   /** 更新星级考核 */
@@ -73,7 +73,7 @@ export default class StarRatingReportService extends BaseApiService {
       itemList
     }
 
-    return this.post('/qcAnalysis/sr/update/workScheduleList', query)
+    return this.post('/qcAnalysis/sry/update/workScheduleList', query)
   }
 
   /**获取所有层级 */
@@ -92,4 +92,4 @@ export default class StarRatingReportService extends BaseApiService {
   }
 }
 
-export const starRatingReportService = new StarRatingReportService()
+export const starRatingYearReportService = new StarRatingYearReportService()

@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
 import qs from 'qs'
-import { starRatingReportService, ListQuery } from './api/StarRatingReportService'
+import { starRatingYearReportService, ListQuery } from './api/StarRatingYearReportService'
 import { numToChinese } from 'src/utils/number/numToChinese'
 
 import { authStore, appStore } from 'src/stores'
@@ -18,10 +18,10 @@ import { useKeepAliveEffect } from 'react-keep-alive'
 import ReportCreateModal from './components/ReportCreateModal'
 import { fileDownload } from 'src/utils/file/file'
 import { globalModal } from 'src/global/globalModal'
-import { qcOneSelectViewModal, statusListAuth } from './../../QcOneSelectViewModal'
-import CommitModal from './../../components/CommitModal'
-import ArchiveModal from './../../components/ArchiveModal'
-import { qcOneService } from './../../services/QcOneService'
+import { qcOneSelectViewModal, statusListAuth } from '../../QcOneSelectViewModal'
+import CommitModal from '../../components/CommitModal'
+import ArchiveModal from '../../components/ArchiveModal'
+import { qcOneService } from '../../services/QcOneService'
 
 export interface Props { }
 
@@ -43,7 +43,7 @@ export default observer(function NursingWorkPlainList() {
     wardCode: '',
     pageIndex: 1,
     status: '',
-    year: moment().format('YYYY'),
+    year: '',
     month: '',
     pageSize: 20,
   } as any
@@ -85,13 +85,13 @@ export default observer(function NursingWorkPlainList() {
       title: '科室',
       width: 180,
     },
-    {
-      dataIndex: 'month',
-      title: '月份',
-      align: 'center',
-      width: 110,
-      render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
-    },
+    // {
+    //   dataIndex: 'month',
+    //   title: '月份',
+    //   align: 'center',
+    //   width: 110,
+    //   render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
+    // },
     {
       dataIndex: 'status',
       title: '状态',
@@ -159,7 +159,7 @@ export default observer(function NursingWorkPlainList() {
 
   const getList = (query: any) => {
     setLoading(true)
-    starRatingReportService.getPage(query).then(res => {
+    starRatingYearReportService.getPage(query).then(res => {
       setLoading(false)
       if (res.data) {
         setTableData(res.data.list)
@@ -182,7 +182,7 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleEdit = (record: any) => {
-    history.push(`/starRatingReportEdit?${qs.stringify({
+    history.push(`/starRatingYearReportEdit?${qs.stringify({
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
@@ -197,7 +197,7 @@ export default observer(function NursingWorkPlainList() {
   const handleExport = (record: any) => {
     // console.log(record)
     setLoading(true)
-    // starRatingReportService.exportData({
+    // starRatingYearReportService.exportData({
     //   wardCode: record.wardCode,
     //   year: record.year,
     //   month: record.month
@@ -206,7 +206,7 @@ export default observer(function NursingWorkPlainList() {
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
-    }, 'sr')
+    }, 'sry')
       .then(res => { fileDownload(res); setLoading(false) }, () => setLoading(false))
   }
 
@@ -214,7 +214,7 @@ export default observer(function NursingWorkPlainList() {
     globalModal.confirm('提交确认', '你确定要提交该报告吗？')
       .then((res) => {
         setLoading(true)
-        return starRatingReportService.publish({
+        return starRatingYearReportService.publish({
           wardCode: record.wardCode,
           year: record.year,
           month: record.month
@@ -231,7 +231,7 @@ export default observer(function NursingWorkPlainList() {
     globalModal.confirm('撤销确认', '你确定要撤销该报告吗？')
       .then((res) => {
         setLoading(true)
-        return starRatingReportService.cancelPublish({
+        return starRatingYearReportService.cancelPublish({
           wardCode: record.wardCode,
           year: record.year,
           month: record.month
@@ -255,12 +255,12 @@ export default observer(function NursingWorkPlainList() {
         <span>年份: </span>
         <span>
           <YearPicker
-            allowClear={false}
+            allowClear={true}
             value={moment(`${year}-01-01`) || undefined}
             onChange={(_moment: any) => year = _moment.format('YYYY')} />
         </span>
       </div>
-      <div>
+      {/* <div>
         <span>月份: </span>
         <Select
           defaultValue={month}
@@ -268,7 +268,7 @@ export default observer(function NursingWorkPlainList() {
           onChange={(_month: any) => month = _month}>
           {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
         </Select>
-      </div>
+      </div> */}
       {isBigDept && <div>
         <span>片区: </span>
         <Select
@@ -290,7 +290,7 @@ export default observer(function NursingWorkPlainList() {
             wardCode: $wardCode,
             year,
             month
-          }, 'sr')
+          }, 'sry')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -299,7 +299,7 @@ export default observer(function NursingWorkPlainList() {
           qcOneService.exportByNd({
             year,
             month
-          }, 'sr')
+          }, 'sry')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -343,7 +343,7 @@ export default observer(function NursingWorkPlainList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle className="pannel-title">星级考核报表</PageTitle>
+        <PageTitle className="pannel-title">年度星级考核报表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -358,14 +358,6 @@ export default observer(function NursingWorkPlainList() {
                 setQuery({ ...query, year: '' })
             }} />
         </span>
-        <span>月份:</span>
-        <Select
-          value={query.month}
-          onChange={(month: string) => setQuery({ ...query, month })}
-          className="month-select">
-          <Option value="">全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
-        </Select>
         <span>状态:</span>
         <Select
           value={query.status}
@@ -428,14 +420,14 @@ export default observer(function NursingWorkPlainList() {
       visible={createVisible}
       onCancel={handleCancel} />
     <CommitModal
-      reportType='sr'
+      reportType='sry'
       visible={commitVisible}
       onCancel={() => {
         setCommitVisible(false)
         getList(query)
       }} />
     <ArchiveModal
-      reportType='sr'
+      reportType='sry'
       visible={archiveVisible}
       onCancel={() => {
         setArchiveVisible(false)

@@ -20,6 +20,7 @@ import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeeti
 import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 
 import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
+import StarRatingYearReport from './views/qcOne/report/StarRatingYearReport/StarRatingYearReport'
 import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
 import PatientVisitMonth from './views/qcOne/report/PatientVisitMonth/PatientVisitMonth'
@@ -91,6 +92,14 @@ const LEFT_MENU_CONFIG: any = [
     icon: <YIBG />,
     path: '/qcOne/starRatingReport',
     component: StarRatingReport,
+    keepAlive: true,
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+  },
+  {
+    title: '年度星级考核报表',
+    icon: <YIBG />,
+    path: '/qcOne/starRatingYearReport',
+    component: StarRatingYearReport,
     keepAlive: true,
     disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },

@@ -24,7 +24,6 @@ export interface Props {
 export default observer(function 星级考核表弹窗(props: Props) {
   let { location, history } = appStore
   let search = qs.parse(location.search.replace('?', ''))
-  const { scoreDetailMap } = starRatingReportEditModel
 
   let { sectionId, setData, data } = props
 
@@ -55,8 +54,6 @@ export default observer(function 星级考核表弹窗(props: Props) {
             if (cloneData.list[index].empNo) {
               cloneData.list[index].empNo = ''
               cloneData.list[index].currentLevel = ''
-              cloneData.list[index].addPointsItemList = []
-              cloneData.list[index].annualAddPoints = ''
             }
             setData(cloneData)
           }}
@@ -67,8 +64,6 @@ export default observer(function 星级考核表弹窗(props: Props) {
             if (target) {
               cloneData.list[index].empNo = target.empNo
               cloneData.list[index].currentLevel = target.currentLevel || ''
-              cloneData.list[index].addPointsItemList = []
-              cloneData.list[index].annualAddPoints = ''
             }
 
             setData(cloneData)
@@ -159,76 +154,6 @@ export default observer(function 星级考核表弹窗(props: Props) {
       },
       width: 80
     },
-    ...(() => {
-      /**12月份显示年度加分和明细 */
-      if (report.month === 12) {
-        return [
-          {
-            title: '年度加分',
-            dataIndex: 'annualAddPoints',
-            align: 'center',
-            render(val: any, record: any, index: number) {
-              return <Input
-                className={`annualAddPoints${index}`}
-                value={val}
-                onChange={(e: any) => handleNumberInput(e, record, index, 'annualAddPoints')} />
-            },
-            width: 90,
-          },
-          {
-            title: '加分明细',
-            dataIndex: 'addPointsItemList',
-            width: 80,
-            align: 'center',
-            render: (arr: any, record: any, index: number) => {
-              let level = record.currentLevel
-              if (!level) return <span></span>
-
-              let itemList = scoreDetailMap[level] || []
-
-              const content = itemList.map((item: any, itemIdx: number) => {
-                let targetItem = (record.addPointsItemList || [])
-                  .find((recordItem: any) => recordItem.itemCode == item.itemCode)
-
-                return <PopItemCon key={`pop-${index}-${itemIdx}`}>
-                  <Checkbox
-                    checked={targetItem && targetItem.checked} onChange={(e: any) => {
-                      let newRecord = { ...record }
-
-                      if (targetItem) {
-                        targetItem.checked = e.target.checked
-                      } else {
-                        newRecord.addPointsItemList.push({
-                          ...item,
-                          checked: e.target.checked
-                        })
-                      }
-
-                      cloneData.list[index] = newRecord
-
-                      setData(cloneData)
-                    }}>
-                    {item.itemName}
-                  </Checkbox>
-                </PopItemCon>
-              })
-
-              return <DoCon>
-                <Popover
-                  placement='right'
-                  trigger='click'
-                  title={`${record.empName || ''}的加分明细`}
-                  content={content}>
-                  <span>请选择</span>
-                </Popover>
-              </DoCon>
-            },
-          }
-        ] as ColumnProps<any>[]
-      } else {
-        return []
-      }
-    })(),
     {
       title: '操作',
       key: '操作',

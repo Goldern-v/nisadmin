@@ -266,6 +266,11 @@ const StarRatingReportEdit = lazy(() =>
     "src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit"
   )
 );
+const StarRatingYearReportEdit = lazy(() =>
+  import(
+    "src/modules/quality/views/qcOne/report/StarRatingYearReport/StarRatingYearReportEdit"
+  )
+);
 
 const BadEventReportEdit = lazy(() =>
   import(
@@ -672,6 +677,7 @@ const routes: RouteItem[] = [
   setLayout("/badEventRecordEdit", BadEventRecordEdit, layouts.MainLayout),
   setLayout("/badEventRecordDetail", BadEventRecordDetail, layouts.MainLayout),
   setLayout("/starRatingReportEdit", StarRatingReportEdit, layouts.MainLayout),
+  setLayout("/starRatingYearReportEdit", StarRatingYearReportEdit, layouts.MainLayout),
   setLayout("/badEventReportEdit", BadEventReportEdit, layouts.MainLayout),
   setLayout(
     "/patientVisitQuarterEdit",

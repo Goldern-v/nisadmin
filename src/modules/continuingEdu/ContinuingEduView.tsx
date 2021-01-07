@@ -273,9 +273,8 @@ export default function ContinuingEdu(props: Props) {
       map: {
         hj: [
           {
-            title: "学习资源+",
+            title: "学习资源",
             icon: <TKGL />,
-            hide: !appStore.isDev,
             children: [
               {
                 title: "学习的网站链接",

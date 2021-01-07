@@ -7,7 +7,7 @@ import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { starRatingReportEditModel } from './../../model/StarRatingReportEditModel'
-import { starRatingReportService } from './../../api/StarRatingReportService'
+import { starRatingYearReportService } from '../../api/StarRatingYearReportService'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -48,7 +48,7 @@ export default observer(function BaseModal(props: Props) {
     console.log(sectionData.sectionId, data)
 
     if (sectionData.sectionId == '报告名称') {
-      starRatingReportService.updateReportName(data.text).then((res) => {
+      starRatingYearReportService.updateReportName(data.text).then((res) => {
         starRatingReportEditModel.setSectionData(sectionData.sectionId, {
           text: res.data.reportName
         })
@@ -76,7 +76,7 @@ export default observer(function BaseModal(props: Props) {
         }
       })
 
-      starRatingReportService.updateStarRattingList(reqList).then((res) => {
+      starRatingYearReportService.updateStarRattingList(reqList).then((res) => {
         starRatingReportEditModel.setSectionData(sectionData.sectionId, {
           list: res.data.itemList.map((item: any) => {
             let nursingDeduct = -Number(item.nursingDeduct)
