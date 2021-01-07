@@ -10,7 +10,7 @@ export interface Props extends NativeButtonProps {
 }
 
 export default observer(function EditButton(props: Props) {
-  // if (!authStore.isOnlyRoleManage) return <span></span>;
+  if (!authStore.isOnlyRoleManage && !authStore.isAdmin) return <span></span>;
   let btnDisabled = () => {
     if (!starRatingReportEditModel.allData.report) return true;
     if (starRatingReportEditModel.allData.report.status == '1') return true;
@@ -18,6 +18,7 @@ export default observer(function EditButton(props: Props) {
   }
   return <ButtonStyl {...props} icon={'edit'} border={props.border ? 1 : 0} disabled={btnDisabled()} />
 })
+
 const ButtonStyl = styled(Button) <{ border: number }>`
   &.ant-btn {
     ${(p) => !p.border && 'border: 0'}

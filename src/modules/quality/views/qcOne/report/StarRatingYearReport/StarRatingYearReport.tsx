@@ -36,7 +36,8 @@ export default observer(function NursingWorkPlainList() {
     isRoleManage, //是否护士长
     isSupervisorNurse, //是否科护士长
     isDepartment, //是否护理部
-    isOnlyRoleManage
+    isOnlyRoleManage,
+    isAdmin
   } = authStore
 
   const defaultQuery = {
@@ -44,7 +45,7 @@ export default observer(function NursingWorkPlainList() {
     pageIndex: 1,
     status: '',
     year: '',
-    month: '',
+    month: '1',
     pageSize: 20,
   } as any
 
@@ -85,13 +86,6 @@ export default observer(function NursingWorkPlainList() {
       title: '科室',
       width: 180,
     },
-    // {
-    //   dataIndex: 'month',
-    //   title: '月份',
-    //   align: 'center',
-    //   width: 110,
-    //   render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
-    // },
     {
       dataIndex: 'status',
       title: '状态',
@@ -195,13 +189,8 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleExport = (record: any) => {
-    // console.log(record)
     setLoading(true)
-    // starRatingYearReportService.exportData({
-    //   wardCode: record.wardCode,
-    //   year: record.year,
-    //   month: record.month
-    // }).
+
     qcOneService.export({
       wardCode: record.wardCode,
       year: record.year,
@@ -245,7 +234,7 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleExportGather = (isBigDept?: boolean) => {
-    let year = query.year
+    let year = query.year || moment().format('YYYY')
     let month = query.month || moment().format('M')
     let $wardCode = ''
     if (bigDeptList.length > 0) $wardCode = bigDeptList[0].code
@@ -255,20 +244,11 @@ export default observer(function NursingWorkPlainList() {
         <span>年份: </span>
         <span>
           <YearPicker
-            allowClear={true}
+            allowClear={false}
             value={moment(`${year}-01-01`) || undefined}
             onChange={(_moment: any) => year = _moment.format('YYYY')} />
         </span>
       </div>
-      {/* <div>
-        <span>月份: </span>
-        <Select
-          defaultValue={month}
-          style={{ width: '70px' }}
-          onChange={(_month: any) => month = _month}>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
-        </Select>
-      </div> */}
       {isBigDept && <div>
         <span>片区: </span>
         <Select
@@ -349,8 +329,8 @@ export default observer(function NursingWorkPlainList() {
         <span>年份:</span>
         <span className="year-select">
           <YearPicker
-            allowClear={false}
-            value={moment(`${query.year}-01-01`) || undefined}
+            allowClear={true}
+            value={query.year ? moment(`${query.year}-01-01`) : undefined}
             onChange={(newMoment: any) => {
               if (newMoment)
                 setQuery({ ...query, year: newMoment.format('YYYY') })
@@ -367,7 +347,6 @@ export default observer(function NursingWorkPlainList() {
           {statusList.filter((item: any) => !item.disabled).map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
-        {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
         <Select
           showSearch
           value={query.wardCode}
@@ -380,8 +359,7 @@ export default observer(function NursingWorkPlainList() {
           {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        {isOnlyRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
-        <Button type="primary" onClick={handleCreate}>新建</Button>
+        {(isOnlyRoleManage || isAdmin) && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isSupervisorNurse || isDepartment
@@ -421,6 +399,7 @@ export default observer(function NursingWorkPlainList() {
       onCancel={handleCancel} />
     <CommitModal
       reportType='sry'
+      hideMonthOrSeason={true}
       visible={commitVisible}
       onCancel={() => {
         setCommitVisible(false)
@@ -429,6 +408,7 @@ export default observer(function NursingWorkPlainList() {
     <ArchiveModal
       reportType='sry'
       visible={archiveVisible}
+      hideMonthOrSeason={true}
       onCancel={() => {
         setArchiveVisible(false)
         getList(query)

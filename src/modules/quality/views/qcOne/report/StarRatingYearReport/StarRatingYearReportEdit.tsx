@@ -121,6 +121,7 @@ export default observer(function StarRatingReportEdit() {
           </span>
         </div>
         <div className='tool-con'>
+          <Button onClick={onDelete}>删除</Button>
           {(isRoleManage && !isSupervisorNurse && !isDepartment) && <React.Fragment>
             <Button onClick={onDelete}>删除</Button>
             {report.status == '1' ? (

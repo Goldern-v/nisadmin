@@ -29,7 +29,7 @@ export default observer(function 星级考核表模块(props: Props) {
     <Wrapper>
       <div className='sup-title' style={{ width: '100px', height: '21px' }}></div>
       <Table list={list} totalSorce={totalSorce} report={report} />
-      <EditButton onClick={() => starRatingReportEditModel.openEditModal(sectionId)}>编辑</EditButton>
+      {/* <EditButton onClick={() => starRatingReportEditModel.openEditModal(sectionId)}>编辑</EditButton> */}
     </Wrapper>
   )
 })

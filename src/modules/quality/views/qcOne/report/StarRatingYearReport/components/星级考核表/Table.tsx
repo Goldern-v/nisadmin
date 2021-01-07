@@ -16,6 +16,65 @@ export default observer(function Table(props: Props) {
   let { list, totalSorce, report } = props
   // let report: Report = starRatingReportEditModel.getDataInAllData('report') || {}
 
+  const colList = [
+    {
+      title: '一月',
+      key: 'januaryScore'
+    },
+    {
+      title: '二月',
+      key: 'februaryScore'
+    },
+    {
+      title: '三月',
+      key: 'marchScore'
+    },
+    {
+      title: '四月',
+      key: 'aprilScore'
+    },
+    {
+      title: '五月',
+      key: 'mayScore'
+    },
+    {
+      title: '六月',
+      key: 'juneScore'
+    },
+    {
+      title: '七月',
+      key: 'julyScore'
+    },
+    {
+      title: '八月',
+      key: 'augustScore'
+    },
+    {
+      title: '九月',
+      key: 'septemberScore'
+    },
+    {
+      title: '十月',
+      key: 'octoberScore'
+    },
+    {
+      title: '十一',
+      key: 'novemberScore'
+    },
+    {
+      title: '十二',
+      key: 'decemberScore'
+    },
+    {
+      title: '年度加分',
+      key: 'annualAddPoints'
+    },
+    {
+      title: '总分',
+      key: 'totalScore'
+    },
+  ]
+
   const formatNum = (num: number | string) => {
     num = Number(num)
 
@@ -33,91 +92,55 @@ export default observer(function Table(props: Props) {
     return numArr.join('.')
   }
 
-  const sum = (item: any) => {
-    let total = 100;
-    let nursingDeduct = Number(
-      formatNum(
-        -Number(item.nursingDeduct)
-      )
-    )
-    if (isNaN(nursingDeduct)) nursingDeduct = 0
+  // const sum = (item: any) => {
+  //   let total = 100;
+  //   let nursingDeduct = Number(
+  //     formatNum(
+  //       -Number(item.nursingDeduct)
+  //     )
+  //   )
+  //   if (isNaN(nursingDeduct)) nursingDeduct = 0
 
-    let workloadDeduct = Number(
-      formatNum(
-        -Number(item.workloadDeduct)
-      )
-    )
-    if (isNaN(workloadDeduct)) workloadDeduct = 0
+  //   let workloadDeduct = Number(
+  //     formatNum(
+  //       -Number(item.workloadDeduct)
+  //     )
+  //   )
+  //   if (isNaN(workloadDeduct)) workloadDeduct = 0
 
-    let satisfactionDeduct = Number(
-      formatNum(
-        -Number(item.satisfactionDeduct)
-      )
-    )
-    if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+  //   let satisfactionDeduct = Number(
+  //     formatNum(
+  //       -Number(item.satisfactionDeduct)
+  //     )
+  //   )
+  //   if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
 
-    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
-  }
-
-  /**12月份显示年度加分和明细 */
-  const showAddPintCol = report.month === 12
+  //   return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
+  // }
 
   return (
     <Wrapper>
       <table>
         <colgroup>
           <col width='80' />
-          <col width='120' />
-          <col />
-          <col />
-          <col />
-          <col />
-          {showAddPintCol && (
-            <React.Fragment>
-              <col />
-              <col width='180' />
-            </React.Fragment>
-          )}
         </colgroup>
         <tbody>
           <tr className='header'>
             <td>姓名</td>
-            <td>护理质量</td>
-            <td>工作量</td>
-            <td>满意度</td>
-            <td>考核总分</td>
-            <td>星级</td>
-            {showAddPintCol && (
-              <React.Fragment>
-                <td>年度加分</td>
-                <td>加分明细</td>
-              </React.Fragment>
-            )}
+            {colList.map((col: any, colIndex: number) => <td
+              key={colIndex}
+              style={{ textAlign: 'center' }}>
+              {col.title}
+            </td>)}
           </tr>
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'center' }}>{item.empName}</td>
-              {item.noCheck ?
-                <React.Fragment>
-                  <td style={{ textAlign: 'center' }} className="headerItem">不参加考核原因</td>
-                  <td style={{ textAlign: 'center' }} colSpan={4}>{item.noCheckReason || ''}</td>
-                </React.Fragment> :
-                <React.Fragment>
-                  <td style={{ textAlign: 'center' }}>{formatNum(item.nursingDeduct)}</td>
-                  <td style={{ textAlign: 'center' }}>{formatNum(item.workloadDeduct)}</td>
-                  <td style={{ textAlign: 'center' }}>{formatNum(item.satisfactionDeduct)}</td>
-                  <td>{sum(item)}</td>
-                  <td style={{ textAlign: 'center' }}>{item.starClass}</td>
-                </React.Fragment>}
-              {showAddPintCol && (
-                <React.Fragment>
-                  <td>{item.annualAddPoints}</td>
-                  <td style={{ textAlign: 'left', }}>{(item.addPointsItemList || [])
-                    .map((scoreDetailItem: any, scoreDetailItemIdx: number) => (
-                      <div style={{ wordBreak: 'break-all', fontSize: '12px' }}>{scoreDetailItemIdx + 1}.{scoreDetailItem.itemName}</div>
-                    ))}</td>
-                </React.Fragment>
-              )}
+              <td>{item.empName}</td>
+              {colList.map((col: any, colIndex: number) => <td
+                key={`${index}-${colIndex}`}
+                style={{ textAlign: 'center' }}>
+                {formatNum(item[col.key] || '')}
+              </td>)}
             </tr>
           ))}
         </tbody>

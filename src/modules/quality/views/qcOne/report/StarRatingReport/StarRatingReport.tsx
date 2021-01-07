@@ -36,7 +36,8 @@ export default observer(function NursingWorkPlainList() {
     isRoleManage, //是否护士长
     isSupervisorNurse, //是否科护士长
     isDepartment, //是否护理部
-    isOnlyRoleManage
+    isOnlyRoleManage,
+    isAdmin
   } = authStore
 
   const defaultQuery = {
@@ -388,8 +389,7 @@ export default observer(function NursingWorkPlainList() {
           {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        {isOnlyRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
-        <Button type="primary" onClick={handleCreate}>新建</Button>
+        {(isOnlyRoleManage || isAdmin) && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isSupervisorNurse || isDepartment

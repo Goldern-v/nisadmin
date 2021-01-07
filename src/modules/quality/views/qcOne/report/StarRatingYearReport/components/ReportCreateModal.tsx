@@ -75,7 +75,11 @@ export default observer(function WorkPlainEditModal(props: Props) {
         if (res.data) {
           message.success('创建成功', 1, () => {
             setLoading(false)
-            history.push(`/starRatingReportEdit?${qs.stringify({ ...params })}`)
+            history.push(`/starRatingYearReportEdit?${qs.stringify({
+              "wardCode": params.wardCode,
+              "year": params.year,
+              "month": params.month,
+            })}`)
             onOk && onOk()
           })
         }
@@ -125,7 +129,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       centered
       onOk={handleCreate}
       onCancel={() => onCancel && onCancel()}
-      title={title || "添加星级考核报表"}>
+      title={title || "添加年度星级考核报表"}>
       <Wrapper>
         <Row>
           <Col span={5}>科室:</Col>

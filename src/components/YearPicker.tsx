@@ -31,7 +31,7 @@ export default function YearPicker(props: Props) {
       disabled={props.disabled}
       open={isOpen}
       mode='year'
-      placeholder='请选择年份'
+      placeholder='年份'
       format='YYYY'
       onOpenChange={(status: boolean) => {
         if (status) {

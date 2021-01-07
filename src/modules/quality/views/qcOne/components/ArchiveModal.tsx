@@ -15,13 +15,14 @@ export interface Props {
   reportType?: string,
   isQuarter?: boolean,
   onOk?: any,
+  hideMonthOrSeason?: boolean,
   onCancel?: any
 }
 
 // const Option = Select.Option
 
 export default observer(function ArchiveModal(props: Props) {
-  const { visible, onCancel, reportType, isQuarter } = props
+  const { visible, onCancel, reportType, isQuarter, hideMonthOrSeason } = props
 
   const [query, setQuery] = useState({
     year: moment().format('YYYY')
@@ -53,18 +54,25 @@ export default observer(function ArchiveModal(props: Props) {
       title: '片区',
       width: 120,
     },
-    {
-      key: 'month',
-      title: isQuarter ? '季度' : '月份',
-      align: 'center',
-      width: 110,
-      render: (text: string, record: any, idx: number) => {
-        if (isQuarter)
-          return `${record.year}年第${record.month}季度`
-        else
-          return `${record.year}年${record.month}月`
-      }
-    },
+    ...(() => {
+      if (hideMonthOrSeason)
+        return []
+
+      return [
+        {
+          key: 'month',
+          title: isQuarter ? '季度' : '月份',
+          align: 'center',
+          width: 110,
+          render: (text: string, record: any, idx: number) => {
+            if (isQuarter)
+              return `${record.year}年第${record.month}季度`
+            else
+              return `${record.year}年${record.month}月`
+          }
+        },
+      ] as ColumnProps<any>[]
+    })(),
     {
       key: 'status',
       title: '状态',
