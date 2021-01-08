@@ -51,6 +51,8 @@ import {
 } from "./stepComponent/StepViewModal";
 import { observer } from "mobx-react-lite";
 import { stepServices } from "./stepComponent/services/stepServices";
+import { ksStepViewModal } from "./stepComponent/考试/KSStepViewModal";
+
 const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -161,27 +163,32 @@ export default observer(function AddRecordModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      stepViewModal.initDict();
-      stepViewModal.initTaskCode();
-      if (props.id) {
-        /** 修改 */
-        setTitle("修改记录");
-        stepServices.getCompleteInfo(props.id).then(res => {
-          stepViewModal.initData(res.data);
-          console.log(
-            selfStepViewModalMap,
-            res.data.teachingMethod,
-            "res.data.teachingMethod"
-          );
-          selfStepViewModalMap[res.data.teachingMethod].initData(res.data);
-          setCurrentStep(0);
+      (async () => {
+        stepViewModal.initDict();
+        let task = '';
+        await stepServices.generateTaskCode().then(res => {
+          stepViewModal.taskCode = res.data;
+          task = res.data;
         });
-      } else {
-        setCurrentStep(0);
-        setTitle("添加记录");
-      }
+        if (props.id) {
+          /** 修改 */
+          setTitle("修改记录");
+          stepServices.getCompleteInfo(props.id).then(res => {
+            stepViewModal.initData(res.data);
+            selfStepViewModalMap[res.data.teachingMethod].initData(res.data);
+            setCurrentStep(0);
+          });
+          // 厚街多套试卷数据初始化
+          stepServices.getStatInfoOfAllEditRunTimeExamPapers(task, props.id).then((res: any) => {
+            ksStepViewModal.manyQuestionStatLists = res.data || []
+          })
+        } else {
+          setCurrentStep(0);
+          setTitle("添加记录");
+        }
+      })();
     } else {
-      setCurrentStep(-1);
+      setCurrentStep(- 1);
       stepViewModal.cleanAllStepData();
     }
   }, [visible]);

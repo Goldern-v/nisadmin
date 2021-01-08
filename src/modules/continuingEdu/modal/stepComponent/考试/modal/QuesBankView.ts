@@ -88,6 +88,23 @@ class QuesBankView {
     });
   }
 
+  clearData() {
+    this.selectedLabel = [];
+    this.bankType = 1;
+    this.questionType = "单选题";
+    this.keyWord = "";
+    this.questionIdList = [];
+    this.selectedRows = [];
+    this.questionList = [];
+    this.pageIndex = 1;
+    this.pageSize = 20;
+    this.allQuestionNum = 0;
+    this.RadioQuestionNum = 0;
+    this.checkBoxQuestionNum = 0;
+    this.TKQuestionNum = 0;
+    this.JDQuestionNum = 0;
+    this.tableList = [];
+  }
   //获取所有标签数据
   // initAllData() {
   //   stepServices.searchLabels(this.allCheckObj).then(res => {

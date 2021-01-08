@@ -247,6 +247,15 @@ class StepViewModal {
     });
   }
 
+  // 厚街多套试卷数据初始化
+  initAllExamPapers(taskCode: any, cetpId: any) {
+    stepServices
+      .getStatInfoOfAllEditRunTimeExamPapers(taskCode, cetpId)
+      .then((res: any) => {
+        ksStepViewModal.manyQuestionStatLists = res.data || [];
+      });
+  }
+
   @observable public dictObj = {
     /** 学习地址 */
     studyAndTrainAddress: []

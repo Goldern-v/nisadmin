@@ -6,6 +6,11 @@ let getPid = () => {
   return appStore.queryObj.id;
 };
 
+const uploadUrl =
+  appStore.HOSPITAL_ID == "hj"
+    ? "hj/editRunTime/upLoadQuestions/exam"
+    : "upLoadQuestions/exam";
+
 export default class StepServices extends BaseApiService {
   /** 获取教学类型列表 */
   public getMenuListByPId() {
@@ -111,11 +116,9 @@ export default class StepServices extends BaseApiService {
   }
   /** 上传题目-考试 */
   public upLoadQuestionsExam(file: any) {
-    return this.post(
-      `/studyAndTrain/teachingPlanManage/upLoadQuestions/exam`,
-      file
-    );
+    return this.post(`/studyAndTrain/teachingPlanManage/${uploadUrl}`, file);
   }
+
   /** 下载题目上传模板-练习*/
   public downLoadQueUploadTemplate() {
     return this.get(`/studyAndTrain/exerciseManage/downLoadQueUploadTemplate`, {
@@ -198,6 +201,27 @@ export default class StepServices extends BaseApiService {
   }
 
   /** 厚街考试特殊处理（多套试卷 添加题目题库修改） */
+  //新建试卷
+  public addExamPaper(taskCode: string) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/hj/editRunTime/addExamPaper`,
+      qs.stringify({ taskCode })
+    );
+  }
+  // 删除试卷
+  public deleteExamPaper(taskCode: string, pertId: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/hj/editRunTime/deleteExamPaper`,
+      qs.stringify({ taskCode, pertId })
+    );
+  }
+  // 获取所有试卷的统计信息
+  public getStatInfoOfAllEditRunTimeExamPapers(taskCode: any, cetpId: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/hj/editRunTime/getStatInfoOfAllEditRunTimeExamPapers`,
+      qs.stringify({ taskCode, cetpId })
+    );
+  }
 }
 
 export const stepServices = new StepServices();

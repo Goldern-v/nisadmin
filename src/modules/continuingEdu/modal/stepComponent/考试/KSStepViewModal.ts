@@ -72,6 +72,8 @@ const defaultStepData5 = {
 };
 class StepViewModal {
   @observable public stepData2: DefaultStepData2 = cloneJson(defaultStepData2);
+  /** 厚街多套题目统计信息 */
+  @observable public manyQuestionStatLists: any = [];
 
   /** 计算考试截止时间 */
   @computed
@@ -145,6 +147,7 @@ class StepViewModal {
   public cleanAllStepData = () => {
     this.stepData2 = cloneJson(defaultStepData2);
     this.stepData5 = cloneJson(defaultStepData5);
+    this.manyQuestionStatLists = [];
   };
 
   /** 数据合并 */
@@ -205,7 +208,10 @@ class StepViewModal {
           },
           []
         ),
-        questionStatList: this.stepData2.questionStatList
+        questionStatList:
+          appStore.HOSPITAL_ID == "hj"
+            ? this.manyQuestionStatLists
+            : this.stepData2.questionStatList
       }
     };
     return result;
