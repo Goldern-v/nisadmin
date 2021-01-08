@@ -18,9 +18,10 @@ export default observer(function 星级考核表模块(props: Props) {
   let data = starRatingReportEditModel.getSectionData(sectionId)
   let report: Report = starRatingReportEditModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  let totalSorce = 0;
+  let totalSorce = 0
+
   for (let i = 0; i < list.length; i++) {
-    totalSorce += list[i].deductScore || 0;
+    totalSorce += list[i].deductScore || 0
   }
 
   useEffect(() => { })
@@ -33,6 +34,7 @@ export default observer(function 星级考核表模块(props: Props) {
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   min-height: 60px;
   padding: 5px 0;

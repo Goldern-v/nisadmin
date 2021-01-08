@@ -164,18 +164,6 @@ export default observer(function 星级考核表弹窗(props: Props) {
       if (report.month === 12) {
         return [
           {
-            title: '年度加分',
-            dataIndex: 'annualAddPoints',
-            align: 'center',
-            render(val: any, record: any, index: number) {
-              return <Input
-                className={`annualAddPoints${index}`}
-                value={val}
-                onChange={(e: any) => handleNumberInput(e, record, index, 'annualAddPoints')} />
-            },
-            width: 90,
-          },
-          {
             title: '加分明细',
             dataIndex: 'addPointsItemList',
             width: 80,
@@ -223,7 +211,19 @@ export default observer(function 星级考核表弹窗(props: Props) {
                 </Popover>
               </DoCon>
             },
-          }
+          },
+          {
+            title: '年度加分',
+            dataIndex: 'annualAddPoints',
+            align: 'center',
+            render(val: any, record: any, index: number) {
+              return <Input
+                className={`annualAddPoints${index}`}
+                value={val}
+                onChange={(e: any) => handleNumberInput(e, record, index, 'annualAddPoints')} />
+            },
+            width: 90,
+          },
         ] as ColumnProps<any>[]
       } else {
         return []

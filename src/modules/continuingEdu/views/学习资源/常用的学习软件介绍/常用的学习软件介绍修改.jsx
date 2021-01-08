@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, Radio, Spin, message, Select } from 'antd'
+import { Button, Input, Radio, Spin, message } from 'antd'
 import { Place } from 'src/components/common'
 import { appStore, authStore } from 'src/stores'
 import MultiFileUploader from 'src/components/MultiFileUploader'
@@ -8,13 +8,10 @@ import CKEditor from 'ckeditor4-react'
 import { localityService } from './api/LocalityService'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
-export default function 应急预案学习修改() {
+export default function 循证护理记录集合修改() {
   const { history, queryObj } = appStore
   const [editParams, setEditParams] = useState({
-    planName: '',
     status: 0,
-    briefIntroduction: '',
-    type: 1,
     attachmentList: []
   })
   const [loading, setLoading] = useState(false)
@@ -32,26 +29,15 @@ export default function 应急预案学习修改() {
         .getCompleteInfo(queryObj.id)
         .then(res => {
           if (res.data) {
-            let {
-              id,
-              detailContent,
-              planName,
-              status,
-              attachmentList,
-              deptCode,
-              briefIntroduction,
-              type,
-            } = res.data
+            let { detailContent, id, title, status, articleUrl, attachmentList } = res.data
 
             setEditorData(detailContent || '')
 
             setEditParams({
               id,
-              planName,
+              title,
               status,
-              deptCode,
-              briefIntroduction,
-              type,
+              articleUrl,
               attachmentList: attachmentList || []
             })
           }
@@ -66,7 +52,7 @@ export default function 应急预案学习修改() {
       detailContent: editorData
     }
 
-    if (saveParams.planName.trim() === '') {
+    if (saveParams.title.trim() === '') {
       message.warn('标题不能为空')
       return
     }
@@ -88,7 +74,7 @@ export default function 应急预案学习修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>应急预案学习{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>常用的学习软件介绍{queryObj.id ? '修改' : '添加'}</Title>
       <Place />
       {/* <Button
         type="primary"
@@ -102,23 +88,12 @@ export default function 应急预案学习修改() {
       <Spin spinning={loading}>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">预案名称：</div>
+            <div className="row-label">标题：</div>
             <div className="row-content">
               <Input
-                value={editParams.planName}
+                value={editParams.title}
                 style={{ width: '100%', maxWidth: 600 }}
-                onChange={(e) => setEditParams({ ...editParams, planName: e.target.value })}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="pannel">
-          <div className="row-item">
-            <div className="row-label">预案简介：</div>
-            <div className="row-content">
-              <Input.TextArea
-                value={editParams.briefIntroduction}
-                onChange={(e) => setEditParams({ ...editParams, briefIntroduction: e.target.value })}
+                onChange={(e) => setEditParams({ ...editParams, title: e.target.value })}
               />
             </div>
           </div>
@@ -152,7 +127,7 @@ export default function 应急预案学习修改() {
                 style={{ paddingBottom: 20 }}
                 size={1}
                 data={editParams.attachmentList}
-                type="lat_sr_contingency_plan"
+                type="lat_ebn_practise_evidence"
                 onChange={(payload) => {
                   let attachmentList = [...payload]
                   if (attachmentList.length > 0) attachmentList = [attachmentList[attachmentList.length - 1]]
@@ -163,50 +138,19 @@ export default function 应急预案学习修改() {
         </div>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">类型：</div>
+            <div className="row-label">文章链接：</div>
             <div className="row-content">
-              <Radio.Group
-                value={editParams.type}
-                onChange={(e) => {
-                  let newEditParams = { ...editParams, type: e.target.value }
-                  if (e.target.value === 1) {
-                    newEditParams.deptCode = ''
-                  } else {
-                    newEditParams.deptCode = authStore.defaultDeptCode
-                  }
-
-                  setEditParams(newEditParams)
-                }}>
-                <Radio value={1}>医院应急预案</Radio>
-                <Radio value={2}>专科应急预案</Radio>
-              </Radio.Group>
+              <Input
+                value={editParams.articleUrl}
+                style={{ width: '100%', maxWidth: 600 }}
+                onChange={(e) =>
+                  setEditParams({ ...editParams, articleUrl: e.target.value })} />
             </div>
           </div>
         </div>
-        {editParams.type === 2 && (
-          <div className="pannel">
-            <div className="row-item">
-              <div className="row-label">科室：</div>
-              <div className="row-content">
-                <Select
-                  showSearch
-                  style={{ width: 220 }}
-                  value={editParams.deptCode}
-                  onChange={(deptCode) => setEditParams({ ...editParams, deptCode })}
-                  filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }>
-                  {authStore.deptList.map((item, index) => (
-                    <Select.Option value={item.code} key={index}>{item.name}</Select.Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </div>
-        )}
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">状态：</div>
+            <div className="row-label">文章状态：</div>
             <div className="row-content">
               <Radio.Group
                 value={editParams.status}

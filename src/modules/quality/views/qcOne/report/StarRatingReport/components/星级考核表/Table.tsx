@@ -67,7 +67,7 @@ export default observer(function Table(props: Props) {
       <table>
         <colgroup>
           <col width='80' />
-          <col width='120' />
+          <col width='100' />
           <col />
           <col />
           <col />
@@ -111,11 +111,11 @@ export default observer(function Table(props: Props) {
                 </React.Fragment>}
               {showAddPintCol && (
                 <React.Fragment>
-                  <td>{item.annualAddPoints}</td>
                   <td style={{ textAlign: 'left', }}>{(item.addPointsItemList || [])
                     .map((scoreDetailItem: any, scoreDetailItemIdx: number) => (
                       <div style={{ wordBreak: 'break-all', fontSize: '12px' }}>{scoreDetailItemIdx + 1}.{scoreDetailItem.itemName}</div>
                     ))}</td>
+                  <td>{item.annualAddPoints}</td>
                 </React.Fragment>
               )}
             </tr>
