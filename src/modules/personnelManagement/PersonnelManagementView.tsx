@@ -24,7 +24,7 @@ import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseBySh
 import DepartmentByShiftView from 'src/modules/statistic/views/departmentByShift/DepartmentByShiftView'
 
 
-export interface Props {}
+export interface Props { }
 
 export default function PersonnelManagementView() {
   const leftMenuConfig = [
@@ -34,7 +34,7 @@ export default function PersonnelManagementView() {
 
       children: [
         {
-          title: "护士排班",
+          title: appStore.HOSPITAL_ID == "nys" ? '护士排班与轮班' : "护士排班",
           path: "/personnelManagement/arrangeHome",
           component: ArrangeHome,
           style: { background: "#fff" }
@@ -47,18 +47,18 @@ export default function PersonnelManagementView() {
         },
         appStore.HOSPITAL_ID == "wh"
           ? {
-              title: "临时人员借调",
-              path: "/personnelManagement/personnelSecondment",
-              component: PersonnelSecondment,
-              style: { background: "#fff" },
-              hide: !authStore.isRoleManage
-            }
+            title: "临时人员借调",
+            path: "/personnelManagement/personnelSecondment",
+            component: PersonnelSecondment,
+            style: { background: "#fff" },
+            hide: !authStore.isRoleManage
+          }
           : {
-              title: "科室借用",
-              path: "/personnelManagement/DeptBorrowNew",
-              component: DeptBorrowNew,
-              hide: !authStore.isRoleManage
-            },
+            title: "科室借用",
+            path: "/personnelManagement/DeptBorrowNew",
+            component: DeptBorrowNew,
+            hide: !authStore.isRoleManage
+          },
         {
           title: "人员分组",
           path: "/personnelManagement/PersonnelSettingViewNew",
@@ -93,7 +93,7 @@ export default function PersonnelManagementView() {
           title: "标准工时设置",
           path: "/personnelManagement/standardTime",
           component: StandardTime,
-          hide:  appStore.HOSPITAL_ID != "wh" || !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+          hide: appStore.HOSPITAL_ID != "wh" || !(authStore.user ?.empNo == 'G6051' || authStore.user ?.empNo == 'ADMIN')
         },
         {
           title: "加减班列表查询",
