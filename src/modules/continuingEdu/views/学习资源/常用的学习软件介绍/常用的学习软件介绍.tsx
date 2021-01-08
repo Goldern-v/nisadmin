@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Modal } from 'antd'
+import { Button, Input, message, Modal, Icon } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { localityService } from './api/LocalityService'
-import { fileDownload, getFilePrevImg } from 'src/utils/file/file'
+import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
 import { appStore, authStore } from 'src/stores'
 import Axios from 'axios'
+import ReactZmage from 'react-zmage'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import createModal from 'src/libs/createModal'
 
 export interface Props { }
 
@@ -25,6 +28,8 @@ export default function 常用的学习软件介绍() {
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
 
+  const previewModal = createModal(PreviewModal)
+
   const columns: ColumnProps<any>[] = [
     {
       title: "序号",
@@ -36,18 +41,28 @@ export default function 常用的学习软件介绍() {
     },
     {
       title: '名称',
-      dataIndex: 'title',
+      dataIndex: 'softwareName',
+      align: "left",
+      width: 150,
+      render: (text: any, record: any, index: number) => {
+        return <div>{text}</div>
+      }
+    },
+    {
+      title: '简介',
+      dataIndex: 'briefIntroduction',
       align: "left",
       render: (text: any, record: any, index: number) => {
-        if (record.articleUrl)
-          return <a
-            target="_blank"
-            href={record.articleUrl}
-            title={record.articleUrl}>
-            {text}
-          </a>
-        else
-          return <div>{text}</div>
+        return <div>{text}</div>
+      }
+    },
+    {
+      title: '官方网址/下载地址',
+      dataIndex: 'officialWebsiteUrl',
+      align: "left",
+      width: 150,
+      render: (text: any, record: any, index: number) => {
+        return <a href={text} target="_blank">{text}</a>
       }
     },
     {
@@ -58,13 +73,22 @@ export default function 常用的学习软件介绍() {
       render: (obj: any, record: any, index: number) => {
         if (obj && obj.id)
           return <div
-            className="download-item"
-            title={`下载 ${obj.name}`}
-            onClick={() => handleDownload(obj)}>
-            <img
-              className="file-icon"
-              src={getFilePrevImg(obj.path)} />
-            <span>{obj.name}</span>
+            className="file-item" >
+            <span
+              className="preview"
+              title={`预览 ${obj.name}`}
+              onClick={() => handlePreview(obj)}>
+              <img
+                className="file-icon"
+                src={getFilePrevImg(obj.path)} />
+              <span>{obj.name}</span>
+            </span>
+            <span
+              className="download"
+              title={`下载 ${obj.name}`}
+              onClick={() => handleDownload(obj)}>
+              <Icon type="download" />
+            </span>
           </div>
         else
           return <span></span>
@@ -126,12 +150,12 @@ export default function 常用的学习软件介绍() {
   }
 
   const handleDetail = (record: any) => {
-    history.push(`/continuingEdu/循证护理记录集合详情?id=${record.id}&title=${record.title}`)
+    history.push(`/continuingEdu/常用的学习软件介绍详情?id=${record.id}&title=${record.softwareName}`)
   }
 
   const handleEdit = (record: any) => {
     if (record.id)
-      history.push(`/continuingEdu/循证护理记录集合修改?id=${record.id}`)
+      history.push(`/continuingEdu/常用的学习软件介绍修改?id=${record.id}`)
   }
 
   const handleDelete = (record: any) => {
@@ -153,6 +177,19 @@ export default function 常用的学习软件介绍() {
       })
   }
 
+  const handlePreview = (file: any) => {
+    if (getFileType(file.path) == 'img')
+      ReactZmage.browsing({
+        backdrop: 'rgba(0,0,0, .8)',
+        set: [{ src: file.path }]
+      })
+    else
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
+  }
+
   const handleDownload = (obj: any) => {
     Axios.get(obj.path, { responseType: 'blob' })
       .then(
@@ -170,7 +207,7 @@ export default function 常用的学习软件介绍() {
   }
 
   const handleAdd = () => {
-    history.push('/continuingEdu/循证护理记录集合修改')
+    history.push('/continuingEdu/常用的学习软件介绍修改')
   }
 
   return <Wrapper>
@@ -213,6 +250,7 @@ export default function 常用的学习软件介绍() {
           pageSize: query.pageSize
         }} />
     </MainCon>
+    <previewModal.Component />
   </Wrapper>
 }
 
@@ -222,17 +260,20 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  .download-item{
+  .file-item{
     cursor: pointer;
     color: #00A680;
     word-break: break-all;
-    &>*{
+    & *{
       vertical-align: middle;
     }
-  }
-  .file-icon{
-    width: 12px; 
-    margin-right: 5px;
+    .download{
+      margin-left: 5px;
+    }
+    .file-icon{
+      width: 12px; 
+      margin-right: 5px;
+    }
   }
 `
 const HeaderCon = styled.div`

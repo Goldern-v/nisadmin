@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Modal, Select } from 'antd'
+import { Button, Icon, Input, message, Modal, Select } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import BaseTabs from "src/components/BaseTabs"
@@ -8,7 +8,10 @@ import { ColumnProps } from 'antd/lib/table'
 import { localityService } from './api/LocalityService'
 import { appStore, authStore } from 'src/stores'
 import Axios from 'axios'
-import { fileDownload, getFilePrevImg } from 'src/utils/file/file'
+import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
+import ReactZmage from 'react-zmage'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import createModal from 'src/libs/createModal'
 
 const Option = Select.Option
 
@@ -29,6 +32,8 @@ export default function 应急预案学习() {
 
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
+
+  const previewModal = createModal(PreviewModal)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -77,13 +82,22 @@ export default function 应急预案学习() {
       render: (obj: any, record: any, index: number) => {
         if (obj && obj.id)
           return <div
-            className="download-item"
-            title={`下载 ${obj.name}`}
-            onClick={() => handleDownload(obj)}>
-            <img
-              className="file-icon"
-              src={getFilePrevImg(obj.path)} />
-            <span>{obj.name}</span>
+            className="file-item" >
+            <span
+              className="preview"
+              title={`预览 ${obj.name}`}
+              onClick={() => handlePreview(obj)}>
+              <img
+                className="file-icon"
+                src={getFilePrevImg(obj.path)} />
+              <span>{obj.name}</span>
+            </span>
+            <span
+              className="download"
+              title={`下载 ${obj.name}`}
+              onClick={() => handleDownload(obj)}>
+              <Icon type="download" />
+            </span>
           </div>
         else
           return <span></span>
@@ -169,6 +183,19 @@ export default function 应急预案学习() {
             }, () => setLoading(false))
 
         }
+      })
+  }
+
+  const handlePreview = (file: any) => {
+    if (getFileType(file.path) == 'img')
+      ReactZmage.browsing({
+        backdrop: 'rgba(0,0,0, .8)',
+        set: [{ src: file.path }]
+      })
+    else
+      previewModal.show({
+        title: file.name,
+        path: file.path
       })
   }
 
@@ -275,6 +302,7 @@ export default function 应急预案学习() {
         onChange={(key: any) => handleTypeChange(key)}
       />
     </MainCon>
+    <previewModal.Component />
   </Wrapper>
 }
 
@@ -284,17 +312,20 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  .download-item{
+  .file-item{
     cursor: pointer;
     color: #00A680;
     word-break: break-all;
-    &>*{
+    & *{
       vertical-align: middle;
     }
-  }
-  .file-icon{
-    width: 12px; 
-    margin-right: 5px;
+    .download{
+      margin-left: 5px;
+    }
+    .file-icon{
+      width: 12px; 
+      margin-right: 5px;
+    }
   }
 `
 const HeaderCon = styled.div`

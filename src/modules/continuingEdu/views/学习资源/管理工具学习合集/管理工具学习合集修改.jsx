@@ -8,7 +8,7 @@ import CKEditor from 'ckeditor4-react'
 import { localityService } from './api/LocalityService'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
-export default function 常用的学习软件介绍修改() {
+export default function 管理工具学习合集修改() {
   const { history, queryObj } = appStore
   const [editParams, setEditParams] = useState({
     status: 0,
@@ -83,7 +83,7 @@ export default function 常用的学习软件介绍修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>常用的学习软件介绍{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>管理工具学习合集{queryObj.id ? '修改' : '添加'}</Title>
       <Place />
       {/* <Button
         type="primary"

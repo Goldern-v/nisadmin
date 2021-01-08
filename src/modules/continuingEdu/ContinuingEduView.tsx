@@ -62,6 +62,10 @@ import 审核集中管理 from './views/审核集中管理/审核集中管理'
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() => import('./views/学习资源/学习的网站链接/学习的网站链接'))
+//常用的学习软件介绍
+const 常用的学习软件介绍 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍'))
+const 常用的学习软件介绍详情 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍详情'))
+const 常用的学习软件介绍修改 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍修改'))
 //循证护理实践证据集合
 const 循证护理实践证据集合 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理实践证据集合'))
 const 循证护理记录集合详情 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理记录集合详情'))
@@ -280,6 +284,23 @@ export default function ContinuingEdu(props: Props) {
                 title: "学习的网站链接",
                 path: "/continuingEdu/学习的网站链接",
                 component: 学习的网站链接
+              },
+              {
+                title: "常用的学习软件介绍详情",
+                path: "/continuingEdu/常用的学习软件介绍详情",
+                hide: true,
+                component: 常用的学习软件介绍详情
+              },
+              {
+                title: "常用的学习软件介绍修改",
+                path: "/continuingEdu/常用的学习软件介绍修改",
+                hide: true,
+                component: 常用的学习软件介绍修改
+              },
+              {
+                title: "常用的学习软件介绍",
+                path: "/continuingEdu/常用的学习软件介绍",
+                component: 常用的学习软件介绍
               },
               {
                 title: "循证护理记录集合详情",

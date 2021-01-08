@@ -196,7 +196,35 @@ export default observer(function 星级考核表弹窗(props: Props) {
 
                       setData(cloneData)
                     }}>
-                    {item.itemName}
+                    <span className="pop-item-content">{itemIdx + 1}.{item.itemName}</span>
+                    <span
+                      onClick={(e) => { e.stopPropagation() }}
+                      style={{
+                        marginLeft: '5px',
+                        marginRight: '-5px',
+                        color: '#999',
+                        fontSize: '12px',
+                        position: 'relative',
+                        top: '-2px',
+                      }}>
+                      <span>分值:</span>
+                      <span>
+                        <Input
+                          size="small"
+                          disabled={!(targetItem && targetItem.checked)}
+                          style={{ width: '60px' }}
+                          className={`check-item-source-${index}-${itemIdx}`}
+                          value={targetItem ? targetItem.addPoints : ''}
+                          onChange={(e) =>
+                            handleCheckItemSource(
+                              e.target.value,
+                              targetItem ? targetItem.addPoints : '',
+                              record,
+                              item,
+                              index)} />
+                      </span>
+                      <span style={{ marginLeft: '5px' }}>({item.expand || '0'}分)</span>
+                    </span>
                   </Checkbox>
                 </PopItemCon>
               })
@@ -216,12 +244,12 @@ export default observer(function 星级考核表弹窗(props: Props) {
             title: '年度加分',
             dataIndex: 'annualAddPoints',
             align: 'center',
-            render(val: any, record: any, index: number) {
-              return <Input
-                className={`annualAddPoints${index}`}
-                value={val}
-                onChange={(e: any) => handleNumberInput(e, record, index, 'annualAddPoints')} />
-            },
+            // render(val: any, record: any, index: number) {
+            //   return <Input
+            //     className={`annualAddPoints${index}`}
+            //     value={val}
+            //     onChange={(e: any) => handleNumberInput(e, record, index, 'annualAddPoints')} />
+            // },
             width: 90,
           },
         ] as ColumnProps<any>[]
@@ -249,6 +277,47 @@ export default observer(function 星级考核表弹窗(props: Props) {
       }
     }
   ]
+
+  const handleCheckItemSource = (newVal: string, oldVal: string, record: any, item: any, idx: number) => {
+    if (/^\d*\.{0,1}\d*$/.test(newVal)) {
+      newVal = newVal.replace('-', '')
+      let valArr = newVal.split('.')
+      if (valArr.length > 1) {
+        valArr[1] = valArr[1].slice(0, 1)
+        // if (valArr[1].length <= 0) valArr[1] = '0'
+      }
+      newVal = valArr.join('.')
+
+      let expand = item.expand
+
+      if (expand && !isNaN(Number(expand)) && Number(newVal) > Number(expand)) {
+        newVal = expand
+      }
+    } else if (newVal !== '' && newVal !== '0') {
+      newVal = oldVal
+    }
+
+    let newRecord = { ...record }
+
+    let target = newRecord.addPointsItemList.find((listItem: any) => listItem.itemCode == item.itemCode)
+    target.addPoints = newVal
+
+    let annualAddPoints = 0
+    newRecord.addPointsItemList
+      .filter((listItem: any) => listItem.checked)
+      .map((listItem: any) => {
+        console.log(listItem)
+        annualAddPoints += parseFloat(listItem.addPoints || 0)
+      })
+
+    newRecord.annualAddPoints = annualAddPoints
+
+    cloneData.list[idx] = newRecord
+
+    console.log(cloneData.list[idx])
+
+    setData(cloneData)
+  }
 
   const addItem = () => {
 

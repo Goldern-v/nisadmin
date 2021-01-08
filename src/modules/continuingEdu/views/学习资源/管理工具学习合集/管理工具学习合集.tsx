@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Icon, Input, message, Modal } from 'antd'
+import { Button, Input, message, Modal, Icon } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
@@ -14,7 +14,7 @@ import createModal from 'src/libs/createModal'
 
 export interface Props { }
 
-export default function 循证护理实践证据集合() {
+export default function 管理工具学习合集() {
   const { history } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
@@ -41,18 +41,28 @@ export default function 循证护理实践证据集合() {
     },
     {
       title: '名称',
-      dataIndex: 'title',
+      dataIndex: 'softwareName',
+      align: "left",
+      width: 150,
+      render: (text: any, record: any, index: number) => {
+        return <div>{text}</div>
+      }
+    },
+    {
+      title: '简介',
+      dataIndex: 'briefIntroduction',
       align: "left",
       render: (text: any, record: any, index: number) => {
-        if (record.articleUrl)
-          return <a
-            target="_blank"
-            href={record.articleUrl}
-            title={record.articleUrl}>
-            {text}
-          </a>
-        else
-          return <div>{text}</div>
+        return <div>{text}</div>
+      }
+    },
+    {
+      title: '官方网址/下载地址',
+      dataIndex: 'officialWebsiteUrl',
+      align: "left",
+      width: 150,
+      render: (text: any, record: any, index: number) => {
+        return <a href={text} target="_blank">{text}</a>
       }
     },
     {
@@ -140,12 +150,12 @@ export default function 循证护理实践证据集合() {
   }
 
   const handleDetail = (record: any) => {
-    history.push(`/continuingEdu/循证护理记录集合详情?id=${record.id}&title=${record.title}`)
+    history.push(`/continuingEdu/管理工具学习合集详情?id=${record.id}&title=${record.softwareName}`)
   }
 
   const handleEdit = (record: any) => {
     if (record.id)
-      history.push(`/continuingEdu/循证护理记录集合修改?id=${record.id}`)
+      history.push(`/continuingEdu/管理工具学习合集修改?id=${record.id}`)
   }
 
   const handleDelete = (record: any) => {
@@ -197,12 +207,12 @@ export default function 循证护理实践证据集合() {
   }
 
   const handleAdd = () => {
-    history.push('/continuingEdu/循证护理记录集合修改')
+    history.push('/continuingEdu/管理工具学习合集修改')
   }
 
   return <Wrapper>
     <HeaderCon>
-      <Title>循证护理实践证据集合</Title>
+      <Title>管理工具学习合集</Title>
       <Place />
       <Input
         placeholder="请输入要搜索的关键字"

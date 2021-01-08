@@ -28,17 +28,17 @@ class LocalityService extends BaseApiService {
    * /file/uploadAttachment/lat_sr_frequentlyuse_learnsoftware
   */
 
-  /** 287.厚街--学习资源--常用的学习软件介绍--获取完整信息（用于修改） */
+  /** 293.厚街--学习资源--常用的学习软件--获取完整信息（用于修改） */
   public getCompleteInfo(id: string | number) {
-    return this.post('/studyAndTrain/studyResources/eBNPractiseEvidenceManage/getCompleteInfo', qs.stringify({ id }))
+    return this.post('/studyAndTrain/studyResources/frequentlyUseLearnSoftwareManage/getCompleteInfo', qs.stringify({ id }))
   }
 
-  /** 286.厚街--学习资源--常用的学习软件介绍--获取详情内容（富文本内容） */
+  /** 292.厚街--学习资源--常用的学习软件--获取详情内容（富文本内容） */
   public getDetailContent(id: string | number) {
-    return this.post('/studyAndTrain/studyResources/eBNPractiseEvidenceManage/getDetailContent', qs.stringify({ id }))
+    return this.post('/studyAndTrain/studyResources/frequentlyUseLearnSoftwareManage/getDetailContent', qs.stringify({ id }))
   }
 
-  /** 285.厚街--学习资源--常用的学习软件介绍--获取主列表数据（分页查询） */
+  /** 291.厚街--学习资源--常用的学习软件--获取主列表数据（分页查询） */
   public queryPageList(
     query: {
       pageIndex: number,
@@ -46,7 +46,7 @@ class LocalityService extends BaseApiService {
       keyWord: string,
     }
   ) {
-    return this.post('/studyAndTrain/studyResources/eBNPractiseEvidenceManage/queryPageList', query)
+    return this.post('/studyAndTrain/studyResources/frequentlyUseLearnSoftwareManage/queryPageList', query)
   }
 }
 

@@ -166,8 +166,8 @@ class StarRatingReportEditModel {
             let key = keys[i]
             if (res && res.data) {
               dataMap[key] = (res.data || []).map((item: any) => {
-                const { code, name } = item
-                return { itemCode: code, itemName: name }
+                const { code, name, expand } = item
+                return { itemCode: code, itemName: name, expand }
               })
             }
           }

@@ -88,7 +88,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${wardName} 年度星级考核表`
+    return `${year}年${wardName}年度星级考核表`
   }
 
   useEffect(() => {

@@ -67,15 +67,15 @@ export default observer(function Table(props: Props) {
       <table>
         <colgroup>
           <col width='80' />
-          <col width='100' />
+          <col />
           <col />
           <col />
           <col />
           <col />
           {showAddPintCol && (
             <React.Fragment>
-              <col />
               <col width='180' />
+              <col />
             </React.Fragment>
           )}
         </colgroup>
@@ -89,8 +89,8 @@ export default observer(function Table(props: Props) {
             <td>星级</td>
             {showAddPintCol && (
               <React.Fragment>
-                <td>年度加分</td>
                 <td>加分明细</td>
+                <td>年度加分</td>
               </React.Fragment>
             )}
           </tr>
@@ -112,8 +112,17 @@ export default observer(function Table(props: Props) {
               {showAddPintCol && (
                 <React.Fragment>
                   <td style={{ textAlign: 'left', }}>{(item.addPointsItemList || [])
+                    .filter((scoreDetailItem: any) => scoreDetailItem.checked)
                     .map((scoreDetailItem: any, scoreDetailItemIdx: number) => (
-                      <div style={{ wordBreak: 'break-all', fontSize: '12px' }}>{scoreDetailItemIdx + 1}.{scoreDetailItem.itemName}</div>
+                      <div
+                        style={{
+                          wordBreak: 'break-all',
+                          fontSize: '12px'
+                        }}
+                        key={`${index}-${scoreDetailItemIdx}`}>
+                        {scoreDetailItemIdx + 1}.{scoreDetailItem.itemName}
+                        ({scoreDetailItem.addPoints || '0'})
+                      </div>
                     ))}</td>
                   <td>{item.annualAddPoints}</td>
                 </React.Fragment>

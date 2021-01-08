@@ -6,7 +6,7 @@ import { appStore } from 'src/stores'
 import { localityService } from './api/LocalityService'
 export interface Props { }
 
-export default function 常用的学习软件介绍详情() {
+export default function 管理工具学习合集详情() {
   const { queryObj, history } = appStore
   const [loading, setLoading] = useState(false)
   const [content, setContent] = useState('')
@@ -28,7 +28,7 @@ export default function 常用的学习软件介绍详情() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>常用的学习软件介绍详情</Title>
+      <Title>管理工具学习合集详情</Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>
     </HeaderCon>

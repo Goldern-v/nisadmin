@@ -200,7 +200,7 @@ export default observer(function NursingQualityCheckEdit() {
                       style={{ width: '60px' }}
                       className={`check-item-source-${idx}-${itemIdx}`}
                       value={item.deductScore}
-                      onChange={(e) => handleCheckItemSource(e.target.value, item.deductScore, record, idx, itemIdx)} /></span>
+                      onChange={(e) => handleCheckItemSource(e.target.value, item.deductScore, record, item.expand || '', idx, itemIdx)} /></span>
                   </span>
                 </Checkbox>
               </PopItemCon>
@@ -282,7 +282,7 @@ export default observer(function NursingQualityCheckEdit() {
     getResultist()
   }, [])
 
-  const handleCheckItemSource = (newVal: string, oldVal: string, record: any, idx1: number, idx2: number) => {
+  const handleCheckItemSource = (newVal: string, oldVal: string, record: any, expand: string, idx1: number, idx2: number) => {
     if (/^\d*\.{0,1}\d*$/.test(newVal)) {
       newVal = newVal.replace('-', '')
       let valArr = newVal.split('.')
@@ -291,6 +291,10 @@ export default observer(function NursingQualityCheckEdit() {
         // if (valArr[1].length <= 0) valArr[1] = '0'
       }
       newVal = valArr.join('.')
+
+      if (expand && !isNaN(Number(expand)) && Number(newVal) > Number(expand)) {
+        newVal = expand
+      }
     } else if (newVal !== '' && newVal !== '0') {
       newVal = oldVal
     }
@@ -323,6 +327,7 @@ export default observer(function NursingQualityCheckEdit() {
               return {
                 itemName: item.name,
                 itemCode: item.code,
+                expand: item.expand || '',
                 checked: false
               }
             })
