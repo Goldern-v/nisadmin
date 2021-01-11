@@ -16,6 +16,7 @@ import { Rules } from "src/components/Form/interfaces";
 import service from "src/services/api"; //获取科室公共接口
 import { nursingEduFilesApi } from "../api/NursingEduFilesApi"; //接口
 import { nursingEduFilesModal } from "../NursingEduFilesModal"; //仓库数据
+import { observer } from "mobx-react-lite";
 
 export interface Props {
   visible: boolean;
@@ -25,35 +26,36 @@ export interface Props {
   onOkCallBack?: any;
 }
 
-export default function HdNursingEditModal(props: Props) {
+export default observer(function HdNursingEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [deptList, setDeptList]: any = useState([]); // 科室
   const [editLoading, setEditLoading] = useState(false); // 保存loading
   const formRef = React.createRef<Form>();
-  const showType: any = nursingEduFilesModal.showType
-  const titleName: string = showType == 1 ? '外出进修生' : '外来进修生'
+  const showType: any = params.id ? params.type : nursingEduFilesModal.showType
+  const titleName: string = showType == 1 ? '外来进修生' : '外出进修生'
 
   // 弹窗必填项
   const rules: Rules = {
-    name: val => !!val || "姓名不能为空",
+    name: val => showType == 1 && (!!val || "姓名不能为空"),
+    empNo: val => showType == 2 && (!!val || "姓名不能为空"),
     sex: val => !!val || "性别不能为空",
     age: val => !!val || "年龄不能为空",
     title: val => !!val || "职称不能为空",
     education: val => !!val || "学历不能为空",
-    originalWorkUnit: val => !!val || "原单位名称不能为空",
-    originalDepartment: val => !!val || "原科室不能为空",
+    originalDepartmentCode: val => !!val || "科室不能为空",
     idCardNo: val => !!val || "身份证号码不能为空",
     phone: val => !!val || "联系电话不能为空",
     isResident: val => !!val || "是否住宿不能为空",
     studyTime: val => !!val || "进修时间不能为空",
-    studyDeptCode01: val => !!val || "进修科室一不能为空",
+    studyDeptCode01: val => showType == 1 && (!!val || "进修科室一不能为空"),
+    studyDeptName01: val => showType == 2 && (!!val || "进修科室一不能为空"),
     address: val => !!val || "家庭住址不能为空",
     emergencyContactPerson: val => !!val || "紧急联系人不能为空",
     emergencyContactPhone: val => !!val || "紧急联系人电话不能为空",
-    层级: val => showType == 1 && (!!val || "层级不能为空"),
-    进修科目: val => !!val || "进修科目不能为空",
-    进修地点: val => showType == 1 && (!!val || "进修地点不能为空"),
-    来自单位: val => showType == 2 && (!!val || "来自单位不能为空")
+    nurseHierarchy: val => showType == 2 && (!!val || "层级不能为空"),
+    refresherSubject: val => !!val || "进修科目不能为空",
+    toWorkUnit: val => showType == 2 && (!!val || "进修地点不能为空"),
+    originalWorkUnit: val => showType == 1 && (!!val || "单位名称不能为空")
   };
 
   // 初始化科室
@@ -74,7 +76,7 @@ export default function HdNursingEditModal(props: Props) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-        if (params.identifier) {
+        if (params.id) {
           current.clear();
           let data: any = { ...params };
           // 学历单独处理
@@ -115,7 +117,13 @@ export default function HdNursingEditModal(props: Props) {
             address,
             emergencyContactPerson,
             emergencyContactPhone,
-            remark
+            remark,
+            toWorkUnit,
+            refresherSubject,
+            nurseHierarchy,
+            empNo,
+            originalDepartmentCode,
+            projectName
           } = data;
           current.setFields({
             identifier,
@@ -132,11 +140,19 @@ export default function HdNursingEditModal(props: Props) {
             dormitoryNumber,
             studyDeptCode01,
             studyDeptCode02,
+            studyDeptName01,
+            studyDeptName02,
             address,
             emergencyContactPerson,
             emergencyContactPhone,
             remark,
-            studyTime: [moment(studyTimeBegin), moment(studyTimeEnd)]
+            studyTime: [moment(studyTimeBegin), moment(studyTimeEnd)],
+            toWorkUnit,
+            refresherSubject,
+            nurseHierarchy,
+            empNo,
+            originalDepartmentCode,
+            projectName
           });
         } else {
           current.clear();
@@ -155,35 +171,46 @@ export default function HdNursingEditModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            console.log(newParams, "newParams1111");
             newParams.studyTimeBegin = newParams.studyTime
               ? newParams.studyTime[0].format("YYYY-MM-DD")
               : "";
             newParams.studyTimeEnd = newParams.studyTime
               ? newParams.studyTime[1].format("YYYY-MM-DD")
               : "";
-            newParams.studyDeptName01 = newParams.studyDeptCode01
+            newParams.originalDepartment = newParams.originalDepartmentCode
               ? deptList.find(
-                (item: any) => item.code === newParams.studyDeptCode01
-              ).name
-              : "";
-            newParams.studyDeptName02 = newParams.studyDeptCode02
-              ? deptList.find(
-                (item: any) => item.code === newParams.studyDeptCode02
+                (item: any) => item.code === newParams.originalDepartmentCode
               ).name
               : "";
             newParams.type = showType;
-            if (params.identifier) {
+            if (showType == 2) {
+              newParams.empName = nursingEduFilesModal.empNoList.find((item: any) => item.empNo = newParams.empNo).empName
+            }
+            if (showType == 1) {
+              newParams.name = nursingEduFilesModal.empNoList.find((item: any) => item.empNo = newParams.name).empName;
+              newParams.studyDeptName01 = newParams.studyDeptCode01
+                ? deptList.find(
+                  (item: any) => item.code === newParams.studyDeptCode01
+                ).name
+                : "";
+              newParams.studyDeptName02 = newParams.studyDeptCode02
+                ? deptList.find(
+                  (item: any) => item.code === newParams.studyDeptCode02
+                ).name
+                : "";
+
+            }
+            if (params.id) {
               newParams.identifier = params.identifier;
+              newParams.id = params.id;
               setEditLoading(true);
               nursingEduFilesApi
                 .saveOrUpdateInfo(newParams)
-                .then(res => {
+                .then((res: any) => {
                   setEditLoading(false);
                   let msg = "修改成功";
                   Message.success(msg);
                   onOk();
-                  current.clear();
                 })
                 .catch((e: any) => {
                   console.log(e);
@@ -195,7 +222,6 @@ export default function HdNursingEditModal(props: Props) {
                 let msg = "添加成功";
                 Message.success(msg);
                 onOk(res);
-                current.clear();
               });
             }
           }
@@ -241,8 +267,27 @@ export default function HdNursingEditModal(props: Props) {
               <span className="mustWrite">*</span> 姓名:
             </Col>
             <Col span={16}>
-              <Form.Field name="name">
-                <Input />
+              <Form.Field name={showType == 1 ? "name" : "empNo"}>
+                <Select
+                  placeholder="请输入成员姓名"
+                  value={nursingEduFilesModal.empNo as any}
+                  onChange={(val: string) => {
+                    nursingEduFilesModal.empNo = val;
+                  }}
+                  allowClear
+                  showSearch
+                  filterOption={false}
+                  onSearch={(value: any) => {
+                    nursingEduFilesModal.empNoSearch = value;
+                    nursingEduFilesModal.initData()
+                  }}
+                >
+                  {nursingEduFilesModal.empNoList.map((item: any) => (
+                    <Select.Option key={item.empName} value={item.empNo}>
+                      {`${item.empName}(${item.empNo})`}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
           </Row>
@@ -285,26 +330,26 @@ export default function HdNursingEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {showType == 2 &&
+          {showType == 1 &&
             <Row>
               <Col span={6} className="label">
                 <span className="mustWrite">*</span> 来自单位:
               </Col>
               <Col span={16}>
-                <Form.Field name="来自单位">
+                <Form.Field name="originalWorkUnit">
                   <Input />
                 </Form.Field>
               </Col>
             </Row>
           }
-          {showType == 1 &&
+          {showType == 2 &&
             <Row>
               <Col span={6} className="label">
                 <span className="mustWrite">*</span> 层级:
               </Col>
               <Col span={16}>
-                <Form.Field name="层级">
-                  <Select defaultValue="N0">
+                <Form.Field name="nurseHierarchy">
+                  <Select>
                     <Select.Option value="N0">N0</Select.Option>
                     <Select.Option value="N1">N1</Select.Option>
                     <Select.Option value="N2">N2</Select.Option>
@@ -334,21 +379,28 @@ export default function HdNursingEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 原单位名称:
+              <span className="mustWrite">*</span> 科室:
             </Col>
             <Col span={16}>
-              <Form.Field name="originalWorkUnit">
-                <Input />
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6} className="label">
-              <span className="mustWrite">*</span> 原科室:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="originalDepartment">
-                <Input />
+              <Form.Field name="originalDepartmentCode">
+                <Select
+                  style={{ width: 180 }}
+                  allowClear
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {deptList.map((item: any) => {
+                    return (
+                      <Select.Option value={item.code} key={item}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
               </Form.Field>
             </Col>
           </Row>
@@ -399,7 +451,7 @@ export default function HdNursingEditModal(props: Props) {
             <Col span={6} className="label">项目名称:
               </Col>
             <Col span={16}>
-              <Form.Field name="项目名称">
+              <Form.Field name="projectName">
                 <Input />
               </Form.Field>
             </Col>
@@ -409,7 +461,7 @@ export default function HdNursingEditModal(props: Props) {
               <span className="mustWrite">*</span> 进修科目:
               </Col>
             <Col span={16}>
-              <Form.Field name="进修科目">
+              <Form.Field name="refresherSubject">
                 <Input />
               </Form.Field>
             </Col>
@@ -424,72 +476,98 @@ export default function HdNursingEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {showType == 1 &&
-            <Row>
-              <Col span={6} className="label">
-                <span className="mustWrite">*</span> 进修地点:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="进修地点">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
+          {showType == 2 &&
+            <div>
+              <Row>
+                <Col span={6} className="label">
+                  <span className="mustWrite">*</span> 进修地点:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="toWorkUnit">
+                    <Input />
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={6} className="label">
+                  <span className="mustWrite">*</span> 进修科室一:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="studyDeptName01">
+                    <Input />
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={6} className="label">
+                  进修科室二:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="studyDeptName02">
+                    <Input />
+                  </Form.Field>
+                </Col>
+              </Row>
+            </div>
           }
-          <Row>
-            <Col span={6} className="label">
-              <span className="mustWrite">*</span> 进修科室一:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="studyDeptCode01">
-                <Select
-                  style={{ width: 180 }}
-                  allowClear
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {deptList.map((item: any) => {
-                    return (
-                      <Select.Option value={item.code} key={item}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6} className="label">
-              进修科室二:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="studyDeptCode02">
-                <Select
-                  style={{ width: 180 }}
-                  allowClear
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {deptList.map((item: any) => {
-                    return (
-                      <Select.Option value={item.code} key={item}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+          {showType == 1 &&
+            <div>
+              <Row>
+                <Col span={6} className="label">
+                  <span className="mustWrite">*</span> 进修科室一:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="studyDeptCode01">
+                    <Select
+                      style={{ width: 180 }}
+                      allowClear
+                      showSearch
+                      filterOption={(input: any, option: any) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {deptList.map((item: any) => {
+                        return (
+                          <Select.Option value={item.code} key={item}>
+                            {item.name}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={6} className="label">
+                  进修科室二:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="studyDeptCode02">
+                    <Select
+                      style={{ width: 180 }}
+                      allowClear
+                      showSearch
+                      filterOption={(input: any, option: any) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {deptList.map((item: any) => {
+                        return (
+                          <Select.Option value={item.code} key={item}>
+                            {item.name}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+            </div>
+          }
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 家庭住址:
@@ -534,7 +612,7 @@ export default function HdNursingEditModal(props: Props) {
       </Wrapper>
     </Modal>
   );
-}
+})
 const Wrapper = styled.div`
   width: 95%;
   margin: 0 auto;

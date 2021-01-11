@@ -17,6 +17,10 @@ class NursingEduFilesModal {
   @observable public total: any = 0; //总条数
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
+  @observable public empNoSearch: any = null; //成员
+  @observable public empNoList: any = []; //所有成员
+  @observable public empNo: any = null; //成员
+
   @computed
   get postObj() {
     return {
@@ -28,6 +32,15 @@ class NursingEduFilesModal {
       pageSize: this.pageSize,
       type: appStore.HOSPITAL_ID == "gzhd" ? this.selectdType : null
     };
+  }
+
+  async initData() {
+    await Promise.all([
+      //人员
+      nursingEduFilesApi.getAllEmpName(this.empNoSearch).then(res => {
+        this.empNoList = res.data.list || [];
+      })
+    ]);
   }
 
   onload() {
@@ -46,6 +59,11 @@ class NursingEduFilesModal {
     nursingEduFilesApi.exportPageList(this.postObj).then(res => {
       fileDownload(res);
     });
+  }
+
+  async init() {
+    await this.initData();
+    this.onload();
   }
 }
 

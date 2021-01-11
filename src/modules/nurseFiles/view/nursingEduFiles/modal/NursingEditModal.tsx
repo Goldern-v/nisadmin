@@ -68,7 +68,7 @@ export default function NursingEditModal(props: Props) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-        if (params.identifier) {
+        if (params.id) {
           current.clear();
           let data: any = { ...params };
           // 学历单独处理
@@ -84,7 +84,7 @@ export default function NursingEditModal(props: Props) {
               (item: any) => item.name === data.education
             )
               ? educationList.find((item: any) => item.name === data.education)
-                  .num
+                .num
               : "";
           }
           const {
@@ -158,16 +158,17 @@ export default function NursingEditModal(props: Props) {
               : "";
             newParams.studyDeptName01 = newParams.studyDeptCode01
               ? deptList.find(
-                  (item: any) => item.code === newParams.studyDeptCode01
-                ).name
+                (item: any) => item.code === newParams.studyDeptCode01
+              ).name
               : "";
             newParams.studyDeptName02 = newParams.studyDeptCode02
               ? deptList.find(
-                  (item: any) => item.code === newParams.studyDeptCode02
-                ).name
+                (item: any) => item.code === newParams.studyDeptCode02
+              ).name
               : "";
-            if (params.identifier) {
+            if (params.id) {
               newParams.identifier = params.identifier;
+              newParams.id = params.id;
               setEditLoading(true);
               nursingEduFilesApi
                 .saveOrUpdateInfo(newParams)
@@ -176,7 +177,7 @@ export default function NursingEditModal(props: Props) {
                   let msg = "修改成功";
                   Message.success(msg);
                   onOk();
-                  current.clear();
+                  // current.clear();
                 })
                 .catch((e: any) => {
                   console.log(e);
@@ -188,7 +189,7 @@ export default function NursingEditModal(props: Props) {
                 let msg = "添加成功";
                 Message.success(msg);
                 onOk(res);
-                current.clear();
+                // current.clear();
               });
             }
           }

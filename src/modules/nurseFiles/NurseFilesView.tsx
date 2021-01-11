@@ -210,7 +210,8 @@ export default observer(function NurseFilesView(props: Props) {
       title: "护理进修生花名册",
       path: "/nurseFile/nursingEduFiles",
       component: NursingEduFiles,
-      icon: <TXHSCX />
+      icon: <TXHSCX />,
+      hide: appStore.HOSPITAL_ID == 'nys'
     },
     {
       title: "护理实习生花名册",
