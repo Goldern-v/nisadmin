@@ -103,7 +103,7 @@ export const LEFT_MENU = [
         path: "/indicator/患者走失高风险患者评估率"
       },
       { title: "患者走失发生率", path: "/indicator/患者走失发生率" },
-      { title: "患者足下垂的发生率", path: "/indicator/患者足下垂的发生率" }
+      // { title: "患者足下垂的发生率", path: "/indicator/患者足下垂的发生率" }
     ]
   },
   {
