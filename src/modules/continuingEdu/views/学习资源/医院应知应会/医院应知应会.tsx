@@ -1,24 +1,29 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Modal, Icon } from 'antd'
+import { Button, Icon, Input, message, Modal, Select } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import BaseTabs from "src/components/BaseTabs"
 import { ColumnProps } from 'antd/lib/table'
 import { localityService } from './api/LocalityService'
-import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
 import { appStore, authStore } from 'src/stores'
 import Axios from 'axios'
+import typeList from './utils/typeList'
+import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
 import ReactZmage from 'react-zmage'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import createModal from 'src/libs/createModal'
 
+const Option = Select.Option
+
 export interface Props { }
 
-export default function 管理工具学习合集() {
+export default function 医院应知应会() {
   const { history } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
+    type: 1,
     pageSize: 20,
     pageIndex: 1,
   })
@@ -40,85 +45,27 @@ export default function 管理工具学习合集() {
       align: "center",
     },
     {
-      title: '工具名称',
-      dataIndex: 'toolName',
+      title: '名称',
+      dataIndex: 'name',
+      width: 220,
       align: "left",
-      width: 150,
       render: (text: any, record: any, index: number) => {
-        return <div>{text}</div>
+        return <div className="">{text}</div>
       }
     },
     {
-      title: '简介',
+      title: '介绍',
       dataIndex: 'briefIntroduction',
       align: "left",
       render: (text: any, record: any, index: number) => {
-        return <div>{text}</div>
+        return <div className="">{text}</div>
       }
     },
     {
-      title: '附件1',
-      dataIndex: 'attachment01',
+      title: '学习附件',
+      dataIndex: 'attachment',
       align: "left",
-      width: 180,
-      render: (obj: any, record: any, index: number) => {
-        if (obj && obj.id)
-          return <div
-            className="file-item" >
-            <span
-              className="preview"
-              title={`预览 ${obj.name}`}
-              onClick={() => handlePreview(obj)}>
-              <img
-                className="file-icon"
-                src={getFilePrevImg(obj.path)} />
-              <span>{obj.name}</span>
-            </span>
-            <span
-              className="download"
-              title={`下载 ${obj.name}`}
-              onClick={() => handleDownload(obj)}>
-              <Icon type="download" />
-            </span>
-          </div>
-        else
-          return <span></span>
-      }
-    },
-    {
-      title: '附件2',
-      dataIndex: 'attachment02',
-      align: "left",
-      width: 180,
-      render: (obj: any, record: any, index: number) => {
-        if (obj && obj.id)
-          return <div
-            className="file-item" >
-            <span
-              className="preview"
-              title={`预览 ${obj.name}`}
-              onClick={() => handlePreview(obj)}>
-              <img
-                className="file-icon"
-                src={getFilePrevImg(obj.path)} />
-              <span>{obj.name}</span>
-            </span>
-            <span
-              className="download"
-              title={`下载 ${obj.name}`}
-              onClick={() => handleDownload(obj)}>
-              <Icon type="download" />
-            </span>
-          </div>
-        else
-          return <span></span>
-      }
-    },
-    {
-      title: '附件3',
-      dataIndex: 'attachment03',
-      align: "left",
-      width: 180,
+      width: 200,
       render: (obj: any, record: any, index: number) => {
         if (obj && obj.id)
           return <div
@@ -146,7 +93,7 @@ export default function 管理工具学习合集() {
     {
       title: '状态',
       dataIndex: 'status',
-      align: "center",
+      align: "left",
       width: 80,
       render: (status: number) => {
         switch (status) {
@@ -199,12 +146,12 @@ export default function 管理工具学习合集() {
   }
 
   const handleDetail = (record: any) => {
-    history.push(`/continuingEdu/管理工具学习合集详情?id=${record.id}&title=${record.toolName}`)
+    history.push(`/continuingEdu/医院应知应会详情?id=${record.id}&title=${record.name}`)
   }
 
   const handleEdit = (record: any) => {
     if (record.id)
-      history.push(`/continuingEdu/管理工具学习合集修改?id=${record.id}`)
+      history.push(`/continuingEdu/医院应知应会修改?id=${record.id}`)
   }
 
   const handleDelete = (record: any) => {
@@ -241,8 +188,7 @@ export default function 管理工具学习合集() {
 
   const handleDownload = (obj: any) => {
     Axios.get(obj.path, { responseType: 'blob' })
-      .then(
-        res => fileDownload(res, obj.name),
+      .then(res => fileDownload(res, obj.name),
         err => message.error(`${err.name}：${err.message}`)
       )
   }
@@ -256,12 +202,34 @@ export default function 管理工具学习合集() {
   }
 
   const handleAdd = () => {
-    history.push('/continuingEdu/管理工具学习合集修改')
+    history.push('/continuingEdu/医院应知应会修改')
   }
+
+  const handleTypeChange = (key: any) => {
+    let newQuery = { ...query, pageIndex: 1, type: key }
+
+    setQuery(newQuery)
+  }
+
+  const TableCon = <BaseTable
+    surplusHeight={280}
+    columns={columns}
+    dataSource={tableData}
+    loading={loading}
+    pagination={{
+      pageSizeOptions: ["10", "20", "30", "40", "50"],
+      total: totalCount,
+      onChange: handlePageChange,
+      onShowSizeChange: handlePageSizeChange,
+      current: query.pageIndex,
+      showSizeChanger: true,
+      showQuickJumper: true,
+      pageSize: query.pageSize
+    }} />
 
   return <Wrapper>
     <HeaderCon>
-      <Title>管理工具学习合集</Title>
+      <Title>医院应知应会</Title>
       <Place />
       <Input
         placeholder="请输入要搜索的关键字"
@@ -283,21 +251,17 @@ export default function 管理工具学习合集() {
       {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
-      <BaseTable
-        surplusHeight={235}
-        columns={columns}
-        dataSource={tableData}
-        loading={loading}
-        pagination={{
-          pageSizeOptions: ["10", "20", "30", "40", "50"],
-          total: totalCount,
-          onChange: handlePageChange,
-          onShowSizeChange: handlePageSizeChange,
-          current: query.pageIndex,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          pageSize: query.pageSize
-        }} />
+      <BaseTabs
+        defaultActiveKey={query.type}
+        config={typeList.map((item: any) => {
+          return {
+            title: item.name,
+            component: TableCon,
+            index: item.type
+          }
+        })}
+        onChange={(key: any) => handleTypeChange(key)}
+      />
     </MainCon>
     <previewModal.Component />
   </Wrapper>

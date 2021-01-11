@@ -33,20 +33,18 @@ export default function 管理工具学习合集修改() {
               id,
               briefIntroduction,
               detailContent,
-              softwareName,
+              toolName,
               status,
-              officialWebsiteUrl,
               attachmentList
             } = res.data
 
-            setEditorData(detailContent || '')
+            setTimeout(() => setEditorData(detailContent || ''), 1000)
 
             setEditParams({
               id,
               briefIntroduction,
-              softwareName,
+              toolName,
               status,
-              officialWebsiteUrl,
               attachmentList: attachmentList || []
             })
           }
@@ -61,7 +59,7 @@ export default function 管理工具学习合集修改() {
       detailContent: editorData
     }
 
-    if (saveParams.softwareName.trim() === '') {
+    if (saveParams.toolName.trim() === '') {
       message.warn('标题不能为空')
       return
     }
@@ -97,19 +95,19 @@ export default function 管理工具学习合集修改() {
       <Spin spinning={loading}>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">软件名称：</div>
+            <div className="row-label">工具名称：</div>
             <div className="row-content">
               <Input
-                value={editParams.softwareName}
+                value={editParams.toolName}
                 style={{ width: '100%', maxWidth: 600 }}
-                onChange={(e) => setEditParams({ ...editParams, softwareName: e.target.value })}
+                onChange={(e) => setEditParams({ ...editParams, toolName: e.target.value })}
               />
             </div>
           </div>
         </div>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">软件简介：</div>
+            <div className="row-label">工具简介：</div>
             <div className="row-content">
               <Input.TextArea
                 value={editParams.briefIntroduction}
@@ -141,28 +139,15 @@ export default function 管理工具学习合集修改() {
         </div>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">官方网址/下载地址：</div>
-            <div className="row-content">
-              <Input
-                value={editParams.officialWebsiteUrl}
-                style={{ width: '100%', maxWidth: 600 }}
-                onChange={(e) =>
-                  setEditParams({ ...editParams, officialWebsiteUrl: e.target.value })} />
-            </div>
-          </div>
-        </div>
-        <div className="pannel">
-          <div className="row-item">
             <div className="row-label">添加学习附件：</div>
             <div className="row-content">
               <MultiFileUploader
                 style={{ paddingBottom: 20 }}
-                size={1}
+                size={3}
                 data={editParams.attachmentList}
-                type="lat_sr_frequentlyuse_learnsoftware"
+                type="lat_sr_management_tools"
                 onChange={(payload) => {
                   let attachmentList = [...payload]
-                  if (attachmentList.length > 0) attachmentList = [attachmentList[attachmentList.length - 1]]
                   setEditParams({ ...editParams, attachmentList })
                 }} />
             </div>
@@ -170,7 +155,7 @@ export default function 管理工具学习合集修改() {
         </div>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">文章状态：</div>
+            <div className="row-label">状态：</div>
             <div className="row-content">
               <Radio.Group
                 value={editParams.status}

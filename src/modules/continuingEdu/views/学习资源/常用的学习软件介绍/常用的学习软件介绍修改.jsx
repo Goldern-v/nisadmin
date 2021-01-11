@@ -39,7 +39,7 @@ export default function 常用的学习软件介绍修改() {
               attachmentList
             } = res.data
 
-            setEditorData(detailContent || '')
+            setTimeout(() => setEditorData(detailContent || ''), 1000)
 
             setEditParams({
               id,
@@ -162,7 +162,6 @@ export default function 常用的学习软件介绍修改() {
                 type="lat_sr_frequentlyuse_learnsoftware"
                 onChange={(payload) => {
                   let attachmentList = [...payload]
-                  if (attachmentList.length > 0) attachmentList = [attachmentList[attachmentList.length - 1]]
                   setEditParams({ ...editParams, attachmentList })
                 }} />
             </div>

@@ -5,16 +5,18 @@ import { Place } from 'src/components/common'
 import { appStore, authStore } from 'src/stores'
 import MultiFileUploader from 'src/components/MultiFileUploader'
 import CKEditor from 'ckeditor4-react'
+import typeList from './utils/typeList'
 import { localityService } from './api/LocalityService'
+import Item from 'antd/lib/list/Item'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
-export default function 应急预案学习修改() {
+const Option = Select.Option
+
+export default function 医院应知应会修改() {
   const { history, queryObj } = appStore
   const [editParams, setEditParams] = useState({
-    planName: '',
     status: 0,
-    briefIntroduction: '',
-    type: 1,
+    type: '1',
     attachmentList: []
   })
   const [loading, setLoading] = useState(false)
@@ -34,23 +36,21 @@ export default function 应急预案学习修改() {
           if (res.data) {
             let {
               id,
-              detailContent,
-              planName,
-              status,
-              attachmentList,
-              deptCode,
               briefIntroduction,
+              detailContent,
+              name,
+              status,
               type,
+              attachmentList
             } = res.data
 
             setTimeout(() => setEditorData(detailContent || ''), 1000)
 
             setEditParams({
               id,
-              planName,
-              status,
-              deptCode,
               briefIntroduction,
+              name,
+              status,
               type,
               attachmentList: attachmentList || []
             })
@@ -66,7 +66,7 @@ export default function 应急预案学习修改() {
       detailContent: editorData
     }
 
-    if (saveParams.planName.trim() === '') {
+    if (saveParams.name.trim() === '') {
       message.warn('标题不能为空')
       return
     }
@@ -88,7 +88,7 @@ export default function 应急预案学习修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>应急预案学习{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>医院应知应会{queryObj.id ? '修改' : '添加'}</Title>
       <Place />
       {/* <Button
         type="primary"
@@ -102,24 +102,39 @@ export default function 应急预案学习修改() {
       <Spin spinning={loading}>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">预案名称：</div>
+            <div className="row-label">名称：</div>
             <div className="row-content">
               <Input
-                value={editParams.planName}
+                value={editParams.name}
                 style={{ width: '100%', maxWidth: 600 }}
-                onChange={(e) => setEditParams({ ...editParams, planName: e.target.value })}
+                onChange={(e) => setEditParams({ ...editParams, name: e.target.value })}
               />
             </div>
           </div>
         </div>
         <div className="pannel">
           <div className="row-item">
-            <div className="row-label">预案简介：</div>
+            <div className="row-label">简介：</div>
             <div className="row-content">
               <Input.TextArea
                 value={editParams.briefIntroduction}
                 onChange={(e) => setEditParams({ ...editParams, briefIntroduction: e.target.value })}
               />
+            </div>
+          </div>
+        </div>
+        <div className="pannel">
+          <div className="row-item">
+            <div className="row-label">类型：</div>
+            <div className="row-content">
+              <Select
+                style={{ width: '150px' }}
+                value={editParams.type}
+                onChange={(type) => setEditParams({ ...editParams, type })}>
+                {typeList.map((item) => (
+                  <Option value={item.type} key={item.type}>{item.name}</Option>
+                ))}
+              </Select>
             </div>
           </div>
         </div>
@@ -152,7 +167,7 @@ export default function 应急预案学习修改() {
                 style={{ paddingBottom: 20 }}
                 size={1}
                 data={editParams.attachmentList}
-                type="lat_sr_contingency_plan"
+                type="lat_sr_hospital_shouldknow"
                 onChange={(payload) => {
                   let attachmentList = [...payload]
                   setEditParams({ ...editParams, attachmentList })
@@ -160,49 +175,6 @@ export default function 应急预案学习修改() {
             </div>
           </div>
         </div>
-        <div className="pannel">
-          <div className="row-item">
-            <div className="row-label">类型：</div>
-            <div className="row-content">
-              <Radio.Group
-                value={editParams.type}
-                onChange={(e) => {
-                  let newEditParams = { ...editParams, type: e.target.value }
-                  if (e.target.value === 1) {
-                    newEditParams.deptCode = ''
-                  } else {
-                    newEditParams.deptCode = authStore.defaultDeptCode
-                  }
-
-                  setEditParams(newEditParams)
-                }}>
-                <Radio value={1}>医院应急预案</Radio>
-                <Radio value={2}>专科应急预案</Radio>
-              </Radio.Group>
-            </div>
-          </div>
-        </div>
-        {editParams.type === 2 && (
-          <div className="pannel">
-            <div className="row-item">
-              <div className="row-label">科室：</div>
-              <div className="row-content">
-                <Select
-                  showSearch
-                  style={{ width: 220 }}
-                  value={editParams.deptCode}
-                  onChange={(deptCode) => setEditParams({ ...editParams, deptCode })}
-                  filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }>
-                  {authStore.deptList.map((item, index) => (
-                    <Select.Option value={item.code} key={index}>{item.name}</Select.Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </div>
-        )}
         <div className="pannel">
           <div className="row-item">
             <div className="row-label">状态：</div>

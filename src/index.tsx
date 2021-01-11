@@ -6,7 +6,7 @@ import autoUpdate from './utils/autoUpdate'
 import { appStore } from './stores'
 // import registerServiceWorker from './registerServiceWorker'
 /** 自动更新 */
-!appStore.isDev && autoUpdate()
+!process.env.NODE_ENV === 'development' as any && autoUpdate()
 ReactDOM.render(<App />, document.getElementById('root'))
 // ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 let preLoader: any = document!.getElementById('pre-loader')

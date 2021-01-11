@@ -6,6 +6,7 @@ import service from 'src/services/api'
 import createModal from 'src/libs/createModal'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import Zimage from 'src/components/Zimage'
+import { message } from 'antd/es'
 
 const commonApi = service.commonApiService
 
@@ -50,6 +51,10 @@ export default function MultiFileUploader(props: Props) {
     }
 
     if (files && files.length > 0) {
+      if (size !== undefined && (files.length + (data || []).length) > size) {
+        message.warn(`超过最大上传限制,最大上传文件数量限制为${size}`)
+        return
+      }
 
       let reqList = [] as any
       for (let i = 0; i < files.length; i++) {

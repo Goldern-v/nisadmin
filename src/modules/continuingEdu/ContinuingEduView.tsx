@@ -62,18 +62,30 @@ import 审核集中管理 from './views/审核集中管理/审核集中管理'
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() => import('./views/学习资源/学习的网站链接/学习的网站链接'))
-//常用的学习软件介绍
-const 常用的学习软件介绍 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍'))
-const 常用的学习软件介绍详情 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍详情'))
-const 常用的学习软件介绍修改 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍修改'))
 //循证护理实践证据集合
 const 循证护理实践证据集合 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理实践证据集合'))
 const 循证护理记录集合详情 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理记录集合详情'))
 const 循证护理记录集合修改 = lazy(() => import('./views/学习资源/循证护理实践证据集合/循证护理记录集合修改'))
+//常用的学习软件介绍
+const 常用的学习软件介绍 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍'))
+const 常用的学习软件介绍详情 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍详情'))
+const 常用的学习软件介绍修改 = lazy(() => import('./views/学习资源/常用的学习软件介绍/常用的学习软件介绍修改'))
+//管理工具学习合集
+const 管理工具学习合集 = lazy(() => import('./views/学习资源/管理工具学习合集/管理工具学习合集'))
+const 管理工具学习合集详情 = lazy(() => import('./views/学习资源/管理工具学习合集/管理工具学习合集详情'))
+const 管理工具学习合集修改 = lazy(() => import('./views/学习资源/管理工具学习合集/管理工具学习合集修改'))
 //应急预案学习
 const 应急预案学习 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习'))
 const 应急预案学习详情 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习详情'))
 const 应急预案学习修改 = lazy(() => import('./views/学习资源/应急预案学习/应急预案学习修改'))
+//医院应知应会
+const 医院应知应会 = lazy(() => import('./views/学习资源/医院应知应会/医院应知应会'))
+const 医院应知应会详情 = lazy(() => import('./views/学习资源/医院应知应会/医院应知应会详情'))
+const 医院应知应会修改 = lazy(() => import('./views/学习资源/医院应知应会/医院应知应会修改'))
+//护理专栏
+const 护理专栏 = lazy(() => import('./views/学习资源/护理专栏/护理专栏'))
+const 护理专栏详情 = lazy(() => import('./views/学习资源/护理专栏/护理专栏详情'))
+const 护理专栏修改 = lazy(() => import('./views/学习资源/护理专栏/护理专栏修改'))
 
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
@@ -286,23 +298,6 @@ export default function ContinuingEdu(props: Props) {
                 component: 学习的网站链接
               },
               {
-                title: "常用的学习软件介绍详情",
-                path: "/continuingEdu/常用的学习软件介绍详情",
-                hide: true,
-                component: 常用的学习软件介绍详情
-              },
-              {
-                title: "常用的学习软件介绍修改",
-                path: "/continuingEdu/常用的学习软件介绍修改",
-                hide: true,
-                component: 常用的学习软件介绍修改
-              },
-              {
-                title: "常用的学习软件介绍",
-                path: "/continuingEdu/常用的学习软件介绍",
-                component: 常用的学习软件介绍
-              },
-              {
                 title: "循证护理记录集合详情",
                 path: "/continuingEdu/循证护理记录集合详情",
                 hide: true,
@@ -320,6 +315,40 @@ export default function ContinuingEdu(props: Props) {
                 component: 循证护理实践证据集合
               },
               {
+                title: "常用的学习软件介绍详情",
+                path: "/continuingEdu/常用的学习软件介绍详情",
+                hide: true,
+                component: 常用的学习软件介绍详情
+              },
+              {
+                title: "常用的学习软件介绍修改",
+                path: "/continuingEdu/常用的学习软件介绍修改",
+                hide: true,
+                component: 常用的学习软件介绍修改
+              },
+              {
+                title: "常用的学习软件介绍",
+                path: "/continuingEdu/常用的学习软件介绍",
+                component: 常用的学习软件介绍
+              },
+              {
+                title: "管理工具学习合集详情",
+                path: "/continuingEdu/管理工具学习合集详情",
+                hide: true,
+                component: 管理工具学习合集详情
+              },
+              {
+                title: "管理工具学习合集修改",
+                path: "/continuingEdu/管理工具学习合集修改",
+                hide: true,
+                component: 管理工具学习合集修改
+              },
+              {
+                title: "管理工具学习合集",
+                path: "/continuingEdu/管理工具学习合集",
+                component: 管理工具学习合集
+              },
+              {
                 title: "应急预案学习修改",
                 path: "/continuingEdu/应急预案学习修改",
                 hide: true,
@@ -335,6 +364,40 @@ export default function ContinuingEdu(props: Props) {
                 title: "应急预案学习",
                 path: "/continuingEdu/应急预案学习",
                 component: 应急预案学习
+              },
+              {
+                title: "医院应知应会详情",
+                path: "/continuingEdu/医院应知应会详情",
+                hide: true,
+                component: 医院应知应会详情
+              },
+              {
+                title: "医院应知应会修改",
+                path: "/continuingEdu/医院应知应会修改",
+                hide: true,
+                component: 医院应知应会修改
+              },
+              {
+                title: "医院应知应会",
+                path: "/continuingEdu/医院应知应会",
+                component: 医院应知应会
+              },
+              {
+                title: "护理专栏详情",
+                path: "/continuingEdu/护理专栏详情",
+                hide: true,
+                component: 护理专栏详情
+              },
+              {
+                title: "护理专栏修改",
+                path: "/continuingEdu/护理专栏修改",
+                hide: true,
+                component: 护理专栏修改
+              },
+              {
+                title: "护理专栏",
+                path: "/continuingEdu/护理专栏",
+                component: 护理专栏
               },
             ]
           },

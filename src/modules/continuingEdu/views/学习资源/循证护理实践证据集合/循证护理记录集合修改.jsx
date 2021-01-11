@@ -31,7 +31,7 @@ export default function 循证护理记录集合修改() {
           if (res.data) {
             let { detailContent, id, title, status, articleUrl, attachmentList } = res.data
 
-            setEditorData(detailContent || '')
+            setTimeout(() => setEditorData(detailContent || ''), 1000)
 
             setEditParams({
               id,
@@ -130,7 +130,6 @@ export default function 循证护理记录集合修改() {
                 type="lat_ebn_practise_evidence"
                 onChange={(payload) => {
                   let attachmentList = [...payload]
-                  if (attachmentList.length > 0) attachmentList = [attachmentList[attachmentList.length - 1]]
                   setEditParams({ ...editParams, attachmentList })
                 }} />
             </div>

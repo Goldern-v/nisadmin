@@ -186,10 +186,14 @@ export default observer(function 星级考核表弹窗(props: Props) {
                       if (targetItem) {
                         targetItem.checked = e.target.checked
                       } else {
-                        newRecord.addPointsItemList.push({
+                        let newItem = {
                           ...item,
                           checked: e.target.checked
-                        })
+                        }
+                        if (newRecord.addPointsItemList instanceof Array)
+                          newRecord.addPointsItemList.push(newItem)
+                        else
+                          newRecord.addPointsItemList = [newItem]
                       }
 
                       cloneData.list[index] = newRecord
