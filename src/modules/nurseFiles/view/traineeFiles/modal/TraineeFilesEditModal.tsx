@@ -44,7 +44,7 @@ export default function TraineeFilesEditModal(props: Props) {
     isResident: val => !!val || "是否住宿不能为空",
     studyTime: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习时间不能为空"),
     studyDeptCode: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习科室不能为空"),
-    是否党员: val => appStore.HOSPITAL_ID == 'gzhd' && (!!val || "党员不能为空"),
+    isCPCMember: val => appStore.HOSPITAL_ID == 'gzhd' && (!!val || "党员不能为空"),
     isGroupLeader: val => !!val || "是否组长不能为空",
     address: val => !!val || "家庭住址不能为空",
     emergencyContactPerson: val => !!val || "紧急联系人不能为空",
@@ -112,7 +112,8 @@ export default function TraineeFilesEditModal(props: Props) {
             address,
             emergencyContactPerson,
             emergencyContactPhone,
-            remark
+            remark,
+            isCPCMember
           } = data;
           current.setFields({
             identifier,
@@ -125,6 +126,7 @@ export default function TraineeFilesEditModal(props: Props) {
             idCardNo,
             phone,
             isResident: isResident === "否" ? "0" : "1",
+            isCPCMember: isCPCMember === "否" ? "0" : "1",
             dormitoryNumber,
             isGroupLeader: isGroupLeader === "否" ? "0" : "1",
             address,
@@ -290,7 +292,7 @@ export default function TraineeFilesEditModal(props: Props) {
                 <span className="mustWrite">*</span> 是否党员:
               </Col>
               <Col span={16}>
-                <Form.Field name="是否党员">
+                <Form.Field name="isCPCMember">
                   <Radio.Group buttonStyle="solid">
                     <Radio.Button value="1">是</Radio.Button>
                     <Radio.Button value="0">否</Radio.Button>
@@ -354,7 +356,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 实习科室:
+              <span className={appStore.HOSPITAL_ID == 'gzhd' ? 'displayNone' : "mustWrite"}>*</span> 实习科室:
             </Col>
             <Col span={16}>
               <Form.Field name="studyDeptCode">

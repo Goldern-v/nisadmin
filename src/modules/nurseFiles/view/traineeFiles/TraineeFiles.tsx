@@ -80,7 +80,7 @@ export default observer(function TraineeFiles(props: Props) {
     },
     appStore.HOSPITAL_ID == "gzhd" && {
       title: "是否党员",
-      dataIndex: "是否党员",
+      dataIndex: "isCPCMember",
       width: 80,
       align: "center"
     },
@@ -184,7 +184,7 @@ export default observer(function TraineeFiles(props: Props) {
       cancelText: "取消",
       onOk: () => {
         traineeFilesApi
-          .deleteInfoByIdentifier(record.identifier)
+          .deleteInfoById(record.id)
           .then(res => {
             if (res.code == 200) {
               Message.success("记录删除成功");
@@ -285,16 +285,20 @@ export default observer(function TraineeFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => setEditVisible(true)}>添加实习生</Button>
-          <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
-          <Button
-            onClick={() =>
-              traineeCheckModal.show({
-                closeCallback: () => traineeFilesModal.onload()
-              })
-            }
-          >
-            待检查
-          </Button>
+          {appStore.HOSPITAL_ID == 'hj' &&
+            <span>
+              <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
+              <Button
+                onClick={() =>
+                  traineeCheckModal.show({
+                    closeCallback: () => traineeFilesModal.onload()
+                  })
+                }
+              >
+                待检查
+              </Button>
+            </span>
+          }
         </RightIcon>
       </PageHeader>
       <Content>
