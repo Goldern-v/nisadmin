@@ -90,62 +90,62 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        appStore.HOSPITAL_ID == "wh"
+        appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "nys"
           ? {
-              icon: require("../../images/修改工时.png"),
-              label: "加/减班",
-              type: "text",
-              disabled: disableByName,
-              onClick: () => {
-                editEffectiveTimeModal.show({
-                  data: sheetViewModal.selectedCell,
-                  onOkCallBack(data: any) {
-                    console.log(data, "datadata");
-                    sheetViewModal.selectedCell.detail = data.detail;
+            icon: require("../../images/修改工时.png"),
+            label: "加/减班",
+            type: "text",
+            disabled: disableByName,
+            onClick: () => {
+              editEffectiveTimeModal.show({
+                data: sheetViewModal.selectedCell,
+                onOkCallBack(data: any) {
+                  console.log(data, "datadata");
+                  sheetViewModal.selectedCell.detail = data.detail;
 
-                    if (data.statusType == "1") {
-                      /** 加班 */
-                      sheetViewModal.selectedCell.effectiveTime = Number(
-                        Number(data.effectiveTime) +
-                          Number(sheetViewModal.selectedCell.effectiveTimeOld)
-                      );
-                    } else if (data.statusType == "2") {
-                      /** 减班 */
-                      sheetViewModal.selectedCell.effectiveTime =
-                        Number(sheetViewModal.selectedCell.effectiveTimeOld) -
-                        Number(data.effectiveTime);
-                    }
-                    sheetViewModal.selectedCell.schAddOrSubs = [
-                      {
-                        startDate: data.startDate,
-                        endDate: data.endDate,
-                        statusType: data.statusType,
-                        hour: Number(data.effectiveTime),
-                        settingNightHour: Number(data.settingNightHour) || 0,
-                        settingMorningHour: Number(data.settingMorningHour) || 0
-                      }
-                    ];
-                  }
-                });
-              }
-            }
-          : {
-              icon: require("../../images/修改工时.png"),
-              label: "修改工时",
-              type: "text",
-              disabled: disableByName,
-              onClick: () => {
-                editEffectiveTimeModal.show({
-                  data: sheetViewModal.selectedCell,
-                  onOkCallBack(value: any) {
+                  if (data.statusType == "1") {
+                    /** 加班 */
+                    sheetViewModal.selectedCell.effectiveTime = Number(
+                      Number(data.effectiveTime) +
+                      Number(sheetViewModal.selectedCell.effectiveTimeOld)
+                    );
+                  } else if (data.statusType == "2") {
+                    /** 减班 */
                     sheetViewModal.selectedCell.effectiveTime =
-                      value.effectiveTime;
-                    sheetViewModal.selectedCell.detail = value.detail;
-                    // setCellConfig(sheetViewModal.analyseCell(cellObj))
+                      Number(sheetViewModal.selectedCell.effectiveTimeOld) -
+                      Number(data.effectiveTime);
                   }
-                });
-              }
-            },
+                  sheetViewModal.selectedCell.schAddOrSubs = [
+                    {
+                      startDate: data.startDate,
+                      endDate: data.endDate,
+                      statusType: data.statusType,
+                      hour: Number(data.effectiveTime),
+                      settingNightHour: Number(data.settingNightHour) || 0,
+                      settingMorningHour: Number(data.settingMorningHour) || 0
+                    }
+                  ];
+                }
+              });
+            }
+          }
+          : {
+            icon: require("../../images/修改工时.png"),
+            label: "修改工时",
+            type: "text",
+            disabled: disableByName,
+            onClick: () => {
+              editEffectiveTimeModal.show({
+                data: sheetViewModal.selectedCell,
+                onOkCallBack(value: any) {
+                  sheetViewModal.selectedCell.effectiveTime =
+                    value.effectiveTime;
+                  sheetViewModal.selectedCell.detail = value.detail;
+                  // setCellConfig(sheetViewModal.analyseCell(cellObj))
+                }
+              });
+            }
+          },
         {
           icon: require("../../images/休假计数.png"),
           disabled: !sheetViewModal.countArrangeNameList.includes(
@@ -415,8 +415,8 @@ export default observer(function Cell(props: Props) {
     wh: () => {
       return (
         (cellObj.schAddOrSubs &&
-        cellObj.schAddOrSubs.length &&
-        cellObj.schAddOrSubs[0].statusType == "1"
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
         ":" +
@@ -430,11 +430,11 @@ export default observer(function Cell(props: Props) {
         `白:${(cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&
           cellObj.schAddOrSubs[0].settingMorningHour) ||
-          0}h，` +
+        0}h，` +
         `夜:${(cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&
           cellObj.schAddOrSubs[0].settingNightHour) ||
-          0}h`
+        0}h`
       );
     }
   });
@@ -465,8 +465,8 @@ export default observer(function Cell(props: Props) {
             alt=""
           />
         ) : (
-          ""
-        )}
+            ""
+          )}
         {formatCell(cellObj)}
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>

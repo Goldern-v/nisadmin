@@ -102,6 +102,12 @@ export default function PersonnelManagementView() {
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         },
         {
+          title: "加减班列表查询",
+          path: "/personnelManagement/addSubClass",
+          component: AddSubClass,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "nys"
+        },
+        {
           title: "节假日查询",
           path: "/personnelManagement/holidaysList",
           component: HolidaysList,
