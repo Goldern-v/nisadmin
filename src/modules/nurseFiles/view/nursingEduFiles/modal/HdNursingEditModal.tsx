@@ -184,10 +184,9 @@ export default observer(function HdNursingEditModal(props: Props) {
               : "";
             newParams.type = showType;
             if (showType == 2) {
-              newParams.empName = nursingEduFilesModal.empNoList.find((item: any) => item.empNo = newParams.empNo).empName
+              newParams.empName = nursingEduFilesModal.empNoList.find((item: any) => item.empNo == newParams.empNo).empName
             }
             if (showType == 1) {
-              newParams.name = nursingEduFilesModal.empNoList.find((item: any) => item.empNo = newParams.name).empName;
               newParams.studyDeptName01 = newParams.studyDeptCode01
                 ? deptList.find(
                   (item: any) => item.code === newParams.studyDeptCode01
@@ -262,35 +261,49 @@ export default observer(function HdNursingEditModal(props: Props) {
               </Col>
             </Row>
           )}
-          <Row>
-            <Col span={6} className="label">
-              <span className="mustWrite">*</span> 姓名:
-            </Col>
-            <Col span={16}>
-              <Form.Field name={showType == 1 ? "name" : "empNo"}>
-                <Select
-                  placeholder="请输入成员姓名"
-                  value={nursingEduFilesModal.empNo as any}
-                  onChange={(val: string) => {
-                    nursingEduFilesModal.empNo = val;
-                  }}
-                  allowClear
-                  showSearch
-                  filterOption={false}
-                  onSearch={(value: any) => {
-                    nursingEduFilesModal.empNoSearch = value;
-                    nursingEduFilesModal.initData()
-                  }}
-                >
-                  {nursingEduFilesModal.empNoList.map((item: any) => (
-                    <Select.Option key={item.empName} value={item.empNo}>
-                      {`${item.empName}(${item.empNo})`}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+          {showType == 1 &&
+            <Row>
+              <Col span={6} className="label">
+                <span className="mustWrite">*</span> 姓名:
+              </Col>
+              <Col span={16}>
+                <Form.Field name="name">
+                  <Input />
+                </Form.Field>
+              </Col>
+            </Row>
+          }
+          {showType == 2 &&
+            <Row>
+              <Col span={6} className="label">
+                <span className="mustWrite">*</span> 姓名:
+              </Col>
+              <Col span={16}>
+                <Form.Field name="empNo">
+                  <Select
+                    placeholder="请输入成员姓名"
+                    value={nursingEduFilesModal.empNo as any}
+                    onChange={(val: string) => {
+                      nursingEduFilesModal.empNo = val;
+                    }}
+                    allowClear
+                    showSearch
+                    filterOption={false}
+                    onSearch={(value: any) => {
+                      nursingEduFilesModal.empNoSearch = value;
+                      nursingEduFilesModal.initData()
+                    }}
+                  >
+                    {nursingEduFilesModal.empNoList.map((item: any) => (
+                      <Select.Option key={item.empName} value={item.empNo}>
+                        {`${item.empName}(${item.empNo})`}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 性别:

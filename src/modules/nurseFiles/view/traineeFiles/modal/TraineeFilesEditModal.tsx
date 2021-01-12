@@ -166,6 +166,7 @@ export default function TraineeFilesEditModal(props: Props) {
               : "";
             if (params.identifier) {
               newParams.identifier = params.identifier;
+              newParams.id = params.id;
               setEditLoading(true);
               traineeFilesApi
                 .saveOrUpdateInfo(newParams)
@@ -174,7 +175,6 @@ export default function TraineeFilesEditModal(props: Props) {
                   let msg = "修改成功";
                   Message.success(msg);
                   onOk();
-                  current.clear();
                 })
                 .catch((e: any) => {
                   console.log(e);
@@ -186,7 +186,6 @@ export default function TraineeFilesEditModal(props: Props) {
                 let msg = "添加成功";
                 Message.success(msg);
                 onOk();
-                current.clear();
               });
             }
           }

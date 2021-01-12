@@ -379,7 +379,7 @@ export default observer(function NursingEduFiles(props: Props) {
           >
             导出
           </Button>
-          <Button onClick={() => addNurse()}>添加护士</Button>
+          <Button onClick={() => addNurse()}>添加进修生</Button>
           {appStore.HOSPITAL_ID == 'hj' &&
             <span>
               <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
