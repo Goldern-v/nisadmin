@@ -60,6 +60,7 @@ export default observer(function Step4() {
   const onFormChange = async (name: string, value: any, from: Form) => {
     let data: any = from.getFields();
     Object.assign(stepViewModal.stepData2, data);
+    let totalScore: any = 0;
     if (appStore.HOSPITAL_ID == 'hj') {
       if (textPapersLists.length) {
         await textPapersLists.map((item: any, index: number) => {
@@ -69,10 +70,10 @@ export default observer(function Step4() {
             item.questionScoresSettings = isHaveData.questionScoresSettings
           }
         })
+        totalScore = textPapersLists[0].questionScoresSettings.reduce((total: any, current: any) => {
+          return total + current.totalScores;
+        }, 0);
       }
-      let totalScore = textPapersLists[0].questionScoresSettings.reduce((total: any, current: any) => {
-        return total + current.totalScores;
-      }, 0);
       stepViewModal.stepData2.totalScores = totalScore;
     }
   };
@@ -123,7 +124,7 @@ export default observer(function Step4() {
       textPapersLists[1] && refForm.current && refForm.current.setFields({ questionScoresSettings1: textPapersLists[1] });
       textPapersLists[2] && refForm.current && refForm.current.setFields({ questionScoresSettings2: textPapersLists[2] });
       textPapersLists[3] && refForm.current && refForm.current.setFields({ questionScoresSettings3: textPapersLists[3] });
-      textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });  
+      textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });
     }
   }, []);
 
@@ -224,7 +225,7 @@ export default observer(function Step4() {
           <Col span={24}>
             <Form.Field label={`总成绩`} name="totalScores">
               <span>
-                <Input readOnly value={stepViewModal.stepData2.totalScores}/>
+                <Input readOnly value={stepViewModal.stepData2.totalScores} />
               </span>
             </Form.Field>
           </Col>

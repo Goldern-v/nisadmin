@@ -276,6 +276,7 @@ export default observer(function UpdateTableHj(props: Props) {
         visible={quesVisible}
         onCancel={onQuesCancel}
         onOk={handleQuesOk}
+        pertId={data.pertId}
       />
       <testPage.Component />
     </Wrapper>

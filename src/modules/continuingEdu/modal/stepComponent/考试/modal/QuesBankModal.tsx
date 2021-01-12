@@ -11,10 +11,12 @@ import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/co
 import createModal from "src/libs/createModal";
 import { stepServices } from "../../services/stepServices";
 import { stepViewModal as allStepViewModal } from "../../StepViewModal";
+import { appStore } from "src/stores";
 
 const { TabPane } = Tabs;
 
 export interface Props {
+  pertId?: any; //厚街上传试题需要传试卷id
   visible: boolean;
   onCancel: any;
   onOk: any;
@@ -22,7 +24,7 @@ export interface Props {
 }
 
 export default observer(function PushModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk, pertId } = props;
   const [editLoading, setEditLoading] = useState(false);
   const testPage = createModal(TestPageModal); // 预览弹窗
 
@@ -53,7 +55,8 @@ export default observer(function PushModal(props: Props) {
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {
       let obj = {
         taskCode: allStepViewModal.taskCode,
-        questionIdList: quesBankView.questionIdList
+        questionIdList: quesBankView.questionIdList,
+        pertId: appStore.HOSPITAL_ID == 'hj' ? pertId : null
       };
       setEditLoading(true);
       stepServices

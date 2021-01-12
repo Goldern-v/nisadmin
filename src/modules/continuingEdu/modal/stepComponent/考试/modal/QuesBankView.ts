@@ -1,5 +1,6 @@
 import { observable, computed } from "mobx";
 import { stepServices } from "../../services/stepServices";
+import { appStore } from "src/stores";
 
 class QuesBankView {
   @observable public deptCode: any = ""; //厚街所选科室
@@ -49,7 +50,7 @@ class QuesBankView {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       bankType: this.bankType,
-      deptCode: this.deptCode,
+      deptCode: appStore.HOSPITAL_ID == "hj" ? this.deptCode : null,
       questionType: this.questionType,
       keyWord: this.keyWord,
       questionLabelIdList: this.selectedLabel
