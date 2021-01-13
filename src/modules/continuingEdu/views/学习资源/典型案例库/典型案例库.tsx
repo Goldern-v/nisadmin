@@ -1,39 +1,40 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Icon, Input, message, Modal, Select } from 'antd'
+import { Button, Input, message, Modal, DatePicker, Select } from 'antd'
 import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import BaseTabs from "src/components/BaseTabs"
 import { ColumnProps } from 'antd/lib/table'
 import { localityService } from './api/LocalityService'
 import { appStore, authStore } from 'src/stores'
-import Axios from 'axios'
-import typeList from './utils/typeList'
-import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
-import ReactZmage from 'react-zmage'
-import PreviewModal from 'src/utils/file/modal/PreviewModal'
-import createModal from 'src/libs/createModal'
+import moment from 'moment'
+import deptNameList from './utils/deptNameList'
+import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import PreviewOrEditModal from './components/PreviewOrEditModal'
 
 const Option = Select.Option
 
 export interface Props { }
 
-export default function 护理专栏() {
+export default function 典型案例库() {
+
   const { history } = appStore
   const [query, setQuery] = useState({
+    medicalSubject: deptNameList[0],
+    collectTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
+    collectTimeEnd: getCurrentMonthNow()[1].format('YYYY-MM-DD'),
     keyWord: '',
     status: '',
-    type: 1,
     pageSize: 20,
     pageIndex: 1,
   })
 
   const [tableData, setTableData] = useState([] as any[])
+  const [modalVisible, setModalVisible] = useState(false as any)
+  const [modalEditable, setModalEditable] = useState(true as any)
+  const [modalParams, setModalParams] = useState({} as any)
 
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
-
-  const previewModal = createModal(PreviewModal)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -45,66 +46,56 @@ export default function 护理专栏() {
       align: "center",
     },
     {
-      title: '名称',
-      dataIndex: 'name',
-      width: 220,
+      title: '科室',
+      dataIndex: 'medicalSubject',
       align: "left",
-      render: (text: any, record: any, index: number) => {
-        return <div className="">{text}</div>
-      }
+      width: 180,
     },
     {
-      title: '介绍',
-      dataIndex: 'briefIntroduction',
-      align: "left",
-      render: (text: any, record: any, index: number) => {
-        return <div className="">{text}</div>
-      }
-    },
-    {
-      title: '学习附件',
-      dataIndex: 'attachment',
-      align: "left",
-      width: 200,
-      render: (obj: any, record: any, index: number) => {
-        if (obj && obj.id)
-          return <div
-            className="file-item" >
-            <span
-              className="preview"
-              title={`预览 ${obj.name}`}
-              onClick={() => handlePreview(obj)}>
-              <img
-                className="file-icon"
-                src={getFilePrevImg(obj.path)} />
-              <span>{obj.name}</span>
-            </span>
-            <span
-              className="download"
-              title={`下载 ${obj.name}`}
-              onClick={() => handleDownload(obj)}>
-              <Icon type="download" />
-            </span>
-          </div>
-        else
-          return <span></span>
-      }
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      align: "left",
+      title: '患者姓名',
+      dataIndex: 'patientName',
+      align: "center",
       width: 80,
-      render: (status: number) => {
-        switch (status) {
-          case 0:
-            return '编辑中'
-          case 2:
-            return '已发布'
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      align: "center",
+      width: 60,
+      render: (text: any) => {
+        switch (text) {
+          case '0':
+            return '男'
+          case '1':
+            return '女'
           default:
             return ''
         }
       }
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      align: "center",
+      width: 60,
+    },
+    {
+      title: '收集时间',
+      dataIndex: 'collectDate',
+      align: "center",
+      width: 120,
+    },
+    {
+      title: '收集人',
+      dataIndex: 'collectorName',
+      align: "center",
+      width: 80,
+    },
+    {
+      title: '状态',
+      dataIndex: 'statusDesc',
+      align: "center",
+      width: 80,
     },
     {
       title: '操作',
@@ -146,12 +137,11 @@ export default function 护理专栏() {
   }
 
   const handleDetail = (record: any) => {
-    history.push(`/continuingEdu/护理专栏详情?id=${record.id}&title=${record.name}`)
+
   }
 
   const handleEdit = (record: any) => {
-    if (record.id)
-      history.push(`/continuingEdu/护理专栏修改?id=${record.id}`)
+
   }
 
   const handleDelete = (record: any) => {
@@ -173,26 +163,6 @@ export default function 护理专栏() {
       })
   }
 
-  const handlePreview = (file: any) => {
-    if (getFileType(file.path) == 'img')
-      ReactZmage.browsing({
-        backdrop: 'rgba(0,0,0, .8)',
-        set: [{ src: file.path }]
-      })
-    else
-      previewModal.show({
-        title: file.name,
-        path: file.path
-      })
-  }
-
-  const handleDownload = (obj: any) => {
-    Axios.get(obj.path, { responseType: 'blob' })
-      .then(res => fileDownload(res, obj.name),
-        err => message.error(`${err.name}：${err.message}`)
-      )
-  }
-
   useEffect(() => {
     getTableData(query)
   }, [query])
@@ -202,35 +172,42 @@ export default function 护理专栏() {
   }
 
   const handleAdd = () => {
-    history.push('/continuingEdu/护理专栏修改')
+    history.push('/continuingEdu/典型案例库修改')
   }
-
-  const handleTypeChange = (key: any) => {
-    let newQuery = { ...query, pageIndex: 1, type: Number(key) }
-
-    setQuery(newQuery)
-  }
-
-  const TableCon = <BaseTable
-    surplusHeight={280}
-    columns={columns}
-    dataSource={tableData}
-    loading={loading}
-    pagination={{
-      pageSizeOptions: ["10", "20", "30", "40", "50"],
-      total: totalCount,
-      onChange: handlePageChange,
-      onShowSizeChange: handlePageSizeChange,
-      current: query.pageIndex,
-      showSizeChanger: true,
-      showQuickJumper: true,
-      pageSize: query.pageSize
-    }} />
 
   return <Wrapper>
     <HeaderCon>
-      <Title>护理专栏</Title>
+      <Title>典型案例库</Title>
       <Place />
+      <span>科室：</span>
+      <Select
+        value={query.medicalSubject}
+        style={{ width: 120 }}
+        showSearch
+        filterOption={(input: any, option: any) => (
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        )}
+        onChange={(medicalSubject: string) =>
+          setQuery({ ...query, medicalSubject, pageIndex: 1 })}>
+        {deptNameList.map((name: string) =>
+          <Option
+            key={name}
+            value={name}>
+            {name}
+          </Option>)}
+      </Select>
+      <span className="sub">收集时间：</span>
+      <DatePicker.RangePicker
+        style={{ width: 200 }}
+        allowClear={false}
+        value={[moment(query.collectTimeBegin), moment(query.collectTimeEnd)]}
+        onChange={(moments: any[]) => {
+          setQuery({
+            ...query,
+            collectTimeBegin: moments[0].format('YYYY-MM-DD'),
+            collectTimeEnd: moments[1].format('YYYY-MM-DD'),
+          })
+        }} />
       <Input
         placeholder="请输入要搜索的关键字"
         style={{ width: 240, marginLeft: 15 }}
@@ -251,19 +228,33 @@ export default function 护理专栏() {
       {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
-      <BaseTabs
-        defaultActiveKey={query.type.toString()}
-        config={typeList.map((item: any) => {
-          return {
-            title: item.name,
-            component: TableCon,
-            index: item.type.toString()
-          }
-        })}
-        onChange={(key: any) => handleTypeChange(key)}
-      />
+      <BaseTable
+        surplusHeight={235}
+        columns={columns}
+        dataSource={tableData}
+        loading={loading}
+        pagination={{
+          pageSizeOptions: ["10", "20", "30", "40", "50"],
+          total: totalCount,
+          onChange: handlePageChange,
+          onShowSizeChange: handlePageSizeChange,
+          current: query.pageIndex,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          pageSize: query.pageSize
+        }} />
     </MainCon>
-    <previewModal.Component />
+    <PreviewOrEditModal
+      visible={modalVisible}
+      onOk={() => {
+        setModalVisible(false)
+        getTableData(query)
+      }}
+      onCancel={() => {
+        setModalVisible(false)
+      }}
+      params={modalParams}
+      editable={modalEditable} />
   </Wrapper>
 }
 

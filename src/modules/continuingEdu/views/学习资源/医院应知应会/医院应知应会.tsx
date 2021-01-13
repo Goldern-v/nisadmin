@@ -206,7 +206,7 @@ export default function 医院应知应会() {
   }
 
   const handleTypeChange = (key: any) => {
-    let newQuery = { ...query, pageIndex: 1, type: key }
+    let newQuery = { ...query, pageIndex: 1, type: Number(key) }
 
     setQuery(newQuery)
   }
@@ -252,12 +252,12 @@ export default function 医院应知应会() {
     </HeaderCon>
     <MainCon>
       <BaseTabs
-        defaultActiveKey={query.type}
+        defaultActiveKey={query.type.toString()}
         config={typeList.map((item: any) => {
           return {
             title: item.name,
             component: TableCon,
-            index: item.type
+            index: item.type.toString()
           }
         })}
         onChange={(key: any) => handleTypeChange(key)}

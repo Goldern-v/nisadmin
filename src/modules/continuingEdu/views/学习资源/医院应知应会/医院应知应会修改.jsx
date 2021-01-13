@@ -7,7 +7,6 @@ import MultiFileUploader from 'src/components/MultiFileUploader'
 import CKEditor from 'ckeditor4-react'
 import typeList from './utils/typeList'
 import { localityService } from './api/LocalityService'
-import Item from 'antd/lib/list/Item'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
 const Option = Select.Option

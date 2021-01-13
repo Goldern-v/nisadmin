@@ -86,6 +86,8 @@ const 医院应知应会修改 = lazy(() => import('./views/学习资源/医院�
 const 护理专栏 = lazy(() => import('./views/学习资源/护理专栏/护理专栏'))
 const 护理专栏详情 = lazy(() => import('./views/学习资源/护理专栏/护理专栏详情'))
 const 护理专栏修改 = lazy(() => import('./views/学习资源/护理专栏/护理专栏修改'))
+//典型案例
+const 典型案例库 = lazy(() => import('./views/学习资源/典型案例库/典型案例库'))
 
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
@@ -398,6 +400,12 @@ export default function ContinuingEdu(props: Props) {
                 title: "护理专栏",
                 path: "/continuingEdu/护理专栏",
                 component: 护理专栏
+              },
+              {
+                title: "典型案例库",
+                path: "/continuingEdu/典型案例库",
+                hide: true,
+                component: 典型案例库
               },
             ]
           },
