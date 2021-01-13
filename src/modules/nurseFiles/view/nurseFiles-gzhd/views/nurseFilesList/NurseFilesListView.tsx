@@ -1,6 +1,6 @@
 import qs from "qs";
 import BaseTable from "src/components/BaseTable";
-import store from "src/stores";
+import store, { appStore } from "src/stores";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
@@ -17,7 +17,7 @@ import SelectCon from "./components/SelectCon";
 import { nurseFilesService } from "../../services/NurseFilesService";
 import { nurseFilesListViewModel } from "./NurseFilesListViewModel";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 let rowNum: number = 5;
 const ThemeContext = React.createContext({
@@ -123,6 +123,49 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: "center"
   },
+  ...appStore.hisMatch({
+    map: {
+      'gzhd': [
+        {
+          title: "毕业院校",
+          key: "graduateSchool",
+          width: 120,
+          align: "center"
+        },
+        {
+          title: "身份证号",
+          key: "cardNo",
+          width: 150,
+          align: "center"
+        },
+        {
+          title: "参与工作时间",
+          key: "goWorkTime",
+          width: 120,
+          align: "center"
+        },
+        {
+          title: "来院时间",
+          key: "goHospitalWorkDate",
+          width: 120,
+          align: "center"
+        },
+        {
+          title: "手机号",
+          key: "phone",
+          width: 120,
+          align: "center"
+        },
+        {
+          title: "资格名称",
+          key: "qualificationName",
+          width: 120,
+          align: "center"
+        }
+      ],
+      'other': []
+    }
+  }),
   {
     title: "执业证书编号",
     dataIndex: "zyzsNumber",
