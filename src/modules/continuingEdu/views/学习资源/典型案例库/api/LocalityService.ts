@@ -12,6 +12,7 @@ class LocalityService extends BaseApiService {
   public addOrUpdate(
     params: {
       id?: string | number,
+      actionType: 0 | 1,
       [p: string]: any
     }
   ) {
@@ -87,11 +88,9 @@ class LocalityService extends BaseApiService {
   }
 
   /** 322.厚街--学习资源--典型案例库--获取完整信息（用于修改） */
-  public name(id: string | number) {
+  public queryFormContent(id: string | number) {
     return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/queryFormContent', qs.stringify({ id }))
   }
-
-  /**  */
 }
 
 export const localityService = new LocalityService()

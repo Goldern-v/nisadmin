@@ -404,7 +404,6 @@ export default function ContinuingEdu(props: Props) {
               {
                 title: "典型案例库",
                 path: "/continuingEdu/典型案例库",
-                hide: true,
                 component: 典型案例库
               },
             ]

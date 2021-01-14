@@ -103,11 +103,28 @@ export default function 典型案例库() {
       align: "center",
       width: 120,
       render: (text: any, record: any, index: number) => {
+        const editable = () => {
+          if (
+            record.status < 2
+            && (
+              authStore.isNotANormalNurse
+              || record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()
+            )
+          ) return true
+
+          return false
+        }
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {authStore.isNotANormalNurse && (
+          {editable() && (
             <React.Fragment>
               <span onClick={() => handleEdit(record)}>编辑</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </React.Fragment>
+          )}
+          {!editable() && (
+            <React.Fragment>
+              <span style={{ color: "#aaa", cursor: "dafualt" }}>编辑</span>
               <span onClick={() => handleDelete(record)}>删除</span>
             </React.Fragment>
           )}
@@ -137,11 +154,15 @@ export default function 典型案例库() {
   }
 
   const handleDetail = (record: any) => {
-
+    setModalParams(record)
+    setModalEditable(false)
+    setModalVisible(true)
   }
 
   const handleEdit = (record: any) => {
-
+    setModalParams(record)
+    setModalEditable(true)
+    setModalVisible(true)
   }
 
   const handleDelete = (record: any) => {
@@ -172,7 +193,9 @@ export default function 典型案例库() {
   }
 
   const handleAdd = () => {
-    history.push('/continuingEdu/典型案例库修改')
+    setModalEditable(true)
+    setModalParams({})
+    setModalVisible(true)
   }
 
   return <Wrapper>
@@ -225,7 +248,7 @@ export default function 典型案例库() {
       >
         搜索
       </Button>
-      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
+      <Button className="sub" onClick={handleAdd}>添加</Button>
     </HeaderCon>
     <MainCon>
       <BaseTable

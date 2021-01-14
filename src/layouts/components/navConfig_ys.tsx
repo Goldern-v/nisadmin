@@ -11,7 +11,7 @@ export interface navConfigItem {
   menuStyle?: React.CSSProperties;
 }
 
-export const navConfig: navConfigItem[] = [
+const baseConfig: navConfigItem[] = [
   {
     name: "首页",
     path: "/home"
@@ -29,14 +29,15 @@ export const navConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile"
   },
-  {
-    name: "不良事件",
-    path: "/badEventsNewList"
-  },
-  {
-    name: "不良事件分析报告",
-    path: "/badEvents/alanysis/1/1"
-  },
+  // {
+  //   name: '不良事件',
+  //   path: '/badEventsNewList',
+  //   hidden: !appStore.isDev,
+  // },
+  // {
+  //   name: '不良事件分析报告',
+  //   path: '/badEvents/alanysis/1/1'
+  // },
   {
     name: "质量管理",
     children: [
@@ -50,11 +51,11 @@ export const navConfig: navConfigItem[] = [
         path: "/qcTwo",
         icon: require("../images/menu-icon/二级质控@2x.png")
       },
-      // {
-      //   name: '一级质量',
-      //   path: '/qcOne',
-      //   icon: require('../images/menu-icon/一级质控@2x.png')
-      // },
+      {
+        name: "一级质量",
+        path: "/qcOneHj",
+        icon: require("../images/menu-icon/一级质控@2x.png")
+      },
       // {
       //   name: '病区登记本',
       //   path: '',
@@ -73,8 +74,18 @@ export const navConfig: navConfigItem[] = [
     ]
   },
   {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
     name: "敏感指标",
     path: "/indicator"
+  },
+  {
+    name: "敏感指标登记本",
+    path: "/sensitiveRegister",
+    // hidden: !appStore.isDev
   },
   {
     name: "统计查询",
@@ -97,3 +108,7 @@ export const navConfig: navConfigItem[] = [
     path: "/personnelManagement"
   }
 ];
+
+const beConfig: navConfigItem[] = []
+
+export const navConfig: navConfigItem[] = appStore.onlyBadEvent ? beConfig : baseConfig

@@ -28,10 +28,10 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   approvalNumber: (val) => {
     if (val) {
-      if (/^〔.*〕$/.test(val))
-        return true
+      if (/(<|>|\(|\)|（|）|〈|〉|‹|›|﹛|﹜|『|』|〖|〗|［|］|《|》|{|}|「|」|【|】|︵|︶|︷|︸|︿|﹀|︹|︺|︽|︾|﹁|﹂|﹃|﹄|︻|︼)/.test(val))
+        return '括号统一为六角括号〔〕'
 
-      return '括号统一为六角括号〔〕'
+      return true
     } else {
       return true
     }

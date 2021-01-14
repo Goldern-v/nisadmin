@@ -220,9 +220,9 @@ export default withRouter(function LoginView(props: Props) {
         </BoxInput>
       </BgImg>
       <BottomContent>
-        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-
-        {new Date().getFullYear()}，All rights reseved. 关于宸瑞 | 关于智慧护理
-        | 联系客服
+        广州{appStore.HOSPITAL_ID === 'ys' ? '百辰源' : '宸瑞'}软件科技有限公司 {appStore.HOSPITAL_ID === 'ys' ? '' : 'http://www.cr-health.com'} 版权所有©2013-
+        {new Date().getFullYear()}，All rights reseved. {appStore.HOSPITAL_ID === 'ys' ? '' : `关于宸瑞 | 关于智慧护理
+        | 联系客服`}
       </BottomContent>
     </Wrapper>
   );

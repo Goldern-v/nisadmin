@@ -17,22 +17,24 @@ export interface Props {
 export default function FormEdit(props: Props) {
   const { style, editable, editData, onEditDataChange } = props
 
-  console.log(editData)
-
   const totalCol = 12
 
   const EditCon = (params: {
     code: string,
     type: string,
-    value?: string,
+    value?: any,
+    defaultValue?: any,
     placeholder?: string,
     style?: React.CSSProperties,
     options?: any[]
   }) => {
-    const { code, type, options, placeholder, value, style } = params
-    if (!editable) return editData[code]
+    const { code, type, options, placeholder, value, style, defaultValue } = params
+
+    const placeSpan = <span style={{ height: 24, width: 24, display: 'inline-block' }}></span>
+
     switch (type) {
       case 'input':
+        if (!editable) return editData[code] || placeSpan
         return (
           <Input
             style={style}
@@ -42,6 +44,13 @@ export default function FormEdit(props: Props) {
               onEditDataChange({ ...editData, [code]: e.target.value })} />
         )
       case 'select':
+        if (!editable) {
+          let target = (options || []).find((item: any) => item.value == editData[code])
+
+          if (target) return target.label
+
+          return editData[code] || placeSpan
+        }
         return (
           <Select
             value={editData[code]}
@@ -58,7 +67,25 @@ export default function FormEdit(props: Props) {
           </Select>
         )
       case 'radio':
-        return editData[code] === value ? <Checked style={style} /> : <Uncheck style={style} />
+        const handleClick = () => {
+          if (!editable) return
+
+          let newVal = null as any
+          if (editData[code] !== value) {
+            newVal = value
+          } else {
+            if (defaultValue) newVal = defaultValue
+          }
+
+          onEditDataChange({ ...editData, [code]: newVal })
+        }
+        return editData[code] === value ?
+          <Checked
+            style={{ cursor: 'pointer', ...style }}
+            onClick={() => handleClick()} /> :
+          <Uncheck
+            style={{ cursor: 'pointer', ...style }}
+            onClick={() => handleClick()} />
       default: return editData[code]
     }
   }
@@ -90,7 +117,7 @@ export default function FormEdit(props: Props) {
                   code: 'f00140',
                   type: 'select',
                   options: deptNameList
-                    .map((name: string) => ({ lable: name, value: name }))
+                    .map((name: string) => ({ label: name, value: name }))
                 })}
               </td>
               <td className="title">患者姓名</td>
@@ -103,8 +130,8 @@ export default function FormEdit(props: Props) {
                   code: 'f00003',
                   type: 'select',
                   options: [
-                    { label: '男', value: '0' },
-                    { label: '女', value: '1' }
+                    { label: '男', value: 0 },
+                    { label: '女', value: 1 }
                   ]
                 })}
               </td>
@@ -154,7 +181,7 @@ export default function FormEdit(props: Props) {
               <td colSpan={totalCol} className="align-left">
                 <span className="title" style={{ marginRight: 10 }}>过敏史</span>
                 <span style={{ marginRight: 10 }}>无</span>
-                {EditCon({ code: 'f00151', type: 'radio', value: '有' })}
+                {EditCon({ code: 'f00151', type: 'radio', value: '有', defaultValue: '' })}
                 <span style={{ marginRight: 10 }}>有</span>
                 {EditCon({ code: 'f00152', type: 'input', style: { width: 540 } })}
               </td>

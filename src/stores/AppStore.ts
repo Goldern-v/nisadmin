@@ -65,6 +65,9 @@ export default class AppStore {
       return require("src/assets/images/BadEventLogo.svg")
     }
 
+    if (process.env.REACT_APP_BLANK_DEMO)
+      return require("src/assets/images/logo.png")
+
     if (this.HOSPITAL_ID == "wh") {
       return require("src/assets/images/武汉logo.png");
     } else if (this.HOSPITAL_ID == "hj") {

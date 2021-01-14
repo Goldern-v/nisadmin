@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal } from 'antd'
+import { Button, Modal, Spin } from 'antd'
 import FormEdit from './FormEdit'
+import { localityService } from '../api/LocalityService'
+import { authStore } from 'src/stores'
+import moment from 'moment'
+import { message } from 'antd/es'
 
 export interface Props {
   visible: boolean,
@@ -17,19 +21,77 @@ export default function PreviewOrEditModal(props: Props) {
   const [loading, setLoading] = useState(false)
 
   const handleSave = () => {
-    console.log('save')
+    setLoading(true)
+    let saveParams = { ...editData, actionType: 1 }
+
+    if (!saveParams.id) delete saveParams.id
+    // console.log(saveParams)
+    localityService
+      .addOrUpdate(saveParams)
+      .then(res => {
+        message.success('保存成功', 1, () => onOk())
+      })
+      .finally(() => setLoading(false))
   }
 
   const handleSubmit = () => {
-    console.log('submit')
+    let submitParams = { ...editData, actionType: 2 }
+
+    if (!submitParams.id) delete submitParams.id
+
+    localityService
+      .addOrUpdate(submitParams)
+      .then(res => {
+        message.success('提交成功', 1, () => onOk())
+      })
+      .finally(() => setLoading(false))
+  }
+
+  const initNewEditParams = () => {
+    setLoading(true)
+
+    localityService.queryFieldRemarks()
+      .then(res => {
+        if (res.data) {
+          let keyArr = Object.keys(res.data)
+          if (keyArr.length >= 0) {
+            let newEditData = {} as any
+            keyArr.map((key: string) => {
+              newEditData[key] = ''
+
+              if (key == 'f00003') newEditData[key] = 0
+              if (key == 'f00144') newEditData[key] = authStore.user?.empName
+              if (key == 'f00142') newEditData[key] = moment().format('YYYY-MM-DD')
+            })
+            setEditData(newEditData)
+          }
+        }
+      })
+      .finally(() => setLoading(false))
+  }
+
+  const getEditData = () => {
+    setLoading(true)
+
+    localityService
+      .queryFormContent(params.id)
+      .then(res => {
+        if (res.data)
+          setEditData(res.data)
+      })
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => {
     if (visible) {
       if (params.id) {
-
+        getEditData()
       } else if (editable) {
-
+        if (Object.keys(params).length <= 0) {
+          initNewEditParams()
+        } else {
+          getEditData()
+        }
       }
     } else {
       setEditData({})
@@ -38,7 +100,14 @@ export default function PreviewOrEditModal(props: Props) {
   }, [visible, params])
 
   return <Modal
-    title={`${editable ? '修改' : '新建'}典型案例库`}
+    title={`${(() => {
+      if (!editable) return '查看'
+
+      if (Object.keys(params).length <= 0)
+        return '新建'
+
+      return '修改'
+    })()}典型案例库`}
     visible={visible}
     width={900}
     bodyStyle={{ padding: 0 }}
@@ -52,10 +121,12 @@ export default function PreviewOrEditModal(props: Props) {
     onCancel={() => onCancel()}
     centered>
     <Wrapper>
-      <FormEdit
-        editData={editData}
-        editable={editable}
-        onEditDataChange={(payload: any) => setEditData(payload)} />
+      <Spin spinning={loading}>
+        <FormEdit
+          editData={editData}
+          editable={editable}
+          onEditDataChange={(payload: any) => setEditData(payload)} />
+      </Spin>
     </Wrapper>
   </Modal>
 }

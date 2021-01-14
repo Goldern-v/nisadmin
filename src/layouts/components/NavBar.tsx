@@ -135,44 +135,45 @@ export default observer(function NavBar(props: any) {
       </React.Fragment>
     );
     // console.log(appStore.HOSPITAL_ID, 'appStore.HOSPITAL_ID')
-    switch (appStore.HOSPITAL_ID) {
-      case "wh":
-        view = (
-          <React.Fragment>
-            <img
-              src={require("../images/武汉logo.png")}
-              alt=""
-              className="logo"
-              style={{ height: 30 }}
-            />
-            <img
-              src={require("../images/护理管理系统.png")}
-              alt=""
-              className="name"
-              style={{ paddingRight: 30 }}
-            />
-          </React.Fragment>
-        );
-        break;
-      case "hj":
-        view = (
-          <React.Fragment>
-            <img
-              src={require("../images/厚街logo.png")}
-              alt=""
-              className="logo"
-              style={{ height: 30 }}
-            />
-            <img
-              src={require("../images/护理管理系统.png")}
-              alt=""
-              className="name"
-              style={{ paddingRight: 30 }}
-            />
-          </React.Fragment>
-        );
-        break;
-    }
+    if (!process.env.REACT_APP_BLANK_DEMO)
+      switch (appStore.HOSPITAL_ID) {
+        case "wh":
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../images/武汉logo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              />
+            </React.Fragment>
+          );
+          break;
+        case "hj":
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../images/厚街logo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              />
+            </React.Fragment>
+          );
+          break;
+      }
 
     if (appStore.onlyBadEvent)
       view = (
