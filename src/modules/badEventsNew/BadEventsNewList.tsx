@@ -184,20 +184,7 @@ export default observer(function BadEventNewList() {
   ];
 
   useEffect(() => {
-    api.getDeptList("2")
-      .then(res => {
-        let data = res.data;
-        if (data instanceof Array)
-          setDeptList(
-            data.map((item: any) => {
-              return {
-                name: item.deptName,
-                code: item.deptCode
-              };
-            })
-          );
-      });
-
+    getDeptListAll()
     getEventTypeList()
     getEventStatusList()
   }, []);
@@ -210,10 +197,28 @@ export default observer(function BadEventNewList() {
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP')
       getEventList()
+
+    if (deptList.length <= 0 && authStore.isDepartment) getDeptListAll()
     if (eventTypeList.length <= 0) getEventTypeList()
     if (eventStatusList.length <= 0) getEventStatusList()
     // return () => { }
   })
+
+  const getDeptListAll = () => {
+    api.getDeptList("2")
+      .then(res => {
+        let data = res.data;
+        if (data instanceof Array)
+          setDeptList(
+            data.map((item: any) => {
+              return {
+                name: item.deptName,
+                code: item.deptCode
+              }
+            })
+          )
+      })
+  }
 
   const getEventStatusList = () => {
     service.commonApiService

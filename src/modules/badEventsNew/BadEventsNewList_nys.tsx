@@ -13,6 +13,7 @@ import BadEventsNewService from "./api/badEventsNewService";
 // import CustomPagination from './components/CustomPagination'
 import moment from "moment";
 import { useKeepAliveEffect } from "react-keep-alive";
+import BaseTabs from "src/components/BaseTabs";
 
 const api = new BadEventsNewService();
 
@@ -36,7 +37,8 @@ export default observer(function BadEventNewList() {
     dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
     eventType: "",
-    eventStatus: ""
+    eventStatus: "",
+    type: '1'
   });
 
   const [deptList, setDeptList] = useState([] as any);
@@ -184,20 +186,7 @@ export default observer(function BadEventNewList() {
   ];
 
   useEffect(() => {
-    api.getDeptList("2")
-      .then(res => {
-        let data = res.data;
-        if (data instanceof Array)
-          setDeptList(
-            data.map((item: any) => {
-              return {
-                name: item.deptName,
-                code: item.deptCode
-              };
-            })
-          );
-      });
-
+    getDeptListAll()
     getEventTypeList()
     getEventStatusList()
   }, []);
@@ -215,10 +204,27 @@ export default observer(function BadEventNewList() {
       }
     }
 
+    if (deptList.length <= 0 && authStore.isDepartment) getDeptListAll()
     if (eventTypeList.length <= 0) getEventTypeList()
     if (eventStatusList.length <= 0) getEventStatusList()
     // return () => { }
   })
+
+  const getDeptListAll = () => {
+    api.getDeptList("2")
+      .then(res => {
+        let data = res.data;
+        if (data instanceof Array)
+          setDeptList(
+            data.map((item: any) => {
+              return {
+                name: item.deptName,
+                code: item.deptCode
+              }
+            })
+          )
+      })
+  }
 
   const getEventStatusList = () => {
     service.commonApiService
@@ -241,32 +247,37 @@ export default observer(function BadEventNewList() {
   }
 
   const getEventList = (newQuery?: any) => {
-    setDataLoading(true);
-    api.getList(
-      newQuery ||
-      {
-        ...query,
-        pageIndex: page.current,
-        pageSize: page.size
-      }
-    ).then(
-      res => {
-        setDataLoading(false);
-        let data = res.data.list;
-        if (data && data.map)
-          setData(
-            data.map((item: any, idx: number) => {
-              return {
-                key: idx,
-                ...item
-              };
-            })
-          );
-      },
-      err => {
-        setDataLoading(false);
-      }
-    );
+    setDataLoading(true)
+
+    let reqQuery = newQuery ||
+    {
+      ...query,
+      pageIndex: page.current,
+      pageSize: page.size
+    }
+
+    let reqMethod = api.getWaitHandler.bind(api)
+    if (reqQuery.type == '2') api.getMyHandler.bind(api)
+
+    reqMethod(reqQuery)
+      .then(
+        res => {
+          setDataLoading(false);
+          let data = res.data.list;
+          if (data && data.map)
+            setData(
+              data.map((item: any, idx: number) => {
+                return {
+                  key: idx,
+                  ...item
+                };
+              })
+            );
+        },
+        err => {
+          setDataLoading(false);
+        }
+      );
   };
 
   const handleQueryDateRangeChange = (moments: any[]): void => {
@@ -297,7 +308,7 @@ export default observer(function BadEventNewList() {
             <div className="title">不良事件</div>
           </div>
           <div className="float-right">
-            <div className="float-item">
+            {/* <div className="float-item">
               <div className="item-title">事件日期:</div>
               <div className="item-content date-range">
                 <RangePicker
@@ -305,7 +316,7 @@ export default observer(function BadEventNewList() {
                   defaultValue={defaultDateRange()}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="float-item">
               <div className="item-title">科室:</div>
               <div className="item-content">
@@ -353,7 +364,7 @@ export default observer(function BadEventNewList() {
                 </Select>
               </div>
             </div>
-            <div className="float-item">
+            {/* <div className="float-item">
               <div className="item-title">状态:</div>
               <div className="item-content">
                 <Select
@@ -373,7 +384,7 @@ export default observer(function BadEventNewList() {
                   })}
                 </Select>
               </div>
-            </div>
+            </div> */}
             <div className="float-item">
               <div className="item-title" />
               <div className="item-content">
@@ -387,23 +398,35 @@ export default observer(function BadEventNewList() {
       </div>
       <div className="main-contain">
         <div className="table-content">
-          <BaseTable
-            loading={dataLoading}
-            columns={columns}
-            dataSource={data.filter((item: any, idx: number) => {
-              let { current, size } = page;
-              let starIndex = (current - 1) * size;
-              return idx + 1 > starIndex && idx + 1 <= starIndex + size;
+          <BaseTabs
+            defaultActiveKey={query.type.toString()}
+            config={['待我处理', '我已处理'].map((name: any, idx: number) => {
+              return {
+                title: name,
+                component: (
+                  <BaseTable
+                    loading={dataLoading}
+                    columns={columns}
+                    dataSource={data.filter((item: any, idx: number) => {
+                      let { current, size } = page;
+                      let starIndex = (current - 1) * size;
+                      return idx + 1 > starIndex && idx + 1 <= starIndex + size;
+                    })}
+                    surplusHeight={265}
+                    pagination={{
+                      showQuickJumper: true,
+                      total: data.length,
+                      current: page.current,
+                      pageSize: page.size,
+                      onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
+                      onChange: (current: number) => setPage({ ...page, current })
+                    }}
+                  />
+                ),
+                index: (idx + 1).toString()
+              }
             })}
-            surplusHeight={235}
-            pagination={{
-              showQuickJumper: true,
-              total: data.length,
-              current: page.current,
-              pageSize: page.size,
-              onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
-              onChange: (current: number) => setPage({ ...page, current })
-            }}
+            onChange={(type: any) => setQuery({ ...query, type })}
           />
         </div>
       </div>

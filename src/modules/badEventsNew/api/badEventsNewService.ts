@@ -50,6 +50,36 @@ export default class BadEventsNewService extends BaseApiService {
   public async getPatientInfo(patientId: string | number, visitId: string | number) {
     return this.get(`/patient/info/${patientId}/${visitId}`)
   }
+
+  //待我处理
+  public getWaitHandler(query: {
+    pageIndex: number,
+    pageSize: number,
+    eventType: string,
+    wardCode: number | string,
+    [p: string]: any
+  }) {
+
+    const { pageIndex, pageSize, eventType, wardCode } = query
+    return this.post('/badEvent/getWaitHandler', {
+      pageIndex, pageSize, eventType, wardCode
+    })
+  }
+
+  //我已处理
+  public getMyHandler(query: {
+    pageIndex: number,
+    pageSize: number,
+    eventType: string,
+    wardCode: number | string,
+    [p: string]: any
+  }) {
+
+    const { pageIndex, pageSize, eventType, wardCode } = query
+    return this.post('/badEvent/getMyHandler', {
+      pageIndex, pageSize, eventType, wardCode
+    })
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()
