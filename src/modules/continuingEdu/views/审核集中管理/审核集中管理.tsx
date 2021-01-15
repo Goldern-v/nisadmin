@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import AuditEduPlan from './../auditEduPlant/AuditEduPlan'
 import FormReview from "./../trainingSetting/formReview/FormReview";
+import 典型案例库审核 from './../学习资源/典型案例库/典型案例库审核'
 import { appStore } from 'src/stores'
 // import { Button } from 'antd'
 
@@ -21,14 +22,16 @@ export default observer(function 审核集中管理() {
   const tabList = [
     { name: '学习计划审核', id: '1' },
     { name: '资质准入审核', id: '2' },
+    { name: '典型案例审核', id: '3' },
     // { name: '学员笔记审核', id: '3' },
-    // { name: '经典案例审核', id: '4' },
   ]
 
   const currentView = () => {
     switch (queryObj.tabId) {
       case '2':
         return <FormReview />
+      case '3':
+        return <典型案例库审核 />
       default:
         return <AuditEduPlan
           btntop='151px'

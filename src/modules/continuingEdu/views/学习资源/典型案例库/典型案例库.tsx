@@ -95,7 +95,15 @@ export default function 典型案例库() {
       title: '状态',
       dataIndex: 'statusDesc',
       align: "center",
-      width: 80,
+      render: (text: string, record: any) => {
+        if (text == '退回')
+          return <div>
+            <span style={{ color: 'red' }}>{text}</span>
+            <span>{record.auditRemark && `(${record.auditRemark})`}</span>
+          </div>
+
+        return text
+      }
     },
     {
       title: '操作',
@@ -105,7 +113,7 @@ export default function 典型案例库() {
       render: (text: any, record: any, index: number) => {
         const editable = () => {
           if (
-            record.status < 2
+            [2, 4].indexOf(record.status) < 0
             && (
               authStore.isNotANormalNurse
               || record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()

@@ -19,16 +19,6 @@ class LocalityService extends BaseApiService {
     return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/addOrUpdate', params)
   }
 
-  /** 299.厚街--学习资源--管理工具学习集合--获取完整信息（用于修改）） */
-  public getCompleteInfo(id: string | number) {
-    return this.post('/studyAndTrain/studyResources/managementToolsManage/getCompleteInfo', qs.stringify({ id }))
-  }
-
-  /** 298.厚街--学习资源--管理工具学习集合--获取详情内容（富文本内容） */
-  public getDetailContent(id: string | number) {
-    return this.post('/studyAndTrain/studyResources/managementToolsManage/getDetailContent', qs.stringify({ id }))
-  }
-
   /** 321.厚街--学习资源--典型案例库--获取主列表数据（分页查询） */
   public queryPageList(
     query: {
@@ -69,7 +59,7 @@ class LocalityService extends BaseApiService {
     medicalSubject: string, //科室（专科）取值：内科、外科、儿科、妇产科、综合病例
     keyWord: string, //搜索关键字
   }) {
-    return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/queryAuditedPageList')
+    return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/queryAuditedPageList', query)
   }
 
   /** 327.厚街--学习资源--典型案例库--获取待我审核任务列表 */
@@ -79,7 +69,7 @@ class LocalityService extends BaseApiService {
     medicalSubject: string, //科室（专科）取值：内科、外科、儿科、妇产科、综合病例
     keyWord: string, //搜索关键字
   }) {
-    return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/queryToAuditPageList')
+    return this.post('/studyAndTrain/studyResources/typicalCaseLibraryManage/queryToAuditPageList', query)
   }
 
   /** 324.厚街--学习资源--典型案例库--获取字段简要说明（名称、类型、取值说明等） */

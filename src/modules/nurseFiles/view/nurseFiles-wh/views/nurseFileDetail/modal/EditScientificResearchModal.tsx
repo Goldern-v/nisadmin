@@ -27,10 +27,10 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   resultType: (val) => {
     if (val) {
-      if (/^第[零壹贰叁肆伍陆柒捌玖拾佰仟万亿兆]*$/.test(val))
+      if (/^第[零一二三四五六七八九十百千万亿兆]*$/.test(val))
         return true
 
-      return '一律为“第几”，“几”为大写'
+      return '一律为“第几”'
     } else {
       return true
     }

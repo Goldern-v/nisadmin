@@ -371,6 +371,9 @@ const ExamScore = lazy(() =>
   )
 );
 
+//学习培训-学习资源-典型案例审核详情(厚街)
+const 典型案例库审核详情 = lazy(() => import('src/modules/continuingEdu/views/学习资源/典型案例库/典型案例库审核详情'))
+
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
   import("src/modules/infectedAreasCount/InfectedAreasCount")
@@ -473,6 +476,7 @@ const routes: RouteItem[] = [
     path: "/trainingExamination",
     redirect: "/trainingExamination/人员管理"
   },
+  /**  */
   setLayout("/notice", NoticeView, layouts.MainLayout),
   setLayout("/sentNotice", SentNoticeView, layouts.MainLayout),
   setLayout("/lmsDetails", LmsDetails, layouts.MainLayout),
@@ -519,6 +523,7 @@ const routes: RouteItem[] = [
     ContinuingEduEmpDetail,
     layouts.MainLayout
   ),
+  setLayout('/典型案例库审核详情', 典型案例库审核详情, layouts.MainLayout),
   // 护理质量
   setLayout("/quality/:name", QualityView, layouts.MainLayout),
   setLayout(

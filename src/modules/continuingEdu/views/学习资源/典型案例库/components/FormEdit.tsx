@@ -10,7 +10,7 @@ const Option = Select.Option
 export interface Props {
   style?: React.CSSProperties
   editable?: boolean
-  onEditDataChange: Function
+  onEditDataChange?: Function
   editData?: any
 }
 
@@ -41,7 +41,7 @@ export default function FormEdit(props: Props) {
             value={editData[code]}
             placeholder={placeholder}
             onChange={(e: any) =>
-              onEditDataChange({ ...editData, [code]: e.target.value })} />
+              onEditDataChange && onEditDataChange({ ...editData, [code]: e.target.value })} />
         )
       case 'select':
         if (!editable) {
@@ -56,7 +56,7 @@ export default function FormEdit(props: Props) {
             value={editData[code]}
             style={{ width: '100%', ...style }}
             onChange={(val: any) =>
-              onEditDataChange({ ...editData, [code]: val })}>
+              onEditDataChange && onEditDataChange({ ...editData, [code]: val })}>
             {(options || []).map((item: any) => (
               <Option
                 value={item.value}
@@ -77,7 +77,7 @@ export default function FormEdit(props: Props) {
             if (defaultValue) newVal = defaultValue
           }
 
-          onEditDataChange({ ...editData, [code]: newVal })
+          onEditDataChange && onEditDataChange({ ...editData, [code]: newVal })
         }
         return editData[code] === value ?
           <Checked
@@ -288,7 +288,7 @@ const Wrapper = styled.div`
  overflow-y: auto;
  .form-content{
   width: 760px;
-  min-height: 1000px;
+  min-height: 900px;
   padding: 15px 40px 30px 40px;
   margin: 0 auto;
   background: #fff;
