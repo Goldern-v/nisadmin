@@ -145,8 +145,8 @@ export default function 常用的学习软件介绍() {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)
         }
-      }, () => { })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleDetail = (record: any) => {

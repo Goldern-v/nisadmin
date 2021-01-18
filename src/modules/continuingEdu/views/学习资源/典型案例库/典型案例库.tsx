@@ -157,8 +157,8 @@ export default function 典型案例库() {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)
         }
-      }, () => { })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleDetail = (record: any) => {

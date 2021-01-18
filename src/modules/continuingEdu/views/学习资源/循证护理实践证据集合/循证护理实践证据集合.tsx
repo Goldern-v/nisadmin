@@ -135,8 +135,8 @@ export default function 循证护理实践证据集合() {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)
         }
-      }, () => { })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleDetail = (record: any) => {

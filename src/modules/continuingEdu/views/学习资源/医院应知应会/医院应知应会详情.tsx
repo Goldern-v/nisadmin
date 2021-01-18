@@ -18,7 +18,7 @@ export default function 医院应知应会详情() {
       .then(res => {
         if (res.data) setContent(res.data.detailContent || '')
       })
-      .finally(() => setLoading(false))
+
   }
 
   useEffect(() => {

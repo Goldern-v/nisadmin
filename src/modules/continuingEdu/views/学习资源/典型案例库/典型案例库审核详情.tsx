@@ -38,8 +38,8 @@ export default function 典型案例库审核详情() {
       .then(resArr => {
         setFormData(resArr[0].data)
         setAuditInfo(resArr[1].data.flowTaskHisList || [])
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleOk = () => {

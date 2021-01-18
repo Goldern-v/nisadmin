@@ -30,8 +30,8 @@ export default function PreviewOrEditModal(props: Props) {
       .addOrUpdate(saveParams)
       .then(res => {
         message.success('保存成功', 1, () => onOk())
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleSubmit = () => {
@@ -43,8 +43,8 @@ export default function PreviewOrEditModal(props: Props) {
       .addOrUpdate(submitParams)
       .then(res => {
         message.success('提交成功', 1, () => onOk())
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const initNewEditParams = () => {
@@ -66,8 +66,8 @@ export default function PreviewOrEditModal(props: Props) {
             setEditData(newEditData)
           }
         }
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const getEditData = () => {
@@ -79,7 +79,7 @@ export default function PreviewOrEditModal(props: Props) {
         if (res.data)
           setEditData(res.data)
       })
-      .finally(() => setLoading(false))
+
   }
 
   useEffect(() => {

@@ -141,8 +141,8 @@ export default function 医院应知应会() {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)
         }
-      }, () => { })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleDetail = (record: any) => {

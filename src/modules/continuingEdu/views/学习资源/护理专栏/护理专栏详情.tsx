@@ -17,8 +17,8 @@ export default function 护理专栏详情() {
       .getDetailContent(queryObj.id)
       .then(res => {
         if (res.data) setContent(res.data.detailContent || '')
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   useEffect(() => {

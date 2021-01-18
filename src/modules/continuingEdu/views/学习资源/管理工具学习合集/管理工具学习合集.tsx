@@ -194,8 +194,8 @@ export default function 管理工具学习合集() {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)
         }
-      }, () => { })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   const handleDetail = (record: any) => {

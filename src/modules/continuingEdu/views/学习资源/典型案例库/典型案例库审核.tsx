@@ -124,8 +124,8 @@ export default function 典型案例审核() {
         setTotalCount(res.data.totalCount)
         setTableData(res.data.list)
       }
-    }, () => { })
-      .finally(() => setLoading(false))
+    }, () => setLoading(false))
+
   }
 
   const handleToAudit = (record: any) => {

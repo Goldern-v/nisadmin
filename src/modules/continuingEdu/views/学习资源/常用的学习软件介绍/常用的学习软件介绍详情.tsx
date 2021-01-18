@@ -17,8 +17,8 @@ export default function 常用的学习软件介绍详情() {
       .getDetailContent(queryObj.id)
       .then(res => {
         if (res.data) setContent(res.data.detailContent || '')
-      })
-      .finally(() => setLoading(false))
+      }, () => setLoading(false))
+
   }
 
   useEffect(() => {
