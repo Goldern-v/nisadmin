@@ -15,7 +15,7 @@ export default function 医院应知应会修改() {
   const { history, queryObj } = appStore
   const [editParams, setEditParams] = useState({
     status: 0,
-    type: '1',
+    type: 1,
     attachmentList: []
   })
   const [loading, setLoading] = useState(false)

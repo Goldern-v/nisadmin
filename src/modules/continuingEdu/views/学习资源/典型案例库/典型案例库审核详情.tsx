@@ -102,7 +102,6 @@ export default function 典型案例库审核详情() {
       visible={auditModalVisible}
       taskId={queryObj.taskId}
       onOk={() => handleOk()}
-      onCancel={() => setAuditModalVisible(false)}
-      onClose={() => setAuditModalVisible(false)} />
+      onCancel={() => setAuditModalVisible(false)} />
   </Wrapper>
 }

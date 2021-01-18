@@ -256,7 +256,7 @@ export default observer(function BadEventNewList() {
       pageSize: page.size
     }
 
-    console.log(reqQuery)
+    // console.log(reqQuery)
 
     let reqMethod = api.getWaitHandler.bind(api)
     if (reqQuery.type == '2') reqMethod = api.getMyHandler.bind(api)

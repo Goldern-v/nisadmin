@@ -7,12 +7,15 @@ import { observer } from 'mobx-react-lite'
 import { localityService } from './../api/LocalityService'
 import moment from 'moment'
 
-export interface Props extends ModalComponentProps {
-  taskId: string
+export interface Props {
+  taskId: string,
+  visible: boolean,
+  onCancel: Function,
+  onOk: Function,
 }
 
 export default observer(function AuditModal(props: Props) {
-  const { visible, onCancel, taskId, onOk } = props
+  const { visible, onCancel, taskId, onOk, } = props
 
   const [loading, setLoading] = useState(false)
   const [auditResult, setAuditResult] = useState(1 as 1 | -1)
@@ -46,7 +49,7 @@ export default observer(function AuditModal(props: Props) {
     confirmLoading={loading}
     visible={visible}
     onOk={() => handleOk()}
-    onCancel={() => onCancel}
+    onCancel={() => onCancel()}
     title="审核">
     <Wrapper>
       <div className="row">
