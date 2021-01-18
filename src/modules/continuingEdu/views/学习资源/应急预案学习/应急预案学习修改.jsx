@@ -89,7 +89,9 @@ export default function 应急预案学习修改() {
   return <Wrapper>
     <HeaderCon>
       <Title>
-        <span>应急预案学习{queryObj.id ? '修改' : '添加'}</span>
+        <span>
+          <span>应急预案学习{queryObj.id ? '修改' : '添加'}</span>
+        </span>
       </Title>
       <Place />
       {/* <Button

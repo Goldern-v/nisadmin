@@ -30,7 +30,7 @@ export default function 循证护理记录集合详情() {
   return <Wrapper>
     <HeaderCon>
       <Title>
-        <span>循证护理记录集合详情</span>
+        {/* <span>循证护理记录集合详情</span> */}
       </Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>

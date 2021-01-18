@@ -30,7 +30,7 @@ export default function 应急预案学习详情() {
   return <Wrapper>
     <HeaderCon>
       <Title>
-        <span>应急预案学习详情</span>
+        {/* <span>应急预案学习详情</span> */}
       </Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>

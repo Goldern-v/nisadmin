@@ -30,7 +30,7 @@ export default function 医院应知应会详情() {
   return <Wrapper>
     <HeaderCon>
       <Title>
-        <span>医院应知应会详情</span>
+        {/* <span>医院应知应会详情</span> */}
       </Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>

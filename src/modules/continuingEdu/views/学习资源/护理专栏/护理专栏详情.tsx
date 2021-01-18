@@ -30,7 +30,7 @@ export default function 护理专栏详情() {
   return <Wrapper>
     <HeaderCon>
       <Title>
-        <span>护理专栏详情</span>
+        {/* <span>护理专栏详情</span> */}
       </Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>
@@ -93,7 +93,7 @@ const HeaderCon = styled.div`
   }
 `
 const Title = styled.div`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #333;
 `
