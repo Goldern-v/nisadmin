@@ -432,6 +432,9 @@ class PrintModal {
         width: 30,
         visible: colVisibleList.indexOf('year') >= 0,
         render: (record: any) => {
+          if (!record.empName)
+            return ''
+
           return record.year || '0'
         }
       }
@@ -445,6 +448,9 @@ class PrintModal {
         width: 60,
         visible: colVisibleList.indexOf('total1') >= 0,
         render: (record: any) => {
+          if (!record.empName)
+            return ''
+
           return totalCellContent(record.id)
         }
       },
@@ -509,7 +515,19 @@ class PrintModal {
     }
 
     //排班的护士列表及其排班内容
-    let NurseGroup = [...nurseGroup];
+    let NurseGroup = [] as any[];
+    for (let i = 0; i < nurseGroup.length; i++) {
+      let item = nurseGroup[i]
+      let nextItem = nurseGroup[i + 1] || null
+      NurseGroup.push(item)
+      if (nextItem) {
+        let groupName = item.groupName
+        let nextGroupName = nextItem.groupName
+        if (groupName !== nextGroupName)
+          NurseGroup.push({})
+      }
+    }
+
     //排班备注固定模块
     let remarkEl = `<pre>排班备注：${remark}</pre>`;
     // 列宽
@@ -658,7 +676,7 @@ class PrintModal {
         for (let k = 0; k < dateRow.length; k++) {
           let dateItem = dateRow[k];
           let last = groups[groups.length - 1];
-          let target = nurse.settingDtos.find((item: any) => {
+          let target = (nurse.settingDtos || []).find((item: any) => {
             return item.workDate == dateItem.moment.format("YYYY-MM-DD");
           });
           if (!target) {
@@ -712,7 +730,14 @@ class PrintModal {
 
         //组合排班信息
         groups = groups.map((item1: any) => {
-          return tdEl({ colSpan: item1.col, content: item1.rangeName || "/" });
+          let rangeName = ''
+          if (nurse.empName)
+            rangeName = item1.rangeName || "/"
+
+          return tdEl({
+            colSpan: item1.col,
+            content: rangeName
+          });
         });
         tr += groups.join("");
         //排班内容后的固定列内容

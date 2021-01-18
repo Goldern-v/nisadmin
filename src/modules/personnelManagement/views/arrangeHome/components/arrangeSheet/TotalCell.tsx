@@ -42,7 +42,7 @@ export const totalCellContent = (id: any) => {
   ]; // 工时小计为0的班次
 
   if (user) {
-    list = user.settingDtos;
+    list = user.settingDtos || [];
     allTimeLimit = user.timeLimit
       ? Math.ceil(list.length / 7) * user.timeLimit
       : 0;
@@ -59,7 +59,7 @@ export const totalCellContent = (id: any) => {
   }, 0);
 
   // 超过周工作时长给提示
-  if (user.timeLimit && allTimeLimit && total > allTimeLimit) {
+  if (user && user.timeLimit && allTimeLimit && total > allTimeLimit) {
     Message.warning(
       `请注意： 该人员每周排班时长不可以超过 ${user.timeLimit} !`
     );
@@ -109,10 +109,10 @@ export const totalCellContent = (id: any) => {
         appStore.HOSPITAL_ID === "nys" || makeZero
           ? 0
           : sheetViewModal.getStandTime(
-              moment()
-                .week(Number(key))
-                .format("YYYY-MM-DD")
-            );
+            moment()
+              .week(Number(key))
+              .format("YYYY-MM-DD")
+          );
       total -= (real_week / 5) * 2;
     }
   }
