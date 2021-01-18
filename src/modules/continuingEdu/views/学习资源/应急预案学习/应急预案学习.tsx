@@ -240,6 +240,11 @@ export default function 应急预案学习() {
     columns={columns}
     dataSource={tableData}
     loading={loading}
+    onRow={(record: any) => {
+      return {
+        onDoubleClick: () => handleDetail(record)
+      }
+    }}
     pagination={{
       pageSizeOptions: ["10", "20", "30", "40", "50"],
       total: totalCount,

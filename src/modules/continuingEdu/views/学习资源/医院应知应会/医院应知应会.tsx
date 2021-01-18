@@ -219,6 +219,11 @@ export default function 医院应知应会() {
     columns={columns}
     dataSource={tableData}
     loading={loading}
+    onRow={(record: any) => {
+      return {
+        onDoubleClick: () => handleDetail(record)
+      }
+    }}
     pagination={{
       pageSizeOptions: ["10", "20", "30", "40", "50"],
       total: totalCount,

@@ -289,6 +289,11 @@ export default function 管理工具学习合集() {
         columns={columns}
         dataSource={tableData}
         loading={loading}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleDetail(record)
+          }
+        }}
         pagination={{
           pageSizeOptions: ["10", "20", "30", "40", "50"],
           total: totalCount,

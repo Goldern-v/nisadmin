@@ -95,6 +95,7 @@ export default function 典型案例库() {
       title: '状态',
       dataIndex: 'statusDesc',
       align: "center",
+      width: 200,
       render: (text: string, record: any) => {
         if (text == '退回')
           return <div>
@@ -266,6 +267,11 @@ export default function 典型案例库() {
         columns={columns}
         dataSource={tableData}
         loading={loading}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleDetail(record)
+          }
+        }}
         pagination={{
           pageSizeOptions: ["10", "20", "30", "40", "50"],
           total: totalCount,
