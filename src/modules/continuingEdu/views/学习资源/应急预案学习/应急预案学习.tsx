@@ -18,11 +18,11 @@ const Option = Select.Option
 export interface Props { }
 
 export default function 应急预案学习() {
-  const { history } = appStore
+  const { history, queryObj, match } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
-    type: '1',
+    type: queryObj.activeTabIdx || '1',
     deptCode: '',
     pageSize: 20,
     pageIndex: 1,
@@ -147,6 +147,8 @@ export default function 应急预案学习() {
   }
 
   const getTableData = (newQuery: any) => {
+    history.replace(`${match.url}?activeTabIdx=${newQuery.type}`)
+
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
@@ -258,10 +260,11 @@ export default function 应急预案学习() {
           <span className="sub">科室：</span>
           <Select
             value={query.deptCode}
-            style={{ width: '180px' }}>
+            style={{ width: '180px' }}
+            onChange={(deptCode: any) => setQuery({ ...query, deptCode, pageIndex: 1 })}>
             {authStore.isDepartment && <Option value="">全部</Option>}
             {authStore.deptList.map((item: any) => (
-              <Option key={item.code} value={item.name}>{item.name}</Option>
+              <Option key={item.code} value={item.code}>{item.name}</Option>
             ))}
           </Select>
         </React.Fragment>

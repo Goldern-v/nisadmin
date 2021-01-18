@@ -30,6 +30,11 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj));
   }
 
+  // 查看护士首页信息 个人
+  public async findByEmpNoSelf(empNo: any) {
+    return this.get(`/nurseFileIndex/findByEmpNo/${empNo}/123456`)
+  }
+
   // 查看护士首页信息
   public async findByEmpNo(empNo: any) {
     return this.get(`/auditeNurseFileIndex/findByEmpNo/${empNo}`);
@@ -47,7 +52,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseInformationSelf(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     console.log(this, "thisthis");
-    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`).then(res => {
+    return this.get(`/nurseInformation/getByEmpNo//${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
     });

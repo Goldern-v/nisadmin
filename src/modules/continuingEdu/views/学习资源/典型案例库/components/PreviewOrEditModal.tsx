@@ -79,9 +79,10 @@ export default function PreviewOrEditModal(props: Props) {
     localityService
       .queryFormContent(params.id)
       .then(res => {
+        setLoading(false)
         if (res.data)
           setEditData(res.data)
-      })
+      }, () => setLoading(false))
 
   }
 

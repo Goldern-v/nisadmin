@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { isSelf } from '../utils/isSelf'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -150,8 +151,14 @@ export default observer(function BaseInfo() {
     }
   }
 
-  const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+  const getTableData = () => {
+    if (!appStore.queryObj.empNo) return
+
+    let reqMethod = isSelf() ?
+      nurseFilesService.nurseInformationSelf.bind(nurseFilesService) :
+      nurseFilesService.nurseInformation.bind(nurseFilesService)
+
+    reqMethod(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)
       setIdData(data.empNo)
@@ -195,6 +202,7 @@ export default observer(function BaseInfo() {
         }
       ])
     })
+  }
   useEffect(() => {
     getTableData()
   }, [appStore.queryObj])

@@ -74,7 +74,9 @@ export default function 循证护理记录集合修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>循证护理实践证据集合{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>
+        <span>循证护理实践证据集合{queryObj.id ? '修改' : '添加'}</span>
+      </Title>
       <Place />
       {/* <Button
         type="primary"

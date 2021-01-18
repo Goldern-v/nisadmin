@@ -19,11 +19,11 @@ const Option = Select.Option
 export interface Props { }
 
 export default function 护理专栏() {
-  const { history } = appStore
+  const { history, queryObj, match } = appStore
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
-    type: 1,
+    type: queryObj.activeTabIdx ? Number(queryObj.activeTabIdx) : 1,
     pageSize: 20,
     pageIndex: 1,
   })
@@ -134,6 +134,8 @@ export default function 护理专栏() {
   }
 
   const getTableData = (newQuery: any) => {
+    history.replace(`${match.url}?activeTabIdx=${newQuery.type}`)
+
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {

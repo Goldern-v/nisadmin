@@ -83,7 +83,9 @@ export default function 常用的学习软件介绍修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>常用的学习软件介绍{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>
+        {/* <span>常用的学习软件介绍{queryObj.id ? '修改' : '添加'}</span> */}
+      </Title>
       <Place />
       {/* <Button
         type="primary"

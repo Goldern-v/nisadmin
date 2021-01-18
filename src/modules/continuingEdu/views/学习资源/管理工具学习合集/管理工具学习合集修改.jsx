@@ -81,7 +81,9 @@ export default function 管理工具学习合集修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>管理工具学习合集{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>
+        {/* <span>管理工具学习合集{queryObj.id ? '修改' : '添加'}</span> */}
+      </Title>
       <Place />
       {/* <Button
         type="primary"

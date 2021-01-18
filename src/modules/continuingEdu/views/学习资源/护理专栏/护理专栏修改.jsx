@@ -87,7 +87,9 @@ export default function 护理专栏修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>护理专栏{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>
+        <span>护理专栏{queryObj.id ? '修改' : '添加'}</span>
+      </Title>
       <Place />
       {/* <Button
         type="primary"

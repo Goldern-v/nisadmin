@@ -29,7 +29,9 @@ export default function 护理专栏详情() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>护理专栏详情</Title>
+      <Title>
+        <span>护理专栏详情</span>
+      </Title>
       <Place />
       <Button onClick={() => history.goBack()}>返回</Button>
     </HeaderCon>
@@ -68,7 +70,7 @@ const MainCon = styled.div`
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     .text-title{
-      font-size: 16px;
+      font-size: 24px;
       text-align: center;
       font-weight: bold;
       color: #000;

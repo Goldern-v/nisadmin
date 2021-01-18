@@ -19,7 +19,7 @@ export default function 典型案例库() {
 
   const { history } = appStore
   const [query, setQuery] = useState({
-    medicalSubject: deptNameList[0],
+    medicalSubject: '',
     collectTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
     collectTimeEnd: getCurrentMonthNow()[1].format('YYYY-MM-DD'),
     keyWord: '',
@@ -221,6 +221,7 @@ export default function 典型案例库() {
         )}
         onChange={(medicalSubject: string) =>
           setQuery({ ...query, medicalSubject, pageIndex: 1 })}>
+        <Option value=""> 全部</Option>
         {deptNameList.map((name: string) =>
           <Option
             key={name}

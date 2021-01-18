@@ -87,7 +87,9 @@ export default function 医院应知应会修改() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>医院应知应会{queryObj.id ? '修改' : '添加'}</Title>
+      <Title>
+        <span>医院应知应会{queryObj.id ? '修改' : '添加'}</span>
+      </Title>
       <Place />
       {/* <Button
         type="primary"

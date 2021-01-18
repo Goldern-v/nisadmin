@@ -742,7 +742,7 @@ const MainWrapper = styled.div`
   left: 200px;
   top: 0;
   right: 0;
-  bottom: 0;
+  height: calc( 100vh - 50px );
 `;
 const LoadingCon = styled.div`
   position: fixed;

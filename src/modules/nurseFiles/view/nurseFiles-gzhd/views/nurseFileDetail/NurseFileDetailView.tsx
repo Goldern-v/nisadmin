@@ -102,21 +102,22 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 
   useEffect(() => {
-    if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
-      service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
-        appStore.history.replace(`${appStore.match.url}?empNo=${res.data.empNo}`)
-      })
-    }
-    if (appStore.match.url.indexOf('selfNurseFile') > -1 && appStore.queryObj.empNo) {
-      nurseFileDetailViewModal.nurserInfo = {}
-      nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
-        nurseFileDetailViewModal.nurserInfo = res.data
-      })
-    } else if (appStore.queryObj.empNo) {
-      nurseFileDetailViewModal.nurserInfo = {}
-      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-        nurseFileDetailViewModal.nurserInfo = res.data
-      })
+    if (appStore.queryObj.empNo) {
+
+      if (appStore.match.url.indexOf('selfNurseFile') > -1) {
+        nurseFileDetailViewModal.nurserInfo = {}
+        nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
+          nurseFileDetailViewModal.nurserInfo = res.data
+        })
+      } else {
+        nurseFileDetailViewModal.nurserInfo = {}
+        nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+          nurseFileDetailViewModal.nurserInfo = res.data
+        })
+      }
+    } else {
+      if (appStore.match.url.indexOf('selfNurseFile') > -1)
+        appStore.history.replace(`${appStore.match.url}?empNo=${authStore.user?.empNo}`)
     }
   }, [appStore.queryObj.empNo])
 

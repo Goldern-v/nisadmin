@@ -7,6 +7,7 @@ import qs from 'qs'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { isSelf } from '../utils/isSelf'
 interface RouteType {
   type: string
   component: any
@@ -29,7 +30,10 @@ export default function LeftMenu(props: Props) {
   let [listInfo, setListInfo] = useState([])
 
   const onLoad = () => {
-    nurseFilesService.findByEmpNo(appStore.queryObj.empNo).then((res) => {
+    if (!appStore.queryObj.empNo) return
+
+    let fun = isSelf() ? nurseFilesService.findByEmpNoSelf : nurseFilesService.findByEmpNo
+    fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       setListInfo(res.data)
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
         return total + item.statusColorNum
@@ -43,7 +47,7 @@ export default function LeftMenu(props: Props) {
     return () => {
       emitter.removeAllListeners('refreshNurseFileDeatilLeftMenu')
     }
-  }, [])
+  }, [appStore.queryObj])
   return (
     <Wrapper>
       {props.routeList.map((item: RouteType) => {
