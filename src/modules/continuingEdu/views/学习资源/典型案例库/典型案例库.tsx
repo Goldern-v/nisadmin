@@ -153,6 +153,7 @@ export default function 典型案例库() {
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)

@@ -36,6 +36,7 @@ export default function 典型案例库审核详情() {
       localityService.getFlowTaskHisByCetpId(queryObj.formId)
     ])
       .then(resArr => {
+        setLoading(false)
         setFormData(resArr[0].data)
         setAuditInfo(resArr[1].data.flowTaskHisList || [])
       }, () => setLoading(false))

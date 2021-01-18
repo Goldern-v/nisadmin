@@ -120,6 +120,7 @@ export default function 典型案例审核() {
     delete reqParams.type
 
     reqMethod(reqParams).then(res => {
+      setLoading(false)
       if (res.data) {
         setTotalCount(res.data.totalCount)
         setTableData(res.data.list)

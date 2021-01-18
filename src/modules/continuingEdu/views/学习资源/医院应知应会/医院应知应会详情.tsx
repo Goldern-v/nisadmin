@@ -16,8 +16,9 @@ export default function 医院应知应会详情() {
     localityService
       .getDetailContent(queryObj.id)
       .then(res => {
+        setLoading(false)
         if (res.data) setContent(res.data.detailContent || '')
-      })
+      }, () => setLoading(false))
 
   }
 

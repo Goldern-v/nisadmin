@@ -141,6 +141,7 @@ export default function 常用的学习软件介绍() {
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)

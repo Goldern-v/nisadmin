@@ -190,6 +190,7 @@ export default function 管理工具学习合集() {
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)

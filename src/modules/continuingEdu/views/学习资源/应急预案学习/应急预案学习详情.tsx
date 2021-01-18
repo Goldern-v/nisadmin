@@ -16,6 +16,7 @@ export default function 应急预案学习详情() {
     localityService
       .getDetailContent(queryObj.id)
       .then(res => {
+        setLoading(false)
         if (res.data) setContent(res.data.detailContent || '')
       }, () => setLoading(false))
 

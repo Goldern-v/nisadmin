@@ -131,6 +131,7 @@ export default function 循证护理实践证据集合() {
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)

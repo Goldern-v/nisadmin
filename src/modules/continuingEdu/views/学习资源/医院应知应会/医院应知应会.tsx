@@ -137,6 +137,7 @@ export default function 医院应知应会() {
     setLoading(true)
     localityService.queryPageList(newQuery)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           setTotalCount(res.data.totalCount)
           setTableData(res.data.list)

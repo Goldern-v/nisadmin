@@ -16,6 +16,7 @@ export default function 管理工具学习合集详情() {
     localityService
       .getDetailContent(queryObj.id)
       .then(res => {
+        setLoading(false)
         if (res.data) setContent(res.data.detailContent || '')
       }, () => setLoading(false))
 

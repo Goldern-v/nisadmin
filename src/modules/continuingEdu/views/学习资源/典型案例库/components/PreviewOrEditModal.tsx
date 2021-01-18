@@ -29,6 +29,7 @@ export default function PreviewOrEditModal(props: Props) {
     localityService
       .addOrUpdate(saveParams)
       .then(res => {
+        setLoading(false)
         message.success('保存成功', 1, () => onOk())
       }, () => setLoading(false))
 
@@ -42,6 +43,7 @@ export default function PreviewOrEditModal(props: Props) {
     localityService
       .addOrUpdate(submitParams)
       .then(res => {
+        setLoading(false)
         message.success('提交成功', 1, () => onOk())
       }, () => setLoading(false))
 
@@ -52,6 +54,7 @@ export default function PreviewOrEditModal(props: Props) {
 
     localityService.queryFieldRemarks()
       .then(res => {
+        setLoading(false)
         if (res.data) {
           let keyArr = Object.keys(res.data)
           if (keyArr.length >= 0) {
