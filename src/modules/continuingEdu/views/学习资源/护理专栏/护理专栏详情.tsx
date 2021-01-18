@@ -93,7 +93,7 @@ const HeaderCon = styled.div`
   }
 `
 const Title = styled.div`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 `

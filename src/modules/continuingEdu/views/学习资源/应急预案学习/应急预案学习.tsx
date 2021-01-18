@@ -23,7 +23,7 @@ export default function 应急预案学习() {
     keyWord: '',
     status: '',
     type: queryObj.activeTabIdx || '1',
-    deptCode: '',
+    deptCode: queryObj.deptCode,
     pageSize: 20,
     pageIndex: 1,
   })
@@ -147,7 +147,7 @@ export default function 应急预案学习() {
   }
 
   const getTableData = (newQuery: any) => {
-    history.replace(`${match.url}?activeTabIdx=${newQuery.type}`)
+    history.replace(`${match.url}?activeTabIdx=${newQuery.type}&deptCode=${newQuery.deptCode}`)
 
     setLoading(true)
     localityService.queryPageList(newQuery)
@@ -223,7 +223,7 @@ export default function 应急预案学习() {
 
   const handleTypeChange = (key: any) => {
     let newQuery = { ...query, pageIndex: 1, type: key }
-    if (key == '1') {
+    if (key == '2') {
       if (authStore.isDepartment)
         newQuery.deptCode = ''
       else
