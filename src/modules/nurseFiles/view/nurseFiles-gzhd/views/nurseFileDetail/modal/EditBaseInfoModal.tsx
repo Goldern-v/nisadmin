@@ -23,7 +23,8 @@ export interface Props extends ModalComponentProps {
   data?: any
   getTableData?: () => {}
 }
-const uploadCard = () => Promise.resolve('123')
+// const uploadCard = () => Promise.resolve('123')
+
 // const rules: Rules = {
 //   empName: (val) => !!val || '请填写姓名',
 //   empNo: (val) => !!val || '请填写工号',
@@ -45,7 +46,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const uploadCard = async (file: any) => {
     let obj: any = {
@@ -64,7 +65,7 @@ export default function EditWorkHistoryModal(props: Props) {
     }
   }
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = {
       id: id,
       auditedStatus: ''
@@ -80,8 +81,12 @@ export default function EditWorkHistoryModal(props: Props) {
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
     value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
+    //goHospitalWorkDate
+    value.goHospitalWorkDate && (value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD'))
+    //zyzsEffectiveUpDate
+    value.zyzsEffectiveUpDate && (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
-    nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.saveOrUpdate({ ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -123,8 +128,17 @@ export default function EditWorkHistoryModal(props: Props) {
       width={1000}
       visible={visible}
       onCancel={onCancel}
-      onOk={onSave}
-      okText='保存'
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
       forceRender
     >
       <Form ref={refForm} labelWidth={140} onChange={onFieldChange} rules={{}}>
@@ -189,8 +203,9 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`技术职称`} name='newTitle'>
+            <Form.Field label={`职称`} name='newTitle'>
               <Select>
+                <Option value='见习期护士'>见习期护士</Option>
                 <Option value='护士'>护士</Option>
                 <Option value='护师'>护师</Option>
                 <Option value='主管护师'>主管护师</Option>
@@ -222,6 +237,26 @@ export default function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`家庭住址`} name='address'>
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`毕业院校`} name='graduateSchool'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`来院作时间`} name='goHospitalWorkDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`职业证书截止日期`} name='zyzsEffectiveUpDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`资格名称`} name='qualificationName'>
+              <DatePicker />
             </Form.Field>
           </Col>
         </Row>

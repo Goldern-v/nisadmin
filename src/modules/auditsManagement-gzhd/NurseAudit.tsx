@@ -3,13 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
-import TopCon from './components/TopCon'
 import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import AuditsTableDHSZ from './components/AuditsTableDHSZ'
 import BaseTabs from 'src/components/BaseTabs'
-
 const TABS_LIST_NURSE = [
   {
     title: '待护士长审核',
@@ -55,7 +53,6 @@ const tabShow = () => {
 export default observer(function NurseAudit() {
   return (
     <Wrapper>
-      <TopCon />
       <MainCon>
         <BaseTabs config={tabShow()} />
       </MainCon>
@@ -71,7 +68,7 @@ const Wrapper = styled.div`
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 137px);
   align-items: stretch;
   display: flex;
   margin: 20px;

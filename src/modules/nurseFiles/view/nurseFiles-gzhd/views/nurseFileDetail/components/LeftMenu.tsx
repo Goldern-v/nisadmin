@@ -7,7 +7,6 @@ import qs from 'qs'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { isSelf } from '../utils/isSelf'
 interface RouteType {
   type: string
   component: any
@@ -32,7 +31,7 @@ export default function LeftMenu(props: Props) {
   const onLoad = () => {
     if (!appStore.queryObj.empNo) return
 
-    let fun = isSelf() ? nurseFilesService.findByEmpNoSelf : nurseFilesService.findByEmpNo
+    let fun = appStore.isSelf ? nurseFilesService.findByEmpNoSelf : nurseFilesService.findByEmpNo
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       setListInfo(res.data)
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
@@ -59,7 +58,7 @@ export default function LeftMenu(props: Props) {
             className={isActive}
             key={item.name}
             onClick={() => {
-              history.push('/nurseFileDetail/' + item.type + `?${appStore.query}`)
+              history.push(`/${appStore.isSelf ? 'selfNurseFile' : 'nurseFileDetail'}/` + item.type + `?${appStore.query}`)
               // emitter.emit('护士档案左侧信息', item.name)
               // console.log('点击了')
             }}

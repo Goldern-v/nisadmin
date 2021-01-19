@@ -12,7 +12,6 @@ import { globalModal } from 'src/global/globalModal'
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { isSelf } from '../utils/isSelf'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -21,49 +20,80 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
 
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
-    if (info.statusColor === '1') {
+    let auditBtnText = info.statusColor === '1' ? '审核' : '查看'
+    if (appStore.isSelf) auditBtnText = '查看'
+
+    const auditBtn = {
+      label: auditBtnText,
+      onClick: () => {
+        globalModal.auditModal.show({
+          empNo: idData,
+          id: id,
+          type: 'nurseInformation',
+          getTableData: getTableData,
+          title: '审核基础信息',
+          tableFormat: [
+            {
+              姓名: `empName`,
+              工号: `empNo`
+            },
+            {
+              性别: `sex`,
+              民族: `nation`
+            },
+            {
+              出生年月: `birthday`,
+              年龄: `age`
+            },
+            {
+              籍贯: `nativePlace`,
+              职务: `job`
+            },
+            {
+              参加工作时间: `goWorkTime`,
+              最高学历: `highestEducation`
+            },
+            {
+              技术职称: `newTitle`,
+              护士执业证书编号: `zyzsNumber`
+            },
+            {
+              身份证号: `cardNumber`,
+              社会团体职务: `socialGroup`
+            },
+            {
+              手机号: `phone`,
+              家庭住址: `address`
+            },
+            {
+              毕业院校: 'graduateSchool',
+              来院工作时间: 'goHospitalWorkDate'
+            },
+            {
+              职业证书截止日期: 'zyzsEffectiveUpDate',
+              资格名称: 'qualificationName'
+            }
+          ],
+          fileData: [
+            {
+              个人头像: info.nearImageUrl
+            },
+            ...(info.zyzsUrl
+              ? info.zyzsUrl.split(',').map((item: any, index: number) => {
+                return {
+                  ['执业证书' + (index + 1)]: item
+                }
+              })
+              : [])
+          ],
+          allData: info
+        })
+      }
+    }
+
+    if (appStore.isSelf) {
       return [
         {
           label: '修改',
@@ -74,79 +104,11 @@ export default observer(function BaseInfo() {
             })
           }
         },
-        {
-          label: '审核',
-          onClick: () => {
-            globalModal.auditModal.show({
-              empNo: idData,
-              id: id,
-              type: 'nurseInformation',
-              getTableData: getTableData,
-              // empNo: appStore.queryObj.empNo,
-              title: '审核基础信息',
-              tableFormat: [
-                //
-                {
-                  姓名: `empName`,
-                  工号: `empNo`
-                },
-                {
-                  性别: `sex`,
-                  民族: `nation`
-                },
-                {
-                  出生年月: `birthday`,
-                  年龄: `age`
-                },
-                {
-                  籍贯: `nativePlace`,
-                  职务: `job`
-                },
-                {
-                  参加工作时间: `goWorkTime`,
-                  最高学历: `highestEducation`
-                },
-                {
-                  技术职称: `newTitle`,
-                  护士执业证书编号: `zyzsNumber`
-                },
-                {
-                  身份证号: `cardNumber`,
-                  社会团体职务: `socialGroup`
-                },
-                {
-                  手机号: `phone`,
-                  家庭住址: `address`
-                }
-              ],
-              fileData: [
-                {
-                  个人头像: info.nearImageUrl
-                },
-                ...(info.zyzsUrl
-                  ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                    return {
-                      ['执业证书' + (index + 1)]: item
-                    }
-                  })
-                  : [])
-              ],
-              allData: info
-            })
-          }
-        }
+        auditBtn
       ]
     } else {
       return [
-        // {
-        //   label: '修改',
-        //   onClick: () => {
-        //     editBaseInfoModal.show({
-        //       id: id,
-        //       data: info
-        //     })
-        //   }
-        // }
+        auditBtn
       ]
     }
   }
@@ -154,7 +116,7 @@ export default observer(function BaseInfo() {
   const getTableData = () => {
     if (!appStore.queryObj.empNo) return
 
-    let reqMethod = isSelf() ?
+    let reqMethod = appStore.isSelf ?
       nurseFilesService.nurseInformationSelf.bind(nurseFilesService) :
       nurseFilesService.nurseInformation.bind(nurseFilesService)
 
@@ -194,7 +156,7 @@ export default observer(function BaseInfo() {
         },
         {
           毕业院校: data.graduateSchool,
-          来院作时间: data.goHospitalWorkDate
+          来院工作时间: data.goHospitalWorkDate
         },
         {
           职业证书截止日期: data.zyzsEffectiveUpDate,

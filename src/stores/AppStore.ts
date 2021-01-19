@@ -97,6 +97,12 @@ export default class AppStore {
     }
   }
 
+  @computed
+  public get isSelf() {
+    /* 护理档案详情判断是否本人 */
+    return this.match.path == '/selfNurseFile/:type'
+  }
+
   @action
   public setExpand = (isExpand: "1" | "0") => {
     this.isExpand = isExpand;

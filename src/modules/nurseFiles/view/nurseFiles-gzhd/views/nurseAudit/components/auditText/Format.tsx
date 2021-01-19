@@ -43,6 +43,14 @@ export default function Format(row: any, getTableData: any) {
           {
             手机号: `phone`,
             家庭住址: `address`
+          },
+          {
+            毕业院校: 'graduateSchool',
+            来院工作时间: 'goHospitalWorkDate'
+          },
+          {
+            职业证书截止日期: 'zyzsEffectiveUpDate',
+            资格名称: 'qualificationName'
           }
         ],
         fileData: [

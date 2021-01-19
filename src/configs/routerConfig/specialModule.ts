@@ -10,10 +10,12 @@ import { appStore } from "src/stores";
 // import NurseFilesListView_wh from 'src/modules/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 
 import AuditsManagementView_wh from "src/modules/auditsManagement-wh/AuditsManagementView";
+import AuditsManagementView_gzhd from "src/modules/auditsManagement-gzhd/AuditsManagementView";
 import HomeView from "src/modules/home/HomeView";
 import HomeView_wh from "src/modules/home-wh/HomeView";
 import AuditsManagementView from "src/modules/auditsManagement/AuditsManagementView";
 import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/NurseAudit";
+import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
@@ -181,7 +183,7 @@ if (
 } else if (appStore.HOSPITAL_ID == 'gzhd') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_gzhd, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_gzhd,
@@ -192,7 +194,7 @@ if (
       NurseFileDetailView_gzhd,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    setLayout("/auditsManagement", AuditsManagementView_gzhd, layouts.MainLayout),
     ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

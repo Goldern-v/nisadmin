@@ -1,7 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
-import { isSelf } from "../views/nurseFileDetail/utils/isSelf";
+
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -52,7 +52,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseInformationSelf(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     console.log(this, "thisthis");
-    return this.get(`/nurseInformation/getByEmpNo//${empNo}`).then(res => {
+    return this.get(`/nurseInformation/getByEmpNo/${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
     });
@@ -319,7 +319,7 @@ export default class NurseFilesService extends BaseApiService {
   /** 统一列表 */
   public commonfindByEmpNoSubmit(type: string, empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    if (isSelf()) {
+    if (appStore.isSelf) {
       return this.get(`/${type}/findByEmpNo/${empNo}`).then(res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;

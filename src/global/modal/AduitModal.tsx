@@ -83,10 +83,10 @@ export default function AduitModal(props: Props) {
             },
             ...(data.zyzsUrl
               ? data.zyzsUrl.split(',').map((item: any, index: number) => {
-                  return {
-                    ['执业证书' + (index + 1)]: item
-                  }
-                })
+                return {
+                  ['执业证书' + (index + 1)]: item
+                }
+              })
               : [])
           ])
           // }
@@ -116,10 +116,10 @@ export default function AduitModal(props: Props) {
             setFileData(
               data.urlImageOne
                 ? data.urlImageOne.split(',').map((item: any, index: number) => {
-                    return {
-                      ['附件' + (index + 1)]: item
-                    }
-                  })
+                  return {
+                    ['附件' + (index + 1)]: item
+                  }
+                })
                 : []
             )
           }
@@ -194,7 +194,7 @@ export default function AduitModal(props: Props) {
           <TimeLineCon>
             <div className='label'>审核过程：</div>
             <LinCon>
-              {auditeListDtos.map((item: any, index: any, arr: any) => (
+              {(auditeListDtos || []).map((item: any, index: any, arr: any) => (
                 <TimeLineItem data={item} index={index} key={index} arr={arr} />
               ))}
             </LinCon>

@@ -104,7 +104,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   useEffect(() => {
     if (appStore.queryObj.empNo) {
 
-      if (appStore.match.url.indexOf('selfNurseFile') > -1) {
+      if (appStore.isSelf) {
         nurseFileDetailViewModal.nurserInfo = {}
         nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
           nurseFileDetailViewModal.nurserInfo = res.data
@@ -116,7 +116,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
         })
       }
     } else {
-      if (appStore.match.url.indexOf('selfNurseFile') > -1)
+      if (appStore.isSelf)
         appStore.history.replace(`${appStore.match.url}?empNo=${authStore.user?.empNo}`)
     }
   }, [appStore.queryObj.empNo])
