@@ -266,7 +266,7 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "住院患者身体约束日期",
-          value: "--"
+          value: nursingDataModal.dataList.restraintDays
         }
       ]
     },
@@ -275,43 +275,43 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "气管导管非计划拔管例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.ccSize
         },
         {
           name: "气管导管留置总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.ccDays
         },
         {
           name: "CVC非计划拔管例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.cvcSize
         },
         {
           name: " CVC留置总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.cvcDays
         },
         {
           name: "PICC非计划拔管例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.piccSize
         },
         {
           name: "PICC留置总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.piccDays
         },
         {
           name: "导尿管非计划拔管发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.catheterUrinarySize
         },
         {
           name: "导尿管留置总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.catheterUrinaryDays
         },
         {
           name: "胃肠管（经口鼻）非计划拔管发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.ventilatorSize
         },
         {
           name: "胃肠管（经口鼻）留置总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterCount.ventilatorDays
         }
       ]
     },
@@ -320,23 +320,23 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "PICC相关血流感染发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterInfectionCount.piccInfectionSize
         },
         {
           name: "CVC相关血流感染发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterInfectionCount.cvcInfectionSize
         },
         {
           name: "VAP发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterInfectionCount.ventilatorPneumoniaSize
         },
         {
           name: " 有创机械通气总日数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterInfectionCount.ccInfectionSize
         },
         {
           name: "导尿管相关尿路感染（CAUTI)发生例次数",
-          value: "--"
+          value: nursingDataModal.dataList.catheterInfectionCount.cauti
         }
       ]
     },
@@ -345,31 +345,31 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "住院患者跌倒发生总例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.field_19
         },
         {
           name: "住院患者跌倒伤害总例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSize
         },
         {
           name: "住院患者跌倒无伤害（0级）例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSizeL0
         },
         {
           name: " 住院患者跌倒轻度伤害（1级）例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSizeL1
         },
         {
           name: "住院患者跌倒中度伤害（2级）例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSizeL2
         },
         {
           name: " 住院患者跌倒重度伤害（3级）例次数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSizeL3
         },
         {
           name: "住院患者跌倒死亡例数",
-          value: "--"
+          value: nursingDataModal.dataList.fallCount.patientFallHurtSizeL4
         }
       ]
     },
@@ -378,7 +378,7 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "2期及以上病区压力性损伤(包括粘膜压力性损伤)新发病例数",
-          value: "--"
+          value: nursingDataModal.dataList.pressureSoreCount.pressureMoreThanPhase2
         }
       ]
     }

@@ -7,7 +7,7 @@ class NursingDataModal {
   @observable public deptList = []; //所有科室
   @observable public isBigScreenOk = ""; //是否为大屏
   @observable public selectedDate: any = crrentMonth(); //日期
-  @observable public dataList = {
+  @observable public dataList: any = {
     nurseCount: {
       bedSize: "",
       totalNurseInBegin: "",
@@ -69,7 +69,40 @@ class NursingDataModal {
       moreThanTwentyYearInEnd: 0,
       totalNurseInEnd: 0
     },
-    dimission: 0
+    dimission: 0,
+    restraintDays: 0,
+    catheterCount: {
+      catheterUrinaryDays: 0,
+      catheterUrinarySize: 0,
+      ccDays: 0,
+      ccSize: 0,
+      piccDays: 0,
+      piccSize: 0,
+      cvcDays: 0,
+      cvcSize: 0,
+      ventilatorDays: 0,
+      ventilatorSize: 0
+    },
+    catheterInfectionCount: {
+      cauti: 0,
+      ccInfectionSize: 0,
+      piccInfectionSize: 0,
+      cvcInfectionSize: 0,
+      ventilatorPneumoniaSize: 0
+    },
+    fallCount: {
+      field_19: 0,
+      patientFallHurtSize: 0,
+      patientFallHurtSizeL0: 0,
+      patientFallHurtSizeL1: 0,
+      patientFallHurtSizeL2: 0,
+      patientFallHurtSizeL3: 0,
+      patientFallHurtSizeL4: 0
+    },
+    pressureSoreCount: {
+      patientPressureSoreSize: 0,
+      pressureMoreThanPhase2: 0
+    }
   }; //数据内容
   @observable public dataLoading = false; //内容loading
 
@@ -83,7 +116,6 @@ class NursingDataModal {
   }
 
   async initData() {
-    console.log(this.isBigScreenOk, "this.isBigScreenOk");
     await Promise.all([
       //类型
       nursingDataApi
