@@ -169,6 +169,16 @@ export default class TrainingResultService extends BaseApiService {
     };
     return this.post(`/studyAndTrain/examManage/reviewMyExamPaper`, obj);
   }
+
+  // 厚街补考--获取参与人
+  public async getParticipants(obj: any) {
+    return this.post(`/studyAndTrain/teachingPlanManage/getParticipants`, obj);
+  }
+
+  // 厚街补考--添加保存补考
+  public async addResitExam(obj: any) {
+    return this.post(`/studyAndTrain/examManage/addResitExam`, obj);
+  }
 }
 
 export const trainingResultService = new TrainingResultService();

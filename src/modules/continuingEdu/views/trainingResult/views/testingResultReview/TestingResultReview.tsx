@@ -25,6 +25,8 @@ import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from './../../api/TrainingResultService'
 import HjExamResultAnalyse from '../hjExamResultAnalyse/HjExamResultAnalyse'
 import { stepViewModal } from '../../../../modal/stepComponent/StepViewModal'
+import AddExamPaperModal from '../../modal/AddExamPaperModal'
+
 export interface Props { }
 
 //查看考试结果
@@ -43,6 +45,8 @@ export default observer(function TestingResultReview() {
 
   //发布功能的loading状态
   const [publishLoading, setPublishLoading] = useState(false)
+  // 添加补考弹窗控制
+  const [editVisible, setEditVisible] = useState(false)
 
   const tableDateSpecial: any = appStore.HOSPITAL_ID == 'hj' && !appStore.queryObj.editable ? [
     {
@@ -396,6 +400,10 @@ export default observer(function TestingResultReview() {
     )
   }
 
+  const handleEditOk = () => {
+    setEditVisible(false);
+  };
+
   return <Wrapper>
     <TopPannel>
       <NavCon>
@@ -452,12 +460,18 @@ export default observer(function TestingResultReview() {
           })}
           <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         </React.Fragment>}
+        {appStore.HOSPITAL_ID == 'hj' && <Button type='primary' onClick={() => setEditVisible(true)}>添加补考</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
     <div style={{ padding: "10px", boxSizing: "border-box" }}>{getPage()}</div>
     <scorceConfirm.Component />
     <answerSheet.Component />
+    <AddExamPaperModal
+      visible={editVisible}
+      onCancel={() => setEditVisible(false)}
+      onOk={handleEditOk}
+    />
   </Wrapper>
 })
 
