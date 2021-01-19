@@ -51,6 +51,14 @@ export default function TraineeFilesEditModal(props: Props) {
     emergencyContactPhone: val => !!val || "紧急联系人电话不能为空"
   };
 
+  const nysRules: Rules = {
+    name: val => !!val || "姓名不能为空",
+    sex: val => !!val || "性别不能为空",
+    schoolName: val => !!val || "院校不能为空",
+    major: val => !!val || "专业不能为空",
+  };
+
+
   // 初始化科室
   const getDeptList = () => {
     service.commonApiService.getNursingUnitAll().then(res => {
@@ -213,7 +221,7 @@ export default function TraineeFilesEditModal(props: Props) {
       title={params.identifier ? "修改" : "添加"}
     >
       <Wrapper>
-        <Form ref={formRef} rules={rules}>
+        <Form ref={formRef} rules={appStore.HOSPITAL_ID == 'nys' ? nysRules : rules}>
           {params.identifier && (
             <Row>
               <Col span={6} className="label">
@@ -271,7 +279,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 学历:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 学历:
             </Col>
             <Col span={16}>
               <Form.Field name="education">
@@ -302,7 +310,7 @@ export default function TraineeFilesEditModal(props: Props) {
           }
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 身份证号码:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 身份证号码:
             </Col>
             <Col span={16}>
               <Form.Field name="idCardNo">
@@ -312,7 +320,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 联系电话:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 联系电话:
             </Col>
             <Col span={16}>
               <Form.Field name="phone">
@@ -322,7 +330,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 是否住宿:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 是否住宿:
             </Col>
             <Col span={16}>
               <Form.Field name="isResident">
@@ -345,7 +353,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className={appStore.HOSPITAL_ID == 'gzhd' ? 'displayNone' : "mustWrite"}>*</span> 实习时间:
+              <span className={appStore.HOSPITAL_ID == 'gzhd' || appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 实习时间:
             </Col>
             <Col span={16}>
               <Form.Field name="studyTime">
@@ -355,7 +363,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className={appStore.HOSPITAL_ID == 'gzhd' ? 'displayNone' : "mustWrite"}>*</span> 实习科室:
+              <span className={appStore.HOSPITAL_ID == 'gzhd' || appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 实习科室:
             </Col>
             <Col span={16}>
               <Form.Field name="studyDeptCode">
@@ -382,7 +390,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 是否组长:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 是否组长:
             </Col>
             <Col span={16}>
               <Form.Field name="isGroupLeader">
@@ -395,7 +403,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 家庭住址:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 家庭住址:
             </Col>
             <Col span={16}>
               <Form.Field name="address">
@@ -405,7 +413,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 紧急联系人:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 紧急联系人:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPerson">
@@ -415,7 +423,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className="mustWrite">*</span> 紧急联系人电话:
+              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 紧急联系人电话:
             </Col>
             <Col span={16}>
               <Form.Field name="emergencyContactPhone">

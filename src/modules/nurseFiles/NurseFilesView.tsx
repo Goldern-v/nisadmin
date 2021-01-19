@@ -74,7 +74,14 @@ export default observer(function NurseFilesView(props: Props) {
       path: "/nurseFile/retiredRetirees",
       component: RetiredRetireesNys,
       icon: <TXHSCX />
+    },
+    {
+      title: "护理实习生花名册",
+      path: "/nurseFile/traineeFiles",
+      component: TraineeFiles,
+      icon: <TXHSCX />
     }
+
     // {
     //   title: "查询统计",
     //   icon: <CXTJ />,
