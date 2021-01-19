@@ -37,7 +37,8 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisAdapter({
       hj: () => AddShiftModal,
-      wh: () => AddShiftModal_wh
+      wh: () => AddShiftModal_wh,
+      nys: () => AddShiftModal_wh
     })
   );
 

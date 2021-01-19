@@ -38,21 +38,23 @@ export default observer(function ArrangeSheet(props: Props) {
   /** 修改工时 or 加减班 */
 
   let editEffectiveTimeModal = createModal(
-    appStore.HOSPITAL_ID == "wh"
-      ? EditVacationCountModal_wh
-      : EditEffectiveTimeModal
+    appStore.hisAdapter({
+      hj: () => EditEffectiveTimeModal,
+      wh: () => EditVacationCountModal_wh,
+      nys: () => EditVacationCountModal_wh
+    })
   );
   let editVacationCountModal = createModal(EditVacationCountModal);
 
   const nysGroupName = [
     appStore.HOSPITAL_ID == "nys"
       ? {
-          title: "类别标题",
-          dataIndex: "groupName",
-          width: 70,
-          fixed: "left",
-          align: "center"
-        }
+        title: "类别标题",
+        dataIndex: "groupName",
+        width: 70,
+        fixed: "left",
+        align: "center"
+      }
       : {}
   ];
 
@@ -284,15 +286,15 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) {}
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (
           (document as any).querySelector("#arrangeSheet .ant-table-body") &&
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .scrollWidth ==
-            (document as any).querySelector("#arrangeSheet .ant-table-body")
-              .clientWidth
+          (document as any).querySelector("#arrangeSheet .ant-table-body")
+            .clientWidth
         ) {
           /** noscorll */
           (document as any).querySelector(
@@ -300,7 +302,7 @@ export default observer(function ArrangeSheet(props: Props) {
           ).style.width =
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({ nys: () => 5, hj: () => 3, wh: () => 6 })) *
-              70 +
+            70 +
             250 +
             10 +
             "px";
@@ -313,13 +315,13 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) {}
+    } catch (error) { }
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) {}
+    } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   return (
@@ -407,7 +409,7 @@ export default observer(function ArrangeSheet(props: Props) {
               });
               sheetViewModal.sheetTableData = list;
               sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-            } catch (error) {}
+            } catch (error) { }
           }}
         />
       )}
@@ -462,7 +464,7 @@ export default observer(function ArrangeSheet(props: Props) {
               });
               sheetViewModal.sheetTableData = list;
               sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-            } catch (error) {}
+            } catch (error) { }
           }}
         />
       )}
@@ -600,7 +602,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-        getWeekString(date).indexOf("日") > -1
+          getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }

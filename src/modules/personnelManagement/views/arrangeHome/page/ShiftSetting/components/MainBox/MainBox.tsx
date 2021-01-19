@@ -55,7 +55,8 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisAdapter({
       hj: () => AddShiftModal,
-      wh: () => AddShiftModal_wh
+      wh: () => AddShiftModal_wh,
+      nys: () => AddShiftModal_wh
     })
   );
   const columns = [
