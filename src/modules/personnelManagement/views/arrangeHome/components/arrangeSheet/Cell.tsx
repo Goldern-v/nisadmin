@@ -305,40 +305,40 @@ export default observer(function Cell(props: Props) {
             copyRowClick(list, copyRow, true);
           }
         },
-        {
-          icon: require("../../images/复制行.png"),
-          label: "复制整周",
-          type: "text",
-          onClick() {
-            // sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
-            let copyWeekNum = moment(
-              sheetViewModal.selectedCell.workDate
-            ).week();
+        // {
+        //   icon: require("../../images/复制行.png"),
+        //   label: "复制整周",
+        //   type: "text",
+        //   onClick() {
+        //     // sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
+        //     let copyWeekNum = moment(
+        //       sheetViewModal.selectedCell.workDate
+        //     ).week();
 
-            let copyWeekData = sheetViewModal
-              .getAllCell(true)
-              .filter(item => moment(item.workDate).week() == copyWeekNum);
+        //     let copyWeekData = sheetViewModal
+        //       .getAllCell(true)
+        //       .filter(item => moment(item.workDate).week() == copyWeekNum);
 
-            sheetViewModal.copyWeekData = cloneJson(copyWeekData);
+        //     sheetViewModal.copyWeekData = cloneJson(copyWeekData);
 
-            message.success("复制周成功");
-          }
-        },
-        {
-          icon: require("../../images/粘贴行.png"),
-          label: "粘贴整周",
-          type: "text",
-          onClick() {
-            // let list = sheetViewModal.getSelectWeekList(true);
-            // let copyWeekRow = sheetViewModal.copyWeekRow;
-            // copyRowClick(list, copyWeekRow, false);
-            let currentWeekNum = moment(
-              sheetViewModal.selectedCell.workDate
-            ).week();
+        //     message.success("复制周成功");
+        //   }
+        // },
+        // {
+        //   icon: require("../../images/粘贴行.png"),
+        //   label: "粘贴整周",
+        //   type: "text",
+        //   onClick() {
+        //     // let list = sheetViewModal.getSelectWeekList(true);
+        //     // let copyWeekRow = sheetViewModal.copyWeekRow;
+        //     // copyRowClick(list, copyWeekRow, false);
+        //     let currentWeekNum = moment(
+        //       sheetViewModal.selectedCell.workDate
+        //     ).week();
 
-            sheetViewModal.copyWeek(currentWeekNum);
-          }
-        },
+        //     sheetViewModal.copyWeek(currentWeekNum);
+        //   }
+        // },
         {
           type: "line"
         },
