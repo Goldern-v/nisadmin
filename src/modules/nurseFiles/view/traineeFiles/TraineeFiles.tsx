@@ -114,7 +114,7 @@ export default observer(function TraineeFiles(props: Props) {
       width: 210,
       align: "center",
       render(text: string, record: any) {
-        return `${record.internshipBegin} ~ ${record.internshipEnd}`;
+        return record.internshipBegin && record.internshipEnd ? `${record.internshipBegin} ~ ${record.internshipEnd}` : '';
       }
     },
     {

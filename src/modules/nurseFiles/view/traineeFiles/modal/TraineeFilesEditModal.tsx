@@ -142,7 +142,7 @@ export default function TraineeFilesEditModal(props: Props) {
             emergencyContactPhone,
             remark,
             studyDeptCode,
-            studyTime: [moment(internshipBegin), moment(internshipEnd)]
+            studyTime: internshipBegin && internshipEnd ? [moment(internshipBegin), moment(internshipEnd)] : []
           });
         } else {
           current.clear();
