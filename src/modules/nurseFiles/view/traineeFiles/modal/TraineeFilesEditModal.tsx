@@ -43,7 +43,7 @@ export default function TraineeFilesEditModal(props: Props) {
     phone: val => !!val || "联系电话不能为空",
     isResident: val => !!val || "是否住宿不能为空",
     studyTime: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习时间不能为空"),
-    studyDeptCode: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习科室不能为空"),
+    studyDeptCode: val => !!val || "实习科室不能为空",
     isCPCMember: val => appStore.HOSPITAL_ID == 'gzhd' && (!!val || "党员不能为空"),
     isGroupLeader: val => !!val || "是否组长不能为空",
     address: val => !!val || "家庭住址不能为空",
@@ -56,6 +56,7 @@ export default function TraineeFilesEditModal(props: Props) {
     sex: val => !!val || "性别不能为空",
     schoolName: val => !!val || "院校不能为空",
     major: val => !!val || "专业不能为空",
+    studyDeptCode: val => !!val || "实习科室不能为空",
   };
 
 
@@ -363,7 +364,7 @@ export default function TraineeFilesEditModal(props: Props) {
           </Row>
           <Row>
             <Col span={6} className="label">
-              <span className={appStore.HOSPITAL_ID == 'gzhd' || appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 实习科室:
+              <span className="mustWrite">*</span> 实习科室:
             </Col>
             <Col span={16}>
               <Form.Field name="studyDeptCode">

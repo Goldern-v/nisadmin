@@ -106,7 +106,14 @@ export default observer(function Header(props: Props) {
             }
           ],
           wh: () => [],
-          nys: () => []
+          nys: () => [
+            {
+              step: "按实习生选择",
+              label: "按实习生选择",
+              data: [],
+              dataLabel: "year"
+            }
+          ]
         })
       ];
     }
@@ -131,31 +138,31 @@ export default observer(function Header(props: Props) {
           }}
         />
         {appStore.HOSPITAL_ID === "hj" &&
-        (stepViewModal.getParentsName == "在线学习" ||
-          stepViewModal.getParentsName == "集中培训") ? (
-          ""
-        ) : (
-          <span>
-            <span>类型：</span>
-            <Select
-              style={{ width: 120 }}
-              value={mainPageModal.selectedType}
-              onChange={(val: string) => {
-                mainPageModal.selectedType = val;
-                mainPageModal.pageIndex = 1;
-                mainPageModal.onload();
-              }}
-            >
-              <Select.Option value="">全部</Select.Option>
-              {mainPageModal.selectTypeList.map((item: any, index: number) => (
-                <Select.Option value={item.id} key={index}>
-                  {item.name}
-                </Select.Option>
-              ))}
-              <Select.Option value="-1">其他</Select.Option>
-            </Select>
-          </span>
-        )}
+          (stepViewModal.getParentsName == "在线学习" ||
+            stepViewModal.getParentsName == "集中培训") ? (
+            ""
+          ) : (
+            <span>
+              <span>类型：</span>
+              <Select
+                style={{ width: 120 }}
+                value={mainPageModal.selectedType}
+                onChange={(val: string) => {
+                  mainPageModal.selectedType = val;
+                  mainPageModal.pageIndex = 1;
+                  mainPageModal.onload();
+                }}
+              >
+                <Select.Option value="">全部</Select.Option>
+                {mainPageModal.selectTypeList.map((item: any, index: number) => (
+                  <Select.Option value={item.id} key={index}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+                <Select.Option value="-1">其他</Select.Option>
+              </Select>
+            </span>
+          )}
         <span>状态：</span>
         <Select
           style={{ width: 120 }}
