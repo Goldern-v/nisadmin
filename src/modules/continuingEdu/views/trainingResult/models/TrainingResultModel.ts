@@ -117,7 +117,7 @@ class TrainingResultModel {
     const viewResultsUrlName =
       appStore.HOSPITAL_ID == "hj" && appStore.queryObj.teachingMethod == "练习"
         ? "queryExerciseResultDetailsByPage"
-        : appStore.HOSPITAL_ID == "hj" &&
+        : (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
           appStore.queryObj.teachingMethod == "考试"
         ? "queryExamResultDetailsByPage"
         : null;

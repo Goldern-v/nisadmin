@@ -48,7 +48,7 @@ export default observer(function TestingResultReview() {
   // 添加补考弹窗控制
   const [editVisible, setEditVisible] = useState(false)
 
-  const tableDateSpecial: any = appStore.HOSPITAL_ID == 'hj' && !appStore.queryObj.editable ? [
+  const tableDateSpecial: any = (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys') && !appStore.queryObj.editable ? [
     {
       dataIndex: 'answerCountsAndTotalCounts',
       title: '答题',
@@ -198,7 +198,7 @@ export default observer(function TestingResultReview() {
         const btnText = editable ? '立即评分' : '查看成绩'
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>{btnText}</span>
-          {appStore.HOSPITAL_ID == 'hj' && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
+          {(appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys') && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
         </DoCon>
       }
     }
@@ -460,7 +460,7 @@ export default observer(function TestingResultReview() {
           })}
           <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         </React.Fragment>}
-        {appStore.HOSPITAL_ID == 'hj' && <Button type='primary' onClick={() => setEditVisible(true)}>添加补考</Button>}
+        {(appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys') && <Button type='primary' onClick={() => setEditVisible(true)}>添加补考</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
