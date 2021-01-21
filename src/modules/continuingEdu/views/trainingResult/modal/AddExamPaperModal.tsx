@@ -79,6 +79,11 @@ export default function AddExamPaperModal(props: Props) {
 
   // 保存
   const checkForm = () => {
+    // 补考人员不能为空
+    if (!checkedUserList.length) {
+      Message.error('补考人员不能为空');
+      return
+    };
     let current = formRef.current;
     if (current) {
       current
@@ -97,13 +102,12 @@ export default function AddExamPaperModal(props: Props) {
               onOk();
               setGetCheckedbox([])
               initClean()
-            })
+            }).catch(e => {
+              setEditLoading(false);
+              console.log(e);
+            });
           }
         })
-        .catch(e => {
-          console.log(e);
-          setEditLoading(false);
-        });
     }
   };
 
@@ -229,7 +233,7 @@ export default function AddExamPaperModal(props: Props) {
         startTime: '',
         examDuration: '',
         openTime: '',
-        openTimeUnit: "天",
+        openTimeUnit: "",
         daysToArchive: 7,
       }
     )
@@ -240,7 +244,6 @@ export default function AddExamPaperModal(props: Props) {
       visible={visible}
       onCancel={handleCancel}
       onOk={checkForm}
-      confirmLoading={editLoading}
       title='补考设置'
       footer={
         <div style={{ textAlign: "center" }}>
@@ -329,7 +332,6 @@ export default function AddExamPaperModal(props: Props) {
                       }))
                     );
                     setGetCheckedbox(checkedValue)
-                    console.log(getCheckedbox, 'getCheckedbox1111111', checkedValue)
                   }}
                 >
                   {allUserList &&
@@ -366,8 +368,6 @@ export default function AddExamPaperModal(props: Props) {
             </SelectedPeople>
           </div>
         </PeopleSelectCon>
-
-
       </Wrapper>
     </Modal>
   );
@@ -378,7 +378,7 @@ const AllCheckBox = styled.div`
   height: 215px;
   overflow-y: scroll;
   .box {
-      width: 180px;
+      width: 100%;
       position: relative;
       line-height: 30px;
       color: rgba(0, 0, 0, 0.65);
