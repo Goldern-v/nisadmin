@@ -9,6 +9,7 @@ import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
 import { message } from 'antd/es'
 import { info } from 'console'
+import { timelinePrint } from './utils/timelinePrint'
 
 const api = new badEventsNewService()
 
@@ -386,6 +387,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
               保存
             </Button>
           )}
+          <Button
+            disabled={iframeLoading}
+            className='audit'
+            onClick={() => timelinePrint({
+              hideName: detailData.instance.anonymous || false,
+              title: `${detailData.instance.badEventOrderNo} ${detailData.instance.badEventName}`,
+              timeline: timeLine
+            })}>
+            事件轨迹打印
+          </Button>
           <Button
             disabled={iframeLoading}
             className='audit'
