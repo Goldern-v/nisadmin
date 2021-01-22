@@ -37,9 +37,9 @@ export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
-  const onSave = async () => {
+  const onSave = async (sign?: boolean) => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -47,11 +47,14 @@ export default function EditWorkHistoryModal(props: Props) {
       attachmentId: '',
       urlImageOne: ''
     }
+
     if ((authStore.user && authStore.user.post) === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
     } else if ((authStore.user && authStore.user.post) === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+    if (!sign) obj.auditedStatus = 'noSubmit'
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
@@ -63,7 +66,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
 
-    nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -93,7 +96,22 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+      </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+      </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+      </Button>
+      ]}
+      forceRender>
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
         <Row>
           <Row gutter={12}>

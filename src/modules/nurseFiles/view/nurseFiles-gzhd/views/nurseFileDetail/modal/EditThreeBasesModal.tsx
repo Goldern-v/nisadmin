@@ -35,9 +35,9 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
-  const onSave = async () => {
+  const onSave = async (sign?: boolean) => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
     if (getPostData === '护士长') {
@@ -45,14 +45,18 @@ export default function EditWorkHistoryModal(props: Props) {
     } else if (getPostData === '护理部') {
       auditedStatusShow = 'waitAuditedDepartment'
     }
+
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: auditedStatusShow
     }
+    if (!sign) obj.auditedStatus = 'noSubmit'
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
+
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
@@ -86,8 +90,27 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+      </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+      </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+      </Button>
+      ]}
+      forceRender>
+      <Form
+        ref={refForm}
+        rules={rules}
+        labelWidth={120}
+        onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`年度`} name='year'>

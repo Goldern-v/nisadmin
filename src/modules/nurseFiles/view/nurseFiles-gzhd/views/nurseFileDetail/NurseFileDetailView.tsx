@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
@@ -13,17 +13,16 @@ import LevelChange from './views/LevelChange'
 import ContinuingEducation from './views/ContinuingEducation'
 import Writings from './views/Writings'
 import Awards from './views/Awards'
-import BadAction from './views/BadAction'
 import ThreeBases from './views/ThreeBases'
 import ExaminationResults from './views/ExaminationResults'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
-import FileList from './views/FileList'
+// import FileList from './views/FileList'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesService } from '../../services/NurseFilesService'
-import service from 'src/services/api'
+// import service from 'src/services/api'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -69,11 +68,6 @@ const ROUTE_LIST = [
     component: Awards,
     name: '所获奖励'
   },
-  // {
-  //   type: 'badAction',
-  //   component: BadAction,
-  //   name: '不良行为'
-  // },
   {
     type: 'examinationResults',
     component: ExaminationResults,
@@ -89,11 +83,11 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: '工作情况登记'
   },
-  {
-    type: 'fileList',
-    component: FileList,
-    name: '附件'
-  }
+  // {
+  //   type: 'fileList',
+  //   component: FileList,
+  //   name: '附件'
+  // }
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -104,7 +98,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   useEffect(() => {
     if (appStore.queryObj.empNo) {
 
-      if (appStore.isSelf) {
+      if (appStore.selfNurseFile) {
         nurseFileDetailViewModal.nurserInfo = {}
         nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
           nurseFileDetailViewModal.nurserInfo = res.data
@@ -116,7 +110,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
         })
       }
     } else {
-      if (appStore.isSelf)
+      if (appStore.selfNurseFile)
         appStore.history.replace(`${appStore.match.url}?empNo=${authStore.user?.empNo}`)
     }
   }, [appStore.queryObj.empNo])
@@ -137,6 +131,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   height: 100%;
   display: flex;
@@ -153,7 +148,7 @@ const LeftMenuCon = styled.div`
 `
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 185px);
   align-items: stretch;
   display: flex;
 `

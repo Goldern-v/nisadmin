@@ -34,21 +34,26 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
-  const onSave = async () => {
+  const onSave = async (sign?: boolean) => {
     let getPostData = loginViewModel.post
+
     let auditedStatusShow = 'waitAuditedDepartment'
     if (getPostData === '护士长') {
       auditedStatusShow = 'waitAuditedNurse'
     } else if (getPostData === '护理部') {
       auditedStatusShow = 'waitAuditedDepartment'
     }
+
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: auditedStatusShow
     }
+
+    if (!sign) obj.auditedStatus = 'noSubmit'
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
@@ -85,7 +90,22 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+      </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+      </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+      </Button>
+      ]}
+      forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

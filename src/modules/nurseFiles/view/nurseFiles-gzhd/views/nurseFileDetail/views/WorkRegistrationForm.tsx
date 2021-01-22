@@ -11,10 +11,13 @@ import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModa
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function WorkRegistrationForm() {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
-  const btnList = [
+
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -22,7 +25,7 @@ export default observer(function WorkRegistrationForm() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
 
   const columns: ColumnProps<any>[] = [
     {
@@ -98,7 +101,7 @@ export default observer(function WorkRegistrationForm() {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
@@ -107,43 +110,16 @@ export default observer(function WorkRegistrationForm() {
                 修改
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
             <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseRegistrationWork',
-                  title: '审核工作情况登记',
-                  tableFormat: [
-                    {
-                      年度: `year`,
-                      夜班: `nightShift`
-                    },
-                    {
-                      查房: `checkOut`,
-                      护理会诊: `nursingConsultation`
-                    },
-                    {
-                      病例讨论: `caseDiscussion`,
-                      个案: `individualCase`
-                    },
-                    {
-                      小讲课: `lecture`,
-                      带教: `teaching`
-                    },
-                    {
-                      证明人: `witness`
-                    }
-                  ],
-                  // fileData: [{}],
-                  allData: row
-                })
-              }}
+              onClick={() => handlePreviewOrAudit(row)}
             >
-              {limitUtils(row) ? '审核' : '查看'}
+              {limitUtils(row) && !appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -155,6 +131,45 @@ export default observer(function WorkRegistrationForm() {
       setTableData(res.data)
     })
   }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseRegistrationWork',
+      title: '审核工作情况登记',
+      tableFormat: [
+        {
+          年度: `year`,
+          夜班: `nightShift`
+        },
+        {
+          查房: `checkOut`,
+          护理会诊: `nursingConsultation`
+        },
+        {
+          病例讨论: `caseDiscussion`,
+          个案: `individualCase`
+        },
+        {
+          小讲课: `lecture`,
+          带教: `teaching`
+        },
+        {
+          证明人: `witness`
+        }
+      ],
+      // fileData: [{}],
+      allData: row
+    })
+  }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => getTableData())
+  }
+
   useEffect(() => {
     getTableData()
   }, [])

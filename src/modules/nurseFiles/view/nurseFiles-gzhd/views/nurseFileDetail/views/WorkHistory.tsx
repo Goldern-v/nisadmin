@@ -9,17 +9,17 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { auditedStatusEnum } from 'src/libs/enum/common'
+// import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function WorkHistory() {
-  const [getId, setGetId] = useState(0)
+  // const [getId, setGetId] = useState(0)
   const editWorkHistoryModal = createModal(EditWorkHistoryModal)
 
-  const btnList = [
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -27,7 +27,8 @@ export default observer(function WorkHistory() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -88,7 +89,7 @@ export default observer(function WorkHistory() {
         if (Object.keys(row).length === 0) return <span />
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editWorkHistoryModal.show({ data: row, signShow: '修改' })
@@ -97,37 +98,14 @@ export default observer(function WorkHistory() {
                 修改
               </span>
             ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWorkExperience',
-                  title: '审核工作经历',
-                  tableFormat: [
-                    {
-                      起始时间: `startTime`,
-                      结束时间: `endTime`
-                    },
-                    {
-                      单位: `unit`,
-                      专业技术工作: 'professionalWork'
-                    },
-                    {
-                      技术职称: 'professional',
-                      职务: 'post'
-                    }
-                  ],
-
-                  allData: row
-                })
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
+                ''
+              )}
+            <span onClick={() => handlePreviewOrAudit(row)}>
+              {limitUtils(row) && !appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -135,12 +113,45 @@ export default observer(function WorkHistory() {
   ]
 
   const [tableData, setTableData] = useState([])
+
   const getTableData = () => {
-    nurseFilesService.nurseWorkExperience(appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-      // setGetId(res.data)
+    nurseFilesService.nurseWorkExperience(appStore.queryObj.empNo)
+      .then((res) => {
+        setTableData(res.data)
+        // setGetId(res.data)
+      })
+  }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseWorkExperience',
+      title: '审核工作经历',
+      tableFormat: [
+        {
+          起始时间: `startTime`,
+          结束时间: `endTime`
+        },
+        {
+          单位: `unit`,
+          专业技术工作: 'professionalWork'
+        },
+        {
+          技术职称: 'professional',
+          职务: 'post'
+        }
+      ],
+      allData: row
     })
   }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => getTableData())
+  }
+
   useEffect(() => {
     getTableData()
   }, [])

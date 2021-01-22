@@ -13,10 +13,12 @@ import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
+
 export default observer(function ThreeBases() {
   const editThreeBasesModal = createModal(EditThreeBasesModal)
-  const btnList = [
+
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -24,7 +26,7 @@ export default observer(function ThreeBases() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
 
   const columns: ColumnProps<any>[] = [
     {
@@ -72,7 +74,7 @@ export default observer(function ThreeBases() {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editThreeBasesModal.show({ data: row, signShow: '修改' })
@@ -81,38 +83,17 @@ export default observer(function ThreeBases() {
                 修改
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
 
             <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseHospitalsThreeBase',
-                  title: '审核医院三基考核',
-                  tableFormat: [
-                    {
-                      年度: `year`,
-                      理论考核成绩_分: `theoryScore`
-                    },
-                    {
-                      操作考核成绩_分: `technologyScore`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
-              }}
+              onClick={() => handlePreviewOrAudit(row)}
             >
-              {limitUtils(row) ? '审核' : '查看'}
+              {limitUtils(row) && appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -125,6 +106,39 @@ export default observer(function ThreeBases() {
       setTableData(res.data)
     })
   }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseHospitalsThreeBase',
+      title: '审核医院三基考核',
+      tableFormat: [
+        {
+          年度: `year`,
+          理论考核成绩_分: `theoryScore`
+        },
+        {
+          操作考核成绩_分: `technologyScore`
+        }
+      ],
+      fileData: row.urlImageOne
+        ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          return {
+            ['附件' + (index + 1)]: item
+          }
+        })
+        : [],
+      allData: row
+    })
+  }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => getTableData())
+  }
+
   useEffect(() => {
     getTableData()
   }, [])

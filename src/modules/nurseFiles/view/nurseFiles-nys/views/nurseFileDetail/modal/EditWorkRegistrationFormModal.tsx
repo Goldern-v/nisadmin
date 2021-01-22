@@ -37,9 +37,23 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [title, setTitle] = useState('')
 
+  const yearList = (() => {
+    let startYear = 2010
+    let lastYear = Number(moment().format('YYYY'))
+    let currentYear = startYear
+    let list = []
+
+    while (currentYear <= lastYear) {
+      list.push(currentYear.toString())
+      currentYear++
+    }
+
+    return list.reverse()
+  })()
+
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
   const onSave = async () => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
@@ -101,17 +115,9 @@ export default function EditWorkHistoryModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`年度`} name='year'>
                 <Select>
-                  <Option value='2020'>2020</Option>
-                  <Option value='2019'>2019</Option>
-                  <Option value='2018'>2018</Option>
-                  <Option value='2017'>2017</Option>
-                  <Option value='2016'>2016</Option>
-                  <Option value='2015'>2015</Option>
-                  <Option value='2014'>2014</Option>
-                  <Option value='2013'>2013</Option>
-                  <Option value='2012'>2012</Option>
-                  <Option value='2011'>2011</Option>
-                  <Option value='2010'>2010</Option>
+                  {yearList.map((year: string) => (
+                    <Option value={year} key={year}>{year}</Option>
+                  ))}
                 </Select>
               </Form.Field>
             </Col>

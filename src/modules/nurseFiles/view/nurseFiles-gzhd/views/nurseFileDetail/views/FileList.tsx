@@ -13,7 +13,9 @@ import limitUtils from '../utils/limit'
 import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { Modal, Button, Icon, Carousel } from 'antd'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function FileList() {
   const [visible, setVisible] = useState(false)
   const editFileListModal = createModal(EditFileListModal)
@@ -65,7 +67,7 @@ export default observer(function FileList() {
         return (
           <DoCon>
             {row.type < 7 && <Zimage text='查看' list={row.filterData} />}
-            {row.type > 6 && row.isShow ? (
+            {row.type > 6 && row.isShow && appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editFileListModal.show({ data: row, signShow: '添加' })
@@ -74,30 +76,14 @@ export default observer(function FileList() {
                 添加
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
 
             {row.id && (
               <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseAttachment',
-                    title: '附件审核',
-                    tableFormat: [],
-                    fileData: row.path
-                      ? row.path.split(',').map((item: any, index: number) => {
-                          return {
-                            ['附件' + (index + 1)]: item
-                          }
-                        })
-                      : [],
-                    allData: row
-                  })
-                }}
+                onClick={() => handlePreviewOrAudit(row)}
               >
-                {limitUtils(row, '附件审核') ? '审核' : '查看'}
+                {limitUtils(row, '附件审核') && !appStore.selfNurseFile ? '审核' : '查看'}
               </span>
             )}
           </DoCon>
@@ -105,6 +91,7 @@ export default observer(function FileList() {
       }
     }
   ]
+
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.nurseAttachment(appStore.queryObj.empNo).then((res) => {
@@ -294,9 +281,29 @@ export default observer(function FileList() {
       setTableData(data)
     })
   }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseAttachment',
+      title: '附件审核',
+      tableFormat: [],
+      fileData: row.path
+        ? row.path.split(',').map((item: any, index: number) => {
+          return {
+            ['附件' + (index + 1)]: item
+          }
+        })
+        : [],
+      allData: row
+    })
+  }
+
   useEffect(() => {
     getTableData()
   }, [])
+
   const bodyStyle = { width: '900px' }
   // 轮播图组件
   const pictureDom = pictureArr.map((item: any, index: number) => {
