@@ -162,10 +162,10 @@ export default function TraineeFilesEditModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            newParams.internshipBegin = newParams.studyTime
+            newParams.internshipBegin = newParams.studyTime && newParams.studyTime[0]
               ? newParams.studyTime[0].format("YYYY-MM-DD")
               : "";
-            newParams.internshipEnd = newParams.studyTime
+            newParams.internshipEnd = newParams.studyTime && newParams.studyTime[1]
               ? newParams.studyTime[1].format("YYYY-MM-DD")
               : "";
             newParams.studyDeptName = newParams.studyDeptCode
