@@ -16,7 +16,7 @@ import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-// const Option = Select.Option
+const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
   data?: any
@@ -141,7 +141,14 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`学历`} name='education' required>
-              <Input />
+              {/* <Input /> */}
+              <Select>
+                <Option value="中专">中专</Option>
+                <Option value="大专">大专</Option>
+                <Option value="本科">本科</Option>
+                <Option value="研究生">研究生</Option>
+                <Option value="博士">博士</Option>
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
