@@ -114,8 +114,10 @@ class TrainingResultModel {
       this.loading = false;
     };
 
+    // 厚街 南医三考试练习类型 详情单独接口特殊处理
     const viewResultsUrlName =
-      appStore.HOSPITAL_ID == "hj" && appStore.queryObj.teachingMethod == "练习"
+      (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
+      appStore.queryObj.teachingMethod == "练习"
         ? "queryExerciseResultDetailsByPage"
         : (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
           appStore.queryObj.teachingMethod == "考试"
@@ -221,8 +223,17 @@ class TrainingResultModel {
 
   /**导出结果 */
   @action public handleExportResults() {
+    // 厚街 南医三考试练习类型 导出单独接口特殊处理
+    const urlName =
+      (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
+      appStore.queryObj.teachingMethod == "练习"
+        ? "exportExerciseResultDetails"
+        : (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
+          appStore.queryObj.teachingMethod == "考试"
+        ? "exportExamResultDetails"
+        : null;
     trainingResultService
-      .exportResults(appStore.queryObj.id || "")
+      .exportResults(appStore.queryObj.id || "", urlName)
       .then(res => fileDownload(res));
   }
 }

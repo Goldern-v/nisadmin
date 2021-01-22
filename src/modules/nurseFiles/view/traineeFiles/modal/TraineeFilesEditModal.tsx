@@ -168,7 +168,7 @@ export default function TraineeFilesEditModal(props: Props) {
             newParams.internshipEnd = newParams.studyTime
               ? newParams.studyTime[1].format("YYYY-MM-DD")
               : "";
-            newParams.studyDeptName = newParams.studyDeptName
+            newParams.studyDeptName = newParams.studyDeptCode
               ? deptList.find(
                 (item: any) => item.code === newParams.studyDeptCode
               ).name

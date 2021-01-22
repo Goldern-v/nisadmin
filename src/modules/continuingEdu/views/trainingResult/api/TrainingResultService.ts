@@ -147,9 +147,11 @@ export default class TrainingResultService extends BaseApiService {
   }
 
   /**导出 */
-  public exportResults(cetpId: string) {
+  public exportResults(cetpId: string, urlName?: any) {
     return this.post(
-      "/studyAndTrain/teachingPlanManage/exportResults",
+      urlName
+        ? `studyAndTrain/teachingPlanManage/hj/${urlName}`
+        : "/studyAndTrain/teachingPlanManage/exportResults",
       {
         cetpId
       },
