@@ -115,15 +115,14 @@ class TrainingResultModel {
     };
 
     // 厚街 南医三考试练习类型 详情单独接口特殊处理
-    const viewResultsUrlName =
-      (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
-      appStore.queryObj.teachingMethod == "练习"
-        ? "queryExerciseResultDetailsByPage"
-        : (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
-          appStore.queryObj.teachingMethod == "考试"
-        ? "queryExamResultDetailsByPage"
-        : null;
-
+    let viewResultsUrlName = null;
+    if (["hj", "nys"].includes(appStore.HOSPITAL_ID)) {
+      const teachingMethod = appStore.queryObj.teachingMethod;
+      if (teachingMethod === "练习")
+        viewResultsUrlName = "queryExerciseResultDetailsByPage";
+      if (teachingMethod === "考试")
+        viewResultsUrlName = "queryExamResultDetailsByPage";
+    }
     if (appStore.queryObj.editable) {
       trainingResultService
         .queryToScoreDetailList(this.query)
@@ -224,14 +223,12 @@ class TrainingResultModel {
   /**导出结果 */
   @action public handleExportResults() {
     // 厚街 南医三考试练习类型 导出单独接口特殊处理
-    const urlName =
-      (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
-      appStore.queryObj.teachingMethod == "练习"
-        ? "exportExerciseResultDetails"
-        : (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "nys") &&
-          appStore.queryObj.teachingMethod == "考试"
-        ? "exportExamResultDetails"
-        : null;
+    let urlName = null;
+    if (["hj", "nys"].includes(appStore.HOSPITAL_ID)) {
+      const teachingMethod = appStore.queryObj.teachingMethod;
+      if (teachingMethod === "练习") urlName = "exportExerciseResultDetails";
+      if (teachingMethod === "考试") urlName = "exportExamResultDetails";
+    }
     trainingResultService
       .exportResults(appStore.queryObj.id || "", urlName)
       .then(res => fileDownload(res));
