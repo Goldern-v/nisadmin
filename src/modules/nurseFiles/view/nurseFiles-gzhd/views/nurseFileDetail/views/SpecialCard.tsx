@@ -10,13 +10,15 @@ import createModal from 'src/libs/createModal'
 import EditSpecialCardModal from '../modal/EditSpecialCardModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
-import { Button } from 'antd'
+// import { Button } from 'antd'
 import Zimage from 'src/components/Zimage'
 import limitUtils from '../utils/limit'
-export interface Props extends RouteComponentProps {}
-export default function SpecialCard() {
+
+export interface Props extends RouteComponentProps { }
+
+export default observer(function SpecialCard() {
   const editSpecialCardModal = createModal(EditSpecialCardModal)
-  const btnList = [
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -24,7 +26,8 @@ export default function SpecialCard() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -73,7 +76,7 @@ export default function SpecialCard() {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editSpecialCardModal.show({ data: row, signShow: '修改' })
@@ -82,38 +85,14 @@ export default function SpecialCard() {
                 修改
               </span>
             ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseSpecialQualification',
-                  title: '审核特殊资格证',
-                  tableFormat: [
-                    {
-                      获得时间: `time`,
-                      资格名称: `specialQualificationName`
-                    },
-                    {
-                      资格证编号: `specialQualificationNo`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
+                ''
+              )}
+            <span onClick={() => handlePreviewOrAudit(row)}>
+              {limitUtils(row) && !appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -121,11 +100,45 @@ export default function SpecialCard() {
   ]
   const [tableData, setTableData] = useState([])
   const [statusNameGet, setStatusNameGet] = useState('')
+
   const getTableData = () => {
     nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseSpecialQualification', row.id))
+      .then(() => getTableData())
+  }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseSpecialQualification',
+      title: '审核特殊资格证',
+      tableFormat: [
+        {
+          获得时间: `time`,
+          资格名称: `specialQualificationName`
+        },
+        {
+          资格证编号: `specialQualificationNo`
+        }
+      ],
+      fileData: row.urlImageOne
+        ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          return {
+            ['附件' + (index + 1)]: item
+          }
+        })
+        : [],
+      allData: row
+    })
+  }
+
   useEffect(() => {
     getTableData()
   }, [])
@@ -145,5 +158,6 @@ export default function SpecialCard() {
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
-}
+})
+
 const Wrapper = styled.div``

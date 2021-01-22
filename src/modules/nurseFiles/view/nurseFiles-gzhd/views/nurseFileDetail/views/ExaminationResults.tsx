@@ -12,10 +12,13 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function ExaminationResults() {
   const editExaminationResultsModal = createModal(EditExaminationResultsModal)
-  const btnList = [
+
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -23,7 +26,8 @@ export default observer(function ExaminationResults() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -64,7 +68,7 @@ export default observer(function ExaminationResults() {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editExaminationResultsModal.show({ data: row, signShow: '修改' })
@@ -73,35 +77,16 @@ export default observer(function ExaminationResults() {
                 修改
               </span>
             ) : (
-              ''
-            )}
-
+                ''
+              )}
             <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseYearCheck',
-                  title: '审核年度考核结果',
-                  tableFormat: [
-                    {
-                      年度: `year`,
-                      考核结果: `checkResult`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
-              }}
+              onClick={() => handlePreviewOrAudit(row)}
             >
-              {limitUtils(row) ? '审核' : '查看'}
+              {limitUtils(row) && !appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -113,6 +98,36 @@ export default observer(function ExaminationResults() {
       setTableData(res.data)
     })
   }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseYearCheck',
+      title: '审核年度考核结果',
+      tableFormat: [
+        {
+          年度: `year`,
+          考核结果: `checkResult`
+        }
+      ],
+      fileData: row.urlImageOne
+        ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          return {
+            ['附件' + (index + 1)]: item
+          }
+        })
+        : [],
+      allData: row
+    })
+  }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => getTableData())
+  }
+
   useEffect(() => {
     getTableData()
   }, [])

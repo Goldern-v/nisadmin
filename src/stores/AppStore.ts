@@ -98,8 +98,8 @@ export default class AppStore {
   }
 
   @computed
-  public get isSelf() {
-    /* 护理档案详情判断是否本人 */
+  public get selfNurseFile() {
+    /* 护理档案详情判断是否是在我的档案模块中查看 */
     return this.match.path == '/selfNurseFile/:type'
   }
 

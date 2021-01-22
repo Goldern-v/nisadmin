@@ -75,6 +75,7 @@ export default function EditWorkHistoryModal(props: Props) {
     } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+    if (!sign) obj.auditedStatus = 'noSubmit'
 
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())

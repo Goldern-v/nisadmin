@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Input, message } from 'antd'
 import { ReactComponent as AgreeIcon } from '../images/morengouxuan.svg'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 const { TextArea } = Input
 import { Modal, Spin } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
@@ -192,12 +192,22 @@ export default function AduitModal(props: Props) {
         </MainPart>
         <AduitCon>
           <TimeLineCon>
-            <div className='label'>审核过程：</div>
-            <LinCon>
-              {(auditeListDtos || []).map((item: any, index: any, arr: any) => (
-                <TimeLineItem data={item} index={index} key={index} arr={arr} />
-              ))}
-            </LinCon>
+            {!appStore.selfNurseFile && (
+              <React.Fragment>
+                <div className='label'>审核过程：</div>
+                <LinCon>
+                  {(auditeListDtos || []).map((item: any, index: any, arr: any) => (
+                    <TimeLineItem data={item} index={index} key={index} arr={arr} />
+                  ))}
+                </LinCon>
+              </React.Fragment>
+            )}
+            {appStore.selfNurseFile && (
+              <React.Fragment>
+                <div className='label'>审核意见：</div>
+                <LinCon>{(props.allData || {}).detail || '(暂无)'}</LinCon>
+              </React.Fragment>
+            )}
           </TimeLineCon>
           <FormCon>
             <div className='row'>

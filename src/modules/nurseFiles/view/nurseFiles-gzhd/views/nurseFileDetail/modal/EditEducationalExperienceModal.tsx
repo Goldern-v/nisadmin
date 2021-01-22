@@ -1,22 +1,22 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+// import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
+// import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+// import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
-import loginViewModel from 'src/modules/login/LoginViewModel'
-import ImageUploader from 'src/components/ImageUploader'
+// import loginViewModel from 'src/modules/login/LoginViewModel'
+// import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-const Option = Select.Option
+// const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
   data?: any
@@ -43,16 +43,18 @@ export default function EditWorkHistoryModal(props: Props) {
       (authStore.user && authStore.user.post) === '护长'
         ? 'waitAuditedNurse'
         : (authStore.user && authStore.user.post) === '护理部'
-        ? 'waitAuditedDepartment'
-        : ''
+          ? 'waitAuditedDepartment'
+          : ''
   }
 
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = { ...uploadOption }
+
+    if (!sign) obj.auditedStatus = 'noSubmit'
 
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
@@ -66,7 +68,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
-    nurseFilesService.userEducatAdd({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.userEducatAdd({ ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -97,7 +99,22 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+      </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+      </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+      </Button>
+      ]}
+      forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

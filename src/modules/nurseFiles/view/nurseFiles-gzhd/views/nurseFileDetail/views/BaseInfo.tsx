@@ -23,7 +23,7 @@ export default observer(function BaseInfo() {
 
   const limitsComponent = () => {
     let auditBtnText = info.statusColor === '1' ? '审核' : '查看'
-    if (appStore.isSelf) auditBtnText = '查看'
+    if (appStore.selfNurseFile) auditBtnText = '查看'
 
     const auditBtn = {
       label: auditBtnText,
@@ -93,7 +93,7 @@ export default observer(function BaseInfo() {
       }
     }
 
-    if (appStore.isSelf) {
+    if (appStore.selfNurseFile) {
       return [
         {
           label: '修改',
@@ -116,7 +116,7 @@ export default observer(function BaseInfo() {
   const getTableData = () => {
     if (!appStore.queryObj.empNo) return
 
-    let reqMethod = appStore.isSelf ?
+    let reqMethod = appStore.selfNurseFile ?
       nurseFilesService.nurseInformationSelf.bind(nurseFilesService) :
       nurseFilesService.nurseInformation.bind(nurseFilesService)
 
@@ -260,7 +260,9 @@ const Value = styled.div`
 `
 
 const ZyzsCon = styled.div`
-  height: 220px;
+  min-height: 220px;
+  height: auto;
+  overflow: hidden;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
   border: 1px solid rgba(219, 224, 228, 1);
@@ -274,7 +276,8 @@ const ZyzsCon = styled.div`
     top: 19px;
   }
   .img-con {
-    margin: 15px 0 0 137px;
+    margin: 15px 0 15px 137px;
+    overflow: hidden;
   }
   img {
     float: left;

@@ -12,10 +12,12 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
 import limitUtils from '../utils/limit'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function LevelChange() {
   const editLevelChangeModal = createModal(EditLevelChangeModal)
-  const btnList = [
+  const btnList = appStore.selfNurseFile ? [
     {
       label: '添加',
       onClick: () =>
@@ -23,7 +25,7 @@ export default observer(function LevelChange() {
           signShow: '添加'
         })
     }
-  ]
+  ] : []
 
   const columns: ColumnProps<any>[] = [
     {
@@ -73,7 +75,7 @@ export default observer(function LevelChange() {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
+            {appStore.selfNurseFile ? (
               <span
                 onClick={() => {
                   editLevelChangeModal.show({ data: row, signShow: '修改' })
@@ -82,38 +84,16 @@ export default observer(function LevelChange() {
                 修改
               </span>
             ) : (
-              ''
-            )}
-
+                ''
+              )}
             <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseProfessionalAndLevelChange',
-                  title: '审核职称及层级变动',
-                  tableFormat: [
-                    {
-                      职称聘用时间: `appointmentTime`,
-                      取得职称: `titleQualification`
-                    },
-                    {
-                      层级: `hierarchy`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
-              }}
+              onClick={() => handlePreviewOrAudit(row)}
             >
-              {limitUtils(row) ? '审核' : '查看'}
+              {limitUtils(row) && !appStore.selfNurseFile ? '审核' : '查看'}
             </span>
+            {appStore.selfNurseFile && (
+              <span onClick={() => handleDelete(row)}>删除</span>
+            )}
           </DoCon>
         )
       }
@@ -125,6 +105,39 @@ export default observer(function LevelChange() {
       setTableData(res.data)
     })
   }
+
+  const handlePreviewOrAudit = (row: any) => {
+    globalModal.auditModal.show({
+      getTableData: getTableData,
+      id: row.id,
+      type: 'nurseProfessionalAndLevelChange',
+      title: '审核职称及层级变动',
+      tableFormat: [
+        {
+          职称聘用时间: `appointmentTime`,
+          取得职称: `titleQualification`
+        },
+        {
+          层级: `hierarchy`
+        }
+      ],
+      fileData: row.urlImageOne
+        ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          return {
+            ['附件' + (index + 1)]: item
+          }
+        })
+        : [],
+      allData: row
+    })
+  }
+
+  const handleDelete = (row: any) => {
+    globalModal.confirm('删除确定', '你确定要删除该记录吗?')
+      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => getTableData())
+  }
+
   useEffect(() => {
     getTableData()
   }, [])

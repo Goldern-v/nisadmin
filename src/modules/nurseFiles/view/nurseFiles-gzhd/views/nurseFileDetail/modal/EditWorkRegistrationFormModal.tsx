@@ -37,10 +37,25 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [title, setTitle] = useState('')
 
+  const yearList = (() => {
+    let startYear = 2010
+    let lastYear = Number(moment().format('YYYY'))
+    let currentYear = startYear
+    let list = []
+
+    while (currentYear <= lastYear) {
+      list.push(currentYear.toString())
+      currentYear++
+    }
+
+    return list.reverse()
+  })()
+
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
-  const onSave = async () => {
+  const onFieldChange = () => { }
+
+  const onSave = async (sign: boolean) => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -48,11 +63,14 @@ export default function EditWorkHistoryModal(props: Props) {
       attachmentId: '',
       urlImageOne: ''
     }
+
     if ((authStore.user && authStore.user.post) == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
     } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+    if (!sign) obj.auditedStatus = 'noSubmit'
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
@@ -70,7 +88,6 @@ export default function EditWorkHistoryModal(props: Props) {
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    //
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         year: data.year,
@@ -94,23 +111,31 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+    </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+    </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+    </Button>
+      ]}
+      forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>
             <Col span={24}>
               <Form.Field label={`年度`} name='year'>
                 <Select>
-                  <Option value='2019'>2019</Option>
-                  <Option value='2018'>2018</Option>
-                  <Option value='2017'>2017</Option>
-                  <Option value='2016'>2016</Option>
-                  <Option value='2015'>2015</Option>
-                  <Option value='2014'>2014</Option>
-                  <Option value='2013'>2013</Option>
-                  <Option value='2012'>2012</Option>
-                  <Option value='2011'>2011</Option>
-                  <Option value='2010'>2010</Option>
+                  {yearList.map((year: string) => (
+                    <Option value={year} key={year}>{year}</Option>
+                  ))}
                 </Select>
               </Form.Field>
             </Col>
