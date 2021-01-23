@@ -28,7 +28,7 @@ export default function TestInfo(props: Props) {
         <div className="label w-106">题目设置：</div>
         <div className="content">
           【{info.teachingMethodName}】《{info.title}》
-                 </div>
+         </div>
         {info.id && queryObj.onlineLearningName != "考试" && appStore.HOSPITAL_ID != 'hj' && (
           <div>
             <div className="label w-106" />

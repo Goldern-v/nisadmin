@@ -132,9 +132,9 @@ class HjExerciseModal {
   //导出Excel
   export() {
     const urlNameArr: any = [
-      "exportExamResultStats",
-      "exportExamResultAnalyse",
-      "exportExamResultAnalyseReport"
+      "exportExerciseResultStats",
+      "exportExerciseResultAnalyse",
+      "exportExerciseResultAnalyseReport"
     ];
     let urlName = urlNameArr[this.keyIdx];
     hjExerciseApi.exportExam(appStore.queryObj.id, urlName).then(res => {

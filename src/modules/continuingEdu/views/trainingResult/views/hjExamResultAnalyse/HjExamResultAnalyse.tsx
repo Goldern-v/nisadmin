@@ -54,7 +54,7 @@ export default observer(function HjExamResultAnalyse() {
         <span>实际参加人数：{headCont.finishedPersonCount}</span>
       </HeadCont>
       <HeadBtn>
-        <Button style={{ marginRight: '20px' }} onClick={() => hjExamModal.export}>导出</Button>
+        <Button style={{ marginRight: '20px' }} onClick={() => hjExamModal.export()}>导出</Button>
         <Button type="primary" style={{ marginRight: '20px' }} onClick={() => onPrint()}>打印当前页</Button>
         <Button>刷新</Button>
       </HeadBtn>
