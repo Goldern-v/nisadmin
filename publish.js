@@ -20,6 +20,12 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('8062') >= 0) {
     folderSrc = '/crdata/webProject/nanyisanmanage'
   }
+
+  //护理管理文档
+  if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
+    localSrc = './docs/.vuepress/dist'
+    folderSrc = '/crdata/webProject/front-end-doc/manage'
+  }
   // localSrc = './build'
 
   let serverInfo = {
