@@ -19,6 +19,8 @@ export interface Props extends ModalComponentProps {
   hideAnwserInfo?: boolean //是否隐藏侧边栏
   videoQuestionList?: any[] //视频插题
   questionParams?: any // 视频插题预览
+  pertId?: number | string, //多套试卷添加记录 试卷pertId
+  paperId?: number | string, //多套试卷查看信息 试卷pertId
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -37,7 +39,9 @@ export default observer(function TestPageModal(props: Props) {
     questionIdList,
     hideAnwserInfo,
     videoQuestionList,
-    questionParams
+    questionParams,
+    pertId,
+    paperId
   } = props
 
   const [questionInfo, setQuestionInfo] = useState({} as any)
@@ -57,6 +61,20 @@ export default observer(function TestPageModal(props: Props) {
       }
       trainingInfoReviewService
         .KKTKpreviewPaper(obj || {})
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+        }, () => setLoading(false))
+    } else if (pertId) {
+      trainingInfoReviewService
+        .HjPreviewPaperByPertId(pertId || '')
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+        }, () => setLoading(false))
+    } else if (paperId) {
+      trainingInfoReviewService
+        .HjPreviewPaperByPertIdCheck(paperId || '')
         .then(res => {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)
@@ -84,7 +102,7 @@ export default observer(function TestPageModal(props: Props) {
     } else {
       //根据学习计划id获取试卷信息
       trainingInfoReviewService
-        .previewPaper(id?.toString() || '')
+        .previewPaper(id ?.toString() || '')
         .then(res => {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)

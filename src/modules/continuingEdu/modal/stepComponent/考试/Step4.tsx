@@ -44,7 +44,6 @@ export default observer(function Step4() {
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
   //学时自由输入
-  // const [totalScore, setTotalScore] = useState(0);
   const testPage = createModal(TestPageModal); // 习题预览弹窗
 
   // 组织方式
@@ -126,11 +125,13 @@ export default observer(function Step4() {
       textPapersLists[3] && refForm.current && refForm.current.setFields({ questionScoresSettings3: textPapersLists[3] });
       textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });
     }
-  }, []);
+  }, [textPapersLists.length]);
 
 
   /** 判断是否有问答题，只有问答题才允许选择评分负责人 */
-  let hasWdt = stepViewModal.stepData2.questionStatList && stepViewModal.stepData2.questionStatList.find((item: any) => {
+  let hasWdt = appStore.HOSPITAL_ID == 'hj' ? textPapersLists[0] && textPapersLists[0].questionScoresSettings && textPapersLists[0].questionScoresSettings.find((item: any) => {
+    return item.questionType == 4
+  }) : stepViewModal.stepData2.questionStatList && stepViewModal.stepData2.questionStatList.find((item: any) => {
     return item.questionType == 4
   })
 

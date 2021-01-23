@@ -35,12 +35,10 @@ export default observer(function UpdateTableHj(props: Props) {
   let totalNum = dataSource.reduce((total: any, current: any) => {
     return total + current.questionCount;
   }, 0);
-  // let totalNum = 0
   /** 总分 */
   let totalScore = dataSource.reduce((total: any, current: any) => {
     return total + current.totalScores;
   }, 0);
-  // let totalScore = 0;
 
   const columns: ColumnProps<any>[] = [
     {
@@ -180,7 +178,7 @@ export default observer(function UpdateTableHj(props: Props) {
       getObj.cetpId = allStepViewModal.stepData1.ceptId;
     }
     testPage.show({
-      obj: getObj,
+      pertId: data.pertId,
       teachingMethodName: "",
       title: "",
       startTime: "",
@@ -204,16 +202,16 @@ export default observer(function UpdateTableHj(props: Props) {
       okType: "danger",
       cancelText: "取消",
       onOk: () => {
-        stepServices.deleteExamPaper(allStepViewModal.taskCode,data.pertId)
+        stepServices.deleteExamPaper(allStepViewModal.taskCode, data.pertId)
           .then(res => {
             if (res.code == 200) {
               Message.success("试卷删除成功");
-              allStepViewModal.initAllExamPapers(allStepViewModal.taskCode,allStepViewModal.stepData1.cetpId);
+              allStepViewModal.initAllExamPapers(allStepViewModal.taskCode, allStepViewModal.stepData1.cetpId);
             } else {
               Message.error("试卷删除失败");
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   }
@@ -234,7 +232,7 @@ export default observer(function UpdateTableHj(props: Props) {
         >
           试卷预览
         </Button>
-        {appStore.HOSPITAL_ID == 'hj' && <Button size="small"  onClick={() => handleDelete()}>删除</Button>}
+        {appStore.HOSPITAL_ID == 'hj' && <Button size="small" onClick={() => handleDelete()}>删除</Button>}
       </div>
       <BaseTable
         dataSource={[{}, ...dataSource]}

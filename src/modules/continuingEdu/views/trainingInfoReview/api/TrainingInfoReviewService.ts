@@ -60,6 +60,24 @@ export default class TrainingInfoReviewService extends BaseApiService {
       obj
     );
   }
+
+  // 试卷预览添加记录（厚街 南医三多套试卷）
+  public async HjPreviewPaperByPertId(pertId: any) {
+    /** taskCode attachmentId*/
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/hj/editRunTime/previewPaperByPertId/exam`,
+      qs.stringify({ pertId })
+    );
+  }
+
+  // 试卷预览查看信息（厚街 南医三多套试卷）
+  public async HjPreviewPaperByPertIdCheck(paperId: any) {
+    /** taskCode attachmentId*/
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/hj/previewPaperByPaperId`,
+      qs.stringify({ paperId })
+    );
+  }
 }
 
 export const trainingInfoReviewService = new TrainingInfoReviewService();

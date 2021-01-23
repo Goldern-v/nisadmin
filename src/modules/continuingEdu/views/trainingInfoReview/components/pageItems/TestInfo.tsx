@@ -28,34 +28,71 @@ export default function TestInfo(props: Props) {
         <div className="label w-106">题目设置：</div>
         <div className="content">
           【{info.teachingMethodName}】《{info.title}》
-        </div>
-        <div className="label w-106" />
-        <div className="content">
-          卷面题目数共 {info.questionCount} 题{" "}
-          {info.randomOrderQue ? "随机显示题目顺序" : ""}{" "}
-          {info.randomOrderQItem ? "随机显示选项顺序" : ""}
-        </div>
-        <div className="label w-106" />
-        {info.id && queryObj.onlineLearningName != "考试" && (
-          <div className="content">
-            <Button
-              type="primary"
-              onClick={() =>
-                testPage.show({
-                  id: info.id,
-                  teachingMethodName: info.teachingMethodName,
-                  title: info.title,
-                  startTime: info.startTime,
-                  endTime: info.endTime,
-                  examDuration: info.examDuration,
-                  passScores: info.passScores
-                })
-              }
-            >
-              试卷预览
+                 </div>
+        {info.id && queryObj.onlineLearningName != "考试" && appStore.HOSPITAL_ID != 'hj' && (
+          <div>
+            <div className="label w-106" />
+            <div className="content">
+              卷面题目数共 {info.questionCount} 题{" "}
+              {info.randomOrderQue ? "随机显示题目顺序" : ""}{" "}
+              {info.randomOrderQItem ? "随机显示选项顺序" : ""}
+            </div>
+            <div className="label w-106" />
+            <div className="content">
+              <Button
+                type="primary"
+                onClick={() =>
+                  testPage.show({
+                    id: info.id,
+                    teachingMethodName: info.teachingMethodName,
+                    title: info.title,
+                    startTime: info.startTime,
+                    endTime: info.endTime,
+                    examDuration: info.examDuration,
+                    passScores: info.passScores
+                  })
+                }
+              >
+                试卷预览
             </Button>
+            </div>
           </div>
         )}
+        {info.id && queryObj.onlineLearningName != "考试" && appStore.HOSPITAL_ID == 'hj' &&
+          info.paperList.map((item: any, index: any) => {
+            return (
+              <div>
+                <div className="label w-106" />
+                <div style={{fontWeight: 900}}>试卷{index + 1}</div>
+                <div className="label w-106" />
+                <div className="content">
+                  卷面题目数共 {info.questionCount} 题{" "}
+                  {info.randomOrderQue ? "随机显示题目顺序" : ""}{" "}
+                  {info.randomOrderQItem ? "随机显示选项顺序" : ""}
+                </div>
+                <div className="label w-106" />
+                <div className="content" style={{ marginBottom: "15px" }}>
+                  <Button
+                    type="primary"
+                    onClick={() =>
+                      testPage.show({
+                        paperId: item.paperId,
+                        teachingMethodName: info.teachingMethodName,
+                        title: info.title,
+                        startTime: info.startTime,
+                        endTime: info.endTime,
+                        examDuration: info.examDuration,
+                        passScores: info.passScores
+                      })
+                    }
+                  >
+                    试卷预览
+                  </Button>
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
       <testPage.Component />
     </Wrapper>

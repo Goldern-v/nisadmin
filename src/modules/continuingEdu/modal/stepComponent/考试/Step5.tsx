@@ -9,8 +9,9 @@ import { observer } from "mobx-react-lite";
 import moment from "moment";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
+import { appStore, authStore } from "src/stores";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
@@ -149,11 +150,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">评分人学时：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">评分人学时：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
 
           {ksStepViewModal.stepData2.category == 1 ? (
             <tr>
@@ -161,11 +162,11 @@ export default observer(function Step5() {
               <td className="value">中医类</td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">类&nbsp;&nbsp;别：</td>
-              <td className="value">非中医类</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">类&nbsp;&nbsp;别：</td>
+                <td className="value">非中医类</td>
+              </tr>
+            )}
 
           {ksStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
@@ -173,18 +174,18 @@ export default observer(function Step5() {
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    ksStepViewModal.stepData2.studentCreditType
+                  ksStepViewModal.stepData2.studentCreditType
                   ]
                 }{" "}
                 {ksStepViewModal.stepData2.studentCredit} 分
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学分：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学分：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           {ksStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
@@ -193,11 +194,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学时：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学时：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           <tr>
             <td className="key">最大考试次数：</td>
             <td className="value">{ksStepViewModal.stepData2.maxExamTimes}</td>
@@ -216,38 +217,40 @@ export default observer(function Step5() {
               {ksStepViewModal.stepData2.examDuration} 分钟
             </td>
           </tr>
-
-          <tr>
-            <td className="key">题目设置：</td>
-            <td className="value">
-              <div>【考试】《{ksStepViewModal.stepData2.title}》</div>
-              <div>
-                <span style={{ marginRight: 10 }}>
-                  卷面题目共 {totalNum} 题
-                </span>
-                {!!ksStepViewModal.stepData2.randomOrderQue && (
-                  <span style={{ marginRight: 10 }}>随机显示题目顺序</span>
-                )}
-                {!!ksStepViewModal.stepData2.randomOrderQItem && (
-                  <span style={{ marginRight: 10 }}>随机显示题目选项顺序</span>
-                )}
-                {!!ksStepViewModal.stepData2.showScoreInstantly && (
-                  <span style={{ marginRight: 10 }}>交卷后显示分数</span>
-                )}
-              </div>
-              <div>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    handlePagePreview();
-                  }}
-                  className="ab"
-                >
-                  试卷预览
-                </Button>
-              </div>
-            </td>
-          </tr>
+          {/* 厚街多套试卷不暂时题目内容 */}
+          {appStore.HOSPITAL_ID !== 'hj' &&
+            <tr>
+              <td className="key">题目设置：</td>
+              <td className="value">
+                <div>【考试】《{ksStepViewModal.stepData2.title}》</div>
+                <div>
+                  <span style={{ marginRight: 10 }}>
+                    卷面题目共 {totalNum} 题
+              </span>
+                  {!!ksStepViewModal.stepData2.randomOrderQue && (
+                    <span style={{ marginRight: 10 }}>随机显示题目顺序</span>
+                  )}
+                  {!!ksStepViewModal.stepData2.randomOrderQItem && (
+                    <span style={{ marginRight: 10 }}>随机显示题目选项顺序</span>
+                  )}
+                  {!!ksStepViewModal.stepData2.showScoreInstantly && (
+                    <span style={{ marginRight: 10 }}>交卷后显示分数</span>
+                  )}
+                </div>
+                <div>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      handlePagePreview();
+                    }}
+                    className="ab"
+                  >
+                    试卷预览
+              </Button>
+                </div>
+              </td>
+            </tr>
+          }
 
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
