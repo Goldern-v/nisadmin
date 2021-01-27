@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import StatisticLeftList from './components/StatisticLeftList'
-import StatisticHeader from './components/StatisticHeader'
+// import StatisticHeader from './components/StatisticHeader'
 import store from 'src/stores'
 
 // 护士排班表
@@ -39,10 +39,10 @@ import NurseList from './views/nursingStatistics/nurseList/NurseList'
 
 //// 患者查询统计   大块
 // 住院病人认知情况统计表
-import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
+// import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
 
 export default function StatisticView() {
-  const [shiftClass, setShiftClass] = useState(new Array())
+  // const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => { }, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
@@ -86,13 +86,17 @@ export default function StatisticView() {
     { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
     //// 患者查询统计   大块
     { name: '护理质量统计', path: '/statistic/护理质量统计', component: 护理质量统计查询 },
-    { name: '' }
+    // { name: '护士学历分布', path: '/statistic/护士学历分布', component: <span>护士学历分布</span> },
+    // { name: '护士男女分布', path: '/statistic/护士男女分布', component: <span>护士男女分布</span> },
+    // { name: '护士工作年限分布', path: '/statistic/护士工作年限分布', component: <span>护士工作年限分布</span> },
+    // { name: '护士在职状态分析', path: '/statistic/护士在职状态分析', component: <span>护士在职状态分析</span> },
+    // { name: '护士离职原因分析', path: '/statistic/护士离职原因分析', component: <span>护士离职原因分析</span> },
   ]
-  const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
+  // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 
   let currentRoutePath = store.appStore.history.location.pathname
   let CurrentRoute = leftListPath.find((item) => item.path === currentRoutePath)
-  let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
+  // let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
   return (
     <Con>
       {/* <StatisticLeftList {...props} aa='11' /> */}

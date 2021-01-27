@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import { appStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
@@ -12,7 +12,7 @@ export interface Props {
 export default observer(function BedSituation(props: Props) {
   //
   const [bodyTable, setBodyTable]: any = useState([])
-  const postNurseScheduling = () =>
+  const postNurseScheduling = () => {
     StatisticsApi.postNurseScheduling().then((res) => {
       if (res.data) {
         let addLength = 8 - res.data.length
@@ -24,14 +24,21 @@ export default observer(function BedSituation(props: Props) {
         setBodyTable(res.data)
       }
     })
+  }
 
   useEffect(() => {
-    emitter.addListener('touchState', () => {
-      postNurseScheduling()
-    })
+    emitter.addListener('touchState', postNurseScheduling)
 
-    postNurseScheduling()
+    return () => {
+      emitter.removeListener('touchState', postNurseScheduling)
+    }
   }, [])
+
+  useEffect(() => {
+    postNurseScheduling()
+  }, [appStore.history])
+
+
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
   //   setBodyTable(res.data)
   // })

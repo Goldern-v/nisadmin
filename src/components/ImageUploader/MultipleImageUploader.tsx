@@ -21,6 +21,8 @@ export interface Props {
 export interface State {
   loading: boolean
   src: string[]
+  iptVisible: boolean
+  iptId: string
 }
 
 export default class MultipleImageUploader extends React.Component<Props, State> {
@@ -37,24 +39,34 @@ export default class MultipleImageUploader extends React.Component<Props, State>
 
   public state: State = {
     loading: false,
-    src: []
+    src: [],
+    iptVisible: false,
+    iptId: `file-input-el-${(Math.random() * 1000).toString()}`
   }
 
-  private refInput = React.createRef<HTMLInputElement>()
+  // private refInput = React.createRef<HTMLInputElement>()
 
-  public componentDidMount() {
-    const $input = this.refInput.current
-    if ($input) $input.addEventListener('change', this.onChange)
-  }
+  // public componentDidMount() {
+  //   const $input = this.refInput.current
+  //   if ($input) $input.addEventListener('change', this.onChange)
+  // }
 
-  public componentWillUnmount() {
-    const $input = this.refInput.current
-    if ($input) $input.removeEventListener('change', this.onChange)
-  }
+  // public componentWillUnmount() {
+  //   const $input = this.refInput.current
+  //   if ($input) $input.removeEventListener('change', this.onChange)
+  // }
 
   private open = () => {
-    const $input = this.refInput.current
-    if ($input) $input.click()
+    this.setState({ ...this.state, iptVisible: false })
+    console.log('open')
+
+    setTimeout(() => {
+      this.setState({ ...this.state, iptVisible: true })
+      let iptEl = document.getElementById(this.state.iptId)
+      if (iptEl) iptEl.click()
+    }, 100)
+    // const $input = this.refInput.current
+    // if ($input) $input.click()
   }
 
   private getBase64 = (file: File) => {
@@ -152,7 +164,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
   }
   public render() {
     const { tip, accept, text, preview } = this.props
-    const { loading, src } = this.state
+    const { loading, src, iptVisible, iptId } = this.state
     return (
       <Wrapper>
         {/* {JSON.stringify(src)} */}
@@ -178,13 +190,13 @@ export default class MultipleImageUploader extends React.Component<Props, State>
             list={[item]}
           />
         ))}
-        <Inner onClick={this.onOpen} className="inner">
-          <OriginalInput ref={this.refInput} type='file' accept={accept} multiple={true} />
+        <Inner onClick={() => this.onOpen()} className="inner">
           <React.Fragment>
             <StyledIcon type={loading ? 'loading' : 'plus'} />
             <Text>{text}</Text>
           </React.Fragment>
         </Inner>
+        {iptVisible && <OriginalInput onChange={(e: any) => this.onChange(e)} id={iptId} type='file' accept={accept} multiple={true} />}
         <div style={{ clear: 'both' }} />
         {tip && <Tip className="tip">{tip}</Tip>}
       </Wrapper>

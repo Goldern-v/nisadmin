@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
-export interface Props {}
+export interface Props { }
 
 export default function TwoPage() {
   return (
@@ -55,7 +55,7 @@ const Wrapper = styled.div`
     font-size: 20px;
     text-align: center;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 5px;
   }
   .title-1 {

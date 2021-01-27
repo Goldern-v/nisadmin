@@ -141,7 +141,7 @@ export default observer(function Writings() {
 
   const handleDelete = (row: any) => {
     globalModal.confirm('删除确定', '你确定要删除该记录吗?')
-      .then(() => nurseFilesService.commonDelById('nurseWorkExperience', row.id))
+      .then(() => nurseFilesService.commonDelById('nursePaperExperience', row.id))
       .then(() => getTableData())
   }
 

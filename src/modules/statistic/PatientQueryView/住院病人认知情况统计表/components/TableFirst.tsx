@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 export interface Props {
   showType: string
 }
-export default observer(function BedSituation (props: Props) {
+export default observer(function BedSituation(props: Props) {
   // 
   const [bodyTable, setBodyTable] = useState([{}])
   const postNurseScheduling = () =>
@@ -26,7 +26,7 @@ export default observer(function BedSituation (props: Props) {
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
   //   setBodyTable(res.data)
   // })
-  function trClickChange (e: any) {
+  function trClickChange(e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
     allTr.forEach((item: any) => {

@@ -156,7 +156,7 @@ export default class NurseFilesService extends BaseApiService {
     nurseFileDetailViewModal.pageSpinning = true;
 
     let url = `/nurseContinuingEducation/findByEmpNoSubmit/${empNo}`
-    if (appStore.selfNurseFile)`/nurseContinuingEducation/findByEmpNo/${empNo}`
+    if (appStore.selfNurseFile) url = `/nurseContinuingEducation/findByEmpNo/${empNo}`
 
     return this.get(url).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;

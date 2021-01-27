@@ -1,5 +1,78 @@
 
+const routeList = [
+  {
+    path: '业务模块',
+    title: '业务模块',
+    redict: '',
+    collapsable: false,
+    sidebarDepth: 2,
+    children: [
+      '首页',
+      '登录'
+    ]
+  }
+]
 
+const createNav = (routeList) => (
+  routeList.map((routeItem) => ({
+    text: routeItem.title,
+    items: routeItem.children.map((child) => ({
+      text: child === '' ? redict || 'Index' : child,
+      link: `/${routeItem.path}/${child}`
+    }))
+  }))
+)
+
+const createSideBar = (routeList) => {
+  let routeObj = {}
+
+  for (let i = 0; i < routeList.length; i++) {
+    const routeItem = routeList[i]
+
+    const { path, children, ...sidebarCfg } = routeItem
+
+    if (path)
+      routeObj[`/${path}/`] = [
+        {
+          children: children.map((childItem) => formatRoute(childItem, childItem.redict)),
+          ...sidebarCfg,
+        }
+      ]
+  }
+
+  return routeObj
+}
+
+const formatRoute = (route, indexTitle) => {
+  let title = route
+  let maxLength = 32
+  if (route === '') title = indexTitle || 'Index'
+
+  if (getByteLen(title) > maxLength) {
+    let orginTitle = title
+    let currentLength = 0
+    let appendIdx = 0
+
+    title = ''
+
+    while (currentLength <= maxLength) {
+      let target = orginTitle[appendIdx]
+
+      title += target
+
+      if (target.match(/[^\x00-\xff]/ig)) {
+        currentLength += 2
+      } else {
+        currentLength += 1
+      }
+      appendIdx++
+    }
+
+    title += '...'
+  }
+
+  return [route, title]
+}
 
 const getByteLen = (val) => {
   var len = 0;
@@ -24,7 +97,8 @@ module.exports = {
   themeConfig: {
     displayAllHeaders: true,
     nav: [
-      // { text: 'Home', link: '/' },
+      { text: '首页', link: '/' },
+      ...createNav(routeList)
       // {
       //   text: 'React',
       //   items: reactRouterList
@@ -34,15 +108,16 @@ module.exports = {
       //     }))
       // },
     ],
-    sidebar: {
-      // '/react/': [
-      //   {
-      //     title: 'React',
-      //     collapsable: false,
-      //     sidebarDepth: 2,
-      //     children: reactRouterList.map((route) => formatRoute(route, '介绍'))
-      //   }
-      // ]
-    }
+    sidebar: createSideBar(routeList)
+    // {
+    // '/react/': [
+    //   {
+    //     title: 'React',
+    //     collapsable: false,
+    //     sidebarDepth: 2,
+    //     children: reactRouterList.map((route) => formatRoute(route, '介绍'))
+    //   }
+    // ]
+    // }
   }
 }

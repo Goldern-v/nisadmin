@@ -257,7 +257,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`资格名称`} name='qualificationName'>
-              <DatePicker />
+              <Input />
             </Form.Field>
           </Col>
         </Row>
