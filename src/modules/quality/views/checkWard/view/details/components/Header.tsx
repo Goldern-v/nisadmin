@@ -124,7 +124,7 @@ export default function Header(props: Props) {
         </div>
         <div className="topHeaderStatus">
           状态：
-          <span style={{ color: "#6767ff" }}>{Title.nextNodePendingName}</span>
+          <span style={{ color: "#6767ff" }}>{Title.finish ? '已结束' : Title.nextNodePendingName}</span>
         </div>
       </TopHeader>
       <hlbModal.Component />
