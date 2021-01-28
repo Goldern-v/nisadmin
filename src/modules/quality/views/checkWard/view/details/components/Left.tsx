@@ -25,7 +25,7 @@ export default function Left(props: Props) {
         </div>
         <div className="boxRight">
           <div>检查者：{messageBoxData.srName}</div>
-          <div>状态：{messageBoxData.nextNodePendingName}</div>
+          <div>状态：{messageBoxData.finish ? '已结束' : messageBoxData.nextNodePendingName}</div>
         </div>
       </MessageBox>
       <ContentCon>
