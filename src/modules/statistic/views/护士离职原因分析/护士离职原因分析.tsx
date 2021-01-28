@@ -64,6 +64,7 @@ export default observer(function 护士离职原因分析() {
       title: '离职原因',
       dataIndex: 'remark',
       align: 'left',
+      render: (text: any, record: any) => `${record.empName}: ${text || '(无)'}`
     },
   ]
 

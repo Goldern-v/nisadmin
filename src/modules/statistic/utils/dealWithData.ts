@@ -11,6 +11,9 @@ export const delWithResData = (options?: {
 }) => {
   let { dataList, baseColums, otherName } = options || {}
   if (!dataList) dataList = []
+  //过滤空科室数据
+  dataList = dataList.filter((item: any) => item.DEPTNAME)
+
   if (!baseColums) baseColums = ['NUM', 'DEPTNAME']
   if (!otherName) otherName = '其他'
 

@@ -403,7 +403,7 @@ function WardRegisterRouter() {
       }
     },
     {
-      title: "生命支持仪器管理",
+      title: "(特殊科室)生命支持仪器管理",
       icon: <SMZC />,
       children: [
         {
