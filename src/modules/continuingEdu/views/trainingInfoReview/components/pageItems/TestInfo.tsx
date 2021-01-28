@@ -63,10 +63,10 @@ export default function TestInfo(props: Props) {
             return (
               <div>
                 <div className="label w-106" />
-                <div style={{fontWeight: 900}}>试卷{index + 1}</div>
+                <div style={{ fontWeight: 900 }}>试卷{index + 1}</div>
                 <div className="label w-106" />
                 <div className="content">
-                  卷面题目数共 {info.questionCount} 题{" "}
+                  卷面题目数共 {item.questionCount} 题{" "}
                   {info.randomOrderQue ? "随机显示题目顺序" : ""}{" "}
                   {info.randomOrderQItem ? "随机显示选项顺序" : ""}
                 </div>
