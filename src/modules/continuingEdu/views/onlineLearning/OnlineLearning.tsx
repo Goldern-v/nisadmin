@@ -150,7 +150,7 @@ const Wrapper = styled.div`
 `;
 const HeadCon = styled.div`
   margin: 0 10px 10px 0;
-  height： 40px;
+  height: 40px;
   overflow: hidden
 `;
 const MainCon = styled.div`

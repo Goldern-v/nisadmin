@@ -29,7 +29,9 @@ import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import 培训统计分析 from './views/allMenus/AllMenus'
+import 培训手册 from './views/trainingManual/TrainingManual'
 // import FormReview from "./views/trainingSetting/formReview/FormReview";
+// 厚街资质准入表单
 import FormApply from "./views/trainingSetting/formApply/FormApply";
 //题库管理
 import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
@@ -113,6 +115,13 @@ export default function ContinuingEdu(props: Props) {
       component: 在线学习,
       hide: appStore.HOSPITAL_ID !== "hj"
     },
+    // {
+    //   title: "培训手册",
+    //   icon: <JSGL />,
+    //   path: "/continuingEdu/培训手册",
+    //   component: 培训手册,
+    //   hide: appStore.HOSPITAL_ID !== "hj"
+    // },
     ...appStore.hisMatch({
       map: {
         hj: [
