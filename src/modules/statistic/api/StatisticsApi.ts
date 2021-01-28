@@ -1,6 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import qs from 'qs'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
   public async postNurseScheduling(exportData: any = true) {
@@ -250,6 +251,31 @@ class StatisticsApi extends BaseApiService {
     }
     let trancePostData = this.stringify(postData)
     return this.post(`/patientStatistics/exportExcel`, trancePostData, { responseType: 'blob' })
+  }
+
+  // 统计学历
+  public countEducation(query: any) {
+    return this.post('/countInformation/countEducation', query)
+  }
+
+  // 统计性别
+  public countSex(query: any) {
+    return this.post('/countInformation/countSex', query)
+  }
+
+  // 统计工作年限
+  public countEntryDate(query: any) {
+    return this.post('/countInformation/countEntryDate', query)
+  }
+
+  // 统计在职状态
+  public countStatus(query: any) {
+    return this.post('/countInformation/countStatus', query)
+  }
+
+  // 护士离职原因统计
+  public countLeaveRemark(query: any) {
+    return this.post('/countInformation/countLeaveRemark', query)
   }
 }
 

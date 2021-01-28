@@ -64,6 +64,11 @@ const LEFT_MENU_CONFIG = [
     title: "护理人员统计",
     icon: <HLRYTJ />,
     children: [
+      { title: "护士学历分布", path: "/statistic/护士学历分布", hide: !appStore.isDev },
+      { title: "护士男女分布", path: "/statistic/护士男女分布", hide: !appStore.isDev },
+      { title: "护士工作年限分布", path: "/statistic/护士工作年限分布", hide: !appStore.isDev },
+      { title: "护士在职状态分析", path: "/statistic/护士在职状态分析", hide: !appStore.isDev },
+      { title: "护士离职原因分析", path: "/statistic/护士离职原因分析", hide: !appStore.isDev },
       { title: "护理人员统计", path: "/statistic/护理人员统计" },
       { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
       { title: "科室护士明细表", path: "/statistic/科室护士明细表" },

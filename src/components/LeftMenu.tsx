@@ -47,7 +47,7 @@ export default observer(function LeftMenu(props: Props) {
               title={
                 <span>
                   {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
-                  <span>{item.title}</span>
+                  <span title={item.title}>{item.title}</span>
                   {item.addIcon && (
                     <AddIcon
                       onClick={(e: any) => {
@@ -69,7 +69,7 @@ export default observer(function LeftMenu(props: Props) {
             <Menu.Item key={item.path}>
               <span>
                 {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
-                <span>{item.title}</span>
+                <span title={item.title}>{item.title}</span>
                 {item.addIcon && (
                   <AddIcon
                     onClick={(e: any) => {

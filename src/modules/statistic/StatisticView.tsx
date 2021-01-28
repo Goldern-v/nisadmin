@@ -28,6 +28,16 @@ import DepartmentVacationByMonthView from './views/departmentVacationByMonth/Dep
 import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/DepartmentHolidayScheduleView'
 //护理质量统计
 import 护理质量统计查询 from 'src/modules/quality/views/qcFormNys/护理质量统计查询'
+//护士学历分布
+import 护士学历分布 from './views/护士学历分布/护士学历分布'
+//护士男女分布
+import 护士男女分布 from './views/护士男女分布/护士男女分布'
+//护士在职状态分析
+import 护士工作年限分布 from './views/护士工作年限分布/护士工作年限分布'
+//护士在职状态分析
+import 护士在职状态分析 from './views/护士在职状态分析/护士在职状态分析'
+//护士离职原因分析
+import 护士离职原因分析 from './views/护士离职原因分析/护士离职原因分析'
 
 // 全院护理人员一览表
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
@@ -84,13 +94,14 @@ export default function StatisticView() {
     },
     { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
     { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
-    //// 患者查询统计   大块
+    //患者查询统计   大块
     { name: '护理质量统计', path: '/statistic/护理质量统计', component: 护理质量统计查询 },
-    // { name: '护士学历分布', path: '/statistic/护士学历分布', component: <span>护士学历分布</span> },
-    // { name: '护士男女分布', path: '/statistic/护士男女分布', component: <span>护士男女分布</span> },
-    // { name: '护士工作年限分布', path: '/statistic/护士工作年限分布', component: <span>护士工作年限分布</span> },
-    // { name: '护士在职状态分析', path: '/statistic/护士在职状态分析', component: <span>护士在职状态分析</span> },
-    // { name: '护士离职原因分析', path: '/statistic/护士离职原因分析', component: <span>护士离职原因分析</span> },
+    //2021-01-28 南医三 统计需求
+    { name: '护士学历分布', path: '/statistic/护士学历分布', component: 护士学历分布 },
+    { name: '护士男女分布', path: '/statistic/护士男女分布', component: 护士男女分布 },
+    { name: '护士工作年限分布', path: '/statistic/护士工作年限分布', component: 护士工作年限分布 },
+    { name: '护士在职状态分析', path: '/statistic/护士在职状态分析', component: 护士在职状态分析 },
+    { name: '护士离职原因分析', path: '/statistic/护士离职原因分析', component: 护士离职原因分析 },
   ]
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

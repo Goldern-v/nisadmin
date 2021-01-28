@@ -209,7 +209,7 @@ function WardRegisterRouter() {
         //   }
         // },
         {
-          title: "仪器设备使用时间登记表",
+          title: "(特殊科室)仪器设备使用时间登记表",
           path: "/wardRegister/QCRG_11_2",
           component: { ...重点患者评估登记本 },
           payload: {
@@ -407,7 +407,7 @@ function WardRegisterRouter() {
       icon: <SMZC />,
       children: [
         {
-          title: "生命支持仪器交接登记",
+          title: "(特殊科室)生命支持仪器交接登记",
           path: "/wardRegister/QCRG_20_1",
           component: { ...重点患者评估登记本 },
           payload: {
