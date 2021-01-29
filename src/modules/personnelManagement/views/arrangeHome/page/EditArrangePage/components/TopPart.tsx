@@ -19,7 +19,7 @@ import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
 import AsClassModal from "../../../modal/AsClassModal";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function TopPart() {
   const [date, setDate] = useState([] as any[]);
@@ -82,7 +82,7 @@ export default observer(function TopPart() {
   const handlePush = () => {
     Modal.confirm({
       title: "提示",
-      content: "确定需要发布排班信息吗？",
+      content: appStore.HOSPITAL_ID == 'nys' ? "请再次确认审核无误，并发布排班信息吗？" : "确定需要发布排班信息吗？",
       okText: "确定",
       okType: "danger",
       cancelText: "取消",
@@ -166,9 +166,9 @@ export default observer(function TopPart() {
               value={
                 selectViewModal.params.startTime
                   ? [
-                      moment(selectViewModal.params.startTime),
-                      moment(selectViewModal.params.endTime)
-                    ]
+                    moment(selectViewModal.params.startTime),
+                    moment(selectViewModal.params.endTime)
+                  ]
                   : undefined
               }
               onChange={(dates: any) => {
@@ -200,9 +200,9 @@ export default observer(function TopPart() {
                   let _date = date[0].format("YYYY-MM-DD");
                   if (
                     date[0].format("YYYY-MM-DD") ==
-                      date[0].startOf("week").format("YYYY-MM-DD") ||
+                    date[0].startOf("week").format("YYYY-MM-DD") ||
                     date[1].format("YYYY-MM-DD") ==
-                      date[0].endOf("week").format("YYYY-MM-DD")
+                    date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
                     return [date[0].subtract(7, "d"), date[1].subtract(7, "d")];
                   }
@@ -224,9 +224,9 @@ export default observer(function TopPart() {
                   let weeks = date[0].week();
                   if (
                     date[0].format("YYYY-MM-DD") ==
-                      date[0].startOf("week").format("YYYY-MM-DD") ||
+                    date[0].startOf("week").format("YYYY-MM-DD") ||
                     date[1].format("YYYY-MM-DD") ==
-                      date[0].endOf("week").format("YYYY-MM-DD")
+                    date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
                     return [date[0].add(7, "d"), date[1].add(7, "d")];
                   }
@@ -336,7 +336,7 @@ export default observer(function TopPart() {
             onClick={handlePush}
             disabled={sheetViewModal.isPush}
           >
-            发布
+            {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
         </div>
         {appStore.HOSPITAL_ID == "wh" && (
