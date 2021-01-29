@@ -131,6 +131,13 @@ const columns: ColumnProps<any>[] = [
     align: "center"
   },
   {
+    title: "执业证书有效截止日期",
+    dataIndex: "zyzsEffectiveUpDate",
+    key: "zyzsEffectiveUpDate",
+    width: 120,
+    align: "center"
+  },
+  {
     title: "来院工作时间",
     dataIndex: "goHospitalWorkDate",
     key: "goHospitalWorkDate",
@@ -150,6 +157,14 @@ const columns: ColumnProps<any>[] = [
     key: "enrolDate",
     width: 120,
     align: "center"
+  },
+  {
+    title: "是否返聘员工",
+    dataIndex: "hireEmployees",
+    key: "hireEmployees",
+    width: 60,
+    align: "center",
+    render: (text: any) => text == '1' ? '是' : '否'
   },
   {
     title: "操作",

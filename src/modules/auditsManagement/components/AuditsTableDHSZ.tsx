@@ -18,6 +18,7 @@ export interface Props {
 
 export default function AuditsTableDHSZ(props: Props) {
   let { type } = props
+
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
