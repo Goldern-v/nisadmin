@@ -47,7 +47,7 @@ import NurseList from './views/nursingStatistics/nurseList/NurseList'
 // import TableModel from './common/TableModel'
 // export interface Props extends RouteComponentProps<{ type?: string }> {}
 
-//// 患者查询统计   大块
+// 患者查询统计   大块
 // 住院病人认知情况统计表
 // import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
 
