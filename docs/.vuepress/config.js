@@ -8,7 +8,8 @@ const routeList = [
     sidebarDepth: 2,
     children: [
       '首页',
-      '登录'
+      '登录',
+      '病区日志',
     ]
   }
 ]
@@ -99,25 +100,7 @@ module.exports = {
     nav: [
       { text: '首页', link: '/' },
       ...createNav(routeList)
-      // {
-      //   text: 'React',
-      //   items: reactRouterList
-      //     .filter((route) => !(route instanceof Array)).map((route) => ({
-      //       text: route,
-      //       link: `/react/${route}`
-      //     }))
-      // },
     ],
     sidebar: createSideBar(routeList)
-    // {
-    // '/react/': [
-    //   {
-    //     title: 'React',
-    //     collapsable: false,
-    //     sidebarDepth: 2,
-    //     children: reactRouterList.map((route) => formatRoute(route, '介绍'))
-    //   }
-    // ]
-    // }
   }
 }
