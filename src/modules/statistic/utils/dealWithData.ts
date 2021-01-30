@@ -11,11 +11,9 @@ export const delWithResData = (options?: {
 }) => {
   let { dataList, baseColums, otherName } = options || {}
   if (!dataList) dataList = []
-  //过滤空科室数据
-  dataList = dataList.filter((item: any) => item.DEPTNAME)
 
   if (!baseColums) baseColums = ['NUM', 'DEPTNAME']
-  if (!otherName) otherName = '其他'
+  let _otherName = otherName || '其他'
 
   let newData = [] as any[]
   let newChartData = [] as any[]
@@ -30,9 +28,31 @@ export const delWithResData = (options?: {
       newChartData.push({ type: key, value: val || 0 })
   }
 
-  let extraKeys: any[] = []
   if (dataList && dataList.length > 0) {
+    let extraKeys: any[] = []
+    //获取统计分类
     extraKeys = Object.keys(dataList[0]).filter((key: string) => (baseColums || []).indexOf(key) < 0)
+    //计算未统计人数
+    //过滤空科室数据
+    dataList = dataList.filter((item: any) => item.DEPTNAME)
+      .map((item: any) => {
+
+        let remainVal = extraKeys.reduce((prev, current) => {
+          if (typeof prev == 'number')
+            return prev + item[current] || 0
+          else
+            return (item[prev] || 0) + (item[current] || 0)
+        })
+
+        let restVal = (item.NUM || 0) - remainVal
+        if (restVal < 0) restVal = 0
+
+        return { ...item, [_otherName]: restVal }
+      })
+
+    //统计完未统计人数，把 其他otherName分类加入
+    extraKeys.push(_otherName)
+
     newExtraColumns = extraKeys.map((key: string) => ({
       title: key,
       align: 'center',
@@ -68,19 +88,6 @@ export const delWithResData = (options?: {
         //设置图表item
         if (newItem.DEPTNAME !== '全院')
           setChartDataItem(key, newItem[key])
-      }
-
-      //统计无学历人数
-      if (newItem.DEPTNAME !== '全院') {
-        let restVal = (newItem.NUM || 0) - extraKeys.reduce((prev, current) => {
-          if (typeof prev == 'number')
-            return prev + newItem[current] || 0
-          else
-            return newItem[prev] || 0 + newItem[current] || 0
-        })
-
-        if (restVal > 0)
-          setChartDataItem(otherName, restVal)
       }
 
       newData.push(newItem)

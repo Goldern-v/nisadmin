@@ -121,6 +121,7 @@ export default observer(function 护士工作年限分布() {
       </div>
       {!chartVisible && <BaseTable
         surplusHeight={300}
+        surplusWidth={200}
         columns={columns}
         dataSource={data} />}
       {chartVisible && <ChartCon style={{ height: `${chartHeight || 0}px` }}>

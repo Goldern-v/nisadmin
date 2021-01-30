@@ -290,7 +290,7 @@ export default observer(function ImportModal(props: Props) {
 
     /** 学历 */
     service.commonApiService
-      .dictInfo("user_new_highest_education ")
+      .dictInfo("user_new_highest_education")
       .then(res => {
         setEducationList(res.data);
       });
