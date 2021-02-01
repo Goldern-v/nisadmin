@@ -11,11 +11,16 @@ import Axios from 'axios'
 import ReactZmage from 'react-zmage'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import createModal from 'src/libs/createModal'
+import { continuningEduAuth } from 'src/modules/continuingEdu/data/continuningEduAuth'
+import { observer } from 'mobx-react'
 
 export interface Props { }
 
-export default function 管理工具学习合集() {
+export default observer(function 管理工具学习合集() {
   const { history } = appStore
+  /**操作权限 */
+  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
@@ -167,7 +172,7 @@ export default function 管理工具学习合集() {
       render: (text: any, record: any, index: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {authStore.isNotANormalNurse && (
+          {editAuth && (
             <React.Fragment>
               <span onClick={() => handleEdit(record)}>编辑</span>
               <span onClick={() => handleDelete(record)}>删除</span>
@@ -281,7 +286,7 @@ export default function 管理工具学习合集() {
       >
         搜索
       </Button>
-      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
+      {editAuth && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTable
@@ -307,7 +312,7 @@ export default function 管理工具学习合集() {
     </MainCon>
     <previewModal.Component />
   </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   padding: 15px;

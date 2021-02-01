@@ -77,7 +77,6 @@ export default observer(function 护士离职原因分析() {
       .then((res: any) => {
         setLoading(false)
         if (res.data) {
-          console.log(res.data)
 
           let newData = []
 
@@ -148,6 +147,7 @@ export default observer(function 护士离职原因分析() {
       <div className="main-title">护士离职原因分析</div>
       <div className="sub-title">统计日期：{query.startDate} 至 {query.endDate}</div>
       <BaseTable
+        surplusWidth={500}
         surplusHeight={320}
         columns={columns}
         dataSource={data} />

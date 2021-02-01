@@ -329,14 +329,22 @@ export default observer(function WardLogEdit(props: any) {
       <div className="editor-contain">
         <Spin spinning={loading}>
           <div className="title-input">{title}</div>
+          <div className="sub-title">
+            {editList.filter((item: any) => item.type === '7').map((item: any, idx: number) => <div key={idx}>{item.content}</div>)}
+          </div>
           <div className="hr"></div>
-          {editList.map((item: any, idx: number) =>
-            <div className="edit-row" key={idx}>
-              <div className="title">{item.name}</div>
-              <div className="content">
-                {editContent(item, idx)}
+          {editList.map((item: any, idx: number) => {
+            if (item.type === '7') {
+              return ''
+            } else {
+              return <div className="edit-row" key={idx}>
+                <div className="title">{item.name}</div>
+                <div className="content">
+                  {editContent(item, idx)}
+                </div>
               </div>
-            </div>)}
+            }
+          })}
           <div className="edit-row">
             <div className="title">备注</div>
             <div className="content">
@@ -474,6 +482,10 @@ const Wrapper = styled.div`
         font-family: 'braft-icons' !important;
         resize: none;
         text-align:center;
+      }
+      .sub-title{
+        color: #999;
+        word-break: break-all;
       }
       .hr{
         margin: 10px 0;

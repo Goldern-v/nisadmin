@@ -13,7 +13,7 @@ import BaseLayout from "../components/BaseLayout";
 import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal);
   let [tableData, setTableData]: [any, any] = useState([]);
@@ -108,23 +108,27 @@ export default observer(function BaseInfo() {
                   最高学历: `highestEducation`
                 },
                 {
+                  护士执业证书编号: `zyzsNumber`,
+                  护士执业证书有效截止日期: `zyzsNumber`,
+                },
+                {
                   技术职称: `newTitle`,
-                  护士执业证书编号: `zyzsNumber`
-                },
-                {
                   身份证号: `cardNumber`,
-                  学术任职: `socialGroup`
                 },
                 {
+                  学术任职: `socialGroup`,
                   手机号: `phone`,
-                  家庭住址: `address`
                 },
                 {
+                  家庭住址: `address`,
                   来院工作时间: "goHospitalWorkDate",
-                  工作编制: "workConversion"
                 },
                 {
+                  工作编制: "workConversion",
                   纳编时间: "enrolDate"
+                },
+                {
+                  是否返聘员工: "hireEmployees"
                 }
               ],
               fileData: [
@@ -133,10 +137,10 @@ export default observer(function BaseInfo() {
                 },
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(",").map((item: any, index: number) => {
-                      return {
-                        ["执业证书" + (index + 1)]: item
-                      };
-                    })
+                    return {
+                      ["执业证书" + (index + 1)]: item
+                    };
+                  })
                   : [])
               ],
               allData: info
@@ -183,23 +187,27 @@ export default observer(function BaseInfo() {
           最高学历: data.highestEducation
         },
         {
+          护士执业证书编号: data.zyzsNumber,
+          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+        },
+        {
           技术职称: data.newTitle,
-          护士执业证书编号: data.zyzsNumber
-        },
-        {
           身份证号: data.cardNumber,
-          学术任职: data.socialGroup
         },
         {
+          学术任职: data.socialGroup,
           手机号: data.phone,
-          家庭住址: data.address
         },
         {
+          家庭住址: data.address,
           来院工作时间: data.goHospitalWorkDate,
-          工作编制: data.workConversion
         },
         {
+          工作编制: data.workConversion,
           纳编时间: data.enrolDate
+        },
+        {
+          是否返聘员工: data.enrolDate == '1' ? '是' : '否'
         }
       ]);
     });
@@ -235,12 +243,12 @@ export default observer(function BaseInfo() {
                     alt=""
                   />
                 ) : (
-                  <img
-                    className="head-img"
-                    src={require("../../../images/护士默认头像.png")}
-                    alt=""
-                  />
-                )}
+                    <img
+                      className="head-img"
+                      src={require("../../../images/护士默认头像.png")}
+                      alt=""
+                    />
+                  )}
               </td>
             </tr>
             {tableData.map((obj: any, index: number) => (
@@ -269,8 +277,8 @@ export default observer(function BaseInfo() {
                   <Zimage src={item} alt="" key={index} />
                 ))
             ) : (
-              <img src={require("../../../images/证件空态度.png")} alt="" />
-            )}
+                <img src={require("../../../images/证件空态度.png")} alt="" />
+              )}
           </div>
         </ZyzsCon>
       </ScrollCon>

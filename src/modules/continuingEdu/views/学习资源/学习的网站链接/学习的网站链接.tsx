@@ -8,10 +8,12 @@ import EditModal from './components/EditModal'
 import { localityService } from './api/LocalityService'
 import { message } from 'antd/es'
 import { authStore } from 'src/stores'
+import { continuningEduAuth } from 'src/modules/continuingEdu/data/continuningEduAuth'
+import { observer } from 'mobx-react'
 
 export interface Props { }
 
-export default function 学习的网站链接() {
+export default observer(function 学习的网站链接() {
   const [query, setQuery] = useState({
     keyWord: '',
     pageSize: 20,
@@ -22,6 +24,8 @@ export default function 学习的网站链接() {
 
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
+  /**操作权限 */
+  const operateAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
 
   const [editVisible, setEditVisible] = useState(false)
   const [editRecord, setEditRecord] = useState({} as any)
@@ -67,7 +71,7 @@ export default function 学习的网站链接() {
       align: "center",
       width: 100,
       render: (text: any, record: any, index: number) => {
-        if (authStore.isNotANormalNurse)
+        if (operateAuth)
           return <DoCon>
             <span onClick={() => handleEdit(record)}>编辑</span>
             <span onClick={() => handleDelete(record)}>删除</span>
@@ -157,7 +161,7 @@ export default function 学习的网站链接() {
       >
         搜索
       </Button>
-      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
+      {operateAuth && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTable
@@ -189,7 +193,7 @@ export default function 学习的网站链接() {
         setEditVisible(false)
       }} />
   </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   padding: 15px;

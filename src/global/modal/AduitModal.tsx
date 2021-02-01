@@ -59,13 +59,32 @@ export default function AduitModal(props: Props) {
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
             if (!keys[1]) keys[1] = ''
-            let sexFormat: any = {
-              '0': '男',
-              '1': '女'
+
+            //名称
+            let title0 = keys[0]
+            let title1 = keys[1]
+            //名称对应的字段key
+            let dataIndex0 = item[title0]
+            let dataIndex1 = item[title1]
+            //名称对应的字段value
+            let val0 = data[dataIndex0]
+            let val1 = data[dataIndex1]
+
+            let formatRules = {
+              'sex': (val: any) => val == '0' ? '男' : '女',
+              'hireEmployees': (val: any) => val == '1' ? '是' : '否',
+            } as { [p: string]: (val: any) => any }
+
+            let formatVal = (dataIndex: string, val: any) => {
+              let rule = formatRules[dataIndex] || null
+              if (rule) return rule(val || '')
+
+              return val
             }
+
             return {
-              [keys[0]]: keys[0] == '性别' ? sexFormat[data[item[keys[0]]]] || '' : data[item[keys[0]]],
-              [keys[1]]: data[item[keys[1]]]
+              [title0]: formatVal(dataIndex0, val0),
+              [title1]: formatVal(dataIndex1, val1)
             }
           })
           setTableData(tableData)

@@ -10,14 +10,18 @@ import moment from 'moment'
 import deptNameList from './utils/deptNameList'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import PreviewOrEditModal from './components/PreviewOrEditModal'
+import { continuningEduAuth } from 'src/modules/continuingEdu/data/continuningEduAuth'
+import { observer } from 'mobx-react'
 
 const Option = Select.Option
 
 export interface Props { }
 
-export default function 典型案例库() {
+export default observer(function 典型案例库() {
+  /**操作权限 */
+  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
 
-  const { history } = appStore
+  // const { history } = appStore
   const [query, setQuery] = useState({
     medicalSubject: '',
     collectTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
@@ -112,17 +116,16 @@ export default function 典型案例库() {
       align: "center",
       width: 120,
       render: (text: any, record: any, index: number) => {
+        // 当前条目是否可编辑
         const editable = () => {
-          if (
-            [2, 4].indexOf(record.status) < 0
-            && (
-              authStore.isNotANormalNurse
-              || record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()
-            )
-          ) return true
+          const isEditStatus = [2, 4].indexOf(record.status) < 0
+          const isCreater = record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()
+
+          if (isEditStatus && (editAuth || isCreater)) return true
 
           return false
         }
+
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
           {editable() && (
@@ -295,7 +298,7 @@ export default function 典型案例库() {
       params={modalParams}
       editable={modalEditable} />
   </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   padding: 15px;

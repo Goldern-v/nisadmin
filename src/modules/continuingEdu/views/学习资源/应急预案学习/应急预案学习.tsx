@@ -12,13 +12,18 @@ import { fileDownload, getFilePrevImg, getFileType } from 'src/utils/file/file'
 import ReactZmage from 'react-zmage'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import createModal from 'src/libs/createModal'
+import { continuningEduAuth } from 'src/modules/continuingEdu/data/continuningEduAuth'
+import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
 
 export interface Props { }
 
-export default function 应急预案学习() {
+export default observer(function 应急预案学习() {
   const { history, queryObj, match } = appStore
+  /**操作权限 */
+  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+
   const [query, setQuery] = useState({
     keyWord: '',
     status: '',
@@ -127,7 +132,7 @@ export default function 应急预案学习() {
       render: (text: any, record: any, index: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {authStore.isNotANormalNurse && (
+          {editAuth && (
             <React.Fragment>
               <span onClick={() => handleEdit(record)}>编辑</span>
               <span onClick={() => handleDelete(record)}>删除</span>
@@ -291,7 +296,7 @@ export default function 应急预案学习() {
       >
         搜索
       </Button>
-      {authStore.isNotANormalNurse && <Button className="sub" onClick={handleAdd}>添加</Button>}
+      {editAuth && <Button className="sub" onClick={handleAdd}>添加</Button>}
     </HeaderCon>
     <MainCon>
       <BaseTabs
@@ -313,7 +318,7 @@ export default function 应急预案学习() {
     </MainCon>
     <previewModal.Component />
   </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   padding: 15px;

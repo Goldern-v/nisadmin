@@ -57,7 +57,7 @@ export default observer(function 护士在职状态分析() {
     },
     {
       title: '护士人数',
-      width: 180,
+      width: 60,
       dataIndex: 'NUM',
       align: 'center',
     },
@@ -151,6 +151,7 @@ export default observer(function 护士在职状态分析() {
         </Radio.Group>
       </div>
       {!chartVisible && <BaseTable
+        surplusWidth={500}
         surplusHeight={320}
         columns={columns}
         dataSource={data} />}

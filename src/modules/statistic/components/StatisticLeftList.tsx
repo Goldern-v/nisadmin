@@ -66,51 +66,46 @@ const LEFT_MENU_CONFIG = [
     children: [
       {
         title: "护士学历分布", path: "/statistic/护士学历分布",
-        // hide: !appStore.isDev 
       },
       {
         title: "护士男女分布", path: "/statistic/护士男女分布",
-        // hide: !appStore.isDev 
       },
       {
         title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
-        // hide: !appStore.isDev 
       },
       {
         title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
-        // hide: !appStore.isDev 
       },
       {
         title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
-        // hide: !appStore.isDev 
       },
       { title: "护理人员统计", path: "/statistic/护理人员统计" },
       { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
       { title: "科室护士明细表", path: "/statistic/科室护士明细表" },
-      {
-        title: "科室护士结构信息汇总表",
-        path: "/statistic/科室护士结构信息汇总表"
-      },
-      { title: "护士离职率", path: "/statistic/护士离职率" }
+      // {
+      //   title: "科室护士结构信息汇总表",
+      //   path: "/statistic/科室护士结构信息汇总表"
+      // },
+      // { title: "护士离职率", path: "/statistic/护士离职率" }
     ]
   },
-  {
-    title: "患者查询统计",
-    icon: <HZCXTJ />,
-    children: [
-      { title: "患者查询", path: "/statistic/患者查询" },
-      {
-        title: "住院病人认知情况统计表",
-        path: "/statistic/住院病人认知情况统计表"
-      },
-      { title: "床位使用情况统计表", path: "/statistic/床位使用情况统计表" },
-      { title: "病区流转", path: "/statistic/病区流转" },
-      { title: "在院患者病情统计表", path: "/statistic/在院患者病情统计表" },
-      { title: "出院病人统计表", path: "/statistic/出院病人统计表" },
-      { title: "住院执行单统计表", path: "/statistic/住院执行单统计表" },
-      { title: "患者分布统计表", path: "/statistic/患者分布统计表" }
-    ]
-  },
+  // {
+  //   title: "患者查询统计",
+  //   icon: <HZCXTJ />,
+  //   children: [
+  //     { title: "患者查询", path: "/statistic/患者查询" },
+  //     {
+  //       title: "住院病人认知情况统计表",
+  //       path: "/statistic/住院病人认知情况统计表"
+  //     },
+  //     { title: "床位使用情况统计表", path: "/statistic/床位使用情况统计表" },
+  //     { title: "病区流转", path: "/statistic/病区流转" },
+  //     { title: "在院患者病情统计表", path: "/statistic/在院患者病情统计表" },
+  //     { title: "出院病人统计表", path: "/statistic/出院病人统计表" },
+  //     { title: "住院执行单统计表", path: "/statistic/住院执行单统计表" },
+  //     { title: "患者分布统计表", path: "/statistic/患者分布统计表" }
+  //   ]
+  // },
   ...appStore.hisMatch({
     map: {
       nys: [

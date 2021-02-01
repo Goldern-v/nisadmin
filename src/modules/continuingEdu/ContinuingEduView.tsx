@@ -3,6 +3,8 @@ import React, { useState, useLayoutEffect, lazy, Suspense } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
+import { continuningEduAuth } from './data/continuningEduAuth'
+
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
 import { ReactComponent as JXJH } from "./assets/icon_svg/JXJH.svg";
@@ -661,8 +663,25 @@ export default function ContinuingEdu(props: Props) {
 
   // 初始化动态菜单 菜单权限
   useLayoutEffect(() => {
-    getAuth();
-    getList();
+    let baseInitMethods = () => {
+      getAuth();
+      getList();
+    }
+
+    //初始化的方法
+    let initMethods = appStore.hisMatch({
+      map: {
+        hj: () => {
+          baseInitMethods()
+          //初始化学习培训权限
+          continuningEduAuth.initAuth()
+        },
+        other: () => baseInitMethods()
+      }
+    })
+
+    initMethods()
+
   }, [props.history.location.pathname]);
 
   // 获取icon

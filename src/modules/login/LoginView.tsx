@@ -20,7 +20,7 @@ export default withRouter(function LoginView(props: Props) {
   const { location, history } = props;
   const search = qs.parse(location.search.replace('?', ''))
   let formatInfoStr = search.formatInfo
-  console.log(formatInfoStr)
+  // console.log(formatInfoStr)
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
@@ -43,7 +43,8 @@ export default withRouter(function LoginView(props: Props) {
       setPassword("");
     }
     if (userLoginInfoMap[username]) {
-      setPassword(userLoginInfoMap[username]);
+      setPassword(userLoginInfoMap[username])
+      setIsSavePassword(true)
     }
   }, [username]);
 

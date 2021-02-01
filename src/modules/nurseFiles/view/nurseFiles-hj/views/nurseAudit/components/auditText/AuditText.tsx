@@ -8,15 +8,16 @@ interface Props {
   needAudit: boolean
 }
 
-export default function AuditText (props: Props) {
+export default function AuditText(props: Props) {
   let { row, getTableData } = props
-  
+
+
 
   return props.needAudit ? (
     <Wrapper onClick={() => Format(row, getTableData)}>审核</Wrapper>
   ) : (
-    <Wrapper onClick={() => Format(row, getTableData)}>查看</Wrapper>
-  )
+      <Wrapper onClick={() => Format(row, getTableData)}>查看</Wrapper>
+    )
 }
 const Wrapper = styled.div`
   font-size: 12px;

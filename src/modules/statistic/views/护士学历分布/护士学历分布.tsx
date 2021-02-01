@@ -44,7 +44,7 @@ export default observer(function 护士学历分布() {
     },
     {
       title: '护士人数',
-      width: 180,
+      width: 60,
       dataIndex: 'NUM',
       align: 'center',
     },
@@ -120,6 +120,7 @@ export default observer(function 护士学历分布() {
         </Radio.Group>
       </div>
       {!chartVisible && <BaseTable
+        surplusWidth={500}
         surplusHeight={300}
         columns={columns}
         dataSource={data} />}
