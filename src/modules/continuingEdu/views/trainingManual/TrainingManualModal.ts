@@ -44,12 +44,6 @@ class TrainingManualModal {
     });
   }
 
-  //清空数据
-  cleanInit() {
-    this.knowledgePointDivisionTree = [];
-    this.learningFormTree = [];
-  }
-
   async init() {
     await this.initData();
     await this.allOnload();

@@ -90,7 +90,6 @@ export default function SettingEditModal(props: Props) {
         } else {
           // 新增清空内容，层级职称赋予默认值不可改
           current.clear();
-          trainingManualModal.cleanInit()
           current.setFields({
             nurseHierarchy: trainingManualModal.tabKeyName,
             officialRank: getOfficialRank(trainingManualModal.tabKeyName)
@@ -98,7 +97,7 @@ export default function SettingEditModal(props: Props) {
         }
       }, 100);
     }
-  }, [visible]);
+  }, [visible, formRef]);
 
   // 表单变化函数
   const onFormChange = (name: string, value: any, from: Form) => {
