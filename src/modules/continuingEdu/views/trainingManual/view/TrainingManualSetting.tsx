@@ -2,25 +2,29 @@ import styled from "styled-components";
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Button } from "antd";
-import { trainingManualModal } from './TrainingManualModal'
-import Tabs from './components/Tabs'
-
+import { trainingManualModal } from '../TrainingManualModal'
 import { appStore } from "src/stores";
+import Tabs from '../components/Tabs'
 interface Props { }
 
-export default observer(function TrainingManual(props: Props) {
+export default observer(function TrainingManualSetting(props: Props) {
 
   // 初始化表格数据
   useEffect(() => {
-    trainingManualModal.myOnload()
+    trainingManualModal.allOnload()
   }, [trainingManualModal.tabKey]);
+
+  useEffect(() => {
+    trainingManualModal.init()
+  }, []);
 
   return (
     <Wrapper>
       <Header>
-        <Title>培训手册</Title>
+        <Title>培训清单管理</Title>
         <HandleBtn>
-          <Button type="primary" onClick={() => appStore.history.push(`/trainingManualSetting?nameType=trainingManualSetting`)}>培训清单管理</Button>
+          <Button type="primary" style={{ marginRight: '15px' }} onClick={() => trainingManualModal.modalBtn = true}>添加培训计划</Button>
+          <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </HandleBtn>
       </Header>
       <Content>

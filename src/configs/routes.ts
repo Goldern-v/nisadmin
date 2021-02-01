@@ -166,6 +166,13 @@ const NotificationManagementView = lazy(() =>
     "src/modules/continuingEdu/views/notificationManagement/view/CheckResults"
   )
 );
+// 学习培训--厚街培训手册
+const TrainingManualSetting = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/trainingManual/view/TrainingManualSetting"
+  )
+);
+
 // 武汉首页——学习培训
 const AllEduData = lazy(() =>
   import("src/modules/home-wh/components/AllEduData")
@@ -197,8 +204,14 @@ const WorkSummaryReportView = lazy(() =>
   import("src/modules/quality/views/workSummaryReport/WorkSummaryReportView")
 );
 //二级质控防疫专项检查片区汇总
-const 防疫专项检查片区汇总 = lazy(() => import("src/modules/quality/views/防疫专项检查片区汇总报告/防疫专项检查片区汇总报告"))
-const 防疫专项检查汇总报告 = lazy(() => import("src/modules/quality/views/防疫专项检查汇总报告/防疫专项检查汇总报告"))
+const 防疫专项检查片区汇总 = lazy(() =>
+  import(
+    "src/modules/quality/views/防疫专项检查片区汇总报告/防疫专项检查片区汇总报告"
+  )
+);
+const 防疫专项检查汇总报告 = lazy(() =>
+  import("src/modules/quality/views/防疫专项检查汇总报告/防疫专项检查汇总报告")
+);
 
 //病区管理
 const WardManagementView = lazy(() =>
@@ -372,7 +385,11 @@ const ExamScore = lazy(() =>
 );
 
 //学习培训-学习资源-典型案例审核详情(厚街)
-const 典型案例库审核详情 = lazy(() => import('src/modules/continuingEdu/views/学习资源/典型案例库/典型案例库审核详情'))
+const 典型案例库审核详情 = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/学习资源/典型案例库/典型案例库审核详情"
+  )
+);
 
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
@@ -523,7 +540,7 @@ const routes: RouteItem[] = [
     ContinuingEduEmpDetail,
     layouts.MainLayout
   ),
-  setLayout('/典型案例库审核详情', 典型案例库审核详情, layouts.MainLayout),
+  setLayout("/典型案例库审核详情", 典型案例库审核详情, layouts.MainLayout),
   // 护理质量
   setLayout("/quality/:name", QualityView, layouts.MainLayout),
   setLayout(
@@ -546,6 +563,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/notificationManagement",
     NotificationManagementView,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/trainingManualSetting",
+    TrainingManualSetting,
     layouts.MainLayout
   ),
   setLayout("/allEduData", AllEduData, layouts.MainLayout),
@@ -605,16 +627,8 @@ const routes: RouteItem[] = [
     WorkSummaryReportView,
     layouts.MainLayout
   ),
-  setLayout(
-    "/防疫专项检查片区汇总",
-    防疫专项检查片区汇总,
-    layouts.MainLayout
-  ),
-  setLayout(
-    "/防疫专项检查汇总报告",
-    防疫专项检查汇总报告,
-    layouts.MainLayout
-  ),
+  setLayout("/防疫专项检查片区汇总", 防疫专项检查片区汇总, layouts.MainLayout),
+  setLayout("/防疫专项检查汇总报告", 防疫专项检查汇总报告, layouts.MainLayout),
   /** 档案模块 */
   setLayout("/nurseFile/:path", NurseFilesView, layouts.MainLayout),
   setLayout("/wardManagement/:name", WardManagementView, layouts.MainLayout),
@@ -682,7 +696,11 @@ const routes: RouteItem[] = [
   setLayout("/badEventRecordEdit", BadEventRecordEdit, layouts.MainLayout),
   setLayout("/badEventRecordDetail", BadEventRecordDetail, layouts.MainLayout),
   setLayout("/starRatingReportEdit", StarRatingReportEdit, layouts.MainLayout),
-  setLayout("/starRatingYearReportEdit", StarRatingYearReportEdit, layouts.MainLayout),
+  setLayout(
+    "/starRatingYearReportEdit",
+    StarRatingYearReportEdit,
+    layouts.MainLayout
+  ),
   setLayout("/badEventReportEdit", BadEventReportEdit, layouts.MainLayout),
   setLayout(
     "/patientVisitQuarterEdit",
@@ -730,8 +748,8 @@ const routes: RouteItem[] = [
       appStore.HOSPITAL_ID == "nys"
         ? "/continuingEdu/人员管理"
         : appStore.HOSPITAL_ID == "wh"
-          ? "/continuingEdu/在线学习"
-          : "/continuingEdu/学习培训任务"
+        ? "/continuingEdu/在线学习"
+        : "/continuingEdu/学习培训任务"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {
