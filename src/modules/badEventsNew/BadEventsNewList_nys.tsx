@@ -53,6 +53,7 @@ export default observer(function BadEventNewList() {
     current: 1,
     size: 20
   });
+  const [total, setTotal] = useState(0)
 
   //不良事件状态对应的文本显示
   const [eventStatusList, setEventStatusList] = useState([] as any[])
@@ -266,6 +267,8 @@ export default observer(function BadEventNewList() {
         res => {
           setDataLoading(false);
           let data = res.data.list;
+          let total = res.data.totalCount || 0
+          setTotal(total)
           if (data && data.map)
             setData(
               data.map((item: any, idx: number) => {
@@ -417,7 +420,7 @@ export default observer(function BadEventNewList() {
                     surplusHeight={265}
                     pagination={{
                       showQuickJumper: true,
-                      total: data.length,
+                      total,
                       current: page.current,
                       pageSize: page.size,
                       onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
