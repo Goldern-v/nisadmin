@@ -22,6 +22,9 @@ import NightHoursStatistics from "./views/arrangeHome/page/nightHoursStatistics/
 import StandardTime from "./views/arrangeHome/page/StandardTime/StandardTime";
 import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 import DepartmentByShiftView from 'src/modules/statistic/views/departmentByShift/DepartmentByShiftView'
+//南医三 请假管理
+import 请假审核 from "./views/请假审核/请假审核"
+import 请假统计 from "./views/请假统计/请假统计"
 
 
 export interface Props { }
@@ -93,7 +96,7 @@ export default function PersonnelManagementView() {
           title: "标准工时设置",
           path: "/personnelManagement/standardTime",
           component: StandardTime,
-          hide: appStore.HOSPITAL_ID != "wh" || !(authStore.user ?.empNo == 'G6051' || authStore.user ?.empNo == 'ADMIN')
+          hide: appStore.HOSPITAL_ID != "wh" || !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         },
         {
           title: "加减班列表查询",
@@ -157,7 +160,31 @@ export default function PersonnelManagementView() {
         //   hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         // }
       ]
-    }
+    },
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            title: "请假管理",
+            path: "/personnelManagement/请假管理",
+            hide: !authStore.isRoleManage,
+            children: [
+              {
+                title: "请假审核",
+                path: "/personnelManagement/请假管理/请假审核",
+                component: 请假审核
+              },
+              {
+                title: "请假统计",
+                path: "/personnelManagement/请假统计/请假统计",
+                component: 请假统计
+              }
+            ]
+          }
+        ],
+        other: []
+      }
+    })
   ];
   return (
     <Wrapper>

@@ -17,6 +17,7 @@ interface logItem {
 }
 
 export default React.forwardRef(function MainPage(props: Props, ref: any) {
+  const listData = props.pageData.logDetail
   return (
     <Wrapper ref={ref} id='wardLogPrintPage'>
       <PrintHead>
@@ -26,9 +27,14 @@ export default React.forwardRef(function MainPage(props: Props, ref: any) {
           <div className='aside'>创建人: {props.pageData.detail.senderName}</div>
           <div className='aside'>科室: {props.pageData.detail.wardName}</div>
         </div>
+        <div className="hr"></div>
       </PrintHead>
-
-      {props.pageData.logDetail.map((item: logItem, index: number) => (
+      <div className="sub-title">
+        {listData.filter((item: any) => item.type === '7')
+          .map((item: any, idx: number) => <div key={idx}>{item.content}</div>)}
+      </div>
+      <div className="hr"></div>
+      {listData.filter((item: any) => item.type !== '7').map((item: logItem, index: number) => (
         <TitleItem title={item.name} aside={item.content} key={index} />
       ))}
       <TitleItem title={'备注'} aside={props.pageData?.detail?.remark || ''} />
@@ -46,6 +52,15 @@ const Wrapper = styled.div`
   border: 1px solid rgba(221, 221, 221, 1);
   margin: 20px auto;
   padding: 20px;
+  .sub-title{
+    color: #999;
+    word-break: break-all;
+  }
+  .hr{
+    margin: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #aaa;
+  }
 `
 
 const Line = styled.div`

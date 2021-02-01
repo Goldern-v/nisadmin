@@ -59,13 +59,13 @@ export const delWithResData = (options?: {
       children: [
         {
           title: '人数',
-          width: 80,
+          width: 60,
           dataIndex: key,
           align: 'center',
         },
         {
           title: '占比',
-          width: 80,
+          width: 60,
           dataIndex: `${key}-percent`,
           align: 'center',
         },
