@@ -13,8 +13,8 @@ export default class WardRegisterService extends BaseApiService {
     return this.get(`/qcRegisterBlock/${registerCode}/getList/${wardCode}`);
   }
   /** 创建 */
-  public qcRegisterBlockCreate(registerCode: string, wardCode: string) {
-    return this.get(`/qcRegisterBlock/${registerCode}/create/${wardCode}`);
+  public qcRegisterBlockCreate(registerCode: string, wardCode: string, params?: any) {
+    return this.get(`/qcRegisterBlock/${registerCode}/create/${wardCode}`, { params });
   }
   /** 获取block详情 */
   public getPage(registerCode: string, obj: any) {

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Button, Pagination } from "antd";
+import { Button, Col, message, Pagination, Row, Select } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -8,7 +8,6 @@ import {
   // AutoComplete,
   // message,
   Input,
-  Select,
   DatePicker,
   Popover
 } from "src/vendors/antd";
@@ -25,9 +24,15 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
 // import { getCurrentMonth } from 'src/utils/date/currentMonth'
-import { getSeaonsStartAndEnd } from 'src/utils/date/season'
+// import { getSeaonsStartAndEnd } from 'src/utils/date/season'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import SubTable from './components/SubTable'
+import { wardRegisterService } from '../../services/WardRegisterService';
+import { globalModal } from 'src/global/globalModal';
+import YearPicker from 'src/components/YearPicker';
+import { numToChinese } from 'src/utils/number/numToChinese';
+
+const Option = Select.Option
 
 export interface Props {
   payload: any;
@@ -48,7 +53,8 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(540);
-  const [date, setDate]: any = useState(getSeaonsStartAndEnd());
+  // const [date, setDate]: any = useState(getSeaonsStartAndEnd());
+  const [date, setDate]: any = useState([]);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -88,9 +94,9 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   }
 
   /** 选中的blockObj */
-  const selectedBlockObj = blockList.find(
+  const selectedBlockObj: any = blockList.find(
     (item: any) => item.id == selectedBlockId
-  );
+  ) || {};
 
   const columns: ColumnProps<any>[] | any = [
     //后端返回的自定义项目
@@ -218,11 +224,111 @@ export default observer(function 中医护理方案季度评价总结表(props: 
     // console.log(payload)
   }
 
+  /**自定义 新增修订 弹窗*/
+  const onAddBlock = () => {
+    let createTime = ''
+
+    let ModalContent = () => {
+      const [year, setYear] = useState(moment())
+      const [quarter, setQuarter] = useState(1)
+      const [time, setTime] = useState(moment())
+
+      useEffect(() => {
+        let yearStr = year.format('YYYY')
+        let dateStr = (() => {
+          switch (quarter) {
+            case 2:
+              return '04-01'
+            case 3:
+              return '07-01'
+            case 4:
+              return '10-01'
+            default:
+              return '01-01'
+          }
+        })()
+        setTime(moment(`${yearStr}-${dateStr}`))
+      }, [year, quarter])
+
+      useEffect(() => {
+        if (time) {
+          createTime = time.format("YYYY-MM-DD")
+
+          if (time.format('YYYY') !== year.format('YYYY'))
+            setYear(time)
+
+          if (time.quarter() !== quarter)
+            setQuarter(time.quarter())
+        }
+      }, [time])
+
+      const ContentWrapper = styled.div`
+        .ant-row{
+          margin-top: 10px;
+          .ant-col:first-of-type{
+            line-height: 30px;
+            text-align: right;
+          }
+        }
+      `
+
+      return <div>
+        <div>{`新建${registerName}，历史${registerName}请切换修订版本查看`}</div>
+        <ContentWrapper>
+          <Row>
+            <Col span={6}>
+              年
+              <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
+              份：
+            </Col>
+            <Col span={18}>
+              <YearPicker allowClear={false} value={year} onChange={(val: moment.Moment) => setYear(val)} />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}>
+              季
+              <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
+              度：
+            </Col>
+            <Col span={18}>
+              <Select value={quarter} onChange={(val: number) => setQuarter(val)}>
+                <Option value={1}>第一季度</Option>
+                <Option value={2}>第二季度</Option>
+                <Option value={3}>第三季度</Option>
+                <Option value={4}>第四季度</Option>
+              </Select>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}>创建时间：</Col>
+            <Col span={18}>
+              <DatePicker allowClear={false} value={time} onChange={(val: moment.Moment) => setTime(val)} />
+            </Col>
+          </Row>
+        </ContentWrapper>
+      </div>
+    }
+
+    globalModal
+      .confirm(`是否新建${registerName}`, <ModalContent />)
+      .then(res => {
+        // console.log(createTime)
+        wardRegisterService
+          .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode, { createTime })
+          .then(res => {
+            message.success("创建成功");
+            onInitData();
+          });
+      })
+      .catch((e) => console.error(e));
+  };
+
   /** 公共函数 */
   const {
     onInitData,
     getPage,
-    onAddBlock,
+    // onAddBlock,
     onSave,
     onDelete,
     createRow,
@@ -264,7 +370,11 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   useEffect(() => {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
-  }, [pageOptions, date, selectedBlockId]);
+  }, [
+    pageOptions,
+    date,
+    selectedBlockId
+  ]);
 
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
@@ -292,20 +402,13 @@ export default observer(function 中医护理方案季度评价总结表(props: 
           <Select.Option value={item.id} key={item.id}>
             {item.registerName +
               " " +
-              moment(item.createTime).format("MM-DD")}
+              moment(item.createTime).format("YYYY年") +
+              `第${numToChinese(moment(item.createTime).quarter())}季度`}
           </Select.Option>
         ))}
       </Select>
-      <span className="label">日期</span>
-      <DatePicker.RangePicker
-        value={date}
-        onChange={value => {
-          setDate(value)
-          setPageOptions({ ...pageOptions, pageIndex: 1 })
-        }}
-        allowClear={true}
-        style={{ width: 220 }}
-      />
+      <span className="label">创建日期</span>
+      <Input value={selectedBlockObj?.createTime || ''} style={{ width: 100 }} readOnly />
       <span className="label">科室</span>
       <DeptSelect onChange={() => { }} style={{ width: 150 }} />
       {popoverContent && (

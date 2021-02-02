@@ -36,7 +36,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format('YYYY'),
-    month: moment().format('M'),
+    month: '1',
     wardCode: wardCode,
     reportName: '',
     beginDate: `${moment().format('YYYY')}-01-01`,
@@ -95,7 +95,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
     if (visible) {
       let newQuery = {
         year: moment().format('YYYY'),
-        month: moment().format('M'),
+        month: '1',
         wardCode: wardCode,
         reportName: '',
         beginDate: `${moment().format('YYYY')}-01-01`,
@@ -110,10 +110,10 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const setEditQueryAndInit = (newQuery: any) => {
     let newReportName = reportName(newQuery)
-    let newRangeDate = moment(`${newQuery.year}-${newQuery.month}`)
-    let newBeginDate = newRangeDate.format('YYYY-MM-01')
+    let newRangeDate = moment(`${newQuery.year}-01-01`)
+    let newBeginDate = newRangeDate.format('YYYY-01-01')
 
-    let newEndDate = moment(newBeginDate).add(1, 'M').subtract(1, 'd').format('YYYY-MM-DD')
+    let newEndDate = newRangeDate.format('YYYY-12-31')
 
     newQuery.reportName = newReportName
     newQuery.beginDate = newBeginDate

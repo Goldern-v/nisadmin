@@ -299,15 +299,6 @@ function WardRegisterRouter() {
             registerName: "中医护理技术项目统计表"
           }
         },
-        // {
-        //   title: "中医护理方案季度评价总结表",
-        //   path: "/wardRegister/QCRG_15_3",
-        //   component: { ...物品交接登记本 },
-        //   payload: {
-        //     registerCode: "QCRG_15_3",
-        //     registerName: "中医护理方案季度评价总结表"
-        //   }
-        // },
         {
           title: "中医护理方案实施效果半年评价总结",
           path: "/wardRegister/QCRG_15_4",
@@ -323,7 +314,7 @@ function WardRegisterRouter() {
           component: { ...中医护理方案季度评价总结表 },
           payload: {
             registerCode: "QCRG_15_3",
-            registerName: "中医护理方案实施效果半年评价总结"
+            registerName: "中医护理方案季度评价总结表"
           }
         }
       ]

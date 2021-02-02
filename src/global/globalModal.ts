@@ -1,12 +1,12 @@
 import { Modal } from "antd";
 
 class GlobalModal {
-  public constructor() {}
+  public constructor() { }
   public auditModal: any = null;
   public groupsAduitModal: any = null;
   public signModal: any = null;
   /** 对话弹窗 */
-  public confirm = (title: string, content: string) => {
+  public confirm = (title: string, content: React.ReactNode | string) => {
     let resolveFun: any = null;
     let rejectFun: any = null;
     const onOk = new Promise((resolve, reject) => {
