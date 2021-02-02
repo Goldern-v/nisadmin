@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Button, DatePicker, Select } from "antd";
 import BaseTabs from "src/components/BaseTabs";
 import Table from "./components/Table";
+import TrainingManual from '../trainingManual/TrainingManual'
 import { onlineLearningModal } from "./OnlineLearningModal";
 interface Props {
   getId: any;
@@ -37,6 +38,10 @@ export default observer(function OnlineLearning(props: Props) {
 
   const TABS_LIST_NURSE = [
     {
+      title: '培训清单',
+      component: <TrainingManual />
+    },
+    {
       title: `全部（${onlineLearningModal.taskCount.unFinishedTaskCount ||
         0}）`,
       component: <Table />
@@ -56,20 +61,6 @@ export default observer(function OnlineLearning(props: Props) {
     {
       title: `待练习（${onlineLearningModal.taskCount.toExerciseTaskCount ||
         0}）`,
-      component: <Table />
-    },
-    {
-      title: `待实操（${onlineLearningModal.taskCount.toPractiseTaskCount ||
-        0}）`,
-      component: <Table />
-    },
-    {
-      title: `待演练（${onlineLearningModal.taskCount.toWtTaskCount || 0}）`,
-      component: <Table />
-    },
-    {
-      title: `待实践（${onlineLearningModal.taskCount
-        .toSocialPractiseTaskCount || 0}）`,
       component: <Table />
     },
     {
@@ -130,7 +121,7 @@ export default observer(function OnlineLearning(props: Props) {
           defaultActiveKey={onlineLearningModal.key}
           config={TABS_LIST_NURSE}
           onChange={(key: any) => {
-            onlineLearningModal.tabsChanged(key);
+            onlineLearningModal.hjTabsChanged(key);
             onlineLearningModal.key = key;
           }}
         />

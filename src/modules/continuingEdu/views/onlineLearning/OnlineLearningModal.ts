@@ -1,6 +1,5 @@
 import { observable, computed } from "mobx";
 import { onlineLearningApi } from "./api/OnlineLearningApi";
-import { crrentMonth } from "src/utils/moment/crrentMonth";
 
 class OnlineLearningModal {
   @observable public selectedDate: any = []; //日期
@@ -81,6 +80,20 @@ class OnlineLearningModal {
   tabsChanged(key: any) {
     const arr: any = [null, 1, 2, 3, 4, 5, 6, 7, "finished"];
     let res = arr[key];
+    if (res === "finished") {
+      this.tpStatus = "finished";
+    } else {
+      this.teachingMethod = res;
+      this.tpStatus = "tobeginAndongoing";
+    }
+    this.onload();
+  }
+
+  //厚街tabs变化函数
+  hjTabsChanged(key: any) {
+    if (key == 0) return;
+    const arr: any = [null, 1, 2, 3, 4, "finished"];
+    let res = arr[key - 1];
     if (res === "finished") {
       this.tpStatus = "finished";
     } else {

@@ -1,5 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import { authStore } from "src/stores/index";
 import qs from "qs";
 
 export default class MainPageApi extends BaseApiService {

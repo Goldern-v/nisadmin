@@ -20,7 +20,6 @@ export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 其他人员 from "./views/其他人员/其他人员";
 import 人员分组设置 from "./views/人员分组设置/人员分组设置";
-import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
 import 菜单设置 from "./views/menuSettings/MenuSettings";
@@ -31,7 +30,9 @@ import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import 培训统计分析 from './views/allMenus/AllMenus'
-import 培训手册 from './views/trainingManual/TrainingManual'
+import 在线学习 from "./views/onlineLearning/OnlineLearning";
+import 培训手册 from "./views/onlineLearning/OnlineLearning-hj";
+
 // import FormReview from "./views/trainingSetting/formReview/FormReview";
 // 厚街资质准入表单
 import FormApply from "./views/trainingSetting/formApply/FormApply";

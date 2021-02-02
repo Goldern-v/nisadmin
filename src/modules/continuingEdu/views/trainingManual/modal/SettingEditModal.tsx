@@ -148,6 +148,7 @@ export default function SettingEditModal(props: Props) {
   return (
     <Modal
       visible={visible}
+      forceRender={true}
       onCancel={handleCancel}
       onOk={checkForm}
       confirmLoading={editLoading}

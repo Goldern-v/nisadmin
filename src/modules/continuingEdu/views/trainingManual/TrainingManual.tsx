@@ -50,7 +50,9 @@ const HandleBtn = styled.div`
   float: right;
 `
 const Content = styled.div`
-  height: calc( 100vh - 115px);
+  height: calc( 100vh - 220px);
+  padding-bottom: 10px;
+  box-sizing: border-box;
   .ant-tabs-nav {
     width: 100% !important;
   }
