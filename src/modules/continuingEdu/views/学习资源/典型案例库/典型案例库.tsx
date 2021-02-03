@@ -19,7 +19,7 @@ export interface Props { }
 
 export default observer(function 典型案例库() {
   /**操作权限 */
-  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+  const editAuth = continuningEduAuth.studyResourcesEditAuth
 
   // const { history } = appStore
   const [query, setQuery] = useState({
@@ -116,10 +116,10 @@ export default observer(function 典型案例库() {
       align: "center",
       width: 120,
       render: (text: any, record: any, index: number) => {
+        const isCreater = record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()
         // 当前条目是否可编辑
         const editable = () => {
           const isEditStatus = [2, 4].indexOf(record.status) < 0
-          const isCreater = record.creatorEmpNo.toLocaleUpperCase() === (authStore.user?.empNo || '').toLocaleUpperCase()
 
           if (isEditStatus && (editAuth || isCreater)) return true
 
@@ -137,7 +137,8 @@ export default observer(function 典型案例库() {
           {!editable() && (
             <React.Fragment>
               <span style={{ color: "#aaa", cursor: "dafualt" }}>编辑</span>
-              <span onClick={() => handleDelete(record)}>删除</span>
+              {(editAuth || isCreater) && <span onClick={() => handleDelete(record)}>删除</span>}
+              {!(editAuth || isCreater) && <span style={{ color: "#aaa", cursor: "dafualt" }}>删除</span>}
             </React.Fragment>
           )}
         </DoCon>

@@ -19,7 +19,7 @@ export interface Props { }
 export default observer(function 管理工具学习合集() {
   const { history } = appStore
   /**操作权限 */
-  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+  const editAuth = continuningEduAuth.studyResourcesEditAuth
 
   const [query, setQuery] = useState({
     keyWord: '',

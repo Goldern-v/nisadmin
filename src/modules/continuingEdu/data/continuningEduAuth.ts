@@ -1,4 +1,6 @@
+import { message } from 'antd'
 import { action, observable, computed } from 'mobx'
+import { authStore } from 'src/stores'
 import { continuningEduService } from './../service/ContinuningEduService'
 /** 当前用户学习培训权限列表模块*/
 class ContinuningEduAuth {
@@ -16,13 +18,40 @@ class ContinuningEduAuth {
 
     return false
   }
+
+  //能够编辑学习资源的releCode列表
+  private studyResourcesRoleCodes = [
+    'ROLE_006', //副护士长
+    'ROLE_005', //护士长
+    'ROLE_000', //护理部
+    'ROLE_010' //教学小组组长
+  ]
+
+  /**学习资源编辑权限 */
+  @computed get studyResourcesEditAuth() {
+    // if (authStore.isNotANormalNurse) return true
+
+    let target = this.authList
+      .map((item: any) => item.roleCode)
+      .find((code: string) => this.studyResourcesRoleCodes.indexOf(code) >= 0)
+
+    if (target) return true
+
+    return false
+  }
+
   /** 获取权限列表 */
   private getAuth() {
+    this.authList = []
     this.authListLoading = true
-    continuningEduService.getMyRoles(2)
-      .then(res => {
+    Promise.all([
+      continuningEduService.getMyRoles(1),
+      continuningEduService.getMyRoles(2),
+    ])
+      .then(resList => {
         this.authListLoading = false
-        this.authList = res.data
+        this.authList = [...resList[0].data || [], ...resList[1].data || []]
+
       }, () => this.authListLoading = false)
   }
   /** 初始化学习培训权限 */

@@ -23,7 +23,7 @@ export interface Props { }
 export default observer(function 医院应知应会() {
   const { history, queryObj, match } = appStore
   /**操作权限 */
-  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+  const editAuth = continuningEduAuth.studyResourcesEditAuth
 
   const [query, setQuery] = useState({
     keyWord: '',

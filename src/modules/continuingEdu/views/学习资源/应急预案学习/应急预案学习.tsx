@@ -22,7 +22,7 @@ export interface Props { }
 export default observer(function 应急预案学习() {
   const { history, queryObj, match } = appStore
   /**操作权限 */
-  const editAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+  const editAuth = continuningEduAuth.studyResourcesEditAuth
 
   const [query, setQuery] = useState({
     keyWord: '',

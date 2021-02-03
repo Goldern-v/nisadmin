@@ -60,10 +60,8 @@ export default class BadEventsNewService extends BaseApiService {
     [p: string]: any
   }) {
 
-    const { pageIndex, pageSize, eventType, wardCode } = query
-    return this.post('/badEvent/getWaitHandler', {
-      pageIndex, pageSize, eventType, wardCode
-    })
+    // const { pageIndex, pageSize, eventType, wardCode } = query
+    return this.post('/badEvent/getWaitHandler', query)
   }
 
   //我已处理
