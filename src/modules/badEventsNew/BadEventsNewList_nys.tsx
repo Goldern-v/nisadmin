@@ -313,7 +313,7 @@ export default observer(function BadEventNewList() {
             <div className="title">不良事件</div>
           </div>
           <div className="float-right">
-            <div className="float-item">
+            {/* <div className="float-item">
               <div className="item-title">事件日期:</div>
               <div className="item-content date-range">
                 <RangePicker
@@ -321,7 +321,7 @@ export default observer(function BadEventNewList() {
                   defaultValue={defaultDateRange()}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="float-item">
               <div className="item-title">科室:</div>
               <div className="item-content">
@@ -369,7 +369,7 @@ export default observer(function BadEventNewList() {
                 </Select>
               </div>
             </div>
-            <div className="float-item">
+            {/* <div className="float-item">
               <div className="item-title">状态:</div>
               <div className="item-content">
                 <Select
@@ -389,7 +389,7 @@ export default observer(function BadEventNewList() {
                   })}
                 </Select>
               </div>
-            </div>
+            </div> */}
             <div className="float-item">
               <div className="item-title" />
               <div className="item-content">
