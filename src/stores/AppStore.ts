@@ -12,7 +12,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -120,7 +120,7 @@ export default class AppStore {
   }
   /** 关闭全局进度条 */
   closeFullLoadingBar(okText?: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.openFullLoadingBar({
         aside:
           okText ||
@@ -135,7 +135,7 @@ export default class AppStore {
   }
   /** 关闭全局进度条 */
   closeFullLoadingBarInFail(failText?: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.openFullLoadingBar({
         aside: failText || "出现错误",
         progress: "0%"

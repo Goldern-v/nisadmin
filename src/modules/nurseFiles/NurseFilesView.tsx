@@ -8,6 +8,9 @@ import NurseFilesListView_hj from "./view/nurseFiles-hj/views/nurseFilesList/Nur
 import NurseFilesListView_wh from "./view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_nys from "./view/nurseFiles-nys/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_gzhd from "./view/nurseFiles-gzhd/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_lcey from "./view/nurseFiles-lcey/views/nurseFilesList/NurseFilesListView";
+
+
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
 import StatisticsView from "./view/statistics/StatisticsView";
@@ -44,6 +47,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_nys;
       case "gzhd":
         return NurseFilesListView_gzhd;
+      case "lcey":
+        return NurseFilesListView_lcey;
       default:
         return NurseFilesListView_hj;
     }
@@ -270,7 +275,7 @@ export default observer(function NurseFilesView(props: Props) {
 
   // 初始化动态菜单 菜单权限
   useLayoutEffect(() => {
-    if (appStore.HOSPITAL_ID === "hj" || appStore.HOSPITAL_ID === "gzhd") getList();
+    if (appStore.HOSPITAL_ID === "hj" || appStore.HOSPITAL_ID === "gzhd" || appStore.HOSPITAL_ID === "lcey") getList();
   }, [props.history.location.pathname]);
 
   // 厚街实习生轮班动态菜单列表
