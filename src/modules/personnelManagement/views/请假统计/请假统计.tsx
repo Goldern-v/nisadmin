@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, message, Select } from 'antd'
+import {
+  Button, DatePicker,
+  // message, Select 
+} from 'antd'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import { ColumnProps } from 'antd/lib/table'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import moment from 'src/vendors/moment'
-import { authStore } from 'src/stores'
 import { observer } from 'mobx-react'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
+import BaseTable from 'src/components/BaseTable'
+import { leaveStatisticsService } from './service/LeaveStatisticsService'
 
 const RangePicker = DatePicker.RangePicker
-const Option = Select.Option
+// const Option = Select.Option
 
 export interface Props { }
 
@@ -21,9 +24,9 @@ export default observer(function 请假统计() {
   let _currentYear = currentYear()
 
   const [query, setQuery] = useState({
-    deptCode: '',
-    beginDate: currentMonth()[0],
-    endDate: currentMonth()[1],
+    // deptCode: '',
+    queryBeginTime: _currentMonth[0].format('YYYY-MM-DD'),
+    queryEndTime: _currentMonth[1].format('YYYY-MM-DD'),
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -33,7 +36,7 @@ export default observer(function 请假统计() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      key: 'id',
+      dataIndex: 'deptCode',
       width: 50,
       align: 'center',
       render: (text: string, record: any, idx: number) =>
@@ -47,74 +50,75 @@ export default observer(function 请假统计() {
     },
     {
       title: '请假总数',
-      dataIndex: '请假总数',
+      dataIndex: 'totalLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '事假数',
-      dataIndex: '事假数',
+      dataIndex: 'personalLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '病假数',
-      dataIndex: '病假数',
+      dataIndex: 'sickLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '年假数',
-      dataIndex: '年假数',
+      dataIndex: 'annualLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '婚假数',
-      dataIndex: '婚假数',
+      dataIndex: 'maritalLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '产假数',
-      dataIndex: '产假数',
+      dataIndex: 'maternityLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '陪产假数',
-      dataIndex: '陪产假数',
+      dataIndex: 'paternityLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '丧假数',
-      dataIndex: '丧假数',
+      dataIndex: 'funeralLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '调休数',
-      dataIndex: '调休数',
+      dataIndex: 'compensatoryLeaveCount',
       align: 'center',
       width: 80,
     },
     {
       title: '其他数',
-      dataIndex: '其他数',
+      dataIndex: 'otherLeaveCount',
       align: 'center',
       width: 80,
     },
   ]
 
   const getTableData = () => {
-    let randomSec = Math.random() / 4 * 10
     setLoading(true)
 
-    setTimeout(() => {
-      setTableData([])
-      setLoading(false)
-    }, randomSec * 1000)
+    leaveStatisticsService
+      .queryStatDatasGroupByDept(query)
+      .then(res => {
+        setLoading(false)
+        setTableData(res.data || [])
+      }, () => setLoading(false))
   }
 
   useEffect(() => {
@@ -143,7 +147,7 @@ export default observer(function 请假统计() {
               <RangePicker
                 className="content-item"
                 style={{ width: 220 }}
-                value={[moment(query.beginDate), moment(query.endDate)]}
+                value={[moment(query.queryBeginTime), moment(query.queryEndTime)]}
                 ranges={{
                   '本月': _currentMonth,
                   '本季度': _currentQuater,
@@ -152,8 +156,8 @@ export default observer(function 请假统计() {
                 onChange={(payload: any) => {
                   setQuery({
                     ...query,
-                    beginDate: payload[0].format('YYYY-MM-DD'),
-                    endDate: payload[1].format('YYYY-MM-DD'),
+                    queryBeginTime: payload[0].format('YYYY-MM-DD'),
+                    queryEndTime: payload[1].format('YYYY-MM-DD'),
                   })
                 }}
                 allowClear={false} />

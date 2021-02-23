@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, message, Select } from 'antd'
+import { Button, Col, DatePicker, Input, message, Modal, Radio, Row, Select } from 'antd'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import { ColumnProps } from 'antd/lib/table'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
@@ -8,6 +8,9 @@ import moment from 'src/vendors/moment'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import BaseTabs from "src/components/BaseTabs"
+import { leaveAuditService } from './service/LeaveAuditService'
+import DetailOrAuditModal from './components/DetailOrAuditModal'
 
 const RangePicker = DatePicker.RangePicker
 const Option = Select.Option
@@ -22,37 +25,33 @@ export default observer(function 请假审核() {
 
   const [query, setQuery] = useState({
     type: '',
-    status: '',
     deptCode: '',
-    beginDate: currentMonth()[0],
-    endDate: currentMonth()[1],
+    queryBeginTime: _currentMonth[0].format('YYYY-MM-DD'),
+    queryEndTime: _currentMonth[1].format('YYYY-MM-DD'),
     pageIndex: 1,
     pageSize: 20,
+    auditResult: '' as string | number,
+    keyWord: '',
   })
 
+  const [activeTab, setActiveTab] = useState('0')
+
   const [tableData, setTableData] = useState([] as any[])
+  const [typeList, setTypeList] = useState([] as any[])
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
 
-  const typeList = [
-    { name: '事假', code: '1' },
-    { name: '病假', code: '2' },
-    { name: '年假', code: '3' },
-    { name: '婚假', code: '4' },
-    { name: '产假', code: '5' },
-    { name: '陪产假', code: '6' },
-    { name: '丧假', code: '7' },
-    { name: '调休', code: '8' },
-    { name: '其他', code: '9' },
+  const statusList = [
+    { name: '通过', code: 1 },
+    { name: '驳回', code: -1 },
   ]
 
-  const statusList = [
-    { name: '审核通过', code: '1' },
-    { name: '审核驳回', code: 'w' },
-    { name: '待审核', code: 'e' },
-  ]
+  /**详情审核弹窗相关 */
+  const [detailModalVisible, setDetailModalVisible] = useState(false)
+  const [detailModalId, setDetailModalId] = useState(0)
+  const [detailModalAudit, setDetailModalAudit] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -77,37 +76,39 @@ export default observer(function 请假审核() {
     },
     {
       title: '请假类型',
-      dataIndex: 'type',
+      dataIndex: 'typeName',
       align: 'center',
       width: 80,
     },
     {
       title: '开始时间',
-      dataIndex: 'beginDate',
+      dataIndex: 'startTime',
       align: 'center',
       width: 120,
     },
     {
       title: '结束时间',
-      dataIndex: 'endDate',
+      dataIndex: 'endTime',
       align: 'center',
       width: 120,
     },
     {
       title: '请假时长',
-      dataIndex: '请假时长',
+      dataIndex: 'duration',
       align: 'center',
       width: 80,
+      render: (duration: number) =>
+        duration > 24 ? `${Math.ceil(duration / 24)}天${duration % 24}小时` : `${duration}小时`
     },
     {
       title: '请假事由',
-      dataIndex: '请假事由',
+      dataIndex: 'leaveReason',
       align: 'center',
       width: 180,
     },
     {
       title: '审核状态',
-      dataIndex: '审核状态',
+      dataIndex: 'statusDetailDesc',
       align: 'center',
       width: 80,
     },
@@ -116,29 +117,166 @@ export default observer(function 请假审核() {
       dataIndex: '审核操作',
       align: 'center',
       width: 80,
-      render: (text: any) => {
+      render: (text: any, record: any) => {
         return <DoCon>
-          <span>审核</span>
+          {activeTab == '0' ?
+            <span onClick={() => handleDetailOrAudit(record, true)}>审核</span> :
+            <span onClick={() => handleDetailOrAudit(record, false)}>查看</span>}
         </DoCon>
       }
     },
   ]
 
   const getTableData = () => {
-    let randomSec = Math.random() / 4 * 10
     setLoading(true)
+    setSelectedRowKeys([])
 
-    setTimeout(() => {
-      setSelectedRowKeys([])
-      setTableData([])
-      setTotal(0)
-      setLoading(false)
-    }, randomSec * 1000)
+    let reqQuery = { ...query } as any
+
+    let reqMethod = leaveAuditService.queryToAuditPageList.bind(leaveAuditService)
+
+    if (activeTab == '1') {
+      reqMethod = leaveAuditService.queryAuditedPageList.bind(leaveAuditService)
+    } else {
+      delete reqQuery.auditResult
+    }
+
+    reqMethod(reqQuery)
+      .then(res => {
+        setLoading(false)
+        if (res.data) {
+          setTotal(res.data.totalCount)
+          setTableData(res.data.list || [])
+        }
+      }, () => setLoading(false))
   }
+
+  const getTypeList = () => {
+    leaveAuditService.getAllLeaveTypes()
+      .then(res => {
+        setTypeList(
+          (res.data || []).
+            map(({ typeCode, typeName }: any) => ({ type: typeCode, name: typeName }))
+        )
+      })
+  }
+
+  const handleDetailOrAudit = (record: any, isAudit: boolean) => {
+    setDetailModalAudit(isAudit)
+    setDetailModalId(record.id)
+    setDetailModalVisible(true)
+  }
+
+  const handleAudit = () => {
+    if (selectedRowKeys.length <= 0)
+      return message.warn('未勾选审核条目')
+
+    let auditResult = 1
+    let auditRemark = ''
+
+    const AuditCon = styled.div`
+      .ant-row{
+        line-height:30px;
+        margin-bottom: 10px;
+        &:last-of-type{
+          margin-bottom:0;
+        }
+      }
+    `
+
+    Modal.confirm({
+      title: '批量审核',
+      centered: true,
+      content: <AuditCon>
+        <Row>
+          <Col span={6}>审核结果：</Col>
+          <Col span={18}>
+            <Radio.Group
+              buttonStyle='solid'
+              defaultValue={auditResult}
+              onChange={(e: any) =>
+                auditResult = e.target.value}>
+              <Radio.Button value={1}>通过</Radio.Button>
+              <Radio.Button value={-1}>驳回</Radio.Button>
+            </Radio.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={6}>审核意见:</Col>
+          <Col span={18}>
+            <Input.TextArea
+              defaultValue={auditRemark}
+              onChange={(e: any) =>
+                auditRemark = e.target.value}
+              autosize={{ minRows: 2 }} />
+          </Col>
+        </Row>
+      </AuditCon>,
+      onOk: () => {
+        setLoading(true)
+        leaveAuditService
+          .batchAuditLeaveApplicationInfo({
+            auditResult,
+            auditRemark,
+            taskIdList: selectedRowKeys
+          })
+          .then(res => {
+            message.success('操作成功', 2, () => {
+              setLoading(false)
+              getTableData()
+            })
+          }, err => setLoading(false))
+      }
+    })
+  }
+
+  useEffect(() => {
+    getTypeList()
+  }, [])
 
   useEffect(() => {
     getTableData()
   }, [query])
+
+  const btntop = '141px'
+  const AuditPannel = <div>
+    <GroupPostBtn
+      btntop={btntop}
+      disabled={loading}
+      onClick={() => getTableData()}>
+      刷新
+        </GroupPostBtn>
+    {activeTab == '0' && (
+      <GroupPostBtn
+        btntop={btntop}
+        onClick={handleAudit}
+        disabled={loading}
+        style={{ right: 110 }}>
+        批量审核
+      </GroupPostBtn>
+    )}
+    <BaseTable
+      surplusHeight={305}
+      columns={columns}
+      rowKey={'id'}
+      loading={loading}
+      dataSource={tableData}
+      rowSelection={activeTab == '0' ? {
+        selectedRowKeys,
+        onChange: (selectedRowKeys: any) => {
+          setSelectedRowKeys(selectedRowKeys)
+        }
+      } : undefined}
+      pagination={{
+        pageSize: query.pageSize,
+        current: query.pageIndex,
+        total,
+        onChange: () => (pageIndex: number, pageSize: number) =>
+          setQuery({ ...query, pageIndex: pageIndex }),
+        onShowSizeChange: (pageIndex: number, pageSize: number) =>
+          setQuery({ ...query, pageIndex: 1, pageSize, })
+      }} />
+  </div>
 
   return <Wrapper>
     <div className="top">
@@ -162,7 +300,7 @@ export default observer(function 请假审核() {
               <RangePicker
                 className="content-item"
                 style={{ width: 220 }}
-                value={[moment(query.beginDate), moment(query.endDate)]}
+                value={[moment(query.queryBeginTime), moment(query.queryEndTime)]}
                 ranges={{
                   '本月': _currentMonth,
                   '本季度': _currentQuater,
@@ -171,8 +309,8 @@ export default observer(function 请假审核() {
                 onChange={(payload: any) => {
                   setQuery({
                     ...query,
-                    beginDate: payload[0].format('YYYY-MM-DD'),
-                    endDate: payload[1].format('YYYY-MM-DD'),
+                    queryBeginTime: payload[0].format('YYYY-MM-DD'),
+                    queryEndTime: payload[1].format('YYYY-MM-DD'),
                     pageIndex: 1,
                   })
                 }}
@@ -210,35 +348,33 @@ export default observer(function 请假审核() {
               </Select>
             </span>
           </span>
-          <span className="item">
-            <span className="label">状态：</span>
-            <span className="content">
-              <Select
-                style={{ minWidth: 80 }}
-                value={query.status}
-                onChange={(status: string) => setQuery({ ...query, status, pageIndex: 1 })}>
-                <Option value={''}>全部</Option>
-                {statusList.map((item: any, idx: number) => (
-                  <Option key={idx} value={item.code}>{item.name}</Option>
-                ))}
-              </Select>
+          {activeTab == '1' && (
+            <span className="item">
+              <span className="label">状态：</span>
+              <span className="content">
+                <Select
+                  style={{ minWidth: 80 }}
+                  value={query.auditResult}
+                  onChange={(auditResult: string | number) => setQuery({ ...query, auditResult, pageIndex: 1 })}>
+                  <Option value={''}>全部</Option>
+                  {statusList.map((item: any, idx: number) => (
+                    <Option key={idx} value={item.code}>{item.name}</Option>
+                  ))}
+                </Select>
+              </span>
             </span>
-          </span>
+          )}
           <span className="item">
-            <Button
-              loading={loading}
-              onClick={() => setQuery({ ...query, pageIndex: 1 })}>
-              查询
-            </Button>
+            <Input
+              placeholder="请输入关键词"
+              style={{ width: 150 }}
+              onBlur={(e: any) => setQuery({ ...query, keyWord: e.target.value, pageIndex: 1 })} />
           </span>
           <span className="item">
             <Button
               disabled={loading}
-              onClick={() => {
-                if (selectedRowKeys.length <= 0) message.warn('未勾选审核条目')
-              }}
-              type="primary">
-              批量审核
+              onClick={() => setQuery({ ...query, pageIndex: 1 })}>
+              查询
             </Button>
           </span>
         </div>
@@ -246,28 +382,34 @@ export default observer(function 请假审核() {
     </div>
     <div className="main">
       <div className="table-content">
-        <BaseTable
-          surplusHeight={220}
-          columns={columns}
-          loading={loading}
-          dataSource={tableData}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (selectedRowKeys: any, selectedRows: any) => {
-              setSelectedRowKeys(selectedRows)
+        <BaseTabs
+          defaultActiveKey={activeTab}
+          config={[
+            {
+              title: "待我审核",
+              component: AuditPannel
+            },
+            {
+              title: "我已审核",
+              component: AuditPannel
             }
+          ]}
+          onChange={(key: any) => {
+            setActiveTab(key);
+            setQuery({ ...query, pageIndex: 1, auditResult: '' });
           }}
-          pagination={{
-            pageSize: query.pageSize,
-            current: query.pageIndex,
-            total,
-            onChange: () => (pageIndex: number, pageSize: number) =>
-              setQuery({ ...query, pageIndex: pageIndex }),
-            onShowSizeChange: (pageIndex: number, pageSize: number) =>
-              setQuery({ ...query, pageIndex: 1, pageSize, })
-          }} />
+        />
       </div>
     </div>
+    <DetailOrAuditModal
+      visible={detailModalVisible}
+      id={detailModalId}
+      isAudit={detailModalAudit}
+      onOk={() => {
+        setDetailModalVisible(false)
+        getTableData()
+      }}
+      onCancel={() => setDetailModalVisible(false)} />
   </Wrapper>
 })
 
@@ -305,13 +447,18 @@ const Wrapper = styled.div`
   }
 
   .main {
-    width: 100%;
     height: 100%;
-    padding: 10px 0;
-    padding-top: 0;
+    padding: 10px 15px;
+    padding-top: 20px;
     .table-content {
       height: 100%;
       background: #fff;
     }
   }
 `
+
+const GroupPostBtn = styled(Button) <{ btntop?: string | number }>`
+  position: fixed !important;
+  top: ${p => p.btntop || '121px'};
+  right: 33px;
+`;
