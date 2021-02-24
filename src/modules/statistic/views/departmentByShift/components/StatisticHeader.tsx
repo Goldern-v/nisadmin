@@ -9,7 +9,7 @@ import { Button, message } from 'antd'
 import emitter from 'src/libs/ev'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation() {
-  useEffect(() => {})
+  useEffect(() => { })
 
   // const onChange = (value: string) => {
   //   // nurseFilesListViewModel.loadNursingList()
@@ -42,7 +42,7 @@ export default function BedSituation() {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function(data: any) {
+      reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
@@ -56,12 +56,13 @@ export default function BedSituation() {
       }
     )
   }
+  const onChange = () => { }
 
   return (
     <Con>
-      {/* <DeptSelect onChange={onChange} /> */}
+      <DeptSelect onChange={onChange} />
       {/* <SelectDepartment /> */}
-      {/* <Spacing /> */}
+      <Spacing />
       <SelectData />
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
