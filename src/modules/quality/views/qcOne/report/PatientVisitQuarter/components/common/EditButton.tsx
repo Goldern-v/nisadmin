@@ -17,6 +17,9 @@ export default observer(function EditButton(props: Props) {
     if (patientVisitQuarterModel.allData.report.status == '1') return true;
     return false;
   }
+
+  return <span></span>
+
   return <ButtonStyl {...props} icon={'edit'} border={props.border ? 1 : 0} disabled={btnDisabled()} />
 })
 const ButtonStyl = styled(Button) <{ border: number }>`

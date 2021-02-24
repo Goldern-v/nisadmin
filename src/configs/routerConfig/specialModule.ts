@@ -21,6 +21,7 @@ import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views
 import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_lcey from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -195,6 +196,31 @@ if (
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView_gzhd, layouts.MainLayout),
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
+} else if (appStore.HOSPITAL_ID == 'lcey') {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_lcey,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
     ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

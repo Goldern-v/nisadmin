@@ -1,11 +1,24 @@
 
 const routeList = [
   {
+    path: '基本信息',
+    title: '基本信息',
+    redict: '',
+    collapsable: false,
+    sidebarDepth: 1,
+    children: [
+      '介绍',
+      '命令行说明',
+      '开发环境接口代理',
+      '数据管理',
+    ]
+  },
+  {
     path: '业务模块',
     title: '业务模块',
     redict: '',
     collapsable: false,
-    sidebarDepth: 2,
+    sidebarDepth: 1,
     children: [
       '首页',
       '登录',

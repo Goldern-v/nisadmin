@@ -25,7 +25,7 @@ export default observer(function 学习的网站链接() {
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
   /**操作权限 */
-  const operateAuth = authStore.isNotANormalNurse || continuningEduAuth.isTeachingGroupLeader
+  const operateAuth = continuningEduAuth.studyResourcesEditAuth
 
   const [editVisible, setEditVisible] = useState(false)
   const [editRecord, setEditRecord] = useState({} as any)

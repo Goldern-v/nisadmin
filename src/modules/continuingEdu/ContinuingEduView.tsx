@@ -27,12 +27,12 @@ import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
+import 晋升管理_hj from "./views/promotionSetting_hj/PromotionSetting_hj";
 import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import 培训统计分析 from './views/allMenus/AllMenus'
 import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 培训手册 from "./views/onlineLearning/OnlineLearning-hj";
-
 // import FormReview from "./views/trainingSetting/formReview/FormReview";
 // 厚街资质准入表单
 import FormApply from "./views/trainingSetting/formApply/FormApply";
@@ -282,6 +282,23 @@ export default function ContinuingEdu(props: Props) {
         }
       ]
     },
+    // {
+    //   title: "教学质量管理",
+    //   icon: <JXJH />,
+    //   hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
+    //   children: [
+    //     {
+    //       title: "教学质量评价",
+    //       path: "/continuingEdu/教学质量评价",
+    //       component: 类型管理
+    //     },
+    //     {
+    //       title: "进修临床实践管理",
+    //       path: "/continuingEdu/进修临床实践管理",
+    //       component: 类型管理
+    //     },
+    //   ]
+    // },
     {
       title: "通知管理",
       icon: <TZGL />,
@@ -290,15 +307,35 @@ export default function ContinuingEdu(props: Props) {
       hide: () =>
         queyMenuAuthInfo("nm_lat_noticemanage") || authStore.isOnlyInternsManage
     },
-    {
-      title: "晋升管理",
-      icon: <JSGL />,
-      path: "/continuingEdu/晋升管理",
-      component: 晋升管理,
-      hide: () =>
-        queyMenuAuthInfo("nm_lat_promotemanage") ||
-        authStore.isOnlyInternsManage
-    },
+    //晋升管理 根据医院切换
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: "晋升管理",
+            icon: <JSGL />,
+            path: "/continuingEdu/晋升管理",
+            component: 晋升管理_hj,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_promotemanage") ||
+              authStore.isOnlyInternsManage
+          },
+        ],
+        other: [
+          {
+            title: "晋升管理",
+            icon: <JSGL />,
+            path: "/continuingEdu/晋升管理",
+            component: 晋升管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_promotemanage") ||
+              authStore.isOnlyInternsManage
+          },
+        ]
+      },
+      currentHospitalId: appStore.isDev ? 'development' : "production"
+    }),
+    //题库管理 根据医院切换
     ...appStore.hisMatch({
       map: {
         hj: [

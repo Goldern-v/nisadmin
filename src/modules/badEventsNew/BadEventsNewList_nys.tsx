@@ -412,11 +412,7 @@ export default observer(function BadEventNewList() {
                   <BaseTable
                     loading={dataLoading}
                     columns={columns}
-                    dataSource={data.filter((item: any, idx: number) => {
-                      let { current, size } = page;
-                      let starIndex = (current - 1) * size;
-                      return idx + 1 > starIndex && idx + 1 <= starIndex + size;
-                    })}
+                    dataSource={data}
                     surplusHeight={265}
                     pagination={{
                       showQuickJumper: true,
