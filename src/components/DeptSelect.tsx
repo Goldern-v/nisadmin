@@ -39,7 +39,7 @@ export default observer(function DeptSelect(props: Props) {
     const hasAllDeptRouteList = [
       "/home",
       "/nurseFile/:path",
-      "/statistic/:name",
+      // "/statistic/:name",统计查询科室筛选去掉全院
       "/auditsManagement",
       "/quality/:name"
     ];
