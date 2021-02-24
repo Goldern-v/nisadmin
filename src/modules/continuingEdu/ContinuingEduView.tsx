@@ -94,6 +94,11 @@ const 护理专栏修改 = lazy(() => import('./views/学习资源/护理专栏/
 //典型案例
 const 典型案例库 = lazy(() => import('./views/学习资源/典型案例库/典型案例库'))
 
+//教学质量管理
+//教学质量评价
+const 教学质量评价 = lazy(() => import('./views/教学质量管理/教学质量评价/教学质量评价'))
+const 教学质量评价详情 = lazy(() => import('./views/教学质量管理/教学质量评价/views/教学质量评价详情'))
+
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
 import { Icon } from "antd";
@@ -288,14 +293,20 @@ export default function ContinuingEdu(props: Props) {
     //   hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
     //   children: [
     //     {
+    //       title: "教学质量评价详情",
+    //       path: "/continuingEdu/教学质量评价详情",
+    //       component: 教学质量评价详情,
+    //       hide: true,
+    //     },
+    //     {
     //       title: "教学质量评价",
     //       path: "/continuingEdu/教学质量评价",
-    //       component: 类型管理
+    //       component: 教学质量评价
     //     },
     //     {
     //       title: "进修临床实践管理",
     //       path: "/continuingEdu/进修临床实践管理",
-    //       component: 类型管理
+    //       component: 教学质量评价
     //     },
     //   ]
     // },

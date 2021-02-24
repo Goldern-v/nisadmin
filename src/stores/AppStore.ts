@@ -12,7 +12,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -172,7 +172,7 @@ export default class AppStore {
     let _currentHospitalId = currentHospitalId || this.HOSPITAL_ID as string
     if (vague) {
       for (let hospitalId in map) {
-        if (hospitalId.split(',').indexOf(hospitalId) >= 0)
+        if (hospitalId.split(',').indexOf(_currentHospitalId) >= 0)
           return map[hospitalId]
       }
     } else {
