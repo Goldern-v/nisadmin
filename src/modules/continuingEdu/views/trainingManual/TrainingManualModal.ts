@@ -22,6 +22,9 @@ class TrainingManualModal {
       // 获取弹窗的级联
       trainingManualApi.getTrainingItemsTree().then(res => {
         this.trainingKeyPointTree = res.data || [];
+        this.knowledgePointDivisionTree = (res.data && res.data[0]) || [];
+        this.learningFormTree =
+          this.knowledgePointDivisionTree.childList[0] || [];
       })
     ]);
   }

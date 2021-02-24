@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Modal, message as Message, Select } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { mainPageApi } from "../api/MainPageApi";
+import { mainPageModal } from '../MainPageModal'
 import { appStore } from "src/stores";
 
 export interface Props {
@@ -14,10 +16,11 @@ export interface Props {
   onOkCallBack?: any;
 }
 
-export default function TypeEditModal(props: Props) {
+export default observer(function TypeEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
+
 
   // 弹窗必填项
   const rules: Rules = {
@@ -35,6 +38,8 @@ export default function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         if (params.id) {
+          console.log(params, 'vparamsparamsparams333333')
+          let data: any = { ...params };
           const teachingMethodList = [
             "学习",
             "培训",
@@ -43,13 +48,16 @@ export default function TypeEditModal(props: Props) {
             "实操",
             "演练"
           ];
-          params.teachingMethod = teachingMethodList[params.teachingMethod - 1];
-          const { name, sort, teachingMethod } = params;
+          data.teachingMethod = teachingMethodList[params.teachingMethod - 1];
+          const { name, sort, teachingMethod, trainingKeyPointId, knowledgePointDivisionId, learningFormId } = data;
           current.setFields({
             name,
             sort,
             teachingMethod
           });
+          mainPageModal.trainingKeyPointTreeId = trainingKeyPointId || '';
+          mainPageModal.knowledgePointDivisionTreeId = knowledgePointDivisionId || '';
+          mainPageModal.learningFormTreeId = learningFormId || '';
         } else {
           current.clear();
           const { sort, teachingMethod } = params;
@@ -119,20 +127,20 @@ export default function TypeEditModal(props: Props) {
       <Wrapper>
         <Form ref={formRef} rules={rules}>
           <Row>
-            <Col span={4} className="label">
+            <Col span={5} className="label">
               名称:
             </Col>
-            <Col span={20}>
+            <Col span={19}>
               <Form.Field name="name">
                 <Input placeholder="名称" />
               </Form.Field>
             </Col>
           </Row>
           <Row>
-            <Col span={4} className="label">
+            <Col span={5} className="label">
               教学方式:
             </Col>
-            <Col span={20}>
+            <Col span={19}>
               <Form.Field name="teachingMethod">
                 <Select defaultValue="1" disabled={params.id}>
                   <Select.Option value="1">学习</Select.Option>
@@ -147,20 +155,108 @@ export default function TypeEditModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={4} className="label">
+            <Col span={5} className="label">
               排序:
             </Col>
-            <Col span={20}>
+            <Col span={19}>
               <Form.Field name="sort">
                 <Input placeholder="排序" />
               </Form.Field>
             </Col>
           </Row>
+          {/* {appStore.HOSPITAL_ID == 'hj' && (
+            <div>
+              <Row>
+                <Col span={5} className="label">
+                  类型名称:
+                </Col>
+                <Col span={19}>
+                  <Form.Field name="">
+                    <Select
+                      value={mainPageModal.trainingKeyPointTreeId}
+                      style={{ width: 120 }}
+                      onChange={(id: any) => {
+                        mainPageModal.trainingKeyPointTreeId = id;
+                        mainPageModal.knowledgePointDivisionTreeId = "";
+                        let target: any = mainPageModal.trainingKeyPointTree.find(
+                          (item: any) => item.id == id
+                        );
+                        if (target && target.childList)
+                          mainPageModal.knowledgePointDivisionTree = target.childList;
+                      }}
+                    >
+                      {mainPageModal.trainingKeyPointTree.map(
+                        (item: any, idx: number) => (
+                          <Select.Option value={item.id} key={idx}>
+                            {item.name}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={5} className="label">
+                  知识划分点:
+                </Col>
+                <Col span={19}>
+                  <Form.Field name="">
+                    <Select
+                      value={mainPageModal.knowledgePointDivisionTreeId}
+                      style={{ width: 120 }}
+                      onChange={(id: any) => {
+                        mainPageModal.knowledgePointDivisionTreeId = id;
+                        mainPageModal.learningFormTreeId = "";
+                        let target: any = mainPageModal.knowledgePointDivisionTree.find(
+                          (item: any) => item.id == id
+                        );
+                        if (target && target.childList)
+                          mainPageModal.learningFormTree = target.childList;
+                      }}
+                    >
+                      {mainPageModal.knowledgePointDivisionTree.map(
+                        (item: any, idx: number) => (
+                          <Select.Option value={item.id} key={idx}>
+                            {item.name}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={5} className="label">
+                  教学:
+                </Col>
+                <Col span={19}>
+                  <Form.Field name="">
+                    <Select
+                      value={mainPageModal.learningFormTreeId}
+                      style={{ width: 120 }}
+                      onChange={(id: any) =>
+                        mainPageModal.learningFormTreeId = id
+                      }
+                    >
+                      {mainPageModal.learningFormTree.map(
+                        (item: any, idx: number) => (
+                          <Select.Option value={item.id} key={idx}>
+                            {item.name}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+            </div>
+          )} */}
         </Form>
       </Wrapper>
     </Modal>
   );
-}
+})
 const Wrapper = styled.div`
   width: 80%;
   margin: 0 auto;

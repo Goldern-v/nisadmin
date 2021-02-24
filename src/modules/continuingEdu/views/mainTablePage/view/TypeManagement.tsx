@@ -10,6 +10,7 @@ import qs from "qs";
 import { mainPageApi } from "../api/MainPageApi";
 import { meunSettingApi } from "../../menuSettings/api/MeunSettingApi";
 import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
+import { mainPageModal } from '../MainPageModal'
 
 export default withRouter(
   observer(function TypeManagement() {
@@ -98,7 +99,6 @@ export default withRouter(
         align: "center",
         width: 70
       },
-
       {
         title: "操作",
         dataIndex: "",
@@ -118,6 +118,7 @@ export default withRouter(
     // 初始化
     useEffect(() => {
       getTableData();
+      mainPageModal.getTree()
     }, []);
 
     // 查询表格初始化数据

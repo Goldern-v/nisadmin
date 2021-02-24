@@ -19,6 +19,13 @@ class MainPageModal {
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
   @observable public hjSelectedType = ""; //状态
+  // 三级联
+  @observable public trainingKeyPointTreeId: any = ""; // 类型名称
+  @observable public knowledgePointDivisionTreeId: any = ""; // 知识点划分
+  @observable public learningFormTreeId: any = ""; // 教学方式
+  @observable public trainingKeyPointTree: any = []; // 类型名称
+  @observable public knowledgePointDivisionTree: any = []; // 知识点划分
+  @observable public learningFormTree: any = []; // 教学方式
 
   @computed
   get postObj() {
@@ -79,6 +86,16 @@ class MainPageModal {
   //tabs变化函数
   tabsChanged(key: any) {
     this.hjSelectedType = this.selectTypeList[Number(key)].id;
+  }
+
+  //三级联
+  getTree() {
+    mainPageApi.getTrainingItemsTree().then(res => {
+      this.trainingKeyPointTree = res.data || [];
+      this.knowledgePointDivisionTree = res.data[0].childList || [];
+      this.learningFormTree =
+        this.knowledgePointDivisionTree[0].childList || [];
+    });
   }
 
   async init() {

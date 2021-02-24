@@ -151,7 +151,7 @@ export default observer(function Table(props: Props) {
         loading={isTrainingManualSetting ? trainingManualModal.allTableLoading : trainingManualModal.myTableLoading}
         dataSource={isTrainingManualSetting ? trainingManualModal.allTableList : trainingManualModal.myTableList}
         columns={columns}
-        surplusHeight={380}
+        surplusHeight={280}
       />
       <SettingEditModal
         visible={trainingManualModal.modalBtn}

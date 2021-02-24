@@ -66,5 +66,10 @@ export default class MainPageApi extends BaseApiService {
       qs.stringify({ id })
     );
   }
+
+  // 获取培训项目树--弹窗级联
+  public async getTrainingItemsTree() {
+    return this.get(`/studyAndTrain/trainManualManage/getTrainingItemsTree`);
+  }
 }
 export const mainPageApi = new MainPageApi();

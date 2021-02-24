@@ -92,7 +92,10 @@ export default function SettingEditModal(props: Props) {
           current.clear();
           current.setFields({
             nurseHierarchy: trainingManualModal.tabKeyName,
-            officialRank: getOfficialRank(trainingManualModal.tabKeyName)
+            officialRank: getOfficialRank(trainingManualModal.tabKeyName),
+            // trainingKeyPointId: trainingManualModal.trainingKeyPointTree.name,
+            // knowledgePointDivisionId: trainingManualModal.knowledgePointDivisionTree.name,
+            // learningFormId: trainingManualModal.learningFormTree.name,
           });
         }
       }, 100);
