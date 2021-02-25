@@ -51,6 +51,7 @@ export default observer(function 请假审核() {
   /**详情审核弹窗相关 */
   const [detailModalVisible, setDetailModalVisible] = useState(false)
   const [detailModalId, setDetailModalId] = useState(0)
+  const [detailModalTaskId, setDetailModalTaskId] = useState('')
   const [detailModalAudit, setDetailModalAudit] = useState(false)
 
   const columns: ColumnProps<any>[] = [
@@ -164,6 +165,7 @@ export default observer(function 请假审核() {
   const handleDetailOrAudit = (record: any, isAudit: boolean) => {
     setDetailModalAudit(isAudit)
     setDetailModalId(record.id)
+    setDetailModalTaskId(record.taskId)
     setDetailModalVisible(true)
   }
 
@@ -183,6 +185,13 @@ export default observer(function 请假审核() {
         }
       }
     `
+
+    const taskIdList = selectedRowKeys
+      .map((id: any) => {
+        let target = tableData.find((record: any) => record.id == id)
+        if (target) return target.taskId
+      })
+      .filter((taskId: any) => taskId)
 
     Modal.confirm({
       title: '批量审核',
@@ -218,7 +227,7 @@ export default observer(function 请假审核() {
           .batchAuditLeaveApplicationInfo({
             auditResult,
             auditRemark,
-            taskIdList: selectedRowKeys
+            taskIdList,
           })
           .then(res => {
             message.success('操作成功', 2, () => {
@@ -405,6 +414,7 @@ export default observer(function 请假审核() {
       visible={detailModalVisible}
       id={detailModalId}
       isAudit={detailModalAudit}
+      taskId={detailModalTaskId}
       onOk={() => {
         setDetailModalVisible(false)
         getTableData()

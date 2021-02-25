@@ -13,11 +13,12 @@ export interface Props {
   onOk: Function,
   onCancel: Function,
   isAudit?: boolean,
-  id: number
+  id: number,
+  taskId?: string
 }
 
 export default function DetailOrAuditModal(props: Props) {
-  const { visible, onOk, onCancel, isAudit, id } = props
+  const { visible, onOk, onCancel, isAudit, id, taskId } = props
 
   const [loading, setLoading] = useState(false)
   const [detail, setDetail] = useState({} as any)
@@ -67,7 +68,7 @@ export default function DetailOrAuditModal(props: Props) {
     setLoading(true)
 
     let params = {
-      taskIdList: [id],
+      taskIdList: [taskId] as string[],
       ...auditInfo,
     }
 

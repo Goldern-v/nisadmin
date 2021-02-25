@@ -45,7 +45,7 @@ class LeaveAuditService extends BaseApiService {
 
   /**请假管理-请假审核-批量审批请假申请信息 */
   public batchAuditLeaveApplicationInfo(params: {
-    taskIdList: number[], //审核任务id列表
+    taskIdList: string[], //审核任务id列表
     auditResult: number, //审核结果（1审核通过；-1审核拒绝）
     auditRemark: string, //备注
   }) {
