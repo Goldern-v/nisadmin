@@ -10,7 +10,8 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { appStore, authStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
-import BadEventsNewListNys from './BadEventsNewList_nys'
+import BadEventsNewList_nys from './BadEventsNewList_nys'
+import BadEventsNewList_gzsrm from './BadEventsNewList_gzsrm'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
@@ -26,7 +27,17 @@ export default function BadEventsRouters(props: Props) {
             title: " 不良事件查询",
             // icon: <SJZK />,
             path: "/home",
-            component: BadEventsNewListNys,
+            component: BadEventsNewList_nys,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+        ],
+        'gzsrm': [
+          {
+            title: " 不良事件查询",
+            // icon: <SJZK />,
+            path: "/home",
+            component: BadEventsNewList_gzsrm,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
@@ -53,21 +64,22 @@ export default function BadEventsRouters(props: Props) {
       path: '/home/不良事件发生率',
       component: 不良事件发生率,
     },
-
-  ];
-
-  if (appStore.HOSPITAL_ID === 'hj') {
-    LEFT_MENU_CONFIG = LEFT_MENU_CONFIG.concat([
-      {
-        title: '不良事件分析报告',
-        path: '/home/不良事件分析报告',
-        component: BadEventReportList,
-        // hide: appStore.isDev ? false : true,
-        keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    ...appStore.hisMatch({
+      map: {
+        hj: [
+          {
+            title: '不良事件分析报告',
+            path: '/home/不良事件分析报告',
+            component: BadEventReportList,
+            // hide: appStore.isDev ? false : true,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          }
+        ],
+        other: []
       }
-    ])
-  }
+    })
+  ];
 
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
