@@ -84,7 +84,7 @@ export default observer(function 不良事件发生率() {
     let keys = Object.keys(eventTypeCount) || []
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i]
-      let val = eventTypeCount[key]
+
       let title = ''
 
       let target = eventTypeList.find((item: any) => item.code == key)
@@ -95,7 +95,10 @@ export default observer(function 不良事件发生率() {
         dataIndex: key,
         width: 60,
         align: 'center',
-        render: () => val
+        render: (text: any, record: any) => {
+          let val = record.eventTypeCount[key]
+          return val || 0
+        }
       })
     }
   }

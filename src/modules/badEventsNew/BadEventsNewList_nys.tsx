@@ -22,8 +22,8 @@ const { RangePicker } = DatePicker;
 export default observer(function BadEventNewList() {
 
   const defaultDateRange = () => {
-    let startDate = moment(moment().format("YYYY-MM-") + "01");
-    let ednDate = moment(moment().format("YYYY-MM-DD"));
+    let startDate = moment(moment().format("YYYY-MM-01 00:00:00"));
+    let ednDate = moment(moment().format("YYYY-MM-DD 23:59:59"));
 
     return [startDate, ednDate] as [moment.Moment, moment.Moment];
   };
@@ -33,11 +33,11 @@ export default observer(function BadEventNewList() {
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: defaultWardCode,
-    dateBegin: dateRange[0].format("YYYY-MM-DD"),
-    dateEnd: dateRange[1].format("YYYY-MM-DD"),
+    beginTime: dateRange[0].format("YYYY-MM-DD 00:00:00"),
+    endTime: dateRange[1].format("YYYY-MM-DD 23:59:59"),
     patientName: "",
     eventType: "",
-    eventStatus: "",
+    status: "",
     type: '1'
   });
 
@@ -302,7 +302,7 @@ export default observer(function BadEventNewList() {
 
     Promise.all([
       api.getWaitHandler(reqQuery),
-      api.getMyHandler(reqQuery),
+      api.getMyHandler({ ...reqQuery, type: '2' }),
     ])
       .then(res => {
         let toAuditNum = 0
@@ -323,14 +323,14 @@ export default observer(function BadEventNewList() {
     if (moments.length > 0) {
       setQuery({
         ...query,
-        dateBegin: moments[0].format("YYYY-MM-DD"),
-        dateEnd: moments[1].format("YYYY-MM-DD")
+        beginTime: moments[0].format("YYYY-MM-DD 00:00:00"),
+        endTime: moments[1].format("YYYY-MM-DD 23:59:59")
       });
     } else {
       setQuery({
         ...query,
-        dateBegin: "",
-        dateEnd: ""
+        beginTime: "",
+        endTime: ""
       });
     }
   };
@@ -347,7 +347,7 @@ export default observer(function BadEventNewList() {
             <div className="title">不良事件</div>
           </div>
           <div className="float-right">
-            {/* <div className="float-item">
+            <div className="float-item">
               <div className="item-title">事件日期:</div>
               <div className="item-content date-range">
                 <RangePicker
@@ -355,7 +355,7 @@ export default observer(function BadEventNewList() {
                   defaultValue={defaultDateRange()}
                 />
               </div>
-            </div> */}
+            </div>
             <div className="float-item">
               <div className="item-title">科室:</div>
               <div className="item-content">
@@ -403,14 +403,14 @@ export default observer(function BadEventNewList() {
                 </Select>
               </div>
             </div>
-            {/* <div className="float-item">
+            <div className="float-item">
               <div className="item-title">状态:</div>
               <div className="item-content">
                 <Select
                   defaultValue=""
-                  value={query.eventStatus}
-                  onChange={(eventStatus: any) => {
-                    setQuery({ ...query, eventStatus });
+                  value={query.status}
+                  onChange={(status: any) => {
+                    setQuery({ ...query, status });
                   }}
                 >
                   <Select.Option value="">全部</Select.Option>
@@ -423,7 +423,7 @@ export default observer(function BadEventNewList() {
                   })}
                 </Select>
               </div>
-            </div> */}
+            </div>
             <div className="float-item">
               <div className="item-title" />
               <div className="item-content">
