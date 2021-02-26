@@ -10,7 +10,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { PageTitle } from 'src/components/common'
 
 const { RangePicker } = DatePicker
-export interface Props {}
+export interface Props { }
 
 export default observer(function Head() {
   const handleSearch: any = (val: any) => {
@@ -100,7 +100,7 @@ export default observer(function Head() {
         >
           <Select.Option value=''>全部</Select.Option>
           <Select.Option value='1'>待病区处理</Select.Option>
-          <Select.Option value='1,2'>待科护士长审核</Select.Option>
+          <Select.Option value='2'>待科护士长审核</Select.Option>
           <Select.Option value='3'>待护理部审核</Select.Option>
           <Select.Option value='4'>已完成</Select.Option>
           {/* {recordViewModal.checkStateList.map((item: any, index: number) => (

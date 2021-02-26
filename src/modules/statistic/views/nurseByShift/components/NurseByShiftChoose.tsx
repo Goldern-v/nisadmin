@@ -7,7 +7,7 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
 let classState: any = []
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState([])
@@ -197,6 +197,7 @@ const RightChooseByShift = styled.div`
     padding-left: 10px;
     height: 44px;
     line-height: 44px;
+
     .ant-radio-wrapper {
       margin: 0;
       padding: 0;
@@ -207,13 +208,16 @@ const RightChooseByShift = styled.div`
     /* 调整间距 */
     margin-top: 20px;
     padding-left: 10px;
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    overflow-y: scroll;
+    height: 270px;
   }
   .RightChooseByShiftCheckboxItem {
     width: 104px;
     height: 36px;
     line-height: 36px;
+    display: inline-block;
   }
 `

@@ -34,18 +34,18 @@ export interface Props extends ModalComponentProps {
 const rules: Rules =
   appStore.HOSPITAL_ID == "hj"
     ? {
-        name: val => !!val || "请填写班次名称",
-        shiftType: val => !!val || "请填写班次类别",
-        workTime: val => !!val || "请填写上班时间",
-        effectiveTime: val => !!val || "请填写标准工时",
-        nameColor: val => !!val || "请填写颜色标记"
-      }
+      name: val => !!val || "请填写班次名称",
+      shiftType: val => !!val || "请填写班次类别",
+      workTime: val => !!val || "请填写上班时间",
+      effectiveTime: val => !!val || "请填写标准工时",
+      nameColor: val => !!val || "请填写颜色标记"
+    }
     : {
-        name: val => !!val || "请填写班次名称",
-        shiftType: val => !!val || "请填写班次类别",
-        workTime: val => !!val || "请填写上班时间",
-        effectiveTime: val => (!!val || val == "0" ? "" : "请填写标准工时")
-      };
+      name: val => !!val || "请填写班次名称",
+      shiftType: val => !!val || "请填写班次类别",
+      workTime: val => !!val || "请填写上班时间",
+      effectiveTime: val => (!!val || val == "0" ? "" : "请填写标准工时")
+    };
 
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
@@ -156,7 +156,7 @@ export default function AddShiftModal(props: Props) {
           ref={refForm}
           rules={rules}
           labelWidth={80}
-          onChange={props.type && props.type == "nys" ? onFormChange : () => {}}
+          onChange={props.type && props.type == "nys" ? onFormChange : () => { }}
         >
           <Row>
             <Col span={24}>
@@ -205,13 +205,11 @@ export default function AddShiftModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
-            {appStore.HOSPITAL_ID == "nys" && (
-              <Col span={24}>
-                <Form.Field label={`周班次数`} name="rangeLimit">
-                  <Input />
-                </Form.Field>
-              </Col>
-            )}
+            <Col span={24}>
+              <Form.Field label={`周班次数`} name="rangeLimit">
+                <Input />
+              </Form.Field>
+            </Col>
             <Col span={24}>
               <Form.Field label={`启用状态`} name="status">
                 <SwitchField />

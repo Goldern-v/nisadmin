@@ -86,6 +86,7 @@ const TableCon = styled.div`
   display: flex;
   /* position: relative; */
   .NurseByShiftChooseCon {
+    height: 300px;
     /* width: 222px; */
     /* position: relative;
     top: -50px;

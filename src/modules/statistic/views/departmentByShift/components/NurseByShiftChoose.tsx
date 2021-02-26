@@ -26,7 +26,7 @@ let ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它
 // ]
 let checkboxItemState: any = []
 let classState: any = []
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
@@ -190,13 +190,17 @@ const RightChooseByShift = styled.div`
     /* 调整间距 */
     margin-top: 20px;
     padding-left: 10px;
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    overflow-y: scroll;
+    height: 270px;
+
   }
   .RightChooseByShiftCheckboxItem {
     width: 104px;
     height: 36px;
     line-height: 36px;
+    display: inline-block;
   }
 `

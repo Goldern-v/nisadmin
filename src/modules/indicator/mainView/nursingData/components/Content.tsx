@@ -4,7 +4,7 @@ import { observer } from "src/vendors/mobx-react-lite";
 import { Input, Spin } from "src/vendors/antd";
 import { nursingDataModal } from "../NursingDataModal";
 
-interface Props {}
+interface Props { }
 
 export default observer(function Content(props: Props) {
   // 配置数据
@@ -207,7 +207,7 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.workYearsCount.lessThanTenYearInBegin
         },
         {
-          name: "本时段白班护时段初10≤y<20年资护士人数",
+          name: "本时段初10≤y<20年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInBegin
         },

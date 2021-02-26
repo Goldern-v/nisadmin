@@ -163,18 +163,12 @@ export default function MainBox() {
       key: "settingNightHour",
       width: 90
     },
-    ...appStore.hisAdapter({
-      nys: () => [
-        {
-          title: "  周班次数",
-          dataIndex: "rangeLimit",
-          key: "rangeLimit",
-          width: 70
-        }
-      ],
-      wh: () => [],
-      hj: () => []
-    })
+    {
+      title: "  周班次数",
+      dataIndex: "rangeLimit",
+      key: "rangeLimit",
+      width: 70
+    }
   ];
 
   // old:(仲杰)
