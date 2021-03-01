@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
-// import DeptSelect from 'src/components/DeptSelect'
+import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
@@ -9,7 +9,7 @@ import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
 import emitter from 'src/libs/ev'
 export default function BedSituation() {
-  useEffect(() => {})
+  useEffect(() => { })
 
   // const onChange = (value: string) => {
   //   // nurseFilesListViewModel.loadNursingList()
@@ -41,7 +41,7 @@ export default function BedSituation() {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function(data: any) {
+      reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
@@ -56,11 +56,14 @@ export default function BedSituation() {
     )
   }
 
+  const onChange = () => { }
+
+
   return (
     <Con>
-      {/* <DeptSelect onChange={onChange} /> */}
+      <DeptSelect onChange={onChange} />
       {/* <SelectDepartment /> */}
-      {/* <Spacing /> */}
+      <Spacing />
       <SelectData />
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
