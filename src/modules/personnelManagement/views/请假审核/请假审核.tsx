@@ -24,7 +24,7 @@ export default observer(function 请假审核() {
   let _currentYear = currentYear()
 
   const [query, setQuery] = useState({
-    type: '',
+    typeCode: '',
     deptCode: '',
     queryBeginTime: _currentMonth[0].format('YYYY-MM-DD'),
     queryEndTime: _currentMonth[1].format('YYYY-MM-DD'),
@@ -155,10 +155,10 @@ export default observer(function 请假审核() {
   const getTypeList = () => {
     leaveAuditService.getAllLeaveTypes()
       .then(res => {
-        setTypeList(
-          (res.data || []).
-            map(({ typeCode, typeName }: any) => ({ type: typeCode, name: typeName }))
-        )
+        let newList = (res.data || []).
+          map(({ typeCode, typeName }: any) => ({ typeCode: typeCode, name: typeName }))
+
+        setTypeList(newList)
       })
   }
 
@@ -348,11 +348,11 @@ export default observer(function 请假审核() {
             <span className="content">
               <Select
                 style={{ minWidth: 80 }}
-                value={query.type}
-                onChange={(type: string) => setQuery({ ...query, type, pageIndex: 1 })}>
+                value={query.typeCode}
+                onChange={(typeCode: string) => setQuery({ ...query, typeCode, pageIndex: 1 })}>
                 <Option value={''}>全部</Option>
                 {typeList.map((item: any, idx: number) => (
-                  <Option key={idx} value={item.code}>{item.name}</Option>
+                  <Option key={idx} value={item.typeCode}>{item.name}</Option>
                 ))}
               </Select>
             </span>

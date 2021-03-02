@@ -164,7 +164,7 @@ export default function DetailOrAuditModal(props: Props) {
                 <div className="audit-item" key={idx}>
                   <div className="emp-img">
                     <img src={item.nearImageUrl} alt="" />
-                    {!!item.flag && (item.taskType == 3 ? <Icon type="close-circle" theme="filled" className="step-status error" /> : <Icon type="check-circle" theme="filled" className="step-status success" />)}
+                    {!!item.flag && (item.handleResult == -1 ? <Icon type="close-circle" theme="filled" className="step-status error" /> : <Icon type="check-circle" theme="filled" className="step-status success" />)}
                   </div>
                   <div className="info">
                     <div className="step-title">
