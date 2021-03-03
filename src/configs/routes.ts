@@ -153,6 +153,10 @@ const SensitiveRegisterRouter = lazy(() =>
 const DetailsView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/details/DetailsView")
 );
+const CommunityDetailsView = lazy(() =>
+  import("src/modules/communityRounds/views/details/DetailsView")
+);
+
 const ImportView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/import/ImportView")
 );
@@ -240,7 +244,12 @@ const QcOneRouterNys = lazy(() =>
   import("src/modules/quality/QcOneRouter_nys")
 );
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
+const CommunityRoundsRouter = lazy(() =>
+  import("src/modules/communityRounds/CommunityRoundsRouter")
+);
+// 武汉社区查房
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
+
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
 );
@@ -558,6 +567,11 @@ const routes: RouteItem[] = [
     DetailsView,
     layouts.MainLayout
   ),
+  setLayout(
+    "/CommunityDetailsView/:id",
+    CommunityDetailsView,
+    layouts.MainLayout
+  ),
   setLayout("/qualityScheduleImport", ImportView, layouts.MainLayout),
   setLayout("/typeManagement", TypeManagementView, layouts.MainLayout),
   setLayout(
@@ -671,6 +685,11 @@ const routes: RouteItem[] = [
   setLayout("/qcOneHj", QcOneRouterHj, layouts.MainLayout),
   setLayout("/qcOneNys", QcOneRouterNys, layouts.MainLayout),
   setLayout("/qcTwo", QcTwoRouter, layouts.MainLayout),
+  setLayout(
+    "/communityRoundsRouter/:pannelName",
+    CommunityRoundsRouter,
+    layouts.MainLayout
+  ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
@@ -756,7 +775,10 @@ const routes: RouteItem[] = [
   //   path: "/continuingEdu",
   //   redirect: "/continuingEdu/审核发布"
   // },
-
+  {
+    path: "/communityRoundsRouter",
+    redirect: "/communityRoundsRouter/checkWardRecord"
+  },
   {
     path: "/continuingEduEmpDetail",
     redirect: "/continuingEduEmpDetail/baseinfo"
