@@ -32,7 +32,7 @@ export default class AppStore {
     process.env.NODE_ENV === "development" ||
     window.location.port == "34002" || //武汉测试环境
     window.location.port == "9093" ||
-    window.location.hostname == "120.25.105.45"; //公司测试环境
+    window.location.hostname == "192.168.1.54"; //公司测试环境
 
   //是否是
   @observable public onlyBadEvent: boolean = !!process.env.REACT_APP_ONLY_BAD_EVENT

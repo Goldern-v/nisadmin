@@ -5,7 +5,7 @@ import { Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import BaseTabs from "src/components/BaseTabs"
 import { ColumnProps } from 'antd/lib/table'
-// import { localityService } from './api/LocalityService'
+import { studyNoteManageService } from './api/StudyNoteManageService'
 import { appStore, authStore } from 'src/stores'
 // import deptNameList from './utils/deptNameList'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
@@ -13,7 +13,7 @@ import StudyNoteAuditModal from './components/StudyNoteAuditModal'
 
 import moment from 'moment'
 
-const Option = Select.Option
+// const Option = Select.Option
 
 export interface Props { }
 
@@ -115,47 +115,28 @@ export default function 学习笔记审核() {
 
   const getTableData = (newQuery: any) => {
     setSelectedRowKeys([])
-    // setLoading(true)
+    setLoading(true)
 
-    // let reqMethod = localityService.queryToAuditPageList.bind(localityService)
+    let reqMethod = studyNoteManageService.queryToAuditPageList.bind(studyNoteManageService)
 
-    // if (newQuery.type == '2')
-    //   reqMethod = localityService.queryAuditedPageList.bind(localityService)
+    if (newQuery.type == '2')
+      reqMethod = studyNoteManageService.queryAuditedPageList.bind(studyNoteManageService)
 
-    // let reqParams = { ...newQuery }
-    // delete reqParams.type
+    let reqParams = { ...newQuery }
+    delete reqParams.type
 
-    // reqMethod(reqParams).then(res => {
-    //   setLoading(false)
-    //   if (res.data) {
-    //     setTotalCount(res.data.totalCount)
-    //     setTableData(res.data.list)
-    //   }
-    // }, () => setLoading(false))
+    reqMethod(reqParams).then(res => {
+      setLoading(false)
+      if (res.data) {
+        setTotalCount(res.data.totalCount)
+        setTableData(res.data.list)
+      }
+    }, () => setLoading(false))
 
   }
 
   const handleToAudit = (record: any) => {
-    history.push(`/典型案例库审核详情?formId=${record.formId}&taskId=${record.taskId}&type=audit`)
-  }
-
-  const handleDelete = (record: any) => {
-    // if (record.id)
-    //   Modal.confirm({
-    //     title: '删除',
-    //     content: '是否删除选中项目？',
-    //     onOk: () => {
-    //       setLoading(true)
-    //       localityService
-    //         .deleteById(record.id)
-    //         .then(res => {
-    //           setLoading(false)
-    //           message.success('操作成功')
-    //           getTableData(query)
-    //         }, () => setLoading(false))
-
-    //     }
-    //   })
+    // history.push(`/典型案例库审核详情?formId=${record.formId}&taskId=${record.taskId}&type=audit`)
   }
 
   useEffect(() => {
