@@ -1,73 +1,235 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Carousel, Input, Modal } from 'antd'
+import { Button, Carousel, Input, Modal, Radio, Tag } from 'antd'
 import { Place } from 'src/components/common'
 import { authStore } from 'src/stores'
 import moment from 'src/vendors/moment'
+import { studyNoteManageService } from './../api/StudyNoteManageService'
+
+const TextArea = Input.TextArea
 export interface Props {
-  visible: boolean
+  visible: boolean,
+  toAudit?: boolean,
   onOk: Function
   onCancel: Function
   recordList: any[]
 }
 
 export default function StudyNoteAuditModal(props: Props) {
-  const { visible, onOk, onCancel, recordList } = props
+  const { visible, onOk, onCancel, recordList, toAudit } = props
 
-  const onChange = (info: any) => {
-    console.log(info)
-  }
+  const carouselRef = React.createRef<any>()
+
+  const [dataList, setDataList] = useState([] as any[])
+  const [activeIdx, setActiveIdx] = useState(0)
 
   const [loading, setLoading] = useState(false)
 
+  const handleChange = (payload: any, idx: any) => {
+    if (dataList.length <= 0) return
+    if (loading) return
+
+    let newList = dataList.concat()
+    newList[idx] = payload
+
+    setDataList(newList)
+  }
+
+  const getAuditedInfo = () => {
+    if (!recordList[0]) return
+    setLoading(true)
+
+    let noteId = recordList[0].id
+    studyNoteManageService.getAuditedStudyNoteDetailInfo(noteId)
+      .then(res => {
+        setLoading(false)
+        setDataList([
+          {
+            ...recordList[0],
+            ...res.data,
+          }
+        ])
+      }, err => setLoading(false))
+  }
+
+  const getToAuditInfo = () => {
+    setLoading(true)
+
+    let taskIdList = recordList.map((record: any) => record.taskId)
+    taskIdList = ["f487fbf4-30e3-4729-ad6a-64078db01cc1", "76ae2dd4-602a-4028-939e-44947fd24a32"]
+
+    // studyNoteManageService
+    //   .getToAuditStudyNoteDetailInfoList(taskIdList)
+    //   .then(res => {
+    setLoading(false)
+
+    let resData = [
+      {
+        "taskId": "f487fbf4-30e3-4729-ad6a-64078db01cc1",
+        "title": "测试",
+        "firstLevelMenuName": "在线学习",
+        "startTime": "2020-10-19 10:04:40",
+        "endTime": "2020-10-20 10:04:40",
+        "noteContent": "已经达到巅峰"
+      },
+      {
+        "taskId": "76ae2dd4-602a-4028-939e-44947fd24a32",
+        "title": "反反复复",
+        "firstLevelMenuName": "在线学习",
+        "startTime": "2020-05-08 14:55:11",
+        "endTime": "2020-05-08 15:55:11",
+        "noteContent": "加把努力"
+      }
+    ] as any[]
+
+    let newDataList = resData.map((item: any, idx: number) => {
+      return {
+        ...item,
+        ...recordList[idx] || {
+          empName: '张三丰' + idx,
+        },
+        auditResult: 1,
+        auditRemark: '',
+      }
+    })
+
+    setDataList(newDataList)
+    // },err=>setLoading(false))
+  }
+
+  const handleAudit = () => {
+
+  }
+
+  const handleGroupAudit = (auditResult: number) => {
+    let auditRemark = ''
+    Modal.confirm({
+      title: `确定批量审核${auditResult == 1 ? '通过' : '驳回'}`,
+      centered: true,
+      content: <TextArea
+        autosize={{ minRows: 4 }}
+        onChange={(e: any) => auditRemark = e.target.value} />,
+      onOk: () => {
+        console.log(auditRemark)
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (visible) {
+      if (carouselRef.current)
+        carouselRef.current.goTo(1, true)
+      setActiveIdx(0)
+
+      if (toAudit) {
+        getToAuditInfo()
+      } else {
+        getAuditedInfo()
+      }
+
+    }
+  }, [visible])
+
   return <Modal
-    title="审核"
+    title={`${dataList[activeIdx] && dataList[activeIdx].empName + '的' || ''}学习笔记`}
     visible={visible}
+    centered
     confirmLoading={loading}
     onCancel={() => onCancel()}
     footer={<FooterCon>
-      <Button type="primary">批量通过</Button>
-      <Button type="danger">批量驳回</Button>
+      {dataList.length > 1 &&
+        <React.Fragment>
+          <Button type="primary" onClick={() => handleGroupAudit(1)}>批量通过</Button>
+          <Button type="danger" onClick={() => handleGroupAudit(-1)}>批量驳回</Button>
+        </React.Fragment>}
       <Place />
-      <Button>确定</Button>
-      <Button type="primary" disabled={loading}>取消</Button>
+      <Button onClick={() => onCancel()}>取消</Button>
+      {toAudit && <Button
+        type="primary"
+        disabled={loading}
+        onClick={() => handleAudit()}>
+        提交
+      </Button>}
     </FooterCon>}>
     <Wrapper>
-      <Carousel afterChange={onChange}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
+      <Carousel
+        dots={false}
+        ref={carouselRef}>
+        {(dataList.length > 0 ? dataList : [{}] as any[])
+          .map((item: any, idx: number) =>
+            <div key={item} className="data-item">
+              <div>学习任务：{item.title}</div>
+              <div>学习类型：{item.firstLevelMenuName}</div>
+              <div>学习时间：{item.startTime || '...'} ~ {item.endTime || '...'}</div>
+              <div>学习笔记：</div>
+              <div>
+                <TextArea
+                  value={item.noteContent}
+                  autosize={{ minRows: 5 }}
+                  readOnly />
+              </div>
+              {toAudit && <React.Fragment>
+                <div>
+                  <span>审核结果：</span>
+                  <Radio.Group
+                    value={item.auditResult}
+                    onChange={(e: any) => handleChange({
+                      ...item,
+                      auditResult: e.target.value
+                    }, idx)}>
+                    <Radio value={1}>通过</Radio>
+                    <Radio value={-1}>驳回</Radio>
+                  </Radio.Group>
+                </div>
+                <div>批阅意见：</div>
+                <div>
+                  <TextArea
+                    value={item.auditRemark}
+                    onChange={(e: any) =>
+                      handleChange({ ...item, auditRemark: e.target.value }, idx)} />
+                </div>
+              </React.Fragment>}
+            </div>)}
       </Carousel>
-      <div className="auditer-info">
+      {dataList.length > 0 && toAudit && <div className="emp-list">
+        {dataList.map((item: any, idx: number) => <Tag
+          onClick={() => {
+            setActiveIdx(idx)
+            if (carouselRef.current) {
+              console.log(carouselRef.current)
+              carouselRef.current.goTo(idx + 1, false)
+            }
+          }}
+          color={activeIdx == idx ? '#00A680' : '#bbb'}
+          key={idx}>
+          {item.empName}
+        </Tag>)}
+      </div>}
+      {toAudit && <div className="auditer-info">
         <span>审核人：</span>
-        <Input style={{ width: 100 }} readOnly value={authStore.user?.empName} />
+        <Input
+          style={{ width: 100, marginRight: 10 }}
+          readOnly
+          value={authStore.user?.empName} />
         <span>审核时间：</span>
-        <Input style={{ width: 120 }} readOnly value={moment().format('YYYY-MM-DD HH:mm')} />
-      </div>
+        <Input
+          style={{ width: 150 }}
+          readOnly
+          value={moment().format('YYYY-MM-DD HH:mm')} />
+      </div>}
     </Wrapper>
   </Modal>
 }
 
 const Wrapper = styled.div`
   .ant-carousel .slick-slide {
-    text-align: center;
-    height: 160px;
-    line-height: 160px;
-    background: #364d79;
+    text-align: left;
     overflow: hidden;
   }
-
-  .ant-carousel .slick-slide h3 {
-    color: #fff;
+  .data-item{
+    &>div{
+      margin-bottom: 10px;
+    }
   }
 
   .auditer-info{

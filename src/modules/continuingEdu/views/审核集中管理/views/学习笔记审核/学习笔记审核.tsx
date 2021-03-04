@@ -13,7 +13,7 @@ import StudyNoteAuditModal from './components/StudyNoteAuditModal'
 
 import moment from 'moment'
 
-// const Option = Select.Option
+const Option = Select.Option
 
 export interface Props { }
 
@@ -23,8 +23,8 @@ export default function 学习笔记审核() {
     submitTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
     submitTimeEnd: getCurrentMonthNow()[1].format('YYYY-MM-DD'),
     keyWord: '',
-    medicalSubject: '',
-    type: 1,
+    deptCode: '',
+    audited: '0',
     pageSize: 20,
     pageIndex: 1,
   })
@@ -34,8 +34,10 @@ export default function 学习笔记审核() {
   const [loading, setLoading] = useState(false)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
-  const selectedList = [] as any[]
+
+  const [selectedList, setSelectedList] = useState([] as any[])
   const [auditVisible, setAuditVisible] = useState(false)
+  const [toAudit, setToAudit] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -47,48 +49,32 @@ export default function 学习笔记审核() {
       align: "center",
     },
     {
-      title: '科室',
-      dataIndex: 'medicalSubject',
-      width: 220,
-      align: "center",
-    },
-    {
-      title: '患者姓名',
-      dataIndex: 'patientName',
+      title: '姓名',
+      dataIndex: 'empName',
       align: "center",
       width: 80,
     },
     {
-      title: '患者性别',
-      dataIndex: 'sex',
+      title: '科室',
+      dataIndex: 'deptName',
+      width: 220,
       align: "center",
-      width: 60,
-      render: (text: any) => {
-        switch (text) {
-          case '0':
-            return '男'
-          case '1':
-            return '女'
-          default:
-            return ''
-        }
-      }
     },
     {
-      title: '患者年龄',
-      dataIndex: 'age',
+      title: '学习方式',
+      dataIndex: 'teachingMethodName',
       align: "center",
-      width: 60,
+      width: 80,
     },
     {
-      title: '提交时间',
-      dataIndex: 'submitTime',
+      title: '学习记录',
+      dataIndex: 'title',
       align: "center",
-      width: 120,
+      width: 220,
     },
     {
-      title: '提交人',
-      dataIndex: 'submitterEmpName',
+      title: '状态',
+      dataIndex: 'statusDesc',
       align: "center",
       width: 80,
     },
@@ -99,7 +85,7 @@ export default function 学习笔记审核() {
       width: 120,
       render: (text: any, record: any, index: number) => {
         return <DoCon>
-          <span onClick={() => handleToAudit(record)}>查看</span>
+          <span onClick={() => handleToAudit(record)}>{query.audited ? '查看' : '审核'}</span>
         </DoCon>
       }
     }
@@ -119,11 +105,11 @@ export default function 学习笔记审核() {
 
     let reqMethod = studyNoteManageService.queryToAuditPageList.bind(studyNoteManageService)
 
-    if (newQuery.type == '2')
+    if (newQuery.audited == '1')
       reqMethod = studyNoteManageService.queryAuditedPageList.bind(studyNoteManageService)
 
     let reqParams = { ...newQuery }
-    delete reqParams.type
+    delete reqParams.audited
 
     reqMethod(reqParams).then(res => {
       setLoading(false)
@@ -136,7 +122,14 @@ export default function 学习笔记审核() {
   }
 
   const handleToAudit = (record: any) => {
-    // history.push(`/典型案例库审核详情?formId=${record.formId}&taskId=${record.taskId}&type=audit`)
+    if (query.audited)
+      setToAudit(false)
+    else
+      setToAudit(true)
+
+    setSelectedList([record])
+
+    setAuditVisible(true)
   }
 
   useEffect(() => {
@@ -148,13 +141,14 @@ export default function 学习笔记审核() {
   }
 
   const handleTypeChange = (key: any) => {
-    let newQuery = { ...query, pageIndex: 1, type: Number(key) }
+    let newQuery = { ...query, pageIndex: 1, audited: key }
 
     setQuery(newQuery)
   }
 
   const TableCon = <BaseTable
     surplusHeight={310}
+    surplusWidth={1000}
     columns={columns}
     dataSource={tableData}
     loading={loading}
@@ -168,25 +162,35 @@ export default function 学习笔记审核() {
       showQuickJumper: true,
       pageSize: query.pageSize
     }}
-    rowSelection={{
+    rowSelection={query.audited == '0' ? {
       selectedRowKeys,
       onChange: (rowKeys: any[]) => setSelectedRowKeys(rowKeys)
-    }} />
+    } : undefined} />
 
   return <Wrapper>
     <HeaderCon>
-      <Title>学习笔记审核</Title>
+      <Title></Title>
       <Place />
-      {/* <span className="sub">科室：</span>
+      <span className="sub">类型：</span>
       <Select
-        style={{ width: 100 }}
-        value={query.medicalSubject}
-        onChange={(medicalSubject: any) =>
-          setQuery({ ...query, medicalSubject, pageIndex: 1, })}>
-        {deptNameList.map((name: string) => (
-          <Option value={name} key={name}>{name}</Option>
-        ))}
-      </Select> */}
+        defaultValue={'学习笔记'}
+        onChange={(payload: any) => { }}>
+        <Option value={'学习笔记'}>学习笔记</Option>
+        <Option value={'工作反思'}>工作反思</Option>
+      </Select>
+      <span className="sub">科室：</span>
+      <Select
+        style={{ width: 180 }}
+        value={query.deptCode}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        onChange={(deptCode: any) =>
+          setQuery({ ...query, deptCode, pageIndex: 1 })}>
+        <Option value={''}>全部</Option>
+        {authStore.deptList.map((item: any, idx: number) =>
+          <Option value={item.code} key={idx}>{item.name}</Option>)}
+      </Select>
       <span className="sub">提交日期：</span>
       <DatePicker.RangePicker
         style={{ width: 210 }}
@@ -216,22 +220,35 @@ export default function 学习笔记审核() {
         style={{ marginLeft: 15 }}>
         搜索
       </Button>
-      <Button onClick={() => setAuditVisible(true)}>test</Button>
+      <Button
+        style={{ marginLeft: 15 }}
+        onClick={() => {
+          setToAudit(true)
+          setSelectedList(selectedRowKeys
+            .map((id: any) => {
+              return tableData.find((item: any) => item.id == id)
+            }))
+          setAuditVisible(true)
+        }}>
+        批量审核
+      </Button>
     </HeaderCon>
     <MainCon>
       <BaseTabs
-        defaultActiveKey={query.type.toString()}
-        config={['待我审核', '我已审核'].map((name: any, index: number) => {
-          return {
-            title: name,
-            component: TableCon,
-            index: (index + 1).toString()
-          }
-        })}
+        defaultActiveKey={query.audited}
+        config={['待我审核', '我已审核']
+          .map((name: any, index: number) => {
+            return {
+              title: name,
+              component: TableCon,
+              index: index.toString()
+            }
+          })}
         onChange={(key: any) => handleTypeChange(key)}
       />
     </MainCon>
     <StudyNoteAuditModal
+      toAudit={toAudit}
       visible={auditVisible}
       onOk={() => {
         getTableData(query)

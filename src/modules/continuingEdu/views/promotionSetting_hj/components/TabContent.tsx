@@ -140,15 +140,17 @@ export default observer(function TabContent(props: Props) {
               </div>
             )
           })}
-          <div className="training-key-point-group">
+          <div className="row" style={{ marginTop: 20 }}>
             <div className="sub-title">临床专业能力训练重点</div>
+          </div>
+          <div className="training-key-point-group">
             {trainingKeyPointList.map((item: any, idx: number) =>
               <div className="training-key-point-item" key={idx}>
                 {idx + 1}.{item.trainingKeyPointName}
               </div>)}
             {trainingKeyPointList.length <= 0 && <div>未设置</div>}
           </div>
-          <div className="row">
+          <div className="row" style={{ marginTop: 20 }}>
             <div className="sub-title">岗位职责:</div>
           </div>
           <div className="job-duty">
