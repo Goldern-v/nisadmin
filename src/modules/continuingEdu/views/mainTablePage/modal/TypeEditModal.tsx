@@ -38,7 +38,6 @@ export default observer(function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         if (params.id) {
-          console.log(params, 'vparamsparamsparams333333')
           let data: any = { ...params };
           const teachingMethodList = [
             "学习",
@@ -65,6 +64,7 @@ export default observer(function TypeEditModal(props: Props) {
             sort,
             teachingMethod
           });
+
         }
       }, 100);
     }
@@ -80,28 +80,39 @@ export default observer(function TypeEditModal(props: Props) {
           if (current) {
             let newParams = current.getFields();
             newParams.sort = Number(newParams.sort);
+            newParams.trainingKeyPointId = mainPageModal.trainingKeyPointTreeId;
+            newParams.knowledgePointDivisionId = mainPageModal.knowledgePointDivisionTreeId;
+            newParams.learningFormId = mainPageModal.learningFormTreeId;
             if (params.id) {
               newParams.id = params.id;
               delete newParams.teachingMethod;
               setEditLoading(true);
-              mainPageApi.updateTypeData(newParams).then(res => {
-                setEditLoading(false);
-                let msg = "类型修改成功";
-                Message.success(msg);
-                onOk();
-              });
+              if (appStore.HOSPITAL_ID == 'hj') {
+                updateTypeDataHJ(newParams)
+              } else {
+                mainPageApi.updateTypeData(newParams).then(res => {
+                  setEditLoading(false);
+                  let msg = "类型修改成功";
+                  Message.success(msg);
+                  onOk();
+                });
+              }
             } else {
               if (newParams.teachingMethod === "学习") {
                 newParams.teachingMethod = 1;
               }
               newParams.pId = Number(params.Pid);
               newParams.teachingMethod = Number(newParams.teachingMethod);
-              mainPageApi.addTypeData(newParams).then(res => {
-                setEditLoading(false);
-                let msg = "类型添加成功";
-                Message.success(msg);
-                onOk(res);
-              });
+              if (appStore.HOSPITAL_ID == 'hj') {
+                updateTypeDataHJ(newParams)
+              } else {
+                mainPageApi.addTypeData(newParams).then(res => {
+                  setEditLoading(false);
+                  let msg = "类型添加成功";
+                  Message.success(msg);
+                  onOk(res);
+                });
+              }
             }
           }
         })
@@ -111,10 +122,24 @@ export default observer(function TypeEditModal(props: Props) {
     }
   };
 
+  // 厚街类型管理单独接口
+  const updateTypeDataHJ = (newParams: any) => {
+    mainPageApi.updateTypeDataHJ(newParams).then(res => {
+      setEditLoading(false);
+      let msg = "类型添加成功";
+      Message.success(msg);
+      onOk(res);
+    });
+  }
+
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
   };
+
+  const getName = (tree: any, id: any) => {
+    return tree.find((item: any) => item.id == id).name
+  }
 
   return (
     <Modal
@@ -126,16 +151,18 @@ export default observer(function TypeEditModal(props: Props) {
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
-          <Row>
-            <Col span={5} className="label">
-              名称:
+          {params.id &&
+            <Row>
+              <Col span={5} className="label">
+                名称:
             </Col>
-            <Col span={19}>
-              <Form.Field name="name">
-                <Input placeholder="名称" />
-              </Form.Field>
-            </Col>
-          </Row>
+              <Col span={19}>
+                <Form.Field name="name">
+                  <Input placeholder="名称" disabled />
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={5} className="label">
               教学方式:
@@ -164,7 +191,7 @@ export default observer(function TypeEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {/* {appStore.HOSPITAL_ID == 'hj' && (
+          {appStore.HOSPITAL_ID == 'hj' && (
             <div>
               <Row>
                 <Col span={5} className="label">
@@ -251,7 +278,7 @@ export default observer(function TypeEditModal(props: Props) {
                 </Col>
               </Row>
             </div>
-          )} */}
+          )}
         </Form>
       </Wrapper>
     </Modal>

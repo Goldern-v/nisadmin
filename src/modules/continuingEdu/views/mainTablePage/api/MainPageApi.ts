@@ -71,5 +71,14 @@ export default class MainPageApi extends BaseApiService {
   public async getTrainingItemsTree() {
     return this.get(`/studyAndTrain/trainManualManage/getTrainingItemsTree`);
   }
+
+  // 厚街类型管理新增修改单独接口
+  public async updateTypeDataHJ(obj: any) {
+    // id(菜单id) name(菜单名)
+    return this.post(
+      `/studyAndTrain/menuManage/hj/addOrUpdateThreeLevelMenuItem`,
+      obj
+    );
+  }
 }
 export const mainPageApi = new MainPageApi();

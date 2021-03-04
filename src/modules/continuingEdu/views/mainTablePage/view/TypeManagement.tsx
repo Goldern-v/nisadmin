@@ -167,12 +167,7 @@ export default withRouter(
     // 修改类型管理
     const saveOrUpload = (record?: any) => {
       if (record) {
-        setEditParams({
-          id: record.id,
-          teachingMethod: record.teachingMethod,
-          name: record.name,
-          sort: record.sort
-        });
+        setEditParams(record);
       } else {
         setEditParams({
           Pid: id,
