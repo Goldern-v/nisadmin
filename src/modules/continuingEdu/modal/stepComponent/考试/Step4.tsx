@@ -27,6 +27,7 @@ import { appStore } from "src/stores";
 import { stepServices } from "../services/stepServices";
 import { fileDownload } from "src/utils/file/file";
 import UpdateTableHj from "./UpdateTableHj";
+import UpdateTableNys from "./UpdateTableNys";
 
 
 export interface Props { }
@@ -209,6 +210,50 @@ export default observer(function Step4() {
     });
   }
 
+  // 添加试卷组件
+  const UpdateTablePage = () => {
+    if (appStore.HOSPITAL_ID == 'hj') {
+      return (<div>
+        <Col span={24}>
+          <Form.Field label={`上传题库`}>
+            <div className="down-file-con">
+              选择上传文件：
+          <span onClick={downFileWith}>下载题库模板(含问答题)</span>
+              &nbsp;
+          <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
+            </div>
+          </Form.Field>
+        </Col>
+        <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
+        {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
+          return (
+            <Col span={24}>
+              <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
+                <UpdateTableHj data={item} />
+              </Form.Field>
+            </Col>
+          )
+        })}
+      </div>)
+    } else if (appStore.HOSPITAL_ID == 'nys') {
+      return (
+        <Col span={24}>
+          <Form.Field label='上传题库' name="questionStatList">
+            <UpdateTableNys />
+          </Form.Field>
+        </Col>
+      )
+    } else {
+      return (
+        <Col span={24}>
+          <Form.Field label='上传题库' name="questionStatList">
+            <UpdateTable />
+          </Form.Field>
+        </Col>
+      )
+    }
+  }
+
   return (
     <Wrapper>
       <Form
@@ -246,41 +291,7 @@ export default observer(function Step4() {
             </Form.Field>
           </Col>
 
-          {appStore.HOSPITAL_ID == 'hj' ?
-            (<div>
-              <Col span={24}>
-                <Form.Field label={`上传题库`}>
-                  <div className="down-file-con">
-                    选择上传文件：
-                <span onClick={downFileWith}>下载题库模板(含问答题)</span>
-                    &nbsp;
-                <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
-                  </div>
-                </Form.Field>
-              </Col>
-              <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
-              {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
-                return (
-                  <Col span={24}>
-                    <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
-                      <UpdateTableHj data={item} />
-                    </Form.Field>
-                  </Col>
-                )
-              })}
-            </div>)
-            :
-            <Col span={24}>
-              <Form.Field label='上传题库' name="questionStatList">
-                <UpdateTable />
-              </Form.Field>
-            </Col>
-          }
-          {/* <Col span={24}>
-            <Form.Field label='' name="questionStatList">
-              <UpdateTable />
-            </Form.Field>
-          </Col> */}
+          <UpdateTablePage />
 
           <Col span={24}>
             {/* <Form.Field label={`卷面设置`} name="卷面设置"> */}
@@ -460,7 +471,7 @@ export default observer(function Step4() {
 });
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
-    position: relative;
+  position: relative;
   .ab {
       display: inline - block;
       position: absolute;
@@ -468,20 +479,20 @@ const Wrapper = styled.div`
       top: 215px;
     }
   .addText {
-      margin: -20px 0 15px 120px;
+    margin: -20px 0 15px 120px;
+  }
+  .down-file-con {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #666;
+    span {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
     }
-  .down - file - con {
-      margin - top: 10px;
-      margin - bottom: 10px;
-      font - size: 12px;
-      color: #666;
-      span {
-        color: blue;
-        text - decoration: underline;
-        cursor: pointer;
-      }
-    }
-    `;
+  }
+`;
 
 const DateSelectCon = styled.div`
       .date - row {

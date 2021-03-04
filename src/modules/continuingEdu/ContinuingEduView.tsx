@@ -116,20 +116,20 @@ export default function ContinuingEdu(props: Props) {
       component: 在线学习,
       hide: appStore.HOSPITAL_ID !== "wh"
     },
-    {
-      title: "学习培训任务",
-      icon: <JSGL />,
-      path: "/continuingEdu/学习培训任务",
-      component: 在线学习,
-      hide: appStore.HOSPITAL_ID !== "hj"
-    },
     // {
-    //   title: "培训手册",
+    //   title: "学习培训任务",
     //   icon: <JSGL />,
-    //   path: "/continuingEdu/培训手册",
-    //   component: 培训手册,
+    //   path: "/continuingEdu/学习培训任务",
+    //   component: 在线学习,
     //   hide: appStore.HOSPITAL_ID !== "hj"
     // },
+    {
+      title: "培训手册",
+      icon: <JSGL />,
+      path: "/continuingEdu/培训手册",
+      component: 培训手册,
+      hide: appStore.HOSPITAL_ID !== "hj"
+    },
     ...appStore.hisMatch({
       map: {
         hj: [
