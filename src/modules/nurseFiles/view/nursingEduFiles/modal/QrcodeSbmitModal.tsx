@@ -14,8 +14,8 @@ export default observer(function QrcodeSbmitModal(props: Props) {
 
   const testIp = appStore.hisMatch({
     map: {
-      hj: 'http://120.25.105.45:9864',
-      gzhd: 'http://120.25.105.45:9868',
+      hj: 'http://192.168.1.54:9864',
+      gzhd: 'http://192.168.1.54:9868',
       other: ''
     },
   })

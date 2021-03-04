@@ -344,7 +344,7 @@ export default function ContinuingEdu(props: Props) {
           },
         ]
       },
-      currentHospitalId: appStore.isDev ? 'development' : "production"
+      // currentHospitalId: appStore.isDev ? 'development' : "production"
     }),
     //题库管理 根据医院切换
     ...appStore.hisMatch({
