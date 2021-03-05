@@ -171,13 +171,13 @@ export default function 学习笔记审核() {
     <HeaderCon>
       <Title></Title>
       <Place />
-      <span className="sub">类型：</span>
+      {/* <span className="sub">类型：</span>
       <Select
         defaultValue={'学习笔记'}
         onChange={(payload: any) => { }}>
         <Option value={'学习笔记'}>学习笔记</Option>
         <Option value={'工作反思'}>工作反思</Option>
-      </Select>
+      </Select> */}
       <span className="sub">科室：</span>
       <Select
         style={{ width: 180 }}
@@ -223,6 +223,9 @@ export default function 学习笔记审核() {
       <Button
         style={{ marginLeft: 15 }}
         onClick={() => {
+          if (selectedRowKeys.length <= 0)
+            return message.warn('未勾选项目')
+
           setToAudit(true)
           setSelectedList(selectedRowKeys
             .map((id: any) => {

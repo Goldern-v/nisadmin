@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Carousel, Input, Modal, Radio, Tag } from 'antd'
+import { Button, Carousel, Input, message, Modal, Radio, Tag } from 'antd'
 import { Place } from 'src/components/common'
 import { authStore } from 'src/stores'
 import moment from 'src/vendors/moment'
@@ -56,49 +56,39 @@ export default function StudyNoteAuditModal(props: Props) {
     setLoading(true)
 
     let taskIdList = recordList.map((record: any) => record.taskId)
-    taskIdList = ["f487fbf4-30e3-4729-ad6a-64078db01cc1", "76ae2dd4-602a-4028-939e-44947fd24a32"]
 
-    // studyNoteManageService
-    //   .getToAuditStudyNoteDetailInfoList(taskIdList)
-    //   .then(res => {
-    setLoading(false)
+    studyNoteManageService
+      .getToAuditStudyNoteDetailInfoList(taskIdList)
+      .then(res => {
+        setLoading(false)
 
-    let resData = [
-      {
-        "taskId": "f487fbf4-30e3-4729-ad6a-64078db01cc1",
-        "title": "测试",
-        "firstLevelMenuName": "在线学习",
-        "startTime": "2020-10-19 10:04:40",
-        "endTime": "2020-10-20 10:04:40",
-        "noteContent": "已经达到巅峰"
-      },
-      {
-        "taskId": "76ae2dd4-602a-4028-939e-44947fd24a32",
-        "title": "反反复复",
-        "firstLevelMenuName": "在线学习",
-        "startTime": "2020-05-08 14:55:11",
-        "endTime": "2020-05-08 15:55:11",
-        "noteContent": "加把努力"
-      }
-    ] as any[]
+        let newDataList = (res.data || []).map((item: any, idx: number) => {
+          return {
+            ...item,
+            ...recordList[idx] || {},
+            auditResult: 1,
+            auditRemark: '',
+          }
+        })
 
-    let newDataList = resData.map((item: any, idx: number) => {
-      return {
-        ...item,
-        ...recordList[idx] || {
-          empName: '张三丰' + idx,
-        },
-        auditResult: 1,
-        auditRemark: '',
-      }
-    })
-
-    setDataList(newDataList)
-    // },err=>setLoading(false))
+        setDataList(newDataList)
+      }, err => setLoading(false))
   }
 
   const handleAudit = () => {
-
+    setLoading(true)
+    Promise.all(dataList.map((item: any) => {
+      return studyNoteManageService.auditStudyNote({
+        taskId: item.taskId,
+        auditResult: item.auditResult,
+        auditRemark: item.auditRemark,
+      })
+    }))
+      .then(res => {
+        setLoading(false)
+        message.success('操作成功')
+        onOk()
+      }, () => setLoading(false))
   }
 
   const handleGroupAudit = (auditResult: number) => {
@@ -110,7 +100,17 @@ export default function StudyNoteAuditModal(props: Props) {
         autosize={{ minRows: 4 }}
         onChange={(e: any) => auditRemark = e.target.value} />,
       onOk: () => {
-        console.log(auditRemark)
+        setLoading(true)
+        studyNoteManageService.batchAuditStudyNotes({
+          taskIdList: recordList.map((record: any) => record.taskId as string),
+          auditResult,
+          auditRemark,
+        })
+          .then(res => {
+            setLoading(false)
+            message.success('操作成功')
+            onOk()
+          }, () => setLoading(false))
       }
     })
   }

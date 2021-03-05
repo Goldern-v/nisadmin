@@ -6,6 +6,7 @@ import FormReview from "./../trainingSetting/formReview/FormReview";
 import 典型案例库审核 from './../学习资源/典型案例库/典型案例库审核'
 import 学习笔记审核 from './views/学习笔记审核/学习笔记审核'
 import { appStore } from 'src/stores'
+import AppStore from 'src/stores/AppStore';
 // import { Button } from 'antd'
 
 export interface Props { }
@@ -24,7 +25,7 @@ export default observer(function 审核集中管理() {
     { name: '学习计划审核', id: '1' },
     { name: '资质准入审核', id: '2' },
     { name: '典型案例审核', id: '3' },
-    // { name: '学员笔记审核', id: '4' },
+    ...appStore.isDev ? [{ name: '学员笔记审核', id: '4' },] : []
   ]
 
   const currentView = () => {

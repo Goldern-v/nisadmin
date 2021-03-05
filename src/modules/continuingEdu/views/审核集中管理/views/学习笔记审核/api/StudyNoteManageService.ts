@@ -34,6 +34,24 @@ export default class StudyNoteManageService extends BaseApiService {
   public getAuditedStudyNoteDetailInfo(noteId: any) {
     return this.post('/studyAndTrain/studyNoteManage/getAuditedStudyNoteDetailInfo', { noteId })
   }
+
+  /**360.厚街-学习笔记-批量审核学习笔记 */
+  public batchAuditStudyNotes(params: {
+    taskIdList: string[],
+    auditResult: number,
+    auditRemark?: string
+  }) {
+    return this.post('/studyAndTrain/studyNoteManage/batchAuditStudyNotes', params)
+  }
+
+  /**359.厚街-学习笔记-审核学习笔记 */
+  public auditStudyNote(params: {
+    taskId: string,
+    auditResult: number,
+    auditRemark?: string
+  }) {
+    return this.post('/studyAndTrain/studyNoteManage/auditStudyNote', params)
+  }
 }
 
 export const studyNoteManageService = new StudyNoteManageService()
