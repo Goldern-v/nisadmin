@@ -39,9 +39,6 @@ export default observer(function UpdateTableNys(props: Props) {
   let totalScore = dataSource.reduce((total: any, current: any) => {
     return total + current.totalScores;
   }, 0);
-  console.log(totalScore, 'totalScoretotalScoretotalScoretotalScore')
-  // let _totalScore = ksStepViewModal.stepData2.totalScores;
-  ksStepViewModal.stepData2.totalScores = totalScore;
 
   const columns: ColumnProps<any>[] = [
     {
@@ -75,21 +72,21 @@ export default observer(function UpdateTableNys(props: Props) {
       }
     },
     {
-      title: "题目数",
+      title: "题池数",
       dataIndex: "questionCount",
       align: "center",
       render(text: any, record: any, index: number) {
-        if (index == 0) return `总题数：${totalNum} 题`;
+        if (index == 0) return `题池数：${totalNum} 题`;
         return text;
       }
     },
     {
-      title: "题池数",
+      title: "题目数",
       dataIndex: "pickQuestionCount",
       align: "center",
       className: "input-cell",
       render(text: any, record: any, index: number) {
-        if (index == 0) return `题池数：${pickTotalNum} 题`;
+        if (index == 0) return `总题数：${pickTotalNum} 题`;
         return (
           <InputNumber
             min={0}
@@ -109,7 +106,7 @@ export default observer(function UpdateTableNys(props: Props) {
       className: "input-cell",
       width: 80,
       dataIndex: "scoresPerQuestion",
-      render(text: any, record: any, index: number) {
+      render: (text: any, record: any, index: number) => {
         if (index == 0) return "--";
         return (
           <InputNumber
@@ -118,6 +115,10 @@ export default observer(function UpdateTableNys(props: Props) {
             value={text}
             onChange={(val: any) => {
               record.scoresPerQuestion = val;
+              if (record.scoresPerQuestion && record.questionCount) {
+                record.totalScores =
+                  record.scoresPerQuestion * record.pickQuestionCount;
+              }
               onChange([...dataSource]);
             }}
           />
@@ -129,10 +130,10 @@ export default observer(function UpdateTableNys(props: Props) {
       width: 50,
       align: "center",
       dataIndex: "totalScores",
-      render(text: any, record: any, index: number) {
+      render: (text: any, record: any, index: number) => {
         // record.totalScores = record.scoresPerQuestion * record.questionCount;
         if (index == 0) return <span>{totalScore}</span>;
-        return record.scoresPerQuestion * record.questionCount;
+        return text;
       }
     }
   ];

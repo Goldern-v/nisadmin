@@ -35,7 +35,7 @@ export default observer(function UpdateTable(props: Props) {
     return total + current.totalScores;
   }, 0);
   // let _totalScore = ksStepViewModal.stepData2.totalScores;
-  ksStepViewModal.stepData2.totalScores = totalScore;
+  // ksStepViewModal.stepData2.totalScores = totalScore;
 
   const columns: ColumnProps<any>[] = [
     {

@@ -75,7 +75,11 @@ export default observer(function Step4() {
         }, 0);
       }
       stepViewModal.stepData2.totalScores = totalScore;
-    }
+    } else {
+      stepViewModal.stepData2.totalScores = data.questionStatList.reduce((total: any, current: any) => {
+        return total + current.totalScores;
+      }, 0);
+    } 
   };
 
   const onSave = async () => {

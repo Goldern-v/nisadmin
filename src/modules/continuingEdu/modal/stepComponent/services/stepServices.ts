@@ -44,14 +44,6 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
-  /** 新建教学计划  考试 （南医三单独处理  新增题池数）*/
-  public addTeachingPlanInfoExamNYS(obj: any) {
-    return this.post(
-      `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/exam---nysy`,
-      obj
-    );
-  }
-
   /** 新建教学计划  练习*/
   public addTeachingPlanInfoExercise(obj: any) {
     return this.post(
