@@ -4,6 +4,7 @@ import { appStore } from "src/stores";
 import { Button } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import HlbModal from "../modal/HlbModal";
+import TjModal from "../modal/TjModal";
 import createModal from "src/libs/createModal";
 
 interface Props {
@@ -17,6 +18,7 @@ export default function Header(props: Props) {
 
   //弹窗
   const hlbModal = createModal(HlbModal);
+  const tjModal = createModal(TjModal);
 
   let nodeDataList = JSON.parse(
     JSON.stringify(props.detailData.handlenodeDto || [])
@@ -37,6 +39,16 @@ export default function Header(props: Props) {
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
             title: "护士长审核",
+            onOkCallBack: props.onload
+          });
+        }
+        break;
+      case "提交":
+        {
+          tjModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: "是否提交",
             onOkCallBack: props.onload
           });
         }
@@ -101,6 +113,7 @@ export default function Header(props: Props) {
         </div>
       </TopHeader>
       <hlbModal.Component />
+      <tjModal.Component />
     </Con>
   );
 }

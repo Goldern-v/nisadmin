@@ -3,6 +3,10 @@ import React from "react";
 import Zimage from "src/components/Zimage";
 import { Radio, Icon, Input } from "antd";
 const { TextArea } = Input;
+import createModal from 'src/libs/createModal'
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import service from 'src/services/api'
 
 interface Props {
   detailData: any;
@@ -13,6 +17,19 @@ export default function Left(props: Props) {
   let messageBoxData = detailData.record || {};
   let pageItem = detailData.pageItem || {};
   let attachment = detailData.attachment || [];
+  const previewModal = createModal(PreviewModal)
+
+  const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
+    previewModal.show({
+      title: file.name,
+      path: file.path
+    })
+    e.stopPropagation()
+  }
+  const downFile = (path: string, name: string) => {
+    service.commonApiService.getFileAndDown(path, name)
+  }
+
 
   return (
     <Wrapper>
@@ -46,7 +63,7 @@ export default function Left(props: Props) {
               {/* +附件 */}
               <div className="fujian">
                 <span className="problemPro">附件：</span>
-                <div className="imgCon">
+                {/* <div className="imgCon">
                   <Zimage text={<span style={{ fontSize: "13px" }}>
                     <Icon
                       type="paper-clip"
@@ -61,7 +78,27 @@ export default function Left(props: Props) {
                       .filter((item: any) => item.type == "0")
                       .map((item: any) => item.path)}
                   />
-                </div>
+                </div> */}
+                <FileCon>
+                  {attachment.filter((item: any) => item.type == "0").map((item: any, index: number) => (
+                    <div className='file-box' key={index}>
+                      <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
+                        {getFileType(item.path) == 'img' ? (
+                          <Zimage src={item.path} className='type-img' alt='' />
+                        ) : (
+                            <img
+                              src={getFilePrevImg(item.path)}
+                              className='type-img'
+                              alt=''
+                              onClick={(e) => onPreView(e, item)}
+                            />
+                          )}
+                        <div className='file-name'>{item.name}</div>
+                        <div className='file-size'>{getFileSize(item.size)}</div>
+                      </div>
+                    </div>
+                  ))}
+                </FileCon>
               </div>
             </div>
           </div>
@@ -86,22 +123,27 @@ export default function Left(props: Props) {
               {/* +附件 */}
               <div className="fujian">
                 <span className="problemPro">附件：</span>
-                <div className="imgCon">
-                  <Zimage text={<span style={{ fontSize: "13px" }}>
-                    <Icon
-                      type="paper-clip"
-                      style={{ fontSize: "13px" }}
-                    />
-                    {
-                      attachment.filter((item: any) => item.type == "1").length
-                    }
-                  </span>
-                  }
-                    list={attachment
-                      .filter((item: any) => item.type == "1")
-                      .map((item: any) => item.path)}
-                  />
-                </div>
+                <FileCon>
+                  {attachment.filter((item: any) => item.type == "1").map((item: any, index: number) => (
+                    <div className='file-box' key={index}>
+                      <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
+                        {getFileType(item.path) == 'img' ? (
+                          <Zimage src={item.path} className='type-img' alt='' />
+                        ) : (
+                            <img
+                              src={getFilePrevImg(item.path)}
+                              className='type-img'
+                              alt=''
+                              onClick={(e) => onPreView(e, item)}
+                            />
+                          )}
+                        <div className='file-name'>{item.name}</div>
+                        <div className='file-size'>{getFileSize(item.size)}</div>
+                      </div>
+                    </div>
+                  ))}
+                </FileCon>
+                <previewModal.Component />
               </div>
             </div>
           </div>
@@ -175,6 +217,8 @@ const QuestionItem = styled.div`
       }
       .problemPro {
         color: #000;
+        margin: 20px 0 5px;
+        display: inline-block;
       }
       .itemAttachmentCon {
         display: inline-block;
@@ -226,3 +270,45 @@ const QuestionItem = styled.div`
 const Place = styled.div`
   margin-bottom: 20px;
 `;
+const FileCon = styled.div`
+  overflow: hidden;
+  .file-box {
+    width: 25%;
+    float: left;
+    padding-left: 8px;
+    padding-bottom: 8px;
+
+    .file-inner {
+      word-break: break-all;
+      height: 125px;
+      background: rgba(246, 246, 246, 1);
+      border-radius: 2px;
+      border: 1px dotted rgba(0, 166, 128, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 5px 10px;
+      cursor: pointer;
+      .type-img {
+        height: 44px;
+        min-height: 44px;
+        width: 44px;
+      }
+      .file-name {
+        font-size: 13px;
+        color: #333333;
+        margin: 5px 0 3px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+      .file-size {
+        font-size: 13px;
+        color: #999;
+      }
+    }
+  }
+`
