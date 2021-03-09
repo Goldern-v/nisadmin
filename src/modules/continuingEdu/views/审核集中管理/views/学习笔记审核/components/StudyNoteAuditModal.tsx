@@ -12,11 +12,12 @@ export interface Props {
   toAudit?: boolean,
   onOk: Function
   onCancel: Function
-  recordList: any[]
+  recordList: any[],
+  noteType: string,
 }
 
 export default function StudyNoteAuditModal(props: Props) {
-  const { visible, onOk, onCancel, recordList, toAudit } = props
+  const { visible, onOk, onCancel, recordList, toAudit, noteType } = props
 
   const carouselRef = React.createRef<any>()
 
@@ -39,8 +40,8 @@ export default function StudyNoteAuditModal(props: Props) {
     if (!recordList[0]) return
     setLoading(true)
 
-    let noteId = recordList[0].id
-    studyNoteManageService.getAuditedStudyNoteDetailInfo(noteId)
+    let noteId = recordList[0].noteId
+    studyNoteManageService.getAuditedStudyNoteDetailInfo(noteId, noteType)
       .then(res => {
         setLoading(false)
         setDataList([
@@ -58,7 +59,7 @@ export default function StudyNoteAuditModal(props: Props) {
     let taskIdList = recordList.map((record: any) => record.taskId)
 
     studyNoteManageService
-      .getToAuditStudyNoteDetailInfoList(taskIdList)
+      .getToAuditStudyNoteDetailInfoList(taskIdList, noteType)
       .then(res => {
         setLoading(false)
 
@@ -82,7 +83,7 @@ export default function StudyNoteAuditModal(props: Props) {
         taskId: item.taskId,
         auditResult: item.auditResult,
         auditRemark: item.auditRemark,
-      })
+      }, noteType)
     }))
       .then(res => {
         setLoading(false)
@@ -105,7 +106,7 @@ export default function StudyNoteAuditModal(props: Props) {
           taskIdList: recordList.map((record: any) => record.taskId as string),
           auditResult,
           auditRemark,
-        })
+        }, noteType)
           .then(res => {
             setLoading(false)
             message.success('操作成功')
@@ -131,7 +132,7 @@ export default function StudyNoteAuditModal(props: Props) {
   }, [visible])
 
   return <Modal
-    title={`${dataList[activeIdx] && dataList[activeIdx].empName + '的' || ''}学习笔记`}
+    title={`${dataList[activeIdx] && dataList[activeIdx].empName + '的' || ''}${noteType}`}
     visible={visible}
     centered
     confirmLoading={loading}
@@ -158,10 +159,16 @@ export default function StudyNoteAuditModal(props: Props) {
         {(dataList.length > 0 ? dataList : [{}] as any[])
           .map((item: any, idx: number) =>
             <div key={item} className="data-item">
-              <div>学习任务：{item.title}</div>
-              <div>学习类型：{item.firstLevelMenuName}</div>
-              <div>学习时间：{item.startTime || '...'} ~ {item.endTime || '...'}</div>
-              <div>学习笔记：</div>
+              <div>
+                {noteType == '学习笔记' ? <span>学习任务：</span> : <span>标题：</span>}
+                <span>{item.title}</span>
+              </div>
+              {noteType == '学习笔记' && <div>学习类型：{item.firstLevelMenuName}</div>}
+              <div>
+                {noteType == '学习笔记' && <span>学习时间：{item.startTime || '...'} ~ {item.endTime || '...'}</span>}
+                {noteType == '工作反思' && <span>提交时间：{item.submitTime}</span>}
+              </div>
+              <div>{noteType}：</div>
               <div>
                 <TextArea
                   value={item.noteContent}
@@ -191,7 +198,7 @@ export default function StudyNoteAuditModal(props: Props) {
               </React.Fragment>}
             </div>)}
       </Carousel>
-      {dataList.length > 0 && toAudit && <div className="emp-list">
+      {dataList.length > 1 && toAudit && <div className="emp-list">
         {dataList.map((item: any, idx: number) => <Tag
           onClick={() => {
             setActiveIdx(idx)

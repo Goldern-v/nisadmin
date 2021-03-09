@@ -18,13 +18,13 @@ const Option = Select.Option
 export interface Props { }
 
 export default function 学习笔记审核() {
-  const { history } = appStore
   const [query, setQuery] = useState({
     submitTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
     submitTimeEnd: getCurrentMonthNow()[1].format('YYYY-MM-DD'),
     keyWord: '',
     deptCode: '',
     audited: '0',
+    noteType: '学习笔记',
     pageSize: 20,
     pageIndex: 1,
   })
@@ -85,7 +85,7 @@ export default function 学习笔记审核() {
       width: 120,
       render: (text: any, record: any, index: number) => {
         return <DoCon>
-          <span onClick={() => handleToAudit(record)}>{query.audited ? '查看' : '审核'}</span>
+          <span onClick={() => handleToAudit(record)}>{query.audited !== '0' ? '查看' : '审核'}</span>
         </DoCon>
       }
     }
@@ -111,18 +111,23 @@ export default function 学习笔记审核() {
     let reqParams = { ...newQuery }
     delete reqParams.audited
 
-    reqMethod(reqParams).then(res => {
+    reqMethod(reqParams, query.noteType).then(res => {
       setLoading(false)
       if (res.data) {
         setTotalCount(res.data.totalCount)
-        setTableData(res.data.list)
+        setTableData(res.data.list.map((item: any) => {
+          return {
+            ...item,
+            noteId: item.noteId || item.workReviewId
+          }
+        }))
       }
     }, () => setLoading(false))
 
   }
 
   const handleToAudit = (record: any) => {
-    if (query.audited)
+    if (query.audited !== '0')
       setToAudit(false)
     else
       setToAudit(true)
@@ -152,6 +157,7 @@ export default function 学习笔记审核() {
     columns={columns}
     dataSource={tableData}
     loading={loading}
+    rowKey="noteId"
     pagination={{
       pageSizeOptions: ["10", "20", "30", "40", "50"],
       total: totalCount,
@@ -171,13 +177,13 @@ export default function 学习笔记审核() {
     <HeaderCon>
       <Title></Title>
       <Place />
-      {/* <span className="sub">类型：</span>
+      <span className="sub">类型：</span>
       <Select
-        defaultValue={'学习笔记'}
-        onChange={(payload: any) => { }}>
+        value={query.noteType}
+        onChange={(noteType: any) => setQuery({ ...query, noteType, pageIndex: 1 })}>
         <Option value={'学习笔记'}>学习笔记</Option>
         <Option value={'工作反思'}>工作反思</Option>
-      </Select> */}
+      </Select>
       <span className="sub">科室：</span>
       <Select
         style={{ width: 180 }}
@@ -228,8 +234,8 @@ export default function 学习笔记审核() {
 
           setToAudit(true)
           setSelectedList(selectedRowKeys
-            .map((id: any) => {
-              return tableData.find((item: any) => item.id == id)
+            .map((noteId: any) => {
+              return tableData.find((item: any) => item.noteId == noteId)
             }))
           setAuditVisible(true)
         }}>
@@ -251,6 +257,7 @@ export default function 学习笔记审核() {
       />
     </MainCon>
     <StudyNoteAuditModal
+      noteType={query.noteType}
       toAudit={toAudit}
       visible={auditVisible}
       onOk={() => {

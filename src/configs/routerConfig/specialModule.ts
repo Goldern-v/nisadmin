@@ -23,6 +23,7 @@ import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/
 import NurseFileDetailView_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_lcey from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_gzsrm from "src/modules/nurseFiles/view/nurseFiles-gzsrm/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -244,6 +245,31 @@ if (
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_gzsrm,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
+} else if (appStore.HOSPITAL_ID == 'jmfy') {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_jmfy,
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),

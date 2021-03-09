@@ -110,7 +110,7 @@ const ContinuingEduFormCheck = lazy(() =>
 const QualityView = lazy(() => import("src/modules/quality/QualityView"));
 const QualityControlRecordDetail = lazy(() =>
   import(
-    "src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx"
+    "src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail"
   )
 );
 const qualityControlRecordEdit = lazy(() =>
@@ -334,17 +334,17 @@ const nightChargingReport = lazy(() =>
 //学习培训查看结果
 const StudyResultReview = lazy(() =>
   import(
-    "src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview.tsx"
+    "src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview"
   )
 );
 const TrainingResultReview = lazy(() =>
   import(
-    "src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview.tsx"
+    "src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview"
   )
 );
 const TestingResultReview = lazy(() =>
   import(
-    "src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview.tsx"
+    "src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview"
   )
 );
 const OperateResultReview = lazy(() =>
@@ -767,8 +767,8 @@ const routes: RouteItem[] = [
       appStore.HOSPITAL_ID == "nys"
         ? "/continuingEdu/人员管理"
         : appStore.HOSPITAL_ID == "wh"
-        ? "/continuingEdu/在线学习"
-        : "/continuingEdu/学习培训任务"
+          ? "/continuingEdu/在线学习"
+          : "/continuingEdu/学习培训任务"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

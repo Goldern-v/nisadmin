@@ -223,7 +223,7 @@ export default withRouter(function LoginView(props: Props) {
       <BottomContent>
         {appStore.hisMatch({
           map: {
-            'ys,gzsrm': '百辰源(广州)科技有限公司',
+            'ys,gzsrm,jmfy': '百辰源(广州)科技有限公司',
             lcey: '宸瑞普惠(广州)科技有限公司',
             other: '广州宸瑞软件科技有限公司 http://www.cr-health.com'
           },
@@ -232,7 +232,7 @@ export default withRouter(function LoginView(props: Props) {
         <span> 版权所有©2013-{new Date().getFullYear()}，All rights reseved. </span>
         {appStore.hisMatch({
           map: {
-            'ys,lcey,gzsrm': '关于智慧护理 | 联系客服',
+            'ys,lcey,gzsrm,jmfy': '关于智慧护理 | 联系客服',
             other: `关于宸瑞 | 关于智慧护理 | 联系客服`
           },
           vague: true
