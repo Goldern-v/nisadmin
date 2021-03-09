@@ -3,7 +3,11 @@ import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { stepViewModal } from "../stepComponent/StepViewModal";
+import { stepServices } from "../stepComponent/services/stepServices";
+
 class SelectPeopleViewModel {
+  @observable public groupsList: any = [];
+
   @observable modalLoading: boolean = false;
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
@@ -38,9 +42,8 @@ class SelectPeopleViewModel {
     }
   ];
   @observable stepState: string[] = [];
-
   @observable public currentData: any = {};
-  async pushStep(step: string) {
+  async pushStep(step: string, id?: any) {
     this.modalLoading = true;
     let ser = service.commonApiService;
     if (this.stepState.indexOf(step) == -1) {
@@ -99,6 +102,10 @@ class SelectPeopleViewModel {
         } else if (this.stepState[0] == "按进修生选择") {
           this.currentData = {
             list: (await ser.queryRefresherStudentInfoListGroupByYear()).data
+          };
+        } else if (id) {
+          this.currentData = {
+            list: (await stepServices.getAllPersonsOfGroup(id)).data
           };
         }
       } else if (this.stepState.length == 2) {
@@ -171,11 +178,37 @@ class SelectPeopleViewModel {
       : this.selectTreeDataAll;
   }
   @computed get currentTreeData() {
+    // 判断当前是否为南医三小组名
+    const arr: any = [
+      "按片区选择",
+      "默认科室",
+      "按护理单元选择",
+      "按职务选择",
+      "按职称选择",
+      "按层级选择",
+      "按实习生选择",
+      "按进修生选择"
+    ];
+    let isGroupName: any = !!arr.find(
+      (item: any) => item === this.stepState[0]
+    );
     if (this.stepState.length == 1) {
       if (this.stepState[0] == "默认科室") {
         return {
           parent: authStore.selectedDeptName,
           list: (this.currentData.userList || []).map((item: any) => ({
+            ...item,
+            userList: [item],
+            label: item.empName,
+            key: item.empNo
+          })),
+          type: "userList",
+          dataLabel: "empName"
+        };
+      } else if (!isGroupName) {
+        return {
+          parent: this.stepState[0],
+          list: (this.currentData.list || []).map((item: any) => ({
             ...item,
             userList: [item],
             label: item.empName,

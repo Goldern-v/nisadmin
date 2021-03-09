@@ -222,6 +222,46 @@ export default class StepServices extends BaseApiService {
       qs.stringify({ taskCode, cetpId })
     );
   }
+
+  /** 南医三小组成员设置 */
+  //获取我的所有小组
+  public getMyGroups() {
+    return this.get(
+      `/studyAndTrain/teachingPlanManage/personGroupManage/getMyGroups`
+    );
+  }
+
+  //通过id获取小组成员
+  public getAllPersonsOfGroup(id: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/personGroupManage/getAllPersonsOfGroup`,
+      { id }
+    );
+  }
+
+  //通过id获取小组完整信息
+  public getCompleteInfoOfGroup(id: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/personGroupManage/getCompleteInfoOfGroup`,
+      { id }
+    );
+  }
+
+  //保存小组
+  public saveOrUpdateGroup(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/personGroupManage/saveOrUpdateGroup`,
+      obj
+    );
+  }
+
+  //删除小组
+  public deleteGroup(id: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/personGroupManage/deleteGroup`,
+      { id }
+    );
+  }
 }
 
 export const stepServices = new StepServices();

@@ -17,7 +17,7 @@ import {
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import { ScrollBox } from "src/components/common";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import { selectPeopleViewModel } from "./SelectPeopleViewModel";
 import { observer } from "mobx-react-lite";
 const { Search } = Input;
@@ -29,6 +29,8 @@ import service from "src/services/api";
 import classNames from "classnames";
 import { toJS } from "src/vendors/mobx-react-lite";
 import { stepViewModal } from "../stepComponent/StepViewModal";
+import GroupsSettingModal from './modal/GroupsSettingModal'
+import { stepServices } from "../stepComponent/services/stepServices";
 
 export interface Props {
   /** 表单提交成功后的回调 */
@@ -43,12 +45,13 @@ interface User {
 
 export default observer(function SelectPeople(props: Props) {
   let { onOkCallBack } = props;
-
   const [initEd, setInitEd]: any = useState(false);
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
   const [searchWord, setSearchWord]: any = useState("");
   const [allPeople, setAllPeople]: any = useState(0);
+  const [editVisible, setEditVisible] = useState(false); // 小组设置弹窗状态
+  const [groupId, setGroupId] = useState('');// 小组id
 
   const inCheckedUser = (user: User) => {
     return !!checkedUserList.find((item: any) => item.key === user.key);
@@ -146,6 +149,7 @@ export default observer(function SelectPeople(props: Props) {
     setNumber(props.checkedUserList, 1);
     setSearchWord("");
     setInitEd(true);
+    getGroups();
   }, [props.checkedUserList]);
 
   useEffect(() => {
@@ -189,6 +193,65 @@ export default observer(function SelectPeople(props: Props) {
     setAllPeople(0);
   };
 
+  /**南医三小组设置 */
+  // 获取全部小组
+  const getGroups = () => {
+    stepServices.getMyGroups().then((res: any) => {
+      selectPeopleViewModel.groupsList = res.data || []
+    })
+  }
+
+  // 南医三小组弹窗
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setGroupId('');
+  };
+  const handleEditOk = () => {
+    getGroups();
+    handleEditCancel();
+  };
+
+  // 新建小组
+  const handleGroupSetting = () => {
+    if (!stepViewModal.stepData3.participantList.length) {
+      message.warning('新建小组前请选择你想加入该小组的成员！');
+      return;
+    }
+    setEditVisible(true);
+  }
+
+  // 删除小组
+  const deleteGroup = (e: any, id: any) => {
+    e.stopPropagation();
+    let content = (
+      <div>
+        <div>您确定要删除选中的小组吗？</div>
+        <div>删除后将无法恢复。</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        stepServices
+          .deleteGroup(id)
+          .then(res => {
+            if (res.code == 200) {
+              message.success("小组删除成功");
+              getGroups();
+            } else message.error("小组删除失败");
+          })
+          .catch(err => {
+            message.error("文件删除失败");
+          });
+      }
+    });
+
+  }
+
   return (
     <Wrapper>
       {/* {stepViewModal.stepData3.participantList.length} */}
@@ -218,53 +281,85 @@ export default observer(function SelectPeople(props: Props) {
                 </div>
               </ListCon>
             ) : (
-              <div>
-                {selectPeopleViewModel.selectedBigDeptCode ? (
-                  <div
-                    className="title"
-                    onClick={() => selectPeopleViewModel.popStep()}
-                    style={{
-                      color: "#333",
-                      marginBottom: "10px",
-                      marginLeft: "-3px",
-                      cursor: "pointer"
-                    }}
-                  >
-                    <Icon type="left" />
-                    <span style={{ paddingLeft: 5 }}>
-                      {selectPeopleViewModel.selectedBigDeptName}
-                    </span>
-                  </div>
-                ) : (
-                  <AutoComplete
-                    dataSource={searchUserList}
-                    style={{ width: "100%" }}
-                    onSelect={onSelect}
-                    onSearch={handleSearch}
-                    value={searchWord}
-                  >
-                    <Search placeholder="请输入搜索关键字" />
-                  </AutoComplete>
-                )}
-
-                <FileList>
-                  {selectPeopleViewModel.selectTreeData.map(
-                    (item: any, index: any) => (
-                      <div
-                        className="item-box"
-                        onClick={() =>
-                          selectPeopleViewModel.pushStep(item.step)
-                        }
-                        key={index}
+                <div>
+                  {selectPeopleViewModel.selectedBigDeptCode ? (
+                    <div
+                      className="title"
+                      onClick={() => selectPeopleViewModel.popStep()}
+                      style={{
+                        color: "#333",
+                        marginBottom: "10px",
+                        marginLeft: "-3px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      <Icon type="left" />
+                      <span style={{ paddingLeft: 5 }}>
+                        {selectPeopleViewModel.selectedBigDeptName}
+                      </span>
+                    </div>
+                  ) : (
+                      <AutoComplete
+                        dataSource={searchUserList}
+                        style={{ width: "100%" }}
+                        onSelect={onSelect}
+                        onSearch={handleSearch}
+                        value={searchWord}
                       >
-                        <img src={require("../../images/文件夹.png")} alt="" />
-                        <span>{item.label}</span>
-                      </div>
-                    )
-                  )}
-                </FileList>
-              </div>
-            )}
+                        <Search placeholder="请输入搜索关键字" />
+                      </AutoComplete>
+                    )}
+                  <FileList>
+                    {selectPeopleViewModel.selectTreeData.map(
+                      (item: any, index: any) => (
+                        <div
+                          className="item-box"
+                          onClick={() =>
+                            selectPeopleViewModel.pushStep(item.step)
+                          }
+                          key={index}
+                        >
+                          <img src={require("../../images/文件夹.png")} alt="" />
+                          <span>{item.label}</span>
+                        </div>
+                      )
+                    )}
+                    {appStore.HOSPITAL_ID == 'nys' && selectPeopleViewModel.groupsList.map(
+                      (item: any, index: any) => (
+                        <div
+                          className="item-box"
+                          onClick={() =>
+                            selectPeopleViewModel.pushStep(item.groupName, item.id)
+                          }
+                          key={index}
+                        >
+                          <div id='groups'>
+                            <img src={require("../../images/文件夹.png")} alt="" />
+                            <span>{item.groupName}</span>
+                            <span
+
+                              className='button settingBtn'
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setGroupId(item.id);
+                                handleGroupSetting()
+                              }}
+                            >
+                              设置
+                            </span>
+                            <span
+                              className='button deleteBtn'
+                              onClick={(e) => deleteGroup(e, item.id)}
+                            >
+                              删除
+                            </span>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </FileList>
+                </div>
+              )}
           </Spin>
         </div>
         <div className="right-part">
@@ -282,17 +377,20 @@ export default observer(function SelectPeople(props: Props) {
         </div>
       </div>
       <div className="footer-con">
-        {/* <Button onClick={onClose}>取消</Button> */}
         <span>共选择 {allPeople} 人</span>
         <Button onClick={onClean}>重置</Button>
-        {/* <Button type="primary" onClick={onSave}>
-              确认
-            </Button> */}
+        {appStore.HOSPITAL_ID == 'nys' && <Button onClick={handleGroupSetting} type='primary'>新建小组</Button>}
       </div>
+      <GroupsSettingModal
+        visible={editVisible}
+        id={groupId}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 });
-const CheckListCon = observer(function(props: any) {
+const CheckListCon = observer(function (props: any) {
   let {
     checkedUserList,
     setCheckedUserList,
@@ -323,7 +421,7 @@ const CheckListCon = observer(function(props: any) {
       }
       return false;
     })();
-  } catch (error) {}
+  } catch (error) { }
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
     if (e.target.checked) {
@@ -387,40 +485,40 @@ const CheckListCon = observer(function(props: any) {
                 </Checkbox>
                 {selectPeopleViewModel!.currentTreeData!.type !==
                   "userList" && (
-                  <div style={{ minWidth: 54 }}>
-                    <span style={{ padding: "0 4px" }}>|</span>
-                    <span
-                      className={classNames({
-                        open: true,
-                        inChecked: inCheckedUser(item)
-                      })}
-                      onClick={() =>
-                        selectPeopleViewModel.pushStep(
-                          item[
-                            selectPeopleViewModel!.currentTreeData!.stepLabel
-                          ]
-                            ? `${
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .stepLabel
-                                ]
-                              }-${
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel
-                                ]
-                              }`
-                            : item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel || ""
+                    <div style={{ minWidth: 54 }}>
+                      <span style={{ padding: "0 4px" }}>|</span>
+                      <span
+                        className={classNames({
+                          open: true,
+                          inChecked: inCheckedUser(item)
+                        })}
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(
+                            item[
+                              selectPeopleViewModel!.currentTreeData!.stepLabel
+                            ]
+                              ? `${
+                              item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .stepLabel
                               ]
-                        )
-                      }
-                    >
-                      展开
+                              }-${
+                              item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .dataLabel
+                              ]
+                              }`
+                              : item[
+                              selectPeopleViewModel!.currentTreeData!
+                                .dataLabel || ""
+                              ]
+                          )
+                        }
+                      >
+                        展开
                     </span>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
             );
           }
@@ -490,6 +588,25 @@ const FileList = styled.div`
       margin-right: 10px;
       position: relative;
       top: -2px;
+    }
+  }
+  .settingBtn {
+    left: 210px;
+  }
+  .deleteBtn {
+    left: 250px;
+  }
+  .button {
+    display: none;
+    color: rgb(0, 166, 128);
+    position: absolute;
+  }
+  #groups {
+    position: relative;
+    &:hover {
+      .button{
+        display: inline;
+      }
     }
   }
 `;
