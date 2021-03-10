@@ -290,11 +290,11 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.catheterCount.cvcDays
         },
         {
-          name: "经外周静脉置入中心静脉导管留置例数",
+          name: "picc经外周静脉置入中心静脉导管留置例数",
           value: nursingDataModal.dataList.catheterCount.piccSize
         },
         {
-          name: "经外周静脉置入中心静脉导管留置总日数",
+          name: "picc经外周静脉置入中心静脉导管留置总日数",
           value: nursingDataModal.dataList.catheterCount.piccDays
         },
         {
