@@ -274,31 +274,31 @@ export default observer(function Content(props: Props) {
       title: "七、导管非计划拔管相关数据",
       data: [
         {
-          name: "气管导管非计划拔管例次数",
+          name: "中心导管留置例数",
           value: nursingDataModal.dataList.catheterCount.ccSize
         },
         {
-          name: "气管导管留置总日数",
+          name: "中心导管留置总日数",
           value: nursingDataModal.dataList.catheterCount.ccDays
         },
         {
-          name: "CVC非计划拔管例次数",
+          name: "cvc中心静脉导管留置例数",
           value: nursingDataModal.dataList.catheterCount.cvcSize
         },
         {
-          name: " CVC留置总日数",
+          name: "cvc中心静脉导管留置总日数",
           value: nursingDataModal.dataList.catheterCount.cvcDays
         },
         {
-          name: "PICC非计划拔管例次数",
+          name: "经外周静脉置入中心静脉导管留置例数",
           value: nursingDataModal.dataList.catheterCount.piccSize
         },
         {
-          name: "PICC留置总日数",
+          name: "经外周静脉置入中心静脉导管留置总日数",
           value: nursingDataModal.dataList.catheterCount.piccDays
         },
         {
-          name: "导尿管非计划拔管发生例次数",
+          name: "导尿管留置例数",
           value: nursingDataModal.dataList.catheterCount.catheterUrinarySize
         },
         {
@@ -306,12 +306,20 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.catheterCount.catheterUrinaryDays
         },
         {
-          name: "胃肠管（经口鼻）非计划拔管发生例次数",
+          name: "呼吸机患者例数",
           value: nursingDataModal.dataList.catheterCount.ventilatorSize
         },
         {
-          name: "胃肠管（经口鼻）留置总日数",
+          name: "呼吸机患者总日数",
           value: nursingDataModal.dataList.catheterCount.ventilatorDays
+        },
+        {
+          name: "胃肠管（经口鼻）留置例数",
+          value: nursingDataModal.dataList.catheterCount.catheterStomachIntestinalSize
+        },
+        {
+          name: "胃肠管（经口鼻）留置总日数",
+          value: nursingDataModal.dataList.catheterCount.catheterStomachIntestinalDays
         }
       ]
     },

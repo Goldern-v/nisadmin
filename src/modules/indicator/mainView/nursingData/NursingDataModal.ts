@@ -81,7 +81,9 @@ class NursingDataModal {
       cvcDays: 0,
       cvcSize: 0,
       ventilatorDays: 0,
-      ventilatorSize: 0
+      ventilatorSize: 0,
+      catheterStomachIntestinalSize: 0,
+      catheterStomachIntestinalDays: 0
     },
     catheterInfectionCount: {
       cauti: 0,
