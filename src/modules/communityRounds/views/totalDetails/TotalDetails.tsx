@@ -11,6 +11,7 @@ export interface Props { }
 
 export default observer(function TotalDetails() {
   const id: any = appStore.match.params.id;
+  const [title, setTitle] = useState('');
   const [tableList, setTableList] = useState([] as any);
   const [tableLoading, setTableLoading] = useState(false);
   const [query, setQuery]: any = useState({
@@ -29,7 +30,8 @@ export default observer(function TotalDetails() {
     setTableLoading(true)
     checkWardService.getDetailTotal(id).then(res => {
       setTableLoading(false)
-      setTableList(res.data)
+      setTitle(res.title)
+      setTableList(res.data.csrTotalDetail)
     })
   }
 
@@ -124,7 +126,7 @@ export default observer(function TotalDetails() {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle>社区查房记录</PageTitle>
+          <PageTitle>{title}</PageTitle>
         </LeftIcon>
         <RightIcon>
           <Button type='primary' onClick={handleExport}>
