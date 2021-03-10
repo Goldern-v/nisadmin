@@ -156,6 +156,9 @@ const DetailsView = lazy(() =>
 const CommunityDetailsView = lazy(() =>
   import("src/modules/communityRounds/views/details/DetailsView")
 );
+const CommunityTotalDetailsView = lazy(() =>
+  import("src/modules/communityRounds/views/totalDetails/TotalDetails")
+);
 
 const ImportView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/import/ImportView")
@@ -572,6 +575,11 @@ const routes: RouteItem[] = [
     CommunityDetailsView,
     layouts.MainLayout
   ),
+  setLayout(
+    "/CommunityTotalDetailsView/:id",
+    CommunityTotalDetailsView,
+    layouts.MainLayout
+  ),
   setLayout("/qualityScheduleImport", ImportView, layouts.MainLayout),
   setLayout("/typeManagement", TypeManagementView, layouts.MainLayout),
   setLayout(
@@ -767,8 +775,8 @@ const routes: RouteItem[] = [
       appStore.HOSPITAL_ID == "nys"
         ? "/continuingEdu/人员管理"
         : appStore.HOSPITAL_ID == "wh"
-          ? "/continuingEdu/在线学习"
-          : "/continuingEdu/学习培训任务"
+        ? "/continuingEdu/在线学习"
+        : "/continuingEdu/学习培训任务"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

@@ -150,10 +150,10 @@ export default observer(function CheckWardRecord() {
         checkWardService.delete(id)
           .then(res => {
             if (res.code == 200) {
-              message.success("试卷删除成功");
+              message.success("删除成功");
               checkWardRecordModal.onload();
             } else {
-              message.error("试卷删除失败");
+              message.error("删除失败");
             }
           })
           .catch(e => { });

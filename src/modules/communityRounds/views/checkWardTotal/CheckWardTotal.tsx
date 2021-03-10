@@ -88,7 +88,7 @@ export default observer(function CheckWardTotal() {
     {
       title: "操作",
       dataIndex: "操作",
-      width: 120,
+      width: 100,
       render(text: string, record: any) {
         return (
           <DoCon>
@@ -112,7 +112,7 @@ export default observer(function CheckWardTotal() {
 
   // 查看详情
   const toDetails = (record: any) => {
-    appStore.history.push(`/CommunityDetailsView/${record.id}`);
+    appStore.history.push(`/CommunityTotalDetailsView/${record.id}`);
   };
 
   // 发布

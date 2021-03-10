@@ -64,6 +64,13 @@ export default class CheckWardService extends BaseApiService {
   public deleteTotal(id: any) {
     return this.get(`/csrTotal/delete/${id}`);
   }
+
+  // 导出
+  public export(id: any, obj?: any) {
+    return this.post(`/csrTotal/export/${id}`, obj, {
+      responseType: "blob"
+    });
+  }
 }
 
 export const checkWardService = new CheckWardService();
