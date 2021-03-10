@@ -274,31 +274,31 @@ export default observer(function Content(props: Props) {
       title: "七、导管非计划拔管相关数据",
       data: [
         {
-          name: "中心导管留置例数",
+          name: "气管导管非计划拔管例次数",
           value: nursingDataModal.dataList.catheterCount.ccSize
         },
         {
-          name: "中心导管留置总日数",
+          name: "气管导管留置总日数",
           value: nursingDataModal.dataList.catheterCount.ccDays
         },
         {
-          name: "cvc中心静脉导管留置例数",
+          name: "CVC非计划拔管例次数",
           value: nursingDataModal.dataList.catheterCount.cvcSize
         },
         {
-          name: "cvc中心静脉导管留置总日数",
+          name: "CVC留置总日数",
           value: nursingDataModal.dataList.catheterCount.cvcDays
         },
         {
-          name: "picc经外周静脉置入中心静脉导管留置例数",
+          name: "PICC非计划拔管例次数",
           value: nursingDataModal.dataList.catheterCount.piccSize
         },
         {
-          name: "picc经外周静脉置入中心静脉导管留置总日数",
+          name: "PICC留置总日数",
           value: nursingDataModal.dataList.catheterCount.piccDays
         },
         {
-          name: "导尿管留置例数",
+          name: "导尿管非计划拔管发生例次数",
           value: nursingDataModal.dataList.catheterCount.catheterUrinarySize
         },
         {
@@ -314,7 +314,7 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.catheterCount.ventilatorDays
         },
         {
-          name: "胃肠管（经口鼻）留置例数",
+          name: "胃肠管（经口鼻）非计划拔管发生例次数",
           value: nursingDataModal.dataList.catheterCount.catheterStomachIntestinalSize
         },
         {
