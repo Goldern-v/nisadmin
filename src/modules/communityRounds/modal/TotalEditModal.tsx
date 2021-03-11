@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Modal, message as Message, Select, DatePicker } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
@@ -39,16 +39,23 @@ export default observer(function TotalEditModal(props: Props) {
   ]; //月份
   const [beginDate, setBeginDate] = useState(null as any | null)
   const [endDate, setEndDate] = useState(null as any | null)
-
+  const [type, setType] = useState(null as any)// 类型-用来判断是否需要填写月份
   // 弹窗必填项
   const rules: Rules = {
     type: (val) => !!val || '请选择类型',
     year: (val) => !!val || '请选择年度',
-    month: (val) => !!val || '请选择月份',
+    // month: (val) => !!val || '请选择月份',
     beginDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间',
     name: (val) => !!val || '请填写报告名称',
   };
+
+  //初始化弹窗清空数据
+  useEffect(() => {
+    let current = formRef.current;
+    if (!current) return;
+    current.clear();
+  }, [visible])
 
   //保存
   const checkForm = () => {
@@ -69,6 +76,7 @@ export default observer(function TotalEditModal(props: Props) {
               beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
               endDate: endDate ? endDate.format('YYYY-MM-DD') : ''
             }
+            if (type == 2) params.month = null;
             checkWardService.saveTotal(params).then(res => {
               setEditLoading(false);
               let msg = "社区查房报告新建成功！";
@@ -95,25 +103,6 @@ export default observer(function TotalEditModal(props: Props) {
     return true
   }
 
-  const setBeginDateAndEndDate = (year: any) => {
-    if (year) {
-      let currentDate = Moment().set('year', year.year())
-      let currentWeek = weekStartAndEnd(currentDate)
-
-      setBeginDate(Moment(currentWeek.beginDate))
-      setFormItem('beginDate', Moment(currentWeek.beginDate))
-      setEndDate(Moment(currentWeek.endDate))
-      setFormItem('endDate', Moment(currentWeek.endDate))
-    }
-  }
-  const weekStartAndEnd = (currentDate: Moment.Moment) => {
-    let currentWeekDay = Moment(currentDate).week(currentDate.weeks())
-    return {
-      beginDate: currentWeekDay.startOf('week').format('YYYY-MM-DD'),
-      endDate: currentWeekDay.endOf('week').format('YYYY-MM-DD')
-    }
-  }
-
   // 封装表单赋值函数
   const setFormItem = (key: any, value: any) => {
     if (formRef.current) formRef.current.setField(key, value)
@@ -123,29 +112,47 @@ export default observer(function TotalEditModal(props: Props) {
   const setName = () => {
     let current = formRef.current
     if (current) {
-      let { year, month } = current.getFields()
-      if (!year || !month ) return
+      let { year, month, type } = current.getFields();
+      // 年报告没有月份名称
+      if (type == 2) month = null;
+      if (!year) return
       let yearStr = year.format('YYYY')
       let monthStr = month
-      let name = `${yearStr}年${monthStr}月社区管理汇总表`
+      let name = monthStr ? `${yearStr}年${monthStr}月社区管理汇总表` : `${yearStr}年社区管理汇总表`
       setFormItem('name', name)
     }
   }
 
   //表单变化函数
-  const handleFormChange = (key: any, val: any) => {
-    if (key == 'beginDate') setBeginDate(val)
-    if (key == 'year') {
+  const handleFormChange = (key: any, val: any, from: Form) => {
+    let data = from.getFields();
+    let selcetdYear: any = data.year ?.format('YYYY') || null;
+    let selcetdMonth: any = data.month;
+    //类型为月报告时显示月份选项
+    if (key == 'type') {
       if (formRef.current) {
-        let year = formRef.current.getField('year');
-        setBeginDateAndEndDate(year)
+        setType(formRef.current.getField('type'));
+        selcetdMonth = null;
       }
     }
+    if (key == 'beginDate') setBeginDate(val)
     if (key == 'endDate') setEndDate(val)
     if (key !== 'name') setName()
+    if (selcetdYear) {
+      setEditQueryAndInit(selcetdYear, selcetdMonth);
+    }
   }
 
+  // 默认起止时间
+  const setEditQueryAndInit = (year: any, month: any) => {
+    let newRangeDate = month ? Moment(`${year}-${month}`) : Moment(year);
+    let newBeginDate = month ? newRangeDate.format('YYYY-MM-01') : newRangeDate.format('YYYY-01-01');
+    let newEndDate = month ? Moment(newBeginDate).add(1, 'M').subtract(1, 'd').format('YYYY-MM-DD') : newRangeDate.format('YYYY-12-31');
+    setFormItem('beginDate', Moment(newBeginDate))
+    setFormItem('endDate', Moment(newEndDate))
+  }
 
+  // 弹窗取消
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
@@ -188,22 +195,24 @@ export default observer(function TotalEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          <Row>
-            <Col span={3} className="label">
-              月份:
-            </Col>
-            <Col span={20}>
-              <Form.Field name="month">
-                <Select>
-                  {monthList.map((item: any) => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+          {type == 1 &&
+            <Row>
+              <Col span={3} className="label">
+                月份:
+              </Col>
+              <Col span={20}>
+                <Form.Field name="month">
+                  <Select>
+                    {monthList.map((item: any) => (
+                      <Select.Option value={item.code} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={3} className="label">
               起止日期:
