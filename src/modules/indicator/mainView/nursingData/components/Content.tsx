@@ -275,11 +275,11 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "气管导管非计划拔管例次数",
-          value: nursingDataModal.dataList.catheterCount.ccSize
+          value: nursingDataModal.dataList.catheterCount.ventilatorSize
         },
         {
           name: "气管导管留置总日数",
-          value: nursingDataModal.dataList.catheterCount.ccDays
+          value: nursingDataModal.dataList.catheterCount.ventilatorDays
         },
         {
           name: "CVC非计划拔管例次数",
@@ -304,14 +304,6 @@ export default observer(function Content(props: Props) {
         {
           name: "导尿管留置总日数",
           value: nursingDataModal.dataList.catheterCount.catheterUrinaryDays
-        },
-        {
-          name: "呼吸机患者例数",
-          value: nursingDataModal.dataList.catheterCount.ventilatorSize
-        },
-        {
-          name: "呼吸机患者总日数",
-          value: nursingDataModal.dataList.catheterCount.ventilatorDays
         },
         {
           name: "胃肠管（经口鼻）非计划拔管发生例次数",
@@ -340,7 +332,7 @@ export default observer(function Content(props: Props) {
         },
         {
           name: " 有创机械通气总日数",
-          value: nursingDataModal.dataList.catheterInfectionCount.ccInfectionSize
+          value: nursingDataModal.dataList.catheterInfectionCount.ventilatorPneumoniaSize
         },
         {
           name: "导尿管相关尿路感染（CAUTI)发生例次数",
@@ -353,7 +345,7 @@ export default observer(function Content(props: Props) {
       data: [
         {
           name: "住院患者跌倒发生总例次数",
-          value: nursingDataModal.dataList.fallCount.field_19
+          value: nursingDataModal.dataList.fallCount.patientFallSize
         },
         {
           name: "住院患者跌倒伤害总例次数",
