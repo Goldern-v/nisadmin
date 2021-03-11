@@ -56,7 +56,8 @@ export default observer(function PushModal(props: Props) {
       let obj = {
         taskCode: allStepViewModal.taskCode,
         questionIdList: quesBankView.questionIdList,
-        pertId: appStore.HOSPITAL_ID == 'hj' ? pertId : null
+        pertId: appStore.HOSPITAL_ID == 'hj' ? pertId : null,
+        teachingMethod: allStepViewModal.stepData1.teachingMethod
       };
       setEditLoading(true);
       stepServices
