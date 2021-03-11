@@ -5,7 +5,7 @@ import { Button, Select, DatePicker, message, Modal } from 'antd'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { checkWardRecordModal } from './CheckWardRecordModal'
 import { checkWardService } from "../../services/CheckWardService";
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import EditModal from '../../modal/EditModal'
 export interface Props { }
@@ -16,8 +16,18 @@ export default observer(function CheckWardRecord() {
 
   // 获取查房初始化数据
   useEffect(() => {
-    checkWardRecordModal.init()
+    checkWardRecordModal.init();
   }, [])
+
+  // 判断编辑权限
+  const canHandleEdit = (record: any) => {
+    let loginName: any = authStore.user && authStore.user.empName;
+    if (loginName == record.creatorName && record.status != '0') {
+      return <span onClick={() => toSaveOrUpdate(record)} >编辑</span>
+    } else {
+      return <span style={{ color: " #ccc" }}>编辑</span>
+    }
+  }
 
   const columns: any = [
     {
@@ -103,7 +113,7 @@ export default observer(function CheckWardRecord() {
       render(text: string, record: any) {
         return (
           <DoCon>
-            <span onClick={() => toSaveOrUpdate(record)}>编辑</span>
+            {canHandleEdit(record)}
             <span onClick={() => toDetails(record)}>查看</span>
             <span onClick={() => handleDelete(record.id)}>删除</span>
           </DoCon>
@@ -216,10 +226,9 @@ export default observer(function CheckWardRecord() {
             }}
           >
             <Select.Option value=''>全部</Select.Option>
-            <Select.Option value='0'>待提交</Select.Option>
-            <Select.Option value='1'>待护士长审核</Select.Option>
-            <Select.Option value='2'>待护理部审核</Select.Option>
-            <Select.Option value='3'>已完成</Select.Option>
+            <Select.Option value='0'>待护士长审核</Select.Option>
+            <Select.Option value='1'>待护理部审核</Select.Option>
+            <Select.Option value='2'>已完成</Select.Option>
           </Select>
           <Button type='primary' onClick={() => checkWardRecordModal.onload()}>
             查询
