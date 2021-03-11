@@ -22,7 +22,7 @@ export default observer(function CheckWardRecord() {
   // 判断编辑权限
   const canHandleEdit = (record: any) => {
     let loginName: any = authStore.user && authStore.user.empName;
-    if (loginName == record.creatorName && record.status != '0') {
+    if (loginName == record.creatorName && record.status == '0') {
       return <span onClick={() => toSaveOrUpdate(record)} >编辑</span>
     } else {
       return <span style={{ color: " #ccc" }}>编辑</span>
