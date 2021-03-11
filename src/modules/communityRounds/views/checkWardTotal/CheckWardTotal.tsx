@@ -6,7 +6,7 @@ import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTa
 import YearPicker from "src/components/YearPicker";
 import { checkWardTotalModal } from './CheckWardTotalModal'
 import { checkWardService } from "../../services/CheckWardService";
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import TotalEditModal from '../../modal/TotalEditModal'
 export interface Props { }
@@ -36,7 +36,7 @@ export default observer(function CheckWardTotal() {
 
   // 获取查房总列表初始化数据
   useEffect(() => {
-    checkWardTotalModal.onload()
+    checkWardTotalModal.onload();
   }, [])
 
   const columns: any = [
@@ -221,7 +221,12 @@ export default observer(function CheckWardTotal() {
           <Button type='primary' onClick={() => checkWardTotalModal.onload()}>
             查询
           </Button>
-          <Button type='primary' onClick={() => setEditVisible(true)} className='checkButton'>
+          <Button
+            type='primary'
+            onClick={() => setEditVisible(true)}
+            className='checkButton'
+            disabled={!!!authStore.isYuanHong}
+          >
             添加
           </Button>
         </RightIcon>

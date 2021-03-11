@@ -99,6 +99,15 @@ export default class AuthStore {
     }
   }
 
+  /** 是否是袁红 */
+  public get isYuanHong() {
+    try {
+      return this.user && this.user.empNo == "G6039";
+    } catch (error) {
+      return "";
+    }
+  }
+
   public get isAd() {
     try {
       return (
