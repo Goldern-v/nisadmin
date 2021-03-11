@@ -332,7 +332,7 @@ export default observer(function Content(props: Props) {
         },
         {
           name: " 有创机械通气总日数",
-          value: nursingDataModal.dataList.catheterInfectionCount.ventilatorPneumoniaSize
+          value: nursingDataModal.dataList.catheterInfectionCount.ventilatorDays
         },
         {
           name: "导尿管相关尿路感染（CAUTI)发生例次数",
