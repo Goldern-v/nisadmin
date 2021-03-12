@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
+import { Button, message, Modal, Radio } from "antd";
 import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
@@ -10,6 +10,9 @@ import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";
 import { lxStepViewModal } from "./LXStepViewModal";
+import QuesBankModal from "../考试/modal/QuesBankModal";
+import { quesBankView } from "../考试/modal/QuesBankView";
+
 export interface Props {
   value?: any;
   onChange?: any;
@@ -19,6 +22,9 @@ export default observer(function UpdateTable(props: Props) {
   const { value, onChange } = props;
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [dataSource, setDataSource]: any = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [showType, setShowType] = useState(1); // 题库上传类型 （1--题库 2--本地）
+  const [quesVisible, setQuesVisible] = useState(false);
 
   /** 题目条数 */
   let totalNum = dataSource.reduce((total: any, current: any) => {
@@ -54,7 +60,7 @@ export default observer(function UpdateTable(props: Props) {
             <Button
               type="primary"
               icon="plus"
-              onClick={uploadFile}
+              onClick={() => setVisible(true)}
               style={{ margin: "10px auto" }}
             >
               题库上传
@@ -120,6 +126,44 @@ export default observer(function UpdateTable(props: Props) {
       });
   };
 
+  const handleOk = () => {
+    if (showType) {
+      setQuesVisible(true);
+      // 再次打开题库上传 初始化数据
+      quesBankView.selectedLabel = [];
+      quesBankView.bankType = 1;
+      quesBankView.questionType = "单选题";
+      quesBankView.keyWord = "";
+      quesBankView.questionIdList = [];
+      quesBankView.selectedRows = [];
+      quesBankView.questionList = [];
+      quesBankView.pageIndex = 1;
+      quesBankView.pageSize = 20;
+      quesBankView.allQuestionNum = 0;
+      quesBankView.RadioQuestionNum = 0;
+      quesBankView.checkBoxQuestionNum = 0;
+      quesBankView.TKQuestionNum = 0;
+      quesBankView.JDQuestionNum = 0;
+      quesBankView.tableList = [];
+      // quesBankView.init();
+    } else {
+      fileInputRef.current && fileInputRef.current.click();
+    }
+    onCancel();
+  };
+  const onCancel = () => {
+    setVisible(false);
+  };
+
+  const onQuesCancel = () => {
+    setQuesVisible(false);
+  };
+  const handleQuesOk = () => {
+    onQuesCancel();
+    onChange(quesBankView.saveData);
+  };
+
+
   useEffect(() => {
     console.log(value, "aaaa");
     value && setDataSource(value);
@@ -142,6 +186,35 @@ export default observer(function UpdateTable(props: Props) {
         style={{ display: "none" }}
         ref={fileInputRef}
         onChange={onFileChange}
+      />
+      <Modal
+        visible={visible}
+        title={
+          <div>
+            <span>题库上传</span>
+            <span style={{ color: "red", fontSize: "13px" }}>
+              （*每次题库上传都会将上一次选择的题库覆盖清空）
+            </span>
+          </div>
+        }
+        width="460px"
+        onOk={handleOk}
+        onCancel={onCancel}
+      >
+        <Radio.Group
+          value={showType}
+          onChange={(e: any) => setShowType(e.target.value)}
+        >
+          <Radio value={1} style={{ margin: " 20px 80px 20px 70px" }}>
+            题库选择
+          </Radio>
+          <Radio value={0}>本地上传</Radio>
+        </Radio.Group>
+      </Modal>
+      <QuesBankModal
+        visible={quesVisible}
+        onCancel={onQuesCancel}
+        onOk={handleQuesOk}
       />
     </Wrapper>
   );
