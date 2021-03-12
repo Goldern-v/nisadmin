@@ -120,10 +120,10 @@ export default function BadEventsRouters(props: Props) {
               />
             </KeepAlive>
           ) : (
-              <currentRoute.component
-                getTitle={currentRoute && currentRoute.title}
-              />
-            ))}
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title}
+            />
+          ))}
       </MainCon>
     </Wrapper>
   );

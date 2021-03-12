@@ -99,7 +99,8 @@ export default observer(function 请假审核() {
       align: 'center',
       width: 80,
       render: (duration: number) =>
-        duration > 24 ? `${Math.ceil(duration / 24)}天${duration % 24}小时` : `${duration}小时`
+        `${duration}小时`
+      // duration > 24 ? `${Math.ceil(duration / 24)}天${duration % 24}小时` : `${duration}小时`
     },
     {
       title: '请假事由',

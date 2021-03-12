@@ -48,7 +48,9 @@ export default function DetailOrAuditModal(props: Props) {
   const getDuration = () => {
     const { duration } = detail
     if (!duration) return ''
-    return duration > 24 ? `${Math.ceil(duration / 24)}天${duration % 24}小时` : `${duration}小时`
+
+    return `${duration}小时`
+    // return duration > 24 ? `${Math.ceil(duration / 24)}天${duration % 24}小时` : `${duration}小时`
   }
 
   const downFile = (path: string, name: string) => {
@@ -141,13 +143,13 @@ export default function DetailOrAuditModal(props: Props) {
                       {getFileType(item.path) == 'img' ? (
                         <Zimage src={item.path} className='type-img' alt='' />
                       ) : (
-                          <img
-                            src={getFilePrevImg(item.path)}
-                            className='type-img'
-                            alt=''
-                            onClick={(e) => onPreView(e, item)}
-                          />
-                        )}
+                        <img
+                          src={getFilePrevImg(item.path)}
+                          className='type-img'
+                          alt=''
+                          onClick={(e) => onPreView(e, item)}
+                        />
+                      )}
                       <div className='file-name' title={item.name}>{item.name}</div>
                       <div className='file-size'>{getFileSize(item.size)}</div>
                     </div>
