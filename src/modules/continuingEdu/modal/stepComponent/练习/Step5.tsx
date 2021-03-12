@@ -11,7 +11,7 @@ import ShowTable from "./ShowTable";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
@@ -36,12 +36,12 @@ export default observer(function Step5() {
     3: "市级"
   };
 
-  let totalNum = lxStepViewModal.stepData2.questionStatList.reduce(
-    (total: any, current: any) => {
-      return total + current.questionCount;
-    },
-    0
-  );
+  // let totalNum = lxStepViewModal.stepData2.questionStatList.reduce(
+  //   (total: any, current: any) => {
+  //     return total + current.questionCount;
+  //   },
+  //   0
+  // );
 
   // 习题预览弹窗
   const handlePagePreview = () => {
@@ -112,11 +112,11 @@ export default observer(function Step5() {
               <td className="value">中医类</td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">类&nbsp;&nbsp;别：</td>
-              <td className="value">非中医类</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">类&nbsp;&nbsp;别：</td>
+                <td className="value">非中医类</td>
+              </tr>
+            )}
 
           {lxStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
@@ -124,18 +124,18 @@ export default observer(function Step5() {
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    lxStepViewModal.stepData2.studentCreditType
+                  lxStepViewModal.stepData2.studentCreditType
                   ]
                 }{" "}
                 {lxStepViewModal.stepData2.studentCredit} 分
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学分：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学分：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           {lxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
@@ -144,11 +144,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-            <tr>
-              <td className="key">学员学时：</td>
-              <td className="value">无</td>
-            </tr>
-          )}
+              <tr>
+                <td className="key">学员学时：</td>
+                <td className="value">无</td>
+              </tr>
+            )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">

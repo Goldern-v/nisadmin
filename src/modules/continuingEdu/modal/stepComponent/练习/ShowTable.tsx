@@ -18,7 +18,7 @@ export default observer(function ShowTable(props: Props) {
   let dataSource = lxStepViewModal.stepData2.questionStatList;
 
   /** 题目条数 */
-  let totalNum = dataSource.reduce((total: any, current: any) => {
+  let totalNum = dataSource ?.reduce((total: any, current: any) => {
     return total + current.questionCount;
   }, 0);
 
