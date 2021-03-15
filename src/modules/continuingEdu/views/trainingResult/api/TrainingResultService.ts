@@ -181,6 +181,11 @@ export default class TrainingResultService extends BaseApiService {
   public async addResitExam(obj: any) {
     return this.post(`/studyAndTrain/examManage/addResitExam`, obj);
   }
+
+  // 南医三成绩显示隐藏
+  public async displayOrHideScores(obj: any) {
+    return this.post(`/studyAndTrain/examManage/displayOrHideScores`, obj);
+  }
 }
 
 export const trainingResultService = new TrainingResultService();

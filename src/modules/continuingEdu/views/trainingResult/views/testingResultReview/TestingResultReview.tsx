@@ -297,7 +297,10 @@ export default observer(function TestingResultReview() {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    if (appStore.HOSPITAL_ID === 'hj' && !appStore.queryObj.editable) {
+    // 南医三 厚街有统计查询功能
+    const HOSPITAL_ID: any = ['hj', 'nys'];
+    let isOk: any = HOSPITAL_ID.find((item: any) => item == appStore.HOSPITAL_ID)
+    if (isOk && !appStore.queryObj.editable) {
       return (
         <BaseTabs
           config={
@@ -404,6 +407,32 @@ export default observer(function TestingResultReview() {
     setEditVisible(false);
   };
 
+  // 南医三成绩显示隐藏显示
+  const handleDisplayOrHideScores = (actionType: any) => {
+    let type: string = actionType === 1 ? '显示' : '隐藏'
+    let obj: any = {
+      cetpId: appStore.queryObj.id || '',
+      actionType
+    }
+    Modal.confirm({
+      title: `${type}成绩？`,
+      centered: true,
+      content: `确定给所有考生${type}成绩？`,
+      onOk: () => {
+        setPublishLoading(true)
+        trainingResultService
+          .displayOrHideScores(obj)
+          .then(res => {
+            message.success(`${type}成功`, 1, () => {
+              trainingResultModel.getBaseInfo()
+            })
+            setPublishLoading(false)
+          }, () => setPublishLoading(false))
+      }
+    })
+
+  }
+
   return <Wrapper>
     <TopPannel>
       <NavCon>
@@ -438,7 +467,8 @@ export default observer(function TestingResultReview() {
         </span>
       </SubContent>
       <ButtonGroups>
-        {baseInfo.isResultPublished === 0 &&
+        {/* 发布成绩按钮只在立即评分页面显示，发布成绩以及已发布按钮暂时在查看结果页面隐藏 */}
+        {editable && baseInfo.isResultPublished === 0 &&
           <Button
             type="primary"
             onClick={handlePublish}
@@ -446,12 +476,29 @@ export default observer(function TestingResultReview() {
             发布成绩
           </Button>}
         {!editable && <React.Fragment>
-          {baseInfo.isResultPublished === 1 &&
+          {/* {baseInfo.isResultPublished === 1 &&
             <Button
               type="primary"
               disabled={true}>
               已发布
-          </Button>}
+          </Button>} */}
+          {/* 南医三新增成绩显示隐藏功能 */}
+          {appStore.HOSPITAL_ID == 'nys' && baseInfo.scoresVisibleStatus === 0 &&
+            <Button
+              type="primary"
+              onClick={() => handleDisplayOrHideScores(1)}
+            >
+              显示成绩
+            </Button>
+          }
+          {appStore.HOSPITAL_ID == 'nys' && baseInfo.scoresVisibleStatus === 1 &&
+            <Button
+              type="primary"
+              onClick={() => handleDisplayOrHideScores(0)}
+            >
+              隐藏成绩
+            </Button>
+          }
           {appStore.hisMatch({
             map: {
               wh: <span></span>,
