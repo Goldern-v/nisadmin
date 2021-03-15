@@ -21,7 +21,7 @@ export default function Left(props: Props) {
 
   const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
     previewModal.show({
-      title: file.name,
+      title: file.fileName,
       path: file.path
     })
     e.stopPropagation()
@@ -82,7 +82,7 @@ export default function Left(props: Props) {
                 <FileCon>
                   {attachment.filter((item: any) => item.type == "0").map((item: any, index: number) => (
                     <div className='file-box' key={index}>
-                      <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
+                      <div className='file-inner' onClick={() => downFile(item.path, item.fileName)}>
                         {getFileType(item.path) == 'img' ? (
                           <Zimage src={item.path} className='type-img' alt='' />
                         ) : (
