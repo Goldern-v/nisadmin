@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, Select } from 'antd'
 import BaseTabs from "src/components/BaseTabs";
 import { observer } from 'mobx-react-lite'
 import { appStore } from "src/stores";
@@ -19,6 +19,13 @@ export interface Props { }
 export default observer(function HjExerciseResultAnalyse() {
   const [headCont, setHeadCont]: any = useState([])// tabs顶部数据
   const printRef: any = useRef(null);
+  const typeList = [
+    { code: '', name: '全部' },
+    { code: 'byDept', name: '科室' },
+    { code: 'byTitle', name: '职称' },
+    { code: 'byHierarchy', name: '层级' },
+    { code: 'byScoresSection', name: '分数' }
+  ]
 
   // 初始化tabs顶部数据
   useEffect(() => {
@@ -54,6 +61,25 @@ export default observer(function HjExerciseResultAnalyse() {
         <span>实际参加人数：{headCont.finishedPersonCount}</span>
       </HeadCont>
       <HeadBtn>
+        {appStore.HOSPITAL_ID == 'nys' && hjExerciseModal.keyIdx == '2' && (
+          <Select
+            style={{ width: 120, marginRight: '15px' }}
+            placeholder="请选择科室"
+            value={hjExerciseModal.exportType}
+            onChange={(val: string) => {
+              hjExerciseModal.exportType = val;
+            }}
+          >
+            {typeList.map((item: any) => {
+              return (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
+                </Select.Option>
+              );
+            })}
+          </Select>
+        )}
+
         <Button style={{ marginRight: '20px' }} onClick={() => hjExerciseModal.export()}>导出</Button>
         <Button type="primary" style={{ marginRight: '20px' }} onClick={() => onPrint()}>打印当前页</Button>
         <Button>刷新</Button>

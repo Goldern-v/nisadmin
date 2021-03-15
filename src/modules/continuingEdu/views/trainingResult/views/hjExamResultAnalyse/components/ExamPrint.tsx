@@ -3,14 +3,381 @@ import React, { useState, useEffect } from 'react'
 import { ContentSpecial, Title, TableTitle, ChartCon } from './components/styleCss'
 import { observer } from 'mobx-react-lite'
 import { hjExamModal } from '../HjExamModal'
+import { appStore } from 'src/stores';
 export interface Props {
   printRef?: any;
 }
 
 export default observer(function ExamPrint(props: Props) {
-  useEffect(() => {
-    console.log('hjExamModal.keyIdx111111111',hjExamModal.keyIdx)
-  })
+
+  // 南医三根据当前页面tab值动态打印页面
+  const getPage = () => {
+    if (appStore.HOSPITAL_ID == 'nys' && hjExamModal.keyIdx == '2') {
+      switch (hjExamModal.exportType) {
+        case 'byDept':
+          return (
+            <Report>
+              <ContentSpecial>
+                <Title>《科室参与人数柱状图》</Title>
+                <ChartCon >
+                  <img src={hjExamModal.deptImg} className="chart-con-img" />
+                </ChartCon>
+                <TableTitle>科室维度分析</TableTitle>
+                <table>
+                  <colgroup>
+                    <col width="16%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>科室</th>
+                      <th>应参与人数</th>
+                      <th>已参与人数</th>
+                      <th>未参与人数</th>
+                      <th>参与率</th>
+                      <th>未参与率</th>
+                      <th>科室平均正确率</th>
+                      <th>科室平均分</th>
+                    </tr>
+                    {hjExamModal.excelTableListByDept.map((item: any, index: any) => (
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>{item.deptName}</td>
+                        <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                        <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </ContentSpecial>
+            </Report>
+          )
+        case 'byTitle':
+          return (
+            <Report>
+              <ContentSpecial>
+                <Title>《各职称参与人数柱状图》</Title>
+                <ChartCon >
+                  <img src={hjExamModal.titleImg} className="chart-con-img" />
+                </ChartCon>
+                <TableTitle>职称维度分析</TableTitle>
+                <table>
+                  <colgroup>
+                    <col width="16%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>职称</th>
+                      <th>应参与人数</th>
+                      <th>已参与人数</th>
+                      <th>未参与人数</th>
+                      <th>参与率</th>
+                      <th>未参与率</th>
+                      <th>科室平均正确率</th>
+                      <th>科室平均分</th>
+                    </tr>
+                    {hjExamModal.excelTableListByTitle.map((item: any, index: any) => (
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>{item.empTitle}</td>
+                        <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                        <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </ContentSpecial>
+            </Report>
+          )
+        case 'byHierarchy':
+          return (
+            <Report>
+              <ContentSpecial>
+                <Title>《层级参与人数柱状图》</Title>
+                <ChartCon >
+                  <img src={hjExamModal.hierarchyImg} className="chart-con-img" />
+                </ChartCon>
+                <TableTitle>层级维度分析</TableTitle>
+                <table>
+                  <colgroup>
+                    <col width="16%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                    <col width="12%" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>层级</th>
+                      <th>应参与人数</th>
+                      <th>已参与人数</th>
+                      <th>未参与人数</th>
+                      <th>参与率</th>
+                      <th>未参与率</th>
+                      <th>科室平均正确率</th>
+                      <th>科室平均分</th>
+                    </tr>
+                    {hjExamModal.excelTableListByHierarchy.map((item: any, index: any) => (
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>{item.nurseHierarchy}</td>
+                        <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                        <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </ContentSpecial>
+            </Report>
+          )
+        case 'byScoresSection':
+          return (
+            <Report>
+              <ContentSpecial>
+                <Title>《各分数段人数数据图》</Title>
+                <ChartCon >
+                  <img src={hjExamModal.scoresSectionImgYuan} className="chart-con-scoresSectionImgYuan" />
+                  <img src={hjExamModal.scoresSectionImgZhu} className="chart-con-scoresSectionImgZhu" />
+                </ChartCon>
+                <TableTitle>分数段维度分析</TableTitle>
+                <table>
+                  <colgroup>
+                    <col width="24%" />
+                    <col width="19%" />
+                    <col width="19%" />
+                    <col width="19%" />
+                    <col width="19%" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>分数段</th>
+                      <th>人数</th>
+                      <th>人数占比</th>
+                      <th>该分数段平均正确率</th>
+                      <th>该分数段平均分</th>
+                    </tr>
+                    {hjExamModal.excelTableListByScoresSection.map((item: any, index: any) => (
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>{item.scoresSection}</td>
+                        <td style={{ textAlign: "center" }}>{item.personCount}</td>
+                        <td style={{ textAlign: "center" }}>{item.personRatio * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                        <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </ContentSpecial>
+            </Report>
+          )
+        default:
+          return (
+            <React.Fragment>
+              <Report>
+                <ContentSpecial>
+                  <Title>《科室参与人数柱状图》</Title>
+                  <ChartCon >
+                    <img src={hjExamModal.deptImg} className="chart-con-img" />
+                  </ChartCon>
+                  <TableTitle>科室维度分析</TableTitle>
+                  <table>
+                    <colgroup>
+                      <col width="16%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th>科室</th>
+                        <th>应参与人数</th>
+                        <th>已参与人数</th>
+                        <th>未参与人数</th>
+                        <th>参与率</th>
+                        <th>未参与率</th>
+                        <th>科室平均正确率</th>
+                        <th>科室平均分</th>
+                      </tr>
+                      {hjExamModal.excelTableListByDept.map((item: any, index: any) => (
+                        <tr key={index}>
+                          <td style={{ textAlign: "center" }}>{item.deptName}</td>
+                          <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                          <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </ContentSpecial>
+              </Report>
+              <Report>
+                <ContentSpecial>
+                  <Title>《各职称参与人数柱状图》</Title>
+                  <ChartCon >
+                    <img src={hjExamModal.titleImg} className="chart-con-img" />
+                  </ChartCon>
+                  <TableTitle>职称维度分析</TableTitle>
+                  <table>
+                    <colgroup>
+                      <col width="16%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th>职称</th>
+                        <th>应参与人数</th>
+                        <th>已参与人数</th>
+                        <th>未参与人数</th>
+                        <th>参与率</th>
+                        <th>未参与率</th>
+                        <th>科室平均正确率</th>
+                        <th>科室平均分</th>
+                      </tr>
+                      {hjExamModal.excelTableListByTitle.map((item: any, index: any) => (
+                        <tr key={index}>
+                          <td style={{ textAlign: "center" }}>{item.empTitle}</td>
+                          <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                          <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </ContentSpecial>
+              </Report>
+              <Report>
+                <ContentSpecial>
+                  <Title>《层级参与人数柱状图》</Title>
+                  <ChartCon >
+                    <img src={hjExamModal.hierarchyImg} className="chart-con-img" />
+                  </ChartCon>
+                  <TableTitle>层级维度分析</TableTitle>
+                  <table>
+                    <colgroup>
+                      <col width="16%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                      <col width="12%" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th>层级</th>
+                        <th>应参与人数</th>
+                        <th>已参与人数</th>
+                        <th>未参与人数</th>
+                        <th>参与率</th>
+                        <th>未参与率</th>
+                        <th>科室平均正确率</th>
+                        <th>科室平均分</th>
+                      </tr>
+                      {hjExamModal.excelTableListByHierarchy.map((item: any, index: any) => (
+                        <tr key={index}>
+                          <td style={{ textAlign: "center" }}>{item.nurseHierarchy}</td>
+                          <td style={{ textAlign: "center" }}>{item.totalPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.finishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.unFinishedPersonCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.participateRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.unParticipateRate * 100}%}</td>
+                          <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </ContentSpecial>
+              </Report>
+              <Report>
+                <ContentSpecial>
+                  <Title>《各分数段人数数据图》</Title>
+                  <ChartCon >
+                    <img src={hjExamModal.scoresSectionImgYuan} className="chart-con-scoresSectionImgYuan" />
+                    <img src={hjExamModal.scoresSectionImgZhu} className="chart-con-scoresSectionImgZhu" />
+                  </ChartCon>
+                  <TableTitle>分数段维度分析</TableTitle>
+                  <table>
+                    <colgroup>
+                      <col width="24%" />
+                      <col width="19%" />
+                      <col width="19%" />
+                      <col width="19%" />
+                      <col width="19%" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th>分数段</th>
+                        <th>人数</th>
+                        <th>人数占比</th>
+                        <th>该分数段平均正确率</th>
+                        <th>该分数段平均分</th>
+                      </tr>
+                      {hjExamModal.excelTableListByScoresSection.map((item: any, index: any) => (
+                        <tr key={index}>
+                          <td style={{ textAlign: "center" }}>{item.scoresSection}</td>
+                          <td style={{ textAlign: "center" }}>{item.personCount}</td>
+                          <td style={{ textAlign: "center" }}>{item.personRatio * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.avgCorrectRate * 100}%</td>
+                          <td style={{ textAlign: "center" }}>{item.avgScores}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </ContentSpecial>
+              </Report>
+            </React.Fragment>
+          )
+      }
+    }
+  }
 
   return (
     <Wrapper ref={props.printRef} id="wardLogPrintPage">
@@ -95,7 +462,7 @@ export default observer(function ExamPrint(props: Props) {
           </tbody>
         </table>
       </ContentSpecial>}
-      {hjExamModal.keyIdx == '2' && <ContentSpecial>
+      {hjExamModal.keyIdx == '2' && appStore.HOSPITAL_ID == 'hj' && <ContentSpecial>
         <Report>
           <ContentSpecial>
             <Title>《科室参与人数柱状图》</Title>
@@ -270,6 +637,7 @@ export default observer(function ExamPrint(props: Props) {
         </Report>
       </ContentSpecial>
       }
+      {getPage()}
     </Wrapper>
   )
 })

@@ -5,6 +5,7 @@ import { hjExerciseApi } from "./api/HjExerciseApi";
 
 class HjExerciseModal {
   @observable public keyIdx = "0";
+  @observable public exportType = "byDept"; // 南医三单独类型
 
   @observable public statisticsTableList = [];
   @observable public statisticsTableLoading = false;
@@ -137,9 +138,12 @@ class HjExerciseModal {
       "exportExerciseResultAnalyseReport"
     ];
     let urlName = urlNameArr[this.keyIdx];
-    hjExerciseApi.exportExam(appStore.queryObj.id, urlName).then(res => {
-      fileDownload(res);
-    });
+    let exportType = appStore.HOSPITAL_ID == "nys" ? this.exportType : null;
+    hjExerciseApi
+      .exportExam(appStore.queryObj.id, urlName, exportType)
+      .then(res => {
+        fileDownload(res);
+      });
   }
 }
 

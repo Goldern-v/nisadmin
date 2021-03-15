@@ -195,8 +195,9 @@ export default observer(function PracticeResultReview(props: Props) {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    // if (appStore.HOSPITAL_ID === 'hj' && stepViewModal.getThirdName === '练习设置') {
-    if (appStore.HOSPITAL_ID === 'hj') {
+    const HOSPITAL_ID: any = ['hj', 'nys'];
+    let isOk: any = HOSPITAL_ID.find((item: any) => item == appStore.HOSPITAL_ID)
+    if (isOk) {
       return (
         <BaseTabs
           config={

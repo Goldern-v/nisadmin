@@ -65,11 +65,11 @@ export default class HjExerciseApi extends BaseApiService {
   }
 
   //导出
-  public exportExam(cetpId: any, urlName: string) {
+  public exportExam(cetpId: any, urlName: string, exportType?: any) {
     //统计exportExerciseResultStats  分析exportExerciseResultAnalyse  报表exportExerciseResultAnalyseReport
     return this.post(
       `/studyAndTrain/teachingPlanManage/hj/${urlName}`,
-      { cetpId },
+      { cetpId, exportType },
       {
         responseType: "blob"
       }

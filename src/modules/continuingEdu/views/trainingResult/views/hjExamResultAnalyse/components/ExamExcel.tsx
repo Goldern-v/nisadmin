@@ -7,15 +7,78 @@ import DeptExamReport from './components/DeptExamReport'
 import TitleExamReport from './components/TitleExamReport'
 import HierarchyExamReport from './components/HierarchyExamReport'
 import ScoresSectionExamReport from './components/ScoresSectionExamReport'
-export interface Props {
-}
+import { appStore } from 'src/stores'
+export interface Props { }
 
 export default observer(function ExamExcel() {
+
+  // 南医三根据当前页面tab值显示页面
+  const getPage = () => {
+    if (appStore.HOSPITAL_ID == 'hj') {
+      return (
+        <React.Fragment>
+          <Report>
+            <DeptExamReport />
+          </Report>
+          <Report>
+            <TitleExamReport />
+          </Report>
+          <Report>
+            <HierarchyExamReport />
+          </Report>
+          <ScoresSectionExamReport />
+        </React.Fragment>
+      )
+    } else if (appStore.HOSPITAL_ID == 'nys') {
+      switch (hjExamModal.exportType) {
+        case 'byDept':
+          return (
+            <Report>
+              <DeptExamReport />
+            </Report>
+          )
+        case 'byTitle':
+          return (
+            <Report>
+              <TitleExamReport />
+            </Report>
+          )
+        case 'byHierarchy':
+          return (
+            <Report>
+              <HierarchyExamReport />
+            </Report>
+          )
+        case 'byScoresSection':
+          return (
+            <Report>
+              <ScoresSectionExamReport />
+            </Report>
+          )
+        default:
+          return (
+            <React.Fragment>
+              <Report>
+                <DeptExamReport />
+              </Report>
+              <Report>
+                <TitleExamReport />
+              </Report>
+              <Report>
+                <HierarchyExamReport />
+              </Report>
+              <ScoresSectionExamReport />
+            </React.Fragment>
+          )
+      }
+    }
+  }
 
   return (
     <Wrapper>
       <Spin spinning={hjExamModal.excelTableLoading} >
-        <Report>
+        {getPage()}
+        {/* <Report>
           <DeptExamReport />
         </Report>
         <Report>
@@ -24,7 +87,7 @@ export default observer(function ExamExcel() {
         <Report>
           <HierarchyExamReport />
         </Report>
-        <ScoresSectionExamReport />
+        <ScoresSectionExamReport /> */}
       </Spin>
     </Wrapper>
   )

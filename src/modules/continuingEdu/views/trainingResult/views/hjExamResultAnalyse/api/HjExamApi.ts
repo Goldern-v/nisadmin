@@ -56,12 +56,12 @@ export default class HjExamApi extends BaseApiService {
     );
   }
 
-  //导出
-  public exportExam(cetpId: any, urlName: string) {
+  //导出(南医三新增exportType入参)
+  public exportExam(cetpId: any, urlName: string, exportType?: any) {
     //统计exportExamResultStats  分析exportExamResultAnalyse  报表exportExamResultAnalyseReport
     return this.post(
       `/studyAndTrain/teachingPlanManage/hj/${urlName}`,
-      { cetpId },
+      { cetpId, exportType },
       {
         responseType: "blob"
       }
