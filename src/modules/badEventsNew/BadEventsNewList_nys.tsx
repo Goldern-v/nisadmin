@@ -72,7 +72,7 @@ export default observer(function BadEventNewList() {
       key: "key",
       width: 50,
       align: "center",
-      render: (text: string, record: any, idx: number) => (page.current - 1) * 10 + idx + 1
+      render: (text: string, record: any, idx: number) => (page.current - 1) * page.size + idx + 1
     },
     {
       title: "事件单号",
