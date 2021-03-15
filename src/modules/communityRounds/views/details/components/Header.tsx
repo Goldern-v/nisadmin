@@ -33,12 +33,12 @@ export default function Header(props: Props) {
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
     switch (nodeName) {
-      case "护士长审核":
+      case "科护士长审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: "护士长审核",
+            title: "科护士长审核",
             onOkCallBack: props.onload
           });
         }

@@ -1,6 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import moment from "moment";
-import qs from "qs";
 
 export default class CheckWardService extends BaseApiService {
   /**社区查房记录 */
@@ -66,8 +64,8 @@ export default class CheckWardService extends BaseApiService {
   }
 
   // 导出
-  public export(id: any, obj?: any) {
-    return this.post(`/csrTotal/export/${id}`, obj, {
+  public export(id: any) {
+    return this.get(`/csrTotal/export/${id}`, {
       responseType: "blob"
     });
   }

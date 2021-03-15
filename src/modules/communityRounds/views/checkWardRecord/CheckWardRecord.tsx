@@ -226,9 +226,10 @@ export default observer(function CheckWardRecord() {
             }}
           >
             <Select.Option value=''>全部</Select.Option>
-            <Select.Option value='0'>待护士长审核</Select.Option>
-            <Select.Option value='1'>待护理部审核</Select.Option>
-            <Select.Option value='2'>已完成</Select.Option>
+            <Select.Option value='0'>待提交</Select.Option>
+            <Select.Option value='1'>待科护士长审核</Select.Option>
+            <Select.Option value='2'>待护理部审核</Select.Option>
+            <Select.Option value='3'>已完成</Select.Option>
           </Select>
           <Button type='primary' onClick={() => checkWardRecordModal.onload()}>
             查询
