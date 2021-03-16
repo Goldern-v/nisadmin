@@ -89,7 +89,7 @@ export default observer(function UpdateTableNys(props: Props) {
         if (index == 0) return `总题数：${pickTotalNum} 题`;
         return (
           <InputNumber
-            min={0}
+            min={1}
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={(val: any) => {
@@ -114,6 +114,10 @@ export default observer(function UpdateTableNys(props: Props) {
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={(val: any) => {
+              if (!record.pickQuestionCount) {
+                message.warning('填写分值前，请先填写题目数！')
+                return;
+              }
               record.scoresPerQuestion = val;
               if (record.scoresPerQuestion && record.questionCount) {
                 record.totalScores =
