@@ -94,7 +94,7 @@ export default function Left(props: Props) {
                             />
                           )}
                         <div className='file-name'>{item.fileName}</div>
-                        <div className='file-size'>{getFileSize(item.size)}</div>
+                        {/* <div className='file-size'>{getFileSize(item.size)}</div> */}
                       </div>
                     </div>
                   ))}
@@ -138,7 +138,7 @@ export default function Left(props: Props) {
                             />
                           )}
                         <div className='file-name'>{item.fileName}</div>
-                        <div className='file-size'>{getFileSize(item.size)}</div>
+                        {/* <div className='file-size'>{getFileSize(item.size)}</div> */}
                       </div>
                     </div>
                   ))}
