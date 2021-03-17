@@ -94,7 +94,7 @@ export default observer(function CheckWardTotal() {
           <DoCon>
             {authStore.isYuanHong ? <span onClick={() => handleRelease(record.id)}>发布</span> : <span style={{color: '#ccc'}}>发布</span> }
             <span onClick={() => toDetails(record)}>查看</span>
-            {/* <span onClick={() => handleDelete(record.id)}>删除</span> */}
+            {authStore.isYuanHong && <span onClick={() => handleDelete(record.id)}>删除</span>}
           </DoCon>
         );
       }
