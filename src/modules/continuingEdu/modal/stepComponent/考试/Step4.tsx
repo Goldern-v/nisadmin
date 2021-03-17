@@ -79,7 +79,7 @@ export default observer(function Step4() {
       stepViewModal.stepData2.totalScores = data.questionStatList.reduce((total: any, current: any) => {
         return total + current.totalScores;
       }, 0);
-    } 
+    }
   };
 
   const onSave = async () => {
@@ -144,9 +144,9 @@ export default observer(function Step4() {
     stepViewModal.stepData2.needScorePerson = false
     stepViewModal.stepData2.scorePersonList = []
     refForm.current && refForm.current.setField('scorePersonList', []);
-    stepViewModal.stepData2.showScoreInstantly = true
+    if (appStore.HOSPITAL_ID != 'nys') stepViewModal.stepData2.showScoreInstantly = true
   } else {
-    stepViewModal.stepData2.showScoreInstantly = false
+    if (appStore.HOSPITAL_ID != 'nys') stepViewModal.stepData2.showScoreInstantly = false
   }
 
   // 习题预览弹窗
@@ -338,7 +338,7 @@ export default observer(function Step4() {
               </Row>
               <Row style={{ marginTop: 10 }}>
                 <Checkbox
-                  disabled={true}
+                  disabled={appStore.HOSPITAL_ID != 'nys'}
                   checked={!!stepViewModal.stepData2.showScoreInstantly}
                   onClick={() => {
                     stepViewModal.stepData2.showScoreInstantly = !stepViewModal
