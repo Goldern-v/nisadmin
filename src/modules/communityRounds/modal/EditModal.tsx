@@ -109,7 +109,7 @@ export default observer(function EditModal(props: Props) {
           if (current) {
             let newParams = current.getFields();
             // 日期 检查重点格式转化
-            newParams.srDate = srDate ? moment(newParams.srDate).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
+            newParams.srDate = srDate ? moment(srDate).format("YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
             newParams.keyPoints = getAttachListIds(newParams.keyPoints, 'keyPoints')
             // 公共数据处理
             let record: any = { ...newParams }
