@@ -7,6 +7,8 @@ import LoginView from "src/modules/login/LoginView";
 import { setLayout } from "src/utils/route/route-utils";
 import layouts from "src/layouts";
 import demo from "src/demo";
+import demo1 from "src/demo1";
+
 import { specialModule } from "./routerConfig/specialModule";
 import { appStore, authStore } from "src/stores";
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
@@ -427,6 +429,8 @@ const RefresherInfoSubmit = lazy(() =>
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
+  setLayout("/demo1", demo1),
+
   setLayout("/login", LoginView),
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
@@ -771,12 +775,7 @@ const routes: RouteItem[] = [
   },
   {
     path: "/continuingEdu",
-    redirect:
-      appStore.HOSPITAL_ID == "nys"
-        ? "/continuingEdu/人员管理"
-        : appStore.HOSPITAL_ID == "wh"
-        ? "/continuingEdu/在线学习"
-        : "/continuingEdu/学习培训任务"
+    redirect: "/continuingEdu/人员管理"
   },
   // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
   // {

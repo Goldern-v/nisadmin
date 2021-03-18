@@ -109,27 +109,6 @@ export default function ContinuingEdu(props: Props) {
 
   // 菜单列表
   const LEFT_MENU_CONFIG = [
-    {
-      title: "在线学习",
-      icon: <JSGL />,
-      path: "/continuingEdu/在线学习",
-      component: 在线学习,
-      hide: appStore.HOSPITAL_ID !== "wh"
-    },
-    // {
-    //   title: "学习培训任务",
-    //   icon: <JSGL />,
-    //   path: "/continuingEdu/学习培训任务",
-    //   component: 在线学习,
-    //   hide: appStore.HOSPITAL_ID !== "hj"
-    // },
-    {
-      title: "培训手册",
-      icon: <JSGL />,
-      path: "/continuingEdu/培训手册",
-      component: 培训手册,
-      hide: appStore.HOSPITAL_ID !== "hj"
-    },
     ...appStore.hisMatch({
       map: {
         hj: [
@@ -174,6 +153,20 @@ export default function ContinuingEdu(props: Props) {
         ]
       }
     }),
+    {
+      title: "在线学习",
+      icon: <JSGL />,
+      path: "/continuingEdu/在线学习",
+      component: 在线学习,
+      hide: appStore.HOSPITAL_ID == "hj"
+    },
+    {
+      title: "培训手册",
+      icon: <JSGL />,
+      path: "/continuingEdu/培训手册",
+      component: 培训手册,
+      hide: appStore.HOSPITAL_ID !== "hj"
+    },
     ...appStore.hisMatch({
       map: {
         hj: [
