@@ -5,9 +5,11 @@ import { Input, Row, Col, Modal, message as Message, Select, DatePicker } from "
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { checkWardService } from "../services/CheckWardService";
-import { appStore, authStore } from "src/stores";
+import { authStore } from "src/stores";
 import moment from 'moment'
 import MultiFileUploader, { FileItem } from '../components/MultiFileUploader'
+import { checkWardRecordModal } from '../views/checkWardRecord/CheckWardRecordModal'
+
 
 export interface Props {
   visible: boolean;
@@ -21,13 +23,6 @@ export default observer(function EditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
-  const communityList: any = [
-    { name: "前进社区", code: "前进社区" },
-    { name: "汉水社区", code: "汉水社区" },
-    { name: "吉田社区", code: "吉田社区" },
-    { name: "满春社区", code: "满春社区" },
-    { name: "六角社区", code: "六角社区" },
-  ]
   const keyPointsList: any = [
     { name: "基础护理", code: "基础护理" },
     { name: "科室管理", code: "科室管理" },
@@ -207,8 +202,8 @@ export default observer(function EditModal(props: Props) {
             <Col span={20}>
               <Form.Field name="community">
                 <Select>
-                  {communityList.map((item: any) => (
-                    <Select.Option value={item.code} key={item.name}>
+                  {checkWardRecordModal.communityList.map((item: any) => (
+                    <Select.Option value={item.code} key={item.code}>
                       {item.name}
                     </Select.Option>
                   ))}
