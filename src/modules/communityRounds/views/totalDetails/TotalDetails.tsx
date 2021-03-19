@@ -14,11 +14,6 @@ export default observer(function TotalDetails() {
   const [title, setTitle] = useState('');
   const [tableList, setTableList] = useState([] as any);
   const [tableLoading, setTableLoading] = useState(false);
-  const [query, setQuery]: any = useState({
-    pageIndex: 1,
-    pageSize: 20,
-    total: 0
-  })
 
   // 初始化
   useEffect(() => {
@@ -142,24 +137,8 @@ export default observer(function TotalDetails() {
           loading={tableLoading}
           dataSource={tableList}
           columns={columns}
-          surplusHeight={260}
+          surplusHeight={230}
           surplusWidth={300}
-          pagination={{
-            current: query.pageIndex,
-            total: query.total,
-            pageSize: query.pageSize
-          }}
-          onChange={pagination => {
-            setQuery(
-              {
-                ...query,
-                pageIndex: pagination.current,
-                pageSize: pagination.pageSize,
-                total: pagination.total
-              }
-            );
-            onLoad()
-          }}
         />
       </TableWrapper>
     </Wrapper>
