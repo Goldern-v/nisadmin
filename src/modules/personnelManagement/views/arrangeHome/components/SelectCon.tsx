@@ -212,6 +212,7 @@ export default observer(function SelectCon() {
 
   const bigDeptmenu = (
     <Menu onClick={exportBigDeptExcel}>
+      <Menu.Item key='全院'>全院</Menu.Item>
       {bigDeptList.map((item: DictItem) => (
         <Menu.Item key={item.code}>{item.name}</Menu.Item>
       ))}
