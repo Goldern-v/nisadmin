@@ -2,6 +2,7 @@ import service from 'src/services/api'
 import { observable, computed, action } from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
+
 let dictList = {
   民族: 'nation',
   初始学历: 'initial_education',
@@ -30,7 +31,7 @@ let dictList = {
   授予学分: 'credit_granted',
   专业技术工作: 'professional_work',
   专利排名: 'patent_level',
-  // 作者: 'article_author',
+  作者: 'article_author',
 }
 
 type DictList = typeof dictList

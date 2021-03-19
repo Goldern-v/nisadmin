@@ -67,6 +67,13 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
+      title: '作者',
+      dataIndex: 'articleAuthor',
+      key: 'articleAuthor',
+      width: 80,
+      align: 'center',
+    },
+    {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
       key: 'periodicalNumber',
@@ -93,13 +100,6 @@ export default observer(function Awards() {
       key: 'articleType',
       width: 90,
       align: 'center'
-    },
-    {
-      title: '作者',
-      dataIndex: 'articleAuthor',
-      key: 'articleAuthor',
-      width: 80,
-      align: 'center',
     },
     {
       title: '论文收录网站',

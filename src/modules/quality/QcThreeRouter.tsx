@@ -37,101 +37,148 @@ import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore } from "src/stores";
 
 export default function QcThreeRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname]);
-  let extra_menu: any = [
-    {
-      title: "三级质控月度报告",
-      icon: <YDBG />,
-      path: "/qcThree/analysis",
-      component: Analysis,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
-    {
-      title: "三级质控汇总报告",
-      icon: <HZBG />,
-      path: "/qcThree/summaryReport",
-      component: SummaryReport,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
-    {
-      title: "三级质控问题汇总",
-      icon: <WTBG />,
-      path: "/qcThree/problemSummary",
-      component: ProblemSummary
-    },
-    {
-      title: "检查表单统计表",
-      path: "/qcThree/queryStatistics",
-      icon: <JCTJ />,
-      component: QueryStatistics
-    },
-    {
-      title: "文件书写统计表",
-      path: "/qcThree/writingForm",
-      icon: <WJSX />,
-      component: WritingForm
-    },
-    {
-      title: "特殊时段查房记录",
-      path: "/qcThree/checkWard",
-      icon: <CFJL />,
-      component: RecordView,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
-    {
-      title: "特殊时段计划表",
-      path: "/qcThree/schedule",
-      icon: <CFJHB />,
-      component: ScheduleView
-    },
-    {
-      title: "特殊时段查房统计报告",
-      path: "/qcThree/checkWardReportList",
-      icon: <CFJHBG />,
-      component: CheckWardReportList,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    }
-  ]
+  useEffect(() => { }, [props.history.location.pathname])
 
-  if (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys')
-    extra_menu = [
-      {
-        title: "护理质量巡查情况汇总表",
-        icon: <YDBG />,
-        path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
-        component: 护理质量巡查情况汇总表Nys,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-      {
-        title: "护理质量检查小结",
-        icon: <YDBG />,
-        path: "/qcThree/护理质量检查小结?qcLevel=3",
-        component: appStore.hisMatch({
-          map: {
-            nys: 护理质量检查小结Nys,
-            other: 护理质量检查小结
-          }
-        }),
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      },
-      // {
-      //   title: "护理质量统计查询",
-      //   icon: <YDBG />,
-      //   path: "/qcThree/护理质量统计查询?qcLevel=3",
-      //   component: 护理质量统计查询,
-      //   keepAlive: true,
-      //   // hide: !appStore.isDev,
-      //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-      // },
-    ]
+  let extra_menu: any = appStore.hisMatch({
+    map: {
+      nys: [
+        {
+          title: "护理质量巡查情况汇总表",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
+          component: 护理质量巡查情况汇总表Nys,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量检查小结?qcLevel=3",
+          component: appStore.hisMatch({
+            map: {
+              nys: 护理质量检查小结Nys,
+              other: 护理质量检查小结
+            }
+          }),
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+      ],
+      wh: [
+        {
+          title: "三级质控月度报告",
+          icon: <YDBG />,
+          path: "/qcThree/analysis",
+          component: Analysis,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控汇总报告",
+          icon: <HZBG />,
+          path: "/qcThree/summaryReport",
+          component: SummaryReport,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控问题汇总",
+          icon: <WTBG />,
+          path: "/qcThree/problemSummary",
+          component: ProblemSummary
+        },
+        {
+          title: "检查表单统计表",
+          path: "/qcThree/queryStatistics",
+          icon: <JCTJ />,
+          component: QueryStatistics
+        },
+        {
+          title: "文件书写统计表",
+          path: "/qcThree/writingForm",
+          icon: <WJSX />,
+          component: WritingForm
+        },
+        {
+          title: "特殊时段查房记录",
+          path: "/qcThree/checkWard",
+          icon: <CFJL />,
+          component: RecordView,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "特殊时段计划表",
+          path: "/qcThree/schedule",
+          icon: <CFJHB />,
+          component: ScheduleView
+        },
+        {
+          title: "特殊时段查房统计报告",
+          path: "/qcThree/checkWardReportList",
+          icon: <CFJHBG />,
+          component: CheckWardReportList,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        }
+      ],
+      other: [
+        {
+          title: "护理质量巡查情况汇总表",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
+          component: 护理质量巡查情况汇总表Nys,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量检查小结?qcLevel=3",
+          component: appStore.hisMatch({
+            map: {
+              nys: 护理质量检查小结Nys,
+              other: 护理质量检查小结
+            }
+          }),
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控月度报告",
+          icon: <YDBG />,
+          path: "/qcThree/analysis",
+          component: Analysis,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控汇总报告",
+          icon: <HZBG />,
+          path: "/qcThree/summaryReport",
+          component: SummaryReport,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控问题汇总",
+          icon: <WTBG />,
+          path: "/qcThree/problemSummary",
+          component: ProblemSummary
+        },
+        {
+          title: "检查表单统计表",
+          path: "/qcThree/queryStatistics",
+          icon: <JCTJ />,
+          component: QueryStatistics
+        },
+      ]
+    }
+  })
 
   const LEFT_MENU_CONFIG: any = [
     {
@@ -183,10 +230,10 @@ export default function QcThreeRouter(props: Props) {
               />
             </KeepAlive>
           ) : (
-              <currentRoute.component
-                getTitle={currentRoute && currentRoute.title}
-              />
-            ))}
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title}
+            />
+          ))}
       </MainCon>
     </Wrapper>
   );

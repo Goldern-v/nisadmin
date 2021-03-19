@@ -139,6 +139,15 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
+              <Form.Field label={`作者`} name='articleAuthor'>
+                <Select>
+                  {nurseFileDetailViewModal.getDict('作者').map((item) => (
+                    <Option value={item.name} key={'zuozhe-' + item.name}>{item.name}</Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
               <Form.Field label={`期刊号`} name='periodicalNumber'>
                 <Input />
               </Form.Field>
@@ -156,14 +165,6 @@ export default function EditArticleModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`文章类别`} name='articleType'>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('文章类别').map((item) => item.name)} />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`作者`} name='articleAuthor'>
-                <Select>
-                  <Option value={'第一作者'}>第一作者</Option>
-                  <Option value={'通讯作者'}>通讯作者</Option>
-                </Select>
               </Form.Field>
             </Col>
             <Col span={24}>

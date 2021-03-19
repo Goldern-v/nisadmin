@@ -380,7 +380,15 @@ export default observer(function 星级考核表弹窗(props: Props) {
 
   const handleNumberInput = (e: any, record: any, index: number, key: string) => {
     let val = e.target.value
-    record[key] = e.target.value
+
+    // 学时扣分不能大于6分
+    let numVal = Number(val)
+    if (key === 'classHoursDeduct' && !isNaN(numVal)) {
+      if (Math.abs(numVal) > 6)
+        val = '-6'
+    }
+
+    record[key] = val
     record.starClass = starClass(record)
 
     setData(cloneData)

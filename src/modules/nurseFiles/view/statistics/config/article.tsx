@@ -67,6 +67,13 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
+      title: '作者',
+      dataIndex: 'articleAuthor',
+      key: 'articleAuthor',
+      width: 120,
+      align: 'center'
+    },
+    {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
       key: 'periodicalNumber',
