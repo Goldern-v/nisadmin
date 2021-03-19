@@ -23,9 +23,19 @@ export default observer(function CheckWardRecord() {
   const canHandleEdit = (record: any) => {
     let loginName: any = authStore.user && authStore.user.empName;
     if (loginName == record.creatorName && record.status == '0') {
-      return <span onClick={() => toSaveOrUpdate(record)} >编辑</span>
+      return (
+        <span>
+          <span onClick={() => toSaveOrUpdate(record)} style={{ marginRight: '18px' }}>编辑</span>
+          <span onClick={() => handleDelete(record.id)}>删除</span>
+        </span>
+      );
     } else {
-      return <span style={{ color: " #ccc" }}>编辑</span>
+      return (
+        <span>
+          <span style={{ color: " #ccc", marginRight: '18px' }}>编辑</span>
+          <span style={{ color: " #ccc" }}>删除</span>
+        </span>
+      );
     }
   }
 
@@ -115,7 +125,6 @@ export default observer(function CheckWardRecord() {
           <DoCon>
             {canHandleEdit(record)}
             <span onClick={() => toDetails(record)}>查看</span>
-            <span onClick={() => handleDelete(record.id)}>删除</span>
           </DoCon>
         );
       }
