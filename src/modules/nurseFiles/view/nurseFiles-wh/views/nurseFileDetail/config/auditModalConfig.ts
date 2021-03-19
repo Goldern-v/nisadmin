@@ -68,10 +68,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             ...(row.zyzsUrl
               ? row.zyzsUrl.split(',').map((item: any, index: number) => {
-                  return {
-                    ['执业证书' + (index + 1)]: item
-                  }
-                })
+                return {
+                  ['执业证书' + (index + 1)]: item
+                }
+              })
               : [])
           ],
           allData: row
@@ -101,6 +101,9 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               文章类别: `articleType`,
+              作者: `articleAuthor`,
+            },
+            {
               论文收录网站: `influencingFactors`
             }
           ],
@@ -110,10 +113,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           },
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -142,10 +145,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -179,10 +182,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -212,10 +215,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -254,10 +257,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -303,10 +306,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -335,10 +338,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -371,10 +374,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -404,10 +407,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -437,10 +440,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -465,10 +468,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -498,10 +501,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -527,10 +530,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -556,10 +559,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -586,10 +589,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -614,10 +617,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -647,10 +650,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -679,10 +682,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })
@@ -707,10 +710,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                return {
-                  ['附件' + (index + 1)]: item
-                }
-              })
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
             : [],
           allData: row
         })

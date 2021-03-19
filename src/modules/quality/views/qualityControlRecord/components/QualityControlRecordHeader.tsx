@@ -6,8 +6,8 @@ import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
 import { Button, DatePicker, Modal, message } from 'antd'
 import DeptSelect from 'src/components/DeptSelect'
-import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
-import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect.tsx'
+import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect'
+import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect'
 import { qualityControlRecordVM } from '../QualityControlRecordVM'
 import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
 import { Select, Radio } from 'src/vendors/antd'
@@ -57,6 +57,48 @@ export default observer(function TopCon(props: any) {
     }
   })
 
+  /** 新建按钮 */
+  const createBtnCon = () => {
+    /** 护理部，科护士长权限 */
+    const defaultCreateCon = (
+      <Button
+        onClick={handleCreate}
+        style={{ marginLeft: 10 }}
+        disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}>
+        新建
+      </Button>
+    )
+
+    /** 前端无控制权限 */
+    const withOutAuditCreateCon = (
+      <Button
+        onClick={handleCreate}
+        style={{ marginLeft: 10 }}>
+        新建
+      </Button>
+    )
+
+    return appStore.hisMatch({
+      map: {
+        // 武汉默认只有二级质控能在pc端添加
+        wh: qualityControlRecordVM.level == 2 ? defaultCreateCon : <span></span>,
+        hj: defaultCreateCon,
+        other: withOutAuditCreateCon
+      }
+    })
+  }
+
+  /** 导出按钮 */
+  const exportCon = () => {
+    return appStore.hisMatch({
+      map: {
+        'hj,nys': <span></span>,
+        other: <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport && props.refExport()}>导出</Button>
+      },
+      vague: true,
+    })
+  }
+
   return (
     <Wrapper>
       <PageTitle>{title()}</PageTitle>
@@ -71,25 +113,6 @@ export default observer(function TopCon(props: any) {
         }}
         style={{ width: 220 }}
       />
-
-      {/* <span style={{ margin: '0 3px 0 15px' }}>类型:</span>
-      <Select
-        style={{ width: 100 }}
-        value={qualityControlRecordVM.level}
-        onChange={(value: any) => {
-          qualityControlRecordVM.level = value
-          props.refreshData()
-        }}
-      >
-        {qualityControlRecordVM.filterLevelList.map((item: any, index: number) => {
-          return (
-            <Select.Option value={item.code} key={index}>
-              {item.name}
-            </Select.Option>
-          )
-        })}
-      </Select> */}
-
       {qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
         <div className='radio-con'>
           <Radio.Group
@@ -142,22 +165,8 @@ export default observer(function TopCon(props: any) {
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
-      {(qualityControlRecordVM.level == 2 && appStore.HOSPITAL_ID !== 'nys') && (
-        <Button
-          onClick={handleCreate}
-          style={{ marginLeft: 10 }}
-          disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}
-        >
-          新建
-        </Button>
-      )}
-      {appStore.HOSPITAL_ID == 'nys' && <Button
-        onClick={handleCreate}
-        style={{ marginLeft: 10 }}
-      >
-        新建
-        </Button>}
-      {appStore.HOSPITAL_ID == 'hj' && <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport && props.refExport()}>导出</Button>}
+      {createBtnCon()}
+      {exportCon()}
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
         onOk={() => setFormCreateVisible(false)}
@@ -167,6 +176,7 @@ export default observer(function TopCon(props: any) {
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   height: 50px;
   /* background: rgba(248, 248, 248, 1);

@@ -56,7 +56,15 @@ export default observer(function Table(props: Props) {
     )
     if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
 
-    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
+
+    let classHoursDeduct = Number(
+      formatNum(
+        -Number(item.classHoursDeduct)
+      )
+    )
+    if (isNaN(classHoursDeduct)) classHoursDeduct = 0
+
+    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct - classHoursDeduct)
   }
 
   /**12月份显示年度加分和明细 */
@@ -67,15 +75,16 @@ export default observer(function Table(props: Props) {
       <table>
         <colgroup>
           <col width='80' />
+          <col width='60' />
           <col />
           <col />
           <col />
-          <col />
+          <col width='60' />
           <col />
           {showAddPintCol && (
             <React.Fragment>
               <col width='180' />
-              <col />
+              <col width='40' />
             </React.Fragment>
           )}
         </colgroup>
@@ -85,6 +94,7 @@ export default observer(function Table(props: Props) {
             <td>护理质量</td>
             <td>工作量</td>
             <td>满意度</td>
+            <td>学时</td>
             <td>考核总分</td>
             <td>星级</td>
             {showAddPintCol && (
@@ -100,12 +110,13 @@ export default observer(function Table(props: Props) {
               {item.noCheck ?
                 <React.Fragment>
                   <td style={{ textAlign: 'center' }} className="headerItem">不参加考核原因</td>
-                  <td style={{ textAlign: 'center' }} colSpan={4}>{item.noCheckReason || ''}</td>
+                  <td style={{ textAlign: 'center' }} colSpan={5}>{item.noCheckReason || ''}</td>
                 </React.Fragment> :
                 <React.Fragment>
                   <td style={{ textAlign: 'center' }}>{formatNum(item.nursingDeduct)}</td>
                   <td style={{ textAlign: 'center' }}>{formatNum(item.workloadDeduct)}</td>
                   <td style={{ textAlign: 'center' }}>{formatNum(item.satisfactionDeduct)}</td>
+                  <td style={{ textAlign: 'center' }}>{formatNum(item.classHoursDeduct)}</td>
                   <td>{sum(item)}</td>
                   <td style={{ textAlign: 'center' }}>{item.starClass}</td>
                 </React.Fragment>}

@@ -35,7 +35,7 @@ export default function BaseLayout(props: Props) {
   )
 }
 const Wrapper = styled.div`
-  height: 100%;
+  height: calc( 100vh - 136px);
   /* background: #f8f8f8; */
   overflow: auto;
   /* padding: 20px 30px; */

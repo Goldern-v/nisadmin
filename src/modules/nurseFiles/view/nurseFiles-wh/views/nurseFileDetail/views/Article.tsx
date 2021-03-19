@@ -18,7 +18,9 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
 import Do from '../components/Do'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function Awards() {
   const editArticleModal = createModal(EditArticleModal)
   const [tableData, setTableData] = useState([])
@@ -93,6 +95,13 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
+      title: '作者',
+      dataIndex: 'articleAuthor',
+      key: 'articleAuthor',
+      width: 80,
+      align: 'center',
+    },
+    {
       title: '论文收录网站',
       dataIndex: 'influencingFactors',
       key: 'influencingFactors',
@@ -130,12 +139,13 @@ export default observer(function Awards() {
   ]
 
   useEffect(() => {
+    console.log('good work')
     getTableData()
   }, [])
 
   return (
     <BaseLayout title='文章' btnList={isSelf() ? btnList : []}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={260} surplusWidth={250} type={['spaceRow']} />
       <editArticleModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

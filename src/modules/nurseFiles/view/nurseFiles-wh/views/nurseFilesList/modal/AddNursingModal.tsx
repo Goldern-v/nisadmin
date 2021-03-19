@@ -45,13 +45,15 @@ function AddNursingModal(props: Props) {
     handleCancel,
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
-  const handleSubmit = (e: any) => {
-    validateFields((err, value) => {
-      if (err) {
-        return
-      }
-    })
-  }
+
+  // const handleSubmit = (e: any) => {
+  //   validateFields((err, value) => {
+  //     if (err) {
+  //       return
+  //     }
+  //   })
+  // }
+
   const onSave = (e: any) => {
     validateFields((err, value) => {
       if (err) {
@@ -59,7 +61,8 @@ function AddNursingModal(props: Props) {
       }
       if (value.birthday) value.birthday = value.birthday.format('YYYY-MM-DD')
       if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
-      nurseFilesService.saveOrUpdate(value).then((res) => {
+
+      nurseFilesService.addNewNurse(value).then((res) => {
         message.success('操作成功')
         nurseFilesListViewModel.loadNursingList()
         handleOk()

@@ -159,6 +159,14 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
+              <Form.Field label={`作者`} name='articleAuthor'>
+                <Select>
+                  <Option value={'第一作者'}>第一作者</Option>
+                  <Option value={'通讯作者'}>通讯作者</Option>
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
               <Form.Field label={`论文收录网站`} name='influencingFactors'>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('论文收录网站').map((item) => item.name)} />
               </Form.Field>

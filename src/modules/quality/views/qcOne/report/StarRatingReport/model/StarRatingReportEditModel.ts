@@ -129,11 +129,15 @@ class StarRatingReportEditModel {
         let satisfactionDeduct = -Number(item.satisfactionDeduct)
         if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
 
+        let classHoursDeduct = -Number(item.classHoursDeduct)
+        if (isNaN(classHoursDeduct)) classHoursDeduct = 0
+
         return {
           ...item,
           nursingDeduct,
           workloadDeduct,
-          satisfactionDeduct
+          satisfactionDeduct,
+          classHoursDeduct
         }
       }) || [];
   }

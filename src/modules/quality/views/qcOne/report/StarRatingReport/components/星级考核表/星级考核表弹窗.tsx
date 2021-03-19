@@ -138,6 +138,19 @@ export default observer(function 星级考核表弹窗(props: Props) {
       width: 90
     },
     {
+      title: `学时`,
+      render(text: any, record: any, index: number) {
+        if (record.noCheck)
+          return { children: '', props: { colSpan: 0 } }
+        else
+          return <Input
+            className={`classHoursDeduct${index}`}
+            value={record.classHoursDeduct}
+            onChange={(e: any) => handleNumberInput(e, record, index, 'classHoursDeduct')} />
+      },
+      width: 90
+    },
+    {
       title: `考核总分`,
       width: 90,
       align: 'center',
@@ -416,7 +429,15 @@ export default observer(function 星级考核表弹窗(props: Props) {
     if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
     if (satisfactionDeduct < 0) satisfactionDeduct = -satisfactionDeduct
 
-    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
+    let classHoursDeduct = Number(
+      formatNum(
+        -Number(item.classHoursDeduct)
+      )
+    )
+    if (isNaN(classHoursDeduct)) classHoursDeduct = 0
+    if (classHoursDeduct < 0) classHoursDeduct = -classHoursDeduct
+
+    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct - classHoursDeduct)
   }
 
   const starClass = (record: any) => {

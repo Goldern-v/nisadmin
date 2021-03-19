@@ -57,9 +57,12 @@ export default observer(function BaseModal(props: Props) {
       })
     } else if (sectionData.sectionId == '星级考核') {
       let reqList = data.list.map((item: any) => {
+
         let nursingDeduct = Number(formatNum(item.nursingDeduct))
         let workloadDeduct = Number(formatNum(item.workloadDeduct))
         let satisfactionDeduct = Number(formatNum(item.satisfactionDeduct))
+        let classHoursDeduct = Number(formatNum(item.classHoursDeduct))
+
         if (isNaN(nursingDeduct)) nursingDeduct = 0
         if (nursingDeduct < 0) nursingDeduct = -nursingDeduct
 
@@ -68,37 +71,49 @@ export default observer(function BaseModal(props: Props) {
 
         if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
         if (satisfactionDeduct < 0) satisfactionDeduct = -satisfactionDeduct
+
+        if (isNaN(classHoursDeduct)) classHoursDeduct = 0
+        if (classHoursDeduct < 0) classHoursDeduct = -classHoursDeduct
         return {
           ...item,
           nursingDeduct,
           workloadDeduct,
-          satisfactionDeduct
+          satisfactionDeduct,
+          classHoursDeduct
         }
       })
 
-      starRatingReportService.updateStarRattingList(reqList).then((res) => {
-        starRatingReportEditModel.setSectionData(sectionData.sectionId, {
-          list: res.data.itemList.map((item: any) => {
-            let nursingDeduct = -Number(item.nursingDeduct)
-            if (isNaN(nursingDeduct)) nursingDeduct = 0
+      starRatingReportService
+        .updateStarRattingList(reqList)
+        .then((res) => {
+          starRatingReportEditModel
+            .setSectionData(sectionData.sectionId, {
+              list: res.data.itemList.map((item: any) => {
+                let nursingDeduct = -Number(item.nursingDeduct)
+                if (isNaN(nursingDeduct)) nursingDeduct = 0
 
-            let workloadDeduct = -Number(item.workloadDeduct)
-            if (isNaN(workloadDeduct)) workloadDeduct = 0
+                let workloadDeduct = -Number(item.workloadDeduct)
+                if (isNaN(workloadDeduct)) workloadDeduct = 0
 
-            let satisfactionDeduct = -Number(item.satisfactionDeduct)
-            if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+                let satisfactionDeduct = -Number(item.satisfactionDeduct)
+                if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
 
-            return {
-              ...item,
-              nursingDeduct,
-              workloadDeduct,
-              satisfactionDeduct
-            }
-          }) || []
+
+                let classHoursDeduct = -Number(item.classHoursDeduct)
+                if (isNaN(classHoursDeduct)) classHoursDeduct = 0
+
+                return {
+                  ...item,
+                  nursingDeduct,
+                  workloadDeduct,
+                  satisfactionDeduct,
+                  classHoursDeduct
+                }
+              }) || []
+            })
+          message.success('保存成功')
+          onCancel()
         })
-        message.success('保存成功')
-        onCancel()
-      })
     }
 
     // starRatingReportEditModel.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')

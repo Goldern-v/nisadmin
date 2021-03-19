@@ -8,53 +8,37 @@ import { Pagination, Spin, message } from 'antd'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
+import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { Modal } from 'antd/es'
 import { fileDownload } from 'src/utils/file/file'
 
 export interface Props extends RouteComponentProps { }
-/** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+
   useEffect(() => {
-    let level =
-      appStore.history.location.pathname.indexOf('qcThree') >= 0
-        ? 3
-        : appStore.history.location.pathname.indexOf('qcTwo') >= 0
-          ? 2
-          : (appStore.history.location.pathname.indexOf('qcOne')) >= 0
-            ? 1
-            : 3
+    /** 根据路由路径判断质控等级 */
+    let level = ((pathname: string) => {
+      if (pathname.indexOf('qcThree') >= 0)
+        return 3
+
+      if (pathname.indexOf('qcTwo') >= 0)
+        return 2
+
+      if (pathname.indexOf('qcOne') >= 0)
+        return 1
+
+      return 3
+    })(appStore.history.location.pathname)
 
     setLoading(true)
     qualityControlRecordVM
       .init(level).then((res) => {
         getTableData()
       }, err => setLoading(false))
-
-    // ;(async () => {
-    //   if (
-    //     appStore.queryObj.noRefresh &&
-    //     qualityControlRecordVM.allData &&
-    //     qualityControlRecordVM.allData.list &&
-    //     qualityControlRecordVM.allData.list.length > 0
-    //   ) {
-    //     getTableData()
-    //   } else {
-    //     let level =
-    //       appStore.history.location.pathname.indexOf('qcThree') >= 0
-    //         ? 3
-    //         : appStore.history.location.pathname.indexOf('qcTwo') >= 0
-    //         ? 2
-    //         : 3
-    //     await qualityControlRecordVM.init(level)
-    //     getTableData()
-    //   }
-    //   // appStore.history.replace(appStore.history.location.pathname)
-    // })()
   }, [])
 
   useKeepAliveEffect(() => {
@@ -67,6 +51,7 @@ export default observer(function QualityControlRecord() {
   const getTableData = (obj?: any) => {
     setSelectedRowKeys([])
     setLoading(true)
+
     let sendData = {
       pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
       pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
@@ -78,17 +63,11 @@ export default observer(function QualityControlRecord() {
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
       endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
     }
+
     qualityControlRecordApi
       .instanceGetPageByCondition(sendData)
       .then((res: any) => {
         qualityControlRecordVM.allData = res.data
-        // if (res.data.list.length < 20) {
-        //   let len = 20 - res.data.list.length
-        //   for (let i = 0; i < len; i++) {
-        //     res.data.list.push([])
-        //   }
-        // }
-        // setTableData(res.data.list)
         setLoading(false)
       })
       .catch((err: any) => {
@@ -126,18 +105,8 @@ export default observer(function QualityControlRecord() {
     <Wrapper>
       <HeaderCon>
         <QualityControlRecordHeader refreshData={getTableData} refExport={exportSelected} />
-        {/* <button onClick={getTableData}>fffff</button> */}
       </HeaderCon>
       <MidCon>
-        {/* <SpinCon>
-          {loading ? (
-            <div className='LoadingCon'>
-              <Spin size='large' spinning={loading} className='SpinLoadingClass' />
-            </div>
-          ) : (
-            ''
-          )}
-        </SpinCon> */}
         <QualityControlRecordTable
           tableData={qualityControlRecordVM.allData.list || []}
           allData={qualityControlRecordVM.allData}
@@ -148,12 +117,10 @@ export default observer(function QualityControlRecord() {
           getTableData={getTableData}
         />
       </MidCon>
-      {/* <PaginationContent>
-        <PaginationCon rowNum={rowNum} />
-      </PaginationContent> */}
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -176,27 +143,4 @@ const MidCon = styled.div`
   position: relative;
   /* padding: 20px; */
   /* padding-top: 10px; */
-`
-// const PaginationContent = styled.div`
-//   /* margin-top: 30px; */
-//   /* height: 280px; */
-//   padding: 15px 30px;
-//
-const SpinCon = styled.div`
-  .LoadingCon {
-    z-index: 99;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.1);
-    .SpinLoadingClass {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
 `

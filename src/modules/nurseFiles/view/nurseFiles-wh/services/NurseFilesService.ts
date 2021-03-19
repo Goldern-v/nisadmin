@@ -58,6 +58,12 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+
+  /** 护士档案列表 新增护士 */
+  public async addNewNurse(obj: any) {
+    return this.post(`/nurseWHInformation/saveOrUpdatePC`, obj)
+  }
+
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
     return this.post(`/nurseWHInformation/saveOrUpdate`, obj)

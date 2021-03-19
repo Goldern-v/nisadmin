@@ -29,7 +29,8 @@ let dictList = {
   鞋码大小: 'shoe_size',
   授予学分: 'credit_granted',
   专业技术工作: 'professional_work',
-  专利排名: 'patent_level'
+  专利排名: 'patent_level',
+  // 作者: 'article_author',
 }
 
 type DictList = typeof dictList
