@@ -25,6 +25,7 @@ import DepartmentByShiftView from 'src/modules/statistic/views/departmentByShift
 //南医三 请假管理
 import 请假审核 from "./views/请假审核/请假审核"
 import 请假统计 from "./views/请假统计/请假统计"
+import HDMealSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/HDMealSetting/MealSettingView";
 
 
 export interface Props { }
@@ -84,8 +85,15 @@ export default function PersonnelManagementView() {
           title: "排班套餐设置",
           path: "/personnelManagement/MealSettingViewNew",
           component: MealSettingViewNew,
-          hide: !authStore.isRoleManage
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID == "gzhd"
         },
+        {
+          title: "排班套餐设置",
+          path: "/personnelManagement/HDMealSettingViewNew",
+          component: HDMealSettingViewNew,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "gzhd"
+        },
+
         {
           title: "结余设置",
           path: "/personnelManagement/balanceInit",

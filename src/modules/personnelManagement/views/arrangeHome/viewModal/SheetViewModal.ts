@@ -26,6 +26,7 @@ class SheetViewModal {
   @observable public remark: string = "";
   @observable public arrangeMenu: any[] = [];
   @observable public arrangeMeal = [];
+  @observable public hdArrangeMeal = [];
   @observable public schSymbolList: SymbolItem[] = [];
   /** 选中的格子 */
   @observable public selectedCell: ArrangeItem = {};
@@ -292,6 +293,11 @@ class SheetViewModal {
       this.arrangeMeal = res.data;
     });
   }
+  getHDArrangeMeal() {
+    arrangeService.getHDArrangeMeal().then(res => {
+      this.hdArrangeMeal = res.data;
+    });
+  }
   getSchSymbol() {
     arrangeService.getSchSymbol().then(res => {
       this.schSymbolList = res.data;
@@ -497,6 +503,7 @@ class SheetViewModal {
       this.getArrangeMenu();
       this.getArrangeMeal();
       this.getSchSymbol();
+      this.getHDArrangeMeal();
     });
   }
 }

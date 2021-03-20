@@ -61,6 +61,15 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`schMealSetting/getByDeptCode`, this.stringify(obj));
   }
+  /** 获取广州花都排班班次套餐 */
+  public getHDArrangeMeal(obj?: any) {
+    obj = {
+      deptCode: selectViewModal.params.deptCode,
+      status: 1
+    };
+    return this.post(`schMealSettingHd/listByDeptCodeAndStatus`, obj);
+  }
+
   /** 获取符号列表 */
   public getSchSymbol(obj?: any) {
     obj = {

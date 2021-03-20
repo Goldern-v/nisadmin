@@ -4,11 +4,13 @@ import { Button } from 'antd'
 import ArrangeSheet from '../../components/arrangeSheet/ArrangeSheet'
 import TopPart from './components/TopPart'
 import FlightMenu from './components/FlightMenu'
+import HDFlightMenu from './components/HDFlightMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { DatePicker, Modal } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { appStore } from "src/stores";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function EditArrangePage() {
   useEffect(() => {
@@ -22,7 +24,12 @@ export default observer(function EditArrangePage() {
           <ArrangeSheet isEdit={true} surplusHeight={172} />
         </div>
         <div className='right-part'>
-          <FlightMenu />
+          {appStore.hisMatch({
+            map: {
+              gzhd: <HDFlightMenu />,
+              other: <FlightMenu />
+            }
+          })}
         </div>
       </div>
     </Wrapper>
