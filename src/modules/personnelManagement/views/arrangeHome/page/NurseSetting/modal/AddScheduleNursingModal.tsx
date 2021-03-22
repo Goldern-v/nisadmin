@@ -15,6 +15,7 @@ import {
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
+import { observer } from "mobx-react-lite";
 
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
@@ -35,9 +36,12 @@ import {
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import { Spin } from "src/vendors/antd";
 import { DictItem } from "src/services/api/CommonApiService";
+import { sheetViewModal } from "../../../viewModal/SheetViewModal";
+
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   getTableData?: () => void;
+  init?: boolean
 }
 const uploadCard = () => Promise.resolve("123");
 const rules: Rules = {
@@ -49,8 +53,8 @@ if (appStore.HOSPITAL_ID == "wh") {
 }
 
 const TYPE_LIST = ["实习", "进修"];
-export default function AddScheduleNursingModal(props: Props) {
-  let { visible, onCancel, onOk, getTableData } = props;
+export default observer(function AddScheduleNursingModal(props: Props) {
+  let { visible, onCancel, onOk, getTableData, init } = props;
   const [title, setTitle]: any = useState("");
   const [titleList, setTitleList]: any = useState([]);
   const [postList, setPostList]: any = useState([]);
@@ -60,7 +64,7 @@ export default function AddScheduleNursingModal(props: Props) {
   const [modalLoading, setModalLoading]: any = useState(false);
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => {};
+  const onFieldChange = () => { };
 
   const onSave = async () => {
     if (!refForm.current) return;
@@ -76,6 +80,8 @@ export default function AddScheduleNursingModal(props: Props) {
         : "";
     service.scheduleUserApiService.saveOrUpdate(value).then(res => {
       message.success("保存成功");
+      onCancel && onCancel();
+      init && sheetViewModal.init();
       getTableData && getTableData();
     });
   };
@@ -230,6 +236,11 @@ export default function AddScheduleNursingModal(props: Props) {
               nys: () => (
                 <React.Fragment>
                   <Col span={24}>
+                    <Form.Field label={`工号`} name="empNo" >
+                      <Input />
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
                         {titleList.map((item: any) => (
@@ -313,7 +324,7 @@ export default function AddScheduleNursingModal(props: Props) {
       </Spin>
     </Modal>
   );
-}
+})
 const Aside = styled.div`
   font-size: 12px;
   color: #666;

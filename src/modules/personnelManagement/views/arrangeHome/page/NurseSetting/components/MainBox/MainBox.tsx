@@ -21,7 +21,7 @@ import AppStore from "src/stores/AppStore";
 import { observer } from "mobx-react-lite";
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function MainBox() {
   const [userList, setUserList] = useState(new Array());
@@ -162,7 +162,6 @@ export default observer(function MainBox() {
         }
       ]
     }),
-
     {
       title: "操作",
       key: "操作",
@@ -180,7 +179,7 @@ export default observer(function MainBox() {
                   centered: true,
                   maskClosable: true,
                   onOk: () => {
-                    if (!row.empNo) {
+                    if (appStore.HOSPITAL_ID == "nys") {
                       service.scheduleUserApiService
                         .delete(row.id)
                         .then(res => {
@@ -188,7 +187,16 @@ export default observer(function MainBox() {
                           getUserList();
                         });
                     } else {
-                      message.warning("只有工号为空的护士才能删除");
+                      if (!row.empNo) {
+                        service.scheduleUserApiService
+                          .delete(row.id)
+                          .then(res => {
+                            message.success("删除成功");
+                            getUserList();
+                          });
+                      } else {
+                        message.warning("只有工号为空的护士才能删除");
+                      }
                     }
                   }
                 });

@@ -18,6 +18,7 @@ import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
 import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
 import AsClassModal from "../../../modal/AsClassModal";
+import AddScheduleNursingModal from "../../NurseSetting/modal/AddScheduleNursingModal";
 
 export interface Props { }
 
@@ -26,8 +27,8 @@ export default observer(function TopPart() {
   const [isInit, setIsInit] = useState(true);
   let expectSettingModal = createModal(ExpectSettingModal);
   let asClassModal = createModal(AsClassModal);
-
   let arrangAnalysisModal = createModal(ArrangAnalysisModal);
+  const addScheduleNursingModal = createModal(AddScheduleNursingModal);
 
   //重置排班
   const handleReset = () => {
@@ -109,6 +110,7 @@ export default observer(function TopPart() {
       }
     });
   };
+
 
   let handleStatusChange = () => {
     setDate([
@@ -309,7 +311,7 @@ export default observer(function TopPart() {
         )}
 
         <div className="item">
-          <Button onClick={handleCopy}>复制排班</Button>
+          <Button onClick={handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
         {appStore.HOSPITAL_ID == "hj" && (
           <div className="item">
@@ -351,6 +353,20 @@ export default observer(function TopPart() {
             </Button>
           </div>
         )}
+        {appStore.HOSPITAL_ID == "nys" && (
+          <div className="item">
+            <Button
+              className="statistics"
+              onClick={() => {
+                addScheduleNursingModal.show({
+                  init: true
+                });
+              }}
+            >
+              添加人员排班
+            </Button>
+          </div>
+        )}
 
         <div className="item">
           <Button
@@ -368,6 +384,7 @@ export default observer(function TopPart() {
       <expectSettingModal.Component />
       <asClassModal.Component />
       <arrangAnalysisModal.Component />
+      <addScheduleNursingModal.Component />
     </Wrapper>
   );
 });

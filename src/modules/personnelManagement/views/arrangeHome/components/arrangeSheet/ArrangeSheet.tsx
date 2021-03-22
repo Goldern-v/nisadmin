@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Button } from "antd";
-import BaseTable from "src/components/BaseTable";
-import { ColumnProps, Input } from "src/vendors/antd";
+import BaseTable, { DoCon } from "src/components/BaseTable";
+import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
 import { createContextMenu } from "./ContextMenu";
 import Cell from "./Cell";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
@@ -23,7 +23,7 @@ import AddUpHourCell from "./AddUpHourCell";
 import BalanceHour from "./BalanceHour";
 import PublicHour from "./PublicHour";
 import HolidayHour from "./HolidayHour";
-import $ from "jquery";
+import service from "src/services/api";
 import { cloneJson } from "src/utils/json/clone";
 export interface Props {
   /** 编辑模式 */
@@ -59,6 +59,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   let columns: any = [
+
     {
       title: "序号",
       render: (text: string, row: any, index: number) => index + 1,
@@ -203,8 +204,41 @@ export default observer(function ArrangeSheet(props: Props) {
             />
           );
         }
+      },
+      isEdit && {
+        title: "操作",
+        dataIndex: "",
+        width: 70,
+        align: "center",
+        render(text: any, record: any, index: number) {
+          return (
+            <DoCon>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </DoCon>
+          );
+        }
       }
     );
+  }
+
+  /**南医三删除排班人员 */
+  const handleDelete = (record: any) => {
+    Modal.confirm({
+      title: "删除确认",
+      content: "确定要删除此排班人员吗？",
+      okText: "确认",
+      cancelText: "取消",
+      centered: true,
+      maskClosable: true,
+      onOk: () => {
+        service.scheduleUserApiService
+          .delete(record.id)
+          .then(res => {
+            message.success("删除成功");
+            sheetViewModal.init();
+          });
+      }
+    });
   }
 
   /** 武汉特殊字段*/
@@ -301,7 +335,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => 5, hj: () => 3, wh: () => 6 })) *
+              appStore.hisAdapter({ nys: () => 6, hj: () => 3, wh: () => 6 })) *
             70 +
             250 +
             10 +
