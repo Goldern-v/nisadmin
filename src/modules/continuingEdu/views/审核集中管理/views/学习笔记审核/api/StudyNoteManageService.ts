@@ -1,3 +1,4 @@
+import qs from 'qs'
 import BaseApiService from 'src/services/api/BaseApiService'
 
 const extraPath = (noteType: string, options = {
@@ -44,9 +45,9 @@ export default class StudyNoteManageService extends BaseApiService {
 
   /**363.厚街-学习笔记-获取单个学习笔记的详细信息（用于已审核列表中查看详细信息） */
   public getAuditedStudyNoteDetailInfo(noteId: any, noteType: string) {
-    let params = { noteId }
+    let params = { workReviewId: noteId } as any
     if (noteType == '学习笔记') params = { noteId }
-    return this.post(`/studyAndTrain/${extraPath(noteType)}Manage/getAudited${extraPath(noteType, { uppercase: true })}DetailInfo`, { noteId })
+    return this.post(`/studyAndTrain/${extraPath(noteType)}Manage/getAudited${extraPath(noteType, { uppercase: true })}DetailInfo`, params)
   }
 
   /**360.厚街-学习笔记-批量审核学习笔记 */
@@ -65,6 +66,22 @@ export default class StudyNoteManageService extends BaseApiService {
     auditRemark?: string
   }, noteType: string) {
     return this.post(`/studyAndTrain/${extraPath(noteType)}Manage/audit${extraPath(noteType, { uppercase: true })}`, params)
+  }
+
+  /** 364.厚街-学习笔记-获取学习笔记的流程任务历史(审核历史) */
+  public getFlowTaskHisById(id: string | number, noteType: string) {
+    let name = 'workReviewId'
+    let lastPath = 'WorkReviewId'
+
+    if (noteType == '学习笔记') {
+      name = 'noteId'
+      lastPath = 'NoteId'
+    }
+
+    let params = {} as any
+    params[name] = id
+
+    return this.post(`/studyAndTrain/${extraPath(noteType)}Manage/getFlowTaskHisBy${lastPath}`, qs.stringify(params))
   }
 }
 

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Carousel, Input, message, Modal, Radio, Tag } from 'antd'
+import { Button, Carousel, Icon, Input, message, Modal, Radio, Tag } from 'antd'
 import { Place } from 'src/components/common'
 import { authStore } from 'src/stores'
 import moment from 'src/vendors/moment'
 import { studyNoteManageService } from './../api/StudyNoteManageService'
+import { Divider } from 'src/vendors/antd'
 
 const TextArea = Input.TextArea
 export interface Props {
@@ -22,6 +23,7 @@ export default function StudyNoteAuditModal(props: Props) {
   const carouselRef = React.createRef<any>()
 
   const [dataList, setDataList] = useState([] as any[])
+  const [flowTaskHisList, setFlowTaskHisList] = useState([] as any[])
   const [activeIdx, setActiveIdx] = useState(0)
 
   const [loading, setLoading] = useState(false)
@@ -76,6 +78,22 @@ export default function StudyNoteAuditModal(props: Props) {
       }, err => setLoading(false))
   }
 
+  const getFlowTaskHisList = () => {
+    if (!recordList[0]) return
+
+    let id = recordList[0].noteId
+
+    setFlowTaskHisList([])
+
+    studyNoteManageService.
+      getFlowTaskHisById(id, noteType)
+      .then(res => {
+        if (res.data.flowTaskHisList) {
+          setFlowTaskHisList(res.data.flowTaskHisList || [])
+        }
+      })
+  }
+
   const handleAudit = () => {
     setLoading(true)
     Promise.all(dataList.map((item: any) => {
@@ -126,6 +144,7 @@ export default function StudyNoteAuditModal(props: Props) {
         getToAuditInfo()
       } else {
         getAuditedInfo()
+        getFlowTaskHisList()
       }
 
     }
@@ -135,6 +154,7 @@ export default function StudyNoteAuditModal(props: Props) {
     title={`${dataList[activeIdx] && dataList[activeIdx].empName + '的' || ''}${noteType}`}
     visible={visible}
     centered
+    bodyStyle={{ padding: 0 }}
     confirmLoading={loading}
     onCancel={() => onCancel()}
     footer={<FooterCon>
@@ -171,7 +191,7 @@ export default function StudyNoteAuditModal(props: Props) {
               <div>{noteType}：</div>
               <div>
                 <TextArea
-                  value={item.noteContent}
+                  value={item.noteContent || item.workReviewContent || ''}
                   autosize={{ minRows: 5 }}
                   readOnly />
               </div>
@@ -224,22 +244,49 @@ export default function StudyNoteAuditModal(props: Props) {
           readOnly
           value={moment().format('YYYY-MM-DD HH:mm')} />
       </div>}
+      {!toAudit && <React.Fragment>
+        <Divider style={{ margin: '6px 0' }} />
+        <AuditInfoCon>
+          <div className="audit-title">审核过程</div>
+          <div className="audit-list">
+            {flowTaskHisList.map((item: any, idx: number) =>
+              <div className="audit-item" key={idx}>
+                <div className="emp-img">
+                  <img src={item.nearImageUrl} alt="" />
+                  {!!item.flag && (item.handleResult == -1 ? <Icon type="close-circle" theme="filled" className="step-status error" /> : <Icon type="check-circle" theme="filled" className="step-status success" />)}
+                </div>
+                <div className="info">
+                  <div className="step-title">
+                    <span>{item.stepName}</span>
+                  </div>
+                  <div className="emp-name">{item.handlerEmpName}</div>
+                  {item.flag == 1 && <div className="emp-name">{item.handleTime}({item.handleDayOfWeek})</div>}
+                  {item.flag !== 1 && <div className="emp-name">审核中 耗时{item.takeTimeDesc}</div>}
+                  {item.handleRemark && <div className="desc">{item.handleRemark}</div>}
+                </div>
+              </div>)}
+          </div>
+        </AuditInfoCon>
+      </React.Fragment>}
     </Wrapper>
   </Modal>
 }
 
 const Wrapper = styled.div`
+  padding: 16px 0;
   .ant-carousel .slick-slide {
     text-align: left;
     overflow: hidden;
   }
   .data-item{
     &>div{
+      padding: 0 24px;
       margin-bottom: 10px;
     }
   }
 
   .auditer-info{
+    padding: 0 24px;
     line-height:30px;
     font-size: 14px;
     margin-top: 10px;
@@ -248,4 +295,83 @@ const Wrapper = styled.div`
 
 const FooterCon = styled.div`
   display: flex;
+`
+
+const AuditInfoCon = styled.div`
+  background: #fff;
+  border-left: 1px solid #ddd;
+  padding: 10px 15px;
+  height: 100%;
+  .audit-title{
+    font-size: 14px;
+    margin: 10px 0;
+    ::before{
+      content:'';
+      display: inline-block;
+      height: 18px;
+      width: 5px;
+      background: rgba(112, 182, 3, 1);
+      vertical-align: sub;
+      margin-right: 10px;
+    }
+  }
+  .audit-item{
+    color: #666;
+    padding-top: 10px;
+    position: relative;
+    &::before{
+      position: absolute;
+      content: '';
+      width:1px;
+      height: 100%;
+      background: #ddd;
+      top: 0;
+      left: 20px;
+    }
+    &:first-of-type{
+      padding-top:0;
+    }
+    &:last-of-type{
+      &::before{
+        height:40px;
+      }
+    }
+    .emp-img{
+      width: 40px;
+      position: relative;
+      float: left;
+      img{
+        height: 40px;
+        width: 40px;
+        background: #ddd;
+        border-radius: 50%;
+        object-fit: cover;
+        display:inline-block;
+        background: url('${require('src/assets/护士默认头像.png')}');
+        background-size: 100%;
+      }
+      .step-status{
+        position:absolute;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        border-radius: 50%;
+        &.error{
+          color: red;
+        }
+        &.success{
+          color: rgb(2, 159, 123);
+        }
+      }
+    }
+    .info{
+      font-size: 13px;
+      padding-left: 45px;
+      .desc{
+        padding: 5px;
+        border-radius: 3px;
+        background: #eee;
+      }
+    }
+  }
 `
