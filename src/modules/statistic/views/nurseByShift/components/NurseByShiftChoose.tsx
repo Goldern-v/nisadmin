@@ -12,12 +12,11 @@ export interface Props extends RouteComponentProps { }
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState([])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
-  const [checkboxItem, setCheckboxItem] = useState([])
-  const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
-  const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
-
-  //
   const [startClassList, setStartClassList]: any = useState([])
+  const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
+
+  const [checkboxItem, setCheckboxItem] = useState([])
+  // const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
   const [classList, setClassList]: any = useState([])
 
   useEffect(() => {
@@ -25,6 +24,8 @@ export default function BedSituation(props: any) {
       let listData = res.data
       let getShiftType = listData.map((item: any) => item.name)
       setCheckboxItemStandard(getShiftType)
+      checkboxItemState = [...getShiftType]
+      setCheckboxItem(getShiftType)
     })
     StatisticsApi.dictInfo().then((res) => {
       let listData = res.data
@@ -58,19 +59,6 @@ export default function BedSituation(props: any) {
       setClassList(cacheClassList)
     }
   }
-  function radioClickLeft() {
-    setRightChooseCheckboxShow([true, false])
-    setClassList(startClassList)
-    classState = [...startClassList]
-    setCheckboxItem([])
-    checkboxItemState = []
-  }
-  function radioClickRight() {
-    setRightChooseCheckboxShow([false, true])
-    setClassList([])
-    setCheckboxItem([])
-    checkboxItemState = []
-  }
   // checkbox变动
   function checkboxChange(e: any) {
     let target = e.target
@@ -81,7 +69,7 @@ export default function BedSituation(props: any) {
           checkboxItemState[i] = targetValue
         }
         let cacheSetCacheCheckboxItem = checkboxItemState.filter((n: any) => n)
-        setCacheCheckboxItem(cacheSetCacheCheckboxItem)
+        // setCacheCheckboxItem(cacheSetCacheCheckboxItem)
         setCheckboxItem(cacheSetCacheCheckboxItem)
       }
     }
@@ -92,9 +80,23 @@ export default function BedSituation(props: any) {
         }
       }
       let cacheSetcacheCheckboxItem = checkboxItemState.filter((n: any) => n)
-      setCacheCheckboxItem(cacheSetcacheCheckboxItem)
+      // setCacheCheckboxItem(cacheSetcacheCheckboxItem)
       setCheckboxItem(cacheSetcacheCheckboxItem)
     }
+  }
+
+  function radioClickLeft() {
+    setRightChooseCheckboxShow([true, false])
+    setClassList(startClassList)
+    classState = [...startClassList]
+    setCheckboxItem([])
+    checkboxItemState = []
+  }
+  function radioClickRight() {
+    setRightChooseCheckboxShow([false, true])
+    setCheckboxItem(checkboxItemStandard)
+    checkboxItemState = [...checkboxItemStandard]
+    setClassList([])
   }
   // 组件
   const RightChooseByShiftCheckbox = (
@@ -107,45 +109,13 @@ export default function BedSituation(props: any) {
         </div>
       ))}
     </div>
-    // <div className='RightChooseByShiftCheckbox'>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='A班'>
-    //       A班
-    //     </Checkbox>
-    //   </div>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='P班'>
-    //       P班
-    //     </Checkbox>
-    //   </div>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='N班'>
-    //       N班
-    //     </Checkbox>
-    //   </div>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='休假'>
-    //       休假
-    //     </Checkbox>
-    //   </div>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='进修学习'>
-    //       进修学习
-    //     </Checkbox>
-    //   </div>
-    //   <div className='RightChooseByShiftCheckboxItem'>
-    //     <Checkbox defaultChecked onChange={onChange} value='其它'>
-    //       其它
-    //     </Checkbox>
-    //   </div>
-    // </div>
   )
   // 接口组件
   const RightChooseByCustomCheckbox = (
     <div className='RightChooseByShiftCheckbox'>
       {checkboxItemStandard.map((item: any, index: any) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
-          <Checkbox onChange={checkboxChange} value={item}>
+          <Checkbox onChange={checkboxChange} defaultChecked value={item}>
             {item}
           </Checkbox>
         </div>

@@ -9,7 +9,7 @@ import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableFirst from './components/TableFirst'
 import { Button } from 'antd'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 export default function StatisticView() {
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function StatisticView() {
   //   setShiftClass(shiftClass)
   // }
   const testClick = () => {
-    StatisticsApi.dictInfo().then((res) => {})
+    StatisticsApi.dictInfo().then((res) => { })
   }
   return (
     <Con>
