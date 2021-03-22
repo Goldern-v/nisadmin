@@ -170,17 +170,17 @@ function MealCon(props: { dataSource: any[] }) {
   /** 套餐同步 */
   const onClick = (item: any) => {
     if (sheetViewModal.selectedCell) {
-      let classesList: any = item ?.schMealDetailHds || []; // 班次内容
+      let classesList: any = item?.schMealDetailHds || []; // 班次内容
       let list = sheetViewModal.getSelectCellList(true); // 点击当行整行所有数据
       const index = list.findIndex(
         (p: any) => p.workDate === sheetViewModal.selectedCell.workDate
       );// 选择填入班次信息日期的起始下标
-      /** 不循环班次 */
+      /** 不循环班次套餐 */
       if (!loopSwitch) {
         for (let i = 0; i < item.schMealDetailHds.length; i++) {
           saveData(list, index + i, classesList, i)
         }
-        /** 循环班次 */
+        /** 循环班次套餐 */
       } else {
         let loopNum = list.length - index; // 遍历次数
         for (let i = 0; i < loopNum; i++) {
@@ -191,15 +191,15 @@ function MealCon(props: { dataSource: any[] }) {
     }
   };
 
-   /** 班次谈参数据自动填入 */ 
+  /** 班次谈参数据自动填入 */
   const saveData = (list: any, listIndex: number, data: any, dataIndex: number) => {
-    list[listIndex].rangeName = data[dataIndex] ?.name;
-    list[listIndex].settingNightHour = data[dataIndex] ?.NightHour;
-    list[listIndex].settingMorningHour = data[dataIndex] ?.MorningHour;
-    list[listIndex].nameColor = data[dataIndex] ?.nameColor;
-    list[listIndex].effectiveTime = data[dataIndex] ?.effectiveTime;
-    list[listIndex].effectiveTimeOld = data[dataIndex] ?.effectiveTime;
-    list[listIndex].shiftType = data[dataIndex] ?.shiftType;
+    list[listIndex].rangeName = data[dataIndex]?.name;
+    list[listIndex].settingNightHour = data[dataIndex]?.NightHour;
+    list[listIndex].settingMorningHour = data[dataIndex]?.MorningHour;
+    list[listIndex].nameColor = data[dataIndex]?.nameColor;
+    list[listIndex].effectiveTime = data[dataIndex]?.effectiveTime;
+    list[listIndex].effectiveTimeOld = data[dataIndex]?.effectiveTime;
+    list[listIndex].shiftType = data[dataIndex]?.shiftType;
     list[listIndex].statusType = "";
     list[listIndex].schAddOrSubs = [];
   }

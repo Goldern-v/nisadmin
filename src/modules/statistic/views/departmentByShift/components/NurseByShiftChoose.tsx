@@ -42,6 +42,8 @@ export default function BedSituation(props: any) {
       let listData = res.data
       let getShiftType = listData.map((item: any) => item.name)
       setCheckboxItemStandard(getShiftType)
+      checkboxItemState = [...getShiftType]
+      setCheckboxItem(getShiftType)
     })
     StatisticsApi.dictInfo().then((res) => {
       let listData = res.data
@@ -84,9 +86,9 @@ export default function BedSituation(props: any) {
   }
   function radioClickRight() {
     setRightChooseCheckboxShow([false, true])
+    setCheckboxItem(checkboxItemStandard)
+    checkboxItemState = [...checkboxItemStandard]
     setClassList([])
-    setCheckboxItem([])
-    checkboxItemState = []
   }
   // checkbox变动
   function checkboxChange(e: any) {
@@ -130,7 +132,7 @@ export default function BedSituation(props: any) {
     <div className='RightChooseByShiftCheckbox'>
       {checkboxItemStandard.map((item: any, index: any) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
-          <Checkbox onChange={checkboxChange} value={item}>
+          <Checkbox onChange={checkboxChange} defaultChecked value={item}>
             {item}
           </Checkbox>
         </div>
