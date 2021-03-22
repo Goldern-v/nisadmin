@@ -13,9 +13,9 @@ import PerformChart from './components/PerformChart'
 import NurseSituation from './components/NurseSituation/NurseSituation'
 import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 import emitter from 'src/libs/ev'
-import { appStore, authStore } from '../../stores/index'
+import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import FullPageLoading from 'src/components/loading/FullPageLoading'
+// import FullPageLoading from 'src/components/loading/FullPageLoading'
 // export interface Props extends RouteComponentProps {}
 
 // const Option = Select.Option
@@ -80,7 +80,7 @@ export default observer(function HomeView() {
   /** 默认显示全部面板 */
   const visibleListDefault = Object.keys(pannelAll)
 
-  const visibleListJmfy = visibleListDefault.filter((key) => ['performChart'].indexOf(key) < 0)
+  const visibleListJmfy = visibleListDefault.filter((key) => ['performChart', 'myAudit', 'notices'].indexOf(key) < 0)
 
   const visibleCon = (visibleList: string[]) => {
     return <HomeDetail>
