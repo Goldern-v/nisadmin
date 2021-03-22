@@ -13,7 +13,7 @@ import PerformChart from './components/PerformChart'
 import NurseSituation from './components/NurseSituation/NurseSituation'
 import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 import emitter from 'src/libs/ev'
-import { authStore } from '../../stores/index'
+import { appStore, authStore } from '../../stores/index'
 import { observer } from 'mobx-react-lite'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
 // export interface Props extends RouteComponentProps {}
@@ -24,48 +24,85 @@ import FullPageLoading from 'src/components/loading/FullPageLoading'
 //   console.log(`selected ${value}`)
 // }
 
+interface PannelItem {
+  name: string,
+  component: JSX.Element
+}
+
 export default observer(function HomeView() {
   const [page, setPage] = useState(['本页'])
-  useEffect(() => {})
+  useEffect(() => { })
   emitter.removeAllListeners('首页查询')
   emitter.addListener('首页查询', () => {
     setPage(['查询'])
   })
+
+  /** 首页面板集合 */
+  const pannelAll = {
+    bedSituation: {
+      name: '床位情况',
+      component: <BedSituation />
+    },
+    missionToday: {
+      name: '今日任务',
+      component: <MissionToday />
+    },
+    myAudit: {
+      name: '待我审核',
+      component: <MyAudit />
+    },
+    wardSituation: {
+      name: '病区流转情况',
+      component: <WardSituation />
+    },
+    patientSituation: {
+      name: '患者情况',
+      component: <PatientSituation />
+    },
+    notices: {
+      name: '通知公告',
+      component: <Notices />
+    },
+    performChart: {
+      name: '执行单情况',
+      component: <PerformChart />
+    },
+    nurseSituation: {
+      name: '护理人员情况',
+      component: <NurseSituation />
+    },
+    patientDistribute: {
+      name: '患者分布',
+      component: <PatientDistribute />
+    },
+  } as { [key: string]: PannelItem }
+
+  /** 默认显示全部面板 */
+  const visibleListDefault = Object.keys(pannelAll)
+
+  const visibleListJmfy = visibleListDefault.filter((key) => ['performChart'].indexOf(key) < 0)
+
+  const visibleCon = (visibleList: string[]) => {
+    return <HomeDetail>
+      {visibleList.map((key: string) => (
+        <HomeDetailItem key={key}>
+          {pannelAll[key].component || null}
+        </HomeDetailItem>
+      ))}
+    </HomeDetail>
+  }
 
   return (
     <Wrapper>
       <SelectCon>
         <SelectCommon />
       </SelectCon>
-      <HomeDetail>
-        <HomeDetailItem>
-          <BedSituation />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <MissionToday />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <MyAudit />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <WardSituation />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <PatientSituation />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <Notices />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <PerformChart />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <NurseSituation />
-        </HomeDetailItem>
-        <HomeDetailItem>
-          <PatientDistribute />
-        </HomeDetailItem>
-      </HomeDetail>
+      {visibleCon(appStore.hisMatch({
+        map: {
+          jmfy: visibleListJmfy,
+          other: visibleListDefault
+        }
+      }))}
     </Wrapper>
   )
 })

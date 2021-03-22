@@ -159,8 +159,12 @@ export default class AppStore {
   /**适配医院和状态 返回对应的内容*/
   public hisMatch(config: {
     map: {
+      /**默认选项 other */
       other?: any,
+      /**默认选项 all */
       all?: any,
+      /**默认选项 dafault */
+      dafault?: any,
       [p: string]: any
     },
     /**当前医院id或状态 默认为系统医院id*/
@@ -179,6 +183,6 @@ export default class AppStore {
       if (Object.keys(map).indexOf(_currentHospitalId) >= 0) return map[_currentHospitalId]
     }
 
-    return map["other"] || map["all"] || null
+    return map["other"] || map["all"] || map["dafault"] || null
   }
 }
