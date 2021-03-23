@@ -503,7 +503,7 @@ class SheetViewModal {
       this.getArrangeMenu();
       this.getArrangeMeal();
       this.getSchSymbol();
-      this.getHDArrangeMeal();
+      appStore.HOSPITAL_ID == 'gzhd' && this.getHDArrangeMeal();
     });
   }
 }
