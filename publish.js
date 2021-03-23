@@ -21,6 +21,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/nanyisanmanage'
   }
 
+  //江门妇幼护理管理测试环境
+  if (process.env.npm_lifecycle_event.indexOf('9872') >= 0) {
+    folderSrc = '/crdata/webProject/manage-fuyou'
+  }
+
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'

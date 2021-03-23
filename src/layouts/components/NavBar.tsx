@@ -137,7 +137,7 @@ export default observer(function NavBar(props: any) {
           className="logo"
         />
         <img
-          src={require("../images/宸瑞护理管理系统.png")}
+          src={require("../images/护理管理系统.png")}
           alt=""
           className="name"
         />
