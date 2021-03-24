@@ -18,7 +18,7 @@ import { arrangStatisticsService } from "./services/ArrangStatisticsService";
 import BaseTable from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
 
-export interface Props {}
+export interface Props { }
 export default observer(function ArrangStatistics() {
   const [date, setDate]: any = useState(getCurrentMonth());
   const [dataSource, setDataSource] = useState([]);
@@ -131,8 +131,8 @@ export default observer(function ArrangStatistics() {
     showType == "班次统计"
       ? columns_1
       : showType == "工时统计"
-      ? columns_2
-      : [];
+        ? columns_2
+        : [];
 
   const onLoad = () => {
     if (showType == "班次统计") {
@@ -147,7 +147,7 @@ export default observer(function ArrangStatistics() {
         })
         .then(res => {
           setPageLoading(false);
-          setDataSource(res.data);
+          setDataSource(res.data || []);
         });
     }
 
@@ -186,7 +186,7 @@ export default observer(function ArrangStatistics() {
           onChange={(value: any) => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className="label">类型:</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>
           {showTypeList.map(item => (

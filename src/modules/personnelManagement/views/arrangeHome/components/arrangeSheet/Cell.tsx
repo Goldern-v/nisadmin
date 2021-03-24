@@ -90,7 +90,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "nys"
+        appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "nys" || appStore.HOSPITAL_ID == "jmfy"
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -465,8 +465,8 @@ export default observer(function Cell(props: Props) {
             alt=""
           />
         ) : (
-            ""
-          )}
+          ""
+        )}
         {formatCell(cellObj)}
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>

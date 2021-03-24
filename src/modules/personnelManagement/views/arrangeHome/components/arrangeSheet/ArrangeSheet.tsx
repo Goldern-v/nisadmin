@@ -41,6 +41,7 @@ export default observer(function ArrangeSheet(props: Props) {
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
       wh: () => EditVacationCountModal_wh,
+      jmfy: () => EditVacationCountModal_wh,
       nys: () => EditVacationCountModal_wh
     })
   );
@@ -242,7 +243,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 武汉特殊字段*/
-  if (appStore.HOSPITAL_ID == "wh") {
+  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "jmfy") {
     columns.push(
       {
         title: (
@@ -335,7 +336,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => 6, hj: () => 3, wh: () => 6 })) *
+              appStore.hisAdapter({ nys: () => 6, hj: () => 3, wh: () => 6, jmfy: () => 6 })) *
             70 +
             250 +
             10 +
