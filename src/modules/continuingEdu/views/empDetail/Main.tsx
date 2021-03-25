@@ -14,9 +14,6 @@ import 实习生详情 from "./实习生详情";
 import 进修生详情 from "./进修生详情";
 import 其他人员详情 from "./其他人员详情";
 import TableView from "./TableView";
-import Writings from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/Writings"
-import SpecialCard from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/SpecialCard"
-import EducationalExperience from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/views/EducationalExperience"
 import { userTypeList } from "../其他人员/data/options";
 
 export interface Props extends RouteComponentProps { }
@@ -28,96 +25,105 @@ export default observer(function Main(props: any) {
   let usetTypeTarget = userTypeList.find((item: any) => item.type == userType)
   if (usetTypeTarget) userTypeName = usetTypeTarget.name
 
-  let Routes_Config = [
-    {
-      name: "基本信息",
-      title: "基本信息",
-      component: (() => {
-        switch (userType) {
-          case '1':
-            return 实习生详情
-          case '2':
-            return 进修生详情
-          case '3':
-          case '4':
-          case '99':
-            return 其他人员详情
-          default:
-            return BaseInfo
-        }
-      })()
-    },
-    {
-      name: "学分记录",
-      title: "学分记录",
-      component: TableView
-    },
-    {
-      name: "学时记录",
-      title: "学时记录",
-      component: TableView
-    },
-    {
-      name: "学习记录",
-      title: "学习记录",
-      component: TableView
-    },
-    {
-      name: "培训记录",
-      title: "培训记录",
-      component: TableView
-    },
-    {
-      name: "考试记录",
-      title: "考试记录",
-      component: TableView
-    },
-    {
-      name: "练习记录",
-      title: "练习记录",
-      component: TableView
-    },
-    {
-      name: "实操记录",
-      title: "实操记录",
-      component: TableView
-    },
-    {
-      name: "演练记录",
-      title: "演练记录",
-      component: TableView
-    },
-    {
-      name: "实践记录",
-      title: "实践记录",
-      component: TableView
-    },
-    {
-      name: "讲课记录",
-      title: "讲课记录",
-      component: TableView
-    },
-  ] as any[]
-
-  if (appStore.HOSPITAL_ID === 'nys') {
-    Routes_Config = Routes_Config.concat([
-      {
-        name: "特殊资格证",
-        title: "特殊资格证",
-        component: SpecialCard
-      },
-      {
-        name: "教育经历",
-        title: "教育经历",
-        component: EducationalExperience
-      },
-      {
-        name: "著作译文论文",
-        title: "著作译文论文",
-        component: Writings
-      },
-    ])
-  }
+  let Routes_Config = appStore.hisMatch({
+    map: {
+      nys: [
+        {
+          name: "基本信息",
+          title: "基本信息",
+          component: (() => {
+            switch (userType) {
+              case '1':
+                return 实习生详情
+              case '2':
+                return 进修生详情
+              case '3':
+              case '4':
+              case '99':
+                return 其他人员详情
+              default:
+                return BaseInfo
+            }
+          })()
+        },
+        {
+          name: "讲课记录",
+          title: "讲课记录",
+          component: TableView
+        },
+      ],
+      other: [
+        {
+          name: "基本信息",
+          title: "基本信息",
+          component: (() => {
+            switch (userType) {
+              case '1':
+                return 实习生详情
+              case '2':
+                return 进修生详情
+              case '3':
+              case '4':
+              case '99':
+                return 其他人员详情
+              default:
+                return BaseInfo
+            }
+          })()
+        },
+        {
+          name: "学分记录",
+          title: "学分记录",
+          component: TableView
+        },
+        {
+          name: "学时记录",
+          title: "学时记录",
+          component: TableView
+        },
+        {
+          name: "学习记录",
+          title: "学习记录",
+          component: TableView
+        },
+        {
+          name: "培训记录",
+          title: "培训记录",
+          component: TableView
+        },
+        {
+          name: "考试记录",
+          title: "考试记录",
+          component: TableView
+        },
+        {
+          name: "练习记录",
+          title: "练习记录",
+          component: TableView
+        },
+        {
+          name: "实操记录",
+          title: "实操记录",
+          component: TableView
+        },
+        {
+          name: "演练记录",
+          title: "演练记录",
+          component: TableView
+        },
+        {
+          name: "实践记录",
+          title: "实践记录",
+          component: TableView
+        },
+        {
+          name: "讲课记录",
+          title: "讲课记录",
+          component: TableView
+        },
+      ]
+    }
+  }) as any[]
 
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
 
@@ -132,7 +138,7 @@ export default observer(function Main(props: any) {
     status: ""
   } as any);
 
-  const pannelName = appStore.match.params.pannelName || "";
+  const pannelName = empDetailModel.pannelName;
 
   useEffect(() => {
     let search: any = appStore.location.search;
@@ -145,7 +151,7 @@ export default observer(function Main(props: any) {
 
   const targetComponent = () => {
     for (let i = 0; i < Routes_Config.length; i++) {
-      if (appStore.match.params.pannelName == Routes_Config[i].name)
+      if (pannelName == Routes_Config[i].name)
         return Routes_Config[i];
     }
     return Routes_Config[0];

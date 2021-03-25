@@ -284,7 +284,7 @@ export default observer(function TraineeShift(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
@@ -305,7 +305,7 @@ export default observer(function TraineeShift(props: Props) {
           Message.error(`${res.dec}`);
         }
       })
-      .catch(e => {});
+      .catch(e => { });
   };
 
   // 取消弹窗
@@ -422,7 +422,7 @@ const Wrapper = styled.div`
   }
 `;
 const PageHeader = styled.div`
-  width: calc(100vw-200px);
+  width: calc(100vw - 200px);
   justify-content: space-between;
   height: 55px;
   font-size: 13px;
@@ -455,6 +455,7 @@ const RightIcon = styled.div`
   float: right;
 `;
 
+// @ts-ignore
 const Content = styled(TabledCon)`
   box-sizing: border-box;
   .ant-table-tbody > .ant-table-row-hover {

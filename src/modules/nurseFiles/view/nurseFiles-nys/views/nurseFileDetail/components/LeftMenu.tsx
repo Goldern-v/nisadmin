@@ -7,10 +7,12 @@ import qs from 'qs'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { ScrollBox } from 'src/components/common'
 interface RouteType {
   type: string
   component: any
   name: string
+  indexList?: string[]
 }
 
 export interface Props {
@@ -48,8 +50,22 @@ export default function LeftMenu(props: Props) {
     <Wrapper>
       {props.routeList.map((item: RouteType) => {
         let isActive: string = type === item.type ? 'active' : ''
-        let itemInfo: any = listInfo.find((info: any) => info.name === item.name)
-        let isBadge: any = itemInfo && itemInfo.statusColor === '1'
+
+        let isBadge = false
+        if (item.indexList) {
+          //如果一个面板里面包含多个模块 只要有一个模块statusColor为1 isBadge为true
+          let targetListInfo = listInfo.filter((info: any) => (item.indexList || []).indexOf(info.name) >= 0)
+
+          if (targetListInfo) {
+            let isBadgeItem = targetListInfo.find((info: any) => info && info.statusColor === '1')
+
+            if (isBadgeItem) isBadge = true
+          }
+        } else {
+          let itemInfo: any = listInfo.find((info: any) => info.name === item.name)
+
+          isBadge = itemInfo && itemInfo.statusColor === '1'
+        }
         return (
           <Li
             className={isActive}
@@ -68,9 +84,12 @@ export default function LeftMenu(props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
+
+// @ts-ignore
+const Wrapper = styled(ScrollBox)`
   height: 100%;
   background: url(${BG});
+  overflow-y: auto;
   background-size: 100% auto;
   background-repeat: no-repeat;
 `

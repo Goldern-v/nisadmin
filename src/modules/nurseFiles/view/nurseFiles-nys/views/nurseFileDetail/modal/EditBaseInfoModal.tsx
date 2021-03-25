@@ -10,7 +10,8 @@ import {
   Select,
   Row,
   Col,
-  message
+  message,
+  AutoComplete
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -18,7 +19,8 @@ import Form from "src/components/Form";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import {
   TITLE_LIST,
-  POST_LIST
+  POST_LIST,
+  EDUCATION_LIST
 } from "../../nurseFilesList/modal/AddNursingModal";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
@@ -59,7 +61,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => {};
+  const onFieldChange = () => { };
 
   const uploadCard = async (file: any) => {
     let obj: any = {
@@ -194,7 +196,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`职务`} name="job">
-              <Input />
+              <AutoComplete dataSource={POST_LIST} />
             </Form.Field>
           </Col>{" "}
           <Col span={12}>
@@ -205,22 +207,14 @@ export default observer(function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`最高学历`} name="highestEducation">
               <Select>
-                <Option value="中专">中专</Option>
-                <Option value="大专">大专</Option>
-                <Option value="本科">本科</Option>
-                <Option value="硕士">硕士</Option>
-                <Option value="博士">博士</Option>
+                {EDUCATION_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
               </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`技术职称`} name="newTitle">
               <Select>
-                <Option value="护士">护士</Option>
-                <Option value="护师">护师</Option>
-                <Option value="主管护师">主管护师</Option>
-                <Option value="副主任护师">副主任护师</Option>
-                <Option value="主任护师">主任护师</Option>
+                {TITLE_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
               </Select>
             </Form.Field>
           </Col>
@@ -270,19 +264,27 @@ export default observer(function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
+          <Col span={12}>
+            <Form.Field label={`第一学历`} name="firstDegree">
+              <Select>
+                {EDUCATION_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
+              </Select>
+            </Form.Field>
+          </Col>
         </Row>
         <Row>
           <Col span={12}>
             <Form.Field label={`添加个人头像`} name="nearImageUrl">
               <ImageUploader
                 upload={uploadCard}
+                maxSize={2048000}
                 text="添加个人头像"
-                tip={"近期免冠照片或近期工作照片"}
+                tip={"近期免冠照片或近期工作照片, 大小不超过2MB"}
               />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`添加护士执业证书`} name="zyzsUrl">
+            <Form.Field label={`添加附件`} name="zyzsUrl">
               {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader text="添加图片" />
             </Form.Field>

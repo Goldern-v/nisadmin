@@ -221,13 +221,6 @@ function AddNursingModal(props: Props) {
             </Select>
           )}
         </Form.Item>
-
-        {/*
-        <Form.Item {...formItemLayout}>
-          <Button type='primary' htmlType='submit'>
-            Register
-          </Button>
-        </Form.Item> */}
       </Form>
     </Modal>
   )

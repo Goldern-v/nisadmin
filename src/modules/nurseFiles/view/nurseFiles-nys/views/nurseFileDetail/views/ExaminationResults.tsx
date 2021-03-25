@@ -12,7 +12,9 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps { }
+
 export default observer(function ExaminationResults() {
   const editExaminationResultsModal = createModal(EditExaminationResultsModal)
   const btnList = [
@@ -91,10 +93,10 @@ export default observer(function ExaminationResults() {
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
+                      return {
+                        ['附件' + (index + 1)]: item
+                      }
+                    })
                     : [],
                   allData: row
                 })

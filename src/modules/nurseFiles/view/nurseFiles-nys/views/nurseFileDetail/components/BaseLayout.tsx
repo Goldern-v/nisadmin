@@ -6,7 +6,8 @@ import { Button } from 'antd'
 
 export interface Props {
   children?: ReactNode
-  title: string
+  title: string,
+  extra?: JSX.Element,
   btnList?: BtnType[]
 }
 
@@ -16,12 +17,13 @@ interface BtnType {
 }
 
 export default function BaseLayout(props: Props) {
-  let { title, btnList } = props
+  let { title, btnList, extra } = props
   return (
     <Wrapper>
       <Head>
         <Title>{title}</Title>
         <Place />
+        {extra}
         {btnList &&
           btnList.map((item: BtnType) => (
             <Button key={item.label} onClick={item.onClick}>
@@ -34,7 +36,7 @@ export default function BaseLayout(props: Props) {
   )
 }
 const Wrapper = styled.div`
-  height: 100%;
+  height: calc(100vh - 190px);
   /* background: #f8f8f8; */
   overflow: auto;
   /* padding: 20px 30px; */

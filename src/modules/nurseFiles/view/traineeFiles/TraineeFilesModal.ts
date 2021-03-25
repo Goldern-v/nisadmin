@@ -2,6 +2,7 @@ import { observable, computed } from "mobx";
 import { traineeFilesApi } from "./api/TraineeFilesApi";
 import { fileDownload } from "src/utils/file/file";
 import moment from "moment";
+import { appStore } from "src/stores";
 
 class TraineeFilesModal {
   @observable public selectedYear: any = moment(); //年份
@@ -39,7 +40,10 @@ class TraineeFilesModal {
 
   //导出Excel
   export() {
-    traineeFilesApi.exportPageList(this.postObj).then(res => {
+    traineeFilesApi.exportPageList({
+      ...this.postObj,
+      fileName: appStore.queryObj.fileName || undefined
+    }).then(res => {
       fileDownload(res);
     });
   }

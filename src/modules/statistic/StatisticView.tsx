@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import StatisticLeftList from './components/StatisticLeftList'
 // import StatisticHeader from './components/StatisticHeader'
-import store from 'src/stores'
+import store, { appStore } from 'src/stores'
 
 // 护士排班表
 import NurseSchedulingView from './views/nurseScheduling/NurseSchedulingView'
@@ -41,6 +41,8 @@ import 护士离职原因分析 from './views/护士离职原因分析/护士离
 
 // 全院护理人员一览表
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
+import NurseList_nys from './views/nursingStatistics/nurseList_nys/NurseList'
+
 // import { RouteComponentProps } from 'src/components/RouterView'
 // import NurseSchedule from './components/NurseSchedule'
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
@@ -93,7 +95,12 @@ export default function StatisticView() {
       component: DepartmentVacationByMonthView
     },
     { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
-    { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
+    appStore.hisMatch({
+      map: {
+        nys: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_nys },
+        other: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
+      }
+    }),
     //患者查询统计   大块
     { name: '护理质量统计', path: '/statistic/护理质量统计', component: 护理质量统计查询 },
     //2021-01-28 南医三 统计需求

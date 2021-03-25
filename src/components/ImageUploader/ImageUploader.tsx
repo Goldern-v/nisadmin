@@ -1,12 +1,14 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 
 export interface Props {
   tip: string
   accept: string
   value?: string
-  text?: string
+  text?: string,
+  maxSize?: number, // 文件最大限制,单位:byte
+  minSize?: number, // 文件最小限制,单位:byte
   upload?: (file: File) => Promise<string | undefined>
   onChange: (value: string) => void
 }
@@ -21,10 +23,10 @@ export default class ImageUploader extends React.Component<Props, State> {
     accept: 'image/jpg, image/jpeg, image/png, image/bmp',
     tip: '支持jpg、jpeg、png、bmp格式的图片',
     text: '上传图片',
-    onChange: () => {}
+    onChange: () => { }
   }
 
-  public static getDerivedStateFromProps (nextProps: Props) {
+  public static getDerivedStateFromProps(nextProps: Props) {
     return { src: nextProps.value }
   }
 
@@ -35,12 +37,12 @@ export default class ImageUploader extends React.Component<Props, State> {
 
   private refInput = React.createRef<HTMLInputElement>()
 
-  public componentDidMount () {
+  public componentDidMount() {
     const $input = this.refInput.current
     if ($input) $input.addEventListener('change', this.onChange)
   }
 
-  public componentWillUnmount () {
+  public componentWillUnmount() {
     const $input = this.refInput.current
     if ($input) $input.removeEventListener('change', this.onChange)
   }
@@ -68,21 +70,39 @@ export default class ImageUploader extends React.Component<Props, State> {
     const $input = e.target as HTMLInputElement
 
     const file = ($input.files && $input.files[0]) || null
+
     if (!file) return
 
-    const src = file ? await this.getBase64(file) : ''
+    let minSize = Number(this.props.minSize)
+    let maxSize = Number(this.props.maxSize)
 
-    $input.value = ''
-
-    if (upload) {
-      this.setState({ src, loading: true })
-      const value = await upload(file)
-      this.setState({ loading: false })
-      value && onChange(value)
+    console.log(file.size, minSize, maxSize)
+    if (!isNaN(minSize)) {
+      if (file.size < minSize) {
+        message.error('提交失败，文件大小小于最低限制')
+        return
+      }
     }
+    if (!isNaN(maxSize)) {
+      if (file.size > maxSize) {
+        message.error('提交失败，文件大小大于最高限制')
+        return
+      }
+    }
+
+    // const src = file ? await this.getBase64(file) : ''
+
+    // $input.value = ''
+
+    // if (upload) {
+    //   this.setState({ src, loading: true })
+    //   const value = await upload(file)
+    //   this.setState({ loading: false })
+    //   value && onChange(value)
+    // }
   }
 
-  public render () {
+  public render() {
     const { tip, accept, text } = this.props
     const { loading, src } = this.state
 

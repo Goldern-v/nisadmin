@@ -12,6 +12,7 @@ import { globalModal } from "src/global/globalModal";
 import BaseLayout from "../components/BaseLayout";
 import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
+import { ScrollBox } from "src/components/common";
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -128,7 +129,8 @@ export default observer(function BaseInfo() {
                   纳编时间: "enrolDate"
                 },
                 {
-                  是否返聘员工: "hireEmployees"
+                  是否返聘员工: "hireEmployees",
+                  第一学历: "firstDegree"
                 }
               ],
               fileData: [
@@ -138,7 +140,7 @@ export default observer(function BaseInfo() {
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(",").map((item: any, index: number) => {
                     return {
-                      ["执业证书" + (index + 1)]: item
+                      ["附件" + (index + 1)]: item
                     };
                   })
                   : [])
@@ -207,7 +209,8 @@ export default observer(function BaseInfo() {
           纳编时间: data.enrolDate
         },
         {
-          是否返聘员工: data.enrolDate == '1' ? '是' : '否'
+          是否返聘员工: data.enrolDate == '1' ? '是' : '否',
+          第一学历: data.firstDegree
         }
       ]);
     });
@@ -243,12 +246,12 @@ export default observer(function BaseInfo() {
                     alt=""
                   />
                 ) : (
-                    <img
-                      className="head-img"
-                      src={require("../../../images/护士默认头像.png")}
-                      alt=""
-                    />
-                  )}
+                  <img
+                    className="head-img"
+                    src={require("../../../images/护士默认头像.png")}
+                    alt=""
+                  />
+                )}
               </td>
             </tr>
             {tableData.map((obj: any, index: number) => (
@@ -268,7 +271,7 @@ export default observer(function BaseInfo() {
           </tbody>
         </InfoTable>
         <ZyzsCon>
-          <span>护士执业证书：</span>
+          <span>附件：</span>
           <div className="img-con">
             {info.zyzsUrl ? (
               info.zyzsUrl
@@ -277,8 +280,8 @@ export default observer(function BaseInfo() {
                   <Zimage src={item} alt="" key={index} />
                 ))
             ) : (
-                <img src={require("../../../images/证件空态度.png")} alt="" />
-              )}
+              <img src={require("../../../images/证件空态度.png")} alt="" />
+            )}
           </div>
         </ZyzsCon>
       </ScrollCon>
@@ -346,7 +349,8 @@ const ZyzsCon = styled.div`
   }
 `;
 
-const ScrollCon = styled.div`
+// @ts-ignore
+const ScrollCon = styled(ScrollBox)`
   overflow: auto;
   height: calc(100vh - 240px);
 `;

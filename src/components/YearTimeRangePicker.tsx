@@ -67,6 +67,7 @@ const Wrapper = styled.div`
     color: #aaa;
   }
   .unit {
+    font-size: 14px;
     margin-left: 8px;
   }
 `

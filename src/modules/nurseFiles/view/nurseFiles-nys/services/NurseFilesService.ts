@@ -136,7 +136,8 @@ export default class NurseFilesService extends BaseApiService {
       }
     );
   }
-  // 7 查找护士主要著作、译文、论文发表情况-列表(护长)
+
+  /** 7 查找护士主要著作、译文、论文发表情况-列表(护长) */
   public async nursePaperExperience(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(`/nursePaperExperience/findByEmpNoSubmit/${empNo}`).then(
@@ -146,11 +147,13 @@ export default class NurseFilesService extends BaseApiService {
       }
     );
   }
-  // 7-1 护士主要著作、译文、论文发表情况新增或更新(护士)
+
+  /** 7-1 护士主要著作、译文、论文发表情况新增或更新(护士) */
   public async nursePaperExperienceAdd(obj: any) {
     return this.post(`/nursePaperExperience/saveOrUpdatePC`, obj);
   }
-  // 8查找护士获奖情况-列表(护长)
+
+  /** 8查找护士获奖情况-列表(护长) */
   public async nurseAwardWinning(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(`/nurseAwardWinning/findByEmpNoSubmit/${empNo}`).then(
@@ -160,7 +163,81 @@ export default class NurseFilesService extends BaseApiService {
       }
     );
   }
-  // 8查找专科护士-列表(护长)
+  /** 8-1护士获奖情况新增或更新(网页护长) */
+  public async nurseAwardWinningAdd(obj: any) {
+    return this.post(`/nurseAwardWinning/saveOrUpdatePC`, obj);
+  }
+
+  /** 著作-列表 */
+  public async nurseLiterature(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.get(`/nurseLiterature/findByEmpNoSubmit/${empNo}`).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+  /** 著作-编辑 */
+  public async nurseLiteratureAdd(obj: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.post(`/nurseLiterature/saveOrUpdatePC`, obj).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+
+
+  /** 论文-列表 */
+  public async nursePaper(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.get(`/nursePaper/findByEmpNoSubmit/${empNo}`).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+  /** 论文-编辑 */
+  public async nursePaperAdd(obj: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.post(`/nursePaper/saveOrUpdatePC`, obj).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+  /** 考核-列表 */
+  public async nurseCheckFile(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.get(`/nurseCheckFile/findByEmpNoSubmit/${empNo}`).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+  /** 考核-编辑 */
+  public async nurseCheckFileAdd(obj: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.post(`/nurseCheckFile/saveOrUpdatePC`, obj).then(
+      res => {
+        nurseFileDetailViewModal.pageSpinning = false;
+        return res;
+      }
+    );
+  }
+
+
+  /** 8查找专科护士-列表(护长) */
   public async nurseJuniorSpecialFile(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(`/nurseJuniorSpecialFile/findByEmpNoSubmit/${empNo}`).then(
@@ -170,12 +247,8 @@ export default class NurseFilesService extends BaseApiService {
       }
     );
   }
-  // 8-1护士获奖情况新增或更新(网页护长)
-  public async nurseAwardWinningAdd(obj: any) {
-    return this.post(`/nurseAwardWinning/saveOrUpdatePC`, obj);
-  }
 
-  // 专科护士 (网页护长)
+  /** 专科护士 (网页护长) */
   public async nurseJuniorSpecialFileAdd(obj: any) {
     return this.post(`/nurseJuniorSpecialFile/saveOrUpdatePC`, obj);
   }

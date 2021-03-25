@@ -303,11 +303,10 @@ const Inner = styled.div<{ open: boolean }>`
     margin-right: 6px;
   }
   .ant-select {
-    height: 26px;
+
   }
   .ant-select-selection--multiple {
     padding-bottom: 1px;
-    height: 26px;
     overflow: hidden;
   }
   .short {

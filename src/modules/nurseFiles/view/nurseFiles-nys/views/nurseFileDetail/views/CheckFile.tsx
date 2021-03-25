@@ -7,24 +7,25 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
-import { globalModal } from 'src/global/globalModal'
+import EditCheckFileModal from '../modal/EditCheckFileModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
+
 export interface Props extends RouteComponentProps { }
-export default observer(function EducationalExperience() {
-  const editContinuingEducationModal = createModal(EditContinuingEducationModal)
+
+export default observer(function CheckFile() {
+  const editCheckFileModal = createModal(EditCheckFileModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editContinuingEducationModal.show({
+        editCheckFileModal.show({
           signShow: '添加'
         })
     }
   ]
-
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -33,50 +34,21 @@ export default observer(function EducationalExperience() {
       width: 60
     },
     {
-      title: '开始时间',
+      title: '考核时间',
       dataIndex: 'startTime',
-      width: 120,
-      align: 'center'
+      width: 200,
+      align: 'center',
+      render: (text: string, row: any) => `${row.startTime}~${row.endTime}`
     },
     {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '培训单位',
-      dataIndex: 'trainingUnit',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '培训内容',
-      dataIndex: 'trainingContent',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '学习类型',
-      dataIndex: 'studyType',
-      width: 80,
-      align: 'center'
-    },
-    {
-      title: '学分',
-      dataIndex: 'credit',
-      width: 80,
-      align: 'center'
-    },
-    {
-      title: '学时',
-      dataIndex: 'hours',
-      width: 80,
+      title: '考核成绩',
+      dataIndex: 'checkScore',
+      width: 100,
       align: 'center'
     },
     {
       title: '附件',
-      width: 100,
+      width: 200,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
@@ -85,7 +57,7 @@ export default observer(function EducationalExperience() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
@@ -98,7 +70,7 @@ export default observer(function EducationalExperience() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editContinuingEducationModal.show({ data: row, signShow: '修改' })
+                  editCheckFileModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -112,17 +84,17 @@ export default observer(function EducationalExperience() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseContinuingEducation',
-                  title: '审核继续教育',
+                  type: 'nurseCheckFile',
+                  title: '审核年度考核结果',
                   tableFormat: [
                     {
-                      开始时间: `startTime`,
-                      结束时间: `endTime`
+                      开始时间: 'startTime',
+                      结束时间: 'endTime',
                     },
                     {
-                      培训单位: `trainingUnit`,
-                      培训内容: `trainingContent`
-                    }
+                      考核内容: 'checkContent',
+                      考核成绩: 'checkScore',
+                    },
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -142,25 +114,29 @@ export default observer(function EducationalExperience() {
       }
     }
   ]
+
   const [tableData, setTableData] = useState([])
+
   const getTableData = () => {
-    nurseFilesService.nurseContinuingEducation(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseCheckFile(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
+
   useEffect(() => {
     getTableData()
   }, [])
+
   return (
-    <BaseLayout title='继续教育' btnList={btnList}>
+    <BaseLayout title='考核' btnList={btnList}>
       <BaseTable
         dataSource={tableData}
         columns={columns}
         surplusHeight={305}
         type={['fixedWidth']}
-        tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'}
+        tip={''}
       />
-      <editContinuingEducationModal.Component getTableData={getTableData} />
+      <editCheckFileModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

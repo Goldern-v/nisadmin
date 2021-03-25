@@ -19,7 +19,7 @@ import QrcodeSbmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
 import TraineeCheckModal from "./modal/TraineeCheckModal"; //检查实习生填写资料
 import { appStore } from "src/stores";
 
-interface Props {}
+interface Props { }
 export default observer(function TraineeFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
@@ -194,7 +194,7 @@ export default observer(function TraineeFiles(props: Props) {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
@@ -370,6 +370,7 @@ const RightIcon = styled.div`
   float: right;
 `;
 
+// @ts-ignore
 const Content = styled(TabledCon)`
   box-sizing: border-box;
 `;

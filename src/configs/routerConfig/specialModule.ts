@@ -9,12 +9,14 @@ import { appStore } from "src/stores";
 // /**武汉 */
 // import NurseFilesListView_wh from 'src/modules/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 
+import AuditsManagementView_nys from "src/modules/auditsManagement-nys/AuditsManagementView";
 import AuditsManagementView_wh from "src/modules/auditsManagement-wh/AuditsManagementView";
 import AuditsManagementView_gzhd from "src/modules/auditsManagement-gzhd/AuditsManagementView";
 import HomeView from "src/modules/home/HomeView";
 import HomeView_wh from "src/modules/home-wh/HomeView";
 import AuditsManagementView from "src/modules/auditsManagement/AuditsManagementView";
 import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/NurseAudit";
+import NurseAudit_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseAudit/NurseAudit";
 import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
@@ -105,13 +107,13 @@ if (
 } else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_nys, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_nys,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    setLayout("/auditsManagement", AuditsManagementView_nys, layouts.MainLayout),
     ...homeRouter(HomeView_wh),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

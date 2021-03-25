@@ -6,7 +6,7 @@ import { Select } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { authStore } from 'src/stores'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
+import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 
 export interface DeptType {
   code: string

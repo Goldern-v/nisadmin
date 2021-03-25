@@ -34,6 +34,7 @@ import { traineeShiftApi } from "./view/traineeShift/api/TraineeShiftApi"; // �
 import { ReactComponent as ZZHSDA } from "./images/ZZHSDA.svg";
 import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
 import { ReactComponent as CXTJ } from "./images/CXTJ.svg";
+import qs from "qs";
 
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps { }
@@ -87,8 +88,8 @@ export default observer(function NurseFilesView(props: Props) {
       icon: <TXHSCX />
     },
     {
-      title: "护理实习生花名册",
-      path: "/nurseFile/traineeFiles",
+      title: "实习护士",
+      path: `/nurseFile/traineeFiles?${qs.stringify({ fileName: '实习护士' })}`,
       component: TraineeFiles,
       icon: <TXHSCX />
     }
@@ -229,7 +230,6 @@ export default observer(function NurseFilesView(props: Props) {
       path: "/nurseFile/nursingEduFiles",
       component: NursingEduFiles,
       icon: <TXHSCX />,
-      hide: appStore.HOSPITAL_ID == 'nys'
     },
     {
       title: "护理实习生花名册",
@@ -262,18 +262,19 @@ export default observer(function NurseFilesView(props: Props) {
   let currentRoute = getTargetObj(menuConfig(), "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
+
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find(
-          (item1: any) => item1[targetKey] === targetName
+          (item1: any) => item1[targetKey].split("?")[0] === targetName
         );
       } else {
-        return item[targetKey] === targetName;
+        return item[targetKey].split("?")[0] === targetName;
       }
     });
     if (chooseRoute && chooseRoute.children) {
       chooseRoute = chooseRoute.children.find(
-        (item1: any) => item1[targetKey] === targetName
+        (item1: any) => item1[targetKey].split("?")[0] === targetName
       );
     }
     return chooseRoute;
@@ -301,7 +302,7 @@ export default observer(function NurseFilesView(props: Props) {
               id: item.id,
               title: item.title,
               component: TraineeShift,
-              path: `/nurseFile/${item.title}`
+              path: `/ nurseFile / ${item.title}`
             };
             newArr.push(obj);
           });
@@ -343,21 +344,21 @@ export default observer(function NurseFilesView(props: Props) {
 });
 const Wrapper = styled.div`
   overflow: hidden;
-  height: calc(100vh - 50px);
+  height: calc(100vh-50px);
   display: flex;
   align-items: stretch;
-`;
+  `;
 
 const LeftMenuCon = styled.div`
   width: 200px;
-`;
+  `;
 const MainCon = styled.div`
   flex: 1;
   width: 0;
   align-items: stretch;
   display: flex;
   flex-direction: column;
-`;
+  `;
 
 const TopCon = styled.div`
   height: 45px;
@@ -372,11 +373,11 @@ const TopCon = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
-`;
+  `;
 
 const TableCon = styled.div`
   flex: 1;
   margin: 15px;
   background: #fff;
   border: 1px solid rgba(228, 228, 228, 1);
-`;
+  `;

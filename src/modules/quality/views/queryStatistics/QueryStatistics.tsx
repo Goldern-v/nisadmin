@@ -6,12 +6,12 @@ import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 import DeptSelect from 'src/components/DeptSelect'
-import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
+import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect'
 import queryStatisticsServices from './services/queryStatisticsServices'
 import { fileDownload } from 'src/utils/file/file'
 import { PageTitle } from 'src/components/common'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function QueryStatistics(props: any) {
   const [tableData, setTableData] = useState([])
@@ -67,9 +67,15 @@ export default observer(function QueryStatistics(props: any) {
   ]
 
   useEffect(() => {
-    setEffect(true)
-    getTableData()
+    // setEffect(true)
   }, [])
+
+  useEffect(() => {
+    if (!loadingTable) getTableData()
+  }, [
+    showType,
+    qualityControlRecordVM.filterDeptCode
+  ])
 
   useLayoutEffect(() => {
     setEffect(false)
@@ -95,14 +101,10 @@ export default observer(function QueryStatistics(props: any) {
   //质控科室
   const deptOnChange = (value: string) => {
     qualityControlRecordVM.filterDeptCode = value
-    getTableData()
   }
 
   //radio选择
-  const radioChange = (e: any) => {
-    setShowType(e.target.value)
-    getTableData()
-  }
+  const radioChange = (e: any) => setShowType(e.target.value)
 
   const exportExcel = () => {
     let data = {

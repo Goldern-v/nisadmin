@@ -34,6 +34,10 @@ class EmpDetailModel {
     this.setQuery(newQuery)
   }
 
+  @computed get pannelName() {
+    return appStore.match.params?.pannelName || appStore.match.params?.type || '' as string
+  }
+
   @action public setQuery(newQuery: any, needData?: boolean, callback?: Function) {
     this.query = { ...newQuery }
 
@@ -43,7 +47,7 @@ class EmpDetailModel {
   public getTabelData(callback?: Function) {
     this.creditsDesc = ''
     this.classHoursDesc = ''
-    let pannelName: string = appStore.match.params?.pannelName || ''
+    let pannelName: string = this.pannelName
     let empNo = appStore.queryObj.empNo
 
     let { startDate, endDate, type, pageIndex, pageSize } = this.query

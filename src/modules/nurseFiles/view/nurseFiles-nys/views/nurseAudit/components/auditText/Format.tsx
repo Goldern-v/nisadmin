@@ -11,7 +11,6 @@ export default function Format(row: any, getTableData: any) {
         // empNo: appStore.queryObj.empNo,
         title: "审核基础信息",
         tableFormat: [
-          //
           {
             姓名: `empName`,
             工号: `empNo`
@@ -33,17 +32,29 @@ export default function Format(row: any, getTableData: any) {
             最高学历: `highestEducation`
           },
           {
+            护士执业证书编号: `zyzsNumber`,
+            护士执业证书有效截止日期: `zyzsNumber`,
+          },
+          {
             技术职称: `newTitle`,
-            护士执业证书编号: `zyzsNumber`
-          },
-          {
             身份证号: `cardNumber`,
-            学术任职: `socialGroup`
           },
           {
+            学术任职: `socialGroup`,
             手机号: `phone`,
-            家庭住址: `address`
-          }
+          },
+          {
+            家庭住址: `address`,
+            来院工作时间: "goHospitalWorkDate",
+          },
+          {
+            工作编制: "workConversion",
+            纳编时间: "enrolDate"
+          },
+          {
+            是否返聘员工: "hireEmployees",
+            第一学历: "firstDegree",
+          },
         ],
         fileData: [
           {
@@ -52,7 +63,7 @@ export default function Format(row: any, getTableData: any) {
           ...(row.zyzsUrl
             ? row.zyzsUrl.split(",").map((item: any, index: number) => {
               return {
-                ["执业证书" + (index + 1)]: item
+                ["附件" + (index + 1)]: item
               };
             })
             : [])
@@ -175,7 +186,14 @@ export default function Format(row: any, getTableData: any) {
           {
             培训单位: `trainingUnit`,
             培训内容: `trainingContent`
-          }
+          },
+          {
+            学习类型: `studyType`,
+            学分: `credit`
+          },
+          {
+            学时: `hours`,
+          },
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
@@ -187,21 +205,21 @@ export default function Format(row: any, getTableData: any) {
         allData: row
       });
     }
-    case "著作译文论文": {
+    case '考核':
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: "nursePaperExperience",
-        title: "审核著作译文论文",
+        type: "nurseCheckFile",
+        title: "审核考核",
         tableFormat: [
           {
-            发表日期: `publicDate`,
-            题目: `title`
+            开始时间: 'startTime',
+            结束时间: 'endTime',
           },
           {
-            本人排名: `rank`,
-            出版或刊登物: `publication`
-          }
+            考核内容: 'checkContent',
+            考核成绩: 'checkScore',
+          },
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
@@ -211,8 +229,68 @@ export default function Format(row: any, getTableData: any) {
           })
           : [],
         allData: row
-      });
-    }
+      })
+    case '著作':
+      return globalModal.auditModal.show({
+        getTableData: getTableData,
+        id: row.id,
+        type: "nurseLiterature",
+        title: "审核著作",
+        tableFormat: [
+          {
+            登记号: 'registerNumber',
+            作品名称: 'name',
+          },
+          {
+            作品类型: 'types',
+            著作权人: 'copyrightOwner',
+          },
+          {
+            登记日期: 'registerDate',
+            发表日期: 'publicDate',
+          },
+          {
+            出版或刊登物: 'publishMaterial',
+          },
+        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
+          : [],
+        allData: row
+      })
+    case '论文':
+      return globalModal.auditModal.show({
+        getTableData: getTableData,
+        id: row.id,
+        type: "nursePaper",
+        title: "审核论文",
+        tableFormat: [
+          {
+            论文类别: 'types',
+            论文名称: 'name',
+          },
+          {
+            发表日期: 'publicDate',
+            作者: 'owner',
+          },
+          {
+            本人排名: 'range',
+            出版或刊登物: 'publishMaterial',
+          },
+        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
+          : [],
+        allData: row
+      })
     case "所获奖励": {
       return globalModal.auditModal.show({
         getTableData: getTableData,

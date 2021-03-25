@@ -26,7 +26,8 @@ export default observer(function TableView(props: any) {
 
   const studyInfoModal = createModal(StudyInfoModal)
 
-  const pannelName = appStore.match.params?.pannelName || ''
+  const pannelName = empDetailModel.pannelName
+  console.log(appStore.match.params)
 
   const indexColumn = {
     title: '序号',
@@ -682,7 +683,7 @@ export default observer(function TableView(props: any) {
   useEffect(() => {
     handleQueryChange({ ...query, type: '', pageIndex: 1 }, true)
     resetTypeList()
-  }, [appStore.match.params.pannelName])
+  }, [appStore.match.params.pannelName, appStore.match.params.type])
 
   /**获取一级标题 */
   const getTypeList = () => {
