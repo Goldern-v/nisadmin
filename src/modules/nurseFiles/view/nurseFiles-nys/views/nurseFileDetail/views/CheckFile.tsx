@@ -41,6 +41,12 @@ export default observer(function CheckFile() {
       render: (text: string, row: any) => `${row.startTime}~${row.endTime}`
     },
     {
+      title: '考核内容',
+      dataIndex: 'checkContent',
+      width: 200,
+      align: 'center'
+    },
+    {
       title: '考核成绩',
       dataIndex: 'checkScore',
       width: 100,
@@ -132,9 +138,9 @@ export default observer(function CheckFile() {
       <BaseTable
         dataSource={tableData}
         columns={columns}
+        surplusWidth={1000}
         surplusHeight={305}
         type={['fixedWidth']}
-        tip={''}
       />
       <editCheckFileModal.Component getTableData={getTableData} />
     </BaseLayout>

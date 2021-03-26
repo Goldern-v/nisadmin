@@ -23,59 +23,27 @@ export default observer(function BaseInfo() {
   );
   const [idData, setIdData] = useState(0);
   const [id, setId] = useState(0);
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
 
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
-    if (info.statusColor === "1") {
-      return [
-        {
-          label: "修改",
-          onClick: () => {
-            editBaseInfoModal.show({
-              id: id,
-              data: info
-            });
-          }
-        },
+    //本人和非普通用户显示修改按钮
+    let editRows = (
+      (authStore.user?.empNo.toLocaleLowerCase() === appStore.queryObj.empNo.toLocaleLowerCase()) ||
+      authStore.isNotANormalNurse
+    ) ? [
+      {
+        label: "修改",
+        onClick: () => {
+          editBaseInfoModal.show({
+            id: id,
+            data: info
+          });
+        }
+      }
+    ] : []
+
+    //待审核状态显示审核按钮
+    let auditRows = info.statusColor === "1" ?
+      [
         {
           label: "审核",
           onClick: () => {
@@ -149,20 +117,12 @@ export default observer(function BaseInfo() {
             });
           }
         }
-      ];
-    } else {
-      return [
-        // {
-        //   label: '修改',
-        //   onClick: () => {
-        //     editBaseInfoModal.show({
-        //       id: id,
-        //       data: info
-        //     })
-        //   }
-        // }
-      ];
-    }
+      ] : []
+
+    return [
+      ...editRows,
+      ...auditRows,
+    ]
   };
 
   const getTableData = () =>
@@ -214,9 +174,11 @@ export default observer(function BaseInfo() {
         }
       ]);
     });
+
   useEffect(() => {
     getTableData();
   }, [appStore.queryObj]);
+
   return (
     <BaseLayout title="基本信息" btnList={limitsComponent()}>
       <ScrollCon>

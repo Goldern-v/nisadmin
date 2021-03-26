@@ -22,12 +22,14 @@ import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 import HumanResource from "./view/nurseFiles-nys/views/humanResource/HumanResource";
 //院级小组
 import NurseGroupManage from "./view/nurseFiles-nys/views/nurseGroupManage/NurseGroupManage";
-//厚街护理进实习花名册
+//护理进实习花名册
 import TraineeFiles from "./view/traineeFiles/TraineeFiles";
+import TraineeFiles_nys from "./view/traineeFiles_nys/TraineeFiles";
 //厚街护理进修生花名册
 import NursingEduFiles from "./view/nursingEduFiles/NursingEduFiles";
-//厚街护理实习生轮班
+//护理实习生轮班
 import TraineeShift from "./view/traineeShift/TraineeShift";
+
 import AddSecondMenuModal from "./view/traineeShift/modal/AddSecondMenuModal"; // 添加修改弹窗
 import { traineeShiftModal } from "./view/traineeShift/TraineeShiftModal"; // 实习生轮班公共数据仓库
 import { traineeShiftApi } from "./view/traineeShift/api/TraineeShiftApi"; // 实习生轮班接口
@@ -90,7 +92,7 @@ export default observer(function NurseFilesView(props: Props) {
     {
       title: "实习护士",
       path: `/nurseFile/traineeFiles?${qs.stringify({ fileName: '实习护士' })}`,
-      component: TraineeFiles,
+      component: TraineeFiles_nys,
       icon: <TXHSCX />
     }
 

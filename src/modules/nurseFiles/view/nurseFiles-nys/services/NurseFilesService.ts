@@ -453,6 +453,17 @@ export default class NurseFilesService extends BaseApiService {
   public async deleteNurseFileGroup(groupId: string) {
     return this.get(`/nurseFileGroup/delete/${groupId}`)
   }
+  /** 待我审核 */
+  public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(`/auditeNurseFileIndexWH/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
+  }
+  /** 我已审核 */
+  public findNurseFileProcessedFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(
+      `/auditeNurseFileIndexWH/findNurseFileProcessedFlow`,
+      this.stringify({ empNo, pageIndex, pageSize })
+    )
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

@@ -8,53 +8,60 @@ import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import AuditsTableDHSZ from './components/AuditsTableDHSZ'
 import BaseTabs from 'src/components/BaseTabs'
-const TABS_LIST_NURSE = [
-  {
-    title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit />
-  },
-  {
-    title: '护士长审核退回',
-    component: <AuditsTableDHSZ type='auditedFailNurse' needAudit={false} />
-  },
-  {
-    title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit={false} />
-  },
-  {
-    title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
-  }
-]
 
-const TABS_LIST_NURSING = [
-  {
-    title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
-  },
-  {
-    title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
-  },
-  {
-    title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
-  }
-]
-const tabShow = () => {
-  if (authStore.post === '护长') {
-    return TABS_LIST_NURSE
-  } else if (authStore.post === '护理部') {
-    return TABS_LIST_NURSING
-  } else {
-    return []
-  }
+interface Props {
+  showType: any
+  keyword: any
+  needAudit: any
+  setNeedAudit: any
+  selectedDate: any
 }
-export default observer(function NurseAudit() {
+
+export default observer(function NurseAudit(props: Props) {
+  const [activeKey, setActiveKey]: any = useState(0)
+  const TABS_LIST_NURSE = [
+    {
+      title: '待我审核',
+      component: (
+        <AuditsTableDHSZ
+          showType={props.showType}
+          keyword={props.keyword}
+          needAudit
+          active={activeKey == 0}
+          selectedDate={props.selectedDate}
+        />
+      ),
+      index: 0
+    },
+    {
+      title: '我已审核',
+      component: (
+        <AuditsTableDHSZ
+          showType={props.showType}
+          keyword={props.keyword}
+          needAudit={false}
+          active={activeKey == 1}
+          selectedDate={props.selectedDate}
+        />
+      ),
+      index: 1
+    }
+  ]
   return (
     <Wrapper>
       <MainCon>
-        <BaseTabs config={tabShow()} />
+        <BaseTabs
+          config={TABS_LIST_NURSE}
+          onChange={(key: any) => {
+            setActiveKey(key)
+            if (key == 0) {
+              props.setNeedAudit(true)
+            }
+            if (key == 1) {
+              props.setNeedAudit(false)
+            }
+          }}
+        />
       </MainCon>
     </Wrapper>
   )

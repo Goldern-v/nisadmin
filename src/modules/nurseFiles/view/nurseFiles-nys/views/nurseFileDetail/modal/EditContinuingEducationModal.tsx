@@ -22,6 +22,7 @@ export interface Props extends ModalComponentProps {
   signShow?: string
   getTableData?: () => {}
 }
+
 const rules: Rules = {
   startTime: (val) => !!val || '请选择开始时间',
   endTime: (val) => !!val || '请选择结束时间',
@@ -29,6 +30,7 @@ const rules: Rules = {
   trainingContent: (val) => !!val || '请填写培训内容'
   // hours: (val) => !!val || '请填写学时/分'
 }
+
 export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
@@ -113,7 +115,11 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`学习类型`} name='studyType'>
-              <Input />
+              <Select>
+                <Option value="专科护士">专科护士</Option>
+                <Option value="进修">进修</Option>
+                <Option value="短期学习">短期学习</Option>
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -136,4 +142,5 @@ export default function EditWorkHistoryModal(props: Props) {
     </Modal>
   )
 }
+
 const Wrapper = styled.div``

@@ -2,18 +2,38 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import SelectCon from './components/SelectCon'
-import BaseTabs from 'src/components/BaseTabs'
+// import BaseTabs from 'src/components/BaseTabs'
 
-import { authStore, appStore } from 'src/stores'
+// import { authStore, appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
-export interface Props extends RouteComponentProps {}
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
+export interface Props extends RouteComponentProps { }
 
-export default function AuditsManagementView () {
+export default function AuditsManagementView() {
+  const [showType, setShowType] = useState('nurseFile')
+  const [needAudit, setNeedAudit] = useState(true)
+  const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
+  const [keyword, setKeyword] = useState('')
   return (
     <Wrapper>
-      <SelectCon />
+      <SelectCon
+        showType={showType}
+        setShowType={setShowType}
+        keyword={keyword}
+        setKeyword={setKeyword}
+        needAudit={needAudit}
+        setNeedAudit={setNeedAudit}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
       <ScrollCon>
-        <NurseAudit />
+        <NurseAudit
+          showType={showType}
+          keyword={keyword}
+          needAudit={needAudit}
+          setNeedAudit={setNeedAudit}
+          selectedDate={selectedDate}
+        />
       </ScrollCon>
     </Wrapper>
   )

@@ -95,7 +95,7 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='是否护士'>
-          {getFieldDecorator('isNurse', { initialValue: true })(
+          {getFieldDecorator('isNurse', { initialValue: true, rules: [{ required: true, message: '是否护士不能为空' }] })(
             <Radio.Group buttonStyle='solid'>
               <Radio.Button value={true}>是</Radio.Button>
               <Radio.Button value={false}>否</Radio.Button>
@@ -106,28 +106,33 @@ function AddNursingModal(props: Props) {
           {getFieldDecorator(
             'cardNumber',
             {
-              rules: [{
-                validator(rule: any, value: any) {
-                  if (!value) return Promise.resolve()
-                  //身份证验证
-                  let idCardNumberReg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+              rules: [
+                { required: true, message: '身份证号不能为空' },
+                {
+                  validator(rule: any, value: any) {
+                    if (!value) return Promise.resolve()
+                    //身份证验证
+                    let idCardNumberReg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
 
-                  if (idCardNumberReg.test(value))
-                    return Promise.resolve()
-                  else
-                    return Promise.reject('请输入正确的身份证号码')
-                },
-                message: '请输入正确的身份证号码'
-              }]
+                    if (idCardNumberReg.test(value))
+                      return Promise.resolve()
+                    else
+                      return Promise.reject('请输入正确的身份证号码')
+                  },
+                  message: '请输入正确的身份证号码'
+                }]
             })(<Input />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='出生年月'>
-          {getFieldDecorator('birthday')(<DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />)}
+          {getFieldDecorator('birthday', { rules: [{ required: true, message: '出生年月不能为空' }] })(
+            <DatePicker style={{ width: '100%' }} format='YYYY-MM-DD' />
+          )}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='所属科室'>
           {getFieldDecorator('deptCode', {
+            rules: [{ required: true, message: '所属科室不能为空' }],
             initialValue: authStore.selectedDeptCode == '全院' ? '' : authStore.selectedDeptCode
           })(
             <Select
@@ -156,7 +161,9 @@ function AddNursingModal(props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='学历'>
-          {getFieldDecorator('highestEducation')(
+          {getFieldDecorator('highestEducation', {
+            rules: [{ required: true, message: '学历不能为空' }]
+          })(
             <Select
               showSearch
               filterOption={(input: any, option: any) =>
@@ -175,7 +182,9 @@ function AddNursingModal(props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='职称'>
-          {getFieldDecorator('newTitle')(
+          {getFieldDecorator('newTitle', {
+            rules: [{ required: true, message: '职称不能为空' }]
+          })(
             <Select
               showSearch
               filterOption={(input: any, option: any) =>
@@ -193,7 +202,9 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='层级'>
-          {getFieldDecorator('nurseHierarchy')(
+          {getFieldDecorator('nurseHierarchy', {
+            rules: [{ required: true, message: '层级不能为空' }]
+          })(
             <Select
               showSearch
               filterOption={(input: any, option: any) =>
@@ -211,7 +222,9 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='职务'>
-          {getFieldDecorator('job')(
+          {getFieldDecorator('job', {
+            rules: [{ required: true, message: '职务不能为空' }]
+          })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>
               {POST_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>

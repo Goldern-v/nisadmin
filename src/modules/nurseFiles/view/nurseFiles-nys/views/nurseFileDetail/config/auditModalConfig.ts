@@ -1,14 +1,14 @@
-import { globalModal } from "src/global/globalModal";
+import { globalModal } from 'src/global/globalModal'
 
-export default function Format(row: any, getTableData: any) {
-  switch (row.typeName) {
+export function openAuditModal(title: string, row: any, getTableData: any) {
+
+  switch (title) {
     case "基本信息": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         empNo: row.empNo,
         id: row.id,
         type: "nurseInformation",
-        // empNo: appStore.queryObj.empNo,
         title: "审核基础信息",
         tableFormat: [
           {
@@ -74,6 +74,7 @@ export default function Format(row: any, getTableData: any) {
     case "工作经历": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
+        empNo: row.empNo,
         id: row.id,
         type: "nurseWorkExperience",
         title: "审核工作经历",
@@ -97,6 +98,7 @@ export default function Format(row: any, getTableData: any) {
     case "特殊资格证": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
+        empNo: row.empNo,
         id: row.id,
         type: "nurseSpecialQualification",
         title: "审核特殊资格证",
@@ -121,6 +123,8 @@ export default function Format(row: any, getTableData: any) {
     }
     case "教育经历": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
+        getTableData: getTableData,
         id: row.id,
         type: "nurseMedicalEducation",
         title: "审核教育经历",
@@ -147,12 +151,13 @@ export default function Format(row: any, getTableData: any) {
         allData: row
       });
     }
-    case "职称及层级变动": {
+    case "职称及层级": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseProfessionalAndLevelChange",
-        title: "审核职称及层级变动",
+        title: "审核职称及层级",
         tableFormat: [
           {
             职称聘用时间: `appointmentTime`,
@@ -174,6 +179,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "继续教育": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseContinuingEducation",
@@ -207,6 +213,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case '考核':
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseCheckFile",
@@ -232,6 +239,7 @@ export default function Format(row: any, getTableData: any) {
       })
     case '著作':
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseLiterature",
@@ -264,6 +272,7 @@ export default function Format(row: any, getTableData: any) {
       })
     case '论文':
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nursePaper",
@@ -293,21 +302,22 @@ export default function Format(row: any, getTableData: any) {
       })
     case "所获奖励": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseAwardWinning",
         title: "审核所获奖励",
         tableFormat: [
           {
-            时间: `time`,
-            获奖_推广创新项目名称: `awardWinningName`
+            获奖时间: `time`,
+            奖项名称: `awardWinningName`
           },
           {
             本人排名: `rank`,
-            授奖级别: `awardlevel`
+            奖项级别: `awardlevel`
           },
           {
-            批准机关: `approvalAuthority`
+            授奖机构: `approvalAuthority`
           }
         ],
         fileData: row.urlImageOne
@@ -322,6 +332,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "年度考核结果": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseYearCheck",
@@ -344,6 +355,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "医院三基考核": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseHospitalsThreeBase",
@@ -369,6 +381,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "工作情况登记": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseRegistrationWork",
@@ -400,6 +413,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "附件": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseAttachment",
@@ -418,9 +432,9 @@ export default function Format(row: any, getTableData: any) {
     case '外出进修':
       {
         return globalModal.auditModal.show({
+          empNo: row.empNo,
           getTableData: getTableData,
           id: row.id,
-          empNo: row.empNo || row.commiterNo,
           type: 'nurseOutStudy',
           title: '审核外出进修',
           tableFormat: [

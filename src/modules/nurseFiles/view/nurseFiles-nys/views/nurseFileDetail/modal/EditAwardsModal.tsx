@@ -25,11 +25,11 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  time: (val) => !!val || '请填写时间',
-  awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
+  time: (val) => !!val || '请填写获奖时间',
+  awardWinningName: (val) => !!val || '请填写奖项名称',
   rank: (val) => !!val || '请填写本人排名',
-  awardlevel: (val) => !!val || '请填写授奖级别',
-  approvalAuthority: (val) => !!val || '请填写批准机关'
+  awardlevel: (val) => !!val || '请填写奖项级别',
+  approvalAuthority: (val) => !!val || '请填写授奖机构'
 }
 export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -37,7 +37,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async () => {
     let obj = {
@@ -92,12 +92,12 @@ export default function EditWorkHistoryModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`时间`} name='time'>
+            <Form.Field label={`获奖时间`} name='time'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖项目名称`} name='awardWinningName' required>
+            <Form.Field label={`奖项名称`} name='awardWinningName' required>
               <Input />
             </Form.Field>
           </Col>
@@ -107,12 +107,12 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授奖级别`} name='awardlevel' required>
+            <Form.Field label={`奖项级别`} name='awardlevel' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`批准机关`} name='approvalAuthority' required>
+            <Form.Field label={`授奖机构`} name='approvalAuthority' required>
               <Input />
             </Form.Field>
           </Col>

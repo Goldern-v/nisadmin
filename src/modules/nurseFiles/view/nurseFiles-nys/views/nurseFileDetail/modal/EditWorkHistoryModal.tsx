@@ -121,25 +121,18 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`技术职称`} name='professional' required>
-              {/* <Select>
+              <Select>
                 {TITLE_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
                     {item}
                   </Select.Option>
                 ))}
-              </Select> */}
-              <AutoComplete dataSource={TITLE_LIST} />
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`职务`} name='post' required>
-              <Select>
-                {POST_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
+              <AutoComplete dataSource={POST_LIST} />
             </Form.Field>
           </Col>
         </Row>

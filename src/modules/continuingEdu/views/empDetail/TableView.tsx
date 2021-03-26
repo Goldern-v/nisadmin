@@ -812,7 +812,7 @@ export default observer(function TableView(props: any) {
         columns={columns()}
         dataSource={tableData}
         loading={loading}
-        surplusHeight={355}
+        surplusHeight={360}
         // footer={() => footer}
         // surplusWidth={200}
         onRow={(record: any) => {

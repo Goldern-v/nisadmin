@@ -30,12 +30,13 @@ import SorceAppendModal from "src/modules/continuingEdu/components/SorceAppendMo
 import qs from "qs";
 import { empDetailModel } from "src/modules/continuingEdu/views/empDetail/models/EmpDetailModel";
 import StudyAndTariningEmpDetailTable from "src/modules/continuingEdu/views/empDetail/TableView";
+import TestView from "src/modules/continuingEdu/views/empDetail/TestView_nys";
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[];
 }
 
 const studyAndTrainingTypeList = [
-  '学分记录', '学时记录', '学习记录', '培训记录', '考试记录', '练习记录', '实操记录', '演练记录', '实践记录'
+  '学分记录', '学时记录', '学习记录', '练习记录', '实操记录', '演练记录', '实践记录'
 ]
 
 const ROUTE_LIST = [
@@ -62,7 +63,7 @@ const ROUTE_LIST = [
   {
     type: "levelChange",
     component: LevelChange,
-    name: "职称及层级变动"
+    name: "职称及层级"
   },
   {
     type: "ctnEdu",
@@ -98,7 +99,7 @@ const ROUTE_LIST = [
   {
     type: "checkFile",
     component: CheckFile,
-    name: "考核"
+    name: "培训与考核"
   },
   {
     type: "workRegistrationForm",
@@ -120,12 +121,12 @@ const ROUTE_LIST = [
     type: name,
     component: StudyAndTariningEmpDetailTable,
     name
-  }))
-  // {
-  //   type: 'fileList',
-  //   component: FileList,
-  //   name: '附件'
-  // }
+  })),
+  {
+    type: "考试记录",
+    component: TestView,
+    name: "考试记录"
+  },
 ];
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -175,7 +176,7 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
               <CurrentRoute.component
                 {...{
                   shouldSorceAppendOpen: () => setSorceAppendVisible(true),
-                  addBtnHide: true
+                  addBtnHide: false
                 }} />
             )}
           </Spin>

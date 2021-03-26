@@ -15,7 +15,7 @@ import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function Awards() {
   const editAwardsModal = createModal(EditAwardsModal)
   const btnList = [
@@ -33,13 +33,13 @@ export default observer(function Awards() {
       width: 55
     },
     {
-      title: '时间',
+      title: '获奖时间',
       dataIndex: 'time',
       width: 120,
       align: 'center'
     },
     {
-      title: '获奖/推广创新项目名称',
+      title: '奖项名称',
       dataIndex: 'awardWinningName',
       width: 220,
       align: 'center'
@@ -51,13 +51,13 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
-      title: '授奖级别',
+      title: '奖项级别',
       dataIndex: 'awardlevel',
       width: 90,
       align: 'center'
     },
     {
-      title: '批准机关',
+      title: '授奖机构',
       dataIndex: 'approvalAuthority',
       width: 90,
       align: 'center'
@@ -104,23 +104,23 @@ export default observer(function Awards() {
                   title: '审核所获奖励',
                   tableFormat: [
                     {
-                      时间: `time`,
-                      获奖_推广创新项目名称: `awardWinningName`
+                      获奖时间: `time`,
+                      奖项名称: `awardWinningName`
                     },
                     {
                       本人排名: `rank`,
-                      授奖级别: `awardlevel`
+                      奖项级别: `awardlevel`
                     },
                     {
-                      批准机关: `approvalAuthority`
+                      授奖机构: `approvalAuthority`
                     }
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
+                      return {
+                        ['附件' + (index + 1)]: item
+                      }
+                    })
                     : [],
                   allData: row
                 })
