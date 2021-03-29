@@ -22,7 +22,7 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/scheduling/findCreateOrUpdate`, obj);
   }
   /** 保存排班信息 */
-  public saveOrUpdate(status: "0" | "1" | undefined) {
+  public saveOrUpdate(status: "0" | "1" | undefined, urlName: string) {
     let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
@@ -43,7 +43,7 @@ export default class ArrangeService extends BaseApiService {
         .weekday(6)
         .format("YYYY-MM-DD")
     };
-    return this.post(`/scheduling/saveOrUpdate`, obj);
+    return this.post(`/${urlName}/saveOrUpdate`, obj);
   }
   /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {
@@ -270,6 +270,32 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/schShiftRangeNanYiSan/updateList`, obj);
   }
+
+  //南医三积假数据列表 新
+  public schBalanceHourGetListNys(obj: PageObj) {
+    return this.post(`/schBalanceHourNys/getList`, obj);
+  }
+  
+  //南医三新增积假数据 
+  public schBalanceHourSaveOrUpdatetNys(obj: PageObj) {
+    return this.post(`/schBalanceHourNys/saveOrUpdate`, obj);
+  }
+
+  //删除结余数据 新
+  public schBalanceHourDeleteNys(id: any) {
+    return this.get(`/schBalanceHourNys/delete/${id}`);
+  }
+
+  //南医三批量导出
+  public exportNys(obj: any) {
+    return this.post(`/schedulingNys/export`,obj,{responseType: "blob"});
+  }
+
+    // 获取所有科室
+    public getAllDeptList() {
+      return this.get(`/dept/nursingUnit/all`);
+    }
+  
 }
 
 export const arrangeService = new ArrangeService();

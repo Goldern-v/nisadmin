@@ -24,7 +24,6 @@ import service from "src/services/api";
 import { DictItem } from "src/services/api/CommonApiService";
 import createModal from "src/libs/createModal";
 import ShowStandardTimeModal from "../modal/ShowStandardTimeModal";
-
 export interface Props { }
 
 export default observer(function SelectCon() {
@@ -219,6 +218,22 @@ export default observer(function SelectCon() {
     </Menu>
   );
 
+  // 南医三批量导出
+  const handleExport = () => {
+    let obj = {
+      deptCodes: sheetViewModal.deptCodeList,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+    }
+    if (sheetViewModal.deptCodeList && sheetViewModal.deptCodeList.length > 0) {
+      arrangeService.exportNys(obj).then(res => {
+        fileDownload(res);
+      })
+    } else {
+      message.warning('批量导出前请先选择科室！');
+    }
+  };
+
   return (
     <Wrapper>
       <LeftIcon>
@@ -347,6 +362,35 @@ export default observer(function SelectCon() {
             导出科室
           </Button>
         </div>
+        {appStore.HOSPITAL_ID == "nys" &&
+          (authStore.isDepartment || authStore.isSupervisorNurse) && (
+            <div className="item export">
+              <Select
+                style={{ width: '160px' }}
+                mode="multiple"
+                maxTagCount={0}
+                allowClear={true}
+                showSearch
+                placeholder='选择批量导出科室'
+                filterOption={(input: any, option: any) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={(val: any[]) => {
+                  sheetViewModal.deptCodeList = val
+                }}
+                value={sheetViewModal.deptCodeList}
+              >
+                {sheetViewModal.deptList.map((item: any) => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+              <span onClick={() => handleExport()}>批量导出</span>
+            </div>
+          )}
         {appStore.HOSPITAL_ID == "wh" &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
@@ -396,7 +440,7 @@ export default observer(function SelectCon() {
         <span onClick={() => toPath('/personnelManagement/mealSetting')}>排班套餐设置</span>
       </RightIcon> */}
       <showStandardTimeModal.Component />
-    </Wrapper>
+    </Wrapper >
   );
 });
 
@@ -413,6 +457,30 @@ const Wrapper = styled.div`
     & > div {
       display: inline-block;
       vertical-align: middle;
+    }
+  }
+  .ant-select-selection--multiple {
+      min-height: 30px !important;
+    }
+
+  .export {
+    .ant-select-selection {
+        border-radius: 4px 0 0 4px !important;
+        padding-bottom: 0 !important;
+        margin-top: -3px !important;
+      }
+    & > span {
+      border: 1px solid #d9d9d9;
+      border-left: none !important;
+      border-radius: 0 4px 4px 0;
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      font-size: 13px;
+      padding: 0 5px;
+      & :hover {
+        cursor:pointer;
+      }
     }
   }
 `;

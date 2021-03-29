@@ -10,7 +10,7 @@ import AddSubClass from "../views/arrangeHome/page/addSubClass/AddSubClass";
 import StarRatingReportList from "../views/arrangeHome/page/nightChargingReport/StarRatingReportList";
 import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 import DepartmentByShiftView from 'src/modules/statistic/views/departmentByShift/DepartmentByShiftView'
-//南医三 请假管理
+import BalanceInit from "../views/arrangeHome/page/BalanceInitNys/BalanceInit";
 import 请假审核 from "../views/请假审核/请假审核"
 import 请假统计 from "../views/请假统计/请假统计"
 
@@ -64,6 +64,11 @@ export const meunConfig: meunConfigItem[] = [
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
         hide: !authStore.isRoleManage
+      },
+      {
+        title: "积假设置",
+        path: "/personnelManagement/balanceInit",
+        component: BalanceInit,
       },
       {
         title: "加减班列表查询",

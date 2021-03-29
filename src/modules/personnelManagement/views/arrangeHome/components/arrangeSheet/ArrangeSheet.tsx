@@ -25,6 +25,9 @@ import PublicHour from "./PublicHour";
 import HolidayHour from "./HolidayHour";
 import service from "src/services/api";
 import { cloneJson } from "src/utils/json/clone";
+import TotalHolidayHourNys from "./TotalHolidayHourNys";
+import HolidayHourNys from "./HolidayHourNys";
+
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -47,17 +50,36 @@ export default observer(function ArrangeSheet(props: Props) {
   );
   let editVacationCountModal = createModal(EditVacationCountModal);
 
-  const nysGroupName = [
+  const nysGroupName =
     appStore.HOSPITAL_ID == "nys"
-      ? {
+      ? [{
         title: "类别标题",
         dataIndex: "groupName",
         width: 70,
         fixed: "left",
         align: "center"
-      }
-      : {}
-  ];
+      }]
+      : []
+    ;
+
+  const nysHandleDel =
+    appStore.HOSPITAL_ID == "nys" && isEdit
+      ? [{
+        title: "操作",
+        dataIndex: "",
+        width: 70,
+        align: "center",
+        render(text: any, record: any, index: number) {
+          return (
+            <DoCon>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </DoCon>
+          );
+        }
+      }]
+      : []
+    ;
+
 
   let columns: any = [
 
@@ -171,16 +193,15 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "thisWeekHoliday",
         render: (text: string, record: any) => {
-          return (
-            <Input
-              style={{ background: "#fff" }}
-              disabled={!isEdit}
-              defaultValue={text}
-              onChange={(e: any) => {
-                record.thisWeekHoliday = e.target.value;
-              }}
-            />
-          );
+          return <HolidayHourNys id={record.id} />;
+          // <Input
+          //   style={{ background: "#fff" }}
+          //   disabled={!isEdit}
+          //   defaultValue={text}
+          //   onChange={(e: any) => {
+          //     record.thisWeekHoliday = e.target.value;
+          //   }}
+          // />
         }
       },
       {
@@ -194,31 +215,18 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "totalHoliday",
         render: (text: string, record: any) => {
-          return (
-            <Input
-              style={{ background: "#fff", color: "#000" }}
-              disabled={!isEdit}
-              defaultValue={text}
-              onChange={(e: any) => {
-                record.totalHoliday = e.target.value;
-              }}
-            />
-          );
+          return <TotalHolidayHourNys id={record.id} />;
+          // <Input 
+          //   style={{ background: "#fff", color: "#000" }}
+          //   disabled={!isEdit}
+          //   defaultValue={text}
+          //   onChange={(e: any) => {
+          //     record.totalHoliday = e.target.value;
+          //   }}
+          // />
         }
       },
-      isEdit && {
-        title: "操作",
-        dataIndex: "",
-        width: 70,
-        align: "center",
-        render(text: any, record: any, index: number) {
-          return (
-            <DoCon>
-              <span onClick={() => handleDelete(record)}>删除</span>
-            </DoCon>
-          );
-        }
-      }
+      ...nysHandleDel
     );
   }
 
@@ -336,7 +344,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => 6, hj: () => 3, wh: () => 6, jmfy: () => 6 })) *
+              appStore.hisAdapter({ nys: () => isEdit ? 6 : 5, hj: () => 3, wh: () => 6, jmfy: () => 6 })) *
             70 +
             250 +
             10 +

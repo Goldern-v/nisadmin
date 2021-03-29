@@ -51,9 +51,18 @@ class SheetViewModal {
   @observable public countArrangeNameList: any[] = [];
   /** 一周全是这些班次 按5天计算工时 */
   @observable public weekArrangeNameList: any[] = [];
-
   /** 标准工时列表 */
   @observable public standardTimeList: any[] = [];
+  /**科室列表 */
+  @observable public deptList: any[] = [];
+  @observable public deptCodeList: any[] = [];
+
+  getAllDeptList() {
+    arrangeService.getAllDeptList().then((res: any) => {
+      this.deptList = res.data.deptList || []
+    })
+  }
+
 
   /** 时间段 */
   getDateList() {
@@ -327,8 +336,9 @@ class SheetViewModal {
     if (document.querySelector(".public-hour-warning")) {
       return message.warning("存在公休天数小于0的护士，请修正");
     }
+    let urlName = appStore.HOSPITAL_ID == 'nys' ? 'schedulingNys' : 'scheduling'
     this.tableLoading = true;
-    return arrangeService.saveOrUpdate(status).then(res => {
+    return arrangeService.saveOrUpdate(status, urlName).then(res => {
       if (status == "0") message.success("保存成功");
       if (status == "1") message.success("推送成功");
       this.getSheetTableData();
@@ -339,10 +349,14 @@ class SheetViewModal {
     /** for 优化速度 */
     let _sheetTableData = cloneJson(sheetTableData);
     for (let i = 0; i < _sheetTableData.length; i++) {
-      /** 当前结余，公休，节修时间, 用于推导实际时间 */
+      /** 当前结余，公休，南医三当前积假，节修时间, 用于推导实际时间 */
       let current_balanceHour = 0;
+      let current_holidayHourNys = 0;
       let current_holidayHour = 0;
       let current_publicHour = 0;
+      current_holidayHourNys +=
+      Number(_sheetTableData[i].thisWeekHoliday) || 0;
+
       for (let j = 0; j < _sheetTableData[i].settingDtos.length; j++) {
         /** 添加姓名 */
         _sheetTableData[i].settingDtos[j].empName = _sheetTableData[i].empName;
@@ -392,8 +406,9 @@ class SheetViewModal {
           current_balanceHour -= (real_week / 5) * 2;
         }
       }
-
+      
       _sheetTableData[i].current_balanceHour = current_balanceHour;
+      _sheetTableData[i].current_holidayHourNys = current_holidayHourNys;
       _sheetTableData[i].current_holidayHour = current_holidayHour;
       _sheetTableData[i].current_publicHour = current_publicHour;
 
@@ -504,6 +519,7 @@ class SheetViewModal {
       this.getArrangeMeal();
       this.getSchSymbol();
       appStore.HOSPITAL_ID == 'gzhd' && this.getHDArrangeMeal();
+      this.getAllDeptList()
     });
   }
 }
