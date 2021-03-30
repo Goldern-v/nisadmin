@@ -155,7 +155,7 @@ export default class AuthStore {
   /** 是否是护士长 */
   public get isRoleManage() {
     try {
-      return this.user && this.user.roleManage == "1";
+      return this.user && (this.user.roleManage == "1" || this.user.post == '护长');
     } catch (error) {
       return false;
     }

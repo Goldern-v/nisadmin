@@ -29,6 +29,10 @@ export default class ModalService extends BaseApiService {
   public auditeList(obj: any) {
     return this.post(`/auditeNurseFileIndex/auditeList`, obj)
   }
+  // 批量审核-南医三
+  public auditeListNys(obj: any) {
+    return this.post(`/auditeNurseFileIndexNys/auditeList`, obj)
+  }
 }
 
 export const modalService = new ModalService()

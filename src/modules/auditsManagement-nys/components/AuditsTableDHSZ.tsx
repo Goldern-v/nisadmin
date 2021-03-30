@@ -22,15 +22,14 @@ import { message } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
 export interface Props {
-  showType: string;
-  keyword: string;
-  needAudit: boolean;
-  active: boolean;
-  selectedDate: any;
+  showType: string
+  keyword: string
+  needAudit: boolean
+  selectedDate: any
 }
 
 export default observer(function AuditsTableDHSZ(props: Props) {
-  let { showType, needAudit, active, keyword } = props;
+  let { showType, needAudit, keyword } = props;
   let {
     empName,
     post,
@@ -56,7 +55,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`
       );
-    } else if (showType == "nurseFile") {
+    } else if (showType == "nurseFileNys") {
       service.commonApiService.getNurseInformation(row.commiterNo).then(res => {
         // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
         if (needAudit) {
@@ -93,7 +92,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: "center",
       width: 90,
       render(text: string, record: any) {
-        return text == "nurseFile"
+        return text == "nurseFileNys"
           ? "护士档案"
           : text == "qc"
             ? "三级质控"
@@ -183,6 +182,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   ) => {
     setCurrent(current);
     setLoading(true);
+
     let getDataFun = props.needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)
       : aMServices.solvedPage(
@@ -192,6 +192,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         keyword,
         selectedDate
       );
+
     getDataFun.then(res => {
       setLoading(false);
       setTableData(res.data.list);
@@ -239,7 +240,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       return message.warning("请至少勾选一条记录");
     }
 
-    if (showType == "nurseFile") {
+    if (showType == "nurseFileNys") {
       groupsEmpNoAduitModal.show({
         selectedRows,
         getTableData: () => {
@@ -272,7 +273,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   emitter.removeAllListeners("refreshNurseAuditTable");
   emitter.addListener("refreshNurseAuditTable", () => {
-    onload(current, searchText, props.selectedDate);
+    onload(current, searchText, props.selectedDate, pageSize);
   });
 
   //table数据变化后清除勾选
@@ -283,11 +284,11 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   useEffect(() => {
     showType && onload(current, searchText, props.selectedDate, pageSize);
-  }, [active, authStore.selectedDeptCode, showType, statisticsViewModal.selectedDeptCode]);
+  }, [needAudit, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode]);
 
   return (
     <Wrapper>
-      <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>
+      <GroupPostBtn onClick={() => onload(current, searchText, props.selectedDate, pageSize)}>
         刷新
       </GroupPostBtn>
       {props.needAudit && (

@@ -1,29 +1,31 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+// import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
+// import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
-import loginViewModel from 'src/modules/login/LoginViewModel'
+// import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
-import ImageUploader from 'src/components/ImageUploader'
+// import ImageUploader from 'src/components/ImageUploader'
 import { authStore, appStore } from 'src/stores'
-import service from 'src/services/api'
+// import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-const Option = Select.Option
+// const Option = Select.Option
+
 export interface Props extends ModalComponentProps {
   data?: any
   signShow?: string
   getTableData?: () => {}
 }
+
 const rules: Rules = {
   time: (val) => !!val || '请填写获奖时间',
   awardWinningName: (val) => !!val || '请填写奖项名称',
@@ -31,10 +33,13 @@ const rules: Rules = {
   awardlevel: (val) => !!val || '请填写奖项级别',
   approvalAuthority: (val) => !!val || '请填写授奖机构'
 }
+
 export default function EditWorkHistoryModal(props: Props) {
+  let { visible, onCancel, onOk, data, signShow } = props
+
   const [title, setTitle] = useState('')
 
-  let { visible, onCancel, onOk, data, signShow } = props
+
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => { }
@@ -46,19 +51,26 @@ export default function EditWorkHistoryModal(props: Props) {
       auditedStatus: '',
       urlImageOne: ''
     }
+
     if ((authStore.user && authStore.user.post) == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
     } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
+
     if (!refForm.current) return
+
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+
     value.time && (value.startTime = value.time.format('YYYY-MM-DD'))
+
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
+
     nurseFilesService.nurseAwardWinningAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -80,6 +92,7 @@ export default function EditWorkHistoryModal(props: Props) {
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
+
     if (signShow === '修改') {
       setTitle('修改所获奖励')
     } else if (signShow === '添加') {
@@ -126,4 +139,5 @@ export default function EditWorkHistoryModal(props: Props) {
     </Modal>
   )
 }
+
 const Wrapper = styled.div``

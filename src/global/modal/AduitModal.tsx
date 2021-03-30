@@ -155,17 +155,17 @@ export default function AduitModal(props: Props) {
     } else if (agree === 'disagree') {
       agreeStatus = false
     }
+
     let postData = {
       id: props.id,
       empNo: props.allData.empNo,
       empName: props.allData.empName,
       saveStatus: props.allData.saveStatus,
       flag: agreeStatus,
-      detail: opinion
+      detail: opinion,
+      type: props.type,
     }
-    // props.getTableData && props.getTableData()
-    // console.log(props.getTableData, '123213')
-    // onCancel()
+
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
       message.success('审核成功')
       emitter.emit('refreshNurseFileDeatilLeftMenu')

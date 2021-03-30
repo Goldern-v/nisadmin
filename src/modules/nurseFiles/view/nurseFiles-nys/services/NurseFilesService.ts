@@ -42,6 +42,10 @@ export default class NurseFilesService extends BaseApiService {
   public async saveOrUpdate(obj: any) {
     return this.post(`/nurseInformation/saveOrUpdatePC`, obj);
   }
+  // 1-1护士基本信息信息更新
+  public async saveOrUpdateBaseInfo(obj: any) {
+    return this.post(`/nurseInformation/saveOrUpdate`, obj);
+  }
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
@@ -455,12 +459,12 @@ export default class NurseFilesService extends BaseApiService {
   }
   /** 待我审核 */
   public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
-    return this.post(`/auditeNurseFileIndexWH/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
+    return this.post(`/auditeNurseFileIndexNys/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
   }
   /** 我已审核 */
   public findNurseFileProcessedFlow(empNo: any, pageIndex: any, pageSize: any) {
     return this.post(
-      `/auditeNurseFileIndexWH/findNurseFileProcessedFlow`,
+      `/auditeNurseFileIndexNys/findNurseFileProcessedFlow`,
       this.stringify({ empNo, pageIndex, pageSize })
     )
   }

@@ -10,7 +10,7 @@ import { getCurrentMonth } from 'src/utils/date/currentMonth'
 export interface Props extends RouteComponentProps { }
 
 export default function AuditsManagementView() {
-  const [showType, setShowType] = useState('nurseFile')
+  const [showType, setShowType] = useState('nurseFileNys')
   const [needAudit, setNeedAudit] = useState(true)
   const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')
@@ -22,7 +22,6 @@ export default function AuditsManagementView() {
         keyword={keyword}
         setKeyword={setKeyword}
         needAudit={needAudit}
-        setNeedAudit={setNeedAudit}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />

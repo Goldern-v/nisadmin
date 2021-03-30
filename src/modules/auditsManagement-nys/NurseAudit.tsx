@@ -18,42 +18,34 @@ interface Props {
 }
 
 export default observer(function NurseAudit(props: Props) {
-  const [activeKey, setActiveKey]: any = useState(0)
+  const { needAudit } = props
+
+  const AuditsTable = <AuditsTableDHSZ
+    showType={props.showType}
+    keyword={props.keyword}
+    needAudit={needAudit}
+    selectedDate={props.selectedDate}
+  />
+
   const TABS_LIST_NURSE = [
     {
       title: '待我审核',
-      component: (
-        <AuditsTableDHSZ
-          showType={props.showType}
-          keyword={props.keyword}
-          needAudit
-          active={activeKey == 0}
-          selectedDate={props.selectedDate}
-        />
-      ),
+      component: needAudit ? AuditsTable : <span></span>,
       index: 0
     },
     {
       title: '我已审核',
-      component: (
-        <AuditsTableDHSZ
-          showType={props.showType}
-          keyword={props.keyword}
-          needAudit={false}
-          active={activeKey == 1}
-          selectedDate={props.selectedDate}
-        />
-      ),
+      component: needAudit ? <span></span> : AuditsTable,
       index: 1
     }
   ]
+
   return (
     <Wrapper>
       <MainCon>
         <BaseTabs
           config={TABS_LIST_NURSE}
           onChange={(key: any) => {
-            setActiveKey(key)
             if (key == 0) {
               props.setNeedAudit(true)
             }

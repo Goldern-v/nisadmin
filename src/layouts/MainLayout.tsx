@@ -12,6 +12,7 @@ import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
+import GroupsAduitModalNys from 'src/global/modal/GroupsAduitModal-nys'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
 import SignModal from 'src/global/modal/SignModal'
 export interface Props extends RouteComponentProps { }
@@ -26,13 +27,22 @@ export default observer(function MainLayout(props: Props) {
   const groupsAduitModalRef: any = React.createRef()
 
   /** 审核模块区分 */
-  let aduitModal = createModal(AduitModal)
-  let groupsAduitModal = createModal(GroupsAduitModal)
+  let aduitModal = appStore.hisMatch({
+    map: {
+      wh: createModal(AduitModalWh),
+      other: createModal(AduitModal)
+    },
+  })
+
+  let groupsAduitModal = appStore.hisMatch({
+    map: {
+      nys: createModal(GroupsAduitModalNys),
+      wh: createModal(GroupsAduitModalWh),
+      other: createModal(GroupsAduitModal)
+    },
+  })
+
   let signModal = createModal(SignModal)
-  if (appStore.HOSPITAL_ID == 'wh') {
-    groupsAduitModal = createModal(GroupsAduitModalWh)
-    aduitModal = createModal(AduitModalWh)
-  }
 
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res: any) => {

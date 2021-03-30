@@ -15,7 +15,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-const Option = Select.Option
+// const Option = Select.Option
 const { TextArea } = Input
 export interface Props extends ModalComponentProps {
   data?: any
@@ -32,9 +32,10 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
+
   const onSave = async () => {
-    let getPostData = loginViewModel.post
+    // let getPostData = loginViewModel.post
 
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
@@ -48,13 +49,18 @@ export default function EditWorkHistoryModal(props: Props) {
     } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
+
     if (!refForm.current) return
+
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+
     value.time && (value.time = value.time.format('YYYY-MM-DD'))
+
     nurseFilesService.nurseBehaviorRecordAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()

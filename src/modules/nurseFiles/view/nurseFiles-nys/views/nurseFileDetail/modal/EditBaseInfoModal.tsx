@@ -124,7 +124,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
       ));
     value.enrolDate && (value.enrolDate = value.enrolDate.format("YYYY-MM-DD"));
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
-    nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.saveOrUpdateBaseInfo({ ...value, ...obj }).then((res: any) => {
       message.success("保存成功");
       props.getTableData && props.getTableData();
       emitter.emit("refreshNurseFileDeatilLeftMenu");

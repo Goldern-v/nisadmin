@@ -32,7 +32,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const toDetails = (row: any) => {
     openAuditModal(
       getTitle(row.othersMessage.auditedEntityName),
-      { ...row.othersMessage, id: row.othersMessage.fileId },
+      { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
       () => emitter.emit('refreshNurseAuditTable')
     )
   }

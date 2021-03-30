@@ -1,7 +1,7 @@
 import { reverseKeyValue } from 'src/utils/object/object'
 
 let titleEC: any = {
-  NurseInformation: '基本信息',
+  User: '基本信息',
   NurseWorkExperience: '工作经历',
   NurseProfessionalAndLevelChange: '职称及层级',
   NurseMedicalEducation: '教育经历',

@@ -16,7 +16,6 @@ interface Props {
   keyword: any;
   setKeyword: any;
   needAudit: any;
-  setNeedAudit: any;
   selectedDate: any;
   setSelectedDate: any;
 }

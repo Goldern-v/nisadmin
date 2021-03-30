@@ -59,6 +59,7 @@ export default class AMServices extends BaseApiService {
       // wardCode: authStore.selectedDeptCode,
       deptCodes: deptCodes
     };
+
     if (selectedDate) {
       obj.startDate = selectedDate[0]
         ? selectedDate[0].format("YYYY-MM-DD")
@@ -70,7 +71,7 @@ export default class AMServices extends BaseApiService {
 
   /** 按照人员批量审核 */
   public auditeList(obj: any) {
-    return this.post(`/auditeNurseFileIndexWH/findNurseFileAudited`, obj);
+    return this.post(`/auditeNurseFileIndexNys/findNurseFileAudited`, obj);
   }
   /** 批量审核质控表 */
   public batchHandleNode(obj: any) {
