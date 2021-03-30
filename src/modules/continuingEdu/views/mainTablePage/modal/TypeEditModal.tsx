@@ -24,7 +24,7 @@ export default observer(function TypeEditModal(props: Props) {
 
   // 弹窗必填项
   const rules: Rules = {
-    name: val => !!val || "名称不能为空",
+    // name: val => !!val &&  || "名称不能为空",
     teachingMethod: val => !!val || "教学方式不能为空",
     sort: val =>
       isNaN(Number(val)) || val === "" || Number(val) < 0
@@ -151,7 +151,7 @@ export default observer(function TypeEditModal(props: Props) {
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
-          {params.id &&
+          {appStore.HOSPITAL_ID == 'hj' && params.id &&
             <Row>
               <Col span={5} className="label">
                 名称:

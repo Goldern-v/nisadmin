@@ -92,9 +92,9 @@ class MainPageModal {
   getTree() {
     mainPageApi.getTrainingItemsTree().then(res => {
       this.trainingKeyPointTree = res.data || [];
-      this.knowledgePointDivisionTree = res.data[0].childList || [];
+      this.knowledgePointDivisionTree = res.data[0]?.childList || [];
       this.learningFormTree =
-        this.knowledgePointDivisionTree[0].childList || [];
+        this.knowledgePointDivisionTree[0]?.childList || [];
     });
   }
 
