@@ -1663,6 +1663,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
   );
 });
 
+// @ts-ignore
 const Container = styled(Wrapper)`
   .ant-select-disabled .ant-select-selection{
       background: rgba(0,0,0,0.0)!important;

@@ -192,6 +192,7 @@ function WardRegisterRouter() {
       title: "危化品管理登记本",
       path: "/wardRegister/QCRG_10_2",
       icon: <BYYP />,
+      hide: !appStore.isDev,
       component: { ...重点患者评估登记本 },
       payload: {
         registerCode: "QCRG_10_2",
