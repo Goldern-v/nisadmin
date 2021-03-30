@@ -733,12 +733,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
-                        <span className="title-text">
-                          <pre>
-                            {cItem.label || cItem.itemCode}
-                          </pre>
-                        </span>
-                      )}
+                      <span className="title-text">
+                        <pre>
+                          {cItem.label || cItem.itemCode}
+                        </pre>
+                      </span>
+                    )}
                   </CTitleBox>
                 )
               )}
@@ -757,10 +757,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
             </ThBox>
           )
         ) : (
-              <pre>
-                {item.label || item.itemCode}
-              </pre>
-            ),
+          <pre>
+            {item.label || item.itemCode}
+          </pre>
+        ),
         align: "center",
         className: "input-cell",
         colSpan: item.colSpan,
@@ -962,6 +962,26 @@ export default observer(function 重点患者评估登记本(props: Props) {
           })
         ],
         QCRG_10: [
+          signRowObj({
+            title: "检查者签名",
+            width: 70,
+            dataIndex: "signerName",
+            aside: "检查者",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          }),
+          signRowObj({
+            title: "负责人签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "负责人",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
+        QCRG_10_2: [
           signRowObj({
             title: "检查者签名",
             width: 70,
@@ -1296,11 +1316,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
             {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
-                <span
-                  onClick={() => handleDeleteRow(record, index)}>
-                  删除
-                </span>
-              )}
+              <span
+                onClick={() => handleDeleteRow(record, index)}>
+                删除
+              </span>
+            )}
           </DoCon>
         );
       }
@@ -1541,7 +1561,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     </Button>
                   </React.Fragment>
                 ),
-                'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_21': (
+                'QCRG_14_1,QCRG_10,QCRG_10_2,QCRG_03,QCRG_14_2,QCRG_21': (
                   <React.Fragment>
                     <Button
                       disabled={
@@ -1630,12 +1650,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
             </div>
           </React.Fragment>
         ) : (
-            <NullBox
-              onClick={onAddBlock}
-              text={"创建登记本"}
-              registerName={registerName}
-            />
-          )}
+          <NullBox
+            onClick={onAddBlock}
+            text={"创建登记本"}
+            registerName={registerName}
+          />
+        )}
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />

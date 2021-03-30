@@ -189,6 +189,16 @@ function WardRegisterRouter() {
       ],
     },
     {
+      title: "危化品管理登记本",
+      path: "/wardRegister/QCRG_10_2",
+      icon: <BYYP />,
+      component: { ...重点患者评估登记本 },
+      payload: {
+        registerCode: "QCRG_10_2",
+        registerName: "危化品管理登记本"
+      }
+    },
+    {
       title: "仪器设备使用登记",
       path: "/wardRegister/QCRG_11",
       icon: <YQSB />,
