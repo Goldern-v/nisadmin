@@ -1,44 +1,92 @@
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
-// import SpaceShow from 'src/components/SpaceShow.tsx'
-export default function BedSituation () {
-  // 
+import HomeApi from "src/modules/home/api/HomeApi";
+import service from "src/services/api";
+import { appStore } from "src/stores/index";
+import BaseTable from "src/components/BaseTable";
+
+export default function BedSituation() {
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [tableData, setTableData] = useState([]); //表格数据
+
+  const columns: any = [
+    {
+      title: "内容",
+      dataIndex: "message",
+      key: "message",
+      width: 30,
+      align: "left"
+    },
+    {
+      title: "提交人",
+      dataIndex: "commiterName",
+      key: "commiterName",
+      width: 10,
+      align: "center"
+    },
+    {
+      title: "时间",
+      dataIndex: "commitTime",
+      key: "commitTime",
+      width: 16,
+      align: "center"
+    }
+  ];
+
+  const getMealList = () => {
+    setLoadingTable(true);
+    HomeApi.pendingPage(1, 100, "nurseFile", '').then(res => {
+      setLoadingTable(false);
+      setTableData(res.data.list);
+    }).catch(e => {
+      console.log(e, "ee");
+    });
+  };
+
   useEffect(() => {
-    // 
-  })
+    getMealList();
+  }, []);
+
+  // 点击行打开审批页面
+  const selectRow = (record: any) => {
+    service.commonApiService
+      .getNurseInformation(record.commiterNo)
+      .then(res => {
+        window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`);
+      });
+  };
+
 
   return (
     <div>
       <Head>
         <div className='headLeft'>待我审核</div>
-        <div className='headRight'>更多></div>
+        <div
+          className='headRight'
+          onClick={() => {
+            appStore.history.push("/auditsManagement");
+          }}
+        >
+          更多>
+        </div>
       </Head>
       <Mid>
-        {/* <SpaceShow /> */}
-        {/* <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem' />
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem' />
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem' />
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem' />
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem' />
-          <div className='rightItem' />
-        </MidItem> */}
+        <BaseTable
+          dataSource={tableData}
+          columns={columns}
+          surplusHeight={550}
+          loading={loadingTable}
+          rowClassName={record => {
+            return "cursorPointer";
+          }}
+          onRow={record => {
+            return {
+              onClick: (event: any) => {
+                selectRow(record);
+              }
+            };
+          }}
+        />
       </Mid>
     </div>
   )
@@ -62,11 +110,25 @@ const Head = styled.div`
     font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
+    cursor: pointer;
   }
 `
 const Mid = styled.div`
   height: 282px;
-  overflow-y: auto;
+  #baseTable {
+    padding: 0 !important;
+    } */
+    .ant-table-body {
+      border-radius: 0 !important;
+    }
+    .ant-table-small {
+      border-radius: 0 !important;
+    }
+  }
+  .cursorPointer {
+    cursor: pointer;
+  }
+
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -86,20 +148,4 @@ const Mid = styled.div`
     background-color: #ffffff;
   }
   /* padding: 18px 18px 0 18px; */
-`
-const MidItem = styled.div`
-  height: 38px;
-  line-height: 38px;
-  border-bottom: 1px solid #e3e7eb;
-  display: flex;
-  font-size: 13px;
-  .leftItem {
-    padding-left: 14px;
-    width: 70%;
-  }
-  .rightItem {
-    padding-right: 14px;
-    width: 30%;
-    text-align: right;
-  }
 `

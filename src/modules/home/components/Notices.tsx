@@ -1,42 +1,99 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+import { appStore } from "src/stores/index";
+import BaseTable from "src/components/BaseTable";
+import HomeApi from "src/modules/home/api/HomeApi";
+import { ReactComponent as READ } from "../images/YD.svg";
+import { ReactComponent as NOREAD } from "../images/WD.svg";
 
-export default function BedSituation () {
-  // 
+export default function BedSituation() {
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [tableData, setTableData] = useState([]);
+
+  const setIcon = (read: any) => {
+    return read === true ? <READ /> : <NOREAD />;
+  };
+
+  const columns: any = [
+    {
+      title: "标题",
+      dataIndex: "title",
+      key: "title",
+      width: 30,
+      align: "left",
+      render: (text: any, record: any) => (
+        <span>
+          <i className="messageStatus">{setIcon(record.read)}</i>
+          <i className="messageTitle">{record.title}</i>
+        </span>
+      )
+    },
+    {
+      title: "提交人",
+      dataIndex: "senderName",
+      key: "senderName",
+      width: 10,
+      align: "left"
+    },
+    {
+      title: "时间",
+      dataIndex: "sendTime",
+      key: "sendTime",
+      width: 16,
+      align: "left"
+    }
+  ];
+
+  const getMealList = () => {
+    setLoadingTable(true);
+    HomeApi.getReceiveList(1, 50, '').then(res => {
+      setLoadingTable(false);
+      setTableData(res.data.list);
+    }).catch(e => {
+      console.log(e, "ee");
+    });
+  };
+
   useEffect(() => {
-    // 
-  })
+    getMealList();
+  }, []);
+
+  const selectRow = (record: any) => {
+    appStore.history.push(`/notice?selectedMenu=收件箱&id=${record.id}`);
+  };
   return (
     <div>
       <Head>
         <div className='headLeft'>通知公告</div>
-        <div className='headRight'>更多></div>
+        <div
+          className='headRight'
+          onClick={() => {
+            appStore.history.push("/notice");
+          }}
+        >
+          更多>
+        </div>
       </Head>
       <Mid>
-        {/* <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>
-        <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>{' '}
-        <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem>{' '}
-        <MidItem>
-          <div className='leftItem'> </div>
-          <div className='rightItem' />
-        </MidItem> */}
+        <BaseTable
+          rowKey={record => {
+            return record.id;
+          }}
+          dataSource={tableData}
+          columns={columns}
+          surplusHeight={550}
+          loading={loadingTable}
+          onRow={record => {
+            return {
+              onClick: (event: any) => {
+                selectRow(record);
+              }
+            };
+          }}
+          rowClassName={record => {
+            return "cursorPointer";
+          }}
+        />
       </Mid>
     </div>
   )
@@ -60,12 +117,33 @@ const Head = styled.div`
     font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
+    cursor: pointer;
   }
 `
 const Mid = styled.div`
-  /* padding: 18px 18px 0 18px; */
   height: 282px;
-  overflow-y: auto;
+  #baseTable {
+    padding: 0 !important;
+    .ant-table-body {
+      border-radius: 0 !important;
+    }
+    .ant-table-small {
+      border-radius: 0 !important;
+    }
+  }
+  .messageStatus {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: 5px;
+  }
+  .messageTitle {
+    vertical-align: middle;
+    font-style: normal;
+  }
+  .cursorPointer {
+    cursor: pointer;
+  }
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -83,21 +161,5 @@ const Mid = styled.div`
     box-shadow: inset 0 0 5px #ffffff;
     border-radius: 5px;
     background-color: #ffffff;
-  }
-`
-const MidItem = styled.div`
-  height: 38px;
-  line-height: 38px;
-  border-bottom: 1px solid #e3e7eb;
-  display: flex;
-  font-size: 13px;
-  .leftItem {
-    padding-left: 14px;
-    width: 70%;
-  }
-  .rightItem {
-    padding-right: 14px;
-    width: 30%;
-    text-align: right;
   }
 `

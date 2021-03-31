@@ -4,13 +4,13 @@ import { RouteComponentProps } from "react-router";
 import { appStore, authStore } from "src/stores/index";
 import BaseTable from "src/components/BaseTable";
 import { Button } from "antd";
-import HomeApi from "src/modules/home/api/HomeApi.ts";
+import HomeApi from "src/modules/home/api/HomeApi";
 import { observer } from "mobx-react-lite";
 import { ReactComponent as TZGG } from "../images/icon/TZGG.svg";
 import { ReactComponent as READ } from "../images/YD.svg";
 import { ReactComponent as NOREAD } from "../images/WD.svg";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function NoticeTable() {
   const [loadingTable, setLoadingTable] = useState(false);
@@ -57,14 +57,9 @@ export default observer(function NoticeTable() {
     setLoadingTable(true);
     HomeApi.getReceiveList(pageIndex, pageSize, keyword).then(res => {
       setLoadingTable(false);
-      let array: any = [];
-      res.data.list &&
-        res.data.list.length &&
-        res.data.list.map((item: any, i: any) => {
-          item.key = i;
-          array.push(item);
-        });
-      setTableData(array);
+      setTableData(res.data.list);
+    }).catch(e => {
+      console.log(e, "ee");
     });
   };
 
