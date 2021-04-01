@@ -108,7 +108,6 @@ export default observer(function ArrangeSheet(props: Props) {
     {
       title: appStore.hisAdapter({
         hj: () => "层级",
-        nys: () => "类型"
       }),
       dataIndex: "nurseHierarchy",
       width: 40,
