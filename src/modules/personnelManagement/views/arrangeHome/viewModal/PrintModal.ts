@@ -409,6 +409,12 @@ class PrintModal {
     //排班前显示的列
     const colsBefore = [
       {
+        title: '组别',
+        key: 'groupName',
+        width: 30,
+        visible: colVisibleList.indexOf('groupName') >= 0,
+      },
+      {
         title: '姓名',
         key: 'empName',
         width: 60,

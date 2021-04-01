@@ -223,8 +223,7 @@ export default withRouter(function LoginView(props: Props) {
       <BottomContent>
         {appStore.hisMatch({
           map: {
-            'ys,gzsrm,jmfy': '百辰源(广州)科技有限公司',
-            lcey: '宸瑞普惠(广州)科技有限公司',
+            'ys,gzsrm,jmfy,lcey': '百辰源(广州)科技有限公司',
             other: '广州宸瑞软件科技有限公司 http://www.cr-health.com'
           },
           vague: true
