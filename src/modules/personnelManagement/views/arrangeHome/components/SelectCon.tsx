@@ -181,15 +181,16 @@ export default observer(function SelectCon() {
 
   const toPrint = () => {
     if (appStore.HOSPITAL_ID == "nys") {
-      let visibleArr = ['nurseHierarchy', 'newTitle', 'year', 'total1', 'thisWeekHoliday', 'totalHoliday']
+      let visibleArr = ['groupName', 'nurseHierarchy', 'newTitle', 'year', 'total1', 'thisWeekHoliday', 'totalHoliday']
       Modal.confirm({
         title: '选择要打印的列',
         centered: true,
-        width: 600,
+        width: 660,
         content: <div style={{ marginTop: 30 }}>
           <Checkbox.Group
             defaultValue={visibleArr}
             onChange={(newArr: any[]) => visibleArr = newArr}>
+            <Checkbox value="groupName">组别</Checkbox>
             <Checkbox value="nurseHierarchy">层级</Checkbox>
             <Checkbox value="newTitle">职称</Checkbox>
             <Checkbox value="year">年限</Checkbox>
@@ -200,7 +201,7 @@ export default observer(function SelectCon() {
           </Checkbox.Group>
         </div>,
         onOk: () => {
-          console.log(visibleArr)
+          // console.log(visibleArr)
           printModal.printArrangeNys(visibleArr)
         }
       })

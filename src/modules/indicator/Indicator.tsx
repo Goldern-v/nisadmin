@@ -2,62 +2,62 @@ import moment from "moment";
 import BaseTable from "src/components/BaseTable";
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, {useEffect, useLayoutEffect, useState} from "react";
-import {RouteComponentProps} from "src/components/RouterView";
-import {HorizontalMenuItem} from "src/types/horizontalMenu";
-import {appStore} from "src/stores";
-import {Radio, message, Button, DatePicker} from "antd";
-import {crrentMonth} from "src/utils/moment/crrentMonth";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { RouteComponentProps } from "src/components/RouterView";
+import { HorizontalMenuItem } from "src/types/horizontalMenu";
+import { appStore } from "src/stores";
+import { Radio, message, Button, DatePicker } from "antd";
+import { crrentMonth } from "src/utils/moment/crrentMonth";
 import BaseChart from "./components/BaseChart";
 import StatisticLeftList from "./components/StatisticLeftList";
 import TopCon from "./components/TopCon";
-import {床护比统计} from "./views/床护比统计";
-import {护患比统计} from "./views/护患比统计";
-import {小时平均护理时数} from "./views/24小时平均护理时数";
-import {不同级别护士配置} from "./views/不同级别护士配置";
-import {护士离职率} from "./views/护士离职率";
-import {住院患者跌倒发生率} from "./views/住院患者跌倒发生率";
-import {院内压疮发生率} from "./views/院内压疮发生率";
-import {住院患者身体约束率} from "./views/住院患者身体约束率";
-import {插管患者非计划拔管发生率} from "./views/插管患者非计划拔管发生率";
-import {导尿管相关尿路感染发生率} from "./views/导尿管相关尿路感染发生率";
-import {中心导管相关血流感染发生率} from "./views/中心导管相关血流感染发生率";
-import {呼吸机相关性肺炎发生率} from "./views/呼吸机相关性肺炎发生率";
-import {产科护理质量数据} from "./views/产科护理质量数据";
-import {高危药物静脉外渗率} from "./views2/高危药物静脉外渗率";
-import {输血输液反应倒数} from "./views2/输血输液反应倒数";
-import {非计划拔管发生率} from "./views2/非计划拔管发生率";
-import {导管相关血液感染发生率} from "./views2/导管相关血液感染发生率";
-import {尿管相关泌尿系感染发生率} from "./views2/尿管相关泌尿系感染发生率";
-import {手术相关肺部感染发生率} from "./views2/手术相关肺部感染发生率";
-import {患者入院前已有压疮统计} from "./views2/患者入院前已有压疮统计";
-import {入院时压疮高风险患者评估率} from "./views2/入院时压疮高风险患者评估率";
-import {住院压疮高风险压疮发生率} from "./views2/住院压疮高风险压疮发生率";
-import {住院患者手术室压疮发生率} from "./views2/住院患者手术室压疮发生率";
-import {排便失禁患者失禁性皮炎发生率} from "./views2/排便失禁患者失禁性皮炎发生率";
-import {跌倒坠床高风险患者评估率} from "./views2/跌倒坠床高风险患者评估率";
-import {住院患者跌倒发生率2} from "./views2/住院患者跌倒发生率";
-import {住院患者跌倒坠床伤害程度} from "./views2/住院患者跌倒坠床伤害程度";
-import {住院患者误吸高风险评估率} from "./views2/住院患者误吸高风险评估率";
-import {住院高风险患者误吸发生率} from "./views2/住院高风险患者误吸发生率";
-import {走失高风险住院患者评估阳性数} from "./views2/走失高风险住院患者评估阳性数";
-import {患者走失发生率} from "./views2/患者走失发生率";
-import {患者走失高风险患者评估率} from "./views2/患者走失高风险患者评估率";
-import {患者足下垂的发生率} from "./views2/患者足下垂的发生率";
-import {新生儿烧伤烫伤发生率} from "./views2/新生儿烧伤烫伤发生率";
-import {查对制度落实合格率} from "./views2/查对制度落实合格率";
-import {护理不良事件报告处理符合率} from "./views2/护理不良事件报告处理符合率";
-import {使用药物错误的发生率} from "./views2/使用药物错误的发生率";
-import {急救设备器材及药品完好合格率} from "./views2/急救设备器材及药品完好合格率";
-import {无菌物品合格率} from "./views2/无菌物品合格率";
-import {器械清洗合格率} from "./views2/器械清洗合格率";
-import {包装合格率} from "./views2/包装合格率";
-import {湿包发生率} from "./views2/湿包发生率";
-import {LEFT_MENU} from "./config";
-import {indicatorService} from "./services/IndicatorService";
+import { 床护比统计 } from "./views/床护比统计";
+import { 护患比统计 } from "./views/护患比统计";
+import { 小时平均护理时数 } from "./views/24小时平均护理时数";
+import { 不同级别护士配置 } from "./views/不同级别护士配置";
+import { 护士离职率 } from "./views/护士离职率";
+import { 住院患者跌倒发生率 } from "./views/住院患者跌倒发生率";
+import { 院内压疮发生率 } from "./views/院内压疮发生率";
+import { 住院患者身体约束率 } from "./views/住院患者身体约束率";
+import { 插管患者非计划拔管发生率 } from "./views/插管患者非计划拔管发生率";
+import { 导尿管相关尿路感染发生率 } from "./views/导尿管相关尿路感染发生率";
+import { 中心导管相关血流感染发生率 } from "./views/中心导管相关血流感染发生率";
+import { 呼吸机相关性肺炎发生率 } from "./views/呼吸机相关性肺炎发生率";
+import { 产科护理质量数据 } from "./views/产科护理质量数据";
+import { 高危药物静脉外渗率 } from "./views2/高危药物静脉外渗率";
+import { 输血输液反应倒数 } from "./views2/输血输液反应倒数";
+import { 非计划拔管发生率 } from "./views2/非计划拔管发生率";
+import { 导管相关血液感染发生率 } from "./views2/导管相关血液感染发生率";
+import { 尿管相关泌尿系感染发生率 } from "./views2/尿管相关泌尿系感染发生率";
+import { 手术相关肺部感染发生率 } from "./views2/手术相关肺部感染发生率";
+import { 患者入院前已有压疮统计 } from "./views2/患者入院前已有压疮统计";
+import { 入院时压疮高风险患者评估率 } from "./views2/入院时压疮高风险患者评估率";
+import { 住院压疮高风险压疮发生率 } from "./views2/住院压疮高风险压疮发生率";
+import { 住院患者手术室压疮发生率 } from "./views2/住院患者手术室压疮发生率";
+import { 排便失禁患者失禁性皮炎发生率 } from "./views2/排便失禁患者失禁性皮炎发生率";
+import { 跌倒坠床高风险患者评估率 } from "./views2/跌倒坠床高风险患者评估率";
+import { 住院患者跌倒发生率2 } from "./views2/住院患者跌倒发生率";
+import { 住院患者跌倒坠床伤害程度 } from "./views2/住院患者跌倒坠床伤害程度";
+import { 住院患者误吸高风险评估率 } from "./views2/住院患者误吸高风险评估率";
+import { 住院高风险患者误吸发生率 } from "./views2/住院高风险患者误吸发生率";
+import { 走失高风险住院患者评估阳性数 } from "./views2/走失高风险住院患者评估阳性数";
+import { 患者走失发生率 } from "./views2/患者走失发生率";
+import { 患者走失高风险患者评估率 } from "./views2/患者走失高风险患者评估率";
+import { 患者足下垂的发生率 } from "./views2/患者足下垂的发生率";
+import { 新生儿烧伤烫伤发生率 } from "./views2/新生儿烧伤烫伤发生率";
+import { 查对制度落实合格率 } from "./views2/查对制度落实合格率";
+import { 护理不良事件报告处理符合率 } from "./views2/护理不良事件报告处理符合率";
+import { 使用药物错误的发生率 } from "./views2/使用药物错误的发生率";
+import { 急救设备器材及药品完好合格率 } from "./views2/急救设备器材及药品完好合格率";
+import { 无菌物品合格率 } from "./views2/无菌物品合格率";
+import { 器械清洗合格率 } from "./views2/器械清洗合格率";
+import { 包装合格率 } from "./views2/包装合格率";
+import { 湿包发生率 } from "./views2/湿包发生率";
+import { LEFT_MENU } from "./config";
+import { indicatorService } from "./services/IndicatorService";
 // 图
-import 护患比统计图 from "src/modules/indicator/chartView/护患比统计图.tsx";
-import 无图 from "src/modules/indicator/chartView/无图.tsx";
+import 护患比统计图 from "src/modules/indicator/chartView/护患比统计图";
+import 无图 from "src/modules/indicator/chartView/无图";
 
 // 护理质量相关数据
 import NursingData from "./mainView/nursingData/NursingData";
@@ -83,8 +83,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/bedNurseRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -108,8 +108,8 @@ const ROUTE_LIST: any = [
     surplusHeight: 280,
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -131,8 +131,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/nursingHours/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -156,8 +156,8 @@ const ROUTE_LIST: any = [
     surplusWidth: 260,
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -177,8 +177,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/nurseResignRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -201,8 +201,8 @@ const ROUTE_LIST: any = [
     // surplusWidth: 260
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -223,8 +223,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/puRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -247,8 +247,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/brRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -270,8 +270,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/uexRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -293,8 +293,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/cautiRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -316,8 +316,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/crbsiRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -339,8 +339,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/vapRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -362,8 +362,8 @@ const ROUTE_LIST: any = [
     exportName: "nationalIndex/obNursingQuqlity/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -383,8 +383,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/hRDrugsExoRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -405,8 +405,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/infuReactCases/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -427,8 +427,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/uexRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -450,8 +450,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/crbsiRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -473,8 +473,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/cautiRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -496,8 +496,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/surPInfecRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -519,8 +519,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/preAdmiPUCount/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -542,8 +542,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/hRPUEsRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -565,8 +565,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/hRPUAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -589,8 +589,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/oRPUAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元"
@@ -609,8 +609,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/iADAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -632,8 +632,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/hRFallEsRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -655,8 +655,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/patientFallAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -679,8 +679,8 @@ const ROUTE_LIST: any = [
     surplusHeight: 280,
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -701,8 +701,8 @@ const ROUTE_LIST: any = [
     serviceName: "cnqIndex/getMisInhalEsRatio",
     exportName: "cnqIndex/misInhalEsRatio/export",
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -724,8 +724,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/misInhalAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -757,8 +757,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/pLostAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -780,8 +780,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/hRPLostESRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -803,8 +803,8 @@ const ROUTE_LIST: any = [
     exportName: "cnqIndex/pFDropAcciRatio/export",
 
     legendData: [
-      {value: "actualOpenBeds", symbol: "square"},
-      {value: "actualNurseCount", symbol: "square"}
+      { value: "actualOpenBeds", symbol: "square" },
+      { value: "actualNurseCount", symbol: "square" }
     ],
     dictionary: {
       wardName: "护理单元",
@@ -965,7 +965,7 @@ export default function Indicator(props: Props) {
         setStartDate(startDate);
         setEndDate(endDate);
 
-        const {data} = await indicatorService.getIndicatoeData(
+        const { data } = await indicatorService.getIndicatoeData(
           currentRoute!.serviceName,
           startDate,
           endDate
@@ -1056,21 +1056,21 @@ export default function Indicator(props: Props) {
       // 护理质量相关数据
       return (
         <div className="nursingData">
-          <NursingData getTitle={props.match.params.name}/>
+          <NursingData getTitle={props.match.params.name} />
         </div>
       )
     } else if (nursingCharges) {
       // 护理质控指标
       return (
         <div className="nursingCharges">
-          <NursingCharges getTitle={props.match.params.name}/>
+          <NursingCharges getTitle={props.match.params.name} />
         </div>
       )
     } else if (statistic) {
       // 统计表
       return (
         <MainWrapper>
-          <StatisticTable name={props.match.params.name || ''}/>
+          <StatisticTable name={props.match.params.name || ''} />
         </MainWrapper>
       )
     } else {
@@ -1086,11 +1086,11 @@ export default function Indicator(props: Props) {
               onChange={data => {
                 setTimeData(data);
               }}
-              style={{width: 220, margin: "0 10px"}}
+              style={{ width: 220, margin: "0 10px" }}
             />
             <Button
               type="primary"
-              style={{marginRight: 10}}
+              style={{ marginRight: 10 }}
               onClick={() => onload()}
             >
               查询
@@ -1167,10 +1167,10 @@ export default function Indicator(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU} menuTitle="敏感指标"/>
+        <LeftMenu config={LEFT_MENU} menuTitle="敏感指标" />
         {/* <StatisticLeftList /> */}
       </LeftMenuCon>
-      <GetComponents/>
+      <GetComponents />
     </Wrapper>
   );
 }

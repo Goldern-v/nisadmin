@@ -280,29 +280,29 @@ export default function ContinuingEdu(props: Props) {
         }
       ]
     },
-    // {
-    //   title: "教学质量管理",
-    //   icon: <JXJH />,
-    //   hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
-    //   children: [
-    //     {
-    //       title: "教学质量评价详情",
-    //       path: "/continuingEdu/教学质量评价详情",
-    //       component: 教学质量评价详情,
-    //       hide: true,
-    //     },
-    //     {
-    //       title: "教学质量评价",
-    //       path: "/continuingEdu/教学质量评价",
-    //       component: 教学质量评价
-    //     },
-    //     {
-    //       title: "进修临床实践管理",
-    //       path: "/continuingEdu/进修临床实践管理",
-    //       component: 教学质量评价
-    //     },
-    //   ]
-    // },
+    {
+      title: "教学质量管理",
+      icon: <JXJH />,
+      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
+      children: [
+        {
+          title: "教学质量评价详情",
+          path: "/continuingEdu/教学质量评价详情",
+          component: 教学质量评价详情,
+          hide: true,
+        },
+        {
+          title: "教学质量评价",
+          path: "/continuingEdu/教学质量评价",
+          component: 教学质量评价
+        },
+        {
+          title: "进修临床实践管理",
+          path: "/continuingEdu/进修临床实践管理",
+          component: 教学质量评价
+        },
+      ]
+    },
     {
       title: "通知管理",
       icon: <TZGL />,
