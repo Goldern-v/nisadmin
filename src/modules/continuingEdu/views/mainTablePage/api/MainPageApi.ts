@@ -2,20 +2,19 @@ import BaseApiService from "src/services/api/BaseApiService";
 import qs from "qs";
 
 export default class MainPageApi extends BaseApiService {
-  // 主列表页--查询
+  /** 主列表页--查询 */ 
   public async getMainData(obj: any) {
-    // secondLevelMenuId beginTime endTime status pageSize pageIndex
     return this.post(`/studyAndTrain/teachingPlanManage/queryPageList`, obj);
   }
 
-  // 主列表页--导出
+  /** 主列表页--导出 */ 
   public exportMainData(obj?: any) {
     return this.post(`/studyAndTrain/teachingPlanManage/exportPageList`, obj, {
       responseType: "blob"
     });
   }
 
-  // 主列表页--删除
+  /** 主列表页--删除*/ 
   public async delMainData(id: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/recycleTeachingPlan`,
@@ -23,7 +22,7 @@ export default class MainPageApi extends BaseApiService {
     );
   }
 
-  // 主列表页--撤销
+  /** 主列表页--撤销 */ 
   public async revokeMainData(id: any, remark?: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/recallTeachingPlan`,
@@ -31,7 +30,7 @@ export default class MainPageApi extends BaseApiService {
     );
   }
 
-  // 类型管理--根据pId查询
+  /** 类型管理--根据pId查询 */ 
   public async getTypeData(pId: any) {
     return this.post(
       `/studyAndTrain/menuManage/getMenuListByPId`,
@@ -39,19 +38,17 @@ export default class MainPageApi extends BaseApiService {
     );
   }
 
-  // 类型管理--添加
+  /** 类型管理--添加 */ 
   public async addTypeData(obj: any) {
-    // pId(父id) name(菜单名) teachingMethod(教学类型 1.学习、2培训、3考试、4练习、5实操、6演练)
     return this.post(`/studyAndTrain/menuManage/addMenuItem/3`, obj);
   }
 
-  // 类型管理--修改
+  /** 类型管理--修改 */ 
   public async updateTypeData(obj: any) {
-    // id(菜单id) name(菜单名)
     return this.post(`/studyAndTrain/menuManage/updateMenuItem/3`, obj);
   }
 
-  // 类型管理--删除
+  /** 类型管理--删除 */ 
   public async delTypeData(id: any) {
     return this.post(
       `/studyAndTrain/menuManage/deleteMenuItem`,
@@ -59,7 +56,7 @@ export default class MainPageApi extends BaseApiService {
     );
   }
 
-  // 主菜单复制功能
+  /** 主菜单复制功能 */ 
   public async copyTeachingPlan(id: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/copyTeachingPlan`,
@@ -67,14 +64,13 @@ export default class MainPageApi extends BaseApiService {
     );
   }
 
-  // 获取培训项目树--弹窗级联
+  /** 获取培训项目树--弹窗级联 */ 
   public async getTrainingItemsTree() {
     return this.get(`/studyAndTrain/trainManualManage/getTrainingItemsTree`);
   }
 
-  // 厚街类型管理新增修改单独接口
+  /** 厚街类型管理新增修改单独接口 */ 
   public async updateTypeDataHJ(obj: any) {
-    // id(菜单id) name(菜单名)
     return this.post(
       `/studyAndTrain/menuManage/hj/addOrUpdateThreeLevelMenuItem`,
       obj

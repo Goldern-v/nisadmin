@@ -105,15 +105,20 @@ export default observer(function ArrangeSheet(props: Props) {
       fixed: "left",
       align: "center"
     },
-    {
-      title: appStore.hisAdapter({
-        hj: () => "层级",
-      }),
-      dataIndex: "nurseHierarchy",
-      width: 40,
-      fixed: "left",
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        nys: [],
+        other: [
+          {
+            title: '层级',
+            dataIndex: "nurseHierarchy",
+            width: 40,
+            fixed: "left",
+            align: "center"
+          }
+        ]
+      },
+    }),
     {
       title: "职称",
       dataIndex: "newTitle",
@@ -338,6 +343,7 @@ export default observer(function ArrangeSheet(props: Props) {
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .clientWidth
         ) {
+          let widthNys = appStore.HOSPITAL_ID == 'nys' ? 210 : 250;
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -345,7 +351,7 @@ export default observer(function ArrangeSheet(props: Props) {
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({ nys: () => isEdit ? 6 : 5, hj: () => 3, wh: () => 6, jmfy: () => 6 })) *
             70 +
-            250 +
+            widthNys +
             10 +
             "px";
           setSurplusWidth(false);

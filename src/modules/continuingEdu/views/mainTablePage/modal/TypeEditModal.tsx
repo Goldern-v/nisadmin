@@ -20,9 +20,17 @@ export default observer(function TypeEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
+  const teachingMethodList = [
+    { name: '学习', code: '1' },
+    { name: '培训', code: '2' },
+    { name: '考试', code: '3' },
+    { name: '练习', code: '4' },
+    { name: '实操', code: '5' },
+    { name: '演练', code: '6' },
+    { name: '实践', code: '7' },
+  ]; //类型
 
-
-  // 弹窗必填项
+  /** 弹窗必填项 */
   const rules: Rules = {
     // name: val => !!val &&  || "名称不能为空",
     teachingMethod: val => !!val || "教学方式不能为空",
@@ -32,6 +40,7 @@ export default observer(function TypeEditModal(props: Props) {
         : ""
   };
 
+  /** 添加初始化必填项，修改回显数据 */
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -70,6 +79,7 @@ export default observer(function TypeEditModal(props: Props) {
     }
   }, [visible]);
 
+  /** 保存 */
   const checkForm = () => {
     let current = formRef.current;
     if (current) {
@@ -122,7 +132,7 @@ export default observer(function TypeEditModal(props: Props) {
     }
   };
 
-  // 厚街类型管理单独接口
+  /** 厚街类型管理单独接口 */
   const updateTypeDataHJ = (newParams: any) => {
     mainPageApi.updateTypeDataHJ(newParams).then(res => {
       setEditLoading(false);
@@ -132,14 +142,11 @@ export default observer(function TypeEditModal(props: Props) {
     });
   }
 
+  /** 取消弹窗 */
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
   };
-
-  const getName = (tree: any, id: any) => {
-    return tree.find((item: any) => item.id == id).name
-  }
 
   return (
     <Modal
@@ -170,13 +177,11 @@ export default observer(function TypeEditModal(props: Props) {
             <Col span={19}>
               <Form.Field name="teachingMethod">
                 <Select defaultValue="1" disabled={params.id}>
-                  <Select.Option value="1">学习</Select.Option>
-                  <Select.Option value="2">培训</Select.Option>
-                  <Select.Option value="3">考试</Select.Option>
-                  <Select.Option value="4">练习</Select.Option>
-                  <Select.Option value="5">实操</Select.Option>
-                  <Select.Option value="6">演练</Select.Option>
-                  <Select.Option value="7">实践</Select.Option>
+                  {teachingMethodList.map((item: any, idx: any) => (
+                    <Select.Option value={item.code} key={idx}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Field>
             </Col>

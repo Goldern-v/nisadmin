@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { withRouter } from "react-router-dom";
 import { appStore } from "src/stores/index";
@@ -24,7 +24,7 @@ export default withRouter(
 
     const { history } = appStore;
 
-    //教育方式背景颜色函数封装
+    /** 教育方式背景颜色函数封装 */
     const typeBackground = (data: any) => {
       const background = [
         "#EEFDEE",
@@ -63,7 +63,6 @@ export default withRouter(
           }
         }),
         render(teachingMethod: any, record: any) {
-          //1.学习、2培训、3考试、4练习、5实操、6演练
           const teachingMethodArray = [
             "学习",
             "培训",
@@ -115,13 +114,13 @@ export default withRouter(
       }
     ];
 
-    // 初始化
+    /** 初始化数据 */
     useEffect(() => {
       getTableData();
       mainPageModal.getTree()
     }, []);
 
-    // 查询表格初始化数据
+    /** 查询表格初始化数据 */
     const getTableData = () => {
       setLoading(true);
       mainPageApi.getTypeData(id).then(res => {
@@ -132,7 +131,7 @@ export default withRouter(
       });
     };
 
-    //删除
+    /** 删除 */
     const handleDelete = (record: any) => {
       let content = (
         <div>
@@ -164,7 +163,7 @@ export default withRouter(
       });
     };
 
-    // 修改类型管理
+    /** 修改类型管理 */
     const saveOrUpload = (record?: any) => {
       if (record) {
         setEditParams(record);
@@ -177,6 +176,8 @@ export default withRouter(
       }
       setEditVisible(true);
     };
+
+    /** 弹窗 */
     const handleEditCancel = () => {
       setEditVisible(false);
       setEditParams({});

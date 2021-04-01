@@ -1,7 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 
 export default class TypeManagementApi extends BaseApiService {
-  // 查询
+  /** 查询 */
   public getMenuTree() {
     return this.get(`/studyAndTrain/teachingTypeManage/getMenuTree`);
   }

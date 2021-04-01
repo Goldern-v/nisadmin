@@ -19,7 +19,7 @@ class MainPageModal {
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
   @observable public hjSelectedType = ""; //状态
-  // 三级联
+  /** 三级联参数 */
   @observable public trainingKeyPointTreeId: any = ""; // 类型名称
   @observable public knowledgePointDivisionTreeId: any = ""; // 知识点划分
   @observable public learningFormTreeId: any = ""; // 教学方式
@@ -51,20 +51,16 @@ class MainPageModal {
     await Promise.all([
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
-        if (
-          appStore.HOSPITAL_ID === "hj" &&
-          (stepViewModal.getParentsName == "在线学习" ||
-            stepViewModal.getParentsName == "集中培训")
-        ) {
-          this.hjSelectedType = res.data[this.key]
-            ? res.data[this.key].id
-            : res.data[0].id;
+        const nameList = ["集中培训", "在线学习"];
+        if (appStore.HOSPITAL_ID === "hj" && nameList.includes(stepViewModal.getParentsName)) {
+          this.hjSelectedType = res.data[this.key]?.id || res.data[0].id;
         }
         this.selectTypeList = res.data;
       })
     ]);
   }
 
+  /** 获取表格数据 */ 
   onload() {
     this.tableLoading = true;
     mainPageApi.getMainData(this.postObj).then(res => {
@@ -76,7 +72,7 @@ class MainPageModal {
     });
   }
 
-  //导出Excel
+  /** 导出Excel */
   export() {
     mainPageApi.exportMainData(this.postObj).then(res => {
       fileDownload(res);
@@ -88,7 +84,7 @@ class MainPageModal {
     this.hjSelectedType = this.selectTypeList[Number(key)].id;
   }
 
-  //三级联
+  /** 三级联 */ 
   getTree() {
     mainPageApi.getTrainingItemsTree().then(res => {
       this.trainingKeyPointTree = res.data || [];
@@ -100,7 +96,7 @@ class MainPageModal {
 
   async init() {
     await this.initData();
-    await this.onload();
+    this.onload();
   }
 }
 

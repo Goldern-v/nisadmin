@@ -17,15 +17,14 @@ export default observer(function HjTable(props: Props) {
   const addRecordModal = createModal(AddRecordModal); // 添加弹窗
   const [dataList, setDataList] = useState([] as any); // 分类别特殊菜单
   const [tableHeight, setTableHeight] = useState(320); // 表格高度
+  const nameList = ["集中培训", "在线练习考试", "培训统计分析"];
 
   useEffect(() => {
     dataInit();
-    if (stepViewModal.getParentsName == "集中培训" || stepViewModal.getParentsName == "在线练习考试" || stepViewModal.getParentsName == "培训统计分析") {
-      setTableHeight(270)
-    }
+    if (nameList.includes(stepViewModal.getParentsName)) return setTableHeight(270)
   }, [stepViewModal.getThirdName]);
 
-  //培训对象函数封装
+  /** 培训对象函数封装 */
   const setTableConfig = () => {
     let array = [];
     for (let i = 0; i < 7; i++) {
@@ -42,6 +41,7 @@ export default observer(function HjTable(props: Props) {
     return array;
   };
 
+  /** 根据三级菜单设置动态列 */
   const dataInit = () => {
     if (stepViewModal.getThirdName === "考试设置") {
       return setDataList([
@@ -115,7 +115,7 @@ export default observer(function HjTable(props: Props) {
           align: "center"
         }
       ])
-    }  else if (stepViewModal.getParentsName === "集中培训") {
+    } else if (stepViewModal.getParentsName === "集中培训") {
       return setDataList([
         {
           title: "培训对象（必修√/选修△）",
@@ -256,8 +256,8 @@ export default observer(function HjTable(props: Props) {
         return classHours === null ? (
           <span>无</span>
         ) : (
-            <span>{classHours}</span>
-          );
+          <span>{classHours}</span>
+        );
       }
     },
     ...dataList,
@@ -471,7 +471,7 @@ export default observer(function HjTable(props: Props) {
     }
   ];
 
-  //删除
+  /** 删除 */
   const handleDelete = (record: any) => {
     let content = (
       <div>
@@ -500,7 +500,7 @@ export default observer(function HjTable(props: Props) {
     });
   };
 
-  //撤销
+  /** 撤销 */
   const handleRevoke = (record: any) => {
     let content = (
       <div>
@@ -531,7 +531,7 @@ export default observer(function HjTable(props: Props) {
     });
   };
 
-  // 查看结果
+  /** 查看结果 */
   const checkResult = (record: any) => {
     const teachingMethodArray = [
       "studyResultReview",
@@ -546,7 +546,7 @@ export default observer(function HjTable(props: Props) {
     appStore.history.push(`/${router}?id=${record.id}&teachingMethod=${record.teachingMethodName}`);
   };
 
-  // 修改
+  /** 修改 */
   const handReWrite = (record: any) => {
     addRecordModal.show({
       id: record.id,
@@ -557,34 +557,12 @@ export default observer(function HjTable(props: Props) {
     });
   };
 
-  //trainingInfoReview 查看详情(所有类型)
-  // 查看信息
+  /** 查看信息 */
   const checkMessage = (record: any) => {
     appStore.history.push(`/trainingInfoReview?id=${record.id}`);
   };
 
-  // 处理复制入参数据
-  const copyData = (data: any, record: any) => {
-    let ajaxMap: any = {
-      1: "addTeachingPlanInfoStudy",
-      2: "addTeachingPlanInfoTrain",
-      3: "addTeachingPlanInfoExam",
-      4: "addTeachingPlanInfoExercise",
-      5: "addTeachingPlanInfoPractise",
-      6: "addTeachingPlanInfoWalkthrough"
-    };
-    data.id && delete data.id;
-    data.archiveTime && delete data.archiveTime;
-    data.createTime && delete data.createTime;
-    data.endTime && delete data.endTime;
-    data.submitTime && delete data.submitTime;
-    data.status = 1;
-    return (stepServices as any)[ajaxMap[record.teachingMethod as any] as any](
-      data
-    );
-  };
-
-  // 复制
+  /** 复制 */
   const handleCopy = (record: any) => {
     let content = (
       <div>

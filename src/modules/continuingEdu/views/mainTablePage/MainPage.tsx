@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import HjTable from "./components/HjTable";
@@ -21,7 +20,7 @@ interface Props {
 export default observer(function MainPage(props: Props) {
   const { getTitle, getId, getParentsName } = props; //获取当前页面标题
   const addRecordModal = createModal(AddRecordModal); // 添加弹窗
-  const [dataList, setDataList] = useState([] as any); // 动态TAbs
+  const [dataList, setDataList] = useState([] as any); // 动态Tabs
 
   useEffect(() => {
     stepViewModal.getParentsName = getParentsName || "";
@@ -29,7 +28,7 @@ export default observer(function MainPage(props: Props) {
     getTabs();
   }, [getId, getTitle]);
 
-  // 获取动态选项卡
+  /** 获取动态选项卡 */
   const getTabs = () => {
     let arr: any = [];
     let obj: any = {};
@@ -45,15 +44,12 @@ export default observer(function MainPage(props: Props) {
     });
   };
 
-  return (
-    <Wrapper>
-      <Header
-        getTitle={getTitle}
-        getId={getId}
-        addRecordModal={addRecordModal}
-      />
-      <Content>
-        {appStore.HOSPITAL_ID === "hj" && getParentsName === "在线学习" ? (
+  /** 动态渲染页面组件 */
+  const getDynamicPage = () => {
+    const arr = ["集中培训", "在线练习考试"];
+    if (["hj"].includes(appStore.HOSPITAL_ID)) {
+      if (getParentsName === "在线学习")
+        return (
           <BaseTabs
             defaultActiveKey={mainPageModal.key}
             config={dataList}
@@ -63,13 +59,23 @@ export default observer(function MainPage(props: Props) {
               mainPageModal.onload();
             }}
           />
-        ) : appStore.HOSPITAL_ID === "hj" &&
-          (getParentsName === "集中培训" ||
-            getParentsName === "在线练习考试") ? (
-          <HjTable />
-        ) : (
-          <Table getId={getId} addRecordModal={addRecordModal} />
-        )}
+        );
+      if (arr.includes(getParentsName))
+        return <HjTable />;
+    } else {
+      return <Table getId={getId} addRecordModal={addRecordModal} />
+    }
+  }
+
+  return (
+    <Wrapper>
+      <Header
+        getTitle={getTitle}
+        getId={getId}
+        addRecordModal={addRecordModal}
+      />
+      <Content>
+        {getDynamicPage()}
       </Content>
       <addRecordModal.Component />
     </Wrapper>
@@ -79,6 +85,7 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
 `;
-const Content = styled(TabledCon)`
+const Content = styled.div`
   box-sizing: border-box;
+  padding: 0 20px;
 `;

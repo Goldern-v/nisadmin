@@ -7,7 +7,6 @@ import { mainPageModal } from "../MainPageModal";
 import { mainPageApi } from "../api/MainPageApi";
 import { appStore, authStore } from "src/stores";
 import { stepServices } from "../../../modal/stepComponent/services/stepServices";
-
 interface Props {
   getId: any;
   addRecordModal: any;
@@ -15,7 +14,8 @@ interface Props {
 
 export default observer(function Table(props: Props) {
   let id = props.getId || "";
-  //培训对象函数封装
+
+  /** 培训对象函数封装 */
   const setTableConfig = () => {
     let array = [];
     for (let i = 0; i < 7; i++) {
@@ -32,7 +32,7 @@ export default observer(function Table(props: Props) {
     return array;
   };
 
-  //教育方式背景颜色函数封装
+  /** 教育方式背景颜色函数封装 */
   const typeBackground = (data: any) => {
     const background = [
       "#EEFDEE",
@@ -261,11 +261,11 @@ export default observer(function Table(props: Props) {
       render(text: any, record: any, index: number) {
         let data: any = authStore.isAd
           ? [
-              {
-                text: "删除",
-                function: handleDelete
-              }
-            ]
+            {
+              text: "删除",
+              function: handleDelete
+            }
+          ]
           : [];
         switch (record.statusDesc) {
           case "待开始":
@@ -414,7 +414,7 @@ export default observer(function Table(props: Props) {
     }
   ];
 
-  //删除
+  /** 删除 */
   const handleDelete = (record: any) => {
     let content = (
       <div>
@@ -438,12 +438,12 @@ export default observer(function Table(props: Props) {
               Message.error("文件删除失败");
             }
           })
-          .catch(e => {});
+          .catch(e => { });
       }
     });
   };
 
-  //撤销
+  /** 撤销 */
   const handleRevoke = (record: any) => {
     let content = (
       <div>
@@ -474,7 +474,7 @@ export default observer(function Table(props: Props) {
     });
   };
 
-  // 查看结果
+  /** 查看结果 */
   const checkResult = (record: any) => {
     const teachingMethodArray = [
       "studyResultReview",
@@ -489,7 +489,7 @@ export default observer(function Table(props: Props) {
     appStore.history.push(`/${router}?id=${record.id}&teachingMethod=${record.teachingMethodName}`);
   };
 
-  // 修改
+  /** 修改 */
   const handReWrite = (record: any) => {
     props.addRecordModal.show({
       id: record.id,
@@ -500,13 +500,12 @@ export default observer(function Table(props: Props) {
     });
   };
 
-  //trainingInfoReview 查看详情(所有类型)
-  // 查看信息
+  /** 查看信息 */
   const checkMessage = (record: any) => {
     appStore.history.push(`/trainingInfoReview?id=${record.id}`);
   };
 
-  // 处理复制入参数据
+  /** 处理复制入参数据 */
   const copyData = (data: any, record: any) => {
     let ajaxMap: any = {
       1: "addTeachingPlanInfoStudy",
@@ -516,18 +515,12 @@ export default observer(function Table(props: Props) {
       5: "addTeachingPlanInfoPractise",
       6: "addTeachingPlanInfoWalkthrough"
     };
-    data.id && delete data.id;
-    data.archiveTime && delete data.archiveTime;
-    data.createTime && delete data.createTime;
-    data.endTime && delete data.endTime;
-    data.submitTime && delete data.submitTime;
-    data.status = 1;
     return (stepServices as any)[ajaxMap[record.teachingMethod as any] as any](
       data
     );
   };
 
-  // 复制
+  /** 复制 */
   const handleCopy = (record: any) => {
     let content = (
       <div>

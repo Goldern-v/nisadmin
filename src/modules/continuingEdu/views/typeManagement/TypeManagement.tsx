@@ -6,10 +6,12 @@ import { Button, Tooltip } from "antd";
 import { appStore, authStore } from "src/stores";
 import TypeAddModal from "./modal/TypeAddModal";
 import { typeManagementModal } from "./TypeManagementModal";
-interface Props {}
+interface Props { }
 
 export default observer(function TypeManagement(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制弹窗状态
+
+  // 表格列
   const columns: any = [
     {
       title: "菜单设置",
@@ -65,8 +67,7 @@ export default observer(function TypeManagement(props: Props) {
                       );
                     }).name || "";
                   appStore.history.push(
-                    `/typeManagement?id=${record.id}&pName=${name}&name=${
-                      record.name
+                    `/typeManagement?id=${record.id}&pName=${name}&name=${record.name
                     }`
                   );
                 }}
@@ -80,7 +81,7 @@ export default observer(function TypeManagement(props: Props) {
     }
   ];
 
-  // 初始化
+  // 初始化函数
   useLayoutEffect(() => {
     typeManagementModal.onload();
   }, []);
@@ -127,7 +128,7 @@ export default observer(function TypeManagement(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">类型管理</div>
             <div className="topHeaderButton">
-            {(appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) &&<Button onClick={() => setEditVisible(true)}>添加类型</Button>}
+              {(appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) && <Button onClick={() => setEditVisible(true)}>添加类型</Button>}
             </div>
           </div>
         </TopHeader>

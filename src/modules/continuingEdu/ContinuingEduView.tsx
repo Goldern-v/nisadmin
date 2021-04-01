@@ -4,7 +4,6 @@ import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
 import { continuningEduAuth } from './data/continuningEduAuth'
-
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
 import { ReactComponent as JXJH } from "./assets/icon_svg/JXJH.svg";
@@ -33,7 +32,6 @@ import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagem
 import 培训统计分析 from './views/allMenus/AllMenus'
 import 在线学习 from "./views/onlineLearning/OnlineLearning";
 import 培训手册 from "./views/onlineLearning/OnlineLearning-hj";
-// import FormReview from "./views/trainingSetting/formReview/FormReview";
 // 厚街资质准入表单
 import FormApply from "./views/trainingSetting/formApply/FormApply";
 //题库管理
@@ -115,8 +113,6 @@ export default function ContinuingEdu(props: Props) {
           {
             title: "人员管理",
             icon: <RYGL />,
-            // path: "/continuingEdu/人员管理",
-            // component: 人员管理,
             hide: () =>
               queyMenuAuthInfo("nm_lat_personelManage") ||
               authStore.isOnlyInternsManage,
@@ -213,12 +209,6 @@ export default function ContinuingEdu(props: Props) {
       icon: <JXJH />,
       hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
-        // {
-        //   title: "资质准入管理",
-        //   formName: "资质准入管理",
-        //   path: "/continuingEdu/资质准入管理",
-        //   component: FormReview
-        // },
         {
           title: "临床带教资质准入",
           formName: "护理临床带教资质准入申请表",
@@ -337,7 +327,6 @@ export default function ContinuingEdu(props: Props) {
           },
         ]
       },
-      // currentHospitalId: appStore.isDev ? 'development' : "production"
     }),
     //题库管理 根据医院切换
     ...appStore.hisMatch({
@@ -644,8 +633,8 @@ export default function ContinuingEdu(props: Props) {
     meunSettingApi.getData().then((res: any) => {
       let newArr: any = [];
       if (res.data) {
-        let arr = res.data;
-        if (arr.length > 0) {
+        let arr = res.data || [];
+        if (arr && arr.length) {
           arr.map((item: any, index: number) => {
             var obj1: any = {
               id: item.id,
@@ -694,7 +683,6 @@ export default function ContinuingEdu(props: Props) {
 
   // 路由跳转
   // const routerTo = () => {
-  //   console.log("11111111");
   //   let data = LEFT_MENU_CONFIG.find((item: any, index: any) => {
   //     return typeof item.hide === "boolean" ? !item.hide : !!!item.hide();
   //   });

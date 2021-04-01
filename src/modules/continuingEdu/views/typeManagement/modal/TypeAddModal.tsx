@@ -16,7 +16,7 @@ export interface Props {
 
 export default observer(function TypeEditModal(props: Props) {
   const { visible, onCancel, onOk } = props;
-  const [editLoading, setEditLoading] = useState(false);
+  const [editLoading, setEditLoading] = useState(false); //loading
   const formRef = React.createRef<Form>();
 
   // 弹窗必填项
@@ -36,6 +36,7 @@ export default observer(function TypeEditModal(props: Props) {
     }
   }, [visible]);
 
+  // 保存
   const checkForm = () => {
     let current = formRef.current;
     if (current) {
