@@ -5,8 +5,8 @@ class TeachingQualityEvalService extends BaseApiService {
   public exportEvalPlanStatDetailListByPage(query: {
     evalPlanId: number, // 评教计划id
     keyWord: string, // 搜索关键字
-    pageSize: number, // 每页大小
-    pageIndex: number, // 第几页
+    pageSize?: number, // 每页大小
+    pageIndex?: number, // 第几页
   }) {
     return this.post('/studyAndTrain/teachingQualityEval/exportEvalPlanStatDetailListByPage', query, { responseType: 'blob' })
   }

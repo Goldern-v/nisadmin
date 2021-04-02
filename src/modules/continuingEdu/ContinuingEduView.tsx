@@ -273,7 +273,7 @@ export default function ContinuingEdu(props: Props) {
     {
       title: "教学质量管理",
       icon: <JXJH />,
-      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
+      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage || !appStore.isDev,
       children: [
         {
           title: "教学质量评价详情",

@@ -5,13 +5,12 @@ import { appStore, authStore } from 'src/stores'
 
 export interface Props {
   visible: boolean,
-  onOk: Function,
   onCancel: Function,
   params: any
 }
 
-export default function 评教调查表(props: Props) {
-  const { visible, onOk, onCancel, params } = props
+export default function TeachingQualityEvalForm(props: Props) {
+  const { visible, onCancel, params } = props
 
   const rowInfo = [
     {
@@ -130,7 +129,12 @@ export default function 评教调查表(props: Props) {
   ]
 
   return <Modal
-    title="评教调查表">
+    title="评教调查表"
+    visible={visible}
+    centered
+    width={800}
+    footer={null}
+    onCancel={() => onCancel()}>
     <Wrapper>
       <table>
         <tbody>

@@ -147,6 +147,7 @@ export default observer(function AduitModal(props: Props) {
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
+    // console.log(userAudit)
     auditFormSubmit(userAudit)
     setUserCheckVisible(false)
   }

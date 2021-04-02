@@ -129,12 +129,12 @@ export default observer(function 中医护理方案季度评价总结表(props: 
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
-                        <span className="title-text">
-                          <pre>
-                            {cItem.label || cItem.itemCode}
-                          </pre>
-                        </span>
-                      )}
+                      <span className="title-text">
+                        <pre>
+                          {cItem.label || cItem.itemCode}
+                        </pre>
+                      </span>
+                    )}
                   </CTitleBox>
                 )
               )}
@@ -153,10 +153,10 @@ export default observer(function 中医护理方案季度评价总结表(props: 
             </ThBox>
           )
         ) : (
-              <pre>
-                {item.label || item.itemCode}
-              </pre>
-            ),
+          <pre>
+            {item.label || item.itemCode}
+          </pre>
+        ),
         align: "center",
         className: "input-cell",
         colSpan: item.colSpan,
@@ -208,11 +208,11 @@ export default observer(function 中医护理方案季度评价总结表(props: 
             {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
-                <span
-                  onClick={() => handleDeleteRow(record, index)}>
-                  删除
-                </span>
-              )}
+              <span
+                onClick={() => handleDeleteRow(record, index)}>
+                删除
+              </span>
+            )}
           </DoCon>
         );
       }
@@ -228,90 +228,9 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   const onAddBlock = () => {
     let createTime = ''
 
-    let ModalContent = () => {
-      const [year, setYear] = useState(moment())
-      const [quarter, setQuarter] = useState(1)
-      const [time, setTime] = useState(moment())
-
-      useEffect(() => {
-        let yearStr = year.format('YYYY')
-        let dateStr = (() => {
-          switch (quarter) {
-            case 2:
-              return '04-01'
-            case 3:
-              return '07-01'
-            case 4:
-              return '10-01'
-            default:
-              return '01-01'
-          }
-        })()
-        setTime(moment(`${yearStr}-${dateStr}`))
-      }, [year, quarter])
-
-      useEffect(() => {
-        if (time) {
-          createTime = time.format("YYYY-MM-DD")
-
-          if (time.format('YYYY') !== year.format('YYYY'))
-            setYear(time)
-
-          if (time.quarter() !== quarter)
-            setQuarter(time.quarter())
-        }
-      }, [time])
-
-      const ContentWrapper = styled.div`
-        .ant-row{
-          margin-top: 10px;
-          .ant-col:first-of-type{
-            line-height: 30px;
-            text-align: right;
-          }
-        }
-      `
-
-      return <div>
-        <div>{`新建${registerName}，历史${registerName}请切换修订版本查看`}</div>
-        <ContentWrapper>
-          <Row>
-            <Col span={6}>
-              年
-              <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
-              份：
-            </Col>
-            <Col span={18}>
-              <YearPicker allowClear={false} value={year} onChange={(val: moment.Moment) => setYear(val)} />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6}>
-              季
-              <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
-              度：
-            </Col>
-            <Col span={18}>
-              <Select value={quarter} onChange={(val: number) => setQuarter(val)}>
-                <Option value={1}>第一季度</Option>
-                <Option value={2}>第二季度</Option>
-                <Option value={3}>第三季度</Option>
-                <Option value={4}>第四季度</Option>
-              </Select>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6}>创建时间：</Col>
-            <Col span={18}>
-              <DatePicker allowClear={false} value={time} onChange={(val: moment.Moment) => setTime(val)} />
-            </Col>
-          </Row>
-        </ContentWrapper>
-      </div>
-    }
-
     globalModal
-      .confirm(`是否新建${registerName}`, <ModalContent />)
+      .confirm(`是否新建${registerName}`,
+        <ModalContent handleCreateTimeChange={(time: string) => createTime = time} registerName={registerName} />)
       .then(res => {
         // console.log(createTime)
         wardRegisterService
@@ -320,8 +239,7 @@ export default observer(function 中医护理方案季度评价总结表(props: 
             message.success("创建成功");
             onInitData();
           });
-      })
-      .catch((e) => console.error(e));
+      }, err => console.log(err))
   };
 
   /** 公共函数 */
@@ -514,16 +432,120 @@ export default observer(function 中医护理方案季度评价总结表(props: 
           </div>
         </React.Fragment>
       ) : (
-          <NullBox
-            onClick={onAddBlock}
-            text={"创建登记本"}
-            registerName={registerName}
-          />
-        )}
+        <NullBox
+          onClick={onAddBlock}
+          text={"创建登记本"}
+          registerName={registerName}
+        />
+      )}
     </TableCon>
   </Container>
 })
 
+const ModalContent = (props: {
+  handleCreateTimeChange: Function,
+  registerName: string,
+}) => {
+  const { handleCreateTimeChange, registerName } = props
+
+  const [year, setYear] = useState(moment())
+  const [quarter, setQuarter] = useState(1)
+  const [time, setTime] = useState(moment())
+
+  useEffect(() => {
+    if (time)
+      handleCreateTimeChange(time.format("YYYY-MM-DD"))
+  }, [time])
+
+  const handleYearOrQuarterChange = (_year: moment.Moment, _quarter: number) => {
+    let yearStr = _year.format('YYYY')
+    let dateStr = (() => {
+      switch (_quarter) {
+        case 2:
+          return '04-01'
+        case 3:
+          return '07-01'
+        case 4:
+          return '10-01'
+        default:
+          return '01-01'
+      }
+    })()
+
+    setTime(moment(`${yearStr}-${dateStr}`))
+    if (year !== _year) setYear(_year)
+    if (quarter !== _quarter) setQuarter(_quarter)
+  }
+
+  const handleTimeChange = (val: moment.Moment) => {
+    setTime(val)
+
+    if (val.format('YYYY') !== year.format('YYYY'))
+      setYear(val)
+
+    if (val.quarter() !== quarter)
+      setQuarter(val.quarter())
+  }
+
+  const ContentWrapper = styled.div`
+    .ant-row{
+      margin-top: 10px;
+      .ant-col:first-of-type{
+        line-height: 30px;
+        text-align: right;
+      }
+    }
+  `
+
+  return <div>
+    <div>{`新建${registerName}，历史${registerName}请切换修订版本查看`}</div>
+    <ContentWrapper>
+      <Row>
+        <Col span={6}>
+          年
+          <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
+          份：
+        </Col>
+        <Col span={18}>
+          <YearPicker
+            allowClear={false}
+            value={year}
+            onChange={(_year: moment.Moment) =>
+              handleYearOrQuarterChange(_year, quarter)} />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>
+          季
+          <span style={{ width: 28, height: 10, display: 'inline-block' }}></span>
+          度：
+        </Col>
+        <Col span={18}>
+          <Select
+            value={quarter}
+            onChange={(_quarter: number) =>
+              handleYearOrQuarterChange(year, _quarter)}>
+            <Option value={1}>第一季度</Option>
+            <Option value={2}>第二季度</Option>
+            <Option value={3}>第三季度</Option>
+            <Option value={4}>第四季度</Option>
+          </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>创建时间：</Col>
+        <Col span={18}>
+          <DatePicker
+            allowClear={false}
+            value={time}
+            onChange={(val: moment.Moment) => handleTimeChange(val)} />
+        </Col>
+      </Row>
+    </ContentWrapper>
+  </div>
+}
+
+// @ts-ignore
 const Container = styled(Wrapper)`
   .ant-select-disabled .ant-select-selection{
       background: rgba(0,0,0,0.0)!important;

@@ -7,6 +7,10 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import moment from 'src/vendors/moment'
 import BaseTabs from 'src/components/BaseTabs'
+import { teachingQualityEvalService } from './services/TeachingQualityEvalService'
+import { appStore } from 'src/stores'
+import qs from 'qs'
+import { evalTypeGroup } from './utils/evalType'
 
 const RangePicker = DatePicker.RangePicker
 
@@ -18,14 +22,15 @@ export default function 护理教学质量评价() {
   let _currentYear = currentYear()
 
   const [query, setQuery] = useState({
-    queryBeginTime: _currentMonth[0].format('YYYY-MM-DD'),
-    queryEndTime: _currentMonth[1].format('YYYY-MM-DD'),
+    evalType: '1' as '1' | '2' | '3',
+    beginTime: _currentMonth[0].format('YYYY-MM-DD'),
+    endTime: _currentMonth[1].format('YYYY-MM-DD'),
     pageIndex: 1,
     pageSize: 20,
     keyWord: '',
   })
 
-  const [activeTab, setActiveTab] = useState('0')
+  const [activeTab, setActiveTab] = useState('1')
 
   const [tableData, setTableData] = useState([] as any[])
   const [total, setTotal] = useState(0)
@@ -38,51 +43,56 @@ export default function 护理教学质量评价() {
       width: 50,
       align: 'center',
       render: (text: string, record: any, idx: number) =>
-        query.pageSize * (query.pageIndex - 1) + 1
+        query.pageSize * (query.pageIndex - 1) + idx + 1
     },
     {
-      title: '时间',
-      dataIndex: '时间',
+      title: '开始时间',
+      dataIndex: 'beginTime',
       align: 'center',
       width: 120,
     },
     {
-      title: '带教老师',
-      dataIndex: '带教老师',
-      align: 'center',
-      width: 80,
-    },
-    {
-      title: '技术名称',
-      dataIndex: '技术名称',
-      align: 'center',
-      width: 80,
-    },
-    {
-      title: '技术名称',
-      dataIndex: '技术名称',
+      title: '结束时间',
+      dataIndex: 'endTime',
       align: 'center',
       width: 120,
     },
     {
       title: '标题',
-      dataIndex: '标题',
+      dataIndex: 'title',
       align: 'center',
+      width: 200,
+    },
+    {
+      title: '参与人数',
+      dataIndex: 'evalPersonCount',
+      align: 'center',
+      width: 80,
     },
     {
       title: '状态',
-      dataIndex: '状态',
+      dataIndex: 'epStatusDesc',
       align: 'center',
       width: 80,
+      render: (text) => {
+        switch (text) {
+          case '待开始':
+            return <span style={{ color: '#70B603' }}>{text}</span>
+          case '进行中':
+            return <span style={{ color: '#F59A23' }}>{text}</span>
+          default:
+            return <span>{text}</span>
+        }
+      }
     },
     {
       title: '操作',
       dataIndex: '操作',
       align: 'center',
       width: 80,
-      render: () => {
+      render: (text: any, record: any) => {
         return <DoCon>
-          <span>查看详情</span>
+          <span onClick={() => handleDetail(record)}>查看详情</span>
         </DoCon>
       }
     },
@@ -91,7 +101,31 @@ export default function 护理教学质量评价() {
   const getTableData = () => {
     setLoading(true)
 
-    setLoading(false)
+    teachingQualityEvalService
+      .queryEvalPlanStatListByPage({
+        ...query,
+        beginTime: query.beginTime ? query.beginTime + ' 00:00' : '',
+        endTime: query.endTime ? query.endTime + ' 24:00' : '',
+      })
+      .then(res => {
+        if (res.data) {
+          setTableData(res.data.list || [])
+          setTotal(res.data.totalCount || 0)
+        }
+
+        setLoading(false)
+      }, () => setLoading(false))
+  }
+
+  const handleDetail = (record: any) => {
+    appStore.history
+      .push(`/continuingEdu/教学质量评价详情?${qs.stringify({
+        evalPlanId: record.id,
+        title: record.title,
+        submitTimeBegin: record.beginTime,
+        submitTimeEnd: record.endTime,
+        evalType: record.evalType,
+      })}`)
   }
 
   useEffect(() => {
@@ -101,6 +135,7 @@ export default function 护理教学质量评价() {
   const TableCon =
     <BaseTable
       surplusHeight={260}
+      loading={loading}
       dataSource={tableData}
       columns={columns}
       pagination={{
@@ -121,7 +156,7 @@ export default function 护理教学质量评价() {
       <RangePicker
         className="content-item"
         style={{ width: 220, marginRight: 10 }}
-        value={[moment(query.queryBeginTime), moment(query.queryEndTime)]}
+        value={[moment(query.beginTime), moment(query.endTime)]}
         ranges={{
           '本月': _currentMonth,
           '本季度': _currentQuater,
@@ -130,8 +165,8 @@ export default function 护理教学质量评价() {
         onChange={(payload: any) => {
           setQuery({
             ...query,
-            queryBeginTime: payload[0].format('YYYY-MM-DD'),
-            queryEndTime: payload[1].format('YYYY-MM-DD'),
+            beginTime: payload[0].format('YYYY-MM-DD'),
+            endTime: payload[1].format('YYYY-MM-DD'),
             pageIndex: 1,
           })
         }}
@@ -146,23 +181,15 @@ export default function 护理教学质量评价() {
     <MainCon>
       <BaseTabs
         defaultActiveKey={activeTab}
-        config={[
-          {
-            title: "实习生评教",
-            component: TableCon
-          },
-          {
-            title: "规培生评教",
-            component: TableCon
-          },
-          {
-            title: "临床护理教学质量督导",
-            component: TableCon
-          },
-        ]}
+        config={Object.keys(evalTypeGroup).map((key: any) => ({
+          title: evalTypeGroup[key].name,
+          index: key,
+          component: TableCon,
+        }))}
         onChange={(key: any) => {
+          console.log(key)
           setActiveTab(key)
-          setQuery({ ...query, pageIndex: 1 })
+          setQuery({ ...query, pageIndex: 1, evalType: key })
         }} />
     </MainCon>
   </Wrapper>
