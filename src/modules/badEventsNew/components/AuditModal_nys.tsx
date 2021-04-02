@@ -44,7 +44,7 @@ export default observer(function AduitModal(props: Props) {
   const [confirmLoading, setConfirmLoading] = useState(false)
 
   //转发科室列表
-  const [dealerDepts, setDealerDepts] = useState([] as any)
+  // const [dealerDepts, setDealerDepts] = useState([] as any)
   //转发科室护士列表
   const [returnDeptNurseList, setReturnDeptNurseList] = useState([] as any[])
 
@@ -91,20 +91,20 @@ export default observer(function AduitModal(props: Props) {
       getReturnDeptNurseList()
   }, [instanceOrign])
 
-  const getDealerDepts = () => {
-    api.getDeptList().then((res) => {
-      let data = res.data
-      if (data instanceof Array)
-        setDealerDepts(
-          data.map((item: any) => {
-            return {
-              name: item.deptName,
-              value: item.deptCode
-            }
-          })
-        )
-    })
-  }
+  // const getDealerDepts = () => {
+  //   api.getDeptList().then((res) => {
+  //     let data = res.data
+  //     if (data instanceof Array)
+  //       setDealerDepts(
+  //         data.map((item: any) => {
+  //           return {
+  //             name: item.deptName,
+  //             value: item.deptCode
+  //           }
+  //         })
+  //       )
+  //   })
+  // }
 
   const getReturnDeptNurseList = () => {
     commonApiService.userDictInfo(instanceOrign.deptCode)
@@ -165,7 +165,7 @@ export default observer(function AduitModal(props: Props) {
       sac: formMap[`${eventCode}_sac_option`],
     }
 
-    /**转归科室推送护士 */
+    // 转归科室推送护士
     if (formMap.nurseList)
       params.nurseList = formMap.nurseList.map((item: any) => ({
         empName: item.label,
@@ -182,8 +182,15 @@ export default observer(function AduitModal(props: Props) {
         case "pressure_auditor":
           return formMap[`${eventCode}_skzkxzyj_explain`];
       }
-    };
-    params.auditMind = auditMind();
+    }
+
+    // 填充护理组长/护士长字段
+    if (status == 'nurse_auditor') {
+      params.paramMap[`${eventCode}_hlzzhsz_empno`] = userAudit.empNo
+      params.paramMap[`${eventCode}_hlzzhsz_explain`] = authStore.user?.empName
+    }
+
+    params.auditMind = auditMind()
 
     delete params.paramMap.nurseList
     delete params.operatorStatus

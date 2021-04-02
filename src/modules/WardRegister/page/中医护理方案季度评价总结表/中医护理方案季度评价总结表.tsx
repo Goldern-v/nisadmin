@@ -449,7 +449,7 @@ const ModalContent = (props: {
   const { handleCreateTimeChange, registerName } = props
 
   const [year, setYear] = useState(moment())
-  const [quarter, setQuarter] = useState(1)
+  const [quarter, setQuarter] = useState(moment().quarter())
   const [time, setTime] = useState(moment())
 
   useEffect(() => {
