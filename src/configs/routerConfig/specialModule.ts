@@ -26,6 +26,7 @@ import NurseFileDetailView_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzh
 import NurseFileDetailView_lcey from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_gzsrm from "src/modules/nurseFiles/view/nurseFiles-gzsrm/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_dghl from "src/modules/nurseFiles/view/nurseFiles-dghl/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -148,7 +149,6 @@ if (
   ];
 
   //武汉护理制度
-  // if (appStore.isDev) {
   specialModule = specialModule.concat([
     setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
     setLayout(
@@ -167,22 +167,6 @@ if (
       layouts.MainLayout
     )
   ]);
-  // } else {
-  //   specialModule = specialModule.concat([
-  //     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
-  //     setLayout(
-  //       "/nursingRulesNewDetail",
-  //       NursingRulesNewDetail,
-  //       layouts.MainLayout
-  //     ),
-  //     setLayout(
-  //       "/NursingRulesPagePreView",
-  //       NursingRulesPagePreview,
-  //       layouts.MainLayout
-  //     ),
-  //     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  //   ]);
-  // }
 } else if (appStore.HOSPITAL_ID == 'dzlc') {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'gzhd') {
@@ -272,6 +256,31 @@ if (
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_jmfy,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
+} else if (appStore.HOSPITAL_ID == 'dghl') {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_dghl,
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),

@@ -11,6 +11,7 @@ import NurseFilesListView_gzhd from "./view/nurseFiles-gzhd/views/nurseFilesList
 import NurseFilesListView_lcey from "./view/nurseFiles-lcey/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_gzsrm from "./view/nurseFiles-gzsrm/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_jmfy from "./view/nurseFiles-jmfy/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_dghl from "./view/nurseFiles-dghl/views/nurseFilesList/NurseFilesListView";
 
 
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
@@ -58,6 +59,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_gzsrm;
       case "jmfy":
         return NurseFilesListView_jmfy;
+      case "dghl":
+        return NurseFilesListView_dghl;
       default:
         return NurseFilesListView_hj;
     }

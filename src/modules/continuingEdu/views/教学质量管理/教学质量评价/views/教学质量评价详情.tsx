@@ -87,12 +87,6 @@ export default function 护理教学质量评价详情() {
       width: 80,
     },
     {
-      title: '专业',
-      dataIndex: '专业',
-      align: 'center',
-      width: 80,
-    },
-    {
       title: '实习科室',
       dataIndex: 'deptName',
       align: 'center',
