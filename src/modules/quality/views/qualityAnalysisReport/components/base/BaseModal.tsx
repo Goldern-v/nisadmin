@@ -73,7 +73,8 @@ export default observer(function BaseModal(props: Props) {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             return Object.assign(item, {
-              deductScore: Number(Number(item.deductScore).toFixed(2))
+              deductScore: Number(Number(item.deductScore).toFixed(2)),
+              convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
             })
           })
         })

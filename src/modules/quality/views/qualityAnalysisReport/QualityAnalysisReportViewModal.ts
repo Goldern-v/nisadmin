@@ -115,7 +115,8 @@ class QualityAnalysisReportViewModal {
     })
     this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
       return Object.assign(item, {
-        deductScore: Number(Number(item.deductScore).toFixed(2))
+        deductScore: Number(Number(item.deductScore).toFixed(2)),
+        convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
       })
     })
     this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {

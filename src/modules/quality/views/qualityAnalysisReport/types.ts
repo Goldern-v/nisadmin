@@ -48,12 +48,13 @@ export interface TypeCompare {
 }
 /** 扣分科室 */
 export interface DeptItem {
+  convertDeductScore?: string | number;
   id: number
   wardCode: string
   wardName: string
   itemCode: string
   itemBadDesc: string
-  deductScore: number | string
+  deductScore?: number | string
 }
 /** 主要质量问题 */
 export interface DetailItem {
@@ -74,9 +75,9 @@ export interface DetailItem {
   detailList: any[]
 }
 /** 检查亮点 */
-interface HighlightItem extends DetailItem {}
+interface HighlightItem extends DetailItem { }
 /** 重点问题 */
-interface keyItem extends DetailItem {}
+interface keyItem extends DetailItem { }
 
 /** 4.2、持续改进 5.1.检查重点 */
 export interface CurrentImproveItem {

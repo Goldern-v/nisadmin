@@ -20,14 +20,19 @@ const baseConfig: navConfigItem[] = [
     name: "审核管理",
     path: "/auditsManagement"
   },
-  {
-    name: "病区日志",
-    path: "/wardLog"
-    // hidden: !appStore.isDev
-  },
+  // {
+  //   name: "病区日志",
+  //   path: "/wardLog"
+  //   // hidden: !appStore.isDev
+  // },
   {
     name: "档案管理",
     path: "/nurseFile"
+  },
+  {
+    name: '病区登记本',
+    path: '/wardRegister',
+    icon: require('../images/menu-icon/病区登记本@2x.png')
   },
   // {
   //   name: '不良事件',
@@ -53,14 +58,9 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOneHj",
+        path: "/qcOne/nursingWorkPlainList",
         icon: require("../images/menu-icon/一级质控@2x.png")
       },
-      // {
-      //   name: '病区登记本',
-      //   path: '',
-      //   icon: require('../images/menu-icon/病区登记本@2x.png')
-      // },
       {
         name: "查询统计",
         path: "/queryStatistics",

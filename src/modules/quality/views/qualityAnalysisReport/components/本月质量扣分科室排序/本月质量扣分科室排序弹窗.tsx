@@ -90,7 +90,32 @@ export default function 本月质量扣分科室排序弹窗(props: Props) {
       },
       width: 100
     },
+    {
+      title: '折算扣分',
+      key: '折算扣分',
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.convertDeductScore || ''}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
 
+              record.convertDeductScore = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
     {
       title: '操作',
       key: '操作',
@@ -118,11 +143,13 @@ export default function 本月质量扣分科室排序弹窗(props: Props) {
       itemCode: '',
       itemName: '',
       itemImproveDesc: '',
-      result: ''
+      result: '',
+      deductScore: '0',
+      convertDeductScore: '0',
     })
     setData(cloneData)
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
       <div className='button-con'>
