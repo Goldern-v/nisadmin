@@ -7,7 +7,7 @@ import { examOrExerciseModel } from "./ExamOrExerciseModel";
 import { examOrExerciseApi } from "./api/ExamOrExerciseApi";
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
-export interface Props {}
+export interface Props { }
 export default observer(function OnlineLearningReview(props: Props) {
   const { queryObj } = appStore;
   const {
@@ -231,12 +231,14 @@ export default observer(function OnlineLearningReview(props: Props) {
       })
       .catch(err => setBtnLoading(false));
   };
+
   // 提交练习题
   const handInExercisePaper = async (status: boolean) => {
     await handleSaveData(exerciseInfo);
     setBtnLoading(true);
     saveExerciseProcessInfo(status);
   };
+
   // 暂存练习题
   const temporarySaveExercisePaper = async (status: boolean) => {
     await handleSaveData(exerciseInfo);

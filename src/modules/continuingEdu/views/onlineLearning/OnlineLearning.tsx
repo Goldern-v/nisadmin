@@ -13,14 +13,14 @@ export default observer(function OnlineLearning(props: Props) {
   const user = JSON.parse(sessionStorage.getItem("user") || "[]"); // 获取登录人员信息
   const [hourName, setHourName] = useState(""); // 当前时间段对应名称
 
-  // 初始化
+  /** 初始化表格数据 */
   useEffect(() => {
     getNowHour();
     onlineLearningModal.getTaskCount();
     onlineLearningModal.onload();
   }, [getId]);
 
-  // 获取当前时间段对应名称
+  /** 获取当前时间段对应名称 */
   const getNowHour = () => {
     let date = new Date();
     let hour = date.getHours();
@@ -35,6 +35,7 @@ export default observer(function OnlineLearning(props: Props) {
     }
   };
 
+  /** tabs选项 */
   const TABS_LIST_NURSE = [
     {
       title: `全部（${onlineLearningModal.taskCount.unFinishedTaskCount ||

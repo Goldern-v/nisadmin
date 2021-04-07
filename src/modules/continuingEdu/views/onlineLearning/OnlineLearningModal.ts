@@ -1,6 +1,5 @@
 import { observable, computed } from "mobx";
 import { onlineLearningApi } from "./api/OnlineLearningApi";
-
 class OnlineLearningModal {
   @observable public selectedDate: any = []; //日期
   @observable public taskStatus: any = 0; //状态
@@ -20,22 +19,22 @@ class OnlineLearningModal {
       ? {
           beginTime: this.selectedDate.length
             ? this.selectedDate[0].format("YYYY-MM-DD")
-            : null, //开始时间
+            : null, 
           endTime: this.selectedDate.length
             ? this.selectedDate[1].format("YYYY-MM-DD")
-            : null, // 结束时间
+            : null, 
           taskStatus: this.taskStatus,
           tpStatus: this.tpStatus,
-          pageIndex: this.pageIndex, //页码
-          pageSize: this.pageSize //每页大小
+          pageIndex: this.pageIndex, 
+          pageSize: this.pageSize 
         }
       : {
           beginTime: this.selectedDate.length
             ? this.selectedDate[0].format("YYYY-MM-DD")
-            : null, //开始时间
+            : null, 
           endTime: this.selectedDate.length
             ? this.selectedDate[1].format("YYYY-MM-DD")
-            : null, // 结束时间
+            : null, 
           taskStatus: this.taskStatus,
           teachingMethod: this.teachingMethod,
           tpStatus: this.tpStatus,
@@ -49,15 +48,15 @@ class OnlineLearningModal {
     return {
       beginTime: this.selectedDate.length
         ? this.selectedDate[0].format("YYYY-MM-DD")
-        : null, //开始时间
+        : null, 
       endTime: this.selectedDate.length
         ? this.selectedDate[1].format("YYYY-MM-DD")
-        : null, // 结束时间
+        : null, 
       taskStatus: this.taskStatus
     };
   }
 
-  // 初始化表格
+  /** 获取表格数据 */ 
   onload() {
     this.tableLoading = true;
     onlineLearningApi.queryPageList(this.postObj).then(res => {
@@ -69,14 +68,14 @@ class OnlineLearningModal {
     });
   }
 
-  // 获取任务数
+  /** 获取任务数 */ 
   getTaskCount() {
     onlineLearningApi.getTaskCount(this.getTaskCountObj).then(res => {
       this.taskCount = res.data;
     });
   }
 
-  //tabs变化函数
+  /** tabs变化函数 */
   tabsChanged(key: any) {
     const arr: any = [null, 1, 2, 3, 4, 5, 6, 7, "finished"];
     let res = arr[key];
@@ -89,7 +88,7 @@ class OnlineLearningModal {
     this.onload();
   }
 
-  //厚街tabs变化函数
+  /** 厚街tabs变化函数 */
   hjTabsChanged(key: any) {
     if (key == 0) return;
     const arr: any = [null, 1, 2, 3, 4, "finished"];
@@ -103,11 +102,13 @@ class OnlineLearningModal {
     this.onload();
   }
 
+  /** 数据清除 */
   clean() {
     this.tpStatus = "tobeginAndongoing";
     this.teachingMethod = null;
   }
 
+  /** 初始化函数 */
   init() {
     this.clean();
     this.getTaskCount();

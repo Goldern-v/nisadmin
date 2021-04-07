@@ -5,11 +5,12 @@ import { message } from "antd";
 import { examOrExerciseApi } from "./api/ExamOrExerciseApi";
 
 class ExamOrExerciseModel {
-  @observable examInfo = {} as any;
-  @observable examLoading = false;
-  @observable exerciseInfo = [] as any;
-  @observable exerciseLoading = false;
+  @observable examInfo = {} as any; //考试信息
+  @observable examLoading = false; // 考试loading
+  @observable exerciseInfo = [] as any; //练习信息
+  @observable exerciseLoading = false; // 练习loading
 
+  // 初始化页面数据
   @action public init() {
     this.clean();
     if (appStore.queryObj.name === "考试") {
@@ -19,11 +20,13 @@ class ExamOrExerciseModel {
     }
   }
 
+  // 数据清空
   @action public clean() {
     this.examInfo = {};
     this.exerciseInfo = [];
   }
 
+  // 获取考试信息
   @action public getExamInfo(id: string | any) {
     if (!id) {
       message.error("缺少详情ID");
@@ -47,6 +50,7 @@ class ExamOrExerciseModel {
     );
   }
 
+  // 获取练习信息
   @action public getExerciseInfo(id: string | any) {
     if (!id) {
       message.error("缺少详情ID");

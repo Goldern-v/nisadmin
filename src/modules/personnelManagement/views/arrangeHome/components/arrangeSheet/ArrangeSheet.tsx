@@ -82,7 +82,6 @@ export default observer(function ArrangeSheet(props: Props) {
 
 
   let columns: any = [
-
     {
       title: "序号",
       render: (text: string, row: any, index: number) => index + 1,
@@ -349,7 +348,7 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => isEdit ? 6 : 5, hj: () => 3, wh: () => 6, jmfy: () => 6 })) *
+              appStore.hisAdapter({ nys: () => isEdit ? 6 : 5, hj: () => 3, wh: () => 6, jmfy: () => 6, dghl: () => 2 })) *
             70 +
             widthNys +
             10 +
@@ -438,6 +437,15 @@ export default observer(function ArrangeSheet(props: Props) {
                     [hoverIndex, 0, rightList[dragIndex]]
                   ]
                 });
+                // 东莞横沥移动单独处理：右边移动 护士信息一起移动
+                if (appStore.HOSPITAL_ID == "dghl") {
+                  leftList = update(leftList, {
+                    $splice: [
+                      [dragIndex, 1],
+                      [hoverIndex, 0, leftList[dragIndex]]
+                    ]
+                  });
+                }
               } else if (pc == "ant-table-body-outer") {
                 /** left */
                 leftList = update(leftList, {

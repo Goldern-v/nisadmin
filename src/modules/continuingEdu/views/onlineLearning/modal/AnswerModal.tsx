@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Input,
   Modal,
@@ -11,7 +11,6 @@ import {
 } from "antd";
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
-
 export interface Props {
   params: any;
   visible: boolean;
@@ -174,8 +173,6 @@ const Wrapper = styled.div`
       display: none !important;
     }
   }
-  
-  
   .question-item{
     padding-left: 10px;
     font-size: 13px;

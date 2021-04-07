@@ -225,7 +225,6 @@ export default function PreviewModal(props: Props) {
         title={currentTitle}
         visible={visible}
         onCancel={onCancel}
-        // onOk={onSave}
         forceRender
         centered
         footer={
@@ -260,14 +259,14 @@ export default function PreviewModal(props: Props) {
               />
             </div>
           ) : (
-                <Spin spinning={modalLoading}>
-                  {!noFile ? (
-                    <PdfPrview path={filePath} />
-                  ) : (
-                      <NoPrview loading={modalLoading} />
-                    )}
-                </Spin>
+            <Spin spinning={modalLoading}>
+              {!noFile ? (
+                <PdfPrview path={filePath} />
+              ) : (
+                <NoPrview loading={modalLoading} />
               )}
+            </Spin>
+          )}
         </Wrapper>
         {fileList.length > 1 && (
           <IndexSelect>

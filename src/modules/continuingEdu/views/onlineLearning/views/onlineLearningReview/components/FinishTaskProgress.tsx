@@ -2,24 +2,21 @@ import styled from "styled-components";
 import React from "react";
 import { Button, message } from "antd";
 import { observer } from "mobx-react-lite";
-import { getFileSize, getFileType, getFilePrevImg } from "src/utils/file/file";
+import { getFilePrevImg } from "src/utils/file/file";
 import { appStore } from "src/stores";
 import createModal from "src/libs/createModal";
 import PreviewModal from "../../../modal/PreviewModal"; // 学习预览
 import { onlineLearningReviewModel } from "../OnlineLearningReviewModel";
 import { onlineLearningReviewApi } from "../api/OnlineLearningReviewApi";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function finishTaskProgress() {
   const { queryObj } = appStore;
   const { baseInfo } = onlineLearningReviewModel;
   const attachmentList = baseInfo.attachmentList || [];
-  let isExamOrExercise =
-    baseInfo.teachingMethodName === "考试" ||
-    baseInfo.teachingMethodName === "练习"
-      ? true
-      : false;
+  const nameList = ['考试', '练习']
+  let isExamOrExercise = nameList.includes(baseInfo.teachingMethodName)
   const previewModal = createModal(PreviewModal);
 
   // 预览文件
@@ -99,8 +96,7 @@ export default observer(function finishTaskProgress() {
             }
             onClick={() =>
               appStore.history.push(
-                `/examOrExercise?id=${queryObj.id}&name=${
-                  baseInfo.teachingMethodName
+                `/examOrExercise?id=${queryObj.id}&name=${baseInfo.teachingMethodName
                 }&status="true"`
               )
             }
@@ -113,8 +109,7 @@ export default observer(function finishTaskProgress() {
               className="again-btn"
               onClick={() =>
                 appStore.history.push(
-                  `/examOrExercise?id=${queryObj.id}&name=${
-                    baseInfo.teachingMethodName
+                  `/examOrExercise?id=${queryObj.id}&name=${baseInfo.teachingMethodName
                   }`
                 )
               }
@@ -143,8 +138,7 @@ export default observer(function finishTaskProgress() {
             }
             onClick={() =>
               appStore.history.push(
-                `/examOrExercise?id=${queryObj.id}&name=${
-                  baseInfo.teachingMethodName
+                `/examOrExercise?id=${queryObj.id}&name=${baseInfo.teachingMethodName
                 }`
               )
             }
@@ -158,8 +152,7 @@ export default observer(function finishTaskProgress() {
               className="again-btn"
               onClick={() =>
                 appStore.history.push(
-                  `/examOrExercise?id=${queryObj.id}&paperCode=${
-                    baseInfo.ongoingPaperList[0]
+                  `/examOrExercise?id=${queryObj.id}&paperCode=${baseInfo.ongoingPaperList[0]
                   }&name=${baseInfo.teachingMethodName}`
                 )
               }
