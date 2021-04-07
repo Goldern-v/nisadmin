@@ -15,11 +15,12 @@ import service from 'src/services/api'
 // import moment from 'moment'
 import { scheduleStore, appStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import DeptSelect from "src/modules/statistic/common/DeptSelect";
 
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function ToolBar() {
   // Similar to componentDidMount and componentDidUpdate:
@@ -116,7 +117,7 @@ export default function ToolBar() {
               if (!t.hasOwnProperty('children')) {
                 t.children = new Array()
               }
-              ;(t.children as any).push({
+              ; (t.children as any).push({
                 title: s.name,
                 value: s.name,
                 key: s.shiftType + s.name + sIndex,
@@ -128,7 +129,7 @@ export default function ToolBar() {
           })
           if (shift && shift.length > 0) {
           } else {
-            ;(treeData as any).push({
+            ; (treeData as any).push({
               title: s.shiftType,
               label: s.shiftType,
               value: s.shiftType,
@@ -441,6 +442,11 @@ export default function ToolBar() {
       <Wrapper>
         <Title>班次套餐设置</Title>
         <div style={{ flex: 1 }} />
+        {appStore.HOSPITAL_ID == 'jmfy' &&
+          <DeptSelect
+            onChange={() => emitter.emit("更新班次套餐列表")}
+          />
+        }
         <Button
           onClick={() => {
             addMeal('添加排班套餐')
