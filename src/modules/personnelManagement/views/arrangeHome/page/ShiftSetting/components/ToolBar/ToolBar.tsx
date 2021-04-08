@@ -31,15 +31,16 @@ import UpdateAllModal from "../../modal/UpdateAllModal"; // 一级菜单弹窗
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function ToolBar() {
   const addShiftModal = createModal(
-    appStore.hisAdapter({
-      hj: () => AddShiftModal,
-      wh: () => AddShiftModal_wh,
-      nys: () => AddShiftModal_wh
-    })
+    appStore.hisMatch({
+      map: {
+        wh: AddShiftModal_wh,
+        other: AddShiftModal
+      }
+    }),
   );
 
   let dataSource = ["A班", "P班", "N班", "休假", "进修学习", "其他123"];
@@ -208,10 +209,10 @@ export default function ToolBar() {
               style={{ width: inputWidth }}
               dataSource={bangci}
               placeholder=""
-              // filterOption={(inputValue: any, option: any) =>
-              //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-              //   bangci.indexOf(inputValue.toUpperCase()) > -1
-              // }
+            // filterOption={(inputValue: any, option: any) =>
+            //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
+            //   bangci.indexOf(inputValue.toUpperCase()) > -1
+            // }
             />
           )}
         </Form.Item>
@@ -405,7 +406,7 @@ export default function ToolBar() {
     appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
-        (authStore.user && authStore.user.empName) == "管理员";
+      (authStore.user && authStore.user.empName) == "管理员";
   return (
     <div>
       <BreadcrumbBox

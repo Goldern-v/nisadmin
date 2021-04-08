@@ -21,7 +21,7 @@ import { Icon } from "src/vendors/antd";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 // let colorMap: any = {
 //   red: '红色',
@@ -53,11 +53,12 @@ export default function MainBox() {
   const [colorMapCN, setColorMapCN]: [any, any] = useState({});
 
   const addShiftModal = createModal(
-    appStore.hisAdapter({
-      hj: () => AddShiftModal,
-      wh: () => AddShiftModal_wh,
-      nys: () => AddShiftModal_wh
-    })
+    appStore.hisMatch({
+      map: {
+        wh: AddShiftModal_wh,
+        other: AddShiftModal
+      }
+    }),
   );
   const columns = [
     {
@@ -94,16 +95,6 @@ export default function MainBox() {
       dataIndex: "name",
       key: "name",
       width: 150
-      // render: (text: string, record: any) =>
-      //   text.length > 0 ? (
-      //     <span>
-      //       <Tag color={record.nameColor} key={text}>
-      //         {text.toUpperCase()}
-      //       </Tag>
-      //     </span>
-      //   ) : (
-      //     ''
-      //   )
     },
     {
       title: "类别",
@@ -127,18 +118,6 @@ export default function MainBox() {
           ""
         )
     },
-    // {
-    //   title: '开始时间',
-    //   dataIndex: 'startTime',
-    //   width: '30%',
-    //   key: 'startTime'
-    // },
-    // {
-    //   title: '结束时间',
-    //   dataIndex: 'endTime',
-    //   key: 'endTime',
-    //   width: '8%'
-    // },
     {
       title: "上班时间",
       dataIndex: "workTime",
@@ -163,28 +142,28 @@ export default function MainBox() {
       key: "settingNightHour",
       width: 90
     },
-    {
-      title: "  周班次数",
-      dataIndex: "rangeLimit",
-      key: "rangeLimit",
-      width: 70
-    }
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            title: "周班次数",
+            dataIndex: "rangeLimit",
+            key: "rangeLimit",
+            width: 70
+          }
+        ],
+        other: []
+      }
+    }),
   ];
 
-  // old:(仲杰)
-  // let promise =
-  //   appStore.HOSPITAL_ID == "wh"
-  //     ? authStore.isRoleManage
-  //     : (authStore.user && authStore.user.post) == "护理部" ||
-  //       (authStore.user && authStore.user.empName) == "管理员";
-
-  // new:南医三护士长可以编辑排班设置（吴敏）
+  // new:南医三护士长可以编辑排班设置
   let promise =
     appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
-        (authStore.user && authStore.user.empName) == "管理员" ||
-        authStore.isRoleManage;
+      (authStore.user && authStore.user.empName) == "管理员" ||
+      authStore.isRoleManage;
 
   if (promise) {
     columns.push({
@@ -202,18 +181,15 @@ export default function MainBox() {
                 onClick={(e: any) => {
                   addShiftModal.show({
                     editData: record,
-                    // 添加字段type：区分医院和登陆者身份（吴敏）
+                    // 添加字段type：区分医院和登陆者身份
                     type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
                     identity:
                       authStore.isRoleManage &&
-                      (authStore.user && authStore.user.empName) !== "管理员"
-                        ? true
-                        : false,
+                      (authStore.user && authStore.user.empName) !== "管理员",
                     onOkCallBack: () => {
                       getShiftList();
                     }
                   });
-                  // emitter.emit('弹窗编辑排班', record)
                 }}
               >
                 编辑

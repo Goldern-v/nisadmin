@@ -95,7 +95,9 @@ export default function AddShiftModal(props: Props) {
               effectiveTime: props.editData.effectiveTime,
               nameColor: props.editData.nameColor,
               status: props.editData.status,
-              rangeLimit: props.editData.rangeLimit
+              rangeLimit: props.editData.rangeLimit,
+              settingNightHour: props.editData.settingNightHour,
+              settingMorningHour: props.editData.settingMorningHour,
             });
           } else {
             /** 表单数据初始化 */
@@ -106,7 +108,9 @@ export default function AddShiftModal(props: Props) {
               effectiveTime: "8",
               nameColor: "",
               status: true,
-              rangeLimit: ""
+              rangeLimit: "",
+              settingNightHour: "0",
+              settingMorningHour: "0",
             });
           }
         });
@@ -191,6 +195,16 @@ export default function AddShiftModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
+              <Form.Field label={`白工时`} name="settingMorningHour">
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`夜工时`} name="settingNightHour">
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
               <Form.Field
                 label={`颜色标记`}
                 name="nameColor"
@@ -205,11 +219,13 @@ export default function AddShiftModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={24}>
-              <Form.Field label={`周班次数`} name="rangeLimit">
-                <Input />
-              </Form.Field>
-            </Col>
+            {appStore.HOSPITAL_ID == "nys" &&
+              <Col span={24}>
+                <Form.Field label={`周班次数`} name="rangeLimit">
+                  <Input />
+                </Form.Field>
+              </Col>
+            }
             <Col span={24}>
               <Form.Field label={`启用状态`} name="status">
                 <SwitchField />
