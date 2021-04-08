@@ -22,29 +22,29 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
-export interface Props {}
+export interface Props { }
 import { appStore } from "src/stores";
 
 export default observer(function Step1() {
   // 组织方式
   const zzfs =
     appStore.HOSPITAL_ID === "hj" &&
-    allStepViewModal.getParentsName === "在线练习考试"
+      allStepViewModal.getParentsName === "在线练习考试"
       ? [{ name: "线上", code: 1 }]
       : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
   const studentCreditTypeList =
     appStore.HOSPITAL_ID === "wh"
       ? [
-          { name: "国家级", code: 1 },
-          { name: "省级", code: 2 },
-          { name: "市级", code: 3 }
-        ]
+        { name: "国家级", code: 1 },
+        { name: "省级", code: 2 },
+        { name: "市级", code: 3 }
+      ]
       : [
-          { name: "院级学分", code: 1 },
-          { name: "片区学分", code: 2 },
-          { name: "病区学分", code: 3 }
-        ];
+        { name: "院级学分", code: 1 },
+        { name: "片区学分", code: 2 },
+        { name: "病区学分", code: 3 }
+      ];
   //学时
   const studentTimeTypeList = [
     { name: 0, code: 0 },
@@ -155,29 +155,38 @@ export default observer(function Step1() {
               <DateTimePicker />
             </Form.Field>
           </Col>
-
-          <DateSelectCon>
-            <div className="date-row">
-              <span className="date-label">考试开放</span>
-              <Form.Field label={``} name="openTime" labelWidth={1}>
-                <InputNumber />
-              </Form.Field>
-              <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
-                <Select>
-                  {openTimeUnitList.map(item => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-              <span className="aside">
-                {stepViewModal.endTime
-                  ? `即：${stepViewModal.endTime} 结束`
-                  : ""}
-              </span>
-            </div>
-            {/* <div className="date-row">
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <Col span={24}>
+                  <Form.Field label={`考试结束时间`} name="endTime">
+                    <DateTimePicker />
+                  </Form.Field>
+                </Col>
+              ),
+              other: (
+                <DateSelectCon>
+                  <div className="date-row">
+                    <span className="date-label">考试开放</span>
+                    <Form.Field label={``} name="openTime" labelWidth={1}>
+                      <InputNumber />
+                    </Form.Field>
+                    <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
+                      <Select>
+                        {openTimeUnitList.map(item => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                    <span className="aside">
+                      {stepViewModal.getEndTime
+                        ? `即：${stepViewModal.getEndTime} 结束`
+                        : ""}
+                    </span>
+                  </div>
+                  {/* <div className="date-row">
               <span className="date-label">考试结束</span>
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2} />
@@ -187,8 +196,10 @@ export default observer(function Step1() {
                 {stepViewModal.overTime ? `即：${stepViewModal.overTime}` : ""}
               </span>
             </div> */}
-          </DateSelectCon>
-
+                </DateSelectCon>
+              )
+            }
+          })}
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
               <Select
@@ -301,10 +312,10 @@ export default observer(function Step1() {
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
                     {studyTime &&
-                    studyTime !== 0.5 &&
-                    studyTime !== 1 &&
-                    studyTime !== 2 &&
-                    studyTime !== 3 ? (
+                      studyTime !== 0.5 &&
+                      studyTime !== 1 &&
+                      studyTime !== 2 &&
+                      studyTime !== 3 ? (
                       <Select.Option value={studyTime} key={`${studyTime}-`}>
                         {studyTime}
                       </Select.Option>
@@ -349,7 +360,7 @@ export default observer(function Step1() {
                   }}
                   checked={
                     stepViewModal.stepData2.bxNurse.length >=
-                      bxNursing.length && bxNursing.length > 0
+                    bxNursing.length && bxNursing.length > 0
                   }
                 >
                   全选
@@ -364,10 +375,10 @@ export default observer(function Step1() {
                   {bxNursing.map((item: any) => (
                     <Checkbox
                       onChange={(e: any) =>
-                        (stepViewModal.stepData2.bxNurse = [
-                          stepViewModal.stepData2.bxNurse,
-                          ...e.target.value
-                        ])
+                      (stepViewModal.stepData2.bxNurse = [
+                        stepViewModal.stepData2.bxNurse,
+                        ...e.target.value
+                      ])
                       }
                       key={item.code}
                       value={item.code}

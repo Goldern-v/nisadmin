@@ -12,16 +12,16 @@ import {
 import Form from "src/components/Form";
 import { Rules } from "src/components/Form/interfaces";
 import DateTimePicker from "src/components/DateTimePicker";
-import { sjStepViewModal as stepViewModal  } from "./SJStepViewModal";
+import { sjStepViewModal as stepViewModal } from "./SJStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
-import  { appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step2() {
   const selectNurseModal = createModal(SelectPeopleModal);
@@ -32,7 +32,7 @@ export default observer(function Step2() {
     { name: "国家级", code: 1 },
     { name: "省级", code: 2 },
     { name: "市级", code: 3 }
-  ]:[
+  ] : [
     { name: "院级学分", code: 1 },
     { name: "片区学分", code: 2 },
     { name: "病区学分", code: 3 }
@@ -43,12 +43,12 @@ export default observer(function Step2() {
     { name: 0.5, code: 0.5 },
     { name: 1, code: 1 },
     { name: 2, code: 2 },
-    { name:3, code: 3 }
+    { name: 3, code: 3 }
   ]
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0)
   //必修全选
-  const [selectedCheck, setSelectedCheck] = useState([] as any); 
+  const [selectedCheck, setSelectedCheck] = useState([] as any);
   const bxNursing = [
     { name: "N0", code: "nurse0" },
     { name: "N1", code: "nurse1" },
@@ -113,11 +113,11 @@ export default observer(function Step2() {
   useLayoutEffect(() => {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
   }, []);
-  
+
 
   useLayoutEffect(() => {
-    console.log( cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
-  refForm.current?.setFields(stepViewModal.stepData2)
+    console.log(cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
+    refForm.current?.setFields(stepViewModal.stepData2)
   }, [])
 
   return (
@@ -136,32 +136,41 @@ export default observer(function Step2() {
               <DateTimePicker />
             </Form.Field>
           </Col>
-          {/* 实践开放 */}
-          <DateSelectCon>
-            <div className="date-row">
-              <span className="date-label">实践开放</span>
-              <Form.Field label={``} name="openTime" labelWidth={1}>
-                  <InputNumber></InputNumber>
-              </Form.Field>
-              <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
-                <Select>
-                  {openTimeUnitList.map(item => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            <span className="aside">{stepViewModal.endTime ? `即：${stepViewModal.endTime} 结束`: ''}</span>
-            </div>
-            {/* <div className="date-row">
-              <span  className="date-label">学习结束</span>
-              <Form.Field label={``} name="daysToArchive" labelWidth={1}>
-                <InputNumber min={2}></InputNumber>
-              </Form.Field>
-              <span className="aside">天后进行归档 {stepViewModal.overTime ? `即：${stepViewModal.overTime}`: ''}</span>
-            </div> */}
-          </DateSelectCon>
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <Col span={24}>
+                  <Form.Field label={`实践结束时间`} name="endTime">
+                    <DateTimePicker />
+                  </Form.Field>
+                </Col>
+              ),
+              other: (
+                <DateSelectCon>
+                  <div className="date-row">
+                    <span className="date-label">实践开放</span>
+                    <Form.Field label={``} name="openTime" labelWidth={1}>
+                      <InputNumber></InputNumber>
+                    </Form.Field>
+                    <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
+                      <Select>
+                        {openTimeUnitList.map(item => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                    <span className="aside">
+                      {stepViewModal.getEndTime
+                        ? `即：${stepViewModal.getEndTime} 结束`
+                        : ""}
+                    </span>
+                  </div>
+                </DateSelectCon>
+              )
+            }
+          })}
           {/* 组织方式 */}
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
@@ -256,10 +265,10 @@ export default observer(function Step2() {
                         onSearch={(val: any) => setStudyTime(Number(val))}
                       >
                         {studyTime &&
-                        studyTime !== 0.5 &&
-                        studyTime !== 1 &&
-                        studyTime !== 2 &&
-                        studyTime !== 3 ? (
+                          studyTime !== 0.5 &&
+                          studyTime !== 1 &&
+                          studyTime !== 2 &&
+                          studyTime !== 3 ? (
                           <Select.Option
                             value={studyTime}
                             key={`${studyTime}-`}
@@ -376,10 +385,10 @@ export default observer(function Step2() {
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
                     {studyTime &&
-                    studyTime !== 0.5 &&
-                    studyTime !== 1 &&
-                    studyTime !== 2 &&
-                    studyTime !== 3 ? (
+                      studyTime !== 0.5 &&
+                      studyTime !== 1 &&
+                      studyTime !== 2 &&
+                      studyTime !== 3 ? (
                       <Select.Option
                         value={studyTime}
                         key={`${studyTime}-`}
@@ -424,7 +433,7 @@ export default observer(function Step2() {
                   }}
                   checked={
                     stepViewModal.stepData2.bxNurse.length >=
-                      bxNursing.length && bxNursing.length > 0
+                    bxNursing.length && bxNursing.length > 0
                   }
                 >
                   全选
@@ -438,10 +447,10 @@ export default observer(function Step2() {
                   {bxNursing.map((item: any) => (
                     <Checkbox
                       onChange={(e: any) =>
-                        (stepViewModal.stepData2.bxNurse = [
-                          stepViewModal.stepData2.bxNurse,
-                          ...e.target.value
-                        ])
+                      (stepViewModal.stepData2.bxNurse = [
+                        stepViewModal.stepData2.bxNurse,
+                        ...e.target.value
+                      ])
                       }
                       key={item.code}
                       value={item.code}

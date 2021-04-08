@@ -185,39 +185,41 @@ export default observer(function Step1() {
               <DateTimePicker />
             </Form.Field>
           </Col>
-
-          <DateSelectCon>
-            <div className="date-row">
-              <span className="date-label">培训开放</span>
-              <Form.Field label={``} name="openTime" labelWidth={1}>
-                <InputNumber />
-              </Form.Field>
-              <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
-                <Select>
-                  {openTimeUnitList.map(item => (
-                    <Select.Option value={item.code} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-              <span className="aside">
-                {stepViewModal.endTime
-                  ? `即：${stepViewModal.endTime} 结束`
-                  : ""}
-              </span>
-            </div>
-            {/* <div className="date-row">
-              <span className="date-label">培训结束</span>
-              <Form.Field label={``} name="daysToArchive" labelWidth={1}>
-                <InputNumber min={2} />
-              </Form.Field>
-              <span className="aside">
-                天后进行归档{" "}
-                {stepViewModal.overTime ? `即：${stepViewModal.overTime}` : ""}
-              </span>
-            </div> */}
-          </DateSelectCon>
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <Col span={24}>
+                  <Form.Field label={`培训结束时间`} name="endTime">
+                    <DateTimePicker />
+                  </Form.Field>
+                </Col>
+              ),
+              other: (
+                <DateSelectCon>
+                  <div className="date-row">
+                    <span className="date-label">培训开放</span>
+                    <Form.Field label={``} name="openTime" labelWidth={1}>
+                      <InputNumber />
+                    </Form.Field>
+                    <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
+                      <Select>
+                        {openTimeUnitList.map(item => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                    <span className="aside">
+                      {stepViewModal.getEndTime
+                        ? `即：${stepViewModal.getEndTime} 结束`
+                        : ""}
+                    </span>
+                  </div>
+                </DateSelectCon>
+              )
+            }
+          })}
 
           <Col span={24}>
             <Form.Field label={`组织方式`} name="organizationWay">
@@ -293,7 +295,7 @@ export default observer(function Step1() {
             </Form.Field>
           </Col>
 
-          {appStore.HOSPITAL_ID == "hj" && (
+          {appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == 'nys' && (
             <Col span={24}>
               <Form.Field
                 label={`院外讲师`}
@@ -307,6 +309,21 @@ export default observer(function Step1() {
                 />
               </Form.Field>
             </Col>
+          )}
+
+          {appStore.HOSPITAL_ID == 'nys' && (
+            <React.Fragment>
+              <Col span={24}>
+                <Form.Field label={`培训内容`} name="trainContent">
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`描述`} name="trainDescribe">
+                  <Input.TextArea autosize={{ minRows: 3 }} />
+                </Form.Field>
+              </Col>
+            </React.Fragment>
           )}
 
           {appStore.HOSPITAL_ID == "wh" && (
@@ -379,12 +396,12 @@ export default observer(function Step1() {
                       studyTime !== 1 &&
                       studyTime !== 2 &&
                       studyTime !== 3 ? (
-                        <Select.Option value={studyTime} key={`${studyTime}-`}>
-                          {studyTime}
-                        </Select.Option>
-                      ) : (
-                        ""
-                      )}
+                      <Select.Option value={studyTime} key={`${studyTime}-`}>
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
@@ -455,12 +472,12 @@ export default observer(function Step1() {
                       studyTime !== 1 &&
                       studyTime !== 2 &&
                       studyTime !== 3 ? (
-                        <Select.Option value={studyTime} key={`${studyTime}-`}>
-                          {studyTime}
-                        </Select.Option>
-                      ) : (
-                        ""
-                      )}
+                      <Select.Option value={studyTime} key={`${studyTime}-`}>
+                        {studyTime}
+                      </Select.Option>
+                    ) : (
+                      ""
+                    )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
@@ -515,10 +532,10 @@ export default observer(function Step1() {
                   {bxNursing.map((item: any) => (
                     <Checkbox
                       onChange={(e: any) =>
-                        (stepViewModal.stepData2.bxNurse = [
-                          stepViewModal.stepData2.bxNurse,
-                          ...e.target.value
-                        ])
+                      (stepViewModal.stepData2.bxNurse = [
+                        stepViewModal.stepData2.bxNurse,
+                        ...e.target.value
+                      ])
                       }
                       key={item.code}
                       value={item.code}

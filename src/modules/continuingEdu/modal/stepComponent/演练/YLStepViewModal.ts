@@ -34,7 +34,12 @@ const defaultStepData2 = {
   /** 是否有学员学分 1有 0无 */
   hasStudentCredit: 0,
   /** 是否有学员学时 1有 0无*/
-  hasStudentClassHours: 0
+  hasStudentClassHours: 0,
+
+  //南医三单独
+  /**  考试开始时间 */
+  endTime: "",
+
 };
 const defaultStepData5 = {
   /**  是否发送通知（1发通知  0不发通知） */
@@ -45,7 +50,7 @@ class StepViewModal {
 
   /** 计算学习截止时间 */
   @computed
-  public get endTime() {
+  public get getEndTime() {
     if (
       this.stepData2.startTime &&
       this.stepData2.openTime &&
@@ -123,6 +128,7 @@ class StepViewModal {
       title: this.stepData2.title,
       startTime: this.stepData2.startTime,
       openTime: this.stepData2.openTime,
+      endTime: this.stepData2.endTime,
       openTimeUnit: this.stepData2.openTimeUnit,
       daysToArchive: this.stepData2.daysToArchive,
       organizationWay: this.stepData2.organizationWay,

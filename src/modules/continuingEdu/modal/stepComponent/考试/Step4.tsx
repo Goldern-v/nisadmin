@@ -76,7 +76,7 @@ export default observer(function Step4() {
       }
       stepViewModal.stepData2.totalScores = totalScore;
     } else {
-      stepViewModal.stepData2.totalScores = data.questionStatList.reduce((total: any, current: any) => {
+      stepViewModal.stepData2.totalScores = data.questionStatList?.reduce((total: any, current: any) => {
         return total + current.totalScores;
       }, 0);
     }
@@ -318,8 +318,8 @@ export default observer(function Step4() {
                   onClick={() => {
                     stepViewModal.stepData2.randomOrderQue = !stepViewModal
                       .stepData2.randomOrderQue;
-                    refForm.current ?.setField('randomOrderQue', stepViewModal.stepData2.randomOrderQue)    
-              }}
+                    refForm.current?.setField('randomOrderQue', stepViewModal.stepData2.randomOrderQue)
+                  }}
                 >
                   随机显示题目顺序
             </Checkbox>
@@ -330,8 +330,8 @@ export default observer(function Step4() {
                   onClick={() => {
                     stepViewModal.stepData2.randomOrderQItem = !stepViewModal
                       .stepData2.randomOrderQItem;
-                    refForm.current ?.setField('randomOrderQItem', stepViewModal.stepData2.randomOrderQItem)       
-              }}
+                    refForm.current?.setField('randomOrderQItem', stepViewModal.stepData2.randomOrderQItem)
+                  }}
                 >
                   随机显示题目选项顺序
             </Checkbox>
@@ -343,8 +343,8 @@ export default observer(function Step4() {
                   onClick={() => {
                     stepViewModal.stepData2.showScoreInstantly = !stepViewModal
                       .stepData2.showScoreInstantly;
-                    refForm.current ?.setField('showScoreInstantly', stepViewModal.stepData2.showScoreInstantly)  
-              }}
+                    refForm.current?.setField('showScoreInstantly', stepViewModal.stepData2.showScoreInstantly)
+                  }}
                 >
                   交卷后显示分数
               <span style={{ color: "#999" }}>（有问答题需要人工评分，没有则立即显示成绩）</span>
@@ -371,9 +371,9 @@ export default observer(function Step4() {
               onClick={() => {
                 stepViewModal.stepData2.needScorePerson = !stepViewModal.stepData2
                   .needScorePerson;
-                refForm.current ?.setField('needScorePerson', stepViewModal.stepData2.needScorePerson)    
+                refForm.current?.setField('needScorePerson', stepViewModal.stepData2.needScorePerson)
 
-              if (!stepViewModal.stepData2.needScorePerson) {
+                if (!stepViewModal.stepData2.needScorePerson) {
                   refForm.current && refForm.current.setField('scorePersonList', []);
                 }
               }}
@@ -433,12 +433,12 @@ export default observer(function Step4() {
                             studyTime !== 1 &&
                             studyTime !== 2 &&
                             studyTime !== 3 ? (
-                              <Select.Option value={studyTime} key={`${studyTime} - `}>
-                                {studyTime}
-                              </Select.Option>
-                            ) : (
-                              ""
-                            )}
+                            <Select.Option value={studyTime} key={`${studyTime} - `}>
+                              {studyTime}
+                            </Select.Option>
+                          ) : (
+                            ""
+                          )}
                           {studentTimeTypeList.map(item => (
                             <Select.Option value={item.code} key={item.name}>
                               {item.name}

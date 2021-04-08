@@ -73,14 +73,31 @@ export default observer(function Step5() {
                 )}
             </td>
           </tr>
-          <tr>
-            <td className="key">培训开放时间：</td>
-            <td className="value">
-              {pxStepViewModal.stepData2.openTime}
-              {pxStepViewModal.stepData2.openTimeUnit}{" "}
-              <span className="aside">即：{pxStepViewModal.endTime} 结束</span>
-            </td>
-          </tr>
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <tr>
+                  <td className="key">培训结束时间：</td>
+                  <td className="value">
+                    {pxStepViewModal.stepData2.endTime &&
+                      moment(pxStepViewModal.stepData2.endTime).format(
+                        "YYYY-MM-DD HH:mm"
+                      )}
+                  </td>
+                </tr>
+              ),
+              other: (
+                <tr>
+                  <td className="key">培训开放时间：</td>
+                  <td className="value">
+                    {pxStepViewModal.stepData2.openTime}
+                    {pxStepViewModal.stepData2.openTimeUnit}{" "}
+                    <span className="aside">即：{pxStepViewModal.getEndTime} 结束</span>
+                  </td>
+                </tr>
+              )
+            }
+          })}
           <tr>
             <td className="key">组织方式：</td>
             <td className="value">
@@ -115,7 +132,7 @@ export default observer(function Step5() {
               </tr>
             </React.Fragment>
           )}
-          {appStore.HOSPITAL_ID == 'hj' &&
+          {appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys' &&
             <tr>
               <td className="key">院外讲师：</td>
               <td className="value">
@@ -133,17 +150,30 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
+          {appStore.HOSPITAL_ID == 'nys' && (
+            <React.Fragment>
+              <tr>
+                <td className="key">培训内容：</td>
+                <td className="value">{pxStepViewModal.stepData2.trainContent}</td>
+              </tr>
+              <tr>
+                <td className="key">描述：</td>
+                <td className="value">{pxStepViewModal.stepData2.trainDescribe}</td>
+              </tr>
+            </React.Fragment>
+          )}
+
           {pxStepViewModal.stepData2.category == 1 ? (
             <tr>
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">中医类</td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">类&nbsp;&nbsp;别：</td>
-                <td className="value">非中医类</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">非中医类</td>
+            </tr>
+          )}
           {pxStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
               <td className="key">学员学分：</td>
@@ -157,11 +187,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">学员学分：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           {pxStepViewModal.stepData2.hasTeacherCredit == 1 ? (
             <tr>
               <td className="key">讲师学分：</td>
@@ -175,11 +205,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">讲师学分：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">讲师学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           {pxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
@@ -188,11 +218,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">学员学时：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           {pxStepViewModal.stepData2.hasTeacherClassHours == 1 ? (
             <tr>
               <td className="key">讲师学时：</td>
@@ -201,11 +231,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">讲师学时：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">讲师学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
@@ -249,12 +279,12 @@ export default observer(function Step5() {
                                 alt=""
                               />
                             ) : (
-                                <img
-                                  src={getFilePrevImg(item.path)}
-                                  className="type-img"
-                                  alt=""
-                                />
-                              )}
+                              <img
+                                src={getFilePrevImg(item.path)}
+                                className="type-img"
+                                alt=""
+                              />
+                            )}
 
                             <div className="name">{item.name}</div>
                             <div className="size">{item.size}</div>

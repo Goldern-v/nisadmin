@@ -8,8 +8,9 @@ import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import ShowTable from "../公共/table/ShowTable";
+import { appStore } from "src/stores";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step5() {
   const organizationWayMap: any = {
@@ -49,14 +50,31 @@ export default observer(function Step5() {
                 )}
             </td>
           </tr>
-          <tr>
-            <td className="key">学习开放时间：</td>
-            <td className="value">
-              {xxStepViewModal.stepData2.openTime}
-              {xxStepViewModal.stepData2.openTimeUnit}{" "}
-              <span className="aside">即：{xxStepViewModal.endTime} 结束</span>
-            </td>
-          </tr>
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <tr>
+                  <td className="key">学习结束时间：</td>
+                  <td className="value">
+                    {xxStepViewModal.stepData2.endTime &&
+                      moment(xxStepViewModal.stepData2.endTime).format(
+                        "YYYY-MM-DD HH:mm"
+                      )}
+                  </td>
+                </tr>
+              ),
+              other: (
+                <tr>
+                  <td className="key">学习开放时间：</td>
+                  <td className="value">
+                    {xxStepViewModal.stepData2.openTime}
+                    {xxStepViewModal.stepData2.openTimeUnit}{" "}
+                    <span className="aside">即：{xxStepViewModal.getEndTime} 结束</span>
+                  </td>
+                </tr>
+              )
+            }
+          })}
           <tr>
             <td className="key">组织方式：</td>
             <td className="value">
@@ -92,7 +110,7 @@ export default observer(function Step5() {
               <td className="value">
                 {
                   studentCreditTypeMap[
-                    xxStepViewModal.stepData2.studentCreditType
+                  xxStepViewModal.stepData2.studentCreditType
                   ]
                 }{" "}
                 {xxStepViewModal.stepData2.studentCredit} 分

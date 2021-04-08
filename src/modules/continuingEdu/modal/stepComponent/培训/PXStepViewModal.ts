@@ -57,7 +57,15 @@ const defaultStepData2 = {
   pointsForAttention:
     "1、严格执行《东莞市厚街医院会议纪律管理办法（试行）》制度，并按照该制度提前十分钟进行签到。2、进出会场时保持有序，避免喧哗嘈杂等不良行为。3、听课期间将手机调至震动状态，保持会场安静。4、请参加听课人员携带学分卡，不得代刷卡行为。5、听课结束时将产生的纸屑、外包装等垃圾带离会场。",
   /** 院外讲师 */
-  ywTeacherList: []
+  ywTeacherList: [], 
+
+  //南医三单独
+  /**  考试结束时间 */
+  endTime: "",
+  /** 培训内容 */
+  trainContent: '', 
+  /** 描述 */
+  trainDescribe: '', 
 };
 
 const defaultStepData5 = {
@@ -69,7 +77,7 @@ class StepViewModal {
 
   /** 计算培训截止时间 */
   @computed
-  public get endTime() {
+  public get getEndTime() {
     if (
       this.stepData2.startTime &&
       this.stepData2.openTime &&
@@ -146,6 +154,9 @@ class StepViewModal {
     let result = {
       title: this.stepData2.title,
       startTime: this.stepData2.startTime,
+      endTime: this.stepData2.endTime,
+      trainContent: this.stepData2.trainContent,
+      trainDescribe: this.stepData2.trainDescribe,
       openTime: this.stepData2.openTime,
       openTimeUnit: this.stepData2.openTimeUnit,
       daysToArchive: this.stepData2.daysToArchive,

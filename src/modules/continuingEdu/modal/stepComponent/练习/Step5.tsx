@@ -10,6 +10,7 @@ import moment from "moment";
 import ShowTable from "./ShowTable";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
+import { appStore, authStore } from "src/stores";
 
 export interface Props { }
 
@@ -80,14 +81,31 @@ export default observer(function Step5() {
                 )}
             </td>
           </tr>
-          <tr>
-            <td className="key">练习开放时间：</td>
-            <td className="value">
-              {lxStepViewModal.stepData2.openTime}
-              {lxStepViewModal.stepData2.openTimeUnit}{" "}
-              <span className="aside">即：{lxStepViewModal.endTime} 结束</span>
-            </td>
-          </tr>
+          {appStore.hisMatch({
+            map: {
+              nys: (
+                <tr>
+                  <td className="key">练习结束时间：</td>
+                  <td className="value">
+                    {lxStepViewModal.stepData2.endTime &&
+                      moment(lxStepViewModal.stepData2.endTime).format(
+                        "YYYY-MM-DD HH:mm"
+                      )}
+                  </td>
+                </tr>
+              ),
+              other: (
+                <tr>
+                  <td className="key">练习开放时间：</td>
+                  <td className="value">
+                    {lxStepViewModal.stepData2.openTime}
+                    {lxStepViewModal.stepData2.openTimeUnit}{" "}
+                    <span className="aside">即：{lxStepViewModal.getEndTime} 结束</span>
+                  </td>
+                </tr>
+              )
+            }
+          })}
           <tr>
             <td className="key">组织方式：</td>
             <td className="value">
@@ -112,11 +130,11 @@ export default observer(function Step5() {
               <td className="value">中医类</td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">类&nbsp;&nbsp;别：</td>
-                <td className="value">非中医类</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="value">非中医类</td>
+            </tr>
+          )}
 
           {lxStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
@@ -131,11 +149,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">学员学分：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">学员学分：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           {lxStepViewModal.stepData2.hasStudentClassHours == 1 ? (
             <tr>
               <td className="key">学员学时：</td>
@@ -144,11 +162,11 @@ export default observer(function Step5() {
               </td>
             </tr>
           ) : (
-              <tr>
-                <td className="key">学员学时：</td>
-                <td className="value">无</td>
-              </tr>
-            )}
+            <tr>
+              <td className="key">学员学时：</td>
+              <td className="value">无</td>
+            </tr>
+          )}
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">

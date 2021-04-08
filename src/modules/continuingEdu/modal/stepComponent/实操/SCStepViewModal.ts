@@ -48,7 +48,12 @@ const defaultStepData2: any = {
   /** 是否有评分人学时 1有 0无*/
   hasScorePersonClassHours: 0,
   /** 评分人学时*/
-  scorePersonClassHours: 0
+  scorePersonClassHours: 0,
+
+  //南医三单独
+  /**  考试开始时间 */
+  endTime: "",
+
 };
 
 type DefaultStepData2 = typeof defaultStepData2;
@@ -62,7 +67,7 @@ class StepViewModal {
 
   /** 计算考试截止时间 */
   @computed
-  public get endTime() {
+  public get getEndTime() {
     if (
       this.stepData2.startTime &&
       this.stepData2.openTime &&
@@ -139,6 +144,7 @@ class StepViewModal {
     let result = {
       title: this.stepData2.title,
       startTime: this.stepData2.startTime,
+      endTime: this.stepData2.endTime,
       openTime: this.stepData2.openTime,
       openTimeUnit: this.stepData2.openTimeUnit,
       daysToArchive: this.stepData2.daysToArchive,
