@@ -254,8 +254,6 @@ export default observer(function NurseFilesView(props: Props) {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
         return LEFT_MENU_CONFIG_WH;
-      case "hj":
-        return LEFT_MENU_CONFIG_HJ;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
       default:

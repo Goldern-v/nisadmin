@@ -350,7 +350,6 @@ export default observer(function TraineeShift(props: Props) {
           >
             查询
           </Button>
-          {/* <Button onClick={() => setEditGroupBtn(true)}>编辑实习小组</Button> */}
           <Button onClick={() => setEditDeptBtn(true)}>编辑实习科室</Button>
           <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button>
           <Button

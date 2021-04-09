@@ -594,15 +594,32 @@ export default function ContinuingEdu(props: Props) {
             path: "/continuingEdu/wrongQuestionBank",
             component: WrongQuestionBank
           },
-          {
-            title: "题库管理",
-            icon: <TKGL />,
-            path: "/continuingEdu/questionBankManagement",
-            component: 题库管理,
-            hide: () =>
-              queyMenuAuthInfo("nm_lat_questionbankmanage") ||
-              authStore.isOnlyInternsManage
-          },
+          ...appStore.hisMatch({
+            map: {
+              jmfy: [
+                {
+                  title: "题库管理",
+                  icon: <TKGL />,
+                  path: "/continuingEdu/questionBankManagement",
+                  component: 题库管理,
+                  hide: () =>
+                    queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+                    authStore.isDepartment
+                }
+              ],
+              other: [
+                {
+                  title: "题库管理",
+                  icon: <TKGL />,
+                  path: "/continuingEdu/questionBankManagement",
+                  component: 题库管理,
+                  hide: () =>
+                    queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+                    authStore.isOnlyInternsManage
+                }
+              ]
+            }
+          }),
         ]
       }
     }),
