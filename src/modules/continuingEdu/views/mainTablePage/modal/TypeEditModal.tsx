@@ -54,7 +54,8 @@ export default observer(function TypeEditModal(props: Props) {
             "考试",
             "练习",
             "实操",
-            "演练"
+            "演练",
+            "实践"
           ];
           data.teachingMethod = teachingMethodList[params.teachingMethod - 1];
           const { name, sort, teachingMethod, trainingKeyPointId, knowledgePointDivisionId, learningFormId } = data;
@@ -93,6 +94,16 @@ export default observer(function TypeEditModal(props: Props) {
             newParams.trainingKeyPointId = mainPageModal.trainingKeyPointTreeId;
             newParams.knowledgePointDivisionId = mainPageModal.knowledgePointDivisionTreeId;
             newParams.learningFormId = mainPageModal.learningFormTreeId;
+            const teachingMethodList = [
+              "学习",
+              "培训",
+              "考试",
+              "练习",
+              "实操",
+              "演练",
+              "实践"
+            ];
+            newParams.name = teachingMethodList[newParams.teachingMethod - 1];
             if (params.id) {
               newParams.id = params.id;
               delete newParams.teachingMethod;

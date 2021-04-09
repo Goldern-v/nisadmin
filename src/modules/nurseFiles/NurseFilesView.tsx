@@ -307,7 +307,7 @@ export default observer(function NurseFilesView(props: Props) {
               id: item.id,
               title: item.title,
               component: TraineeShift,
-              path: `/ nurseFile / ${item.title}`
+              path: `/nurseFile/${item.title}`
             };
             newArr.push(obj);
           });
