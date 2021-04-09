@@ -49,6 +49,7 @@ const BadEventEditorView = lazy(() =>
 );
 
 const Indicator = lazy(() => import("src/modules/indicator/Indicator"));
+
 const SettingView = lazy(() => import("src/modules/setting/SettingView"));
 const AuditsManagementView = lazy(() =>
   import("src/modules/auditsManagement/AuditsManagementView")

@@ -209,7 +209,12 @@ export default class CommonApiService extends BaseApiService {
     return this.get(`/user/userDictInfo/${wardCode}${queryStr}`);
   }
 
-  // 签名
+  /**
+   * 签名
+   * @param empNo 工号
+   * @param password 密码
+   * @returns 
+   */
   public getUser(empNo: string, password: string) {
     return this.post(`/user/getUser`, {
       empNo,
@@ -217,8 +222,20 @@ export default class CommonApiService extends BaseApiService {
     });
   }
 
-  //获取用户权限科室的所有护士
+  /**
+   * 获取用户权限科室的所有护士
+   * @returns 
+   */
   public findAllNurseByPerDept() {
     return this.get("/qcNurseMeetingRecord/getPermissionDeptNurse");
+  }
+
+  /**
+   * 获取侧边栏菜单
+   * @param moduleRoleCode 模块code
+   * @returns 
+   */
+  public getSideMenu(moduleRoleCode: string) {
+    return this.get(`/menu/getMenuList/${moduleRoleCode}`);
   }
 }

@@ -32,6 +32,23 @@ export default class IndicatorService extends BaseApiService {
       { responseType: 'blob' }
     )
   }
+
+  /**
+   * NQ.1.03、敏感指标：自定义统计表
+   * @param query 
+   * @returns Promise<any>
+   */
+  public getIndicatorTable(query: {
+    beginDate: string,
+    endDate: string,
+    indicatorTableCode: string
+  }) {
+    const { indicatorTableCode, endDate, beginDate } = query
+    return this
+      .post(`/sensitiveIndicator/customIndicatorTable/${indicatorTableCode}`, {
+        endDate, beginDate
+      })
+  }
 }
 
 export const indicatorService = new IndicatorService()

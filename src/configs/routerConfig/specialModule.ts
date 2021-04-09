@@ -58,6 +58,7 @@ const SettingView = lazy(() => import("src/modules/setting/SettingView"))
 //不良事件视图
 const BadEventsNewList = lazy(() => import("src/modules/badEventsNew/BadEventsNewList"))
 import BadEventsRouters from "src/modules/badEventsNew/BadEventsRouters"
+import IndicatorNew from "src/modules/indicator/IndicatorNew";
 let specialModule: any[] = [];
 
 //根据是否只展示不良事件指定页面
@@ -77,12 +78,38 @@ const homeRouter = (view: any): any[] => {
 }
 
 if (
-  process.env.REACT_APP_HOSPITAL_ID == "hj" ||
+  process.env.REACT_APP_HOSPITAL_ID == "hj"
+) {
+  specialModule = [
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
+} else if (
   process.env.REACT_APP_HOSPITAL_ID == "ys" ||
   process.env.REACT_APP_HOSPITAL_ID == "gyd"
 ) {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
