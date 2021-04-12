@@ -22,15 +22,19 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
-export interface Props { }
+
+export interface Props {
+}
+
 import { appStore } from "src/stores";
+
 const { TextArea } = Input;
 
 export default observer(function Step1() {
   // 组织方式
   const zzfs =
     appStore.HOSPITAL_ID === "hj" &&
-      allStepViewModal.getParentsName === "集中培训"
+    allStepViewModal.getParentsName === "集中培训"
       ? [{ name: "线下", code: 2 }]
       : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
 
@@ -168,29 +172,29 @@ export default observer(function Step1() {
   return (
     <Wrapper>
       <Form
-        ref={refForm}
-        rules={rules}
-        labelWidth={100}
-        onChange={onFormChange}
+        ref={ refForm }
+        rules={ rules }
+        labelWidth={ 100 }
+        onChange={ onFormChange }
       >
         <Row>
-          <Col span={24}>
-            <Form.Field label={`培训名称`} name="title">
-              <Input />
+          <Col span={ 24 }>
+            <Form.Field label={ `培训名称` } name="title">
+              <Input/>
             </Form.Field>
           </Col>
 
-          <Col span={24}>
-            <Form.Field label={`培训开始时间`} name="startTime">
-              <DateTimePicker />
+          <Col span={ 24 }>
+            <Form.Field label={ `培训开始时间` } name="startTime">
+              <DateTimePicker/>
             </Form.Field>
           </Col>
-          {appStore.hisMatch({
+          { appStore.hisMatch({
             map: {
               nys: (
-                <Col span={24}>
-                  <Form.Field label={`培训结束时间`} name="endTime">
-                    <DateTimePicker />
+                <Col span={ 24 }>
+                  <Form.Field label={ `培训结束时间` } name="endTime">
+                    <DateTimePicker/>
                   </Form.Field>
                 </Col>
               ),
@@ -198,156 +202,157 @@ export default observer(function Step1() {
                 <DateSelectCon>
                   <div className="date-row">
                     <span className="date-label">培训开放</span>
-                    <Form.Field label={``} name="openTime" labelWidth={1}>
-                      <InputNumber />
+                    <Form.Field label={ `` } name="openTime" labelWidth={ 1 }>
+                      <InputNumber/>
                     </Form.Field>
-                    <Form.Field label={``} name="openTimeUnit" labelWidth={1}>
+                    <Form.Field label={ `` } name="openTimeUnit" labelWidth={ 1 }>
                       <Select>
-                        {openTimeUnitList.map(item => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
+                        { openTimeUnitList.map(item => (
+                          <Select.Option value={ item.code } key={ item.name }>
+                            { item.name }
                           </Select.Option>
-                        ))}
+                        )) }
                       </Select>
                     </Form.Field>
                     <span className="aside">
-                      {stepViewModal.getEndTime
-                        ? `即：${stepViewModal.getEndTime} 结束`
-                        : ""}
+                      { stepViewModal.getEndTime
+                        ? `即：${ stepViewModal.getEndTime } 结束`
+                        : "" }
                     </span>
                   </div>
                 </DateSelectCon>
               )
             }
-          })}
+          }) }
 
-          <Col span={24}>
-            <Form.Field label={`组织方式`} name="organizationWay">
+          <Col span={ 24 }>
+            <Form.Field label={ `组织方式` } name="organizationWay">
               <Select
                 disabled={
                   appStore.HOSPITAL_ID === "hj" &&
                   allStepViewModal.getParentsName === "集中培训"
                 }
               >
-                {zzfs.map(item => (
-                  <Select.Option value={item.code} key={item.name}>
-                    {item.name}
+                { zzfs.map(item => (
+                  <Select.Option value={ item.code } key={ item.name }>
+                    { item.name }
                   </Select.Option>
-                ))}
+                )) }
               </Select>
             </Form.Field>
           </Col>
-          {stepViewModal.stepData2.organizationWay == "2" && (
+          { stepViewModal.stepData2.organizationWay == "2" && (
             <React.Fragment>
-              <Col span={4} />
-              <Col span={20}>
+              <Col span={ 4 }/>
+              <Col span={ 20 }>
                 <Form.Field
-                  label={`签到负责人`}
+                  label={ `签到负责人` }
                   name="sicPersonList"
                   suffix={
                     <MoreBox
-                      onClick={() => {
+                      onClick={ () => {
                         openSelectNurseModal("sicPersonList");
-                      }}
+                      } }
                     />
                   }
                   aside="签到时间从 培训开始前半个小时  至 培训结束"
                 >
                   <Select
-                    labelInValue={true}
+                    labelInValue={ true }
                     mode="multiple"
-                    style={{ width: "100%" }}
-                    open={false}
+                    style={ { width: "100%" } }
+                    open={ false }
                   />
                 </Form.Field>
               </Col>
             </React.Fragment>
-          )}
+          ) }
 
-          <Col span={24}>
-            <Form.Field label={`培训地址`} name="address">
+          <Col span={ 24 }>
+            <Form.Field label={ `培训地址` } name="address">
               <AutoComplete
-                dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
+                dataSource={ allStepViewModal.dictObj.studyAndTrainAddress.map(
                   (item: any) => item.name
-                )}
+                ) }
               />
             </Form.Field>
           </Col>
 
-          <Col span={24}>
+          <Col span={ 24 }>
             <Form.Field
-              label={`讲师`}
+              label={ `讲师` }
               name="teacherList"
               suffix={
                 <MoreBox
-                  onClick={() => {
+                  onClick={ () => {
                     openSelectNurseModal("teacherList");
-                  }}
+                  } }
                 />
               }
             >
               <Select
-                labelInValue={true}
+                labelInValue={ true }
                 mode="multiple"
-                style={{ width: "100%" }}
-                open={false}
+                style={ { width: "100%" } }
+                open={ false }
               />
             </Form.Field>
           </Col>
 
-          {appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == 'nys' && (
-            <Col span={24}>
+          { appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == 'nys' && (
+            <Col span={ 24 }>
               <Form.Field
-                label={`院外讲师`}
+                label={ `院外讲师` }
                 name="ywTeacherList"
               >
                 <Select
-                  labelInValue={true}
+                  labelInValue={ true }
                   mode="tags"
-                  style={{ width: "100%" }}
-                  open={false}
+                  style={ { width: "100%" } }
+                  open={ false }
                 />
               </Form.Field>
             </Col>
-          )}
+          ) }
 
-          {appStore.HOSPITAL_ID == 'nys' && (
-            <React.Fragment>
-              <Col span={24}>
-                <Form.Field label={`培训内容`} name="trainContent">
-                  <Input />
-                </Form.Field>
-              </Col>
-              <Col span={24}>
-                <Form.Field label={`描述`} name="trainDescribe">
-                  <Input.TextArea autosize={{ minRows: 3 }} />
-                </Form.Field>
-              </Col>
-            </React.Fragment>
-          )}
-
-          {appStore.HOSPITAL_ID == "wh" && (
-            <Col span={24}>
-              <Form.Field label={`类别`} name="category">
-                <Select style={{ width: 120 }}>
-                  <Select.Option value={1}>中医类</Select.Option>
-                  <Select.Option value={2}>非中医类</Select.Option>
+          { appStore.hisMatch({
+            map: {
+              nys: <React.Fragment>
+                <Col span={ 24 }>
+                  <Form.Field label={ `培训内容` } name="trainContent">
+                    <Input.TextArea autosize={ { minRows: 3 } }/>
+                  </Form.Field>
+                </Col>
+                <Col span={ 24 }>
+                  <Form.Field label={ `描述` } name="trainDescribe">
+                    <Input/>
+                  </Form.Field>
+                </Col>
+              </React.Fragment>
+            }
+          }) }
+          { appStore.HOSPITAL_ID == "wh" && (
+            <Col span={ 24 }>
+              <Form.Field label={ `类别` } name="category">
+                <Select style={ { width: 120 } }>
+                  <Select.Option value={ 1 }>中医类</Select.Option>
+                  <Select.Option value={ 2 }>非中医类</Select.Option>
                 </Select>
               </Form.Field>
             </Col>
-          )}
-          <Col span={24}>
-            <Form.Field label={`学员学分`} name="hasStudentCredit">
-              <Select style={{ width: 120 }}>
-                <Select.Option value={1}>有</Select.Option>
-                <Select.Option value={0}>无</Select.Option>
+          ) }
+          <Col span={ 24 }>
+            <Form.Field label={ `学员学分` } name="hasStudentCredit">
+              <Select style={ { width: 120 } }>
+                <Select.Option value={ 1 }>有</Select.Option>
+                <Select.Option value={ 0 }>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-          {stepViewModal.stepData2.hasStudentCredit == 1 && (
+          { stepViewModal.stepData2.hasStudentCredit == 1 && (
             <React.Fragment>
-              <Col span={10}>
-                <Form.Field label={``} name="studentCreditType">
+              <Col span={ 10 }>
+                <Form.Field label={ `` } name="studentCreditType">
                   <Select
                     disabled={
                       appStore.HOSPITAL_ID == "hj" &&
@@ -355,75 +360,75 @@ export default observer(function Step1() {
                         allStepViewModal.getThirdName == "科级")
                     }
                   >
-                    {studentCreditTypeList.map((item: any) => (
-                      <Select.Option value={item.code} key={item.name}>
-                        {item.name}
+                    { studentCreditTypeList.map((item: any) => (
+                      <Select.Option value={ item.code } key={ item.name }>
+                        { item.name }
                       </Select.Option>
-                    ))}
+                    )) }
                   </Select>
                 </Form.Field>
               </Col>
-              <Col span={14}>
+              <Col span={ 14 }>
                 <Form.Field
-                  label={``}
+                  label={ `` }
                   name="studentCredit"
                   suffix="分"
-                  labelWidth={1}
+                  labelWidth={ 1 }
                 >
-                  <InputNumber />
+                  <InputNumber/>
                 </Form.Field>
               </Col>
             </React.Fragment>
-          )}
-          <Col span={24}>
-            <Form.Field label={`学员学时`} name="hasStudentClassHours">
-              <Select style={{ width: 120 }}>
-                <Select.Option value={1}>有</Select.Option>
-                <Select.Option value={0}>无</Select.Option>
+          ) }
+          <Col span={ 24 }>
+            <Form.Field label={ `学员学时` } name="hasStudentClassHours">
+              <Select style={ { width: 120 } }>
+                <Select.Option value={ 1 }>有</Select.Option>
+                <Select.Option value={ 0 }>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-          {stepViewModal.stepData2.hasStudentClassHours == 1 && (
+          { stepViewModal.stepData2.hasStudentClassHours == 1 && (
             <React.Fragment>
-              <Col span={24}>
-                <Form.Field label={``} name="studentClassHours" suffix="学时">
+              <Col span={ 24 }>
+                <Form.Field label={ `` } name="studentClassHours" suffix="学时">
                   <Select
                     showSearch
-                    onSearch={(val: any) => setStudyTime(Number(val))}
+                    onSearch={ (val: any) => setStudyTime(Number(val)) }
                   >
-                    {studyTime &&
-                      studyTime !== 0.5 &&
-                      studyTime !== 1 &&
-                      studyTime !== 2 &&
-                      studyTime !== 3 ? (
-                      <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        {studyTime}
+                    { studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option value={ studyTime } key={ `${ studyTime }-` }>
+                        { studyTime }
                       </Select.Option>
                     ) : (
                       ""
-                    )}
-                    {studentTimeTypeList.map(item => (
-                      <Select.Option value={item.code} key={item.name}>
-                        {item.name}
+                    ) }
+                    { studentTimeTypeList.map(item => (
+                      <Select.Option value={ item.code } key={ item.name }>
+                        { item.name }
                       </Select.Option>
-                    ))}
+                    )) }
                   </Select>
                 </Form.Field>
               </Col>
             </React.Fragment>
-          )}
-          <Col span={24}>
-            <Form.Field label={`讲师学分`} name="hasTeacherCredit">
-              <Select style={{ width: 120 }}>
-                <Select.Option value={1}>有</Select.Option>
-                <Select.Option value={0}>无</Select.Option>
+          ) }
+          <Col span={ 24 }>
+            <Form.Field label={ `讲师学分` } name="hasTeacherCredit">
+              <Select style={ { width: 120 } }>
+                <Select.Option value={ 1 }>有</Select.Option>
+                <Select.Option value={ 0 }>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-          {stepViewModal.stepData2.hasTeacherCredit == 1 && (
+          { stepViewModal.stepData2.hasTeacherCredit == 1 && (
             <React.Fragment>
-              <Col span={10}>
-                <Form.Field label={``} name="teacherCreditType">
+              <Col span={ 10 }>
+                <Form.Field label={ `` } name="teacherCreditType">
                   <Select
                     disabled={
                       appStore.HOSPITAL_ID == "hj" &&
@@ -431,73 +436,73 @@ export default observer(function Step1() {
                         allStepViewModal.getThirdName == "科级")
                     }
                   >
-                    {studentCreditTypeList.map((item: any) => (
-                      <Select.Option value={item.code} key={item.name}>
-                        {item.name}
+                    { studentCreditTypeList.map((item: any) => (
+                      <Select.Option value={ item.code } key={ item.name }>
+                        { item.name }
                       </Select.Option>
-                    ))}
+                    )) }
                   </Select>
                 </Form.Field>
               </Col>
-              <Col span={14}>
+              <Col span={ 14 }>
                 <Form.Field
-                  label={``}
+                  label={ `` }
                   name="teacherCredit"
                   suffix="分"
-                  labelWidth={1}
+                  labelWidth={ 1 }
                 >
-                  <InputNumber />
+                  <InputNumber/>
                 </Form.Field>
               </Col>
             </React.Fragment>
-          )}
-          <Col span={24}>
-            <Form.Field label={`讲师学时`} name="hasTeacherClassHours">
-              <Select style={{ width: 120 }}>
-                <Select.Option value={1}>有</Select.Option>
-                <Select.Option value={0}>无</Select.Option>
+          ) }
+          <Col span={ 24 }>
+            <Form.Field label={ `讲师学时` } name="hasTeacherClassHours">
+              <Select style={ { width: 120 } }>
+                <Select.Option value={ 1 }>有</Select.Option>
+                <Select.Option value={ 0 }>无</Select.Option>
               </Select>
             </Form.Field>
           </Col>
-          {stepViewModal.stepData2.hasTeacherClassHours == 1 && (
+          { stepViewModal.stepData2.hasTeacherClassHours == 1 && (
             <React.Fragment>
-              <Col span={24}>
-                <Form.Field label={``} name="teacherClassHours" suffix="学时">
+              <Col span={ 24 }>
+                <Form.Field label={ `` } name="teacherClassHours" suffix="学时">
                   <Select
                     showSearch
-                    onSearch={(val: any) => setStudyTime(Number(val))}
+                    onSearch={ (val: any) => setStudyTime(Number(val)) }
                   >
-                    {studyTime &&
-                      studyTime !== 0.5 &&
-                      studyTime !== 1 &&
-                      studyTime !== 2 &&
-                      studyTime !== 3 ? (
-                      <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        {studyTime}
+                    { studyTime &&
+                    studyTime !== 0.5 &&
+                    studyTime !== 1 &&
+                    studyTime !== 2 &&
+                    studyTime !== 3 ? (
+                      <Select.Option value={ studyTime } key={ `${ studyTime }-` }>
+                        { studyTime }
                       </Select.Option>
                     ) : (
                       ""
-                    )}
-                    {studentTimeTypeList.map(item => (
-                      <Select.Option value={item.code} key={item.name}>
-                        {item.name}
+                    ) }
+                    { studentTimeTypeList.map(item => (
+                      <Select.Option value={ item.code } key={ item.name }>
+                        { item.name }
                       </Select.Option>
-                    ))}
+                    )) }
                   </Select>
                 </Form.Field>
               </Col>
             </React.Fragment>
-          )}
+          ) }
 
-          <Col span={24}>
+          <Col span={ 24 }>
             <Form.Field
-              label={`必修`}
+              label={ `必修` }
               name="bxNurse"
               aside="注：没有选择的默认为选修"
             >
               <div>
                 <Checkbox
-                  indeterminate={(() => {
+                  indeterminate={ (() => {
                     if (stepViewModal.stepData2.bxNurse.length <= 0)
                       return false;
                     if (
@@ -505,8 +510,8 @@ export default observer(function Step1() {
                     )
                       return false;
                     return true;
-                  })()}
-                  onChange={(e: any) => {
+                  })() }
+                  onChange={ (e: any) => {
                     let checked = e.target.checked;
                     console.log(checked, "checkedchecked");
                     if (checked)
@@ -514,7 +519,7 @@ export default observer(function Step1() {
                         (item: any) => item.code
                       );
                     else stepViewModal.stepData2.bxNurse = [];
-                  }}
+                  } }
                   checked={
                     stepViewModal.stepData2.bxNurse.length >=
                     bxNursing.length && bxNursing.length > 0
@@ -523,46 +528,46 @@ export default observer(function Step1() {
                   全选
                 </Checkbox>
                 <Checkbox.Group
-                  value={stepViewModal.stepData2.bxNurse}
-                  onChange={(val: any) => {
+                  value={ stepViewModal.stepData2.bxNurse }
+                  onChange={ (val: any) => {
                     stepViewModal.stepData2.bxNurse = val;
                     console.log(val, "val1111");
-                  }}
+                  } }
                 >
-                  {bxNursing.map((item: any) => (
+                  { bxNursing.map((item: any) => (
                     <Checkbox
-                      onChange={(e: any) =>
-                      (stepViewModal.stepData2.bxNurse = [
-                        stepViewModal.stepData2.bxNurse,
-                        ...e.target.value
-                      ])
+                      onChange={ (e: any) =>
+                        (stepViewModal.stepData2.bxNurse = [
+                          stepViewModal.stepData2.bxNurse,
+                          ...e.target.value
+                        ])
                       }
-                      key={item.code}
-                      value={item.code}
+                      key={ item.code }
+                      value={ item.code }
                     >
-                      {item.name}
+                      { item.name }
                     </Checkbox>
-                  ))}
+                  )) }
                 </Checkbox.Group>
               </div>
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID == "hj" &&
-            allStepViewModal.getParentsName == "集中培训" && (
-              <Col span={24}>
-                <Form.Field label={`注意事项`} name="pointsForAttention">
-                  <TextArea maxLength={300} rows={5} />
-                </Form.Field>
-              </Col>
-            )}
+          { appStore.HOSPITAL_ID == "hj" &&
+          allStepViewModal.getParentsName == "集中培训" && (
+            <Col span={ 24 }>
+              <Form.Field label={ `注意事项` } name="pointsForAttention">
+                <TextArea maxLength={ 300 } rows={ 5 }/>
+              </Form.Field>
+            </Col>
+          ) }
           {/* <Col span={24}>
             <Form.Field label={`通知消息`} name="noticeContent">
               <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
             </Form.Field>
-          </Col> */}
+          </Col> */ }
         </Row>
       </Form>
-      <selectNurseModal.Component />
+      <selectNurseModal.Component/>
     </Wrapper>
   );
 });
@@ -622,5 +627,5 @@ function MoreBox(props: any) {
       box-shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
     }
   `;
-  return <Wrapper onClick={onClick}>...</Wrapper>;
+  return <Wrapper onClick={ onClick }>...</Wrapper>;
 }
