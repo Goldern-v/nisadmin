@@ -319,13 +319,13 @@ export default observer(function Step1() {
             map: {
               nys: <React.Fragment>
                 <Col span={ 24 }>
-                  <Form.Field label={ `培训内容` } name="trainContent">
-                    <Input.TextArea autosize={ { minRows: 3 } }/>
+                  <Form.Field label={ `描述` } name="trainDescribe">
+                    <Input/>
                   </Form.Field>
                 </Col>
                 <Col span={ 24 }>
-                  <Form.Field label={ `描述` } name="trainDescribe">
-                    <Input/>
+                  <Form.Field label={ `培训内容` } name="trainContent">
+                    <Input.TextArea autosize={ { minRows: 3 } }/>
                   </Form.Field>
                 </Col>
               </React.Fragment>
