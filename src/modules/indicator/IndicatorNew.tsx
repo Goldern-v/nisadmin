@@ -25,24 +25,7 @@ export default observer(function indicatorView(props: any) {
 
   const [authMenu, setAuthMenu] = useState([] as any[])
 
-  const LEFT_MENU = [
-    {
-      title: "护理质量相关数据",
-      icon: <ZKHL />,
-      path: "/indicator/护理质量相关数据"
-    },
-    ...authMenu,
-    {
-      title: "公共季度统计表",
-      icon: <HLGZZL />,
-      path: "/indicator/公共季度统计表",
-    },
-    {
-      title: "专科季度统计表",
-      icon: <ZKHL />,
-      path: "/indicator/专科季度统计表",
-    },
-  ]
+  const LEFT_MENU = [...authMenu]
 
   const targetConponent = () => {
     let name = props.match.params.name || ''
@@ -166,5 +149,13 @@ const LeftMenuCon = styled.div`
 `;
 
 const MainCon = styled.div`
-  flex: 1;
+    box-sizing: border-box;
+    flex: 1;
+    width: 0px;
+    align-items: stretch;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    padding: 5px 15px;
 `

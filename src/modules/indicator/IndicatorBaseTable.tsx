@@ -79,6 +79,7 @@ export default function IndicatorBaseTable(props: any) {
           title: item.title,
           width: widthCalc(item.width),
           align: 'center',
+          // fixed: ['序号', '护理单元'].indexOf(item.title) >= 0 ? 'left' : false,
           dataIndex: item.title,
         })
       } else {
@@ -111,7 +112,7 @@ export default function IndicatorBaseTable(props: any) {
 
   const formatChartData = (originData: any[], orginColumns: any[]) => {
     let nameList = orginColumns.filter((column) => column.yaxis).map((column: any) => column.title)
-    console.log(nameList)
+    // console.log(nameList)
     let newData = [] as any[]
 
     for (let i = 0; i < nameList.length; i++) {
@@ -208,12 +209,12 @@ export default function IndicatorBaseTable(props: any) {
           <Radio.Button value="chart">图表</Radio.Button>
         </Radio.Group>
       </span>
-      <div className="main-title">{tableName}</div>
+      <div className="main-title">{tableName || '无标题'}</div>
       <div className="sub-title">日期：{dateRange[0]} 至 {dateRange[1]}</div>
       {viewType == 'table' && <TableCon>
         <BaseTable
           loading={loading}
-          surplusWidth={1000}
+          surplusWidth={300}
           surplusHeight={290}
           dataSource={tableData}
           columns={columns}
@@ -284,8 +285,7 @@ const HeaderCon = styled.div`
 `
 
 const TableCon = styled.div`
-  margin: 10 auto;
- width: 100%;
+  width: 100%;
 `
 
 const MidCon = styled.div`
