@@ -70,8 +70,8 @@ export default function QuestionListModal(props: Props) {
             allowClear={false}
             onChange={(time: any) =>
               setTimeout(() => {
-                saveBroadCastPoint(record,time)
-              },1000)
+                saveBroadCastPoint(record, time)
+              }, 1000)
             }
           />
         )
@@ -87,7 +87,6 @@ export default function QuestionListModal(props: Props) {
         return (
           <DoCon>
             <span onClick={() => handleCheck(record)}>查看</span>
-            {/* <span>修改</span> */}
             <span onClick={() => handleDelete(record)}>删除</span>
           </DoCon>
         );
@@ -106,7 +105,7 @@ export default function QuestionListModal(props: Props) {
   }, [visible, query]);
 
   //保存插入时间
-  const saveBroadCastPoint = async (record: any,broadCastPoint: any) => {
+  const saveBroadCastPoint = async (record: any, broadCastPoint: any) => {
     let obj: any = {
       id: record.id,
       taskCode: stepViewModal.taskCode,
@@ -132,10 +131,10 @@ export default function QuestionListModal(props: Props) {
       pageSize: query.pageSize
     };
     videoInsertionApi.getQuestionPageList(obj).then((res: any) => {
-      if(res.code == 200) {
+      if (res.code == 200) {
         setTableLoading(false);
         setTableList(res.data.list || []);
-        setDataTotal(res.data.totalCount || 0);  
+        setDataTotal(res.data.totalCount || 0);
       } else {
         Message.warning(`${res.desc}`);
       }
@@ -156,8 +155,8 @@ export default function QuestionListModal(props: Props) {
         Message.warning(`${res.desc}`);
       }
     }).catch(err => {
-        Message.error("文件删除失败");
-      });
+      Message.error("文件删除失败");
+    });
   }
 
   // 查看
@@ -185,7 +184,7 @@ export default function QuestionListModal(props: Props) {
       centered: true,
       content: modalContent,
       onOk: () => {
-        setParams({createType,attachmentId})
+        setParams({ createType, attachmentId })
         setEditVisible(true)
       }
     })
@@ -281,13 +280,13 @@ export default function QuestionListModal(props: Props) {
             getTableData(attachmentId)
           }}
         />
-      <ResultModal
-        visible={visibleCheck}
-        onCancel={() => setVisibleCheck(false)}
-        onOk={() => setVisibleCheck(false)}
-        params={paramsCheck}
-      />
-      <PreviewModalWrapper.Component />
+        <ResultModal
+          visible={visibleCheck}
+          onCancel={() => setVisibleCheck(false)}
+          onOk={() => setVisibleCheck(false)}
+          params={paramsCheck}
+        />
+        <PreviewModalWrapper.Component />
       </Wrapper>
     </Modal>
   );

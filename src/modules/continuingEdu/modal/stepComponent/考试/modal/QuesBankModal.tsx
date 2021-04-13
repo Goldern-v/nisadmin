@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { Modal, message as Message, Button, Tabs } from "antd";
 import SelectLabel from "./components/SelectLabel";
 import Header from "./components/Header";
@@ -79,6 +79,7 @@ export default observer(function PushModal(props: Props) {
     }
   };
 
+  // 弹窗取消
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();

@@ -1,7 +1,5 @@
 import { cloneJson } from "src/utils/json/clone";
-import { appStore } from "src/stores";
-import { observable, computed, action } from "mobx";
-import { getVarType } from "src/utils/object/object";
+import { observable, computed } from "mobx";
 import moment from "moment";
 const defaultStepData2 = {
   /** 实践名称 **/

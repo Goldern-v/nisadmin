@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button, Radio, Input } from "antd";
+import React from "react";
+import { Radio, Input } from "antd";
 import { xxStepViewModal } from "./XXStepViewModal";
 import { stepViewModal } from "../StepViewModal";
 import Zimage from "src/components/Zimage";
@@ -9,7 +9,6 @@ import { observer } from "mobx-react-lite";
 import moment from "moment";
 import ShowTable from "../公共/table/ShowTable";
 import { appStore } from "src/stores";
-
 export interface Props { }
 
 export default observer(function Step5() {
@@ -17,7 +16,6 @@ export default observer(function Step5() {
     1: "线上",
     2: "线下"
   };
-
   const bxNursingMap: any = {
     nurse0: "N0",
     nurse1: "N1",

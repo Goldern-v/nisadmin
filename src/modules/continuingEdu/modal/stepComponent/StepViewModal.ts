@@ -1,13 +1,11 @@
 import service from "src/services/api";
 import { ksStepViewModal } from "./考试/KSStepViewModal";
-import { cloneJson } from "src/utils/json/clone";
 import { xxStepViewModal } from "./学习/XXStepViewModal";
 import { scStepViewModal } from "./实操/SCStepViewModal";
 import { appStore } from "src/stores";
 import { stepServices } from "./services/stepServices";
-import { observable, computed, action } from "mobx";
+import { observable } from "mobx";
 import { getVarType } from "src/utils/object/object";
-import moment from "moment";
 import { pxStepViewModal } from "./培训/PXStepViewModal";
 import { lxStepViewModal } from "./练习/LXStepViewModal";
 import { ylStepViewModal } from "./演练/YLStepViewModal";
@@ -107,15 +105,6 @@ class StepViewModal {
       }
     }
     return true;
-    // const stepData2 = this.getCurrentStepViewModal
-    //   ? this.getCurrentStepViewModal.stepData2
-    //   : {};
-
-    // let stepArr = [this.stepData1, stepData2, this.stepData3, this.stepData4];
-    // if (step == 2) return true;
-    // if (step == 3) return true;
-
-    // return this.isOk(stepArr[step]);
   };
 
   /** 获取当前选择模式下的私有viewModal */
@@ -147,8 +136,6 @@ class StepViewModal {
         });
       }
     };
-    // this.getCurrentStepViewModal.cleanAllStepData &&
-    //   this.getCurrentStepViewModal.cleanAllStepData();
     for (let key in selfStepViewModalMap) {
       selfStepViewModalMap[key].cleanAllStepData();
     }
@@ -174,8 +161,6 @@ class StepViewModal {
         []
       ),
       detailInfo: {
-        // ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
-
         ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
       },
       studyLinkList: this.stepData4XX.studyLinkList, // 学习外网链接（吴敏）

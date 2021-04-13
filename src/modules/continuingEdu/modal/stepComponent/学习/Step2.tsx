@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
-  Button,
   Row,
   Col,
-  DatePicker,
   Input,
   AutoComplete,
   Select,
@@ -12,22 +10,17 @@ import {
   InputNumber
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
-import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { xxStepViewModal as stepViewModal } from "./XXStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from 'src/stores'
-
 export interface Props { }
 
 export default observer(function Step2() {
-
   // 组织方式
   const zzfs = (appStore.HOSPITAL_ID === 'hj' && allStepViewModal.getParentsName === '在线学习') ? [{ name: "线上", code: 1 }] : [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
-
   // 学分
   const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' ? [
     { name: "国家级", code: 1 },
@@ -48,7 +41,6 @@ export default observer(function Step2() {
   ]
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0)
-
   //必修全选
   const [selectedCheck, setSelectedCheck] = useState([] as any);
   const bxNursing = [
@@ -65,12 +57,7 @@ export default observer(function Step2() {
     { name: "天", code: "天" },
     { name: "周", code: "周" },
   ];
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   const onFormChange = (name: string, value: any, from: Form) => {
     setSelectedCheck([...selectedCheck, value]);
@@ -84,19 +71,6 @@ export default observer(function Step2() {
     stepViewModal.stepData2 = data;
   };
 
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
-
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
-  };
-
   useLayoutEffect(() => {
     console.log(cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
     refForm.current?.setFields(stepViewModal.stepData2)
@@ -104,7 +78,7 @@ export default observer(function Step2() {
 
   return (
     <Wrapper>
-      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFormChange}>
+      <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`学习名称`} name="title">
@@ -239,11 +213,7 @@ export default observer(function Step2() {
                     showSearch
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
-                    {studyTime &&
-                      studyTime !== 0.5 &&
-                      studyTime !== 1 &&
-                      studyTime !== 2 &&
-                      studyTime !== 3 ? (
+                    {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime) ? (
                       <Select.Option
                         value={studyTime}
                         key={`${studyTime}-`}

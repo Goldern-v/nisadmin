@@ -1,21 +1,18 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Radio, Input } from "antd";
 import { ksStepViewModal } from "./KSStepViewModal";
 import { stepViewModal } from "../StepViewModal";
-import Zimage from "src/components/Zimage";
-import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 
 export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"

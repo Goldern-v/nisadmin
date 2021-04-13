@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Radio, Input } from "antd";
 import { pxStepViewModal } from "./PXStepViewModal";
 import { stepViewModal } from "../StepViewModal";
@@ -10,17 +10,14 @@ import moment from "moment";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
 import { appStore } from "src/stores";
-
 export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
   };
-
   const bxNursingMap: any = {
     nurse0: "N0",
     nurse1: "N1",
@@ -288,7 +285,6 @@ export default observer(function Step5() {
 
                             <div className="name">{item.name}</div>
                             <div className="size">{item.size}</div>
-                            {/* <Icon type="close" title="删除图片" /> */}
                           </div>
                         )
                       )}

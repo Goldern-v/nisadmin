@@ -1,12 +1,7 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
+import React from "react";
 import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
-import { stepServices } from "../services/stepServices";
-import { fileDownload } from "src/utils/file/file";
-import { stepViewModal } from "../StepViewModal";
-import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { scStepViewModal } from "./SCStepViewModal";
 export interface Props {

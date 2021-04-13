@@ -15,7 +15,6 @@ export interface Props {
 
 export default observer(function UpdateTable(props: Props) {
   const { value, onChange } = props;
-  // const fileInputRef = React.createRef<HTMLInputElement>();
   const [dataSource, setDataSource]: any = useState([]);
 
   const columns: ColumnProps<any>[] = [
@@ -117,25 +116,6 @@ export default observer(function UpdateTable(props: Props) {
     onChange([...dataSource]);
   };
 
-  // const onFileChange = (e: any) => {
-  //   e.persist();
-  //   let files = e.target.files || [];
-  //   let postData = new FormData();
-  //   postData.append("file", files[0]);
-
-  //   postData.append("taskCode", stepViewModal.taskCode);
-  //   let hideLoading = message.loading("正在上传，请稍等", 0);
-  //   stepServices
-  //     .upLoadQuestionsExam(postData)
-  //     .then(res => {
-  //       hideLoading();
-  //       onChange(res.data);
-  //     })
-  //     .catch(e => {
-  //       hideLoading();
-  //     });
-  // };
-
   useEffect(() => {
     value && setDataSource(value);
   }, [value]);
@@ -148,12 +128,6 @@ export default observer(function UpdateTable(props: Props) {
         type={[""]}
         wrapperStyle={{ padding: 0 }}
       />
-      {/* <input
-        type="file"
-        style={{ display: "none" }}
-        ref={fileInputRef}
-        onChange={onFileChange}
-      /> */}
     </Wrapper>
   );
 });

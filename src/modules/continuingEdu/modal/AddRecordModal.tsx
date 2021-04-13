@@ -1,21 +1,13 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
-  Input,
   Button,
-  Radio,
-  DatePicker,
   Select,
-  Row,
-  Col,
   message,
   Steps
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
-import Form from "src/components/Form";
-import { to } from "src/libs/fns";
-import { Rules } from "src/components/Form/interfaces";
 import Step1 from "./stepComponent/公共/Step1";
 import Step3 from "./stepComponent/公共/Step3";
 import Step4 from "./stepComponent/公共/Step4";

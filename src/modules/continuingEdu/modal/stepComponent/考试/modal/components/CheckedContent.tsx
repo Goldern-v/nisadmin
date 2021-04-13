@@ -4,7 +4,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { quesBankView } from "../QuesBankView";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
-import { Radio, Select, Input, Button, Modal, message as Message } from "antd";
+import { Select, Input, Button, message as Message } from "antd";
 import ResultModal from "./modal/ResultModal";
 
 export default observer(function CheckedContent() {
@@ -17,10 +17,11 @@ export default observer(function CheckedContent() {
     pageSize: 20
   });
   const [type, setType] = useState("全部"); //题目类型
-  const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [params, setParams] = useState("");
+  const [loading, setLoading] = useState(false); // 表格loading
+  const [visible, setVisible] = useState(false); // 控制弹窗
+  const [params, setParams] = useState(""); // 弹窗参数
 
+  // 初始化
   useLayoutEffect(() => {
     setSelectedList(quesBankView.questionList);
     getData();

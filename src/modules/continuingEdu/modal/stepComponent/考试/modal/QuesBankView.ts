@@ -57,6 +57,7 @@ class QuesBankView {
     };
   }
 
+  // 字典获取
   async initAllData() {
     await Promise.all([
       stepServices.getAllDeptList().then(res => {
@@ -89,6 +90,7 @@ class QuesBankView {
     });
   }
 
+  // 数据初始化清空
   clearData() {
     this.selectedLabel = [];
     this.bankType = 1;

@@ -1,27 +1,22 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Radio, Input } from "antd";
 import { lxStepViewModal } from "./LXStepViewModal";
 import { stepViewModal } from "../StepViewModal";
-import Zimage from "src/components/Zimage";
-import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import ShowTable from "./ShowTable";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
-import { appStore, authStore } from "src/stores";
-
+import { appStore } from "src/stores";
 export interface Props { }
 
 export default observer(function Step5() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
   };
-
   const bxNursingMap: any = {
     nurse0: "N0",
     nurse1: "N1",
@@ -36,13 +31,6 @@ export default observer(function Step5() {
     2: "省级",
     3: "市级"
   };
-
-  // let totalNum = lxStepViewModal.stepData2.questionStatList.reduce(
-  //   (total: any, current: any) => {
-  //     return total + current.questionCount;
-  //   },
-  //   0
-  // );
 
   // 习题预览弹窗
   const handlePagePreview = () => {

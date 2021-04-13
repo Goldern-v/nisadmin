@@ -4,13 +4,11 @@ import { Button, message, Input } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
-import { fileDownload } from "src/utils/file/file";
 import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { scStepViewModal } from "./SCStepViewModal";
-import { authStore, appStore } from "src/stores";
-
+import { appStore } from "src/stores";
 export interface Props {
   value?: any;
   onChange?: any;
@@ -31,7 +29,6 @@ export default observer(function UpdateTable(props: Props) {
   let totalScore = dataSource.reduce((total: any, current: any) => {
     return total + current.scores;
   }, 0);
-  // let _totalScore = scStepViewModal.stepData2.totalScores;
   scStepViewModal.stepData2.totalScores = totalScore;
 
   const columns: ColumnProps<any>[] = [
@@ -134,7 +131,6 @@ export default observer(function UpdateTable(props: Props) {
 
   const delList = (index: any) => {
     dataSource.splice(index, 1);
-
     onChange([...dataSource]);
   };
 

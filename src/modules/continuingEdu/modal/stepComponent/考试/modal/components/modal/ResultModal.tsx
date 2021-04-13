@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Modal, message as Message, Button, Tabs } from "antd";
-import { stepServices } from "../../../../services/stepServices";
-
+import React, { useState } from "react";
+import { Modal, Button } from "antd";
 export interface Props {
   params: any;
   visible: boolean;
@@ -14,7 +12,7 @@ export interface Props {
 export default function ResultModal(props: Props) {
   const { visible, onCancel, onOk, params } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const checkForm = () => {};
+  const checkForm = () => { };
   const {
     questionContent,
     choiceQuestionList,
@@ -33,11 +31,9 @@ export default function ResultModal(props: Props) {
   const Options = () => {
     return choiceList.map((item: any, idx: number) => {
       return (
-        <div className="option" key={idx}>{`${
-          item.questionOption ? item.questionOption : item.optionLabel
-        }. ${
-          item.answerContent ? item.answerContent : item.optionContent
-        }`}</div>
+        <div className="option" key={idx}>{`${item.questionOption ? item.questionOption : item.optionLabel
+          }. ${item.answerContent ? item.answerContent : item.optionContent
+          }`}</div>
       );
     });
   };
@@ -109,9 +105,9 @@ export default function ResultModal(props: Props) {
         }
       >
         {questionType &&
-        (questionType === "单选题" ||
-          questionType === "多选题" ||
-          questionType === "选择题") ? (
+          (questionType === "单选题" ||
+            questionType === "多选题" ||
+            questionType === "选择题") ? (
           <Content>
             <div className="title">
               <WrapPre>{questionContent}</WrapPre>

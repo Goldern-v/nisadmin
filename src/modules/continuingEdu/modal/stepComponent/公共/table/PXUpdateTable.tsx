@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
+import { message } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../../services/stepServices";
@@ -9,8 +9,6 @@ import { stepViewModal } from "../../StepViewModal";
 import { observer } from "mobx-react-lite";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
-import { context } from "react-dnd/lib/cjs/DragDropContext";
-
 export interface Props {
   value?: any;
   onChange?: any;
@@ -130,7 +128,7 @@ export default observer(function PXUpdateTable(props: Props) {
         setDataSource([res.data]);
         onChange([res.data]);
       })
-      .catch(e => {});
+      .catch(e => { });
   };
 
   // 修改时回显文件

@@ -8,8 +8,6 @@ import {
   Row,
   Col,
   Select,
-  DatePicker,
-  TimePicker
 } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
@@ -18,9 +16,8 @@ import { stepViewModal } from "../StepViewModal";
 import UpdateTable from "./table/UpdateTable";
 import PXUpdateTable from "./table/PXUpdateTable";
 import Form from "src/components/Form";
-import moment from "moment";
 import VideoInsertion from "./videoInsertion/VideoInsertion";
-export interface Props {}
+export interface Props { }
 
 export default function Step4() {
   let refForm = React.createRef<Form>();

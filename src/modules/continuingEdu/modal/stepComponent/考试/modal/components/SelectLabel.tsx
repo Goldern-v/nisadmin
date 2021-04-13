@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import windowHeight from "src/hooks/windowHeight";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
 import { Select, Checkbox } from "antd";
-export interface Props {}
+export interface Props { }
 
 export default observer(function SelectLabel(props: Props) {
   const [data, setData]: any = useState([]); //全部标签数据

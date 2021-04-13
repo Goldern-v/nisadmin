@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { TableHeadCon } from "src/components/BaseTable";
 import { Radio, Select, Input, Button, Modal, message as Message } from "antd";
 import { quesBankView } from "../QuesBankView";
@@ -13,6 +13,7 @@ export default observer(function Header() {
     let arr1: any = [];
     let obj: any = {};
     if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
+      // 过滤重复数据
       arr1 = [...quesBankView.questionList, ...quesBankView.selectedRows];
       quesBankView.questionList = arr1.reduce((item: any, next: any) => {
         obj[next.id] ? " " : (obj[next.id] = true && item.push(next));

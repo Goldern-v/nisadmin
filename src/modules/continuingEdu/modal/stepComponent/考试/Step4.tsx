@@ -12,7 +12,6 @@ import {
   message
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import { ksStepViewModal as stepViewModal } from "./KSStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
@@ -21,7 +20,6 @@ import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
-import { cloneJson } from "src/utils/json/clone";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import { appStore } from "src/stores";
 import { stepServices } from "../services/stepServices";
@@ -46,16 +44,8 @@ export default observer(function Step4() {
   const [studyTime, setStudyTime] = useState(0);
   //学时自由输入
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-
-  // 组织方式
-
   const selectNurseModal = createModal(SelectPeopleModal);
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   const onFormChange = async (name: string, value: any, from: Form) => {
     let data: any = from.getFields();
@@ -80,19 +70,6 @@ export default observer(function Step4() {
         return total + current.totalScores;
       }, 0);
     }
-  };
-
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
-
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
   };
 
   /** 选择人员 */
@@ -131,6 +108,10 @@ export default observer(function Step4() {
       textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });
     }
   }, [textPapersLists.length]);
+
+  // const getHjQuestionScoresSettings = (index: number) => {
+  //   textPapersLists[0] && refForm.current && refForm.current.setFields({ questionScoresSettings0: textPapersLists[0] });
+  // }
 
 
   /** 判断是否有问答题，只有问答题才允许选择评分负责人 */
@@ -262,7 +243,6 @@ export default observer(function Step4() {
     <Wrapper>
       <Form
         ref={refForm}
-        rules={rules}
         labelWidth={100}
         onChange={onFormChange}
       >
@@ -298,7 +278,6 @@ export default observer(function Step4() {
           <UpdateTablePage />
 
           <Col span={24}>
-            {/* <Form.Field label={`卷面设置`} name="卷面设置"> */}
             <span
               style={{
                 display: "inline-block",
@@ -428,11 +407,7 @@ export default observer(function Step4() {
                           showSearch
                           onSearch={(val: any) => setStudyTime(Number(val))}
                         >
-                          {studyTime &&
-                            studyTime !== 0.5 &&
-                            studyTime !== 1 &&
-                            studyTime !== 2 &&
-                            studyTime !== 3 ? (
+                          {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime) ? (
                             <Select.Option value={studyTime} key={`${studyTime} - `}>
                               {studyTime}
                             </Select.Option>
@@ -499,11 +474,11 @@ const Wrapper = styled.div`
 `;
 
 const DateSelectCon = styled.div`
-      .date - row {
+      .date-row {
       display: flex;
-      align - items: center;
+      align-items: center;
       height: 32px;
-      margin - bottom: 20px;
+      margin-bottom: 20px;
       padding - left: 120px;
       font - size: 14px;
     .select - item {

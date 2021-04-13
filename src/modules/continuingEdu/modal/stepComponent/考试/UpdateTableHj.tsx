@@ -4,7 +4,6 @@ import { Button, Modal, message as Message, Radio, message } from "antd";
 import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
-import { fileDownload } from "src/utils/file/file";
 import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
@@ -14,7 +13,7 @@ import { quesBankView } from "./modal/QuesBankView";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 
 export interface Props {
   data?: any;

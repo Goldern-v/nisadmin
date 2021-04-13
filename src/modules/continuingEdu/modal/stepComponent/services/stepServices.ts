@@ -1,5 +1,5 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 import qs from "qs";
 
 let getPid = () => {

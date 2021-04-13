@@ -7,7 +7,6 @@ import { stepServices } from "../services/stepServices";
 import { fileDownload } from "src/utils/file/file";
 import { stepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
-import { ksStepViewModal } from "./KSStepViewModal";
 import QuesBankModal from "./modal/QuesBankModal";
 import { quesBankView } from "./modal/QuesBankView";
 
@@ -158,22 +157,8 @@ export default observer(function UpdateTableNys(props: Props) {
     if (showType) {
       setQuesVisible(true);
       // 再次打开题库上传 初始化数据
-      quesBankView.selectedLabel = [];
-      quesBankView.bankType = 1;
-      quesBankView.questionType = "单选题";
-      quesBankView.keyWord = "";
-      quesBankView.questionIdList = [];
-      quesBankView.selectedRows = [];
-      quesBankView.questionList = [];
-      quesBankView.pageIndex = 1;
-      quesBankView.pageSize = 20;
-      quesBankView.allQuestionNum = 0;
-      quesBankView.RadioQuestionNum = 0;
-      quesBankView.checkBoxQuestionNum = 0;
-      quesBankView.TKQuestionNum = 0;
-      quesBankView.JDQuestionNum = 0;
-      quesBankView.tableList = [];
-      // quesBankView.init();
+      quesBankView.clearData();
+      quesBankView.init();
     } else {
       fileInputRef.current && fileInputRef.current.click();
     }

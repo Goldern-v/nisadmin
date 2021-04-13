@@ -1,45 +1,28 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
-  Button,
   Row,
   Col,
-  DatePicker,
   Input,
-  AutoComplete,
-  Select,
   Checkbox,
   InputNumber,
-  message
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
-import { to } from "src/libs/fns";
-import DateTimePicker from "src/components/DateTimePicker";
 import { scStepViewModal as stepViewModal } from "./SCStepViewModal";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
-import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
-import { cloneJson } from "src/utils/json/clone";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import { appStore } from "src/stores";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function Step4() {
   const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-  // 组织方式
-
   const selectNurseModal = createModal(SelectPeopleModal);
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
@@ -64,7 +47,6 @@ export default observer(function Step4() {
     <Wrapper>
       <Form
         ref={refForm}
-        rules={rules}
         labelWidth={100}
         onChange={onFormChange}
       >

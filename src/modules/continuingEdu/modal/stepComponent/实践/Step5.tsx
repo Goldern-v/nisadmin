@@ -8,7 +8,6 @@ import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import { appStore } from "src/stores";
-
 export interface Props { }
 
 export default observer(function Step5() {

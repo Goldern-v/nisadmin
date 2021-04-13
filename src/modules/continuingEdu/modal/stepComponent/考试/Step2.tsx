@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
-  Button,
   Row,
   Col,
-  DatePicker,
   Input,
   AutoComplete,
   Select,
@@ -13,7 +11,6 @@ import {
   message
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { ksStepViewModal as stepViewModal } from "./KSStepViewModal";
@@ -55,7 +52,6 @@ export default observer(function Step1() {
   ];
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
-
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
   const bxNursing = [
     { name: "N0", code: "nurse0" },
@@ -71,14 +67,8 @@ export default observer(function Step1() {
     { name: "天", code: "天" },
     { name: "周", code: "周" }
   ];
-
   const selectNurseModal = createModal(SelectPeopleModal);
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   const onFormChange = (name: string, value: any, from: Form) => {
     setSelectedCheck([...selectedCheck, value]);
@@ -90,19 +80,6 @@ export default observer(function Step1() {
       data.bxNurse = [];
     }
     Object.assign(stepViewModal.stepData2, data);
-  };
-
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
-
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
   };
 
   /** 选择人员 */
@@ -139,7 +116,6 @@ export default observer(function Step1() {
     <Wrapper>
       <Form
         ref={refForm}
-        rules={rules}
         labelWidth={100}
         onChange={onFormChange}
       >
@@ -311,17 +287,14 @@ export default observer(function Step1() {
                     showSearch
                     onSearch={(val: any) => setStudyTime(Number(val))}
                   >
-                    {studyTime &&
-                      studyTime !== 0.5 &&
-                      studyTime !== 1 &&
-                      studyTime !== 2 &&
-                      studyTime !== 3 ? (
-                      <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        {studyTime}
-                      </Select.Option>
-                    ) : (
-                      ""
-                    )}
+                    {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime)
+                      ? (
+                        <Select.Option value={studyTime} key={`${studyTime}-`}>
+                          {studyTime}
+                        </Select.Option>
+                      ) : (
+                        ""
+                      )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
                         {item.name}
@@ -351,7 +324,6 @@ export default observer(function Step1() {
                   })()}
                   onChange={(e: any) => {
                     let checked = e.target.checked;
-                    console.log(checked, "checkedchecked");
                     if (checked)
                       stepViewModal.stepData2.bxNurse = bxNursing.map(
                         (item: any) => item.code
@@ -390,11 +362,6 @@ export default observer(function Step1() {
               </div>
             </Form.Field>
           </Col>
-          {/* <Col span={24}>
-            <Form.Field label={`通知消息`} name="noticeContent">
-              <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
-            </Form.Field>
-          </Col> */}
         </Row>
       </Form>
       <selectNurseModal.Component />

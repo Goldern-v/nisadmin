@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
-  Button,
   Row,
   Col,
-  DatePicker,
   Input,
   AutoComplete,
   Select,
@@ -13,8 +11,6 @@ import {
   message
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
-import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { scStepViewModal as stepViewModal } from "./SCStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
@@ -51,7 +47,6 @@ export default observer(function Step1() {
   ];
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
-
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
   const bxNursing = [
     { name: "N0", code: "nurse0" },
@@ -67,14 +62,8 @@ export default observer(function Step1() {
     { name: "天", code: "天" },
     { name: "周", code: "周" }
   ];
-
   const selectNurseModal = createModal(SelectPeopleModal);
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   const onFormChange = (name: string, value: any, from: Form) => {
     setSelectedCheck([...selectedCheck, value]);
@@ -88,18 +77,6 @@ export default observer(function Step1() {
     Object.assign(stepViewModal.stepData2, data);
   };
 
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
-
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
-  };
 
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
@@ -138,7 +115,6 @@ export default observer(function Step1() {
     <Wrapper>
       <Form
         ref={refForm}
-        rules={rules}
         labelWidth={120}
         onChange={onFormChange}
       >
@@ -280,11 +256,7 @@ export default observer(function Step1() {
                         showSearch
                         onSearch={(val: any) => setStudyTime(Number(val))}
                       >
-                        {studyTime &&
-                          studyTime !== 0.5 &&
-                          studyTime !== 1 &&
-                          studyTime !== 2 &&
-                          studyTime !== 3 ? (
+                        {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime) ? (
                           <Select.Option
                             value={studyTime}
                             key={`${studyTime}-`}

@@ -4,23 +4,19 @@ import {
   Row,
   Col,
   Input,
-  AutoComplete,
   Select,
   Checkbox,
   InputNumber
 } from "antd";
 import Form from "src/components/Form";
-import { Rules } from "src/components/Form/interfaces";
 import DateTimePicker from "src/components/DateTimePicker";
 import { sjStepViewModal as stepViewModal } from "./SJStepViewModal";
-import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from 'src/stores'
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
-
 export interface Props { }
 
 export default observer(function Step2() {
@@ -63,12 +59,7 @@ export default observer(function Step2() {
     { name: "天", code: "天" },
     { name: "周", code: "周" },
   ];
-
   let refForm = React.createRef<Form>();
-  /** 设置规则 */
-  const rules: Rules = {
-    publicDate: val => !!val || "请填写发表日期"
-  };
 
   //表单变化函数
   const onFormChange = (name: string, value: any, from: Form) => {
@@ -122,7 +113,7 @@ export default observer(function Step2() {
 
   return (
     <Wrapper>
-      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFormChange}>
+      <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
         <Row>
           {/* 实践名称 */}
           <Col span={24}>
@@ -264,11 +255,7 @@ export default observer(function Step2() {
                         showSearch
                         onSearch={(val: any) => setStudyTime(Number(val))}
                       >
-                        {studyTime &&
-                          studyTime !== 0.5 &&
-                          studyTime !== 1 &&
-                          studyTime !== 2 &&
-                          studyTime !== 3 ? (
+                        {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime) ? (
                           <Select.Option
                             value={studyTime}
                             key={`${studyTime}-`}
