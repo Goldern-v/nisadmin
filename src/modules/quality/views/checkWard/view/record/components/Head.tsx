@@ -100,7 +100,7 @@ export default observer(function Head() {
         >
           <Select.Option value=''>全部</Select.Option>
           <Select.Option value='1'>待病区处理</Select.Option>
-          <Select.Option value='2'>待科护士长审核</Select.Option>
+          <Select.Option value='1,2'>待科护士长审核</Select.Option>
           <Select.Option value='3'>待护理部审核</Select.Option>
           <Select.Option value='4'>已完成</Select.Option>
           {/* {recordViewModal.checkStateList.map((item: any, index: number) => (
