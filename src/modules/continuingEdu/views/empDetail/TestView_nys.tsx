@@ -4,14 +4,15 @@ import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BaseTable from 'src/components/BaseTable'
-import { DatePicker, Select, Button } from 'antd'
+import { DatePicker, Select, Button, Input } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 // import qs from 'qs'
 import moment from 'moment'
-import { empDetailModel } from './models/EmpDetailModel'
+import { empDetailModel } from './models/EmpDetailModel_nys'
 import StudyInfoModal from './components/StudyInfoModal'
 import createModal from "src/libs/createModal";
 import { empManageService } from './api/EmpManageService'
+import { recordViewModal } from 'src/modules/quality/views/checkWard/view/record/RecordViewModal'
 
 const Option = Select.Option
 
@@ -27,7 +28,6 @@ export default observer(function TableView(props: any) {
   const studyInfoModal = createModal(StudyInfoModal)
 
   const pannelName = empDetailModel.pannelName
-  console.log(appStore.match.params)
 
   const indexColumn = {
     title: '序号',
@@ -89,9 +89,39 @@ export default observer(function TableView(props: any) {
           },
           {
             title: '其他',
-            dataIndex: '其他',
+            dataIndex: 'other',
             width: 200,
             align: 'center',
+            render: (text: string, record: any, idx: number) => {
+              const editId = `other_edit_${idx}_${record.id}`
+              if (record.editing)
+                return <Input.TextArea
+                  id={editId}
+                  autosize={{ minRows: 1 }}
+                  value={text}
+                  autoFocus
+                  onChange={(e) => empDetailModel.handleTableRowChange({
+                    ...record,
+                    other: e.target.value,
+                    modified: true,
+                  }, idx)}
+                  onBlur={() => {
+                    if (record.modified)
+                      empDetailModel.handleSaveTableRow(record, idx)
+                    else
+                      empDetailModel
+                        .handleTableRowChange({ ...record, editing: false }, idx)
+                  }} />
+              return <div
+                style={{ width: '100%', minHeight: '20px' }}
+                onClick={() =>
+                  empDetailModel
+                    .handleTableRowChange({ ...record, editing: true }, idx)}>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                  {text}
+                </pre>
+              </div>
+            }
           },
           {
             title: '考试情况',
@@ -126,11 +156,6 @@ export default observer(function TableView(props: any) {
           setTypeList(menuTree)
         break
       case '学分记录':
-        // setTypeList([
-        //   { id: "1", name: "院级学分" },
-        //   { id: "2", name: "片区学分" },
-        //   { id: "3", name: "病区学分" },
-        // ])
         if (creditTypeList.length <= 0) {
           getCreditTypeList()
         } else {
@@ -295,6 +320,7 @@ export default observer(function TableView(props: any) {
     </div>
     <div style={{ position: 'relative' }}>
       <BaseTable
+        rowKey="id"
         columns={columns()}
         dataSource={tableData}
         loading={loading}

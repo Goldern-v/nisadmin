@@ -1,7 +1,8 @@
 import { action, observable, computed } from 'mobx'
 import { appStore } from 'src/stores'
-import { empManageService } from './../api/EmpManageService'
+import { empManageService } from '../api/EmpManageService'
 import moment from 'moment'
+import { message } from 'antd'
 
 class EmpDetailModel {
   defaultQuery = {
@@ -172,16 +173,48 @@ class EmpDetailModel {
     reqMethod?.then(res => {
       this.loading = false
       if (res.data) {
-        this.tableData = res.data.list || []
+        this.tableData = this.formatTableList(res.data.list)
         this.dataTotal = res.data.totalCount || 0
       }
       callback && callback(res.data)
     }, err => this.loading = false)
   }
 
-  // @action getBaseInfo() {
+  private formatTableList(originList: any[]): any[] {
+    let fommatedList = [] as any[]
+    if (this.pannelName === '考试记录') {
+      fommatedList = originList.map((item: any) => ({
+        ...item,
+        editing: false,
+        modified: false,
+      }))
+    } else {
+      fommatedList = [...originList] || []
+    }
+    return fommatedList
+  }
 
-  // }
+  public handleTableRowChange = (newRecord: any, idx: number) => {
+    this.tableData[idx] = newRecord
+  }
+
+  public handleSaveTableRow = (saveRecord: any, idx: number) => {
+    if (!saveRecord.modified) return
+
+    empManageService.updateExamRecordOther({
+      cetpId: saveRecord.cetpId,
+      empNo: appStore.queryObj.empNo,
+      other: saveRecord.other,
+    })
+      .then(res => {
+        message.success('修改成功')
+        this.handleTableRowChange({
+          ...saveRecord,
+          modified: false,
+          editing: false,
+        }, idx)
+      })
+  }
 }
 
 export const empDetailModel = new EmpDetailModel()

@@ -90,7 +90,7 @@ export default class EmpManageService extends BaseApiService {
   }
 
   /** 个人信息-获取练习记录*/
-  public async querySocialPractiseRecordPageListt(query: any) {
+  public async querySocialPractiseRecordPageList(query: any) {
     return this.post(`/studyAndTrain/personelManage/querySocialPractiseRecordPageList`, query)
   }
 
@@ -152,6 +152,21 @@ export default class EmpManageService extends BaseApiService {
   /**其它人员- 根据人员编号获取人员信息 */
   public async getPersonInfoByIdentifier(identifier: string) {
     return this.post('/studyAndTrain/personelManage/otherperson/getPersonInfoByIdentifier', { identifier })
+  }
+
+  /**
+   * 387.pc端-南医三院-考试记录-修改“其他”
+   * @param params.ectpId 记录id
+   * @param params.empNo 员工号
+   * @param params.other 其他
+   * @returns Promise<any>
+   */
+  public updateExamRecordOther(params: {
+    cetpId: string,
+    empNo: string,
+    other: string,
+  }) {
+    return this.post('/studyAndTrain/personelManage/updateExamRecordOther', params)
   }
 }
 

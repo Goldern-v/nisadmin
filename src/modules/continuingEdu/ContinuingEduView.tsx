@@ -604,7 +604,7 @@ export default function ContinuingEdu(props: Props) {
                   component: 题库管理,
                   hide: () =>
                     queyMenuAuthInfo("nm_lat_questionbankmanage") ||
-                    authStore.isDepartment
+                    !authStore.isDepartment
                 }
               ],
               other: [
