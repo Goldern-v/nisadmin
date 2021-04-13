@@ -371,6 +371,75 @@ export default observer(function ArrangeSheet(props: Props) {
     } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
+  // 拖拽排序
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
+    switch (appStore.HOSPITAL_ID) {
+      case 'hj':
+        const dragRow = sheetViewModal.sheetTableData[dragIndex];
+        if (!dragRow) return;
+        sheetViewModal.sheetTableData = update(
+          sheetViewModal.sheetTableData,
+          {
+            $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+          }
+        );
+        break;
+      default:
+        try {
+          let pc = (document as any).querySelector(
+            ".drop-over-downward,  .drop-over-upward"
+          ).offsetParent.offsetParent.className;
+
+          let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
+          let rightList = sheetTableData.map((item: any) => {
+            return item.settingDtos;
+          });
+          let leftList = sheetTableData.map((item: any) => {
+            delete item.settingDtos;
+            return item;
+          });
+
+          if (pc == "ant-table-body") {
+            /** min */
+            rightList = update(rightList, {
+              $splice: [
+                [dragIndex, 1],
+                [hoverIndex, 0, rightList[dragIndex]]
+              ]
+            });
+            // 东莞横沥移动单独处理：右边移动 护士信息一起移动
+            if (appStore.HOSPITAL_ID == 'dghl') {
+              leftList = update(leftList, {
+                $splice: [
+                  [dragIndex, 1],
+                  [hoverIndex, 0, leftList[dragIndex]]
+                ]
+              });
+            }
+          } else if (pc == "ant-table-body-outer") {
+            /** left */
+            leftList = update(leftList, {
+              $splice: [
+                [dragIndex, 1],
+                [hoverIndex, 0, leftList[dragIndex]]
+              ]
+            });
+          }
+
+          let list = leftList.map((item: any, index: number) => {
+            item.settingDtos = rightList[index].map((r: any) => ({
+              ...r,
+              userId: item.id
+            }));
+            return item;
+          });
+          sheetViewModal.sheetTableData = list;
+          sheetViewModal.allCell = sheetViewModal.getAllCell(true);
+        } catch (error) { }
+    }
+  }
+
+
   return (
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
       {sheetViewModal.sheetTableData.length > 0 && (
@@ -414,59 +483,7 @@ export default observer(function ArrangeSheet(props: Props) {
             );
           }}
           type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-          moveRow={(dragIndex: number, hoverIndex: number) => {
-            try {
-              let pc = (document as any).querySelector(
-                ".drop-over-downward,  .drop-over-upward"
-              ).offsetParent.offsetParent.className;
-
-              let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
-              let rightList = sheetTableData.map((item: any) => {
-                return item.settingDtos;
-              });
-              let leftList = sheetTableData.map((item: any) => {
-                delete item.settingDtos;
-                return item;
-              });
-
-              if (pc == "ant-table-body") {
-                /** min */
-                rightList = update(rightList, {
-                  $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, rightList[dragIndex]]
-                  ]
-                });
-                // 东莞横沥移动单独处理：右边移动 护士信息一起移动
-                if (appStore.HOSPITAL_ID == "dghl") {
-                  leftList = update(leftList, {
-                    $splice: [
-                      [dragIndex, 1],
-                      [hoverIndex, 0, leftList[dragIndex]]
-                    ]
-                  });
-                }
-              } else if (pc == "ant-table-body-outer") {
-                /** left */
-                leftList = update(leftList, {
-                  $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, leftList[dragIndex]]
-                  ]
-                });
-              }
-
-              let list = leftList.map((item: any, index: number) => {
-                item.settingDtos = rightList[index].map((r: any) => ({
-                  ...r,
-                  userId: item.id
-                }));
-                return item;
-              });
-              sheetViewModal.sheetTableData = list;
-              sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-            } catch (error) { }
-          }}
+          moveRow={moveRow}
         />
       )}
       {sheetViewModal.sheetTableData.length <= 0 && (
@@ -478,50 +495,7 @@ export default observer(function ArrangeSheet(props: Props) {
           // fixedFooter={true}
           dataSource={sheetViewModal.sheetTableData}
           type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-          moveRow={(dragIndex: number, hoverIndex: number) => {
-            try {
-              let pc = (document as any).querySelector(
-                ".drop-over-downward,  .drop-over-upward"
-              ).offsetParent.offsetParent.className;
-
-              let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
-              let rightList = sheetTableData.map((item: any) => {
-                return item.settingDtos;
-              });
-              let leftList = sheetTableData.map((item: any) => {
-                delete item.settingDtos;
-                return item;
-              });
-
-              if (pc == "ant-table-body") {
-                /** min */
-                rightList = update(rightList, {
-                  $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, rightList[dragIndex]]
-                  ]
-                });
-              } else if (pc == "ant-table-body-outer") {
-                /** left */
-                leftList = update(leftList, {
-                  $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, leftList[dragIndex]]
-                  ]
-                });
-              }
-
-              let list = leftList.map((item: any, index: number) => {
-                item.settingDtos = rightList[index].map((r: any) => ({
-                  ...r,
-                  userId: item.id
-                }));
-                return item;
-              });
-              sheetViewModal.sheetTableData = list;
-              sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-            } catch (error) { }
-          }}
+          moveRow={moveRow}
         />
       )}
       <contextMenu.Component />
