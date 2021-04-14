@@ -80,7 +80,7 @@ export const meunConfig: meunConfigItem[] = [
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
         component: StandardTime,
-        hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+        hide: !authStore.isDepartment
       },
       {
         title: "加减班列表查询",
