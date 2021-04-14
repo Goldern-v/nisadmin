@@ -286,6 +286,9 @@ const HeaderCon = styled.div`
 
 const TableCon = styled.div`
   width: 100%;
+  td{
+    word-break: break-all;
+  }
 `
 
 const MidCon = styled.div`

@@ -47,7 +47,7 @@ export default observer(function indicatorView(props: any) {
         </Spin>
       </MainCon>
 
-    return <MainCon>
+    return <MainCon style={{ padding: '5px 0px' }}>
       <IndicatorBaseTable
         name={name}
         dateRange={dateRange}
