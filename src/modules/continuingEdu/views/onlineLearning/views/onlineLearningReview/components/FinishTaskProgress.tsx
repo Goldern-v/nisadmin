@@ -15,8 +15,7 @@ export default observer(function finishTaskProgress() {
   const { queryObj } = appStore;
   const { baseInfo } = onlineLearningReviewModel;
   const attachmentList = baseInfo.attachmentList || [];
-  const nameList = ['考试', '练习']
-  let isExamOrExercise = nameList.includes(baseInfo.teachingMethodName)
+  let isExamOrExercise = ['考试', '练习'].includes(baseInfo.teachingMethodName)
   const previewModal = createModal(PreviewModal);
 
   // 预览文件
@@ -76,11 +75,6 @@ export default observer(function finishTaskProgress() {
           </div>
         </div>
       )}
-      {/* {!attachmentList.length && (
-        <div className="no_conetent">
-          暂时没有需要{baseInfo.teachingMethodName}的文件！
-        </div>
-      )} */}
       {baseInfo.teachingMethodName === "练习" && (
         <div className="file-item">
           <img

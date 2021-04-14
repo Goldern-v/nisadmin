@@ -22,12 +22,10 @@ export interface Props {
   onCancel: any;
   onOk: any;
 }
-
 interface User {
   label?: string;
   key: string;
 }
-
 export interface CheckUserItem {
   key: string;
   userList: any[];
@@ -48,10 +46,12 @@ export default function SecondAddModal(props: Props) {
   const [isErrorText, setIsErrorText] = useState("");
   const [chilrenList, setChilrenList] = useState([]);
   const [parentName, setParentName] = useState("");
-  const formRef = React.createRef<Form>();
-  const checkForm = () => {};
   let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
+  const formRef = React.createRef<Form>();
+  const checkForm = () => { };
   // let nameList: any = ["firstAudit", "secondAudit", "thirdAudit"];
+
+  // 回调
   const onOkCallBack = (
     checkedUserList: CheckUserItem[],
     type: any,

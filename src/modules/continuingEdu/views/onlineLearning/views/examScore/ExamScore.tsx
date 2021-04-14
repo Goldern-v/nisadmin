@@ -8,7 +8,7 @@ import { onlineLearningReviewModel } from "../onlineLearningReview/OnlineLearnin
 import AnswerSheetModal from "src/modules/continuingEdu/views/trainingResult/components/AnswerSheetModal/AnswerSheetModal";
 import createModal from "src/libs/createModal";
 
-export interface Props {}
+export interface Props { }
 export default observer(function ExamScore(props: Props) {
   const answerSheet = createModal(AnswerSheetModal);
   const { queryObj } = appStore;
@@ -81,11 +81,6 @@ export default observer(function ExamScore(props: Props) {
           surplusHeight={410}
         />
       </Exam>
-      {/* <Footer>
-        <Button type="primary" onClick={() => handleAnwserSheetReview()}>
-          查看试卷
-        </Button>
-      </Footer> */}
       <answerSheet.Component />
     </Wrapper>
   );

@@ -6,14 +6,12 @@ import { Rules } from "src/components/Form/interfaces";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
 import { meunSettingApi } from "../api/MeunSettingApi";
-
 export interface Props {
   visible: boolean;
   onCancel: any;
   onOk: any;
   onOkCallBack?: any;
 }
-
 export interface CheckUserItem {
   key: string;
   userList: any[];
@@ -36,14 +34,14 @@ export default function PermissionSettingsModal(props: Props) {
           setLoading(false);
           setPeopleData(
             res.data.authPersonList &&
-              res.data.authPersonList.map((item: any) => {
-                return {
-                  empName: item.authPersonName,
-                  empNo: item.authPerson,
-                  key: item.authPerson,
-                  label: item.authPersonName
-                };
-              })
+            res.data.authPersonList.map((item: any) => {
+              return {
+                empName: item.authPersonName,
+                empNo: item.authPerson,
+                key: item.authPerson,
+                label: item.authPersonName
+              };
+            })
           );
         });
       }, 100);

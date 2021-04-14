@@ -3,7 +3,6 @@ import React, { useState, useLayoutEffect } from "react";
 import { Modal, Icon, Button } from "antd";
 import reactZmage from "react-zmage";
 import { ModalComponentProps } from "src/libs/createModal";
-import { Rules } from "src/components/Form/interfaces";
 import { getFileType, clearFilePath } from "src/utils/file/file";
 import { Spin } from "src/vendors/antd";
 import { httpNoError } from "src/libs/http/http";
@@ -23,11 +22,6 @@ export interface Props extends ModalComponentProps {
     [p: string]: any;
   }[];
 }
-
-/** 设置规则 */
-const rules: Rules = {
-  publicDate: val => !!val || "请填写发表日期"
-};
 
 export default function PreviewModal(props: Props) {
   let {

@@ -134,6 +134,20 @@ export default function ContinuingEdu(props: Props) {
                 hide: true
               }
             ]
+          },
+          {
+            title: "培训手册",
+            icon: <JSGL />,
+            path: "/continuingEdu/培训手册",
+            component: 培训手册
+          },
+          {
+            title: "审核发布",
+            icon: <YNXXB />,
+            path: "/continuingEdu/审核发布",
+            component: 审核集中管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
           }
         ],
         other: [
@@ -145,37 +159,13 @@ export default function ContinuingEdu(props: Props) {
             hide: () =>
               queyMenuAuthInfo("nm_lat_personelManage") ||
               authStore.isOnlyInternsManage
-          }
-        ]
-      }
-    }),
-    {
-      title: "在线学习",
-      icon: <JSGL />,
-      path: "/continuingEdu/在线学习",
-      component: 在线学习,
-      hide: appStore.HOSPITAL_ID == "hj"
-    },
-    {
-      title: "培训手册",
-      icon: <JSGL />,
-      path: "/continuingEdu/培训手册",
-      component: 培训手册,
-      hide: appStore.HOSPITAL_ID !== "hj"
-    },
-    ...appStore.hisMatch({
-      map: {
-        hj: [
-          {
-            title: "审核发布",
-            icon: <YNXXB />,
-            path: "/continuingEdu/审核发布",
-            component: 审核集中管理,
-            hide: () =>
-              queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
           },
-        ],
-        other: [
+          {
+            title: "在线学习",
+            icon: <JSGL />,
+            path: "/continuingEdu/在线学习",
+            component: 在线学习
+          },
           {
             title: "审核发布",
             icon: <YNXXB />,
@@ -183,7 +173,7 @@ export default function ContinuingEdu(props: Props) {
             component: 审核发布,
             hide: () =>
               queyMenuAuthInfo("nm_lat_auditmanage") || authStore.isOnlyInternsManage
-          },
+          }
         ]
       }
     }),

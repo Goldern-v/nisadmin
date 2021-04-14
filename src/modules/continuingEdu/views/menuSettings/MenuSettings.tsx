@@ -4,9 +4,9 @@ import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message, Tooltip } from "antd";
 import { meunSettingApi } from "./api/MeunSettingApi";
-import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
-import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
-import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
+import FirstEditModal from "./modal/FirstEditModal";
+import SecondEditModal from "./modal/SecondEditModal";
+import SecondAddModal from "./modal/SecondAddModal";
 import PermissionSettingsModal from "./modal/PermissionSettingsModal"; // 菜单设置权限弹窗
 import { selectPeopleViewModel } from "./modal/modal-two/SelectPeopleViewModel";
 import { appStore, authStore } from "src/stores";
@@ -16,7 +16,6 @@ interface Props {
 }
 
 export default observer(function MenuSettings(props: Props) {
-  const [effect, setEffect] = useState(true);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
   const [editVisible, setEditVisible] = useState(false); // 控制一级弹窗状态
@@ -24,14 +23,10 @@ export default observer(function MenuSettings(props: Props) {
   const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制修改二级弹窗状态
   const [addSecondVisible, setAddSecondVisible] = useState(false); // 控制添加二级弹窗状态
   const [settingsEditVisible, setSettingsEditVisible] = useState(false); // 控制添加二级弹窗状态
-  const [addParams, setAddParams] = useState([]);
-  useLayoutEffect(() => {
-    setEffect(false);
-  }, []);
+  let canHandleBtn: any = appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)
 
   // 初始化
   useEffect(() => {
-    setEffect(true);
     getTableData();
   }, []);
 
@@ -39,9 +34,8 @@ export default observer(function MenuSettings(props: Props) {
     let dept = authStore.deptList.find(
       (dept: any) => dept.code == authStore.defaultDeptCode
     );
-    selectPeopleViewModel.newSelectTreeDataAll[1].label = dept
-      ? dept.name
-      : authStore.defaultDeptCodeName;
+    selectPeopleViewModel.newSelectTreeDataAll[1].label = dept?.name
+      || authStore.defaultDeptCodeName;
   }, [authStore.defaultDeptCode]);
 
   // 提交 审核 一级 二级 三级函数封装
@@ -69,8 +63,8 @@ export default observer(function MenuSettings(props: Props) {
           {`${str1}...`}
         </Tooltip>
       ) : (
-          str
-        );
+        str
+      );
     } else {
       return "--";
     }
@@ -117,11 +111,7 @@ export default observer(function MenuSettings(props: Props) {
       align: "center",
       width: 80,
       render: (text: any) => {
-        // if (text) {
         return <span>{text == 1 ? "院级" : text == 3 ? "科级" : "无"}</span>;
-        // } else {
-        //   return "--";
-        // }
       }
     },
     {
@@ -179,7 +169,7 @@ export default observer(function MenuSettings(props: Props) {
       align: "center",
       render(text: any, record: any, index: number) {
         return (
-          (appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) ?
+          canHandleBtn ?
             (<DoCon>
               <span onClick={() => saveOrUpload(record)}>修改</span>
               <span onClick={() => handleDelete(record)}>删除</span>
@@ -191,16 +181,14 @@ export default observer(function MenuSettings(props: Props) {
 
   // 查询
   const getTableData = () => {
-    if (effect) {
-      setLoading(true);
-      meunSettingApi.getGetData().then((res: any) => {
-        setLoading(false);
-        if (res.data) {
-          setTableList(res.data || []);
-        }
-      });
-      props.getList();
-    }
+    setLoading(true);
+    meunSettingApi.getGetData().then((res: any) => {
+      setLoading(false);
+      if (res.data) {
+        setTableList(res.data || []);
+      }
+    }).catch((err: any) => { });
+    props.getList();
   };
 
   //删除
@@ -243,6 +231,7 @@ export default observer(function MenuSettings(props: Props) {
     );
   };
 
+  // 保存
   const saveOrUpload = (record?: any) => {
     if (record) {
       if (record.key) {
@@ -262,11 +251,6 @@ export default observer(function MenuSettings(props: Props) {
       });
       setEditVisible(true);
     }
-  };
-
-  const addSecond = () => {
-    setAddParams([]);
-    setAddSecondVisible(true);
   };
 
   const handleEditCancel = () => {
@@ -294,12 +278,12 @@ export default observer(function MenuSettings(props: Props) {
                 </Button>
               )}
               <Button onClick={getTableData}>刷新</Button>
-              {(appStore.HOSPITAL_ID !== 'hj' || (appStore.HOSPITAL_ID == 'hj' && authStore.isDepartment)) && (
+              {canHandleBtn && (
                 <span>
                   <Button type="primary" onClick={() => saveOrUpload()}>
                     添加一级菜单
               </Button>
-                  <Button type="primary" onClick={addSecond}>
+                  <Button type="primary" onClick={() => setAddSecondVisible(true)}>
                     添加二级菜单
               </Button>
                 </span>

@@ -7,19 +7,16 @@ import { meunSettingApi } from "../api/MeunSettingApi";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
 import { appStore } from "src/stores";
-
 export interface Props {
   secondVisible: boolean;
   params: any;
   onCancel: any;
   onOk: any;
 }
-
 interface User {
   label?: string;
   key: string;
 }
-
 export interface CheckUserItem {
   key: string;
   userList: any[];
@@ -439,10 +436,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                        <EditClickBtn onClick={editSecondAudit}>
-                          + 添加二级审核人
+                      <EditClickBtn onClick={editSecondAudit}>
+                        + 添加二级审核人
                       </EditClickBtn>
-                      )}
+                    )}
                   </Form.Field>
                 </Col>
               </Row>
@@ -468,10 +465,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                        <EditClickBtn onClick={editThirdAudit}>
-                          + 添加三级审核人
+                      <EditClickBtn onClick={editThirdAudit}>
+                        + 添加三级审核人
                       </EditClickBtn>
-                      )}
+                    )}
                   </Form.Field>
                 </Col>
               </Row>

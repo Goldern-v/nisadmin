@@ -4,7 +4,6 @@ import { Input, Row, Col, Modal, message as Message } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { meunSettingApi } from "../api/MeunSettingApi";
-
 export interface Props {
   visible: boolean;
   params: any;
@@ -17,6 +16,7 @@ export default function FirstEditModal(props: Props) {
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
 
+  // 必填项验证
   const rules: Rules = {
     name: val => !!val || "名称不能为空",
     sort: val =>
@@ -25,6 +25,7 @@ export default function FirstEditModal(props: Props) {
         : ""
   };
 
+  // 初始化
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -47,6 +48,7 @@ export default function FirstEditModal(props: Props) {
     }
   }, [visible, params]);
 
+  // 保存
   const checkForm = () => {
     let current = formRef.current;
     if (current) {
