@@ -29,6 +29,9 @@ export default function VideoInsertion() {
         .then((res: any) => {
           setTableLoading(false);
           setTableList(res.data);
+        }).catch((err: any) => {
+          console.log(err);
+          setTableLoading(false);
         });
   };
 

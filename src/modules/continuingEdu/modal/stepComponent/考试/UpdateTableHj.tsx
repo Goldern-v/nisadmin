@@ -218,10 +218,6 @@ export default observer(function UpdateTableHj(props: Props) {
   return (
     <Wrapper>
       <div className={appStore.HOSPITAL_ID == 'hj' ? 'hjAllBtns' : "allBtns"}>
-        {/* 选择上传文件：
-        <span onClick={downFileWith}>下载题库模板(含问答题)</span>
-        &nbsp;
-        <span onClick={downFileWithout}>下载题库模板(不含问答题)</span> */}
         <Button
           size="small"
           onClick={() => {

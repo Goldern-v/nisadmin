@@ -121,24 +121,6 @@ export default observer(function Step5() {
             <td className="key">考试地址：</td>
             <td className="value">{ksStepViewModal.stepData2.address}</td>
           </tr>
-          {/* 
-          {ksStepViewModal.stepData2.organizationWay == "2" && (
-            <React.Fragment>
-              <tr>
-                <td className="key">签到负责人：</td>
-                <td className="value">
-                  {ksStepViewModal.stepData2.sicPersonList
-                    .map((item: any) => item.label)
-                    .join("，")}
-                </td>
-              </tr>
-              <tr>
-                <td className="key">签到方式：</td>
-                <td className="value">二维码</td>
-              </tr>
-            </React.Fragment>
-          )} */}
-
           <tr>
             <td className="key">评分负责人：</td>
             <td className="value">

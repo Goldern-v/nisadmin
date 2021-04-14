@@ -402,11 +402,18 @@ export default function ToolBar() {
   };
 
   // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
-  let promise =
-    appStore.HOSPITAL_ID == "wh"
-      ? authStore.isRoleManage
-      : (authStore.user && authStore.user.post) == "护理部" ||
-      (authStore.user && authStore.user.empName) == "管理员";
+  // 添加班次权限设置
+  const isOk = () => {
+    switch (appStore.HOSPITAL_ID) {
+      case "wh":
+        return authStore.isRoleManage;
+      case "dghl":
+        return true;
+      default:
+        return (authStore.isDepartment || authStore.isAd);
+    }
+  }
+
   return (
     <div>
       <BreadcrumbBox
@@ -439,7 +446,7 @@ export default function ToolBar() {
             添加班次
           </Button>
         )} */}
-        {promise && (
+        {isOk() && (
           <Button
             onClick={() => {
               addShiftModal.show({

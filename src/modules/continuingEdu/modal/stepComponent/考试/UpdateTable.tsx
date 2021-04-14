@@ -166,7 +166,6 @@ export default observer(function UpdateTable(props: Props) {
   };
 
   useEffect(() => {
-    console.log(value, "aaaa");
     value && setDataSource(value);
   }, [value]);
 
