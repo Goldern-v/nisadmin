@@ -20,10 +20,12 @@ import 健康宣教字典 from "./../healthPropaganda/健康宣教字典";
 import Preview from "./view/components/Preview";
 import DeptFileShare from "src/modules/deptReferSetting/views/DeptFileShare";
 import FlatManage from "src/modules/deptReferSetting/views/FlatManage";
+import FlatManageProblemList from "src/modules/deptReferSetting/views/FlatManageProblemList";
+import ManagementSummary from "src/modules/deptReferSetting/views/ManagementSummary";
 import HealthEducationReportList from "../healthEducationReport/healthEducationReportList/HealthEducationReportList";
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 const LEFT_MENU_CONFIG = [
   // {
@@ -92,6 +94,25 @@ const LEFT_MENU_CONFIG = [
         path: "/setting/扁平管理设置",
         component: FlatManage
       },
+      ...appStore.hisMatch({
+        map: {
+          jmfy: [
+            {
+              title: '扁平管理问题查看',
+              path: '/setting/扁平管理问题查看',
+              component: FlatManageProblemList
+              // hide: true
+            },
+            {
+              title: '扁平管理汇总',
+              path: '/setting/扁平管理汇总',
+              component: ManagementSummary
+            }
+          ],
+          other: []
+        }
+      }),
+
       {
         title: "病区文件",
         path: "/setting/病区文件",
@@ -99,6 +120,8 @@ const LEFT_MENU_CONFIG = [
       }
     ]
   }
+
+
   // {
   //   title: '物流平台设置',
   //   icon: <WLPTSZ />,
@@ -147,7 +170,7 @@ const LEFT_MENU_CONFIG_WH = [
 ];
 
 export default function SettingView(props: Props) {
-  useEffect(() => {}, [props.match.params.name]);
+  useEffect(() => { }, [props.match.params.name]);
   let currentRoutePath = props.match.url || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
