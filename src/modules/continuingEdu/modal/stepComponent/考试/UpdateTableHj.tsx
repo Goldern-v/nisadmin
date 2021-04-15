@@ -98,6 +98,9 @@ export default observer(function UpdateTableHj(props: Props) {
                 record.totalScores =
                   record.scoresPerQuestion * record.questionCount;
               }
+
+            }}
+            onBlur={(e: any) => {
               let obj: any = {
                 pertId: data.pertId,
                 sort: data.sort,

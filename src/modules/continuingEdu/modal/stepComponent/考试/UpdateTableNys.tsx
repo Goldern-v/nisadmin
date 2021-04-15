@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Modal, message as Message, Radio, message, InputNumber } from "antd";
+import { Button, Modal, message as Message, Radio, message } from "antd";
 import BaseTable from "src/components/BaseTable";
+import { InputNumber } from "antd/es";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
 import { fileDownload } from "src/utils/file/file";
@@ -88,13 +89,16 @@ export default observer(function UpdateTableNys(props: Props) {
         if (index == 0) return `总题数：${pickTotalNum} 题`;
         return (
           <InputNumber
-            min={1}
+            min={0}
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={(val: any) => {
               record.pickQuestionCount = val;
-              onChange([...dataSource]);
+              record.totalScores =
+                record.scoresPerQuestion * record.pickQuestionCount;
+              setDataSource([...dataSource])
             }}
+            onBlur={(e: any) => onChange([...dataSource])}
           />
         );
       }
@@ -118,12 +122,11 @@ export default observer(function UpdateTableNys(props: Props) {
                 return;
               }
               record.scoresPerQuestion = val;
-              if (record.scoresPerQuestion && record.questionCount) {
-                record.totalScores =
-                  record.scoresPerQuestion * record.pickQuestionCount;
-              }
-              onChange([...dataSource]);
+              record.totalScores =
+                record.scoresPerQuestion * record.pickQuestionCount;
+              setDataSource([...dataSource])
             }}
+            onBlur={(e: any) => onChange([...dataSource])}
           />
         );
       }
@@ -134,7 +137,6 @@ export default observer(function UpdateTableNys(props: Props) {
       align: "center",
       dataIndex: "totalScores",
       render: (text: any, record: any, index: number) => {
-        // record.totalScores = record.scoresPerQuestion * record.questionCount;
         if (index == 0) return <span>{totalScore}</span>;
         return text;
       }

@@ -93,8 +93,9 @@ export default observer(function UpdateTable(props: Props) {
                 record.totalScores =
                   record.scoresPerQuestion * record.questionCount;
               }
-              onChange([...dataSource]);
+              setDataSource([...dataSource])
             }}
+            onBlur={(e: any) => onChange([...dataSource])}
           />
         );
       }
