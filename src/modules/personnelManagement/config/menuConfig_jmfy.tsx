@@ -4,7 +4,8 @@ import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
 import MealSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView";
-import PersonnelSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
+import PersonnelSettingViewNew
+  from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
 import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
 import AddSubClass from "../views/arrangeHome/page/addSubClass/AddSubClass";
 import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
@@ -14,6 +15,7 @@ import StarRatingReportList from "../views/arrangeHome/page/nightChargingReport/
 import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
+import MaternityLeave from '../views/arrangeHome/page/maternityLeave';
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 
 export interface meunConfigItem {
@@ -117,6 +119,12 @@ export const meunConfig: meunConfigItem[] = [
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
+        hide: !authStore.isRoleManage
+      },
+      {
+        title: " 产假及哺乳期",
+        path: "/personnelManagement/maternityLeave",
+        component: MaternityLeave,
         hide: !authStore.isRoleManage
       }
     ]
