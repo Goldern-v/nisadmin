@@ -67,14 +67,14 @@ export default function BedSituation() {
             appStore.history.push("/auditsManagement");
           }}
         >
-          更多>
+          更多{'>'}
         </div>
       </Head>
       <Mid>
         <BaseTable
+          scroll={{ y: 240 }}
           dataSource={tableData}
           columns={columns}
-          surplusHeight={550}
           loading={loadingTable}
           rowClassName={record => {
             return "cursorPointer";
@@ -113,11 +113,11 @@ const Head = styled.div`
     cursor: pointer;
   }
 `
+
 const Mid = styled.div`
   height: 282px;
   #baseTable {
     padding: 0 !important;
-    } */
     .ant-table-body {
       border-radius: 0 !important;
     }
@@ -130,22 +130,17 @@ const Mid = styled.div`
   }
 
   ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    width: 6px;
     height: 4px;
   }
   ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
     border-radius: 5px;
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
     background: rgba(0, 0, 0, 0.2);
   }
-  /*定义滚动条轨道 内阴影+圆角*/
   ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
     box-shadow: inset 0 0 5px #ffffff;
     border-radius: 5px;
     background-color: #ffffff;
   }
-  /* padding: 18px 18px 0 18px; */
 `

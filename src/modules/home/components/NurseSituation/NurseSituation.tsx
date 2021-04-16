@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import JobTitleMap from './components/JobTitleMap'
 import { Button, Radio, Icon } from 'antd'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import HomeApi from 'src/modules/home/api/HomeApi'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
 import emitter from 'src/libs/ev'
-import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
+import HomeViewModel from 'src/modules/home/HomeViewModel'
 import { observer } from 'mobx-react-lite'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
@@ -51,7 +51,7 @@ export default observer(function NurseSituation() {
     <div>
       <Head>
         <div className='headLeft'>护理人员情况</div>
-        <div className='headRight'>更多 ></div>
+        <div className='headRight'>更多{'>'}</div>
       </Head>
       <Mid>
         <MidHeader>

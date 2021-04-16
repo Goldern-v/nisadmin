@@ -71,7 +71,7 @@ export default function BedSituation() {
             appStore.history.push("/notice");
           }}
         >
-          更多>
+          更多{'>'}
         </div>
       </Head>
       <Mid>
@@ -81,7 +81,7 @@ export default function BedSituation() {
           }}
           dataSource={tableData}
           columns={columns}
-          surplusHeight={550}
+          scroll={{ y: 240 }}
           loading={loadingTable}
           onRow={record => {
             return {

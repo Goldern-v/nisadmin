@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 import { authStore } from 'src/stores/index'
-import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
+import HomeViewModel from 'src/modules/home/HomeViewModel'
 import { observer } from 'mobx-react-lite'
 import { any } from 'prop-types'
 import emitter from 'src/libs/ev'
@@ -25,7 +25,7 @@ export default observer(function BedSituation(props: Props) {
   const [tableData, setTableDate]: any = useState([])
   const scale = [
     {
-      dataKey: 'sales',
+      dataKey: '人数',
       tickInterval: 20
     }
   ]
@@ -81,7 +81,7 @@ export default observer(function BedSituation(props: Props) {
     // if (item === 'userTotal') {
     //   return
     // }
-    return { year: item, sales: byIndexInfo[item] }
+    return { year: item, 人数: byIndexInfo[item] }
     // }
   })
 
@@ -96,7 +96,7 @@ export default observer(function BedSituation(props: Props) {
         <Chart forceFit height={300} data={tranceData} scale={scale}>
           <Tooltip />
           <Axis />
-          <Bar position='year*sales' />
+          <Bar position='year*人数' />
         </Chart>
       </ChartCon>
     </div>
