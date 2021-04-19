@@ -6,6 +6,8 @@ import { notificationModal } from "../NotificationModal";
 import { observer } from "mobx-react-lite";
 
 export default observer(function Header() {
+
+  // 初始化
   useLayoutEffect(() => {
     notificationModal.onload();
   }, []);

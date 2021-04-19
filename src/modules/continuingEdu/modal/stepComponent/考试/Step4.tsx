@@ -197,45 +197,46 @@ export default observer(function Step4() {
 
   // 添加试卷组件
   const UpdateTablePage = () => {
-    if (appStore.HOSPITAL_ID == 'hj') {
-      return (<div>
-        <Col span={24}>
-          <Form.Field label={`上传题库`}>
-            <div className="down-file-con">
-              选择上传文件：
-          <span onClick={downFileWith}>下载题库模板(含问答题)</span>
-              &nbsp;
-          <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
-            </div>
-          </Form.Field>
-        </Col>
-        <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
-        {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
-          return (
-            <Col span={24}>
-              <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
-                <UpdateTableHj data={item} />
-              </Form.Field>
-            </Col>
-          )
-        })}
-      </div>)
-    } else if (appStore.HOSPITAL_ID == 'nys') {
-      return (
-        <Col span={24}>
-          <Form.Field label='上传题库' name="questionStatList">
-            <UpdateTableNys />
-          </Form.Field>
-        </Col>
-      )
-    } else {
-      return (
-        <Col span={24}>
-          <Form.Field label='上传题库' name="questionStatList">
-            <UpdateTable />
-          </Form.Field>
-        </Col>
-      )
+    switch (appStore.HOSPITAL_ID) {
+      case 'hj':
+        return (<div>
+          <Col span={24}>
+            <Form.Field label={`上传题库`}>
+              <div className="down-file-con">
+                选择上传文件：
+            <span onClick={downFileWith}>下载题库模板(含问答题)</span>
+                &nbsp;
+            <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
+              </div>
+            </Form.Field>
+          </Col>
+          <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
+          {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
+            return (
+              <Col span={24}>
+                <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
+                  <UpdateTableHj data={item} />
+                </Form.Field>
+              </Col>
+            )
+          })}
+        </div>)
+      case 'nys':
+        return (
+          <Col span={24}>
+            <Form.Field label='上传题库' name="questionStatList">
+              <UpdateTableNys />
+            </Form.Field>
+          </Col>
+        )
+      default:
+        return (
+          <Col span={24}>
+            <Form.Field label='上传题库' name="questionStatList">
+              <UpdateTable />
+            </Form.Field>
+          </Col>
+        )
     }
   }
 

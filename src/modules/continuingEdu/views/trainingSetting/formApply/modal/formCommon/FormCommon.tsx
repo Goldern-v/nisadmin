@@ -17,9 +17,9 @@ interface Props {
 }
 
 export default observer(function FormApply(props: Props) {
-  let name = appStore.queryObj.name ? appStore.queryObj.name : "";
-  let code = appStore.queryObj.code ? appStore.queryObj.code : "";
-  let formId = appStore.queryObj.formId ? appStore.queryObj.formId : "";
+  let name = appStore.queryObj?.name || "";
+  let code = appStore.queryObj?.code || "";
+  let formId = appStore.queryObj?.formId || "";
 
   //根据formcode对应表单
   const formList: any = [
@@ -73,8 +73,8 @@ export default observer(function FormApply(props: Props) {
         {code
           ? formList.find((item: any) => item.name === code).component
           : formList.find(
-              (item: any) => item.name === formApplyModal.getFormCode
-            ).component}
+            (item: any) => item.name === formApplyModal.getFormCode
+          ).component}
       </FromContent>
     </Wrapper>
   );

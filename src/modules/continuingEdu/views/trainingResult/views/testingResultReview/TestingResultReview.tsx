@@ -37,8 +37,8 @@ export default observer(function TestingResultReview() {
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
-  const editScoreAuth = baseInfo.scorePersonList ?.find((item: any) => {
-    return item.empNo.toLowerCase() == authStore.user ?.empNo.toLowerCase()
+  const editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
+    return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
   })
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
@@ -68,63 +68,63 @@ export default observer(function TestingResultReview() {
       width: 70,
     }
   ] : [
-      {
-        dataIndex: 'totalScores',
-        title: '最终成绩',
-        align: 'center',
-        width: 70,
-      },
-      {
-        dataIndex: 'passedDesc',
-        title: '及格',
-        align: 'center',
-        width: 70,
-        render: (text: string) => {
-          if (text == '不及格')
-            return <span style={{ color: 'red' }}>{text}</span>
-          else
-            return <span>{text}</span>
-        }
-      },
-      {
-        dataIndex: 'finishTime',
-        title: '答题时间',
-        align: 'center',
-        width: 180,
-        render: (finishTime: string) => {
-          if (finishTime) return finishTime
-          return '未答题'
-        }
-      },
-      {
-        dataIndex: 'resultPublishDesc',
-        title: '发布成绩',
-        align: 'center',
-        width: 60
-      },
-      {
-        dataIndex: 'creditDesc',
-        title: '学分',
-        align: 'center',
-        width: 120,
-        render: (text: string) => {
-          if (text) return text
-          return '0'
-        }
-      },
-      {
-        dataIndex: 'classHoursDesc',
-        title: '学时',
-        align: 'center',
-        width: 100,
-      },
-      {
-        dataIndex: 'scoreEmpName',
-        title: '评分人',
-        align: 'center',
-        width: 80,
+    {
+      dataIndex: 'totalScores',
+      title: '最终成绩',
+      align: 'center',
+      width: 70,
+    },
+    {
+      dataIndex: 'passedDesc',
+      title: '及格',
+      align: 'center',
+      width: 70,
+      render: (text: string) => {
+        if (text == '不及格')
+          return <span style={{ color: 'red' }}>{text}</span>
+        else
+          return <span>{text}</span>
       }
-    ]
+    },
+    {
+      dataIndex: 'finishTime',
+      title: '答题时间',
+      align: 'center',
+      width: 180,
+      render: (finishTime: string) => {
+        if (finishTime) return finishTime
+        return '未答题'
+      }
+    },
+    {
+      dataIndex: 'resultPublishDesc',
+      title: '发布成绩',
+      align: 'center',
+      width: 60
+    },
+    {
+      dataIndex: 'creditDesc',
+      title: '学分',
+      align: 'center',
+      width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
+    },
+    {
+      dataIndex: 'classHoursDesc',
+      title: '学时',
+      align: 'center',
+      width: 100,
+    },
+    {
+      dataIndex: 'scoreEmpName',
+      title: '评分人',
+      align: 'center',
+      width: 80,
+    }
+  ]
 
   const columns: ColumnProps<any>[] = [
     {
@@ -298,8 +298,7 @@ export default observer(function TestingResultReview() {
   // 针对不同医院打开不同界面
   const getPage = () => {
     // 南医三 厚街有统计查询功能
-    const HOSPITAL_ID: any = ['hj', 'nys'];
-    let isOk: any = HOSPITAL_ID.find((item: any) => item == appStore.HOSPITAL_ID)
+    let isOk: any = ['hj', 'nys'].indexOf(appStore.HOSPITAL_ID)
     if (isOk && !appStore.queryObj.editable) {
       return (
         <BaseTabs

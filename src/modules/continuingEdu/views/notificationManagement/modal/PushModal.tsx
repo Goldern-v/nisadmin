@@ -18,24 +18,26 @@ export default function PushModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
-  const checkForm = () => {};
+  const checkForm = () => { };
 
-  // 弹窗必填项
+  // 弹窗必填项验证
   const rules: Rules = {
     noticeContent: val => !!val || "通知详情不能为空"
   };
 
+  // 初始化
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-          const { noticeContent } = params;
-          current.setFields({ noticeContent });
+        const { noticeContent } = params;
+        current.setFields({ noticeContent });
       }, 100);
     }
   }, [visible]);
 
+  // 保存
   const confirm = () => {
     let current = formRef.current;
     if (current) {
@@ -50,8 +52,8 @@ export default function PushModal(props: Props) {
               setEditLoading(true);
               notificationApi.pushData(newParams).then(res => {
                 setEditLoading(false);
-                Message.success("已推送！");   
-                onOk();          
+                Message.success("已推送！");
+                onOk();
               })
             }
           }
@@ -87,10 +89,8 @@ export default function PushModal(props: Props) {
           </div>
         )
       }
-
     >
       <Wrapper>
-        <div />
         <Form ref={formRef} rules={rules}>
           <Row>
             <Col span={3} className="label">
@@ -98,9 +98,9 @@ export default function PushModal(props: Props) {
             </Col>
             <Col span={21}>
               <ul className="ul">
-              {params.empNames?.map((item: any, index: any) => (
-                <li key={index} className="empNames">{item}</li>
-              ))}
+                {params.empNames?.map((item: any, index: any) => (
+                  <li key={index} className="empNames">{item}</li>
+                ))}
               </ul>
             </Col>
           </Row>

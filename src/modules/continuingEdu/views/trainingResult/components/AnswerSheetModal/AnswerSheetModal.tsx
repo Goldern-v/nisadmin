@@ -8,6 +8,11 @@ import 满意度问卷调查 from "./满意度问卷调查";
 import AnwserResultPannel from "./AnwserResultPannel";
 import { trainingResultService } from "./../../api/TrainingResultService";
 import { message } from "antd/es";
+import { appStore } from "src/stores"
+import { useRef } from "src/types/react";
+import printing from "printing";
+import PrintPageNys from "./PrintPageNys";
+
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function;
   title?: string;
@@ -37,6 +42,7 @@ export default observer(function AnswerSheetModal(props: Props) {
   const [baseInfo, setBaseInfo] = useState({} as any);
   const [questionList, setQuestionList] = useState([] as any[]);
   const [loading, setLoading] = useState(false);
+  const printRef: any = useRef(null);
 
   const wendaQuestionList = questionList.filter(
     (question: any) => question.questionType == 4
@@ -59,7 +65,6 @@ export default observer(function AnswerSheetModal(props: Props) {
     trainingResultService.saveScores(params).then(
       res => {
         setLoading(false);
-
         message.success("成绩保存成功");
         onOkCallBack && onOkCallBack();
         onCancel && onCancel();
@@ -133,12 +138,34 @@ export default observer(function AnswerSheetModal(props: Props) {
     }
   }, [visible]);
 
+  // 南医三考试试卷打印
+  const handlePrint = () => {
+    printing(printRef.current, {
+      scanStyles: false,
+      injectGlobalCss: true,
+      css: `
+           @page {
+            size: A4 vertical; 
+            margin: 10mm;
+           }
+           #printPage {
+             display: block !important;
+             margin: 0;
+             border: 0;
+           }
+        `
+    });
+  }
+
   return (
     <Modal
       width={hideRightSide ? 900 : 1200}
       confirmLoading={loading}
       footer={
         <div>
+          {appStore.HOSPITAL_ID == 'nys' &&
+            <Button onClick={handlePrint} type='primary'>打印试卷</Button>
+          }
           <Button onClick={onCancel}>取消</Button>
           {viewType == "edit" && wendaQuestionList.length > 0 && (
             <Button loading={loading} onClick={handleOK} type="primary">
@@ -150,8 +177,6 @@ export default observer(function AnswerSheetModal(props: Props) {
       onCancel={onCancel}
       bodyStyle={bodyStyle}
       visible={visible}
-      // onOk={handleOK}
-      // onCancel={onCancel}
       centered
       title="查看试卷"
     >
@@ -173,6 +198,14 @@ export default observer(function AnswerSheetModal(props: Props) {
             />
           </div>
         )}
+        <PrintPageNys
+          baseInfo={baseInfo}
+          printRef={printRef}
+          type={viewType}
+          title={title}
+          data={questionList}
+          onDataChange={(newList: any[]) => setQuestionList(newList)}
+        />
       </Wrapper>
     </Modal>
   );
@@ -189,7 +222,7 @@ const Wrapper = styled.div`
       background: #eee;
     }
     &.right {
-      width: 300px;
+      width: 280px;
       border-left: 1px solid #e8e8e8;
     }
 

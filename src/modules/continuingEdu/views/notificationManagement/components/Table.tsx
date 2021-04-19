@@ -151,10 +151,8 @@ export default observer(function Table() {
           <DoCon>
             <span
               onClick={() => {
-                // console.log(row, "0000000");
                 appStore.history.push(
-                  `/notificationManagement?title=${row.title}&cetpId=${
-                    row.cetpId
+                  `/notificationManagement?title=${row.title}&cetpId=${row.cetpId
                   }&noticeContent=${row.noticeContent}`
                 );
               }}
