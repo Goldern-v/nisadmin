@@ -147,7 +147,7 @@ export default function AnswerModal(props: Props) {
   );
 }
 const Wrapper = styled.div`
-  /deep/ .ant-modal-body {
+  .ant-modal-body {
     .all {
     }
     .title {
@@ -166,10 +166,10 @@ const Wrapper = styled.div`
     }
   }
   .answerModal {
-    /deep/ .ant-modal-close {
+    .ant-modal-close {
       display: none !important; 
     }
-    /deep/ .ant-modal-close-x {
+    .ant-modal-close-x {
       display: none !important;
     }
   }

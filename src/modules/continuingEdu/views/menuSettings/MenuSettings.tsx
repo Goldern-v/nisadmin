@@ -334,8 +334,8 @@ export default observer(function MenuSettings(props: Props) {
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
-  /deep/.gWDyQg {
-    background: #red !important;
+  .gWDyQg {
+    background: red !important;
   }
 `;
 const Content = styled.div`

@@ -6,16 +6,16 @@ export const Wrapper = styled.div`
   table {
     width: 100%;
   }
-  /deep/ .ant-select-selection {
+   .ant-select-selection {
     border: none !important;
     text-align: center;
   }
-  /deep/.ant-select-selection: focus {
+   .ant-select-selection:focus {
     border: none !important;
   }
 
   .special-radio {
-    /deep/ .ant-radio-wrapper {
+     .ant-radio-wrapper {
       display: flex;
 
       > span:nth-child(2) {
@@ -26,12 +26,12 @@ export const Wrapper = styled.div`
       }
     }
   }
-  /deep/ textarea {
+   textarea {
     resize: none; //去右下角灰点
     text-align: left !important;
   }
 
-  /deep/ .ant-radio {
+   .ant-radio {
     width: 16px;
     height: 16px;
     .ant-radio-inner {
@@ -39,8 +39,7 @@ export const Wrapper = styled.div`
       border-color: #ccc;
     }
   }
-
-  /deep/ .ant-radio-checked {
+   .ant-radio-checked {
     .ant-radio-inner::after {
       background-color: transparent;
       content: "✔";
@@ -52,7 +51,7 @@ export const Wrapper = styled.div`
   }
 
   .specialInput {
-    /deep/.ant-input {
+    .ant-input {
       border-bottom: 1px solid #000 !important;
       width: 150px;
       border-radius: 0;
@@ -85,7 +84,7 @@ export const Wrapper = styled.div`
     vertical-align: bottom !important;
     text-align: right !important;
   }
-  /deep/.ant-input {
+  .ant-input {
     border: none;
     word-break: break-all;
     word-wrap: break-word;
@@ -93,14 +92,14 @@ export const Wrapper = styled.div`
     font-size: 13px !important;
     padding: 3px 0 !important;
   }
-  /deep/ .ant-input-disabled {
+   .ant-input-disabled {
     background-color: #fff !important;
   }
-  /deep/.ant-input:focus {
+  .ant-input:focus {
     border: none;
     box-shadow: none;
   }
-  /deep/ .ant-radio-wrapper {
+   .ant-radio-wrapper {
     margin-right: 0 !important;
   }
   .img {
@@ -108,7 +107,7 @@ export const Wrapper = styled.div`
     height: 30px;
     width: 85px;
   }
-  // /deep/ textarea::-webkit-scrollbar {
+  //  textarea::-webkit-scrollbar {
   //   display: none; //去滚动条
   // }
 `;
@@ -121,13 +120,13 @@ export const CJJSWrapper = styled.div`
   th,
   td {
     border: 1px solid #000;
-    padding: 6px 10px;
+    padding: 5px 10px;
     box-sizing: border-box;
     text-align: center;
     word-break: break-all;
     word-wrap: break-word;
   }
-  /deep/ .ant-radio {
+   .ant-radio {
     width: 16px;
     height: 16px;
     .ant-radio-inner {
@@ -138,7 +137,7 @@ export const CJJSWrapper = styled.div`
   .marginTop {
     margin-top: 20px;
   }
-  /deep/ .ant-radio-checked {
+   .ant-radio-checked {
     .ant-radio-inner::after {
       background-color: transparent;
       content: "✔";
@@ -157,14 +156,14 @@ export const CJJSWrapper = styled.div`
     text-align: left !important;
   }
   .godie {
-    /deep/.ant-input {
+    .ant-input {
       border: none !important;
     }
   }
   .textAlign {
     text-align: left !important;
   }
-  /deep/.ant-input {
+  .ant-input {
     border: none;
     word-break: break-all;
     word-wrap: break-word;
@@ -175,22 +174,22 @@ export const CJJSWrapper = styled.div`
     font-size: 13px !important;
     padding: 3px 0 !important;
   }
-  /deep/ .ant-input-disabled {
+   .ant-input-disabled {
     background-color: #fff !important;
   }
-  /deep/.ant-input:focus {
+  .ant-input:focus {
     border: none;
     box-shadow: none;
   }
-  /deep/ .ant-radio-wrapper {
+   .ant-radio-wrapper {
     font-size: 12px !important;
   }
   .specialInput {
-    /deep/.ant-input {
+    .ant-input {
       width: 150px;
     }
   }
-  /deep/ textarea {
+   textarea {
     resize: none; //去右下角灰点
     border: none !important;
     text-align: left !important;

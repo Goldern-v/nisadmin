@@ -155,7 +155,7 @@ export default function ResultModal(props: Props) {
   );
 }
 const Wrapper = styled.div`
-  /deep/ .ant-modal-body {
+  .ant-modal-body {
     .all {
     }
     .title {

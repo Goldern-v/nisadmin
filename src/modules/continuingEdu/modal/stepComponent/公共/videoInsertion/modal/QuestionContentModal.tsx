@@ -465,7 +465,7 @@ export default function QuestionContentModal(props: Props) {
   );
 }
 const Question = styled.div`
-  /deep/ .ant-modal-body {
+  .ant-modal-body {
     min-height: 420px !important;
   }
 `;

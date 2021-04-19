@@ -503,10 +503,10 @@ const Spin = styled.div``;
 const Wrapper = styled.div`
   width: 85%;
   margin: 0 auto;
-  /deep/ .ant-select {
+   .ant-select {
     width: 87% !important;
   }
-  /deep/ .ant-select-selection {
+   .ant-select-selection {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }

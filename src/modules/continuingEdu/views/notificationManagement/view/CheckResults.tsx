@@ -336,9 +336,8 @@ export default function TypeManagement() {
                       <div className="messageName">
                         <span>
                           {item.messageRecipientList.length > 1
-                            ? `${item.messageRecipientList[0].empName}等${
-                                item.messageRecipientList.length
-                              }人`
+                            ? `${item.messageRecipientList[0].empName}等${item.messageRecipientList.length
+                            }人`
                             : item.messageRecipientList[0].empName}
                         </span>
                         <span>{item.sendTime}</span>
@@ -404,8 +403,8 @@ export default function TypeManagement() {
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
-  /deep/.gWDyQg {
-    background: #red !important;
+  .gWDyQg {
+    background: red !important;
   }
 `;
 const Content = styled.div`
@@ -429,7 +428,7 @@ const People = styled.div`
   box-sizing: border-box;
   background: white;
   padding: 0 15px;
-  /deep/ .ant-tabs-nav .ant-tabs-tab {
+  .ant-tabs-nav .ant-tabs-tab {
     width: 123px;
     text-align: center;
   }
