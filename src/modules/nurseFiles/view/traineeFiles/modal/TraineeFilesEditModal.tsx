@@ -122,12 +122,14 @@ export default function TraineeFilesEditModal(props: Props) {
             emergencyContactPerson,
             emergencyContactPhone,
             remark,
-            isCPCMember
+            isCPCMember,
+            isOnJob
           } = data;
           current.setFields({
             identifier,
             name,
             sex: sex === "男" ? "0" : "1",
+            isOnJob: isOnJob === '在院' ? '1' : '0',
             age,
             schoolName,
             major,
@@ -258,6 +260,21 @@ export default function TraineeFilesEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
+          {appStore.HOSPITAL_ID == 'hj' &&
+            <Row>
+              <Col span={6} className="label">
+                在院状态:
+              </Col>
+              <Col span={16}>
+                <Form.Field name="isOnJob">
+                  <Radio.Group buttonStyle="solid">
+                    <Radio.Button value="0">离院</Radio.Button>
+                    <Radio.Button value="1">在院</Radio.Button>
+                  </Radio.Group>
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 院校:

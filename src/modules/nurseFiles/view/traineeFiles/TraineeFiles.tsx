@@ -78,18 +78,30 @@ export default observer(function TraineeFiles(props: Props) {
       width: 80,
       align: "center"
     },
-    appStore.HOSPITAL_ID == "gzhd" && {
-      title: "是否党员",
-      dataIndex: "isCPCMember",
-      width: 80,
-      align: "center"
-    },
-    {
-      title: "身份证号码",
-      dataIndex: "idCardNo",
-      width: 180,
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        'hj': [
+          {
+            title: "在院状态",
+            dataIndex: "isOnJob",
+            width: 80,
+            align: "center",
+            render(text: any, record: any) {
+              return <span style={{ color: text == 1 ? 'blue' : '#ccc' }}>{text == 1 ? '在院' : '离院'}</span>
+            }
+          }
+        ],
+        'gzhd': [
+          {
+            title: "是否党员",
+            dataIndex: "isCPCMember",
+            width: 80,
+            align: "center"
+          }
+        ],
+        'other': []
+      }
+    }),
     {
       title: "联系电话",
       dataIndex: "phone",
@@ -223,7 +235,7 @@ export default observer(function TraineeFiles(props: Props) {
           <span>年份：</span>
           <YearPicker
             allowClear={false}
-            style={{ width: 120 }}
+            style={{ width: 100 }}
             value={traineeFilesModal.selectedYear}
             onChange={(year: any) => {
               traineeFilesModal.selectedYear = year;
@@ -232,7 +244,7 @@ export default observer(function TraineeFiles(props: Props) {
           />
           <span>学历：</span>
           <Select
-            style={{ width: 120 }}
+            style={{ width: 90 }}
             value={traineeFilesModal.selectdEdu}
             onChange={(val: string) => {
               traineeFilesModal.selectdEdu = val;
@@ -249,7 +261,7 @@ export default observer(function TraineeFiles(props: Props) {
           </Select>
           <span>性别：</span>
           <Select
-            style={{ width: 120 }}
+            style={{ width: 80 }}
             value={traineeFilesModal.selectdSex}
             onChange={(val: string) => {
               traineeFilesModal.selectdSex = val;
@@ -261,8 +273,22 @@ export default observer(function TraineeFiles(props: Props) {
             <Select.Option value="0">男</Select.Option>
             <Select.Option value="1">女</Select.Option>
           </Select>
+          <span>在院状态：</span>
+          <Select
+            style={{ width: 90 }}
+            value={traineeFilesModal.isOnJob}
+            onChange={(val: string) => {
+              traineeFilesModal.isOnJob = val;
+              traineeFilesModal.pageIndex = 1;
+              traineeFilesModal.onload();
+            }}
+          >
+            <Select.Option value="">全部</Select.Option>
+            <Select.Option value="1">在院</Select.Option>
+            <Select.Option value="0">离院</Select.Option>
+          </Select>
           <Input
-            style={{ width: 180, marginLeft: 5, marginRight: -5 }}
+            style={{ width: 120, marginLeft: 5, marginRight: -5 }}
             placeholder="请输入"
             value={traineeFilesModal.keyWord}
             onChange={e => {

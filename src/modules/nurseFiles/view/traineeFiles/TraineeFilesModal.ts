@@ -14,7 +14,9 @@ class TraineeFilesModal {
   @observable public total: any = 0; //总条数
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
+  @observable public isOnJob = ''; //表格loading
 
+  
   @computed
   get postObj() {
     return {
@@ -23,7 +25,8 @@ class TraineeFilesModal {
       sex: this.selectdSex,
       keyWord: this.keyWord,
       pageIndex: this.pageIndex,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      isOnJob: this.isOnJob
     };
   }
 
