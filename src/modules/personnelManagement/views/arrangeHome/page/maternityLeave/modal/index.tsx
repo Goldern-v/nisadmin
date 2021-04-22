@@ -2,8 +2,9 @@ import { RangePickerValue } from "antd/lib/date-picker/interface";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import moment from 'moment'
 
-interface iSearchForm {
-  name?: string,
+export interface iSearchForm {
+  empName?: string,
+  deptCode?: string
   date?: RangePickerValue,
   status?: string,
   type?: string,
@@ -12,38 +13,43 @@ interface iSearchForm {
 }
 
 export class SearchForm implements iSearchForm {
-  name?: string
+  empName?: string
+  deptCode?: string
   date?: RangePickerValue
   status?: string
-  type?: string
+  deliveryMode?: string
   pageIndex?: number
   pageSize?: number
 
   constructor() {
     this.date = getCurrentMonth() as RangePickerValue
-    this.status = '0'
-    this.type = '0'
+    this.status = ''
+    this.deliveryMode = ''
     this.pageIndex = 1
     this.pageSize = 20
   }
 }
 
-interface iModalForm {
-  name?: string
-  aaa?: string
-  time?: moment.Moment
-  time2?: string
-  time3?: moment.Moment
-  type?: string
+export interface iModalForm {
+  id?: string,
+  empNo?: string
+  empName?: string
+  deptCode?: string
+  lastMenstrualPeriod?: moment.Moment
+  expectedDate?: moment.Moment
+  deliveryDate?: moment.Moment
+  deliveryMode?: string
 }
 
 export class ModalForm implements iModalForm {
-  name?: string
-  aaa?: string
-  time?: moment.Moment
-  time2?: string
-  time3?: moment.Moment
-  type?: string
+  id?: string
+  empNo?: string
+  empName?: string
+  deptCode?: string
+  lastMenstrualPeriod?: moment.Moment
+  expectedDate?: moment.Moment
+  deliveryDate?: moment.Moment
+  deliveryMode?: string
 
   constructor() {
   }

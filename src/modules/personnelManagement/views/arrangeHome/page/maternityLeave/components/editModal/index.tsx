@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
-import { Col, Input, Modal, Row } from "antd"
+import { Col, Modal, Row } from "antd"
 import styled from "styled-components"
 import DeptSelect from "src/components/DeptSelect"
 import { DatePicker, Select } from "src/vendors/antd"
@@ -19,6 +19,7 @@ interface Props {
 
 export default observer((props: Props) => {
   const [loading, setLoading] = useState(false)
+  const [nursingList, setNursingList] = useState([])
   const [form, setForm] = useState(new ModalForm())
   const setFormItem = (item: {}) => {
     setForm({ ...form, ...item })
@@ -26,24 +27,34 @@ export default observer((props: Props) => {
 
   const { modalId, visible, onOk, onCancel } = props
 
-  const handleCreate = () => {
-    // api.updateItem(form)
+  const handleCreate = async () => {
+    await api.updateItem(form)
     onOk && onOk()
   }
 
   const handleDateChange = (date: moment.Moment) => {
-    const time3 = moment(moment(date).add(9, 'months')).add(7, 'days')
-    setFormItem({ time: date, time3: time3 })
+    const expectedDate = moment(date).add(9, 'months').add(7, 'days')
+    setFormItem({ lastMenstrualPeriod: date, expectedDate })
   }
 
   useEffect(() => {
     if (!visible) return
     if (modalId) {
+      setLoading(true)
       // api.getItem(modalId)
+      setLoading(false)
     } else {
       setForm(new ModalForm())
     }
   }, [visible])
+
+  useEffect(() => {
+    if (!visible || !form.deptCode) return
+    api.getNursingList(form.deptCode).then(res => {
+      setNursingList(res.data)
+      setFormItem({ empName: '' })
+    })
+  }, [form.deptCode])
 
   return (
     <React.Fragment>
@@ -57,43 +68,58 @@ export default observer((props: Props) => {
       >
         <Wrapper>
           <Row>
-            <Col span={5}>姓名:</Col>
-            <Col span={18}>
-              <Input value={form.name} onChange={e => setFormItem({ 'name': e.target.value })}/>
-            </Col>
-          </Row>
-          <Row>
             <Col span={5}>科室:</Col>
             <Col span={18}>
               <DeptSelect
                 style={{ width: '100%' }}
                 onChange={deptCode => {
-                  setFormItem({ 'aaa': deptCode })
+                  setFormItem({ 'deptCode': deptCode })
                 }}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={5}>姓名:</Col>
+            <Col span={18}>
+              <Select
+                value={form.empName}
+                onChange={(empName: string) => {
+                  setFormItem({ 'empName': empName })
+                }}>
+                {nursingList.map((item: { empName: string, empNo: string }, index) => (
+                  <Select.Option value={item.empName} key={item.empNo + index}>
+                    {item.empName}
+                  </Select.Option>
+                ))}
+              </Select>
             </Col>
           </Row>
           <Row>
             <Col span={5}>末次月经:</Col>
             <Col span={18}>
               <DatePicker
-                value={form.time}
+                value={form.lastMenstrualPeriod}
                 onChange={handleDateChange}
               />
             </Col>
           </Row>
           <Row>
-            <Col span={5}>当前孕周:</Col>
+            <Col span={5}>预产期:</Col>
             <Col span={18}>
-              <Input value={form.time2} onChange={e => setFormItem({ 'time2': e.target.value })}/>
+              <DatePicker
+                value={form.expectedDate}
+                onChange={(date) => {
+                  setFormItem({ 'expectedDate': date })
+                }}
+              />
             </Col>
           </Row>
           <Row>
             <Col span={5}>分娩日期:</Col>
             <Col span={18}>
               <DatePicker
-                value={form.time3}
+                value={form.deliveryDate}
                 onChange={(date) => {
-                  setFormItem({ 'time3': date })
+                  setFormItem({ 'deliveryDate': date })
                 }}
               />
             </Col>
@@ -102,9 +128,9 @@ export default observer((props: Props) => {
             <Col span={5}>分娩方式:</Col>
             <Col span={18}>
               <Select
-                value={form.type}
+                value={form.deliveryMode}
                 onChange={(value: string) => {
-                  setFormItem({ 'type': value })
+                  setFormItem({ 'deliveryMode': value })
                 }}>
                 {config.typeOption.map((item, index) => (
                   <Select.Option value={item.value} key={index}>

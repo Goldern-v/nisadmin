@@ -15,7 +15,7 @@ export default observer(function NurseSituation() {
   const [titleBy, setTitleBy] = useState('按职称')
   const [userTotal, setUserTotal] = useState(0)
   useEffect(() => {
-    // 
+    //
   })
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)

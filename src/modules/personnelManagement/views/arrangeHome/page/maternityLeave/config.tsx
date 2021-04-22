@@ -1,74 +1,73 @@
-import { ColumnProps, message } from "src/vendors/antd";
-import { DoCon } from "src/components/BaseTable";
 import React from "react";
+import { DoCon } from "src/components/BaseTable";
+import { iModalForm } from "./modal";
 
 const statusOption = [
-  { label: '全部', value: '0' },
-  { label: '怀孕护士', value: '1' },
-  { label: '休产假', value: '2' },
-  { label: '哺乳假期', value: '3' },
-  { label: '哺乳期结束', value: '4' },
+  { label: '全部', value: '' },
+  { label: '怀孕护士', value: '怀孕护士' },
+  { label: '休产假', value: '休产假' },
+  { label: '哺乳假期', value: '哺乳假期' },
+  { label: '哺乳期结束', value: '哺乳期结束' },
 ]
 const typeOption = [
-  { label: '顺产', value: '1' },
-  { label: '剖宫产', value: '2' },
+  { label: '顺产', value: '顺产' },
+  { label: '剖宫产', value: '剖宫产' },
 ]
 
 const creatColumns = (calBack?: Function): {}[] => {
   return [
     {
       title: "序号",
-      dataIndex: "aaa",
       align: "center",
     },
     {
-      title: "工号",
-      dataIndex: "aaa",
+      title: "姓名",
+      dataIndex: "empName",
       align: "center",
     },
     {
       title: "科室",
-      dataIndex: "aaa",
+      dataIndex: "deptCode",
       align: "center",
     },
     {
       title: "预产期",
-      dataIndex: "aaa",
+      dataIndex: "expectedDate",
       align: "center",
     },
     {
       title: "当前孕周",
-      dataIndex: "aaa",
+      dataIndex: "gestationalAge",
       align: "center",
     },
     {
       title: "末次月经",
-      dataIndex: "aaa",
+      dataIndex: "lastMenstrualPeriod",
       align: "center",
     },
     {
       title: "分娩方式",
-      dataIndex: "aaa",
+      dataIndex: "deliveryMode",
       align: "center",
     },
     {
       title: "分娩日期",
-      dataIndex: "aaa",
+      dataIndex: "deliveryDate",
       align: "center",
     },
     {
       title: "产假开始日期",
-      dataIndex: "aaa",
+      dataIndex: "babyBreakStartDate",
       align: "center",
     },
     {
       title: "产假结束日期",
-      dataIndex: "aaa",
+      dataIndex: "babyBreakEndDate",
       align: "center",
     },
     {
       title: "哺乳结束日期",
-      dataIndex: "aaa",
+      dataIndex: "lactationEndDate",
       align: "center",
     },
     {
@@ -76,7 +75,7 @@ const creatColumns = (calBack?: Function): {}[] => {
       dataIndex: "",
       align: "center",
       width: 150,
-      render(text: any, record: any) {
+      render(text: '', record: iModalForm) {
         return (
           <DoCon>
             <span onClick={() => calBack && calBack('edit', record)}>编辑</span>

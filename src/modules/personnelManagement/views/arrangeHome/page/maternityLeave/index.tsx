@@ -1,13 +1,14 @@
-import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { PageHeader, Place } from "src/components/common"
 import { DatePicker, Input, PaginationConfig, Select } from "src/vendors/antd"
 import { globalModal } from "src/global/globalModal"
 import { Button, message } from "antd"
+import styled from "styled-components"
+import DeptSelect from "src/components/DeptSelect"
 import BaseTable from "src/components/BaseTable"
 import EditModal from './components/editModal'
-import { SearchForm } from './modal'
+import { SearchForm, iModalForm } from './modal'
 import config from './config'
 import api from './api'
 
@@ -22,32 +23,43 @@ export default observer(() => {
   const [modalId, setModalId] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
 
-
-  const columns = config.creatColumns((type: string, item: any) => {
+  const columns = config.creatColumns((type: string, item: iModalForm) => {
     switch (type) {
       case 'edit':
-        setModalId(item.id)
+        setModalId(item.id || '')
         setModalVisible(true)
         break
       case 'delete':
-        globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
-          // api.deleteItem(item.id)
-          message.success(`删除${item.name}成功`);
+        globalModal.confirm("确认删除", "确认删除该套餐？").then(async res => {
+          await api.deleteItem(item.id || '')
+          message.success(`删除成功`)
+          await getData()
         });
         break
     }
   })
 
+  const getData = async () => {
+    if (!form.deptCode) return
 
-  const getData = () => {
-    // api.getList().then()
+    setPageLoading(true)
+    const { data } = await api.getList(form)
+    setPageLoading(false)
+
+    setTotal(data.totalCount)
+    setTableData(data.list)
+  }
+
+  const handleModalUpdate = async () => {
+    setModalVisible(false)
+    await getData()
   }
 
   const exportData = () => {
   }
 
   useEffect(() => {
-    getData()
+    const promise = getData()
   }, [form])
 
   return (
@@ -57,10 +69,12 @@ export default observer(() => {
         <Place/>
         <span className="label">姓名</span>
         <Input
-          value={form.name}
-          onChange={e => setFormItem({ 'name': e.target.value })}
+          value={form.empName}
           style={{ width: 120 }}
+          onChange={e => setFormItem({ empName: e.target.value })}
         />
+        <span className="label">科室</span>
+        <DeptSelect onChange={deptCode => setFormItem({ 'deptCode': deptCode })}/>
         <span className="label">分娩日期</span>
         <DatePicker.RangePicker
           value={form.date}
@@ -74,8 +88,8 @@ export default observer(() => {
           ))}
         </Select>
         <span className="label">分娩方式</span>
-        <Select value={form.type} onChange={(value: string) => setFormItem({ 'type': value })}>
-          <Select.Option value={'0'}>全部</Select.Option>
+        <Select value={form.deliveryMode} onChange={(value: string) => setFormItem({ 'deliveryMode': value })}>
+          <Select.Option value={''}>全部</Select.Option>
           {config.typeOption.map((item, index) => (
             <Select.Option value={item.value} key={index}>
               {item.label}
@@ -110,6 +124,7 @@ export default observer(() => {
       <EditModal
         modalId={modalId}
         visible={modalVisible}
+        onOk={handleModalUpdate}
         onCancel={() => setModalVisible(false)}
       />
     </Wrapper>
