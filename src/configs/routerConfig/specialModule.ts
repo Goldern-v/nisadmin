@@ -134,7 +134,8 @@ if (
   ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    // setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+    // setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_nys, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",

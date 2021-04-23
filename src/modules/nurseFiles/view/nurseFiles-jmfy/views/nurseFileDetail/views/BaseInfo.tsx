@@ -13,7 +13,7 @@ import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
@@ -116,6 +116,9 @@ export default observer(function BaseInfo() {
                 {
                   手机号: `phone`,
                   家庭住址: `address`
+                },
+                {
+                  鞋码: `shoeSize`,
                 }
               ],
               fileData: [
@@ -124,10 +127,10 @@ export default observer(function BaseInfo() {
                 },
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                      return {
-                        ['执业证书' + (index + 1)]: item
-                      }
-                    })
+                    return {
+                      ['执业证书' + (index + 1)]: item
+                    }
+                  })
                   : [])
               ],
               allData: info
@@ -184,6 +187,9 @@ export default observer(function BaseInfo() {
         {
           手机号: data.phone,
           家庭住址: data.address
+        },
+        {
+          鞋码: data.shoeSize
         }
       ])
     })

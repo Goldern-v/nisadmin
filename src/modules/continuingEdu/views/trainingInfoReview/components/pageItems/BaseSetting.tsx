@@ -10,8 +10,9 @@ export interface Props {
 }
 
 export default function BaseSetting(props: Props) {
-  const {labelWidth, info} = props;
+  const { labelWidth, info } = props;
   const _labelWidth = labelWidth ? `${labelWidth}px` : "92px";
+  const [signQrCodeModalVisible, setSignQrCodeModalVisible] = useState(false)
 
   const creditInfo = () => {
     console.log(info, "info");
@@ -21,7 +22,7 @@ export default function BaseSetting(props: Props) {
     let baseCredit = (
       <React.Fragment>
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>
+          <div className="label" style={{ width: _labelWidth }}>
             学 分：
           </div>
           <div className="content">
@@ -29,7 +30,7 @@ export default function BaseSetting(props: Props) {
           </div>
         </div>
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>
+          <div className="label" style={{ width: _labelWidth }}>
             学 时：
           </div>
           <div className="content">{classHours}</div>
@@ -43,7 +44,7 @@ export default function BaseSetting(props: Props) {
       return (
         <React.Fragment>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               讲 师：
             </div>
             <div className="content">
@@ -53,7 +54,7 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               学员学分：
             </div>
             <div className="content">
@@ -61,7 +62,7 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               讲师学分：
             </div>
             <div className="content">
@@ -69,13 +70,13 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               学员学时：
             </div>
             <div className="content">{classHours}</div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               讲师学时：
             </div>
             <div className="content">{info.teacherClassHours}</div>
@@ -86,7 +87,7 @@ export default function BaseSetting(props: Props) {
       return (
         <React.Fragment>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               主持人：
             </div>
             <div className="content">
@@ -96,7 +97,7 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               学员学分：
             </div>
             <div className="content">
@@ -104,7 +105,7 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               主持人学分：
             </div>
             <div className="content">
@@ -112,13 +113,13 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               学员学时：
             </div>
             <div className="content">{classHours}</div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               主持人学时：
             </div>
             <div className="content">{info.hostClassHours}</div>
@@ -135,7 +136,7 @@ export default function BaseSetting(props: Props) {
         return (
           <React.Fragment>
             <div className="row">
-              <div className="label" style={{width: _labelWidth}}>
+              <div className="label" style={{ width: _labelWidth }}>
                 评分负责人：
               </div>
               <div className="content">
@@ -148,7 +149,7 @@ export default function BaseSetting(props: Props) {
             </div>
             {!!(info.scorePersonList || []).length && (
               <div className="row">
-                <div className="label" style={{width: _labelWidth}}>
+                <div className="label" style={{ width: _labelWidth }}>
                   评分人学时：
                 </div>
                 <div className="content">{info.scorePersonClassHours}</div>
@@ -157,7 +158,7 @@ export default function BaseSetting(props: Props) {
           </React.Fragment>
         );
       default:
-        return <span/>;
+        return <span />;
     }
   };
 
@@ -166,7 +167,7 @@ export default function BaseSetting(props: Props) {
       return (
         <React.Fragment>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               签到负责人：
             </div>
             <div className="content">
@@ -176,14 +177,22 @@ export default function BaseSetting(props: Props) {
             </div>
           </div>
           <div className="row">
-            <div className="label" style={{width: _labelWidth}}>
+            <div className="label" style={{ width: _labelWidth }}>
               签到方式：
             </div>
-            <div className="content">二维码</div>
+            <div className="content">
+              {/* <span
+                style={{ cursor: 'pointer', color: '#00A680' }}
+                onClick={() => setSignQrCodeModalVisible(true)}
+                title="显示签到二维码">
+                二维码
+              </span> */}
+              <span>二维码</span>
+            </div>
           </div>
         </React.Fragment>
       );
-    else return <span/>;
+    else return <span />;
   };
 
   // 南医三 外加的一些字段
@@ -191,15 +200,15 @@ export default function BaseSetting(props: Props) {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>院外讲师：</div>
+          <div className="label" style={{ width: _labelWidth }}>院外讲师：</div>
           <div className="content">{(info.ywTeacherList || []).map((teacher: any) => teacher.empName).join(",")}</div>
         </div>
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>描述：</div>
+          <div className="label" style={{ width: _labelWidth }}>描述：</div>
           <div className="content">{info.trainDescribe}</div>
         </div>
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>培训内容：</div>
+          <div className="label" style={{ width: _labelWidth }}>培训内容：</div>
           <div className="content">{info.trainContent}</div>
         </div>
       </React.Fragment>
@@ -210,7 +219,7 @@ export default function BaseSetting(props: Props) {
     <Wrapper>
       <div className="content-item-title">基本设置</div>
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           {info.teachingMethodName}开始时间：
         </div>
         <div className="content">{info.startTime}</div>
@@ -219,7 +228,7 @@ export default function BaseSetting(props: Props) {
         appStore.hisMatch({
           map: {
             nys: <div className="row">
-              <div className="label" style={{width: _labelWidth}}>
+              <div className="label" style={{ width: _labelWidth }}>
                 {info.teachingMethodName}结束时间：
               </div>
               <div className="content">
@@ -227,7 +236,7 @@ export default function BaseSetting(props: Props) {
               </div>
             </div>,
             other: <div className="row">
-              <div className="label" style={{width: _labelWidth}}>
+              <div className="label" style={{ width: _labelWidth }}>
                 {info.teachingMethodName}开放时间：
               </div>
               <div className="content">
@@ -238,7 +247,7 @@ export default function BaseSetting(props: Props) {
         })
       }
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           教学类型：
         </div>
         <div className="content">
@@ -246,7 +255,7 @@ export default function BaseSetting(props: Props) {
         </div>
       </div>
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           类别：
         </div>
         {appStore.HOSPITAL_ID === "wh" && (
@@ -254,7 +263,7 @@ export default function BaseSetting(props: Props) {
         )}
       </div>
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           组织方式：
         </div>
         <div className="content">
@@ -264,7 +273,7 @@ export default function BaseSetting(props: Props) {
       {/* 类型对应地址 */}
       {info.address && (
         <div className="row">
-          <div className="label" style={{width: _labelWidth}}>
+          <div className="label" style={{ width: _labelWidth }}>
             {info.teachingMethodName}地址：
           </div>
           <div className="content">{info.address}</div>
@@ -277,7 +286,7 @@ export default function BaseSetting(props: Props) {
       {/* 根据对应的类型和组织方式显示学分 */}
       {creditInfo()}
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           必修/选修：
         </div>
         <div className="content">
@@ -285,19 +294,19 @@ export default function BaseSetting(props: Props) {
         </div>
       </div>
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           通知设置：
         </div>
         <div className="content">{info.noticeSetting}</div>
       </div>
       <div className="row">
-        <div className="label" style={{width: _labelWidth}}>
+        <div className="label" style={{ width: _labelWidth }}>
           通知详情：
         </div>
         <div className="content">{info.noticeContent}</div>
       </div>
       {/* 南医三 外加的一些字段 */}
-      {appStore.hisMatch({map: {nys: nysOtherInfo()}})}
+      {appStore.hisMatch({ map: { nys: nysOtherInfo() } })}
     </Wrapper>
   );
 }

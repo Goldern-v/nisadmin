@@ -70,13 +70,25 @@ export default class TrainingInfoReviewService extends BaseApiService {
     );
   }
 
-  // 试卷预览查看信息（厚街 南医三多套试卷）
+  /**
+   * 试卷预览查看信息（厚街 南医三多套试卷）
+   * @param paperId 试卷id
+   * @returns Promise
+   */
   public async HjPreviewPaperByPertIdCheck(paperId: any) {
-    /** taskCode attachmentId*/
     return this.post(
       `/studyAndTrain/teachingPlanManage/hj/previewPaperByPaperId`,
       qs.stringify({ paperId })
     );
+  }
+
+  /**
+   * 88.护理app--产生签到二维码时调用此接口获取signIncode
+   * @param cetpId 学习计划Id
+   * @returns Promise
+   */
+  public genSignInCode(cetpId: string | number) {
+    return this.post('/studyAndTrain/teachingPlanManage/genSignInCode', qs.stringify(cetpId))
   }
 }
 

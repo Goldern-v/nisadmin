@@ -44,11 +44,11 @@ export default observer(function TrainingInfoReview() {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <Link to="/continuingEdu">学习培训</Link>
-        <span> > 信息查看</span>
+        <span> &gt; 信息查看</span>
         {/* <Link to="/home">二级目录</Link> */}
-        {baseInfo && <span> > {baseInfo.title}</span>}
+        {baseInfo && <span> &gt; {baseInfo.title}</span>}
       </NavCon>
       <MainTitle>{baseInfo.title || ' '}</MainTitle>
       <SubContent>

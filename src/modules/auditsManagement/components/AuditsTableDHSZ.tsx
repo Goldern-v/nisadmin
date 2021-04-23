@@ -4,17 +4,25 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
 
-import store from 'src/stores'
+import store, { appStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
-import AuditText from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/components/auditText/AuditText'
+import AuditTextDefault from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/components/auditText/AuditText'
+import AuditTextJmfy from 'src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/components/auditText/AuditText'
 import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-hj/services/NurseFilesService'
 export interface Props {
   type: string
   needAudit: boolean
 }
+
+const AuditText = appStore.hisMatch({
+  map: {
+    jmfy: AuditTextJmfy,
+    default: AuditTextDefault
+  }
+})
 
 export default function AuditsTableDHSZ(props: Props) {
   let { type } = props

@@ -11,89 +11,43 @@ export default function Format(row: any, getTableData: any) {
         type: "nurseInformation",
         // empNo: appStore.queryObj.empNo,
         title: "审核基础信息",
-        tableFormat: appStore.hisMatch({
-          map: {
-            nys: [
-              {
-                姓名: `empName`,
-                工号: `empNo`
-              },
-              {
-                性别: `sex`,
-                民族: `nation`
-              },
-              {
-                出生年月: `birthday`,
-                年龄: `age`
-              },
-              {
-                籍贯: `nativePlace`,
-                职务: `job`
-              },
-              {
-                参加工作时间: `goWorkTime`,
-                最高学历: `highestEducation`
-              },
-              {
-                护士执业证书编号: `zyzsNumber`,
-                护士执业证书有效截止日期: `zyzsNumber`,
-              },
-              {
-                技术职称: `newTitle`,
-                身份证号: `cardNumber`,
-              },
-              {
-                学术任职: `socialGroup`,
-                手机号: `phone`,
-              },
-              {
-                家庭住址: `address`,
-                来院工作时间: "goHospitalWorkDate",
-              },
-              {
-                工作编制: "workConversion",
-                纳编时间: "enrolDate"
-              },
-              {
-                是否返聘员工: "hireEmployees"
-              }
-            ],
-            other: [
-              {
-                姓名: `empName`,
-                工号: `empNo`
-              },
-              {
-                性别: `sex`,
-                民族: `nation`
-              },
-              {
-                出生年月: `birthday`,
-                年龄: `age`
-              },
-              {
-                籍贯: `nativePlace`,
-                职务: `job`
-              },
-              {
-                参加工作时间: `goWorkTime`,
-                最高学历: `highestEducation`
-              },
-              {
-                技术职称: `newTitle`,
-                护士执业证书编号: `zyzsNumber`
-              },
-              {
-                身份证号: `cardNumber`,
-                社会团体职务: `socialGroup`
-              },
-              {
-                手机号: `phone`,
-                家庭住址: `address`
-              }
-            ]
+        tableFormat: [
+          {
+            姓名: `empName`,
+            工号: `empNo`
+          },
+          {
+            性别: `sex`,
+            民族: `nation`
+          },
+          {
+            出生年月: `birthday`,
+            年龄: `age`
+          },
+          {
+            籍贯: `nativePlace`,
+            职务: `job`
+          },
+          {
+            参加工作时间: `goWorkTime`,
+            最高学历: `highestEducation`
+          },
+          {
+            技术职称: `newTitle`,
+            护士执业证书编号: `zyzsNumber`
+          },
+          {
+            身份证号: `cardNumber`,
+            社会团体职务: `socialGroup`
+          },
+          {
+            手机号: `phone`,
+            家庭住址: `address`
+          },
+          {
+            鞋码: `shoeSize`,
           }
-        }),
+        ],
         fileData: [
           {
             个人头像: row.nearImageUrl
