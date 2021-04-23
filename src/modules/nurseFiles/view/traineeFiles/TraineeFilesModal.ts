@@ -14,7 +14,7 @@ class TraineeFilesModal {
   @observable public total: any = 0; //总条数
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
-  @observable public isOnJob = ''; //表格loading
+  @observable public isOnJob = '1'; //表格loading
 
   
   @computed
