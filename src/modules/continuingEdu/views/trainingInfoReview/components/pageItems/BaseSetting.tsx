@@ -194,7 +194,7 @@ export default function BaseSetting(props: Props) {
             visible={signQrCodeModalVisible}
             ceptId={appStore.queryObj.id || ''}
             title={info.title || '培训计划'}
-            subTitle={`${info.startTime || '...'} - ${info.endTime || '...'}`}
+            subTitle={`培训时间：${info.startTime || '...'} - ${info.endTime || '...'}`}
             onCancel={() => setSignQrCodeModalVisible(false)} />
         </React.Fragment>
       );
