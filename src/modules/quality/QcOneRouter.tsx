@@ -25,6 +25,7 @@ import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
 import PatientVisitMonth from './views/qcOne/report/PatientVisitMonth/PatientVisitMonth'
 import SafetyCheckReport from './views/qcOne/report/SafetyCheck/SafetyCheckReport'
+import Workload from './views/workload/Workload'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -134,7 +135,37 @@ const LEFT_MENU_CONFIG: any = [
     component: PatientVisitMonth,
     keepAlive: true,
     disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-  }
+  },
+  // {
+  //   title: '工作量',
+  //   icon: <YJJL />,
+  //   children: [
+  //     {
+  //       title: '服务之星',
+  //       path: '/qcOne/serviceStar',
+  //       component: Workload,
+  //       keepAlive: true,
+  //       indexKey: '1',
+  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+  //     },
+  //     {
+  //       title: '技术能手',
+  //       path: '/qcOne/technicalExperts',
+  //       component: Workload,
+  //       keepAlive: true,
+  //       indexKey: '2',
+  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+  //     },
+  //     {
+  //       title: '工作量统计',
+  //       path: '/qcOne/workloadStatistics',
+  //       component: Workload,
+  //       keepAlive: true,
+  //       indexKey: '3',
+  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+  //     }
+  //   ]
+  // }
 ]
 
 export default function QcOneRouter(props: Props) {
@@ -166,11 +197,11 @@ export default function QcOneRouter(props: Props) {
           currentRoute.component &&
           (currentRoute.keepAlive ? (
             <KeepAlive name={currentRoute.path} disabled={currentRoute.disabledKeepAlive()}>
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} indexKey={currentRoute && currentRoute.indexKey} />
             </KeepAlive>
           ) : (
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-            ))}
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )
