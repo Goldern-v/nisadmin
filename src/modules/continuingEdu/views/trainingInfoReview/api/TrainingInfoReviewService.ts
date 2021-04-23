@@ -88,7 +88,7 @@ export default class TrainingInfoReviewService extends BaseApiService {
    * @returns Promise
    */
   public genSignInCode(cetpId: string | number) {
-    return this.post('/studyAndTrain/teachingPlanManage/genSignInCode', qs.stringify(cetpId))
+    return this.post('/studyAndTrain/teachingPlanManage/genSignInCode', qs.stringify({ cetpId }))
   }
 }
 

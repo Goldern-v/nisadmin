@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
-// import BaseInfo from 'src/modules/nurseFiles/view/nurseFiles-hj/views/exportNurseFile/page/BaseInfo'
 import { appStore } from "src/stores";
+import SignQrCodeModal from './../SignQrCodeModal'
 
 export interface Props {
   labelWidth?: number;
@@ -37,8 +37,6 @@ export default function BaseSetting(props: Props) {
         </div>
       </React.Fragment>
     );
-
-    // console.log(JSON.parse(JSON.stringify(info)))
 
     if (info.teachingMethod == 2)
       return (
@@ -181,15 +179,23 @@ export default function BaseSetting(props: Props) {
               签到方式：
             </div>
             <div className="content">
-              {/* <span
-                style={{ cursor: 'pointer', color: '#00A680' }}
-                onClick={() => setSignQrCodeModalVisible(true)}
-                title="显示签到二维码">
-                二维码
-              </span> */}
               <span>二维码</span>
+              <Button
+                style={{ marginLeft: 10, height: 20 }}
+                size="small"
+                type="primary"
+                onClick={() => setSignQrCodeModalVisible(true)}
+                title="点击生成签到二维码">
+                生成签到二维码
+              </Button>
             </div>
           </div>
+          <SignQrCodeModal
+            visible={signQrCodeModalVisible}
+            ceptId={appStore.queryObj.id || ''}
+            title={info.title || '培训计划'}
+            subTitle={`${info.startTime || '...'} - ${info.endTime || '...'}`}
+            onCancel={() => setSignQrCodeModalVisible(false)} />
         </React.Fragment>
       );
     else return <span />;
