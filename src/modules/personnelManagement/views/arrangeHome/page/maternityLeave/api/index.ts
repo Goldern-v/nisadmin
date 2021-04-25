@@ -16,7 +16,7 @@ class Api extends BaseApiService {
 
   // 获取
   getItem(id: string) {
-    return this.post(`/schBabyBreak/findBylist`, id)
+    return this.get(`schBabyBreak/get/${id}`)
   }
 
   // 新增 && 获取
@@ -32,7 +32,7 @@ class Api extends BaseApiService {
 
   // 删除
   deleteItem(id: string) {
-    return this.post(`/schBabyBreak/delete/${id}`);
+    return this.get(`/schBabyBreak/delete/${id}`)
   }
 
   // 护士列表

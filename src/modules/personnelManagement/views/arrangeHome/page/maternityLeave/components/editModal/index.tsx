@@ -38,18 +38,31 @@ export default observer((props: Props) => {
   }
 
   useEffect(() => {
-    if (!visible) return
+    if (!visible) {
+      // setForm(new ModalForm())
+      return
+    }
     if (modalId) {
       setLoading(true)
-      // api.getItem(modalId)
-      setLoading(false)
-    } else {
-      setForm(new ModalForm())
+      api.getItem(modalId).then(res => {
+        const data = {
+          id: res.data.id,
+          empNo: res.data.empNo,
+          empName: res.data.empName,
+          deptCode: res.data.deptCode,
+          lastMenstrualPeriod: res.data.lastMenstrualPeriod,
+          expectedDate: res.data.expectedDate,
+          deliveryDate: res.data.deliveryDate,
+          deliveryMode: res.data.deliveryMode,
+        }
+        setForm(new ModalForm(data))
+        setLoading(false)
+      })
     }
   }, [visible])
 
   useEffect(() => {
-    if (!visible || !form.deptCode) return
+    if (!visible || !form.deptCode || modalId) return
     api.getNursingList(form.deptCode).then(res => {
       setNursingList(res.data)
       setFormItem({ empName: '' })

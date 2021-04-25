@@ -50,6 +50,11 @@ export default observer(() => {
     setTableData(data.list)
   }
 
+  const handleCreate = () => {
+    setModalId('')
+    setModalVisible(true)
+  }
+
   const handleModalUpdate = async () => {
     setModalVisible(false)
     await getData()
@@ -99,7 +104,7 @@ export default observer(() => {
 
         <Button onClick={() => getData()}>查询</Button>
         <Button onClick={() => exportData()}>导出</Button>
-        <Button type="primary" onClick={() => setModalVisible(true)}>新增</Button>
+        <Button type="primary" onClick={handleCreate}>新增</Button>
       </PageHeader>
       {/* 表格 */}
       <BaseTable

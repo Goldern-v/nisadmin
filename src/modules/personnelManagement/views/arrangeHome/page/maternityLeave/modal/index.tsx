@@ -51,6 +51,14 @@ export class ModalForm implements iModalForm {
   deliveryDate?: moment.Moment
   deliveryMode?: string
 
-  constructor() {
+  constructor(data: iModalForm = {}) {
+    this.id = data.id
+    this.empNo = data.empNo
+    this.empName = data.empName
+    this.deptCode = data.deptCode
+    this.lastMenstrualPeriod = data.lastMenstrualPeriod && moment(data.lastMenstrualPeriod)
+    this.expectedDate = data.expectedDate && moment(data.expectedDate)
+    this.deliveryDate = data.deliveryDate && moment(data.deliveryDate)
+    this.deliveryMode = data.deliveryMode
   }
 }
