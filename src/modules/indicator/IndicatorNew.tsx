@@ -14,6 +14,7 @@ import moment from 'moment'
 import StatisticTable from './statisticsTable'
 import NursingData from "./mainView/nursingData/NursingData"
 import IndicatorBaseTable from './IndicatorBaseTable'
+import SelfDeclaration from './selfDeclaration'
 
 export default observer(function indicatorView(props: any) {
   const [modlueLoading, setModuleLoading] = useState(false)
@@ -27,32 +28,41 @@ export default observer(function indicatorView(props: any) {
 
   const LEFT_MENU = [...authMenu]
 
-  const targetConponent = () => {
+  const targetComponent = () => {
     let name = props.match.params.name || ''
 
-    if (['公共季度统计表', '专科季度统计表'].indexOf(name) >= 0)
-      return <MainCon>
-        <StatisticTable name={name} />
-      </MainCon>
+    switch (name) {
+      case '公共季度统计表':
+      case '专科季度统计表':
+        return <MainCon>
+          <StatisticTable name={name}/>
+        </MainCon>
 
-    if (name === '护理质量相关数据')
-      return <div className="nursingData">
-        <NursingData getTitle={props.match.params.name} />
-      </div>
+      case '自主申报':
+        return <MainCon>
+          <SelfDeclaration/>
+        </MainCon>
 
-    if (!name)
-      return <MainCon>
-        <Spin spinning={modlueLoading}>
-          <BaseMatchCon>{modlueLoading ? '获取菜单...' : '无匹配模块'}</BaseMatchCon>
-        </Spin>
-      </MainCon>
+      case '护理质量相关数据':
+        return <div className="nursingData">
+          <NursingData getTitle={props.match.params.name}/>
+        </div>
 
-    return <MainCon style={{ padding: '5px 0px' }}>
-      <IndicatorBaseTable
-        name={name}
-        dateRange={dateRange}
-        onDateRangeChange={(payload: any) => setDateRange(payload)} />
-    </MainCon>
+      case '':
+        return <MainCon>
+          <Spin spinning={modlueLoading}>
+            <BaseMatchCon>{modlueLoading ? '获取菜单...' : '无匹配模块'}</BaseMatchCon>
+          </Spin>
+        </MainCon>
+
+      default:
+        return <MainCon style={{ padding: '5px 0px' }}>
+          <IndicatorBaseTable
+            name={name}
+            dateRange={dateRange}
+            onDateRangeChange={(payload: any) => setDateRange(payload)}/>
+        </MainCon>
+    }
   }
 
   /**获取左侧菜单栏并初始化右侧面板 */
@@ -66,7 +76,7 @@ export default observer(function indicatorView(props: any) {
           let menuItem0 = {
             title: item0.name || `未命名 ${idx0}`,
             path: `${item0.url}`,
-            icon: <ZKHL />,
+            icon: <ZKHL/>,
           } as any
 
           if (item0.childrenMenu && item0.childrenMenu.length > 0) {
@@ -103,10 +113,10 @@ export default observer(function indicatorView(props: any) {
 
   return <Wrapper>
     <LeftMenuCon>
-      <LeftMenu config={LEFT_MENU} menuTitle="敏感指标" />
+      <LeftMenu config={LEFT_MENU} menuTitle="敏感指标"/>
       {/* <StatisticLeftList /> */}
     </LeftMenuCon>
-    {targetConponent()}
+    {targetComponent()}
   </Wrapper>
 })
 
