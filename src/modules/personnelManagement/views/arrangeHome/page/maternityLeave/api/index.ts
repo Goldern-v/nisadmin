@@ -25,7 +25,8 @@ class Api extends BaseApiService {
       ...data,
       'lastMenstrualPeriod': data.lastMenstrualPeriod && moment(data.lastMenstrualPeriod).format('YYYY-MM-DD'),
       'expectedDate': data.expectedDate && moment(data.expectedDate).format('YYYY-MM-DD'),
-      'deliveryDate': data.deliveryDate && moment(data.deliveryDate).format('YYYY-MM-DD')
+      'deliveryDate': data.deliveryDate && moment(data.deliveryDate).format('YYYY-MM-DD'),
+      'babyBreakStartDate': data.babyBreakStartDate && moment(data.babyBreakStartDate).format('YYYY-MM-DD')
     }
     return this.post(`/schBabyBreak/saveOrUpdate`, params)
   }

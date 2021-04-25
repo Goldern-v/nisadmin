@@ -9,12 +9,11 @@ import { ModalForm } from "../../modal"
 import config from "../../config"
 import api from '../../api'
 
-
 interface Props {
   modalId?: string
   visible: boolean
-  onOk?: Function
-  onCancel?: Function
+  onOk: Function
+  onCancel: Function
 }
 
 export default observer((props: Props) => {
@@ -24,12 +23,11 @@ export default observer((props: Props) => {
   const setFormItem = (item: {}) => {
     setForm({ ...form, ...item })
   }
-
   const { modalId, visible, onOk, onCancel } = props
 
   const handleCreate = async () => {
     await api.updateItem(form)
-    onOk && onOk()
+    onOk()
   }
 
   const handleDateChange = (date: moment.Moment) => {
@@ -38,10 +36,6 @@ export default observer((props: Props) => {
   }
 
   useEffect(() => {
-    if (!visible) {
-      // setForm(new ModalForm())
-      return
-    }
     if (modalId) {
       setLoading(true)
       api.getItem(modalId).then(res => {
@@ -53,19 +47,21 @@ export default observer((props: Props) => {
           lastMenstrualPeriod: res.data.lastMenstrualPeriod,
           expectedDate: res.data.expectedDate,
           deliveryDate: res.data.deliveryDate,
+          babyBreakStartDate: res.data.babyBreakStartDate,
           deliveryMode: res.data.deliveryMode,
         }
         setForm(new ModalForm(data))
         setLoading(false)
       })
+    } else {
+      setForm(new ModalForm())
     }
-  }, [visible])
+  }, [])
 
   useEffect(() => {
-    if (!visible || !form.deptCode || modalId) return
+    if (!form.deptCode) return
     api.getNursingList(form.deptCode).then(res => {
       setNursingList(res.data)
-      setFormItem({ empName: '' })
     })
   }, [form.deptCode])
 
@@ -76,12 +72,12 @@ export default observer((props: Props) => {
         visible={visible}
         confirmLoading={loading}
         onOk={handleCreate}
-        onCancel={() => onCancel && onCancel()}
-        title={"添加"}
+        onCancel={() => onCancel()}
+        title={modalId ? '修改' : '新增'}
       >
         <Wrapper>
           <Row>
-            <Col span={5}>科室:</Col>
+            <Col span={6}>科室:</Col>
             <Col span={18}>
               <DeptSelect
                 style={{ width: '100%' }}
@@ -91,7 +87,7 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={5}>姓名:</Col>
+            <Col span={6}>姓名:</Col>
             <Col span={18}>
               <Select
                 value={form.empName}
@@ -107,7 +103,7 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={5}>末次月经:</Col>
+            <Col span={6}>末次月经:</Col>
             <Col span={18}>
               <DatePicker
                 value={form.lastMenstrualPeriod}
@@ -116,7 +112,7 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={5}>预产期:</Col>
+            <Col span={6}>预产期:</Col>
             <Col span={18}>
               <DatePicker
                 value={form.expectedDate}
@@ -127,7 +123,7 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={5}>分娩日期:</Col>
+            <Col span={6}>分娩日期:</Col>
             <Col span={18}>
               <DatePicker
                 value={form.deliveryDate}
@@ -138,7 +134,18 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={5}>分娩方式:</Col>
+            <Col span={6}>产假开始日期:</Col>
+            <Col span={18}>
+              <DatePicker
+                value={form.babyBreakStartDate}
+                onChange={(date) => {
+                  setFormItem({ 'babyBreakStartDate': date })
+                }}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}>分娩方式:</Col>
             <Col span={18}>
               <Select
                 value={form.deliveryMode}

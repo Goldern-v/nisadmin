@@ -22,7 +22,10 @@ export class SearchForm implements iSearchForm {
   pageSize?: number
 
   constructor() {
-    this.date = getCurrentMonth() as RangePickerValue
+    this.date = [
+      moment(moment().format('YYYY-MM-01')),
+      moment(moment().add(1, 'year').format('YYYY-MM-01'))
+    ]
     this.status = ''
     this.deliveryMode = ''
     this.pageIndex = 1
@@ -38,6 +41,7 @@ export interface iModalForm {
   lastMenstrualPeriod?: moment.Moment
   expectedDate?: moment.Moment
   deliveryDate?: moment.Moment
+  babyBreakStartDate?: moment.Moment
   deliveryMode?: string
 }
 
@@ -49,6 +53,7 @@ export class ModalForm implements iModalForm {
   lastMenstrualPeriod?: moment.Moment
   expectedDate?: moment.Moment
   deliveryDate?: moment.Moment
+  babyBreakStartDate?: moment.Moment
   deliveryMode?: string
 
   constructor(data: iModalForm = {}) {
@@ -59,6 +64,7 @@ export class ModalForm implements iModalForm {
     this.lastMenstrualPeriod = data.lastMenstrualPeriod && moment(data.lastMenstrualPeriod)
     this.expectedDate = data.expectedDate && moment(data.expectedDate)
     this.deliveryDate = data.deliveryDate && moment(data.deliveryDate)
+    this.babyBreakStartDate = data.babyBreakStartDate && moment(data.babyBreakStartDate)
     this.deliveryMode = data.deliveryMode
   }
 }

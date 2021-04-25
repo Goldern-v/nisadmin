@@ -126,12 +126,15 @@ export default observer(() => {
         }}
       />
       {/* 新增修改弹窗 */}
-      <EditModal
-        modalId={modalId}
-        visible={modalVisible}
-        onOk={handleModalUpdate}
-        onCancel={() => setModalVisible(false)}
-      />
+      {
+        modalVisible && <EditModal
+          modalId={modalId}
+          visible={modalVisible}
+          onOk={handleModalUpdate}
+          onCancel={() => setModalVisible(false)}
+        />
+      }
+
     </Wrapper>
   )
 })
