@@ -9,54 +9,27 @@ import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import AuditsTableDHSZ from './components/AuditsTableDHSZ'
 import BaseTabs from 'src/components/BaseTabs'
-const TABS_LIST_NURSE = [
-  {
-    title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit />
-  },
-  {
-    title: '护士长审核退回',
-    component: <AuditsTableDHSZ type='auditedFailNurse' needAudit={false} />
-  },
-  {
-    title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit={false} />
-  },
-  {
-    title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
-  }
-]
 
-const TABS_LIST_NURSING = [
-  {
-    title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
-  },
-  {
-    title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
-  },
-  {
-    title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
-  }
-]
-const tabShow = () => {
-  if (authStore.post === '护长') {
-    return TABS_LIST_NURSE
-  } else if (authStore.post === '护理部') {
-    return TABS_LIST_NURSING
-  } else {
-    return []
-  }
-}
 export default observer(function NurseAudit() {
+  const [activeKey, setActiveKey]: any = useState(appStore.queryObj.needAudit == 'false' ? '1' : '0')
+  const TABS_LIST_NURSE = [
+    {
+      title: '待我审核',
+      component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit active={activeKey == 0} />,
+      index: '0'
+    },
+    {
+      title: '我已审核',
+      component: <AuditsTableDHSZ type='auditedFailNurse' needAudit={false} active={activeKey == 1} />,
+      index: '1'
+    }
+  ]
+
   return (
     <Wrapper>
       <TopCon />
       <MainCon>
-        <BaseTabs config={tabShow()} />
+        <BaseTabs config={TABS_LIST_NURSE} onChange={(key) => setActiveKey(key)} defaultActiveKey={activeKey} />
       </MainCon>
     </Wrapper>
   )
@@ -70,8 +43,8 @@ const Wrapper = styled.div`
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 200px);
   align-items: stretch;
   display: flex;
-  margin: 20px;
+  margin: 15px;
 `

@@ -131,10 +131,12 @@ export default function AduitModal(props: Props) {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
-          if ((!props.fileData || props.fileData.length == 0) && data.urlImageOne) {
+
+          let filePathGroup = data.urlImageOne || data.path || ''
+          if ((!props.fileData || props.fileData.length == 0) && filePathGroup) {
             setFileData(
-              data.urlImageOne
-                ? data.urlImageOne.split(',').map((item: any, index: number) => {
+              filePathGroup
+                ? filePathGroup.split(',').map((item: any, index: number) => {
                   return {
                     ['附件' + (index + 1)]: item
                   }

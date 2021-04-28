@@ -292,6 +292,17 @@ export default class NurseFilesService extends BaseApiService {
       responseType: "blob"
     });
   }
+  /** 待我审核 */
+  public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(`/auditeNurseFileIndexNys/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
+  }
+  /** 我已审核 */
+  public findNurseFileProcessedFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(
+      `/auditeNurseFileIndexNys/findNurseFileProcessedFlow`,
+      this.stringify({ empNo, pageIndex, pageSize })
+    )
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

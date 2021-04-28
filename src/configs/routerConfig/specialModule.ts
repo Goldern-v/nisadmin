@@ -3,22 +3,21 @@ import layouts from "src/layouts";
 import React, { lazy } from "react";
 import { appStore } from "src/stores";
 
-// import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-
-// import AuditsManagementView from 'src/modules/auditsManagement/AuditsManagementView'
-// /**武汉 */
-// import NurseFilesListView_wh from 'src/modules/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
-
-import AuditsManagementView_nys from "src/modules/auditsManagement-nys/AuditsManagementView";
-import AuditsManagementView_wh from "src/modules/auditsManagement-wh/AuditsManagementView";
-import AuditsManagementView_gzhd from "src/modules/auditsManagement-gzhd/AuditsManagementView";
 import HomeView from "src/modules/home/HomeView";
 import HomeView_wh from "src/modules/home-wh/HomeView";
+//审核列表页
+import AuditsManagementView_nys from "src/modules/auditsManagement-nys/AuditsManagementView";
+import AuditsManagementView_jmfy from "src/modules/auditsManagement-jmfy/AuditsManagementView";
+import AuditsManagementView_wh from "src/modules/auditsManagement-wh/AuditsManagementView";
+import AuditsManagementView_gzhd from "src/modules/auditsManagement-gzhd/AuditsManagementView";
 import AuditsManagementView from "src/modules/auditsManagement/AuditsManagementView";
+//档案个人审核页
 import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/NurseAudit";
 import NurseAudit_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseAudit/NurseAudit";
 import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
+import NurseAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/NurseAudit";
+//档案详情
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
@@ -53,6 +52,7 @@ const NursingRulesPagePreview_wh = lazy(() =>
 const NursingRulesNewEdit_wh = lazy(() =>
   import("src/modules/nursingRulesNew-wh/views/NursingRulesNewEdit")
 );
+
 const SettingView = lazy(() => import("src/modules/setting/SettingView"))
 
 //不良事件视图
@@ -280,13 +280,13 @@ if (
 } else if (appStore.HOSPITAL_ID == 'jmfy') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_jmfy, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_jmfy,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    setLayout("/auditsManagement", AuditsManagementView_jmfy, layouts.MainLayout),
     ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

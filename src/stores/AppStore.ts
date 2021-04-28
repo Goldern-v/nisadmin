@@ -164,8 +164,8 @@ export default class AppStore {
       other?: any,
       /**默认选项 all */
       all?: any,
-      /**默认选项 dafault */
-      dafault?: any,
+      /**默认选项 default */
+      default?: any,
       [p: string]: any
     },
     /**当前医院id或状态 默认为系统医院id*/
@@ -184,6 +184,6 @@ export default class AppStore {
       if (Object.keys(map).indexOf(_currentHospitalId) >= 0) return map[_currentHospitalId]
     }
 
-    return map["other"] || map["all"] || map["dafault"] || null
+    return map["other"] || map["all"] || map["default"] || null
   }
 }

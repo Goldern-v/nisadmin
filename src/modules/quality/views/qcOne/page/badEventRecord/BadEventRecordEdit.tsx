@@ -409,6 +409,7 @@ const MainContent = styled.div`
   }
 `
 
+// @ts-ignore
 const ScrollBody = styled(ScrollBox)`
   position: absolute;
   left: 0;
