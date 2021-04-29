@@ -92,7 +92,7 @@ export default observer(function TopCon(props: any) {
   const exportCon = () => {
     return appStore.hisMatch({
       map: {
-        'hj,nys': <span></span>,
+        'nys': <span></span>,
         other: <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport && props.refExport()}>导出</Button>
       },
       vague: true,

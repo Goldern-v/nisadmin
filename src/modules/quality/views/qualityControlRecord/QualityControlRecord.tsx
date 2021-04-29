@@ -76,29 +76,52 @@ export default observer(function QualityControlRecord() {
   }
 
   const exportSelected = () => {
+    // 未勾选则全局导出
     if (selectedRowKeys.length <= 0) {
-      message.warn('未勾选条目')
-      return
-    }
-
-    let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
-      .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
-      .map((item: any) => item.id)
-
-    Modal.confirm({
-      title: '导出',
-      content: '是否导出选中条目？',
-      onOk: () => {
-        setLoading(true)
-        qualityControlRecordApi
-          .exportList(selectedRecordIds)
-          .then(res => {
-            setLoading(false)
-            fileDownload(res)
-            setSelectedRowKeys([])
-          }, () => setLoading(false))
+      const exportParams = {
+        wardCode: qualityControlRecordVM.filterDeptCode,
+        qcGroupRole: qualityControlRecordVM.filterForm,
+        type: qualityControlRecordVM.readWay,
+        nodeCode: qualityControlRecordVM.filterState,
+        level: qualityControlRecordVM.level,
+        beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+        endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
       }
-    })
+
+      Modal.confirm({
+        title: '导出',
+        content: '是否导出全部？',
+        onOk: () => {
+          setLoading(true)
+          qualityControlRecordApi
+            .exportAll(exportParams)
+            .then(res => {
+              setLoading(false)
+              fileDownload(res)
+              setSelectedRowKeys([])
+            }, () => setLoading(false))
+        }
+      })
+    } else {
+      let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
+        .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+        .map((item: any) => item.id)
+
+      Modal.confirm({
+        title: '导出',
+        content: '是否导出选中条目？',
+        onOk: () => {
+          setLoading(true)
+          qualityControlRecordApi
+            .exportList(selectedRecordIds)
+            .then(res => {
+              setLoading(false)
+              fileDownload(res)
+              setSelectedRowKeys([])
+            }, () => setLoading(false))
+        }
+      })
+    }
   }
 
   return (

@@ -97,6 +97,11 @@ export default class QualityControlRecordApi extends BaseApiService {
   public exportList(list: any[]) {
     return this.post(`/qcItem/instance/exportList`, { list }, { responseType: 'blob' })
   }
+
+  /** 质控详情全部导出*/
+  public exportAll(exportParams: any) {
+    return this.post(`/qcItem/instance/exportListByCondition`, exportParams, { responseType: 'blob' })
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()
