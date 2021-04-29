@@ -223,6 +223,8 @@ const HeaderCon = styled.div`
   box-sizing: border-box;
   overflow: hidden;
 `
+
+// @ts-ignore
 const MidCon = styled(ScrollBox)`
   box-sizing: border-box;
   height: calc(100vh - 55px);

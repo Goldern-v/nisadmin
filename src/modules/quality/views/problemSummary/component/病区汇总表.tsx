@@ -129,7 +129,7 @@ export default function 病区汇总表(props: Props) {
       ]
     },
     {
-      title: '护理质量 20分',
+      title: '护理质量 15分',
       key: '2020',
       dataIndex: 'score',
       align: 'center',
