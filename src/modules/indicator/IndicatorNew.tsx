@@ -2,10 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Spin } from 'antd'
 import LeftMenu from 'src/components/LeftMenu'
-import { ReactComponent as HLMGZL } from "./images/HLMGZL.svg";
-import { ReactComponent as LCHL } from "./images/LCHL.svg";
 import { ReactComponent as ZKHL } from "./images/ZKHL.svg";
-import { ReactComponent as HLGZZL } from "./images/HLGZZL.svg";
 import { appStore } from 'src/stores';
 import { observer } from 'mobx-react-lite';
 import service from 'src/services/api';
@@ -38,7 +35,7 @@ export default observer(function indicatorView(props: any) {
           <StatisticTable name={name}/>
         </MainCon>
 
-      case '自主申报':
+      case 'eventReport': // 国家数据填报
         return <MainCon>
           <SelfDeclaration/>
         </MainCon>

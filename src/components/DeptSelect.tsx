@@ -5,10 +5,13 @@ import { RouteComponentProps } from "react-router";
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
 import { authStore, appStore } from "src/stores";
+
 export interface Props {
   onChange: (value: string) => void;
   extraDept?: any[];
   style?: any;
+  deptCode?: string;
+  hasAllDept?: boolean;
 }
 
 export interface DeptType {
@@ -18,7 +21,7 @@ export interface DeptType {
 
 export default observer(function DeptSelect(props: Props) {
   const [hasAllDept, setHasAllDept] = useState(false);
-  const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode);
+  const [defaultValue, setDefaultValue] = useState(props.deptCode || authStore.selectedDeptCode);
   let deptList = authStore.deptList;
   const onChange = (value: string) => {
     authStore.selectedDeptCode = value;
@@ -36,15 +39,21 @@ export default observer(function DeptSelect(props: Props) {
   };
 
   useEffect(() => {
+    if (props.deptCode) {
+      setDefaultValue(props.deptCode)
+    }
+  }, [props.deptCode])
+
+  useEffect(() => {
     const hasAllDeptRouteList = [
       "/home",
       "/nurseFile/:path",
       // "/statistic/:name",统计查询科室筛选去掉全院
       "/auditsManagement",
-      "/quality/:name"
+      "/quality/:name",
     ];
     if (authStore.post === "护理部" || authStore.isAdmin || authStore.isDepartment) {
-      if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
+      if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1 || props.hasAllDept) {
         // alert(123)
         setHasAllDept(true);
         // if (!authStore.selectedDeptCode) {
@@ -85,11 +94,11 @@ export default observer(function DeptSelect(props: Props) {
         )}
 
         {props.extraDept &&
-          props.extraDept.map((item: DeptType) => (
-            <Select.Option key={item.name} value={item.code}>
-              {item.name}
-            </Select.Option>
-          ))}
+        props.extraDept.map((item: DeptType) => (
+          <Select.Option key={item.name} value={item.code}>
+            {item.name}
+          </Select.Option>
+        ))}
 
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>
