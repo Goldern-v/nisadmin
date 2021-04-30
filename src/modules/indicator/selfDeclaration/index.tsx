@@ -78,6 +78,7 @@ export default observer((props: Props) => {
           columns={columns}
           dataSource={tableData}
           surplusHeight={200}
+          wrapperStyle={{ 'border-radius': '5px' }}
           pagination={{
             current: pageIndex,
             pageSize: pageSize,
@@ -103,4 +104,9 @@ export default observer((props: Props) => {
 const Wrapper = styled.div`
 `
 const TableWrapper = styled.div`
+  box-sizing: border-box;
+  flex: 1;
+  box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px;
+  background-color: #fff;
+  border-radius: 5px;
 `

@@ -16,7 +16,7 @@ import formModel from "src/modules/indicator/selfDeclaration/components/editPage
 import DeptSelect from "src/components/DeptSelect";
 
 interface Props {
-
+  handlePatientClick: Function
 }
 
 export default observer((props: Props) => {
@@ -36,7 +36,7 @@ export default observer((props: Props) => {
 
   useEffect(() => {
     setAge()
-  }, [master.happenDate])
+  }, [master.birthday, master.happenDate])
 
   return (
     <Wrapper>
@@ -47,14 +47,17 @@ export default observer((props: Props) => {
                       onChange={deptCode => setMaster("wardCode", deptCode)}/>
         </Col>
         <Col span={4} className='title'>住院患者病案号</Col>
-        <Col span={8}>
-          <Input value={master.inpNo} onChange={(event => setMaster('inpNo', event.target.value))}/>
+        <Col span={8} style={{ 'display': 'flex' }}>
+          <Input value={master.inpNo} style={{ marginRight: '10px' }}
+                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+          <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
       <Row>
         <Col span={4} className='title'>入院时间</Col>
         <Col span={8}>
-          <DatePicker value={master.admissionDate} onChange={(val) => setMaster('admissionDate', val)}/>
+          <DatePicker className='full' value={master.admissionDate}
+                      onChange={(val) => setMaster('admissionDate', val)}/>
         </Col>
         <Col span={4} className='title'>性别</Col>
         <Col span={8}>
@@ -116,9 +119,9 @@ export default observer((props: Props) => {
         <Col span={16}>
           <Select
             className='full'
-            value={itemDataMap.R0008003}
-            onChange={(value: string) => setItemDataMap('R0008003', value)}>
-            {config.R0008003.map((item, index) =>
+            value={itemDataMap.R0009006}
+            onChange={(value: string) => setItemDataMap('R0009006', value)}>
+            {config.R0009006.map((item, index) =>
               <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
             )}
           </Select>

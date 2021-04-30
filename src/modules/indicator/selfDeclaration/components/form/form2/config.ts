@@ -47,16 +47,14 @@ export default {
       "code": "是",
       "name": "是",
       "pinyin": "s"
-    }
-  ],
-  "R0002003": [
+    },
     {
       "code": "否",
       "name": "否",
       "pinyin": "f"
     }
   ],
-  "R0002004": [
+  "R0002003": [
     {
       "code": "低危",
       "name": "低危",
@@ -76,6 +74,53 @@ export default {
       "code": "极高危",
       "name": "极高危",
       "pinyin": "jgw"
+    }
+  ],
+  "R0002004": [
+    {
+      "code": "1周",
+      "name": "1周",
+      "pinyin": "1z"
+    },
+    {
+      "code": "6天",
+      "name": "6天",
+      "pinyin": "6t"
+    },
+    {
+      "code": "5天",
+      "name": "5天",
+      "pinyin": "5t"
+    },
+    {
+      "code": "4天",
+      "name": "4天",
+      "pinyin": "4t"
+    },
+    {
+      "code": "3天",
+      "name": "3天",
+      "pinyin": "3t"
+    },
+    {
+      "code": "2天",
+      "name": "2天",
+      "pinyin": "2t"
+    },
+    {
+      "code": "1天",
+      "name": "1天",
+      "pinyin": "1t"
+    },
+    {
+      "code": "小于24小时",
+      "name": "小于24小时",
+      "pinyin": "xy24xs"
+    },
+    {
+      "code": "1周前",
+      "name": "1周前",
+      "pinyin": "1zq"
     }
   ],
   "R0002005": [

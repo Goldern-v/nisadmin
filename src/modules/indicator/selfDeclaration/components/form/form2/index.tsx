@@ -16,7 +16,7 @@ import formModel from "src/modules/indicator/selfDeclaration/components/editPage
 import DeptSelect from "src/components/DeptSelect";
 
 interface Props {
-
+  handlePatientClick: Function
 }
 
 export default observer((props: Props) => {
@@ -30,13 +30,23 @@ export default observer((props: Props) => {
   const setMaster = (key: string, value: any) => {
     formModel.setMaster({ [key]: value })
   }
+
   const setItemDataMap = (key: string, value: any) => {
     formModel.setItemDataMap({ [key]: value })
+    const keys = ['R0002007', 'R0002009', 'R0002011', 'R0002013', 'R0002015', 'R0002017']
+    if (keys.includes(key)) {
+      const sum = keys.reduce((acc: number, cur: string) => {
+        const val = cur === key ? value : itemDataMap[cur]
+        const valNum = isNaN(+val) ? 0 : +val
+        return acc + valNum
+      }, 0)
+      setItemDataMap('R0002006', sum)
+    }
   }
 
   useEffect(() => {
     setAge()
-  }, [master.happenDate])
+  }, [master.birthday, master.happenDate])
 
   return (
     <Wrapper>
@@ -47,8 +57,10 @@ export default observer((props: Props) => {
                       onChange={deptCode => setMaster("wardCode", deptCode)}/>
         </Col>
         <Col span={4} className='title'>住院患者病案号</Col>
-        <Col span={8}>
-          <Input value={master.inpNo} onChange={(event => setMaster('inpNo', event.target.value))}/>
+        <Col span={8} style={{ 'display': 'flex' }}>
+          <Input value={master.inpNo} style={{ marginRight: '10px' }}
+                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+          <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
       <Row>
@@ -86,8 +98,8 @@ export default observer((props: Props) => {
       </Row>
       <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }}/>
       <Row>
-        <Col span={8} className='title'>压力性损伤风险评估工具：</Col>
-        <Col span={16}>
+        <Col span={14} className='title'>压力性损伤风险评估工具：</Col>
+        <Col span={10}>
           <Select
             className='full'
             value={itemDataMap.R0002001}
@@ -99,8 +111,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>人病区时是否进行压力性损伤风险评估：</Col>
-        <Col span={16}>
+        <Col span={14} className='title'>人病区时是否进行压力性损伤风险评估：</Col>
+        <Col span={10}>
           <Select
             className='full'
             value={itemDataMap.R0002002}
@@ -112,8 +124,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>最近一次压力性损伤风险评估距离发现时间：</Col>
-        <Col span={16}>
+        <Col span={14} className='title'>最近一次压力性损伤风险评估距离发现时间：</Col>
+        <Col span={10}>
           <Select
             className='full'
             value={itemDataMap.R0002004}
@@ -125,93 +137,95 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>最近一次压性损伤风险评估级别：</Col>
-        <Col span={16}>
+        <Col span={14} className='title'>最近一次压性损伤风险评估级别：</Col>
+        <Col span={10}>
           <Select
             className='full'
-            value={itemDataMap.R0002003}
-            onChange={(value: string) => setItemDataMap('R0002003', value)}>
-            {config.R0002003.map((item, index) =>
+            value={itemDataMap.R0002005}
+            onChange={(value: string) => setItemDataMap('R0002005', value)}>
+            {config.R0002005.map((item, index) =>
               <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
             )}
           </Select>
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>入本病区24小时后新发2期及以上院内压力性损伤部位数：</Col>
-        <Col span={16}>
-          <Input value={itemDataMap.R0002006} suffix="人"
+        <Col span={14} className='title'>入本病区24小时后新发2期及以上院内压力性损伤部位数：</Col>
+        <Col span={10}>
+          <Input disabled value={itemDataMap.R0002006}
                  onChange={(event => setItemDataMap('R0002006', event.target.value))}/>
         </Col>
       </Row>
       <SameTable>
         <Row>
-          <Col span={4}>分期、类型</Col>
-          <Col span={10}>入院病区24小时后新发2期及以上院内压力性损伤部位数</Col>
-          <Col span={10}>其中，医疗器械相关压力性损伤部位数</Col>
+          <Col span={6}>分期、类型</Col>
+          <Col span={9}>入院病区24小时后新发2期及以上院内压力性损伤部位数</Col>
+          <Col span={9}>其中，医疗器械相关压力性损伤部位数</Col>
         </Row>
         <Row>
-          <Col span={4}>2期</Col>
-          <Col span={10}>
+          <Col span={6}>2期</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002007}
-                   onChange={(event => setItemDataMap('R0002007', event.target.value))}/>
+                   onChange={(event => {
+                     setItemDataMap('R0002007', event.target.value)
+                   })}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002008}
                    onChange={(event => setItemDataMap('R0002008', event.target.value))}/>
           </Col>
         </Row>
         <Row>
-          <Col span={4}>3期</Col>
-          <Col span={10}>
+          <Col span={6}>3期</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002009}
                    onChange={(event => setItemDataMap('R0002009', event.target.value))}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002010}
                    onChange={(event => setItemDataMap('R0002010', event.target.value))}/>
           </Col>
         </Row>
         <Row>
-          <Col span={4}>4期</Col>
-          <Col span={10}>
+          <Col span={6}>4期</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002011}
                    onChange={(event => setItemDataMap('R0002011', event.target.value))}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002012}
                    onChange={(event => setItemDataMap('R0002012', event.target.value))}/>
           </Col>
         </Row>
         <Row>
-          <Col span={4}>深部位组织损伤</Col>
-          <Col span={10}>
+          <Col span={6}>深部位组织损伤</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002013}
                    onChange={(event => setItemDataMap('R0002013', event.target.value))}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002014}
                    onChange={(event => setItemDataMap('R0002014', event.target.value))}/>
           </Col>
         </Row>
         <Row>
-          <Col span={4}>不可分期</Col>
-          <Col span={10}>
+          <Col span={6}>不可分期</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002015}
                    onChange={(event => setItemDataMap('R0002015', event.target.value))}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002016}
                    onChange={(event => setItemDataMap('R0002016', event.target.value))}/>
           </Col>
         </Row>
         <Row>
-          <Col span={4}>粘膜压力性损伤</Col>
-          <Col span={10}>
+          <Col span={6}>粘膜压力性损伤</Col>
+          <Col span={9}>
             <Input value={itemDataMap.R0002017}
                    onChange={(event => setItemDataMap('R0002017', event.target.value))}/>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <Input value={itemDataMap.R0002018}
                    onChange={(event => setItemDataMap('R0002018', event.target.value))}/>
           </Col>
@@ -225,7 +239,10 @@ const Wrapper = styled.div`
   width: 50%;
   background: #fff;
   padding: 30px;
-  margin: 30px auto;
+  margin: 0 auto;
+  border-radius: 5px;
+  font-size: 12px;
+  
   .ant-row{
     margin: 10px 0;
     display: flex;
@@ -244,22 +261,22 @@ const Wrapper = styled.div`
 const SameTable = styled.div`
   borderTop: '1px solid #eee';
   marginTop: '20px';
-  font-size: 14px;
-  line-height: 32px;
   
   .ant-row{
     display: flex;
-    align-items: center;
     margin: 0;
     border: 1px solid #ccc;
     border-bottom: none;
+    align-items: stretch;
+    
     .ant-col{
       padding: 0 10px;
       text-align: center;
+      display: flex;
+      align-items: center;
     }
-    .ant-col-10{
+    .ant-col-9{
       border-left: 1px solid #ccc;
-      padding: 0 10px;
     }
     & :nth-last-of-type(1) {
       border-bottom: 1px solid #ccc;

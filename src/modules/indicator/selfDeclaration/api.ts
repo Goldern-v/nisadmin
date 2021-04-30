@@ -7,6 +7,7 @@ class Api extends BaseApiService {
     const params = { ...data }
     params.beginDate = moment(params.time[0]).format("YYYY-MM-DD")
     params.endDate = moment(params.time[1]).format("YYYY-MM-DD")
+    params.formCodes = params.formCodes ? [params.formCodes] : []
     delete params.time
     return this.post(`/form/eventReport/master/getPage`, params)
   }

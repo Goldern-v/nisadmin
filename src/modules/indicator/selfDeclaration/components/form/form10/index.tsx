@@ -16,7 +16,7 @@ import formModel from "src/modules/indicator/selfDeclaration/components/editPage
 import DeptSelect from "src/components/DeptSelect";
 
 interface Props {
-
+  handlePatientClick: Function
 }
 
 export default observer((props: Props) => {
@@ -36,7 +36,7 @@ export default observer((props: Props) => {
 
   useEffect(() => {
     setAge()
-  }, [master.happenDate])
+  }, [master.birthday, master.happenDate])
 
   return (
     <Wrapper>
@@ -47,14 +47,17 @@ export default observer((props: Props) => {
                       onChange={deptCode => setMaster("wardCode", deptCode)}/>
         </Col>
         <Col span={4} className='title'>住院患者病案号</Col>
-        <Col span={8}>
-          <Input value={master.inpNo} onChange={(event => setMaster('inpNo', event.target.value))}/>
+        <Col span={8} style={{ 'display': 'flex' }}>
+          <Input value={master.inpNo} style={{ marginRight: '10px' }}
+                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+          <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
       <Row>
         <Col span={4} className='title'>入院时间</Col>
         <Col span={8}>
-          <DatePicker value={master.admissionDate} onChange={(val) => setMaster('admissionDate', val)}/>
+          <DatePicker className='full' value={master.admissionDate}
+                      onChange={(val) => setMaster('admissionDate', val)}/>
         </Col>
         <Col span={4} className='title'>性别</Col>
         <Col span={8}>
@@ -86,8 +89,8 @@ export default observer((props: Props) => {
       </Row>
       <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }}/>
       <Row>
-        <Col span={8} className='title'>人工气管类型：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>人工气管类型：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010001}
@@ -99,8 +102,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>导管类型：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>导管类型：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010002}
@@ -112,8 +115,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>湿化装置：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>湿化装置：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010003}
@@ -125,8 +128,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>吸痰方式：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>吸痰方式：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010004}
@@ -138,8 +141,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>口腔护理方式：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>口腔护理方式：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010005}
@@ -151,15 +154,15 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>该患者每天口腔护理次数：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>该患者每天口腔护理次数：</Col>
+        <Col span={12}>
           <Input value={itemDataMap.R0010006}
                  onChange={(event => setItemDataMap('R0010006', event.target.value))}/>
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>口腔护理液选择：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>口腔护理液选择：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010007}
@@ -171,8 +174,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>经人工气道通气的同时，是否有经鼻胃管内营养：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>经人工气道通气的同时，是否有经鼻胃管内营养：</Col>
+        <Col span={12}>
           <Select
             className='full'
             value={itemDataMap.R0010008}
@@ -184,8 +187,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>发生VAP时，经人工气道机械通气时长：</Col>
-        <Col span={16}>
+        <Col span={12} className='title'>发生VAP时，经人工气道机械通气时长：</Col>
+        <Col span={12}>
           <Input value={itemDataMap.R0010009} suffix="天"
                  onChange={(event => setItemDataMap('R0010009', event.target.value))}/>
         </Col>

@@ -93,4 +93,16 @@ export default {
       "pinyin": "dyjm"
     }
   ],
+  "R0009006": [
+    {
+      "code": "超声引导",
+      "name": "超声引导",
+      "pinyin": "csyd"
+    },
+    {
+      "code": "盲穿",
+      "name": "盲穿",
+      "pinyin": "mc"
+    }
+  ]
 }

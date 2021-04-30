@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Button, DatePicker, Select } from "src/vendors/antd";
 import DeptSelect from "src/components/DeptSelect";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
+import config from '../../config'
 
 interface Props {
   handleSelect: Function,
@@ -15,7 +16,8 @@ export default observer((props: Props) => {
   const [form, setForm]: any = useState({
     wardCode: '',
     status: '',
-    time: getCurrentMonth()
+    time: getCurrentMonth(),
+    formCodes: ''
   })
   const setFormItem = (item: {}) => {
     const temp = { ...form, ...item }
@@ -33,16 +35,27 @@ export default observer((props: Props) => {
       <RightCon>
         <span className="label">科室:</span>
         <DeptSelect hasAllDept onChange={deptCode => setFormItem({ wardCode: deptCode })}/>
+        <span className="label">表单:</span>
+        <Select
+          value={form.formCodes}
+          style={{ width: '160px' }}
+          onChange={(val: any) => setFormItem({ 'formCodes': val })}>
+          <Select.Option value=''>全部</Select.Option>
+          {config.tableList.map((item) =>
+            <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+          )}
+        </Select>
         <span className="label">状态:</span>
         <Select value={form.status} style={{ width: '140px' }}
                 onChange={(val: string) => setFormItem({ status: val })}>
-          <Select.Option value="">全部</Select.Option>
+          <Select.Option value=''>全部</Select.Option>
           <Select.Option value="1">在院</Select.Option>
           <Select.Option value="2">出院</Select.Option>
         </Select>
         <span className="label">时间:</span>
         <DatePicker.RangePicker
           value={form.time}
+          style={{ width: '220px' }}
           onChange={(dates) => setFormItem({ time: dates })}/>
 
         {/* 查询按钮 */}
@@ -55,13 +68,14 @@ export default observer((props: Props) => {
 })
 const Wrapper = styled.div`
   width: 100%;
-  height: 40px;
+  height: 45px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const PageTitle = styled.div`
-  font-size: 20px;
+  font-size: 16px;
   color: #333;
   font-weight: bold;
 `

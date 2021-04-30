@@ -17,7 +17,7 @@ import { getAge } from '../utils'
 import DeptSelect from "src/components/DeptSelect";
 
 interface Props {
-
+  handlePatientClick: Function
 }
 
 export default observer((props: Props) => {
@@ -42,23 +42,26 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       <Row>
-        <Col span={4} className='title'>发生病区名称</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>发生病区名称</Col>
+        <Col span={7}>
           <DeptSelect deptCode={master.wardCode} style={{ width: '100%' }}
                       onChange={deptCode => setMaster("wardCode", deptCode)}/>
         </Col>
-        <Col span={4} className='title'>住院患者病案号</Col>
-        <Col span={8}>
-          <Input value={master.inpNo} onChange={(event => setMaster('inpNo', event.target.value))}/>
+        <Col span={5} className='title'>住院患者病案号</Col>
+        <Col span={7} style={{ 'display': 'flex' }}>
+          <Input value={master.inpNo} style={{ marginRight: '10px' }}
+                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+          <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>入院时间</Col>
-        <Col span={8}>
-          <DatePicker value={master.admissionDate} onChange={(val) => setMaster('admissionDate', val)}/>
+        <Col span={5} className='title'>入院时间</Col>
+        <Col span={7}>
+          <DatePicker value={master.admissionDate} style={{ width: '100%' }}
+                      onChange={(val) => setMaster('admissionDate', val)}/>
         </Col>
-        <Col span={4} className='title'>性别</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>性别</Col>
+        <Col span={7}>
           <Radio.Group value={master.sex} onChange={(e => setMaster('sex', e.target.value))}>
             <Radio value={'男'}>男</Radio>
             <Radio value={'女'}>女</Radio>
@@ -66,8 +69,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>年龄</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>年龄</Col>
+        <Col span={7}>
           <Select
             value={master.age} className='full'
             onChange={(val: string) => setMaster('age', val)}
@@ -77,8 +80,8 @@ export default observer((props: Props) => {
             )}
           </Select>
         </Col>
-        <Col span={4} className='title'>发生地点</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>发生地点</Col>
+        <Col span={7}>
           <Select
             className='full'
             value={itemDataMap.R0001002}
@@ -90,15 +93,15 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>发生日期</Col>
-        <Col span={18}>
+        <Col span={5} className='title'>发生日期</Col>
+        <Col span={17}>
           <DateTimePicker value={master.happenDate}
                           onChange={(v: string) => setMaster('happenDate', v)}/>
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>该患者本次住院跌倒(坠床)第次</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>该患者本次住院跌倒(坠床)第次</Col>
+        <Col span={7}>
           <Select
             className='full'
             value={itemDataMap.R0001001}
@@ -111,8 +114,8 @@ export default observer((props: Props) => {
       </Row>
       <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }}/>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)前患者活动能力：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)前患者活动能力：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001003}
@@ -124,8 +127,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)发生于何项活动过程：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)发生于何项活动过程：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001004}
@@ -137,8 +140,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)伤害级别：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)伤害级别：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001005}
@@ -150,8 +153,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)前有无跌倒(坠床)风险评估：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)前有无跌倒(坠床)风险评估：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001007}
@@ -166,8 +169,8 @@ export default observer((props: Props) => {
         itemDataMap.R0001007 === '有' &&
         <React.Fragment>
           <Row>
-            <Col span={8} className='title'>跌倒(坠床)风险评估工具：</Col>
-            <Col span={16}>
+            <Col span={10} className='title'>跌倒(坠床)风险评估工具：</Col>
+            <Col span={14}>
               <Select
                 className='full'
                 value={itemDataMap.R0001008}
@@ -179,8 +182,8 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={8} className='title'>跌倒(坠床)前跌倒风险评估级别：</Col>
-            <Col span={16}>
+            <Col span={10} className='title'>跌倒(坠床)前跌倒风险评估级别：</Col>
+            <Col span={14}>
               <Select
                 className='full'
                 value={itemDataMap.R0001009}
@@ -192,8 +195,8 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={8} className='title'>最近一次跌倒(坠床)风险评估距离跌倒(坠床)发生时间：</Col>
-            <Col span={16}>
+            <Col span={10} className='title'>最近一次跌倒(坠床)风险评估距离跌倒(坠床)发生时间：</Col>
+            <Col span={14}>
               <Select
                 className='full'
                 value={itemDataMap.R0001010}
@@ -207,8 +210,8 @@ export default observer((props: Props) => {
         </React.Fragment>
       }
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)时有无约束：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)时有无约束：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001011}
@@ -220,8 +223,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)发生时当班责任护士工作年限：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)发生时当班责任护士工作年限：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0001012}
@@ -233,15 +236,15 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)发生时在岗责任护士人数：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)发生时在岗责任护士人数：</Col>
+        <Col span={14}>
           <Input value={itemDataMap.R0001013} suffix="人"
                  onChange={(event => setItemDataMap('R0001013', event.target.value))}/>
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>跌倒(坠床)发生时病区在原患者数：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>跌倒(坠床)发生时病区在原患者数：</Col>
+        <Col span={14}>
           <Input value={itemDataMap.R0001014} suffix="人"
                  onChange={(event => setItemDataMap('R0001014', event.target.value))}/>
         </Col>
@@ -254,8 +257,9 @@ const Wrapper = styled.div`
   width: 50%;
   background: #fff;
   padding: 30px;
-  margin: 30px auto;
-  
+  margin: 0 auto;
+  border-radius: 5px;
+    
   .ant-row{
     margin: 10px 0;
     display: flex;

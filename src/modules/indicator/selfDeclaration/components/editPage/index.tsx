@@ -8,8 +8,8 @@ import PatientDialog from '../patientDialog'
 import Form from '../form'
 import formModel from './model'
 import api from '../../api'
-import { message } from "antd";
-import moment from "moment";
+import { message } from "antd"
+import BreadcrumbBox from "src/layouts/components/BreadcrumbBox"
 
 interface Props {
 
@@ -53,10 +53,16 @@ export default observer((props: Props) => {
 
   return (
     <Wrapper>
+      <BreadcrumbBox
+        style={{ padding: '5px 10px 0', height: '26px' }}
+        data={[
+          { name: '国家数据填报', link: '/indicator/eventReport' },
+          { name: search.id ? "修改表单" : "新建表单" }
+        ]}
+      />
       <HeadWrapper>
         <span style={{ fontWeight: "bold" }}>{search.name}</span>
         <div className='right-bottom'>
-          <Button className="con-item" onClick={() => setPatientVisible(true)}>患者选择</Button>
           {
             formModel.getMaster().status === '1' ?
               <Button className="con-item" onClick={() => cancelCommit()}>取消提交</Button>
@@ -73,33 +79,33 @@ export default observer((props: Props) => {
       <FormWrapper>
         <Form formCode={search.formId}/>
       </FormWrapper>
-      {/* 患者弹窗 */}
-      <PatientDialog
-        visible={patientVisible}
-        onOk={handlePatientSelect}
-        onCancel={() => setPatientVisible(false)}
-      />
     </Wrapper>
   )
 })
 
 const Wrapper = styled.div`
-  
+  height: calc(100vh - 50px);
+  overflow: hidden;
 `
 
 const HeadWrapper = styled.div`
-  height: 60px;
+  height: 40px;
   background: #fff;
-  font-size: 16px;
+  font-size: 14px;
   display:flex;
   align-items: center;
   padding: 0 10px;
   justify-content: space-between;
+  
   .right-bottom{
     .con-item{
-      margin-left: 15px;
+      margin-left: 10px;
+      font-size: 12px;
     }
   }
 `
 const FormWrapper = styled.div`
+  height: calc(100% - 40px - 26px - 20px);
+  padding: 20px 0;
+  overflow: auto;
 `

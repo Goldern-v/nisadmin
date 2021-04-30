@@ -7,6 +7,7 @@ import { DatePicker } from "src/vendors/antd"
 import moment from "moment"
 import { getCurrentMonth } from "src/utils/date/currentMonth"
 import api from "./api"
+import BaseTable from "src/components/BaseTable";
 
 
 interface Props {
@@ -26,29 +27,39 @@ export default observer((props: Props) => {
   }
   const [tableData, setTableData] = useState([])
   const [selected, setSelected]: any = useState({})
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 15
+  })
+  const [total, setTotal] = useState(1)
 
   const { visible, onOk, onCancel } = props
 
-  const columns = [
+  const columns: any = [
     {
       title: '护理单元',
-      dataIndex: 'wardName'
+      dataIndex: 'wardName',
+      align: 'left'
     },
     {
       title: '床号',
-      dataIndex: 'bedLabel'
+      dataIndex: 'bedLabel',
+      align: 'center'
     },
     {
       title: '姓名',
-      dataIndex: 'name'
+      dataIndex: 'name',
+      align: 'center'
     },
     {
       title: '性别',
-      dataIndex: 'sex'
+      dataIndex: 'sex',
+      align: 'center'
     },
     {
       title: '住院号',
-      dataIndex: 'patientId'
+      dataIndex: 'patientId',
+      align: 'center'
     },
   ]
 
@@ -71,11 +82,15 @@ export default observer((props: Props) => {
     const { data } = await api.getPatientList(params)
     setLoading(false)
     setTableData(data.list)
+    setTotal(data.page)
   }
 
-  const tableSelected = async (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-    const [item] = selectedRows
-    const { data } = await api.getPatientItem(item.patientId, item.visitId)
+  const handleSelect = async (changeableRowKeys: any) => {
+    setSelected(changeableRowKeys)
+  }
+
+  const handleOk = async () => {
+    const { data } = await api.getPatientItem(selected.patientId, selected.visitId)
     const obj = {
       patientId: data.patientId,
       patientName: data.name,
@@ -88,7 +103,7 @@ export default observer((props: Props) => {
       sex: data.sex,
       birthday: data.birthday
     }
-    setSelected(obj)
+    onOk(obj)
   }
 
   useEffect(() => {
@@ -99,7 +114,7 @@ export default observer((props: Props) => {
     <Modal
       title={`选择患者`}
       centered
-      width={1500}
+      width={1100}
       visible={visible}
       onCancel={() => onCancel()}
       footer={
@@ -107,7 +122,7 @@ export default observer((props: Props) => {
           <Button onClick={() => onCancel()}>
             取消
           </Button>
-          <Button disabled={!selected.patientId} onClick={() => onOk(selected)}>
+          <Button type='primary' disabled={!selected.patientId} onClick={handleOk}>
             确定
           </Button>
         </div>
@@ -115,21 +130,42 @@ export default observer((props: Props) => {
     >
       <Wrapper>
         <TableWrapper>
-          <Table
+          <BaseTable
             loading={loading}
             columns={columns}
             dataSource={tableData}
+            surplusHeight={300}
+            wrapperStyle={{ padding: 0 }}
             rowKey="patientId"
             rowSelection={{
-              type: 'radio',
-              onChange: tableSelected
+              type: 'checkbox',
+              selectedRowKeys: [selected].map(i => i.patientId),
+              onSelect: handleSelect
+            }}
+            onRow={(record) => {
+              return {
+                onClick: () => handleSelect(record).then()
+              }
+            }}
+            pagination={{
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: total
+            }}
+            onChange={(pagination: any) => {
+              setPagination({
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+              })
+              getData().then()
             }}
           />
         </TableWrapper>
         <SearchWrapper>
           <div className='label'>护理单元:</div>
           <div className='item'>
-            <DeptSelect hasAllDept style={{ width: '100%' }} onChange={deptCode => setFormItem({ 'wardCode': deptCode })}/>
+            <DeptSelect hasAllDept style={{ width: '100%' }}
+                        onChange={deptCode => setFormItem({ 'wardCode': deptCode })}/>
           </div>
           <div className='label'>出入院:</div>
           <Select value={form.status} className='item'
@@ -152,7 +188,7 @@ export default observer((props: Props) => {
           <Input value={form.bedLabel} className='item' placeholder='床号'
                  onChange={(event => setFormItem({ 'bedLabel': event.target.value }))}/>
 
-          <Button type='primary' size='large' className='item' onClick={() => getData()}>查询</Button>
+          <Button type='primary' className='item' onClick={() => getData()}>查询</Button>
         </SearchWrapper>
       </Wrapper>
     </Modal>
@@ -160,15 +196,13 @@ export default observer((props: Props) => {
 })
 
 const Wrapper = styled.div`
-  min-height: 600px;
+  height: 500px;
   display: flex;
 `
 
 const TableWrapper = styled.div`
-  height: 100%;
   width: 80%;
-  border: 1px solid #aaa;
-  min-height: 600px;
+  height: 100%;
 `
 const SearchWrapper = styled.div`
   width: 20%;

@@ -69,18 +69,21 @@ export default observer((props: Props) => {
 const Wrapper = styled.div`
   display:flex;
   flex-wrap:wrap;
+  justify-content: space-between;
+  
   .item{
-    width: 50%;
-    height: 60px;
+    width: 45%;
+    height: 50px;
     display:flex;
     align-items: center;
     padding: 0 10px;
+    margin: 10px 0;
     &.select{
       border: 1px solid rgb(29, 179, 139);
       border-radius: 5px;
     }
     img{
-      width: 40px;
+      width: 35px;
       height: 40px;
       margin-right: 10px;
     }

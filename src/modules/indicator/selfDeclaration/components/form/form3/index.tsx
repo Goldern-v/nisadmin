@@ -16,7 +16,7 @@ import formModel from "src/modules/indicator/selfDeclaration/components/editPage
 import DeptSelect from "src/components/DeptSelect";
 
 interface Props {
-
+  handlePatientClick: Function
 }
 
 export default observer((props: Props) => {
@@ -36,27 +36,30 @@ export default observer((props: Props) => {
 
   useEffect(() => {
     setAge()
-  }, [master.happenDate])
+  }, [master.birthday, master.happenDate])
   return (
     <Wrapper>
       <Row>
-        <Col span={4} className='title'>发生病区名称</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>发生病区名称</Col>
+        <Col span={7}>
           <DeptSelect deptCode={master.wardCode} style={{ width: '100%' }}
                       onChange={deptCode => setMaster("wardCode", deptCode)}/>
         </Col>
-        <Col span={4} className='title'>住院患者病案号</Col>
-        <Col span={8}>
-          <Input value={master.inpNo} onChange={(event => setMaster('inpNo', event.target.value))}/>
+        <Col span={5} className='title'>住院患者病案号</Col>
+        <Col span={7} style={{ 'display': 'flex' }}>
+          <Input value={master.inpNo} style={{ marginRight: '10px' }}
+                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+          <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>入院时间</Col>
-        <Col span={8}>
-          <DatePicker value={master.admissionDate} onChange={(val) => setMaster('admissionDate', val)}/>
+        <Col span={5} className='title'>入院时间</Col>
+        <Col span={7}>
+          <DatePicker className='full' value={master.admissionDate}
+                      onChange={(val) => setMaster('admissionDate', val)}/>
         </Col>
-        <Col span={4} className='title'>性别</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>性别</Col>
+        <Col span={7}>
           <Radio.Group value={master.sex} onChange={(e => setMaster('sex', e.target.value))}>
             <Radio value={'男'}>男</Radio>
             <Radio value={'女'}>女</Radio>
@@ -64,8 +67,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>年龄</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>年龄</Col>
+        <Col span={7}>
           <Select
             value={master.age} className='full'
             onChange={(val: string) => setMaster('age', val)}
@@ -75,8 +78,8 @@ export default observer((props: Props) => {
             )}
           </Select>
         </Col>
-        <Col span={4} className='title'>发生地点</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>发生地点</Col>
+        <Col span={7}>
           <Select
             className='full'
             value={itemDataMap.R0003002}
@@ -88,15 +91,15 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>发生日期</Col>
-        <Col span={18}>
+        <Col span={5} className='title'>发生日期</Col>
+        <Col span={17}>
           <DateTimePicker value={master.happenDate}
                           onChange={(v: string) => master.happenDate = v}/>
         </Col>
       </Row>
       <Row>
-        <Col span={4} className='title'>该患者本次住院跌倒(坠床)第次</Col>
-        <Col span={8}>
+        <Col span={5} className='title'>该患者本次住院跌倒(坠床)第次</Col>
+        <Col span={7}>
           <Select
             className='full'
             value={itemDataMap.R0003001}
@@ -109,8 +112,8 @@ export default observer((props: Props) => {
       </Row>
       <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }}/>
       <Row>
-        <Col span={8} className='title'>非计划拔管主要原因：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管主要原因：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003003}
@@ -122,8 +125,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>是否重置：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>是否重置：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003004}
@@ -135,8 +138,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管时有无约束：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管时有无约束：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003005}
@@ -148,8 +151,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管时患者状态：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管时患者状态：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003006}
@@ -161,8 +164,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管时患者神志：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管时患者神志：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003007}
@@ -174,8 +177,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管时患者是否镇静：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管时患者是否镇静：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003008}
@@ -187,8 +190,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管时患者镇静评分工具：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管时患者镇静评分工具：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003009}
@@ -200,8 +203,8 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管发生时当班责任护士工作年限：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管发生时当班责任护士工作年限：</Col>
+        <Col span={14}>
           <Select
             className='full'
             value={itemDataMap.R0003011}
@@ -213,15 +216,15 @@ export default observer((props: Props) => {
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管发生时在岗责任护士人数：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管发生时在岗责任护士人数：</Col>
+        <Col span={14}>
           <Input value={itemDataMap.R0003012} suffix="人"
                  onChange={(event => setItemDataMap('R0003012', event.target.value))}/>
         </Col>
       </Row>
       <Row>
-        <Col span={8} className='title'>非计划拔管发生时病区在院患者数：</Col>
-        <Col span={16}>
+        <Col span={10} className='title'>非计划拔管发生时病区在院患者数：</Col>
+        <Col span={14}>
           <Input value={itemDataMap.R0003013} suffix="人"
                  onChange={(event => setItemDataMap('R0003013', event.target.value))}/>
         </Col>
