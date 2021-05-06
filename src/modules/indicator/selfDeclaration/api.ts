@@ -1,5 +1,6 @@
 import BaseApiService from "src/services/api/BaseApiService"
 import moment from 'moment'
+import { message } from "antd";
 
 class Api extends BaseApiService {
   // 获取列表
@@ -10,6 +11,16 @@ class Api extends BaseApiService {
     params.formCodes = params.formCodes ? [params.formCodes] : []
     delete params.time
     return this.post(`/form/eventReport/master/getPage`, params)
+  }
+
+  // 导出
+  export(data: any) {
+    const params = { ...data }
+    params.beginDate = moment(params.time[0]).format("YYYY-MM-DD")
+    params.endDate = moment(params.time[1]).format("YYYY-MM-DD")
+    params.formCodes = params.formCodes ? [params.formCodes] : []
+    delete params.time
+    return this.post(`/form/eventReport/master/export`, params)
   }
 
   // 获取一项

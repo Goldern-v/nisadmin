@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite"
 import { appStore } from "src/stores"
 import qs from "qs"
 import { Button } from "src/vendors/antd"
-import PatientDialog from '../patientDialog'
 import Form from '../form'
 import formModel from './model'
 import api from '../../api'

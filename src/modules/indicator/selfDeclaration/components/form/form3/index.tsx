@@ -202,6 +202,16 @@ export default observer((props: Props) => {
           </Select>
         </Col>
       </Row>
+      {
+        ['RASS(Richmond躁动-镇静评分)', 'SAS(镇静-躁动评分)'].includes(itemDataMap.R0003009) &&
+        <Row>
+          <Col span={10} className='title'>非计划拔管时患者镇静评分：</Col>
+          <Col span={14}>
+            <Input value={itemDataMap.R0003010}
+                   onChange={(event => setItemDataMap('R0003010', event.target.value))}/>
+          </Col>
+        </Row>
+      }
       <Row>
         <Col span={10} className='title'>非计划拔管发生时当班责任护士工作年限：</Col>
         <Col span={14}>

@@ -8,7 +8,8 @@ import config from "./config"
 import api from './api'
 import { globalModal } from "src/global/globalModal";
 import { message } from "antd";
-import { appStore } from "src/stores";
+import { appStore } from "src/stores"
+import { fileDownload } from "src/utils/file/file"
 
 interface Props {
 
@@ -21,7 +22,6 @@ export default observer((props: Props) => {
   const [pageSize, setPageSize] = useState(20)
   const [total, setTotal] = useState(0)
   const [tableData, setTableData] = useState([])
-  const [modalId, setModalId] = useState('')
   const [tableModalVisible, setTableModalVisible] = useState(false)
 
   const columns = config.creatColumns((type: string, item: any) => {
@@ -57,8 +57,17 @@ export default observer((props: Props) => {
   }
 
   const handleCreate = () => {
-    setModalId('')
     setTableModalVisible(true)
+  }
+
+  const handleExport = async (search = {}) => {
+    const params = {
+      ...search,
+      pageIndex,
+      pageSize
+    }
+    const res = await api.export(params)
+    fileDownload(res)
   }
 
   const handleTableSelected = (item: { code: '', name: '' }) => {
@@ -69,7 +78,7 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       {/* 头部新增查询按钮 */}
-      <Header search={search} handleSelect={handleSelect} handleCreate={handleCreate}/>
+      <Header search={search} handleSelect={handleSelect} handleCreate={handleCreate} handleExport={handleExport}/>
       {/* 表格数据 */}
       <TableWrapper>
         <BaseTable
@@ -77,8 +86,8 @@ export default observer((props: Props) => {
           loading={tableLoading}
           columns={columns}
           dataSource={tableData}
-          surplusHeight={200}
-          wrapperStyle={{ 'border-radius': '5px' }}
+          surplusHeight={220}
+          wrapperStyle={{ borderRadius: '5px' }}
           pagination={{
             current: pageIndex,
             pageSize: pageSize,

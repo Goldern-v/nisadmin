@@ -169,8 +169,8 @@ export default observer((props: Props) => {
       <Row>
         <Col span={8} className='title'>发生CAUTI时导尿管留置时长：</Col>
         <Col span={16}>
-          <Input value={itemDataMap.R0010006} suffix="天"
-                 onChange={(event => setItemDataMap('R0010006', event.target.value))}/>
+          <Input value={itemDataMap.R0011007} suffix="天"
+                 onChange={(event => setItemDataMap('R0011007', event.target.value))}/>
         </Col>
       </Row>
     </Wrapper>

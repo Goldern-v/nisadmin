@@ -123,6 +123,22 @@ export default observer((props: Props) => {
           </Select>
         </Col>
       </Row>
+      {
+        itemDataMap.R0002002 === '是' &&
+        <Row>
+          <Col span={14} className='title'>入病区时压力性损伤风险评估级别：</Col>
+          <Col span={10}>
+            <Select
+              className='full'
+              value={itemDataMap.R0002003}
+              onChange={(value: string) => setItemDataMap('R0002003', value)}>
+              {config.R0002003.map((item, index) =>
+                <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+              )}
+            </Select>
+          </Col>
+        </Row>
+      }
       <Row>
         <Col span={14} className='title'>最近一次压力性损伤风险评估距离发现时间：</Col>
         <Col span={10}>

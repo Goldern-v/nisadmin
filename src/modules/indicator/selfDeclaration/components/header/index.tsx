@@ -9,6 +9,7 @@ import config from '../../config'
 interface Props {
   handleSelect: Function,
   handleCreate: Function,
+  handleExport: Function,
   search: boolean
 }
 
@@ -24,6 +25,12 @@ export default observer((props: Props) => {
     temp.wardCode === '全院' && delete temp.wardCode
     setForm(temp)
     props.handleSelect(temp)
+  }
+
+  const handleExport = () => {
+    const temp = { ...form }
+    temp.wardCode === '全院' && delete temp.wardCode
+    props.handleExport(temp)
   }
 
   useEffect(() => {
@@ -49,8 +56,8 @@ export default observer((props: Props) => {
         <Select value={form.status} style={{ width: '140px' }}
                 onChange={(val: string) => setFormItem({ status: val })}>
           <Select.Option value=''>全部</Select.Option>
-          <Select.Option value="1">在院</Select.Option>
-          <Select.Option value="2">出院</Select.Option>
+          <Select.Option value="0">保存</Select.Option>
+          <Select.Option value="1">提交</Select.Option>
         </Select>
         <span className="label">时间:</span>
         <DatePicker.RangePicker
@@ -62,6 +69,9 @@ export default observer((props: Props) => {
         <Button type="primary" className="con-item" onClick={() => props.handleSelect(form)}>查询</Button>
         {/* 新增按钮 */}
         <Button type="primary" className="con-item" onClick={() => props.handleCreate()}>新增</Button>
+        {/* 导出按钮 */}
+        <Button type="primary" className="con-item"
+                onClick={() => handleExport()}>导出</Button>
       </RightCon>
     </Wrapper>
   )
