@@ -45,21 +45,42 @@ export default observer((props: Props) => {
     {
       title: '床号',
       dataIndex: 'bedLabel',
-      align: 'center'
+      align: 'center',
+      width: 60
     },
     {
       title: '姓名',
       dataIndex: 'name',
-      align: 'center'
+      align: 'center',
+      width: 70,
     },
     {
       title: '性别',
       dataIndex: 'sex',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
       title: '住院号',
+      dataIndex: 'inpNo',
+      align: 'center',
+      width: 110
+    },
+    {
+      title: '病人ID',
       dataIndex: 'patientId',
+      align: 'center',
+      width: 110
+    },
+    {
+      title: '次数',
+      dataIndex: 'visitId',
+      align: 'center',
+      width: 50
+    },
+    {
+      title: '入院日期',
+      dataIndex: 'admissionDate',
       align: 'center'
     },
   ]
