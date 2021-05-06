@@ -91,6 +91,26 @@ export default {
       "code": "大隐静脉",
       "name": "大隐静脉",
       "pinyin": "dyjm"
+    },
+    {
+      "code": "颞浅静脉",
+      "name": "颞浅静脉",
+      "pinyin": "nqjm"
+    },
+    {
+      "code": "耳后静脉",
+      "name": "耳后静脉",
+      "pinyin": "ehjm"
+    },
+    {
+      "code": "股静脉",
+      "name": "股静脉",
+      "pinyin": "gjm"
+    },
+    {
+      "code": "其他",
+      "name": "其他",
+      "pinyin": "qt"
     }
   ],
   "R0009006": [

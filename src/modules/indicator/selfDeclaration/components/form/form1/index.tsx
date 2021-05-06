@@ -37,7 +37,7 @@ export default observer((props: Props) => {
 
   useEffect(() => {
     setAge()
-  }, [master.happenDate])
+  }, [master.birthday, master.happenDate])
 
   return (
     <Wrapper>

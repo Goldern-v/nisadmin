@@ -57,7 +57,7 @@ export default observer(function DeptSelect(props: Props) {
         // alert(123)
         setHasAllDept(true);
         // if (!authStore.selectedDeptCode) {
-        authStore.selectedDeptCode = "全院";
+        authStore.selectedDeptCode = props.deptCode || "全院";
         // }
       } else {
         setHasAllDept(false);

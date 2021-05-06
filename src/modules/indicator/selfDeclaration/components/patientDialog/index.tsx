@@ -8,6 +8,7 @@ import moment from "moment"
 import { getCurrentMonth } from "src/utils/date/currentMonth"
 import api from "./api"
 import BaseTable from "src/components/BaseTable";
+import { authStore } from "src/stores";
 
 
 interface Props {
@@ -164,7 +165,7 @@ export default observer((props: Props) => {
         <SearchWrapper>
           <div className='label'>护理单元:</div>
           <div className='item'>
-            <DeptSelect hasAllDept style={{ width: '100%' }}
+            <DeptSelect hasAllDept deptCode={authStore.defaultDeptCode} style={{ width: '100%' }}
                         onChange={deptCode => setFormItem({ 'wardCode': deptCode })}/>
           </div>
           <div className='label'>出入院:</div>
