@@ -3,10 +3,15 @@ import * as H from "history";
 import { match } from "react-router";
 import qs from "qs";
 
+/**
+ * 全局加载对象
+ * @param duration 预计加载完成毫秒数
+ * @param aside 描述
+ * @param progress 进度
+ * @param isFullpage 是否全屏
+ */
 interface FullLoadingBarObj {
-  /** 预计加载完成毫秒数 */
   duration?: number;
-  /** 描述 */
   aside: string;
   progress?: string;
   isFullpage?: boolean;
@@ -119,8 +124,16 @@ export default class AppStore {
   openFullLoadingBar(option: FullLoadingBarObj) {
     this.fullLoadingBarObj = option;
   }
-  /** 关闭全局进度条 */
-  closeFullLoadingBar(okText?: string) {
+  /** 
+   * 关闭全局进度条
+   * @param okText 状态
+   * @param options.delay 关闭延时
+   */
+  closeFullLoadingBar(okText?: string, options?: {
+    delay: number
+  }) {
+    const { delay } = options || {}
+
     return new Promise<void>((resolve, reject) => {
       this.openFullLoadingBar({
         aside:
@@ -131,7 +144,7 @@ export default class AppStore {
       setTimeout(() => {
         this.fullLoadingBarObj = null;
         resolve();
-      }, 200);
+      }, delay || 200);
     });
   }
   /** 关闭全局进度条 */

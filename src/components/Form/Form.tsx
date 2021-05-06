@@ -54,7 +54,7 @@ export default class Form<T extends Object = any> extends React.Component<Props<
   }
 
   public setField = (name: string, value: any, trigger: boolean = true) => {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       this.setState(
         (state) => {
           const values = { ...(state.values as any) }

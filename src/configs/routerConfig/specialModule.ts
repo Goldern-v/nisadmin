@@ -254,29 +254,40 @@ if (
   ];
 } else if (appStore.HOSPITAL_ID == 'gzsrm') {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
-      NurseFileDetailView_gzsrm,
+      NurseFileDetailView_wh,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
-    ...homeRouter(HomeView),
-    //厚街护理制度
-    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/selfNurseFile/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
+    ...homeRouter(HomeView_wh),
+  ];
+
+  specialModule = specialModule.concat([
+    setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
     setLayout(
       "/nursingRulesNewDetail",
-      NursingRulesNewDetail,
+      NursingRulesNewDetail_wh,
       layouts.MainLayout
     ),
     setLayout(
       "/NursingRulesPagePreView",
-      NursingRulesPagePreview,
+      NursingRulesPagePreview_wh,
       layouts.MainLayout
     ),
-    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  ];
+    setLayout(
+      "/nursingRulesNewEdit",
+      NursingRulesNewEdit_wh,
+      layouts.MainLayout
+    )
+  ]);
 } else if (appStore.HOSPITAL_ID == 'jmfy') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),

@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs'
+import { appStore, authStore } from 'src/stores'
 
 export default class HealthProagandaService extends BaseApiService {
   //字典类型列表
@@ -31,6 +32,18 @@ export default class HealthProagandaService extends BaseApiService {
   //获取字典content
   public async getContent(id: string) {
     return this.post(`/briefMission/getContentByMissionIds`, qs.stringify({ ids: id }))
+  }
+  /**
+   * 编辑器上传文件
+   * @param file 文件
+   * @param onUploadProgress 上传进度回调
+   */
+  public async editorUploadFile(file: any, onUploadProgress?: Function) {
+    const newFormData = new FormData()
+    newFormData.set('upload', file)
+    return this.post(`/briefMission/uploadPicture?App-Token-Nursing=${appStore.getAppToken()}&Auth-Token-Nursing=${authStore.authToken}`, newFormData, {
+      onUploadProgress: (payload: any) => onUploadProgress && onUploadProgress(payload)
+    })
   }
 }
 

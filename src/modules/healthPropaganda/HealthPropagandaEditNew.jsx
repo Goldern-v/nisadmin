@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Button, Spin, Select, message as Message, Modal, Icon, Input } from 'antd'
 import moment from 'moment'
 import store, { authStore, appStore } from 'src/stores'
@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite'
 import TemplatesPannel from './components/TemplatesPannel'
 import { healthProagandaService } from './api/healthProgandaService'
 import service from 'src/services/api'
+import FullPageLoading from 'src/components/loading/FullPageLoading'
 
 import CKEditor from 'ckeditor4-react'
 
@@ -20,8 +21,16 @@ export default observer(function HealthPropagandaEditNew(props) {
   const [editorData, setEditorData] = useState('')
   const [typeList, setTypeList] = useState([])
   const [editorLoading, setEditorLaoding] = useState(false)
+  const [videoUploadVisible, setVideoUploadVisible] = useState(false)
 
-  const editorRef = React.createRef()
+  const filebrowserUploadUrl =
+    `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`
+  const filebrowserHtml5videoUploadUrl =
+    `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`
+
+  const videoUploadId = 'customVideoUpload'
+
+  const editorRef = useRef()
 
   const [params, setParams] = useState({
     missionId: '', //宣教id (修改用)
@@ -295,6 +304,68 @@ export default observer(function HealthPropagandaEditNew(props) {
     if (current) current.editor.insertHtml(html)
   }
 
+  const customVideoUpload = () => {
+    setVideoUploadVisible(false)
+
+    new Promise((resolve) => {
+      setVideoUploadVisible(true)
+      resolve()
+    }).then(() => {
+      let el = document.getElementById(videoUploadId)
+      if (el) el.click()
+    })
+  }
+
+  const handleVideoUpload = (e) => {
+    let file = e.target.files[0]
+
+    appStore.openFullLoadingBar({
+      aside: '正在上传，请稍候',
+      progress: '0%',
+      isFullpage: true
+    })
+
+    if (file)
+      healthProagandaService.editorUploadFile(file, (payload) => {
+        appStore.openFullLoadingBar({
+          aside: '正在上传数据，请稍候',
+          progress: `${Number(Math.min(payload.loaded / (payload.total * 10000 || 1), 1) * 100).toFixed(
+            0
+          )}%`
+        })
+      })
+        .then(res => {
+          appStore.closeFullLoadingBar('下载完成', { delay: 800 })
+          let resData = res.data
+          if (resData.uploaded === '1') {
+            handleHtmlInsert(`
+        <div class="ckeditor-html5-video" style="text-align: center;">
+          <video 
+            controlslist="nodownload" 
+            src="${resData.url}">
+            &nbsp;
+          </video>
+        </div>
+        `)
+          }
+        }, err => {
+          appStore.closeFullLoadingBarInFail('下载失败', { delay: 800 })
+        })
+  }
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      let videoBtnEl = document.getElementsByClassName('cke_button__html5video')[0]
+
+      if (videoBtnEl)
+        videoBtnEl.onclick = () => customVideoUpload()
+    }, 1000)
+    return () => {
+      let videoBtnEl = document.getElementsByClassName('cke_button__html5video')[0]
+      if (videoBtnEl) videoBtnEl.onclick = null
+    };
+  }, [])
+
   return <Wrapper>
     <Button className='back' onClick={() => history.goBack()}>
       <Icon type='double-left' className='icon-back' />
@@ -315,10 +386,8 @@ export default observer(function HealthPropagandaEditNew(props) {
             config={{
               extraPlugins: 'stylesheetparser,colorbutton,colordialog,html5video',
               removePlugins: 'easyimage,cloudservices',
-              filebrowserUploadUrl:
-                `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
-              filebrowserHtml5videoUploadUrl:
-                `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
+              filebrowserUploadUrl,
+              filebrowserHtml5videoUploadUrl,
               height: 600,
               title: ''
             }}
@@ -360,6 +429,8 @@ export default observer(function HealthPropagandaEditNew(props) {
         <Button onClick={handleCancel}>取消</Button>
       </span>
     </div>
+    {videoUploadVisible && <input id={videoUploadId} type="file" accept="video/*" onChange={(e) => handleVideoUpload(e)} />}
+    {appStore.fullLoadingBarObj && <FullPageLoading />}
   </Wrapper>
 })
 
