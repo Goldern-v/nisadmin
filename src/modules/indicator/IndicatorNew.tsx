@@ -12,6 +12,7 @@ import StatisticTable from './statisticsTable'
 import NursingData from "./mainView/nursingData/NursingData"
 import IndicatorBaseTable from './IndicatorBaseTable'
 import SelfDeclaration from './selfDeclaration'
+import DepManage from './depManage'
 
 export default observer(function indicatorView(props: any) {
   const [modlueLoading, setModuleLoading] = useState(false)
@@ -38,6 +39,11 @@ export default observer(function indicatorView(props: any) {
       case 'eventReport': // 国家数据填报
         return <MainCon>
           <SelfDeclaration/>
+        </MainCon>
+
+      case 'wardSetting': // 病区设置
+        return <MainCon>
+          <DepManage/>
         </MainCon>
 
       case '护理质量相关数据':
