@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
-import { Col, Modal, Row } from "antd"
+import { Col, Form, message, Modal, Row } from "antd"
 import styled from "styled-components"
 import DeptSelect from "src/components/DeptSelect"
 import { DatePicker, Select } from "src/vendors/antd"
@@ -26,6 +26,9 @@ export default observer((props: Props) => {
   const { modalId, visible, onOk, onCancel } = props
 
   const handleCreate = async () => {
+    if (!form.empName) {
+      return message.warning('请选择人员');
+    }
     await api.updateItem(form)
     onOk()
   }
