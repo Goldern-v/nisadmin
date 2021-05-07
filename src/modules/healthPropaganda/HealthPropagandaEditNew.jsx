@@ -335,7 +335,7 @@ export default observer(function HealthPropagandaEditNew(props) {
         })
       })
         .then(res => {
-          appStore.closeFullLoadingBar('下载完成', { delay: 800 })
+          appStore.closeFullLoadingBar('上传完成', { delay: 800 })
           let resData = res.data
           if (resData.uploaded === '1') {
             handleHtmlInsert(`
@@ -349,7 +349,7 @@ export default observer(function HealthPropagandaEditNew(props) {
         `)
           }
         }, err => {
-          appStore.closeFullLoadingBarInFail('下载失败', { delay: 800 })
+          appStore.closeFullLoadingBarInFail('上传失败', { delay: 800 })
         })
   }
 
