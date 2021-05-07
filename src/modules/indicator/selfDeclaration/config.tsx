@@ -64,6 +64,17 @@ const creatColumns = (calBack: Function): {}[] => {
       width: 60,
     },
     {
+      title: "状态",
+      dataIndex: "status",
+      align: "center",
+      width: 60,
+      render(status: string) {
+        return (
+          <span>{status === '0' ? '保存' : '已提交'}</span>
+        )
+      }
+    },
+    {
       title: "操作",
       dataIndex: "",
       align: "center",
