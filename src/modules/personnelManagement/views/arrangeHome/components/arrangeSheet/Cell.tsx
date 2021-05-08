@@ -21,6 +21,7 @@ import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
 import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
 import moment from "moment";
+
 export interface Props {
   contextMenu: ContextMenu;
   editEffectiveTimeModal: any;
@@ -201,7 +202,8 @@ export default observer(function Cell(props: Props) {
                 sheetViewModal.selectedCell.addSymbols = [
                   {
                     symbol: item.dataSource.symbol,
-                    detail: item.dataSource.detail
+                    detail: item.dataSource.detail,
+                    symbolColor: item.dataSource.symbolColor
                   }
                 ];
               }
@@ -415,8 +417,8 @@ export default observer(function Cell(props: Props) {
     wh: () => {
       return (
         (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
+        cellObj.schAddOrSubs.length &&
+        cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
         ":" +
@@ -456,8 +458,8 @@ export default observer(function Cell(props: Props) {
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
         )}
-        {cellConfig.isAddWordTime ? <div className="sj add" /> : ""}
-        {cellConfig.isReduceWordTime ? <div className="sj reduce" /> : ""}
+        {cellConfig.isAddWordTime ? <div className="sj add"/> : ""}
+        {cellConfig.isReduceWordTime ? <div className="sj reduce"/> : ""}
         {cellConfig.isExpectedScheduling ? (
           <img
             className="expect"
@@ -475,19 +477,18 @@ export default observer(function Cell(props: Props) {
     </Popover>
   );
 });
+
 function formatCell(cellObj: ArrangeItem) {
   const Con = styled.span<{ color: string | undefined }>`
     color: ${p => p.color};
   `;
+  const symbol: any = (cellObj.addSymbols && cellObj.addSymbols[0]) || {}
   if (cellObj) {
     return (
       <React.Fragment>
         <Con color={cellObj.nameColor}>
-          <span style={{ color: "#333" }}>
-            {(cellObj.addSymbols &&
-              cellObj.addSymbols.length &&
-              cellObj.addSymbols[0]!.symbol) ||
-              ""}
+          <span style={{ color: symbol.symbolColor || "#333" }}>
+            {symbol.symbol || ""}
           </span>
           {sheetViewModal.countArrangeNameList.includes(cellObj.rangeName)
             ? (cellObj.rangeName || "") + (cellObj.rangeNameCode || "")
@@ -504,7 +505,7 @@ function formatCell(cellObj: ArrangeItem) {
             </Con>
           </React.Fragment>
         )) ||
-          ""}
+        ""}
       </React.Fragment>
     );
   }

@@ -15,7 +15,7 @@ export interface ArrangeItem {
   effectiveTime?: number | null;
   effectiveTimeOld?: number | null;
   shiftType?: string;
-  addSymbols?: { symbol: string; detail: string }[] | null;
+  addSymbols?: { symbol: string; detail: string, symbolColor?: string }[] | null;
   detail?: string;
   settings?: ArrangeItem | null;
   statusType?: string;
@@ -24,6 +24,7 @@ export interface ArrangeItem {
   schAddOrSubs?: Partial<SchAddOrSubItem>[];
   /** 断点编号 */
   rangeNameCodeList?: any;
+
   [p: string]: any;
 }
 
