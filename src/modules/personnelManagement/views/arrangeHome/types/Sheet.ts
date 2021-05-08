@@ -33,5 +33,6 @@ export interface SymbolItem {
   createTime: string;
   id: string;
   symbol: string;
+  symbolColor?: string;
   detail: string;
 }

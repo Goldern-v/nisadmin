@@ -194,7 +194,7 @@ export default observer(function Cell(props: Props) {
               dataSource: item,
               label: (
                 <div className="symbol-con">
-                  <div className="symbol-icon">{item.symbol}</div>
+                  <div className="symbol-icon" style={{ color: item.symbolColor || '' }}>{item.symbol}</div>
                   <div className="symbol-aside">{item.detail}</div>
                 </div>
               ),
