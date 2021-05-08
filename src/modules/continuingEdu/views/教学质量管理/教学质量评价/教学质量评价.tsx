@@ -176,7 +176,7 @@ export default function 护理教学质量评价() {
         style={{ width: 150, marginRight: 10 }}
         defaultValue={query.keyWord}
         onBlur={(e) => setQuery({ ...query, keyWord: e.target.value })} />
-      <Button>查询</Button>
+      <Button onClick={() => setQuery({ ...query, pageIndex: 1 })}>查询</Button>
     </HeaderCon>
     <MainCon>
       <BaseTabs
@@ -187,7 +187,6 @@ export default function 护理教学质量评价() {
           component: TableCon,
         }))}
         onChange={(key: any) => {
-          console.log(key)
           setActiveTab(key)
           setQuery({ ...query, pageIndex: 1, evalType: key })
         }} />

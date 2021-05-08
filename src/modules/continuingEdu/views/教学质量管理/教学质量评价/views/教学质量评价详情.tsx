@@ -193,7 +193,12 @@ export default function 护理教学质量评价详情() {
         style={{ width: 150 }}
         defaultValue={query.keyWord}
         onBlur={(e) => setQuery({ ...query, keyWord: e.target.value })} />
-      <Button className="mr-10" type="primary">查询</Button>
+      <Button
+        className="mr-10"
+        type="primary"
+        onClick={() => setQuery({ ...query, pageIndex: 1 })}>
+        查询
+      </Button>
       <Button className="mr-10" onClick={() => handleExport()}>导出</Button>
       <Button onClick={() => appStore.history.goBack()}>返回</Button>
     </HeaderCon>
