@@ -233,14 +233,14 @@ export default observer(function NavBar(props: any) {
                   (item.path !== "" &&
                     (item.path &&
                       location &&
-                      location.pathname.indexOf(item.path) !== -1)) ||
+                      location.pathname.indexOf(item.path) === 0)) ||
                   (item.children &&
                     item.children.some(
                       (item: any) =>
                         !!(
                           item.path &&
                           location &&
-                          location.pathname.indexOf(item.path) !== -1
+                          location.pathname.indexOf(item.path) === 0
                         )
                     ))
                 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from 'antd'
 import OnePage from './page/OnePage'
 import TwoPage from './page/TwoPage'
@@ -15,9 +15,10 @@ import ThreeBases from './page/ThreeBases'
 import WorkRegistrationForm from './page/WorkRegistrationForm'
 import { nurseFilesService } from '../../services/NurseFilesService'
 import printing from 'printing'
+import { message } from 'src/vendors/antd'
 export interface Props {
   empNo: string
-  onCallBack?: () => any
+  onCallBack?: (payload?: any) => any
 }
 
 export default function ExportNurseFile(props: Props) {
@@ -44,8 +45,10 @@ export default function ExportNurseFile(props: Props) {
   const [threeBaseList, setThreeBaseList]: any = useState([])
   /** 工作情况登记 */
   const [registrationWorkList, setRegistrationWorkList]: any = useState([])
+  /** 图片列表 */
+  const [imgPageList, setImgPageList]: any[] = useState([])
 
-  let fileRef: any = React.createRef<HTMLDivElement>()
+  let fileRef: any = useRef()
 
   const getData = () => {
     let fileForm = fileRef.current
@@ -54,35 +57,131 @@ export default function ExportNurseFile(props: Props) {
         setBaseInfo(res.data)
         return res.data
       }),
-      nurseFilesService.nurseWorkExperience(props.empNo).then((res) => setExperienceList(res.data)),
-      nurseFilesService.nurseMedicalEducation(props.empNo).then((res) => setMedicalEducatioList(res.data)),
-      nurseFilesService.nurseProfessionalAndLevelChange(props.empNo).then((res) => setLevelChangeList(res.data)),
-      nurseFilesService.nurseContinuingEducation(props.empNo).then((res) => setContinuingEducationList(res.data)),
-      nurseFilesService.nursePaperExperience(props.empNo).then((res) => setPaperExperienceList(res.data)),
-      nurseFilesService.nurseYearCheck(props.empNo).then((res) => setYearCheckList(res.data)),
-      nurseFilesService.nurseHospitalsThreeBase(props.empNo).then((res) => setThreeBaseList(res.data)),
-      nurseFilesService.nurseAwardWinning(props.empNo).then((res) => setAwardWinningList(res.data)),
-      nurseFilesService.nurseRegistrationWork(props.empNo).then((res) => setRegistrationWorkList(res.data))
+      nurseFilesService.nurseWorkExperience(props.empNo).then((res) => {
+        setExperienceList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseMedicalEducation(props.empNo).then((res) => {
+        setMedicalEducatioList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseProfessionalAndLevelChange(props.empNo).then((res) => {
+        setLevelChangeList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseContinuingEducation(props.empNo).then((res) => {
+        setContinuingEducationList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nursePaperExperience(props.empNo).then((res) => {
+        setPaperExperienceList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseYearCheck(props.empNo).then((res) => {
+        setYearCheckList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseHospitalsThreeBase(props.empNo).then((res) => {
+        setThreeBaseList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseAwardWinning(props.empNo).then((res) => {
+        setAwardWinningList(res.data)
+        return res.data
+      }),
+      nurseFilesService.nurseRegistrationWork(props.empNo).then((res) => {
+        setRegistrationWorkList(res.data)
+        return res.data
+      })
     ]).then((res) => {
-      setInited(true)
-      setTimeout(() => {
-        let _title = document.title
-        document.title = res[0].empName + '信息档案'
-        printing(fileForm, {
-          injectGlobalCss: true,
-          scanStyles: false,
-          css: `
+      return handleImgPreload(res)
+    })
+      .then((res: any) => {
+        setInited(true)
+        setTimeout(() => {
+          let _title = document.title
+          document.title = res.empName + '信息档案'
+          printing(fileForm, {
+            injectGlobalCss: true,
+            scanStyles: false,
+            css: `
+          @media print {
+            .print-content{
+              display: block;
+            }
+          }
           @page {
             margin: 0;
           }
           `
-        })
-        setTimeout(() => {
-          document.title = _title
-        }, 500)
+          })
+          setTimeout(() => {
+            document.title = _title
+          }, 500)
 
-        props.onCallBack && props.onCallBack()
-      }, 500)
+          props.onCallBack && props.onCallBack()
+        }, 500)
+      }, err => {
+        if (err.path) message.error(`图片 ${err.path[0].currentSrc} 获取失败`)
+
+        props.onCallBack && props.onCallBack(err)
+      })
+  }
+
+  /** 附件图片预加载 */
+  const handleImgPreload = (payload: any[]) => {
+    let imgPreLoadUrlList = [] as string[]
+    for (let i = 0; i < payload.length; i++) {
+      let current = payload[i]
+      if (current instanceof Array) {
+        for (let j = 0; j < current.length; j++) {
+          let item = current[j]
+          if (item.urlImageOne) imgPreLoadUrlList = imgPreLoadUrlList.concat(item.urlImageOne.split(','))
+          if (item.urlImageTwo) imgPreLoadUrlList = imgPreLoadUrlList.concat(item.urlImageTwo.split(','))
+        }
+      } else {
+        if (current.zyzsUrl) imgPreLoadUrlList = imgPreLoadUrlList.concat(current.zyzsUrl.split(','))
+      }
+    }
+
+    imgPreLoadUrlList = imgPreLoadUrlList.filter((url: string) => url)
+
+    return new Promise((resolve, reject) => {
+      if (imgPreLoadUrlList.length <= 0) {
+        resolve(payload[0])
+      } else {
+        Promise.all(imgPreLoadUrlList.map((url: string) => {
+          return new Promise((_resolve, _reject) => {
+            let newImg = new Image()
+            newImg.onload = (res: any) => _resolve(res.path[0])
+            newImg.onerror = (err) => _reject(err)
+            newImg.src = url
+          })
+        }))
+          .then((resArr: any[]) => {
+            let newImgPageList = [[]] as any[]
+            let currentPageHeight = 0
+
+            for (let i = 0; i < resArr.length; i++) {
+              let currentImg = resArr[i]
+              let currentPage = newImgPageList[newImgPageList.length - 1]
+              let finalImgHeight = currentImg.naturalHeight > 460 ? 480 : currentImg.naturalHeight + 20
+
+              currentPageHeight += finalImgHeight
+
+              if (currentPageHeight > 960) {
+                currentPageHeight = finalImgHeight
+                newImgPageList.push([currentImg])
+              } else {
+                currentPage.push(currentImg)
+              }
+            }
+
+            setImgPageList(newImgPageList)
+
+            resolve(payload[0])
+          }, err => reject(err))
+      }
     })
   }
 
@@ -91,7 +190,7 @@ export default function ExportNurseFile(props: Props) {
   }, [])
 
   return (
-    <Wrapper ref={fileRef}>
+    <Wrapper ref={fileRef} className="print-content">
       {inited && (
         <React.Fragment>
           <PrintPage>
@@ -127,9 +226,21 @@ export default function ExportNurseFile(props: Props) {
           <PrintPage pageIndex={11}>
             <WorkRegistrationForm registrationWorkList={registrationWorkList} />
           </PrintPage>
+          {imgPageList.map((imgArr: any[], idx0: number) => (
+            <PrintPage pageIndex={idx0 + 1 + 11} key={idx0}>
+              {imgArr.map((img: any, idx1) => (
+                <img
+                  src={img.currentSrc}
+                  style={{ maxHeight: 460, maxWidth: '100%', margin: '10px auto' }}
+                  key={`${idx0}-${idx1}`} />
+              ))}
+            </PrintPage>
+          ))}
         </React.Fragment>
       )}
     </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  display:none;
+`
