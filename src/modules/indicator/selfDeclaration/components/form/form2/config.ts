@@ -125,61 +125,6 @@ export default {
   ],
   "R0002005": [
     {
-      "code": "小于24小时",
-      "name": "小于24小时",
-      "pinyin": "xy24xs"
-    },
-    {
-      "code": "1天",
-      "name": "1天",
-      "pinyin": "1t"
-    },
-    {
-      "code": "2天",
-      "name": "2天",
-      "pinyin": "2t"
-    },
-    {
-      "code": "3天",
-      "name": "3天",
-      "pinyin": "3t"
-    },
-    {
-      "code": "4天",
-      "name": "4天",
-      "pinyin": "4t"
-    },
-    {
-      "code": "5天",
-      "name": "5天",
-      "pinyin": "5t"
-    },
-    {
-      "code": "6天",
-      "name": "6天",
-      "pinyin": "6t"
-    },
-    {
-      "code": "1周",
-      "name": "1周",
-      "pinyin": "1z"
-    },
-    {
-      "code": "1周前",
-      "name": "1周前",
-      "pinyin": "1zq"
-    },
-    {
-      "code": "不确定",
-      "name": "不确定",
-      "pinyin": "bqd"
-    },
-    {
-      "code": "未评估",
-      "name": "未评估",
-      "pinyin": "wpg"
-    },
-    {
       "code": "低危",
       "name": "低危",
       "pinyin": "dw"

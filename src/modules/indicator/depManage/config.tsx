@@ -3,18 +3,26 @@ import { DoCon } from "src/components/BaseTable";
 import { departType } from './model'
 import { Input } from "antd";
 
-const creatColumns = (calBack: Function, editId?: number): {}[] => {
+const creatColumns = (calBack: Function): {}[] => {
   return [
+    {
+      title: "序号",
+      dataIndex: "indexNo",
+      width: 200,
+      render(name: string, record: departType) {
+        return (
+          <Input value={record.indexNo} size='small' style={{ width: '100px' }}
+                 onChange={(event => calBack('setData', { ...record, indexNo: event.target.value }))}/>
+        )
+      }
+    },
     {
       title: "科室名称",
       dataIndex: "name",
       render(name: string, record: departType) {
-        const isEditMode = !record.id || editId === record.id
         return (
-          isEditMode ?
-            <Input value={record.name} size='small' style={{ width: '280px' }}
-                   onChange={(event => calBack('setData', { ...record, name: event.target.value }))}/> :
-            <span>{record.name}</span>
+          <Input value={record.name} size='small' style={{ width: '280px' }}
+                 onChange={(event => calBack('setData', { ...record, name: event.target.value }))}/>
         )
       }
     },
@@ -23,31 +31,23 @@ const creatColumns = (calBack: Function, editId?: number): {}[] => {
       dataIndex: "expand",
       width: 250,
       render(expand: string, record: departType) {
-        const isEditMode = !record.id || editId === record.id
         return (
-          isEditMode ?
-            <Input value={record.expand} size='small'
-                   onChange={(event => calBack('setData', { ...record, expand: event.target.value }))}/> :
-            <span>{record.expand}</span>
+          <Input value={record.expand} size='small'
+                 onChange={(event => calBack('setData', { ...record, expand: event.target.value }))}/>
         )
       }
     },
     {
       title: "操作",
       align: "center",
-      dataIndex: "level",
-      width: 300,
-      render(level: number, record: departType) {
-        const hasCreate = Boolean(level !== 2 && record.id && record.id !== editId)
-        const hasSave = Boolean(!record.id || record.id === editId)
-        const hasEdit = Boolean(record.id && record.id !== editId)
-        const isCancel = Boolean(!record.id || record.id === editId)
+      dataIndex: "expand2",
+      width: 250,
+      render(text: '', record: departType) {
+        const hasCreate = Boolean(+record.expand2 < 3)
         return (
           <DoCon>
             {hasCreate && <span onClick={() => calBack('creat', record)}>添加下一级</span>}
-            {hasSave && <span onClick={() => calBack('save', record)}>保存</span>}
-            {hasEdit && <span onClick={() => calBack('edit', record)}>编辑</span>}
-            <span onClick={() => calBack('delete', record)}>{isCancel ? '取消' : '删除'}</span>
+            <span onClick={() => calBack('delete', record)}>删除</span>
           </DoCon>
         )
       }

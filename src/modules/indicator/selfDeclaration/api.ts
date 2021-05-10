@@ -48,6 +48,18 @@ class Api extends BaseApiService {
   cancelCommit(id: string) {
     return this.post(`form/eventReport/master/cancelCommit`, { id })
   }
+
+  // 获取默认值
+  getDefaultValue(data: any) {
+    const params = {
+      formCode: data.formCode,
+      happenDate: data.happenDate,
+      patientId: data.patientId,
+      wardCode: data.wardCode,
+      visitId: data.visitId
+    }
+    return this.post(`form/eventReport/master/getDefaultData`, params)
+  }
 }
 
 export default new Api()

@@ -14,6 +14,7 @@ import config from './config'
 import { getAge } from "../utils";
 import formModel from "src/modules/indicator/selfDeclaration/components/editPage/model";
 import DeptSelect from "src/components/DeptSelect";
+import api from "src/modules/indicator/selfDeclaration/api";
 
 interface Props {
   handlePatientClick: Function
@@ -25,6 +26,12 @@ export default observer((props: Props) => {
 
   const setAge = () => {
     master.age = getAge(master.birthday, master.happenDate)
+  }
+
+  const getDefaultValue = async () => {
+    if (master.id || !master.patientId || !master.happenDate) return
+    const { data: { itemDataMap } } = await api.getDefaultValue(master)
+    formModel.setItemDataMap(itemDataMap)
   }
 
   const setMaster = (key: string, value: any) => {
@@ -47,6 +54,10 @@ export default observer((props: Props) => {
   useEffect(() => {
     setAge()
   }, [master.birthday, master.happenDate])
+
+  useEffect(() => {
+    getDefaultValue().then()
+  }, [master.happenDate])
 
   return (
     <Wrapper>

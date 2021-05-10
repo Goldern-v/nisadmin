@@ -7,10 +7,13 @@ class Api extends BaseApiService {
   }
 
   // 获取列表
-  saveItem(data: any) {
-    const params = { ...data }
-    if (!params.id) delete params.id
+  saveItem(params: any) {
     return this.post(`/dictTree/cnq_ward/saveOrUpdate`, params)
+  }
+
+  // 获取列表
+  saveAll(params: any) {
+    return this.post(`/dictTree/cnq_ward/saveOrUpdateAll`, params)
   }
 
 

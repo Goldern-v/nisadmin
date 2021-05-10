@@ -12,8 +12,9 @@ import Form8 from './form8'
 import Form9 from './form9'
 import Form10 from './form10'
 import Form11 from './form11'
-import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
-import formModel from "src/modules/indicator/selfDeclaration/components/editPage/model";
+import PatientDialog from "../patientDialog";
+import formModel from "../editPage/model";
+import api from '../../api'
 
 interface Props {
   formCode: string,
