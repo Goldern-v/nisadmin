@@ -8,12 +8,12 @@ import { ReactComponent as HLGZZL } from "./images/HLGZZL.svg";
 export const LEFT_MENU = [
   {
     title: "护理质量相关数据",
-    icon: <ZKHL />,
+    icon: <ZKHL/>,
     path: "/indicator/护理质量相关数据"
   },
   {
     title: "护理敏感质量指标",
-    icon: <HLMGZL />,
+    icon: <HLMGZL/>,
     children: [
       { title: "床护比统计", path: "/indicator/床护比统计" },
       { title: "护患比统计", path: "/indicator/护患比统计" },
@@ -44,7 +44,7 @@ export const LEFT_MENU = [
   },
   {
     title: "临床护理质量指标",
-    icon: <LCHL />,
+    icon: <LCHL/>,
     children: [
       { title: "高危药物静脉外渗率", path: "/indicator/高危药物静脉外渗率" },
       { title: "输血/输液反应倒数", path: "/indicator/输血输液反应倒数" },
@@ -108,7 +108,7 @@ export const LEFT_MENU = [
   },
   {
     title: "专科护理质量指标",
-    icon: <ZKHL />,
+    icon: <ZKHL/>,
     children: [
       {
         title: "新生儿烧伤、烫伤发生率",
@@ -118,7 +118,7 @@ export const LEFT_MENU = [
   },
   {
     title: "护理工作质量指标",
-    icon: <HLGZZL />,
+    icon: <HLGZZL/>,
     children: [
       { title: "查对制度落实合格率", path: "/indicator/查对制度落实合格率" },
       {
@@ -141,19 +141,28 @@ export const LEFT_MENU = [
   },
   {
     title: "护理质控指标",
-    icon: <ZKHL />,
+    icon: <ZKHL/>,
     path: "/indicator/护理质控指标"
   },
   {
     title: "公共季度统计表",
-    icon: <HLGZZL />,
+    icon: <HLGZZL/>,
     path: "/indicator/公共季度统计表",
     // hide: appStore.isDev
   },
   {
     title: "专科季度统计表",
-    icon: <ZKHL />,
+    icon: <ZKHL/>,
     path: "/indicator/专科季度统计表",
+    // hide: appStore.isDev
+  },
+  {
+    title: "国家数据填报",
+    icon: <ZKHL/>,
+    children: [
+      { title: "数据填报", path: "/indicator/eventReport" },
+      { title: "病区设置", path: "/indicator/wardSetting" },
+    ],
     // hide: appStore.isDev
   },
 ];

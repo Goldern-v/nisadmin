@@ -30,9 +30,9 @@ export default observer((props: Props) => {
   const [selected, setSelected]: any = useState({})
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 15
+    pageSize: 20
   })
-  const [total, setTotal] = useState(1)
+  const [pages, setPages] = useState(1)
 
   const { visible, onOk, onCancel } = props
 
@@ -92,19 +92,22 @@ export default observer((props: Props) => {
       wardCode: form.wardCode,
       name: form.name,
       status: form.status,
+      patientId: form.patientId,
+      inpNo: form.inpNo,
+      bedLabel: form.bedLabel,
       admissionDateBegin: form.status === '1' ? dateBegin : '',
       admissionDateEnd: form.status === '1' ? dateEnd : '',
       dischargeDateBegin: form.status === '2' ? dateBegin : '',
       dischargeDateEnd: form.status === '2' ? dateEnd : '',
-      pageIndex: 1,
-      pageNum: 20
+      pageIndex: pagination.current,
+      pageNum: pagination.pageSize
     }
     params.wardCode === '全院' && delete params.wardCode
     setLoading(true)
     const { data } = await api.getPatientList(params)
     setLoading(false)
     setTableData(data.list)
-    setTotal(data.page)
+    setPages(data.page)
   }
 
   const handleSelect = async (changeableRowKeys: any) => {
@@ -130,7 +133,7 @@ export default observer((props: Props) => {
 
   useEffect(() => {
     const promise = getData()
-  }, [form])
+  }, [form, pagination])
 
   return (
     <Modal
@@ -172,14 +175,14 @@ export default observer((props: Props) => {
             pagination={{
               current: pagination.current,
               pageSize: pagination.pageSize,
-              total: total
+              total: (pages * pagination.pageSize),
+              showTotal: () => `共 ${pages || 1} 页`
             }}
-            onChange={(pagination: any) => {
+            onChange={(page: any) => {
               setPagination({
-                current: pagination.current,
-                pageSize: pagination.pageSize,
+                current: page.current,
+                pageSize: page.pageSize
               })
-              getData().then()
             }}
           />
         </TableWrapper>
@@ -218,25 +221,25 @@ export default observer((props: Props) => {
 })
 
 const Wrapper = styled.div`
-  height: 500px;
-  display: flex;
-`
+              height: 500px;
+              display: flex;
+              `
 
 const TableWrapper = styled.div`
-  width: 80%;
-  height: 100%;
-`
+              width: 80%;
+              height: 100%;
+              `
 const SearchWrapper = styled.div`
-  width: 20%;
-  padding-left: 10px;
-  
-  .label{
-    height: 32px; 
-    line-height: 32px;
-    font-size: 14px;
-  }
-  .item{
-    width: 100%;
-    margin-bottom: 10px;
-  }
-`
+              width: 20%;
+              padding-left: 10px;
+
+              .label{
+              height: 32px;
+              line-height: 32px;
+              font-size: 14px;
+              }
+              .item{
+              width: 100%;
+              margin-bottom: 10px;
+              }
+              `

@@ -66,6 +66,9 @@ import NursingCharges from "./mainView/nursingCharges/NursingCharges";
 //统计表
 import StatisticTable from './statisticsTable'
 
+import SelfDeclaration from './selfDeclaration'
+import DepManage from './depManage'
+
 export interface Props extends RouteComponentProps<{ name?: string }> {
 }
 
@@ -922,6 +925,7 @@ export default function Indicator(props: Props) {
   const [nursingData, setNursingData] = useState(false); //是否展示护理主质量相关数据页面（--true展示）
   const [nursingCharges, setNursingCharges] = useState(false); //是否展示护理质控指标页面（--true展示）
   const [statistic, setStatistic] = useState(false); // 是否是统计表
+  const [cmpName, setCmpName] = useState('') // 组件名字
 
   let topRef: any = React.createRef();
   useLayoutEffect(() => {
@@ -929,11 +933,14 @@ export default function Indicator(props: Props) {
     setNursingCharges(false)
     setNursingData(false)
     setStatistic(false)
-    if (props.match.params.name === "专科季度统计表" || props.match.params.name === "公共季度统计表") {
+    const name = props.match.params.name || ''
+    if (['eventReport', 'wardSetting'].includes(name)) {
+      setCmpName(name)
+    } else if (['专科季度统计表', '公共季度统计表'].includes(name)) {
       setStatistic(true)
-    } else if (props.match.params.name === "护理质量相关数据") { // 护理质量相关数据（吴敏）
+    } else if (name === "护理质量相关数据") { // 护理质量相关数据（吴敏）
       setNursingData(true);
-    } else if (props.match.params.name === "护理质控指标") {
+    } else if (name === "护理质控指标") {
       setNursingCharges(true);
     } else {
       onload();
@@ -1052,25 +1059,33 @@ export default function Indicator(props: Props) {
 
   // 条件渲染右侧组件
   const GetComponents = () => {
+    if (cmpName) {
+      return (
+        <div className="nursingData">
+          {cmpName === 'eventReport' && <SelfDeclaration/>} {/* 国家数据填报 --- 数据填报 */}
+          {cmpName === 'wardSetting' && <DepManage/>} {/* 国家数据填报 --- 病区设置 */}
+        </div>
+      )
+    }
     if (nursingData) {
       // 护理质量相关数据
       return (
         <div className="nursingData">
-          <NursingData getTitle={props.match.params.name} />
+          <NursingData getTitle={props.match.params.name}/>
         </div>
       )
     } else if (nursingCharges) {
       // 护理质控指标
       return (
         <div className="nursingCharges">
-          <NursingCharges getTitle={props.match.params.name} />
+          <NursingCharges getTitle={props.match.params.name}/>
         </div>
       )
     } else if (statistic) {
       // 统计表
       return (
         <MainWrapper>
-          <StatisticTable name={props.match.params.name || ''} />
+          <StatisticTable name={props.match.params.name || ''}/>
         </MainWrapper>
       )
     } else {
@@ -1167,10 +1182,10 @@ export default function Indicator(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU} menuTitle="敏感指标" />
+        <LeftMenu config={LEFT_MENU} menuTitle="敏感指标"/>
         {/* <StatisticLeftList /> */}
       </LeftMenuCon>
-      <GetComponents />
+      <GetComponents/>
     </Wrapper>
   );
 }

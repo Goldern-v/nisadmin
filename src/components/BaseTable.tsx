@@ -74,9 +74,11 @@ export default observer(function BaseTable(props: Props) {
       if ((props.dataSource as any).length) {
         _total = (props.pagination as any).total;
       }
-    } catch (error) { }
+    } catch (error) {
+    }
+    const showTotal = props.pagination.showTotal || (() => `共 ${_total} 条`)
     let pagination = {
-      showTotal: (total: number) => `共 ${_total} 条`,
+      showTotal: showTotal,
       showSizeChanger: true,
       showSizeshowQuickJumperChanger: true,
       pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -153,8 +155,8 @@ export default observer(function BaseTable(props: Props) {
           });
         }
         option.type.includes("fixedIndex") &&
-          !props.nohorizontalScroll &&
-          (option.columns[0].fixed = "left");
+        !props.nohorizontalScroll &&
+        (option.columns[0].fixed = "left");
       }
     }
 
@@ -176,7 +178,7 @@ export default observer(function BaseTable(props: Props) {
     doCols.forEach((doCol: any) => {
       let callback = doCol.render;
       doCol.render = (text: any, row: any, index: any) => {
-        if (Object.keys(row).length <= 1) return <span />;
+        if (Object.keys(row).length <= 1) return <span/>;
         return callback && callback(text, row, index);
       };
     });
@@ -197,7 +199,8 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) { }
+            } catch (error) {
+            }
           }
         }
       }, 0);
@@ -214,11 +217,13 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) { }
+            } catch (error) {
+            }
           }
         }
       }, 100);
-    } catch (error) { }
+    } catch (error) {
+    }
     try {
       setTimeout(() => {
         if (tableRef.current && !option.fixedFooter) {
@@ -240,7 +245,8 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) { }
+    } catch (error) {
+    }
     try {
       setTimeout(() => {
         if (tableRef.current && option.surplusHeight) {
@@ -280,7 +286,8 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) { }
+    } catch (error) {
+    }
     setTimeout(() => {
       try {
         tableRef!.current!.querySelector(".ant-table-body").onscroll = (
@@ -289,13 +296,15 @@ export default observer(function BaseTable(props: Props) {
           scrollTop = e.target.scrollTop;
         };
         // scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
-      } catch (error) { }
+      } catch (error) {
+      }
     }, 0);
     try {
       tableRef!.current!.querySelector(
         ".ant-table-body"
       )!.scrollTop = scrollTop;
-    } catch (error) { }
+    } catch (error) {
+    }
   });
 
   useEffect(() => {
@@ -323,7 +332,7 @@ export default observer(function BaseTable(props: Props) {
           style={{
             float: 'right',
             marginTop: '15px'
-          }} />}
+          }}/>}
       </React.Fragment>}
       {!props.useOuterPagination && <TableComponent {...option} />}
     </Wrapper>
