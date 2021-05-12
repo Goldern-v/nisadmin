@@ -933,6 +933,7 @@ export default function Indicator(props: Props) {
     setNursingCharges(false)
     setNursingData(false)
     setStatistic(false)
+    setCmpName('')
     const name = props.match.params.name || ''
     if (['eventReport', 'wardSetting'].includes(name)) {
       setCmpName(name)

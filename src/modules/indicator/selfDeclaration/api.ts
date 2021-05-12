@@ -20,7 +20,7 @@ class Api extends BaseApiService {
     params.endDate = moment(params.time[1]).format("YYYY-MM-DD")
     params.formCodes = params.formCodes ? [params.formCodes] : []
     delete params.time
-    return this.post(`/form/eventReport/master/export`, params)
+    return this.post(`/form/eventReport/master/export`, params, { responseType: 'blob' })
   }
 
   // 获取一项

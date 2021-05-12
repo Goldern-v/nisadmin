@@ -78,7 +78,8 @@ const homeRouter = (view: any): any[] => {
 }
 
 if (
-  process.env.REACT_APP_HOSPITAL_ID == "hj"
+  process.env.REACT_APP_HOSPITAL_ID == "hj" ||
+  process.env.REACT_APP_HOSPITAL_ID == "nys"
 ) {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
@@ -133,7 +134,8 @@ if (
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
-  specialModule = [
+  // 南医三 使用 厚街模式
+  /*specialModule = [
     // setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     // setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_nys, layouts.MainLayout),
@@ -157,7 +159,7 @@ if (
       layouts.MainLayout
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  ];
+  ];*/
 } else if (process.env.REACT_APP_HOSPITAL_ID == "wh") {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
