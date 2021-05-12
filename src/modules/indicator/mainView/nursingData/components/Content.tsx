@@ -169,7 +169,7 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.nurseEduCount.collegeInEnd
         },
         {
-          name: "时段末主管护师本科人数",
+          name: "时段末本科人数",
           value: nursingDataModal.dataList.nurseEduCount.undergraduateInEnd
         },
         {
