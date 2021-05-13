@@ -228,6 +228,7 @@ export default function ExportNurseFile(props: Props) {
           </PrintPage>
           {imgPageList.map((imgArr: any[], idx0: number) => (
             <PrintPage pageIndex={idx0 + 1 + 11} key={idx0}>
+              {idx0 === 0 && <SubTitle>附件</SubTitle>}
               {imgArr.map((img: any, idx1) => (
                 <img
                   src={img.currentSrc}
@@ -243,4 +244,11 @@ export default function ExportNurseFile(props: Props) {
 }
 const Wrapper = styled.div`
   display:none;
+`
+const SubTitle = styled.div`
+  text-align: center;
+  color: #000;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 20px;
 `

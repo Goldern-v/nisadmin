@@ -55,7 +55,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`
       );
-    } else if (showType == "nurseFile") {
+    } else if (showType == "nurseFileNys") {
       service.commonApiService.getNurseInformation(row.commiterNo).then(res => {
         // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
         if (needAudit) {
@@ -92,7 +92,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: "center",
       width: 90,
       render(text: string, record: any) {
-        return text == "nurseFile"
+        return text == "nurseFileNys"
           ? "护士档案"
           : text == "qc"
             ? "三级质控"
@@ -240,7 +240,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       return message.warning("请至少勾选一条记录");
     }
 
-    if (showType == "nurseFile") {
+    if (showType == "nurseFileNys") {
       groupsEmpNoAduitModal.show({
         selectedRows,
         getTableData: () => {
