@@ -2,6 +2,7 @@ import { observable, computed } from "mobx";
 import { traineeShiftApi } from "./api/TraineeShiftApi";
 import { fileDownload } from "src/utils/file/file";
 import moment from "moment";
+import { message } from "antd";
 
 class TraineeShiftModal {
   @observable public sheetId: any = undefined; //轮科表id
@@ -108,6 +109,43 @@ class TraineeShiftModal {
     traineeShiftApi.exportSheetCompleteInfo(this.postObj).then(res => {
       fileDownload(res);
     });
+  }
+
+  /** 获取导入模板 */
+  getImportTemplate() {
+    if (this.tableList.length <= 0) {
+      message.warning('请先设置分组')
+    } else {
+      traineeShiftApi.exportSheetTemplate(this.sheetId)
+        .then(res => fileDownload(res))
+    }
+  }
+
+  /** 根据模板导入实习生轮科表 */
+  import() {
+    let importElId = 'sxslrb_import_file_el'
+    let lastEl = document.getElementById('importElId')
+    if (lastEl) document.body.removeChild(lastEl)
+
+    let importEl = document.createElement('input')
+    importEl.id = importElId
+    importEl.style.display = 'none'
+    importEl.type = 'file'
+    importEl.onchange = (e: any) => {
+      let file = e.target.files[0]
+      console.log(file)
+      this.tableLoading = true;
+
+      traineeShiftApi.importSheetFromFile(file, this.sheetId)
+        .then(res => {
+          message.success('导入成功')
+          this.onload()
+        }, err => this.tableLoading = false)
+
+      document.body.removeChild(importEl)
+    }
+    document.body.appendChild(importEl)
+    importEl.click()
   }
 }
 

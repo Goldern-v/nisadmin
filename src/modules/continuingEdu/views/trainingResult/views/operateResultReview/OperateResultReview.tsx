@@ -283,11 +283,11 @@ export default observer(function OperateResultReview() {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> &gt; </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
-        <span> > </span>
+        <span> &gt; </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > {editable ? '评分设置' : '查看结果'}</span>
+        <span> &gt; {editable ? '评分设置' : '查看结果'}</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
@@ -399,6 +399,7 @@ export default observer(function OperateResultReview() {
   </Wrapper>
 })
 
+// @ts-ignore
 const TableWrapper = styled(TabledCon)`
   position: relative;
   td{

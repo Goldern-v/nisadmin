@@ -166,5 +166,25 @@ export default class TraineeShiftApi extends BaseApiService {
       obj
     );
   }
+
+  /**
+   * 实习生轮课表导入模版
+   */
+  public exportSheetTemplate(sheetId: string | number) {
+    return this.post('/studyAndTrain/intern/deptRotationSchedule/exportSheetTemplate', { sheetId }, { responseType: 'blob' })
+  }
+
+  /**
+   * 导入实习生轮科表
+   * @param filename 文件
+   * @param sheetId 论课表id
+   */
+  public importSheetFromFile(filename: any, sheetId: any) {
+    let newFormData = new FormData()
+    newFormData.set('filename', filename)
+    newFormData.set('sheetId', sheetId)
+
+    return this.post('/studyAndTrain/intern/deptRotationSchedule/importSheetTemplate', newFormData)
+  }
 }
 export const traineeShiftApi = new TraineeShiftApi();

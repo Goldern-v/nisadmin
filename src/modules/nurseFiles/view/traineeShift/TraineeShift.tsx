@@ -18,6 +18,7 @@ import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
 import EditDeptModal from "./modal/EditDeptModal"; // 添加修改弹窗
 import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
 import AddGroupModal from "./modal/AddGroupModal"; // 添加分组弹窗
+import { Span } from "src/modules/continuingEdu/views/trainingSetting/formApply/modal/formCommon/common";
 
 interface Props {
   getTitle: any;
@@ -352,6 +353,18 @@ export default observer(function TraineeShift(props: Props) {
           </Button>
           <Button onClick={() => setEditDeptBtn(true)}>编辑实习科室</Button>
           <Button onClick={() => setAddGroupBtn(true)}>添加分组</Button>
+          <Button
+            onClick={() => {
+              traineeShiftModal.getImportTemplate();
+            }}>
+            下载模板
+          </Button>
+          <Button
+            onClick={() => {
+              traineeShiftModal.import();
+            }}>
+            导入
+          </Button>
           <Button
             onClick={() => {
               traineeShiftModal.export();

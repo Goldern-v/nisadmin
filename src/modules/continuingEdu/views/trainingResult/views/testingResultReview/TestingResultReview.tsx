@@ -424,6 +424,7 @@ export default observer(function TestingResultReview() {
           .then(res => {
             message.success(`${type}成功`, 1, () => {
               trainingResultModel.getBaseInfo()
+              trainingResultModel.getTableData()
             })
             setPublishLoading(false)
           }, () => setPublishLoading(false))
@@ -487,7 +488,7 @@ export default observer(function TestingResultReview() {
               type="primary"
               onClick={() => handleDisplayOrHideScores(1)}
             >
-              显示成绩
+              公布成绩
             </Button>
           }
           {appStore.HOSPITAL_ID == 'nys' && baseInfo.scoresVisibleStatus === 1 &&
@@ -495,7 +496,7 @@ export default observer(function TestingResultReview() {
               type="primary"
               onClick={() => handleDisplayOrHideScores(0)}
             >
-              隐藏成绩
+              不公布成绩
             </Button>
           }
           {appStore.hisMatch({
@@ -521,6 +522,7 @@ export default observer(function TestingResultReview() {
   </Wrapper>
 })
 
+// @ts-ignore
 const TableWrapper = styled(TabledCon)`
   position: relative;
   td{
