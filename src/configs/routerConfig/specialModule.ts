@@ -19,13 +19,20 @@ import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurse
 import NurseAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/NurseAudit";
 //档案详情
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_lcey from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_gzsrm from "src/modules/nurseFiles/view/nurseFiles-gzsrm/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_dghl from "src/modules/nurseFiles/view/nurseFiles-dghl/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_wh
+  from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_nys
+  from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_gzhd
+  from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_lcey
+  from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_gzsrm
+  from "src/modules/nurseFiles/view/nurseFiles-gzsrm/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_jmfy
+  from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_dghl
+  from "src/modules/nurseFiles/view/nurseFiles-dghl/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -59,6 +66,7 @@ const SettingView = lazy(() => import("src/modules/setting/SettingView"))
 const BadEventsNewList = lazy(() => import("src/modules/badEventsNew/BadEventsNewList"))
 import BadEventsRouters from "src/modules/badEventsNew/BadEventsRouters"
 import IndicatorNew from "src/modules/indicator/IndicatorNew";
+
 let specialModule: any[] = [];
 
 //根据是否只展示不良事件指定页面
@@ -77,10 +85,7 @@ const homeRouter = (view: any): any[] => {
   }
 }
 
-if (
-  process.env.REACT_APP_HOSPITAL_ID == "hj" ||
-  process.env.REACT_APP_HOSPITAL_ID == "nys"
-) {
+if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -134,10 +139,9 @@ if (
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
-  // 南医三 使用 厚街模式
-  /*specialModule = [
-    // setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
-    // setLayout("/indicator", IndicatorNew, layouts.MainLayout),
+  specialModule = [
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_nys, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
@@ -159,7 +163,7 @@ if (
       layouts.MainLayout
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  ];*/
+  ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "wh") {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
