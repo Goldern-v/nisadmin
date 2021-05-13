@@ -155,14 +155,5 @@ export const LEFT_MENU = [
     icon: <ZKHL/>,
     path: "/indicator/专科季度统计表",
     // hide: appStore.isDev
-  },
-  {
-    title: "国家数据填报",
-    icon: <ZKHL/>,
-    children: [
-      { title: "数据填报", path: "/indicator/eventReport" },
-      { title: "病区设置", path: "/indicator/wardSetting" },
-    ],
-    // hide: appStore.isDev
-  },
+  }
 ];

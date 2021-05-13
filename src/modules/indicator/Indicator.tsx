@@ -66,9 +66,6 @@ import NursingCharges from "./mainView/nursingCharges/NursingCharges";
 //统计表
 import StatisticTable from './statisticsTable'
 
-import SelfDeclaration from './selfDeclaration'
-import DepManage from './depManage'
-
 export interface Props extends RouteComponentProps<{ name?: string }> {
 }
 
@@ -925,7 +922,6 @@ export default function Indicator(props: Props) {
   const [nursingData, setNursingData] = useState(false); //是否展示护理主质量相关数据页面（--true展示）
   const [nursingCharges, setNursingCharges] = useState(false); //是否展示护理质控指标页面（--true展示）
   const [statistic, setStatistic] = useState(false); // 是否是统计表
-  const [cmpName, setCmpName] = useState('') // 组件名字
 
   let topRef: any = React.createRef();
   useLayoutEffect(() => {
@@ -933,11 +929,8 @@ export default function Indicator(props: Props) {
     setNursingCharges(false)
     setNursingData(false)
     setStatistic(false)
-    setCmpName('')
     const name = props.match.params.name || ''
-    if (['eventReport', 'wardSetting'].includes(name)) {
-      setCmpName(name)
-    } else if (['专科季度统计表', '公共季度统计表'].includes(name)) {
+    if (['专科季度统计表', '公共季度统计表'].includes(name)) {
       setStatistic(true)
     } else if (name === "护理质量相关数据") { // 护理质量相关数据（吴敏）
       setNursingData(true);
@@ -1060,14 +1053,6 @@ export default function Indicator(props: Props) {
 
   // 条件渲染右侧组件
   const GetComponents = () => {
-    if (cmpName) {
-      return (
-        <div className="nursingData">
-          {cmpName === 'eventReport' && <SelfDeclaration/>} {/* 国家数据填报 --- 数据填报 */}
-          {cmpName === 'wardSetting' && <DepManage/>} {/* 国家数据填报 --- 病区设置 */}
-        </div>
-      )
-    }
     if (nursingData) {
       // 护理质量相关数据
       return (
