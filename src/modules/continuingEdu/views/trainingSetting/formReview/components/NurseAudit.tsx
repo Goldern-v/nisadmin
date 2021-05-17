@@ -59,8 +59,8 @@ export default observer(function NurseAudit() {
             {activeKey == "0" ? (
               <span onClick={() => handleDetail(record)}>审核</span>
             ) : (
-                <span onClick={() => handleDetail(record, true)}>查看</span>
-              )}
+              <span onClick={() => handleDetail(record, true)}>查看</span>
+            )}
           </DoCon>
         );
       }

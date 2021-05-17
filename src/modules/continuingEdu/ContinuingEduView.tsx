@@ -190,7 +190,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/培训统计分析",
       component: 培训统计分析,
-      hide: appStore.HOSPITAL_ID !== "hj"
+      hide: appStore.HOSPITAL_ID !== "hj" || authStore.isOnlyInternsManage
     },
     ...dataList,
     {
@@ -263,7 +263,7 @@ export default function ContinuingEdu(props: Props) {
     {
       title: "教学质量管理",
       icon: <JXJH />,
-      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage || !appStore.isDev,
+      hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
         {
           title: "教学质量评价详情",
@@ -279,6 +279,7 @@ export default function ContinuingEdu(props: Props) {
         {
           title: "进修临床实践管理",
           path: "/continuingEdu/进修临床实践管理",
+          hide: !appStore.isDev,
           component: 教学质量评价
         },
       ]

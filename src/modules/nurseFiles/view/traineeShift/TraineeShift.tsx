@@ -18,7 +18,6 @@ import { traineeShiftModal } from "./TraineeShiftModal"; // 仓库数据
 import EditDeptModal from "./modal/EditDeptModal"; // 添加修改弹窗
 import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
 import AddGroupModal from "./modal/AddGroupModal"; // 添加分组弹窗
-import { Span } from "src/modules/continuingEdu/views/trainingSetting/formApply/modal/formCommon/common";
 
 interface Props {
   getTitle: any;

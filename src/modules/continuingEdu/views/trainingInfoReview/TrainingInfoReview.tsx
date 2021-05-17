@@ -70,11 +70,24 @@ export default observer(function TrainingInfoReview() {
       </SubContent>
       <ButtonGroups>
         {queryObj.audit &&
-          <Button
-            type="primary"
-            onClick={handleAuditOpen}>
-            {queryObj.statusDesc || '未知审核流程'}
-          </Button>}
+          appStore.hisMatch({
+            map: {
+              hj: (
+                <Button
+                  type="primary"
+                  onClick={handleAuditOpen}>
+                  {queryObj.statusDesc ? '审核' : '未知审核流程'}
+                </Button>
+              ),
+              default: (
+                <Button
+                  type="primary"
+                  onClick={handleAuditOpen}>
+                  {queryObj.statusDesc || '未知审核流程'}
+                </Button>
+              )
+            }
+          })}
         <Button
           onClick={() => history.goBack()}>
           返回
