@@ -32,6 +32,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://218.14.180.38:9094' // 公司-江门妇幼正式
       // return 'https://info.cr-health.com:20211' // 公司-江门妇幼测试-外网
       return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
+    /** 东莞横沥 */
+    case 'dghl':
+      return 'http://183.63.206.194:9091' // 公司-东莞横沥正式
     /** 默认公司本地内网厚街测试环境 */
     default:
       return 'http://192.168.1.54:9866'

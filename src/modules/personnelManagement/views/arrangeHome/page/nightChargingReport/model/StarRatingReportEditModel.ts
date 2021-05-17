@@ -25,7 +25,9 @@ export interface SectionListItem {
 
 interface ModalCase {
   show: (...arr: any) => void;
+
   hide(): void;
+
   Component: any;
 }
 
@@ -61,12 +63,10 @@ class StarRatingReportEditModel {
   @action
   openEditModal(sectionId: string) {
     let obj = this.getSection(sectionId);
-    this.baseModal &&
-      obj &&
-      this.baseModal.show({
-        Component: obj.modal,
-        sectionData: this.getSection(sectionId)
-      });
+    this.baseModal && obj && this.baseModal.show({
+      Component: obj.modal,
+      sectionData: this.getSection(sectionId)
+    });
   }
 
   /** 获取组件数据 */
@@ -79,6 +79,7 @@ class StarRatingReportEditModel {
       return null;
     }
   }
+
   /** 设置组件数据 */
   @action
   setSectionData(sectionId: string, data: any) {
@@ -102,12 +103,31 @@ class StarRatingReportEditModel {
 
   /** 数据初始化 */
   async initData(query?: any) {
-    let { data } = await starRatingReportService.getReport(query);
-    this.allData = data;
+    const { data } = await starRatingReportService.getReport(query)
+    this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
-    this.getSectionData("报告名称")!.text = appStore.queryObj.name;
-    this.getSectionData("夜班费上报表")!.list = data;
+    if (['dghl'].includes(appStore.HOSPITAL_ID)) {
+      this.allData = data.list1
+      this.getSectionData("夜班费上报表")!.list = data.list1
+      this.getSectionData("夜班费上报表")!.list2 = {
+        ...{
+          allMoney: 0,
+          ksfzr: '',
+          ksfzrAutograph: '',
+          ksfzrAutographDate: '',
+          zgbmyj: '',
+          zgbmyjAutograph: '',
+          zgbmyjAutographDate: '',
+        },
+        ...data.list2
+      }
+      this.getSectionData("夜班费上报表")!.schNightTotalModel = data.schNightTotalModel
+    } else {
+      this.allData = data
+      this.getSectionData("夜班费上报表")!.list = data
+    }
   }
+
   async init(query?: any) {
     await this.initData(query);
     this.baseModal = createModal(BaseModal);

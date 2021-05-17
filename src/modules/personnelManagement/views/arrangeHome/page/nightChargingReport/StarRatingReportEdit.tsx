@@ -14,7 +14,9 @@ import { globalModal } from "src/global/globalModal";
 import { starRatingReportService } from "./api/StarRatingReportService";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file";
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps {
+}
 
 export default observer(function StarRatingReportEdit() {
   const pageRef: any = useRef<HTMLElement>();
@@ -90,13 +92,22 @@ export default observer(function StarRatingReportEdit() {
     });
   };
   const onExport = () => {
-    starRatingReportService
-      .export({
-        lists: starRatingReportEditModel.getSectionData("夜班费上报表").list
-      })
-      .then(res => {
-        fileDownload(res);
-      });
+    const data = starRatingReportEditModel.getSectionData("夜班费上报表")
+    const params = appStore.hisMatch({
+      map: {
+        dghl: {
+          list1: data.list,
+          list2: data.list2,
+          schNightTotalModel: data.schNightTotalModel
+        },
+        default: {
+          lists: data.list
+        }
+      }
+    })
+    starRatingReportService.export(params).then(res => {
+      fileDownload(res);
+    });
   };
   const onPublish = () => {
     globalModal.confirm("提交确认", "你确定要提交该报告吗？").then(res => {
@@ -154,7 +165,7 @@ export default observer(function StarRatingReportEdit() {
       <ScrollCon>
         <Page
           ref={pageRef}
-          className={appStore.HOSPITAL_ID === "nys" ? "nysWidth" : ""}
+          className={['nys', 'dghl'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
@@ -175,7 +186,7 @@ export default observer(function StarRatingReportEdit() {
           })}
         </Page>
         {starRatingReportEditModel.baseModal && (
-          <starRatingReportEditModel.baseModal.Component />
+          <starRatingReportEditModel.baseModal.Component/>
         )}
       </ScrollCon>
     </Wrapper>

@@ -7,6 +7,7 @@ import { meunConfig as menuConfig_jmfy } from "./config/menuConfig_jmfy";
 import { meunConfig as menuConfig_gzhd } from "./config/menuConfig_gzhd";
 import { meunConfig as menuConfig_hj } from "./config/menuConfig_hj";
 import { meunConfig as menuConfig_nys } from "./config/menuConfig_nys";
+import { meunConfig as menuConfig_dghl } from "./config/menuConfig_dghl";
 export interface Props { }
 
 export default function PersonnelManagementView() {
@@ -20,6 +21,8 @@ export default function PersonnelManagementView() {
         return menuConfig_nys;
       case 'gzhd':
         return menuConfig_gzhd;
+      case 'dghl':
+        return menuConfig_dghl;
       default:
         return menuConfig_hj;
     }

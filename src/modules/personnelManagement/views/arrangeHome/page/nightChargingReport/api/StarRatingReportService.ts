@@ -2,10 +2,16 @@ import BaseApiService from "src/services/api/BaseApiService";
 // import qs from 'qs'
 import { starRatingReportEditModel } from "./../model/StarRatingReportEditModel";
 import { appStore } from "src/stores";
-const nysHis: string =
-  appStore.HOSPITAL_ID === "nys"
-    ? "schNightTotalContentNys"
-    : "schNightTotalContent";
+
+const hospitalPath: string =
+  appStore.hisMatch({
+    map: {
+      nys: 'schNightTotalContentNys',
+      dghl: 'schNightTotalContentHl',
+      default: 'schNightTotalContent',
+    }
+  })
+
 
 export interface ListQuery {
   wardCode: string;
@@ -15,6 +21,7 @@ export interface ListQuery {
   pageIndex: number;
   pageSize: number;
 }
+
 export default class StarRatingReportService extends BaseApiService {
   /**列表接口 */
   public getPage(query: ListQuery) {
@@ -28,12 +35,12 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**获取报告 */
   public getReport(query: any) {
-    return this.post(`/${nysHis}/getList`, query);
+    return this.post(`/${hospitalPath}/getList`, query);
   }
 
   /**修改报告 */
   public editReport(query: any) {
-    return this.post(`/${nysHis}/saveOrUpdate`, query);
+    return this.post(`/${hospitalPath}/saveOrUpdate`, query);
   }
 
   /**更新夜班费上报表 */
@@ -83,7 +90,7 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**导出 */
   public export(query: any) {
-    return this.post(`/${nysHis}/excel`, query, {
+    return this.post(`/${hospitalPath}/excel`, query, {
       responseType: "blob"
     });
   }
@@ -94,6 +101,7 @@ export default class StarRatingReportService extends BaseApiService {
       deptCode
     });
   }
+
   /**修改标准 */
   public saveOrUpdateSchNightStandard(deptCode: any, standard: any) {
     return this.post("/schNightStandard/saveOrUpdate", {

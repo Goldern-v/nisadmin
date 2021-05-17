@@ -22,6 +22,6 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 夜班费上报表模块,
     modal: 夜班费上报表弹窗,
-    modalWidth: appStore.HOSPITAL_ID === "nys" ? 1300 : 900
+    modalWidth: ['nys', 'dghl'].includes(appStore.HOSPITAL_ID) ? 1300 : 900
   }
 ];
