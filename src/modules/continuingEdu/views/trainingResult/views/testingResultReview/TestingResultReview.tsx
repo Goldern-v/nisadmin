@@ -298,34 +298,36 @@ export default observer(function TestingResultReview() {
   // 针对不同医院打开不同界面
   const getPage = () => {
     // 南医三 厚街有统计查询功能
-    let isOk: any = ['hj', 'nys'].indexOf(appStore.HOSPITAL_ID)
-    if (isOk && !appStore.queryObj.editable) {
-      return (
-        <BaseTabs
-          config={
-            [
-              {
-                title: '考试详情',
-                index: "0",
-                component: <HjExaminationDetails />
-              },
-              {
-                title: '考试情况统计与分析',
-                index: "1",
-                component: <HjExamResultAnalyse />
-              }
-            ]
-          }
-        />
-      )
-    } else {
-      return (
-        <MainPannel>
-          <QueryPannel />
-          <ExaminationDetails />
-        </MainPannel>
-      )
-    }
+    return appStore.hisMatch({
+      map: {
+        'hj,nys': (
+          <BaseTabs
+            config={
+              [
+                {
+                  title: '考试详情',
+                  index: "0",
+                  component: <HjExaminationDetails />
+                },
+                {
+                  title: '考试情况统计与分析',
+                  index: "1",
+                  component: <HjExamResultAnalyse />
+                }
+              ]
+            }
+          />
+        ),
+        'default': (
+          <MainPannel>
+            <QueryPannel />
+            <ExaminationDetails />
+          </MainPannel>
+        )
+      },
+      currentHospitalId: appStore.queryObj.editable ? 'default' : appStore.HOSPITAL_ID,
+      vague: true,
+    })
   }
 
   // 普通表格考试详情
