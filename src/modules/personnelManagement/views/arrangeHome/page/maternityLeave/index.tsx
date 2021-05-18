@@ -103,7 +103,7 @@ export default observer(() => {
         </Select>
 
         <Button onClick={() => getData()}>查询</Button>
-        <Button onClick={() => exportData()}>导出</Button>
+        {/*<Button onClick={() => exportData()}>导出</Button>*/}
         <Button type="primary" onClick={handleCreate}>新增</Button>
       </PageHeader>
       {/* 表格 */}

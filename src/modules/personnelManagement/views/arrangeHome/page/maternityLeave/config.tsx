@@ -8,6 +8,7 @@ const statusOption = [
   { label: '休产假', value: '休产假' },
   { label: '哺乳假期', value: '哺乳假期' },
   { label: '哺乳期结束', value: '哺乳期结束' },
+  { label: '孕周大于28+', value: '孕周大于28+' },
 ]
 const typeOption = [
   { label: '顺产', value: '顺产' },
