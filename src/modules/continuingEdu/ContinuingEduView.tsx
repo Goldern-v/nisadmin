@@ -190,7 +190,8 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/培训统计分析",
       component: 培训统计分析,
-      hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
+      // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
+      hide: () => appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage
     },
     ...dataList,
     {
