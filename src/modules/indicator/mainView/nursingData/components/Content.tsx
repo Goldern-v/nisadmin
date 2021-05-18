@@ -17,12 +17,20 @@ export default observer(function Content(props: Props) {
           value: nursingDataModal.dataList.nurseCount.bedSize
         },
         {
-          name: "时段初病区执业护士总人数",
+          name: "时段初全院执业护士总人数",
           value: nursingDataModal.dataList.nurseCount.totalNurseInBegin
         },
         {
-          name: "时段末病区执业护士总人数",
+          name: "时段末全院执业护士总人数",
           value: nursingDataModal.dataList.nurseCount.totalNurseInEnd
+        },
+        {
+          name: "时段初病区执业护士总人数",
+          value: nursingDataModal.dataList.nurseCount.totalNurseInBeginInWard
+        },
+        {
+          name: "时段末病区执业护士总人数",
+          value: nursingDataModal.dataList.nurseCount.totalNurseInEndInWard
         },
         {
           name: "本时段白班责任护士数",
