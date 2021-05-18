@@ -6,7 +6,9 @@ import BaseTable from 'src/components/BaseTable'
 import { Transfer, Modal, Input, message, Spin } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
-export interface Props extends RouteComponentProps {}
+
+export interface Props extends RouteComponentProps {
+}
 
 export default function MainBox() {
   const [loadingTable, setLoadingTable] = useState(false)
@@ -58,7 +60,7 @@ export default function MainBox() {
 
   //获取人员分组列表
   const getMealList = () => {
-    if(effect){
+    if (effect) {
       setLoadingTable(true)
       let deptCode = scheduleStore.getDeptCode()
       service.personnelSettingApiService.getByDeptCode(deptCode).then((res) => {
@@ -103,7 +105,7 @@ export default function MainBox() {
         service.personnelSettingApiService.deletePersonnelSetting(record).then((res) => {
           getMealList()
           setMockData([])
-          setTargetKeys([])           
+          setTargetKeys([])
           message.success('删除成功')
         })
       }
@@ -111,14 +113,14 @@ export default function MainBox() {
   }
 
   //获取分组已选人员
-  const selectedScheduler = (record?: any, arrayData?:any) =>{
+  const selectedScheduler = (record?: any, arrayData?: any) => {
     let id = record.id
     setLoadingTransfer(true)
     service.personnelSettingApiService.getById(id).then((res) => {
       setLoadingTransfer(false)
-      let array:any = []
-      res.data.length > 0 && res.data.map((item:any, i:any) => {
-        let data:any = arrayData.filter((o:any) => `${o.empNo} + ${o.empName}` === `${item.empNo} + ${item.empName}`)
+      let array: any = []
+      res.data.length > 0 && res.data.map((item: any, i: any) => {
+        let data: any = arrayData.filter((o: any) => `${o.empNo} + ${o.empName}` === `${item.empNo} + ${item.empName}`)
         if (data && data.length > 0) {
           array.push(data[0].key)
         }
@@ -132,19 +134,19 @@ export default function MainBox() {
     let deptCode = scheduleStore.getDeptCode()
     let id = record.id
     setLoadingTransfer(true)
-    service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
+    service.personnelSettingApiService.getScheduler(deptCode, id).then((res) => {
       setLoadingTransfer(false)
       let array: any = []
       res.data.length > 0 &&
-        res.data.map((item: any, i: any) => {
-          array.push({
-            key: i.toString(),
-            sortValue: i.toString(),
-            schSettingNurseGroupId: id,
-            empName: item.empName,
-            empNo: item.empNo
-          })
+      res.data.map((item: any, i: any) => {
+        array.push({
+          key: i.toString(),
+          sortValue: i.toString(),
+          schSettingNurseGroupId: id,
+          empName: item.empName,
+          empNo: item.empNo
         })
+      })
       setMockData(array)
       selectedScheduler(record, array)
     })

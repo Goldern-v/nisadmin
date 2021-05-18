@@ -1,15 +1,17 @@
 import BaseApiService from '../BaseApiService'
+import { appStore } from "src/stores";
+
 export default class PersonnelSettingApiService extends BaseApiService {
   //1、按科室查找人员分组列表
-  public async getByDeptCode (deptCode: any) {
+  public async getByDeptCode(deptCode: any) {
     const getData = {
-      deptCode: deptCode, // number 
+      deptCode: deptCode, // number
     }
     return this.get(`/schSettingNurseGroup/getByDeptCode/${getData.deptCode}`)
   }
 
   //2、新增人员分组
-  public async updatePersonnelSetting (data: any) {
+  public async updatePersonnelSetting(data: any) {
     const postData = {
       deptCode: data.deptCode,  //string
       groupName: data.groupName,  //string
@@ -17,30 +19,36 @@ export default class PersonnelSettingApiService extends BaseApiService {
     }
     return this.post(`/schSettingNurseGroup/saveSettingNurseGroup`, postData)
   }
-  
+
   //3、删除分组
-  public async deletePersonnelSetting (data: any) {
+  public async deletePersonnelSetting(data: any) {
     const getData = {
-      id: data.id, // number 
+      id: data.id, // number
     }
     return this.get(`/schSettingNurseGroup/delete/${getData.id}`)
   }
 
   // 4.查找排班人员
-  public async getScheduler(deptCode: string) {
-    return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
+  public async getScheduler(deptCode: string, id?: string) {
+    return appStore.hisMatch({
+      map: {
+        dghl: this.get(`/schShiftUser/getByDeptCodeAndId/${deptCode}/${id}`),
+        other: this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
+      }
+    })
+    // return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
   }
 
   //5、根据人员分组ID获取对应的人员
-  public async getById (id: any) {
+  public async getById(id: any) {
     const getData = {
-      id: id, // number 
+      id: id, // number
     }
     return this.get(`/schSettingNurseGroup/getBySettingNurseGroupId/${getData.id}`)
   }
-  
+
   //6、新增或修改分组中的人员
-  public async updateSavePersonnelSetting (data: any) {
+  public async updateSavePersonnelSetting(data: any) {
     const postData = {
       schSettingNurseGroupId: data.schSettingNurseGroupId,  // 分组ID
       schSettingNurseGroupDetails: data.schSettingNurseGroupDetail // 已选数据
