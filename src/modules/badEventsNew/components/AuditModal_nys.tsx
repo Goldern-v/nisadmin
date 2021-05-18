@@ -30,6 +30,15 @@ export interface Props {
   patientInfo?: any //病人信息
 }
 
+/** 患者坠床∕跌倒记录表 伤害选项*/
+const hlb_ddzcsh_option_list = [
+  '无', '1级', '2级', '3级', '4级', '死亡'
+]
+/** 压力性损伤事件报告表 护理质量管理委员会压疮分期 */
+const zlwyh_ycfq_explain_list = [
+  '1期', '2期', '3期', '4期', '不可分期', '深部组织损伤', '医疗器械相关性压力性损伤', '粘膜压力性损伤'
+]
+
 export default observer(function AduitModal(props: Props) {
   const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign, isZhuanke, patientInfo } = props
   //用于操作和提交的不良事件表单数据
@@ -264,22 +273,53 @@ export default observer(function AduitModal(props: Props) {
         return (
           <div>
             {commonCon}
-            {eventCode === 'badevent_nys_fall' && <Row>
-              <Col span={4}>事件等级：</Col>
-              <Col span={20}>
-                <Radio.Group
-                  className='radio-group'
-                  value={formMap[`${eventCode}_sjdj_option`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_sjdj_option`]: e.target.value })
-                  }>
-                  <Radio value="警告事件" >警告事件</Radio>
-                  <Radio value="不良事件">不良事件</Radio>
-                  <Radio value="未造成后果事件">未造成后果事件</Radio>
-                  <Radio value="隐患事件">隐患事件</Radio>
-                </Radio.Group>
-              </Col>
-            </Row>}
+            {eventCode === 'badevent_nys_fall' && (
+              <React.Fragment>
+                <Row>
+                  <Col span={4}>事件等级：</Col>
+                  <Col span={20}>
+                    <Radio.Group
+                      className='radio-group'
+                      value={formMap[`${eventCode}_sjdj_option`]}
+                      onChange={(e) =>
+                        setFormMap({ ...formMap, [`${eventCode}_sjdj_option`]: e.target.value })
+                      }>
+                      <Radio value="警告事件" >警告事件</Radio>
+                      <Radio value="不良事件">不良事件</Radio>
+                      <Radio value="未造成后果事件">未造成后果事件</Radio>
+                      <Radio value="隐患事件">隐患事件</Radio>
+                    </Radio.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={4}>伤害等级：</Col>
+                  <Col span={20}>
+                    <Radio.Group
+                      className='radio-group'
+                      value={formMap[`${eventCode}_hlb_ddzcsh_option`]}
+                      onChange={(e) =>
+                        setFormMap({ ...formMap, [`${eventCode}_hlb_ddzcsh_option`]: e.target.value })
+                      }>
+                      {hlb_ddzcsh_option_list.map((val: string) => <Radio value={val} key={val}>{val}</Radio>)}
+                    </Radio.Group>
+                  </Col>
+                </Row>
+              </React.Fragment>
+            )}
+            {eventCode === 'badevent_nys_pressure' && (
+              <Row>
+                <Col span={4}>事件等级：压疮分期</Col>
+                <Col span={20}>
+                  <Select
+                    value={formMap[`${eventCode}_zlwyh_ycfq_explain`]}
+                    onChange={(val: any) =>
+                      setFormMap({ ...formMap, [`${eventCode}_zlwyh_ycfq_explain`]: val })
+                    }>
+                    {zlwyh_ycfq_explain_list.map((val: string) => <Option value={val} key={val}>{val}</Option>)}
+                  </Select>
+                </Col>
+              </Row>
+            )}
             <Row>
               <Col span={4}>审核意见：</Col>
               <Col span={20}>

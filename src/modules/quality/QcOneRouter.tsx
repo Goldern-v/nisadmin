@@ -25,6 +25,8 @@ import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
 import PatientVisitMonth from './views/qcOne/report/PatientVisitMonth/PatientVisitMonth'
 import SafetyCheckReport from './views/qcOne/report/SafetyCheck/SafetyCheckReport'
+import SatisfyInvestigation from './views/qcOne/page/satisfyInvestigation/SatisfyInvestigation'
+import SatisfyInvestigationDetail from './views/qcOne/page/satisfyInvestigation/SatisfyInvestigationDetail'
 import Workload from './views/workload/Workload'
 
 const LEFT_MENU_CONFIG: any = [
@@ -136,6 +138,25 @@ const LEFT_MENU_CONFIG: any = [
     keepAlive: true,
     disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
+  // {
+  //   title: '满意度调查表',
+  //   icon: <YJJL />,
+  //   children: [
+  //     {
+  //       title: '护士满意度调查表',
+  //       path: '/qcOne/satisfyInvestigation',
+  //       component: SatisfyInvestigation,
+  //       keepAlive: true,
+  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+  //     },
+  //     {
+  //       title: '护士满意度调查表详情',
+  //       hide: true,
+  //       path: '/qcOne/satisfyInvestigationDetail',
+  //       component: SatisfyInvestigationDetail,
+  //     },
+  //   ]
+  // },
   // {
   //   title: '工作量',
   //   icon: <YJJL />,
