@@ -55,6 +55,10 @@ export function openAuditModal(title: string, row: any, getTableData: any) {
             是否返聘员工: "hireEmployees",
             第一学历: "firstDegree",
           },
+          {
+            开始从事护理时间: "zyzsNursingPostDate",
+            获取执业证书开始时间: "zyzsDate"
+          }
         ],
         fileData: [
           {

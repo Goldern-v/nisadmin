@@ -99,6 +99,10 @@ export default observer(function BaseInfo() {
                 {
                   是否返聘员工: "hireEmployees",
                   第一学历: "firstDegree"
+                },
+                {
+                  开始从事护理时间: "zyzsNursingPostDate",
+                  获取执业证书开始时间: "zyzsDate"
                 }
               ],
               fileData: [
@@ -171,6 +175,10 @@ export default observer(function BaseInfo() {
         {
           是否返聘员工: data.enrolDate == '1' ? '是' : '否',
           第一学历: data.firstDegree
+        },
+        {
+          开始从事护理时间: data.zyzsNursingPostDate,
+          获取执业证书开始时间: data.zyzsDate
         }
       ]);
     });

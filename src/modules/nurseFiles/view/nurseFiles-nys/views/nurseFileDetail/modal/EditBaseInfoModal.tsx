@@ -74,6 +74,8 @@ const rules: Rules = {
   enrolDate: (val) => !!val || '请填写纳编时间',
   firstDegree: (val) => !!val || '请填写第一学历',
   nearImageUrl: (val) => !!val || '请添加个人头像',
+  zyzsNursingPostDate: (val) => !!val || '请填写开始从事护理时间',
+  zyzsDate: (val) => !!val || '请填写获取执业证书开始时间',
 }
 
 export default observer(function EditWorkHistoryModal(props: Props) {
@@ -290,6 +292,16 @@ export default observer(function EditWorkHistoryModal(props: Props) {
               <Select>
                 {EDUCATION_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`开始从事护理时间`} name="zyzsNursingPostDate" required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`获取执业证书开始时间`} name="zyzsDate" required>
+              <DatePicker />
             </Form.Field>
           </Col>
         </Row>
