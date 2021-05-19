@@ -93,15 +93,20 @@ export default observer(function StarRatingReportEdit() {
   };
   const onExport = () => {
     const data = starRatingReportEditModel.getSectionData("夜班费上报表")
+    const list = data.list.map((i: any) => {
+      const item = { ...i }
+      delete item.key
+      return item
+    })
     const params = appStore.hisMatch({
       map: {
         dghl: {
-          list1: data.list,
+          list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
         },
         default: {
-          lists: data.list
+          lists: list
         }
       }
     })
