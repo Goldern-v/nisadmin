@@ -236,6 +236,7 @@ export default observer(function Cell(props: Props) {
               sheetViewModal.copyCell = sheetViewModal.selectedCell;
               sheetViewModal._copyCellList = [];
             }
+            sheetViewModal.selectedCellList = []
             message.success("复制格成功");
           }
         },
@@ -267,7 +268,8 @@ export default observer(function Cell(props: Props) {
                 for (let i = 0; i < length; i++) {
                   copyCellClick(restList[i], sheetViewModal._copyCellList[i]);
                 }
-                sheetViewModal.selectedCell = {};
+                sheetViewModal.selectedCell = {}
+                sheetViewModal.selectedCellList = []
               }
             } else {
               copyCellClick(
@@ -386,6 +388,20 @@ export default observer(function Cell(props: Props) {
     } else {
       sheetViewModal.copyCellList = [];
     }
+
+    // 东莞横沥 按住ctrl 可以选择多个cell  start -----
+    if (appStore.HOSPITAL_ID === 'dghl') {
+      if (e.ctrlKey) {
+        const includes = sheetViewModal.selectedCellList.includes(cellObj)
+        if (!includes) { // 如果包含也不取消
+          sheetViewModal.selectedCellList.push(cellObj)
+        }
+      } else {
+        sheetViewModal.selectedCellList = [cellObj]
+      }
+    }
+    // end ------
+
     sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
@@ -469,7 +485,7 @@ export default observer(function Cell(props: Props) {
         ) : (
           ""
         )}
-        {formatCell(cellObj)}
+        {formatCell(cellObj, isEdit)}
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>
         )}
@@ -478,7 +494,7 @@ export default observer(function Cell(props: Props) {
   );
 });
 
-function formatCell(cellObj: ArrangeItem) {
+function formatCell(cellObj: ArrangeItem, isEdit = false) {
   const Con = styled.span<{ color: string | undefined }>`
     color: ${p => p.color};
   `;
@@ -488,7 +504,7 @@ function formatCell(cellObj: ArrangeItem) {
       'jmfy': ['', '0'].includes(cellObj.status) && !authStore.isNotANormalNurse,
     }
   })
-  if (isHidden) {
+  if (isHidden && !isEdit) {
     return (
       <Con color={cellObj.nameColor}/>
     )

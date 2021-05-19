@@ -7,7 +7,10 @@ import moment from "moment";
 import { sheetViewModal } from "../../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../../types/Sheet";
 import { cloneJson } from "src/utils/json/clone";
-export interface Props {}
+import { appStore } from "src/stores";
+
+export interface Props {
+}
 
 const BoxInner = styled.div<{ color?: string }>`
   height: 30px;
@@ -97,18 +100,19 @@ export default observer(function FlightMenu() {
           {
             title: "可选班次",
             index: "0",
-            component: <MenuCon dataSource={sheetViewModal.arrangeMenu} />
+            component: <MenuCon dataSource={sheetViewModal.arrangeMenu}/>
           },
           {
             title: "班次套餐",
             index: "1",
-            component: <MealCon dataSource={sheetViewModal.arrangeMeal} />
+            component: <MealCon dataSource={sheetViewModal.arrangeMeal}/>
           }
         ]}
       />
     </Wrapper>
   );
 });
+
 function MenuCon(props: { dataSource: any[] }) {
   const Contain = styled.div`
     padding: 5px;
@@ -118,45 +122,56 @@ function MenuCon(props: { dataSource: any[] }) {
       padding: 5px;
     }
   `;
-  const onClick = (item: any) => {
-    let _rangeName: any =
-      sheetViewModal.selectedCell && sheetViewModal.selectedCell!.rangeName;
-    if (sheetViewModal.selectedCell) {
-      sheetViewModal.selectedCell!.rangeName = item.name;
-      sheetViewModal.selectedCell!.settingNightHour = item.settingNightHour;
-      sheetViewModal.selectedCell!.settingMorningHour = item.settingMorningHour;
-      sheetViewModal.selectedCell!.rangeNameCode = null;
-      sheetViewModal.selectedCell!.nameColor = item.nameColor;
-      sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime;
-      sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime;
-      sheetViewModal.selectedCell!.shiftType = item.shiftType;
-      sheetViewModal.selectedCell!.settings = null;
-      sheetViewModal.selectedCell!.statusType = "";
-      sheetViewModal.selectedCell!.schAddOrSubs = [];
-      // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
+
+
+  const setCellData = (cell: ArrangeItem, countArrangeNameList: any[], item: any) => {
+    // let _rangeName: any = cell!.rangeName;
+    if (cell) {
+      cell!.rangeName = item.name;
+      cell!.settingNightHour = item.settingNightHour;
+      cell!.settingMorningHour = item.settingMorningHour;
+      cell!.rangeNameCode = null;
+      cell!.nameColor = item.nameColor;
+      cell!.effectiveTime = item.effectiveTime;
+      cell!.effectiveTimeOld = item.effectiveTime;
+      cell!.shiftType = item.shiftType;
+      cell!.settings = null;
+      cell!.statusType = "";
+      cell!.schAddOrSubs = [];
+      // cell!.rangeNameCode = item.rangeNameCode
 
       /** 判断是否生成编号 */
       if (
-        sheetViewModal.selectedCell.rangeName &&
-        sheetViewModal.selectedCell.userId &&
-        sheetViewModal.countArrangeNameList.includes(
-          sheetViewModal.selectedCell.rangeName
-        )
+        cell.rangeName &&
+        cell.userId &&
+        countArrangeNameList.includes(cell.rangeName)
       ) {
-        resetArrangeCount(
-          sheetViewModal.selectedCell.userId,
-          sheetViewModal.selectedCell.rangeName
-        );
+        resetArrangeCount(cell.userId, cell.rangeName)
       }
-      if (
-        _rangeName &&
-        sheetViewModal.selectedCell.userId &&
-        sheetViewModal.countArrangeNameList.includes(_rangeName)
-      ) {
-        resetArrangeCount(sheetViewModal.selectedCell.userId, _rangeName);
-      }
-      sheetViewModal.selectedCell = sheetViewModal.getNextCell();
+      // if (
+      //   _rangeName &&
+      //   cell.userId &&
+      //   countArrangeNameList.includes(_rangeName)
+      // ) {
+      //   resetArrangeCount(cell.userId, _rangeName);
+      // }
+      // cell = cell.getNextCell();
     }
+  }
+
+  const onClick = (item: any) => {
+    if (appStore.HOSPITAL_ID === 'dghl') {
+      if (sheetViewModal.selectedCellList.length > 0) {
+        sheetViewModal.selectedCellList.forEach(cell => {
+          setCellData(cell, sheetViewModal.countArrangeNameList, item)
+        })
+        sheetViewModal.selectedCellList = []
+        sheetViewModal.copyCellList = []
+      }
+    } else {
+      setCellData(sheetViewModal.selectedCell, sheetViewModal.countArrangeNameList, item)
+    }
+    sheetViewModal.selectedCell = sheetViewModal.getNextCell();
   };
 
   return (

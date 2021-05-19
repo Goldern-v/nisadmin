@@ -31,6 +31,8 @@ class SheetViewModal {
   @observable public schSymbolList: SymbolItem[] = [];
   /** 选中的格子 */
   @observable public selectedCell: ArrangeItem = {};
+  // 选中的格子列表（只用来批量赋值） 东莞横沥需要多个格子一起赋值
+  @observable public selectedCellList: ArrangeItem[] = [];
   @observable public allCell: any[] = [];
   /** 加载状态 */
   @observable public tableLoading: boolean = false;
@@ -184,7 +186,8 @@ class SheetViewModal {
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2"
       }),
-      isSelected: this.selectedCell == cellObj || this.copyCellList.includes(cellObj),
+      isSelected:
+        this.selectedCell == cellObj || this.copyCellList.includes(cellObj) || this.selectedCellList.includes(cellObj),
     };
     return cellConfig;
   }
