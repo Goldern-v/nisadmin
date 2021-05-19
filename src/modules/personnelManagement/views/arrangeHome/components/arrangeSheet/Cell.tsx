@@ -18,7 +18,7 @@ import {
 } from "./cellClickEvent";
 import { message, Popover } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
 import moment from "moment";
 
@@ -482,6 +482,17 @@ function formatCell(cellObj: ArrangeItem) {
   const Con = styled.span<{ color: string | undefined }>`
     color: ${p => p.color};
   `;
+  const isHidden = appStore.hisMatch({
+    map: {
+      // 江门妇幼 普通用户 && cellObj.status === "" 或 "0"
+      'jmfy': ['', '0'].includes(cellObj.status) && !authStore.isNotANormalNurse,
+    }
+  })
+  if (isHidden) {
+    return (
+      <Con color={cellObj.nameColor}/>
+    )
+  }
   const symbol: any = (cellObj.addSymbols && cellObj.addSymbols[0]) || {}
   if (cellObj) {
     return (

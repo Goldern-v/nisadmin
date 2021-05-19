@@ -13,6 +13,7 @@ import {
   cleanCell,
   copyRowClick
 } from "../components/arrangeSheet/cellClickEvent";
+
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   /** 是否已经初始化字典数据 */
@@ -70,9 +71,9 @@ class SheetViewModal {
     let dayDiff =
       selectViewModal.params.startTime && selectViewModal.params.endTime
         ? dateDiff(
-            selectViewModal.params.startTime,
-            selectViewModal.params.endTime
-          )
+        selectViewModal.params.startTime,
+        selectViewModal.params.endTime
+        )
         : 0;
     if (dayDiff >= 0) {
       for (let i = 0; i <= dayDiff; i++) {
@@ -103,6 +104,7 @@ class SheetViewModal {
     }
     return cellList;
   }
+
   getNextCell() {
     if (this.selectedCell) {
       let allCell = this.allCell;
@@ -182,8 +184,7 @@ class SheetViewModal {
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2"
       }),
-      isSelected:
-        this.selectedCell == cellObj || this.copyCellList.includes(cellObj)
+      isSelected: this.selectedCell == cellObj || this.copyCellList.includes(cellObj),
     };
     return cellConfig;
   }
@@ -203,6 +204,7 @@ class SheetViewModal {
       return item.userId == userId && item.workDate == date;
     });
   }
+
   /** 根据姓名和时间获取排班格子 */
   getCellObjByName(empName: string, date: string) {
     let allCell = this.getAllCell(true);
@@ -255,6 +257,7 @@ class SheetViewModal {
       this.allCell = this.getAllCell(true);
     });
   }
+
   @computed
   get isPush() {
     let allCell = this.getAllCell(false);
@@ -273,6 +276,7 @@ class SheetViewModal {
       this.allCell = this.getAllCell(true);
     });
   }
+
   /** 复制排班人员数据 */
   handleCopy() {
     this.tableLoading = true;
@@ -297,26 +301,31 @@ class SheetViewModal {
       this.arrangeMenu = res.data;
     });
   }
+
   getArrangeMeal() {
     arrangeService.getArrangeMeal().then(res => {
       this.arrangeMeal = res.data;
     });
   }
+
   getHDArrangeMeal() {
     arrangeService.getHDArrangeMeal().then(res => {
       this.hdArrangeMeal = res.data;
     });
   }
+
   getSchSymbol() {
     arrangeService.getSchSymbol().then(res => {
       this.schSymbolList = res.data;
     });
   }
+
   getExpectList() {
     return arrangeService.getByDeptCodeAndDate().then(res => {
       this.expectList = res.data;
     });
   }
+
   /** 申请加减班 */
   getExpectAsList() {
     return arrangeService.schExpectAddOrSubGetByDeptCodeAndDate().then(res => {
@@ -344,6 +353,7 @@ class SheetViewModal {
       this.getSheetTableData();
     });
   }
+
   /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
   handleSheetTableData(sheetTableData: any, countObj: any = {}) {
     /** for 优化速度 */
@@ -355,7 +365,7 @@ class SheetViewModal {
       let current_holidayHour = 0;
       let current_publicHour = 0;
       current_holidayHourNys +=
-      Number(_sheetTableData[i].thisWeekHoliday) || 0;
+        Number(_sheetTableData[i].thisWeekHoliday) || 0;
 
       for (let j = 0; j < _sheetTableData[i].settingDtos.length; j++) {
         /** 添加姓名 */
@@ -406,7 +416,7 @@ class SheetViewModal {
           current_balanceHour -= (real_week / 5) * 2;
         }
       }
-      
+
       _sheetTableData[i].current_balanceHour = current_balanceHour;
       _sheetTableData[i].current_holidayHourNys = current_holidayHourNys;
       _sheetTableData[i].current_holidayHour = current_holidayHour;
@@ -441,7 +451,7 @@ class SheetViewModal {
         let baseCount =
           _sheetTableData[i].countArrangeBaseIndexObj[
             this.countArrangeNameList[j]
-          ];
+            ];
         /** 计数顺序 */
         let _index = 0;
         /** 基本序号 */
