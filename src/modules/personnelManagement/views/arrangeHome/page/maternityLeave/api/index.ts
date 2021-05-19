@@ -10,6 +10,7 @@ class Api extends BaseApiService {
       'deliveryStartDate': data.date && moment(data.date[0]).format('YYYY-MM-DD'),
       'deliveryEndDate': data.date && moment(data.date[1]).format('YYYY-MM-DD')
     }
+    params.deptCode = params.deptCode === '全院' ? '' : params.deptCode
     delete params.date
     return this.post(`/schBabyBreak/findBylist`, params)
   }
