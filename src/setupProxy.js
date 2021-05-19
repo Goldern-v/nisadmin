@@ -5,6 +5,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
   /** 继续教育接口测试 */
   // return 'https://info.cr-health.com:20202' //外网
   // return 'http://192.168.1.54:9864' //内网
+  // return 'http://192.168.20.68:8062' //广豪本地
 
   switch (HOSPITAL_ID) {
     /** 厚街 */

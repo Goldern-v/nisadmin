@@ -43,6 +43,7 @@ export default class AuthStore {
       return "";
     }
   }
+
   // 仅科室名
   @computed
   public get selectedDeptNameOnly() {
@@ -57,6 +58,7 @@ export default class AuthStore {
       return "";
     }
   }
+
   @computed
   public get post() {
     try {
@@ -65,6 +67,7 @@ export default class AuthStore {
       return "";
     }
   }
+
   @computed
   public get selectedDeptName() {
     try {
@@ -77,6 +80,7 @@ export default class AuthStore {
       return "";
     }
   }
+
   @computed
   public get defaultDeptName() {
     try {
@@ -136,6 +140,7 @@ export default class AuthStore {
       return "";
     }
   }
+
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
     try {
@@ -152,22 +157,30 @@ export default class AuthStore {
       return "";
     }
   }
+
   /** 是否是护士长 */
   public get isRoleManage() {
     try {
-      return this.user && (this.user.roleManage == "1" || this.user.post == '护长');
+      if (!this.user) return false
+      if (this.user.roleManageCode === 'QCR0004') return true
+      if (this.user.roleManageCodeList?.find((code: string) => code === "QCR0004")) return true
+      if (this.user.roleManage == "1") return true
+      if (this.user.post == '护长') return true
     } catch (error) {
       return false;
     }
   }
+
   /** 是否只是护士长 */
   public get isOnlyRoleManage() {
     return this.isRoleManage && !(this.isDepartment || this.isSupervisorNurse);
   }
+
   /** 是否非普通护士 */
   public get isNotANormalNurse() {
     return this.isRoleManage || this.isDepartment || this.isSupervisorNurse;
   }
+
   /** 是否实习生 */
   public get isOnlyInternsManage() {
     return this.user && this.user.userType == "1" ? true : false;

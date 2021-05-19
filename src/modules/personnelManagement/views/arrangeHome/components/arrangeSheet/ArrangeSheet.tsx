@@ -44,6 +44,7 @@ export default observer(function ArrangeSheet(props: Props) {
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
       wh: () => EditVacationCountModal_wh,
+      dghl: () => EditVacationCountModal_wh,
       jmfy: () => EditVacationCountModal_wh,
       nys: () => EditVacationCountModal_wh
     })
@@ -60,7 +61,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center"
       }]
       : []
-    ;
+  ;
 
   const nysHandleDel =
     appStore.HOSPITAL_ID == "nys" && isEdit
@@ -78,7 +79,7 @@ export default observer(function ArrangeSheet(props: Props) {
         }
       }]
       : []
-    ;
+  ;
 
 
   let columns: any = [
@@ -134,7 +135,7 @@ export default observer(function ArrangeSheet(props: Props) {
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
-        title: <Th date={date} />,
+        title: <Th date={date}/>,
         width: 70,
         render(text: any, record: any) {
           return (
@@ -160,7 +161,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 70,
       align: "center",
       render(text: string, record: any) {
-        return <TotalCell id={record.id} />;
+        return <TotalCell id={record.id}/>;
       }
     }
   ];
@@ -177,7 +178,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 70,
       align: "center",
       render(text: string, record: any) {
-        return <NightHourCell id={record.id} />;
+        return <NightHourCell id={record.id}/>;
       }
     });
   }
@@ -196,7 +197,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "thisWeekHoliday",
         render: (text: string, record: any) => {
-          return <HolidayHourNys id={record.id} />;
+          return <HolidayHourNys id={record.id}/>;
           // <Input
           //   style={{ background: "#fff" }}
           //   disabled={!isEdit}
@@ -218,8 +219,8 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "totalHoliday",
         render: (text: string, record: any) => {
-          return <TotalHolidayHourNys id={record.id} />;
-          // <Input 
+          return <TotalHolidayHourNys id={record.id}/>;
+          // <Input
           //   style={{ background: "#fff", color: "#000" }}
           //   disabled={!isEdit}
           //   defaultValue={text}
@@ -254,7 +255,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 武汉特殊字段*/
-  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "jmfy") {
+  if (['wh', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -266,7 +267,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <NightHourCell id={record.id} />;
+          return <NightHourCell id={record.id}/>;
         }
       },
       {
@@ -279,7 +280,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <BalanceHour id={record.id} />;
+          return <BalanceHour id={record.id}/>;
         }
       },
       {
@@ -292,7 +293,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <PublicHour id={record.id} />;
+          return <PublicHour id={record.id}/>;
         }
       },
       {
@@ -305,7 +306,39 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <HolidayHour id={record.id} />;
+          return <HolidayHour id={record.id}/>;
+        }
+      }
+    );
+  }
+
+  /** 东莞横沥特殊字段*/
+  if (['dghl'].includes(appStore.HOSPITAL_ID)) {
+    columns.push(
+      {
+        title: (
+          <div>
+            <div>累计结余</div>
+            <div>（小时）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <BalanceHour id={record.id}/>;
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>公休结余</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <PublicHour id={record.id}/>;
         }
       }
     );
@@ -332,7 +365,8 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) { }
+    } catch (error) {
+    }
     try {
       setTimeout(() => {
         if (
@@ -348,7 +382,13 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({ nys: () => isEdit ? 6 : 5, hj: () => 3, wh: () => 6, jmfy: () => 6, dghl: () => 2 })) *
+              appStore.hisAdapter({
+                nys: () => isEdit ? 6 : 5,
+                hj: () => 3,
+                wh: () => 6,
+                jmfy: () => 6,
+                dghl: () => 4
+              })) *
             70 +
             widthNys +
             10 +
@@ -356,19 +396,21 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(false);
         } else {
           (document as any).querySelector("#arrangeSheet #baseTable") &&
-            ((document as any).querySelector(
-              "#arrangeSheet #baseTable"
-            ).style.width = "auto");
+          ((document as any).querySelector(
+            "#arrangeSheet #baseTable"
+          ).style.width = "auto");
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) { }
+    } catch (error) {
+    }
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) { }
+    } catch (error) {
+    }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   // 拖拽排序
@@ -435,7 +477,8 @@ export default observer(function ArrangeSheet(props: Props) {
           });
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-        } catch (error) { }
+        } catch (error) {
+        }
     }
   }
 
@@ -498,9 +541,9 @@ export default observer(function ArrangeSheet(props: Props) {
           moveRow={moveRow}
         />
       )}
-      <contextMenu.Component />
-      <editEffectiveTimeModal.Component />
-      <editVacationCountModal.Component />
+      <contextMenu.Component/>
+      <editEffectiveTimeModal.Component/>
+      <editVacationCountModal.Component/>
     </Wrapper>
   );
 });
@@ -632,7 +675,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-          getWeekString(date).indexOf("日") > -1
+        getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }

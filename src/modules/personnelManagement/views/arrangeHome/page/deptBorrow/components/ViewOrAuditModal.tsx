@@ -6,7 +6,7 @@ import { ReactComponent as YSQ } from '../assets/yishenqing.svg'
 import { ReactComponent as YJJ } from '../assets/yijujue.svg'
 import { ReactComponent as YTG } from '../assets/yitongguo.svg'
 
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 
 import DeptBorrowService from './../api/DeptBorrowService'
@@ -60,21 +60,29 @@ export default observer(function ViewOrAuditModal(props: Props) {
     let user = authStore.user
 
     // if (user && (user.post == '护长' || '护理部') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
-    if (user && user.post == '护长' && detailInfo.statusTransferFrom.value == '0') classList.push('auth')
+    // if (user && user.post == '护长' && detailInfo.statusTransferFrom.value == '0') classList.push('auth')
     // classList.push('auth');
+
+    if (authStore.isDepartment) { // 护士长
+      classList.push('auth')
+    } else if (authStore.isRoleManage && appStore.HOSPITAL_ID === 'dghl') {
+      // 东莞横沥的 护理部也可以审批
+      classList.push('auth')
+    }
+
     return classList.join(' ')
   }
 
   const statusTransferFromIcon = (): any => {
     switch (detailInfo.statusTransferFrom.value) {
       case '0':
-        return <YSQ />
+        return <YSQ/>
       case '1':
-        return <YTG />
+        return <YTG/>
       case '2':
-        return <YJS />
+        return <YJS/>
       case '3':
-        return <YJJ />
+        return <YJJ/>
       default:
         return ''
     }
@@ -120,6 +128,11 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   //同意申请相关
   const openAllow = () => {
+    if (appStore.HOSPITAL_ID === 'dghl' && detailInfo.statusTransferFrom.value === '4') {
+      // 东莞横沥 护理部 审批
+      handleAllow()
+      return
+    }
     setAllowModalVisible(true)
     setAllowList([])
     //getNurseList
@@ -179,10 +192,20 @@ export default observer(function ViewOrAuditModal(props: Props) {
       auditedEmpName = authStore.user.empName
       auditedEmpNo = authStore.user.empNo
     }
-    let params: any = {
+
+    const statusTransferFrom = (() => {
+      if (appStore.HOSPITAL_ID === 'dghl') {
+        if (authStore.isRoleManage) return '4' // 护士长
+        if (authStore.isDepartment) return '1' // 护理部
+      } else {
+        return '1'
+      }
+    })()
+
+    const params: any = {
       schDeptTransfer: {
         id: detailInfo.id.value,
-        statusTransferFrom: '1',
+        statusTransferFrom,
         auditedEmpNo,
         auditedEmpName
       },
@@ -205,8 +228,11 @@ export default observer(function ViewOrAuditModal(props: Props) {
       })
     }
 
-    if (params.schDeptTransferUser.length <= 0) return Message.warn('至少选择一名借出人员')
-    //return console.log(params)
+    if (params.schDeptTransferUser.length <= 0
+      && detailInfo.statusTransferFrom.value !== '4') {
+      // 护理部审批的时候不需要传借出人员
+      return Message.warn('至少选择一名借出人员')
+    }
     setAllowLoading(true)
 
     api.allowBorrow(params).then(
@@ -232,7 +258,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
     let status = detailInfo.statusTransferFrom.value
     if (status == '0' || detailInfo.auditedEmpName.value == '') return ''
 
-    let statusText = '通过'
+    let statusText = status === '4' ? '待护理部审核' : '通过'
     let detailNode: any
     if (status !== '3') {
       detailNode = (
@@ -245,9 +271,9 @@ export default observer(function ViewOrAuditModal(props: Props) {
               return (
                 <span className='borrow-out-item' key={item.empNo}>
                   <span className='item-img'>
-                    <img src={item.nearImageUrl} alt='' />
+                    <img src={item.nearImageUrl} alt=''/>
                   </span>
-                  <br />
+                  <br/>
                   <span className='item-name'>{item.empName}</span>
                 </span>
               )
@@ -290,22 +316,22 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   return (
     <Wrapper className={modalClassName()}>
-      <div className='mask' onClick={onCancel} />
+      <div className='mask' onClick={onCancel}/>
       <div className='modal'>
         <div className='header'>
           <span className='title'>借用详情</span>
           <div className='float-right' onClick={onCancel}>
-            <Icon type='close' />
+            <Icon type='close'/>
           </div>
         </div>
         <div className='body'>
           <div className='base-info'>
             <span className='applicant'>
-              <img src={detailInfo.nearImageUrlTransferFrom.value} alt='' />
+              <img src={detailInfo.nearImageUrlTransferFrom.value} alt=''/>
             </span>
             <span>
               <span className='title'>{detailInfo.empNameTransferFrom.value}提出的借用申请</span>
-              <br />
+              <br/>
               <span className='statusTransferFrom'>申请</span>
             </span>
             <span className='statusTransferFrom-icon'>{statusTransferFromIcon()}</span>

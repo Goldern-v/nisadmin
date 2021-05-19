@@ -4,8 +4,10 @@ import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
 import MealSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView";
-import PersonnelSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
-import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
+import PersonnelSettingViewNew
+  from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
+// import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
+import DeptBorrowNew from "src/modules/personnelManagement/views/arrangeHome/page/deptBorrow/DeptBorrow";
 import AddSubClass from "../views/arrangeHome/page/addSubClass/AddSubClass";
 import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "../views/arrangeHome/page/BalanceInit/BalanceInit";
@@ -44,7 +46,7 @@ export const meunConfig: meunConfigItem[] = [
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
-        component: PersonnelSecondment,
+        component: DeptBorrowNew,
         style: { background: "#fff" },
         hide: !authStore.isRoleManage
       },

@@ -113,7 +113,7 @@ export default observer(function DeptBorrow(props: any) {
       key: 'statusTransferFrom',
       dataIndex: 'statusTransferFrom',
       align: 'center',
-      width: 80,
+      width: 100,
       render: (status: string, record: any) => {
         switch (status) {
           case '0':
@@ -124,6 +124,8 @@ export default observer(function DeptBorrow(props: any) {
             return '已结束'
           case '3':
             return '已拒绝'
+          case '4':
+            return '待护理部审核'
           default:
             return ''
         }
