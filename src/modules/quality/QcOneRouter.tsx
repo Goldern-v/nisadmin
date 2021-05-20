@@ -13,7 +13,7 @@ import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
 import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 import NursingReportList from './views/qcOne/report/NursingReportList/NursingReportList'
-import NursingReportDetailView from './views/qcOne/report/NursingReportDetail/NursingReportDetailView'
+// import NursingReportDetailView from './views/qcOne/report/NursingReportDetail/NursingReportDetailView'
 import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWorkPlainList'
 import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
 import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
@@ -138,55 +138,57 @@ const LEFT_MENU_CONFIG: any = [
     keepAlive: true,
     disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
-  // {
-  //   title: '满意度调查表',
-  //   icon: <YJJL />,
-  //   children: [
-  //     {
-  //       title: '护士满意度调查表',
-  //       path: '/qcOne/satisfyInvestigation',
-  //       component: SatisfyInvestigation,
-  //       keepAlive: true,
-  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-  //     },
-  //     {
-  //       title: '护士满意度调查表详情',
-  //       hide: true,
-  //       path: '/qcOne/satisfyInvestigationDetail',
-  //       component: SatisfyInvestigationDetail,
-  //     },
-  //   ]
-  // },
-  // {
-  //   title: '工作量',
-  //   icon: <YJJL />,
-  //   children: [
-  //     {
-  //       title: '服务之星',
-  //       path: '/qcOne/serviceStar',
-  //       component: Workload,
-  //       keepAlive: true,
-  //       indexKey: '1',
-  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-  //     },
-  //     {
-  //       title: '技术能手',
-  //       path: '/qcOne/technicalExperts',
-  //       component: Workload,
-  //       keepAlive: true,
-  //       indexKey: '2',
-  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-  //     },
-  //     {
-  //       title: '工作量统计',
-  //       path: '/qcOne/workloadStatistics',
-  //       component: Workload,
-  //       keepAlive: true,
-  //       indexKey: '3',
-  //       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-  //     }
-  //   ]
-  // }
+  {
+    title: '满意度调查表',
+    icon: <YJJL />,
+    hide: !appStore.isDev,
+    children: [
+      {
+        title: '护士满意度调查表',
+        path: '/qcOne/satisfyInvestigation',
+        component: SatisfyInvestigation,
+        keepAlive: true,
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+      },
+      {
+        title: '护士满意度调查表详情',
+        hide: true,
+        path: '/qcOne/satisfyInvestigationDetail',
+        component: SatisfyInvestigationDetail,
+      },
+    ]
+  },
+  {
+    title: '工作量',
+    icon: <YJJL />,
+    hide: !appStore.isDev,
+    children: [
+      {
+        title: '服务之星',
+        path: '/qcOne/serviceStar',
+        component: Workload,
+        keepAlive: true,
+        indexKey: '1',
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+      },
+      {
+        title: '技术能手',
+        path: '/qcOne/technicalExperts',
+        component: Workload,
+        keepAlive: true,
+        indexKey: '2',
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+      },
+      {
+        title: '工作量统计',
+        path: '/qcOne/workloadStatistics',
+        component: Workload,
+        keepAlive: true,
+        indexKey: '3',
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+      }
+    ]
+  }
 ]
 
 export default function QcOneRouter(props: Props) {

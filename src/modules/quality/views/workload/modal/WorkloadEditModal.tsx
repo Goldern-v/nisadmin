@@ -1,19 +1,26 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Input,
   Row,
   Col,
   Modal,
-  message as Message,
+  message,
   Select,
 } from "antd";
-import DeptSelect from "src/components/DeptSelect";
 import YearPicker from "src/components/YearPicker";
 import Form from "src/components/Form/Form";
 import moment from "moment";
+import { authStore } from 'src/stores'
 import { workloadApi } from "../api/WorkloadApi";
 import { workloadModal } from "../WorkloadModal";
+import service from "src/services/api";
+import { observer } from "src/vendors/mobx-react-lite";
+import { Rules } from "src/components/Form/interfaces";
+
+const Option = Select.Option
+
+const commonApi = service.commonApiService
 export interface Props {
   visible: boolean;
   params: any;
@@ -22,10 +29,20 @@ export interface Props {
   onOkCallBack?: any;
 }
 
-export default function WorkloadEditModal(props: Props) {
+const rules: Rules = {
+  title: (val) => !!val || '请填写标题',
+  deptCode: (val) => !!val || '请选择科室',
+  month: (val) => !!val || '请填写月份',
+  year: (val) => !!val || '请填写月份',
+  empNo: (val) => !!val || '请选择护士',
+}
+
+export default observer(function WorkloadEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const formRef = React.createRef<Form>();
+  const [nurseList, setNurseList] = useState([] as any[])
+  const formRef = useRef<any>();
+
   const monthList = (() => {
     let currentMonth = 12;
     let monthArr = []
@@ -43,28 +60,37 @@ export default function WorkloadEditModal(props: Props) {
         if (!current) return;
         // 修改数据回显
         if (params.id) {
-          current.clear();
           let data: any = { ...params };
           const {
-            标题,
-            病区,
-            科室,
-            年份,
-            月份,
-            姓名
+            title,
+            deptCode,
+            deptName,
+            empNo,
+            empName,
+            year,
+            month
           } = data;
           current.setFields({
-            标题,
-            病区,
-            科室,
-            年份,
-            月份,
-            姓名
+            title,
+            deptCode,
+            deptName,
+            empNo,
+            empName,
+            year: year ? moment(year) : undefined,
+            month
           });
         } else {
-          current.clear();
+          current.setFields({
+            deptCode: authStore.selectedDeptCode,
+            deptName: authStore.selectedDeptName,
+            year: moment(),
+            month: (moment().get('month') + 1).toString()
+          });
         }
       }, 100);
+    } else {
+      let current: any = formRef.current;
+      if (current) current.clear();
     }
   }, [visible]);
 
@@ -77,35 +103,59 @@ export default function WorkloadEditModal(props: Props) {
         .then((res: any) => {
           current = formRef.current;
           if (current) {
-            let newParams = current.getFields();
+            let newParams = { ...current.getFields() };
             let msg = '添加成功！'
             //修改
             if (params.id) {
               newParams.id = params.id;
               msg = '修改成功！'
             };
-            let ajaxMap: any = {
-              1: "saveOrUpdateFwzx",
-              2: "saveOrUpdateJsns",
-              3: "saveOrUpdateGzltj"
-            };
-            (workloadApi as any)[ajaxMap[workloadModal.indexKey as any] as any](newParams).then((res: any) => {
-              // if (res.code == 200) {
-              //   Message.success(msg);
-              //   workloadModal.pageIndex = 1;
-              //   onOk();
-              // } else {
-              //   Message.error(`${res.dec}`);
-              // }
-            }).catch((e: any) => { });
+            //处理时间类型
+            console.log(newParams.year)
+            newParams.year = newParams.year ? newParams.year.format('YYYY') : ''
+
+            let req = ((indexKey) => {
+              switch (indexKey) {
+                case '2':
+                  return workloadApi.saveOrUpdateJsns.bind(workloadApi)
+                case '3':
+                  return workloadApi.saveOrUpdateGzltj.bind(workloadApi)
+                default:
+                  return workloadApi.saveOrUpdateFwzx.bind(workloadApi)
+              }
+            })(workloadModal.indexKey)
+
+            req(newParams)
+              .then((res: any) => {
+                onOk && onOk()
+              }, () => setEditLoading(false))
           }
-        })
-        .catch((e: any) => {
-          console.log(e);
-          setEditLoading(false);
-        });
+        }, () => setEditLoading(false))
     }
   };
+
+  const getDeptNurseList = (deptCode: string) => {
+    commonApi.userDictInfo(deptCode)
+      .then(res => setNurseList(res.data))
+  }
+
+  const handleChange = (key: string, value: any, current: any) => {
+    if (key === 'deptCode') {
+      let target = authStore.deptList.find((dept) => dept.code === value)
+
+      current.setFields({
+        deptName: target?.name || '',
+        empName: '',
+        empNo: '',
+      })
+
+      if (value) getDeptNurseList(value)
+    }
+    if (key === 'empNo') {
+      let target = nurseList.find((dept) => dept.code === value)
+      if (target) current.setField('empName', target.empName)
+    }
+  }
 
   // 关闭取消
   const handleCancel = () => {
@@ -122,23 +172,13 @@ export default function WorkloadEditModal(props: Props) {
       title={params.id ? "修改" : "添加"}
     >
       <Wrapper>
-        <Form ref={formRef}>
+        <Form ref={formRef} onChange={handleChange} rules={rules}>
           <Row>
             <Col span={3} className="label">
               标题:
             </Col>
             <Col span={19}>
-              <Form.Field name="标题">
-                <Input />
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={3} className="label">
-              病区:
-            </Col>
-            <Col span={19}>
-              <Form.Field name="病区">
+              <Form.Field name="title">
                 <Input />
               </Form.Field>
             </Col>
@@ -148,8 +188,13 @@ export default function WorkloadEditModal(props: Props) {
               科室:
             </Col>
             <Col span={19}>
-              <Form.Field name="科室">
-                <DeptSelect onChange={(value: string) => { }} />
+              <Form.Field name="deptCode">
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                  {authStore.deptList.map((dept) => <Option value={dept.code} key={dept.code}>{dept.name}</Option>)}
+                </Select>
               </Form.Field>
             </Col>
           </Row>
@@ -158,8 +203,8 @@ export default function WorkloadEditModal(props: Props) {
               年份:
             </Col>
             <Col span={19}>
-              <Form.Field name="年份">
-                <YearPicker />
+              <Form.Field name="year">
+                <YearPicker allowClear={false} />
               </Form.Field>
             </Col>
           </Row>
@@ -168,10 +213,10 @@ export default function WorkloadEditModal(props: Props) {
               月份:
             </Col>
             <Col span={19}>
-              <Form.Field name="月份">
+              <Form.Field name="month">
                 <Select>
                   {monthList.map((month: number) =>
-                    <Select.Option value={`${month}`} key={month}>{month}</Select.Option>
+                    <Select.Option value={`${month}`} key={month}>{month}月</Select.Option>
                   )}
                 </Select>
               </Form.Field>
@@ -182,8 +227,13 @@ export default function WorkloadEditModal(props: Props) {
               姓名:
             </Col>
             <Col span={19}>
-              <Form.Field name="姓名">
-                <Input />
+              <Form.Field name="empNo">
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                  {nurseList.map((item: any) => <Option value={item.empNo} key={item.empNo}>{item.empName}</Option>)}
+                </Select>
               </Form.Field>
             </Col>
           </Row>
@@ -191,7 +241,8 @@ export default function WorkloadEditModal(props: Props) {
       </Wrapper>
     </Modal>
   );
-}
+})
+
 const Wrapper = styled.div`
   width: 95%;
   margin: 0 auto;

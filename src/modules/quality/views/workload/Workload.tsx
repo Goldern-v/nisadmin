@@ -6,7 +6,7 @@ import YearPicker from "src/components/YearPicker";
 import {
   Select,
   Button,
-  message as Message,
+  message,
   Modal
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -14,6 +14,8 @@ import DeptSelect from "src/components/DeptSelect";
 import { workloadModal } from "./WorkloadModal";
 import { workloadApi } from "./api/WorkloadApi";
 import WorkloadEditModal from "./modal/WorkloadEditModal";
+import { authStore } from "src/stores";
+
 interface Props {
   getTitle: string;
   indexKey: any;
@@ -35,7 +37,7 @@ export default observer(function TraineeFiles(props: Props) {
   const specialColumn = titleArr.includes(getTitle) ? [
     {
       title: "创建时间",
-      dataIndex: "identifier",
+      dataIndex: "createDate",
       width: 100,
       align: "center"
     },
@@ -56,7 +58,7 @@ export default observer(function TraineeFiles(props: Props) {
   ] : [
     {
       title: "工作量",
-      dataIndex: "identifier",
+      dataIndex: "workSize",
       width: 100,
       align: "center"
     }
@@ -81,33 +83,28 @@ export default observer(function TraineeFiles(props: Props) {
     },
     {
       title: "标题",
-      dataIndex: "identifier",
+      dataIndex: "title",
       width: 100,
       align: "center"
     },
     {
       title: "姓名",
-      dataIndex: "name",
+      dataIndex: "empName",
       width: 80,
       align: "center"
     },
     {
-      title: "病区",
-      dataIndex: "sex",
-      width: 60,
-      align: "center"
-    },
-    {
       title: "科室",
-      dataIndex: "schoolName",
+      dataIndex: "deptName",
       width: 150,
       align: "center"
     },
     {
       title: "月份",
-      dataIndex: "major",
+      dataIndex: "month",
       width: 120,
-      align: "center"
+      align: "center",
+      render: (text: string, record: any) => text ? `${record.year}年${text}月` : ''
     },
     ...specialColumn
   ];
@@ -126,19 +123,20 @@ export default observer(function TraineeFiles(props: Props) {
       okType: "danger",
       cancelText: "取消",
       onOk: () => {
-        let ajaxMap: any = {
-          1: "deleteInfoFwzx",
-          2: "deleteInfoJsns",
-          3: "deleteInfoGzltj"
-        };
-        (workloadApi as any)[ajaxMap[indexKey as any] as any](record.id).then((res: any) => {
-          //     if (res.code == 200) {
-          //       Message.success("记录删除成功");
-          //       workloadModal.pageIndex = 1;
-          //       workloadModal.onload();
-          //     } else {
-          //       Message.error(`${res.dec}`);
-          //     }
+        const deleteReq = ((indexKey: string) => {
+          switch (indexKey) {
+            case '2':
+              return workloadApi.deleteInfoJsns.bind(workloadApi)
+            case '3':
+              return workloadApi.deleteInfoGzltj.bind(workloadApi)
+            default:
+              return workloadApi.deleteInfoFwzx.bind(workloadApi)
+          }
+        })(indexKey)
+
+        deleteReq(record.id).then((res: any) => {
+          message.success("记录删除成功")
+          workloadModal.onload()
         }).catch((e: any) => { });
       }
     });
@@ -175,50 +173,37 @@ export default observer(function TraineeFiles(props: Props) {
               workloadModal.onload();
             }}
           />
-          <span>月：</span>
+          <span>月份：</span>
           <Select
             style={{ width: 100 }}
-            value={workloadModal.selectedMonth}
+            value={workloadModal.month}
             onChange={(val: string) => {
-              workloadModal.selectedMonth = val;
+              workloadModal.month = val;
               workloadModal.pageIndex = 1;
               workloadModal.onload();
             }}
           >
             <Select.Option value="">全部</Select.Option>
             {monthList.map((month: number) =>
-              <Select.Option value={`${month}`} key={month}>{month}</Select.Option>
+              <Select.Option value={`${month}`} key={month}>{month}月</Select.Option>
             )}
           </Select>
-          <span>病区：</span>
+          <span>科室：</span>
           <Select
             style={{ width: 150 }}
-            value={workloadModal.selectedBq}
+            showSearch
+            filterOption={(input: any, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            value={workloadModal.deptCode}
             onChange={(val: string) => {
-              workloadModal.selectedBq = val;
+              workloadModal.deptCode = val;
               workloadModal.pageIndex = 1;
               workloadModal.onload();
             }}
           >
             <Select.Option value="">全部</Select.Option>
+            {authStore.deptList.map((dept) => <Select.Option value={dept.code} key={dept.code}>{dept.name}</Select.Option>)}
           </Select>
-
-          {/* 工作量统计单独有科室下拉框 */}
-          {getTitle === '工作量统计' &&
-            <React.Fragment>
-              <span>科室：</span>
-              <div className="dept">
-                <DeptSelect
-                  onChange={(val: string) => {
-                    workloadModal.selectedDept = val;
-                    workloadModal.pageIndex = 1;
-                    workloadModal.onload();
-                  }}
-                />
-              </div>
-            </React.Fragment>
-          }
-
           <Button
             type="primary"
             onClick={() => {
@@ -271,7 +256,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 const PageHeader = styled.div`
-  width: calc(100vw-200px);
+  width: calc(100vw - 200px);
   justify-content: space-between;
   height: 55px;
   font-size: 13px;
@@ -297,7 +282,8 @@ const PageHeader = styled.div`
 const LeftIcon = styled.div`
   padding: 0;
   float: left;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 const RightIcon = styled.div`

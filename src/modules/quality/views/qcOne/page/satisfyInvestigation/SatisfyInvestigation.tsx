@@ -7,7 +7,7 @@ import qs from 'qs'
 import YearPicker from 'src/components/YearPicker'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { appStore, authStore } from 'src/stores'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 import { observer } from 'mobx-react'
 
@@ -45,11 +45,61 @@ export default observer(function SatisfyInvestigation() {
       align: 'left',
     },
     {
-      dataIndex: 'reportName',
-      title: '标题',
-      align: 'left',
+      dataIndex: 'deptName',
+      title: '科室',
+      width: 180,
+      align: 'center',
     },
+    {
+      dataIndex: 'month',
+      title: '月份',
+      width: 120,
+      align: 'center',
+      render: (text: string, record: any) => `${record.year}年${record.month}月`
+    },
+    {
+      dataIndex: '状态',
+      title: '状态',
+      width: 180,
+      align: 'center',
+    },
+    {
+      dataIndex: 'creatorName',
+      title: '创建人',
+      width: 80,
+      align: 'center',
+    },
+    {
+      dataIndex: 'createDate',
+      title: '创建时间',
+      width: 150,
+      align: 'center',
+    },
+    {
+      dataIndex: 'operate',
+      title: '操作',
+      width: 120,
+      align: 'center',
+      render: (text: string, record: any) => <DoCon>
+        <span onClick={() => handleReview(record)}>查看</span>
+        <span onClick={() => handleEdit(record)}>修改</span>
+        <span onClick={() => handleDelete(record)}>删除</span>
+      </DoCon>
+
+    }
   ]
+
+  const handleReview = (record: any) => {
+    appStore.history.push(`/qcOne/satisfyInvestigationDetail?id=${record.id}`)
+  }
+
+  const handleEdit = (record: any) => {
+
+  }
+
+  const handleDelete = (record: any) => {
+
+  }
 
   const getTableData = () => {
     console.log('getData')

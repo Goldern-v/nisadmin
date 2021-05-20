@@ -115,8 +115,10 @@ export default observer(function EditWorkHistoryModal(props: Props) {
     }
 
     if (!refForm.current) return;
+
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
+
     value.birthday && (value.birthday = value.birthday.format("YYYY-MM-DD"));
     value.goWorkTime &&
       (value.goWorkTime = value.goWorkTime.format("YYYY-MM-DD"));
@@ -126,6 +128,10 @@ export default observer(function EditWorkHistoryModal(props: Props) {
       ));
     value.enrolDate && (value.enrolDate = value.enrolDate.format("YYYY-MM-DD"));
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
+
+    value.zyzsNursingPostDate && (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format("YYYY-MM-DD"));
+    value.zyzsDate && (value.zyzsDate = value.zyzsDate.format("YYYY-MM-DD"));
+
     nurseFilesService.saveOrUpdateBaseInfo({ ...value, ...obj }).then((res: any) => {
       message.success("保存成功");
       props.getTableData && props.getTableData();
@@ -161,6 +167,8 @@ export default observer(function EditWorkHistoryModal(props: Props) {
         zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
         newTitle: data.newTitle,
         workConversion: data.workConversion,
+        zyzsNursingPostDate: data.zyzsNursingPostDate ? moment(data.zyzsNursingPostDate) : null,
+        zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
         goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
       });
       // refForm.current.setField('unit', 123)

@@ -5,14 +5,14 @@ export default class WorkloadApi extends BaseApiService {
   // 查询服务之星
   public async queryPageListFwzx(obj: any) {
     return this.post(
-      `/query111`,
+      `/studyAndTrain/serviceStar/queryPageList`,
       obj
     );
   }
   // 查询技术能手
   public async queryPageListJsns(obj: any) {
     return this.post(
-      `/query222`,
+      `/studyAndTrain/technicalExperts/queryPageList`,
       obj
     );
   }
@@ -27,14 +27,14 @@ export default class WorkloadApi extends BaseApiService {
   // 保存服务之星
   public async saveOrUpdateFwzx(obj: any) {
     return this.post(
-      `/save111`,
+      `/studyAndTrain/serviceStar/saveOrUpdate`,
       obj
     );
   }
   // 保存技术能手
   public async saveOrUpdateJsns(obj: any) {
     return this.post(
-      `/save222`,
+      `/studyAndTrain/technicalExperts/saveOrUpdate`,
       obj
     );
   }
@@ -48,31 +48,39 @@ export default class WorkloadApi extends BaseApiService {
 
   // 删除服务之星
   public async deleteInfoFwzx(id: any) {
-    return this.post(
-      `/delete111`,
-      { id }
+    return this.get(
+      `/studyAndTrain/serviceStar/delete/${id}`
     );
   }
   // 删除技术能手
   public async deleteInfoJsns(id: any) {
-    return this.post(
-      `/delete222`,
-      { id }
+    return this.get(
+      `/studyAndTrain/technicalExperts/delete/${id}`
     );
   }
   // 删除工作量统计
   public async deleteInfoGzltj(id: any) {
-    return this.post(
-      `/delete333`,
-      { id }
+    return this.get(
+      `/delete333/${id}`
     );
   }
 
   // 导出
-  public exportPageList(obj?: any) {
+  public exportPageList(query: any, type: string) {
+    let url = ((type: string) => {
+      switch (type) {
+        case '2':
+          return `/studyAndTrain/technicalExperts/exportPageList`
+        case '3':
+          return `/studyAndTrain/serviceStar/exportPage3333`
+        default:
+          return `/studyAndTrain/serviceStar/exportPageList`
+      }
+    })(type)
+
     return this.post(
-      `/export`,
-      obj,
+      url,
+      query,
       {
         responseType: "blob"
       }
