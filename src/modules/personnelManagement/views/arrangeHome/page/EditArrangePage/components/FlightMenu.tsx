@@ -165,13 +165,14 @@ function MenuCon(props: { dataSource: any[] }) {
         sheetViewModal.selectedCellList.forEach(cell => {
           setCellData(cell, sheetViewModal.countArrangeNameList, item)
         })
-        sheetViewModal.selectedCellList = []
         sheetViewModal.copyCellList = []
       }
     } else {
       setCellData(sheetViewModal.selectedCell, sheetViewModal.countArrangeNameList, item)
     }
-    sheetViewModal.selectedCell = sheetViewModal.getNextCell();
+    const nextCell = sheetViewModal.getNextCell();
+    sheetViewModal.selectedCell = nextCell
+    sheetViewModal.selectedCellList = [nextCell]
   };
 
   return (

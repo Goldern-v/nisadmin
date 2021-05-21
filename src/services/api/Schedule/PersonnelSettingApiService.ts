@@ -15,6 +15,7 @@ export default class PersonnelSettingApiService extends BaseApiService {
     const postData = {
       deptCode: data.deptCode,  //string
       groupName: data.groupName,  //string
+      groupColor: data.groupColor,  //string
       // sortValue: data.sortValue  //string
     }
     return this.post(`/schSettingNurseGroup/saveSettingNurseGroup`, postData)
@@ -29,14 +30,13 @@ export default class PersonnelSettingApiService extends BaseApiService {
   }
 
   // 4.查找排班人员
-  public async getScheduler(deptCode: string, id?: string) {
-    return appStore.hisMatch({
-      map: {
-        dghl: this.get(`/schShiftUser/getByDeptCodeAndId/${deptCode}/${id}`),
-        other: this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
-      }
-    })
-    // return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
+  public async getScheduler(deptCode: string) {
+    return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
+  }
+
+  // 4.查找排班人员 横沥
+  public async getSchedulerHl(params: any) {
+    return this.post(`schShiftUser/getByDeptCodeAndId`, params)
   }
 
   //5、根据人员分组ID获取对应的人员
@@ -54,5 +54,9 @@ export default class PersonnelSettingApiService extends BaseApiService {
       schSettingNurseGroupDetails: data.schSettingNurseGroupDetail // 已选数据
     }
     return this.post(`/schSettingNurseGroup/saveSettingNurseGroupDetail`, postData)
+  }
+
+  public async getGroupColorList() {
+    return this.post(`/dept/multiDictInfo`, ['sch_range_color'])
   }
 }

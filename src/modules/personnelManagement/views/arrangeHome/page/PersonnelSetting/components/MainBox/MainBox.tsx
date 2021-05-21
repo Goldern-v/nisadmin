@@ -3,9 +3,11 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
-import { Transfer, Modal, Input, message, Spin } from 'antd'
+import { Transfer, Modal, Input, message, Spin, Select } from 'antd'
 import service from 'src/services/api'
-import { scheduleStore } from 'src/stores'
+import { appStore, scheduleStore } from 'src/stores'
+import { PageHeader } from "src/components/common";
+import { find } from "tslint/lib/utils";
 
 export interface Props extends RouteComponentProps {
 }
@@ -18,6 +20,8 @@ export default function MainBox() {
   const [targetKeys, setTargetKeys] = useState([] as any[])
   const [selectedKeys, setSelectedKeys] = useState([] as any[])
   const [groupName, setGroupName] = useState('')
+  const [groupColor, setGroupColor] = useState('')
+  const [groupColorList, setGroupColorList] = useState([])
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
   const [effect, setEffect] = useState(true)
@@ -40,6 +44,23 @@ export default function MainBox() {
       width: 30,
       align: 'left'
     },
+    appStore.hisMatch({
+      map: {
+        dghl: {
+          title: '分组颜色',
+          dataIndex: 'groupColor',
+          key: 'groupColor',
+          width: 8,
+          align: 'center',
+          render: (text: any, record: any) => {
+            const item = groupColorList.find((item: any) => {
+              return item.code === record.groupColor
+            }) || { name: "" }
+            return <span>{item.name}</span>
+          }
+        },
+      }
+    }),
     {
       title: '操作',
       dataIndex: '操作',
@@ -74,7 +95,8 @@ export default function MainBox() {
   const handleOk = () => {
     const data = {
       deptCode: scheduleStore.getDeptCode(), //string 科室
-      groupName: groupName //string 分组名称
+      groupName: groupName, //string 分组名称
+      groupColor: groupColor, //string 分组颜色
     }
     if (!groupName) {
       message.warning('保存前请先填写分组名称')
@@ -130,26 +152,35 @@ export default function MainBox() {
   }
 
   //获取分组可选人员
-  const selectScheduler = (record?: any) => {
+  const selectScheduler = async (record?: any) => {
     let deptCode = scheduleStore.getDeptCode()
     let id = record.id
     setLoadingTransfer(true)
-    service.personnelSettingApiService.getScheduler(deptCode, id).then((res) => {
-      setLoadingTransfer(false)
-      let array: any = []
-      res.data.length > 0 &&
-      res.data.map((item: any, i: any) => {
-        array.push({
-          key: i.toString(),
-          sortValue: i.toString(),
-          schSettingNurseGroupId: id,
-          empName: item.empName,
-          empNo: item.empNo
-        })
+    let res = null
+    if (appStore.HOSPITAL_ID === 'dghl') {
+      const params = {
+        id,
+        deptCode,
+        userLists: tableData.map(i => i.id).filter(i => i !== id),
+      }
+      res = await service.personnelSettingApiService.getSchedulerHl(params)
+    } else {
+      res = await service.personnelSettingApiService.getScheduler(deptCode)
+    }
+    setLoadingTransfer(false)
+    let array: any = []
+    res.data.length > 0 &&
+    res.data.map((item: any, i: any) => {
+      array.push({
+        key: i.toString(),
+        sortValue: i.toString(),
+        schSettingNurseGroupId: id,
+        empName: item.empName,
+        empNo: item.empNo
       })
-      setMockData(array)
-      selectedScheduler(record, array)
     })
+    setMockData(array)
+    selectedScheduler(record, array)
   }
 
   //表格行操作
@@ -165,6 +196,13 @@ export default function MainBox() {
 
   useLayoutEffect(() => {
     setEffect(false)
+  }, [])
+
+  useLayoutEffect(() => {
+    service.personnelSettingApiService.getGroupColorList().then(res => {
+      const list = res.data.sch_range_color
+      setGroupColorList(list)
+    })
   }, [])
 
   // 新增或修改分组中的人员
@@ -271,7 +309,7 @@ export default function MainBox() {
           onOk={handleOk}
           confirmLoading={confirmLoading}
         >
-          <div className='category' style={{ marginTop: '50px', marginBottom: '60px' }}>
+          <div className='category' style={{ marginTop: '50px' }}>
             <SpanOne>分组名称：</SpanOne>
             <Input
               style={{ width: '72%' }}
@@ -280,6 +318,29 @@ export default function MainBox() {
               onChange={(e) => setGroupName(e.target.value)}
             />
           </div>
+          {
+            appStore.hisMatch({
+              map: {
+                dghl: (
+                  <div className='category' style={{ marginTop: '20px', marginBottom: '50px' }}>
+                    <SpanOne>分组颜色：</SpanOne>
+                    <Select
+                      style={{ width: '72%' }}
+                      value={groupColor}
+                      onChange={(value: any) => setGroupColor(value)}
+                    >
+                      {groupColorList.map((item: any, index: number) =>
+                        <Select.Option key={index} value={item.code}>
+                          {item.name}
+                        </Select.Option>
+                      )}
+                    </Select>
+                  </div>
+                ),
+                other: <div style={{ marginBottom: '50px' }}/>
+              }
+            })
+          }
         </Modal>
       </TransferBox>
     </Wrapper>

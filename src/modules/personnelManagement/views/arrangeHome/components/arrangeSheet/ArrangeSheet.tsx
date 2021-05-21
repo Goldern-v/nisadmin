@@ -46,7 +46,8 @@ export default observer(function ArrangeSheet(props: Props) {
       wh: () => EditVacationCountModal_wh,
       dghl: () => EditVacationCountModal_wh,
       jmfy: () => EditVacationCountModal_wh,
-      nys: () => EditVacationCountModal_wh
+      nys: () => EditVacationCountModal_wh,
+      gzsrm: () => EditVacationCountModal_wh,
     })
   );
   let editVacationCountModal = createModal(EditVacationCountModal);
@@ -103,7 +104,19 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "empName",
       width: 50,
       fixed: "left",
-      align: "center"
+      align: "center",
+      render(text: any, record: any) {
+        return appStore.hisMatch({
+          map: {
+            dghl: (
+              <div style={{ background: record.groupColor }}>{record.empName}</div>
+            ),
+            other: (
+              <div>{record.empName}</div>
+            )
+          }
+        })
+      }
     },
     ...appStore.hisMatch({
       map: {
@@ -387,7 +400,8 @@ export default observer(function ArrangeSheet(props: Props) {
                 hj: () => 3,
                 wh: () => 6,
                 jmfy: () => 6,
-                dghl: () => 4
+                dghl: () => 4,
+                gzsrm: () => 2,
               })) *
             70 +
             widthNys +
