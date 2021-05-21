@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import JobTitleMap from './components/JobTitleMap'
 import { Button, Radio, Icon } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi'
-import { authStore } from 'src/stores/index'
+import { appStore, authStore } from 'src/stores/index'
 import moment from 'moment'
 import emitter from 'src/libs/ev'
 import HomeViewModel from 'src/modules/home/HomeViewModel'
@@ -14,9 +14,9 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 export default observer(function NurseSituation() {
   const [titleBy, setTitleBy] = useState('按职称')
   const [userTotal, setUserTotal] = useState(0)
-  useEffect(() => {
-    //
-  })
+  // useEffect(() => {
+  //
+  // })
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)
   }
@@ -33,8 +33,6 @@ export default observer(function NurseSituation() {
           HomeViewModel.NurseSituationData = data
 
           emitter.emit('护理人员情况全数据', { ...data })
-          // console.log('resssssssssssssssssssssssssss', data)
-          // console.log('resssssssssssssssssssssssssss', HomeViewModel.NurseSituationData)
           if (data.userTotal) {
             emitter.emit('护理人员情况数组', () => {
               let cacheArr = Object.keys(data) || []
@@ -57,19 +55,24 @@ export default observer(function NurseSituation() {
         <MidHeader>
           <div className='headerLeft'>护理人员合计：{userTotal}</div>
           <div className='headerRight'>
-            {/* <div className='headerRightItem' onClick={choose1}>
-              按职称
-            </div>
-            <div className='headerRightItem' onClick={choose2}>
-              按层级
-            </div>
-            <div className='headerRightItem' onClick={choose3}>
-              按工龄
-            </div> */}
             <Radio.Group defaultValue='按职称' onChange={selectChange}>
-              <Radio.Button value='按职称'>按职称</Radio.Button>
-              <Radio.Button value='按层级'>按层级</Radio.Button>
-              <Radio.Button value='按工龄'>按工龄</Radio.Button>
+              {appStore.hisMatch({
+                map: {
+                  jmfy: (
+                    <React.Fragment>
+                      <Radio.Button value='按职称'>按职称</Radio.Button>
+                      <Radio.Button value='按层级'>按层级</Radio.Button>
+                    </React.Fragment>
+                  ),
+                  default: (
+                    <React.Fragment>
+                      <Radio.Button value='按职称'>按职称</Radio.Button>
+                      <Radio.Button value='按层级'>按层级</Radio.Button>
+                      <Radio.Button value='按工龄'>按工龄</Radio.Button>
+                    </React.Fragment>
+                  )
+                }
+              })}
             </Radio.Group>
           </div>
         </MidHeader>

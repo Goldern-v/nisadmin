@@ -80,7 +80,7 @@ export default observer(function HomeView() {
   /** 默认显示全部面板 */
   const visibleListDefault = Object.keys(pannelAll)
   /** 根据需要屏蔽面板 */
-  const visibleListJmfy = visibleListDefault.filter((key) => ['performChart', 'nurseSituation', 'patientDistribute'].indexOf(key) < 0)
+  const visibleListJmfy = visibleListDefault.filter((key) => ['performChart'].indexOf(key) < 0)
 
   const visibleListDghl = visibleListDefault.filter((key) => ['performChart'].indexOf(key) < 0)
 

@@ -79,7 +79,11 @@ const LEFT_MENU_CONFIG = [
       {
         title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
       },
-      { title: "护理人员统计", path: "/statistic/护理人员统计" },
+      {
+        title: "护理人员统计",
+        path: "/statistic/护理人员统计",
+        hide: appStore.HOSPITAL_ID == "jmfy"
+      },
       { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
       {
         title: "科室护士明细表",
