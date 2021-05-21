@@ -81,7 +81,11 @@ const LEFT_MENU_CONFIG = [
       },
       { title: "护理人员统计", path: "/statistic/护理人员统计" },
       { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
-      { title: "科室护士明细表", path: "/statistic/科室护士明细表" },
+      {
+        title: "科室护士明细表",
+        path: "/statistic/科室护士明细表",
+        hide: appStore.HOSPITAL_ID == "jmfy"
+      },
       // {
       //   title: "科室护士结构信息汇总表",
       //   path: "/statistic/科室护士结构信息汇总表"
