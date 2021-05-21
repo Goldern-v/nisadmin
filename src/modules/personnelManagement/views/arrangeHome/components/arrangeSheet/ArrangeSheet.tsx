@@ -104,20 +104,23 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "empName",
       width: 50,
       fixed: "left",
-      align: "center",
-      render(text: any, record: any) {
-        return appStore.hisMatch({
-          map: {
-            dghl: (
-              <div style={{ background: record.groupColor }}>{record.empName}</div>
-            ),
-            other: (
-              <div>{record.empName}</div>
-            )
-          }
-        })
-      }
+      align: "center"
     },
+    //  分组名称 分组颜色
+    appStore.hisMatch({
+      map: {
+        dghl: {
+          title: "分组名称",
+          dataIndex: "groupName",
+          width: 70,
+          fixed: "left",
+          align: "center",
+          render(text: any, record: any) {
+            return <div style={{ background: record.groupColor }}>{record.groupName}</div>
+          }
+        },
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         nys: [],
@@ -400,7 +403,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 hj: () => 3,
                 wh: () => 6,
                 jmfy: () => 6,
-                dghl: () => 4,
+                dghl: () => 5,
                 gzsrm: () => 2,
               })) *
             70 +
