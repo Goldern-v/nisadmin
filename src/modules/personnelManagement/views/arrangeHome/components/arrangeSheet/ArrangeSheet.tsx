@@ -99,13 +99,6 @@ export default observer(function ArrangeSheet(props: Props) {
       fixed: "left",
       align: "center"
     },
-    {
-      title: "姓名",
-      dataIndex: "empName",
-      width: 50,
-      fixed: "left",
-      align: "center"
-    },
     //  分组名称 分组颜色
     appStore.hisMatch({
       map: {
@@ -116,11 +109,18 @@ export default observer(function ArrangeSheet(props: Props) {
           fixed: "left",
           align: "center",
           render(text: any, record: any) {
-            return <div style={{ background: record.groupColor }}>{record.groupName}</div>
+            return <div style={{ color: record.groupColor }}>{record.groupName}</div>
           }
-        },
+        }
       }
     }),
+    {
+      title: "姓名",
+      dataIndex: "empName",
+      width: 50,
+      fixed: "left",
+      align: "center"
+    },
     ...appStore.hisMatch({
       map: {
         nys: [],
@@ -347,7 +347,7 @@ export default observer(function ArrangeSheet(props: Props) {
       {
         title: (
           <div>
-            <div>公休结余</div>
+            <div>年假天数</div>
             <div>（天）</div>
           </div>
         ),
