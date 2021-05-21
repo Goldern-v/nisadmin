@@ -163,7 +163,8 @@ export default observer(function LabelTable(props: Props) {
   const handleQuestionView = (record: any) => {
     let newQuery = {
       id: record.id,
-      labelContent: record.labelContent
+      labelContent: record.labelContent,
+      bankType: model.query.bankType
     }
     history.push(`/continuingEdu/labelQuestionBank?${qs.stringify(newQuery)}`)
   }

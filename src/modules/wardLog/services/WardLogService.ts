@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
+import { fileDownload } from 'src/utils/file/file'
 export default class WardLogService extends BaseApiService {
   public findLog(obj: PageOptions | any) {
     return this.post(`/InpatientAreaLog/findLog`, obj)
@@ -26,6 +27,13 @@ export default class WardLogService extends BaseApiService {
   /** 导出详情excel */
   public exportDetail(data: any) {
     return this.post(`/InpatientAreaLog/info/export`, data, { responseType: 'blob' })
+  }
+
+
+  /** 根据查询条件导出列表页excel */
+  public allExcel(params: any) {
+    return this.post(`/InpatientAreaLog/allExcel`, params, { responseType: 'blob' })
+      .then(res => fileDownload(res))
   }
 
   /** 导出详情excel */

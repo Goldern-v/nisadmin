@@ -167,23 +167,33 @@ export default observer(function MyCreateList() {
 
   const handleExport = () => {
     if (selectedRowKeys.length <= 0) {
-      message.warning('未勾选条目')
-      return
-    }
+      let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+      let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
 
-    setPageLoading(true)
-
-    wardLogService
-      .exportDetailList({
-        ids: selectedRowKeys,
+      wardLogService.allExcel({
         wardCode: deptSelect,
-        templateId: selectedTemplate
+        startDate,
+        endDate,
+        templateId: selectedTemplate,
+        status
       })
-      .then(res => {
-        setPageLoading(false)
-        setSelectedRowKeys([])
-        fileDownload(res)
-      }, err => setPageLoading(false))
+    } else {
+
+      setPageLoading(true)
+
+      wardLogService
+        .exportDetailList({
+          ids: selectedRowKeys,
+          wardCode: deptSelect,
+          templateId: selectedTemplate
+        })
+        .then(res => {
+          setPageLoading(false)
+          setSelectedRowKeys([])
+          fileDownload(res)
+        }, err => setPageLoading(false))
+
+    }
   }
 
   useEffect(() => {

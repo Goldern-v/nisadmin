@@ -21,7 +21,7 @@ class LabelQuestionBankModel extends QuestionBankManageModel {
       ...this.query,
     }
 
-    delete query.bankType;
+    // delete query.bankType;
 
     const successCallback = (list: any, total: number) => {
       this.setTableLoading(false);

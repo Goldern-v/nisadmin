@@ -1,15 +1,17 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
-import { Button, Select } from 'antd'
+import { Button, Select, Modal } from 'antd'
 import { Place } from 'src/components/common'
 import moment from 'moment'
-import qs from 'qs'
 import YearPicker from 'src/components/YearPicker'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { appStore, authStore } from 'src/stores'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { satisfyInvestigationServices } from './services/SatisfyInvestigationServices'
+import { ColumnProps, message } from 'src/vendors/antd'
 import { observer } from 'mobx-react'
+import SatisfyInvestigationEditModal from './components/SatisfyInvestigationEditModal'
+import qs from 'qs'
 
 const Option = Select.Option
 
@@ -27,6 +29,7 @@ export default observer(function SatisfyInvestigation() {
   })
 
   const [tableData, setTableData] = useState([] as any[])
+  const [loading, setLoading] = useState(false)
 
   const [editVisible, setEditVisible] = useState(false)
   const [editId, setEditId] = useState('')
@@ -40,12 +43,12 @@ export default observer(function SatisfyInvestigation() {
       render: (text: string, record: any, idx: number) => idx + 1
     },
     {
-      dataIndex: 'reportName',
+      dataIndex: 'title',
       title: '标题',
       align: 'left',
     },
     {
-      dataIndex: 'deptName',
+      dataIndex: 'wardName',
       title: '科室',
       width: 180,
       align: 'center',
@@ -56,12 +59,6 @@ export default observer(function SatisfyInvestigation() {
       width: 120,
       align: 'center',
       render: (text: string, record: any) => `${record.year}年${record.month}月`
-    },
-    {
-      dataIndex: '状态',
-      title: '状态',
-      width: 180,
-      align: 'center',
     },
     {
       dataIndex: 'creatorName',
@@ -90,19 +87,51 @@ export default observer(function SatisfyInvestigation() {
   ]
 
   const handleReview = (record: any) => {
-    appStore.history.push(`/qcOne/satisfyInvestigationDetail?id=${record.id}`)
+    appStore.history.push(`/qcOne/satisfyInvestigationDetail?${qs.stringify({
+      id: record.id,
+      title: record.title
+    })}`)
   }
 
-  const handleEdit = (record: any) => {
+  const handleEdit = (record?: any) => {
+    if (record) {
+      setEditId(record.id)
+    } else {
+      setEditId('')
+    }
 
+    setEditVisible(true)
   }
 
   const handleDelete = (record: any) => {
-
+    Modal.confirm({
+      content: '是否要删除该项目',
+      onOk: () => {
+        setLoading(true)
+        satisfyInvestigationServices
+          .satisfiedInstanceDelete(record.id)
+          .then(res => {
+            message.success('删除成功')
+            getTableData()
+          }, () => setLoading(false))
+      }
+    })
   }
 
   const getTableData = () => {
-    console.log('getData')
+    setLoading(true)
+
+    satisfyInvestigationServices
+      .satisfiedInstanceList(query)
+      .then(res => {
+        setLoading(false)
+        setTableData(res.data)
+      }, () => setLoading(false))
+  }
+
+  const handleExport = () => {
+    satisfyInvestigationServices
+      .exportInstance(query)
   }
 
   useKeepAliveEffect(() => {
@@ -148,15 +177,24 @@ export default observer(function SatisfyInvestigation() {
           <Option value={item.code} key={item.code}>{item.name}</Option>)}
       </Select>
       <Button type="primary" className="mr-10">查询</Button>
-      <Button className="mr-10">导出</Button>
-      <Button>新建</Button>
+      <Button className="mr-10" onClick={() => handleExport()}>导出</Button>
+      <Button onClick={() => handleEdit()}>新建</Button>
     </HeaderCon>
     <MainCon>
       <BaseTable
+        loading={loading}
         surplusHeight={205}
         dataSource={tableData}
         columns={columns} />
     </MainCon>
+    <SatisfyInvestigationEditModal
+      visible={editVisible}
+      editId={editId}
+      onOk={() => {
+        getTableData()
+        setEditVisible(false)
+      }}
+      onCancel={() => setEditVisible(false)} />
   </Wrapper>
 })
 

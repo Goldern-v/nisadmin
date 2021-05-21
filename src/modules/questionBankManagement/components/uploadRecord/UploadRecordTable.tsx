@@ -177,7 +177,8 @@ export default observer(function BankTable(props: Props) {
   const handleQuestionView = (record: any) => {
     let newQuery = {
       id: record.id,
-      bankName: record.bankName
+      bankName: record.bankName,
+      bankType: model.query.bankType
     }
     history.push(`/continuingEdu/uploadRecordQuestionBank?${qs.stringify(newQuery)}`)
   }

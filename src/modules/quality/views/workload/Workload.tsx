@@ -10,7 +10,6 @@ import {
   Modal
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import DeptSelect from "src/components/DeptSelect";
 import { workloadModal } from "./WorkloadModal";
 import { workloadApi } from "./api/WorkloadApi";
 import WorkloadEditModal from "./modal/WorkloadEditModal";

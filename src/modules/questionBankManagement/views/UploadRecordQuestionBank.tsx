@@ -52,6 +52,7 @@ export default observer(function QuestionBankManagement() {
     search = qs.parse(search);
     if (uploadQuestionBankModel.tableData.length == 0 && uploadQuestionBankModel.tableLoading) return
     questionBankManageService.getCountMenu({
+      bankType: '2',
       status: '导入记录',
       id: search.id
     }).then(res => {

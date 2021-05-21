@@ -1,4 +1,5 @@
 import { observable, computed, action } from 'mobx'
+import { appStore } from 'src/stores';
 import { questionBankManageService } from '../api/QuestionBankManageService'
 
 export default class QuestionBankManageModel {

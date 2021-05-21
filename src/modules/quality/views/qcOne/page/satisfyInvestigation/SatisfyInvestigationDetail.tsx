@@ -36,7 +36,7 @@ export default function SatisfyInvestigationDetail() {
         <span>/</span>
         <span>详情</span>
       </NavCon>
-      <MainTitle>{detailInfo.title}</MainTitle>
+      <MainTitle>{queryObj.title || detailInfo.title}</MainTitle>
       <SubContent>
         <span className="content">由Janzen于2021-01-25 13:39创建</span>
         <span className="label">单元:</span>

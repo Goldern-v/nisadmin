@@ -16,7 +16,7 @@ import qs from 'qs';
 import { questionBankManageService } from './../api/QuestionBankManageService';
 
 export default observer(function LabelQuestionBank() {
-  let { bankType, searchingContent } = labelQuestionBankModel.query;
+  let { searchingContent, bankType } = labelQuestionBankModel.query;
   let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
@@ -27,7 +27,7 @@ export default observer(function LabelQuestionBank() {
     const { choiceType } = search;
     let activeIdx = '0';
     let newQuery = {
-      bankType: '2',
+      bankType: appStore.queryObj.bankType || '2',
       pageIndex: 1,
       pageSize: 20,
       searchingContent: '',
@@ -52,6 +52,7 @@ export default observer(function LabelQuestionBank() {
     search = qs.parse(search);
     if (labelQuestionBankModel.tableData.length == 0 && labelQuestionBankModel.tableLoading) return
     questionBankManageService.getCountMenu({
+      bankType,
       status: '标签查看',
       id: search.id
     }).then(res => {

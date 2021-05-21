@@ -1,4 +1,5 @@
 import BaseApiService from "src/services/api/BaseApiService";
+import { fileDownload } from "src/utils/file/file";
 
 
 class SatisfyInvestigationServices extends BaseApiService {
@@ -20,7 +21,7 @@ class SatisfyInvestigationServices extends BaseApiService {
    * 获取满意度调查详情
    * @param id 满意度调查表id
    */
-  public satisfiedInstanceDetail(id: string) {
+  public satisfiedInstanceDetail(id: string | number) {
     return this.get(`/satisfiedInstance/detail/${id}`)
   }
 
@@ -45,8 +46,32 @@ class SatisfyInvestigationServices extends BaseApiService {
   }
 
   /**
-   * 
+   * 满意度调查列表导出
+   * @param year 年份
+   * @param month 月份
+   * @param wardCode 科室
    */
+  public exportInstance(params: {
+    year: string,
+    month: string,
+    wardCode: string,
+  }) {
+    return this.post('/satisfiedInstance/exportInstance', params, {
+      responseType: 'blob'
+    })
+      .then(res => fileDownload(res))
+  }
+
+  /**
+   * 满意度调查详情导出
+   * @param id 满意度调查表id
+   */
+  public exportDetail(id: string | number) {
+    return this.get(`/satisfiedInstance/exportDetail/${id}`, {
+      responseType: 'blob'
+    })
+      .then(res => fileDownload(res))
+  }
 }
 
 export const satisfyInvestigationServices = new SatisfyInvestigationServices()
