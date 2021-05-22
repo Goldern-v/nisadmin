@@ -100,20 +100,16 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center"
     },
     //  分组名称 分组颜色
-    appStore.hisMatch({
-      map: {
-        dghl: {
-          title: "分组名称",
-          dataIndex: "groupName",
-          width: 70,
-          fixed: "left",
-          align: "center",
-          render(text: any, record: any) {
-            return <div style={{ color: record.groupColor }}>{record.groupName}</div>
-          }
-        }
+    appStore.HOSPITAL_ID === 'dghl' && {
+      title: "分组名称",
+      dataIndex: "groupName",
+      width: 70,
+      fixed: "left",
+      align: "center",
+      render(text: any, record: any) {
+        return <div style={{ color: record.groupColor }}>{record.groupName}</div>
       }
-    }),
+    },
     {
       title: "姓名",
       dataIndex: "empName",
