@@ -72,6 +72,20 @@ class SatisfyInvestigationServices extends BaseApiService {
     })
       .then(res => fileDownload(res))
   }
+
+  /**
+   * 保存填写的调查表内容
+   * @param params.detailId 人员对应的id
+   * @param content 表单内容
+   * @param score 分数
+   */
+  public submitForm(params: {
+    detailId: number | string,
+    content: string,
+    score: number,
+  }) {
+    return this.post('/satisfiedInstance/submitForm', params)
+  }
 }
 
 export const satisfyInvestigationServices = new SatisfyInvestigationServices()

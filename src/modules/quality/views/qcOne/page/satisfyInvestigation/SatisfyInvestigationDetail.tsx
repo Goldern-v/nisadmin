@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { ColumnProps } from 'src/vendors/antd'
-import BaseTable, { TabledCon } from 'src/components/BaseTable'
+import BaseTable, { DoCon, TabledCon } from 'src/components/BaseTable'
 import { Link } from 'react-router-dom'
+import { satisfyInvestigationServices } from './services/SatisfyInvestigationServices'
+import SatisfiedFormModal from './components/SatisfiedFormModal'
 
 export interface Props { }
 
@@ -14,15 +16,128 @@ export default function SatisfyInvestigationDetail() {
   const [detailInfo, setDetailInfo] = useState({} as any)
 
   const [formVisible, setFormVisible] = useState(false)
+  const [formQuestionList, setFormQuestionList] = useState([] as any[])
+  const [formEditable, setFormEditable] = useState(false)
   const [formId, setFormId] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const columns: ColumnProps<any>[] = [
 
+  // 计算满意人数 和满意率 70分算满意
+  const satisfiedPersonSize = personList.filter((person: any) => Number(person.score || 0) > 70).length
+  let satisfiedRate = parseInt((satisfiedPersonSize / personList.length * 10000).toString()) / 100
+  if (isNaN(satisfiedRate)) satisfiedRate = 0
+
+  const editId = (() => {
+    let editPerson = personList.find(
+      (person: any) => {
+        if (person.empNo.toLocaleUpperCase() !== authStore.user?.empNo.toLocaleUpperCase()) return false
+
+        if (person.status !== '0') return false
+
+        return true
+      }
+    )
+
+    if (editPerson) return editPerson.id
+
+    return ''
+  })()
+
+  const columns: ColumnProps<any>[] = [
+    {
+      key: 'index',
+      title: '序号',
+      width: 80,
+      align: 'center',
+      render: (text: string, record: any, idx: number) => idx + 1
+    },
+    {
+      dataIndex: 'empNo',
+      title: '工号',
+      width: 80,
+      align: 'center',
+    },
+    {
+      dataIndex: 'empName',
+      title: '姓名',
+      width: 80,
+      align: 'center',
+    },
+    {
+      dataIndex: 'title',
+      title: '职称',
+      width: 80,
+      align: 'center',
+    },
+    {
+      dataIndex: 'wardName',
+      title: '科室',
+      width: 180,
+      align: 'center',
+    },
+    {
+      dataIndex: 'status',
+      title: '调查表',
+      width: 80,
+      align: 'center',
+      render: (text: string) => {
+        if (text === '0') {
+          return <span style={{ color: '#999' }}>未填写</span>
+        } else {
+          return <span style={{ color: '#00A680' }}>已填写</span>
+        }
+      }
+    },
+    {
+      dataIndex: 'operate',
+      title: '操作',
+      width: 80,
+      align: 'center',
+      render: (text: string, record: any) => {
+        if (record.status !== '0')
+          return <DoCon>
+            <span onClick={() => handleReview(record)}>查看</span>
+          </DoCon>
+        else
+          return <span style={{ color: '#999' }}>查看</span>
+      }
+    }
   ]
 
+  const handleReview = (record: any) => {
+    try {
+      let newFormQuestionList = JSON.parse(record.content)
+      setFormQuestionList(newFormQuestionList)
+    } catch (e) { }
+
+    setFormId(record.id)
+    setFormEditable(false)
+    setFormVisible(true)
+  }
+
+  const openFormModal = () => {
+    setFormId(editId)
+    setFormEditable(true)
+    setFormVisible(true)
+  }
+
   const getDetailData = () => {
-    console.log('getDetailData', queryObj.id)
+    setLoading(true)
+
+    satisfyInvestigationServices
+      .satisfiedInstanceDetail(queryObj.id)
+      .then(res => {
+        setLoading(false)
+        if (res.data) {
+          setPersonList(res.data.satisfiedDetail)
+          setDetailInfo(res.data.satisfiedInstance)
+        }
+      }, () => setLoading(false))
+  }
+
+  const handleExport = () => {
+    satisfyInvestigationServices
+      .exportDetail(queryObj.id)
   }
 
   useEffect(() => {
@@ -38,25 +153,47 @@ export default function SatisfyInvestigationDetail() {
       </NavCon>
       <MainTitle>{queryObj.title || detailInfo.title}</MainTitle>
       <SubContent>
-        <span className="content">由Janzen于2021-01-25 13:39创建</span>
+        <span className="content">由{detailInfo.creatorName || '...'}于{detailInfo.createDate || '...'}创建</span>
         <span className="label">单元:</span>
-        <span className="content">急诊护理科室</span>
+        <span className="content">{detailInfo.wardName || '...'}</span>
         <span className="label">时间:</span>
-        <span className="content">2021年1月</span>
-        <span>共调查39位护士</span>
-        <span>满意人数：  39人</span>
-        <span>满意度：100%</span>
+        <span className="content">{detailInfo.year || '...'}年{detailInfo.month || '...'}月</span>
+        <span className="content">共调查{personList.length || 0}位护士</span>
+        <span className="content">满意人数：{satisfiedPersonSize}人</span>
+        <span className="content">满意度：{satisfiedRate}%</span>
       </SubContent>
       <ButtonGroups>
-        <Button>导出</Button>
+        {editId && (
+          <Button type="primary" onClick={() => openFormModal()}>填写调查表</Button>
+        )}
+        <Button onClick={() => handleExport()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
       <TableWrapper>
-        <BaseTable dataSource={personList} loading={loading} columns={columns} />
+        <BaseTable
+          surplusHeight={250}
+          dataSource={personList}
+          loading={loading}
+          columns={columns} />
       </TableWrapper>
     </MainPannel>
+    <SatisfiedFormModal
+      visible={formVisible}
+      isEdit={formEditable}
+      questionListOrigin={formQuestionList}
+      id={formId}
+      onOk={() => {
+        setFormVisible(false)
+        setFormQuestionList([])
+        getDetailData()
+      }}
+      onClose={() => { }}
+      onCancel={() => {
+        setFormQuestionList([])
+        setFormVisible(false)
+      }} />
   </Wrapper>
 }
 
