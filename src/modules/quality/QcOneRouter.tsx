@@ -18,15 +18,20 @@ import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWor
 import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
 import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
 import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
-
+// 质控报告
 import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
 import StarRatingYearReport from './views/qcOne/report/StarRatingYearReport/StarRatingYearReport'
 import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
 import PatientVisitMonth from './views/qcOne/report/PatientVisitMonth/PatientVisitMonth'
 import SafetyCheckReport from './views/qcOne/report/SafetyCheck/SafetyCheckReport'
+// 护士满意度调查表
 import SatisfyInvestigation from './views/qcOne/page/satisfyInvestigation/SatisfyInvestigation'
 import SatisfyInvestigationDetail from './views/qcOne/page/satisfyInvestigation/SatisfyInvestigationDetail'
+// 患者满意度调查表
+import SatisfiedPatInvestigation from './views/qcOne/page/satisfiedPat/SatisfiedPatInvestigation'
+import SatisfiedPatInvestigationDetail from './views/qcOne/page/satisfiedPat/SatisfiedPatInvestigationDetail'
+// 工作量统计
 import Workload from './views/workload/Workload'
 
 const LEFT_MENU_CONFIG: any = [
@@ -155,6 +160,19 @@ const LEFT_MENU_CONFIG: any = [
         hide: true,
         path: '/qcOne/satisfyInvestigationDetail',
         component: SatisfyInvestigationDetail,
+      },
+      {
+        title: '患者满意度调查表',
+        path: '/qcOne/satisfiedPatInvestigation',
+        component: SatisfiedPatInvestigation,
+        keepAlive: true,
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+      },
+      {
+        title: '患者满意度调查表详情',
+        hide: true,
+        path: '/qcOne/satisfiedPatInvestigationDetail',
+        component: SatisfiedPatInvestigationDetail,
       },
     ]
   },

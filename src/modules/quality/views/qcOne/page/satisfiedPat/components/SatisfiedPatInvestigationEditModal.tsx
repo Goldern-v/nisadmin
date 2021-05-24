@@ -5,10 +5,7 @@ import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
 import moment from 'moment'
 import YearPicker from 'src/components/YearPicker'
-import { satisfyInvestigationServices } from './../services/SatisfyInvestigationServices'
-import createModal from 'src/libs/createModal'
-import SelectPeopleModal from "src/modules/notice/page/modal/SelectPeopleModal";
-import SelectPeopleModal_wh from "src/modules/notice/page/modal-wh/SelectPeopleModal";
+import { satisfiedPatInvestigationServices } from './../services/SatisfiedPatInvestigationServices'
 
 const Option = Select.Option
 
@@ -19,42 +16,35 @@ export interface Props {
   onOk: Function
 }
 
-export default observer(function SatisfyInvestigationEditModal(props: Props) {
+export default observer(function SatisfiedPatInvestigationEditModal(props: Props) {
   const { editId, visible, onCancel, onOk } = props
-  const [satisfiedInstance, setSatisfiedInstance] = useState({} as any)
-  const [satisfiedDetail, setSatisfiedDetail] = useState([] as any[])
+  const [satisfiedPat, setSatisfiedPat] = useState({} as any)
+  const [satisfiedPatDetail, setSatisfiedPatDetail] = useState([] as any[])
   const [loading, setLoading] = useState(false)
   const monthList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
-  const selectPeopleModal = createModal(appStore.HOSPITAL_ID == "wh" ? SelectPeopleModal_wh : SelectPeopleModal);
-
-  const getSatisfiedDetail = () => {
+  const getSatisfiedPatDetail = () => {
     setLoading(true)
-    satisfyInvestigationServices
-      .satisfiedInstanceDetail(editId || '')
+    satisfiedPatInvestigationServices
+      .satisfiedPatDetail(editId || '')
       .then(res => {
         setLoading(false)
 
         if (res.data) {
-          setSatisfiedDetail(res.data.satisfiedDetail)
-          setSatisfiedInstance(res.data.satisfiedInstance)
+          setSatisfiedPatDetail(res.data.satisfiedPatDetail)
+          setSatisfiedPat(res.data.satisfiedPat)
         }
 
       }, () => setLoading(false))
   }
 
   const handleSave = () => {
-    if (satisfiedDetail.length <= 0) {
-      message.warn('未选择调查对象')
-      return
-    }
-
     setLoading(true)
 
-    satisfyInvestigationServices
-      .satisfiedInstanceSaveOrUpdate({
-        satisfiedInstance,
-        satisfiedDetail
+    satisfiedPatInvestigationServices
+      .satisfiedPatSaveOrUpdate({
+        satisfiedPat,
+        satisfiedPatDetail
       })
       .then(res => {
         setLoading(false)
@@ -64,50 +54,17 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
       }, () => setLoading(false))
   }
 
-  const handlePersonAdd = () => {
-    selectPeopleModal.show({
-      checkedUserList: satisfiedDetail.map((person: any) => {
-        return {
-          label: person.empName,
-          key: person.empNo
-        }
-      }) as any[],
-      onOkCallBack: (payload: any) => {
-        let newPersonList = [] as any[]
-
-        for (let i = 0; i < payload.length; i++) {
-          let current = payload[i]
-
-          if (current.userList) {
-            for (let j = 0; j < current.userList.length; j++) {
-              let userItem = current.userList[j]
-
-              newPersonList.push(userItem)
-            }
-          } else {
-            newPersonList.push({
-              empName: current.label,
-              empNo: current.key
-            })
-          }
-        }
-
-        setSatisfiedDetail([...newPersonList])
-      }
-    })
-  }
-
   useEffect(() => {
     if (visible) {
       if (editId) {
-        getSatisfiedDetail()
+        getSatisfiedPatDetail()
       } else {
         let year = moment().format('YYYY')
         let month = (moment().get('month') + 1).toString()
         let wardName = authStore.selectedDeptName
 
-        setSatisfiedInstance({
-          title: `${year}年${month}月${wardName}护士满意度调查表`,
+        setSatisfiedPat({
+          title: `${year}年${month}月${wardName}患者满意度调查表`,
           year,
           month,
           wardCode: authStore.selectedDeptCode,
@@ -117,7 +74,7 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
         })
       }
     } else {
-      setSatisfiedDetail([])
+      setSatisfiedPatDetail([])
     }
   }, [visible])
 
@@ -136,9 +93,9 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
             <Col span={6}>标&nbsp;&nbsp;题</Col>
             <Col span={18}>
               <Input
-                value={satisfiedInstance.title}
+                value={satisfiedPat.title}
                 onChange={(e: any) =>
-                  setSatisfiedInstance({ ...satisfiedInstance, title: e.target.value })} />
+                  setSatisfiedPat({ ...satisfiedPat, title: e.target.value })} />
             </Col>
           </Row>
           <Row>
@@ -149,12 +106,12 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
                 showSearch
                 filterOption={(input: any, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                value={satisfiedInstance.wardCode}
+                value={satisfiedPat.wardCode}
                 onChange={(val: string) => {
                   let target = authStore.deptList.find((dept: any) => dept.code === val)
 
-                  setSatisfiedInstance({
-                    ...satisfiedInstance,
+                  setSatisfiedPat({
+                    ...satisfiedPat,
                     wardCode: val,
                     wardName: target?.name || ''
                   })
@@ -167,19 +124,19 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
             <Col span={6}>月&nbsp;&nbsp;份</Col>
             <Col span={9}>
               <YearPicker
-                value={satisfiedInstance.year ? moment(satisfiedInstance.year) : undefined}
+                value={satisfiedPat.year ? moment(satisfiedPat.year) : undefined}
                 allowClear={false}
-                onChange={(payload: any) => setSatisfiedInstance({
-                  ...satisfiedInstance,
+                onChange={(payload: any) => setSatisfiedPat({
+                  ...satisfiedPat,
                   year: payload ? payload.format('YYYY-MM-DD') : ''
                 })}
               />
             </Col>
             <Col span={9}>
               <Select
-                value={satisfiedInstance.month}
+                value={satisfiedPat.month}
                 style={{ width: '100%' }}
-                onChange={(month: string) => setSatisfiedInstance({ ...satisfiedInstance, month })}>
+                onChange={(month: string) => setSatisfiedPat({ ...satisfiedPat, month })}>
                 {monthList.map((month: string) => (
                   <Option
                     value={month}
@@ -199,33 +156,11 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
           <Row>
             <Col span={6}>调查对象</Col>
             <Col span={18} style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-              <Button size="small" onClick={() => handlePersonAdd()}>添加</Button>
+              <Input value={`${satisfiedPat.wardName}患者`} readOnly />
             </Col>
           </Row>
-          <Row>
-            <Col span={4}></Col>
-            <Col span={20}>
-              {satisfiedDetail.map((person: any, idx: number) => (
-                <Tag
-                  key={person.empNo}
-                  onClose={() => {
-                    let newSatisfiedDetail = satisfiedDetail.concat()
-                    newSatisfiedDetail.splice(idx, 1)
-
-                    setSatisfiedDetail(newSatisfiedDetail)
-                  }}
-                  closable>
-                  {person.empName}
-                </Tag>
-              ))}
-            </Col>
-          </Row>
-          {satisfiedDetail.length <= 0 && (
-            <div className="person-empty">未添加人员</div>
-          )}
         </Wrapper>
       </Modal>
-      <selectPeopleModal.Component />
     </React.Fragment>
   )
 })

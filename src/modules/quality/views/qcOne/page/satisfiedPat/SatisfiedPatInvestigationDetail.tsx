@@ -5,12 +5,14 @@ import { appStore, authStore } from 'src/stores'
 import { ColumnProps } from 'src/vendors/antd'
 import BaseTable, { DoCon, TabledCon } from 'src/components/BaseTable'
 import { Link } from 'react-router-dom'
-import { satisfyInvestigationServices } from './services/SatisfyInvestigationServices'
-import SatisfiedFormModal from './components/SatisfiedFormModal'
+import { satisfiedPatInvestigationServices } from './services/SatisfiedPatInvestigationServices'
+import SatisfiedPatFormModal from './components/SatisfiedPatFormModal'
+import QrcodeSubmitModal from './components/QrcodeSubmitModal'
+import createModal from 'src/libs/createModal'
 
 export interface Props { }
 
-export default function SatisfyInvestigationDetail() {
+export default function SatisfiedPatInvestigationDetail() {
   const { queryObj, history } = appStore
   const [personList, setPersonList] = useState([] as any[])
   const [detailInfo, setDetailInfo] = useState({} as any)
@@ -21,27 +23,13 @@ export default function SatisfyInvestigationDetail() {
   const [formId, setFormId] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const qrcodeSubmitModal = createModal(QrcodeSubmitModal)
+
 
   // 计算满意人数 和满意率 70分算满意
   const satisfiedPersonSize = personList.filter((person: any) => Number(person.score || 0) > 70).length
   let satisfiedRate = parseInt((satisfiedPersonSize / personList.filter((person: any) => person.content).length * 10000).toString()) / 100
   if (isNaN(satisfiedRate)) satisfiedRate = 0
-
-  const editId = (() => {
-    let editPerson = personList.find(
-      (person: any) => {
-        if (person.empNo.toLocaleUpperCase() !== authStore.user?.empNo.toLocaleUpperCase()) return false
-
-        if (person.status !== '0') return false
-
-        return true
-      }
-    )
-
-    if (editPerson) return editPerson.id
-
-    return ''
-  })()
 
   const columns: ColumnProps<any>[] = [
     {
@@ -52,26 +40,32 @@ export default function SatisfyInvestigationDetail() {
       render: (text: string, record: any, idx: number) => idx + 1
     },
     {
-      dataIndex: 'empNo',
-      title: '工号',
+      dataIndex: 'bedNo',
+      title: '床位',
       width: 80,
       align: 'center',
     },
     {
-      dataIndex: 'empName',
+      dataIndex: 'name',
       title: '姓名',
       width: 80,
       align: 'center',
     },
     {
-      dataIndex: 'title',
-      title: '职称',
+      dataIndex: 'age',
+      title: '年龄',
       width: 80,
       align: 'center',
     },
     {
+      dataIndex: 'phone',
+      title: '联系方式',
+      width: 180,
+      align: 'center',
+    },
+    {
       dataIndex: 'wardName',
-      title: '科室',
+      title: '就诊科室',
       width: 180,
       align: 'center',
     },
@@ -81,11 +75,12 @@ export default function SatisfyInvestigationDetail() {
       width: 80,
       align: 'center',
       render: (text: string) => {
-        if (text === '0') {
-          return <span style={{ color: '#999' }}>未填写</span>
-        } else {
-          return <span style={{ color: '#00A680' }}>已填写</span>
-        }
+        return <span style={{ color: '#00A680' }}>已填写</span>
+        // if (text === '0') {
+        //   return <span style={{ color: '#999' }}>未填写</span>
+        // } else {
+        //   return <span style={{ color: '#00A680' }}>已填写</span>
+        // }
       }
     },
     {
@@ -94,12 +89,15 @@ export default function SatisfyInvestigationDetail() {
       width: 80,
       align: 'center',
       render: (text: string, record: any) => {
-        if (record.status !== '0')
-          return <DoCon>
-            <span onClick={() => handleReview(record)}>查看</span>
-          </DoCon>
-        else
-          return <span style={{ color: '#999' }}>查看</span>
+        return <DoCon>
+          <span onClick={() => handleReview(record)}>查看</span>
+        </DoCon>
+        // if (record.status !== '0')
+        //   return <DoCon>
+        //     <span onClick={() => handleReview(record)}>查看</span>
+        //   </DoCon>
+        // else
+        //   return <span style={{ color: '#999' }}>查看</span>
       }
     }
   ]
@@ -116,27 +114,29 @@ export default function SatisfyInvestigationDetail() {
   }
 
   const openFormModal = () => {
-    setFormId(editId)
-    setFormEditable(true)
-    setFormVisible(true)
+    qrcodeSubmitModal.show({
+      id: detailInfo.id,
+      wardCode: detailInfo.wardCode,
+      wardName: detailInfo.wardName,
+    })
   }
 
   const getDetailData = () => {
     setLoading(true)
 
-    satisfyInvestigationServices
-      .satisfiedInstanceDetail(queryObj.id)
+    satisfiedPatInvestigationServices
+      .satisfiedPatDetail(queryObj.id)
       .then(res => {
         setLoading(false)
         if (res.data) {
-          setPersonList(res.data.satisfiedDetail)
-          setDetailInfo(res.data.satisfiedInstance)
+          setPersonList(res.data.satisfiedPatDetail)
+          setDetailInfo(res.data.satisfiedPat)
         }
       }, () => setLoading(false))
   }
 
   const handleExport = () => {
-    satisfyInvestigationServices
+    satisfiedPatInvestigationServices
       .exportDetail(queryObj.id)
   }
 
@@ -147,7 +147,7 @@ export default function SatisfyInvestigationDetail() {
   return <Wrapper>
     <TopPannel>
       <NavCon>
-        <Link to="/satisfyInvestigation">护士满意度调查表</Link>
+        <Link to="/satisfiedPatInvestigation">患者满意度调查表</Link>
         <span>/</span>
         <span>详情</span>
       </NavCon>
@@ -158,14 +158,12 @@ export default function SatisfyInvestigationDetail() {
         <span className="content">{detailInfo.wardName || '...'}</span>
         <span className="label">时间:</span>
         <span className="content">{detailInfo.year || '...'}年{detailInfo.month || '...'}月</span>
-        <span className="content">共调查{personList.length || 0}位护士</span>
+        <span className="content">共调查{personList.length || 0}位患者</span>
         <span className="content">满意人数：{satisfiedPersonSize}人</span>
         <span className="content">满意度：{satisfiedRate}%</span>
       </SubContent>
       <ButtonGroups>
-        {editId && (
-          <Button type="primary" onClick={() => openFormModal()}>填写调查表</Button>
-        )}
+        <Button type="primary" onClick={() => openFormModal()}>填写二维码</Button>
         <Button onClick={() => handleExport()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
@@ -179,7 +177,7 @@ export default function SatisfyInvestigationDetail() {
           columns={columns} />
       </TableWrapper>
     </MainPannel>
-    <SatisfiedFormModal
+    <SatisfiedPatFormModal
       visible={formVisible}
       isEdit={formEditable}
       questionListOrigin={formQuestionList}
@@ -194,6 +192,7 @@ export default function SatisfyInvestigationDetail() {
         setFormQuestionList([])
         setFormVisible(false)
       }} />
+    <qrcodeSubmitModal.Component />
   </Wrapper>
 }
 

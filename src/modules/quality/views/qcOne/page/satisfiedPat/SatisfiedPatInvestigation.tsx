@@ -7,17 +7,17 @@ import YearPicker from 'src/components/YearPicker'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { appStore, authStore } from 'src/stores'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { satisfyInvestigationServices } from './services/SatisfyInvestigationServices'
+import { satisfiedPatInvestigationServices } from './services/SatisfiedPatInvestigationServices'
 import { ColumnProps, message } from 'src/vendors/antd'
 import { observer } from 'mobx-react'
-import SatisfyInvestigationEditModal from './components/SatisfyInvestigationEditModal'
+import SatisfiedPatInvestigationEditModal from './components/SatisfiedPatInvestigationEditModal'
 import qs from 'qs'
 
 const Option = Select.Option
 
 export interface Props { }
 
-export default observer(function SatisfyInvestigation() {
+export default observer(function SatisfiedPatInvestigation() {
   const monthList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
   const { deptList } = authStore
@@ -87,7 +87,7 @@ export default observer(function SatisfyInvestigation() {
   ]
 
   const handleReview = (record: any) => {
-    appStore.history.push(`/qcOne/satisfyInvestigationDetail?${qs.stringify({
+    appStore.history.push(`/qcOne/satisfiedPatInvestigationDetail?${qs.stringify({
       id: record.id,
       title: record.title
     })}`)
@@ -108,8 +108,8 @@ export default observer(function SatisfyInvestigation() {
       content: '是否要删除该项目',
       onOk: () => {
         setLoading(true)
-        satisfyInvestigationServices
-          .satisfiedInstanceDelete(record.id)
+        satisfiedPatInvestigationServices
+          .satisfiedPatDelete(record.id)
           .then(res => {
             message.success('删除成功')
             getTableData()
@@ -121,8 +121,8 @@ export default observer(function SatisfyInvestigation() {
   const getTableData = () => {
     setLoading(true)
 
-    satisfyInvestigationServices
-      .satisfiedInstanceList(query)
+    satisfiedPatInvestigationServices
+      .satisfiedPatList(query)
       .then(res => {
         setLoading(false)
         setTableData(res.data)
@@ -130,7 +130,7 @@ export default observer(function SatisfyInvestigation() {
   }
 
   const handleExport = () => {
-    satisfyInvestigationServices
+    satisfiedPatInvestigationServices
       .exportInstance(query)
   }
 
@@ -146,7 +146,7 @@ export default observer(function SatisfyInvestigation() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>护士满意度调查表</Title>
+      <Title>患者满意度调查表</Title>
       <Place />
       <span>年份：</span>
       <YearPicker
@@ -187,7 +187,7 @@ export default observer(function SatisfyInvestigation() {
         dataSource={tableData}
         columns={columns} />
     </MainCon>
-    <SatisfyInvestigationEditModal
+    <SatisfiedPatInvestigationEditModal
       visible={editVisible}
       editId={editId}
       onOk={() => {

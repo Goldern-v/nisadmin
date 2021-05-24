@@ -52,6 +52,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
 
   const toDetails = (row: any) => {
+    console.log('ok')
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`

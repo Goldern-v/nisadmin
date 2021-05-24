@@ -173,9 +173,10 @@ export default class CommonApiService extends BaseApiService {
 
   /** 根据工号获取完整信息 */
   public getNurseInformation(empNo: any) {
-    if (appStore.HOSPITAL_ID == "hj") {
+    let HOSPITAL_ID = appStore.HOSPITAL_ID
+    if (HOSPITAL_ID == "hj") {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
-    } else if (appStore.HOSPITAL_ID == "wh") {
+    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm") {
       return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`);
     } else {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);

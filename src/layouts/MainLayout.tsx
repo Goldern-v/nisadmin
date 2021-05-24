@@ -29,17 +29,19 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = appStore.hisMatch({
     map: {
-      wh: createModal(AduitModalWh),
+      'wh,gzsrm': createModal(AduitModalWh),
       other: createModal(AduitModal)
     },
+    vague: true
   })
 
   let groupsAduitModal = appStore.hisMatch({
     map: {
-      nys: createModal(GroupsAduitModalNys),
-      wh: createModal(GroupsAduitModalWh),
+      'nys,jmfy': createModal(GroupsAduitModalNys),
+      'wh,gzsrm': createModal(GroupsAduitModalWh),
       other: createModal(GroupsAduitModal)
     },
+    vague: true
   })
 
   let signModal = createModal(SignModal)

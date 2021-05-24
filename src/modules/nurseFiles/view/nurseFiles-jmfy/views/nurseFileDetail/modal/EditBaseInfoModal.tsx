@@ -45,7 +45,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const uploadCard = async (file: any) => {
     let obj: any = {
@@ -111,7 +111,8 @@ export default function EditWorkHistoryModal(props: Props) {
         nearImageUrl: data.nearImageUrl,
         zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : [],
         newTitle: data.newTitle,
-        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
+        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null,
+        shoeSize: data.shoeSize,
       })
       // refForm.current.setField('unit', 123)
     }
@@ -221,6 +222,11 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`家庭住址`} name='address'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`鞋码`} name='shoeSize'>
               <Input />
             </Form.Field>
           </Col>
