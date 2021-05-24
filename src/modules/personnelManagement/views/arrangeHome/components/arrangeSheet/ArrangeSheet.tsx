@@ -267,7 +267,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 武汉特殊字段*/
-  if (['wh', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
+  if (['wh', 'gzsrm', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -400,7 +400,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 wh: () => 6,
                 jmfy: () => 6,
                 dghl: () => 5,
-                gzsrm: () => 2,
+                gzsrm: () => 6,
               })) *
             70 +
             widthNys +

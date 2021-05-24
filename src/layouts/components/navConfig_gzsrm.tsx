@@ -17,10 +17,6 @@ const baseConfig: navConfigItem[] = [
     path: "/home"
   },
   {
-    name: "社区查房",
-    path: "/communityRoundsRouter"
-  },
-  {
     name: "审核管理",
     path: "/auditsManagement"
   },
