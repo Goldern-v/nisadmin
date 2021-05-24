@@ -14,6 +14,7 @@ import LabelsDelete from './../common/LabelsDelete';
 import WrapPre from './../common/WrapPre'
 
 import { questionBankManageService } from './../../api/QuestionBankManageService'
+
 interface Props {
   active?: boolean,
   model: any,
@@ -34,7 +35,6 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     labels: [] as any[],
     questionIds: [] as any[]
   })
-  console.log(tableData)
   const handleLabelAppendOk = (newLabels: any) => {
     let questionLabelIdList = newLabels.map((item: any) => item.id);
     let questionIdList = getSelectedRows().map((item: any) => item.id);
@@ -118,7 +118,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       dataIndex: '题目',
       key: '题目',
       render(text: any, record: string, index: number) {
-        return <QuestionTemplate data={record} />
+        return <QuestionTemplate data={record}/>
       }
     },
     {
@@ -244,7 +244,8 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
               })
             }
           }
-        };
+        }
+        ;
 
         setLabelAppendCfg({
           ...labelAppendCfg,
@@ -261,7 +262,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         if (rows.length <= 0) {
           Message.warning('未选择题目')
           return
-        };
+        }
 
         let labels: any[] = [];
         for (let i = 0; i < rows.length; i++) {
@@ -275,7 +276,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
               })
             }
           }
-        };
+        }
 
         setLabelDeleteCfg({
           ...labelAppendCfg,
@@ -318,6 +319,21 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
           }
         })
       }
+    },
+    {
+      name: '收藏题目',
+      onClick: () => {
+        const rows = getSelectedRows();
+        if (rows.length <= 0) {
+          Message.warning('未选择题目')
+          return
+        }
+        const questionIdList = rows.map((item: any) => item.id);
+        questionBankManageService.handleFavorites(questionIdList).then(res => {
+          Message.success('收藏成功')
+          model.getList()
+        })
+      }
     }
   ]
   return (
@@ -339,9 +355,9 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
           pageSize: query.pageSize
         }}
       />
-      <FooterBtnCon btnList={btnList} />
-      <LabelsAppend {...labelAppendCfg} onCancel={handleLabelAppendCancel} onOk={handleLabelAppendOk} />
-      <LabelsDelete {...labelDeleteCfg} onCancel={handleLabelDeleteCancel} onOk={handleLabelDeleteOk} />
+      <FooterBtnCon btnList={btnList}/>
+      <LabelsAppend {...labelAppendCfg} onCancel={handleLabelAppendCancel} onOk={handleLabelAppendOk}/>
+      <LabelsDelete {...labelDeleteCfg} onCancel={handleLabelDeleteCancel} onOk={handleLabelDeleteOk}/>
     </Wrapper>
   )
 })

@@ -15,7 +15,10 @@ import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
-export interface Props extends RouteComponentProps { }
+
+export interface Props extends RouteComponentProps {
+}
+
 import 人员管理 from "./人员管理";
 import 其他人员 from "./views/其他人员/其他人员";
 import 人员分组设置 from "./views/人员分组设置/人员分组设置";
@@ -60,8 +63,10 @@ import UploadRecordQuestionBank_hj2 from "../科室考试资源库/views/UploadR
 import UploadQuestionBank_hj2 from "../科室考试资源库/views/UploadQuestionBank";
 import WrongQuestionBank_hj2 from "../科室考试资源库/views/WrongQuestionBank";
 import 科室考试资源库 from "src/modules/科室考试资源库/QuestionBankManagement";
+import myFavorites from "src/modules/myFavorites/index";
 //厚街审核管理
 import 审核集中管理 from './views/审核集中管理/审核集中管理'
+
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() => import('./views/学习资源/学习的网站链接/学习的网站链接'))
@@ -112,7 +117,7 @@ export default function ContinuingEdu(props: Props) {
         hj: [
           {
             title: "人员管理",
-            icon: <RYGL />,
+            icon: <RYGL/>,
             hide: () =>
               queyMenuAuthInfo("nm_lat_personelManage") ||
               authStore.isOnlyInternsManage,
@@ -137,13 +142,13 @@ export default function ContinuingEdu(props: Props) {
           },
           {
             title: "培训手册",
-            icon: <JSGL />,
+            icon: <JSGL/>,
             path: "/continuingEdu/培训手册",
             component: 培训手册
           },
           {
             title: "审核发布",
-            icon: <YNXXB />,
+            icon: <YNXXB/>,
             path: "/continuingEdu/审核发布",
             component: 审核集中管理,
             hide: () =>
@@ -153,7 +158,7 @@ export default function ContinuingEdu(props: Props) {
         other: [
           {
             title: "人员管理",
-            icon: <RYGL />,
+            icon: <RYGL/>,
             path: "/continuingEdu/人员管理",
             component: 人员管理,
             hide: () =>
@@ -162,13 +167,13 @@ export default function ContinuingEdu(props: Props) {
           },
           {
             title: "在线学习",
-            icon: <JSGL />,
+            icon: <JSGL/>,
             path: "/continuingEdu/在线学习",
             component: 在线学习
           },
           {
             title: "审核发布",
-            icon: <YNXXB />,
+            icon: <YNXXB/>,
             path: "/continuingEdu/审核发布",
             component: 审核发布,
             hide: () =>
@@ -179,7 +184,7 @@ export default function ContinuingEdu(props: Props) {
     }),
     {
       title: "评分管理",
-      icon: <LXGL />,
+      icon: <LXGL/>,
       path: "/continuingEdu/评分管理",
       component: 评分管理,
       hide: () =>
@@ -187,7 +192,7 @@ export default function ContinuingEdu(props: Props) {
     },
     {
       title: "培训统计分析",
-      icon: <JSGL />,
+      icon: <JSGL/>,
       path: "/continuingEdu/培训统计分析",
       component: 培训统计分析,
       // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
@@ -197,7 +202,7 @@ export default function ContinuingEdu(props: Props) {
     {
       title: "培训设置管理",
       path: "/continuingEdu",
-      icon: <JXJH />,
+      icon: <JXJH/>,
       hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
         {
@@ -263,7 +268,7 @@ export default function ContinuingEdu(props: Props) {
     },
     {
       title: "教学质量管理",
-      icon: <JXJH />,
+      icon: <JXJH/>,
       hide: appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage,
       children: [
         {
@@ -287,7 +292,7 @@ export default function ContinuingEdu(props: Props) {
     },
     {
       title: "通知管理",
-      icon: <TZGL />,
+      icon: <TZGL/>,
       path: "/continuingEdu/通知管理",
       component: 通知管理,
       hide: () =>
@@ -299,7 +304,7 @@ export default function ContinuingEdu(props: Props) {
         hj: [
           {
             title: "晋升管理",
-            icon: <JSGL />,
+            icon: <JSGL/>,
             path: "/continuingEdu/晋升管理",
             component: 晋升管理_hj,
             hide: () =>
@@ -310,7 +315,7 @@ export default function ContinuingEdu(props: Props) {
         other: [
           {
             title: "晋升管理",
-            icon: <JSGL />,
+            icon: <JSGL/>,
             path: "/continuingEdu/晋升管理",
             component: 晋升管理,
             hide: () =>
@@ -326,7 +331,7 @@ export default function ContinuingEdu(props: Props) {
         hj: [
           {
             title: "学习资源",
-            icon: <TKGL />,
+            icon: <TKGL/>,
             children: [
               {
                 title: "学习的网站链接",
@@ -444,7 +449,7 @@ export default function ContinuingEdu(props: Props) {
           },
           {
             title: "资源库",
-            icon: <TKGL />,
+            icon: <TKGL/>,
             children: [
               {
                 title: "选择题新建和编辑",
@@ -540,6 +545,11 @@ export default function ContinuingEdu(props: Props) {
                 path: "/continuingEdu/科室考试资源库",
                 component: 科室考试资源库,
               },
+              {
+                title: "我的收藏",
+                path: "/continuingEdu/myFavorites",
+                component: myFavorites,
+              },
             ]
           }
         ],
@@ -591,7 +601,7 @@ export default function ContinuingEdu(props: Props) {
               jmfy: [
                 {
                   title: "题库管理",
-                  icon: <TKGL />,
+                  icon: <TKGL/>,
                   path: "/continuingEdu/questionBankManagement",
                   component: 题库管理,
                   hide: () =>
@@ -602,7 +612,7 @@ export default function ContinuingEdu(props: Props) {
               other: [
                 {
                   title: "题库管理",
-                  icon: <TKGL />,
+                  icon: <TKGL/>,
                   path: "/continuingEdu/questionBankManagement",
                   component: 题库管理,
                   hide: () =>
@@ -617,7 +627,7 @@ export default function ContinuingEdu(props: Props) {
     }),
     {
       title: "类型管理",
-      icon: <TKGL />,
+      icon: <TKGL/>,
       path: "/continuingEdu/TypeManagement",
       component: 类型管理,
       hide: () =>
@@ -627,7 +637,7 @@ export default function ContinuingEdu(props: Props) {
     },
     {
       title: "菜单设置",
-      icon: <KSGL />,
+      icon: <KSGL/>,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
       hide: () =>
@@ -663,7 +673,7 @@ export default function ContinuingEdu(props: Props) {
                   title: childItem.name,
                   component: 主列表页,
                   path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${childItem.id
-                    }`
+                  }`
                 };
                 arr.push(obj2);
                 obj1.children = arr;
@@ -727,25 +737,26 @@ export default function ContinuingEdu(props: Props) {
   const getIcon = (icon: any) => {
     switch (icon) {
       case 1:
-        return <JXJH />;
+        return <JXJH/>;
       case 2:
-        return <LXGL />;
+        return <LXGL/>;
       case 3:
-        return <SPXX />;
+        return <SPXX/>;
       case 4:
-        return <TKGL />;
+        return <TKGL/>;
       case 5:
-        return <PXGL />;
+        return <PXGL/>;
       case 6:
-        return <JJSZ />;
+        return <JJSZ/>;
       default:
-        return <JXJH />;
+        return <JXJH/>;
     }
   };
 
   let currentRoutePath =
     `${props.history.location.pathname}${props.history.location.search}` || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
+
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -764,19 +775,20 @@ export default function ContinuingEdu(props: Props) {
     }
     return chooseRoute;
   }
+
   return (
     <Wrapper>
       <LeftWrapper>
-        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="学习培训" />
+        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="学习培训"/>
       </LeftWrapper>
       <MainWrapper>
         {currentRoute && currentRoute.component && (
           <Suspense
             fallback={
               <React.Fragment>
-                <NavBar style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />
+                <NavBar style={{ position: 'fixed', top: -1, left: 0, right: 0 }}/>
                 <LoadingCon>
-                  <Icon type="loading" />
+                  <Icon type="loading"/>
                 </LoadingCon>
               </React.Fragment>
             }>

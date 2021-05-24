@@ -17,13 +17,17 @@ import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
 import { questionBankManageService } from './api/QuestionBankManageService';
-export interface Props extends RouteComponentProps { }
+import { message } from "antd";
+
+export interface Props extends RouteComponentProps {
+}
 
 export default observer(function QuestionBankManagement() {
   let { bankType, searchingContent } = questionBankManageModel_hj1.query;
   let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
+  let selectData: any[] = []
 
   useEffect(() => {
     let search: any = location.search.replace('?', '');
@@ -64,37 +68,37 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={questionBankManageModel_hj1} />
+      component: <ChoiceQuestionsTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={questionBankManageModel_hj1} />
+      component: <FillingQuestionTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={questionBankManageModel_hj1} />
+      component: <ShortQuestionTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `标签查看(${menuNum['标签查看'] || '-'})`,
       orginTitle: '标签查看',
       size: '',
-      component: <LabelTable model={questionBankManageModel_hj1} />
+      component: <LabelTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `导入记录(${menuNum['导入记录'] || '-'})`,
       orginTitle: '导入记录',
       size: '',
-      component: <UploadRecordTable model={questionBankManageModel_hj1} />
+      component: <UploadRecordTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `回收站(${menuNum['回收站'] || '-'})`,
       orginTitle: '回收站',
       size: '',
-      component: <RecycleTable model={questionBankManageModel_hj1} />
+      component: <RecycleTable model={questionBankManageModel_hj1}/>
     },
     {
       title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
@@ -168,7 +172,6 @@ export default observer(function QuestionBankManagement() {
     questionBankManageService
       .exportQuestionsBySearchParams(questionBankManageModel_hj1.query)
   }
-
   const handleOpenCreate = () => {
     let createType = '选择题';
     let modalContent = <div style={{ marginTop: '30px' }}>
@@ -210,7 +213,7 @@ export default observer(function QuestionBankManagement() {
     <Wrapper>
       <HeadCon>
         <div className='title'>院级共享考试资源库</div>
-        <Place />
+        <Place/>
         {/* <SelectBox>
           <span className='label'>选择类型：</span>
 
@@ -223,16 +226,17 @@ export default observer(function QuestionBankManagement() {
           style={{ width: 200 }}
           placeholder='输入名称进行搜索'
           allowClear defaultValue={searchingContent}
-          onBlur={handleSearchInputBlur} />
+          onBlur={handleSearchInputBlur}/>
         <Button onClick={handleSearchBtnClick}>查询</Button>
         <Button onClick={handleOpenCreate} disabled={!authStore.isDepartment}>创建</Button>
         <Button onClick={handleUpload} disabled={!authStore.isDepartment}>导入</Button>
-        {['选择题', '填空题', '问答题']
-          .indexOf(questionBankManageModel_hj1.query.choiceType) >= 0 &&
-          <Button onClick={handleExport}>导出</Button>}
+        {
+          ['选择题', '填空题', '问答题']
+            .indexOf(questionBankManageModel_hj1.query.choiceType) >= 0 &&
+          <Button onClick={handleExport}>导出</Button>
+        }
       </HeadCon>
-
-      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
+      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey}/>
     </Wrapper>
   )
 })

@@ -309,6 +309,21 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
           }
         })
       }
+    },
+    {
+      name: '收藏题目',
+      onClick: () => {
+        const rows = getSelectedRows();
+        if (rows.length <= 0) {
+          Message.warning('未选择题目')
+          return
+        }
+        const questionIdList = rows.map((item: any) => item.id);
+        questionBankManageService.handleFavorites(questionIdList).then(res => {
+          Message.success('收藏成功')
+          model.getList()
+        })
+      }
     }
   ]
   return (

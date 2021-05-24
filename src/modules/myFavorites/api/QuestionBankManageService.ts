@@ -3,9 +3,9 @@ import qs from 'qs';
 import { fileDownload } from 'src/utils/file/file';
 
 export default class QuestionBankManageService extends BaseApiService {
-  /**院级共享考试资源库--查询列表 */
-  public getQuestionBankList(query: any) {
-    return this.post('/studyAndTrain/questionBankManage/getContentBySearch', query);
+  /**科室考试资源库--查询已收藏的列表 */
+  public getQuestionBankList(params: any) {
+    return this.post('/studyAndTrain/questionBankManage/getCollectQuestionList', params);
   }
 
   /**题目--给问题批量加标签&给标签批量加问题 */
@@ -18,16 +18,16 @@ export default class QuestionBankManageService extends BaseApiService {
     return this.post('/studyAndTrain/questionBankManage/questionChange/deleteLabelByQuestionId', params);
   }
 
-  /**院级共享考试资源库--第一次获取菜单栏包含的内容数量 */
+  /**科室考试资源库--第一次获取菜单栏包含的内容数量 */
   public getCountMenu(query?: any) {
     return this.get('/studyAndTrain/questionBankManage/getCountMenu', {
       params: query || { status: '', id: '' }
     });
   }
 
-  /**题目--删除题目 */
+  /**题目--取消收藏的题目 */
   public deleteQuestion(params: any) {
-    return this.post('/studyAndTrain/questionBankManage/questionChange/deleteQuestion', params);
+    return this.post('/studyAndTrain/questionBankManage/cancelCollectQuestion', params);
   }
 
   /**根据题目id获取题目内容 */
@@ -120,7 +120,7 @@ export default class QuestionBankManageService extends BaseApiService {
     return this.post('/studyAndTrain/questionBankManage/recycleBin/entireDeleteQuestion', params);
   }
 
-  /**院级共享考试资源库--错题反馈 */
+  /**科室考试资源库--错题反馈 */
   public getWrongQustionListBySearch(query: any) {
     return this.post('/studyAndTrain/questionBankManage/getContentBySearch', query);
   }
@@ -129,15 +129,15 @@ export default class QuestionBankManageService extends BaseApiService {
   // public handleWrongQuestionMark(query: any) {
   //   return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/handleQuestion', query);
   // }
-  /**院级共享考试资源库--错题反馈--待我处理 */
+  /**科室考试资源库--错题反馈--待我处理 */
   // public getWrongQustionHandleList(query: any) {
   //   return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/getPendingPage', query)
   // }
-  /**院级共享考试资源库--错题反馈--我已处理 */
+  /**科室考试资源库--错题反馈--我已处理 */
   // public getWrongQustionSolvedList(query: any) {
   //   return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/getSolvedPage', query)
   // }
-  /**院级共享考试资源库--错题反馈--标记解决 */
+  /**科室考试资源库--错题反馈--标记解决 */
   public handleWrongQuestionMark(params: {
     flowId: string,
     handleContent?: string,
@@ -169,7 +169,7 @@ export default class QuestionBankManageService extends BaseApiService {
       .then(res => fileDownload(res));
   }
 
-  /**厚街 题库收藏 */
+  /**厚街 题库收藏 取消 */
   public handleFavorites(ids: any[]) {
     return this.post('studyAndTrain/questionBankManage/collectQuestion', { questionIdList: ids },)
   }

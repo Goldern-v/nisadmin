@@ -8,13 +8,12 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { Modal, message as Message } from 'antd'
 
+import QuestionTemplate from './QuestionTemplate'
 import LabelsAppend from './../common/LabelsAppend';
 import LabelsDelete from './../common/LabelsDelete';
-import ShortQuestionTemplate from './ShortQuestionTemplate'
 import WrapPre from './../common/WrapPre'
 
 import { questionBankManageService } from './../../api/QuestionBankManageService'
-import { checkIsDeparment } from '../../utils/checkIsDeparment'
 
 interface Props {
   active?: boolean,
@@ -22,7 +21,7 @@ interface Props {
   surplusHeight?: number
 }
 
-export default observer(function ShortQuestionTable(props: Props) {
+export default observer(function ChoiceQuestionsTable(props: Props) {
   const { model, surplusHeight } = props;
   const { history } = appStore;
   const { tableTotal, tableData, query, tableLoading } = model;
@@ -69,8 +68,6 @@ export default observer(function ShortQuestionTable(props: Props) {
     questionIds: [] as any[]
   })
   const handleLabelDeleteOk = (labelsDelete: any[]) => {
-    if (!checkIsDeparment()) return
-
     if (labelsDelete.length <= 0) {
       Message.warning('未选择要删除的标签');
       return
@@ -96,6 +93,11 @@ export default observer(function ShortQuestionTable(props: Props) {
     setLabelDeleteCfg({ ...labelDeleteCfg, visible: false });
   }
 
+  const handleExportRecord = (record: any) => {
+    questionBankManageService
+      .exportQuestionsByIds([record.id])
+  }
+
   useEffect(() => {
     setSelectedRowKeys([]);
   }, [tableData])
@@ -116,8 +118,15 @@ export default observer(function ShortQuestionTable(props: Props) {
       dataIndex: '题目',
       key: '题目',
       render(text: any, record: string, index: number) {
-        return <ShortQuestionTemplate data={record}/>
+        return <QuestionTemplate data={record}/>
       }
+    },
+    {
+      title: '类型',
+      dataIndex: 'choiceType',
+      key: 'choiceType',
+      align: 'center',
+      width: 60
     },
     {
       title: '出题次数',
@@ -146,13 +155,13 @@ export default observer(function ShortQuestionTable(props: Props) {
       title: '操作',
       dataIndex: '操作',
       key: '操作',
-      width: 120,
+      width: 150,
       render(text: string, record: any) {
         return (
           <DoCon>
             <span onClick={() => handleEdit(record)}>编辑</span>
             <span onClick={() => handleExportRecord(record)}>下载</span>
-            <span onClick={() => handleDeleteQuestion(record)}>删除</span>
+            <span onClick={() => handleDeleteQuestion(record)}>取消收藏</span>
           </DoCon>
         )
       }
@@ -167,40 +176,24 @@ export default observer(function ShortQuestionTable(props: Props) {
   }
 
   const handleEdit = (record: any) => {
-    if (!checkIsDeparment()) return
     // if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
     //   Message.warning('系统题库无法修改')
     //   return
     // }
-    history.push(`/continuingEdu/shortQuestionEdit_hj1?id=${record.id}`)
-  }
-
-  const handleExportRecord = (record: any) => {
-    questionBankManageService
-      .exportQuestionsByIds([record.id])
+    history.push(`/continuingEdu/choiceQuestionEdit_hj2?id=${record.id}`)
   }
 
   const handleDeleteQuestion = (record: any) => {
-    if (!checkIsDeparment()) return
-
-    if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
-      Message.warning('系统题库无法删除')
-      return
-    }
-
-    let questionIdList = [record.id];
-
-    let content = <div>
-      <div>您确定要删除该题目吗？</div>
-      <div>删除的题目可以在回收站里找回。</div>
+    const questionIdList = [record.id]
+    const content = <div>
+      <div>您确定要取消该题目吗？</div>
     </div>
-
     Modal.confirm({
-      title: '删除题目',
+      title: '取消收藏',
       content,
       onOk: () => {
         questionBankManageService.deleteQuestion({ questionIdList }).then(res => {
-          Message.success('删除成功');
+          Message.success('取消成功');
           model.getList();
         })
       }
@@ -223,115 +216,16 @@ export default observer(function ShortQuestionTable(props: Props) {
 
   let btnList: BtnList[] = [
     {
-      name: '添加标签',
-      onClick: () => {
-        let rows = getSelectedRows();
-        if (rows.length <= 0) {
-          Message.warning('未选择题目')
-          return
-        }
-
-        let labels: any[] = [];
-        for (let i = 0; i < rows.length; i++) {
-          let questionLabels = rows[i].questionLabels;
-          for (let j = 0; j < questionLabels.length; j++) {
-            let label = questionLabels[j];
-            if (labels.filter((item: any) => item.id == label.id).length <= 0) {
-              labels.push({
-                id: label.id,
-                labelContent: label.labelContent
-              })
-            }
-          }
-        }
-        ;
-
-        setLabelAppendCfg({
-          ...labelAppendCfg,
-          visible: true,
-          labels,
-          questionIds: rows.map((item: any) => item.id)
-        })
-      }
-    },
-    {
-      name: '移除标签',
-      onClick: () => {
-        let rows = getSelectedRows();
-        if (rows.length <= 0) {
-          Message.warning('未选择题目')
-          return
-        }
-        ;
-
-        let labels: any[] = [];
-        for (let i = 0; i < rows.length; i++) {
-          let questionLabels = rows[i].questionLabels;
-          for (let j = 0; j < questionLabels.length; j++) {
-            let label = questionLabels[j];
-            if (labels.filter((item: any) => item.id == label.id).length <= 0) {
-              labels.push({
-                id: label.id,
-                labelContent: label.labelContent
-              })
-            }
-          }
-        }
-        ;
-
-        setLabelDeleteCfg({
-          ...labelAppendCfg,
-          visible: true,
-          labels,
-          questionIds: rows.map((item: any) => item.id)
-        })
-      }
-    },
-    {
-      name: '删除题目',
-      onClick: () => {
-        let rows = getSelectedRows();
-
-        let errText = '';
-
-        if (rows.length <= 0) errText = '未选择题目';
-        if (query.bankType == '系统题库' || model.query.bankType == '系统题库') errText = '无法修改系统题库'
-
-        if (errText.length) {
-          Message.warning(errText)
-          return
-        }
-
-        let questionIdList = rows.map((item: any) => item.id);
-
-        let content = <div>
-          <div>您确定要删除选中的{questionIdList.length}个题目吗？</div>
-          <div>删除的题目可以在回收站里找回。</div>
-        </div>
-
-        Modal.confirm({
-          title: '删除题目',
-          content,
-          onOk: () => {
-            questionBankManageService.deleteQuestion({ questionIdList }).then(res => {
-              Message.success('删除成功');
-              model.getList();
-            })
-          }
-        })
-      }
-    },
-    {
-      name: '收藏题目',
+      name: '取消收藏',
       onClick: () => {
         const rows = getSelectedRows();
         if (rows.length <= 0) {
           Message.warning('未选择题目')
           return
         }
-        const questionIdList = rows.map((item: any) => item.id);
-        questionBankManageService.handleFavorites(questionIdList).then(res => {
-          Message.success('收藏成功')
+        const questionIdList = rows.map((item: any) => item.id)
+        questionBankManageService.deleteQuestion({ questionIdList }).then(res => {
+          Message.success('取消成功')
           model.getList()
         })
       }

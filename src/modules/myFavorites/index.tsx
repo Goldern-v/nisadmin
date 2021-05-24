@@ -22,14 +22,13 @@ import { getKskszyDefaultDeptCode, setKskszyDefaultCode } from './utils/kskszyDe
 
 const Option = Select.Option
 
-export interface Props extends RouteComponentProps {
-}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function QuestionBankManagement() {
   let { bankType, searchingContent } = questionBankManageModel_hj2.query;
   let { location, history } = appStore;
-  const [activeKey, setActiveKey] = useState('0')
-  const [menuNum, setMenuNum] = useState({} as any)
+  const [activeKey, setActiveKey] = useState('0');
+  const [menuNum, setMenuNum] = useState({} as any);
 
   useEffect(() => {
     let search: any = location.search.replace('?', '');
@@ -72,43 +71,19 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={questionBankManageModel_hj2}/>
+      component: <ChoiceQuestionsTable model={questionBankManageModel_hj2} />
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={questionBankManageModel_hj2}/>
+      component: <FillingQuestionTable model={questionBankManageModel_hj2} />
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={questionBankManageModel_hj2}/>
-    },
-    {
-      title: `标签查看(${menuNum['标签查看'] || '-'})`,
-      orginTitle: '标签查看',
-      size: '',
-      component: <LabelTable model={questionBankManageModel_hj2}/>
-    },
-    {
-      title: `导入记录(${menuNum['导入记录'] || '-'})`,
-      orginTitle: '导入记录',
-      size: '',
-      component: <UploadRecordTable model={questionBankManageModel_hj2}/>
-    },
-    {
-      title: `回收站(${menuNum['回收站'] || '-'})`,
-      orginTitle: '回收站',
-      size: '',
-      component: <RecycleTable model={questionBankManageModel_hj2}/>
-    },
-    {
-      title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
-      orginTitle: '错题反馈',
-      size: '',
-      component: null
+      component: <ShortQuestionTable model={questionBankManageModel_hj2} />
     }
   ]
 
@@ -222,20 +197,11 @@ export default observer(function QuestionBankManagement() {
       .exportQuestionsBySearchParams(questionBankManageModel_hj2.query)
   }
 
-
   return (
     <Wrapper>
       <HeadCon>
-        <div className='title'>科室考试资源库</div>
-        <Place/>
-        {/* <SelectBox>
-          <span className='label'>选择类型：</span>
-
-          <Radio.Group name='radiogroup' value={bankType} onChange={handleBankTypeChange}>
-            <Radio value={'系统题库'}>系统题库</Radio>
-            <Radio value={'2'}>2</Radio>
-          </Radio.Group>
-        </SelectBox> */}
+        <div className='title'>我的收藏</div>
+        <Place />
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
@@ -258,20 +224,11 @@ export default observer(function QuestionBankManagement() {
           style={{ width: 200 }}
           placeholder='输入名称进行搜索'
           allowClear defaultValue={searchingContent}
-          onBlur={handleSearchInputBlur}/>
+          onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
-        <Button onClick={handleOpenCreate}>创建</Button>
-        <Button onClick={handleUpload}>导入</Button>
-        {
-          ['选择题', '填空题', '问答题']
-            .indexOf(questionBankManageModel_hj2.query.choiceType) >= 0 &&
-          <React.Fragment>
-            <Button onClick={handleExport}>导出</Button>
-          </React.Fragment>
-        }
       </HeadCon>
 
-      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey}/>
+      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
     </Wrapper>
   )
 })
