@@ -75,6 +75,10 @@ export const navConfig: navConfigItem[] = [
     path: "/wardManagement"
   },
   {
+    name: "统计查询",
+    path: "/statistic"
+  },
+  {
     name: "进出感染区统计",
     path: "/InfectedAreasCount",
     hidden: () => {

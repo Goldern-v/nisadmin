@@ -215,6 +215,18 @@ export default observer(function NurseFilesView(props: Props) {
           component: StatisticsView
         }
       ]
+    },
+    {
+      title: "护理实习生花名册",
+      path: "/nurseFile/traineeFiles",
+      component: TraineeFiles,
+      icon: <TXHSCX />
+    },
+    {
+      title: "护理实习生轮科",
+      icon: <TXHSCX />,
+      addIcon: true,
+      children: dataList
     }
   ];
   const LEFT_MENU_CONFIG_HJ = [
@@ -287,7 +299,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "gzhd", "lcey", "gzsrm", "jmfy"]
+      ["hj", "gzhd", "lcey", "gzsrm", "jmfy", "wh"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();

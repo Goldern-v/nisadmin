@@ -320,12 +320,25 @@ export default observer(function WorkSummaryReportList() {
             <Button onClick={handleSearch}>查询</Button>
           </div>
           <div className='item'>
-            <Button
-              onClick={handleCreate} type='primary'
-              disabled={!!!authStore.isSupervisorNurse}
-            >
-              创建
-            </Button>
+            {appStore.hisMatch({
+              map: {
+                dghl: (
+                  <Button
+                    onClick={handleCreate} type='primary'
+                  >
+                    创建
+                  </Button>
+                ),
+                default: (
+                  <Button
+                    onClick={handleCreate} type='primary'
+                    disabled={!!!authStore.isSupervisorNurse}
+                  >
+                    创建
+                  </Button>
+                )
+              }
+            })}
           </div>
         </div>
       </div>

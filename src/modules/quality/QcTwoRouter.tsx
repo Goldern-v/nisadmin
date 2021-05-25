@@ -17,47 +17,59 @@ import { appStore } from 'src/stores'
 
 export default function QcTwoRouter(props: Props) {
 
-  let extra_menu: any = [
-    {
-      title: '二级质控月度报告',
-      icon: <YDBG />,
-      path: '/qcTwo/workSummaryReportList',
-      component: WorkSummaryReportList,
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    },
-    {
-      title: '防疫专项检查分析报告',
-      icon: <YDBG />,
-      path: '/qcTwo/防疫专项检查分析报告',
-      component: 防疫专项检查片区汇总,
-      keepAlive: true,
-      // hide: !appStore.isDev,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    },
-    {
-      title: '防疫专项检查汇总报告',
-      icon: <YDBG />,
-      path: '/qcTwo/防疫专项检查汇总',
-      component: 防疫专项检查汇总,
-      keepAlive: true,
-      // hide: !appStore.isDev,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    },
-  ]
-
-  if (appStore.HOSPITAL_ID == 'hj')
-    extra_menu = [
-      {
-        title: '护理质量巡查情况汇总表',
-        icon: <YDBG />,
-        path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
-        component: 护理质量巡查情况汇总表,
-        keepAlive: true,
-        // hide: !appStore.isDev,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-      },
-    ]
+  const extra_menu = appStore.hisMatch({
+    map: {
+      hj: [
+        {
+          title: '护理质量巡查情况汇总表',
+          icon: <YDBG />,
+          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          component: 护理质量巡查情况汇总表,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+      ],
+      dghl: [
+        {
+          title: '二级质控月度报告',
+          icon: <YDBG />,
+          path: '/qcTwo/workSummaryReportList',
+          component: WorkSummaryReportList,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+      ],
+      default: [
+        {
+          title: '二级质控月度报告',
+          icon: <YDBG />,
+          path: '/qcTwo/workSummaryReportList',
+          component: WorkSummaryReportList,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '防疫专项检查分析报告',
+          icon: <YDBG />,
+          path: '/qcTwo/防疫专项检查分析报告',
+          component: 防疫专项检查片区汇总,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '防疫专项检查汇总报告',
+          icon: <YDBG />,
+          path: '/qcTwo/防疫专项检查汇总',
+          component: 防疫专项检查汇总,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+      ]
+    }
+  })
 
   const LEFT_MENU_CONFIG: any = [
     {
@@ -70,6 +82,7 @@ export default function QcTwoRouter(props: Props) {
     },
     ...extra_menu
   ]
+
   useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
@@ -101,8 +114,8 @@ export default function QcTwoRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-            ))}
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )
