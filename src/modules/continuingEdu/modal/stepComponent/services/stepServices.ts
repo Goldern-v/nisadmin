@@ -37,6 +37,7 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+
   /** 新建教学计划  考试*/
   public addTeachingPlanInfoExam(obj: any) {
     return this.post(
@@ -44,6 +45,7 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+
   /** 新建教学计划  练习*/
   public addTeachingPlanInfoExercise(obj: any) {
     return this.post(
@@ -51,6 +53,7 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+
   /** 新建教学计划  实操*/
   public addTeachingPlanInfoPractise(obj: any) {
     return this.post(
@@ -96,6 +99,7 @@ export default class StepServices extends BaseApiService {
       })
     );
   }
+
   /** 下载题目上传模板-考试  有问答题*/
   public downLoadQueUploadTemplateWithShortQues() {
     return this.get(
@@ -105,6 +109,7 @@ export default class StepServices extends BaseApiService {
       }
     );
   }
+
   /** 下载题目上传模板-考试 无问答题*/
   public downLoadQueUploadTemplateWithoutShortQues() {
     return this.get(
@@ -114,6 +119,7 @@ export default class StepServices extends BaseApiService {
       }
     );
   }
+
   /** 上传题目-考试 */
   public upLoadQuestionsExam(file: any) {
     return this.post(`/studyAndTrain/teachingPlanManage/${uploadUrl}`, file);
@@ -125,6 +131,7 @@ export default class StepServices extends BaseApiService {
       responseType: "blob"
     });
   }
+
   /** 上传题目-练习 */
   public upLoadQuestionsExercise(file: any) {
     return this.post(
@@ -139,6 +146,20 @@ export default class StepServices extends BaseApiService {
     return this.post(
       `/studyAndTrain/questionBankManage/exam/queryQuestionsByPage`,
       obj
+    );
+  }
+
+  /***.题库管理--查询初始化数据  (我的收藏列表) */
+  public getMyFavorites(obj: any) {
+    const params = {
+      choiceType: obj.questionType,
+      searchingContent: obj.searchingContent,
+      pageIndex: obj.pageIndex,
+      pageSize: obj.pageSize,
+    }
+    return this.post(
+      `/studyAndTrain/questionBankManage/getCollectQuestionList`,
+      params
     );
   }
 
@@ -208,6 +229,7 @@ export default class StepServices extends BaseApiService {
       qs.stringify({ taskCode })
     );
   }
+
   // 删除试卷
   public deleteExamPaper(taskCode: string, pertId: any) {
     return this.post(
@@ -215,6 +237,7 @@ export default class StepServices extends BaseApiService {
       qs.stringify({ taskCode, pertId })
     );
   }
+
   // 获取所有试卷的统计信息
   public getStatInfoOfAllEditRunTimeExamPapers(taskCode: any, cetpId: any) {
     return this.post(

@@ -176,7 +176,7 @@ export default observer(function UpdateTable(props: Props) {
           <div>
             <span>题库上传</span>
             <span style={{ color: "red", fontSize: "13px" }}>
-              （*每次题库上传都会将上一次选择的题库覆盖清空）
+              （*每次题库上传都会将上一次选择的{totalNum}题库覆盖清空）
             </span>
           </div>
         }

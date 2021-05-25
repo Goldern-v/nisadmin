@@ -70,15 +70,20 @@ class QuesBankView {
   }
 
   // 初始化查询数据（题库所有数据）
-  onload() {
+  async onload() {
     this.tableLoading = true;
-    stepServices.queryQuestionsByPage(this.postObj).then(res => {
-      this.tableList = res.data.list;
-      this.pageIndex = res.data.pageIndex;
-      this.pageSize = res.data.pageSize;
-      this.total = res.data.totalCount;
-      this.tableLoading = false;
-    });
+    const params = this.postObj
+    let res: any
+    if (params.bankType === 3) {
+      res = await stepServices.getMyFavorites(params)
+    } else {
+      res = await stepServices.queryQuestionsByPage(params)
+    }
+    this.tableList = res.data.list;
+    this.pageIndex = res.data.pageIndex;
+    this.pageSize = res.data.pageSize;
+    this.total = res.data.totalCount;
+    this.tableLoading = false;
   }
 
   //按需获取前100条数据
@@ -108,6 +113,7 @@ class QuesBankView {
     this.JDQuestionNum = 0;
     this.tableList = [];
   }
+
   //获取所有标签数据
   // initAllData() {
   //   stepServices.searchLabels(this.allCheckObj).then(res => {

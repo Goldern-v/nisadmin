@@ -88,7 +88,7 @@ export default observer(function PushModal(props: Props) {
   return (
     <Wrapper>
       <Modal
-        width={1250}
+        width={1450}
         visible={visible}
         onCancel={handleCancel}
         onOk={checkForm}

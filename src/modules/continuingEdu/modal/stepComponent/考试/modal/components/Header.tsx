@@ -60,6 +60,7 @@ export default observer(function Header() {
         >
           <Radio.Button value={1}>系统题库</Radio.Button>
           <Radio.Button value={2}>科室题库</Radio.Button>
+          <Radio.Button value={3}>我的收藏</Radio.Button>
         </Radio.Group>
         {quesBankView.bankType == 2 && appStore.HOSPITAL_ID == 'hj' && (
           <span>
