@@ -88,11 +88,11 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: '工作情况登记'
   },
-  {
-    type: 'fileList',
-    component: FileList,
-    name: '附件'
-  }
+  // {
+  //   type: 'fileList',
+  //   component: FileList,
+  //   name: '附件'
+  // }
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {

@@ -81,7 +81,7 @@ export default observer(function SatisfiedPatInvestigationEditModal(props: Props
   return (
     <React.Fragment>
       <Modal
-        title={`满意度调查表编辑${editId ? '编辑' : '新建'}`}
+        title={`满意度调查表${editId ? '编辑' : '新建'}`}
         centered
         confirmLoading={loading}
         visible={visible}
@@ -156,7 +156,7 @@ export default observer(function SatisfiedPatInvestigationEditModal(props: Props
           <Row>
             <Col span={6}>调查对象</Col>
             <Col span={18} style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-              <Input value={`${satisfiedPat.wardName}患者`} readOnly />
+              <Input value={`${satisfiedPat.wardName || ''}患者`} readOnly />
             </Col>
           </Row>
         </Wrapper>

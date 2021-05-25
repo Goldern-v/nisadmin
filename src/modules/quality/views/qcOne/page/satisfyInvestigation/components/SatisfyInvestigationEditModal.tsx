@@ -124,7 +124,7 @@ export default observer(function SatisfyInvestigationEditModal(props: Props) {
   return (
     <React.Fragment>
       <Modal
-        title={`满意度调查表编辑${editId ? '编辑' : '新建'}`}
+        title={`满意度调查表${editId ? '编辑' : '新建'}`}
         centered
         confirmLoading={loading}
         visible={visible}
