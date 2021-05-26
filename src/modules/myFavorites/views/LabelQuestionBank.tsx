@@ -74,19 +74,19 @@ export default observer(function LabelQuestionBank() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
+      component: <ChoiceQuestionsTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight}/>
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
+      component: <FillingQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight}/>
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight} />
+      component: <ShortQuestionTable model={labelQuestionBankModel_hj2} surplusHeight={surplusHeight}/>
     }
   ]
 
@@ -149,7 +149,7 @@ export default observer(function LabelQuestionBank() {
       </NavCon>
       <HeadCon>
         <div className='title'>标签题库: {labelQuestionBankModel_hj2.label.labelContent}</div>
-        <Place />
+        <Place/>
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
@@ -173,15 +173,15 @@ export default observer(function LabelQuestionBank() {
           placeholder='输入题目进行搜索'
           allowClear
           defaultValue={searchingContent}
-          onBlur={handleSearchInputBlur} />
+          onBlur={handleSearchInputBlur}/>
         <Button onClick={handleSearchBtnClick}>查询</Button>
         {['选择题', '填空题', '问答题']
           .indexOf(labelQuestionBankModel_hj2.query.choiceType) >= 0 &&
-          <Button onClick={handleExport}>导出</Button>}
+        <Button onClick={handleExport}>导出</Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </HeadCon>
 
-      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
+      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey}/>
     </Wrapper>
   )
 })

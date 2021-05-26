@@ -19,10 +19,11 @@ interface Props {
   active?: boolean,
   model: any,
   surplusHeight?: number
+  getCountMenu?: Function
 }
 
 export default observer(function ShortQuestionTable(props: Props) {
-  const { model, surplusHeight } = props;
+  const { model, surplusHeight, getCountMenu } = props;
   const { history } = appStore;
   const { tableTotal, tableData, query, tableLoading } = model;
   //选中的行下标
@@ -188,6 +189,7 @@ export default observer(function ShortQuestionTable(props: Props) {
         questionBankManageService.deleteQuestion({ questionIdList }).then(res => {
           Message.success('取消成功');
           model.getList();
+          getCountMenu && getCountMenu()
         })
       }
     })
@@ -220,6 +222,7 @@ export default observer(function ShortQuestionTable(props: Props) {
         questionBankManageService.deleteQuestion({ questionIdList }).then(res => {
           Message.success('取消成功')
           model.getList()
+          getCountMenu && getCountMenu()
         })
       }
     }

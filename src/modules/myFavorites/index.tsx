@@ -22,7 +22,8 @@ import { getKskszyDefaultDeptCode, setKskszyDefaultCode } from './utils/kskszyDe
 
 const Option = Select.Option
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {
+}
 
 export default observer(function QuestionBankManagement() {
   let { bankType, searchingContent } = questionBankManageModel_hj2.query;
@@ -55,13 +56,7 @@ export default observer(function QuestionBankManagement() {
   }, [])
 
   const getCountMenu = () => {
-    questionBankManageService.getCountMenu({
-      bankType: questionBankManageModel_hj2.query.bankType || '',
-      deptCode: questionBankManageModel_hj2.query.deptCode,
-      status: '',
-      id: ''
-
-    }).then(res => {
+    questionBankManageService.getCountMenu().then(res => {
       setMenuNum(res.data)
     })
   }
@@ -71,19 +66,19 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={questionBankManageModel_hj2} />
+      component: <ChoiceQuestionsTable model={questionBankManageModel_hj2} getCountMenu={getCountMenu}/>
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={questionBankManageModel_hj2} />
+      component: <FillingQuestionTable model={questionBankManageModel_hj2} getCountMenu={getCountMenu}/>
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={questionBankManageModel_hj2} />
+      component: <ShortQuestionTable model={questionBankManageModel_hj2} getCountMenu={getCountMenu}/>
     }
   ]
 
@@ -201,7 +196,7 @@ export default observer(function QuestionBankManagement() {
     <Wrapper>
       <HeadCon>
         <div className='title'>我的收藏</div>
-        <Place />
+        <Place/>
         <span>科室：</span>
         <Select
           style={{ width: 180, marginRight: 10 }}
@@ -224,11 +219,11 @@ export default observer(function QuestionBankManagement() {
           style={{ width: 200 }}
           placeholder='输入名称进行搜索'
           allowClear defaultValue={searchingContent}
-          onBlur={handleSearchInputBlur} />
+          onBlur={handleSearchInputBlur}/>
         <Button onClick={handleSearchBtnClick}>查询</Button>
       </HeadCon>
 
-      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
+      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey}/>
     </Wrapper>
   )
 })

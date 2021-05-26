@@ -20,9 +20,7 @@ export default class QuestionBankManageService extends BaseApiService {
 
   /**科室考试资源库--第一次获取菜单栏包含的内容数量 */
   public getCountMenu(query?: any) {
-    return this.get('/studyAndTrain/questionBankManage/getCountMenu', {
-      params: query || { status: '', id: '' }
-    });
+    return this.get('/studyAndTrain/questionBankManage/getCollectQuestionCount');
   }
 
   /**题目--取消收藏的题目 */
