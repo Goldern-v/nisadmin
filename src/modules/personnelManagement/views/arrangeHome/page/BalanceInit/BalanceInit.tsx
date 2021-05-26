@@ -65,7 +65,7 @@ export default observer(function FollowUpRecord() {
       width: 150
     },
     {
-      title: "公休结余（天）",
+      title: "年假天数（天）",
       dataIndex: "publicHourNow",
       align: "center",
       width: 100
