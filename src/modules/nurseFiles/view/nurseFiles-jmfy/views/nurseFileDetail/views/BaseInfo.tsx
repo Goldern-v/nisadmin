@@ -8,10 +8,12 @@ import { appStore, authStore } from 'src/stores'
 import { sexEnum } from 'src/libs/enum/common'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
+import service from 'src/services/api'
 
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { message } from 'antd'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -20,47 +22,7 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
 
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
     if (info.statusColor === '1') {
       return [
@@ -84,7 +46,6 @@ export default observer(function BaseInfo() {
               // empNo: appStore.queryObj.empNo,
               title: '审核基础信息',
               tableFormat: [
-                //
                 {
                   姓名: `empName`,
                   工号: `empNo`
@@ -119,6 +80,7 @@ export default observer(function BaseInfo() {
                 },
                 {
                   鞋码: `shoeSize`,
+                  入职时间: 'entryDate'
                 }
               ],
               fileData: [
@@ -139,63 +101,108 @@ export default observer(function BaseInfo() {
         }
       ]
     } else {
-      return [
-        // {
-        //   label: '修改',
-        //   onClick: () => {
-        //     editBaseInfoModal.show({
-        //       id: id,
-        //       data: info
-        //     })
-        //   }
-        // }
-      ]
+      return []
     }
   }
 
   const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      let data = res.data || info
-      setInfo(data)
-      setIdData(data.empNo)
-      setId(data.id)
-      setTableData([
-        {
-          性别: sexEnum[data.sex],
-          民族: data.nation
-        },
-        {
-          出生年月: data.birthday,
-          年龄: data.age
-        },
-        {
-          籍贯: data.nativePlace,
-          职务: data.job
-        },
-        {
-          参加工作时间: data.goWorkTime,
-          最高学历: data.highestEducation
-        },
-        {
-          技术职称: data.newTitle,
-          护士执业证书编号: data.zyzsNumber
-        },
-        {
-          身份证号: data.cardNumber,
-          社会团体职务: data.socialGroup
-        },
-        {
-          手机号: data.phone,
-          家庭住址: data.address
-        },
-        {
-          鞋码: data.shoeSize
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo)
+      .then((res) => {
+        let data = res.data || info
+        let maps = res.data.maps || {}
+        setInfo(data)
+        setIdData(data.empNo)
+        setId(data.id)
+
+        let newTableData = [
+          {
+            性别: sexEnum[data.sex],
+            民族: data.nation
+          },
+          {
+            出生年月: data.birthday,
+            年龄: data.age
+          },
+          {
+            籍贯: data.nativePlace,
+            职务: data.job
+          },
+          {
+            参加工作时间: data.goWorkTime,
+            最高学历: data.highestEducation
+          },
+          {
+            技术职称: data.newTitle,
+            护士执业证书编号: data.zyzsNumber
+          },
+          {
+            身份证号: data.cardNumber,
+            社会团体职务: data.socialGroup
+          },
+          {
+            手机号: data.phone,
+            家庭住址: data.address
+          },
+          {
+            鞋码: data.shoeSize,
+            入职时间: data.entryDate
+          }
+        ]
+
+        setTableData(newTableData)
+
+        // 处理扩展字段
+        if (Object.keys(data).includes('maps'))
+          return new Promise((resolve, reject) => {
+            service.commonApiService.listNurseExpand('User')
+              .then(res => {
+                resolve({
+                  maps,
+                  mapsConfig: res.data,
+                  orgin: newTableData
+                })
+              }, (e) => reject(e))
+          })
+      })
+      .then((payload: any) => {
+        if (payload) {
+          const { maps, mapsConfig, orgin } = payload
+          const newTableData = [...orgin]
+
+          for (let i = 0; i < mapsConfig.length; i++) {
+            let mapCfgItem = mapsConfig[i]
+            let key = mapCfgItem.fieldCode
+            let val = maps[key] || ''
+
+            if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
+              let options = []
+              try {
+                options = JSON.parse(mapCfgItem.fieldSelectContent)
+              } catch (e) {
+
+              }
+              let target = options.find((opt: any) => opt.code === val)
+
+              if (target) val = target.name
+            }
+
+            let name = mapCfgItem.fieldName
+            let lastItem = newTableData[orgin.length - 1]
+            if (Object.keys(lastItem).length > 1) {
+              newTableData.push({ [name]: val })
+            } else {
+              lastItem[name] = val
+            }
+          }
+
+          setTableData(newTableData)
         }
-      ])
-    })
+      }, e => { })
+
   useEffect(() => {
     getTableData()
-  }, [appStore.queryObj])
+  }, [appStore.queryObj.empNo])
+
   return (
     <BaseLayout title='基本信息' btnList={limitsComponent()}>
       <ScrollCon>

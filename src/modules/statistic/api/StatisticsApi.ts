@@ -277,6 +277,16 @@ class StatisticsApi extends BaseApiService {
   public countLeaveRemark(query: any) {
     return this.post('/countInformation/countLeaveRemark', query)
   }
+
+  /** 护士初始学历分布 */
+  public countInitialEducation(query: any) {
+    return this.post('/countInformation/countInitialEducation', query)
+  }
+
+  /** 统计职称 */
+  public countTitle(query: any) {
+    return this.post('/countInformation/countTitle', query)
+  }
 }
 
 let statisticsApi = new StatisticsApi()

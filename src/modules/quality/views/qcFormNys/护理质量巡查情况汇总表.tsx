@@ -118,7 +118,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   const getFormList = () => {
     setFormListLoaindg(true)
     qualityControlRecordApi.formTemplateList({
-      level: Number(queryObj.level || '1'),
+      level: Number(queryObj.qcLevel || '1'),
       templateName: ''
     })
       .then(res => {

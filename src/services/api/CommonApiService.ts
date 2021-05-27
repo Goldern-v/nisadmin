@@ -239,4 +239,12 @@ export default class CommonApiService extends BaseApiService {
   public getSideMenu(moduleRoleCode: string) {
     return this.get(`/menu/getMenuList/${moduleRoleCode}`);
   }
+
+  /**
+   * 档案管理-模块-拓展字段查询
+   * @param moduleCode 模块Code
+   */
+  public listNurseExpand(moduleCode: string) {
+    return this.post('/nurseExpand/listNurseExpand', { "moduleCode": moduleCode })
+  }
 }

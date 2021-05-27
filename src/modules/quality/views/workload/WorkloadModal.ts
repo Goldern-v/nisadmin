@@ -36,6 +36,11 @@ class WorkloadModal {
 
   // 查询
   onload = () => {
+    if (this.indexKey === '3') {
+      this.tableList = []
+      return
+    }
+
     const queryListReq = ((indexKey: string) => {
       switch (indexKey) {
         case '2':

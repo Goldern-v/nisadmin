@@ -144,6 +144,11 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData);
     return this.post(`/indexInfo/wardFlow`, trancePostData);
   }
+
+  /**统计科室人员情况 */
+  public countWardCodeEmpName() {
+    return this.post('/countInformation/countWardCodeEmpName', {})
+  }
 }
 
 export default new StatisticsApi();

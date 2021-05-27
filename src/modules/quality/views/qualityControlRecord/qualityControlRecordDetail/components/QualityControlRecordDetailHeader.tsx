@@ -237,14 +237,13 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </React.Fragment>
               )}
             {master &&
+              master.canUpdate &&
               appStore.hisMatch({
                 map: {
-                  nys: true,
-                  other: master.qcLevel == "2"
+                  wh: master.qcLevel == "2" && master.creatorNo == authStore.user?.empNo,
+                  other: true
                 }
-              }) &&
-              master.canUpdate &&
-              master.creatorNo == (authStore.user && authStore.user.empNo) && (
+              }) && (
                 <React.Fragment>
                   <Button
                     onClick={handleDelete}

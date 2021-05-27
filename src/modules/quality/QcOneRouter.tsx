@@ -149,22 +149,15 @@ const LEFT_MENU_CONFIG: any = [
     hide: !appStore.isDev,
     children: [
       {
-        title: '护士满意度调查表',
-        path: '/qcOne/satisfyInvestigation',
-        component: SatisfyInvestigation,
-        keepAlive: true,
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      },
-      {
         title: '护士满意度调查表详情',
         hide: true,
         path: '/qcOne/satisfyInvestigationDetail',
         component: SatisfyInvestigationDetail,
       },
       {
-        title: '患者满意度调查表',
-        path: '/qcOne/satisfiedPatInvestigation',
-        component: SatisfiedPatInvestigation,
+        title: '护士满意度调查表',
+        path: '/qcOne/satisfyInvestigation',
+        component: SatisfyInvestigation,
         keepAlive: true,
         disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
@@ -173,6 +166,13 @@ const LEFT_MENU_CONFIG: any = [
         hide: true,
         path: '/qcOne/satisfiedPatInvestigationDetail',
         component: SatisfiedPatInvestigationDetail,
+      },
+      {
+        title: '患者满意度调查表',
+        path: '/qcOne/satisfiedPatInvestigation',
+        component: SatisfiedPatInvestigation,
+        keepAlive: true,
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
     ]
   },

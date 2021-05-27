@@ -65,7 +65,13 @@ const LEFT_MENU_CONFIG = [
     icon: <HLRYTJ />,
     children: [
       {
-        title: "护士学历分布", path: "/statistic/护士学历分布",
+        title: "护士学历分布",
+        path: "/statistic/护士学历分布",
+      },
+      {
+        title: "护士初始学历分布",
+        path: "/statistic/护士初始学历分布",
+        hide: appStore.HOSPITAL_ID !== "jmfy"
       },
       {
         title: "护士男女分布", path: "/statistic/护士男女分布",
@@ -88,7 +94,6 @@ const LEFT_MENU_CONFIG = [
       {
         title: "科室护士明细表",
         path: "/statistic/科室护士明细表",
-        hide: appStore.HOSPITAL_ID == "jmfy"
       },
       // {
       //   title: "科室护士结构信息汇总表",

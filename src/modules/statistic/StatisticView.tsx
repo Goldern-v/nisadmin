@@ -30,6 +30,10 @@ import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/Dep
 import 护理质量统计查询 from 'src/modules/quality/views/qcFormNys/护理质量统计查询'
 //护士学历分布
 import 护士学历分布 from './views/护士学历分布/护士学历分布'
+//护士初始学历分布
+import 护士初始学历分布 from './views/护士初始学历分布/护士初始学历分布'
+//护士职称统计
+import 护士职称统计 from './views/护士职称统计/护士职称统计'
 //护士男女分布
 import 护士男女分布 from './views/护士男女分布/护士男女分布'
 //护士在职状态分析
@@ -105,10 +109,17 @@ export default function StatisticView() {
     { name: '护理质量统计', path: '/statistic/护理质量统计', component: 护理质量统计查询 },
     //2021-01-28 南医三 统计需求
     { name: '护士学历分布', path: '/statistic/护士学历分布', component: 护士学历分布 },
+    { name: '护士初始学历分布', path: '/statistic/护士初始学历分布', component: 护士初始学历分布 },
     { name: '护士男女分布', path: '/statistic/护士男女分布', component: 护士男女分布 },
     { name: '护士工作年限分布', path: '/statistic/护士工作年限分布', component: 护士工作年限分布 },
     { name: '护士在职状态分析', path: '/statistic/护士在职状态分析', component: 护士在职状态分析 },
     { name: '护士离职原因分析', path: '/statistic/护士离职原因分析', component: 护士离职原因分析 },
+    ...appStore.hisMatch({
+      map: {
+        jmfy: [{ name: '科室护士明细表', path: '/statistic/科室护士明细表', component: 护士职称统计 }],
+        default: []
+      }
+    })
   ]
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

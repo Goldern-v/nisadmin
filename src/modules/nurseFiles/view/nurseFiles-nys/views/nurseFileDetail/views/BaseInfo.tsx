@@ -78,7 +78,7 @@ export default observer(function BaseInfo() {
                 },
                 {
                   护士执业证书编号: `zyzsNumber`,
-                  护士执业证书有效截止日期: `zyzsNumber`,
+                  护士执业证书有效截止日期: `zyzsEffectiveUpDate`,
                 },
                 {
                   技术职称: `newTitle`,

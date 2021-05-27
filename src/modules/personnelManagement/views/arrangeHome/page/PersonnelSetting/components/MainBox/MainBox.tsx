@@ -44,21 +44,24 @@ export default function MainBox() {
       width: 30,
       align: 'left'
     },
-    appStore.hisMatch({
+    ...appStore.hisMatch({
       map: {
-        dghl: {
-          title: '分组颜色',
-          dataIndex: 'groupColor',
-          key: 'groupColor',
-          width: 8,
-          align: 'center',
-          render: (text: any, record: any) => {
-            const item = groupColorList.find((item: any) => {
-              return item.code === record.groupColor
-            }) || { name: "" }
-            return <span>{item.name}</span>
+        dghl: [
+          {
+            title: '分组颜色',
+            dataIndex: 'groupColor',
+            key: 'groupColor',
+            width: 8,
+            align: 'center',
+            render: (text: any, record: any) => {
+              const item = groupColorList.find((item: any) => {
+                return item.code === record.groupColor
+              }) || { name: "" }
+              return <span>{item.name}</span>
+            }
           }
-        },
+        ],
+        default: []
       }
     }),
     {
@@ -170,15 +173,15 @@ export default function MainBox() {
     setLoadingTransfer(false)
     let array: any = []
     res.data.length > 0 &&
-    res.data.map((item: any, i: any) => {
-      array.push({
-        key: i.toString(),
-        sortValue: i.toString(),
-        schSettingNurseGroupId: id,
-        empName: item.empName,
-        empNo: item.empNo
+      res.data.map((item: any, i: any) => {
+        array.push({
+          key: i.toString(),
+          sortValue: i.toString(),
+          schSettingNurseGroupId: id,
+          empName: item.empName,
+          empNo: item.empNo
+        })
       })
-    })
     setMockData(array)
     selectedScheduler(record, array)
   }
@@ -337,7 +340,7 @@ export default function MainBox() {
                     </Select>
                   </div>
                 ),
-                other: <div style={{ marginBottom: '50px' }}/>
+                other: <div style={{ marginBottom: '50px' }} />
               }
             })
           }

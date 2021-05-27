@@ -45,6 +45,7 @@ export function openAuditModal(title: string, row: any, getTableData: any) {
           },
           {
             鞋码: `shoeSize`,
+            入职时间: 'entryDate'
           }
         ],
         fileData: [

@@ -10,6 +10,7 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService'
 import Zimage from 'src/components/Zimage'
+import service from 'src/services/api'
 const defaultHead = require('../images/护士默认头像.png')
 const defaultFile = require('../images/证件空态度.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
@@ -43,6 +44,7 @@ export default function AduitModal(props: Props) {
   let [auditeListDtos, setAuditeListDtos]: [any, any] = useState([])
   /** 是否需要当前用户审核 */
   let [needAudite, setNeedAudite]: [any, any] = useState(false)
+
   useEffect(() => {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
@@ -54,7 +56,6 @@ export default function AduitModal(props: Props) {
       setSpinning(true)
       if (props.type === 'nurseInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
-          setSpinning(false)
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
@@ -82,20 +83,24 @@ export default function AduitModal(props: Props) {
               return val
             }
 
-            return {
-              [title0]: formatVal(dataIndex0, val0),
-              [title1]: formatVal(dataIndex1, val1)
-            }
+            let newRow = {} as any
+            if (title0) newRow[title0] = formatVal(dataIndex0, val0)
+            if (title1) newRow[title1] = formatVal(dataIndex1, val1)
+
+            return newRow
           })
+
           setTableData(tableData)
+
           setAuditeListDtos(data.auditeListDtos)
           if (data.statusColor === '0') {
             setNeedAudite(false)
           } else if (data.statusColor === '1') {
             setNeedAudite(true)
           }
+
           setAuditStatus(data.auditedStatusName)
-          // if (props.fileData.length == 0 && (data.nearImageUrl || data.zyzsUrl)) {
+
           setFileData([
             {
               个人头像: data.nearImageUrl
@@ -108,8 +113,59 @@ export default function AduitModal(props: Props) {
               })
               : [])
           ])
-          // }
+
+          if (Object.keys(data).includes('maps')) {
+            let maps = data.maps || {}
+            return new Promise((resolve, reject) => {
+              service.commonApiService.listNurseExpand('User')
+                .then(res => {
+                  resolve({
+                    maps,
+                    mapsConfig: res.data,
+                    tableData,
+                  })
+                }, (e) => reject(e))
+            })
+          } else {
+            setSpinning(false)
+          }
         })
+          .then((payload: any) => {
+            setSpinning(false)
+            if (payload) {
+              const { maps, mapsConfig, tableData } = payload
+              const newTableData = [...tableData]
+
+              for (let i = 0; i < mapsConfig.length; i++) {
+                let mapCfgItem = mapsConfig[i]
+
+                let key = mapCfgItem.fieldCode
+                let val = maps[key] || ''
+                let name = mapCfgItem.fieldName
+                let lastItem = newTableData[newTableData.length - 1]
+
+                if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
+                  let options = []
+                  try {
+                    options = JSON.parse(mapCfgItem.fieldSelectContent)
+                  } catch (e) {
+
+                  }
+                  let target = options.find((opt: any) => opt.code === val)
+
+                  if (target) val = target.name
+                }
+
+                if (Object.keys(lastItem).length > 1) {
+                  newTableData.push({ [name]: val })
+                } else {
+                  lastItem[name] = val
+                }
+              }
+
+              setTableData(newTableData)
+            }
+          }, err => setSpinning(false))
       } else {
         /** 获取详情 */
         modalService.getByIdAudite(props.type, props.id).then((res) => {
@@ -179,6 +235,7 @@ export default function AduitModal(props: Props) {
     <Modal
       title={title}
       visible={visible}
+      centered
       onOk={onOk}
       onCancel={onCancel}
       okText={needAudite ? '审核' : '关闭'}

@@ -9,25 +9,18 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 import { observer } from 'mobx-react-lite'
 import HomeApi from 'src/modules/home/api/HomeApi'
 import BaseTable from 'src/components/BaseTable'
-export default observer(function PatientSituation() {
+
+export default observer(function WardCodeEmpName() {
   const [dataSource, setDataSource] = useState([])
+
   useEffect(() => {
-    const postData = {
-      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
-      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
-      endTime: moment()
-        .add(1, 'd')
-        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
-    }
-    if (authStore.selectedDeptCode) {
-      HomeApi.patientCondition(postData).then((res: any) => {
-        console.log('===patientCondition', res)
-        if (res.data) {
-          setDataSource(res.data)
-        }
-      })
-    }
-  }, [authStore.selectedDeptCode])
+    HomeApi.countWardCodeEmpName().then((res: any) => {
+      if (res.data) {
+        setDataSource(res.data)
+      }
+    })
+  }, [])
+
   const columns: any = [
     // {
     //   title: '序号',
@@ -38,68 +31,28 @@ export default observer(function PatientSituation() {
     //   width: 50
     // },
     {
-      title: '类型',
-      dataIndex: 'patientType',
+      title: '科室',
+      dataIndex: 'DEPTNAME',
       key: '',
       align: 'center',
       width: 200
     },
     {
-      title: '人数',
-      dataIndex: 'patientNum',
+      title: '护士人数',
+      dataIndex: 'NUM',
       key: '',
       align: 'center'
     }
   ]
+
   return (
     <div>
       <Head>
-        <div className='headLeft'>患者情况</div>
+        <div className='headLeft'>科室在岗人员</div>
         <div className='headRight'>更多{'>'}</div>
       </Head>
       <Mid>
         <BaseTable dataSource={dataSource} columns={columns} scroll={{ y: 240 }} />
-        {/* <table>
-          <thead>
-            <tr>
-              <th>类型</th>
-              <th>人数</th>
-              <th>与现有人数比率</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-            </tr>
-          </tbody>
-        </table> */}
       </Mid>
     </div>
   )
