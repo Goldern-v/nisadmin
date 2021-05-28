@@ -19,7 +19,7 @@ export default function QcTwoRouter(props: Props) {
 
   const extra_menu = appStore.hisMatch({
     map: {
-      hj: [
+      "hj,dghl": [
         {
           title: '护理质量巡查情况汇总表',
           icon: <YDBG />,
@@ -27,16 +27,6 @@ export default function QcTwoRouter(props: Props) {
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-        },
-      ],
-      dghl: [
-        {
-          title: '二级质控月度报告',
-          icon: <YDBG />,
-          path: '/qcTwo/workSummaryReportList',
-          component: WorkSummaryReportList,
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
@@ -68,7 +58,8 @@ export default function QcTwoRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ]
-    }
+    },
+    vague: true,
   })
 
   const LEFT_MENU_CONFIG: any = [
