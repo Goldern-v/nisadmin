@@ -9,12 +9,13 @@ import wardManagementViewModel from './WardManagementViewModel'
 import { ReactComponent as KSPHSZ } from './images/KSPHSZ.svg'
 
 import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
+import DeptBed from 'src/modules/deptReferSetting/views/DeptBed'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
 import ManagementSummary from '../deptReferSetting/views/ManagementSummary'
 import FlatManageProblemList from '../deptReferSetting/views/FlatManageProblemList'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 const LEFT_MENU_CONFIG_HJ: any = []
 const LEFT_MENU_CONFIG_WH = [
@@ -46,11 +47,17 @@ const LEFT_MENU_CONFIG_WH = [
     path: '/wardManagement/病区文件',
     component: DeptFileShare,
     icon: <KSPHSZ />
+  },
+  {
+    title: '病区床位',
+    path: '/wardManagement/病区床位',
+    component: DeptBed,
+    icon: <KSPHSZ />
   }
 ]
 
 export default function WardManagementView(props: Props) {
-  useEffect(() => {}, [props.match.params.name])
+  useEffect(() => { }, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(
     appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,

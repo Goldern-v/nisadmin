@@ -29,6 +29,7 @@ import Leave from './views/Leave'
 import PositionChange from './views/PositionChange'
 import RankChange from './views/RankChange'
 // import PostChange from './views/PostChange'
+import WardInnovate from './views/WardInnovate'
 import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
@@ -145,13 +146,18 @@ const ROUTE_LIST = [
     type: 'OrganizationChange',
     component: OrganizationChange,
     name: '编制变动'
-  }
+  },
 
   // {
   //   type: 'Leave',
   //   component: Leave,
   //   name: '离职'
   // }
+  {
+    type: 'WardInnovate',
+    component: WardInnovate,
+    name: '科室创新'
+  },
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -204,6 +210,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
+// @ts-ignore
 const LeftMenuCon = styled(ScrollBox)`
   width: 160px;
   position: relative;

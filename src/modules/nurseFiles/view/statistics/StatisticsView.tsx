@@ -13,7 +13,7 @@ import { statisticsService } from './services/StatisticsService'
 import { cloneJson } from 'src/utils/json/clone'
 import { fileDownload } from 'src/utils/file/file'
 import { message } from 'src/vendors/antd'
-export interface Props {}
+export interface Props { }
 
 export default function Statistics() {
   let path = appStore.match.params.path
@@ -66,7 +66,7 @@ export default function Statistics() {
   useEffect(() => {
     if (statisticsViewModal.dict)
       statisticsViewModal.init().then((res) => {
-        let pageObj = getPageObj(path)
+        // let pageObj = getPageObj(path)
         filterRef.current = {}
         paginationRef.current = {
           pageIndex: 1,

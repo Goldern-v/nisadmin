@@ -7,11 +7,11 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import DeptSelect from "src/components/DeptSelect";
 
-import DeptFileEditModal from "./../components/DeptFileEditModal";
+import DeptFileEditModal from "../components/DeptFileEditModal";
 
 import createModal from "src/libs/createModal";
 
-import DeptFielShareService from "./../api/DeptFielShareService";
+import DeptFielShareService from "../api/DeptFielShareService";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
 import moment from 'moment'
 
@@ -21,7 +21,7 @@ export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option;
 
-export default function DeptFileShare() {
+export default function DeptBed() {
   const [tableData, setTableData] = useState([] as any);
   const [dataTotal, setDataTotal] = useState(0 as number);
 
@@ -53,78 +53,78 @@ export default function DeptFileShare() {
   const [tableLoading, setTableLoading] = useState(false);
 
   const columns: ColumnProps<any>[] = [
-    {
-      title: "序号",
-      dataIndex: "key",
-      key: "key",
-      width: 50,
-      align: "center",
-      render: (text: string, record: any, index: number) => {
-        const { pageIndex, pageSize } = query;
-        return (pageIndex - 1) * pageSize + index + 1;
-      }
-    },
-    {
-      title: "文件名称",
-      dataIndex: "fileName",
-      key: "fileName",
-      className: "align-left",
-      align: "left",
-      render: (text: string) => {
-        return (
-          <div className="rule-name" title={text}>
-            {text}
-          </div>
-        );
-      }
-    },
-    {
-      title: "文件格式",
-      key: "fileType",
-      align: "center",
-      width: 80,
-      render: (text: string, record: any) => {
-        let typeArr = record.originalFileName.split(".");
-        return typeArr[typeArr.length - 1] || "";
-      }
-    },
-    {
-      title: "目录",
-      dataIndex: "catalog",
-      key: "catalog",
-      align: "center",
-      width: 180
-    },
-    {
-      title: "上传日期",
-      dataIndex: "uploadTime",
-      key: "uploadTime",
-      align: "center",
-      width: 150
-    },
-    {
-      title: "上传人",
-      dataIndex: "empName",
-      key: "empName",
-      align: "center",
-      width: 70
-    },
-    {
-      title: "操作",
-      key: "opetation",
-      align: "center",
-      width: 140,
-      render: (text: string, record: any) => {
-        return (
-          <DoCon>
-            <span onClick={() => handlePreview(record)}>预览</span>
-            <span onClick={() => reUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-            <span onClick={() => handleDownload(record)}>下载</span>
-          </DoCon>
-        );
-      }
-    }
+    // {
+    //   title: "序号",
+    //   dataIndex: "key",
+    //   key: "key",
+    //   width: 50,
+    //   align: "center",
+    //   render: (text: string, record: any, index: number) => {
+    //     const { pageIndex, pageSize } = query;
+    //     return (pageIndex - 1) * pageSize + index + 1;
+    //   }
+    // },
+    // {
+    //   title: "文件名称",
+    //   dataIndex: "fileName",
+    //   key: "fileName",
+    //   className: "align-left",
+    //   align: "left",
+    //   render: (text: string) => {
+    //     return (
+    //       <div className="rule-name" title={text}>
+    //         {text}
+    //       </div>
+    //     );
+    //   }
+    // },
+    // {
+    //   title: "文件格式",
+    //   key: "fileType",
+    //   align: "center",
+    //   width: 80,
+    //   render: (text: string, record: any) => {
+    //     let typeArr = record.originalFileName.split(".");
+    //     return typeArr[typeArr.length - 1] || "";
+    //   }
+    // },
+    // {
+    //   title: "目录",
+    //   dataIndex: "catalog",
+    //   key: "catalog",
+    //   align: "center",
+    //   width: 180
+    // },
+    // {
+    //   title: "上传日期",
+    //   dataIndex: "uploadTime",
+    //   key: "uploadTime",
+    //   align: "center",
+    //   width: 150
+    // },
+    // {
+    //   title: "上传人",
+    //   dataIndex: "empName",
+    //   key: "empName",
+    //   align: "center",
+    //   width: 70
+    // },
+    // {
+    //   title: "操作",
+    //   key: "opetation",
+    //   align: "center",
+    //   width: 140,
+    //   render: (text: string, record: any) => {
+    //     return (
+    //       <DoCon>
+    //         <span onClick={() => handlePreview(record)}>预览</span>
+    //         <span onClick={() => reUpload(record)}>修改</span>
+    //         <span onClick={() => handleDelete(record)}>删除</span>
+    //         <span onClick={() => handleDownload(record)}>下载</span>
+    //       </DoCon>
+    //     );
+    //   }
+    // }
   ];
 
   const handlePreview = (record: any) => {
@@ -224,18 +224,19 @@ export default function DeptFileShare() {
   const getTableData = () => {
     setTableLoading(true);
 
-    api.getList(query).then(
-      res => {
-        setTableLoading(false);
-        if (res.data) {
-          setDataTotal(res.data.totalCount || 0);
-          setTableData(res.data.list);
-        }
-      },
-      err => {
-        setTableLoading(false);
-      }
-    );
+    // api.getList(query).then(
+    //   res => {
+    //     setTableLoading(false);
+    //     if (res.data) {
+    //       setDataTotal(res.data.totalCount || 0);
+    //       console.log(res.data.list);
+    //       setTableData(res.data.list);
+    //     }
+    //   },
+    //   err => {
+    setTableLoading(false);
+    //   }
+    // );
   };
 
   const handleDownload = (record: any) => {
@@ -248,7 +249,7 @@ export default function DeptFileShare() {
     <Wrapper>
       <div className="topbar">
         <div className="float-left">
-          <div className="item title">病区文件</div>
+          <div className="item title">病区床位</div>
         </div>
         <div className="float-right">
           <div className="item">
@@ -257,7 +258,7 @@ export default function DeptFileShare() {
               <DeptSelect onChange={handleDeptChange} />
             </div>
           </div>
-          <div className="item">
+          {/* <div className="item">
             <div className="label">目录：</div>
             <div className="content">
               <Select
@@ -276,7 +277,8 @@ export default function DeptFileShare() {
           </div>
           <div className="item link">
             <Link to="/deptFileShareCatalogSetting">目录设置</Link>
-          </div>
+          </div> */}
+
           <div className="item">
             <Button onClick={() => getTableData()}>查询</Button>
           </div>

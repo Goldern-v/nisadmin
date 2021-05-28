@@ -30,6 +30,8 @@ import TraineeFiles_nys from "./view/traineeFiles_nys/TraineeFiles";
 import NursingEduFiles from "./view/nursingEduFiles/NursingEduFiles";
 //护理实习生轮班
 import TraineeShift from "./view/traineeShift/TraineeShift";
+//查询统计-科室创新
+import 科室创新 from "./view/科室创新/科室创新"
 
 import AddSecondMenuModal from "./view/traineeShift/modal/AddSecondMenuModal"; // 添加修改弹窗
 import { traineeShiftModal } from "./view/traineeShift/TraineeShiftModal"; // 实习生轮班公共数据仓库
@@ -213,6 +215,11 @@ export default observer(function NurseFilesView(props: Props) {
           title: "编制变动",
           path: "/nurseFile/workConversion",
           component: StatisticsView
+        },
+        {
+          title: "科室创新",
+          path: "/nurseFile/科室创新",
+          component: 科室创新
         }
       ]
     },

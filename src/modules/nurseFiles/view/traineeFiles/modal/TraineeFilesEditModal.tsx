@@ -217,6 +217,7 @@ export default function TraineeFilesEditModal(props: Props) {
   return (
     <Modal
       visible={visible}
+      width={550}
       onCancel={handleCancel}
       forceRender={true}
       onOk={checkForm}

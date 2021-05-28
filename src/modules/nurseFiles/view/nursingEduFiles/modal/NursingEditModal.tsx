@@ -211,6 +211,7 @@ export default function NursingEditModal(props: Props) {
     <Modal
       visible={visible}
       onCancel={handleCancel}
+      width={550}
       forceRender={true}
       onOk={checkForm}
       confirmLoading={editLoading}
