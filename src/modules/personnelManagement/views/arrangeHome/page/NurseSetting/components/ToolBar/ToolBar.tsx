@@ -15,7 +15,7 @@ import DeptSelect from "src/components/DeptSelect";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function ToolBar() {
   // Similar to componentDidMount and componentDidUpdate:
@@ -41,21 +41,25 @@ export default function ToolBar() {
         <Title>排班人员设置</Title>
         <div style={{ flex: 1 }} />
 
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
 
         <Button
           onClick={(e: any) => {
             emitter.emit("添加排班人员");
           }}
-          style={{ marginLeft: 3, marginRight: 3 }}
+          style={{
+            marginLeft: 3,
+            marginRight: 3,
+            display: appStore.HOSPITAL_ID === 'gzsrm' ? 'none' : 'block'
+          }}
         >
           {appStore.HOSPITAL_ID == "wh"
             ? "添加"
             : appStore.HOSPITAL_ID == "hj"
-            ? "添加实习护士"
-            : appStore.HOSPITAL_ID == "nys"
-            ? "添加排班人员"
-            : "添加实习护士"}
+              ? "添加实习护士"
+              : appStore.HOSPITAL_ID == "nys"
+                ? "添加排班人员"
+                : "添加实习护士"}
         </Button>
         {/* <Button
         onClick={(e: any) => {

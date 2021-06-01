@@ -10,7 +10,7 @@ import BaseTabs from 'src/components/BaseTabs'
 import { teachingQualityEvalService } from './services/TeachingQualityEvalService'
 import { appStore } from 'src/stores'
 import qs from 'qs'
-import { evalTypeGroup } from './utils/evalType'
+import { evalTypeGroup } from './data/evalType'
 import 实操评分添加 from './components/实操评分添加'
 
 const RangePicker = DatePicker.RangePicker

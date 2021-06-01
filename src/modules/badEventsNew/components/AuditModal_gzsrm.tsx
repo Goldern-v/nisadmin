@@ -30,6 +30,15 @@ export interface Props {
   patientInfo?: any //病人信息
 }
 
+/** 患者坠床∕跌倒记录表 伤害选项*/
+const hlb_ddzcsh_option_list = [
+  '无', '1级', '2级', '3级', '4级', '死亡'
+]
+/** 压力性损伤事件报告表 护理质量管理委员会压疮分期 */
+const zlwyh_ycfq_explain_list = [
+  '1期', '2期', '3期', '4期', '不可分期', '深部组织损伤', '医疗器械相关性压力性损伤', '粘膜压力性损伤'
+]
+
 export default observer(function AduitModal(props: Props) {
   const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign, isZhuanke, patientInfo } = props
   //用于操作和提交的不良事件表单数据
@@ -44,7 +53,7 @@ export default observer(function AduitModal(props: Props) {
   const [confirmLoading, setConfirmLoading] = useState(false)
 
   //转发科室列表
-  const [dealerDepts, setDealerDepts] = useState([] as any)
+  // const [dealerDepts, setDealerDepts] = useState([] as any)
   //转发科室护士列表
   const [returnDeptNurseList, setReturnDeptNurseList] = useState([] as any[])
 
@@ -91,20 +100,20 @@ export default observer(function AduitModal(props: Props) {
       getReturnDeptNurseList()
   }, [instanceOrign])
 
-  const getDealerDepts = () => {
-    api.getDeptList().then((res) => {
-      let data = res.data
-      if (data instanceof Array)
-        setDealerDepts(
-          data.map((item: any) => {
-            return {
-              name: item.deptName,
-              value: item.deptCode
-            }
-          })
-        )
-    })
-  }
+  // const getDealerDepts = () => {
+  //   api.getDeptList().then((res) => {
+  //     let data = res.data
+  //     if (data instanceof Array)
+  //       setDealerDepts(
+  //         data.map((item: any) => {
+  //           return {
+  //             name: item.deptName,
+  //             value: item.deptCode
+  //           }
+  //         })
+  //       )
+  //   })
+  // }
 
   const getReturnDeptNurseList = () => {
     commonApiService.userDictInfo(instanceOrign.deptCode)
@@ -147,6 +156,7 @@ export default observer(function AduitModal(props: Props) {
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
+    // console.log(userAudit)
     auditFormSubmit(userAudit)
     setUserCheckVisible(false)
   }
@@ -164,7 +174,7 @@ export default observer(function AduitModal(props: Props) {
       sac: formMap[`${eventCode}_sac_option`],
     }
 
-    /**转归科室推送护士 */
+    // 转归科室推送护士
     if (formMap.nurseList)
       params.nurseList = formMap.nurseList.map((item: any) => ({
         empName: item.label,
@@ -181,8 +191,15 @@ export default observer(function AduitModal(props: Props) {
         case "pressure_auditor":
           return formMap[`${eventCode}_skzkxzyj_explain`];
       }
-    };
-    params.auditMind = auditMind();
+    }
+
+    // 填充护理组长/护士长字段
+    if (status == 'nurse_auditor') {
+      params.paramMap[`${eventCode}_hlzzhsz_empno`] = userAudit.empNo
+      params.paramMap[`${eventCode}_hlzzhsz_explain`] = authStore.user?.empName
+    }
+
+    params.auditMind = auditMind()
 
     delete params.paramMap.nurseList
     delete params.operatorStatus
@@ -256,22 +273,53 @@ export default observer(function AduitModal(props: Props) {
         return (
           <div>
             {commonCon}
-            {eventCode === 'badevent_nys_fall' && <Row>
-              <Col span={4}>事件等级：</Col>
-              <Col span={20}>
-                <Radio.Group
-                  className='radio-group'
-                  value={formMap[`${eventCode}_sjdj_option`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_sjdj_option`]: e.target.value })
-                  }>
-                  <Radio value="警告事件" >警告事件</Radio>
-                  <Radio value="不良事件">不良事件</Radio>
-                  <Radio value="未造成后果事件">未造成后果事件</Radio>
-                  <Radio value="隐患事件">隐患事件</Radio>
-                </Radio.Group>
-              </Col>
-            </Row>}
+            {eventCode === 'badevent_nys_fall' && (
+              <React.Fragment>
+                <Row>
+                  <Col span={4}>事件等级：</Col>
+                  <Col span={20}>
+                    <Radio.Group
+                      className='radio-group'
+                      value={formMap[`${eventCode}_sjdj_option`]}
+                      onChange={(e) =>
+                        setFormMap({ ...formMap, [`${eventCode}_sjdj_option`]: e.target.value })
+                      }>
+                      <Radio value="警告事件" >警告事件</Radio>
+                      <Radio value="不良事件">不良事件</Radio>
+                      <Radio value="未造成后果事件">未造成后果事件</Radio>
+                      <Radio value="隐患事件">隐患事件</Radio>
+                    </Radio.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={4}>伤害等级：</Col>
+                  <Col span={20}>
+                    <Radio.Group
+                      className='radio-group'
+                      value={formMap[`${eventCode}_hlb_ddzcsh_option`]}
+                      onChange={(e) =>
+                        setFormMap({ ...formMap, [`${eventCode}_hlb_ddzcsh_option`]: e.target.value })
+                      }>
+                      {hlb_ddzcsh_option_list.map((val: string) => <Radio value={val} key={val}>{val}</Radio>)}
+                    </Radio.Group>
+                  </Col>
+                </Row>
+              </React.Fragment>
+            )}
+            {eventCode === 'badevent_nys_pressure' && (
+              <Row>
+                <Col span={4}>事件等级：压疮分期</Col>
+                <Col span={20}>
+                  <Select
+                    value={formMap[`${eventCode}_zlwyh_ycfq_explain`]}
+                    onChange={(val: any) =>
+                      setFormMap({ ...formMap, [`${eventCode}_zlwyh_ycfq_explain`]: val })
+                    }>
+                    {zlwyh_ycfq_explain_list.map((val: string) => <Option value={val} key={val}>{val}</Option>)}
+                  </Select>
+                </Col>
+              </Row>
+            )}
             <Row>
               <Col span={4}>审核意见：</Col>
               <Col span={20}>

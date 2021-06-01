@@ -73,8 +73,8 @@ export default class ImageUploader extends React.Component<Props, State> {
 
     if (!file) return
 
-    let minSize = Number(this.props.minSize)
-    let maxSize = Number(this.props.maxSize)
+    let minSize = Number(this.props.minSize || 0)
+    let maxSize = Number(this.props.maxSize || file.size)
 
     console.log(file.size, minSize, maxSize)
     if (!isNaN(minSize)) {
@@ -90,16 +90,16 @@ export default class ImageUploader extends React.Component<Props, State> {
       }
     }
 
-    // const src = file ? await this.getBase64(file) : ''
+    const src = file ? await this.getBase64(file) : ''
 
-    // $input.value = ''
+    $input.value = ''
 
-    // if (upload) {
-    //   this.setState({ src, loading: true })
-    //   const value = await upload(file)
-    //   this.setState({ loading: false })
-    //   value && onChange(value)
-    // }
+    if (upload) {
+      this.setState({ src, loading: true })
+      const value = await upload(file)
+      this.setState({ loading: false })
+      value && onChange(value)
+    }
   }
 
   public render() {

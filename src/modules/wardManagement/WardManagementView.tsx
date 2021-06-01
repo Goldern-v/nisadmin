@@ -17,8 +17,7 @@ import FlatManageProblemList from '../deptReferSetting/views/FlatManageProblemLi
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
-const LEFT_MENU_CONFIG_HJ: any = []
-const LEFT_MENU_CONFIG_WH = [
+const LEFT_MENU_CONFIG = [
   {
     title: '扁平管理',
     component: FlatManage,
@@ -48,19 +47,27 @@ const LEFT_MENU_CONFIG_WH = [
     component: DeptFileShare,
     icon: <KSPHSZ />
   },
-  {
-    title: '病区床位',
-    path: '/wardManagement/病区床位',
-    component: DeptBed,
-    icon: <KSPHSZ />
-  }
+  ...appStore.hisMatch({
+    map: {
+      wh: [
+        {
+          title: '病区床位',
+          path: '/wardManagement/病区床位',
+          component: DeptBed,
+          icon: <KSPHSZ />
+        }
+      ],
+      default: []
+    }
+  })
 ]
 
 export default function WardManagementView(props: Props) {
   useEffect(() => { }, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
+
   let currentRoute = getTargetObj(
-    appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,
+    LEFT_MENU_CONFIG,
     'path',
     currentRoutePath
   )
@@ -80,10 +87,11 @@ export default function WardManagementView(props: Props) {
   }
   let cacheSetHeadTitle = currentRoute && currentRoute.title
   wardManagementViewModel.setHeadTitle(cacheSetHeadTitle)
+
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ} />
+        <LeftMenu config={LEFT_MENU_CONFIG} />
       </LeftMenuCon>
       <MainCon>
         {/*

@@ -153,11 +153,11 @@ const ROUTE_LIST = [
   //   component: Leave,
   //   name: '离职'
   // }
-  {
+  ...appStore.HOSPITAL_ID === 'wh' ? [{
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'
-  },
+  }] : []
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {

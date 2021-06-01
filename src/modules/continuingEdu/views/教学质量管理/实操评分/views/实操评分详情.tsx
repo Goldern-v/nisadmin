@@ -8,7 +8,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import moment from 'src/vendors/moment'
 import { appStore } from 'src/stores'
 import { teachingQualityEvalService } from '../services/TeachingQualityEvalService'
-import { evalTypeGroup } from '../utils/evalType'
+import { evalTypeGroup } from '../data/evalType'
 import TeachingQualityEvalForm from '../components/TeachingQualityEvalForm'
 import { fileDownload } from 'src/utils/file/file'
 

@@ -5,7 +5,7 @@ import { ScrollBox } from 'src/components/common'
 import 实习生带教评价调查表 from './实习生带教评价调查表'
 import 规培生带教评价调查表 from './规培生带教评价调查表'
 import 临床护理教学质量督导调查表 from './临床护理教学质量督导调查表'
-import { evalTypeGroup } from '../utils/evalType'
+import { evalTypeGroup } from '../data/evalType'
 import { teachingQualityEvalService } from './../services/TeachingQualityEvalService'
 import moment from 'moment'
 

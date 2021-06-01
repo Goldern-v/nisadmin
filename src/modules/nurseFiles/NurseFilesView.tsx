@@ -275,6 +275,21 @@ export default observer(function NurseFilesView(props: Props) {
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
+      case "gzsrm":
+        return [
+          {
+            title: "在职护士档案",
+            path: "/nurseFile/onTheJob",
+            component: OnTheJobComponent,
+            icon: <ZZHSDA />
+          },
+          {
+            title: "离职/退休人员查询",
+            path: "/nurseFile/retiredRetirees",
+            component: RetiredRetirees,
+            icon: <TXHSCX />
+          },
+        ]
       default:
         return LEFT_MENU_CONFIG_HJ;
     }

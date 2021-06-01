@@ -14,8 +14,9 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import { appStore } from 'src/stores'
+import { observer } from 'src/vendors/mobx-react-lite'
 
-export default function QcTwoRouter(props: Props) {
+export default observer(function QcTwoRouter(props: Props) {
 
   const extra_menu = appStore.hisMatch({
     map: {
@@ -110,7 +111,8 @@ export default function QcTwoRouter(props: Props) {
       </MainCon>
     </Wrapper>
   )
-}
+})
+
 const Wrapper = styled.div`
   overflow: hidden;
   height: calc(100vh - 50px);
