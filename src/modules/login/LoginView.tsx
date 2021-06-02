@@ -167,6 +167,22 @@ export default withRouter(function LoginView(props: Props) {
         // }}
         >
           <img src={appStore.HOSPITAL_LOGO} alt="logo" className="BoxLogin" />
+          {appStore.hisMatch({
+            map: {
+              'nys': appStore.onlyBadEvent ? (
+                <h1
+                  className="Title"
+                  style={{
+                    margin: 0,
+                    marginBottom: '-10px',
+                    letterSpacing: '2px'
+                  }}>
+                  {appStore.HOSPITAL_Name}
+                </h1>
+              ) : null,
+              default: null
+            }
+          })}
           <h1 className="Title">{Title()}</h1>
 
           <div className="TextItem">

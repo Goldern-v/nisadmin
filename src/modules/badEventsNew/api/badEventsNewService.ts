@@ -32,19 +32,19 @@ export default class BadEventsNewService extends BaseApiService {
   }
   //不良事件统计数据
   public async badEventTotal(params: any) {
-    return this.post(`/badEventM/badEventTotal`, params);
+    return this.post(`/badEvent/badEventTotal`, params);
   }
   //不良事件统计导出
   public async badEventTotalExport(params: any) {
-    return this.post(`/badEventM/badEventTotal/export`, params);
+    return this.post(`/badEvent/badEventTotal/export`, params);
   }
   //不良事件发生率
   public async badEventHappenPercent(params: any) {
-    return this.post(`/badEventM/badEventHappenPercent`, params);
+    return this.post(`/badEvent/badEventHappenPercent`, params);
   }
   //不良事件发生率导出
   public async badEventHappenPercentExport(params: any) {
-    return this.post(`/badEventM/badEventHappenPercent/export`, params);
+    return this.post(`/badEvent/badEventHappenPercent/export`, params);
   }
   //获取病人信息
   public async getPatientInfo(patientId: string | number, visitId: string | number) {

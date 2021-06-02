@@ -240,11 +240,11 @@ export default observer(function 不良事件统计() {
             查询
           </Button>
         </div>
-        <div className="item">
+        {/* <div className="item">
           <Button onClick={handleExport}>
             导出
           </Button>
-        </div>
+        </div> */}
       </RightIcon>
     </HeaderCon>
     <MidCon>

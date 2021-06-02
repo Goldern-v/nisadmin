@@ -247,11 +247,11 @@ export default observer(function 不良事件发生率() {
             查询
           </Button>
         </div>
-        <div className="item">
+        {/* <div className="item">
           <Button onClick={handleExport}>
             导出
           </Button>
-        </div>
+        </div> */}
       </RightIcon>
     </HeaderCon>
     <MidCon>

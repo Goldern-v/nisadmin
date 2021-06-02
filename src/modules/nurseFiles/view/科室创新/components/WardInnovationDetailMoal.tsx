@@ -7,17 +7,17 @@ export interface Props extends ModalProps {
   detailData: any
 }
 
-export default function 科室创新DetailMoal(props: Props) {
+export default function WardInnovationDetailMoal(props: Props) {
   const { visible, detailData, onCancel } = props
 
   return <Modal
     title="科室创新登记信息"
     visible={visible}
-    okButtonDisabled
+    footer={null}
     onCancel={onCancel}>
     <Wrapper>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           项目名称
         </Col>
         <Col span={20}>
@@ -25,43 +25,43 @@ export default function 科室创新DetailMoal(props: Props) {
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           创新科室
         </Col>
         <Col span={20}>
-          <Input value={detailData.wardName} readOnly />
+          <Input value={detailData.innovationDeptName} readOnly />
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           创新时间
         </Col>
         <Col span={20}>
-          <Input value={detailData.createTime} readOnly />
+          <Input value={detailData.innovationTime} readOnly />
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           登记单位
         </Col>
         <Col span={20}>
-          <Input value={detailData.signUnit} readOnly />
+          <Input value={detailData.regUnit} readOnly />
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           登记号
         </Col>
         <Col span={20}>
-          <Input value={detailData.signNum} readOnly />
+          <Input value={detailData.regNum} readOnly />
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
+        <Col span={4} className="title">
           参与成员
         </Col>
         <Col span={20}>
-          <Input value={detailData.members} readOnly />
+          <Input value={detailData.innovationMember} readOnly />
         </Col>
       </Row>
     </Wrapper>

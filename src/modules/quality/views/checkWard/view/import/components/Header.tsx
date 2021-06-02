@@ -47,7 +47,7 @@ export default function Header() {
           <div className='topHeaderButton'>
             <Button onClick={nightRoomDownload}>中夜班模版下载</Button>
             <Button onClick={specialRoomDownload}>特殊模版下载</Button>
-            <Button onClick={() => {appStore.history.push(`/quality/checkWard/schedule`)}}>返回</Button>
+            <Button onClick={() => { appStore.history.goBack() }}>返回</Button>
           </div>
         </div>
       </TopHeader>

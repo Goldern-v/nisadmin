@@ -7,11 +7,12 @@ import moment from 'src/vendors/moment'
 import { observer } from 'mobx-react-lite'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import 科室创新DetailMoal from './components/科室创新DetailMoal'
+import WardInnovationDetailMoal from './components/WardInnovationDetailMoal'
 import { ColumnProps } from 'src/vendors/antd'
-import settingViewModel from 'src/modules/setting/SettingViewModel'
+import { wardInnovationServices } from './services/WardInnovationServices'
 
-const Option = Select.Option
+
+// const Option = Select.Option
 const RangePicker = DatePicker.RangePicker
 
 export interface Props { }
@@ -26,13 +27,13 @@ export default observer(function 科室创新() {
   const [recordSelected, setRecordSelected] = useState({})
 
   const [query, setQuery] = useState({
-    wardCode: '',
+    deptName: '',
     pageSize: 20,
     pageIndex: 1,
-    beginDate: _currentMonth[0].format('YYYY-MM-DD'),
-    endDate: _currentMonth[1].format('YYYY-MM-DD'),
-    signUnit: '',
-    members: '',
+    innovationTimeStart: _currentMonth[0].format('YYYY-MM-DD 00:00'),
+    innovationTimeEnd: _currentMonth[1].format('YYYY-MM-DD 23:59'),
+    regUnit: '',
+    member: '',
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -55,31 +56,31 @@ export default observer(function 科室创新() {
     },
     {
       title: '创新科室',
-      dataIndex: 'wardName',
+      dataIndex: 'innovationDeptName',
       width: 150,
       align: 'center',
     },
     {
       title: '创新时间',
-      dataIndex: 'createTime',
+      dataIndex: 'innovationTime',
       width: 150,
       align: 'center',
     },
     {
       title: '登记单位',
-      dataIndex: 'signUnit',
+      dataIndex: 'regUnit',
       width: 150,
       align: 'center',
     },
     {
       title: '登记号',
-      dataIndex: 'signNum',
+      dataIndex: 'regNum',
       width: 150,
       align: 'center',
     },
     {
       title: '参与成员',
-      dataIndex: 'members',
+      dataIndex: 'innovationMember',
       width: 150,
       align: 'center',
     },
@@ -103,7 +104,13 @@ export default observer(function 科室创新() {
 
   const getTableData = () => {
     setLoading(true)
-    setTableData([])
+
+    wardInnovationServices
+      .getInnovationDeptList(query)
+      .then(res => {
+        setTableData(res.data.list)
+        setTotal(res.data.totalCount)
+      })
 
     setLoading(false)
   }
@@ -116,7 +123,7 @@ export default observer(function 科室创新() {
     <HeaderCon>
       <Title>科室创新</Title>
       <Place />
-      <Button>导出</Button>
+      {/* <Button>导出</Button> */}
     </HeaderCon>
     <FilterCon>
       <Row>
@@ -133,13 +140,13 @@ export default observer(function 科室创新() {
               }
               style={{ width: 220 }}
               placeholder="选择新科室"
-              value={query.wardCode}
-              onChange={(wardCode: string) => setQuery({ ...query, wardCode, pageIndex: 1 })}
+              value={query.deptName}
+              onChange={(deptName: string) => setQuery({ ...query, deptName, pageIndex: 1 })}
             >
               <Select.Option value={""}>全部</Select.Option>
               {authStore.deptList.map((item: any) => {
                 return (
-                  <Select.Option value={item.code} key={item}>
+                  <Select.Option value={item.name} key={item}>
                     {item.name}
                   </Select.Option>
                 );
@@ -153,7 +160,7 @@ export default observer(function 科室创新() {
             <RangePicker
               className="content-item"
               style={{ width: 220, marginRight: 10 }}
-              value={[moment(query.beginDate), moment(query.endDate)]}
+              value={[moment(query.innovationTimeStart), moment(query.innovationTimeEnd)]}
               ranges={{
                 '本月': _currentMonth,
                 '本季度': _currentQuater,
@@ -162,8 +169,8 @@ export default observer(function 科室创新() {
               onChange={(payload: any) => {
                 setQuery({
                   ...query,
-                  beginDate: payload[0].format('YYYY-MM-DD'),
-                  endDate: payload[1].format('YYYY-MM-DD'),
+                  innovationTimeStart: payload[0].format('YYYY-MM-DD 00:00'),
+                  innovationTimeEnd: payload[1].format('YYYY-MM-DD 23:59'),
                   pageIndex: 1,
                 })
               }}
@@ -174,18 +181,18 @@ export default observer(function 科室创新() {
           <div className="title">登记单位</div>
           <div className="content">
             <Input
-              value={query.signUnit}
+              value={query.regUnit}
               onChange={(e: any) =>
-                setQuery({ ...query, signUnit: e.target.value, pageIndex: 1 })} />
+                setQuery({ ...query, regUnit: e.target.value, pageIndex: 1 })} />
           </div>
         </Col>
         <Col span={5}>
           <div className="title">参与成员</div>
           <div className="content">
             <Input
-              value={query.members}
+              value={query.member}
               onChange={(e: any) =>
-                setQuery({ ...query, members: e.target.value, pageIndex: 1 })} />
+                setQuery({ ...query, member: e.target.value, pageIndex: 1 })} />
           </div>
         </Col>
         <Col span={2}>
@@ -199,7 +206,7 @@ export default observer(function 科室创新() {
       </Row>
     </FilterCon>
     <BaseTable
-      surplusHeight={260}
+      surplusHeight={295}
       surplusWidth={1000}
       loading={loading}
       dataSource={tableData}
@@ -213,7 +220,7 @@ export default observer(function 科室创新() {
         onShowSizeChange: (pageIndex: number, pageSize: number) =>
           setQuery({ ...query, pageIndex: 1, pageSize, })
       }} />
-    <科室创新DetailMoal
+    <WardInnovationDetailMoal
       visible={detailModalVisible}
       onCancel={() => setDetailModalVisible(false)}
       detailData={recordSelected} />
