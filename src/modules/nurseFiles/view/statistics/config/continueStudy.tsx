@@ -36,7 +36,13 @@ export const pageObj: PageObj = {
       width: 90,
       align: 'center'
     },
-
+    {
+      title: '级别',
+      dataIndex: 'projectLevel',
+      key: 'projectLevel',
+      width: 80,
+      align: 'center'
+    },
     {
       title: '项目名称',
       dataIndex: 'projectName',
