@@ -100,7 +100,8 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: selectViewModal.params.endTime // endTime   结束时间（刚开始由后台传给前台）
     };
-    return this.post(`/scheduling/export`, postData, { responseType: "blob" });
+    const url = appStore.HOSPITAL_ID === 'lcey' ? 'schedulingLc/export' : '/scheduling/export'
+    return this.post(url, postData, { responseType: "blob" });
   }
 
   // 获取期望排班
