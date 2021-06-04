@@ -47,6 +47,7 @@ export default observer(function ArrangeSheet(props: Props) {
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
       wh: () => EditVacationCountModal_wh,
+      lcey: () => EditVacationCountModal_wh,
       dghl: () => EditVacationCountModal_wh,
       jmfy: () => EditVacationCountModal_wh,
       nys: () => EditVacationCountModal_wh,

@@ -8,7 +8,10 @@ import { meunConfig as menuConfig_gzhd } from "./config/menuConfig_gzhd";
 import { meunConfig as menuConfig_hj } from "./config/menuConfig_hj";
 import { meunConfig as menuConfig_nys } from "./config/menuConfig_nys";
 import { meunConfig as menuConfig_dghl } from "./config/menuConfig_dghl";
-export interface Props { }
+import { meunConfig as menuConfig_lcey } from "./config/menuConfig_lcey";
+
+export interface Props {
+}
 
 export default function PersonnelManagementView() {
   const leftMenuConfig = (() => {
@@ -24,6 +27,8 @@ export default function PersonnelManagementView() {
         return menuConfig_gzhd;
       case 'dghl':
         return menuConfig_dghl;
+      case 'lcey':
+        return menuConfig_lcey;
       default:
         return menuConfig_hj;
     }
@@ -31,7 +36,7 @@ export default function PersonnelManagementView() {
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={leftMenuConfig} />
+      <LeftMenuPage leftMenuConfig={leftMenuConfig}/>
     </Wrapper>
   );
 }
