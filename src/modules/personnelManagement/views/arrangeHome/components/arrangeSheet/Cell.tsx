@@ -25,6 +25,8 @@ import moment from "moment";
 export interface Props {
   contextMenu: ContextMenu;
   editEffectiveTimeModal: any;
+  addAccumulativeLeaveModal: any; // 添加积假
+  addRemakeModal: any; // 添加备注
   editVacationCountModal: any;
   dataSource: any;
   index: number;
@@ -37,6 +39,8 @@ export default observer(function Cell(props: Props) {
     dataSource,
     index,
     editEffectiveTimeModal,
+    addAccumulativeLeaveModal, // 添加积假
+    addRemakeModal, // 添加备注
     editVacationCountModal,
     isEdit
   } = props;
@@ -147,6 +151,44 @@ export default observer(function Cell(props: Props) {
               });
             }
           },
+        ...appStore.hisMatch({
+          map: {
+            'jmfy': [
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加积假",
+                type: "text",
+                disabled: disableByName,
+                onClick: () => {
+                  addAccumulativeLeaveModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(data: any) {
+                      sheetViewModal.selectedCell.schJiJias = [{
+                        statusType: data.statusType,
+                        totalHoliday: data.totalHoliday,
+                      }]
+                    }
+                  });
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加备注",
+                type: "text",
+                disabled: disableByName,
+                onClick: () => {
+                  addRemakeModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(value: any) {
+                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+                    }
+                  });
+                }
+              }
+            ],
+            other: []
+          }
+        }),
         {
           icon: require("../../images/休假计数.png"),
           disabled: !sheetViewModal.countArrangeNameList.includes(
@@ -390,7 +432,7 @@ export default observer(function Cell(props: Props) {
     }
 
     // 东莞横沥 按住ctrl 可以选择多个cell  start -----
-    if (appStore.HOSPITAL_ID === 'dghl') {
+    if (['dghl', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
       if (e.ctrlKey) {
         const includes = sheetViewModal.selectedCellList.includes(cellObj)
         if (!includes) { // 如果包含也不取消
@@ -533,6 +575,10 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
           </React.Fragment>
         )) ||
         ""}
+        {/* 聊城二院 备注功能 */}
+        {(cellObj.schRemarks && cellObj.schRemarks.length) && (
+          <span>({cellObj.schRemarks[0].remark})</span>
+        )}
       </React.Fragment>
     );
   }

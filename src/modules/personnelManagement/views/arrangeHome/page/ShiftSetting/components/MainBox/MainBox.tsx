@@ -21,7 +21,8 @@ import { Icon } from "src/vendors/antd";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {
+}
 
 // let colorMap: any = {
 //   red: '红色',
@@ -45,6 +46,8 @@ export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
 
+  const [selectAll, setSelectAll] = useState(false);
+
   /** 禁用的班次 */
   const [disableArrangeList, setDisableArrangeList]: any = useState([]);
 
@@ -60,6 +63,16 @@ export default function MainBox() {
       }
     }),
   );
+
+  const handleSwitchClick = (checked: boolean) => {
+    const newArr = shiftList.map((item: any) => {
+      item.status = checked
+      return item
+    })
+    setShiftList(newArr)
+    setSelectAll(checked)
+  }
+
   const columns = [
     {
       title: "序号",
@@ -69,7 +82,22 @@ export default function MainBox() {
       render: (text: string, record: any, index: any) => index + 1
     },
     {
-      title: "列入排班",
+      title: () => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span>列入排班</span>
+            {
+              appStore.HOSPITAL_ID === 'jmfy' &&
+              <Switch
+                size="small"
+                defaultChecked={selectAll}
+                style={{ marginLeft: '5px' }}
+                onClick={handleSwitchClick}
+              />
+            }
+          </div>
+        )
+      },
       dataIndex: "status",
       key: "是否排班",
       width: 100,
@@ -369,7 +397,7 @@ export default function MainBox() {
         )}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
-      <addShiftModal.Component />
+      <addShiftModal.Component/>
     </Wrapper>
   );
 }

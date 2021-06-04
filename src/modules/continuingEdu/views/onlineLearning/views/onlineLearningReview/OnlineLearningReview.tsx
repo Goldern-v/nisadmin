@@ -19,7 +19,9 @@ import {
 import BaseInfoPannel from "./components/BaseInfoPannel";
 import FinishTaskProgress from "./components/FinishTaskProgress";
 import { onlineLearningReviewApi } from "./api/OnlineLearningReviewApi";
-export interface Props {}
+
+export interface Props {
+}
 
 export default observer(function OnlineLearningReview(props: Props) {
   const { history, queryObj } = appStore;
@@ -100,7 +102,8 @@ export default observer(function OnlineLearningReview(props: Props) {
           message.error(`${res.desc}`);
         }
       })
-      .catch(err => {});
+      .catch(err => {
+      });
   };
 
   return (
@@ -140,11 +143,11 @@ export default observer(function OnlineLearningReview(props: Props) {
               </Button>
             )}
             {baseInfo.taskStatus === 1 &&
-              baseInfo.teachingMethodName === "考试" && (
-                <Button type="primary" onClick={() => checkExam()}>
-                  查看成绩
-                </Button>
-              )}
+            baseInfo.teachingMethodName === "考试" && (
+              <Button type="primary" onClick={() => checkExam()}>
+                查看成绩
+              </Button>
+            )}
             <Button
               onClick={() => {
                 history.goBack();
@@ -155,8 +158,8 @@ export default observer(function OnlineLearningReview(props: Props) {
           </ButtonGroups>
         </TopPannel>
         <MainPannel>
-          {!queryObj.taskRoleCode && <FinishTaskProgress />}
-          <BaseInfoPannel />
+          {!queryObj.taskRoleCode && <FinishTaskProgress/>}
+          <BaseInfoPannel/>
         </MainPannel>
       </Spin>
     </Wrapper>

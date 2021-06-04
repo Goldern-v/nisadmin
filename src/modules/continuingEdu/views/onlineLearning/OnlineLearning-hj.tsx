@@ -4,11 +4,14 @@ import { observer } from "mobx-react-lite";
 import { Button, DatePicker, Select } from "antd";
 import BaseTabs from "src/components/BaseTabs";
 import Table from "./components/Table";
+import WorkReflection from "./components/workReflection";
 import TrainingManual from '../trainingManual/TrainingManual'
 import { onlineLearningModal } from "./OnlineLearningModal";
+
 interface Props {
   getId: any;
 }
+
 export default observer(function OnlineLearning(props: Props) {
   const { getId } = props; //获取当前页面标题
   const user = JSON.parse(sessionStorage.getItem("user") || "[]"); // 获取登录人员信息
@@ -40,35 +43,41 @@ export default observer(function OnlineLearning(props: Props) {
   const TABS_LIST_NURSE = [
     {
       title: '培训清单',
-      component: <TrainingManual />
+      component: <TrainingManual/>
     },
     {
       title: `全部（${onlineLearningModal.taskCount.unFinishedTaskCount ||
-        0}）`,
-      component: <Table />
+      0}）`,
+      component: <Table/>
     },
     {
       title: `待学习（${onlineLearningModal.taskCount.toStudyTaskCount || 0}）`,
-      component: <Table />
+      component: <Table/>
     },
     {
       title: `待培训（${onlineLearningModal.taskCount.toTrainTaskCount || 0}）`,
-      component: <Table />
+      component: <Table/>
     },
     {
       title: `待考试（${onlineLearningModal.taskCount.toExamTaskCount || 0}）`,
-      component: <Table />
+      component: <Table/>
     },
     {
       title: `待练习（${onlineLearningModal.taskCount.toExerciseTaskCount ||
-        0}）`,
-      component: <Table />
+      0}）`,
+      component: <Table/>
     },
     {
       title: `已结束（${onlineLearningModal.taskCount.finishedTaskCount ||
-        0}）`,
-      component: <Table />
-    }
+      0}）`,
+      component: <Table/>
+    },
+    // 2021-6-4 暂时屏蔽
+    /*{
+      title: `工作反思（${onlineLearningModal.taskCount.finishedTaskCount ||
+      0}）`,
+      component: <WorkReflection/>
+    }*/
   ];
 
   return (
@@ -92,20 +101,37 @@ export default observer(function OnlineLearning(props: Props) {
             }}
           />
           <span>任务状态：</span>
-          <Select
-            style={{ width: 140, marginRight: 15 }}
-            value={onlineLearningModal.taskStatus}
-            onChange={(val: string) => {
-              onlineLearningModal.taskStatus = val;
-              onlineLearningModal.pageIndex = 1;
-              onlineLearningModal.getTaskCount();
-              onlineLearningModal.onload();
-            }}
-          >
-            <Select.Option value={0}>未完成</Select.Option>
-            <Select.Option value={1}>已完成</Select.Option>
-            <Select.Option value="">全部</Select.Option>
-          </Select>
+          {
+            onlineLearningModal.key === '7' ?
+              <Select
+                style={{ width: 140, marginRight: 15 }}
+                value={onlineLearningModal.taskStatus}
+                onChange={(val: string) => {
+                  onlineLearningModal.taskStatus = val;
+                  onlineLearningModal.pageIndex = 1;
+                  onlineLearningModal.getTaskCount();
+                  onlineLearningModal.onload();
+                }}
+              >
+                <Select.Option value={0}>未完成</Select.Option>
+                <Select.Option value={1}>已完成</Select.Option>
+                <Select.Option value="">全部</Select.Option>
+              </Select> :
+              <Select
+                style={{ width: 140, marginRight: 15 }}
+                value={onlineLearningModal.taskStatus}
+                onChange={(val: string) => {
+                  onlineLearningModal.taskStatus = val;
+                  onlineLearningModal.pageIndex = 1;
+                  onlineLearningModal.getTaskCount();
+                  onlineLearningModal.onload();
+                }}
+              >
+                <Select.Option value={0}>未完成</Select.Option>
+                <Select.Option value={1}>已完成</Select.Option>
+                <Select.Option value="">全部</Select.Option>
+              </Select>
+          }
           <Button
             type="primary"
             onClick={() => {
@@ -115,6 +141,11 @@ export default observer(function OnlineLearning(props: Props) {
           >
             查询
           </Button>
+          {
+            onlineLearningModal.key === '7' &&
+            <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => {
+            }}>新增</Button>
+          }
         </div>
       </HeadCon>
       <MainCon>

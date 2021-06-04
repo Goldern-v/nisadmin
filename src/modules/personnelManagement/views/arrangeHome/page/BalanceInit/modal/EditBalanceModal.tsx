@@ -19,8 +19,10 @@ import { DictItem } from "src/services/api/CommonApiService";
 import { InputNumber } from "src/vendors/antd";
 import { arrangeService } from "../../../services/ArrangeService";
 import moment from "moment";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
+
 const Option = Select.Option;
+
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => any;
@@ -64,6 +66,7 @@ export default function EditBalanceModal(props: Props) {
     data.publicHourNow = Number(data.publicHourNow) || 0;
     data.holidayHourNow = Number(data.holidayHourNow) || 0;
     data.balanceHourNow = Number(data.balanceHourNow) || 0;
+    data.totalHoliday = Number(data.totalHoliday) || 0;
 
     /** 保存接口 */
     arrangeService.schBalanceHourSaveOrUpdate(data).then((res: any) => {
@@ -90,6 +93,7 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: props.oldData.publicHourNow,
           holidayHourNow: props.oldData.holidayHourNow,
           balanceHourNow: props.oldData.balanceHourNow,
+          totalHoliday: props.oldData.totalHoliday,
           remark: props.oldData.remark,
           status: "2" || props.oldData.status
         });
@@ -102,6 +106,7 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: 0,
           holidayHourNow: 0,
           balanceHourNow: 0,
+          totalHoliday: 0,
           remark: "",
           status: status
         });
@@ -135,23 +140,32 @@ export default function EditBalanceModal(props: Props) {
 
           <Col span={24}>
             <Form.Field label={`结余日期`} name="endDate" required>
-              <DatePicker disabledDate={disabledDate} />
+              <DatePicker disabledDate={disabledDate}/>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`工时结余`} name="balanceHourNow">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
+          {
+            appStore.HOSPITAL_ID === 'jmfy' && (
+              <Col span={24}>
+                <Form.Field label={`积假结余`} name="totalHoliday">
+                  <InputNumber/>
+                </Form.Field>
+              </Col>
+            )
+          }
           <Col span={24}>
             <Form.Field label={`公休结余`} name="publicHourNow">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
 
           <Col span={24}>
             <Form.Field label={`节休结余`} name="holidayHourNow">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
           <Col span={24}>

@@ -90,6 +90,11 @@ export default class TrainingInfoReviewService extends BaseApiService {
   public genSignInCode(cetpId: string | number) {
     return this.post('/studyAndTrain/teachingPlanManage/genSignInCode', qs.stringify({ cetpId }))
   }
+
+  // 保存学笔记
+  public saveStudyNote(params: any) {
+    return this.post('/studyAndTrain/studyNoteManage/saveStudyNote', params)
+  }
 }
 
 export const trainingInfoReviewService = new TrainingInfoReviewService();

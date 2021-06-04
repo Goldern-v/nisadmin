@@ -9,6 +9,7 @@ import {
   Select,
   Row,
   Col,
+  TimePicker,
   message
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
@@ -20,8 +21,10 @@ import { Spin, Switch } from "src/vendors/antd";
 import { authStore, appStore } from "src/stores";
 import SwitchField from "src/components/Swich";
 import { arrangeService } from "../../../services/ArrangeService";
+import moment from "moment";
 
 const Option = Select.Option;
+
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => any;
@@ -36,14 +39,18 @@ const rules: Rules =
     ? {
       name: val => !!val || "请填写班次名称",
       shiftType: val => !!val || "请填写班次类别",
-      workTime: val => !!val || "请填写上班时间",
+      // workTime: val => !!val || "请填写上班时间",
+      workTime1: val => !!val || "请填写上班开始时间",
+      workTime2: val => !!val || "请填写上班结束时间",
       effectiveTime: val => !!val || "请填写标准工时",
       nameColor: val => !!val || "请填写颜色标记"
     }
     : {
       name: val => !!val || "请填写班次名称",
       shiftType: val => !!val || "请填写班次类别",
-      workTime: val => !!val || "请填写上班时间",
+      // workTime: val => !!val || "请填写上班时间",
+      workTime1: val => !!val || "请填写上班开始时间",
+      workTime2: val => !!val || "请填写上班结束时间",
       effectiveTime: val => (!!val || val == "0" ? "" : "请填写标准工时")
     };
 
@@ -56,6 +63,26 @@ export default function AddShiftModal(props: Props) {
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
 
+  const parsingTime = (time: string) => {
+    const [timeRange, timeRange2] = time.split(';')
+    const [workTime1, workTime2] = (timeRange || '').split('-')
+    const [workTime3, workTime4] = (timeRange2 || '').split('-')
+    return {
+      workTime1: moment(workTime1, 'HH:mm'),
+      workTime2: moment(workTime2, 'HH:mm'),
+      workTime3: workTime3 ? moment(workTime3, 'HH:mm') : undefined,
+      workTime4: workTime4 ? moment(workTime4, 'HH:mm') : undefined,
+    }
+  }
+
+  const getTimeStr = (time1: moment.Moment, time2: moment.Moment, time3?: moment.Moment, time4?: moment.Moment) => {
+    let str = time1.format('HH:mm') + '-' + time2.format('HH:mm')
+    if (time3 && time4) {
+      str += ';' + time3.format('HH:mm') + '-' + time4.format('HH:mm')
+    }
+    return str
+  }
+
   const onSave = async () => {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
@@ -67,6 +94,11 @@ export default function AddShiftModal(props: Props) {
       : (data.settingMorningHour = 0);
     data.settingNightHour ? data.settingNightHour : (data.settingNightHour = 0);
     data.deptCode = authStore.selectedDeptCode;
+    data.workTime = getTimeStr(data.workTime1, data.workTime2, data.workTime3, data.workTime4)
+    delete data.workTime1
+    delete data.workTime2
+    delete data.workTime3
+    delete data.workTime4
     /** 保存接口 */
     arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
       message.success("保存成功");
@@ -91,7 +123,8 @@ export default function AddShiftModal(props: Props) {
             from!.setFields({
               name: props.editData.name,
               shiftType: props.editData.shiftType,
-              workTime: props.editData.workTime,
+              // workTime: props.editData.workTime,
+              ...parsingTime(props.editData.workTime),
               effectiveTime: props.editData.effectiveTime,
               nameColor: props.editData.nameColor,
               status: props.editData.status,
@@ -104,7 +137,10 @@ export default function AddShiftModal(props: Props) {
             from!.setFields({
               name: "",
               shiftType: "",
-              workTime: "8:00 - 16:00",
+              workTime1: moment('8:00', 'HH:mm'),
+              workTime2: moment('16:00', 'HH:mm'),
+              workTime3: undefined,
+              workTime4: undefined,
               effectiveTime: "8",
               nameColor: "",
               status: true,
@@ -117,8 +153,10 @@ export default function AddShiftModal(props: Props) {
     }
   }, [visible]);
 
+
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    if (name === "workTime") {
+    // 之前有的标准工时计算 现在有两个时间段不自动计算
+    /*if (name === "workTime") {
       let hour: any = 0;
       let min: any = 0;
       let index: any = value.indexOf("-");
@@ -143,7 +181,7 @@ export default function AddShiftModal(props: Props) {
       }
       form.setField("effectiveTime", min === 0 ? hour : `${hour}.${min}`);
       // console.log(`${hour}.${min}`, "计算结果");
-    }
+    }*/
   };
 
   return (
@@ -160,7 +198,8 @@ export default function AddShiftModal(props: Props) {
           ref={refForm}
           rules={rules}
           labelWidth={80}
-          onChange={props.type && props.type == "nys" ? onFormChange : () => { }}
+          onChange={props.type && props.type == "nys" ? onFormChange : () => {
+          }}
         >
           <Row>
             <Col span={24}>
@@ -184,24 +223,48 @@ export default function AddShiftModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={24}>
-              <Form.Field label={`上班时间`} name="workTime" required>
-                <Input />
+            {/*<div style={tips}>例如：多个上班时间段可用;隔开，如08:00-12:00;02:00-18:00</div>*/}
+            {/* 时间段1 */}
+            <Col span={12}>
+              <Form.Field label={`上班时间`} name="workTime1" required>
+                <TimePicker format={'HH:mm'}/>
+              </Form.Field>
+            </Col>
+            <Col span={1}>
+              <div style={{ lineHeight: '32px', textAlign: 'center' }}>-</div>
+            </Col>
+            <Col span={8}>
+              <Form.Field name="workTime2" required>
+                <TimePicker format={'HH:mm'}/>
+              </Form.Field>
+            </Col>
+            {/* 时间段2 */}
+            <Col span={12} style={{ paddingLeft: '100px' }}>
+              <Form.Field name="workTime3" required>
+                <TimePicker format={'HH:mm'}/>
+              </Form.Field>
+            </Col>
+            <Col span={1}>
+              <div style={{ lineHeight: '32px', textAlign: 'center' }}>-</div>
+            </Col>
+            <Col span={8}>
+              <Form.Field name="workTime4" required>
+                <TimePicker format={'HH:mm'}/>
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`标准工时`} name="effectiveTime" required>
-                <Input />
+                <Input/>
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`白工时`} name="settingMorningHour">
-                <Input />
+                <Input/>
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`夜工时`} name="settingNightHour">
-                <Input />
+                <Input/>
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -220,15 +283,15 @@ export default function AddShiftModal(props: Props) {
               </Form.Field>
             </Col>
             {appStore.HOSPITAL_ID == "nys" &&
-              <Col span={24}>
-                <Form.Field label={`周班次数`} name="rangeLimit">
-                  <Input />
-                </Form.Field>
-              </Col>
+            <Col span={24}>
+              <Form.Field label={`周班次数`} name="rangeLimit">
+                <Input/>
+              </Form.Field>
+            </Col>
             }
             <Col span={24}>
               <Form.Field label={`启用状态`} name="status">
-                <SwitchField />
+                <SwitchField/>
               </Form.Field>
             </Col>
           </Row>
@@ -237,4 +300,10 @@ export default function AddShiftModal(props: Props) {
     </Modal>
   );
 }
+const tips = {
+  "padding-left": "100px",
+  "font-size": "10px",
+  "color": "red"
+}
+
 const Wrapper = styled.div``;

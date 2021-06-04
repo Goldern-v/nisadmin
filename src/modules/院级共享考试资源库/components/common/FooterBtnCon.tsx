@@ -13,11 +13,13 @@ export interface BtnList {
 interface Props {
   btnList: BtnList[]
 }
+
 export default observer(function FooterBtnCon(props: Props) {
   return (
     <Wrapper>
       {props.btnList.map((item, idx) => (
-        <Button onClick={item.onClick} key={idx} disabled={!authStore.isDepartment}>{item.name}</Button>
+        <Button onClick={item.onClick} key={idx}
+                disabled={!authStore.isDepartment && item.name !== '收藏题目'}>{item.name}</Button>
       ))}
     </Wrapper>
   )

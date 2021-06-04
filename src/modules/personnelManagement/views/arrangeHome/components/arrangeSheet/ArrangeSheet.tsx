@@ -14,9 +14,12 @@ import createModal from "src/libs/createModal";
 import EditEffectiveTimeModal from "../../modal/EditEffectiveTimeModal";
 import EditVacationCountModal from "../../modal/EditVacationCountModal";
 import EditVacationCountModal_wh from "../../modal/EditEffectiveTimeModal_wh";
+import AddAccumulativeLeaveModal from "../../modal/AddAccumulativeLeaveModal";
+import AddRemakeModal from "../../modal/AddRemakeModal";
 import { ArrangeItem } from "../../types/Sheet";
 import TotalCell from "./TotalCell";
 import NightHourCell from "./NightHourCell";
+import TotalHoliday from "./TotalHoliday";
 import { appStore } from "src/stores";
 import update from "immutability-helper";
 import AddUpHourCell from "./AddUpHourCell";
@@ -50,6 +53,8 @@ export default observer(function ArrangeSheet(props: Props) {
       gzsrm: () => EditVacationCountModal_wh,
     })
   );
+  const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal)
+  const addRemakeModal = createModal(AddRemakeModal)
   let editVacationCountModal = createModal(EditVacationCountModal);
 
   const nysGroupName =
@@ -154,6 +159,8 @@ export default observer(function ArrangeSheet(props: Props) {
             <Cell
               contextMenu={contextMenu}
               editEffectiveTimeModal={editEffectiveTimeModal}
+              addAccumulativeLeaveModal={addAccumulativeLeaveModal}
+              addRemakeModal={addRemakeModal}
               editVacationCountModal={editVacationCountModal}
               dataSource={record}
               index={index}
@@ -267,7 +274,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 武汉特殊字段*/
-  if (['wh', 'gzsrm', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
+  if (['wh', 'gzsrm'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -293,6 +300,64 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <BalanceHour id={record.id}/>;
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>公休结余</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <PublicHour id={record.id}/>;
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>节休结余</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <HolidayHour id={record.id}/>;
+        }
+      }
+    );
+  }
+
+  /** 江门妇幼特殊字段*/
+  if (['jmfy'].includes(appStore.HOSPITAL_ID)) {
+    columns.push(
+      {
+        title: (
+          <div>
+            <div>夜小时数</div>
+            <div>（小时）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <NightHourCell id={record.id}/>;
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>当月积假</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <TotalHoliday id={record.id}/>;
         }
       },
       {
@@ -557,6 +622,8 @@ export default observer(function ArrangeSheet(props: Props) {
       <contextMenu.Component/>
       <editEffectiveTimeModal.Component/>
       <editVacationCountModal.Component/>
+      <addAccumulativeLeaveModal.Component/>
+      <addRemakeModal.Component/>
     </Wrapper>
   );
 });

@@ -4,7 +4,8 @@ import StudyContent from "src/modules/continuingEdu/views/trainingInfoReview/com
 import { observer } from "mobx-react-lite";
 import { onlineLearningReviewModel } from "../OnlineLearningReviewModel";
 
-export interface Props {}
+export interface Props {
+}
 
 export default observer(function BaseInfoPannel() {
   const { baseInfo, baseLoading } = onlineLearningReviewModel;
@@ -12,7 +13,7 @@ export default observer(function BaseInfoPannel() {
   return (
     <Wrapper>
       <BaseInfoPage>
-        <StudyContent data={baseInfo} />
+        <StudyContent data={baseInfo}/>
       </BaseInfoPage>
     </Wrapper>
   );

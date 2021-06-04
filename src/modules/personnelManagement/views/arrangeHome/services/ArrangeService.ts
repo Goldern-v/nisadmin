@@ -1,9 +1,10 @@
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import BaseApiService from "src/services/api/BaseApiService";
 import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { selectViewModal } from "../viewModal/SelectViewModal";
 import moment from "moment";
 import { PageObj } from "src/modules/nurseFiles/view/statistics/config/getPageObj";
+
 export default class ArrangeService extends BaseApiService {
   /** 获取排班信息 */
   public findCreateOrUpdate(obj?: any) {
@@ -19,8 +20,10 @@ export default class ArrangeService extends BaseApiService {
         .weekday(6)
         .format("YYYY-MM-DD")
     };
-    return this.post(`/scheduling/findCreateOrUpdate`, obj);
+    const url = appStore.HOSPITAL_ID === 'jmfy' ? `/schedulingJm/findCreateOrUpdate` : `/scheduling/findCreateOrUpdate`
+    return this.post(url, obj);
   }
+
   /** 保存排班信息 */
   public saveOrUpdate(status: "0" | "1" | undefined, urlName: string) {
     let obj = {
@@ -45,6 +48,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/${urlName}/saveOrUpdate`, obj);
   }
+
   /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {
     obj = {
@@ -53,6 +57,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(obj));
   }
+
   /** 获取排班班次套餐 */
   public getArrangeMeal(obj?: any) {
     obj = {
@@ -61,6 +66,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`schMealSetting/getByDeptCode`, this.stringify(obj));
   }
+
   /** 获取广州花都排班班次套餐 */
   public getHDArrangeMeal(obj?: any) {
     obj = {
@@ -77,6 +83,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/schSymbol/listByDeptCode`, obj);
   }
+
   // 按科室查找人员分组列表
   public getByDeptCode(obj: any) {
     obj = {
@@ -84,6 +91,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.get(`/schSettingNurseGroup/getByDeptCode/${obj.deptCode}`);
   }
+
   // 导出护士排班
   public async export(data: any) {
     const postData = {
@@ -104,6 +112,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/schExpect/getByDeptCodeAndDatePC`, obj);
   }
+
   // 获取申请加减班
   public schExpectAddOrSubGetByDeptCodeAndDate(obj?: any) {
     obj = {
@@ -144,6 +153,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/scheduling/saveOrUpdate`, obj);
   }
+
   //同步排班人员
   public findSysnNurse() {
     const postData = {
@@ -175,10 +185,12 @@ export default class ArrangeService extends BaseApiService {
   public schHolidaysWHFindBylist(obj: PageObj) {
     return this.post(`/schHolidaysWH/findBylist`, obj);
   }
+
   //假期新增
   public schHolidaysWHSaveOrUpdate(obj: any) {
     return this.post(`/schHolidaysWH/saveOrUpdate`, obj);
   }
+
   //假期删除
   public schHolidaysWHDelete(id: any) {
     return this.get(`/schHolidaysWH/delete/${id}`);
@@ -193,6 +205,7 @@ export default class ArrangeService extends BaseApiService {
   public schHourInstanceGetByDeptCode(deptCode: any) {
     return this.get(`/schHourInstance/getByDeptCode/${deptCode}`);
   }
+
   //结余数据列表保存
   public schHourInstanceSaveOrUpdate(lists: any) {
     return this.post(`/schHourInstance/saveOrUpdate`, { lists });
@@ -217,22 +230,27 @@ export default class ArrangeService extends BaseApiService {
   public schInitialHourSaveOrUpdate(obj: any) {
     return this.post(`/schInitialHour/saveOrUpdate`, obj);
   }
+
   //删除结余数据 新
   public schBalanceHourDelete(id: any) {
     return this.get(`/schBalanceHour/delete/${id}`);
   }
+
   //删除标准工时
   public schInitialHourDelete(id: any) {
     return this.get(`/schInitialHour/delete/${id}`);
   }
+
   //请假查询
   public schVacationGetList(obj: PageObj) {
     return this.post(`/schVacation/getList`, obj);
   }
+
   // 获取期望排班列表模块
   public schExpectGetListPC(obj: PageObj) {
     return this.post(`/schExpect/getListPC`, obj);
   }
+
   // 武汉获取休假类型最近日期得天数编号
   public listRangeNameCode(list: any) {
     let obj = {
@@ -248,6 +266,7 @@ export default class ArrangeService extends BaseApiService {
   public schExpectSaveOrUpdate(obj: any) {
     return this.post(`/schExpect/saveOrUpdate`, obj);
   }
+
   // 期望排班删除
   public schExpectDelete(id: any) {
     return this.get(`/schExpect/delete/${id}`);
@@ -275,8 +294,8 @@ export default class ArrangeService extends BaseApiService {
   public schBalanceHourGetListNys(obj: PageObj) {
     return this.post(`/schBalanceHourNys/getList`, obj);
   }
-  
-  //南医三新增积假数据 
+
+  //南医三新增积假数据
   public schBalanceHourSaveOrUpdatetNys(obj: PageObj) {
     return this.post(`/schBalanceHourNys/saveOrUpdate`, obj);
   }
@@ -288,14 +307,14 @@ export default class ArrangeService extends BaseApiService {
 
   //南医三批量导出
   public exportNys(obj: any) {
-    return this.post(`/schedulingNys/export`,obj,{responseType: "blob"});
+    return this.post(`/schedulingNys/export`, obj, { responseType: "blob" });
   }
 
-    // 获取所有科室
-    public getAllDeptList() {
-      return this.get(`/dept/nursingUnit/all`);
-    }
-  
+  // 获取所有科室
+  public getAllDeptList() {
+    return this.get(`/dept/nursingUnit/all`);
+  }
+
 }
 
 export const arrangeService = new ArrangeService();
