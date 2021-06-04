@@ -1,99 +1,49 @@
-import { globalModal } from "src/global/globalModal";
-import { appStore } from "src/stores";
+import { globalModal } from 'src/global/globalModal'
 
-export default function Format(row: any, getTableData: any) {
-  switch (row.typeName) {
+export function openAuditModal(title: string, row: any, getTableData: any) {
+
+  switch (title) {
     case "基本信息": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         empNo: row.empNo,
         id: row.id,
         type: "nurseInformation",
-        // empNo: appStore.queryObj.empNo,
         title: "审核基础信息",
-        tableFormat: appStore.hisMatch({
-          map: {
-            nys: [
-              {
-                姓名: `empName`,
-                工号: `empNo`
-              },
-              {
-                性别: `sex`,
-                民族: `nation`
-              },
-              {
-                出生年月: `birthday`,
-                年龄: `age`
-              },
-              {
-                籍贯: `nativePlace`,
-                职务: `job`
-              },
-              {
-                参加工作时间: `goWorkTime`,
-                最高学历: `highestEducation`
-              },
-              {
-                护士执业证书编号: `zyzsNumber`,
-                护士执业证书有效截止日期: `zyzsEffectiveUpDate`,
-              },
-              {
-                技术职称: `newTitle`,
-                身份证号: `cardNumber`,
-              },
-              {
-                学术任职: `socialGroup`,
-                手机号: `phone`,
-              },
-              {
-                家庭住址: `address`,
-                来院工作时间: "goHospitalWorkDate",
-              },
-              {
-                工作编制: "workConversion",
-                纳编时间: "enrolDate"
-              },
-              {
-                是否返聘员工: "hireEmployees"
-              }
-            ],
-            other: [
-              {
-                姓名: `empName`,
-                工号: `empNo`
-              },
-              {
-                性别: `sex`,
-                民族: `nation`
-              },
-              {
-                出生年月: `birthday`,
-                年龄: `age`
-              },
-              {
-                籍贯: `nativePlace`,
-                职务: `job`
-              },
-              {
-                参加工作时间: `goWorkTime`,
-                最高学历: `highestEducation`
-              },
-              {
-                技术职称: `newTitle`,
-                护士执业证书编号: `zyzsNumber`
-              },
-              {
-                身份证号: `cardNumber`,
-                社会团体职务: `socialGroup`
-              },
-              {
-                手机号: `phone`,
-                家庭住址: `address`
-              }
-            ]
+        tableFormat: [
+          {
+            姓名: `empName`,
+            工号: `empNo`
+          },
+          {
+            性别: `sex`,
+            民族: `nation`
+          },
+          {
+            出生年月: `birthday`,
+            年龄: `age`
+          },
+          {
+            籍贯: `nativePlace`,
+            职务: `job`
+          },
+          {
+            参加工作时间: `goWorkTime`,
+            最高学历: `highestEducation`
+          },
+          {
+            技术职称: `newTitle`,
+            护士执业证书编号: `zyzsNumber`
+          },
+          {
+            身份证号: `cardNumber`,
+            社会团体职务: `socialGroup`
+          },
+          {
+            手机号: `phone`,
+            家庭住址: `address`
           }
-        }),
+        ],
         fileData: [
           {
             个人头像: row.nearImageUrl
@@ -101,7 +51,7 @@ export default function Format(row: any, getTableData: any) {
           ...(row.zyzsUrl
             ? row.zyzsUrl.split(",").map((item: any, index: number) => {
               return {
-                ["执业证书" + (index + 1)]: item
+                ["附件" + (index + 1)]: item
               };
             })
             : [])
@@ -112,6 +62,7 @@ export default function Format(row: any, getTableData: any) {
     case "工作经历": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
+        empNo: row.empNo,
         id: row.id,
         type: "nurseWorkExperience",
         title: "审核工作经历",
@@ -135,6 +86,7 @@ export default function Format(row: any, getTableData: any) {
     case "特殊资格证": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
+        empNo: row.empNo,
         id: row.id,
         type: "nurseSpecialQualification",
         title: "审核特殊资格证",
@@ -159,6 +111,8 @@ export default function Format(row: any, getTableData: any) {
     }
     case "教育经历": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
+        getTableData: getTableData,
         id: row.id,
         type: "nurseMedicalEducation",
         title: "审核教育经历",
@@ -187,10 +141,11 @@ export default function Format(row: any, getTableData: any) {
     }
     case "职称及层级变动": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseProfessionalAndLevelChange",
-        title: "审核职称及层级变动",
+        title: "审核职称及层级",
         tableFormat: [
           {
             职称聘用时间: `appointmentTime`,
@@ -212,6 +167,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "继续教育": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseContinuingEducation",
@@ -264,6 +220,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "所获奖励": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseAwardWinning",
@@ -293,6 +250,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "年度考核结果": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseYearCheck",
@@ -315,6 +273,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "医院三基考核": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseHospitalsThreeBase",
@@ -340,6 +299,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "工作情况登记": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseRegistrationWork",
@@ -371,6 +331,7 @@ export default function Format(row: any, getTableData: any) {
     }
     case "附件": {
       return globalModal.auditModal.show({
+        empNo: row.empNo,
         getTableData: getTableData,
         id: row.id,
         type: "nurseAttachment",
@@ -408,36 +369,37 @@ export default function Format(row: any, getTableData: any) {
         allData: row
       });
     }
-    case '外出进修': {
-      return globalModal.auditModal.show({
-        getTableData: getTableData,
-        id: row.id,
-        empNo: row.empNo || row.commiterNo,
-        type: 'nurseOutStudy',
-        title: '审核外出进修',
-        tableFormat: [
-          {
-            进修专业: `studyMajor`,
-            进修单位: `unit`
-          },
-          {
-            进修单位所属地: `unitLocal`,
-            进修开始时间: `startDate`
-          },
-          {
-            进修结束时间: `endDate`,
-            '进修时长(天)': `studyHour`
-          }
-        ],
-        fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
-            return {
-              ['附件' + (index + 1)]: item
+    case '外出进修':
+      {
+        return globalModal.auditModal.show({
+          empNo: row.empNo,
+          getTableData: getTableData,
+          id: row.id,
+          type: 'nurseOutStudy',
+          title: '审核外出进修',
+          tableFormat: [
+            {
+              进修专业: `studyMajor`,
+              进修单位: `unit`
+            },
+            {
+              进修单位所属地: `unitLocal`,
+              进修开始时间: `startDate`
+            },
+            {
+              进修结束时间: `endDate`,
+              '进修时长(天)': `studyHour`
             }
-          })
-          : [],
-        allData: row
-      })
-    }
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
   }
 }

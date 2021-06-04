@@ -11,12 +11,14 @@ import AuditsManagementView_jmfy from "src/modules/auditsManagement-jmfy/AuditsM
 import AuditsManagementView_wh from "src/modules/auditsManagement-wh/AuditsManagementView";
 import AuditsManagementView_gzhd from "src/modules/auditsManagement-gzhd/AuditsManagementView";
 import AuditsManagementView from "src/modules/auditsManagement/AuditsManagementView";
+import AuditsManagementNewView from "src/modules/auditsManagementNew/AuditsManagementView";
 //档案个人审核页
 import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/NurseAudit";
 import NurseAudit_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseAudit/NurseAudit";
 import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
 import NurseAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/NurseAudit";
+import NurseAuditNew from "src/modules/auditNurseFileNew/NurseAudit";
 //档案详情
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh
@@ -27,8 +29,6 @@ import NurseFileDetailView_gzhd
   from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_lcey
   from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFileDetail/NurseFileDetailView";
-import NurseFileDetailView_gzsrm
-  from "src/modules/nurseFiles/view/nurseFiles-gzsrm/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_jmfy
   from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_dghl
@@ -321,14 +321,15 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   ];
 } else if (appStore.HOSPITAL_ID == 'dghl') {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    // 新版审核界面
+    setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_dghl,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    // 新版审核管理
+    setLayout("/auditsManagement", AuditsManagementNewView, layouts.MainLayout),
     ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

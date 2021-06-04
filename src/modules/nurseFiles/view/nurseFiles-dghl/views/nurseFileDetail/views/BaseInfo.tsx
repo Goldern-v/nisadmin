@@ -13,54 +13,14 @@ import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
 
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
     if (info.statusColor === '1') {
       return [
@@ -124,10 +84,10 @@ export default observer(function BaseInfo() {
                 },
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                      return {
-                        ['执业证书' + (index + 1)]: item
-                      }
-                    })
+                    return {
+                      ['执业证书' + (index + 1)]: item
+                    }
+                  })
                   : [])
               ],
               allData: info

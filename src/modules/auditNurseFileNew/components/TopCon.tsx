@@ -4,14 +4,14 @@ import { RouteComponentProps } from 'react-router'
 import { Breadcrumb } from 'antd'
 import store, { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import { nurseFilesService } from '../../../services/NurseFilesService'
-export interface Props extends RouteComponentProps {}
+import { auditNurseFileNewService } from '../services/AuditNurseFileNewService'
+export interface Props extends RouteComponentProps { }
 
-const BG = require('../../../images/顶部背景.png')
+const BG = require('../images/顶部背景.png')
 
-const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
+const DEFAULT_HEADIMG = require('../images/护士默认头像.png')
 
-const WARNNING_ICON = require('../../../images/注意.png')
+const WARNNING_ICON = require('../images/注意.png')
 
 export default observer(function TopCon() {
   let history = store.appStore.history
@@ -20,7 +20,7 @@ export default observer(function TopCon() {
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = queryObj
   useEffect(() => {
     if (appStore.queryObj.empNo) {
-      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+      auditNurseFileNewService.nurseInformation(appStore.queryObj.empNo).then((res) => {
         setQueryObj(res.data)
       })
     }
@@ -43,17 +43,6 @@ export default observer(function TopCon() {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      {/* <Tip>
-        <img src={WARNNING_ICON} alt='' />
-        {nurseFileDetailViewModal.badgeTotal && (
-          <span>
-            {' '}
-            注意：刘盼盼有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
-            <ClickSpan>这里</ClickSpan>
-            进行审核
-          </span>
-        )}
-      </Tip> */}
     </Wrapper>
   )
 })

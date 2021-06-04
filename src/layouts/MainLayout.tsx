@@ -12,7 +12,7 @@ import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
-import GroupsAduitModalNys from 'src/global/modal/GroupsAduitModal-nys'
+import GroupsAduitModalNew from 'src/global/modal/GroupsAduitModalNew'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
 import SignModal from 'src/global/modal/SignModal'
 export interface Props extends RouteComponentProps { }
@@ -37,9 +37,9 @@ export default observer(function MainLayout(props: Props) {
 
   let groupsAduitModal = appStore.hisMatch({
     map: {
-      'nys,jmfy': createModal(GroupsAduitModalNys),
+      'hj,lcey,ys,dzlc,gyd': createModal(GroupsAduitModalNew),
       'wh,gzsrm': createModal(GroupsAduitModalWh),
-      other: createModal(GroupsAduitModal)
+      other: createModal(GroupsAduitModalNew)
     },
     vague: true
   })
