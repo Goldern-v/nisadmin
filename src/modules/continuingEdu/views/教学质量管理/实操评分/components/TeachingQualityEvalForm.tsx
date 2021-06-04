@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Spin } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import 操作技术评分 from './操作技术评分'
+import 个案护理发表评分表 from './个案护理发表评分表'
+import 护士床边综合能力考核表 from './护士床边综合能力考核表'
 import { evalTypeGroup } from '../data/evalType'
 import { teachingQualityEvalService } from './../services/TeachingQualityEvalService'
 import moment from 'moment'
@@ -29,35 +31,19 @@ export default function TeachingQualityEvalForm(props: Props) {
 
   const getData = () => {
     // setLoading(true)
-    setData({
-      questionList: [
-        { content: '操作者', score: 2, label: '操作前', desc: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,aaaaaaaaaa', sort: 1 },
-        { content: '核对', score: 5, label: '操作前', desc: '', sort: 2 },
-        { content: '评分', score: 10, label: '操作前', desc: '', sort: 3 },
-        { content: '告知', score: 6, label: '操作前', desc: '', sort: 4 },
-        { content: '准备', score: 8, label: '操作前', desc: '', sort: 5 },
-        { content: '', score: 5, label: '实施过程', desc: '6月1日下午，广州市召开疫情防控新闻发布会。广州市卫健委副主任、新闻发言人陈斌介绍，截至5月31日24时，广州市累计报告确诊病例34例、无症状感染者8例。新增报告的12名病例均为荔湾区主动排查发现，其中密接排查发现3例、核酸大排查发现9例。', sort: 6, contentEditable: true },
-        { content: '', score: 5, label: '实施过程', desc: '', sort: 7, contentEditable: true },
-        { content: '', score: 5, label: '实施过程', desc: '', sort: 8, contentEditable: true },
-        { content: '', score: 20, label: '实施过程', desc: '', sort: 9, contentEditable: true },
-        { content: '', score: 13, label: '实施过程', desc: '呈现出区域集中性。与此前出现的病例一样，5月31日新增病例仍集中在两个重点管控区域，\n其中中南街2例、白鹤洞街10例。', sort: 10, contentEditable: true },
-        { content: '', score: 5, label: '实施过程', desc: '', sort: 11, contentEditable: true },
-        { content: '态度', score: 8, label: '评价', desc: '', sort: 12 },
-        { content: '整体性', score: 8, label: '评价', desc: '', sort: 13 },
-      ]
-    })
+    setData([])
   }
 
   const formContent = () => {
     let Template: (props: any) => JSX.Element = () => <span></span>
 
-    Template = 操作技术评分
+    Template = 护士床边综合能力考核表
 
     return <PageWrapper>
       <Template
         questionList={questionList}
         onEditChange={(payload: any) => setData(payload)}
-        editable={true}
+        editable={false}
         baseInfo={data} />
     </PageWrapper>
   }
@@ -136,7 +122,7 @@ const PageWrapper = styled.div`
   }
   .main-title{
     line-height: 45px;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #000;
     letter-spacing: 5px;
