@@ -44,8 +44,9 @@ const uploadCard = () => Promise.resolve('123')
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
+  const [mapsConfig, setMapsConfig] = useState([] as any[])
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const uploadCard = async (file: any) => {
     let obj: any = {
@@ -93,7 +94,7 @@ export default function EditWorkHistoryModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      refForm!.current!.setFields({
+      let editParams = {
         birthday: data.birthday ? moment(data.birthday) : null,
         empName: data.empName,
         empNo: data.empNo,
@@ -112,8 +113,48 @@ export default function EditWorkHistoryModal(props: Props) {
         zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : [],
         newTitle: data.newTitle,
         goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
-      })
-      // refForm.current.setField('unit', 123)
+      } as any
+
+      // 处理含有扩展字段的情况
+      if (Object.keys(data).includes('maps')) {
+        service.commonApiService.listNurseExpand('User')
+          .then((res: any) => {
+
+            let newMapsConfig = (res.data || []).map((item: any) => {
+              let options: any[] = []
+              if (item.fieldSelectContent) {
+                try {
+                  options = JSON.parse(item.fieldSelectContent)
+                } catch (e) { }
+              }
+              return {
+                ...item,
+                options
+              }
+            })
+
+            newMapsConfig.forEach((item: any) => {
+              let key = item.fieldCode
+
+              switch (item.fieldType) {
+                case "img":
+                  editParams[`maps.${key}`] = data.maps[key] ? data.maps[key].split(',') : []
+                case "date":
+                  editParams[`maps.${key}`] = data.maps[key] ? moment(data.maps[key]) : null
+                  break
+                default:
+                  editParams[`maps.${key}`] = data.maps[key] || ''
+              }
+            })
+
+            refForm.current?.setFields(editParams)
+            setMapsConfig(newMapsConfig)
+          })
+      } else {
+        refForm.current?.setFields(editParams)
+      }
+    } else {
+      setMapsConfig([])
     }
   }, [visible])
 
@@ -224,6 +265,37 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
+        </Row>
+        <Row>
+          {mapsConfig.map((item: any, idx: number) => (
+            <Col span={12} key={idx}>
+              <Form.Field label={item.fieldName} name={`maps.${item.fieldCode}`}>
+                {((fieldType: string) => {
+                  switch (fieldType) {
+                    case 'date':
+                      return <DatePicker />
+                    case 'select':
+                    case 'select_edit':
+                      return <Select
+                        showSearch={fieldType === 'select_edit'}
+                        onSearch={(val: any) => {
+                          if (fieldType === 'select_edit' && refForm.current) {
+                            refForm.current.setField(`maps.${item.fieldCode}`, val)
+                          }
+                        }}>
+                        {item.options.map((opt: any, optIdx: number) => <Option key={`opt-${idx}-${optIdx}`} value={opt.code}>{opt.name}</Option>)}
+                      </Select>
+                    case 'img_1':
+                      return <ImageUploader upload={uploadCard} text={`添加${item.fieldName}`} />
+                    case 'img_2':
+                      return <MultipleImageUploader text={`添加${item.fieldName}`} />
+                    default:
+                      return <Input />
+                  }
+                })(item.fieldType)}
+              </Form.Field>
+            </Col>
+          ))}
         </Row>
         <Row>
           <Col span={12}>

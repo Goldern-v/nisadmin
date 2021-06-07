@@ -33,8 +33,37 @@ import SatisfiedPatInvestigation from './views/qcOne/page/satisfiedPat/Satisfied
 import SatisfiedPatInvestigationDetail from './views/qcOne/page/satisfiedPat/SatisfiedPatInvestigationDetail'
 // 工作量统计
 import Workload from './views/workload/Workload'
+import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+
+import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
+import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 
 const LEFT_MENU_CONFIG: any = [
+  ...appStore.hisMatch({
+    map: {
+      jmfy: [
+        {
+          title: '一级质控记录表单',
+          path: '/qcOne',
+          icon: <EJZK />,
+          component: { ...QualityControlRecord },
+          keepAlive: true,
+          disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护理质量巡查情况汇总表',
+          icon: <YDBG />,
+          path: '/qcOne/护理质量巡查情况汇总表?qcLevel=1',
+          component: 护理质量巡查情况汇总表,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+        }
+      ],
+      default: []
+    }
+  }),
   {
     title: '一级质控记录',
     icon: <YJJL />,
@@ -143,70 +172,77 @@ const LEFT_MENU_CONFIG: any = [
     keepAlive: true,
     disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
-  {
-    title: '满意度调查表',
-    icon: <YJJL />,
-    hide: !appStore.isDev,
-    children: [
-      {
-        title: '护士满意度调查表详情',
-        hide: true,
-        path: '/qcOne/satisfyInvestigationDetail',
-        component: SatisfyInvestigationDetail,
-      },
-      {
-        title: '护士满意度调查表',
-        path: '/qcOne/satisfyInvestigation',
-        component: SatisfyInvestigation,
-        keepAlive: true,
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      },
-      {
-        title: '患者满意度调查表详情',
-        hide: true,
-        path: '/qcOne/satisfiedPatInvestigationDetail',
-        component: SatisfiedPatInvestigationDetail,
-      },
-      {
-        title: '患者满意度调查表',
-        path: '/qcOne/satisfiedPatInvestigation',
-        component: SatisfiedPatInvestigation,
-        keepAlive: true,
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      },
-    ]
-  },
-  {
-    title: '工作量',
-    icon: <YJJL />,
-    hide: !appStore.isDev,
-    children: [
-      {
-        title: '服务之星',
-        path: '/qcOne/serviceStar',
-        component: Workload,
-        keepAlive: true,
-        indexKey: '1',
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      },
-      {
-        title: '技术能手',
-        path: '/qcOne/technicalExperts',
-        component: Workload,
-        keepAlive: true,
-        indexKey: '2',
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      },
-      {
-        title: '工作量统计',
-        path: '/qcOne/workloadStatistics',
-        component: Workload,
-        keepAlive: true,
-        indexKey: '3',
-        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-      }
-    ]
-  }
+  ...appStore.hisMatch({
+    map: {
+      wh: [
+        {
+          title: '满意度调查表',
+          icon: <YJJL />,
+          hide: !appStore.isDev,
+          children: [
+            {
+              title: '护士满意度调查表详情',
+              hide: true,
+              path: '/qcOne/satisfyInvestigationDetail',
+              component: SatisfyInvestigationDetail,
+            },
+            {
+              title: '护士满意度调查表',
+              path: '/qcOne/satisfyInvestigation',
+              component: SatisfyInvestigation,
+              keepAlive: true,
+              disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+            },
+            {
+              title: '患者满意度调查表详情',
+              hide: true,
+              path: '/qcOne/satisfiedPatInvestigationDetail',
+              component: SatisfiedPatInvestigationDetail,
+            },
+            {
+              title: '患者满意度调查表',
+              path: '/qcOne/satisfiedPatInvestigation',
+              component: SatisfiedPatInvestigation,
+              keepAlive: true,
+              disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+            },
+          ]
+        },
+        {
+          title: '工作量',
+          icon: <YJJL />,
+          hide: !appStore.isDev,
+          children: [
+            {
+              title: '服务之星',
+              path: '/qcOne/serviceStar',
+              component: Workload,
+              keepAlive: true,
+              indexKey: '1',
+              disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+            },
+            {
+              title: '技术能手',
+              path: '/qcOne/technicalExperts',
+              component: Workload,
+              keepAlive: true,
+              indexKey: '2',
+              disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+            },
+            {
+              title: '工作量统计',
+              path: '/qcOne/workloadStatistics',
+              component: Workload,
+              keepAlive: true,
+              indexKey: '3',
+              disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
+            }
+          ]
+        }
+      ],
+      default: [],
+    }
+  })
 ]
 
 export default function QcOneRouter(props: Props) {
@@ -217,9 +253,9 @@ export default function QcOneRouter(props: Props) {
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
-        return item.children.find((item1: any) => item1[targetKey] === targetName)
+        return item.children.find((item1: any) => item1[targetKey].split('?')[0] === targetName)
       } else {
-        return item[targetKey] === targetName
+        return item[targetKey].split('?')[0] === targetName
       }
     })
     if (chooseRoute && chooseRoute.children) {

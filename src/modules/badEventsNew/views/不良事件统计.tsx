@@ -14,6 +14,7 @@ const DataSet = require('@antv/data-set')
 import moment from 'moment'
 
 export default observer(function 不良事件统计() {
+  console.log('version.2021.6.4.17.02')
   const { queryObj } = appStore
   const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
   //不良事件类型下拉选项
@@ -240,11 +241,11 @@ export default observer(function 不良事件统计() {
             查询
           </Button>
         </div>
-        {/* <div className="item">
+        <div className="item">
           <Button onClick={handleExport}>
             导出
           </Button>
-        </div> */}
+        </div>
       </RightIcon>
     </HeaderCon>
     <MidCon>

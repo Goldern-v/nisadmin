@@ -11,7 +11,7 @@ export interface Props {
 
 export default function 护士床边综合能力考核表(props: Props) {
   const baseInfo = {
-    formName: appStore.HOSPITAL_ID + '护士床边综合能力考核表',
+    formName: appStore.HOSPITAL_Name + '护士床边综合能力考核表',
     empName: 'abc',
     pinfenEmpName: 'def',
     wardName: '测试科室',
@@ -353,6 +353,17 @@ export default function 护士床边综合能力考核表(props: Props) {
       return pre + next.scoreGeted || 0
     })
 
+  const totalLevel = ((totalScore: number) => {
+    if (totalScore >= 90)
+      return 'A'
+    else if (totalScore < 90 && totalScore >= 80)
+      return 'B'
+    else if (totalScore < 80 && totalScore >= 70)
+      return 'C'
+    else
+      return 'D'
+  })(totalScore)
+
   return <Wrapper>
     <div className="main-title">{baseInfo.formName}</div>
     <div className="sub">
@@ -395,7 +406,7 @@ export default function 护士床边综合能力考核表(props: Props) {
           <td className="align-center">D</td>
         </tr>
         {tableGroups.map((groupItem: any, idx: number) => {
-          return <React.Fragment>
+          return <React.Fragment key={`group-${idx}`}>
             {groupItem.children.map((questionItem: any, idx1: number) => (
               <tr key={`question-${idx}-${idx1}`}>
                 {idx1 === 0 && (
@@ -418,7 +429,8 @@ export default function 护士床边综合能力考核表(props: Props) {
                     className={[
                       'align-center',
                       questionItem.answers[idx2]?.isSelected ? 'selected' : ''
-                    ].join(' ')}>
+                    ].join(' ')}
+                    key={`answer-${idx}-${idx1}-${idx2}`}>
                     {questionItem.answers[idx2]?.content || ''}
                   </td>
                 ))}
@@ -435,6 +447,16 @@ export default function 护士床边综合能力考核表(props: Props) {
         })}
       </tbody>
     </table>
+    <div>
+      注：整体综合考核等级：A.很好   B.较好   C.一般    D.较差
+    </div>
+    <div>
+      根据实习生评价表给学生评分总分为：    {totalScore}分       等级为：{totalLevel}
+    </div>
+    <div>
+      注：A.90分以上    B.80-89     C.70-79    D.70以下
+    </div>
+    <div>监考者签名：{baseInfo.pinfenEmpName}</div>
   </Wrapper>
 }
 const Wrapper = styled.div`

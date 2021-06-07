@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -96,27 +97,19 @@ export default observer(function BaseInfo() {
         }
       ]
     } else {
-      return [
-        // {
-        //   label: '修改',
-        //   onClick: () => {
-        //     editBaseInfoModal.show({
-        //       id: id,
-        //       data: info
-        //     })
-        //   }
-        // }
-      ]
+      return []
     }
   }
 
   const getTableData = () =>
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
+      let maps = res.data.maps || {}
       setInfo(data)
       setIdData(data.empNo)
       setId(data.id)
-      setTableData([
+
+      let newTableData = [
         {
           性别: sexEnum[data.sex],
           民族: data.nation
@@ -145,11 +138,62 @@ export default observer(function BaseInfo() {
           手机号: data.phone,
           家庭住址: data.address
         }
-      ])
+      ]
+
+      setTableData(newTableData)
+
+      // 处理扩展字段
+      if (Object.keys(data).includes('maps'))
+        return new Promise((resolve, reject) => {
+          service.commonApiService.listNurseExpand('User')
+            .then(res => {
+              resolve({
+                maps,
+                mapsConfig: res.data,
+                orgin: newTableData
+              })
+            }, (e) => reject(e))
+        })
     })
+      .then((payload: any) => {
+        if (payload) {
+          const { maps, mapsConfig, orgin } = payload
+          const newTableData = [...orgin]
+
+          for (let i = 0; i < mapsConfig.length; i++) {
+            let mapCfgItem = mapsConfig[i]
+            let key = mapCfgItem.fieldCode
+            let val = maps[key] || ''
+
+            if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
+              let options = []
+              try {
+                options = JSON.parse(mapCfgItem.fieldSelectContent)
+              } catch (e) {
+
+              }
+              let target = options.find((opt: any) => opt.code === val)
+
+              if (target) val = target.name
+            }
+
+            let name = mapCfgItem.fieldName
+            let lastItem = newTableData[orgin.length - 1]
+            if (Object.keys(lastItem).length > 1) {
+              newTableData.push({ [name]: val })
+            } else {
+              lastItem[name] = val
+            }
+          }
+
+          setTableData(newTableData)
+        }
+      }, e => { })
+
   useEffect(() => {
     getTableData()
   }, [appStore.queryObj])
+
   return (
     <BaseLayout title='基本信息' btnList={limitsComponent()}>
       <ScrollCon>

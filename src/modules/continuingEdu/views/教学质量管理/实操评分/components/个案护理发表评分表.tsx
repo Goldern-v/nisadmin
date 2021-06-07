@@ -11,7 +11,7 @@ export interface Props {
 
 export default function 个案护理发表评分表(props: Props) {
   const baseInfo = {
-    formName: appStore.HOSPITAL_ID + '个案护理发布评分表',
+    formName: appStore.HOSPITAL_Name + '个案护理发布评分表',
     title: '这是一个题目',
     empName: '朱*丽',
     timeUsed: '10分30秒',

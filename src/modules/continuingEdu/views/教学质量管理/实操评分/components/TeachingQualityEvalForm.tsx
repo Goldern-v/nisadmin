@@ -5,6 +5,7 @@ import { ScrollBox } from 'src/components/common'
 import 操作技术评分 from './操作技术评分'
 import 个案护理发表评分表 from './个案护理发表评分表'
 import 护士床边综合能力考核表 from './护士床边综合能力考核表'
+import 临床护理小讲课比赛评分表 from './临床护理小讲课比赛评分表'
 import { evalTypeGroup } from '../data/evalType'
 import { teachingQualityEvalService } from './../services/TeachingQualityEvalService'
 import moment from 'moment'
@@ -37,7 +38,7 @@ export default function TeachingQualityEvalForm(props: Props) {
   const formContent = () => {
     let Template: (props: any) => JSX.Element = () => <span></span>
 
-    Template = 护士床边综合能力考核表
+    Template = 临床护理小讲课比赛评分表
 
     return <PageWrapper>
       <Template
@@ -116,9 +117,6 @@ const PageWrapper = styled.div`
     &.small-font-size{
       font-size: 12px;
     }
-    &.bold{
-      font-weight: bold;
-    }
   }
   .main-title{
     line-height: 45px;
@@ -136,5 +134,8 @@ const PageWrapper = styled.div`
   }
   .flex-row{
     display: flex;
+  }
+  .bold{
+    font-weight: bold;
   }
 `
