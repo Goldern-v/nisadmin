@@ -35,12 +35,6 @@ export const meunConfig: meunConfigItem[] = [
         style: { background: "#fff" }
       },
       {
-        title: "科室借用",
-        path: "/personnelManagement/DeptBorrowNew",
-        component: DeptBorrowNew,
-        hide: !authStore.isRoleManage
-      },
-      {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
         component: PersonnelSecondment,
