@@ -175,7 +175,6 @@ export default observer(function Cell(props: Props) {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
                 type: "text",
-                disabled: disableByName,
                 onClick: () => {
                   addRemakeModal.show({
                     data: sheetViewModal.selectedCell,
@@ -447,7 +446,7 @@ export default observer(function Cell(props: Props) {
     sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
-    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime) {
+    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime || cellConfig.isJiJiaTime) {
       return setHoverShow(visible);
     } else {
       return setHoverShow(false);
@@ -470,6 +469,16 @@ export default observer(function Cell(props: Props) {
         "了" +
         Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
         "工时"
+      );
+    },
+    jmfy: () => {
+      const jijia = cellObj.schJiJias && cellObj.schJiJias[0]
+      if (!jijia) return ''
+      return (
+        (jijia.statusType === '1' ? "增加" : "减少") +
+        "了" +
+        jijia.totalHoliday +
+        "天积假"
       );
     },
     wh: () => {
@@ -542,6 +551,7 @@ export default observer(function Cell(props: Props) {
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
         )}
         {cellConfig.isAddWordTime ? <div className="sj add"/> : ""}
+        {cellConfig.isJiJiaTime ? <div className="sj jijia"/> : ""}
         {cellConfig.isReduceWordTime ? <div className="sj reduce"/> : ""}
         {cellConfig.isExpectedScheduling ? (
           <img
@@ -645,6 +655,9 @@ const Wrapper = styled.div`
     border-style: solid;
     border-color: transparent transparent;
     &.add {
+      border-color: #e55b00 transparent !important;
+    }  
+    &.jijia {
       border-color: #e55b00 transparent !important;
     }
     &.reduce {

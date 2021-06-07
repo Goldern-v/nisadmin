@@ -186,6 +186,12 @@ class SheetViewModal {
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2"
       }),
+      isJiJiaTime: appStore.hisMatch({
+        map: {
+          jmfy: cellObj.schJiJias && cellObj.schJiJias.length > 0,
+          default: false
+        }
+      }),
       isSelected:
         this.selectedCell == cellObj || this.copyCellList.includes(cellObj) || this.selectedCellList.includes(cellObj),
     };

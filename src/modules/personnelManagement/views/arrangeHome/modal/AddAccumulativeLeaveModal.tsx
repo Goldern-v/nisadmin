@@ -59,8 +59,8 @@ export default function EditEffectiveTimeModal(props: Props) {
     if (refForm.current && visible) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        statusType: data.schJiJias && data.schJiJias.statusType,
-        totalHoliday: data.schJiJias && data.schJiJias.totalHoliday
+        statusType: data.schJiJias && data.schJiJias[0].statusType,
+        totalHoliday: data.schJiJias && data.schJiJias[0].totalHoliday
       });
     }
   }, [visible]);
