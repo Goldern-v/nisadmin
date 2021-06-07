@@ -9,9 +9,9 @@ export interface Props {
   [p: string]: any
 }
 
-export default function 规范化培训护士工作情况调查表(props: Props) {
+export default function 新毕业生护士工作情况调查表(props: Props) {
   const baseInfo = {
-    formName: appStore.HOSPITAL_Name + '规范化培训护士工作情况调查表',
+    formName: appStore.HOSPITAL_Name + '新毕业生护士工作情况调查表',
     empName: 'abc',
     pinfenEmpName: 'def',
     submitTime: '2021-5-13',
@@ -20,8 +20,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
 
   const questionList = [
     {
-      label: '工作态度合作精神',
-      desc: '1.工作认真，态度谦虚，能正确评价自己，学会做事做人，能体谅同事，同事之间搭班工作愉快，在同事中有较好的口碑，有良好的人际关系',
+      label: '',
+      desc: '对病人、家属、同事经常面带微笑。主动向患者及患者家属介绍自己，在进入病人房间时先敲门，对病人有问候。',
       currentScore: 5,
       sort: 1,
       questionType: 1,
@@ -35,8 +35,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '2.主动帮助同事或科室完成本职工作以外的配合工作，参与科室质量管理',
+      label: '',
+      desc: '在移动病人或接触病人时，动作轻柔，尊重患者主述。在进行各项护理操作前，向患者解释清楚该操作的目的，及患者需要配合的事项。',
       currentScore: 4,
       sort: 2,
       questionType: 1,
@@ -50,8 +50,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '3.有自我管理的意识，能控制情绪，自我调节压力，不把情绪带到工作中',
+      label: '',
+      desc: '在护理操作过程中注意保护患者隐私，在与患者沟通过程中用语适当，并能选择恰当的词语和语调来体现你的尊重。',
       currentScore: 3,
       sort: 3,
       questionType: 1,
@@ -65,8 +65,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '4.服从科室护长及组长的安排，对上级护士提出的问题或建议虚心接受，并积极改进，有改进效果',
+      label: '',
+      desc: '对待同事谦恭，有团结合作意识。',
       currentScore: 2,
       sort: 4,
       questionType: 1,
@@ -80,8 +80,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '5.有良好的工作习惯，对工作有计划性，有较高的工作效率，能在班上完成分配的工作量,积极参加科室组织的活动',
+      label: '',
+      desc: '在接听电话时使用文明礼貌用语，用愉悦的声音，耐心倾听对方的诉说，带着帮助的口吻。',
       currentScore: 1,
       sort: 5,
       questionType: 1,
@@ -95,8 +95,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '6.有良好的个人习惯，善于运用五常法，做事充分准备，事后及时清理补充',
+      label: '',
+      desc: '在仪表和着装上体现职业形象。',
       currentScore: 5,
       sort: 6,
       questionType: 1,
@@ -110,8 +110,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '工作态度合作精神',
-      desc: '7.对待病人、家属、同事、来访人员等或接听电话时态度温和、有礼',
+      label: '',
+      desc: '在所有护理操作中都体现出“三轻”。',
       currentScore: 4,
       sort: 7,
       questionType: 1,
@@ -125,8 +125,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '学习能力',
-      desc: '8.学习态度端正，主动参加科室、医院组织的业务学习、技能培训',
+      label: '',
+      desc: '积极参加科室及实习生小讲课、技能培训、教学查房和病例讨论。',
       currentScore: 3,
       sort: 8,
       questionType: 1,
@@ -140,8 +140,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '学习能力',
-      desc: '9.参与科室教学查房、病历讨论等积极提出自己的见解或观点',
+      label: '',
+      desc: '学习态度端正，充分利用业余时间学习业务知识，提高业务水平。',
       currentScore: 2,
       sort: 9,
       questionType: 1,
@@ -155,8 +155,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '学习能力',
-      desc: '10.乐于学习，接受新理论新观点主动与护士长或同事进行分享',
+      label: '',
+      desc: '能够将理论知识运用于护理工作中，遇到不懂问题能虚心请教上级护士',
       currentScore: 1,
       sort: 10,
       questionType: 1,
@@ -170,8 +170,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '学习能力',
-      desc: '11.参与科室的业务管理工作、对科室工作提出建设性意见',
+      label: '',
+      desc: '虚心接受护士长和同事的指导和建议，认真改进，有改进效果。',
       currentScore: 5,
       sort: 11,
       questionType: 1,
@@ -185,8 +185,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '学习能力',
-      desc: '12.对工作有评判思维，有一定的分析、判断能力',
+      label: '',
+      desc: '工作认真，不迟到、不早退，谦恭、合作、帮助同事',
       currentScore: 4,
       sort: 12,
       questionType: 1,
@@ -200,8 +200,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '13.具有独立管床能力，遵循护理工作核心制度，独立完成工作，不拖班',
+      label: '',
+      desc: '对病人或同事需求能迅速做出反应，帮助解决非你工作职责范围内的问题，或帮他们找到能解决问题的人',
       currentScore: 3,
       sort: 13,
       questionType: 1,
@@ -215,8 +215,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '14.熟练掌握科室常用护理操作技术及常用仪器的使用方法,掌握基本生命支持技术、熟练使用科室监护仪的急救仪器',
+      label: '',
+      desc: '服从医院、护理部及科室的各种安排。',
       currentScore: 2,
       sort: 14,
       questionType: 1,
@@ -230,8 +230,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '15.掌握护理病历的书写，对护理病历内容进行一级质控',
+      label: '',
+      desc: '有着积极生活态度和工作态度，团队协作精神强，有良好工作习惯。',
       currentScore: 1,
       sort: 15,
       questionType: 1,
@@ -245,8 +245,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '16.掌握科室高危药物、基本急救药物的药理知识及常见用法',
+      label: '',
+      desc: '与人和谐相处，善于与人沟通，形成良好人际关系。',
       currentScore: 5,
       sort: 16,
       questionType: 1,
@@ -260,8 +260,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '17.掌握医院感控知识，如垃圾分类、防护措施、职业暴露处理流程等',
+      label: '',
+      desc: '具有良好的个人习惯，能将五常法管理运用于实际工作中，做事前准备充分，事后及时清理补充',
       currentScore: 4,
       sort: 17,
       questionType: 1,
@@ -275,8 +275,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '18.有安全意识，掌握科室高危环节、高危药物、高危患者的范畴熟练处理危急值报告，对科室突发事件及时反应、作出处理及上报',
+      label: '',
+      desc: '工作计划性强，有较高工作效率，工作效果较好。',
       currentScore: 3,
       sort: 18,
       questionType: 1,
@@ -290,8 +290,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '19.掌握常用的评估方法，如对患者从头到脚趾式的健康评估及心理评估等',
+      label: '',
+      desc: '能够正确评价自己，学会做事。',
       currentScore: 2,
       sort: 19,
       questionType: 1,
@@ -305,8 +305,8 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       ]
     },
     {
-      label: '专业技术能力',
-      desc: '20.遇到重大抢救时，能协调并配合医生快速实施抢救',
+      label: '',
+      desc: '能自我调节压力，控制情绪',
       currentScore: 1,
       sort: 20,
       questionType: 1,
@@ -319,34 +319,11 @@ export default function 规范化培训护士工作情况调查表(props: Props)
         { content: '0', score: 0, sort: 6, isSelected: false },
       ]
     },
-  ]
+  ] as any[]
 
-  const formatQuestionList = (originList: any[]) => {
-    let groupObj = {} as any
-    let scoreQuestionList = originList.filter((item: any) => item.questionType === 1)
-
-    for (let i = 0; i < scoreQuestionList.length; i++) {
-      let item = scoreQuestionList[i]
-      if (!groupObj[item.label]) {
-        groupObj[item.label] = {
-          scoreGeted: item.currentScore,
-          label: item.label,
-          children: [item]
-        }
-      } else {
-        groupObj[item.label].scoreGeted += item.currentScore
-        groupObj[item.label].children.push(item)
-      }
-    }
-
-    return Object.keys(groupObj).map((label) => groupObj[label])
-  }
-
-  const tableGroups = formatQuestionList(questionList)
-
-  const totalScore = [0, ...tableGroups]
+  const totalScore = [0, ...questionList]
     .reduce((pre: number, next: any) => {
-      return pre + next.scoreGeted || 0
+      return pre + next.currentScore || 0
     })
 
   return <Wrapper>
@@ -363,7 +340,7 @@ export default function 规范化培训护士工作情况调查表(props: Props)
     </div>
     <table>
       <colgroup>
-        <col width="55px" />
+        <col width="50px" />
         <col width="390px" />
       </colgroup>
       <tbody>
@@ -380,20 +357,16 @@ export default function 规范化培训护士工作情况调查表(props: Props)
           <td className="align-center">1分</td>
           <td className="align-center">0分</td>
         </tr>
-        {tableGroups.map((groupItem: any, idx: number) => (
-          <React.Fragment key={`group-${idx}`}>
-            {groupItem.children.map((questionItem: any, idx1: number) => (
-              <tr key={`question-${idx}-${idx1}`}>
-                {idx1 === 0 && <td className="align-center bold" rowSpan={groupItem.children.length}>{groupItem.label}</td>}
-                <td>{questionItem.desc}</td>
-                {[0, 1, 2, 3, 4, 5].map((idx2: number) => (
-                  <td
-                    key={`answer-${idx}-${idx1}-${idx2}`}
-                    className={questionItem.answers[idx2]?.isSelected ? 'selected' : ''}></td>
-                ))}
-              </tr>
+        {questionList.map((questionItem: any, idx1: number) => (
+          <tr key={`question-${idx1}`}>
+            <td className="align-center bold">{questionItem.sort}</td>
+            <td>{questionItem.desc}</td>
+            {[0, 1, 2, 3, 4, 5].map((idx2: number) => (
+              <td
+                key={`answer-${idx1}-${idx2}`}
+                className={questionItem.answers[idx2]?.isSelected ? 'selected' : ''}></td>
             ))}
-          </React.Fragment>
+          </tr>
         ))}
         <tr>
           <td colSpan={2} className="align-center">最后得分</td>

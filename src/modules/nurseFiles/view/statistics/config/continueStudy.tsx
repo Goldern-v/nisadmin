@@ -26,6 +26,11 @@ export const pageObj: PageObj = {
       label: '名称',
       type: 'input',
       name: 'projectName'
+    },
+    {
+      label: '级别',
+      type: 'input',
+      name: 'projectLevel'
     }
   ],
   tableList: [

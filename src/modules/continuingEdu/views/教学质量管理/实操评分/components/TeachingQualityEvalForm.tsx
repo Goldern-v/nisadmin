@@ -6,6 +6,8 @@ import 操作技术评分 from './操作技术评分'
 import 个案护理发表评分表 from './个案护理发表评分表'
 import 护士床边综合能力考核表 from './护士床边综合能力考核表'
 import 临床护理小讲课比赛评分表 from './临床护理小讲课比赛评分表'
+import 规范化培训护士工作情况调查表 from './规范化培训护士工作情况调查表'
+import 新毕业生护士工作情况调查表 from './新毕业生护士工作情况调查表'
 import { evalTypeGroup } from '../data/evalType'
 import { teachingQualityEvalService } from './../services/TeachingQualityEvalService'
 import moment from 'moment'
@@ -38,7 +40,7 @@ export default function TeachingQualityEvalForm(props: Props) {
   const formContent = () => {
     let Template: (props: any) => JSX.Element = () => <span></span>
 
-    Template = 临床护理小讲课比赛评分表
+    Template = 新毕业生护士工作情况调查表
 
     return <PageWrapper>
       <Template
