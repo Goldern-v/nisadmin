@@ -1,6 +1,7 @@
 // import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
+import styled from 'styled-components'
 
 const TextArea = Input.TextArea
 
@@ -16,6 +17,10 @@ export interface Props {
   onBlur?: Function,
   multiple?: boolean,
   selectAll?: boolean
+}
+
+const getId = () => {
+  return `input${new Date().getTime()}${parseInt((Math.random() * 1000000000000).toString())}`
 }
 
 export default function InputColumnRender(porps: Props) {
@@ -34,7 +39,9 @@ export default function InputColumnRender(porps: Props) {
   } = porps
 
   const [editValue, setEditValue] = useState('')
+  const [editVisible, setEditVisible] = useState(false)
   const [open, setOpen] = useState(false)
+  const [id] = useState(getId())
 
   useEffect(() => {
     if (record[itemCode] !== editValue)
@@ -48,73 +55,121 @@ export default function InputColumnRender(porps: Props) {
     else _options = options
   }
 
-  return <AutoComplete
-    className={className || ''}
-    disabled={cellDisabled(record)}
-    dataSource={_options}
-    value={editValue}
-    onChange={value => {
-      value = value ? value.toString().replace(/\n/g, '') : ''
-      setEditValue(value)
-    }}
-    onFocus={() => setOpen(true)}
+  useLayoutEffect(() => {
+    if (editVisible) {
+      let el = document.getElementById(id)
+      let inputEl = el?.querySelector('textarea')
+      if (inputEl) inputEl.focus()
+    }
+  }, [editVisible])
 
-    onBlur={() => {
-      setOpen(false)
+  return editVisible ? (
+    <AutoComplete
+      className={className || ''}
+      id={id}
+      disabled={cellDisabled(record)}
+      dataSource={_options}
+      value={editValue}
+      onChange={value => {
+        value = value ? value.toString().replace(/\n/g, '') : ''
+        setEditValue(value)
+      }}
+      onFocus={() => setOpen(true)}
 
-      let oldVal = record[itemCode]
-
-      if (record[itemCode] !== editValue) {
-        record.modified = true
-        record[itemCode] = editValue;
-        updateDataSource()
-      }
-      onBlur && onBlur(editValue, oldVal)
-    }}
-    onSelect={(payload: any) => {
-      if (multiple) {
-        let newPayload = ''
-
-        if (payload == '全部') {
-          newPayload = options?.join(';') || ''
-        } else {
-          let editValueArr = (editValue || '').split(';')
-          if (editValueArr.indexOf(payload) >= 0)
-            newPayload = editValue
-          else
-            newPayload = [...editValueArr, payload]
-              .filter((str: string) => str).join(';')
-        }
-
-        setTimeout(() => setEditValue(newPayload))
-
-        onSelect && onSelect(newPayload)
-      } else {
+      onBlur={() => {
         setOpen(false)
-        onSelect && onSelect(payload)
-      }
-    }}
-    open={open}>
-    <TextArea
-      autosize={{ minRows: 1 }}
-      data-key={itemCode}
-      onClick={() => setOpen(true)}
-      onKeyUp={(e) => {
-        if (e.keyCode == 40 || e.keyCode == 38)
-          setOpen(true)
+        setEditVisible(false)
 
-        if (e.keyCode == 27)
+        let oldVal = record[itemCode]
+
+        if (record[itemCode] !== editValue) {
+          record.modified = true
+          record[itemCode] = editValue;
+          updateDataSource()
+        }
+        onBlur && onBlur(editValue, oldVal)
+      }}
+      onSelect={(payload: any) => {
+        if (multiple) {
+          let newPayload = ''
+
+          if (payload == '全部') {
+            newPayload = options?.join(';') || ''
+          } else {
+            let editValueArr = (editValue || '').split(';')
+            if (editValueArr.indexOf(payload) >= 0)
+              newPayload = editValue
+            else
+              newPayload = [...editValueArr, payload]
+                .filter((str: string) => str).join(';')
+          }
+
+          setTimeout(() => setEditValue(newPayload))
+
+          onSelect && onSelect(newPayload)
+        } else {
           setOpen(false)
+          onSelect && onSelect(payload)
+        }
+      }}
+      open={open}>
+      <TextArea
+        autosize={{ minRows: 1 }}
+        data-key={itemCode}
+        onClick={() => setOpen(true)}
+        className={!cellDisabled(record) ? 'focus-allow' : 'focus-disabled'}
+        onKeyUp={(e) => {
+          if (e.keyCode == 40 || e.keyCode == 38)
+            setOpen(true)
 
-        if (!multiple || !open)
-          handleNextIptFocus && handleNextIptFocus(e)
-      }}
-      style={{
-        lineHeight: 1.2,
-        overflow: "hidden",
-        padding: "9px 2px",
-        textAlign: "center"
-      }}
-    />
-  </AutoComplete>
+          if (e.keyCode == 27)
+            setOpen(false)
+
+          if (!multiple || !open)
+            handleNextIptFocus && handleNextIptFocus(e)
+        }}
+        style={{
+          lineHeight: 1.2,
+          overflow: "hidden",
+          padding: "9px 2px",
+          textAlign: "center"
+        }}
+      />
+    </AutoComplete>
+  ) : (
+    <TextRender
+      className={[
+        className || '',
+        !cellDisabled(record) ? 'focus-allow' : 'focus-disabled'
+      ].join(' ')}
+      onClick={() => {
+        if (!cellDisabled(record)) {
+          setEditVisible(true)
+        }
+      }}>
+      <span>{editValue}</span>
+    </TextRender>
+  )
 }
+
+const TextRender = styled.div`
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  .focus-disabled{
+    cursor: not-allowed;
+  }
+  span{
+    word-break: break-all;
+    vertical-align: middle;
+    display: inline-block;
+    width: calc(100% - 1px);
+  }
+  &::after{
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 100%;
+    vertical-align: middle;
+  }
+`

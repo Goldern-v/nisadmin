@@ -390,34 +390,26 @@ export function getFun(context: any) {
   };
 
   /**回车键去到下一个输入元素 */
-  const handleNextIptFocus = (e?: any, target?: any) => {
-    if (target || (e.keyCode && e.keyCode == 13)) {
+  const handleNextIptFocus = (e?: any, _target?: any) => {
+    if (_target || (e.keyCode && e.keyCode == 13)) {
       let baseTableEl = document.getElementById('baseTable')
       if (baseTableEl) {
-        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+        let iptList = baseTableEl.querySelectorAll('.focus-allow,.ant-calendar-picker-input') as any
+        let target = _target || e.target
 
         for (let i = 0; i < iptList.length; i++) {
           let el = iptList[i]
-          if (el == (target || e.target)) {
+
+          if (el == target) {
             if (iptList[i + 1]) {
               iptList[i + 1].focus && iptList[i + 1].focus()
               iptList[i + 1].click && iptList[i + 1].click()
             }
-            // if (e && e.target) e.target.value = e.target.value.replace(/\n/g, '')
+            if (e && e.target) e.target.value = e.target.value.replace(/\n/g, '')
             break
           }
         }
       }
-    }
-  }
-
-  /**手动触发AutoComplete组件的下拉 */
-  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
-    let rowEls = document.querySelectorAll('.ant-table-row') as any
-    let rowEl = rowEls[index]
-    if (rowEl) {
-      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
-      // if (target) target.click()
     }
   }
 
@@ -730,7 +722,6 @@ export function getFun(context: any) {
     cellDisabled,
     exportExcel,
     handleNextIptFocus,
-    tiggerAutoCompleteClick,
     handleUpload,
     handleDeleteRow,
     handleAuditAll,

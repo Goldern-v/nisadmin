@@ -148,8 +148,8 @@ export default observer(function 不良事件发生率() {
     // console.log(queryObj.qcLevel)
     setLoading(true)
     badEventsNewService.badEventHappenPercent({
-      dateBegin: filterDate[0].format('YYYY-MM-DD'),
-      dateEnd: filterDate[1].format('YYYY-MM-DD'),
+      beginDate: filterDate[0].format('YYYY-MM-DD'),
+      endDate: filterDate[1].format('YYYY-MM-DD'),
       eventTypeList: eventTypeSelected || []
     })
       .then(res => {
@@ -168,8 +168,8 @@ export default observer(function 不良事件发生率() {
     setLoading(true)
     badEventsNewService
       .badEventHappenPercentExport({
-        dateBegin: filterDate[0].format('YYYY-MM-DD'),
-        dateEnd: filterDate[1].format('YYYY-MM-DD'),
+        beginDate: filterDate[0].format('YYYY-MM-DD'),
+        endDate: filterDate[1].format('YYYY-MM-DD'),
         eventTypeList: eventTypeSelected || []
       })
       .then(res => {

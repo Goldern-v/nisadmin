@@ -49,7 +49,7 @@ export default function DatePickerColumnRender(props: Props) {
     allowClear
     dropdownClassName="disable-date-ipt"
     onOpenChange={(status) => { }}
-    className={`${className} ${queryClassName}`}
+    className={[className, queryClassName,].join(' ')}
     onChange={(val: any) => {
       let newVal = val ? val.format(_format) : ''
 
