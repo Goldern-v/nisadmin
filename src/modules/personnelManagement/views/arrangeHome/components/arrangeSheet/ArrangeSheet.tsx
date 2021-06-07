@@ -217,15 +217,15 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "thisWeekHoliday",
         render: (text: string, record: any) => {
-          return <HolidayHourNys id={record.id}/>;
-          // <Input
-          //   style={{ background: "#fff" }}
-          //   disabled={!isEdit}
-          //   defaultValue={text}
-          //   onChange={(e: any) => {
-          //     record.thisWeekHoliday = e.target.value;
-          //   }}
-          // />
+          // return <HolidayHourNys id={record.id}/>;
+          return <Input
+            style={{ background: "#fff" }}
+            disabled={!isEdit}
+            defaultValue={text}
+            onChange={(e: any) => {
+              record.thisWeekHoliday = e.target.value;
+            }}
+          />
         }
       },
       {
@@ -239,15 +239,15 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         dataIndex: "totalHoliday",
         render: (text: string, record: any) => {
-          return <TotalHolidayHourNys id={record.id}/>;
-          // <Input
-          //   style={{ background: "#fff", color: "#000" }}
-          //   disabled={!isEdit}
-          //   defaultValue={text}
-          //   onChange={(e: any) => {
-          //     record.totalHoliday = e.target.value;
-          //   }}
-          // />
+          // return <TotalHolidayHourNys id={record.id}/>;
+          return <Input
+            style={{ background: "#fff", color: "#000" }}
+            disabled={!isEdit}
+            defaultValue={text}
+            onChange={(e: any) => {
+              record.totalHoliday = e.target.value;
+            }}
+          />
         }
       },
       ...nysHandleDel
