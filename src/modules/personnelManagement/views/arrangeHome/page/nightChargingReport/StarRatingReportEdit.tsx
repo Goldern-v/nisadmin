@@ -14,6 +14,7 @@ import { globalModal } from "src/global/globalModal";
 import { starRatingReportService } from "./api/StarRatingReportService";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file";
+import PageJmfy from './components/nightReport_jmfy'
 
 export interface Props extends RouteComponentProps {
 }
@@ -167,33 +168,41 @@ export default observer(function StarRatingReportEdit() {
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
-      <ScrollCon>
-        <Page
-          ref={pageRef}
-          className={['nys', 'dghl'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
-        >
-          {starRatingReportEditModel.sectionList.map((item, index) => {
-            if (item.sectionId) {
-              let Components = starRatingReportEditModel.getSection(
-                item.sectionId
-              );
-              if (Components && Components.section) {
-                return (
-                  <Components.section
-                    key={index}
-                    sectionId={item.sectionId}
-                    modalTitle={item.modalTitle}
-                    sectionTitle={item.sectionTitle}
-                  />
-                );
-              }
-            }
-          })}
-        </Page>
-        {starRatingReportEditModel.baseModal && (
-          <starRatingReportEditModel.baseModal.Component/>
-        )}
-      </ScrollCon>
+      {
+        appStore.HOSPITAL_ID === 'jmfy' ?
+          <ScrollCon>
+            <Page ref={pageRef} className={"nysWidth"}>
+              <PageJmfy/>
+            </Page>
+          </ScrollCon> :
+          <ScrollCon>
+            <Page
+              ref={pageRef}
+              className={['nys', 'dghl'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+            >
+              {starRatingReportEditModel.sectionList.map((item, index) => {
+                if (item.sectionId) {
+                  let Components = starRatingReportEditModel.getSection(
+                    item.sectionId
+                  );
+                  if (Components && Components.section) {
+                    return (
+                      <Components.section
+                        key={index}
+                        sectionId={item.sectionId}
+                        modalTitle={item.modalTitle}
+                        sectionTitle={item.sectionTitle}
+                      />
+                    );
+                  }
+                }
+              })}
+            </Page>
+            {starRatingReportEditModel.baseModal && (
+              <starRatingReportEditModel.baseModal.Component/>
+            )}
+          </ScrollCon>
+      }
     </Wrapper>
   );
 });
