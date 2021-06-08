@@ -127,6 +127,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.settingNightHour = copyCell.settingNightHour;
     cell.settings = cloneJson(copyCell.settings);
     cell.schJiJias = cloneJson(copyCell.schJiJias);
+    cell.schRemarks = cloneJson(copyCell.schRemarks);
 
     if (appStore.HOSPITAL_ID == "wh") {
       cell.schAddOrSubs = cell.schAddOrSubs;
