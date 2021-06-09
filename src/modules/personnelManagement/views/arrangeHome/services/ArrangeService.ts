@@ -24,6 +24,23 @@ export default class ArrangeService extends BaseApiService {
     return this.post(url, obj);
   }
 
+  public handleSave(obj: any) {
+    const params = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      deptCode: selectViewModal.params.deptCode,
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(0)
+        .format("YYYY-MM-DD"),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(6)
+        .format("YYYY-MM-DD"),
+      ...obj
+    };
+    return this.post(`/scheduling/saveOrUpdate`, params);
+  }
+
   /** 保存排班信息 */
   public saveOrUpdate(status: "0" | "1" | undefined, urlName: string) {
     let obj = {
@@ -316,6 +333,17 @@ export default class ArrangeService extends BaseApiService {
     return this.get(`/dept/nursingUnit/all`);
   }
 
+  // 聊城二院 模板下载
+  public downloadExcel() {
+    return this.post(`/schedulingLc/downloadExcel`, {}, { responseType: "blob" });
+  }
+
+  // 聊城二院 模板导入
+  public importExcel(file: File) {
+    let formData = new FormData()
+    formData.append('upfile', file)
+    return this.post(`/schedulingLc/importExcel`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+  }
 }
 
 export const arrangeService = new ArrangeService();
