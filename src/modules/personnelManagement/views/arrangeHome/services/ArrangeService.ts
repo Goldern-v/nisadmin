@@ -156,7 +156,8 @@ export default class ArrangeService extends BaseApiService {
         .format("YYYY-MM-DD"),
       deptCode: selectViewModal.params.deptCode
     };
-    return this.post(`/scheduling/copyPrevSettingRange`, obj);
+    const url = appStore.HOSPITAL_ID === 'jmfy' ? '/schedulingJm/copyPrevSettingRange' : '/scheduling/copyPrevSettingRange'
+    return this.post(url, obj);
   }
 
   //推送排班
