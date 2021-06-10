@@ -22,7 +22,7 @@ export default function BadEventsRouters(props: Props) {
   let LEFT_MENU_CONFIG: any[] = [
     ...appStore.hisMatch({
       map: {
-        'nys': [
+        'nys,gzhd': [
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
@@ -52,7 +52,8 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
         ]
-      }
+      },
+      vague: true,
     }),
     {
       title: '不良事件统计',
