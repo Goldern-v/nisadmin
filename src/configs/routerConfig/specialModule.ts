@@ -33,6 +33,8 @@ import NurseFileDetailView_jmfy
   from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_dghl
   from "src/modules/nurseFiles/view/nurseFiles-dghl/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_dgxg
+  from "src/modules/nurseFiles/view/nurseFiles-dgxg/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -326,6 +328,32 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_dghl,
+      layouts.MainLayout
+    ),
+    // 新版审核管理
+    setLayout("/auditsManagement", AuditsManagementNewView, layouts.MainLayout),
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
+} else if (appStore.HOSPITAL_ID == 'dgxg') {
+  specialModule = [
+    // 新版审核界面
+    setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_dgxg,
       layouts.MainLayout
     ),
     // 新版审核管理
