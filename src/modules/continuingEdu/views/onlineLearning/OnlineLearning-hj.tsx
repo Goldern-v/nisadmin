@@ -16,6 +16,7 @@ export default observer(function OnlineLearning(props: Props) {
   const { getId } = props; //获取当前页面标题
   const user = JSON.parse(sessionStorage.getItem("user") || "[]"); // 获取登录人员信息
   const [hourName, setHourName] = useState(""); // 当前时间段对应名称
+  const [handleNew, setHandleNew] = useState(0); // 新增弹窗变量
 
   /** 初始化表格数据 */
   useEffect(() => {
@@ -72,12 +73,11 @@ export default observer(function OnlineLearning(props: Props) {
       0}）`,
       component: <Table/>
     },
-    // 2021-6-4 暂时屏蔽
-    /*{
-      title: `工作反思（${onlineLearningModal.taskCount.finishedTaskCount ||
+    {
+      title: `工作反思（${onlineLearningModal.taskCount.workReviewCount ||
       0}）`,
-      component: <WorkReflection/>
-    }*/
+      component: <WorkReflection handleNew={handleNew}/>
+    }
   ];
 
   return (
@@ -113,9 +113,10 @@ export default observer(function OnlineLearning(props: Props) {
                   onlineLearningModal.onload();
                 }}
               >
-                <Select.Option value={0}>未完成</Select.Option>
-                <Select.Option value={1}>已完成</Select.Option>
                 <Select.Option value="">全部</Select.Option>
+                <Select.Option value={2}>审核中</Select.Option>
+                <Select.Option value={4}>审核通过</Select.Option>
+                <Select.Option value={3}>驳回</Select.Option>
               </Select> :
               <Select
                 style={{ width: 140, marginRight: 15 }}
@@ -143,8 +144,8 @@ export default observer(function OnlineLearning(props: Props) {
           </Button>
           {
             onlineLearningModal.key === '7' &&
-            <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => {
-            }}>新增</Button>
+            <Button style={{ marginLeft: '15px' }} type="primary"
+                    onClick={() => setHandleNew(handleNew + 1)}>新增</Button>
           }
         </div>
       </HeadCon>

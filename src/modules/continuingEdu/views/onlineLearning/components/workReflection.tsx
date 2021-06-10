@@ -1,14 +1,18 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { observer } from "src/vendors/mobx-react-lite";
 import { appStore } from "src/stores";
 import { onlineLearningModal } from "../OnlineLearningModal";
+import EditModal from './workReflectionModal'
 
 export interface Props {
+  handleNew: number
 }
 
 export default observer(function Table(props: Props) {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [modalId, setModalId] = useState("")
   const columns: any = [
     {
       title: "序号",
@@ -24,29 +28,34 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "提交时间",
-      dataIndex: "startTime",
+      dataIndex: "submitTime",
       width: 150,
       align: "center"
     },
     {
       title: "提交人",
-      dataIndex: "endTime",
+      dataIndex: "empName",
       width: 150,
       align: "center"
     },
     {
       title: "所在科室",
-      dataIndex: "teachingTypeName",
+      dataIndex: "deptName",
       width: 120,
       align: "center"
     },
     {
       title: "状态",
-      dataIndex: "taskStatusDesc",
+      dataIndex: "statusDesc",
       width: 100,
       align: "center",
       render(text: string) {
-        let color = text === "完成" ? "rgba(0, 0, 0, 0.65)" : "red";
+        const map: any = {
+          '审核中': '#F59A23',
+          '驳回': '#D9001B',
+          '审核通过': '#02A7F0',
+        }
+        let color = map[text]
         return <span style={{ color }}>{text}</span>;
       }
     },
@@ -56,15 +65,9 @@ export default observer(function Table(props: Props) {
       width: 100,
       align: "center",
       render(text: any, record: any) {
-        let btnName =
-          text === "tobegin"
-            ? `待${record.teachingMethodName}`
-            : text === "finished"
-            ? "查看"
-            : `去${record.teachingMethodName}`;
         return (
           <DoCon>
-            <span onClick={() => handleStudy(record)}>{btnName}</span>
+            <span onClick={() => handleView(record)}>查看</span>
           </DoCon>
         );
       }
@@ -72,13 +75,22 @@ export default observer(function Table(props: Props) {
   ];
 
   //查看 学习
-  const handleStudy = (record: any) => {
-    appStore.history.push(
-      `/onlineLearningReview?id=${record.cetpId}&onlineLearningName=${
-        record.teachingMethodName
-      }`
-    );
+  const handleView = (record: any) => {
+    setModalId(record.id)
+    setModalVisible(true)
   };
+
+  const onOk = async () => {
+    setModalVisible(false)
+    await onlineLearningModal.onload()
+  }
+
+  useEffect(() => {
+    if (props.handleNew) {
+      setModalId('')
+      setModalVisible(true)
+    }
+  }, [props.handleNew])
 
   return (
     <Wrapper>
@@ -100,6 +112,7 @@ export default observer(function Table(props: Props) {
           onlineLearningModal.onload();
         }}
       />
+      <EditModal visible={modalVisible} modalId={modalId} onOk={onOk} onCancel={() => setModalVisible(false)}/>
     </Wrapper>
   );
 });

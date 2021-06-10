@@ -24,17 +24,15 @@ export default function StudyContent(props: Props) {
         return <React.Fragment>
           <FileUploadReview info={data}/>
           <OuterLink info={data}/>
-          {/* 2021-6-4 暂时屏蔽 */}
-          {/*<GradientBand/>*/}
-          {/*<StudyNote info={data}/>*/}
+          <GradientBand/>
+          <StudyNote info={data}/>
         </React.Fragment>
       case '培训':
         return <React.Fragment>
           <FileUploadReview info={data}/>
           <Questionnaire info={data}/>
-          {/* 2021-6-4 暂时屏蔽 */}
-          {/*<GradientBand/>*/}
-          {/*<StudyNote info={data}/>*/}
+          <GradientBand/>
+          <StudyNote info={data}/>
         </React.Fragment>
       case '考试':
         return <TestInfo info={data}/>

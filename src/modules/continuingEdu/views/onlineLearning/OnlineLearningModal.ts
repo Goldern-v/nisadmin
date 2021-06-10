@@ -1,5 +1,6 @@
 import { observable, computed } from "mobx";
 import { onlineLearningApi } from "./api/OnlineLearningApi";
+import { appStore } from "src/stores";
 
 class OnlineLearningModal {
   @observable public selectedDate: any = []; //日期
@@ -58,21 +59,28 @@ class OnlineLearningModal {
   }
 
   /** 获取表格数据 */
-  onload() {
+  async onload() {
     this.tableLoading = true;
-    onlineLearningApi.queryPageList(this.postObj).then(res => {
-      this.tableLoading = false;
-      this.tableList = res.data.list;
-      this.total = res.data.totalCount;
-      this.pageIndex = res.data.pageIndex;
-      this.pageSize = res.data.pageSize;
-    });
+    let res = null
+    if (appStore.HOSPITAL_ID === 'hj' && this.teachingMethod === 6) {
+      res = await onlineLearningApi.getMyWorkList(this.postObj)
+    } else {
+      res = await onlineLearningApi.queryPageList(this.postObj)
+    }
+    this.tableLoading = false;
+    this.tableList = res.data.list;
+    this.total = res.data.totalCount;
+    this.pageIndex = res.data.pageIndex;
+    this.pageSize = res.data.pageSize;
   }
 
   /** 获取任务数 */
   getTaskCount() {
     onlineLearningApi.getTaskCount(this.getTaskCountObj).then(res => {
       this.taskCount = res.data;
+    });
+    onlineLearningApi.getWorkTaskCount(this.getTaskCountObj).then(res => {
+      this.taskCount.workReviewCount = res.data.workReviewCount
     });
   }
 

@@ -4,7 +4,9 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { observer } from "src/vendors/mobx-react-lite";
 import { appStore } from "src/stores";
 import { onlineLearningModal } from "../OnlineLearningModal";
-export interface Props {}
+
+export interface Props {
+}
 
 export default observer(function Table(props: Props) {
   const columns: any = [
@@ -96,7 +98,7 @@ export default observer(function Table(props: Props) {
       width: 100,
       align: "center",
       render(text: any) {
-        let color: any = text.includes("天") ? "rgba(0, 0, 0, 0.65)" : "red";
+        let color: any = (text && text.includes("天")) ? "rgba(0, 0, 0, 0.65)" : "red";
         return <span style={{ color }}>{text}</span>;
       }
     },
