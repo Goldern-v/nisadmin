@@ -26,7 +26,10 @@ import moment from "moment";
 import createModal from "src/libs/createModal";
 import EditBalanceModal from "./modal/EditBalanceModal";
 import { globalModal } from "src/global/globalModal";
-export interface Props {}
+
+export interface Props {
+}
+
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [date, setDate]: any = useState(getCurrentMonth());
@@ -84,6 +87,11 @@ export default observer(function FollowUpRecord() {
       render(text: any, record: any) {
         return Number(text).toFixed(2);
       }
+    },
+    {
+      title: "积假结余",
+      dataIndex: "totalHoliday",
+      width: 100
     },
     {
       title: "备注",
@@ -170,7 +178,8 @@ export default observer(function FollowUpRecord() {
     // })
   };
 
-  const onDetail = (record: any) => {};
+  const onDetail = (record: any) => {
+  };
   useEffect(() => {
     getData();
   }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, date, selectedNurse, selectedStatus]);
@@ -182,7 +191,7 @@ export default observer(function FollowUpRecord() {
     <Wrapper>
       <PageHeader>
         <PageTitle>结余设置</PageTitle>
-        <Place />
+        <Place/>
 
         <span className="label">结余类型:</span>
         <Select
@@ -199,7 +208,8 @@ export default observer(function FollowUpRecord() {
           onChange={(value: any) => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => {
+        }}/>
         <span className="label">护士:</span>
         <Select
           value={selectedNurse}
@@ -250,7 +260,7 @@ export default observer(function FollowUpRecord() {
           return { onDoubleClick: () => onDetail(record) };
         }}
       />
-      <editBalanceModal.Component />
+      <editBalanceModal.Component/>
     </Wrapper>
   );
 });
