@@ -32,7 +32,8 @@ import createModal from "src/libs/createModal";
 // import ArchiveModal from './../../components/ArchiveModal'
 // import { qcOneService } from './../../services/QcOneService'
 
-export interface Props {}
+export interface Props {
+}
 
 const Option = Select.Option;
 
@@ -168,6 +169,7 @@ export default observer(function NursingWorkPlainList() {
 
   const getList = (query: any) => {
     setLoading(true);
+    query.deptCode = query.deptCode === '全院' ? '' : query.deptCode
     starRatingReportService.getPage(query).then(
       res => {
         setLoading(false);
@@ -278,7 +280,7 @@ export default observer(function NursingWorkPlainList() {
           </Select>
 
           <span>科室:</span>
-          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })} />
+          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })}/>
 
           <span>标准:</span>
           <Text
@@ -328,7 +330,7 @@ export default observer(function NursingWorkPlainList() {
         visible={createVisible}
         onCancel={handleCancel}
       />
-      <editSchNightStandardModal.Component />
+      <editSchNightStandardModal.Component/>
     </Wrapper>
   );
 });
