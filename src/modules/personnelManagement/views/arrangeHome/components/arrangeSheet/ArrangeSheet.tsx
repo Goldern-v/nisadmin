@@ -468,6 +468,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 dghl: () => 5,
                 gzsrm: () => 6,
                 lcey: () => 2,
+                dgxg: () => 2,
               })) *
             70 +
             widthNys +
