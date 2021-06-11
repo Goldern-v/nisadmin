@@ -278,7 +278,7 @@ export default observer(function NursingWorkPlainList() {
           </Select>
 
           <span>科室:</span>
-          <DeptSelect onChange={deptCode => setQuery({ ...query, deptCode })} />
+          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })} />
 
           <span>标准:</span>
           <Text

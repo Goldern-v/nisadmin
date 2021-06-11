@@ -7,9 +7,11 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
 import emitter from 'src/libs/ev'
+import { appStore } from "src/stores";
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation() {
-  useEffect(() => { })
+  useEffect(() => {
+  })
 
   // const onChange = (value: string) => {
   //   // nurseFilesListViewModel.loadNursingList()
@@ -19,6 +21,7 @@ export default function BedSituation() {
   function searchButtonClick() {
     emitter.emit('科室排班按班次')
   }
+
   // 导出文件
   const fileDownload = (res: any) => {
     let filename = res.headers['content-disposition']
@@ -56,14 +59,15 @@ export default function BedSituation() {
       }
     )
   }
-  const onChange = () => { }
+  const onChange = () => {
+  }
 
   return (
     <Con>
-      <DeptSelect onChange={onChange} />
+      <DeptSelect hasAllDept onChange={onChange}/>
       {/* <SelectDepartment /> */}
-      <Spacing />
-      <SelectData />
+      <Spacing/>
+      <SelectData/>
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>
