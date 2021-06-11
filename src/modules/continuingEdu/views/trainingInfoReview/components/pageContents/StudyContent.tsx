@@ -60,7 +60,7 @@ export default function StudyContent(props: Props) {
 const Wrapper = styled.div``
 const GradientBand = styled.div`
   width: 100%;
-  height: 10px;
+  height: 2px;
   border-radius: 5px;
   background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
 `

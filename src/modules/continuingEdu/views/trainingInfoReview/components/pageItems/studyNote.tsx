@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Input, Modal, message } from 'antd'
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "src/modules/notice/page/modal/SelectPeopleModal";
-import { trainingInfoReviewService, trainingInfoReviewService as api } from '../../api/TrainingInfoReviewService'
+import { trainingInfoReviewService } from '../../api/TrainingInfoReviewService'
 
 export interface Props {
   info?: any
@@ -11,6 +11,7 @@ export interface Props {
 
 //参与人员
 export default function Participation(props: Props) {
+  const [readonly, setReadonly] = useState(false)
   const [noteContent, setNoteContent] = useState('')
   const [firstLevelAuditors, setFirstLevelAuditors]: any[] = useState([])
   const [secondLevelAuditors, setSecondLevelAuditors]: any[] = useState([])
@@ -31,12 +32,16 @@ export default function Participation(props: Props) {
   }
 
   const getReviewerItem = (type: string) => {
+
     const checkedUserList = type === '1' ? firstLevelAuditors : secondLevelAuditors
     return checkedUserList.map((item: any, index: number) => {
       return (
         <div className={'reviewer-item'} key={item.empNo}>
           <span>{item.empName}</span>
-          <Button size={"small"} shape="circle" icon="close" onClick={() => handleDeleteReviewer(type, item.empNo)}/>
+          {
+            !readonly &&
+            <Button size={"small"} shape="circle" icon="close" onClick={() => handleDeleteReviewer(type, item.empNo)}/>
+          }
         </div>
       )
     })
@@ -78,14 +83,15 @@ export default function Participation(props: Props) {
       firstLevelAuditors,
       secondLevelAuditors,
     }
-    const res = await api.saveStudyNote(params)
+    const res = await trainingInfoReviewService.saveStudyNote(params)
     message.success('提交成功')
   }
 
   useEffect(() => {
     if (props.info.id) {
       trainingInfoReviewService.getNoteInfo(props.info.id).then(res => {
-        const { noteContent, firstLevelAuditors, secondLevelAuditors } = res.data
+        const { noteContent, firstLevelAuditors, secondLevelAuditors, status } = res.data
+        setReadonly([2, 4].includes(status))
         setNoteContent(noteContent)
         setFirstLevelAuditors(setKey(firstLevelAuditors))
         setSecondLevelAuditors(setKey(secondLevelAuditors))
@@ -96,22 +102,35 @@ export default function Participation(props: Props) {
   return <Wrapper>
     <div className="content-item-title">学习笔记：</div>
     <div>
-      <Input.TextArea rows={10} value={noteContent} onChange={(event) => {
-        setNoteContent(event.target.value)
-      }}/>
+      <Input.TextArea
+        rows={10}
+        value={noteContent}
+        readOnly={readonly}
+        onChange={(event) => {
+          setNoteContent(event.target.value)
+        }}/>
     </div>
     <div className="reviewer">
       <span>审核人一:</span>
       {getReviewerItem('1')}
-      <Button type="primary" size={"small"} shape="circle" icon="plus" onClick={() => handleSelectReviewer('1')}/>
+      {
+        !readonly &&
+        <Button type="primary" size={"small"} shape="circle" icon="plus" onClick={() => handleSelectReviewer('1')}/>
+      }
     </div>
     <div className="reviewer">
       <span>审核人二:</span>
       {getReviewerItem('2')}
-      <Button type="primary" size={"small"} shape="circle" icon="plus" onClick={() => handleSelectReviewer('2')}/>
+      {
+        !readonly &&
+        <Button type="primary" size={"small"} shape="circle" icon="plus" onClick={() => handleSelectReviewer('2')}/>
+      }
     </div>
     <div className="submit-button">
-      <Button type="primary" onClick={handleSubmit}>提交</Button>
+      {
+        !readonly &&
+        <Button type="primary" onClick={handleSubmit}>提交</Button>
+      }
     </div>
     <selectPeopleModal.Component/>
   </Wrapper>
