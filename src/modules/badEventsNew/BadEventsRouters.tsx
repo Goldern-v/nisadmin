@@ -18,6 +18,7 @@ import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
+  const baseRouter = appStore.onlyBadEvent ? '/home' : '/badEventsNew'
 
   let LEFT_MENU_CONFIG: any[] = [
     ...appStore.hisMatch({
@@ -26,7 +27,7 @@ export default function BadEventsRouters(props: Props) {
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
-            path: "/home",
+            path: baseRouter,
             component: BadEventsNewList_nys,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
@@ -36,7 +37,7 @@ export default function BadEventsRouters(props: Props) {
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
-            path: "/home",
+            path: baseRouter,
             component: BadEventsNewList_gzsrm,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
@@ -46,7 +47,7 @@ export default function BadEventsRouters(props: Props) {
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
-            path: "/home",
+            path: baseRouter,
             component: BadEventsNewList,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
@@ -57,12 +58,12 @@ export default function BadEventsRouters(props: Props) {
     }),
     {
       title: '不良事件统计',
-      path: '/home/不良事件统计',
+      path: `${baseRouter}/不良事件统计`,
       component: 不良事件统计,
     },
     {
       title: '不良事件发生率',
-      path: '/home/不良事件发生率',
+      path: `${baseRouter}/不良事件发生率`,
       component: 不良事件发生率,
     },
     ...appStore.hisMatch({
@@ -70,7 +71,7 @@ export default function BadEventsRouters(props: Props) {
         hj: [
           {
             title: '不良事件分析报告',
-            path: '/home/不良事件分析报告',
+            path: `${baseRouter}/不良事件分析报告`,
             component: BadEventReportList,
             // hide: appStore.isDev ? false : true,
             keepAlive: true,

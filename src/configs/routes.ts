@@ -82,14 +82,17 @@ const HealthPropagandaEdit = lazy(() =>
   import("src/modules/healthPropaganda/HealthPropagandaEdit")
 );
 //不良事件列表和审核流程
-// const BadEventsNewList = lazy(() =>
-//   import("src/modules/badEventsNew/BadEventsNewList")
-// );
+const BadEventsRouters = lazy(() =>
+  import("src/modules/badEventsNew/BadEventsRouters")
+);
 const BadEventsNewDetail = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail")
 );
 const BadEventsNewDetailNys = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail_nys")
+);
+const BadEventsNewDetailGzsrm = lazy(() =>
+  import("src/modules/badEventsNew/BadEventsNewDetail_gzsrm")
 );
 //培训考核
 const TrainingExamination = lazy(() =>
@@ -538,12 +541,13 @@ const routes: RouteItem[] = [
   setLayout("/healthPropagandaEditNew", HealthPropagandaEditNew),
   // setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   // setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
-  // setLayout("/badEventsNewList", BadEventsNewList, layouts.MainLayout),
+  setLayout("/badEventsNew", BadEventsRouters, layouts.MainLayout),
   setLayout(
     "/badEventsNewDetail/:id/:orderNo",
     appStore.hisMatch({
       map: {
         nys: BadEventsNewDetailNys,
+        gzsrm: BadEventsNewDetailGzsrm,
         other: BadEventsNewDetail
       }
     }),

@@ -1,5 +1,6 @@
 import React from "react";
 import { appStore } from "src/stores";
+import { autoLoginTnNisInfoBe } from "src/utils/toNisInfoBe/toNisInfoBe_nys";
 
 export interface navConfigItem {
   onClick?: any;
@@ -113,6 +114,19 @@ const baseConfig: navConfigItem[] = [
   }
 ];
 
-const beConfig: navConfigItem[] = []
+const beConfig: navConfigItem[] = [
+  {
+    name: "审核",
+    path: "/home"
+  },
+  {
+    name: "提交",
+    path: "/submit",
+    onClick: () => {
+      //跳转提交界面
+      autoLoginTnNisInfoBe()
+    }
+  },
+]
 
 export const navConfig: navConfigItem[] = appStore.onlyBadEvent ? beConfig : baseConfig

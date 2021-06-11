@@ -136,11 +136,11 @@ export default observer(function 不良事件发生率() {
     },
     {
       title: '不良事件发生率/千床日',
-      dataIndex: 'patientDay',
+      dataIndex: 'happenRate',
       key: '不良事件发生率/千床日',
       width: 80,
       align: 'center',
-      render: (text: string) => `${text}‰`
+      render: (text: string) => text
     }
   ]
 

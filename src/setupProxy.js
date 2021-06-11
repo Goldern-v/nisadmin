@@ -30,12 +30,12 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return 'http://192.168.1.54:9868' // 公司-花都测试-内网
     /** 江门妇幼 */
     case 'jmfy':
-      // return 'http://218.14.180.38:9094' // 公司-江门妇幼正式
+      // return 'http://218.14.180.38:9094' // 江门妇幼正式
       // return 'https://info.cr-health.com:20211' // 公司-江门妇幼测试-外网
       return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
     /** 东莞横沥 */
     case 'dghl':
-      // return 'http://183.63.206.194:9091' // 公司-东莞横沥正式
+      // return 'http://183.63.206.194:9091' // 东莞横沥正式
       return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
     /** 默认公司本地内网厚街测试环境 */
     default:

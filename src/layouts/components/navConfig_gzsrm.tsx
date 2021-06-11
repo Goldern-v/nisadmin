@@ -65,6 +65,11 @@ const baseConfig: navConfigItem[] = [
     name: "病区管理",
     path: "/wardManagement"
   },
+  {
+    name: "不良事件",
+    hidden: true,
+    path: "/badEventsNew"
+  },
 ];
 
 const beConfig: navConfigItem[] = [

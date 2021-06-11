@@ -76,7 +76,8 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "统计查询",
-    path: "/statistic"
+    path: "/statistic",
+    hidden: () => !appStore.isDev
   },
   {
     name: "进出感染区统计",

@@ -18,8 +18,8 @@ import NurseFilesListView_dgxg from "./view/nurseFiles-dgxg/views/nurseFilesList
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
 import StatisticsView from "./view/statistics/StatisticsView";
-import StatisticsViews from "./view/statistics-hj/StatisticsView";
-import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
+// import StatisticsViews from "./view/statistics-hj/StatisticsView";
+// import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 //护士调动
 import HumanResource from "./view/nurseFiles-nys/views/humanResource/HumanResource";
 //院级小组
@@ -222,6 +222,7 @@ export default observer(function NurseFilesView(props: Props) {
         {
           title: "科室创新",
           path: "/nurseFile/科室创新",
+          hide: !appStore.isDev,
           component: 科室创新
         }
       ]
@@ -229,12 +230,14 @@ export default observer(function NurseFilesView(props: Props) {
     {
       title: "护理实习生花名册",
       path: "/nurseFile/traineeFiles",
+      hide: !appStore.isDev,
       component: TraineeFiles,
       icon: <TXHSCX />
     },
     {
       title: "护理实习生轮科",
       icon: <TXHSCX />,
+      hide: !appStore.isDev,
       addIcon: true,
       children: dataList
     }
@@ -324,7 +327,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "gzhd", "lcey", "gzsrm", "jmfy", "wh"]
+      ["hj", "gzhd", "lcey", "gzsrm", "jmfy", appStore.isDev ? "wh" : "wh_production"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();

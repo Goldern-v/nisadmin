@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Select } from 'antd'
-import { PageObj } from './getPageObj'
+import { filterItem, PageObj } from './getPageObj'
 import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
+import { appStore } from 'src/stores'
+import { ColumnProps } from 'src/vendors/antd'
 
 export const pageObj: PageObj = {
   title: '举办继续教育培训班',
@@ -27,11 +29,11 @@ export const pageObj: PageObj = {
       type: 'input',
       name: 'projectName'
     },
-    {
+    ...appStore.isDev ? [{
       label: '级别',
       type: 'input',
       name: 'projectLevel'
-    }
+    }] as filterItem[] : []
   ],
   tableList: [
     {
@@ -41,13 +43,13 @@ export const pageObj: PageObj = {
       width: 90,
       align: 'center'
     },
-    {
+    ...appStore.isDev ? [{
       title: '级别',
       dataIndex: 'projectLevel',
       key: 'projectLevel',
       width: 80,
       align: 'center'
-    },
+    }] as ColumnProps<any>[] : [],
     {
       title: '项目名称',
       dataIndex: 'projectName',

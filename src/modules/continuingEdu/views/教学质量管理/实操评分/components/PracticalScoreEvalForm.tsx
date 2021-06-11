@@ -2,25 +2,20 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Modal, Spin } from 'antd'
 import { ScrollBox } from 'src/components/common'
-import 操作技术评分 from './操作技术评分'
-import 个案护理发表评分表 from './个案护理发表评分表'
-import 护士床边综合能力考核表 from './护士床边综合能力考核表'
-import 临床护理小讲课比赛评分表 from './临床护理小讲课比赛评分表'
-import 规范化培训护士工作情况调查表 from './规范化培训护士工作情况调查表'
-import 新毕业生护士工作情况调查表 from './新毕业生护士工作情况调查表'
-import { evalTypeGroup } from '../data/evalType'
-import { teachingQualityEvalService } from './../services/TeachingQualityEvalService'
+// import { practicalType } from '../data/practicalType'
+import { practicalScoreEvalService } from '../services/PracticalScoreEvalService'
 import moment from 'moment'
+import { getTemplate } from '../data/formContent'
 
 export interface Props {
   visible: boolean,
-  editable?: boolean,
+  templateOnly?: boolean,
   onCancel: Function,
   params: any
 }
 
 export default function TeachingQualityEvalForm(props: Props) {
-  const { visible, onCancel, params } = props
+  const { visible, onCancel, params, templateOnly } = props
 
   const [data, setData] = useState({} as any)
 
@@ -33,26 +28,44 @@ export default function TeachingQualityEvalForm(props: Props) {
   }, [visible])
 
   const getData = () => {
-    // setLoading(true)
-    setData([])
+    setLoading(true)
+    setData({})
+
+    if (!templateOnly)
+      practicalScoreEvalService.getPracticalUserAnswer({
+        empNo: params.empNo,
+        id: params.id,
+      })
+        .then(res => {
+          setLoading(false)
+
+          setData(res.data)
+
+        }, () => setLoading(false))
+    else
+      practicalScoreEvalService
+        .getPracticalTableByIdpracticalTableId(params.practicalTableId)
+        .then(res => {
+          setLoading(false)
+
+          setData(res.data)
+
+        }, () => setLoading(false))
   }
 
   const formContent = () => {
-    let Template: (props: any) => JSX.Element = () => <span></span>
-
-    Template = 新毕业生护士工作情况调查表
+    let Template = getTemplate(params.practicalTableId)
 
     return <PageWrapper>
       <Template
         questionList={questionList}
-        onEditChange={(payload: any) => setData(payload)}
-        editable={false}
-        baseInfo={data} />
+        isTemplate={templateOnly}
+        baseInfo={{ ...params, ...data }} />
     </PageWrapper>
   }
 
   return <Modal
-    title="评教调查表"
+    title={data.tableName || '实操评分表'}
     visible={visible}
     centered
     bodyStyle={{ padding: 0 }}

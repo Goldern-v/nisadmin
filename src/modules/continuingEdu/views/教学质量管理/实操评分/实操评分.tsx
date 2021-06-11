@@ -7,11 +7,12 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import moment from 'src/vendors/moment'
 import BaseTabs from 'src/components/BaseTabs'
-import { teachingQualityEvalService } from './services/TeachingQualityEvalService'
+import { practicalScoreEvalService } from './services/PracticalScoreEvalService'
 import { appStore } from 'src/stores'
 import qs from 'qs'
-import { evalTypeGroup } from './data/evalType'
+import { practicalTypeGroup } from './data/practicalType'
 import 实操评分添加 from './components/实操评分添加'
+import 操作技术评分标准预览 from './components/操作技术评分标准预览'
 
 const RangePicker = DatePicker.RangePicker
 
@@ -23,12 +24,12 @@ export default function 实操评分() {
   let _currentYear = currentYear()
 
   const [query, setQuery] = useState({
-    evalType: '1' as '1' | '2' | '3',
-    beginTime: _currentMonth[0].format('YYYY-MM-DD'),
-    endTime: _currentMonth[1].format('YYYY-MM-DD'),
+    practicalType: '1' as '1' | '2' | '3',
+    startDate: _currentMonth[0].format('YYYY-MM-DD'),
+    endDate: _currentMonth[1].format('YYYY-MM-DD'),
     pageIndex: 1,
     pageSize: 20,
-    keyWord: '',
+    title: '',
   })
 
   const [activeTab, setActiveTab] = useState('1')
@@ -38,6 +39,7 @@ export default function 实操评分() {
   const [loading, setLoading] = useState(false)
 
   const [addModalVisible, setAddModalVisible] = useState(false)
+  const [templatesModalVisible, setTemplatesModalVisible] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -50,13 +52,13 @@ export default function 实操评分() {
     },
     {
       title: '开始时间',
-      dataIndex: 'beginTime',
+      dataIndex: 'startDate',
       align: 'center',
       width: 120,
     },
     {
       title: '结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'endDate',
       align: 'center',
       width: 120,
     },
@@ -68,21 +70,24 @@ export default function 实操评分() {
     },
     {
       title: '参与人数',
-      dataIndex: 'evalPersonCount',
+      dataIndex: 'participantsList',
       align: 'center',
       width: 80,
+      render: (participantsList: any[]) => (participantsList || []).length
     },
     {
       title: '状态',
-      dataIndex: 'epStatusDesc',
+      dataIndex: 'practicalState',
       align: 'center',
       width: 80,
       render: (text) => {
         switch (text) {
-          case '待开始':
-            return <span style={{ color: '#70B603' }}>{text}</span>
-          case '进行中':
-            return <span style={{ color: '#F59A23' }}>{text}</span>
+          case 1:
+            return <span style={{ color: '#F59A23' }}>未开始</span>
+          case 2:
+            return <span style={{ color: '#70B603' }}>进行中</span>
+          case 3:
+            return <span>已结束</span>
           default:
             return <span>{text}</span>
         }
@@ -104,11 +109,11 @@ export default function 实操评分() {
   const getTableData = () => {
     setLoading(true)
 
-    teachingQualityEvalService
-      .queryEvalPlanStatListByPage({
+    practicalScoreEvalService
+      .getPracticalScorePageList({
         ...query,
-        beginTime: query.beginTime ? query.beginTime + ' 00:00' : '',
-        endTime: query.endTime ? query.endTime + ' 24:00' : '',
+        startDate: query.startDate ? query.startDate + ' 00:00' : '',
+        endDate: query.endDate ? query.endDate + ' 24:00' : '',
       })
       .then(res => {
         if (res.data) {
@@ -123,11 +128,11 @@ export default function 实操评分() {
   const handleDetail = (record: any) => {
     appStore.history
       .push(`/continuingEdu/实操评分详情?${qs.stringify({
-        evalPlanId: record.id,
+        id: record.id,
         title: record.title,
-        submitTimeBegin: record.beginTime,
-        submitTimeEnd: record.endTime,
-        evalType: record.evalType,
+        startDate: record.startDate,
+        endDate: record.endDate,
+        practicalType: record.practicalType,
       })}`)
   }
 
@@ -141,6 +146,11 @@ export default function 实操评分() {
       loading={loading}
       dataSource={tableData}
       columns={columns}
+      onRow={(record) => {
+        return {
+          onDoubleClick: () => handleDetail(record)
+        }
+      }}
       pagination={{
         current: query.pageIndex,
         pageSize: query.pageSize,
@@ -159,7 +169,7 @@ export default function 实操评分() {
       <RangePicker
         className="content-item"
         style={{ width: 220, marginRight: 10 }}
-        value={[moment(query.beginTime), moment(query.endTime)]}
+        value={[moment(query.startDate), moment(query.endDate)]}
         ranges={{
           '本月': _currentMonth,
           '本季度': _currentQuater,
@@ -168,8 +178,8 @@ export default function 实操评分() {
         onChange={(payload: any) => {
           setQuery({
             ...query,
-            beginTime: payload[0].format('YYYY-MM-DD'),
-            endTime: payload[1].format('YYYY-MM-DD'),
+            startDate: payload[0].format('YYYY-MM-DD'),
+            endDate: payload[1].format('YYYY-MM-DD'),
             pageIndex: 1,
           })
         }}
@@ -177,27 +187,32 @@ export default function 实操评分() {
       <Input
         placeholder="请输入关键词"
         style={{ width: 150, marginRight: 10 }}
-        defaultValue={query.keyWord}
-        onBlur={(e) => setQuery({ ...query, keyWord: e.target.value })} />
+        defaultValue={query.title}
+        onBlur={(e) => setQuery({ ...query, title: e.target.value })} />
       <Button
         style={{ marginRight: 10 }}
         onClick={() =>
           setQuery({ ...query, pageIndex: 1 })}>
         查询
       </Button>
-      <Button onClick={() => setAddModalVisible(true)}>添加</Button>
+      <Button
+        style={{ marginRight: 10 }}
+        onClick={() => setAddModalVisible(true)}>
+        新增
+      </Button>
+      <Button onClick={() => setTemplatesModalVisible(true)}>表管理</Button>
     </HeaderCon>
     <MainCon>
       <BaseTabs
         defaultActiveKey={activeTab}
-        config={Object.keys(evalTypeGroup).map((key: any) => ({
-          title: evalTypeGroup[key].name,
+        config={Object.keys(practicalTypeGroup).map((key: any) => ({
+          title: practicalTypeGroup[key].name,
           index: key,
           component: TableCon,
         }))}
         onChange={(key: any) => {
           setActiveTab(key)
-          setQuery({ ...query, pageIndex: 1, evalType: key })
+          setQuery({ ...query, pageIndex: 1, practicalType: key })
         }} />
     </MainCon>
     <实操评分添加
@@ -208,6 +223,9 @@ export default function 实操评分() {
       }}
       onClose={() => null}
       onCancel={() => setAddModalVisible(false)} />
+    <操作技术评分标准预览
+      visible={templatesModalVisible}
+      onCancel={() => setTemplatesModalVisible(false)} />
   </Wrapper>
 }
 const Wrapper = styled.div`

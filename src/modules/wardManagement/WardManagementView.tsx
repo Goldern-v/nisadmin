@@ -53,6 +53,7 @@ const LEFT_MENU_CONFIG = [
         {
           title: '病区床位',
           path: '/wardManagement/病区床位',
+          hide: !appStore.isDev,
           component: DeptBed,
           icon: <KSPHSZ />
         }
