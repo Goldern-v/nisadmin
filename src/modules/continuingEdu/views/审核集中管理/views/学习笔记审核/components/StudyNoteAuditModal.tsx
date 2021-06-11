@@ -2,12 +2,13 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Carousel, Icon, Input, message, Modal, Radio, Tag } from 'antd'
 import { Place } from 'src/components/common'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import moment from 'src/vendors/moment'
 import { studyNoteManageService } from './../api/StudyNoteManageService'
 import { Divider } from 'src/vendors/antd'
 
 const TextArea = Input.TextArea
+
 export interface Props {
   visible: boolean,
   toAudit?: boolean,
@@ -85,8 +86,7 @@ export default function StudyNoteAuditModal(props: Props) {
 
     setFlowTaskHisList([])
 
-    studyNoteManageService.
-      getFlowTaskHisById(id, noteType)
+    studyNoteManageService.getFlowTaskHisById(id, noteType)
       .then(res => {
         if (res.data.flowTaskHisList) {
           setFlowTaskHisList(res.data.flowTaskHisList || [])
@@ -117,7 +117,7 @@ export default function StudyNoteAuditModal(props: Props) {
       centered: true,
       content: <TextArea
         autosize={{ minRows: 4 }}
-        onChange={(e: any) => auditRemark = e.target.value} />,
+        onChange={(e: any) => auditRemark = e.target.value}/>,
       onOk: () => {
         setLoading(true)
         studyNoteManageService.batchAuditStudyNotes({
@@ -154,16 +154,16 @@ export default function StudyNoteAuditModal(props: Props) {
     title={`${dataList[activeIdx] && dataList[activeIdx].empName + '的' || ''}${noteType}`}
     visible={visible}
     centered
-    bodyStyle={{ padding: 0 }}
+    bodyStyle={{ padding: 0, maxHeight: '550px' }}
     confirmLoading={loading}
     onCancel={() => onCancel()}
     footer={<FooterCon>
       {dataList.length > 1 &&
-        <React.Fragment>
-          <Button type="primary" onClick={() => handleGroupAudit(1)}>批量通过</Button>
-          <Button type="danger" onClick={() => handleGroupAudit(-1)}>批量驳回</Button>
-        </React.Fragment>}
-      <Place />
+      <React.Fragment>
+        <Button type="primary" onClick={() => handleGroupAudit(1)}>批量通过</Button>
+        <Button type="danger" onClick={() => handleGroupAudit(-1)}>批量驳回</Button>
+      </React.Fragment>}
+      <Place/>
       <Button onClick={() => onCancel()}>取消</Button>
       {toAudit && <Button
         type="primary"
@@ -188,13 +188,48 @@ export default function StudyNoteAuditModal(props: Props) {
                 {noteType == '学习笔记' && <span>学习时间：{item.startTime || '...'} ~ {item.endTime || '...'}</span>}
                 {noteType == '工作反思' && <span>提交时间：{item.submitTime}</span>}
               </div>
-              <div>{noteType}：</div>
-              <div>
-                <TextArea
-                  value={item.noteContent || item.workReviewContent || ''}
-                  autosize={{ minRows: 5 }}
-                  readOnly />
-              </div>
+              {
+                (noteType === '工作反思' && appStore.HOSPITAL_ID === 'hj') ?
+                  <React.Fragment>
+                    <div>标题：</div>
+                    <div>
+                      <Input value={item.title || ''} readOnly/>
+                    </div>
+                    <div>描述：</div>
+                    <div>
+                      <TextArea value={item.describe || ''} readOnly/>
+                    </div>
+                    <div>感知：</div>
+                    <div>
+                      <TextArea value={item.perception || ''} readOnly/>
+                    </div>
+                    <div>评价：</div>
+                    <div>
+                      <TextArea value={item.evaluate || ''} readOnly/>
+                    </div>
+                    <div>分析：</div>
+                    <div>
+                      <TextArea value={item.analysis || ''} readOnly/>
+                    </div>
+                    <div>结论：</div>
+                    <div>
+                      <TextArea value={item.conclusion || ''} readOnly/>
+                    </div>
+                    <div>行动：</div>
+                    <div>
+                      <TextArea value={item.action || ''} readOnly/>
+                    </div>
+                  </React.Fragment> :
+                  <React.Fragment>
+                    <div>{noteType}：</div>
+                    <div>
+                      <TextArea
+                        value={item.noteContent || item.workReviewContent || ''}
+                        autosize={{ minRows: 5 }}
+                        readOnly/>
+                    </div>
+                  </React.Fragment>
+              }
               {toAudit && <React.Fragment>
                 <div>
                   <span>审核结果：</span>
@@ -213,7 +248,7 @@ export default function StudyNoteAuditModal(props: Props) {
                   <TextArea
                     value={item.auditRemark}
                     onChange={(e: any) =>
-                      handleChange({ ...item, auditRemark: e.target.value }, idx)} />
+                      handleChange({ ...item, auditRemark: e.target.value }, idx)}/>
                 </div>
               </React.Fragment>}
             </div>)}
@@ -237,23 +272,25 @@ export default function StudyNoteAuditModal(props: Props) {
         <Input
           style={{ width: 100, marginRight: 10 }}
           readOnly
-          value={authStore.user?.empName} />
+          value={authStore.user?.empName}/>
         <span>审核时间：</span>
         <Input
           style={{ width: 150 }}
           readOnly
-          value={moment().format('YYYY-MM-DD HH:mm')} />
+          value={moment().format('YYYY-MM-DD HH:mm')}/>
       </div>}
       {!toAudit && <React.Fragment>
-        <Divider style={{ margin: '6px 0' }} />
+        <Divider style={{ margin: '6px 0' }}/>
         <AuditInfoCon>
           <div className="audit-title">审核过程</div>
           <div className="audit-list">
             {flowTaskHisList.map((item: any, idx: number) =>
               <div className="audit-item" key={idx}>
                 <div className="emp-img">
-                  <img src={item.nearImageUrl} alt="" />
-                  {!!item.flag && (item.handleResult == -1 ? <Icon type="close-circle" theme="filled" className="step-status error" /> : <Icon type="check-circle" theme="filled" className="step-status success" />)}
+                  <img src={item.nearImageUrl} alt=""/>
+                  {!!item.flag && (item.handleResult == -1 ?
+                    <Icon type="close-circle" theme="filled" className="step-status error"/> :
+                    <Icon type="check-circle" theme="filled" className="step-status success"/>)}
                 </div>
                 <div className="info">
                   <div className="step-title">

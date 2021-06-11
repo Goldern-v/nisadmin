@@ -8,28 +8,31 @@ class OnlineLearningReviewModel {
   @observable baseLoading = false;
   @observable examScore = {} as any;
 
-  @action public init() {
+  @action
+  public init() {
     this.clean();
     this.getBaseInfo(appStore.queryObj.id);
   }
 
-  @action public clean() {
+  @action
+  public clean() {
     this.baseInfo = {};
   }
 
-  @action public getBaseInfo(id: string | any) {
+  @action
+  public async getBaseInfo(id: string | any) {
     if (!id) {
       message.error("缺少详情ID");
       return;
     }
     this.baseLoading = true;
-    trainingInfoReviewService.getBaseInfo(id, 1).then(
-      res => {
-        this.baseLoading = false;
-        if (res.data) this.baseInfo = res.data;
-      },
-      () => (this.baseLoading = false)
-    );
+    try {
+      const res = await trainingInfoReviewService.getBaseInfo(id, 1)
+      if (res.data) this.baseInfo = res.data;
+      this.baseLoading = false
+    } catch (e) {
+      this.baseLoading = false
+    }
   }
 }
 

@@ -12,6 +12,13 @@ export default class TrainingInfoReviewService extends BaseApiService {
     );
   }
 
+  //获取学习笔记信息
+  public getNoteInfo(id: string, taskRoleCode?: number) {
+    return this.post(
+      "/studyAndTrain/studyNoteManage/viewTaskSummaryInfo", { cetpId: id }
+    );
+  }
+
   //获取考卷信息
   public previewPaper(cetpId: string) {
     return this.post(

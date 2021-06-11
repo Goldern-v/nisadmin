@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Input, Modal, message } from 'antd'
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "src/modules/notice/page/modal/SelectPeopleModal";
-import { trainingInfoReviewService as api } from '../../api/TrainingInfoReviewService'
+import { trainingInfoReviewService, trainingInfoReviewService as api } from '../../api/TrainingInfoReviewService'
 
 export interface Props {
   info?: any
@@ -32,19 +32,19 @@ export default function Participation(props: Props) {
 
   const getReviewerItem = (type: string) => {
     const checkedUserList = type === '1' ? firstLevelAuditors : secondLevelAuditors
-    return checkedUserList.map((item: any) => {
+    return checkedUserList.map((item: any, index: number) => {
       return (
-        <div className={'reviewer-item'} key={item.key}>
+        <div className={'reviewer-item'} key={item.empNo}>
           <span>{item.empName}</span>
-          <Button size={"small"} shape="circle" icon="close" onClick={() => handleDeleteReviewer('1', item.key)}/>
+          <Button size={"small"} shape="circle" icon="close" onClick={() => handleDeleteReviewer(type, item.empNo)}/>
         </div>
       )
     })
   }
 
-  const handleDeleteReviewer = (type: string, key: string) => {
+  const handleDeleteReviewer = (type: string, empNo: string) => {
     const userList = type === '1' ? firstLevelAuditors : secondLevelAuditors
-    const filterList = userList.filter((i: any) => i.key !== key)
+    const filterList = userList.filter((i: any) => i.empNo !== empNo)
     type === '1' ? setFirstLevelAuditors(filterList) : setSecondLevelAuditors(filterList)
   }
 
@@ -52,19 +52,23 @@ export default function Participation(props: Props) {
     let arr: any[] = []
     list.forEach((item: any) => {
       if (item.userList) {
-        const mapArr = item.userList.map((i: any) => {
-          return {
-            ...i,
-            key: i.empNo,
-            label: i.empName,
-          }
-        })
+        const mapArr = setKey(item.userList)
         arr.push(...mapArr)
       } else {
         arr.push(item)
       }
     })
     return arr
+  }
+
+  const setKey = (arr = []) => {
+    return arr.map((i: any) => {
+      return {
+        ...i,
+        key: i.empNo,
+        label: i.empName,
+      }
+    })
   }
 
   const handleSubmit = async () => {
@@ -77,6 +81,17 @@ export default function Participation(props: Props) {
     const res = await api.saveStudyNote(params)
     message.success('提交成功')
   }
+
+  useEffect(() => {
+    if (props.info.id) {
+      trainingInfoReviewService.getNoteInfo(props.info.id).then(res => {
+        const { noteContent, firstLevelAuditors, secondLevelAuditors } = res.data
+        setNoteContent(noteContent)
+        setFirstLevelAuditors(setKey(firstLevelAuditors))
+        setSecondLevelAuditors(setKey(secondLevelAuditors))
+      })
+    }
+  }, [props.info])
 
   return <Wrapper>
     <div className="content-item-title">学习笔记：</div>
