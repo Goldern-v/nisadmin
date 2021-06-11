@@ -35,7 +35,7 @@ export default observer((props: Props) => {
 
   const handleDateChange = (date: moment.Moment) => {
     const expectedDate = moment(date).add(9, 'months').add(7, 'days')
-    setFormItem({ lastMenstrualPeriod: date, expectedDate })
+    setFormItem({ lastMenstrualPeriod: date, expectedDate, deliveryDate: expectedDate })
   }
 
   useEffect(() => {

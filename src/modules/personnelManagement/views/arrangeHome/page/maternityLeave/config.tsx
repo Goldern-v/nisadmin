@@ -28,7 +28,7 @@ const creatColumns = (calBack?: Function): {}[] => {
     },
     {
       title: "科室",
-      dataIndex: "deptCode",
+      dataIndex: "deptName",
       align: "center",
     },
     {
