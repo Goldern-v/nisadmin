@@ -32,7 +32,8 @@ class QualityControlRecordEditModel {
     qcLevel: '',
     intro: '',
     qcName: '',
-    qcGroupRoles: ''
+    qcGroupRoles: '',
+    useScore: false,
   }
   //加载状态
   @observable loading = false
@@ -96,7 +97,8 @@ class QualityControlRecordEditModel {
       qcLevel: '',
       intro: '',
       qcName: '',
-      qcGroupRoles: ''
+      qcGroupRoles: '',
+      useScore: false,
     }
 
     for (let x in this.master) {
@@ -148,7 +150,8 @@ class QualityControlRecordEditModel {
                 qcLevel: template.qcLevel,
                 qcName: template.qcName,
                 intro: template.intro,
-                qcGroupRoles: template.qcGroupRoles
+                qcGroupRoles: template.qcGroupRoles,
+                useScore: template.useScore || false
               }
             }
 
@@ -184,7 +187,8 @@ class QualityControlRecordEditModel {
                 qcLevel: master.qcLevel,
                 qcName: master.qcName,
                 intro: master.intro,
-                qcGroupRoles: master.qcGroupRoles
+                qcGroupRoles: master.qcGroupRoles,
+                useScore: master.useScore || false
               }
             }
 
@@ -203,20 +207,43 @@ class QualityControlRecordEditModel {
   }
 
   private initItemGroupList = (itemGroupList: any[]) => {
-    this.itemGroupList = [...itemGroupList]
+    let newItemGorupList = [...itemGroupList]
+    let newItemListErrObj = {} as any
 
-    for (let i = 0; i < this.itemGroupList.length; i++) {
-      let itemList = this.itemGroupList[i].itemList
+    newItemGorupList.forEach((itemGorup: any, idx0: number) => {
+      let itemList = itemGorup.itemList || []
 
-      if (itemList) for (let j = 0; j < itemList.length; j++) {
-        let item = itemList[j]
-        this.itemListErrObj[item.qcItemCode] = {
-          name: item.qcItemName,
-          err: false,
-          key: `${i}-${j}`
+      itemList.forEach((item: any, idx1: number) => {
+        let qcItemName = item.qcItemName
+
+        let fillDataList = item.fillDataList
+        if (fillDataList && fillDataList.length > 0) {
+          let qcNameFillList = [] as any[]
+
+          fillDataList.forEach((fillItem: any, idx2: number) => {
+            let prevIndexAt = 0
+            if (fillDataList[idx2 - 1]) prevIndexAt = fillDataList[idx2 - 1].indexAt
+
+            qcNameFillList.push(qcItemName.substring(prevIndexAt, fillItem.indexAt) + '____')
+
+            if (idx2 === fillDataList.length - 1)
+              qcNameFillList.push(qcItemName.substring(fillItem.indexAt))
+          })
+
+          item.qcNameFill = qcNameFillList.join('')
         }
-      }
-    }
+
+        newItemListErrObj[item.qcItemCode] = {
+          name: qcItemName,
+          err: false,
+          key: `${idx0}-${idx1}`
+        }
+      })
+
+    })
+
+    this.itemListErrObj = newItemListErrObj
+    this.itemGroupList = newItemGorupList
   }
 
   //获取质控病区科室
@@ -283,8 +310,22 @@ class QualityControlRecordEditModel {
 
       if (itemList)
         for (let j = 0; j < itemList.length; j++) {
-          itemList[j].qcItemValue = val
-          this.setItemListErrObj(itemList[j].qcItemCode, false)
+          let item = itemList[j]
+          item.qcItemValue = val
+
+          if (this.baseInfo.useScore) {
+            if (val !== '否') {
+              if (item.subItemList) {
+                item.subItemList = item.subItemList.map((subItem: any) => ({
+                  ...subItem,
+                  checked: false,
+                }))
+                item.remarkDeductScore = ''
+              }
+            }
+          }
+
+          this.setItemListErrObj(item.qcItemCode, false)
         }
     }
   }
@@ -345,6 +386,7 @@ class QualityControlRecordEditModel {
           let item = originItemList[j]
 
           let newItem = {
+            ...item,
             qcItemCode: item.qcItemCode,
             attachIds: item.attachIds,
             attachUrls: item.attachUrls,

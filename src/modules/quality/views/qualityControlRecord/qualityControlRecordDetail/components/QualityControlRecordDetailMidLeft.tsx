@@ -174,11 +174,11 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>
             质控人：
             {userList.map((item: any, index: number, arr: any) => (
-            <span key={index}>
-              {item.empName}
-              {index != arr.length - 1 ? "、" : ""}
-            </span>
-          ))}
+              <span key={index}>
+                {item.empName}
+                {index != arr.length - 1 ? "、" : ""}
+              </span>
+            ))}
           </div>
           {appStore.hisMatch({
             map: {
@@ -257,6 +257,40 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       不适用
                     </Radio>
                   </Radio.Group>
+                  {detailData.master.useScore ? <div className="sub-item-list">
+                    {item.qcItemValue === "否" && <React.Fragment>
+                      {item.subItemList.map((subItem: any, subItemIdx: number) => (
+                        <div key={subItem.subItemCode}>
+                          <Radio
+                            checked={subItem.checked}>
+                            <span>{subItem.subItemBadDesc}</span>
+                            <span> </span>
+                            <span>({subItem.fixedScore})</span>
+                          </Radio>
+                        </div>
+                      ))}
+                      <div>
+                        <Radio
+                          checked={!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')}>
+                          自定义扣分
+                        </Radio>
+                        <Input
+                          size="small"
+                          style={{ width: 80 }}
+                          readOnly
+                          value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0} />
+                      </div>
+                    </React.Fragment>}
+                    <div style={{ marginTop: 5 }}>
+                      <Input.TextArea
+                        value={item.remark}
+                        readOnly
+                        style={{ resize: 'none' }}
+                        autosize={{ minRows: 2 }}
+                        placeholder="备注" />
+                    </div>
+                  </div> : ''}
+
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (
                       <Zimage
@@ -407,6 +441,18 @@ const QuestionItem = styled.div`
       }
       span {
         font-size: 12px;
+      }
+    }
+
+    .sub-item-list{
+      background: rgba(0,0,0,0.05);
+      padding: 5px 20px;
+      margin: 5px 0;
+      &>div{
+        margin: 2.5px 0;
+      }
+      *{
+        cursor: not-allowed;
       }
     }
   }

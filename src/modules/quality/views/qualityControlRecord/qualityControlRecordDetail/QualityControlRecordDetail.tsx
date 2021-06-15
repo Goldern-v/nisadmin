@@ -11,14 +11,54 @@ export default function qualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
   let [loading, setLoading] = useState(false)
 
+  const formatItemGroupList = (itemGroupList: any) => {
+    let newItemGorupList = [...itemGroupList]
+
+    newItemGorupList.forEach((itemGorup: any, idx0: number) => {
+      let itemList = itemGorup.itemList || []
+
+      itemList.forEach((item: any, idx1: number) => {
+        let qcItemName = item.qcItemName
+
+        let fillDataList = item.fillDataList
+        if (fillDataList && fillDataList.length > 0) {
+          let qcNameFillList = [] as any[]
+
+          fillDataList.forEach((fillItem: any, idx2: number) => {
+            let prevIndexAt = 0
+            if (fillDataList[idx2 - 1]) prevIndexAt = fillDataList[idx2 - 1].indexAt
+
+            qcNameFillList.push(qcItemName.substring(prevIndexAt, fillItem.indexAt) + fillItem.itemValue)
+
+            if (idx2 === fillDataList.length - 1)
+              qcNameFillList.push(qcItemName.substring(fillItem.indexAt))
+          })
+
+          item.qcItemName = qcNameFillList.join('')
+        }
+      })
+
+    })
+
+    return newItemGorupList
+  }
+
   const onload = () => {
     let id = appStore.match.params.id
     setLoading(true)
     qualityControlRecordApi.qcItemInstanceGet(id).then((res) => {
-      setDetailData(res.data)
+
+      let newData = {
+        ...res.data,
+        itemGroupList: formatItemGroupList(res.data.itemGroupList)
+      }
+
+      setDetailData(newData)
+
       setLoading(false)
     })
   }
+
   useEffect(() => {
     onload()
   }, [])
@@ -82,6 +122,8 @@ const MidConScrollCon = styled.div`
   /* height: 150%; */
   /* flex-basis: auto; */
 `
+
+// @ts-ignore
 const MidLeftCon = styled(ScrollBox)`
   box-sizing: border-box;
   /* padding: 20px 153px; */

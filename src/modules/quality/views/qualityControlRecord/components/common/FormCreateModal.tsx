@@ -48,7 +48,7 @@ export default observer(function FormCreateModal(props: Props) {
 
     let qcCode = '';
 
-    if (formList[activeIdx]) qcCode = formList[activeIdx].qcCode
+    if (filterList[activeIdx]) qcCode = filterList[activeIdx].qcCode
 
     setTimeout(() => appStore
       .history
@@ -80,7 +80,7 @@ export default observer(function FormCreateModal(props: Props) {
         <Spin spinning={formListLoading} style={{ minHeight: 300 }}>
           {filterList.map((item: any, idx: number) =>
             <div
-              key={idx}
+              key={item.qcCode}
               className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
               onClick={() => setActiveIdx(idx)}
               title={item.qcName}

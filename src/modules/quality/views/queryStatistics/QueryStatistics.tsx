@@ -17,7 +17,6 @@ export default observer(function QueryStatistics(props: any) {
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
   const [showType, setShowType] = useState(false)
-  const [effect, setEffect] = useState(true)
 
   const columns: any[] = [
     {
@@ -67,35 +66,25 @@ export default observer(function QueryStatistics(props: any) {
   ]
 
   useEffect(() => {
-    // setEffect(true)
-  }, [])
-
-  useEffect(() => {
-    if (!loadingTable) getTableData()
+    getTableData()
   }, [
     showType,
     qualityControlRecordVM.filterDeptCode
   ])
 
-  useLayoutEffect(() => {
-    setEffect(false)
-  }, [])
-
   const getTableData = (obj?: any) => {
-    if (effect) {
-      let data = {
-        beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-        endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
-        wardCode: qualityControlRecordVM.filterDeptCode,
-        qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
-        groupByDept: showType //boolean  科室分组(true) 质控组分组(false)
-      }
-      setLoadingTable(true)
-      queryStatisticsServices.getEvalRateMenu(data).then((res) => {
-        setLoadingTable(false)
-        setTableData(res.data)
-      })
+    let data = {
+      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
+      wardCode: qualityControlRecordVM.filterDeptCode,
+      qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
+      groupByDept: showType //boolean  科室分组(true) 质控组分组(false)
     }
+    setLoadingTable(true)
+    queryStatisticsServices.getEvalRateMenu(data).then((res) => {
+      setLoadingTable(false)
+      setTableData(res.data)
+    }, () => setLoadingTable(false))
   }
 
   //质控科室

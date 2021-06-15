@@ -135,7 +135,6 @@ export default observer(function 不良事件统计() {
       key: '占比',
       width: 80,
       align: 'center',
-      render: (text: string) => `${text}%`
     }
   ]
 
@@ -163,8 +162,8 @@ export default observer(function 不良事件统计() {
     setLoading(true)
     badEventsNewService
       .badEventTotalExport({
-        dateBegin: filterDate[0].format('YYYY-MM-DD'),
-        dateEnd: filterDate[1].format('YYYY-MM-DD'),
+        beginDate: filterDate[0].format('YYYY-MM-DD'),
+        endDate: filterDate[1].format('YYYY-MM-DD'),
         eventTypeList: eventTypeSelected || []
       })
       .then(res => {

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Radio, Icon, Input } from 'antd'
+import { Button, Radio, Icon, Input, InputNumber, Row, Col } from 'antd'
 import { qualityControlRecordEditModel as qcModel, Emp, BedNurse } from './../model/QualityControlRecordEditModel'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const { TextArea } = Input
@@ -40,10 +40,30 @@ export default observer(function QcItemGroup(props: Props) {
     qcModel.upadteItemGroup(newItemGroup, index)
   }
 
+  const handleItemChange = (newItem: any, idx: number) => {
+    let newItemGroup = { ...itemGroup }
+    newItemGroup.itemList[idx] = newItem
+
+    qcModel.upadteItemGroup(newItemGroup, index)
+  }
+
   const setAllQcItemValue = (val: string) => {
     let newItemGroup = { ...itemGroup }
     for (let i = 0; i < newItemGroup.itemList.length; i++) {
-      newItemGroup.itemList[i].qcItemValue = val
+      let item = newItemGroup.itemList[i]
+      item.qcItemValue = val
+
+      if (qcModel.baseInfo.useScore) {
+        if (val !== '否') {
+          if (item.subItemList) {
+            item.subItemList = item.subItemList.map((subItem: any) => ({
+              ...subItem,
+              checked: false,
+            }))
+            item.remarkDeductScore = ''
+          }
+        }
+      }
 
       qcModel.setItemListErrObj(newItemGroup.itemList[i].qcItemCode, false)
     }
@@ -86,8 +106,30 @@ export default observer(function QcItemGroup(props: Props) {
     {itemGroup.itemList.map((item: any, itemIndex: number) => (
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
-          {item.itemShowCode} {item.qcItemName}
+          {item.itemShowCode} {item.qcNameFill || item.qcItemName} {item.fixedScore ? <span style={{ color: '#999' }}>{`（${item.fixedScore}分）`}</span> : ''}
         </div>
+        {item.fillDataList && (
+          <Row gutter={10}>
+            {item.fillDataList.map((fillItem: any, fillItemIdx: number) => (
+              <Col
+                span={8}
+                key={`fillItem-${index}-${itemIndex}-${fillItemIdx}`}
+                style={{ display: 'flex', margin: '2.5px 0' }}>
+                <div style={{ lineHeight: '20px', color: '#666' }}>自定义内容{fillItemIdx + 1}：</div>
+                <Input
+                  size="small"
+                  style={{ flex: 1, fontSize: '12px' }}
+                  value={fillItem.itemValue}
+                  onChange={(e) => {
+                    let newFillDataList = [...item.fillDataList]
+                    newFillDataList[fillItemIdx].itemValue = e.target.value
+
+                    handleItemChange({ ...item, fillDataList: newFillDataList }, itemIndex)
+                  }} />
+              </Col>
+            ))}
+          </Row>
+        )}
         <div className='itemMidCon'>
           <Radio.Group value={item.qcItemValue} buttonStyle='solid' onChange={(e: any) => {
             qcModel.setItemListErrObj(item.qcItemCode, false)
@@ -103,6 +145,68 @@ export default observer(function QcItemGroup(props: Props) {
               不适用
             </Radio>
           </Radio.Group>
+          {qcModel.baseInfo.useScore && <div className="sub-item-list">
+            {item.subItemList && (<React.Fragment>
+              {item.subItemList.map((subItem: any, subItemIdx: number) => (
+                <div key={subItem.subItemCode}>
+                  <Radio
+                    checked={subItem.checked}
+                    onChange={(e) => {
+                      if (subItem.checked) return
+
+                      let newSubItemList = [...item.subItemList]
+                        .map((_subItem: any, _subItemIdx) => ({
+                          ..._subItem,
+                          checked: _subItemIdx === subItemIdx,
+                        }))
+
+                      handleItemChange({
+                        ...item,
+                        subItemList: newSubItemList,
+                        remarkDeductScore: '',
+                      }, itemIndex)
+                    }}>
+                    <span>{subItem.subItemBadDesc}</span>
+                    <span> </span>
+                    <span>({subItem.fixedScore})</span>
+                  </Radio>
+                </div>
+              ))}
+              <div>
+                <Radio
+                  checked={!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')}
+                  onClick={() => {
+                    if (!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')) return
+
+                    handleItemChange({
+                      ...item,
+                      subItemList: item.subItemList.map((_subItem: any) => ({ ..._subItem, checked: false })),
+                      remarkDeductScore: '0',
+                    }, itemIndex)
+                  }}>
+                  自定义扣分
+                </Radio>
+                <InputNumber
+                  size="small"
+                  disabled={isNaN(item.remarkDeductScore) && (item.remarkDeductScore === null && item.remarkDeductScore === '')}
+                  value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
+                  onChange={(val) => handleItemChange({
+                    ...item,
+                    remarkDeductScore: val?.toString() || '',
+                  }, itemIndex)} />
+              </div>
+            </React.Fragment>)}
+            <div style={{ marginTop: 5 }}>
+              <Input.TextArea
+                value={item.remark}
+                autosize={{ minRows: 2 }}
+                placeholder="备注"
+                onChange={(e) => handleItemChange({
+                  ...item,
+                  remark: e.target.value,
+                }, itemIndex)} />
+            </div>
+          </div>}
           <div className="img-upload">
             <MultipleImageUploader
               tip={"(最多上传三张图片)"}
@@ -255,6 +359,15 @@ const QuestionItem = styled.div`
     .tip{
       top: 85%;
       font-size: 12px;
+    }
+  }
+
+  .sub-item-list{
+    background: rgba(0,0,0,0.05);
+    padding: 5px 20px;
+    margin: 5px 0;
+    &>div{
+      margin: 2.5px 0;
     }
   }
 `

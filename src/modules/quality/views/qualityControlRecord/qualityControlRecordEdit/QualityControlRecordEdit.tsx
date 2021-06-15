@@ -10,7 +10,6 @@ import qs from 'qs'
 import { ScrollBox } from 'src/components/common'
 import FormPannel from './components/FormPannel'
 import PreviewPannel from './components/PreviewPannel'
-import { globalModal } from 'src/global/globalModal'
 import { navTitle } from 'src/modules/quality/data/qcTitle'
 
 export interface Props { }
@@ -229,6 +228,7 @@ const Wrapper = styled.div`
   }
 `
 
+// @ts-ignore
 const MainPannel = styled(ScrollBox)`
   height: calc(100vh - 145px);
   padding: 20px 0;

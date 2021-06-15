@@ -216,8 +216,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             {master &&
               appStore.hisMatch({
                 map: {
-                  nys: true,
-                  other: master.qcLevel == "2"
+                  wh: master.qcLevel == "2",
+                  other: true
                 }
               }) &&
               master.status == "-1" &&
