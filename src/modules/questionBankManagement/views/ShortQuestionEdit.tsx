@@ -9,7 +9,8 @@ import NavCon from './../components/common/NavCon'
 import LabelSelect from './../components/common/LabelSelect'
 import { questionBankManageService } from './../api/QuestionBankManageService'
 
-export interface Props { }
+export interface Props {
+}
 
 const TextArea = Input.TextArea;
 
@@ -74,7 +75,8 @@ export default observer(function ChoiceQuestionEdit() {
   }
 
   const handleSave = () => {
-    let params = { ...editModel, bankType: '2' } as any;
+    const bankType = appStore.queryObj.bankType
+    let params = { ...editModel, bankType } as any;
 
     if (search.id) params.id = search.id;
 
@@ -120,7 +122,7 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ width: '700px' }}
               autosize={{ minRows: 2 }}
               value={editModel.questionContent}
-              onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })} />
+              onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })}/>
           </div>
         </div>
       </div>
@@ -133,7 +135,7 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ width: '700px' }}
               autosize={{ minRows: 2 }}
               value={editModel.answerContent}
-              onChange={(e) => setEditModel({ ...editModel, answerContent: e.target.value })} />
+              onChange={(e) => setEditModel({ ...editModel, answerContent: e.target.value })}/>
           </div>
         </div>
       </div>
@@ -143,7 +145,7 @@ export default observer(function ChoiceQuestionEdit() {
           <div className="label">标签:</div>
           <div className="content">
             <div className="label-select" style={{ width: '400px' }}>
-              <LabelSelect onSelect={handleLabelSelected} />
+              <LabelSelect onSelect={handleLabelSelected}/>
             </div>
             <div className="label-list" style={{ width: '700px' }}>
               {editModel.questionLabels.map((item: any, idx: number) => <Tag
@@ -167,13 +169,13 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ width: '700px' }}
               autosize={{ minRows: 3 }}
               value={editModel.annotation}
-              onChange={(e) => setEditModel({ ...editModel, annotation: e.target.value })} />
+              onChange={(e) => setEditModel({ ...editModel, annotation: e.target.value })}/>
           </div>
         </div>
       </div>
       {/* 载入遮罩层 */}
       <div className="loading-mask" style={{ display: pageLoading ? 'block' : 'none' }}>
-        <Spin />
+        <Spin/>
       </div>
     </div>
   </Wrapper>

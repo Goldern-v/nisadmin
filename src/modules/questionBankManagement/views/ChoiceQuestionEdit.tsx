@@ -9,7 +9,8 @@ import NavCon from './../components/common/NavCon'
 import LabelSelect from './../components/common/LabelSelect'
 import { questionBankManageService } from './../api/QuestionBankManageService'
 
-export interface Props { }
+export interface Props {
+}
 
 const TextArea = Input.TextArea;
 
@@ -133,7 +134,8 @@ export default observer(function ChoiceQuestionEdit() {
   }
 
   const handleSave = () => {
-    let params = { ...editModel, bankType: '2' } as any;
+    const bankType = appStore.queryObj.bankType
+    let params = { ...editModel, bankType } as any;
 
     params.choiceQuestionList = params.choiceQuestionList.map((item: any, idx: number) => {
       return {
@@ -186,7 +188,7 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ width: 700 }}
               autosize={{ minRows: 2 }}
               value={editModel.questionContent}
-              onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })} />
+              onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })}/>
           </div>
         </div>
       </div>
@@ -203,11 +205,13 @@ export default observer(function ChoiceQuestionEdit() {
                   autosize={{ minRows: 1 }}
                   value={item.answerContent}
                   className="answerContent"
-                  onChange={(e) => handleAnswerContentChange(e, item, idx)} />
-                <Checkbox checked={item.isRight} onClick={() => handleToogleRight(item, idx)} />
+                  onChange={(e) => handleAnswerContentChange(e, item, idx)}/>
+                <Checkbox checked={item.isRight} onClick={() => handleToogleRight(item, idx)}/>
                 <Button size="small" disabled={idx <= 0} onClick={() => handleChoiceMove(idx, false)}>上移</Button>
-                <Button size="small" disabled={idx >= editModel.choiceQuestionList.length - 1} onClick={() => handleChoiceMove(idx, true)}>下移</Button>
-                <Button size="small" disabled={editModel.choiceQuestionList.length <= 1} onClick={() => handleChoiceDelete(idx)}>删除</Button>
+                <Button size="small" disabled={idx >= editModel.choiceQuestionList.length - 1}
+                        onClick={() => handleChoiceMove(idx, true)}>下移</Button>
+                <Button size="small" disabled={editModel.choiceQuestionList.length <= 1}
+                        onClick={() => handleChoiceDelete(idx)}>删除</Button>
               </div>
             })}
             <div className="choiceItem">
@@ -229,7 +233,7 @@ export default observer(function ChoiceQuestionEdit() {
           <div className="label">标签:</div>
           <div className="content">
             <div className="label-select" style={{ width: '400px' }}>
-              <LabelSelect onSelect={handleLabelSelected} />
+              <LabelSelect onSelect={handleLabelSelected}/>
             </div>
             <div className="label-list" style={{ width: '700px' }}>
               {editModel.labelList.map((item: any, idx: number) => <Tag
@@ -253,13 +257,13 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ width: '700px' }}
               autosize={{ minRows: 3 }}
               value={editModel.annotation}
-              onChange={(e) => setEditModel({ ...editModel, annotation: e.target.value })} />
+              onChange={(e) => setEditModel({ ...editModel, annotation: e.target.value })}/>
           </div>
         </div>
       </div>
       {/* 载入遮罩层 */}
       <div className="loading-mask" style={{ display: pageLoading ? 'block' : 'none' }}>
-        <Spin />
+        <Spin/>
       </div>
     </div>
   </Wrapper>

@@ -80,7 +80,8 @@ export default observer(function ChoiceQuestionEdit() {
 
   //保存修改
   const handleSave = () => {
-    let params = { ...editModel, bankType: '2' } as any;
+    const bankType = appStore.queryObj.bankType
+    let params = { ...editModel, bankType } as any;
 
     if (search.id) params.id = search.id;
 

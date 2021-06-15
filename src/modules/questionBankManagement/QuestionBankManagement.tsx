@@ -17,7 +17,9 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
 import { questionBankManageService } from './api/QuestionBankManageService';
-export interface Props extends RouteComponentProps { }
+
+export interface Props extends RouteComponentProps {
+}
 
 export default observer(function QuestionBankManagement() {
   let { bankType, searchingContent } = questionBankManageModel.query;
@@ -64,37 +66,37 @@ export default observer(function QuestionBankManagement() {
       title: `选择题(${menuNum['选择题'] || '-'})`,
       orginTitle: '选择题',
       size: '',
-      component: <ChoiceQuestionsTable model={questionBankManageModel} />
+      component: <ChoiceQuestionsTable model={questionBankManageModel}/>
     },
     {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <FillingQuestionTable model={questionBankManageModel} />
+      component: <FillingQuestionTable model={questionBankManageModel}/>
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: <ShortQuestionTable model={questionBankManageModel} />
+      component: <ShortQuestionTable model={questionBankManageModel}/>
     },
     {
       title: `标签查看(${menuNum['标签查看'] || '-'})`,
       orginTitle: '标签查看',
       size: '',
-      component: <LabelTable model={questionBankManageModel} />
+      component: <LabelTable model={questionBankManageModel}/>
     },
     {
       title: `导入记录(${menuNum['导入记录'] || '-'})`,
       orginTitle: '导入记录',
       size: '',
-      component: <UploadRecordTable model={questionBankManageModel} />
+      component: <UploadRecordTable model={questionBankManageModel}/>
     },
     {
       title: `回收站(${menuNum['回收站'] || '-'})`,
       orginTitle: '回收站',
       size: '',
-      component: <RecycleTable model={questionBankManageModel} />
+      component: <RecycleTable model={questionBankManageModel}/>
     },
     {
       title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
@@ -174,6 +176,8 @@ export default observer(function QuestionBankManagement() {
       </Radio.Group>
     </div>;
 
+    const bankType = questionBankManageModel.query.bankType
+
     Modal.confirm({
       title: '新建',
       centered: true,
@@ -182,13 +186,13 @@ export default observer(function QuestionBankManagement() {
         let route = ''
         switch (createType) {
           case '选择题':
-            route = '/continuingEdu/choiceQuestionEdit'
+            route = `/continuingEdu/choiceQuestionEdit?bankType=${bankType}`
             break
           case '填空题':
-            route = '/continuingEdu/fillingQuestionEdit'
+            route = '/continuingEdu/fillingQuestionEdit?bankType=${bankType}'
             break
           case '问答题':
-            route = '/continuingEdu/shortQuestionEdit'
+            route = '/continuingEdu/shortQuestionEdit?bankType=${bankType}'
             break
         }
 
@@ -205,7 +209,7 @@ export default observer(function QuestionBankManagement() {
     <Wrapper>
       <HeadCon>
         <div className='title'>题库管理</div>
-        <Place />
+        <Place/>
         <SelectBox>
           <span className='label'>选择类型：</span>
 
@@ -218,13 +222,13 @@ export default observer(function QuestionBankManagement() {
           style={{ width: 200 }}
           placeholder='输入名称进行搜索'
           allowClear defaultValue={searchingContent}
-          onBlur={handleSearchInputBlur} />
+          onBlur={handleSearchInputBlur}/>
         <Button onClick={handleSearchBtnClick}>查询</Button>
         <Button onClick={handleOpenCreate}>创建</Button>
         <Button onClick={handleUpload}>导入</Button>
       </HeadCon>
 
-      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
+      <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey}/>
     </Wrapper>
   )
 })
