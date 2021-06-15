@@ -11,6 +11,7 @@ import EditModal from './components/editModal'
 import { SearchForm, iModalForm } from './modal'
 import config from './config'
 import api from './api'
+import moment from "moment";
 
 export default observer(() => {
   const [pageLoading, setPageLoading] = useState(false)
@@ -41,6 +42,10 @@ export default observer(() => {
 
   const getData = async () => {
     if (!form.deptCode) return
+    if (!form.date) {
+      setFormItem({ date: [moment().year(moment().year() - 1), moment().year(moment().year() + 1)] })
+      return
+    }
 
     setPageLoading(true)
     const { data } = await api.getList(form)
