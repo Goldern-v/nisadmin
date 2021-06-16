@@ -611,9 +611,9 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
         )) ||
         ""}
         {/* 聊城二院 备注功能 */}
-        {(cellObj.schRemarks && cellObj.schRemarks.length) && (
+        {(cellObj.schRemarks && cellObj.schRemarks.length) ? (
           <span>({cellObj.schRemarks[0].remark})</span>
-        )}
+        ) : ''}
       </React.Fragment>
     );
   }

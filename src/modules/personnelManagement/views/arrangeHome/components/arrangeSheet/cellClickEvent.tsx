@@ -165,6 +165,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.settings = [];
   cellObj.addSymbols = [];
   cellObj.statusType = "0";
+  cellObj.schRemarks = [];
 
   if (appStore.HOSPITAL_ID == "wh") {
     cellObj.schAddOrSubs = [];
@@ -173,9 +174,6 @@ export function cleanCell(cellObj: ArrangeItem) {
     cellObj.rangeNameCodeList = null;
   }
 
-  if (appStore.HOSPITAL_ID == "jmfy") {
-    cellObj.schRemarks = [];
-  }
 }
 
 export function cleanCellList(cellList: ArrangeItem[]) {
