@@ -99,8 +99,13 @@ export default function 操作技术评分(props: Props) {
 
         const contentRowSpan = appendList.length
         appendList[0].contentRowSpan = contentRowSpan
-        appendList[0].getedScore = appendList[0].answerList[0]?.answerContent || 0
-        appendList[0].questionScore = appendList[0].answerList[0]?.answerScore || 0
+
+        let answer = appendList[0].answerList[0] || {}
+        let getedScore = Number(answer?.answerContent)
+        if (isNaN(getedScore)) getedScore = 0
+
+        appendList[0].getedScore = getedScore
+        appendList[0].questionScore = answer?.answerScore || 0
 
         if (groupLabel !== item.projectProcess) {
           groupIdx = newList.length
@@ -280,7 +285,7 @@ export default function 操作技术评分(props: Props) {
     </table>
     <div style={{ marginTop: 10 }}>
       <span>评价人签名：</span>
-      <span>{baseInfo.practicaler}</span>
+      <span>{baseInfo.practicaler?.empName}</span>
     </div>
   </Wrapper>
 }

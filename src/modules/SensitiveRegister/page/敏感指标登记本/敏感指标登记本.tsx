@@ -523,12 +523,12 @@ export default observer(function 敏感指标登记本(props: Props) {
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
-                        <span className="title-text">
-                          <pre>
-                            {cItem.label || cItem.itemCode}
-                          </pre>
-                        </span>
-                      )}
+                      <span className="title-text">
+                        <pre>
+                          {cItem.label || cItem.itemCode}
+                        </pre>
+                      </span>
+                    )}
                   </CTitleBox>
                 )
               )}
@@ -547,10 +547,10 @@ export default observer(function 敏感指标登记本(props: Props) {
             </ThBox>
           )
         ) : (
-              <pre>
-                {item.label || item.itemCode}
-              </pre>
-            ),
+          <pre>
+            {item.label || item.itemCode}
+          </pre>
+        ),
         align: "center",
         className: "input-cell",
         colSpan: item.colSpan,
@@ -695,11 +695,11 @@ export default observer(function 敏感指标登记本(props: Props) {
             {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
-                <span
-                  onClick={() => handleDeleteRow(record, index)}>
-                  删除
-                </span>
-              )}
+              <span
+                onClick={() => handleDeleteRow(record, index)}>
+                删除
+              </span>
+            )}
           </DoCon>
         );
       }
@@ -948,12 +948,12 @@ export default observer(function 敏感指标登记本(props: Props) {
             </div>
           </React.Fragment>
         ) : (
-            <NullBox
-              onClick={onAddBlock}
-              text={"创建登记本"}
-              registerName={registerName}
-            />
-          )}
+          <NullBox
+            onClick={onAddBlock}
+            text={"创建登记本"}
+            registerName={registerName}
+          />
+        )}
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
@@ -961,6 +961,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   );
 });
 
+// @ts-ignore
 const Container = styled(Wrapper)`
   .ant-select-disabled .ant-select-selection{
       background: rgba(0,0,0,0.0)!important;

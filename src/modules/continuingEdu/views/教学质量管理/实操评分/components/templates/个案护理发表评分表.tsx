@@ -80,7 +80,7 @@ export default function 个案护理发表评分表(props: Props) {
           <td colSpan={7}>说明：各项得分请在相应评价栏内打“√”</td>
         </tr>
         <tr>
-          <td colSpan={7}>评价人签名：{baseInfo.practicaler}</td>
+          <td colSpan={7}>评价人签名：{baseInfo.practicaler?.empName}</td>
         </tr>
         <tr>
           <td colSpan={7}>日&nbsp;&nbsp;&nbsp;期：{baseInfo.comitDate}</td>

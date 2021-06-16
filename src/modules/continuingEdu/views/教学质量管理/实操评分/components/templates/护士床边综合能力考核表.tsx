@@ -77,7 +77,7 @@ export default function 护士床边综合能力考核表(props: Props) {
       <span>科室：</span>
       <span className="sub-content">{baseInfo.deptName}</span>
       <span>评价人：</span>
-      <span className="sub-content">{baseInfo.practicaler}</span>
+      <span className="sub-content">{baseInfo.practicaler?.empName}</span>
       <span>得分：</span>
       <span className="sub-content">{totalScore}</span>
     </div>

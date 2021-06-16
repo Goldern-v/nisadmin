@@ -49,6 +49,7 @@ const PTitleCon = styled.div`
   .title-text {
     display: block;
     padding: 4px 0;
+    overflow: hidden;
   }
 `;
 const CTitleBox = styled.div`

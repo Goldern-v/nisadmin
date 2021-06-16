@@ -55,7 +55,7 @@ export default function 规范化培训护士工作情况调查表(props: Props)
       <span>科室：</span>
       <span className="sub-content">{baseInfo.deptName}</span>
       <span>评价人：</span>
-      <span className="sub-content">{baseInfo.practicaler}</span>
+      <span className="sub-content">{baseInfo.practicaler?.empName}</span>
     </div>
     <table>
       <colgroup>

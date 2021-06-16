@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { Select } from "src/vendors/antd";
-export interface Props {}
+export interface Props { }
 
 export default function FilterItem(props: any) {
   const { configList, setSelectedItem, selectedItem, keyWord } = props;

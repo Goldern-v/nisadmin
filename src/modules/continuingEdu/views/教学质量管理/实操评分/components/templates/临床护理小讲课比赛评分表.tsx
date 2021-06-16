@@ -64,7 +64,7 @@ export default function 临床护理小讲课比赛评分表(props: Props) {
       <span>科室：</span>
       <span className="sub-content">{baseInfo.deptName}</span>
       <span>评价人：</span>
-      <span className="sub-content">{baseInfo.practicaler}</span>
+      <span className="sub-content">{baseInfo.practicaler?.empName}</span>
     </div>
     <table>
       <colgroup></colgroup>

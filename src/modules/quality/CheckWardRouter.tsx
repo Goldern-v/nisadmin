@@ -3,7 +3,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { Provider, KeepAlive } from "react-keep-alive";
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
@@ -14,41 +14,48 @@ import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import CheckWardReportView from "./views/checkWard/view/report/CheckWardReportView";
 import { appStore } from "src/stores";
 
-const LEFT_MENU_CONFIG: any = [
-  {
-    title: "特殊时段查房记录",
-    path: "/checkWard",
-    icon: <CFJL />,
-    component: RecordView,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "特殊时段计划表",
-    path: "/checkWard/schedule",
-    icon: <CFJHB />,
-    component: ScheduleView
-  },
-  // {
-  //   title: '特殊时段查房统计报告',
-  //   path: '/checkWard/checkWardReportView',
-  //   icon: <CFJHBG />,
-  //   component: CheckWardReportView
-  // },
-  {
-    title: "特殊时段查房统计报告",
-    path: "/checkWard/checkWardReportList",
-    icon: <CFJHBG />,
-    component: CheckWardReportList,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+const LEFT_MENU_CONFIG: any = appStore.hisMatch({
+  map: {
+    jmfy: [
+
+    ],
+    default: [
+      {
+        title: "特殊时段查房记录",
+        path: "/checkWard",
+        icon: <CFJL />,
+        component: RecordView,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      },
+      {
+        title: "特殊时段计划表",
+        path: "/checkWard/schedule",
+        icon: <CFJHB />,
+        component: ScheduleView
+      },
+      // {
+      //   title: '特殊时段查房统计报告',
+      //   path: '/checkWard/checkWardReportView',
+      //   icon: <CFJHBG />,
+      //   component: CheckWardReportView
+      // },
+      {
+        title: "特殊时段查房统计报告",
+        path: "/checkWard/checkWardReportList",
+        icon: <CFJHBG />,
+        component: CheckWardReportList,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      }
+    ]
   }
-];
+})
 
 //CheckWardReportList
 
 export default function CheckWardRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname]);
+  useEffect(() => { }, [props.history.location.pathname]);
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
