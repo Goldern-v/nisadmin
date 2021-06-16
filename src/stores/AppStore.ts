@@ -81,7 +81,9 @@ export default class AppStore {
       return require("src/assets/images/厚街logo.png");
     } else if (this.HOSPITAL_ID == "nys") {
       return require("src/assets/images/南医三logo.png");
-    } else {
+    } else if (this.HOSPITAL_ID == "dgxg") {
+      return require("src/assets/images/东莞谢岗.png");
+    }else {
       return require("src/assets/images/logo.png");
     }
   }
@@ -125,7 +127,7 @@ export default class AppStore {
   openFullLoadingBar(option: FullLoadingBarObj) {
     this.fullLoadingBarObj = option;
   }
-  /** 
+  /**
    * 关闭全局进度条
    * @param okText 状态
    * @param options.delay 关闭延时
