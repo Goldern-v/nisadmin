@@ -172,6 +172,10 @@ export function cleanCell(cellObj: ArrangeItem) {
     cellObj.settingNightHour = 0;
     cellObj.rangeNameCodeList = null;
   }
+
+  if (appStore.HOSPITAL_ID == "jmfy") {
+    cellObj.schRemarks = [];
+  }
 }
 
 export function cleanCellList(cellList: ArrangeItem[]) {
