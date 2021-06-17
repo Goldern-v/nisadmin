@@ -410,10 +410,8 @@ export default function ToolBar() {
         return authStore.isRoleManage;
       case "dghl":
         return true;
-      case "lcey":
-        return (authStore.isDepartment || authStore.isSupervisorNurse || authStore.isAd)
       default:
-        return (authStore.isDepartment || authStore.isAd);
+        return (authStore.isDepartment || authStore.isRoleManage || authStore.isSupervisorNurse || authStore.isAd);
     }
   }
 
