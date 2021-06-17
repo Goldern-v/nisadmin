@@ -152,8 +152,13 @@ const SafetyHazardsDetail = lazy(() =>
   )
 );
 // 病区登记本
+/** 病区登记本 - 武汉市独立 */
 const WardRegisterRouter = lazy(() =>
   import("src/modules/WardRegister/WardRegisterRouter")
+);
+/** 病区登记本 - 标准配置 */
+const WardRegisterDefaultRouter = lazy(() =>
+  import("src/modules/WardRegisterDefault/WardRegisterDefaultRouter")
 );
 //厚街敏感指标登记本
 const SensitiveRegisterRouter = lazy(() =>
@@ -718,7 +723,16 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
-  setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
+  ...appStore.hisMatch({
+    map: {
+      wh: [
+        setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
+      ],
+      default: [
+        setLayout("/wardRegister", WardRegisterDefaultRouter, layouts.MainLayout),
+      ]
+    }
+  }),
   setLayout("/sensitiveRegister", SensitiveRegisterRouter, layouts.MainLayout),
   /**一级质控 */
   setLayout(

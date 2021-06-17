@@ -29,6 +29,11 @@ const baseConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile"
   },
+  {
+    name: "病区登记表",
+    path: "/wardRegister",
+    hidden: !appStore.isDev
+  },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',

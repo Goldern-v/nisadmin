@@ -12,12 +12,27 @@ import CheckWardReportList from "./views/checkWard/view/reportList/CheckWardRepo
 import RecordView from "./views/checkWard/view/record/RecordView";
 import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import CheckWardReportView from "./views/checkWard/view/report/CheckWardReportView";
+import 月护长查房反馈表 from './views/特殊时段查房统计报告_jmfy/月护长查房反馈表/月护长查房反馈表'
+
 import { appStore } from "src/stores";
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
     jmfy: [
-
+      {
+        title: "特殊时段查房统计报告",
+        path: "/checkWard/特殊时段查房统计报告",
+        icon: <CFJHBG />,
+        children: [
+          {
+            title: "月护长查房反馈表",
+            path: "/checkWard",
+            component: 月护长查房反馈表,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+        ]
+      }
     ],
     default: [
       {

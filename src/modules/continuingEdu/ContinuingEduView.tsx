@@ -299,7 +299,6 @@ export default function ContinuingEdu(props: Props) {
         {
           title: "实操评分",
           path: "/continuingEdu/实操评分",
-          hide: !appStore.isDev,
           component: 实操评分
         },
       ]
