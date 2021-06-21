@@ -12,12 +12,13 @@ export interface Props {
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean,
   loading?: boolean,
+  stopRedict?: boolean
 }
 
 // const leftMenuConfig = []
 
 export default function LeftMenuPage(props: Props) {
-  let { leftMenuConfig, loading } = props;
+  let { leftMenuConfig, loading, stopRedict } = props;
   let currentRoutePath = appStore.location.pathname || "";
   let currentRoute = getTargetObj(leftMenuConfig, "path", currentRoutePath);
   // 筛选目标对象
@@ -40,11 +41,12 @@ export default function LeftMenuPage(props: Props) {
     return chooseRoute;
   }
   if (!currentRoute) {
-    appStore.history.replace(
-      leftMenuConfig[0].children
-        ? leftMenuConfig[0].children[0].path
-        : leftMenuConfig[0].path
-    );
+    if (!stopRedict)
+      appStore.history.replace(
+        leftMenuConfig[0].children
+          ? leftMenuConfig[0].children[0].path
+          : leftMenuConfig[0].path
+      );
   }
   // console.log(currentRoute, 'currentRoute')
   return (
@@ -77,11 +79,11 @@ export default function LeftMenuPage(props: Props) {
               />
             </KeepAlive>
           ) : (
-              <currentRoute.component
-                getTitle={currentRoute && currentRoute.title}
-                payload={currentRoute && currentRoute.payload}
-              />
-            ))}
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title}
+              payload={currentRoute && currentRoute.payload}
+            />
+          ))}
       </MainCon>
     </Wrapper>
   );

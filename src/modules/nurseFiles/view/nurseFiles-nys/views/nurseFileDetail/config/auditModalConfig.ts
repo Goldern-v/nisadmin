@@ -465,5 +465,29 @@ export function openAuditModal(title: string, row: any, getTableData: any) {
           allData: row
         })
       }
+    case '专科护士':
+      {
+        return globalModal.auditModal.show({
+          empNo: row.empNo,
+          getTableData: getTableData,
+          id: row.id,
+          type: 'nurseJuniorSpecialFile',
+          title: '审核专科护士',
+          tableFormat: [
+            {
+              获得时间: `time`,
+              文件类型: `specialFileName`
+            }
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
   }
 }

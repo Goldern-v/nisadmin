@@ -30,7 +30,7 @@ const baseConfig: navConfigItem[] = [
     path: "/nurseFile"
   },
   {
-    name: "病区登记表",
+    name: "病区登记本",
     path: "/wardRegister",
     hidden: !appStore.isDev
   },

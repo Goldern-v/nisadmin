@@ -264,12 +264,13 @@ const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const CommunityRoundsRouter = lazy(() =>
   import("src/modules/communityRounds/CommunityRoundsRouter")
 );
-// 武汉社区查房
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
-
+// 社区查房
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
 );
+/** 月度查房统计报告详情 */
+const 月护长查房反馈表详情 = lazy(() => import("src/modules/quality/views/特殊时段查房统计报告_jmfy/月护长查房反馈表/月护长查房反馈表详情"))
 const QueryStatisticsRouter = lazy(() =>
   import("src/modules/quality/QueryStatisticsRouter")
 );
@@ -720,6 +721,7 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
+  setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),

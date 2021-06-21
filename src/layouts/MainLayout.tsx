@@ -37,7 +37,7 @@ export default observer(function MainLayout(props: Props) {
 
   let groupsAduitModal = appStore.hisMatch({
     map: {
-      'hj,lcey,ys,dzlc,gyd': createModal(GroupsAduitModalNew),
+      'hj,ys,dzlc,gyd': createModal(GroupsAduitModal),
       'wh,gzsrm': createModal(GroupsAduitModalWh),
       other: createModal(GroupsAduitModalNew)
     },

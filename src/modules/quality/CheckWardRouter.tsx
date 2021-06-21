@@ -21,12 +21,11 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
     jmfy: [
       {
         title: "特殊时段查房统计报告",
-        path: "/checkWard/特殊时段查房统计报告",
         icon: <CFJHBG />,
         children: [
           {
             title: "月护长查房反馈表",
-            path: "/checkWard",
+            path: "/checkWard/月护长查房反馈表",
             component: 月护长查房反馈表,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"

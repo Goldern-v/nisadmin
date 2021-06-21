@@ -238,13 +238,14 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
 } else if (appStore.HOSPITAL_ID == 'lcey') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_lcey,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    // 新版审核管理
+    setLayout("/auditsManagement", AuditsManagementNewView, layouts.MainLayout),
     ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),

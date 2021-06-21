@@ -101,6 +101,13 @@ export default function 月护长查房反馈表() {
           <Option key={month}>{month}月</Option>
         ))}
       </Select>
+      <span>状态：</span>
+      <Select value={query.status}>
+        <Option value="">全部</Option>
+        <Option value="待护理部审核">待护理部审核</Option>
+        <Option value="通过">通过</Option>
+        <Option value="驳回">驳回</Option>
+      </Select>
       <Button
         className="mr-10"
         onClick={() => setQuery({ ...query, pageIndex: 1 })}>
