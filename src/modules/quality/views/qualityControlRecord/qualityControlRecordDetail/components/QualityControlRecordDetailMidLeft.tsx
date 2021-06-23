@@ -259,24 +259,33 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   </Radio.Group>
                   {detailData.master.useScore ? <div className="sub-item-list">
                     {item.qcItemValue === "否" && <React.Fragment>
-                      {item.subItemList.map((subItem: any, subItemIdx: number) => (
+                      {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
                         <div key={subItem.subItemCode}>
-                          <Radio
+                          <Checkbox
                             checked={subItem.checked}>
                             <span>{subItem.subItemBadDesc}</span>
                             <span> </span>
                             <span>({subItem.fixedScore})</span>
-                          </Radio>
+                          </Checkbox>
                         </div>
                       ))}
                       <div>
-                        <Radio
-                          checked={!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')}>
+                        <span
+                          style={{
+                            marginRight: '5px',
+                            marginLeft: '26px',
+                            verticalAlign: 'middle',
+                            color: 'rgba(0, 0, 0, 0.65)',
+                          }}>
                           自定义扣分
-                        </Radio>
+                        </span>
                         <Input
                           size="small"
-                          style={{ width: 80 }}
+                          style={{
+                            width: 80,
+                            display: 'inline-block',
+                            verticalAlign: 'middle'
+                          }}
                           readOnly
                           value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0} />
                       </div>

@@ -7,6 +7,7 @@ import qs from 'qs'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { ScrollBox } from 'src/components/common'
 interface RouteType {
   type: string
   component: any
@@ -68,7 +69,9 @@ export default function LeftMenu(props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
+
+// @ts-ignore
+const Wrapper = styled(ScrollBox)`
   height: 100%;
   background: url(${BG});
   background-size: 100% auto;

@@ -66,6 +66,43 @@ export default function QcThreeRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
         },
       ],
+      gzsrm: [
+        {
+          title: "护理质量巡查情况汇总表",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
+          component: 护理质量巡查情况汇总表Nys,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量检查小结?qcLevel=3",
+          component: appStore.hisMatch({
+            map: {
+              nys: 护理质量检查小结Nys,
+              other: 护理质量检查小结
+            }
+          }),
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "三级质控问题汇总",
+          icon: <WTBG />,
+          path: "/qcThree/problemSummary",
+          component: ProblemSummary
+        },
+        {
+          title: "检查表单统计表",
+          path: "/qcThree/queryStatistics",
+          icon: <JCTJ />,
+          component: QueryStatistics
+        },
+      ],
       wh: [
         {
           title: "三级质控月度报告",

@@ -31,7 +31,7 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "一级质控",
-    path: "/qcOne/nursingWorkPlainList"
+    path: "/qcOneHj"
   },
   {
     name: "二级质控",

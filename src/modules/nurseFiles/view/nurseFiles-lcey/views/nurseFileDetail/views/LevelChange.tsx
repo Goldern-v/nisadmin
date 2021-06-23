@@ -12,7 +12,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
 import limitUtils from '../utils/limit'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function LevelChange() {
   const editLevelChangeModal = createModal(EditLevelChangeModal)
   const btnList = [
@@ -103,10 +103,10 @@ export default observer(function LevelChange() {
                   ],
                   fileData: row.urlImageOne
                     ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
+                      return {
+                        ['附件' + (index + 1)]: item
+                      }
+                    })
                     : [],
                   allData: row
                 })
@@ -133,7 +133,7 @@ export default observer(function LevelChange() {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={305}
+        surplusHeight={315}
         type={['fixedWidth']}
         tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}
       />

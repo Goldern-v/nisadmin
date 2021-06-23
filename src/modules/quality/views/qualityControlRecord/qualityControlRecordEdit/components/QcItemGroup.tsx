@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Radio, Icon, Input, InputNumber, Row, Col } from 'antd'
+import { Button, Radio, Icon, Input, InputNumber, Row, Col, Checkbox } from 'antd'
 import { qualityControlRecordEditModel as qcModel, Emp, BedNurse } from './../model/QualityControlRecordEditModel'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const { TextArea } = Input
@@ -163,7 +163,7 @@ export default observer(function QcItemGroup(props: Props) {
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
             {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
               <div key={subItem.subItemCode}>
-                <Radio
+                <Checkbox
                   checked={subItem.checked}
                   onClick={() => {
                     let newSubItemList = [...item.subItemList]
@@ -172,13 +172,14 @@ export default observer(function QcItemGroup(props: Props) {
 
                     handleItemChange({
                       ...item,
+                      qcItemValue: !currentChecked ? '否' : item.qcItemValue,
                       subItemList: newSubItemList,
                     }, itemIndex)
                   }}>
                   <span>{subItem.subItemBadDesc}</span>
                   <span> </span>
                   <span>({subItem.fixedScore})</span>
-                </Radio>
+                </Checkbox>
               </div>
             ))}
             <div>
