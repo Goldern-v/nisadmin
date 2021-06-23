@@ -54,14 +54,14 @@ export default observer(function QcItemGroup(props: Props) {
       item.qcItemValue = val
 
       if (qcModel.baseInfo.useScore) {
-        if (val !== '否') {
-          if (item.subItemList) {
-            item.subItemList = item.subItemList.map((subItem: any) => ({
-              ...subItem,
-              checked: false,
-            }))
-            item.remarkDeductScore = ''
+        if (val === '否' && !item.subItemList) {
+          if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+            item.remarkDeductScore = item.fixedScore.toString()
           }
+        } else if (val === '是') {
+          item.remarkDeductScore = ''
+          if (item.subItemList)
+            item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
         }
       }
 
@@ -131,10 +131,25 @@ export default observer(function QcItemGroup(props: Props) {
           </Row>
         )}
         <div className='itemMidCon'>
-          <Radio.Group value={item.qcItemValue} buttonStyle='solid' onChange={(e: any) => {
-            qcModel.setItemListErrObj(item.qcItemCode, false)
-            handleItemValueChange(e.target.value, itemIndex)
-          }}>
+          <Radio.Group
+            value={item.qcItemValue}
+            buttonStyle='solid'
+            onChange={(e: any) => {
+              qcModel.setItemListErrObj(item.qcItemCode, false)
+
+              let newItem = { ...item, qcItemValue: e.target.value }
+              if (e.target.value === '否' && !newItem.subItemList) {
+                if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
+                  newItem.remarkDeductScore = newItem.fixedScore.toString()
+                }
+              } else if (e.target.value === '是') {
+                newItem.remarkDeductScore = ''
+                if (newItem.subItemList)
+                  newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+              }
+
+              handleItemChange({ ...newItem }, itemIndex)
+            }}>
             <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               是
             </Radio>
@@ -146,56 +161,49 @@ export default observer(function QcItemGroup(props: Props) {
             </Radio>
           </Radio.Group>
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
-            {item.subItemList && (<React.Fragment>
-              {item.subItemList.map((subItem: any, subItemIdx: number) => (
-                <div key={subItem.subItemCode}>
-                  <Radio
-                    checked={subItem.checked}
-                    onChange={(e) => {
-                      if (subItem.checked) return
-
-                      let newSubItemList = [...item.subItemList]
-                        .map((_subItem: any, _subItemIdx) => ({
-                          ..._subItem,
-                          checked: _subItemIdx === subItemIdx,
-                        }))
-
-                      handleItemChange({
-                        ...item,
-                        subItemList: newSubItemList,
-                        remarkDeductScore: '',
-                      }, itemIndex)
-                    }}>
-                    <span>{subItem.subItemBadDesc}</span>
-                    <span> </span>
-                    <span>({subItem.fixedScore})</span>
-                  </Radio>
-                </div>
-              ))}
-              <div>
+            {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
+              <div key={subItem.subItemCode}>
                 <Radio
-                  checked={!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')}
+                  checked={subItem.checked}
                   onClick={() => {
-                    if (!isNaN(item.remarkDeductScore) && (item.remarkDeductScore !== null && item.remarkDeductScore !== '')) return
+                    let newSubItemList = [...item.subItemList]
+                    let currentChecked = newSubItemList[subItemIdx].checked
+                    newSubItemList[subItemIdx].checked = !currentChecked
 
                     handleItemChange({
                       ...item,
-                      subItemList: item.subItemList.map((_subItem: any) => ({ ..._subItem, checked: false })),
-                      remarkDeductScore: '0',
+                      subItemList: newSubItemList,
                     }, itemIndex)
                   }}>
-                  自定义扣分
+                  <span>{subItem.subItemBadDesc}</span>
+                  <span> </span>
+                  <span>({subItem.fixedScore})</span>
                 </Radio>
-                <InputNumber
-                  size="small"
-                  disabled={isNaN(item.remarkDeductScore) && (item.remarkDeductScore === null && item.remarkDeductScore === '')}
-                  value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
-                  onChange={(val) => handleItemChange({
-                    ...item,
-                    remarkDeductScore: val?.toString() || '',
-                  }, itemIndex)} />
               </div>
-            </React.Fragment>)}
+            ))}
+            <div>
+              <span
+                style={{
+                  marginRight: '5px',
+                  marginLeft: '26px',
+                  verticalAlign: 'middle',
+                  color: 'rgba(0, 0, 0, 0.65)',
+                }}>
+                自定义扣分
+              </span>
+              <InputNumber
+                style={{
+                  display: 'inline-block',
+                  verticalAlign: 'middle'
+                }}
+                size="small"
+                min={0}
+                value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
+                onChange={(val) => handleItemChange({
+                  ...item,
+                  remarkDeductScore: val?.toString() || '',
+                }, itemIndex)} />
+            </div>
             <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}

@@ -314,14 +314,14 @@ class QualityControlRecordEditModel {
           item.qcItemValue = val
 
           if (this.baseInfo.useScore) {
-            if (val !== '否') {
-              if (item.subItemList) {
-                item.subItemList = item.subItemList.map((subItem: any) => ({
-                  ...subItem,
-                  checked: false,
-                }))
-                item.remarkDeductScore = ''
+            if (val === '否' && !item.subItemList) {
+              if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+                item.remarkDeductScore = item.fixedScore.toString()
               }
+            } else if (val === '是') {
+              item.remarkDeductScore = ''
+              if (item.subItemList)
+                item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
             }
           }
 

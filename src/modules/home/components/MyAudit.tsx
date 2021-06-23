@@ -35,12 +35,21 @@ export default function BedSituation() {
 
   const getMealList = () => {
     setLoadingTable(true);
-    HomeApi.pendingPage(1, 100, "nurseFile", '').then(res => {
-      setLoadingTable(false);
-      setTableData(res.data.list);
-    }).catch(e => {
-      console.log(e, "ee");
-    });
+    HomeApi
+      .pendingPage(1, 100,
+        appStore.hisMatch({
+          map: {
+            'hj,ys,dzlc,gyd': "nurseFile",
+            'wh,gzsrm': "nurseFileWh",
+            other: "nurseFileNys"
+          }
+        }), '')
+      .then(res => {
+        setLoadingTable(false);
+        setTableData(res.data.list);
+      }).catch(e => {
+        setLoadingTable(false);
+      });
   };
 
   useEffect(() => {
