@@ -6,8 +6,8 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button } from 'antd'
 
-export default function BedSituation () {
-  // 
+export default function BedSituation() {
+  //
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [getTableList, setGetTableList]: any = useState([])
@@ -81,10 +81,11 @@ export default function BedSituation () {
   }, [])
   emitter.removeAllListeners('护士排班按班次')
   emitter.addListener('护士排班按班次', () => {
-    
+
     postNurseByShiftViewMethod()
   })
-  function trClickChange (e: any) {
+
+  function trClickChange(e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
     allTr.forEach((item: any) => {
@@ -92,6 +93,7 @@ export default function BedSituation () {
     })
     parentNode.classList.add('addRowClass')
   }
+
   // Cache Td date
   const tdCacheDate = [
     { 序列: 1, 姓名: '杨好', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
@@ -108,7 +110,7 @@ export default function BedSituation () {
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
-      <td />
+      <td/>
     </tr>
   ))
   // th DOM
@@ -138,7 +140,7 @@ export default function BedSituation () {
   const SpaceShow = (
     <SpaceCon>
       <td style={{ width: '100%' }}>
-        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml'/>
         <div className='spaceFont'>暂无数据</div>
       </td>
     </SpaceCon>

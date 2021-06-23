@@ -13,6 +13,7 @@ import AddSubClass from "src/modules/personnelManagement/views/arrangeHome/page/
 import LeaveRecord from "src/modules/personnelManagement/views/arrangeHome/page/leaveRecord/LeaveRecord";
 import ArrangStatistics from "src/modules/personnelManagement/views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "src/modules/personnelManagement/views/arrangeHome/page/expectedRecord/ExpectedRecord";
+import 节假日设置 from "src/modules/setting/view/节假日设置";
 
 export interface meunConfigItem {
   title?: string;
@@ -35,10 +36,9 @@ export const meunConfig: meunConfigItem[] = [
         style: { background: "#fff" }
       },
       {
-        title: "临时人员借调",
-        path: "/personnelManagement/personnelSecondment",
-        component: PersonnelSecondment,
-        style: { background: "#fff" },
+        title: "排班人员设置",
+        path: "/personnelManagement/NurseSettingViewNew",
+        component: NurseSettingViewNew,
         hide: !authStore.isRoleManage
       },
       {
@@ -48,9 +48,10 @@ export const meunConfig: meunConfigItem[] = [
         hide: !authStore.isRoleManage
       },
       {
-        title: "排班人员设置",
-        path: "/personnelManagement/NurseSettingViewNew",
-        component: NurseSettingViewNew,
+        title: "临时人员借调",
+        path: "/personnelManagement/personnelSecondment",
+        component: PersonnelSecondment,
+        style: { background: "#fff" },
         hide: !authStore.isRoleManage
       },
       {
@@ -66,15 +67,9 @@ export const meunConfig: meunConfigItem[] = [
         hide: !authStore.isRoleManage
       },
       {
-        title: "加减班列表查询",
-        path: "/personnelManagement/addSubClass",
-        component: AddSubClass,
-        hide: !authStore.isRoleManage
-      },
-      {
-        title: "休假记录查询",
-        path: "/personnelManagement/leaveRecord",
-        component: LeaveRecord,
+        title: "节假日设置",
+        path: "/personnelManagement/节假日设置",
+        component: 节假日设置,
         hide: !authStore.isRoleManage
       },
       {
@@ -84,11 +79,23 @@ export const meunConfig: meunConfigItem[] = [
         hide: !authStore.isRoleManage
       },
       {
+        title: "休假记录查询",
+        path: "/personnelManagement/leaveRecord",
+        component: LeaveRecord,
+        hide: !authStore.isRoleManage
+      },
+      {
+        title: "加减班列表查询",
+        path: "/personnelManagement/addSubClass",
+        component: AddSubClass,
+        hide: !authStore.isRoleManage
+      },
+      {
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
         hide: !authStore.isRoleManage
-      }
+      },
     ]
   },
 ];

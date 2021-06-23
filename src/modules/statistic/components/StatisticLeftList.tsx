@@ -9,7 +9,7 @@ import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
 const LEFT_MENU_CONFIG = [
   {
     title: "排班统计",
-    icon: <PBTJ />,
+    icon: <PBTJ/>,
     children: [
       { title: "护士排班表", path: "/statistic/护士排班表" },
       {
@@ -62,7 +62,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: "护理人员统计",
-    icon: <HLRYTJ />,
+    icon: <HLRYTJ/>,
     children: [
       {
         title: "护士学历分布",
@@ -124,7 +124,7 @@ const LEFT_MENU_CONFIG = [
       nys: [
         {
           title: "护理质量统计",
-          icon: <HZCXTJ />,
+          icon: <HZCXTJ/>,
           path: "/statistic/护理质量统计",
         }
       ],
@@ -133,10 +133,11 @@ const LEFT_MENU_CONFIG = [
   })
 ];
 export default function BedSituation() {
-  useEffect(() => { });
+  useEffect(() => {
+  });
   return (
     <Con>
-      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="统计查询" />
+      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="统计查询"/>
     </Con>
   );
 }

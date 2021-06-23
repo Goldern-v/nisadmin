@@ -4,10 +4,13 @@ import { Radio, Checkbox } from 'antd'
 import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
 let classState: any = []
-export interface Props extends RouteComponentProps { }
+
+export interface Props extends RouteComponentProps {
+}
 
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState([])
@@ -37,6 +40,7 @@ export default function BedSituation(props: any) {
   }, [])
   emitter.emit('设置班次大类', classList)
   emitter.emit('设置自定义班次', checkboxItem)
+
   function onChange(e: any) {
     let target = e.target
     let targetValue = target.value
@@ -59,6 +63,7 @@ export default function BedSituation(props: any) {
       setClassList(cacheClassList)
     }
   }
+
   // checkbox变动
   function checkboxChange(e: any) {
     let target = e.target
@@ -92,12 +97,14 @@ export default function BedSituation(props: any) {
     setCheckboxItem([])
     checkboxItemState = []
   }
+
   function radioClickRight() {
     setRightChooseCheckboxShow([false, true])
     setCheckboxItem(checkboxItemStandard)
     checkboxItemState = [...checkboxItemStandard]
     setClassList([])
   }
+
   // 组件
   const RightChooseByShiftCheckbox = (
     <div className='RightChooseByShiftCheckbox'>

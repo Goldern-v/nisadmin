@@ -18,7 +18,9 @@ import { arrangStatisticsService } from "./services/ArrangStatisticsService";
 import BaseTable from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
 
-export interface Props { }
+export interface Props {
+}
+
 export default observer(function ArrangStatistics() {
   const [date, setDate]: any = useState(getCurrentMonth());
   const [dataSource, setDataSource] = useState([]);
@@ -37,10 +39,20 @@ export default observer(function ArrangStatistics() {
 
   const columns_1: ColumnProps<any>[] | any = [
     {
+      title: "序号",
+      dataIndex: "",
+      key: "",
+      render: (text: any, record: any, index: number) => index + 1,
+      align: "center",
+      width: 60,
+      fixed: 'left',
+    },
+    {
       title: "姓名",
       dataIndex: "姓名",
       width: 80,
-      align: "center"
+      align: "center",
+      fixed: 'left',
     },
     ...Object.keys(dataSource[0] || {})
       .filter(item => !(item == "姓名" || item == "合计" || item == "序列"))
@@ -131,8 +143,8 @@ export default observer(function ArrangStatistics() {
     showType == "班次统计"
       ? columns_1
       : showType == "工时统计"
-        ? columns_2
-        : [];
+      ? columns_2
+      : [];
 
   const onLoad = () => {
     if (showType == "班次统计") {
@@ -177,7 +189,7 @@ export default observer(function ArrangStatistics() {
     <Wrapper>
       <PageHeader>
         <PageTitle>排班统计</PageTitle>
-        <Place />
+        <Place/>
         <span className="label">日期:</span>
         <DatePicker.RangePicker
           allowClear={false}
@@ -186,7 +198,8 @@ export default observer(function ArrangStatistics() {
           onChange={(value: any) => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => { }} />
+        <DeptSelect onChange={() => {
+        }}/>
         <span className="label">类型:</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>
           {showTypeList.map(item => (
@@ -204,7 +217,6 @@ export default observer(function ArrangStatistics() {
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}
-          type={["index"]}
           surplusHeight={180}
           surplusWidth={220}
         />

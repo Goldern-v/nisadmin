@@ -47,7 +47,7 @@ export default function PersonelSecondModal(props: Props) {
     data.deptNameTransferTo = (deptList.find((item: any) => item.code == data.deptCodeTransferTo) as any)!.name
     data.startDate = moment(data.startDate).format('YYYY-MM-DD')
     /** 保存接口 */
-    globalModal.confirm('确定要保存吗？', '保存后会立即将该护士借出。').then((res) => {
+    globalModal.confirm('确定要保存吗？', '保存后，该护士会在指定日期自动借出。').then((res) => {
       personelSecondServices.saveOrUpdate(data).then((res: any) => {
         message.success('保存成功')
         props.onOkCallBack && props.onOkCallBack()

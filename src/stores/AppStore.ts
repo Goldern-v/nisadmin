@@ -29,6 +29,7 @@ export default class AppStore {
       this.wid = window.innerWidth;
     };
   }
+
   @observable public isExpand: "1" | "0" = "1";
   @observable private appToken: string | null = null;
 
@@ -83,10 +84,11 @@ export default class AppStore {
       return require("src/assets/images/南医三logo.png");
     } else if (this.HOSPITAL_ID == "dgxg") {
       return require("src/assets/images/东莞谢岗.png");
-    }else {
+    } else {
       return require("src/assets/images/logo.png");
     }
   }
+
   /** url 参数 */
   @computed
   public get query() {
@@ -127,6 +129,7 @@ export default class AppStore {
   openFullLoadingBar(option: FullLoadingBarObj) {
     this.fullLoadingBarObj = option;
   }
+
   /**
    * 关闭全局进度条
    * @param okText 状态
@@ -150,6 +153,7 @@ export default class AppStore {
       }, delay || 200);
     });
   }
+
   /** 关闭全局进度条 */
   closeFullLoadingBarInFail(failText?: string) {
     return new Promise<void>((resolve, reject) => {

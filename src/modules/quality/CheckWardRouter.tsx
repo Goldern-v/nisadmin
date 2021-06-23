@@ -3,7 +3,10 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { Provider, KeepAlive } from "react-keep-alive";
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+
+export interface Props extends RouteComponentProps<{ name?: string }> {
+}
+
 import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
 import { ReactComponent as CFJHBG } from "./images/icon/CFJHBG.svg";
@@ -53,7 +56,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
       },
       {
         title: "特殊时段查房统计报告",
-        icon: <CFJHBG />,
+        icon: <CFJHBG/>,
         children: [
           {
             title: "月护长查房反馈表",
@@ -168,3 +171,4 @@ const MainCon = styled.div`
   display: flex;
   flex-direction: column;
 `;
+// ts-ignore

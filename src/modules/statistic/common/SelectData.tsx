@@ -8,7 +8,7 @@ const { RangePicker } = DatePicker
 import emitter from 'src/libs/ev'
 
 const dateFormat = 'YYYY-MM-DD'
-export default function SelectData () {
+export default function SelectData() {
   const [startDate, setStartDate] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
@@ -42,6 +42,32 @@ export default function SelectData () {
           emitter.emit('设置统计页日期', value)
         }}
         format={dateFormat}
+        ranges={{
+          '本周': [
+            moment().startOf('week'),
+            moment().endOf('week')
+          ],
+          '上一周': [
+            moment().subtract(1, 'w').startOf('week'),
+            moment().subtract(1, 'w').endOf('week')
+          ],
+          '下一周': [
+            moment().add(1, 'w').startOf('week'),
+            moment().add(1, 'w').endOf('week')
+          ],
+          '本月': [
+            moment().startOf('months'),
+            moment().endOf('months')
+          ],
+          '上一月': [
+            moment().subtract(1, 'M').startOf('months'),
+            moment().subtract(1, 'M').endOf('months')
+          ],
+          '下一月': [
+            moment().add(1, 'M').startOf('months'),
+            moment().add(1, 'M').endOf('months')
+          ],
+        }}
       />
     </SelectCon>
   )
