@@ -3,8 +3,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { Provider, KeepAlive } from "react-keep-alive";
-export interface Props extends RouteComponentProps<{ name?: string }> { }
-
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
 import { ReactComponent as CFJHBG } from "./images/icon/CFJHBG.svg";
@@ -13,12 +12,45 @@ import RecordView from "./views/checkWard/view/record/RecordView";
 import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import CheckWardReportView from "./views/checkWard/view/report/CheckWardReportView";
 import 月护长查房反馈表 from './views/特殊时段查房统计报告_jmfy/月护长查房反馈表/月护长查房反馈表'
-
 import { appStore } from "src/stores";
+import DutyRecord from './views/dutyRecord'
+import ScoringRecord from './views/scoringRecord'
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
     jmfy: [
+      {
+        title: '特殊时段值班记录',
+        icon: <CFJL/>,
+        children: [
+          {
+            title: '护士长值班表',
+            path: '/checkWard/headNurse',
+            component: () => <DutyRecord type='1'/>,
+          },
+          {
+            title: '门诊夜诊护士值班表',
+            path: '/checkWard/nurse',
+            component: () => <DutyRecord type='2'/>,
+          },
+          {
+            title: '产科二值值班表',
+            path: '/checkWard/obstetrics',
+            component: () => <DutyRecord type='3'/>
+          },
+          {
+            title: '儿科二值值班表',
+            path: '/checkWard/pediatrics',
+            component: () => <DutyRecord type='4'/>
+          },
+        ]
+      },
+      {
+        title: "护长日查房评分记录",
+        path: "/checkWard/scoringRecord",
+        icon: <CFJL/>,
+        component: ScoringRecord
+      },
       {
         title: "特殊时段查房统计报告",
         icon: <CFJHBG />,
@@ -37,7 +69,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
       {
         title: "特殊时段查房记录",
         path: "/checkWard",
-        icon: <CFJL />,
+        icon: <CFJL/>,
         component: RecordView,
         keepAlive: true,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
@@ -45,7 +77,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
       {
         title: "特殊时段计划表",
         path: "/checkWard/schedule",
-        icon: <CFJHB />,
+        icon: <CFJHB/>,
         component: ScheduleView
       },
       // {
@@ -57,7 +89,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
       {
         title: "特殊时段查房统计报告",
         path: "/checkWard/checkWardReportList",
-        icon: <CFJHBG />,
+        icon: <CFJHBG/>,
         component: CheckWardReportList,
         keepAlive: true,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
@@ -69,9 +101,11 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 //CheckWardReportList
 
 export default function CheckWardRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname]);
+  useEffect(() => {
+  }, [props.history.location.pathname]);
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
+
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -94,25 +128,25 @@ export default function CheckWardRouter(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} />
+        <LeftMenu config={LEFT_MENU_CONFIG}/>
       </LeftMenuCon>
       <MainCon>
         {currentRoute &&
-          currentRoute.component &&
-          (currentRoute.keepAlive ? (
-            <KeepAlive
-              name={currentRoute.path}
-              disabled={currentRoute.disabledKeepAlive}
-            >
-              <currentRoute.component
-                getTitle={currentRoute && currentRoute.title}
-              />
-            </KeepAlive>
-          ) : (
+        currentRoute.component &&
+        (currentRoute.keepAlive ? (
+          <KeepAlive
+            name={currentRoute.path}
+            disabled={currentRoute.disabledKeepAlive}
+          >
             <currentRoute.component
               getTitle={currentRoute && currentRoute.title}
             />
-          ))}
+          </KeepAlive>
+        ) : (
+          <currentRoute.component
+            getTitle={currentRoute && currentRoute.title}
+          />
+        ))}
       </MainCon>
     </Wrapper>
   );

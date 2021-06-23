@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+
 export interface Props {
   config: any;
   menuTitle?: string;
@@ -81,7 +82,7 @@ export default observer(function LeftMenu(props: Props) {
                   </AddIcon>
                 )}
                 <span className="selected-arrow">
-                  <img src={require("./images/菜单选中右箭头.png")} alt="" />
+                  <img src={require("./images/菜单选中右箭头.png")} alt=""/>
                 </span>
               </span>
             </Menu.Item>
