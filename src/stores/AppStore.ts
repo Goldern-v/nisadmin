@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg" | "yczyy";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {

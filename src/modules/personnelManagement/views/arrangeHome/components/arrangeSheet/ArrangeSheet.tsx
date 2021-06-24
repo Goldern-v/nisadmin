@@ -68,7 +68,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center"
       }]
       : []
-  ;
+    ;
 
   const nysHandleDel =
     appStore.HOSPITAL_ID == "nys" && isEdit
@@ -86,7 +86,7 @@ export default observer(function ArrangeSheet(props: Props) {
         }
       }]
       : []
-  ;
+    ;
 
 
   let columns: any = [
@@ -153,7 +153,7 @@ export default observer(function ArrangeSheet(props: Props) {
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
-        title: <Th date={date}/>,
+        title: <Th date={date} />,
         width: 70,
         render(text: any, record: any) {
           return (
@@ -181,7 +181,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 70,
       align: "center",
       render(text: string, record: any) {
-        return <TotalCell id={record.id}/>;
+        return <TotalCell id={record.id} />;
       }
     }
   ];
@@ -198,7 +198,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 70,
       align: "center",
       render(text: string, record: any) {
-        return <NightHourCell id={record.id}/>;
+        return <NightHourCell id={record.id} />;
       }
     });
   }
@@ -287,7 +287,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <NightHourCell id={record.id}/>;
+          return <NightHourCell id={record.id} />;
         }
       },
       {
@@ -300,7 +300,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <BalanceHour id={record.id}/>;
+          return <BalanceHour id={record.id} />;
         }
       },
       {
@@ -313,7 +313,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <PublicHour id={record.id}/>;
+          return <PublicHour id={record.id} />;
         }
       },
       {
@@ -326,7 +326,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <HolidayHour id={record.id}/>;
+          return <HolidayHour id={record.id} />;
         }
       }
     );
@@ -345,7 +345,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <NightHourCell id={record.id}/>;
+          return <NightHourCell id={record.id} />;
         }
       },
       {
@@ -358,7 +358,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <TotalHoliday id={record.id}/>;
+          return <TotalHoliday id={record.id} />;
         }
       },
       {
@@ -371,7 +371,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <PublicHour id={record.id}/>;
+          return <PublicHour id={record.id} />;
         }
       },
       {
@@ -384,7 +384,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <HolidayHour id={record.id}/>;
+          return <HolidayHour id={record.id} />;
         }
       }
     );
@@ -403,7 +403,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <BalanceHour id={record.id}/>;
+          return <BalanceHour id={record.id} />;
         }
       },
       {
@@ -416,7 +416,7 @@ export default observer(function ArrangeSheet(props: Props) {
         width: 70,
         align: "center",
         render(text: string, record: any) {
-          return <PublicHour id={record.id}/>;
+          return <PublicHour id={record.id} />;
         }
       }
     );
@@ -461,8 +461,8 @@ export default observer(function ArrangeSheet(props: Props) {
           ).style.width =
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({
+                yczyy: () => 2,
                 nys: () => isEdit ? 6 : 5,
-                hj: () => 3,
                 wh: () => 6,
                 jmfy: () => 6,
                 dghl: () => 5,
@@ -477,9 +477,9 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(false);
         } else {
           (document as any).querySelector("#arrangeSheet #baseTable") &&
-          ((document as any).querySelector(
-            "#arrangeSheet #baseTable"
-          ).style.width = "auto");
+            ((document as any).querySelector(
+              "#arrangeSheet #baseTable"
+            ).style.width = "auto");
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
@@ -622,11 +622,11 @@ export default observer(function ArrangeSheet(props: Props) {
           moveRow={moveRow}
         />
       )}
-      <contextMenu.Component/>
-      <editEffectiveTimeModal.Component/>
-      <editVacationCountModal.Component/>
-      <addAccumulativeLeaveModal.Component/>
-      <addRemakeModal.Component/>
+      <contextMenu.Component />
+      <editEffectiveTimeModal.Component />
+      <editVacationCountModal.Component />
+      <addAccumulativeLeaveModal.Component />
+      <addRemakeModal.Component />
     </Wrapper>
   );
 });
@@ -758,7 +758,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-        getWeekString(date).indexOf("日") > -1
+          getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }

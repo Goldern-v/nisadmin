@@ -66,7 +66,7 @@ export default function QcThreeRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
         },
       ],
-      gzsrm: [
+      'gzsrm,yczyy': [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
@@ -214,7 +214,8 @@ export default function QcThreeRouter(props: Props) {
           component: QueryStatistics
         },
       ]
-    }
+    },
+    vague: true,
   })
 
   const LEFT_MENU_CONFIG: any = [
