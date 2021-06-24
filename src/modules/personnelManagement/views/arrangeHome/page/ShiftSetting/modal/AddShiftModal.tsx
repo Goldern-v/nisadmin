@@ -138,9 +138,9 @@ export default function AddShiftModal(props: Props) {
               name: "",
               shiftType: "",
               workTime1: moment('8:00', 'HH:mm'),
-              workTime2: moment('16:00', 'HH:mm'),
-              workTime3: undefined,
-              workTime4: undefined,
+              workTime2: moment('12:00', 'HH:mm'),
+              workTime3: moment('14:00', 'HH:mm'),
+              workTime4: moment('18:00', 'HH:mm'),
               effectiveTime: "8",
               nameColor: "",
               status: true,
@@ -155,6 +155,14 @@ export default function AddShiftModal(props: Props) {
 
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (appStore.HOSPITAL_ID === 'lcey') {
+      if (['workTime1', 'workTime2', 'workTime3', 'workTime4'].includes(name)) {
+        const { workTime1, workTime2, workTime3, workTime4 } = form.getFields()
+        const time1 = (workTime1 && workTime2) ? workTime2.diff(workTime1, "h") : 0
+        const time2 = (workTime3 && workTime4) ? workTime4.diff(workTime3, "h") : 0
+        form.setField("effectiveTime", time1 + time2);
+      }
+    }
     // 之前有的标准工时计算 现在有两个时间段不自动计算
     /*if (name === "workTime") {
       let hour: any = 0;
@@ -198,8 +206,7 @@ export default function AddShiftModal(props: Props) {
           ref={refForm}
           rules={rules}
           labelWidth={80}
-          onChange={props.type && props.type == "nys" ? onFormChange : () => {
-          }}
+          onChange={onFormChange}
         >
           <Row>
             <Col span={24}>
