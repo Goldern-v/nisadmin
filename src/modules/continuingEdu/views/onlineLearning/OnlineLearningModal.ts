@@ -4,7 +4,8 @@ import { appStore } from "src/stores";
 
 class OnlineLearningModal {
   @observable public selectedDate: any = []; //日期
-  @observable public taskStatus: any = 0; //状态
+  @observable public taskStatus: any = ''; //状态
+  @observable public taskStatus2: any = ''; //工作反思状态
   @observable public teachingMethod = null; //类型
   @observable public tpStatus = "tobeginAndongoing"; //状态
   @observable public pageIndex: any = 1; //页码
@@ -63,7 +64,9 @@ class OnlineLearningModal {
     this.tableLoading = true;
     let res = null
     if (appStore.HOSPITAL_ID === 'hj' && this.teachingMethod === 6) {
-      res = await onlineLearningApi.getMyWorkList(this.postObj)
+      const params = { ...this.postObj }
+      params.taskStatus = this.taskStatus2
+      res = await onlineLearningApi.getMyWorkList(params)
     } else {
       res = await onlineLearningApi.queryPageList(this.postObj)
     }
@@ -79,7 +82,9 @@ class OnlineLearningModal {
     onlineLearningApi.getTaskCount(this.getTaskCountObj).then(res => {
       this.taskCount = res.data;
     });
-    onlineLearningApi.getWorkTaskCount(this.getTaskCountObj).then(res => {
+    const params = { ...this.getTaskCountObj }
+    params.taskStatus = this.taskStatus2
+    onlineLearningApi.getWorkTaskCount(params).then(res => {
       this.taskCount.workReviewCount = res.data.workReviewCount
     });
   }

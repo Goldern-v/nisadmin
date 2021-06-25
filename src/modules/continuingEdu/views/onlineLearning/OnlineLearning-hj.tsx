@@ -105,9 +105,9 @@ export default observer(function OnlineLearning(props: Props) {
             onlineLearningModal.key === '7' ?
               <Select
                 style={{ width: 140, marginRight: 15 }}
-                value={onlineLearningModal.taskStatus}
+                value={onlineLearningModal.taskStatus2}
                 onChange={(val: string) => {
-                  onlineLearningModal.taskStatus = val;
+                  onlineLearningModal.taskStatus2 = val;
                   onlineLearningModal.pageIndex = 1;
                   onlineLearningModal.getTaskCount();
                   onlineLearningModal.onload();
