@@ -314,7 +314,7 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
-        {appStore.HOSPITAL_ID == "hj" && (
+        {['hj', 'dgxg'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={findSysnNurse}>同步排班人员</Button>
           </div>

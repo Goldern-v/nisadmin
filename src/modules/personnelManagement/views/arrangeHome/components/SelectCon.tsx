@@ -50,24 +50,24 @@ export default observer(function SelectCon() {
   const showStandardTimeModal = createModal(ShowStandardTimeModal);
 
   /** 日期*/
-  // 获取星期一
+    // 获取星期一
   let getMonday = () => {
-    let today: any = new Date();
-    let weekday = today.getDay();
-    let dd = new Date(1000 * 60 * 60 * 24 * (1 - weekday) + today.getTime());
-    let y = dd.getFullYear();
-    let m: any = dd.getMonth() + 1; //获取当前月份的日期
-    m = parseInt(m, 10);
-    if (m < 10) {
-      m = "0" + m;
-    }
-    let d: any = dd.getDate();
-    d = parseInt(d, 10);
-    if (d < 10) {
-      d = "0" + d;
-    }
-    return y + "-" + m + "-" + d;
-  };
+      let today: any = new Date();
+      let weekday = today.getDay();
+      let dd = new Date(1000 * 60 * 60 * 24 * (1 - weekday) + today.getTime());
+      let y = dd.getFullYear();
+      let m: any = dd.getMonth() + 1; //获取当前月份的日期
+      m = parseInt(m, 10);
+      if (m < 10) {
+        m = "0" + m;
+      }
+      let d: any = dd.getDate();
+      d = parseInt(d, 10);
+      if (d < 10) {
+        d = "0" + d;
+      }
+      return y + "-" + m + "-" + d;
+    };
   // 获取星期日
   let getSunday = () => {
     var today = new Date();
@@ -224,6 +224,8 @@ export default observer(function SelectCon() {
           printModal.printArrangeNys(visibleArr)
         }
       })
+    } else if (appStore.HOSPITAL_ID == "dgxg") {
+      printModal.printArrangeDgxg();
     } else {
       printModal.printArrange();
     }
@@ -332,7 +334,7 @@ export default observer(function SelectCon() {
         <div className="item">
           <div className="label">科室：</div>
           <div className="content">
-            <DeptSelect onChange={handleChange} style={{ width: 160 }} />
+            <DeptSelect onChange={handleChange} style={{ width: 160 }}/>
           </div>
         </div>
         <div className="item">
@@ -404,50 +406,50 @@ export default observer(function SelectCon() {
                   setModalVisible(false)
                   sheetViewModal.getSheetTableData()
                 }}
-                onCancel={() => setModalVisible(false)} />
+                onCancel={() => setModalVisible(false)}/>
             </React.Fragment>
           }
         })}
         {appStore.HOSPITAL_ID == "nys" &&
-          (authStore.isDepartment || authStore.isSupervisorNurse) && (
-            <div className="item export">
-              <Select
-                style={{ width: '160px' }}
-                mode="multiple"
-                maxTagCount={0}
-                allowClear={true}
-                showSearch
-                placeholder='选择批量导出科室'
-                filterOption={(input: any, option: any) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
-                }
-                onChange={(val: any[]) => {
-                  sheetViewModal.deptCodeList = val
-                }}
-                value={sheetViewModal.deptCodeList}
-              >
-                {sheetViewModal.deptList.map((item: any) => (
-                  <Select.Option value={item.code} key={item.name}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-              <span onClick={() => handleExport()}>批量导出</span>
-            </div>
-          )}
+        (authStore.isDepartment || authStore.isSupervisorNurse) && (
+          <div className="item export">
+            <Select
+              style={{ width: '160px' }}
+              mode="multiple"
+              maxTagCount={0}
+              allowClear={true}
+              showSearch
+              placeholder='选择批量导出科室'
+              filterOption={(input: any, option: any) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+              onChange={(val: any[]) => {
+                sheetViewModal.deptCodeList = val
+              }}
+              value={sheetViewModal.deptCodeList}
+            >
+              {sheetViewModal.deptList.map((item: any) => (
+                <Select.Option value={item.code} key={item.name}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+            <span onClick={() => handleExport()}>批量导出</span>
+          </div>
+        )}
         {appStore.HOSPITAL_ID == "wh" &&
-          (authStore.isDepartment || authStore.isSupervisorNurse) && (
-            <div className="item">
-              <Dropdown.Button
-                className="statistics getExcel"
-                overlay={bigDeptmenu}
-              >
-                导出片区
+        (authStore.isDepartment || authStore.isSupervisorNurse) && (
+          <div className="item">
+            <Dropdown.Button
+              className="statistics getExcel"
+              overlay={bigDeptmenu}
+            >
+              导出片区
             </Dropdown.Button>
-            </div>
-          )}
+          </div>
+        )}
         {appStore.HOSPITAL_ID == "wh" && (
           <div className="item">
             <Button
@@ -468,7 +470,7 @@ export default observer(function SelectCon() {
                   onClick={toPrint}
                 >
                   打印
-            </Button>
+                </Button>
               </div>
             ),
             default: <span></span>
@@ -487,7 +489,7 @@ export default observer(function SelectCon() {
         <span> | </span>
         <span onClick={() => toPath('/personnelManagement/mealSetting')}>排班套餐设置</span>
       </RightIcon> */}
-      <showStandardTimeModal.Component />
+      <showStandardTimeModal.Component/>
     </Wrapper>
   );
 });

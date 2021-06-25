@@ -18,7 +18,10 @@ import { Rules } from "src/components/Form/interfaces";
 import { InputNumber, TimePicker } from "src/vendors/antd";
 import { ArrangeItem } from "../types/Sheet";
 import moment from "moment";
+import { appStore } from "src/stores";
+
 const Option = Select.Option;
+
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: (value?: any) => {};
@@ -127,22 +130,22 @@ export default function EditEffectiveTimeModal(props: Props) {
           <Row>
             <Col span={15}>
               <Form.Field label={`开始时间`} name="startDate_1" required>
-                <DatePicker disabled={true} />
+                <DatePicker disabled={true}/>
               </Form.Field>
             </Col>
             <Col span={9}>
               <Form.Field label={``} name="startDate_2" labelWidth={1}>
-                <TimePicker format={"HH:mm"} />
+                <TimePicker format={"HH:mm"}/>
               </Form.Field>
             </Col>
             <Col span={15}>
               <Form.Field label={`结束时间`} name="endDate_1" required>
-                <DatePicker disabled={true} />
+                <DatePicker disabled={true}/>
               </Form.Field>
             </Col>
             <Col span={9}>
               <Form.Field label={``} name="endDate_2" labelWidth={1}>
-                <TimePicker format={"HH:mm"} />
+                <TimePicker format={"HH:mm"}/>
               </Form.Field>
             </Col>
           </Row>
@@ -156,23 +159,23 @@ export default function EditEffectiveTimeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`工时`} name="effectiveTime" required>
-              <InputNumber readOnly={true} />
+              <InputNumber readOnly={appStore.HOSPITAL_ID !== 'dghl'}/>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`白工时`} name="settingMorningHour">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`夜工时`} name="settingNightHour">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
 
           <Col span={24}>
             <Form.Field label={`备注`} name="detail">
-              <Input.TextArea />
+              <Input.TextArea/>
             </Form.Field>
           </Col>
         </Row>

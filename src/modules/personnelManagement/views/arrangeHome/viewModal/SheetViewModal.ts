@@ -171,6 +171,10 @@ class SheetViewModal {
           cellObj.effectiveTimeOld &&
           cellObj.effectiveTime &&
           cellObj.effectiveTimeOld < cellObj.effectiveTime,
+        dghl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
         wh: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
