@@ -106,7 +106,7 @@ export default observer(function QcItemGroup(props: Props) {
     {itemGroup.itemList.map((item: any, itemIndex: number) => (
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
-          {item.itemShowCode} {item.qcNameFill || item.qcItemName} {item.fixedScore ? <span style={{ color: '#999' }}>{`（${item.fixedScore}分）`}</span> : ''}
+          {item.itemShowCode} {item.qcNameFill || item.qcItemName} {item.qcItemDeductDesc ? <span style={{ color: '#999' }}>{`（${item.qcItemDeductDesc}）`}</span> : ''}
         </div>
         {item.fillDataList && (
           <Row gutter={10}>
@@ -162,24 +162,29 @@ export default observer(function QcItemGroup(props: Props) {
           </Radio.Group>
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
             {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
-              <div key={subItem.subItemCode}>
-                <Checkbox
-                  checked={subItem.checked}
-                  onClick={() => {
-                    let newSubItemList = [...item.subItemList]
-                    let currentChecked = newSubItemList[subItemIdx].checked
-                    newSubItemList[subItemIdx].checked = !currentChecked
+              <div
+                key={subItem.subItemCode}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  let newSubItemList = [...item.subItemList]
+                  let currentChecked = newSubItemList[subItemIdx].checked
+                  newSubItemList[subItemIdx].checked = !currentChecked
 
-                    handleItemChange({
-                      ...item,
-                      qcItemValue: !currentChecked ? '否' : item.qcItemValue,
-                      subItemList: newSubItemList,
-                    }, itemIndex)
-                  }}>
-                  <span>{subItem.subItemBadDesc}</span>
-                  <span> </span>
-                  <span>({subItem.fixedScore})</span>
-                </Checkbox>
+                  handleItemChange({
+                    ...item,
+                    qcItemValue: !currentChecked ? '否' : item.qcItemValue,
+                    subItemList: newSubItemList,
+                  }, itemIndex)
+                }}>
+                <Icon
+                  type="close-square"
+                  style={{
+                    color: subItem.checked ? 'red' : '#999',
+                    fontSize: '16px',
+                    verticalAlign: 'middle',
+                    marginRight: '10px'
+                  }} />
+                <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
               </div>
             ))}
             <div>

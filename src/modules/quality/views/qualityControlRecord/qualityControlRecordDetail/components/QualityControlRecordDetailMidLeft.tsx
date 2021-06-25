@@ -261,12 +261,15 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     {item.qcItemValue === "否" && <React.Fragment>
                       {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
                         <div key={subItem.subItemCode}>
-                          <Checkbox
-                            checked={subItem.checked}>
-                            <span>{subItem.subItemBadDesc}</span>
-                            <span> </span>
-                            <span>({subItem.fixedScore})</span>
-                          </Checkbox>
+                          <Icon
+                            type="close-square"
+                            style={{
+                              color: subItem.checked ? 'red' : '#999',
+                              fontSize: '16px',
+                              verticalAlign: 'middle',
+                              marginRight: '10px'
+                            }} />
+                          <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
                         </div>
                       ))}
                       <div>

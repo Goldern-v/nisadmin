@@ -7,7 +7,7 @@ import { AuditInfoPannel, BaseInfoPannel, ButtonGroups, MainPannel, MainTitle, N
 import { Link } from 'react-router-dom'
 export interface Props { }
 
-export default observer(function 月护长查房反馈表详情() {
+export default observer(function 护长日查房反馈表详情() {
   const { queryObj, history } = appStore
   const [editable, setEditable] = useState(false)
   const [baseInfo, setBaseInfo] = useState({} as any)

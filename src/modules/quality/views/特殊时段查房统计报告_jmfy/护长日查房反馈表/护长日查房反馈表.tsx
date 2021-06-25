@@ -8,6 +8,7 @@ import { appStore } from 'src/stores'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { Place } from 'src/components/common'
 import YearPicker from 'src/components/YearPicker'
+import { dayNursingCheckWard } from './services/护长日查房反馈表_service'
 
 const Option = Select.Option
 
@@ -18,10 +19,11 @@ export default function 护长日查房反馈表() {
 
   const [query, setQuery] = useState({
     year: moment().format('YYYY'),
-    month: '',
+    month: moment().format('M'),
     status: '',
     pageIndex: 1,
     pageSize: 20,
+    date: '',
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -50,10 +52,29 @@ export default function 护长日查房反馈表() {
     },
   ]
 
+  const getMonthDates = () => {
+    if (!query.month) {
+      return []
+    } else {
+      let fullDate = moment(`${query.year}-${Number(query.month) + 1}-1`).subtract(1).get('date')
+      let dateArr = []
+      do {
+        dateArr.unshift(fullDate.toString())
+        fullDate--
+      } while (fullDate > 0)
+      return dateArr
+    }
+  }
+
   const getTableData = () => {
     setLoading(true)
-    console.log('getTableData', query)
-    setLoading(false)
+
+    dayNursingCheckWard.queryList(query)
+      .then(res => {
+        setLoading(false)
+        setTableData(res.data.list)
+        setTotal(res.data.totalCount || 0)
+      }, () => setLoading(false))
   }
 
   const handleDetail = (record: any) => {
@@ -67,6 +88,8 @@ export default function 护长日查房反馈表() {
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP')
       getTableData()
+
+    return () => { }
   })
 
   return <Wrapper>
@@ -94,15 +117,32 @@ export default function 护长日查房反馈表() {
           setQuery({
             ...query,
             pageIndex: 1,
-            month
+            month,
+            date: ''
           })}>
         <Option value="">全部</Option>
         {monthList.map((month: string) => (
           <Option key={month}>{month}月</Option>
         ))}
       </Select>
+      <span>日期：</span>
+      <Select
+        className="mr-10"
+        style={{ width: 75 }}
+        value={query.date}
+        onChange={(date: string) =>
+          setQuery({
+            ...query,
+            pageIndex: 1,
+            date
+          })}>
+        <Option value="">全部</Option>
+        {getMonthDates().map((date: string) => (
+          <Option key={date} value={date}>{date}日</Option>
+        ))}
+      </Select>
       <span>状态：</span>
-      <Select value={query.status}>
+      <Select value={query.status} className="mr-10">
         <Option value="">全部</Option>
         <Option value="待护理部审核">待护理部审核</Option>
         <Option value="通过">通过</Option>

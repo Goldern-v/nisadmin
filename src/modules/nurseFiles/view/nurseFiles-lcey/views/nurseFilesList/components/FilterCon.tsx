@@ -4,6 +4,7 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
 import { Button, Tag } from "antd";
 import { theme } from "src/styles/theme";
+import { CURRENTLEVEL_LIST } from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal";
 
 const FILTER_MAP: any = {
   学历: ["全部", "中专", "大专", "本科", "研究生", "博士"],
@@ -16,7 +17,7 @@ const FILTER_MAP: any = {
     "副主任护师",
     "主任护师"
   ],
-  层级: ["全部", "N0", "N1", "N2", "N3", "N4", "N5", "N6"],
+  层级: ["全部", ...CURRENTLEVEL_LIST],
   职务: [
     "全部",
     "无",
