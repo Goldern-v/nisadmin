@@ -597,9 +597,18 @@ export default observer(function Cell(props: Props) {
 });
 
 function formatCell(cellObj: ArrangeItem, isEdit = false) {
-  const Con = styled.span<{ color: string | undefined }>`
-    color: ${p => p.color};
-  `;
+  const Con = appStore.hisMatch({
+    map: {
+      // 谢岗： 除了黑色和灰色 其它字体都加粗
+      'dgxg': styled.span<{ color: string | undefined }>`
+        color: ${p => p.color};
+        font-weight: ${p => ['#333333', '#999999'].includes(p.color || '') ? 'unset' : 'bold'}; 
+      `,
+      default: styled.span<{ color: string | undefined }>`
+        color: ${p => p.color}; 
+      `
+    }
+  })
   const isHidden = appStore.hisMatch({
     map: {
       // 江门妇幼 普通用户 && cellObj.status === "" 或 "0"
