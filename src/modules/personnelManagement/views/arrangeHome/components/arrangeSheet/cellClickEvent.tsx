@@ -166,6 +166,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.addSymbols = [];
   cellObj.statusType = "0";
   cellObj.schRemarks = [];
+  cellObj.schJiJias = [];
 
   if (appStore.HOSPITAL_ID == "wh") {
     cellObj.schAddOrSubs = [];
