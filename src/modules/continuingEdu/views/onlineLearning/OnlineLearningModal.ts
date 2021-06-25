@@ -108,6 +108,7 @@ class OnlineLearningModal {
     const arr: any = [null, 1, 2, 3, 4, "finished", 6];
     let res = arr[key - 1];
     if (res === "finished") {
+      this.teachingMethod = res;
       this.tpStatus = "finished";
     } else {
       this.teachingMethod = res;
