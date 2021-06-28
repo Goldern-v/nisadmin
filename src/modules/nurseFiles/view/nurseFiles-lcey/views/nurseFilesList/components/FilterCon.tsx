@@ -4,36 +4,17 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
 import { Button, Tag } from "antd";
 import { theme } from "src/styles/theme";
-import { CURRENTLEVEL_LIST } from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal";
+import { CURRENTLEVEL_LIST, EDUCATION_LIST, POST_LIST, TITLE_LIST } from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal";
 
 const FILTER_MAP: any = {
-  学历: ["全部", "中专", "大专", "本科", "研究生", "博士"],
-  职称: [
-    "全部",
-    "见习期护士",
-    "护士",
-    "护师",
-    "主管护师",
-    "副主任护师",
-    "主任护师"
-  ],
+  学历: ["全部", ...EDUCATION_LIST],
+  职称: ["全部", ...TITLE_LIST],
   层级: ["全部", ...CURRENTLEVEL_LIST],
-  职务: [
-    "全部",
-    "无",
-    "教学小组组长",
-    "教学秘书",
-    "护理组长",
-    "副护士长",
-    "护士长",
-    "科护士长",
-    "护理部副主任",
-    "护理部主任"
-  ],
+  职务: ["全部", ...POST_LIST],
   科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"]
 };
 
-type FilterMap = typeof FILTER_MAP;
+// type FilterMap = typeof FILTER_MAP;
 
 const getFilterAdapter = (label: string) => {
   switch (label) {

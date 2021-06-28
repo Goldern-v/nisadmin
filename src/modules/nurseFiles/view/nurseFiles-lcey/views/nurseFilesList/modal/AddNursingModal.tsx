@@ -23,20 +23,13 @@ const formItemLayout = {
 }
 
 /** 职务列表 */
-export const EDUCATION_LIST = ['中专', '大专', '本科', '研究生', '博士']
-export const TITLE_LIST = ['护士', '护师', '主管护师', '副主任护师', '主任护师']
+export const EDUCATION_LIST = ["中专", "大专", "本科", "硕士研究生", "博士研究生"]
+export const TITLE_LIST = ["主任护师", "副主任护师", "主管护师", "护师", "护士", "护士无执照"]
 export const CURRENTLEVEL_LIST = ["N0", "N1-1", "N1-2", "N2-1", "N2-2", "N3-1", "N3-2", "N3-3", "N4-1", "N4-2"]
 export const POST_LIST = [
   // '全部',
   '无',
-  '教学小组组长',
-  '教学秘书',
-  '护理组长',
-  '副护士长',
-  '护士长',
-  '科护士长',
-  '护理部副主任',
-  '护理部主任'
+  "护理部主任", "护理部副主任", "科护士长", "护理部干事", "护士长", "副护士长", "科室负责人", "院级培训师", "专业小组组长", "带教老师", "护理组长"
 ]
 function AddNursingModal(props: Props) {
   let {
