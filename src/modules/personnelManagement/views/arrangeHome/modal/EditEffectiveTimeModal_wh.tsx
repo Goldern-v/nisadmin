@@ -62,6 +62,7 @@ export default function EditEffectiveTimeModal(props: Props) {
   };
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (appStore.HOSPITAL_ID === 'dghl') return
     let time_1 = form.getField("startDate_2");
     let time_2 = form.getField("endDate_2");
     if (time_1 && time_2 && (name == "startDate_2" || name == "endDate_2")) {
