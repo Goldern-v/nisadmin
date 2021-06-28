@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
@@ -16,6 +16,7 @@ import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { EDUCATION_LIST } from 'src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFilesList/modal/AddNursingModal'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -43,13 +44,13 @@ export default function EditWorkHistoryModal(props: Props) {
       (authStore.user && authStore.user.post) === '护长'
         ? 'waitAuditedNurse'
         : (authStore.user && authStore.user.post) === '护理部'
-        ? 'waitAuditedDepartment'
-        : ''
+          ? 'waitAuditedDepartment'
+          : ''
   }
 
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async () => {
     let obj = { ...uploadOption }
@@ -124,7 +125,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`学历`} name='education' required>
-              <Input />
+              <AutoComplete dataSource={EDUCATION_LIST} />
             </Form.Field>
           </Col>
           <Col span={24}>
