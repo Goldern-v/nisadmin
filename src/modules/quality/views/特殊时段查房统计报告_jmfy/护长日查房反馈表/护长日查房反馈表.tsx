@@ -144,9 +144,8 @@ export default function 护长日查房反馈表() {
       <span>状态：</span>
       <Select value={query.status} className="mr-10">
         <Option value="">全部</Option>
-        <Option value="待护理部审核">待护理部审核</Option>
-        <Option value="通过">通过</Option>
-        <Option value="驳回">驳回</Option>
+        <Option value="commit">提交</Option>
+        <Option value="nursing_minister_audit">护理部审核</Option>
       </Select>
       <Button
         className="mr-10"

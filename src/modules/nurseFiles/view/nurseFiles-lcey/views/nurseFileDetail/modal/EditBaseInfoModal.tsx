@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
+import { TITLE_LIST, POST_LIST, EDUCATION_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
@@ -45,7 +45,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const uploadCard = async (file: any) => {
     let obj: any = {
@@ -169,7 +169,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`职务`} name='job'>
-              <Input />
+              <AutoComplete dataSource={POST_LIST} />
             </Form.Field>
           </Col>{' '}
           <Col span={12}>
@@ -179,24 +179,12 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`最高学历`} name='highestEducation'>
-              <Select>
-                <Option value='中专'>中专</Option>
-                <Option value='大专'>大专</Option>
-                <Option value='本科'>本科</Option>
-                <Option value='硕士'>硕士</Option>
-                <Option value='博士'>博士</Option>
-              </Select>
+              <AutoComplete dataSource={EDUCATION_LIST} />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`技术职称`} name='newTitle'>
-              <Select>
-                <Option value='护士'>护士</Option>
-                <Option value='护师'>护师</Option>
-                <Option value='主管护师'>主管护师</Option>
-                <Option value='副主任护师'>副主任护师</Option>
-                <Option value='主任护师'>主任护师</Option>
-              </Select>
+              <AutoComplete dataSource={TITLE_LIST} />
             </Form.Field>
           </Col>
           <Col span={12}>

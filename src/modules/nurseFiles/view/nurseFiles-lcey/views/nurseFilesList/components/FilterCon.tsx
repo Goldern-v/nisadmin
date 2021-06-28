@@ -7,7 +7,7 @@ import { theme } from "src/styles/theme";
 import { CURRENTLEVEL_LIST, EDUCATION_LIST, POST_LIST, TITLE_LIST } from "src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal";
 
 const FILTER_MAP: any = {
-  学历: ["全部", ...EDUCATION_LIST],
+  最高学历: ["全部", ...EDUCATION_LIST],
   职称: ["全部", ...TITLE_LIST],
   层级: ["全部", ...CURRENTLEVEL_LIST],
   职务: ["全部", ...POST_LIST],
@@ -18,7 +18,7 @@ const FILTER_MAP: any = {
 
 const getFilterAdapter = (label: string) => {
   switch (label) {
-    case "学历": {
+    case "最高学历": {
       return nurseFilesListViewModel.filterXl;
     }
     case "职称": {
@@ -42,7 +42,7 @@ const getFilterAdapter = (label: string) => {
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string) => {
   switch (label) {
-    case "学历":
+    case "最高学历":
       {
         nurseFilesListViewModel.filterXl = value;
       }

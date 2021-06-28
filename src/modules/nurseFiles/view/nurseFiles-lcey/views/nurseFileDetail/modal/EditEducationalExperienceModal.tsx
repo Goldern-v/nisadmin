@@ -16,7 +16,7 @@ import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { EDUCATION_LIST } from 'src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseFilesList/modal/AddNursingModal'
+import { EDUCATION_LIST } from 'src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -29,7 +29,7 @@ const rules: Rules = {
   graduationTime: (val) => !!val || '请填写毕业时间',
   graduationSchool: (val) => !!val || '请填写毕业学校',
   readProfessional: (val) => !!val || '请填写专业',
-  education: (val) => !!val || '请填写学历'
+  education: (val) => !!val || '请填写最高学历'
 
   // urlImageTwo: (val) => !!val || '毕业证',
   // urlImageOne: (val) => !!val || '学位证'
@@ -124,7 +124,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学历`} name='education' required>
+            <Form.Field label={`最高学历`} name='education' required>
               <AutoComplete dataSource={EDUCATION_LIST} />
             </Form.Field>
           </Col>
