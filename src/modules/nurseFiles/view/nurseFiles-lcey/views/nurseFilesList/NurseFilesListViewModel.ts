@@ -4,7 +4,7 @@ import {
   nurseFilesService,
   NurseQuery
 } from "../../services/NurseFilesService";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 const kssxMap: any = {
   全部: "",
@@ -27,6 +27,7 @@ class NurseFilesListViewModel {
       }
     );
   }
+
   /** 筛选条件 */
   @observable public filterText: string = "";
   @observable public filterXl: string = "全部";
@@ -35,7 +36,7 @@ class NurseFilesListViewModel {
   @observable public filterZw: string = "全部";
   @observable public filterKs: string = "全部";
   @observable public pageIndex: number = 1;
-  @observable public pageSize: number = 10;
+  @observable public pageSize: number = appStore.HOSPITAL_ID === 'lcey' ? 30 : 10;
   @observable public totalCount: number = 0;
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
