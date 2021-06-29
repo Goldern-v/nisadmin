@@ -5,12 +5,19 @@ import { Button, Tag } from 'antd'
 import { empManageService } from "./../views/empDetail/api/EmpManageService";
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
-import { set } from 'mobx';
+import {
+  CURRENTLEVEL_LIST as CURRENTLEVEL_LIST_lcey,
+  POST_LIST as POST_LIST_lcey,
+  TITLE_LIST as TITLE_LIST_lcey,
+  EDUCATION_LIST as EDUCATION_LIST_lcey
+} from 'src/modules/nurseFiles/view/nurseFiles-lcey/views/nurseFilesList/modal/AddNursingModal';
+
 
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string, callback: any) => {
   let name;
   switch (label) {
+    case '最高学历':
     case '学历':
       name = 'Xl'
       break
@@ -49,13 +56,33 @@ export default observer(function FilterCon(props: Props) {
   const [jobList, setJobList] = useState([] as any)
 
   let filterMap = {
-    学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
-    职称: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
-      ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'] :
-      ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
-    层级: process.env.REACT_APP_HOSPITAL_ID == 'wh' ?
-      ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'] :
-      ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
+    [
+      appStore.hisMatch({
+        map: {
+          lcey: '最高学历',
+          default: '学历'
+        }
+      })
+    ]: appStore.hisMatch({
+      map: {
+        lcey: ['全部', ...EDUCATION_LIST_lcey],
+        default: ['全部', '中专', '大专', '本科', '研究生', '博士'],
+      }
+    }),
+    职称: appStore.hisMatch({
+      map: {
+        'wh': ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
+        'lcey': ['全部', ...TITLE_LIST_lcey],
+        default: ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师']
+      }
+    }),
+    层级: appStore.hisMatch({
+      map: {
+        wh: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
+        lcey: ['全部', ...CURRENTLEVEL_LIST_lcey],
+        default: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
+      }
+    }),
     职务: appStore.hisMatch({
       map: {
         'wh': [
@@ -68,6 +95,7 @@ export default observer(function FilterCon(props: Props) {
           '护理部副主任',
           '护理部主任',
         ],
+        'lcey': ['全部', ...POST_LIST_lcey],
         'nys': ['全部', ...jobList],
         other: [
           '全部',
@@ -97,6 +125,7 @@ export default observer(function FilterCon(props: Props) {
   }
   const getFilterAdapter = (label: string) => {
     switch (label) {
+      case '最高学历':
       case '学历': {
         return filter.Xl
       }
@@ -132,14 +161,14 @@ export default observer(function FilterCon(props: Props) {
         <div className='left'>
           选择：
           {Object.keys(filterMap).map(
-          (item: any) =>
-            getFilterAdapter(item) &&
-            getFilterAdapter(item) !== '全部' && (
-              <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
-                {getFilterAdapter(item)}
-              </Tag>
-            )
-        )}
+            (item: any) =>
+              getFilterAdapter(item) &&
+              getFilterAdapter(item) !== '全部' && (
+                <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
+                  {getFilterAdapter(item)}
+                </Tag>
+              )
+          )}
         </div>
         <div className='right'>
           <Button icon={isOpenFilter ? 'down' : 'left'} onClick={() => setOpen(!isOpenFilter)} size='small'>
