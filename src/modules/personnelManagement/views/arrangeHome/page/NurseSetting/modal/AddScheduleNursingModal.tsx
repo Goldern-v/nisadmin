@@ -307,6 +307,11 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                       <DatePicker />
                     </Form.Field>
                   </Col>
+                  <Col span={24}>
+                    <Form.Field label={`周工时`} name="timeLimit">
+                      <Input />
+                    </Form.Field>
+                  </Col>
                 </React.Fragment>
               )
             })}
