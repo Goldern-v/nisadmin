@@ -29,11 +29,18 @@ export interface Props extends ModalComponentProps {
 }
 
 /** 设置规则 */
-const rules: Rules = {
-  startDate_2: val => !!val || "请填写开始时间",
-  endDate_2: val => !!val || "请填写结束时间",
-  statusType: val => !!val || "请选择班次类型"
-};
+const rules: Rules = appStore.hisMatch({
+  map: {
+    dghl: {
+      statusType: (val: any) => !!val || "请选择班次类型",
+    },
+    other: {
+      startDate_2: (val: any) => !!val || "请填写开始时间",
+      endDate_2: (val: any) => !!val || "请填写结束时间",
+      statusType: (val: any) => !!val || "请选择班次类型"
+    },
+  }
+})
 
 export default function EditEffectiveTimeModal(props: Props) {
   let { visible, onCancel, onOkCallBack, data } = props;
