@@ -159,6 +159,12 @@ export default observer(function MainBox() {
           dataIndex: "startDate",
           key: "startDate",
           width: 120
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70
         }
       ]
     }),
