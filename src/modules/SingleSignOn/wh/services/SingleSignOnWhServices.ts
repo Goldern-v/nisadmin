@@ -5,7 +5,8 @@ import { httpLoginToken } from 'src/libs/http/http'
 import { compileStr } from 'src/utils/encode/encode'
 
 const host = appStore.isDev ? '114.251.193.138:8099' : '192.168.20.25:8099'
-const appHost = appStore.isDev ? 'nurse.cr-health.com:34022' : 'nurse.cr-health.com:34021'
+
+const appHost = process.env.NODE_ENV === "development" ? 'nurse.cr-health.com:34022' : window.location.host
 
 const client_id = appStore.isDev ? 'craPn3h604zp' : 'sD3I9vT526tb'
 const client_secret = appStore.isDev ? 'rBrMnhKrhq6B' : 'VD636hwiDZ0A'
