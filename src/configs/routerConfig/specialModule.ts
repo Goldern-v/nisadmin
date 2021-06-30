@@ -71,6 +71,9 @@ const BadEventsNewList = lazy(() => import("src/modules/badEventsNew/BadEventsNe
 import BadEventsRouters from "src/modules/badEventsNew/BadEventsRouters"
 import IndicatorNew from "src/modules/indicator/IndicatorNew";
 
+/**单点登录 */
+const SingleSignOnWh = lazy(() => import("src/modules/SingleSignOn/wh/SingleSignOnWh"))
+
 let specialModule: any[] = [];
 
 //根据是否只展示不良事件指定页面
@@ -183,6 +186,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
+    setLayout("/wh_single_point_login", SingleSignOnWh),
     ...homeRouter(HomeView_wh),
   ];
 

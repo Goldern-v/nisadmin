@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
-import { Button, Modal, message as Message, Select, message } from "antd";
+import { Button, Modal, message as Message, Select, message, Spin, } from "antd";
 import { Link } from "react-router-dom";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
@@ -14,6 +14,8 @@ import createModal from "src/libs/createModal";
 import DeptFielShareService from "../api/DeptFielShareService";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
 import moment from 'moment'
+import { ScrollBox } from "src/components/common";
+const deptBedImg = require('./../assets/dept-bed.png')
 
 const api = new DeptFielShareService();
 
@@ -22,7 +24,7 @@ export interface Props extends RouteComponentProps { }
 const Option = Select.Option;
 
 export default function DeptBed() {
-  const [tableData, setTableData] = useState([] as any);
+  const [tableData, setTableData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}] as any);
   const [dataTotal, setDataTotal] = useState(0 as number);
 
   const [editParams, setEditParams] = useState({} as any);
@@ -30,6 +32,7 @@ export default function DeptBed() {
   const [editVisible, setEditVisible] = useState(false);
 
   const PreviewModalWrapper = createModal(PreviewModal);
+  const [loading, setLoading] = useState(false);
 
   const [catalogList, setCatalogList] = useState([] as any);
 
@@ -290,7 +293,7 @@ export default function DeptBed() {
         </div>
       </div>
       <div className="main-contain">
-        <BaseTable
+        {/* <BaseTable
           columns={columns}
           rowKey="id"
           dataSource={tableData}
@@ -308,7 +311,16 @@ export default function DeptBed() {
             pageSize: query.pageSize,
             current: query.pageIndex
           }}
-        />
+        /> */}
+        <Spin spinning={loading}>
+          <BedContainer>
+            {tableData.map((item: any, idx: number) => (
+              <div className="bed-label-card">
+                <img src={deptBedImg} />
+              </div>
+            ))}
+          </BedContainer>
+        </Spin>
       </div>
       <DeptFileEditModal
         visible={editVisible}
@@ -403,3 +415,24 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+// @ts-ignore
+const BedContainer = styled(ScrollBox)`
+  width: 100%;
+  height: calc(100vh - 130px);
+  .bed-label-card{
+    background: rgba(255,255,255,0.8);
+    border-radius: 4px;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    width: 240px;
+    float: left;
+    margin: 10px;
+    text-align: center;
+    height: 150px;
+    line-height: 150px;
+    .img{
+      width: 100%;
+    }
+  }
+`

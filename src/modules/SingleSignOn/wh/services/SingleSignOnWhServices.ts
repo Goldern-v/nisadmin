@@ -1,8 +1,11 @@
 import axios from 'axios'
 import qs from 'qs'
-import { appStore } from 'src/stores'
+import { appStore, authStore, scheduleStore } from 'src/stores'
+import { httpLoginToken } from 'src/libs/http/http'
+import { compileStr } from 'src/utils/encode/encode'
 
 const host = appStore.isDev ? '114.251.193.138:8099' : '192.168.20.25:8099'
+const appHost = appStore.isDev ? 'nurse.cr-health.com:34022' : 'nurse.cr-health.com:34021'
 
 const client_id = appStore.isDev ? 'craPn3h604zp' : 'sD3I9vT526tb'
 const client_secret = appStore.isDev ? 'rBrMnhKrhq6B' : 'VD636hwiDZ0A'
@@ -16,8 +19,8 @@ class SingleSignOnWhServices {
       code,
       client_id,
       client_secret,
-      redirect_uri: `http://${host}/crNursing/manage/`,
-      grant_type: 'authorization_code'
+      redirect_uri: `http://${appHost}/crNursing/manage/#/wh_single_point_login`,
+      grant_type: 'code'
     }))
   }
 
@@ -37,6 +40,34 @@ class SingleSignOnWhServices {
    */
   public profile(access_token: string) {
     return axios.get(`http://${host}/DTH_SSO/oauth2.0/profile?${qs.stringify({ access_token })}`)
+  }
+
+  /**
+   * 根据工号登录系统
+   */
+  public loginWithEmpNo(empNo: string) {
+    return httpLoginToken.post('/auth2/oauthLogin', { empNo })
+      .then(res => {
+        let { adminNurse, authToken, user } = res.data
+        user = { ...user }
+        sessionStorage.setItem('adminNurse', adminNurse)
+        sessionStorage.setItem('authToken', authToken)
+        sessionStorage.setItem('user', JSON.stringify(user))
+        authStore.setAuthToken(authToken)
+        authStore.setAdminNurse(adminNurse)
+        authStore.updateUser(user)
+        authStore.selectDeptCode(user.deptCode)
+        scheduleStore.setDepartmentValue('deptCode', user.deptCode)
+        scheduleStore.setDepartmentValue('deptName', user.deptName)
+        authStore.initUser()
+
+        // 实习生直接跳转学习培训在线学习
+        if (authStore.isOnlyInternsManage) {
+          return window.location.href = '#/continuingEdu/在线学习'
+        }
+
+        window.location.href = '#/home'
+      })
   }
 }
 

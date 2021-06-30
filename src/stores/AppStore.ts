@@ -36,7 +36,7 @@ export default class AppStore {
   /** 开发环境 true-开发  false-生产*/
   @observable public isDev: boolean =
     process.env.NODE_ENV === "development" ||
-    window.location.port == "34002" || //武汉测试环境
+    window.location.port == "34022" || //武汉测试环境
     window.location.port == "9093" ||
     window.location.hostname == "localhost" ||
     window.location.hostname == "192.168.1.54" || //公司测试环境
