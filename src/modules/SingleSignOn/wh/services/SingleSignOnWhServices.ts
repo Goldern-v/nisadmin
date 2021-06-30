@@ -45,8 +45,8 @@ class SingleSignOnWhServices {
   /**
    * 根据工号登录系统
    */
-  public loginWithEmpNo(empNo: string) {
-    return httpLoginToken.post('/auth2/oauthLogin', { empNo })
+  public loginWithEmpNo(empNo: string, token: string) {
+    return httpLoginToken.post(`/auth2/oauthLogin`, { empNo, token })
       .then(res => {
         let { adminNurse, authToken, user } = res.data
         user = { ...user }

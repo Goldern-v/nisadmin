@@ -27,10 +27,10 @@ export default withRouter(function SingleSignOnWh(props: any) {
 
       if (!data1.userCode) throw new Error(JSON.stringify(data1))
 
-      await singleSignOnWhServices.loginWithEmpNo('amdin')
+      await singleSignOnWhServices.loginWithEmpNo(data1.userCode, data0.access_token)
 
     } catch (e) {
-      message.error(e.toString())
+      e && message.error(e.toString())
     }
   }
 

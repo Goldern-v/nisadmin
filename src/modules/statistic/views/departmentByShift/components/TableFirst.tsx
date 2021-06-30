@@ -4,7 +4,7 @@ import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-export default function BedSituation () {
+export default function BedSituation() {
   // 
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
@@ -75,7 +75,7 @@ export default function BedSituation () {
   emitter.addListener('科室排班按班次', () => {
     postDepartmentByShiftViewMethod()
   })
-  function trClickChange (e: any) {
+  function trClickChange(e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
     allTr.forEach((item: any) => {
