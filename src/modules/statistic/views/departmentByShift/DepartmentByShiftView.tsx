@@ -10,17 +10,37 @@ import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableFirst from './components/TableFirst'
 
 export default function StatisticView() {
-  const [shiftClass, setShiftClass] = useState(new Array())
-  useEffect(() => {
-    // console.log(3333)
-    // console.log(shiftClass)
+  // const [shiftClass, setShiftClass] = useState(new Array())
+  const [filterObj, setFilterObj] = useState({
+    ['shift_type']: {
+      checked: true,
+      list: [],
+    },
+    ['range_name']: {
+      checked: false,
+      list: [],
+    },
   })
-  // const getShiftClass = (shiftclass: any) => {
-  //   setShiftClass(shiftClass)
-  // }
+
+  const [query, setQuery] = useState({
+    type: '',
+    startTime: '',
+    endTime: '',
+  })
+
+  const handleFilterObjChange = (newFilterObj: any) => {
+    setFilterObj(newFilterObj)
+  }
+
+  useEffect(() => {
+    console.log('getData', query)
+  }, [query])
+
   return (
     <Con>
-      <StatisticHeader />
+      <StatisticHeader onChange={(payload: any) => {
+        console.log('change', payload)
+      }} />
       <MidMidCon>
         <LeftCon>
           <StatisticMIdHeaderDepartment />
@@ -31,7 +51,7 @@ export default function StatisticView() {
         </LeftCon>
         <RigthCon>
           <div className='NurseByShiftChooseCon'>
-            <NurseByShiftChoose />
+            <NurseByShiftChoose filterObj={filterObj} onFilterObjChange={handleFilterObjChange} />
           </div>
         </RigthCon>
       </MidMidCon>

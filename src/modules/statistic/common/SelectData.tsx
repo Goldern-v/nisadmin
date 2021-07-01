@@ -8,7 +8,13 @@ const { RangePicker } = DatePicker
 import emitter from 'src/libs/ev'
 
 const dateFormat = 'YYYY-MM-DD'
-export default function SelectData() {
+
+export interface Props {
+  handleDateChange?: Function
+}
+
+export default function SelectData(props: Props) {
+  const { handleDateChange } = props
   const [startDate, setStartDate] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
@@ -40,6 +46,8 @@ export default function SelectData() {
           setStartDate(value[0])
           setEndDate(value[1])
           emitter.emit('设置统计页日期', value)
+
+          handleDateChange && handleDateChange(value)
         }}
         format={dateFormat}
         ranges={{

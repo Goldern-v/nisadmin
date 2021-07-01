@@ -91,17 +91,7 @@ export default function BedSituation() {
     { 序列: 4, 姓名: '祝晓春', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
     { 序列: 5, 姓名: '卞晓丽', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
   ]
-  // Cache Td DOM
-  const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
-    <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序列}</td>
-      <td>{itemTr.科室}</td>
-      {getShiftClass.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
-      <td />
-    </tr>
-  ))
+
   // th DOM
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
   const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
@@ -149,14 +139,16 @@ export default function BedSituation() {
       <div className='tableCon'>
         <div className='tableHead'>
           <table>
-            <tr>
-              <th>序号</th>
-              <th>科室</th>
-              {getShiftClassDom}
-              {getCheckboxItemDom}
-              <th>合计</th>
-            </tr>
-            {getTdDom}
+            <tbody>
+              <tr>
+                <th>序号</th>
+                <th>科室</th>
+                {getShiftClassDom}
+                {getCheckboxItemDom}
+                <th>合计</th>
+              </tr>
+              {getTdDom}
+            </tbody>
           </table>
         </div>
         {/* <div className='tableMid'>

@@ -117,12 +117,12 @@ const QualityView = lazy(() => import("src/modules/quality/QualityView"));
 const QualityControlRecordDetail = lazy(() =>
   import(
     "src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail"
-    )
+  )
 );
 const qualityControlRecordEdit = lazy(() =>
   import(
     "src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/QualityControlRecordEdit"
-    )
+  )
 );
 const eventReportFormEdit = lazy(() =>
   import("src/modules/indicator/selfDeclaration/components/editPage/index")
@@ -143,13 +143,13 @@ const WardLogEdit = lazy(() =>
 const NursingReportDetailView = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/NursingReportDetail/NursingReportDetailView"
-    )
+  )
 );
 const WardLog = lazy(() => import("src/modules/wardLog/WardLog"));
 const SafetyHazardsDetail = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail"
-    )
+  )
 );
 // 病区登记本
 /** 病区登记本 - 武汉市独立 */
@@ -185,13 +185,13 @@ const TypeManagementView = lazy(() =>
 const NotificationManagementView = lazy(() =>
   import(
     "src/modules/continuingEdu/views/notificationManagement/view/CheckResults"
-    )
+  )
 );
 // 学习培训--厚街培训手册
 const TrainingManualSetting = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingManual/view/TrainingManualSetting"
-    )
+  )
 );
 
 // 武汉首页——学习培训
@@ -211,7 +211,7 @@ const DeptFileShareCatalogSetting = lazy(() =>
 const QualityAnalysisReportView = lazy(() =>
   import(
     "src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView"
-    )
+  )
 );
 const NurseFilesView = lazy(() =>
   import("src/modules/nurseFiles/NurseFilesView")
@@ -219,7 +219,7 @@ const NurseFilesView = lazy(() =>
 const QualityAnalysisReportPoolView = lazy(() =>
   import(
     "src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView"
-    )
+  )
 );
 const WorkSummaryReportView = lazy(() =>
   import("src/modules/quality/views/workSummaryReport/WorkSummaryReportView")
@@ -228,7 +228,7 @@ const WorkSummaryReportView = lazy(() =>
 const 防疫专项检查片区汇总 = lazy(() =>
   import(
     "src/modules/quality/views/防疫专项检查片区汇总报告/防疫专项检查片区汇总报告"
-    )
+  )
 );
 const 防疫专项检查汇总报告 = lazy(() =>
   import("src/modules/quality/views/防疫专项检查汇总报告/防疫专项检查汇总报告")
@@ -245,7 +245,7 @@ const PersonnelManagementView = lazy(() =>
 const EditArrangePage = lazy(() =>
   import(
     "src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage"
-    )
+  )
 );
 //健康宣教报告
 const HealthEducationReportView = lazy(() =>
@@ -281,62 +281,62 @@ const QueryStatisticsRouter = lazy(() =>
 const NursingQualityCheckEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/nursingQualityCheck/NursingQualityCheckEdit"
-    )
+  )
 );
 const NurseMeetingRecordEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordEdit"
-    )
+  )
 );
 const NurseMeetingRecordDetail = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordDetail"
-    )
+  )
 );
 const BadEventRecordEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordEdit"
-    )
+  )
 );
 const BadEventRecordDetail = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordDetail"
-    )
+  )
 );
 
 const StarRatingReportEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit"
-    )
+  )
 );
 const StarRatingYearReportEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/StarRatingYearReport/StarRatingYearReportEdit"
-    )
+  )
 );
 
 const BadEventReportEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/BadEventReport/BadEventReportEdit"
-    )
+  )
 );
 
 const PatientVisitQuarterEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/PatientVisitQuarter/PatientVisitQuarterEdit"
-    )
+  )
 );
 
 const PatientVisitMonthEdit = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/report/PatientVisitMonth/PatientVisitMonthEdit"
-    )
+  )
 );
 
 const QcCheckContentSetting = lazy(() =>
   import(
     "src/modules/quality/views/qcOne/page/nursingQualityCheck/QcCheckContentSetting"
-    )
+  )
 );
 
 const CheckWardReportView = lazy(() =>
@@ -349,76 +349,76 @@ const SafetyCheckEdit = lazy(() =>
 const nightChargingReport = lazy(() =>
   import(
     "src/modules/personnelManagement/views/arrangeHome/page/nightChargingReport/StarRatingReportEdit"
-    )
+  )
 );
 
 //学习培训查看结果
 const StudyResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview"
-    )
+  )
 );
 const TrainingResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview"
-    )
+  )
 );
 const TestingResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview"
-    )
+  )
 );
 const OperateResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/operateResultReview/OperateResultReview"
-    )
+  )
 );
 const PracticeResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/practiceResultReview/PracticeResultReview"
-    )
+  )
 );
 const SimulateResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/simulateResultReview/SimulateResultReview"
-    )
+  )
 );
 const SocialpractiseResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/socialpractiseResultReview/SocialpractiseResultReview"
-    )
+  )
 );
 //学习培训查看信息
 const TrainingInfoReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingInfoReview/TrainingInfoReview"
-    )
+  )
 );
 //学习培训-在线学习信息查看
 const OnlineLearningReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/onlineLearning/views/onlineLearningReview/OnlineLearningReview"
-    )
+  )
 );
 //学习培训-在线学习考试 练习
 const ExamOrExercise = lazy(() =>
   import(
     "src/modules/continuingEdu/views/onlineLearning/views/examOrExercise/ExamOrExercise"
-    )
+  )
 );
 
 //学习培训-在线学习考试(查看试卷)
 const ExamScore = lazy(() =>
   import(
     "src/modules/continuingEdu/views/onlineLearning/views/examScore/ExamScore"
-    )
+  )
 );
 
 //学习培训-学习资源-典型案例审核详情(厚街)
 const 典型案例库审核详情 = lazy(() =>
   import(
     "src/modules/continuingEdu/views/学习资源/典型案例库/典型案例库审核详情"
-    )
+  )
 );
 
 //进出感染区统计
@@ -441,6 +441,9 @@ import RefresherInfoSubmit from "src/modules/mobilePage/refresherInfoSubmit/Refr
 //移动端界面-患者满意度调查表提交
 import SatisfiedPatSubmit from "src/modules/mobilePage/satisfiedPatSubmit/SatisfiedPatSubmit"
 
+//单点登录
+const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/SingleSignOnDefault"))
+
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/demo1", demo1),
@@ -450,6 +453,7 @@ const routes: RouteItem[] = [
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
   ...specialModule,
+  setLayout("/autoLogin", SingleSignOnDefault),
   setLayout("/scheduleHome", ScheduleHomeView, layouts.MainLayout),
 
   setLayout("/nurseSetting", NurseSettingView, layouts.BreadcrumbLayout, [

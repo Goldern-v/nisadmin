@@ -73,7 +73,6 @@ import IndicatorNew from "src/modules/indicator/IndicatorNew";
 
 /**单点登录 */
 const SingleSignOnWh = lazy(() => import("src/modules/SingleSignOn/wh/SingleSignOnWh"))
-const SingleSignOnHj = lazy(() => import("src/modules/SingleSignOn/hj/SingleSignOnHj"))
 
 let specialModule: any[] = [];
 
@@ -95,7 +94,6 @@ const homeRouter = (view: any): any[] => {
 
 if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [
-    setLayout("/autoLogin", SingleSignOnHj),
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),

@@ -2,15 +2,15 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import qs from 'qs'
 import { withRouter } from 'react-router-dom'
-import { singleSignOnHjServices } from './services/SingleSignOnWhServices'
+import { singleSignOnDefaultServices } from './services/SingleSignOnDefaultServices'
 export interface Props { }
 
-export default withRouter(function SingleSignOnHj(props: any) {
+export default withRouter(function SingleSignOnDefault(props: any) {
   const { location: { search } } = props
   const searchObj = qs.parse(search.replace('?', ''))
 
   const authorizeAndSignIn = () => {
-    singleSignOnHjServices.autoLogin(searchObj.token)
+    singleSignOnDefaultServices.autoLogin(searchObj.token)
   }
 
   useEffect(() => {

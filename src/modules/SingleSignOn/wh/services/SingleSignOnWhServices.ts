@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { appStore, authStore, scheduleStore } from 'src/stores'
 import { httpLoginToken } from 'src/libs/http/http'
+import { message } from 'antd'
 
 const host = appStore.isDev ? '114.251.193.138:8099' : '192.168.20.25:8099'
 
@@ -48,25 +49,30 @@ class SingleSignOnWhServices {
   public loginWithEmpNo(empNo: string, token: string) {
     return httpLoginToken.post(`/auth2/oauthLogin`, { empNo, token })
       .then(res => {
-        let { adminNurse, authToken, user } = res.data
-        user = { ...user }
-        sessionStorage.setItem('adminNurse', adminNurse)
-        sessionStorage.setItem('authToken', authToken)
-        sessionStorage.setItem('user', JSON.stringify(user))
-        authStore.setAuthToken(authToken)
-        authStore.setAdminNurse(adminNurse)
-        authStore.updateUser(user)
-        authStore.selectDeptCode(user.deptCode)
-        scheduleStore.setDepartmentValue('deptCode', user.deptCode)
-        scheduleStore.setDepartmentValue('deptName', user.deptName)
-        authStore.initUser()
+        if (res.data.code === 200) {
+          let { adminNurse, authToken, user } = res.data
+          user = { ...user }
+          sessionStorage.setItem('adminNurse', adminNurse)
+          sessionStorage.setItem('authToken', authToken)
+          sessionStorage.setItem('user', JSON.stringify(user))
+          authStore.setAuthToken(authToken)
+          authStore.setAdminNurse(adminNurse)
+          authStore.updateUser(user)
+          authStore.selectDeptCode(user.deptCode)
+          scheduleStore.setDepartmentValue('deptCode', user.deptCode)
+          scheduleStore.setDepartmentValue('deptName', user.deptName)
+          authStore.initUser()
 
-        // 实习生直接跳转学习培训在线学习
-        if (authStore.isOnlyInternsManage) {
-          return window.location.href = '#/continuingEdu/在线学习'
+          // 实习生直接跳转学习培训在线学习
+          if (authStore.isOnlyInternsManage) {
+            return window.location.href = '#/continuingEdu/在线学习'
+          }
+
+          window.location.href = '#/home'
+        } else {
+          let errMsg = res.data.desc || `请求失败 状态码为${res.data.code || 404}`
+          message.error(errMsg)
         }
-
-        window.location.href = '#/home'
       })
   }
 }
