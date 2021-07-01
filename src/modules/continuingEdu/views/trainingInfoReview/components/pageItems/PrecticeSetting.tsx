@@ -4,6 +4,8 @@ import { Button } from "antd";
 import createModal from "src/libs/createModal";
 import TestPageModal from "./../TestPageModal/TestPageModal";
 import { appStore } from "src/stores";
+import { trainingInfoReviewService } from "src/modules/continuingEdu/views/trainingInfoReview/api/TrainingInfoReviewService";
+import { fileDownload } from "src/utils/file/file";
 
 export interface Props {
   info?: any;
@@ -14,6 +16,15 @@ export default function PrecticeSetting(props: Props) {
   const testPage = createModal(TestPageModal);
   const { info } = props;
   const { queryObj } = appStore;
+
+  const handleExport = () => {
+    const params = {
+      cetpId: info.id
+    }
+    trainingInfoReviewService.handleExport(params).then(res => {
+      fileDownload(res)
+    })
+  }
 
   const handlePagePreview = () => {
     testPage.show({
@@ -26,6 +37,7 @@ export default function PrecticeSetting(props: Props) {
       passScores: info.passScores
     });
   };
+
 
   const questionStatList = (info.questionStatList || []) as any[];
 
@@ -47,31 +59,41 @@ export default function PrecticeSetting(props: Props) {
             >
               习题预览
             </Button>
+             <Button
+               size="small"
+               className="fr"
+               style={{ marginRight: '10px' }}
+               onClick={() => {
+                 handleExport();
+               }}
+             >
+              导出习题
+            </Button>
           </span>
         )}
       </div>
       <div className="pd">
         <table>
           <colgroup>
-            <col width="50px" />
+            <col width="50px"/>
           </colgroup>
           <tbody>
-            <tr className="header">
-              <td>序号</td>
-              <td>出题类型</td>
-              <td>题目数</td>
+          <tr className="header">
+            <td>序号</td>
+            <td>出题类型</td>
+            <td>题目数</td>
+          </tr>
+          {questionStatList.map((item: any, idx: number) => (
+            <tr key={idx}>
+              <td>{idx + 1}</td>
+              <td>{item.questionName}</td>
+              <td>{item.questionCount}</td>
             </tr>
-            {questionStatList.map((item: any, idx: number) => (
-              <tr key={idx}>
-                <td>{idx + 1}</td>
-                <td>{item.questionName}</td>
-                <td>{item.questionCount}</td>
-              </tr>
-            ))}
+          ))}
           </tbody>
         </table>
       </div>
-      <testPage.Component />
+      <testPage.Component/>
     </Wrapper>
   );
 }

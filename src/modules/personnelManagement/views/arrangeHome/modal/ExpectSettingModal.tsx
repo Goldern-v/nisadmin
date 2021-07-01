@@ -10,19 +10,22 @@ import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { observer } from "mobx-react-lite";
 import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
+import moment from 'moment'
 
 export interface Props extends ModalComponentProps {
   id: string;
 }
 
-export interface Props {}
+export interface Props {
+}
 
 export default observer(function ExpectSettingModal(props: Props) {
   // const [editingKey, setEditingKey] = useState(false)
   const [loadingTable, setLoadingTable] = useState(false);
   let { visible, onCancel } = props;
 
-  const onFieldChange = () => {};
+  const onFieldChange = () => {
+  };
   const onOk = () => {
     onCancel();
   };
@@ -65,13 +68,24 @@ export default observer(function ExpectSettingModal(props: Props) {
       align: "center"
     },
     {
+      title: "提交申请时间",
+      dataIndex: "createTime",
+      key: "createTime",
+      width: 150,
+      align: "center",
+      render: (text: string) => {
+        return moment(text).format('YYYY-MM-DD HH:mm')
+      }
+    },
+    {
       title: "操作",
       dataIndex: "操作",
       key: "8",
       width: 100,
       align: "center",
       render: (a: any, record: any, c: any) => {
-        let status = 0; /** 0-未填入 1-已经填入 2-休假 */
+        let status = 0;
+        /** 0-未填入 1-已经填入 2-休假 */
         let cellObj = sheetViewModal.getCellObjByName(
           record.empName,
           record.startDate
@@ -145,7 +159,7 @@ export default observer(function ExpectSettingModal(props: Props) {
       <Modal
         className="modal"
         title="期望排班"
-        width="800px"
+        width="900px"
         okText="全部填入"
         cancelText="返回"
         onOk={handleOk}

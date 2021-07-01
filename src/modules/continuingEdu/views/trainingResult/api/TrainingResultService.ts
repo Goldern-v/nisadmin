@@ -11,6 +11,7 @@ export default class TrainingResultService extends BaseApiService {
       qs.stringify({ id })
     );
   }
+
   /** 查看结果列表 */
   public getTableData(query: any, viewResultsUrlName?: any) {
     return this.post(
@@ -46,6 +47,7 @@ export default class TrainingResultService extends BaseApiService {
   public getBigDeptMentTree() {
     return this.post(`/studyAndTrain/teachingPlanManage/getBigDeptMentTree`);
   }
+
   /** 获取职称信息 */
   public getAllTitles() {
     return this.post(`/studyAndTrain/teachingPlanManage/getAllTitles`);
@@ -83,6 +85,15 @@ export default class TrainingResultService extends BaseApiService {
     return this.post(
       `/studyAndTrain/examManage/saveScoresForShortQuestions`,
       params
+    );
+  }
+
+  /**导出 */
+  public handleExport(params: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/exportReviewExamPaper`,
+      params,
+      { responseType: 'blob' }
     );
   }
 
@@ -157,6 +168,13 @@ export default class TrainingResultService extends BaseApiService {
       },
       { responseType: "blob" }
     );
+  }
+
+  /** 上传图片 */
+  public uploadImg(cetpId: string, file: any) {
+    const formData = new FormData()
+    formData.append('file', file)
+    return this.post(`/studyAndTrain/trainManage/uploadPictures/${cetpId}`, formData);
   }
 
   /**查看结果-导出出勤率统计信息 培训类型 获取现场图片*/

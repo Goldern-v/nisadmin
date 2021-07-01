@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message, Tabs, Pagination, Spin } from 'antd'
+import { Button, Checkbox, message, Tabs, Pagination, Spin, Upload } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -28,7 +28,8 @@ import { trainingResultService } from '../../api/TrainingResultService'
 
 const TabPane = Tabs.TabPane
 
-export interface Props { }
+export interface Props {
+}
 
 //查看培训结果
 export default observer(function TrainingResultReview() {
@@ -261,7 +262,8 @@ export default observer(function TrainingResultReview() {
       dataType: '问卷',
       cetpId: appStore.queryObj.id,
       hideRightSide: true,
-      onOkCallBack: () => { }
+      onOkCallBack: () => {
+      }
     })
   }
 
@@ -279,6 +281,12 @@ export default observer(function TrainingResultReview() {
           setImgList(res.data.list || [])
         }
       }, () => setImgListLoading(false))
+  }
+
+  const uploadImg = async (file: any, fileList: any): Promise<boolean> => {
+    await trainingResultService.uploadImg(appStore.queryObj.id, file)
+    await getImgList()
+    return false
   }
 
   useEffect(() => {
@@ -324,7 +332,7 @@ export default observer(function TrainingResultReview() {
             wh: <span></span>,
             other: <React.Fragment>
               {isSignType &&
-                <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+              <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
               <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
             </React.Fragment>
           }
@@ -339,8 +347,8 @@ export default observer(function TrainingResultReview() {
           activeKey={activeTab}
           onChange={(tab: any) => setActiveTab(tab)}
           style={{ height: '100%' }}>
-          <TabPane tab="实践结果" key="1" >
-            <QueryPannel />
+          <TabPane tab={`${baseInfo.teachingMethodName ? baseInfo.teachingMethodName : '实践'}结果`} key="1">
+            <QueryPannel/>
             <BaseTable
               loading={loading}
               rowSelection={{
@@ -386,7 +394,7 @@ export default observer(function TrainingResultReview() {
                   }}
                   checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
                   全选
-            </Checkbox>
+                </Checkbox>
                 <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
                 <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
               </SelectionOperate>
@@ -397,21 +405,27 @@ export default observer(function TrainingResultReview() {
               {
                 !imgListLoading ?
                   <FullContent>
+                    {appStore.HOSPITAL_ID === 'hj' && <div className={'add-button'}>
+                      <Upload beforeUpload={uploadImg} showUploadList={false}>
+                        <Button type='primary'>添加</Button>
+                      </Upload>
+                    </div>}
                     <div className="imglist-con content scroll-con">
-                      {imgList.map((item: any, idx: number) =>
-                        <div className="img-wrapper" key={idx}>
-                          <img
+                      {
+                        imgList.length ? imgList.map((item: any, idx: number) =>
+                          <div className="img-wrapper" key={idx}>
+                            <img
 
-                            src={item.path || ''}
-                            onClick={() => {
-                              if (item.path) Zmage.browsing({
-                                src: item.path,
-                                backdrop: 'rgba(0,0,0, .8)'
-                              })
-                            }} alt="" />
-                        </div>
-                      )}
-                      {<NoPicCon>暂无图片</NoPicCon>}
+                              src={item.path || ''}
+                              onClick={() => {
+                                if (item.path) Zmage.browsing({
+                                  src: item.path,
+                                  backdrop: 'rgba(0,0,0, .8)'
+                                })
+                              }} alt=""/>
+                          </div>
+                        ) : <NoPicCon>暂无图片</NoPicCon>
+                      }
                     </div>
                     <div className="pagination-footer">
                       <Pagination
@@ -419,7 +433,7 @@ export default observer(function TrainingResultReview() {
                         current={imgListQuery.pageIndex}
                         pageSize={imgListQuery.pageSize}
                         onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
-                        total={imgTotal} />
+                        total={imgTotal}/>
                     </div>
                   </FullContent> :
                   <div className="loading-wrapper">
@@ -433,8 +447,8 @@ export default observer(function TrainingResultReview() {
         </Tabs>
       </TableWrapper>
     </MainPannel>
-    <scorceConfirm.Component />
-    <answerSheetModal.Component />
+    <scorceConfirm.Component/>
+    <answerSheetModal.Component/>
   </Wrapper>
 })
 
@@ -525,6 +539,12 @@ const FullContent = styled.div`
     text-align: right;
     padding:15px;
   }
+  .add-button{
+     display: flex; 
+     align-items: center; 
+     justify-content: flex-end;
+     padding: 0 15px;
+  }
   .imglist-con{
     .img-wrapper{
       width: 20%;
@@ -538,6 +558,7 @@ const FullContent = styled.div`
         background-color: #eee;
         cursor: pointer;
         max-width:100%;
+        width:100%;
         height: 100%;
         object-fit: cover;
       }

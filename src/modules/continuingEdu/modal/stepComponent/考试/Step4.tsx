@@ -51,7 +51,7 @@ export default observer(function Step4() {
     let data: any = from.getFields();
     Object.assign(stepViewModal.stepData2, data);
     let totalScore: any = 0;
-    if (appStore.HOSPITAL_ID == 'hj') {
+    if (false) {
       if (textPapersLists.length) {
         await textPapersLists.map((item: any, index: number) => {
           let questionName: any = `questionScoresSettings${index}`
@@ -100,13 +100,13 @@ export default observer(function Step4() {
 
   useLayoutEffect(() => {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
-    if (appStore.HOSPITAL_ID == 'hj') {
-      textPapersLists[0] && refForm.current && refForm.current.setFields({ questionScoresSettings0: textPapersLists[0] });
-      textPapersLists[1] && refForm.current && refForm.current.setFields({ questionScoresSettings1: textPapersLists[1] });
-      textPapersLists[2] && refForm.current && refForm.current.setFields({ questionScoresSettings2: textPapersLists[2] });
-      textPapersLists[3] && refForm.current && refForm.current.setFields({ questionScoresSettings3: textPapersLists[3] });
-      textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });
-    }
+    // if (appStore.HOSPITAL_ID == 'hj') {
+    //   textPapersLists[0] && refForm.current && refForm.current.setFields({ questionScoresSettings0: textPapersLists[0] });
+    //   textPapersLists[1] && refForm.current && refForm.current.setFields({ questionScoresSettings1: textPapersLists[1] });
+    //   textPapersLists[2] && refForm.current && refForm.current.setFields({ questionScoresSettings2: textPapersLists[2] });
+    //   textPapersLists[3] && refForm.current && refForm.current.setFields({ questionScoresSettings3: textPapersLists[3] });
+    //   textPapersLists[4] && refForm.current && refForm.current.setFields({ questionScoresSettings4: textPapersLists[4] });
+    // }
   }, [textPapersLists.length]);
 
   // const getHjQuestionScoresSettings = (index: number) => {
@@ -199,7 +199,7 @@ export default observer(function Step4() {
   const UpdateTablePage = () => {
     switch (appStore.HOSPITAL_ID) {
       case 'hj':
-        return (<div>
+        /*return (<div>
           <Col span={24}>
             <Form.Field label={`上传题库`}>
               <div className="down-file-con">
@@ -220,7 +220,7 @@ export default observer(function Step4() {
               </Col>
             )
           })}
-        </div>)
+        </div>)*/
       case 'nys':
         return (
           <Col span={24}>

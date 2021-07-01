@@ -102,6 +102,11 @@ export default class TrainingInfoReviewService extends BaseApiService {
   public saveStudyNote(params: any) {
     return this.post('/studyAndTrain/studyNoteManage/saveStudyNote', params)
   }
+
+  // 导出练习
+  public handleExport(params: any) {
+    return this.post('/studyAndTrain/teachingPlanManage/exportPreviewPaper', params, { responseType: 'blob' })
+  }
 }
 
 export const trainingInfoReviewService = new TrainingInfoReviewService();

@@ -12,6 +12,7 @@ import { appStore } from "src/stores"
 import { useRef } from "src/types/react";
 import printing from "printing";
 import PrintPageNys from "./PrintPageNys";
+import { fileDownload } from "src/utils/file/file";
 
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function;
@@ -23,6 +24,7 @@ export interface Props extends ModalComponentProps {
   hideRightSide?: boolean; //是否隐藏右侧面板
   visible: boolean;
 }
+
 export default observer(function AnswerSheetModal(props: Props) {
   const bodyStyle = {
     padding: 0
@@ -118,7 +120,7 @@ export default observer(function AnswerSheetModal(props: Props) {
     switch (dataType) {
       case "问卷":
         return (
-          <满意度问卷调查 type={viewType} title={title} data={questionList} />
+          <满意度问卷调查 type={viewType} title={title} data={questionList}/>
         );
       default:
         return (
@@ -156,6 +158,16 @@ export default observer(function AnswerSheetModal(props: Props) {
         `
     });
   }
+  // 导出试卷
+  const handleExport = () => {
+    const params = {
+      cetpId,
+      empNo
+    }
+    trainingResultService.handleExport(params).then(res => {
+      fileDownload(res)
+    })
+  }
 
   return (
     <Modal
@@ -163,8 +175,17 @@ export default observer(function AnswerSheetModal(props: Props) {
       confirmLoading={loading}
       footer={
         <div>
-          {appStore.HOSPITAL_ID == 'nys' &&
-            <Button onClick={handlePrint} type='primary'>打印试卷</Button>
+          {
+            appStore.hisMatch({
+              map: {
+                nys: <Button onClick={handlePrint} type='primary'>打印试卷</Button>,
+                hj: <React.Fragment>
+                  <Button onClick={handlePrint} type='primary'>打印试卷</Button>
+                  <Button onClick={handleExport} type='primary'>导出</Button>
+                </React.Fragment>,
+                default: <span/>
+              }
+            })
           }
           <Button onClick={onCancel}>取消</Button>
           {viewType == "edit" && wendaQuestionList.length > 0 && (

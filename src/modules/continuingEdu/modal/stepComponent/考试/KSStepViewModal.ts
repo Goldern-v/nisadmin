@@ -60,7 +60,7 @@ const defaultStepData2: any = {
   /** 是否有评分人学时 1有 0无*/
   hasScorePersonClassHours: 0,
   /** 评分人学时*/
-  scorePersonClassHours: 0, 
+  scorePersonClassHours: 0,
 
   //南医三单独
   /**  考试开始时间 */
@@ -212,10 +212,10 @@ class StepViewModal {
           },
           []
         ),
-        questionStatList:
-          appStore.HOSPITAL_ID == "hj"
-            ? this.manyQuestionStatLists
-            : this.stepData2.questionStatList
+        questionStatList:this.stepData2.questionStatList
+          // appStore.HOSPITAL_ID == "hj"
+          //   ? this.manyQuestionStatLists
+          //   : this.stepData2.questionStatList
       }
     };
     return result;
