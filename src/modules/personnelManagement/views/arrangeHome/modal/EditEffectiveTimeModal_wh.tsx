@@ -57,12 +57,14 @@ export default function EditEffectiveTimeModal(props: Props) {
       effectiveTime: value.effectiveTime,
       settingNightHour: value.settingNightHour,
       settingMorningHour: value.settingMorningHour,
-      startDate: `${moment(value.startDate_1).format("YYYY-MM-DD")} ${moment(
-        value.startDate_2
-      ).format("HH:mm")}`,
-      endDate: `${moment(value.endDate_1).format("YYYY-MM-DD")} ${moment(
-        value.endDate_2
-      ).format("HH:mm")}`
+      startDate: [
+        `${moment(value.startDate_1).format("YYYY-MM-DD")}`,
+        `${value.startDate_2 ? moment(value.startDate_2).format("HH:mm") : '00:00'}`
+      ].join(' '),
+      endDate: [
+        `${moment(value.endDate_1).format("YYYY-MM-DD")}`,
+        `${value.endDate_2 ? moment(value.endDate_2).format("HH:mm") : '00:00'}`
+      ].join(' ')
     };
     onOkCallBack && onOkCallBack(data);
     onCancel();
