@@ -159,14 +159,17 @@ export default observer(function QcItemGroup(props: Props) {
               qcModel.setItemListErrObj(item.qcItemCode, false)
 
               let newItem = { ...item, qcItemValue: e.target.value }
-              if (e.target.value === '否' && !newItem.subItemList) {
-                if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                  newItem.remarkDeductScore = newItem.fixedScore.toString()
+
+              if (qcModel.baseInfo.useScore) {
+                if (e.target.value === '否' && !newItem.subItemList) {
+                  if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
+                    newItem.remarkDeductScore = newItem.fixedScore.toString()
+                  }
+                } else if (e.target.value === '是') {
+                  newItem.remarkDeductScore = ''
+                  if (newItem.subItemList)
+                    newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
                 }
-              } else if (e.target.value === '是') {
-                newItem.remarkDeductScore = ''
-                if (newItem.subItemList)
-                  newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
               }
 
               handleItemChange({ ...newItem }, itemIndex)
