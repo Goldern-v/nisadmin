@@ -2,7 +2,6 @@ import axios from 'axios'
 import qs from 'qs'
 import { appStore, authStore, scheduleStore } from 'src/stores'
 import { httpLoginToken } from 'src/libs/http/http'
-import { compileStr } from 'src/utils/encode/encode'
 
 const host = appStore.isDev ? '114.251.193.138:8099' : '192.168.20.25:8099'
 

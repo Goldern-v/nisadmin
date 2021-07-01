@@ -86,6 +86,22 @@ export default observer(function QcItemGroup(props: Props) {
     return classList.join(' ')
   }
 
+  const formatQcItemDesc = (qcItemDesc?: string) => {
+    if (!qcItemDesc) return <span></span>
+
+    if (qcItemDesc.match(/\n/))
+      return <pre
+        style={{
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+          color: '#999'
+        }}>
+        （{`${qcItemDesc}`}）
+      </pre>
+
+    return <span style={{ color: '#999' }}>{`（${qcItemDesc}）`}</span>
+  }
+
   return <QuestionItem>
     <div className='titleCon' id={`itemGroupItem${index}`}>
       <div className='titleLeftCon'>
@@ -106,7 +122,12 @@ export default observer(function QcItemGroup(props: Props) {
     {itemGroup.itemList.map((item: any, itemIndex: number) => (
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
-          {item.itemShowCode} {item.qcNameFill || item.qcItemName} {item.qcItemDeductDesc ? <span style={{ color: '#999' }}>{`（${item.qcItemDeductDesc}）`}</span> : ''}
+          <span style={{ marginRight: 5 }}>{item.itemShowCode}</span>
+          {item.qcNameFill || item.qcItemName}
+          {item.fixedScore && (
+            <span style={{ color: '#999' }}>（{item.fixedScore}分）</span>
+          )}
+          <div>{formatQcItemDesc(item.qcItemDeductDesc)}</div>
         </div>
         {item.fillDataList && (
           <Row gutter={10}>
@@ -170,6 +191,8 @@ export default observer(function QcItemGroup(props: Props) {
                   let currentChecked = newSubItemList[subItemIdx].checked
                   newSubItemList[subItemIdx].checked = !currentChecked
 
+                  qcModel.setItemListErrObj(item.qcItemCode, false)
+
                   handleItemChange({
                     ...item,
                     qcItemValue: !currentChecked ? '否' : item.qcItemValue,
@@ -178,12 +201,7 @@ export default observer(function QcItemGroup(props: Props) {
                 }}>
                 <Icon
                   type="close-square"
-                  style={{
-                    color: subItem.checked ? 'red' : '#999',
-                    fontSize: '16px',
-                    verticalAlign: 'middle',
-                    marginRight: '10px'
-                  }} />
+                  className={subItem.checked ? 'checked' : 'unchecked'} />
                 <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
               </div>
             ))}
@@ -382,6 +400,30 @@ const QuestionItem = styled.div`
     margin: 5px 0;
     &>div{
       margin: 2.5px 0;
+    }
+  }
+
+  i.anticon-close-square{
+    color: #999;
+     font-size: 16px;
+      vertical-align: middle;
+      margin-right: 10px;
+    &.checked{
+      color: red;
+    }
+    &.unchecked{
+      position: relative;
+      &::after{
+        content: '';
+        width: 10px;
+        height: 10px;
+        background-color: #eee;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
     }
   }
 `

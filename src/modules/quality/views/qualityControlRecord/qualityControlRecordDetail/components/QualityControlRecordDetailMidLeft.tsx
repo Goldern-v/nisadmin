@@ -136,6 +136,25 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     }
   };
 
+  const qcResult = () => {
+    if (detailData.master?.useScore) {
+      let netTotalScore = detailData.master?.netTotalScore || 0
+      let deductTotalScore = detailData.master?.deductTotalScore || 0
+      let totalScore = netTotalScore + deductTotalScore
+
+      return <div>
+        <span>质控结果：</span>
+        <span>得分({netTotalScore}) </span>
+        <span>总分({totalScore})</span>
+      </div>
+    }
+
+    return <div>
+      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) 不适用(
+      {itemCount.inapplicableSize || 0})
+    </div>
+  }
+
   const itemRadioChange = (e: any) => { };
   // 附件
   const itemAttachmentCheck = () => { };
@@ -161,10 +180,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             currentHospitalId: qcMatchCode
           })}
           <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
-          <div>
-            质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用(
-            {itemCount.inapplicableSize})
-          </div>
+          {qcResult()}
           {messageBoxData.hasArchiveItem && (
             <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
           )}
@@ -263,12 +279,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                         <div key={subItem.subItemCode}>
                           <Icon
                             type="close-square"
-                            style={{
-                              color: subItem.checked ? 'red' : '#999',
-                              fontSize: '16px',
-                              verticalAlign: 'middle',
-                              marginRight: '10px'
-                            }} />
+                            className={subItem.checked ? 'checked' : 'unchecked'} />
                           <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
                         </div>
                       ))}
@@ -488,6 +499,30 @@ const QuestionItem = styled.div`
       }
       .ant-input-disabled {
         color: black;
+      }
+    }
+  }
+
+  i.anticon-close-square{
+    color: #999;
+    font-size: 16px;
+      vertical-align: middle;
+      margin-right: 10px;
+    &.checked{
+      color: red;
+    }
+    &.unchecked{
+      position: relative;
+      &::after{
+        content: '';
+        width: 10px;
+        height: 10px;
+        background-color: #eee;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
       }
     }
   }
