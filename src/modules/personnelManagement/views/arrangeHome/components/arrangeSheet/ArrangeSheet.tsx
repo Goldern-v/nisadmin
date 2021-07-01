@@ -463,6 +463,7 @@ export default observer(function ArrangeSheet(props: Props) {
               appStore.hisAdapter({
                 yczyy: () => 2,
                 nys: () => isEdit ? 6 : 5,
+                hj: () => 3,
                 wh: () => 6,
                 jmfy: () => 6,
                 dghl: () => 5,
