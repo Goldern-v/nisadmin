@@ -401,7 +401,6 @@ class PrintModal {
     if (!params) return;
     if (!nurseGroup || nurseGroup.length <= 0) return;
     if (!deptName) return;
-
     //创建打印容器
     let div = document.createElement("div");
     let printId = `print${moment().format("X")}`;
@@ -444,7 +443,7 @@ class PrintModal {
     let remarkEl = `<pre>排班备注：${remark}</pre>`;
     // 列宽
     //页面总宽度
-    let pageWidth = 720;
+    let pageWidth = 860;
     //页面高度 超过换页
     let pageHeight = 1090;
     //td计算用高度 和打印样式保持一致
@@ -478,6 +477,10 @@ class PrintModal {
     let col2Width = 60;
     //工作年
     let col3Width = 25;
+    //分组
+    let col31Width = 60;
+    //分管床位
+    let col32Width = 60;
     //休假统计
     let col4Width = 35;
     //排版列总宽度
@@ -490,7 +493,7 @@ class PrintModal {
       let tableId = "";
       //计算每列宽度
       let cols = [
-        col1Width, col2Width, col3Width,
+        col1Width, col2Width, col3Width, col31Width, col32Width,
         ...dateRow.map(() => othersWidth / dateLength),
         col4Width
       ]
@@ -507,7 +510,7 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + 4,
+        colSpan: dateRow.length + 6,
         class: "main-title",
         content: `${dateRow[0].moment.format(
           "YYYY年M月"
@@ -518,6 +521,8 @@ class PrintModal {
           ${tdEl({ content: "姓名", rowSpan: 2 })}
           ${tdEl({ content: "岗位", rowSpan: 2 })}
           ${tdEl({ content: "工作年", rowSpan: 2 })}
+          ${tdEl({ content: "分组", rowSpan: 2 })}
+          ${tdEl({ content: "分管床位", rowSpan: 2 })}
           ${dateRow.map((item: any) => tdEl({ content: item.date })).join("")}
           ${tdEl({ content: "休假统计", rowSpan: 2 })}
         </tr>
@@ -538,25 +543,25 @@ class PrintModal {
           <tr class="insert-start">
             ${tdEl({ content: "加班登记栏：", colSpan: 2, class: "text-left" })}
             ${tdEl({ colSpan: 0 })}
-            ${tdEl({ colSpan: dateRow.length + 1 })}
+            ${tdEl({ colSpan: dateRow.length + 3 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4 })}
+            ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4 })}
+            ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4 })}
+            ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4, class: "text-left", content: "休假要求：" })}
+            ${tdEl({ colSpan: dateRow.length + 6, class: "text-left", content: "休假要求：" })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4 })}
+            ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4 })}
+            ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
         `;
       for (let j = 0; j < NurseGroup.length; j++) {
@@ -607,6 +612,10 @@ class PrintModal {
         tr += tdEl({ content: `${nurse.newTitle}/${nurse.nurseHierarchy}` });
         //工作年
         tr += tdEl({ content: nurse.year || "" });
+        //分组
+        tr += tdEl({ content: nurse.groupName || "" });
+        //分管床位
+        tr += tdEl({ content: "" });
         //排班列
         let groups = [] as any;
         for (let k = 0; k < dateRow.length; k++) {
