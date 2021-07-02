@@ -1,8 +1,14 @@
 import BaseApiService from "src/services/api/BaseApiService"
+import moment from 'moment'
 
 class Api extends BaseApiService {
   // 获取列表
-  getList(params: {}) {
+  getList(data: any) {
+    const params = {
+      ...data,
+      beginDate: data.beginDate ? moment(data.beginDate).format('YYYY-MM-DD HH:mm') : '',
+      endDate: data.endDate ? moment(data.endDate).format('YYYY-MM-DD HH:mm') : '',
+    }
     return this.post(`/form/searchRoom/master/getPage`, params)
   }
 
@@ -20,7 +26,6 @@ class Api extends BaseApiService {
   auditItem(params: Object) {
     return this.post(`/form/searchRoom/master/handleNode`, params)
   }
-
 
 
 }

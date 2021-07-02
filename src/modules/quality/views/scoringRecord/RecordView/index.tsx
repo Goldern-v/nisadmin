@@ -105,7 +105,7 @@ export default observer((props: Props) => {
       />
       <HeadWrapper>
         <div>
-          <div style={{ fontWeight: "bold" }}>急诊护理单元中夜班查房记录表</div>
+          <div style={{ fontWeight: "bold" }}>{master.deptName}中夜班查房记录表</div>
           <div>状态：待提交</div>
         </div>
         <div className='right-bottom'>
@@ -115,203 +115,213 @@ export default observer((props: Props) => {
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <div className='table-wrapper'>
-          <div className='table-title'>
-            05月20日护士长班查房评分表
-          </div>
-          <table>
-            <colgroup>
-              <col/>
-              <col/>
-              <col/>
-              <col/>
-              <col/>
-              <col/>
-            </colgroup>
-            <tbody>
-            <tr>
-              <td colSpan={4}/>
-              <td>值班护长：</td>
-              <td>
-                <Input
-                  value={form.SR0001001}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001001': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td>病区：</td>
-              <td>
-                <Input
-                  value={form.SR0001002}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001002': e.target.value })
-                  }/>
-              </td>
-              <td>病人数：</td>
-              <td>
-                <Input
-                  value={form.SR0001003}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001003': e.target.value })
-                  }/>
-              </td>
-              <td>危重病人：</td>
-              <td>
-                <Input
-                  value={form.SR0001004}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001004': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td>值班护士：</td>
-              <td>
-                <Input
-                  value={form.SR0001005}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001005': e.target.value })
-                  }/>
-              </td>
-              <td>陪护数：</td>
-              <td>
-                <Input
-                  value={form.SR0001006}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001006': e.target.value })
-                  }/>
-              </td>
-              <td>I级护理：</td>
-              <td>
-                <Input
-                  value={form.SR0001007}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001007': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>查房内容</td>
-              <td colSpan={3}>存在问题</td>
-              <td>得分</td>
-            </tr>
-            <tr>
-              <td colSpan={2}>护士的服务礼仪(20分)</td>
-              <td colSpan={3}>
-                <Input
-                  value={form.SR0001008}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001008': e.target.value })
-                  }/>
-              </td>
-              <td>
-                <Input
-                  value={form.SR0001009}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001009': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>级别护理的落实(20分)</td>
-              <td colSpan={3}>
-                <Input
-                  value={form.SR0001010}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001010': e.target.value })
-                  }/>
-              </td>
-              <td>
-                <Input
-                  value={form.SR0001011}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001011': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>交接班制度的落实(20分)</td>
-              <td colSpan={3}>
-                <Input
-                  value={form.SR0001012}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001012': e.target.value })
-                  }/>
-              </td>
-              <td>
-                <Input
-                  value={form.SR0001013}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001013': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>医嘱执行的落实(20分)</td>
-              <td colSpan={3}>
-                <Input
-                  value={form.SR0001014}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001014': e.target.value })
-                  }/>
-              </td>
-              <td>
-                <Input
-                  value={form.SR0001015}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001015': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>急救物品及药品管理标准(20分)</td>
-              <td colSpan={3}>
-                <Input
-                  value={form.SR0001016}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001016': e.target.value })
-                  }/>
-              </td>
-              <td>
-                <Input
-                  value={form.SR0001017}
-                  onChange={(e) =>
-                    setFormItem({ 'SR0001017': e.target.value })
-                  }/>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={6}>
-                <div style={{ display: "flex" }}>
-                  <span style={{ width: '140px' }}>工作内容及建议:</span>
-                  <Input.TextArea
-                    rows={4}
-                    value={form.SR0001018}
+        <div style={{ overflow: 'auto', height: '100%', pointerEvents: hasSubmit() ? 'auto' : 'none' }}>
+          <div className='table-wrapper'>
+            <div className='table-title'>
+              05月20日护士长班查房评分表
+            </div>
+            <table>
+              <colgroup>
+                <col/>
+                <col/>
+                <col/>
+                <col/>
+                <col/>
+                <col/>
+              </colgroup>
+              <tbody>
+              <tr>
+                <td colSpan={4}/>
+                <td>值班护长：</td>
+                <td>
+                  <Input
+                    value={form.SR0001001}
                     onChange={(e) =>
-                      setFormItem({ 'SR0001018': e.target.value })
+                      setFormItem({ 'SR0001001': e.target.value })
                     }/>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className='audit-wrapper'>
-          <div className='audit-title'>审核流程</div>
-          <div>
-            <Timeline>
-              {
-                process.map((item: any, index: number) => {
-                  return <Timeline.Item key={index} color={item.status === '1' ? 'green' : 'red'}>
-                    <div className='timeline-item'>{item.nodeName}</div>
-                    <div className='timeline-item'>{item.handlerName}</div>
-                    <div className='timeline-item'>{item.handleTime}</div>
-                  </Timeline.Item>
-                })
-              }
-            </Timeline>,
+                </td>
+              </tr>
+              <tr>
+                <td>病区：</td>
+                <td>
+                  <Input
+                    value={form.SR0001002}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001002': e.target.value })
+                    }/>
+                </td>
+                <td>病人数：</td>
+                <td>
+                  <Input
+                    value={form.SR0001003}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001003': e.target.value })
+                    }/>
+                </td>
+                <td>危重病人：</td>
+                <td>
+                  <Input
+                    value={form.SR0001004}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001004': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td>值班护士：</td>
+                <td>
+                  <Input
+                    value={form.SR0001005}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001005': e.target.value })
+                    }/>
+                </td>
+                <td>陪护数：</td>
+                <td>
+                  <Input
+                    value={form.SR0001006}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001006': e.target.value })
+                    }/>
+                </td>
+                <td>I级护理：</td>
+                <td>
+                  <Input
+                    value={form.SR0001007}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001007': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>查房内容</td>
+                <td colSpan={3}>存在问题</td>
+                <td>得分</td>
+              </tr>
+              <tr>
+                <td colSpan={2}>护士的服务礼仪(20分)</td>
+                <td colSpan={3}>
+                  <Input.TextArea
+                    value={form.SR0001008}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001008': e.target.value })
+                    }/>
+                </td>
+                <td>
+                  <Input
+                    value={form.SR0001009}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001009': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>级别护理的落实(20分)</td>
+                <td colSpan={3}>
+                  <Input.TextArea
+                    value={form.SR0001010}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001010': e.target.value })
+                    }/>
+                </td>
+                <td>
+                  <Input
+                    value={form.SR0001011}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001011': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>交接班制度的落实(20分)</td>
+                <td colSpan={3}>
+                  <Input.TextArea
+                    value={form.SR0001012}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001012': e.target.value })
+                    }/>
+                </td>
+                <td>
+                  <Input
+                    value={form.SR0001013}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001013': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>医嘱执行的落实(20分)</td>
+                <td colSpan={3}>
+                  <Input.TextArea
+                    value={form.SR0001014}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001014': e.target.value })
+                    }/>
+                </td>
+                <td>
+                  <Input
+                    value={form.SR0001015}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001015': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>急救物品及药品管理标准(20分)</td>
+                <td colSpan={3}>
+                  <Input.TextArea
+                    value={form.SR0001016}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001016': e.target.value })
+                    }/>
+                </td>
+                <td>
+                  <Input
+                    value={form.SR0001017}
+                    onChange={(e) =>
+                      setFormItem({ 'SR0001017': e.target.value })
+                    }/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={6}>
+                  <div style={{ display: "flex" }}>
+                    <span style={{ width: '140px' }}>工作内容及建议:</span>
+                    <Input.TextArea
+                      rows={4}
+                      value={form.SR0001018}
+                      onChange={(e) =>
+                        setFormItem({ 'SR0001018': e.target.value })
+                      }/>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className='audit-wrapper'>
+            <div className='audit-title'>审核流程</div>
+            <div>
+              <Timeline>
+                {
+                  process.map((item: any, index: number) => {
+                    return <Timeline.Item key={index} color={item.status === '1' ? 'green' : 'rgba(0,0,0,.25)'}>
+                      <div className='timeline-item'>{item.nodeName}</div>
+                      <div className='timeline-item'>{item.handlerName}</div>
+                      <div className='timeline-item'>{item.handleTime}</div>
+                      <div className='timeline-item'
+                           style={{
+                             background: 'rgb(238,238,238)',
+                             borderRadius: '5px',
+                             padding: '0 5px'
+                           }}>
+                        {item.handleContent}
+                      </div>
+                    </Timeline.Item>
+                  })
+                }
+              </Timeline>,
+            </div>
           </div>
         </div>
       </MainWrapper>
@@ -394,7 +404,8 @@ export default observer((props: Props) => {
 })
 
 const Wrapper = styled.div`
-  height: calc(100% - 50px);
+  height: 100%;
+  overflow: hidden;
 `
 
 const HeadWrapper = styled.div`
@@ -421,10 +432,11 @@ const MainWrapper = styled.div`
    
    .table-wrapper{
       background: #fff;
-      height: 100%;
+      min-height: 100%;
       width: 50%;
       margin: 0 auto;
-      padding: 30px 50px;
+      padding: 30px 50px 80px;
+      
       
       .table-title{
         text-align: center;
@@ -467,8 +479,7 @@ const MainWrapper = styled.div`
         margin-bottom: 10px;
       }
       .timeline-item{
-        height: 30px;
-        line-height:30px;
+        line-height:22px;
       }
    }
 `

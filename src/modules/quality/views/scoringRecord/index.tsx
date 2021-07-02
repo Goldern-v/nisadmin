@@ -82,12 +82,12 @@ export default observer((props: Props) => {
     },
     {
       title: "状态",
-      dataIndex: "",
+      dataIndex: "status",
       width: 100,
-      align: "status",
+      align: "center",
       render: (text: string, row: any, c: any) => {
         return (
-          statusMap[+text]
+          isNaN(row.status) ? '' : statusMap[+row.status]
         )
       }
     },
@@ -129,10 +129,10 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>护长日查房评分记录</div>
+        <div className='page-title'>护长夜查房评分记录</div>
         <div className='button-group'>
           <span className='label'>科室：</span>
-          <DeptSelect onChange={(deptCode) => setFormItem({ wardCode: deptCode })}/>
+          <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })}/>
           <span className='label'>日期：</span>
           <DatePicker.RangePicker
             style={{ width: 220 }}
@@ -145,7 +145,7 @@ export default observer((props: Props) => {
             onChange={(val: string) => setFormItem({ status: val })}>
             {
               statusMap.map((item, index) => {
-                return <Select.Option value={'' + index}>{item}</Select.Option>
+                return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
               })
             }
           </Select>
