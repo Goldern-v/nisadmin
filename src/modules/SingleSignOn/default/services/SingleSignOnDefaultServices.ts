@@ -10,7 +10,7 @@ class SingleSignOnDefaultServices {
   public autoLogin(token: string) {
     return httpLoginToken.post(`/ssoLogin`, { token })
       .then(res => {
-        if (res.data.code === 200) {
+        if (res.data.code === "200") {
           let { adminNurse, authToken, user } = res.data
           user = { ...user }
           sessionStorage.setItem('adminNurse', adminNurse)
