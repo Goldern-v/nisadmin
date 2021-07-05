@@ -18,6 +18,7 @@ export default function SettingEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
+  const [list, setList] = useState([]);
   // 层级
   const nurseHierarchyArr = [
     { name: "N0", code: "N0" },
@@ -62,10 +63,18 @@ export default function SettingEditModal(props: Props) {
   // 获取知识点划分、教学方式级联数据内容
   const getTree = (knowledgePointDivisionVal: any, learningFormVal: any) => {
     if (knowledgePointDivisionVal) {
-      trainingManualModal.knowledgePointDivisionTree = trainingManualModal.trainingKeyPointTree.find((item: any) => item.id == knowledgePointDivisionVal)
-    }
-    if (learningFormVal) {
-      trainingManualModal.learningFormTree = trainingManualModal.knowledgePointDivisionTree.childList.find((o: any) => o.id == learningFormVal)
+      const obj = trainingManualModal.trainingKeyPointTree.find((item: any) => item.id == knowledgePointDivisionVal)
+      trainingManualModal.knowledgePointDivisionTree = { ...obj }
+      setList(obj.childList)
+      if (learningFormVal) {
+        const temp = obj.childList.find((item: any) => item.id === learningFormVal)
+        if (!temp) {
+          formRef?.current?.setFields({
+            knowledgePointDivisionId: ''
+          })
+        }
+        trainingManualModal.learningFormTree = list.find((o: any) => o.id == learningFormVal)
+      }
     }
   }
 
@@ -100,7 +109,7 @@ export default function SettingEditModal(props: Props) {
         }
       }, 100);
     }
-  }, [visible, formRef]);
+  }, [visible]);
 
   // 表单变化函数
   const onFormChange = (name: string, value: any, from: Form) => {
@@ -138,8 +147,8 @@ export default function SettingEditModal(props: Props) {
             }
           }
         }).catch(e => {
-          console.log(e);
-        });
+        console.log(e);
+      });
     }
   };
 
@@ -181,7 +190,7 @@ export default function SettingEditModal(props: Props) {
             </Col>
             <Col span={19}>
               <Form.Field name="officialRank">
-                <Input placeholder="名称" disabled />
+                <Input placeholder="名称" disabled/>
               </Form.Field>
             </Col>
           </Row>
@@ -208,11 +217,13 @@ export default function SettingEditModal(props: Props) {
             <Col span={19}>
               <Form.Field name="knowledgePointDivisionId">
                 <Select>
-                  {trainingManualModal.knowledgePointDivisionTree.childList && trainingManualModal.knowledgePointDivisionTree.childList.map((item: any) => (
-                    <Select.Option value={item.id} key={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
+                  {
+                    list.map((item: any) => (
+                      <Select.Option value={item.id} key={item.name}>
+                        {item.name}
+                      </Select.Option>
+                    ))
+                  }
                 </Select>
               </Form.Field>
             </Col>
