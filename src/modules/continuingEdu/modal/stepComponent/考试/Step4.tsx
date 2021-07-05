@@ -28,7 +28,8 @@ import UpdateTableHj from "./UpdateTableHj";
 import UpdateTableNys from "./UpdateTableNys";
 
 
-export interface Props { }
+export interface Props {
+}
 
 export default observer(function Step4() {
   const textPapersLists: any = stepViewModal.manyQuestionStatLists
@@ -115,11 +116,13 @@ export default observer(function Step4() {
 
 
   /** 判断是否有问答题，只有问答题才允许选择评分负责人 */
-  let hasWdt = appStore.HOSPITAL_ID == 'hj' ? textPapersLists[0] && textPapersLists[0].questionScoresSettings && textPapersLists[0].questionScoresSettings.find((item: any) => {
-    return item.questionType == 4
-  }) : stepViewModal.stepData2.questionStatList && stepViewModal.stepData2.questionStatList.find((item: any) => {
-    return item.questionType == 4
-  })
+  let hasWdt =
+    // appStore.HOSPITAL_ID == 'hj' ? textPapersLists[0] && textPapersLists[0].questionScoresSettings && textPapersLists[0].questionScoresSettings.find((item: any) => {
+    //   return item.questionType == 4
+    // }) :
+    stepViewModal.stepData2.questionStatList && stepViewModal.stepData2.questionStatList.find((item: any) => {
+      return item.questionType == 4
+    })
 
   if (!hasWdt) {
     stepViewModal.stepData2.needScorePerson = false
@@ -190,7 +193,8 @@ export default observer(function Step4() {
               message.error("试卷新增失败");
             }
           })
-          .catch(e => { });
+          .catch(e => {
+          });
       }
     });
   }
@@ -199,33 +203,33 @@ export default observer(function Step4() {
   const UpdateTablePage = () => {
     switch (appStore.HOSPITAL_ID) {
       case 'hj':
-        /*return (<div>
-          <Col span={24}>
-            <Form.Field label={`上传题库`}>
-              <div className="down-file-con">
-                选择上传文件：
-            <span onClick={downFileWith}>下载题库模板(含问答题)</span>
-                &nbsp;
-            <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
-              </div>
-            </Form.Field>
-          </Col>
-          <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
-          {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
-            return (
-              <Col span={24}>
-                <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
-                  <UpdateTableHj data={item} />
-                </Form.Field>
-              </Col>
-            )
-          })}
-        </div>)*/
+      /*return (<div>
+        <Col span={24}>
+          <Form.Field label={`上传题库`}>
+            <div className="down-file-con">
+              选择上传文件：
+          <span onClick={downFileWith}>下载题库模板(含问答题)</span>
+              &nbsp;
+          <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
+            </div>
+          </Form.Field>
+        </Col>
+        <Button type='primary' className="addText" disabled={textPapersLists.length > 4} onClick={() => handleAddText()}>添加新试卷</Button>
+        {textPapersLists.length > 0 && textPapersLists.map((item: any, index: any) => {
+          return (
+            <Col span={24}>
+              <Form.Field label={`试卷${index + 1}`} name={`questionScoresSettings${index}`}>
+                <UpdateTableHj data={item} />
+              </Form.Field>
+            </Col>
+          )
+        })}
+      </div>)*/
       case 'nys':
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">
-              <UpdateTableNys />
+              <UpdateTableNys/>
             </Form.Field>
           </Col>
         )
@@ -233,7 +237,7 @@ export default observer(function Step4() {
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">
-              <UpdateTable />
+              <UpdateTable/>
             </Form.Field>
           </Col>
         )
@@ -250,19 +254,19 @@ export default observer(function Step4() {
         <Row>
           <Col span={24}>
             <Form.Field label={`最大考试次数`} name="maxExamTimes">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`总成绩`} name="totalScores">
               <span>
-                <Input readOnly value={stepViewModal.stepData2.totalScores} />
+                <Input readOnly value={stepViewModal.stepData2.totalScores}/>
               </span>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`及格分数线`} name="passScores">
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -272,11 +276,11 @@ export default observer(function Step4() {
               suffix={"分钟"}
               aside="注：从点击“开始答题”按钮时，单独给每个人开始计时"
             >
-              <InputNumber />
+              <InputNumber/>
             </Form.Field>
           </Col>
 
-          <UpdateTablePage />
+          <UpdateTablePage/>
 
           <Col span={24}>
             <span
@@ -302,7 +306,7 @@ export default observer(function Step4() {
                   }}
                 >
                   随机显示题目顺序
-            </Checkbox>
+                </Checkbox>
               </Row>
               <Row style={{ marginTop: 10 }}>
                 <Checkbox
@@ -314,7 +318,7 @@ export default observer(function Step4() {
                   }}
                 >
                   随机显示题目选项顺序
-            </Checkbox>
+                </Checkbox>
               </Row>
               <Row style={{ marginTop: 10 }}>
                 <Checkbox
@@ -327,7 +331,7 @@ export default observer(function Step4() {
                   }}
                 >
                   交卷后显示分数
-              <span style={{ color: "#999" }}>（有问答题需要人工评分，没有则立即显示成绩）</span>
+                  <span style={{ color: "#999" }}>（有问答题需要人工评分，没有则立即显示成绩）</span>
                 </Checkbox>
               </Row>
             </div>
@@ -359,12 +363,12 @@ export default observer(function Step4() {
               }}
             >
               是否需要评分负责人
-        </Checkbox>
+            </Checkbox>
           </Col>
 
           {!!stepViewModal.stepData2.needScorePerson && (
             <React.Fragment>
-              <Col span={2} />
+              <Col span={2}/>
               <Col span={22}>
                 <Form.Field
                   label={`评分负责人`}
@@ -386,7 +390,7 @@ export default observer(function Step4() {
                 </Form.Field>
               </Col>
               {stepViewModal.stepData2.scorePersonList.length > 0 && (<React.Fragment>
-                <Col span={2} />
+                <Col span={2}/>
                 <Col span={22}>
                   <Form.Field label={`评分人学时`} name="hasScorePersonClassHours">
                     <Select style={{ width: 120 }}>
@@ -397,7 +401,7 @@ export default observer(function Step4() {
                 </Col>
                 {stepViewModal.stepData2.hasScorePersonClassHours == 1 && (
                   <React.Fragment>
-                    <Col span={2} />
+                    <Col span={2}/>
                     <Col span={22}>
                       <Form.Field
                         label={``}
@@ -443,9 +447,9 @@ export default observer(function Step4() {
         </Button>
       </span>
       }
-      <testPage.Component />
+      <testPage.Component/>
 
-      <selectNurseModal.Component />
+      <selectNurseModal.Component/>
     </Wrapper>
   );
 });
