@@ -4,136 +4,90 @@ import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-export default function BedSituation() {
-  // 
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
-  const [getTableList, setGetTableList] = useState([])
-  const [changeClass, setChangeClass] = useState('')
-  const [classItem, setClassItem] = useState('')
-  const postDepartmentByShiftViewMethod = () =>
-    StatisticsApi.postDepartmentByShiftView(changeClass, classItem).then((res: any) => {
-      if (res.data) {
-        let addLength = 8 - res.data.length
-        if (addLength > 0) {
-          for (let i = 0; i < addLength; i++) {
-            res.data.push({ 序列: '' })
+
+export interface Props {
+  tableData: any[],
+  filterObj: any,
+}
+
+export default function BedSituation(props: Props) {
+  const { tableData, filterObj } = props
+  const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
+  const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
+
+  const getShiftClass = (() => {
+    let colNameList = [] as any[]
+
+    Object.keys(filterObj).forEach((key: string) => {
+      let filterList = filterObj[key].list || []
+      filterList.filter((item: any) => item.checked).forEach((item: any) => {
+        colNameList.push(item.name)
+      })
+    })
+
+    return colNameList
+  })()
+
+  const visibleTable = () => {
+    let visibleData = [...tableData.length > 0 ? tableData : vertialTable]
+
+    let sumupRow = { '序列': visibleData.length + 1, '科室': '班次合计' } as any
+
+    visibleData.forEach((item: any) => {
+      let keys = Object.keys(item)
+
+      keys.forEach((key: string) => {
+        if (!['序列', '科室'].includes(key)) {
+          if (sumupRow[key]) {
+            sumupRow[key] = sumupRow[key] + item[key]
+          } else {
+            sumupRow[key] = item[key] || 0
           }
         }
-        setGetTableList(res.data)
-      }
+      })
     })
-  useEffect(() => {
-    // console.log(222)
-    emitter.removeAllListeners('设置班次大类')
-    emitter.addListener('设置班次大类', (shiftClass: any) => {
-      setGetShiftClass(shiftClass)
-      let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-      if (shiftClass.length) {
-        let cacheGetShiftClass = shiftClass.join(',')
-        statisticViewModel.classDiff = '按班次大类'
-        statisticViewModel.classItem = cacheGetShiftClass
-        setChangeClass('按班次大类')
-        setClassItem(cacheGetShiftClass)
-        StatisticsApi.postDepartmentByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
-          if (res.data) {
-            let addLength = 8 - res.data.length
-            if (addLength > 0) {
-              for (let i = 0; i < addLength; i++) {
-                res.data.push({ 序列: '' })
-              }
-            }
-            setGetTableList(res.data)
-          }
-        })
-      }
-    })
-    emitter.removeAllListeners('设置自定义班次')
-    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
-      setGetCheckboxItem(checkboxItem)
-      if (checkboxItem.length) {
-        let cacheCheckboxItem = checkboxItem.join(',')
-        statisticViewModel.classDiff = '自定义班次'
-        statisticViewModel.classItem = cacheCheckboxItem
-        setChangeClass('按班次大类')
-        setClassItem(cacheCheckboxItem)
-        StatisticsApi.postDepartmentByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
-          if (res.data) {
-            let addLength = 8 - res.data.length
-            if (addLength > 0) {
-              for (let i = 0; i < addLength; i++) {
-                res.data.push({ 序列: '' })
-              }
-            }
-            setGetTableList(res.data)
-          }
-        })
-      }
-    })
-  }, [])
-  emitter.removeAllListeners('科室排班按班次')
-  emitter.addListener('科室排班按班次', () => {
-    postDepartmentByShiftViewMethod()
-  })
-  function trClickChange(e: any) {
-    let parentNode = e.target.parentNode
-    let allTr = parentNode.parentNode.querySelectorAll('tr')
-    allTr.forEach((item: any) => {
-      item.classList.remove('addRowClass')
-    })
-    parentNode.classList.add('addRowClass')
+
+    visibleData.push(sumupRow)
+
+    return visibleData
   }
-  // Cache Td date
-  const tdCacheDate = [
-    { 序列: 1, 姓名: '杨好', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 2, 姓名: '王佩', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 3, 姓名: '李楚清', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 4, 姓名: '祝晓春', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 5, 姓名: '卞晓丽', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
-  ]
+
+  // useEffect(() => {
+  // }, [])
 
   // th DOM
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
-  const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
-  // td DOM
-  const getTdDom = getTableList.map((itemTr: any, index: number) => (
-    <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序列}</td>
-      <td>{itemTr.科室}</td>
 
-      {getShiftClass.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序列') {
-          return <td key={indexTd}>{index + 1}</td>
-        } else {
-          return <td key={indexTd}>{itemTr[itemTd]}</td>
-        }
-      })}
-      {getCheckboxItem.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序列') {
-          return <td key={indexTd}>{index + 1}</td>
-        } else {
-          return <td key={indexTd}>{itemTr[itemTd]}</td>
-        }
-      })}
-      <td>{itemTr.合计}</td>
-    </tr>
-  ))
-  const SpaceShow = (
-    <SpaceCon>
-      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
-      <div className='spaceFont'>暂无数据</div>
-    </SpaceCon>
-  )
-  if (getTableList.length < 8) {
-    let addLength = 8 - getTableList.length
-    if (addLength > 0) {
-      let cacheTableList: any = [...getTableList]
-      for (let i = 0; i < addLength; i++) {
-        cacheTableList.push({ 序列: '' })
-      }
-      setGetTableList(cacheTableList)
-    }
-  }
+  // td DOM
+  const getTdDom = visibleTable()
+    .map((itemTr: any, index: number) => (
+      <tr key={index}>
+        {!(itemTr.科室 || '').match('合计') ? (
+          <React.Fragment>
+            <td>{itemTr.序列 || index + 1}</td>
+            <td>{itemTr.科室}</td>
+          </React.Fragment>
+        ) : (
+          <td colSpan={2}>{itemTr.科室}</td>
+        )}
+        {getShiftClass.map((itemTd: any, indexTd: number) => {
+          if (itemTd === '序列') {
+            return <td key={indexTd}>{index + 1}</td>
+          } else {
+            return <td key={indexTd}>{itemTr[itemTd]}</td>
+          }
+        })}
+        {visibleType ? (
+          <td>{itemTr.合计}</td>
+        ) : (
+          <React.Fragment>
+            <td>{itemTr.合计}</td>
+            <td>{itemTr.合计1}</td>
+          </React.Fragment>
+        )}
+      </tr>
+    ))
+
   return (
     <Con>
       <div className='tableCon'>
@@ -144,18 +98,19 @@ export default function BedSituation() {
                 <th>序号</th>
                 <th>科室</th>
                 {getShiftClassDom}
-                {getCheckboxItemDom}
-                <th>合计</th>
+                {visibleType ? (
+                  <th>合计</th>
+                ) : (
+                  <React.Fragment>
+                    <th>班次大类合计</th>
+                    <th>自定义班次合计</th>
+                  </React.Fragment>
+                )}
               </tr>
               {getTdDom}
             </tbody>
           </table>
         </div>
-        {/* <div className='tableMid'>
-          <div className='tableMidCon'>
-            <table>{getTdDom ? getTdDom : SpaceShow}</table>
-          </div>
-        </div> */}
       </div>
     </Con>
   )
@@ -165,6 +120,7 @@ const Con = styled.div`
   width: 100%;
   flex: 1;
   margin-right: 30px;
+  margin-bottom: 20px;
   overflow: auto;
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
@@ -210,6 +166,7 @@ const Con = styled.div`
           padding: 0;
           border: 1px solid #d6d6d6;
           min-width: 60px;
+          height: 20px;
           border-top: none;
           /* width: 6%; */
         }
@@ -286,4 +243,3 @@ const Con = styled.div`
     }
   }
 `
-const SpaceCon = styled.div``

@@ -49,7 +49,7 @@ class SingleSignOnWhServices {
   public loginWithEmpNo(empNo: string, token: string) {
     return httpLoginToken.post(`/auth2/oauthLogin`, { empNo, token })
       .then(res => {
-        if (res.data.code === "200") {
+        if (res.data) {
           let { adminNurse, authToken, user } = res.data
           user = { ...user }
           sessionStorage.setItem('adminNurse', adminNurse)
@@ -69,9 +69,6 @@ class SingleSignOnWhServices {
           }
 
           window.location.href = '#/home'
-        } else {
-          let errMsg = res.data.desc || `请求失败 状态码为${res.data.code || 404}`
-          message.error(errMsg)
         }
       })
   }

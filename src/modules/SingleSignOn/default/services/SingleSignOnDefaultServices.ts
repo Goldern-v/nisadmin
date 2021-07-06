@@ -10,7 +10,7 @@ class SingleSignOnDefaultServices {
   public autoLogin(token: string) {
     return httpLoginToken.post(`/ssoLogin`, { token })
       .then(res => {
-        if (res.data.code === "200") {
+        if (res.data) {
           let { adminNurse, authToken, user } = res.data
           user = { ...user }
           sessionStorage.setItem('adminNurse', adminNurse)
@@ -30,9 +30,6 @@ class SingleSignOnDefaultServices {
           }
 
           window.location.href = '#/home'
-        } else {
-          let errMsg = res.data.desc || `请求失败 状态码为${res.data.code || 404}`
-          message.error(errMsg)
         }
       })
   }

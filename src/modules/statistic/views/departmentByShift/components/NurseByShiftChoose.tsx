@@ -1,31 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Radio, Checkbox } from 'antd'
-import emitter from 'src/libs/ev'
-import { RouteComponentProps } from 'react-router'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-const RadioGroup = Radio.Group
-const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-let ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-
-// const checkboxItemStandard = [
-// '班次1',
-// '班次2',
-// '班次3',
-// '班次4',
-// '班次5',
-// '班次6',
-// '班次7',
-// '班次8',
-// '班次9',
-// '班次10',
-// '班次11',
-// '班次12',
-// '班次13',
-// '班次14'
-// ]
-let checkboxItemState: any = []
-let classState: any = []
+import { ScrollBox } from 'src/components/common'
 export interface Props {
   filterObj?: any
   onFilterObjChange?: Function
@@ -33,48 +9,63 @@ export interface Props {
 
 export default function BedSituation(props: Props) {
   const { filterObj, onFilterObjChange } = props
-  // checkbox变动
-  function checkboxChange(e: any) {
-    let target = e.target
-    let targetValue = target.value
 
-  }
-  // 组件
-  // const RightChooseByShiftCheckbox = (
-  //   <div className='RightChooseByShiftCheckbox'>
-  //     {startClassList.map((item: any, index: number) => (
-  //       <div className='RightChooseByShiftCheckboxItem' key={index}>
-  //         <Checkbox defaultChecked onChange={onChange} value={item}>
-  //           {item}
-  //         </Checkbox>
-  //       </div>
-  //     ))}
-  //   </div>
-  // )
-  // 接口组件
-  // const RightChooseByCustomCheckbox = (
-  //   <div className='RightChooseByShiftCheckbox'>
-  //     {checkboxItemStandard.map((item: any, index: any) => (
-  //       <div className='RightChooseByShiftCheckboxItem' key={index}>
-  //         <Checkbox onChange={checkboxChange} defaultChecked value={item}>
-  //           {item}
-  //         </Checkbox>
-  //       </div>
-  //     ))}
-  //   </div>
-  // )
+  const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
 
   const handleTypeChange = (currentType: string) => {
     let newFilterObj = { ...filterObj }
 
+    let selectAll = true
+
     Object.keys(newFilterObj).forEach((key: string) => {
-      if (currentType === key)
-        newFilterObj[key].checked = !newFilterObj[key].checked
-      else
-        newFilterObj[key].checked = false
+      let item = newFilterObj[key]
+      if (currentType === key) {
+        let newChecked = !newFilterObj[key].checked
+        if (newChecked) selectAll = false
+
+        item.checked = newChecked
+        item.list = item.list.map((item: any) => ({ ...item, checked: newChecked }))
+      } else {
+        item.checked = false
+        item.list = item.list.map((item: any) => ({ ...item, checked: false }))
+      }
     })
 
+    if (selectAll) {
+      Object.keys(newFilterObj).forEach((key: string) => {
+        let item = newFilterObj[key]
+        item.list = item.list.map((item: any) => ({ ...item, checked: true }))
+      })
+    }
+
     onFilterObjChange && onFilterObjChange(newFilterObj)
+  }
+
+  const handleFilterChange = ($e: any, typeName: string, idx: number) => {
+    let newFilterObj = { ...filterObj }
+
+    newFilterObj[typeName].list[idx].checked = $e.target.checked
+
+    onFilterObjChange && onFilterObjChange(newFilterObj)
+  }
+
+  const filterList = () => {
+    return Object.keys(filterObj).map((key: string) => (
+      <React.Fragment key={key}>
+        {filterObj[key].list.map((item: any, itemIdx: number) => (
+          <div
+            key={`${key}-${itemIdx}`}
+            className="RightChooseByShiftCheckboxItem"
+            style={{ display: (visibleType === key || !visibleType) ? 'block' : 'none' }}>
+            <Checkbox
+              checked={item.checked}
+              onChange={(e) => handleFilterChange(e, key, itemIdx)}>
+              {item.name}
+            </Checkbox>
+          </div>
+        ))}
+      </React.Fragment>
+    ))
   }
 
   return (
@@ -83,15 +74,22 @@ export default function BedSituation(props: Props) {
       <RightChooseByShift>
         <div className='RightChooseByShiftHeader'>统计班次</div>
         <div className='RightChooseByShiftRadio'>
-          <Radio checked={filterObj['shift_type']?.checked} onClick={() => handleTypeChange('shift_type')}>
+          <Radio
+            checked={filterObj['shift_type']?.checked}
+            onClick={() =>
+              handleTypeChange('shift_type')}>
             按班次大类
           </Radio>
-          <Radio checked={filterObj['range_name']?.checked} onClick={() => handleTypeChange('range_name')}>
+          <Radio
+            checked={filterObj['range_name']?.checked}
+            onClick={() =>
+              handleTypeChange('range_name')}>
             自定义班次
           </Radio>
         </div>
-        {/* {rightChooseCheckboxShow[0] && RightChooseByShiftCheckbox} */}
-        {/* {rightChooseCheckboxShow[1] && RightChooseByCustomCheckbox} */}
+        <RightChooseByShiftCheckbox>
+          {filterList()}
+        </RightChooseByShiftCheckbox>
       </RightChooseByShift>
     </Con>
   )
@@ -123,17 +121,19 @@ const RightChooseByShift = styled.div`
       width: 104px;
     }
   }
-  .RightChooseByShiftCheckbox {
-    /* 调整间距 */
-    margin-top: 20px;
-    padding-left: 10px;
-    /* display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; */
-    overflow-y: scroll;
-    height: 270px;
+`
 
-  }
+// @ts-ignore
+const RightChooseByShiftCheckbox = styled(ScrollBox)`
+  /* 调整间距 */
+  margin-top: 20px;
+  padding-left: 10px;
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; */
+  overflow-y: auto;
+  height: 270px;
+  
   .RightChooseByShiftCheckboxItem {
     width: 104px;
     height: 36px;

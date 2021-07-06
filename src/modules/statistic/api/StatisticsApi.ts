@@ -113,21 +113,15 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 科室排班统计（按班次）
-  public async postDepartmentByShiftView(showType: string, data: any, exportData: any = true) {
-    if (showType === '按班次大类') {
-      showType = 'shift_type'
-    } else if (showType === '自定义班次') {
-      showType = 'range_name'
-    }
+  public async postDepartmentByShiftView(data: any, toExport: any = false) {
     let postData = {
-      type: showType,
-      startTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate,
-      ls: data,
-      status: exportData
+      ...data,
+      status: !toExport
     }
+
     let trancePostData = this.stringify(postData)
-    if (exportData === false) {
+
+    if (toExport) {
       return this.post(`/scheduling/countByDeptCode`, trancePostData, { responseType: 'blob' })
     } else {
       return this.post(`/scheduling/countByDeptCode`, trancePostData)

@@ -24,6 +24,7 @@ export default function BedSituation(props: Props) {
   function searchButtonClick() {
     onChange && onChange()
   }
+
   const exportButtonClick = () => onExport && onExport()
 
   return (
@@ -39,7 +40,10 @@ export default function BedSituation(props: Props) {
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>
-      <Button style={{ margin: '0 10px', width: '90px' }} onClick={exportButtonClick}>
+      <Button
+        style={{ margin: '0 10px', width: '90px' }}
+        disabled={!(query?.type)}
+        onClick={exportButtonClick}>
         导出Excel
       </Button>
     </Con>

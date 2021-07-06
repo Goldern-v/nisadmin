@@ -42,10 +42,11 @@ export function onRequestRejected(error: Error) {
 
 enum StatusCode {
   error = "300",
+  error1 = "500",
   success = "200",
   logout = "301",
   notFound = "404",
-  badGateWay = "502"
+  badGateWay = "502",
 }
 
 /**
@@ -54,27 +55,30 @@ enum StatusCode {
 export function onResponseFulfilled(response: AxiosResponse) {
   let { code, desc, data } = response.data;
   let status = code;
-  switch (status) {
-    case StatusCode.error: {
-      if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
-      // alert(12)
-      if (desc.indexOf("\n") > -1) {
-        const modal = Modal.error({
-          title: "警告",
-          content: <pre style={{ whiteSpace: "pre-wrap" }}>{desc}</pre>,
-          width: 600,
-          mask: false
-        });
-        // setTimeout(() => {
-        //   modal.destroy()
-        // }, 10 * 1000)
-      } else {
-        message.error(desc || "未知异常");
-      }
-      // console.log(desc, desc.indexOf('\n'), 'desc')
 
-      return Promise.reject(response.data.desc || desc);
-    }
+  switch (status) {
+    case StatusCode.error:
+    case StatusCode.error1:
+      {
+        if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
+        // alert(12)
+        if (desc.indexOf("\n") > -1) {
+          const modal = Modal.error({
+            title: "警告",
+            content: <pre style={{ whiteSpace: "pre-wrap" }}>{desc}</pre>,
+            width: 600,
+            mask: false
+          });
+          // setTimeout(() => {
+          //   modal.destroy()
+          // }, 10 * 1000)
+        } else {
+          message.error(desc || "未知异常");
+        }
+        // console.log(desc, desc.indexOf('\n'), 'desc')
+
+        return Promise.reject(response.data.desc || desc);
+      }
     case StatusCode.logout: {
       // message.destroy()
       // message.warning('登录超时，请重新登录')
