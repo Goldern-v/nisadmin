@@ -10,6 +10,7 @@ class NursingEduFilesModal {
   @observable public selectdType = ""; //花都类型
   @observable public selectedYear: any = moment(); //年份
   @observable public selectdEdu = ""; //学历
+  @observable public isOnJob = ""; //在院状态
   @observable public selectdSex = ""; //性别
   @observable public keyWord: any = undefined; //关键字
   @observable public pageIndex: any = 1; //页码
@@ -30,7 +31,8 @@ class NursingEduFilesModal {
       keyWord: this.keyWord,
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
-      type: appStore.HOSPITAL_ID == "gzhd" ? this.selectdType : null
+      type: appStore.HOSPITAL_ID == "gzhd" ? this.selectdType : null,
+      isOnJob: appStore.HOSPITAL_ID == "hj" ? this.isOnJob : null,
     };
   }
 

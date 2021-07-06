@@ -115,6 +115,15 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 80,
       align: "center"
     },
+    appStore.HOSPITAL_ID == "hj" &&{
+      title: "学历",
+      dataIndex: "isOnJob",
+      width: 80,
+      align: "center",
+      render(text: any, record: any) {
+        return <span style={{ color: text == 1 ? 'blue' : '#ccc' }}>{text == 1 ? '在院' : '离院'}</span>
+      }
+    },
     appStore.HOSPITAL_ID == "gzhd" && {
       title: "来自单位",
       dataIndex: "originalWorkUnit",
@@ -356,6 +365,24 @@ export default observer(function NursingEduFiles(props: Props) {
             <Select.Option value="0">男</Select.Option>
             <Select.Option value="1">女</Select.Option>
           </Select>
+          {
+            appStore.HOSPITAL_ID === 'hj' &&<React.Fragment>
+              <span>在院状态：</span>
+              <Select
+                style={{ width: 90 }}
+                value={nursingEduFilesModal.isOnJob}
+                onChange={(val: string) => {
+                  nursingEduFilesModal.isOnJob = val;
+                  nursingEduFilesModal.pageIndex = 1;
+                  nursingEduFilesModal.onload();
+                }}
+              >
+                <Select.Option value="">全部</Select.Option>
+                <Select.Option value="1">在院</Select.Option>
+                <Select.Option value="0">离院</Select.Option>
+              </Select>
+            </React.Fragment>
+          }
           <Input
             style={{ width: 180, marginLeft: 5, marginRight: -5 }}
             placeholder="请输入"
