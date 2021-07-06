@@ -66,7 +66,6 @@ export const fileDownload = (res: any, fileName?: string) => {
 /**
  * 获取文件类型
  */
-
 export const getFileType = (filePath: string): FileType => {
   if (!filePath) return "other";
   var index = filePath.lastIndexOf(".");

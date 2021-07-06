@@ -20,6 +20,8 @@ export default observer(function PreviewPannel(props: Props) {
     let buShiYong = 0
     let total = 0
     let rate = 0
+    let totalScore = 0
+    let deductScore = 0
 
 
     for (let i = 0; i < itemGroupList.length; i++) {
@@ -38,6 +40,19 @@ export default observer(function PreviewPannel(props: Props) {
             buShiYong++
             break
         }
+
+        // 分数类型累计分数
+        if (baseInfo.useScore) {
+          if (item.fixedScore) totalScore += item.fixedScore
+
+          if (item.remarkDeductScore) {
+            deductScore += Number(item.remarkDeductScore)
+          } else if (item.subItemList) {
+            item.subItemList
+              .filter((subItem: any) => subItem.checked)
+              .forEach((subItem: any) => deductScore += Number(subItem.fixedScore))
+          }
+        }
       }
     }
 
@@ -49,7 +64,9 @@ export default observer(function PreviewPannel(props: Props) {
       shi,
       fou,
       buShiYong,
-      rate
+      rate,
+      totalScore,
+      deductScore
     }
   })()
 
@@ -118,7 +135,11 @@ export default observer(function PreviewPannel(props: Props) {
         </div>
       </div>
       <div className="item item-large">
-        <div>本次评估结果为：是({result.shi})  否({result.fou})  不适用({result.buShiYong})</div>
+        {baseInfo.useScore ? (
+          <div>本次评估结果为：得分({result.totalScore - result.deductScore}) 总分({result.totalScore})</div>
+        ) : (
+          <div>本次评估结果为：是({result.shi})  否({result.fou})  不适用({result.buShiYong})</div>
+        )}
         <br />
         <div>通过率为：{result.rate}%</div>
       </div>

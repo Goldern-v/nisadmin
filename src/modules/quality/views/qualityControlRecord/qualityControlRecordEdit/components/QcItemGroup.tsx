@@ -224,12 +224,18 @@ export default observer(function QcItemGroup(props: Props) {
                   verticalAlign: 'middle'
                 }}
                 size="small"
+                max={item.fixedScore || undefined}
                 min={0}
                 value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
-                onChange={(val) => handleItemChange({
-                  ...item,
-                  remarkDeductScore: val?.toString() || '',
-                }, itemIndex)} />
+                onChange={(val) => {
+                  qcModel.setItemListErrObj(item.qcItemCode, false)
+
+                  handleItemChange({
+                    ...item,
+                    qcItemValue: '否',
+                    remarkDeductScore: val?.toString() || '',
+                  }, itemIndex)
+                }} />
             </div>
             <div style={{ marginTop: 5 }}>
               <Input.TextArea
