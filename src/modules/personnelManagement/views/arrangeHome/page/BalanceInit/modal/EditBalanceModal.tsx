@@ -56,7 +56,7 @@ export default function EditBalanceModal(props: Props) {
     data.startDate = moment(data.endDate)
       .startOf("week")
       .format("YYYY-MM-DD");
-    const current = nurseList.find((item: any) => item.id == data.empName)
+    const current = nurseList.find((item: any) => item.empName ==data.empName)
     data.empNo = current ? current.empNo : "";
     data.empName = current ? current.empName : "";
     data.deptCode = authStore.selectedDeptCode;
@@ -85,6 +85,7 @@ export default function EditBalanceModal(props: Props) {
     /** 如果是修改 */
     if (refForm.current && visible) {
       if (props.oldData) {
+        console.log(props.oldData)
         setTitle("编辑结余工时");
         refForm!.current!.setFields({
           empName: props.oldData.empName,
@@ -129,7 +130,7 @@ export default function EditBalanceModal(props: Props) {
             <Form.Field label={`护士姓名`} name="empName" required>
               <Select disabled={props.oldData}>
                 {(nurseList || []).map((item: any, index: number) => (
-                  <Select.Option value={item.id} key={index}>
+                  <Select.Option value={item.empName} key={index}>
                     {item.empName}
                   </Select.Option>
                 ))}

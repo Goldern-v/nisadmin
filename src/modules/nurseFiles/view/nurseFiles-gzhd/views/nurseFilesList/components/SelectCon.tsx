@@ -6,6 +6,7 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import AddNursingModal from "../modal/AddNursingModal";
 import DeptSelect from "src/components/DeptSelect";
 import { observer } from "mobx-react-lite";
+import { authStore } from "src/stores";
 
 const Option = Select.Option;
 
@@ -65,7 +66,7 @@ export default observer(function SelectCon(props: any, context: any) {
         />
 
         <span>科室：</span>
-        <DeptSelect onChange={onChange} style={{ width: 160, marginRight: "10px" }} />
+        <DeptSelect deptCode={authStore.selectedDeptCode} onChange={onChange} style={{ width: 160, marginRight: "10px" }} />
         <Input
           placeholder="请输入搜索关键字"
           value={nurseFilesListViewModel.filterText}
