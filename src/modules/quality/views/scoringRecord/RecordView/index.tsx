@@ -115,8 +115,8 @@ export default observer((props: Props) => {
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <div style={{ overflow: 'auto', height: '100%', pointerEvents: hasSubmit() ? 'auto' : 'none' }}>
-          <div className='table-wrapper'>
+        <div style={{ overflow: 'auto', height: '100%' }}>
+          <div className='table-wrapper' style={{pointerEvents: hasSubmit() ? 'auto' : 'none'}}>
             <div className='table-title'>
               {moment(master.createTime).format("MM月DD日")}{master.wardName}护士长班查房评分表
             </div>
@@ -315,7 +315,14 @@ export default observer((props: Props) => {
                              borderRadius: '5px',
                              padding: '0 5px'
                            }}>
-                        {item.handleContent}
+                        {
+                          item.nodeName === '病区处理'?
+                            <React.Fragment>
+                              {item.expand && <div>整改措施:{item.expand}</div>}
+                              {item.handleContent && <div>原因分析:{item.handleContent}</div>}
+                            </React.Fragment>:
+                            <span>{item.handleContent}</span>
+                        }
                       </div>
                     </Timeline.Item>
                   })
@@ -472,6 +479,7 @@ const MainWrapper = styled.div`
       top: 0;
       right: 0;
       padding: 20px 20px;
+      overflow: auto;
       
       .audit-title{
         font-weight: bold;
