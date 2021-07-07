@@ -118,7 +118,7 @@ export default observer((props: Props) => {
         <div style={{ overflow: 'auto', height: '100%', pointerEvents: hasSubmit() ? 'auto' : 'none' }}>
           <div className='table-wrapper'>
             <div className='table-title'>
-              05月20日护士长班查房评分表
+              {moment(master.createTime).format("MM月DD日")}{master.wardName}护士长班查房评分表
             </div>
             <table>
               <colgroup>
