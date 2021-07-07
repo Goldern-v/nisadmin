@@ -5,7 +5,7 @@ import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
 
 import { authStore, scheduleStore, appStore } from 'src/stores'
-import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfoBe/toNisInfoBe_nys'
+import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfo/toNisInfo'
 
 import BaseApiService from './BaseApiService'
 import { compileStr } from 'src/utils/encode/encode';

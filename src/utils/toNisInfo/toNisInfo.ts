@@ -1,0 +1,46 @@
+import service from "src/services/api"
+import { appStore, authStore } from "src/stores"
+import { compileStr, uncompileStr } from "../encode/encode"
+
+interface Options {
+  blank?: boolean,
+  redictUri?: string
+  loginUri?: string
+}
+
+export const autoLoginTnNisInfoBe = (options?: Options) => {
+  const defaultOptions = {
+    blank: false,
+    redictUri: '',
+    loginUri: '/crNursing/badevents/login'
+  }
+
+  const _options = {
+    ...defaultOptions,
+    ...options || {}
+  }
+
+  console.log(_options)
+
+  const { blank, redictUri, loginUri } = _options
+
+  let secretText = compileStr(JSON.stringify({
+    empNo: authStore.user?.empNo,
+    password: uncompileStr(authStore.user?.wsp || ''),
+    timeset: new Date().getTime(),
+    redictUri,
+  }))
+
+  let nursingInfoLoginUri = `${window.location.origin}${loginUri}?formatInfo=${encodeURIComponent(secretText)}`
+
+  if (appStore.isDev) console.log(nursingInfoLoginUri)
+
+  if (blank) {
+    window.open(nursingInfoLoginUri)
+  } else {
+    //删除登录信息
+    service.authApiService.logout()
+    //跳转不良事件提交界面
+    window.location.href = nursingInfoLoginUri
+  }
+}

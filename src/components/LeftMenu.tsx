@@ -15,14 +15,26 @@ export interface Props {
   menuTitle?: string;
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean;
+  beforRouter?: (payload: any) => boolean; //跳转前方法 返回boolean代表是否跳转
 }
 
 export default observer(function LeftMenu(props: Props) {
   const [openKeys, setOpenKeys]: any = useState("");
+
   const handleSelect = (e: any) => {
-    appStore.history.push(e.key);
-    if (e.item.props.level === 1) {
-      setOpenKeys("");
+
+    if (props.beforRouter) {
+      if (props.beforRouter(e)) {
+        appStore.history.push(e.key);
+        if (e.item.props.level === 1) {
+          setOpenKeys("");
+        }
+      }
+    } else {
+      appStore.history.push(e.key);
+      if (e.item.props.level === 1) {
+        setOpenKeys("");
+      }
     }
   };
 
@@ -82,7 +94,7 @@ export default observer(function LeftMenu(props: Props) {
                   </AddIcon>
                 )}
                 <span className="selected-arrow">
-                  <img src={require("./images/菜单选中右箭头.png")} alt=""/>
+                  <img src={require("./images/菜单选中右箭头.png")} alt="" />
                 </span>
               </span>
             </Menu.Item>

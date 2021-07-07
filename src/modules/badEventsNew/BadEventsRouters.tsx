@@ -15,6 +15,7 @@ import BadEventsNewList_gzsrm from './BadEventsNewList_gzsrm'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
+import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -42,6 +43,10 @@ export default function BadEventsRouters(props: Props) {
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
+          {
+            title: " 不良事件上报",
+            path: `${baseRouter}/不良事件上报`,
+          }
         ],
         other: [
           {
@@ -52,6 +57,10 @@ export default function BadEventsRouters(props: Props) {
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
+          {
+            title: " 不良事件上报",
+            path: `${baseRouter}/不良事件上报`,
+          }
         ]
       },
       vague: true,
@@ -107,7 +116,20 @@ export default function BadEventsRouters(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} />
+        <LeftMenu
+          config={LEFT_MENU_CONFIG}
+          beforRouter={(payload: any) => {
+            if (payload.key === `${baseRouter}/不良事件上报`) {
+              autoLoginTnNisInfoBe({
+                blank: true,
+                redictUri: '/crNursing/badevents/index',
+                loginUri: '/crNursing/login'
+              })
+              return false
+            } else {
+              return true
+            }
+          }} />
       </LeftMenuCon>
       <MainCon>
         {currentRoute &&

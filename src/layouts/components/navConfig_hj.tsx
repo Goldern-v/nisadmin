@@ -34,11 +34,11 @@ const baseConfig: navConfigItem[] = [
     path: "/wardRegister",
     hidden: !appStore.isDev
   },
-  // {
-  //   name: '不良事件',
-  //   path: '/badEventsNewList',
-  //   hidden: !appStore.isDev,
-  // },
+  {
+    name: '不良事件',
+    path: '/badEventsNew',
+    hidden: !appStore.isDev,
+  },
   // {
   //   name: '不良事件分析报告',
   //   path: '/badEvents/alanysis/1/1'

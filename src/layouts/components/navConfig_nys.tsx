@@ -1,7 +1,7 @@
 import React from "react";
 import { appStore } from "src/stores";
 import { qcOneTitle, qcThreeTitle } from 'src/modules/quality/data/qcTitle'
-import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfoBe/toNisInfoBe_nys'
+import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfo/toNisInfo'
 
 export interface navConfigItem {
   onClick?: Function,
