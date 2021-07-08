@@ -53,15 +53,32 @@ export default observer(function Step1() {
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
-  const bxNursing = [
-    { name: "N0", code: "nurse0" },
-    { name: "N1", code: "nurse1" },
-    { name: "N2", code: "nurse2" },
-    { name: "N3", code: "nurse3" },
-    { name: "N4", code: "nurse4" },
-    { name: "N5", code: "nurse5" },
-    { name: "其他", code: "nurseOther" }
-  ];
+  const bxNursing =appStore.hisMatch({
+    map:{
+      lcey:[
+        { name: "N0", code: "nurse0" },
+        { name: "N1-1", code: "nurse1_1" },
+        { name: "N1-2", code: "nurse1_2" },
+        { name: "N2-1", code: "nurse2_1" },
+        { name: "N2-2", code: "nurse2_2" },
+        { name: "N3-1", code: "nurse3_1" },
+        { name: "N3-2", code: "nurse3_2" },
+        { name: "N3-3", code: "nurse3_3" },
+        { name: "N4-1", code: "nurse4_1" },
+        { name: "N4-2", code: "nurse4_2" },
+        { name: "其他", code: "nurseOther" }
+      ],
+      other:[
+        { name: "N0", code: "nurse0" },
+        { name: "N1", code: "nurse1" },
+        { name: "N2", code: "nurse2" },
+        { name: "N3", code: "nurse3" },
+        { name: "N4", code: "nurse4" },
+        { name: "N5", code: "nurse5" },
+        { name: "其他", code: "nurseOther" }
+      ]
+    }
+  }) ;
   const openTimeUnitList = [
     { name: "小时", code: "小时" },
     { name: "天", code: "天" },
