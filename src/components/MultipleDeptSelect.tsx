@@ -11,6 +11,7 @@ import { Select } from "src/vendors/antd";
 export interface Props {
   onChange?: (value: string[]) => void;
   deptKey?: "全部科室" | "完整科室";
+  deptList?: { name: string; code: string }[]
 }
 
 export interface DeptType {
@@ -22,6 +23,7 @@ export default observer(function MultipleDeptSelect(props: Props) {
   const [deptList, setDeptList]: any = useState([]);
 
   const onChange = (value: string[]) => {
+    if(!value.length) return
     if (value.length > 1) {
       if (value[value.length - 1] == "全院") {
         value = ["全院"];
@@ -48,9 +50,15 @@ export default observer(function MultipleDeptSelect(props: Props) {
 
   useEffect(() => {
     statisticsViewModal.init().then(res => {
-      setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+      if(props.deptList){
+        setDeptList(props.deptList);
+      }else {
+        setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+      }
       if (props.deptKey == "完整科室") {
         statisticsViewModal.selectedDeptCode = ["全院"];
+      }else if(props.deptList){
+        statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
       }
     });
   }, []);

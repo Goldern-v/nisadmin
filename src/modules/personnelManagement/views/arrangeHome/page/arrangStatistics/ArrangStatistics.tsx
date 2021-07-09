@@ -60,7 +60,6 @@ export default observer(function ArrangStatistics() {
         return {
           title: item,
           dataIndex: item,
-          width: 50,
           align: "center"
         };
       }),

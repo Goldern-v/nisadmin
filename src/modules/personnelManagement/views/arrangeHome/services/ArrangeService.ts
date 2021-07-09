@@ -127,6 +127,46 @@ export default class ArrangeService extends BaseApiService {
     return this.post(url, postData, { responseType: "blob" });
   }
 
+  // 聊城打印排班
+  public async printRosterExcel() {
+    const postData = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      deptCode: selectViewModal.params.deptCode,
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(0)
+        .format("YYYY-MM-DD"),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(6)
+        .format("YYYY-MM-DD")
+    };
+    const url ='/scheduling/exportExcel'
+    return this.post(url, postData, { responseType: "blob" });
+  }
+
+  // 聊城导出排班
+  public async exportRoster(type:number) {
+    const list = authStore.deptList;
+    const current = list.find((item:any)=>item.code === selectViewModal.params.deptCode) || {name:''}
+    const postData = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      deptCode: selectViewModal.params.deptCode,
+      deptName: current.name,
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(0)
+        .format("YYYY-MM-DD"),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(6)
+        .format("YYYY-MM-DD"),
+      excelType:type
+    };
+    const url ='/scheduling/exportExcel'
+    return this.post(url, postData, { responseType: "blob" });
+  }
+
   // 获取期望排班
   public getByDeptCodeAndDate(obj?: any) {
     obj = {

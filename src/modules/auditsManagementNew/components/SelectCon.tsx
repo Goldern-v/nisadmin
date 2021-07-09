@@ -4,7 +4,7 @@ import { Place } from "src/components/common";
 import { Select, Input, Button } from "antd";
 import DeptSelect from "src/components/DeptSelect";
 import emitter from "src/libs/ev";
-import store from "src/stores";
+import store, { appStore, authStore } from "src/stores";
 import service from "src/services/api";
 import MultipleDeptSelect from "src/components/MultipleDeptSelect";
 import { DatePicker } from "src/vendors/antd";
@@ -87,7 +87,12 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey="完整科室" />
+        <MultipleDeptSelect
+          deptList={
+            authStore.isOnlyRoleManage?
+              [{ name: authStore.defaultDeptCodeName, code: authStore.defaultDeptCode }] :
+              undefined}
+        />
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

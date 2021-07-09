@@ -136,6 +136,20 @@ export default observer(function SelectCon() {
     });
   };
 
+  // 打印排班Excel
+  const printRosterExcel = () => {
+    arrangeService.exportRoster(1).then(res => {
+      fileDownload(res);
+    });
+  };
+
+  // 导出排班Excel
+  const exportRosterExcel = () => {
+    arrangeService.exportRoster(2).then(res => {
+      fileDownload(res);
+    });
+  };
+
   // 下载模板
   const downloadExcel = async () => {
     const res = await arrangeService.downloadExcel()
@@ -379,25 +393,30 @@ export default observer(function SelectCon() {
           </div>
         )}
 
-        <div className="item">
-          <Button className="statistics getExcel" onClick={exportExcel}>
-            导出科室
-          </Button>
-        </div>
         {appStore.hisMatch({
           map: {
             lcey: <React.Fragment>
               <div className="item">
-                <Button className="statistics getExcel" onClick={downloadExcel}>
-                  下载模板
+                <Button className="statistics getExcel" onClick={printRosterExcel}>
+                  打印排班
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportRosterExcel}>
+                  导出排班
                 </Button>
               </div>
               <div className="item">
                 <Upload showUploadList={false} customRequest={handleUpload}>
                   <Button className="statistics getExcel">
-                    导入模板
+                    导入排班
                   </Button>
                 </Upload>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={downloadExcel}>
+                  下载模板
+                </Button>
               </div>
               <ImportModal
                 visible={modalVisible}
@@ -407,7 +426,12 @@ export default observer(function SelectCon() {
                   sheetViewModal.getSheetTableData()
                 }}
                 onCancel={() => setModalVisible(false)}/>
-            </React.Fragment>
+            </React.Fragment>,
+            other: <div className="item">
+              <Button className="statistics getExcel" onClick={exportExcel}>
+                导出科室
+              </Button>
+            </div>
           }
         })}
         {appStore.HOSPITAL_ID == "nys" &&
