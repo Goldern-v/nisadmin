@@ -87,12 +87,16 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect
-          deptList={
-            authStore.isOnlyRoleManage?
-              [{ name: authStore.defaultDeptCodeName, code: authStore.defaultDeptCode }] :
-              undefined}
-        />
+        {
+          authStore.isOnlyRoleManage && appStore.HOSPITAL_ID === 'lcey'?
+            <MultipleDeptSelect
+              deptList={
+                authStore.isOnlyRoleManage?
+                  [{ name: authStore.defaultDeptCodeName, code: authStore.defaultDeptCode }] :
+                  undefined}
+            />:
+            <MultipleDeptSelect deptKey="完整科室" />
+        }
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

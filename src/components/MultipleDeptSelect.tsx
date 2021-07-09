@@ -23,7 +23,7 @@ export default observer(function MultipleDeptSelect(props: Props) {
   const [deptList, setDeptList]: any = useState([]);
 
   const onChange = (value: string[]) => {
-    if(!value.length) return
+    if(props.deptList && !value.length) return
     if (value.length > 1) {
       if (value[value.length - 1] == "全院") {
         value = ["全院"];
