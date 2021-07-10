@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg" | "yczyy";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -84,6 +84,8 @@ export default class AppStore {
       return require("src/assets/images/南医三logo.png");
     } else if (this.HOSPITAL_ID == "dgxg") {
       return require("src/assets/images/东莞谢岗.png");
+    } else if (this.HOSPITAL_ID == "nfzxy") {
+      return require("src/assets/images/南方中西医logo.png")
     } else {
       return require("src/assets/images/logo.png");
     }

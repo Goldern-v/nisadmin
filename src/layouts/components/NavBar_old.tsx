@@ -225,17 +225,28 @@ export default observer(function NavBar(props: Props) {
   return (
     <Wrapper className='NavBar'>
       <LogoCon>
-        {appStore.HOSPITAL_ID == 'wh' ? (
-          <React.Fragment>
-            <img src={require('../images/武汉logo.png')} alt='' className='logo' style={{ height: 30 }} />
-            <img src={require('../images/护理管理系统.png')} alt='' className='name' style={{ paddingRight: 30 }} />
-          </React.Fragment>
-        ) : (
-            <React.Fragment>
-              <img src={require('../images/logo-white.png')} alt='' className='logo' />
-              <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
-            </React.Fragment>
-          )}
+        {appStore.hisMatch({
+          map: {
+            nfzxy: (
+              <React.Fragment>
+                <img src={require('../images/南方中西医logo.png')} alt='' className='logo' style={{ height: 30 }} />
+                <img src={require('../images/护理管理系统.png')} alt='' className='name' style={{ paddingRight: 30 }} />
+              </React.Fragment>
+            ),
+            wh: (
+              <React.Fragment>
+                <img src={require('../images/武汉logo.png')} alt='' className='logo' style={{ height: 30 }} />
+                <img src={require('../images/护理管理系统.png')} alt='' className='name' style={{ paddingRight: 30 }} />
+              </React.Fragment>
+            ),
+            default: (
+              <React.Fragment>
+                <img src={require('../images/logo-white.png')} alt='' className='logo' />
+                <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
+              </React.Fragment>
+            )
+          }
+        })}
       </LogoCon>
       {(appStore.HOSPITAL_ID == 'wh'
         ? authStore.user && authStore.user.roleManage == '1'

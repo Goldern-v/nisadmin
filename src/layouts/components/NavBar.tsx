@@ -20,6 +20,7 @@ import { navConfig as navConfig_gzsrm } from "./navConfig_gzsrm";
 import { navConfig as navConfig_jmfy } from "./navConfig_jmfy";
 import { navConfig as navConfig_dgxg } from "./navConfig_dgxg";
 import { navConfig as navConfig_yczyy } from "./navConfig_yczyy";
+import { navConfig as navConfig_nfzxy } from "./navConfig_nfzxy";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -131,6 +132,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_dgxg
     } else if (appStore.HOSPITAL_ID == 'yczyy') {
       return navConfig_yczyy
+    } else if (appStore.HOSPITAL_ID == 'nfzxy') {
+      return navConfig_nfzxy
     }
     return navConfig;
   })();
@@ -178,6 +181,24 @@ export default observer(function NavBar(props: any) {
             <React.Fragment>
               <img
                 src={require("../images/厚街logo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              />
+            </React.Fragment>
+          );
+          break;
+        case 'nfzxy':
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../images/南方中西医logo.png")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}
