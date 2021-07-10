@@ -81,13 +81,24 @@ const LEFT_MENU_CONFIG = [
     title: "节假日设置",
     icon: <JJRSZ />,
     path: "/setting/节假日设置",
-    component: 节假日设置
-    // hide: appStore.HOSPITAL_ID == "nys"
+    component: 节假日设置,
+    hide: appStore.hisMatch({
+      map: {
+        gzsrm: true,
+        other: false,
+      }
+    })
   },
   {
     title: "科室偏好设置",
     icon: <KSPHSZ />,
     path: "/setting/科室文件共享",
+    hide: appStore.hisMatch({
+      map: {
+        gzsrm: true,
+        other: false,
+      }
+    }),
     children: [
       {
         title: "扁平管理设置",

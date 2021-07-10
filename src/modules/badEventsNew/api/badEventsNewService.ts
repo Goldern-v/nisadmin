@@ -76,6 +76,42 @@ export default class BadEventsNewService extends BaseApiService {
     // const { pageIndex, pageSize, eventType, wardCode } = query
     return this.post('/badEvent/getMyHandler', query)
   }
+
+  /**
+   * 获取我已处理列表(新)-2021-7-9
+   */
+  public getPageByMyHandled(query: {
+    wardCode: string,
+    beginDate: string,
+    endDate: string,
+    formCodes: string[],
+    pageIndex: number,
+    pageNumber: number,
+  }) {
+    return this.post('/form/badEventMaster/master/getPageByMyHandled', query)
+  }
+
+
+  /**
+   * 获取待我处理列表(新)-2021-7-9
+   */
+  public getPageCanHandle(query: {
+    wardCode: string,
+    beginDate: string,
+    endDate: string,
+    formCodes: string[],
+    pageIndex: number,
+    pageNumber: number,
+  }) {
+    return this.post('/form/badEventMaster/master/getPageCanHandle', query)
+  }
+
+  /**
+   * 获取不良事件详情(新)-2021-7-9
+   */
+  public getBadEventMaster(id: number | string) {
+    return this.get(`/form/badEventMaster/master/get/${id}`)
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()

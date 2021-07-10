@@ -59,6 +59,7 @@ export default function BadEventsRouters(props: Props) {
           },
           {
             title: " 不良事件上报",
+            hide: !appStore.isDev,
             path: `${baseRouter}/不良事件上报`,
           }
         ]

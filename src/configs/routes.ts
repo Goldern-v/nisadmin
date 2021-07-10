@@ -566,6 +566,16 @@ const routes: RouteItem[] = [
     }),
     layouts.MainLayout
   ),
+  setLayout(
+    "/badEventsNewDetail/:id",
+    appStore.hisMatch({
+      map: {
+        gzsrm: BadEventsNewDetailGzsrm,
+        other: BadEventsNewDetail
+      }
+    }),
+    layouts.MainLayout
+  ),
   setLayout("/deptBorrow", DeptBorrow, layouts.BreadcrumbLayout, [
     { name: "排班管理", link: "/scheduleHome" },
     { name: "科室借用", link: "" }
@@ -846,10 +856,22 @@ const routes: RouteItem[] = [
     path: "/indicator",
     redirect: "/indicator/护理质量相关数据"
   },
-  {
-    path: "/setting",
-    redirect: "/setting/扁平管理设置"
-  },
+  ...appStore.hisMatch({
+    map: {
+      gzsrm: [
+        {
+          path: "/setting",
+          redirect: "/setting/健康宣教字典"
+        }
+      ],
+      other: [
+        {
+          path: "/setting",
+          redirect: "/setting/扁平管理设置"
+        }
+      ],
+    }
+  }),
   {
     path: "/wardManagement",
     redirect: "/wardManagement/扁平管理设置"

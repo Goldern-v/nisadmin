@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Steps, Icon, Spin, Modal } from 'antd'
+import { Button, Steps, Icon, Spin, Modal, Divider } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import AuditModal_gzsrm from './components/AuditModal_gzsrm'
@@ -17,69 +17,54 @@ const baseFormUrl = '/crNursing/formUrl'
 const formUrl = baseFormUrl
 
 const { Step } = Steps
-
 export default withRouter(function BadEventsNewDetail(props: any) {
-  const [auditModalvisible, setAuditModalvisible] = useState(false)
-  // const [status, setStatus] = useState(3);
+
+  const iframeRef = React.useRef<any>()
+
+  const [auditModalVisible, setAuditModalVisible] = useState(false)
+
   const [detailData, setDetailData] = useState({
-    status: '',
-    badEventCode: '',
-    badEventName: '',
-    eventType: '',
-    deptCode: '',
-    instance: {} as any,
-    paramMap: {} as any
+    master: {},
+    itemDataMap: {},
+    handlenodeDto: [],
+  } as {
+    master: {
+      [p: string]: any
+    },
+    itemDataMap: {
+      [p: string]: any
+    },
+    handlenodeDto: any[]
   })
 
-  const [reportDept, setReportDept] = useState({
-    code: '',
-    name: ''
-  })
+  const { master, itemDataMap, handlenodeDto } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
-  //初始化时间戳
-  const initTimeLine = [] as any[]
-  //右侧时间轴
-  const [timeLine, setTimeLine] = useState(initTimeLine.concat())
+
+  let stepCurrent = handlenodeDto.find((step: any) => step.nodeCode === master.currentNodeCode)
   //下一步的审核状态
-  let nextStep = timeLine.find((item: any) => item.id == null)
-  if (nextStep) {
-    if (nextStep.operatorStatus == 'save' || nextStep.operatorStatus == 'dept_submit')
-      nextStep = null
-  }
+
+  let stepNext = (() => {
+
+    let nextIdx = handlenodeDto.indexOf(stepCurrent) + 1
+
+    return handlenodeDto[nextIdx] || {} as any
+  })()
   //用于刷新iframe的时间戳
   const [timeSet, setTimeset] = useState(new Date().getTime())
-  //转科信息
-  const [zhuanKe, setZhuanKe] = useState(false)
-  const [patientInfoLoading, setPatientInfoLoading] = useState(false)
-  const [patientInfo, setPatientInfo] = useState({} as any)
-
-  interface stringObj {
-    [key: string]: string
-  }
-
-  //不良事件状态对应的文本显示
-  const [eventStatusList, setEventStatusList] = useState([] as any[])
-  const getTypeList = () => {
-    service.commonApiService.dictInfo('badEvent_status').then((res: any) => {
-      setEventStatusList(res.data)
-    })
-  }
-
-  // console.log(eventStatusList)
 
   const iframeUrl = (): string => {
     let appToken = appStore.getAppToken()
     let authToken = authStore.getAuthToken()
-    let { badEventName, badEventCode, eventType } = detailData
+    let { formName, formCode, eventType } = master
 
     let query: any = {
       id: props.match.params.id || '',
       token: `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`,
-      badEventName,
+      badEvent: formName,
       badEventType: eventType,
-      badEventCode,
-      operation: nextStep && nextStep.operatorStatus == 'nurse_auditor' ? 'edit' : 'view',
+      badEventCode: formCode,
+      // operation: stepNext && stepNext.operatorStatus == 'nurse_auditor' ? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet
     }
@@ -91,7 +76,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
   useEffect(() => {
     getDetail()
-    getTypeList()
+    // getTypeList()
     initSetting()
     return () => {
       removeSetting()
@@ -138,212 +123,54 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (eventId) {
       setIframeLoading(true)
 
-      Promise.all([
-        api.getDetail(eventId),
-        api.getTimeline(eventId)
-      ])
+      api.getBadEventMaster(eventId)
         .then((res) => {
-          let data = res[0].data.instance
-          let paramMap = res[0].data.paramMap
-          let timeData = res[1].data
-          let { badEventCode, badEventName, eventType, deptCode } = data
-
-          setDetailData({
-            ...detailData,
-            status: data.status || '',
-            badEventCode,
-            badEventName,
-            eventType,
-            deptCode,
-            instance: { ...data },
-            paramMap
-          })
-
-          let newTimeline = [] as any[]
-
-          for (let i = 0; i < timeData.length; i++) {
-            let newItem = timeData[i]
-            let timeStatusAbs = Math.abs(timeData[i].operatorStatus)
-            if (timeStatusAbs > Math.abs(data.status)) break
-
-            let description
-            let title = timeData[i].operateName || ''
-            let operatorName = timeData[i].operatorName
-            let operatorWardName = timeData[i].operatorWardName
-            let operatorWardCode = timeData[i].operatorWardCode
-
-            let dateString = timeData[i].operateDate || ''
-            if (dateString) switch (new Date(dateString).getDay()) {
-              case 1:
-                dateString += ' (周一)'
-                break
-              case 2:
-                dateString += ' (周二)'
-                break
-              case 3:
-                dateString += ' (周三)'
-                break
-              case 4:
-                dateString += ' (周四)'
-                break
-              case 5:
-                dateString += ' (周五)'
-                break
-              case 6:
-                dateString += ' (周六)'
-                break
-              case 0:
-                dateString += ' (周日)'
-                break
-            }
-            let deptName = paramMap[`${badEventCode}_department_name`] || ''
-
-            let thExpain = '' as any
-
-            if (timeData[i].operatorStatus == 'save') {
-              if (data.anonymous == true)
-                operatorName = '***'
-
-              title = `保存：${data.badEventName}事件`
-            } else if (timeData[i].operatorStatus == 'nurse_submit') {
-              if (data.anonymous == true)
-                operatorName = '***'
-
-              setReportDept({
-                code: operatorWardCode,
-                name: operatorWardName
-              })
-            } else if (timeData[i].operatorStatus == 'quality_controller') {
-              if (deptName) title = `质控科审核：转发${deptName}`
-            } else if (timeData[i].allow == false) {
-              // thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
-            }
-
-            let line1Text = `${operatorName} ${operatorWardName}`
-            if (!newItem.id) line1Text = '未完成'
-            description = (
-              <div>
-                {timeData[i].auditMind && (
-                  <div>
-                    <span>{timeData[i].auditMind}</span>
-                  </div>
-                )}
-                <span>{line1Text}</span>
-                <br />
-                <span>{dateString}</span>
-                <br />
-                {thExpain}
-              </div>
-            )
-
-            if (title) {
-              newItem.title = title
-            } else {
-              newItem.title = operatorName
-            }
-
-            newTimeline.push({
-              ...newItem,
-              description
+          if (res.data) {
+            let { master, itemDataMap, handlenodeDto } = res.data
+            setDetailData({
+              master,
+              itemDataMap,
+              handlenodeDto,
             })
           }
 
-          setTimeLine(newTimeline)
           setTimeset(new Date().getTime())
-
-          //南医三压力性损伤事件
-          // let patientId = paramMap[`${badEventCode}_patient_id`] || '1048880'
-          // let visitId = paramMap[`${badEventCode}_visit_id`] || '1'
-          // // if (badEventCode === 'badevent_nys_pressure' && patientId && visitId) 
-          // let recordWardcode = data.wardCode
-          // recordWardcode = '123456'
-          // getZhunKeInfo(patientId, visitId, recordWardcode)
         }, err => setIframeLoading(false))
     }
   }
-
-  //判断是否转科，确定对应的流转科室流程
-  // const getZhunKeInfo = (patientId: string | number, visitId: string | number, reportWardCode: string | number) => {
-  //   setPatientInfoLoading(true)
-  //   api
-  //     .getPatientInfo(patientId, visitId)
-  //     .then(res => {
-  //       setPatientInfoLoading(false)
-  //       if (res.data) {
-  //         setPatientInfo(res.data)
-
-  //         //如果用户当前科室和报告科室不同，认为已转科
-  //         if (res.data.wardCode != reportWardCode)
-  //           setZhuanKe(true)
-  //       }
-  //     }, () => setPatientInfoLoading(false))
-  // }
 
   const handleOk = () => {
     setTimeout(() => appStore.history.goBack(), 1000)
   }
 
   const handleCancel = () => {
-    setAuditModalvisible(false)
-  }
-  const statusText = () => {
-    let target = eventStatusList.find((item: any) => item.code == detailData.status)
-    let text = ''
-    if (target) text = target.name || ''
-    return text
+    setAuditModalVisible(false)
   }
 
   const handleIframeLoad = () => {
     setIframeLoading(false)
   }
 
-  const StepsCurrent = () => {
-    let idx = -1
-    for (let i = 0; i < timeLine.length; i++) {
-      if (timeLine[i].operatorStatus == detailData.status) idx = i
-    }
-    return idx
-  }
-
   const AuditBtn = () => {
     let btnDisable = iframeLoading
     if (!authStore.user) return ''
-    if (!nextStep) return ''
+    if (!stepNext) return ''
+    if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
 
-    let btnText = nextStep.operatorName
+    let btnText = stepNext.nodeName
+
+    if (stepNext?.canHandle) btnDisable = true
 
     return (
       <Button
         className='audit'
         type='primary'
-        onClick={(e) => {
-          if (
-            nextStep &&
-            nextStep.operatorStatus === 'department_back'
-          ) {
-
-            // if (patientInfoLoading) {
-            //   message.warning('获取用户转科信息，请稍后再操作...')
-            //   return
-            // }
-
-            // if (!patientInfoLoading && Object.keys(patientInfo).length <= 0) {
-            //   message.error('用户转科信息获取失败')
-            //   return
-            // }
-
-            setAuditModalvisible(true)
-          } else {
-            setAuditModalvisible(true)
-          }
-        }}
+        onClick={(e) => setAuditModalVisible(true)}
         disabled={btnDisable}>
         {btnText}
       </Button>
     )
   }
-
-  const iframeRef = React.createRef<any>()
 
   const handleSave = () => {
     let iframeEl = iframeRef.current
@@ -371,7 +198,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         </div>
         <div className='title'>
           <span className='bad-event-order-no'>
-            {props.match.params.orderNo || ''} {detailData.badEventName}
+            {master.formName}
           </span>
           <Button
             className='audit'
@@ -379,7 +206,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             返回
           </Button>
           {AuditBtn()}
-          {nextStep && nextStep.operatorStatus == 'nurse_auditor' && (
+          {stepNext && stepNext.operatorStatus == 'nurse_auditor' && (
             <Button
               disabled={iframeLoading}
               className='audit'
@@ -387,16 +214,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
               保存
             </Button>
           )}
-          <Button
+          {/* <Button
             disabled={iframeLoading}
             className='audit'
             onClick={() => timelinePrint({
-              hideName: detailData.instance.anonymous || false,
-              title: `${detailData.instance.badEventOrderNo} ${detailData.instance.badEventName}`,
+              hideName: master.anonymous || false,
+              title: `${master.badEventOrderNo} ${master.formName}`,
               timeline: timeLine
             })}>
             事件轨迹打印
-          </Button>
+          </Button> */}
           <Button
             disabled={iframeLoading}
             className='audit'
@@ -404,27 +231,21 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             打印
           </Button>
         </div>
-        <div className='status'>状态：{statusText()}</div>
+        <div className='status'>状态：{stepCurrent?.nodeName}</div>
       </div>
       <div className='main-contain'>
         <div className='status-line'>
           <div className='right-pannel-title'>事件轨迹:</div>
-          <Steps direction='vertical' size='small' current={StepsCurrent()} className='status-line-content'>
-            {timeLine.map((item, idx) => {
-              // if (
-              //   detailData.paramMap[`${detailData.badEventCode}_tjzlanwyh_option`] == '不提交' &&
-              //   item.statuses.indexOf('5') >= 0
-              // )
-              //   return ''
-
+          <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
+            {handlenodeDto.map((item, idx: number) => {
               let icon: any
 
-              if (item.allow) {
+              if (!item.noPass) {
                 icon = <Icon type='check-circle' className='icon-step success' />
               } else {
                 icon = <Icon type='close-circle' className='icon-step error' />
               }
-              if (!item.id)
+              if (item.status === "0")
                 icon = <Icon type='minus-circle' className='icon-step default' />
               // icon = <Icon type='right-circle' className='icon-step default' />
               // console.log(item.title)
@@ -432,20 +253,34 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                 <Step
                   title={item.title}
                   icon={icon}
-                  description={item.description}
+                  description={<div>
+                    <div>
+                      <div style={{ fontSize: 16, fontWeight: 'bold' }}>{item.nodeName}</div>
+                      {item.handleContent && (
+                        <div>
+                          <span>{item.handleContent}</span>
+                        </div>
+                      )}
+                      <span>{item.handlerName}</span>
+                      <br />
+                      <span>{item.handleTime}</span>
+                      <br />
+                      {item.expand}
+                    </div>
+                  </div>}
                   key={idx} />
               )
             })}
           </Steps>
         </div>
         <div className='event-detail'>
-          <iframe
+          {/* <iframe
             src={iframeUrl()}
             ref={iframeRef}
             width='100%'
             height='100%'
             style={{ border: '0' }}
-            onLoad={handleIframeLoad} />
+            onLoad={handleIframeLoad} /> */}
           <Spin
             size='large'
             spinning={iframeLoading}
@@ -453,17 +288,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         </div>
       </div>
       <AuditModal_gzsrm
-        visible={auditModalvisible}
+        visible={auditModalVisible}
         onOk={handleOk}
-        eventCode={detailData.badEventCode}
-        paramMap={detailData.paramMap}
-        instanceOrign={detailData.instance}
-        status={nextStep ? nextStep.operatorStatus : ''}
-        title={nextStep ? nextStep.operatorName : ''}
+        eventCode={master.formCode}
+        paramMap={itemDataMap}
+        instanceOrign={master}
+        status={stepNext ? stepNext.operatorStatus : ''}
+        title={stepNext ? stepNext.operatorName : ''}
         id={props.match.params.id}
-        reportDept={reportDept}
-        isZhuanke={zhuanKe}
-        patientInfo={patientInfo}
         onCancel={handleCancel}
       />
     </Wrapper>

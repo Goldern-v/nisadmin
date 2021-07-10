@@ -28,16 +28,16 @@ export default observer(function BadEventNewList() {
     return [startDate, ednDate] as [moment.Moment, moment.Moment];
   };
 
-  let dateRange = defaultDateRange()
+  // let dateRange = defaultDateRange()
   const defaultWardCode = authStore.isDepartment ? '' : authStore.defaultDeptCode
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: defaultWardCode,
-    dateBegin: dateRange[0].format("YYYY-MM-DD"),
-    dateEnd: dateRange[1].format("YYYY-MM-DD"),
+    // dateBegin: dateRange[0].format("YYYY-MM-DD"),
+    // dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
-    eventType: "",
-    eventStatus: "",
+    formCodes: [] as string[],
+    // eventStatus: "",
     type: '1'
   });
 
@@ -75,14 +75,6 @@ export default observer(function BadEventNewList() {
       render: (text: string, record: any, idx: number) => (page.current - 1) * page.size + idx + 1
     },
     {
-      title: "事件单号",
-      dataIndex: "badEventOrderNo",
-      key: "badEventOrderNo",
-      className: "align-left",
-      align: "left",
-      width: 160
-    },
-    {
       title: "科室",
       dataIndex: "deptName",
       key: "deptName",
@@ -92,90 +84,25 @@ export default observer(function BadEventNewList() {
     },
     {
       title: "事件类别",
-      dataIndex: "eventType",
-      key: "eventType",
+      dataIndex: "chainName",
+      key: "chainName",
       className: "align-left",
-      align: "left",
+      align: "center",
       width: 190
     },
     {
-      title: "发生时间",
-      dataIndex: "happenDate",
-      key: "happenDate",
+      title: "创建时间",
+      dataIndex: "createTime",
+      key: "createTime",
       align: "center",
-      width: 100,
-      render: (text: string) => {
-        let dateStr = text == "Invalid Date" ? "" : text;
-        return <span>{dateStr}</span>;
-      }
+      width: 150,
     },
-    {
-      title: "事件发生地点",
-      dataIndex: "happenPlace",
-      key: "happenPlace",
-      className: "happen-place",
-      align: "left",
-      render: (text: string) => <div title={text}>{text}</div>
-    },
-    {
-      title: "严重程度",
-      dataIndex: "deverityLevel",
-      key: "deverityLevel",
-      align: "center",
-      width: 60
-    },
-    ...appStore.hisMatch({
-      map: {
-        'nys': [],
-        'other': [
-          {
-            title: "SAC",
-            dataIndex: "sac",
-            key: "sac",
-            align: "center",
-            width: 40
-          },
-          {
-            title: "提交医院质量安全管理委员会",
-            dataIndex: "commitToQC",
-            key: "commitToQC",
-            align: "center",
-            width: 110,
-            render: (commitToQC: any, item: any) => {
-              if (!commitToQC || commitToQC == '不提交')
-                return '不提交'
-              else
-                return '提交'
-            }
-          },
-        ]
-      }
-    }),
     {
       title: "事件状态",
-      dataIndex: "status",
-      key: "status",
-      className: "align-left",
-      align: "left",
+      dataIndex: "currentNodePendingName",
+      key: "currentNodePendingName",
+      align: "center",
       width: 140,
-      render: (text: string, item: any) => {
-        let statusText = "";
-        let target = eventStatusList.filter(
-          (item1: any) => item1.code == item.status
-        );
-        let color = '#000'
-
-        if (!item.allow) {
-          if (appStore.HOSPITAL_ID !== 'nys') {
-            return <span style={{ color: "red" }}>退回</span>
-          } else {
-            color = '#f00'
-          }
-        }
-
-        if (target.length > 0) statusText = target[0].name;
-        return <span style={{ wordBreak: "break-word", color }}>{statusText}</span>
-      }
     },
     {
       title: "操作",
@@ -185,7 +112,7 @@ export default observer(function BadEventNewList() {
       render: (text: string, item: any) => {
         return (
           <DoCon>
-            <span onClick={() => appStore.history.push(`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`)}>查看</span>
+            <span onClick={() => appStore.history.push(`/badEventsNewDetail/${item.id}`)}>查看</span>
           </DoCon>
         );
       }
@@ -250,7 +177,7 @@ export default observer(function BadEventNewList() {
       let data = res.data;
 
       if (data instanceof Array)
-        setEventTypeList(data.map((item: any) => item.name));
+        setEventTypeList(data);
     });
   }
 
@@ -266,8 +193,8 @@ export default observer(function BadEventNewList() {
 
     // console.log(reqQuery)
 
-    let reqMethod = api.getWaitHandler.bind(api)
-    if (reqQuery.type == '2') reqMethod = api.getMyHandler.bind(api)
+    let reqMethod = api.getPageCanHandle.bind(api)
+    if (reqQuery.type == '2') reqMethod = api.getPageByMyHandled.bind(api)
 
     reqMethod(reqQuery)
       .then(
@@ -301,8 +228,8 @@ export default observer(function BadEventNewList() {
     }
 
     Promise.all([
-      api.getWaitHandler(reqQuery),
-      api.getMyHandler(reqQuery),
+      api.getPageCanHandle(reqQuery),
+      api.getPageByMyHandled(reqQuery),
     ])
       .then(res => {
         let toAuditNum = 0
@@ -319,22 +246,6 @@ export default observer(function BadEventNewList() {
       })
   }
 
-  const handleQueryDateRangeChange = (moments: any[]): void => {
-    if (moments.length > 0) {
-      setQuery({
-        ...query,
-        dateBegin: moments[0].format("YYYY-MM-DD"),
-        dateEnd: moments[1].format("YYYY-MM-DD")
-      });
-    } else {
-      setQuery({
-        ...query,
-        dateBegin: "",
-        dateEnd: ""
-      });
-    }
-  };
-
   const handleSearch = (): void => {
     setPage({ ...page, current: 1 })
   }
@@ -347,15 +258,6 @@ export default observer(function BadEventNewList() {
             <div className="title">不良事件</div>
           </div>
           <div className="float-right">
-            {/* <div className="float-item">
-              <div className="item-title">事件日期:</div>
-              <div className="item-content date-range">
-                <RangePicker
-                  onChange={handleQueryDateRangeChange}
-                  defaultValue={defaultDateRange()}
-                />
-              </div>
-            </div> */}
             <div className="float-item">
               <div className="item-title">科室:</div>
               <div className="item-content">
@@ -387,34 +289,13 @@ export default observer(function BadEventNewList() {
               <div className="item-content">
                 <Select
                   defaultValue=""
-                  value={query.eventType}
+                  value={query.formCodes[0] || ''}
                   onChange={(eventType: any) => {
-                    setQuery({ ...query, eventType });
+                    setQuery({ ...query, formCodes: eventType ? [eventType] : [] });
                   }}
                 >
                   <Select.Option value="">全部</Select.Option>
                   {eventTypeList.map((item: any, idx: number) => {
-                    return (
-                      <Select.Option value={item} key={idx}>
-                        {item}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </div>
-            </div>
-            {/* <div className="float-item">
-              <div className="item-title">状态:</div>
-              <div className="item-content">
-                <Select
-                  defaultValue=""
-                  value={query.eventStatus}
-                  onChange={(eventStatus: any) => {
-                    setQuery({ ...query, eventStatus });
-                  }}
-                >
-                  <Select.Option value="">全部</Select.Option>
-                  {eventStatusList.map((item, idx) => {
                     return (
                       <Select.Option value={item.code} key={idx}>
                         {item.name}
@@ -423,7 +304,7 @@ export default observer(function BadEventNewList() {
                   })}
                 </Select>
               </div>
-            </div> */}
+            </div>
             <div className="float-item">
               <div className="item-title" />
               <div className="item-content">

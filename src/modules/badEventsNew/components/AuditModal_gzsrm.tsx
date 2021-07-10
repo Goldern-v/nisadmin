@@ -24,10 +24,7 @@ export interface Props {
   title?: string, //当前不良事件审核标题
   onCancel: any //窗口关闭回调
   eventCode: string //不良事件类型代码
-  reportDept: any //上报人科室名称代码
   id: any //不良事件id
-  isZhuanke?: boolean //是否转科
-  patientInfo?: any //病人信息
 }
 
 /** 患者坠床∕跌倒记录表 伤害选项*/
@@ -40,7 +37,7 @@ const zlwyh_ycfq_explain_list = [
 ]
 
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept, title, instanceOrign, isZhuanke, patientInfo } = props
+  const { visible, onOk, onCancel, status, paramMap, id, eventCode, title, instanceOrign } = props
   //用于操作和提交的不良事件表单数据
   let initFormMap: any = {}
   const [formMap, setFormMap] = useState(initFormMap)

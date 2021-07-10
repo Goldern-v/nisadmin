@@ -41,10 +41,10 @@ const baseConfig: navConfigItem[] = [
     name: "三级质控",
     path: "/qcThree"
   },
-  {
-    name: "学习培训",
-    path: "/continuingEdu"
-  },
+  // {
+  //   name: "学习培训",
+  //   path: "/continuingEdu"
+  // },
   {
     name: "通知公告",
     path: "/notice"
@@ -66,8 +66,12 @@ const baseConfig: navConfigItem[] = [
     path: "/wardManagement"
   },
   {
+    name: "系统设置",
+    path: "/setting"
+  },
+  {
     name: "不良事件",
-    hidden: true,
+    hidden: !appStore.isDev,
     path: "/badEventsNew"
   },
 ];
