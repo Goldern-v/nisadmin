@@ -4,12 +4,9 @@ import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import AuditModal_gzsrm from './components/AuditModal_gzsrm'
 import badEventsNewService from './api/badEventsNewService'
-import service from 'src/services/api'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
 import { message } from 'antd/es'
-import { info } from 'console'
-import { timelinePrint } from './utils/timelinePrint'
 
 const api = new badEventsNewService()
 
@@ -27,6 +24,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     master: {},
     itemDataMap: {},
     handlenodeDto: [],
+    commit: false
   } as {
     master: {
       [p: string]: any
@@ -34,10 +32,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     itemDataMap: {
       [p: string]: any
     },
-    handlenodeDto: any[]
+    handlenodeDto: any[],
+    commit: boolean,
+    [p: string]: any
   })
 
-  const { master, itemDataMap, handlenodeDto } = detailData
+  const { master, handlenodeDto } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
 
@@ -64,7 +64,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEvent: formName,
       badEventType: eventType,
       badEventCode: formCode,
-      // operation: stepNext && stepNext.operatorStatus == 'nurse_auditor' ? 'edit' : 'view',
+      // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet
     }
@@ -126,11 +126,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       api.getBadEventMaster(eventId)
         .then((res) => {
           if (res.data) {
-            let { master, itemDataMap, handlenodeDto } = res.data
+            let { master, itemDataMap, handlenodeDto, commit } = res.data
             setDetailData({
               master,
               itemDataMap,
               handlenodeDto,
+              commit
             })
           }
 
@@ -154,12 +155,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const AuditBtn = () => {
     let btnDisable = iframeLoading
     if (!authStore.user) return ''
-    if (!stepNext) return ''
+    if (Object.keys(stepNext).length <= 0) return ''
     if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
 
     let btnText = stepNext.nodeName
 
-    if (stepNext?.canHandle) btnDisable = true
+    if (stepNext?.canHandle) btnDisable = false
 
     return (
       <Button
@@ -172,13 +173,13 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     )
   }
 
-  const handleSave = () => {
-    let iframeEl = iframeRef.current
-    if (iframeEl) {
-      setIframeLoading(true)
-      iframeEl.contentWindow.CRForm.controller.saveForm()
-    }
-  }
+  // const handleSave = () => {
+  //   let iframeEl = iframeRef.current
+  //   if (iframeEl) {
+  //     setIframeLoading(true)
+  //     iframeEl.contentWindow.CRForm.controller.saveForm()
+  //   }
+  // }
 
   const handlePrint = () => {
     let iframeEl = iframeRef.current
@@ -206,14 +207,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             返回
           </Button>
           {AuditBtn()}
-          {stepNext && stepNext.operatorStatus == 'nurse_auditor' && (
+          {/* {stepNext && stepNext.operatorStatus == 'nurse_auditor' && (
             <Button
               disabled={iframeLoading}
               className='audit'
               onClick={handleSave}>
               保存
             </Button>
-          )}
+          )} */}
           {/* <Button
             disabled={iframeLoading}
             className='audit'
@@ -256,16 +257,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                   description={<div>
                     <div>
                       <div style={{ fontSize: 16, fontWeight: 'bold' }}>{item.nodeName}</div>
-                      {item.handleContent && (
-                        <div>
-                          <span>{item.handleContent}</span>
-                        </div>
-                      )}
                       <span>{item.handlerName}</span>
                       <br />
                       <span>{item.handleTime}</span>
                       <br />
-                      {item.expand}
+                      {item.handleContent && (
+                        <div className="handle-content">
+                          <span>{item.handleContent}</span>
+                        </div>
+                      )}
+                      {/* {item.expand} */}
                     </div>
                   </div>}
                   key={idx} />
@@ -274,13 +275,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </Steps>
         </div>
         <div className='event-detail'>
-          {/* <iframe
+          <iframe
             src={iframeUrl()}
             ref={iframeRef}
             width='100%'
             height='100%'
             style={{ border: '0' }}
-            onLoad={handleIframeLoad} /> */}
+            onError={handleIframeLoad}
+            onLoad={handleIframeLoad} />
           <Spin
             size='large'
             spinning={iframeLoading}
@@ -290,12 +292,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       <AuditModal_gzsrm
         visible={auditModalVisible}
         onOk={handleOk}
-        eventCode={master.formCode}
-        paramMap={itemDataMap}
-        instanceOrign={master}
-        status={stepNext ? stepNext.operatorStatus : ''}
-        title={stepNext ? stepNext.operatorName : ''}
-        id={props.match.params.id}
+        dataOrigin={detailData}
+        nodeInfo={stepNext}
         onCancel={handleCancel}
       />
     </Wrapper>
@@ -349,6 +347,19 @@ const Wrapper = styled.div`
       overflow-y: auto;
       overflow-x: hidden;
       padding-right: 18px;
+      &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: #eaeaea;
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: 50px;
+        background-color: #eaeaea;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 50px;
+        background-color: #c2c2c2;
+      }
       .right-pannel-title{
         margin-top: 20px;
         line-height: 24px;
@@ -414,5 +425,11 @@ const Wrapper = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+  }
+  .handle-content{
+    background: #eee;
+    padding: 5px 10px;
+    margin-right: 20px;
+    border-radius: 3px;
   }
 `

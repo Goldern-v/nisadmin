@@ -112,6 +112,33 @@ export default class BadEventsNewService extends BaseApiService {
   public getBadEventMaster(id: number | string) {
     return this.get(`/form/badEventMaster/master/get/${id}`)
   }
+
+  /**
+   * 审核不良事件(新)-2021-7-9
+   * @param params 
+   */
+  public auditBadEventMaster(params: {
+    nodeCode: string | number,
+    id: string | number,
+    expand: string,
+    noPass: boolean,
+    empNo: string,
+    password: string,
+    handleContent: string,
+  }) {
+    return this.post('/form/badEventMaster/master/handleNode', params)
+  }
+
+  /**
+   * 保存修改不良事件(新)-2021-7-9
+   */
+  public badEventMasterSave(params: {
+    master: any,
+    itemDataMap: any,
+    commit: boolean,
+  }) {
+    return this.post('/form/badEventMaster/master/save', params)
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()

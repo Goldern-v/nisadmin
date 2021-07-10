@@ -1,404 +1,214 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
-import { Modal, Input, Select, Button, message as Message, Row, Col, Radio, message } from 'antd'
+import { Modal, Input, Select, Button, message as Message, Row, Col, Radio, message, DatePicker } from 'antd'
 import { authStore } from 'src/stores'
 import services from 'src/services/api'
 import { observer } from 'mobx-react-lite'
-import badEventsNewService from '../api/badEventsNewService'
-import Moment from 'moment'
+import { badEventsNewService } from '../api/badEventsNewService'
+import moment from 'moment'
 
 import UserCheckModal from './UserCheckModal'
+// const commonApiService = services.commonApiService
 
-const api = new badEventsNewService()
-const commonApiService = services.commonApiService
+const TextArea = Input.TextArea
+// const { Option } = Select
 
-const { TextArea } = Input
-const { Option } = Select
+const initAuditInfo = () => {
+  return {
+    handleContent: '',
+    expand: '',
+    auditDate: moment().format('YYYY-MM-DD'),
+    noPass: false,
+  }
+}
 
 export interface Props {
   visible: boolean //审核窗口显示
   onOk: any //审核操作完成回调
-  paramMap?: any //不良事件表单数据
-  instanceOrign?: any //不良事件表单基本数据
-  status: string //当前不良事件状态
-  title?: string, //当前不良事件审核标题
   onCancel: any //窗口关闭回调
-  eventCode: string //不良事件类型代码
-  id: any //不良事件id
+  nodeInfo: any, //当前审核节点信息
+  dataOrigin: any, //窗口关闭回调
 }
 
-/** 患者坠床∕跌倒记录表 伤害选项*/
-const hlb_ddzcsh_option_list = [
-  '无', '1级', '2级', '3级', '4级', '死亡'
-]
-/** 压力性损伤事件报告表 护理质量管理委员会压疮分期 */
-const zlwyh_ycfq_explain_list = [
-  '1期', '2期', '3期', '4期', '不可分期', '深部组织损伤', '医疗器械相关性压力性损伤', '粘膜压力性损伤'
-]
-
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, title, instanceOrign } = props
-  //用于操作和提交的不良事件表单数据
-  let initFormMap: any = {}
-  const [formMap, setFormMap] = useState(initFormMap)
-  //审核时除表单以外其他的提交数据
-  let initInstance: any = {}
-  const [instance, setInstance] = useState(initInstance)
+  const { visible, onOk, onCancel, dataOrigin, nodeInfo } = props
+  const nodeCode = nodeInfo?.nodeCode || ''
+
+  const [auditInfo, setAuditInfo] = useState(initAuditInfo())
+
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
 
-  //转发科室列表
-  // const [dealerDepts, setDealerDepts] = useState([] as any)
-  //转发科室护士列表
-  const [returnDeptNurseList, setReturnDeptNurseList] = useState([] as any[])
-
   useEffect(() => {
     if (visible) {
-      // console.log(isZhuanke, patientInfo)
-      let user = authStore.user
-      if (user)
-        setInstance({
-          instanceId: id,
-          operatorWardCode: user.deptCode,
-          operatorWardName: user.deptName,
-          operatorStatus: status,
-          operatorName: user.empName,
-          operatorEmpNo: user.empNo,
-          operateDate: Moment().format('YYYY-MM-DD'),
-          operatorPW: '',
-          isAllowNext: true,
-          departmentCode: '',
-          departmentName: '',
-          sac: ''
-        })
 
-      let newMap: any = {}
-      /**清空审核意见 */
-      switch (status) {
-        case 'nurse_auditor':
-          newMap[`${eventCode}_khszshyj_explain`] = ''
-          break
-        case 'nusring_department_auditor':
-          newMap[`${eventCode}_hlzlglwyh_explain`] = ''
-          break
-        case 'pressure_auditor':
-          newMap[`${eventCode}_skzkxzyj_explain`] = ''
-          break
-      }
-
-      setFormMap({ ...paramMap, ...newMap })
     }
   }, [visible])
 
-  useEffect(() => {
-    if (instanceOrign.deptCode)
-      getReturnDeptNurseList()
-  }, [instanceOrign])
-
-  // const getDealerDepts = () => {
-  //   api.getDeptList().then((res) => {
-  //     let data = res.data
-  //     if (data instanceof Array)
-  //       setDealerDepts(
-  //         data.map((item: any) => {
-  //           return {
-  //             name: item.deptName,
-  //             value: item.deptCode
-  //           }
-  //         })
-  //       )
-  //   })
-  // }
-
-  const getReturnDeptNurseList = () => {
-    commonApiService.userDictInfo(instanceOrign.deptCode)
-      .then(res => {
-        if (res.data) setReturnDeptNurseList(res.data)
-      })
-  }
-
-  // const handleDeptChange = (name: any) => {
-  //   let department_code = ''
-  //   let department_name = name
-
-  //   if (department_name == reportDept.name) {
-  //     department_code = reportDept.code
-  //   } else {
-  //     for (let i = 0; i < dealerDepts.length; i++) {
-  //       if (dealerDepts[i].name == department_name) {
-  //         department_code = dealerDepts[i].value
-  //         break
-  //       }
-  //     }
-  //   }
-
-  //   setFormMap({
-  //     ...formMap,
-  //     [`${eventCode}_department_code`]: department_code,
-  //     [`${eventCode}_department_name`]: department_name
-  //   })
-  // }
-
   const handleOkBtn = () => {
-    if (
-      status === 'nurse_auditor' &&
-      formMap[`${eventCode}_khszshyj_explain`].trim() === ''
-    ) {
-      message.warn('审核意见不能为空')
-      return
-    }
-
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
-    // console.log(userAudit)
     auditFormSubmit(userAudit)
     setUserCheckVisible(false)
   }
 
   const auditFormSubmit = (userAudit: any) => {
-    let params = {} as any
+    let params = {
+      nodeCode,
+      ...auditInfo,
+      empNo: userAudit.empNo,
+      password: userAudit.password,
+      id: dataOrigin?.master?.id
+    } as any
 
-    params = {
-      ...instance,
-      paramMap: { ...formMap },
-      operatorEmpNo: userAudit.empNo,
-      operatorPW: userAudit.password,
-      departmentCode: formMap[`${eventCode}_department_code`] || '',
-      departmentName: formMap[`${eventCode}_department_name`] || '',
-      sac: formMap[`${eventCode}_sac_option`],
+    delete params.auditDate
+
+    let saveParams = {} as any
+
+    switch (nodeCode) {
+      case 'nursing_minister_audit':
+        saveParams['B0002054'] = auditInfo.handleContent
+        saveParams['B0002053'] = auditInfo.auditDate
+        break
+      case 'dept_handle':
+        saveParams['B0002057'] = auditInfo.handleContent
+        saveParams['B0002056'] = auditInfo.auditDate
+        break
+      case 'nursing_minister_comfirm':
+        saveParams['B0002059'] = auditInfo.handleContent
+        saveParams['B0002058'] = auditInfo.auditDate
+        break
+      default:
     }
 
-    // 转归科室推送护士
-    if (formMap.nurseList)
-      params.nurseList = formMap.nurseList.map((item: any) => ({
-        empName: item.label,
-        empNo: item.key
-      }))
-
-    // 流程审核意见
-    const auditMind = () => {
-      switch (status) {
-        case "nurse_auditor":
-          return formMap[`${eventCode}_khszshyj_explain`];
-        case "nusring_department_auditor":
-          return formMap[`${eventCode}_hlzlglwyh_explain`];
-        case "pressure_auditor":
-          return formMap[`${eventCode}_skzkxzyj_explain`];
+    const handleResponse = (res: any) => {
+      setConfirmLoading(false)
+      if (res.code === "200") {
+        onOk()
+        Message.success('操作成功')
+      } else {
+        if (res.desc) Message.error(res.desc)
       }
     }
 
-    // 填充护理组长/护士长字段
-    if (status == 'nurse_auditor') {
-      params.paramMap[`${eventCode}_hlzzhsz_empno`] = userAudit.empNo
-      params.paramMap[`${eventCode}_hlzzhsz_explain`] = authStore.user?.empName
-    }
-
-    params.auditMind = auditMind()
-
-    delete params.paramMap.nurseList
-    delete params.operatorStatus
-
     setConfirmLoading(true)
 
-    api
-      .aduit(params)
-      .then((res) => {
-        setConfirmLoading(false)
-        if (res.code == 200) {
-          onOk()
-          Message.success('操作成功')
-        } else {
-          if (res.desc) Message.error(res.desc)
-        }
-      }, () => setConfirmLoading(false))
+    if (Object.keys(saveParams).length > 0) {
+      badEventsNewService
+        .badEventMasterSave({
+          master: dataOrigin.master,
+          commit: dataOrigin.commit,
+          itemDataMap: {
+            ...dataOrigin.itemDataMap,
+            ...saveParams
+          }
+        })
+        .then(res => {
+          if (res.code === '200')
+            return badEventsNewService
+              .auditBadEventMaster(params)
+        })
+        .then(
+          (res) => handleResponse(res),
+          () => setConfirmLoading(false)
+        )
+    } else {
+      badEventsNewService
+        .auditBadEventMaster(params)
+        .then(
+          (res) => handleResponse(res),
+          () => setConfirmLoading(false)
+        )
+    }
   }
 
   const ModalWidth = () => {
-    switch (status) {
-      case 'quality_controller':
-      case 'department_auditor':
-      case 'qc_summary':
-        return 900
+    switch (nodeCode) {
       default:
-        return 520
+        return 650
     }
   }
 
   const AduitPannelContent = () => {
-    const commonCon = <Row>
-      <Col span={4}>
-        审核结果：
-      </Col>
-      <Col span={20}>
-        <Radio.Group
-          className='radio-group'
-          value={instance.isAllowNext}
-          onChange={(e) =>
-            setInstance({ ...instance, isAllowNext: e.target.value })
-          }>
-          <Radio value={true} >通过</Radio>
-          <Radio value={false}>退回</Radio>
-        </Radio.Group>
-      </Col>
-    </Row>
+    let auditTitle = '审核意见'
+    let auditDateTitle = '审核时间'
+    let auditTimeEditable = false
 
-    switch (status) {
-      case 'nurse_auditor':
-        return (
-          <div className='form1'>
-            {commonCon}
-            <Row>
-              <Col span={4}>
-                <span style={{ color: 'red', marginLeft: '-7px' }}>*</span>
-                审核意见：
-              </Col>
-              <Col span={20}>
-                <TextArea
-                  autosize={{ minRows: 2 }}
-                  value={formMap[`${eventCode}_khszshyj_explain`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_khszshyj_explain`]: e.target.value })
-                  } />
-              </Col>
-            </Row>
-          </div>
-        )
-      case 'nusring_department_auditor':
-        return (
-          <div>
-            {commonCon}
-            {eventCode === 'badevent_nys_fall' && (
-              <React.Fragment>
-                <Row>
-                  <Col span={4}>事件等级：</Col>
-                  <Col span={20}>
-                    <Radio.Group
-                      className='radio-group'
-                      value={formMap[`${eventCode}_sjdj_option`]}
-                      onChange={(e) =>
-                        setFormMap({ ...formMap, [`${eventCode}_sjdj_option`]: e.target.value })
-                      }>
-                      <Radio value="警告事件" >警告事件</Radio>
-                      <Radio value="不良事件">不良事件</Radio>
-                      <Radio value="未造成后果事件">未造成后果事件</Radio>
-                      <Radio value="隐患事件">隐患事件</Radio>
-                    </Radio.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={4}>伤害等级：</Col>
-                  <Col span={20}>
-                    <Radio.Group
-                      className='radio-group'
-                      value={formMap[`${eventCode}_hlb_ddzcsh_option`]}
-                      onChange={(e) =>
-                        setFormMap({ ...formMap, [`${eventCode}_hlb_ddzcsh_option`]: e.target.value })
-                      }>
-                      {hlb_ddzcsh_option_list.map((val: string) => <Radio value={val} key={val}>{val}</Radio>)}
-                    </Radio.Group>
-                  </Col>
-                </Row>
-              </React.Fragment>
-            )}
-            {eventCode === 'badevent_nys_pressure' && (
-              <Row>
-                <Col span={4}>事件等级：压疮分期</Col>
-                <Col span={20}>
-                  <Select
-                    value={formMap[`${eventCode}_zlwyh_ycfq_explain`]}
-                    onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_zlwyh_ycfq_explain`]: val })
-                    }>
-                    {zlwyh_ycfq_explain_list.map((val: string) => <Option value={val} key={val}>{val}</Option>)}
-                  </Select>
-                </Col>
-              </Row>
-            )}
-            <Row>
-              <Col span={4}>审核意见：</Col>
-              <Col span={20}>
-                <TextArea
-                  autosize={{ minRows: 2 }}
-                  value={formMap[`${eventCode}_hlzlglwyh_explain`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_hlzlglwyh_explain`]: e.target.value })
-                  } />
-              </Col>
-            </Row>
-          </div>
-        )
-      case 'pressure_auditor':
-        return (
-          <div className='form1'>
-            {commonCon}
-            <Row>
-              <Col span={4}>审核意见：</Col>
-              <Col span={20}>
-                <TextArea
-                  autosize={{ minRows: 2 }}
-                  value={formMap[`${eventCode}_skzkxzyj_explain`]}
-                  onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_skzkxzyj_explain`]: e.target.value })
-                  } />
-              </Col>
-            </Row>
-          </div>
-        )
-      case 'department_back':
-        return (
-          <div className='form1'>
-            <Row>
-              <Col span={4}>
-                <div style={{ lineHeight: '30px', fontSize: '14px' }}>推送护士：</div>
-              </Col>
-              <Col span={20}>
-                <Select
-                  value={formMap.nurseList || []}
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  onChange={(val: any[]) => {
-                    if (val.length > 0)
-                      setFormMap({ ...formMap, nurseList: [val[val.length - 1]] })
-                    else
-                      setFormMap({ ...formMap, nurseList: [] })
-                  }}
-                  filterOption={(input: any, option: any) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  labelInValue>
-                  {returnDeptNurseList.map((item: any) => <Option value={item.empNo} key={item.empNo}>{item.empName}</Option>)}
-                </Select>
-              </Col>
-            </Row>
-          </div>
-        )
-      // case 'nurse_comfirm':
-      //   return (
-      //     <div className='form1'>
-      //       <Row>
-      //         <Col span={4}>
-      //           <div style={{ lineHeight: '30px', fontSize: '14px' }}>确认护士长：</div>
-      //         </Col>
-      //         <Col span={20}>
-      //           <Select value={''}>
-      //             <Option></Option>
-      //           </Select>
-      //         </Col>
-      //       </Row>
-      //     </div>
-      //   )
+    switch (nodeCode) {
+      case 'nursing_minister_audit':
+        auditTitle = '护理部意见'
+        auditDateTitle = '护理部意见日期'
+        break
+      case 'dept_handle':
+        auditTitle = '科室整改效果评估'
+        auditDateTitle = '科室整改日期'
+        auditTimeEditable = true
+        break
+      case 'nursing_minister_comfirm':
+        auditTitle = ' 护理部确认'
+        auditDateTitle = ' 护理部确认日期'
+        auditTimeEditable = true
+        break
       default:
-        return <span>未知审核流程</span>
     }
+
+    return (
+      <div className='form1'>
+        <Row>
+          <Col span={6} className="row-title">
+            审核结果：
+          </Col>
+          <Col span={18}>
+            <Radio.Group
+              className='radio-group'
+              value={auditInfo.noPass}
+              onChange={(e) =>
+                setAuditInfo({
+                  ...auditInfo,
+                  noPass: e.target.value,
+                })
+              }>
+              <Radio value={false} >通过</Radio>
+              <Radio value={true}>退回</Radio>
+            </Radio.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={6} className="row-title">
+            <span style={{ color: 'red', marginLeft: '-7px' }}>*</span>
+            {auditTitle}：
+          </Col>
+          <Col span={18}>
+            <TextArea
+              autosize={{ minRows: 2 }}
+              value={auditInfo.handleContent}
+              onChange={(e) =>
+                setAuditInfo({ ...auditInfo, handleContent: e.target.value })} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={6} className="row-title">{auditDateTitle}：</Col>
+          <Col span={18}>
+            <DatePicker
+              allowClear={false}
+              value={moment(auditInfo.auditDate)}
+              disabled={!auditTimeEditable}
+              onChange={(_moment: moment.Moment) =>
+                setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+          </Col>
+        </Row>
+      </div>
+    )
   }
 
   return (
     <Fragment>
       <Modal
         className='badevent-audit-modal'
-        title={title}
+        title={nodeInfo?.nodeName || '审核流程'}
         width={ModalWidth()}
         onOk={handleOkBtn}
         confirmLoading={confirmLoading}
@@ -446,5 +256,11 @@ const Wrapper = styled.div`
       width: 100px;
     }
   }
+}
+.row-title{
+  line-height: 31px;
+  padding-right: 10px;
+  text-align: right;
+  font-size: 14px;
 }
 `

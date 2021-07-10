@@ -63,7 +63,13 @@ const LEFT_MENU_CONFIG = [
       {
         title: "自动推送设置",
         path: "/setting/pushSetting",
-        component: AutomaticPush
+        component: AutomaticPush,
+        hide: appStore.hisMatch({
+          map: {
+            gzsrm: true,
+            other: false,
+          }
+        })
       },
       {
         title: "健康宣教月度报告",
