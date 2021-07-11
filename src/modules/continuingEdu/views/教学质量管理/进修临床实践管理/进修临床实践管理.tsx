@@ -8,7 +8,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import moment from 'src/vendors/moment'
 import BaseTabs from 'src/components/BaseTabs'
 import { advancedManageServices } from './services/AdvancedManageServices'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import qs from 'qs'
 
 // const RangePicker = DatePicker.RangePicker
@@ -20,6 +20,7 @@ export default function 进修临床实践管理() {
 
   const [query, setQuery] = useState({
     deptCode: '',
+    highestEducation: '',
     pageIndex: 1,
     pageSize: 20,
     empName: '',
@@ -39,42 +40,73 @@ export default function 进修临床实践管理() {
         query.pageSize * (query.pageIndex - 1) + idx + 1
     },
     {
-      title: '开始时间',
-      dataIndex: 'beginTime',
-      align: 'center',
-      width: 120,
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      align: 'center',
-      width: 120,
-    },
-    {
-      title: '标题',
-      dataIndex: 'title',
-      align: 'center',
-      width: 200,
-    },
-    {
-      title: '参与人数',
-      dataIndex: 'evalPersonCount',
+      title: '姓名',
+      dataIndex: 'empName',
       align: 'center',
       width: 80,
     },
     {
-      title: '状态',
-      dataIndex: 'epStatusDesc',
+      title: '性别',
+      dataIndex: 'sex',
       align: 'center',
       width: 80,
-      render: (text) => {
-        switch (text) {
-          case '待开始':
-            return <span style={{ color: '#70B603' }}>{text}</span>
-          case '进行中':
-            return <span style={{ color: '#F59A23' }}>{text}</span>
+      render: (sex: string) => sex === '0' ? '男' : '女'
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '所在科室',
+      dataIndex: 'deptName',
+      align: 'center',
+      width: 180,
+    },
+    {
+      title: '最高学历',
+      dataIndex: 'highestEducation',
+      align: 'center',
+      width: 100,
+    },
+    {
+      title: '进修开始时间',
+      dataIndex: 'startDate',
+      align: 'center',
+      width: 120,
+    },
+    {
+      title: '进修结束时间',
+      dataIndex: 'endDate',
+      align: 'center',
+      width: 120,
+    },
+    {
+      title: '进修专科',
+      dataIndex: 'juniorCollege',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: '主办单位',
+      dataIndex: 'organizer',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: '工作计划',
+      dataIndex: 'workPlanState',
+      align: 'center',
+      width: 80,
+      render: (workPlanState: number) => {
+        switch (workPlanState) {
+          case 0:
+            return <span style={{ color: '#70B603' }}>已填写</span>
+          case 1:
+            return <span style={{ color: '#F59A23' }}>未填写</span>
           default:
-            return <span>{text}</span>
+            return <span>{workPlanState}</span>
         }
       }
     },
@@ -95,19 +127,15 @@ export default function 进修临床实践管理() {
     setLoading(true)
 
     advancedManageServices
-    // .queryEvalPlanStatListByPage({
-    //   ...query,
-    //   beginTime: query.beginTime ? query.beginTime + ' 00:00' : '',
-    //   endTime: query.endTime ? query.endTime + ' 24:00' : '',
-    // })
-    // .then(res => {
-    //   if (res.data) {
-    //     setTableData(res.data.list || [])
-    //     setTotal(res.data.totalCount || 0)
-    //   }
+      .getPageAdvancedList(query)
+      .then(res => {
+        if (res.data) {
+          setTableData(res.data.list || [])
+          setTotal(res.data.totalCount || 0)
+        }
 
-    //   setLoading(false)
-    // }, () => setLoading(false))
+        setLoading(false)
+      }, () => setLoading(false))
   }
 
   const handleDetail = (record: any) => {
@@ -127,7 +155,7 @@ export default function 进修临床实践管理() {
 
   const TableCon =
     <BaseTable
-      surplusHeight={260}
+      surplusHeight={225}
       loading={loading}
       dataSource={tableData}
       columns={columns}
@@ -143,11 +171,27 @@ export default function 进修临床实践管理() {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>护理教学质量评价</Title>
+      <Title>进修临床实践管理</Title>
       <Place />
       <span>科室：</span>
-      <Select value={query.deptCode}>
-        <Option>全部</Option>
+      <Select
+        style={{ width: 220, marginRight: 10 }}
+        value={query.deptCode}
+        onChange={(deptCode: string) =>
+          setQuery({ ...query, deptCode, pageIndex: 1 })}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+        <Option value="">全部</Option>
+        {authStore.deptList.map((item: any, idx: number) => (
+          <Option key={idx} value={item.code}>{item.name}</Option>
+        ))}
+      </Select>
+      <span>最高学历：</span>
+      <Select
+        value={query.highestEducation}
+        style={{ marginRight: 10 }}>
+        <Option value="">全部</Option>
       </Select>
       <Input
         placeholder="请输入关键词"
@@ -161,6 +205,7 @@ export default function 进修临床实践管理() {
     </MainCon>
   </Wrapper>
 }
+
 const Wrapper = styled.div`
 `
 

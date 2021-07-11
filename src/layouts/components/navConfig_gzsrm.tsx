@@ -71,7 +71,7 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "不良事件",
-    hidden: !appStore.isDev,
+    // hidden: !appStore.isDev,
     path: "/badEventsNew"
   },
 ];

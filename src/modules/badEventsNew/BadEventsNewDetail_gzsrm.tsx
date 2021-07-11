@@ -64,6 +64,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEvent: formName,
       badEventType: eventType,
       badEventCode: formCode,
+      operation: 'view',
       // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet

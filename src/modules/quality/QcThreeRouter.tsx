@@ -41,7 +41,7 @@ export default function QcThreeRouter(props: Props) {
 
   let extra_menu: any = appStore.hisMatch({
     map: {
-      nys: [
+      'nys,gzsrm': [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
@@ -66,7 +66,7 @@ export default function QcThreeRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
         },
       ],
-      'gzsrm,yczyy': [
+      'yczyy': [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,

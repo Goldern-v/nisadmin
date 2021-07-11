@@ -103,6 +103,7 @@ const 教学质量评价 = lazy(() => import('./views/教学质量管理/教学�
 const 教学质量评价详情 = lazy(() => import('./views/教学质量管理/教学质量评价/views/教学质量评价详情'))
 const 实操评分 = lazy(() => import('./views/教学质量管理/实操评分/实操评分'))
 const 实操评分详情 = lazy(() => import('./views/教学质量管理/实操评分/views/实操评分详情'))
+const 进修临床实践管理 = lazy(() => import('./views/教学质量管理/进修临床实践管理/进修临床实践管理'))
 
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
@@ -288,7 +289,7 @@ export default function ContinuingEdu(props: Props) {
           title: "进修临床实践管理",
           path: "/continuingEdu/进修临床实践管理",
           hide: !appStore.isDev,
-          component: 教学质量评价
+          component: 进修临床实践管理
         },
         {
           title: "实操评分详情",
