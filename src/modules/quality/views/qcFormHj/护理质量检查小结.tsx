@@ -35,9 +35,9 @@ export default observer(function 护理质量检查小结() {
       fill: '#333',
       fontSize: 14
     },
-    // offset: 0,
+    offset: 60,
     // autoRotate: false,
-    rotate: 76.5,
+    rotate: 85,
     formatter: (text: string) => {
       let viewText = text
       if (viewText.length > 8) viewText = `${viewText.substr(0, 7)}...`

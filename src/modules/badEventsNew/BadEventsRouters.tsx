@@ -43,10 +43,10 @@ export default function BadEventsRouters(props: Props) {
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
-          // {
-          //   title: " 不良事件上报",
-          //   path: `${baseRouter}/不良事件上报`,
-          // }
+          {
+            title: " 不良事件上报",
+            path: `${baseRouter}/不良事件上报`,
+          }
         ],
         other: [
           {
@@ -124,7 +124,7 @@ export default function BadEventsRouters(props: Props) {
               autoLoginTnNisInfoBe({
                 blank: true,
                 redictUri: '/crNursing/badevents/index',
-                loginUri: '/crNursing/login'
+                // loginUri: '/crNursing/login'
               })
               return false
             } else {

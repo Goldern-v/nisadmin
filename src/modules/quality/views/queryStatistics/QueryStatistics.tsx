@@ -28,7 +28,7 @@ export default observer(function QueryStatistics(props: any) {
       width: 50
     },
     {
-      title: '护理单元',
+      title: showType ? '护理单元' : "表单",
       dataIndex: 'name',
       key: 'name',
       width: 180,
@@ -163,8 +163,8 @@ export default observer(function QueryStatistics(props: any) {
       <MidCon>
         <RadioCon>
           <Radio.Group value={showType} buttonStyle='solid' onChange={radioChange}>
-            <Radio.Button value={false}>按科室</Radio.Button>
-            <Radio.Button value={true}>按表单</Radio.Button>
+            <Radio.Button value={true}>按科室</Radio.Button>
+            <Radio.Button value={false}>按表单</Radio.Button>
           </Radio.Group>
         </RadioCon>
         <Title>医院质量检查表单统计表</Title>

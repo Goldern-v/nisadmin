@@ -41,7 +41,38 @@ export default function QcThreeRouter(props: Props) {
 
   let extra_menu: any = appStore.hisMatch({
     map: {
-      'nys,gzsrm': [
+      'gzsrm': [
+        {
+          title: "护理质量巡查情况汇总表",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
+          component: 护理质量巡查情况汇总表Nys,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcThree/护理质量检查小结?qcLevel=3",
+          component: appStore.hisMatch({
+            map: {
+              nys: 护理质量检查小结Nys,
+              other: 护理质量检查小结
+            }
+          }),
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        {
+          title: "检查表单统计表",
+          path: "/qcThree/queryStatistics",
+          icon: <JCTJ />,
+          component: QueryStatistics
+        },
+      ],
+      'nys': [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,

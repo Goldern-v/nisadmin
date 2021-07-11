@@ -633,7 +633,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       signRowObj({
         title: signItem.title,
         width: 15 * signItem.width || 50,
-        dataIndex: signItem.filedName,
+        dataIndex: signItem.fieldName,
         aside: signItem.title,
         registerCode,
         updateDataSource,
@@ -866,14 +866,14 @@ export default observer(function 敏感指标登记本(props: Props) {
             <div className="selected-operate-con">
               {(config?.signList || []).map((signItem: any) => (
                 <Button
-                  key={signItem.filedName}
+                  key={signItem.fieldName}
                   disabled={
                     pageLoading ||
                     selectedRowKeys.length <= 0
                   }
                   type="primary"
                   onClick={() =>
-                    handleAuditAll(signItem.title, signItem.filedName === 'auditorName' ? 'audit' : 'sign')}>
+                    handleAuditAll(signItem.title, signItem.fieldName === 'auditorName' ? 'audit' : 'sign')}>
                   {signItem.title}签名
                 </Button>
               ))}
