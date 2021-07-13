@@ -114,39 +114,60 @@ export default observer(function AddScheduleNursingModal(props: Props) {
       setTitle("添加排班人员");
       // setModalLoading(true);
 
-      if (appStore.HOSPITAL_ID == "wh") {
-        statisticsViewModal.initDict().then(res => {
-          setTitleList(statisticsViewModal.getDict("技术职称"));
-          setPostList(statisticsViewModal.getDict("职务"));
-          setLevelList(statisticsViewModal.getDict("层级"));
-          setModalLoading(false);
-        });
-        service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
-          setUserTypeList(res.data);
-        });
-      } else {
-        /** 层级 */
-        service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
-          setLevelList(res.data);
-        });
+      const getDictInfo = appStore.hisMatch({
+        map: {
+          'wh': () => {
+            statisticsViewModal.initDict().then(res => {
+              setTitleList(statisticsViewModal.getDict("技术职称"));
+              setPostList(statisticsViewModal.getDict("职务"));
+              setLevelList(statisticsViewModal.getDict("层级"));
+              setModalLoading(false);
+            });
+            service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
+              setUserTypeList(res.data);
+            });
+          },
+          'nys': () => {
+            /** 层级 */
+            service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
+              setLevelList(res.data);
+            });
 
-        /** 职务 */
-        service.commonApiService.dictInfo("user_new_job").then(res => {
-          setPostList(res.data);
-        });
+            /** 职务 */
+            service.commonApiService.dictInfo("user_new_job").then(res => {
+              setPostList(res.data);
+            });
 
-        /** 职称 */
-        service.commonApiService.dictInfo("user_new_title").then(res => {
-          setTitleList(res.data);
-        });
+            /** 职称 */
+            service.commonApiService.dictInfo("user_new_title").then(res => {
+              setTitleList(res.data);
+            });
 
-        /** 类型 --南医三专有 */
-        service.commonApiService.dictInfo("user_new_nansan_type").then(res => {
-          setNansanTypeList(res.data);
-        });
-      }
+            /** 类型 --南医三专有 */
+            service.commonApiService.dictInfo("user_new_nansan_type").then(res => {
+              setNansanTypeList(res.data);
+            });
+          },
+          default: () => {
+            /** 层级 */
+            service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
+              setLevelList(res.data);
+            });
 
-      // refForm.current.setField('unit', 123)
+            /** 职务 */
+            service.commonApiService.dictInfo("user_new_job").then(res => {
+              setPostList(res.data);
+            });
+
+            /** 职称 */
+            service.commonApiService.dictInfo("user_new_title").then(res => {
+              setTitleList(res.data);
+            });
+          }
+        }
+      })
+
+      getDictInfo()
     }
   }, [visible]);
 
@@ -313,7 +334,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     </Form.Field>
                   </Col>
                 </React.Fragment>
-              )
+              ),
             })}
           </Row>
         </Form>

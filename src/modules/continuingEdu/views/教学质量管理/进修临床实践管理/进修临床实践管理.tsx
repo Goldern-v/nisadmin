@@ -9,6 +9,7 @@ import moment from 'src/vendors/moment'
 import BaseTabs from 'src/components/BaseTabs'
 import { advancedManageServices } from './services/AdvancedManageServices'
 import { appStore, authStore } from 'src/stores'
+import AdvancedManageEditModal from './components/AdvancedManageEditModal'
 import qs from 'qs'
 
 // const RangePicker = DatePicker.RangePicker
@@ -29,6 +30,9 @@ export default function 进修临床实践管理() {
   const [tableData, setTableData] = useState([] as any[])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
+
+  const [editVisible, setEditVisible] = useState(false)
+  const [editParams, setEditParams] = useState({})
 
   const columns: ColumnProps<any>[] = [
     {
@@ -198,11 +202,31 @@ export default function 进修临床实践管理() {
         style={{ width: 150, marginRight: 10 }}
         defaultValue={query.empName}
         onBlur={(e) => setQuery({ ...query, empName: e.target.value })} />
-      <Button onClick={() => setQuery({ ...query, pageIndex: 1 })}>查询</Button>
+      <Button
+        style={{ marginRight: 10 }}
+        type="primary"
+        onClick={() => setQuery({ ...query, pageIndex: 1 })}>
+        查询
+      </Button>
+      <Button
+        onClick={() => {
+          setEditVisible(true)
+          setEditParams({})
+        }}>
+        新建
+      </Button>
     </HeaderCon>
     <MainCon>
       {TableCon}
     </MainCon>
+    <AdvancedManageEditModal
+      visible={editVisible}
+      orginData={editParams}
+      onCancel={() => setEditVisible(false)}
+      onOk={() => {
+        setEditVisible(false)
+        getTableData()
+      }} />
   </Wrapper>
 }
 

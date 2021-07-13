@@ -14,6 +14,7 @@ import { Select, Radio } from 'src/vendors/antd'
 import { PageTitle, Place } from 'src/components/common'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import FormCreateModal from './common/FormCreateModal'
+import FormCreateByTagModal from './common/FormCreateByTagModal'
 
 import { qcOneTitle, qcThreeTitle } from './../../../data/qcTitle'
 
@@ -186,12 +187,26 @@ export default observer(function TopCon(props: any) {
       </Button>
       {createBtnCon()}
       {exportCon()}
-      <FormCreateModal
-        onCancel={() => setFormCreateVisible(false)}
-        onOk={() => setFormCreateVisible(false)}
-        visible={formCreateVisible}
-        level={qualityControlRecordVM.level}
-      />
+      {appStore.hisMatch({
+        map: {
+          gzsrm: (
+            <FormCreateByTagModal
+              onCancel={() => setFormCreateVisible(false)}
+              onOk={() => setFormCreateVisible(false)}
+              visible={formCreateVisible}
+              level={qualityControlRecordVM.level}
+            />
+          ),
+          default: (
+            <FormCreateModal
+              onCancel={() => setFormCreateVisible(false)}
+              onOk={() => setFormCreateVisible(false)}
+              visible={formCreateVisible}
+              level={qualityControlRecordVM.level}
+            />
+          )
+        }
+      })}
     </Wrapper>
   )
 })

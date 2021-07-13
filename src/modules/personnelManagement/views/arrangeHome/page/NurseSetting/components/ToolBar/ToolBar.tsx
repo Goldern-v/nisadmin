@@ -40,10 +40,10 @@ export default function ToolBar() {
 
       <Wrapper>
         <Title>排班人员设置</Title>
-        <div style={{ flex: 1 }}/>
+        <div style={{ flex: 1 }} />
 
         <DeptSelect onChange={() => {
-        }}/>
+        }} />
 
         <Button
           onClick={(e: any) => {
@@ -52,7 +52,6 @@ export default function ToolBar() {
           style={{
             marginLeft: 3,
             marginRight: 3,
-            display: appStore.HOSPITAL_ID === 'gzsrm' ? 'none' : 'block'
           }}
         >
           {/*{appStore.HOSPITAL_ID == "wh"*/}
@@ -65,7 +64,7 @@ export default function ToolBar() {
           {
             appStore.hisMatch({
               map: {
-                wh: '添加',
+                'wh,gzsrm': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
                 default: '添加实习护士',

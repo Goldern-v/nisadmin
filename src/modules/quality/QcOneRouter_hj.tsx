@@ -15,6 +15,7 @@ import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
 import { appStore } from 'src/stores'
+import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 
 export default function QcOneRouterHj(props: Props) {
   const LEFT_MENU_CONFIG: any = [
@@ -34,7 +35,16 @@ export default function QcOneRouterHj(props: Props) {
       keepAlive: true,
       // hide: !appStore.isDev,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    }
+    },
+    {
+      title: "护理质量检查小结",
+      icon: <YDBG />,
+      path: "/qcOneHj/护理质量检查小结?qcLevel=1",
+      component: 护理质量检查小结,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
   ]
   useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
@@ -67,8 +77,8 @@ export default function QcOneRouterHj(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-            ))}
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )

@@ -245,6 +245,7 @@ export default observer(function NurseFilesView(props: Props) {
       children: dataList
     }
   ];
+
   const LEFT_MENU_CONFIG_HJ = [
     {
       title: "在职护士档案",
@@ -284,21 +285,6 @@ export default observer(function NurseFilesView(props: Props) {
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
-      case "gzsrm":
-        return [
-          {
-            title: "在职护士档案",
-            path: "/nurseFile/onTheJob",
-            component: OnTheJobComponent,
-            icon: <ZZHSDA />
-          },
-          {
-            title: "离职/退休人员查询",
-            path: "/nurseFile/retiredRetirees",
-            component: RetiredRetirees,
-            icon: <TXHSCX />
-          },
-        ]
       default:
         return LEFT_MENU_CONFIG_HJ;
     }
@@ -330,7 +316,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "gzhd", "lcey", "gzsrm", "jmfy", appStore.isDev ? "wh" : "wh_production"]
+      ["hj", "gzhd", "lcey", "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();

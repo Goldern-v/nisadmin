@@ -15,12 +15,33 @@ import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import { appStore } from 'src/stores'
 import { observer } from 'src/vendors/mobx-react-lite'
+import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 
 export default observer(function QcTwoRouter(props: Props) {
 
   const extra_menu = appStore.hisMatch({
     map: {
-      "hj,dghl,gzsrm,yczyy": [
+      'hj,gzsrm': [
+        {
+          title: '护理质量巡查情况汇总表',
+          icon: <YDBG />,
+          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          component: 护理质量巡查情况汇总表,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcTwo/护理质量检查小结?qcLevel=2",
+          component: 护理质量检查小结,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+      ],
+      "dghl,gzsrm,yczyy": [
         {
           title: '护理质量巡查情况汇总表',
           icon: <YDBG />,
