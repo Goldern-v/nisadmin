@@ -234,7 +234,7 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any, resitCetpId?: any) => {
-    if (!record.finishTime) {
+    if (!record.resitFinishTime) {
       Modal.warning({
         title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
         okText: '我知道了',
