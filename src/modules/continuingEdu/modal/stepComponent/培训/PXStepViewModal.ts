@@ -2,6 +2,7 @@ import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import moment from "moment";
 import { stepViewModal } from "../StepViewModal";
+import { appStore } from "src/stores";
 
 const defaultStepData2 = {
   /** 培训名称 **/
@@ -55,15 +56,15 @@ const defaultStepData2 = {
   pointsForAttention:
     "1、严格执行《东莞市厚街医院会议纪律管理办法（试行）》制度，并按照该制度提前十分钟进行签到。2、进出会场时保持有序，避免喧哗嘈杂等不良行为。3、听课期间将手机调至震动状态，保持会场安静。4、请参加听课人员携带学分卡，不得代刷卡行为。5、听课结束时将产生的纸屑、外包装等垃圾带离会场。",
   /** 院外讲师 */
-  ywTeacherList: [], 
+  ywTeacherList: [],
 
   //南医三单独
   /**  考试结束时间 */
   endTime: "",
   /** 培训内容 */
-  trainContent: '', 
+  trainContent: '',
   /** 描述 */
-  trainDescribe: '', 
+  trainDescribe: '',
 };
 
 const defaultStepData5 = {
@@ -160,13 +161,32 @@ class StepViewModal {
       daysToArchive: this.stepData2.daysToArchive,
       organizationWay: this.stepData2.organizationWay,
       address: this.stepData2.address,
-      nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
-      nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
-      nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,
-      nurse3: this.stepData2.bxNurse.includes("nurse3") ? 1 : 0,
-      nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
-      nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
-      nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+      ...appStore.hisMatch({
+        map:{
+          lcey:{
+            nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
+            nurse1_1: this.stepData2.bxNurse.includes("nurse1_1") ? 1 : 0,
+            nurse1_2: this.stepData2.bxNurse.includes("nurse1_2") ? 1 : 0,
+            nurse2_1: this.stepData2.bxNurse.includes("nurse2_1") ? 1 : 0,
+            nurse2_2: this.stepData2.bxNurse.includes("nurse2_2") ? 1 : 0,
+            nurse3_1: this.stepData2.bxNurse.includes("nurse3_1") ? 1 : 0,
+            nurse3_2: this.stepData2.bxNurse.includes("nurse3_2") ? 1 : 0,
+            nurse3_3: this.stepData2.bxNurse.includes("nurse3_3") ? 1 : 0,
+            nurse4_1: this.stepData2.bxNurse.includes("nurse4_1") ? 1 : 0,
+            nurse4_2: this.stepData2.bxNurse.includes("nurse4_2") ? 1 : 0,
+            nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+          },
+          other:{
+            nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
+            nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
+            nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,
+            nurse3: this.stepData2.bxNurse.includes("nurse3") ? 1 : 0,
+            nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
+            nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
+            nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+          }
+        }
+      }),
       teacherList: this.stepData2.teacherList.reduce(
         (total: any[], item: any) => {
           return [

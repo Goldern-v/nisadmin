@@ -1,6 +1,7 @@
 import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import moment from "moment";
+import { appStore } from "src/stores";
 
 const defaultStepData2 = {
   /** 学习名称 **/
@@ -132,13 +133,32 @@ class StepViewModal {
       daysToArchive: this.stepData2.daysToArchive,
       organizationWay: this.stepData2.organizationWay,
       address: this.stepData2.address,
-      nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
-      nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
-      nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,
-      nurse3: this.stepData2.bxNurse.includes("nurse3") ? 1 : 0,
-      nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
-      nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
-      nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+      ...appStore.hisMatch({
+        map:{
+          lcey:{
+            nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
+            nurse1_1: this.stepData2.bxNurse.includes("nurse1_1") ? 1 : 0,
+            nurse1_2: this.stepData2.bxNurse.includes("nurse1_2") ? 1 : 0,
+            nurse2_1: this.stepData2.bxNurse.includes("nurse2_1") ? 1 : 0,
+            nurse2_2: this.stepData2.bxNurse.includes("nurse2_2") ? 1 : 0,
+            nurse3_1: this.stepData2.bxNurse.includes("nurse3_1") ? 1 : 0,
+            nurse3_2: this.stepData2.bxNurse.includes("nurse3_2") ? 1 : 0,
+            nurse3_3: this.stepData2.bxNurse.includes("nurse3_3") ? 1 : 0,
+            nurse4_1: this.stepData2.bxNurse.includes("nurse4_1") ? 1 : 0,
+            nurse4_2: this.stepData2.bxNurse.includes("nurse4_2") ? 1 : 0,
+            nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+          },
+          other:{
+            nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
+            nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
+            nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,
+            nurse3: this.stepData2.bxNurse.includes("nurse3") ? 1 : 0,
+            nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
+            nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
+            nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+          }
+        }
+      }),
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       noticeContent: this.stepData2.noticeContent,
       category: this.stepData2.category,
