@@ -118,7 +118,39 @@ export default observer(function Header(props: Props) {
             data: [],
             dataLabel: "year"
           }
-        ]
+        ],
+        lcey:()=>[
+          {
+            step: "按实习生选择",
+            label: "按实习生选择",
+            data: [],
+            dataLabel: "year"
+          },
+          {
+            step: "按进修生选择",
+            label: "按进修生选择",
+            data: [],
+            dataLabel: "year"
+          },
+          {
+            step: "科室总带教",
+            label: "科室总带教",
+            data: [],
+            dataLabel: "year"
+          },
+          {
+            step: "院级培训师",
+            label: "院级培训师",
+            data: [],
+            dataLabel: "year"
+          },
+          {
+            step: "护理专业小组",
+            label: "护理专业小组",
+            data: [],
+            dataLabel: "year"
+          }
+        ],
       })
     ];
     // }

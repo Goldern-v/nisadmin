@@ -462,6 +462,7 @@ const CheckListCon = observer(function (props: any) {
       }
     }
   `;
+  console.log(selectPeopleViewModel.currentTreeData,'sssssssssss')
 
   return (
     <Con>

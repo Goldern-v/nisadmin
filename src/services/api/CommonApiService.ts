@@ -133,6 +133,16 @@ export default class CommonApiService extends BaseApiService {
       obj
     );
   }
+  /** 根据 科室总带教 获取人员列表 ---厚街学习培训 新建类型*/
+  public queryUserListByRoleCode(roleCode:string) {
+    let obj: any = {
+      roleCode
+    };
+    return this.post(
+      `/studyAndTrain/userPersonManage/queryUserListByRoleCode`,
+      obj
+    );
+  }
 
   /** 根据用户名获取人员列表 */
   public searchUser(empName: string, postData: any = {}) {
@@ -214,7 +224,7 @@ export default class CommonApiService extends BaseApiService {
    * 签名
    * @param empNo 工号
    * @param password 密码
-   * @returns 
+   * @returns
    */
   public getUser(empNo: string, password: string) {
     return this.post(`/user/getUser`, {
@@ -225,7 +235,7 @@ export default class CommonApiService extends BaseApiService {
 
   /**
    * 获取用户权限科室的所有护士
-   * @returns 
+   * @returns
    */
   public findAllNurseByPerDept() {
     return this.get("/qcNurseMeetingRecord/getPermissionDeptNurse");
@@ -234,7 +244,7 @@ export default class CommonApiService extends BaseApiService {
   /**
    * 获取侧边栏菜单
    * @param moduleRoleCode 模块code
-   * @returns 
+   * @returns
    */
   public getSideMenu(moduleRoleCode: string) {
     return this.get(`/menu/getMenuList/${moduleRoleCode}`);

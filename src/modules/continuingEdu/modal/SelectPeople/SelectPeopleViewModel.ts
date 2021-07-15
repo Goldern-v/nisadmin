@@ -103,6 +103,18 @@ class SelectPeopleViewModel {
           this.currentData = {
             list: (await ser.queryRefresherStudentInfoListGroupByYear()).data
           };
+        }  else if (this.stepState[0] == "科室总带教") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCode('LC_KSZDJ')).data
+          };
+        }  else if (this.stepState[0] == "院级培训师") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCode('LC_YJPXS')).data
+          };
+        }  else if (this.stepState[0] == "护理专业小组") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCode('LC_HLZYXZ')).data
+          };
         } else if (id) {
           this.currentData = {
             list: (await stepServices.getAllPersonsOfGroup(id)).data
