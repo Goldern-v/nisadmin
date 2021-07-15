@@ -212,6 +212,24 @@ export default observer(function NavBar(props: any) {
             </React.Fragment>
           );
           break;
+        case 'gzsrm':
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../images/贵州省人民医院.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              />
+            </React.Fragment>
+          );
+          break;
       }
 
     if (appStore.onlyBadEvent)

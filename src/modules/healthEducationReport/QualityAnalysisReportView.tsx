@@ -14,7 +14,7 @@ import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
 import { addCSS } from 'src/utils/css/css'
 import $ from 'jquery'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
@@ -141,7 +141,7 @@ export default observer(function QualityAnalysisReportView() {
         </HeadCon>
         <ScrollCon className='healthEducationScrollCon'>
           <Page ref={pageRef} className='print-page'>
-            <div className='hospital-name'>东莞市厚街医院</div>
+            <div className='hospital-name'>{appStore.HOSPITAL_Name}</div>
             {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
               if (item.sectionId) {
                 let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
@@ -211,7 +211,7 @@ const Page = styled.div`
     margin-top: 30px;
   }
 `
-
+// @ts-ignore
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
 `

@@ -86,6 +86,8 @@ export default class AppStore {
       return require("src/assets/images/东莞谢岗.png");
     } else if (this.HOSPITAL_ID == "nfzxy") {
       return require("src/assets/images/南方中西医logo.png")
+    } else if (this.HOSPITAL_ID == "gzsrm") {
+      return require("src/assets/images/贵州省人民医院.png")
     } else {
       return require("src/assets/images/logo.png");
     }
