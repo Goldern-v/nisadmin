@@ -123,8 +123,8 @@ export default function BadEventsRouters(props: Props) {
             if (payload.key === `${baseRouter}/不良事件上报`) {
               autoLoginTnNisInfoBe({
                 blank: true,
-                redictUri: '/crNursing/badevents/index',
-                // loginUri: '/crNursing/login'
+                redictUri: '/crNursing/badEvent',
+                loginUri: '/crNursing/login'
               })
               return false
             } else {
