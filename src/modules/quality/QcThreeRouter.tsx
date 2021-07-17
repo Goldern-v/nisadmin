@@ -28,6 +28,8 @@ import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import 护理质量巡查情况汇总表Nys from './views/qcFormNys/护理质量巡查情况汇总表'
 
+import 问题原因措施汇总 from './views/qcFormGzsrm/问题原因措施汇总'
+
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
@@ -71,6 +73,12 @@ export default function QcThreeRouter(props: Props) {
           icon: <JCTJ />,
           component: QueryStatistics
         },
+        {
+          title: "三级质控问题原因措施汇总",
+          path: "/qcThree/问题原因措施汇总?qcLevel=3",
+          icon: <JCTJ />,
+          component: 问题原因措施汇总
+        }
       ],
       'nys': [
         {
