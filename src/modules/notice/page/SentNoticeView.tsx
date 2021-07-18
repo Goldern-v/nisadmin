@@ -17,7 +17,7 @@ interface User {
   label?: string;
   key: string;
 }
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export interface CheckUserItem {
   key: string;
@@ -126,12 +126,21 @@ export default function SentNoticeView() {
     if (templateType == "转发") {
       postObj.forwardId = id;
     }
+
+    let empNos = checkedUserList.reduce((prev: any, current: any) => {
+      if (current.empNo) {
+        return [...prev, current.empNo];
+      } else if (current.userList) {
+        return [...prev, ...(current.userList || []).map((item: any) => item.empNo)];
+      } else {
+        return [...prev]
+      }
+    }, [])
+
     noticeService
       .sendMail({
         mail: postObj,
-        empNos: checkedUserList.reduce((prev: any, current: any) => {
-          return [...prev, ...current.userList.map((item: any) => item.empNo)];
-        }, []),
+        empNos,
         fileIds: fileList.map(item => item.id),
         tempSave: false
       })
