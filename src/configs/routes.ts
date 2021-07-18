@@ -443,6 +443,7 @@ import SatisfiedPatSubmit from "src/modules/mobilePage/satisfiedPatSubmit/Satisf
 
 //单点登录
 const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/SingleSignOnDefault"))
+const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/SingleSignOnGzsrm"))
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -453,7 +454,12 @@ const routes: RouteItem[] = [
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
   ...specialModule,
-  setLayout("/autoLogin", SingleSignOnDefault),
+  setLayout("/autoLogin", appStore.hisMatch({
+    map: {
+      gzsrm: SingleSignOnGzsrm,
+      default: SingleSignOnDefault
+    }
+  })),
   setLayout("/scheduleHome", ScheduleHomeView, layouts.MainLayout),
 
   setLayout("/nurseSetting", NurseSettingView, layouts.BreadcrumbLayout, [

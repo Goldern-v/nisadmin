@@ -34,6 +34,8 @@ export default observer(function FormCreateByTagModal(props: Props) {
     return formList.filter((item: any) => item.qcName.indexOf(filter) >= 0) || []
   })()
 
+  const showFilterList = !!(activeGroupCode || filter)
+
   useEffect(() => {
     if (visible) {
       setActiveQcCode('')
@@ -80,6 +82,23 @@ export default observer(function FormCreateByTagModal(props: Props) {
       .push(`/qualityControlRecordEdit?qcCode=${target.qcCode}`), 300)
   }
 
+  const RenderFormItem = (item: any) => {
+    return (<div
+      key={item.qcCode}
+      className={activeQcCode == item.qcCode ? 'qc-item active' : 'qc-item'}
+      onClick={() => setActiveQcCode(item.qcCode)}
+      title={item.qcName}
+      onDoubleClick={() => {
+        onOk && onOk()
+        handleOk(item.qcCode)
+      }}>
+      <div className="icon">
+        <img src={require('./../../assets/报告单@3x.png')} alt="" />
+      </div>
+      <div className="qc-name">{item.qcName}</div>
+    </div>)
+  }
+
   return <Modal
     width={545}
     visible={visible}
@@ -115,22 +134,15 @@ export default observer(function FormCreateByTagModal(props: Props) {
       </div>
       <ContentArea className="content-area">
         <Spin spinning={formListLoading} style={{ minHeight: 300 }}>
-          {filterList.map((item: any) =>
-            <div
-              key={item.qcCode}
-              className={activeQcCode == item.qcCode ? 'qc-item active' : 'qc-item'}
-              onClick={() => setActiveQcCode(item.qcCode)}
-              title={item.qcName}
-              onDoubleClick={() => {
-                onOk && onOk()
-                handleOk(item.qcCode)
-              }}>
-              <div className="icon">
-                <img src={require('./../../assets/报告单@3x.png')} alt="" />
-              </div>
-              <div className="qc-name">{item.qcName}</div>
-            </div>
-          )}
+          {showFilterList && filterList.map((item: any) => RenderFormItem(item))}
+          {!showFilterList && Object.keys(formGroup).map((groupCode: string) => {
+            let groupItem = formGroup[groupCode]
+            let groupList = groupItem.list || []
+            return (<React.Fragment key={groupCode}>
+              <div className="tab-name">{groupItem.groupName}</div>
+              {groupList.map((item: any) => RenderFormItem(item))}
+            </React.Fragment>)
+          })}
         </Spin>
       </ContentArea>
     </Wrapper>
@@ -190,5 +202,16 @@ const Wrapper = styled.div`
       width: 200px;
       margin-left: 10px;
     }
+  }
+  .tab-name{
+    width: 100%;
+    height: 20px;
+    float: left;
+    color: #000;
+    border-left: 5px solid #00A680;
+    line-height: 20px;
+    padding: 0 15px;
+    font-size: 14px;
+    margin: 5px 10px;
   }
 `
