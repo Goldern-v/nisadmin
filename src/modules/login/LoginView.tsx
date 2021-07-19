@@ -239,16 +239,16 @@ export default withRouter(function LoginView(props: Props) {
       <BottomContent>
         {appStore.hisMatch({
           map: {
-            'ys,gzsrm,jmfy,lcey,dghl': '百辰源(广州)科技有限公司',
-            other: '广州宸瑞软件科技有限公司 http://www.cr-health.com'
+            'nys': '广州宸瑞软件科技有限公司 http://www.cr-health.com',
+            other: '百辰源(广州)科技有限公司'
           },
           vague: true
         })}
         <span> 版权所有©2013-{new Date().getFullYear()}，All rights reseved. </span>
         {appStore.hisMatch({
           map: {
-            'ys,lcey,gzsrm,jmfy,dghl': '关于智慧护理 | 联系客服',
-            other: `关于宸瑞 | 关于智慧护理 | 联系客服`
+            'nys': '关于宸瑞 | 关于智慧护理 | 联系客服',
+            other: `关于智慧护理 | 联系客服`
           },
           vague: true
         })}
