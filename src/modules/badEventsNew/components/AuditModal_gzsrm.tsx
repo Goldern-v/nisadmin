@@ -41,11 +41,11 @@ export default observer(function AduitModal(props: Props) {
 
   const [confirmLoading, setConfirmLoading] = useState(false)
 
-  useEffect(() => {
-    if (visible) {
+  // useEffect(() => {
+  //   if (visible) {
 
-    }
-  }, [visible])
+  //   }
+  // }, [visible])
 
   const handleOkBtn = () => {
     setUserCheckVisible(true)
@@ -61,7 +61,7 @@ export default observer(function AduitModal(props: Props) {
       ...auditInfo,
       empNo: userAudit.empNo,
       password: userAudit.password,
-      id: dataOrigin?.master?.id
+      id: dataOrigin?.master?.id,
     } as any
 
     delete params.auditDate
@@ -69,15 +69,33 @@ export default observer(function AduitModal(props: Props) {
     let saveParams = {} as any
 
     switch (nodeCode) {
+      case 'nurse_handle':
+        // 片区护长审核是否通过
+        if (auditInfo.noPass) {
+          saveParams['B0002060'] = auditInfo.handleContent
+          if (auditInfo.handleContent.trim().length <= 0) {
+            message.warning('审核意见不能为空')
+            return
+          }
+        } else {
+          saveParams['B0002060'] = ''
+        }
+        break
       case 'nursing_minister_audit':
+        // 是否不良事件
+        saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
+        // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
         break
       case 'dept_handle':
+        // 意见和日期
+        saveParams['B0002062'] = auditInfo.handleContent
         saveParams['B0002057'] = auditInfo.handleContent
         saveParams['B0002056'] = auditInfo.auditDate
         break
       case 'nursing_minister_comfirm':
+        // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
         break
@@ -133,82 +151,186 @@ export default observer(function AduitModal(props: Props) {
   }
 
   const AduitPannelContent = () => {
-    let auditTitle = '审核意见'
+    let opionTitle = '审核意见'
     let auditDateTitle = '审核时间'
     let auditTimeEditable = false
 
     switch (nodeCode) {
+      case 'nurse_handle':
+        opionTitle = '片区护长审核意见'
+        auditDateTitle = '审核日期'
+        break
       case 'nursing_minister_audit':
-        auditTitle = '护理部意见'
-        auditDateTitle = '护理部意见日期'
+        opionTitle = '护理部审核意见'
+        auditDateTitle = '审核日期'
         break
       case 'dept_handle':
-        auditTitle = '科室整改效果评估'
-        auditDateTitle = '科室整改日期'
+        opionTitle = '整改意见'
+        auditDateTitle = '整改日期'
         auditTimeEditable = true
         break
       case 'nursing_minister_comfirm':
-        auditTitle = ' 护理部确认'
+        opionTitle = ' 护理部确认'
         auditDateTitle = ' 护理部确认日期'
-        auditTimeEditable = true
         break
       default:
     }
 
-    return (
-      <div className='form1'>
-        <Row>
-          <Col span={6} className="row-title">
-            审核结果：
-          </Col>
-          <Col span={18}>
-            <Radio.Group
-              className='radio-group'
-              value={auditInfo.noPass}
-              onChange={(e) =>
-                setAuditInfo({
-                  ...auditInfo,
-                  noPass: e.target.value,
-                })
-              }>
-              <Radio value={false} >通过</Radio>
-              <Radio value={true}>退回</Radio>
-            </Radio.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={6} className="row-title">
-            <span style={{ color: 'red', marginLeft: '-7px' }}>*</span>
-            {auditTitle}：
-          </Col>
-          <Col span={18}>
-            <TextArea
-              autosize={{ minRows: 2 }}
-              value={auditInfo.handleContent}
-              onChange={(e) =>
-                setAuditInfo({ ...auditInfo, handleContent: e.target.value })} />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={6} className="row-title">{auditDateTitle}：</Col>
-          <Col span={18}>
-            <DatePicker
-              allowClear={false}
-              value={moment(auditInfo.auditDate)}
-              disabled={!auditTimeEditable}
-              onChange={(_moment: moment.Moment) =>
-                setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
-          </Col>
-        </Row>
-      </div>
-    )
+    switch (nodeCode) {
+      case 'nursing_minister_audit':
+        return (
+          <div className='form1'>
+            <Row>
+              <Col span={6} className="row-title">
+                是否为不良事件：
+              </Col>
+              <Col span={18}>
+                <Radio.Group
+                  className='radio-group'
+                  value={auditInfo.noPass}
+                  onChange={(e) =>
+                    setAuditInfo({
+                      ...auditInfo,
+                      noPass: e.target.value,
+                    })
+                  }>
+                  <Radio value={false} >是</Radio>
+                  <Radio value={true}>否</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">
+                {opionTitle}：
+              </Col>
+              <Col span={18}>
+                <TextArea
+                  autosize={{ minRows: 2 }}
+                  value={auditInfo.handleContent}
+                  onChange={(e) =>
+                    setAuditInfo({ ...auditInfo, handleContent: e.target.value })} />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">{auditDateTitle}：</Col>
+              <Col span={18}>
+                <DatePicker
+                  allowClear={false}
+                  value={moment(auditInfo.auditDate)}
+                  disabled={!auditTimeEditable}
+                  onChange={(_moment: moment.Moment) =>
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+              </Col>
+            </Row>
+          </div>
+        )
+
+      case 'dept_handle':
+        return (
+          <div className='form1'>
+            <Row>
+              <Col span={6} className="row-title">
+                是否提出整改意见：
+              </Col>
+              <Col span={18}>
+                <Radio.Group
+                  className='radio-group'
+                  value={auditInfo.noPass}
+                  onChange={(e) => {
+                    setAuditInfo({
+                      ...auditInfo,
+                      noPass: e.target.value,
+                      handleContent: e.target.value ? auditInfo.handleContent : ""
+                    })
+                  }}>
+                  <Radio value={false}>否</Radio>
+                  <Radio value={true}>是</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">
+                {opionTitle}：
+              </Col>
+              <Col span={18}>
+                <TextArea
+                  disabled={!auditInfo.noPass}
+                  autosize={{ minRows: 2 }}
+                  value={auditInfo.handleContent}
+                  onChange={(e) =>
+                    setAuditInfo({ ...auditInfo, handleContent: e.target.value })} />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">{auditDateTitle}：</Col>
+              <Col span={18}>
+                <DatePicker
+                  allowClear={false}
+                  value={moment(auditInfo.auditDate)}
+                  disabled={!auditTimeEditable}
+                  onChange={(_moment: moment.Moment) =>
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+              </Col>
+            </Row>
+          </div>
+        )
+
+      default:
+        return (
+          <div className='form1'>
+            <Row>
+              <Col span={6} className="row-title">
+                审核结果：
+              </Col>
+              <Col span={18}>
+                <Radio.Group
+                  className='radio-group'
+                  value={auditInfo.noPass}
+                  onChange={(e) =>
+                    setAuditInfo({
+                      ...auditInfo,
+                      noPass: e.target.value,
+                    })
+                  }>
+                  <Radio value={false} >通过</Radio>
+                  <Radio value={true}>退回</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">
+                {/* <span style={{ color: 'red', marginLeft: '-7px' }}>*</span> */}
+                {opionTitle}：
+              </Col>
+              <Col span={18}>
+                <TextArea
+                  autosize={{ minRows: 2 }}
+                  value={auditInfo.handleContent}
+                  onChange={(e) =>
+                    setAuditInfo({ ...auditInfo, handleContent: e.target.value })} />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} className="row-title">{auditDateTitle}：</Col>
+              <Col span={18}>
+                <DatePicker
+                  allowClear={false}
+                  value={moment(auditInfo.auditDate)}
+                  disabled={!auditTimeEditable}
+                  onChange={(_moment: moment.Moment) =>
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+              </Col>
+            </Row>
+          </div>
+        )
+    }
   }
 
   return (
     <Fragment>
       <Modal
         className='badevent-audit-modal'
-        title={nodeInfo?.nodeName || '审核流程'}
+        title={nodeInfo?.nodeName || '当前审核流程'}
         width={ModalWidth()}
         onOk={handleOkBtn}
         confirmLoading={confirmLoading}

@@ -144,7 +144,7 @@ export default function 进修临床实践管理() {
 
   const handleDetail = (record: any) => {
     appStore.history
-      .push(`/continuingEdu/进修临床实践管理详情?${qs.stringify({
+      .push(`/continuingEdu/进修临床实践详情?${qs.stringify({
         evalPlanId: record.id,
         title: record.title,
         submitTimeBegin: record.beginTime,

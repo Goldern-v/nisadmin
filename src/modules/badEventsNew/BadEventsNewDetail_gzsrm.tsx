@@ -41,7 +41,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
   const [iframeLoading, setIframeLoading] = useState(true)
 
-  let stepCurrent = handlenodeDto.find((step: any) => step.nodeCode === master.currentNodeCode)
+  let stepCurrent = [...handlenodeDto].reverse().find((step: any) => step.nodeCode === master.currentNodeCode)
   //下一步的审核状态
 
   let stepNext = (() => {
@@ -62,16 +62,18 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       id: props.match.params.id || '',
       token: `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`,
       badEvent: formName,
-      badEventType: eventType,
+      // badEventType: eventType,
       badEventCode: formCode,
       operation: 'view',
       // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
       isIndependent: 1,
       timeset: timeSet
     }
+
     for (let x in query) {
       if (!query[x]) return ''
     }
+
     return `${formUrl}/不良事件病人安全通报单${appStore.isDev ? '.html' : ''}?${qs.stringify(query)}`
   }
 
