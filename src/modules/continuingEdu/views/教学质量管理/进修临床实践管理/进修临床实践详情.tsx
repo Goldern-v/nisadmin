@@ -14,28 +14,36 @@ export default function 进修临床实践详情() {
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
 
+  const getherCon = (text: string, idx: number) => ({
+    props: { rowSpan: idx === 0 ? (tableData.length || 0) : 0 },
+    children: <span>{text}</span>
+  })
+
   const columns: ColumnProps<any>[] = [
     {
       title: '姓名',
       dataIndex: 'empName',
       width: 80,
       align: 'center',
+      render: (text: string, record: any, idx: number) => (getherCon(text, idx))
     },
     {
       title: '科室',
       dataIndex: 'deptName',
-      width: 120,
+      width: 80,
       align: 'center',
+      render: (text: string, record: any, idx: number) => (getherCon(text, idx))
     },
     {
       title: '进修专科',
       dataIndex: 'juniorCollege',
-      width: 180,
+      width: 80,
       align: 'center',
+      render: (text: string, record: any, idx: number) => (getherCon(text, idx))
     },
     {
       title: '序号',
-      width: 60,
+      width: 50,
       align: 'center',
       render: (text: any, record: any, idx: number) => idx + 1
     },
@@ -66,7 +74,7 @@ export default function 进修临床实践详情() {
     {
       title: '预计完成时间',
       dataIndex: 'startDate',
-      width: 120,
+      width: 160,
       align: 'center',
       render: (text: string, record: any,) => {
         return (
@@ -109,6 +117,11 @@ export default function 进修临床实践详情() {
       })
   }
 
+  const handleExport = () => {
+    advancedManageServices
+      .exportPageUserWorkPlanList(queryObj.evalPlanId)
+  }
+
   useEffect(() => {
     getTableData()
   }, [])
@@ -125,10 +138,12 @@ export default function 进修临床实践详情() {
       </Breadcrumb>
       <Place />
       <Button>添加计划</Button>
-      <Button>导出</Button>
+      <Button onClick={() => handleExport()}>导出</Button>
     </PageHeader>
     <MainCon>
       <BaseTable
+        surplusWidth={1000}
+        surplusHeight={185}
         columns={columns}
         dataSource={tableData}
       />

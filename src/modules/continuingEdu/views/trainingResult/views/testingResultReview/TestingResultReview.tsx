@@ -180,7 +180,7 @@ export default observer(function TestingResultReview() {
             style={{ color: 'blue', cursor: 'pointer' }}
             onClick={itemScoreConfirm}>
             有效
-            </span>
+          </span>
         else
           return <span
             style={{ color: 'red', cursor: 'pointer' }}
@@ -234,30 +234,28 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any, resitCetpId?: any) => {
-    if (!record.resitFinishTime) {
+    if (record.resitFinishTime || record.finishTime) {
+      let isScoreEdit = false
+
+      if (editScoreAuth) isScoreEdit = true
+
+      answerSheet.show({
+        title: `${baseInfo.title}考卷`,
+        empNo: record.empNo,
+        type: appStore.queryObj.editable ? 'edit' : 'view',
+        cetpId: resitCetpId ? resitCetpId : appStore.queryObj.id,
+        onOkCallBack: () => {
+          trainingResultModel.getTableData()
+        }
+      })
+
+    } else {
       Modal.warning({
         title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
         okText: '我知道了',
         content: '该考生未答题，得分为0。'
       })
-      return
-      // return message.warning('该学员未答题')
-
     }
-
-    let isScoreEdit = false
-
-    if (editScoreAuth) isScoreEdit = true
-
-    answerSheet.show({
-      title: `${baseInfo.title}考卷`,
-      empNo: record.empNo,
-      type: appStore.queryObj.editable ? 'edit' : 'view',
-      cetpId: resitCetpId ? resitCetpId : appStore.queryObj.id,
-      onOkCallBack: () => {
-        trainingResultModel.getTableData()
-      }
-    })
   }
 
   // const setLoading = (loading: boolean) => trainingResultModel.setLoading(loading)

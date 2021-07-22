@@ -1,4 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
+import { fileDownload } from 'src/utils/file/file'
 
 class AdvancedManageServices extends BaseApiService {
   /**
@@ -81,7 +82,8 @@ class AdvancedManageServices extends BaseApiService {
    * 护理PC-厚街-进修临床实践管理-导出进修人员工作计划表列表
    */
   public exportPageUserWorkPlanList(advancedId: string) {
-    return this.post('/studyAndTrain/advancedManage/exportPageUserWorkPlanList', { advancedId })
+    return this.post('/studyAndTrain/advancedManage/exportPageUserWorkPlanList', { advancedId }, { responseType: 'blob' })
+      .then(res => fileDownload(res))
   }
 
   /**
