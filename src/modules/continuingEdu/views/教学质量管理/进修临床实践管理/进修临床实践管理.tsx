@@ -146,10 +146,13 @@ export default function 进修临床实践管理() {
     appStore.history
       .push(`/continuingEdu/进修临床实践详情?${qs.stringify({
         evalPlanId: record.id,
+        juniorCollege: record.juniorCollege,
         title: record.title,
-        submitTimeBegin: record.beginTime,
-        submitTimeEnd: record.endTime,
-        evalType: record.evalType,
+        deptName: record.deptName,
+        empNo: record.empNo,
+        empName: record.empName,
+        startDate: record.startDate,
+        endDate: record.endDate,
       })}`)
   }
 

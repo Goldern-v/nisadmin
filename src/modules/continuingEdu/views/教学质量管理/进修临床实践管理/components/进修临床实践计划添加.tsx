@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, Row, Col, Input, DatePicker, Select } from 'antd'
+import { Button, Modal, Row, Col, Input, DatePicker, Select, AutoComplete } from 'antd'
 import { currentMonth } from 'src/utils/date/rangeMethod'
+import { advancedManageServices } from './../services/AdvancedManageServices'
 import moment from 'moment'
+import { message } from 'src/vendors/antd'
 
 const Option = Select.Option
 const RangePicker = DatePicker.RangePicker
@@ -39,12 +41,12 @@ const initParams = (advancedId: string, empNo: string) => {
   return {
     id: '',
     advancedId,
-    empNo: '',
+    empNo,
     projectName: '',
     startDate: startDate.format('YYYY-MM-DD'),
     endDate: endDate.format('YYYY-MM-DD'),
-    finishField: finishFieldList[0],
-    audiencer: audiencerList[0],
+    finishField: finishFieldList[0].code,
+    audiencer: audiencerList[0].code,
     reason: '',
     concreteMeasure: '',
     completion: '',
@@ -66,10 +68,18 @@ export default function 进修临床实践计划添加(props: Props) {
   } = props
 
   const [editParams, setEditParams] = useState(initParams(advancedId, empNo) as any)
+  const [loading, setLoading] = useState(false)
 
   const handleSave = () => {
-    console.log(editParams)
-    onOk()
+    setLoading(true)
+
+    advancedManageServices
+      .saveOrUpdateUserWorkPlan(editParams)
+      .then(res => {
+        setLoading(false)
+        message.success('保存成功')
+        onOk()
+      }, () => setLoading(false))
   }
 
   useEffect(() => {
@@ -77,7 +87,7 @@ export default function 进修临床实践计划添加(props: Props) {
       let newEditParams = initParams(advancedId, empNo)
 
       Object.keys(newEditParams).map((key: string) => {
-        if (originParams[key] !== '')
+        if (originParams[key] || originParams[key] === 0)
           newEditParams[key] = originParams[key]
       })
 
@@ -86,35 +96,41 @@ export default function 进修临床实践计划添加(props: Props) {
   }, [visible])
 
   return <Modal
+    centered
     title={`${editParams.id ? '修改' : '添加'}计划`}
+    width={800}
+    confirmLoading={loading}
+    visible={visible}
     onCancel={() => onCancel()}
     onOk={() => handleSave()}>
     <Wrapper>
       <Row gutter={15}>
         <Col span={8}>
           <span>姓名：</span>
-          <Input readOnly value={empName} />
+          <Input readOnly value={empName} className="flex-1" />
         </Col>
         <Col span={8}>
           <span>科室：</span>
-          <Input readOnly value={deptName} />
+          <Input readOnly value={deptName} className="flex-1" />
         </Col>
-        <Col span={8} className="align-right">
+        <Col span={8} >
           <span>进修专科：</span>
-          <Input readOnly value={juniorCollege} />
+          <Input readOnly value={juniorCollege} className="flex-1" />
         </Col>
       </Row>
-      <Row>
+      <Row gutter={15}>
         <Col span={12}>
           <span>计划名称：</span>
           <Input
+            className="flex-1"
             value={editParams.projectName}
             onChange={(e) =>
               setEditParams({ ...editParams, projectName: e.target.value })} />
         </Col>
-        <Col span={12} className="align-right">
+        <Col span={12} >
           <span>预计完成时间：</span>
           <RangePicker
+            className="flex-1"
             allowClear={false}
             value={[
               moment(editParams.startDate),
@@ -128,30 +144,26 @@ export default function 进修临床实践计划添加(props: Props) {
               })} />
         </Col>
       </Row>
-      <Row>
+      <Row gutter={15}>
         <Col span={12}>
           <span>完成场所：</span>
-          <Select
+          <AutoComplete
+            className="flex-1"
             value={editParams.finishField}
-            onChange={(finishField: string) =>
-              setEditParams({ ...editParams, finishField })}
-            placeholder="请选择完成场所">
-            {finishFieldList.map((item: any) => (
-              <Option key={item.code} value={item.code}>{item.name}</Option>
-            ))}
-          </Select>
+            placeholder="请选择受众对象"
+            dataSource={finishFieldList.map((item: any) => ({ value: item.code, text: item.name }))}
+            onChange={(finishField: any) =>
+              setEditParams({ ...editParams, finishField })} />
         </Col>
-        <Col span={12} className="align-right">
+        <Col span={12} >
           <span>受众对象：</span>
-          <Select
+          <AutoComplete
+            className="flex-1"
             value={editParams.audiencer}
-            onChange={(audiencer: string) =>
-              setEditParams({ ...editParams, audiencer })}
-            placeholder="请选择完成场所">
-            {audiencerList.map((item: any) => (
-              <Option key={item.code} value={item.code}>{item.name}</Option>
-            ))}
-          </Select>
+            placeholder="请选择受众对象"
+            dataSource={audiencerList.map((item: any) => ({ value: item.code, text: item.name }))}
+            onChange={(audiencer: any) =>
+              setEditParams({ ...editParams, audiencer })} />
         </Col>
       </Row>
       <div className="sub-title">原因或理由：</div>
@@ -198,7 +210,23 @@ export default function 进修临床实践计划添加(props: Props) {
 }
 
 const Wrapper = styled.div`
-  .align-right{
-    text-align: right;
+  .ant-col{
+    display: flex;
+    margin-bottom: 15px;
+    &>span:first-of-type{
+      display: inline-block;
+      text-align: right;
+      line-height: 30px;
+      font-size: 14px;
+    }
+    .flex-1{
+      flex: 1;
+    }
+  }
+  .sub-title{
+    font-size: 14px;
+    line-height: 30px;
+    margin-bottom: 5px;
+    margin-top: 15px;
   }
 `

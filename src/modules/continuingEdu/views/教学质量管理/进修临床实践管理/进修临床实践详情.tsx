@@ -1,23 +1,28 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Breadcrumb, Button } from 'antd'
+import { Breadcrumb, Button, message, Modal } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { Link } from 'react-router-dom'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { advancedManageServices } from './services/AdvancedManageServices'
+import 进修临床实践计划添加 from './components/进修临床实践计划添加'
 
 export interface Props { }
 
 export default function 进修临床实践详情() {
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
+  const [loading, setLoading] = useState(false)
 
   const getherCon = (text: string, idx: number) => ({
     props: { rowSpan: idx === 0 ? (tableData.length || 0) : 0 },
     children: <span>{text}</span>
   })
+
+  const [editVisible, setEditVisible] = useState(false)
+  const [editParmas, setEditParams] = useState({} as any)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -76,14 +81,12 @@ export default function 进修临床实践详情() {
       dataIndex: 'startDate',
       width: 160,
       align: 'center',
-      render: (text: string, record: any,) => {
-        return (
-          <div>
-            <div>{record.differMonth}</div>
-            <div>{`${record.startDate} - ${record.endDate}`}</div>
-          </div>
-        )
-      }
+      render: (text: string, record: any,) => (
+        <div>
+          <div>{record.differMonth}</div>
+          <div>{`${record.startDate} - ${record.endDate}`}</div>
+        </div>
+      )
     },
     {
       title: '具体措施',
@@ -103,23 +106,66 @@ export default function 进修临床实践详情() {
       width: 120,
       align: 'center',
     },
+    {
+      title: '操作',
+      width: 120,
+      align: 'center',
+      render: (text: any, record: any) => (
+        <DoCon>
+          <span onClick={() => handleEdit(record)}>修改</span>
+          <span onClick={() => handleDelete(record)}>删除</span>
+        </DoCon>
+      )
+    }
   ]
 
   const getTableData = () => {
+    setLoading(true)
+
     advancedManageServices
       .getPageUserWorkPlanList(queryObj.evalPlanId)
       .then(res => {
+        setLoading(false)
+
         if (res.data.list) {
           setTableData(res.data.list || [])
         } else if (res.data instanceof Array) {
           setTableData(res.data || [])
         }
-      })
+      }, () => setLoading(false))
   }
 
   const handleExport = () => {
     advancedManageServices
       .exportPageUserWorkPlanList(queryObj.evalPlanId)
+  }
+
+  const handleEdit = (record?: any) => {
+    if (record) {
+      setEditParams({ ...record })
+    } else {
+      setEditParams({})
+    }
+
+    setEditVisible(true)
+  }
+
+  const handleDelete = (record: any) => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该记录？',
+      onOk: () => {
+        setLoading(true)
+
+        advancedManageServices
+          .deleteUserWorkPlanById(record.id)
+          .then(res => {
+            setLoading(false)
+            message.success('删除成功')
+            getTableData()
+          }, () => setLoading(false))
+      }
+    })
   }
 
   useEffect(() => {
@@ -137,17 +183,33 @@ export default function 进修临床实践详情() {
         </Breadcrumb.Item>
       </Breadcrumb>
       <Place />
-      <Button>添加计划</Button>
+      <Button type="primary" onClick={() => handleEdit()}>添加计划</Button>
       <Button onClick={() => handleExport()}>导出</Button>
     </PageHeader>
     <MainCon>
       <BaseTable
+        loading={loading}
         surplusWidth={1000}
         surplusHeight={185}
         columns={columns}
         dataSource={tableData}
       />
     </MainCon>
+    <进修临床实践计划添加
+      visible={editVisible}
+      originParams={editParmas}
+      advancedId={queryObj.evalPlanId}
+      empName={queryObj.empName}
+      empNo={queryObj.empNo}
+      deptName={queryObj.deptName}
+      juniorCollege={queryObj.juniorCollege}
+      onOk={() => {
+        getTableData()
+        setEditVisible(false)
+      }}
+      onCancel={() => {
+        setEditVisible(false)
+      }} />
   </Wrapper>
 }
 
