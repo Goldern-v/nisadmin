@@ -12,7 +12,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'hj':
       // return 'http://120.197.141.41:9091' // 厚街正式
       // return 'http://120.197.141.41:9094' // 厚街测试
-      // return 'https://info.cr-health.com:20203 // 公司-厚街测试-外网
+      // return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
       return "http://192.168.1.54:9866" // 公司-厚街测试-内网
     /** 南医三 */
     case 'nys':
@@ -39,8 +39,11 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
     /** 聊城二院 */
     case 'lcey':
-      return 'http://192.168.1.54:9871' // 东莞横沥正式
+      return 'http://192.168.1.54:9871' // 聊城二院测试
     /** 默认公司本地内网厚街测试环境 */
+    case 'gzsrm':
+      return 'http://192.168.8.204:9091' // 贵州人民医院-内网
+      return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接
     default:
       return 'http://192.168.1.54:9866'
   }
