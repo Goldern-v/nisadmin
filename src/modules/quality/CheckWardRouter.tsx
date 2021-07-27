@@ -14,8 +14,10 @@ import CheckWardReportList from "./views/checkWard/view/reportList/CheckWardRepo
 import RecordView from "./views/checkWard/view/record/RecordView";
 import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import CheckWardReportView from "./views/checkWard/view/report/CheckWardReportView";
-import 月护长查房反馈表 from './views/特殊时段查房统计报告_jmfy/月护长查房反馈表/月护长查房反馈表'
-import 护长日查房反馈表 from './views/特殊时段查房统计报告_jmfy/护长日查房反馈表/护长日查房反馈表'
+import 月护长查房反馈表 from './views/qcJmfy/特殊时段查房统计报告/月护长查房反馈表/月护长查房反馈表'
+import 护长日查房反馈表 from './views/qcJmfy/特殊时段查房统计报告/护长日查房反馈表/护长日查房反馈表'
+import 月度查房汇总统计 from './views/qcJmfy/月度查房汇总统计/月度查房汇总统计'
+
 import { appStore } from "src/stores";
 import DutyRecord from './views/dutyRecord'
 import ScoringRecord from './views/scoringRecord'
@@ -23,6 +25,12 @@ import ScoringRecord from './views/scoringRecord'
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
     jmfy: [
+      {
+        title: '月度查房汇总统计',
+        icon: <CFJL />,
+        path: '/checkWard/月度查房汇总统计',
+        component: 护长日查房反馈表
+      },
       {
         title: '特殊时段值班记录',
         icon: <CFJL />,

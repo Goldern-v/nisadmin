@@ -14,6 +14,7 @@ import NurseFilesListView_jmfy from "./view/nurseFiles-jmfy/views/nurseFilesList
 import NurseFilesListView_dghl from "./view/nurseFiles-dghl/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_dgxg from "./view/nurseFiles-dgxg/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_yczyy from "./view/nurseFiles-yczyy/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_fqfybjy from "./view/nurseFiles-fqfybjy/views/nurseFilesList/NurseFilesListView";
 
 
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
@@ -69,6 +70,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_dgxg
       case "yczyy":
         return NurseFilesListView_yczyy
+      case "fqfybjy":
+        return NurseFilesListView_fqfybjy;
       default:
         return NurseFilesListView_hj;
     }

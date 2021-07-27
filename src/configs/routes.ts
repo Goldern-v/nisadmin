@@ -273,7 +273,7 @@ const checkWardRecordView = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView")
 )
 /** 月度查房统计报告详情 */
-const 月护长查房反馈表详情 = lazy(() => import("src/modules/quality/views/特殊时段查房统计报告_jmfy/月护长查房反馈表/月护长查房反馈表详情"))
+const 月护长查房反馈表详情 = lazy(() => import("src/modules/quality/views/qcJmfy/特殊时段查房统计报告/月护长查房反馈表/月护长查房反馈表详情"))
 const QueryStatisticsRouter = lazy(() =>
   import("src/modules/quality/QueryStatisticsRouter")
 );

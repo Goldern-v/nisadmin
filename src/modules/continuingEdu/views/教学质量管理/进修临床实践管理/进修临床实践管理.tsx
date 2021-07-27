@@ -105,9 +105,9 @@ export default function 进修临床实践管理() {
       width: 80,
       render: (workPlanState: number) => {
         switch (workPlanState) {
-          case 0:
-            return <span style={{ color: '#70B603' }}>已填写</span>
           case 1:
+            return <span style={{ color: '#70B603' }}>已填写</span>
+          case 0:
             return <span style={{ color: '#F59A23' }}>未填写</span>
           default:
             return <span>{workPlanState}</span>
@@ -163,6 +163,7 @@ export default function 进修临床实践管理() {
   const TableCon =
     <BaseTable
       surplusHeight={225}
+      surplusWidth={1000}
       loading={loading}
       dataSource={tableData}
       columns={columns}
