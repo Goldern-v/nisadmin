@@ -46,7 +46,7 @@ export default function MainBox() {
     },
     ...appStore.hisMatch({
       map: {
-        dghl: [
+        'dghl,fqfybjy': [
           {
             title: '分组颜色',
             dataIndex: 'groupColor',
@@ -62,7 +62,8 @@ export default function MainBox() {
           }
         ],
         default: []
-      }
+      },
+      vague: true,
     }),
     {
       title: '操作',
@@ -160,7 +161,7 @@ export default function MainBox() {
     let id = record.id
     setLoadingTransfer(true)
     let res = null
-    if (appStore.HOSPITAL_ID === 'dghl') {
+    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       const params = {
         id,
         deptCode,
@@ -324,7 +325,7 @@ export default function MainBox() {
           {
             appStore.hisMatch({
               map: {
-                dghl: (
+                'dghl,fqfybjy': (
                   <div className='category' style={{ marginTop: '20px', marginBottom: '50px' }}>
                     <SpanOne>分组颜色：</SpanOne>
                     <Select
@@ -341,7 +342,8 @@ export default function MainBox() {
                   </div>
                 ),
                 other: <div style={{ marginBottom: '50px' }} />
-              }
+              },
+              vague: true,
             })
           }
         </Modal>

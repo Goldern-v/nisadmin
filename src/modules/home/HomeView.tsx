@@ -89,6 +89,8 @@ export default observer(function HomeView() {
 
   const visibleListDghl = visibleListDefault.filter((key) => !['performChart', 'wardCodeEmpName'].includes(key))
 
+  const visibleListFqfybjy = visibleListDefault.filter((key) => !['performChart', 'wardCodeEmpName'].includes(key))
+
   const visibleListOther = visibleListDefault.filter((key) => !['wardCodeEmpName'].includes(key))
 
   const visibleCon = (visibleList: string[]) => {
@@ -110,7 +112,8 @@ export default observer(function HomeView() {
         map: {
           jmfy: visibleListJmfy,
           dghl: visibleListDghl,
-          other: visibleListOther
+          fqfybjy: visibleListFqfybjy,
+          other: visibleListOther,
         }
       }))}
     </Wrapper>

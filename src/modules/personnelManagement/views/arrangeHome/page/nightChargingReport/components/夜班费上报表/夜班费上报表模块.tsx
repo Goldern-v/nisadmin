@@ -28,12 +28,14 @@ export default observer(function 夜班费上报表模块(props: Props) {
     const data = starRatingReportEditModel.getSectionData(sectionId);
     const params = appStore.hisMatch({
       map: {
-        dghl: {
+        'dghl,fqfybjy': {
           list1: data.list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
-        }
-      }
+        },
+        default: {}
+      },
+      vague: true,
     })
     starRatingReportService.editReport(params).then(res => {
       message.success("修改成功");
@@ -52,10 +54,10 @@ export default observer(function 夜班费上报表模块(props: Props) {
   return (
     <Wrapper>
       <div className="sup-title">
-        {['dghl'].includes(appStore.HOSPITAL_ID) && <Button onClick={handleSave}>保存</Button>}
+        {['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) && <Button onClick={handleSave}>保存</Button>}
         <Button icon={"edit"} onClick={handleEdit}>编辑</Button>
       </div>
-      <Table sectionId={sectionId}/>
+      <Table sectionId={sectionId} />
       {/*<Table sectionId={sectionId} list={list} otherObj={otherObj} totalSorce={totalSorce}/>*/}
       {/*<EditButton onClick={() => starRatingReportEditModel.openEditModal(sectionId)}>*/}
       {/*  编辑*/}

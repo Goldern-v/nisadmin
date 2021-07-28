@@ -101,7 +101,7 @@ export default observer(function StarRatingReportEdit() {
     })
     const params = appStore.hisMatch({
       map: {
-        dghl: {
+        'dghl,fqfybjy': {
           list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
@@ -109,7 +109,8 @@ export default observer(function StarRatingReportEdit() {
         default: {
           lists: list
         }
-      }
+      },
+      vague: true,
     })
     starRatingReportService.export(params).then(res => {
       fileDownload(res);
@@ -172,13 +173,13 @@ export default observer(function StarRatingReportEdit() {
         appStore.HOSPITAL_ID === 'jmfy' ?
           <ScrollCon>
             <Page ref={pageRef} className={"nysWidth"}>
-              <PageJmfy/>
+              <PageJmfy />
             </Page>
           </ScrollCon> :
           <ScrollCon>
             <Page
               ref={pageRef}
-              className={['nys', 'dghl'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+              className={['nys', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
             >
               {starRatingReportEditModel.sectionList.map((item, index) => {
                 if (item.sectionId) {
@@ -199,7 +200,7 @@ export default observer(function StarRatingReportEdit() {
               })}
             </Page>
             {starRatingReportEditModel.baseModal && (
-              <starRatingReportEditModel.baseModal.Component/>
+              <starRatingReportEditModel.baseModal.Component />
             )}
           </ScrollCon>
       }
@@ -248,6 +249,7 @@ const Page = styled.div`
   overflow: hidden;
 `;
 
+// @ts-ignore
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
 `;

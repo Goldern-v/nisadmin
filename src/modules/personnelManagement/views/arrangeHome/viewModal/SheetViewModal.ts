@@ -73,8 +73,8 @@ class SheetViewModal {
     let dayDiff =
       selectViewModal.params.startTime && selectViewModal.params.endTime
         ? dateDiff(
-        selectViewModal.params.startTime,
-        selectViewModal.params.endTime
+          selectViewModal.params.startTime,
+          selectViewModal.params.endTime
         )
         : 0;
     if (dayDiff >= 0) {
@@ -172,6 +172,10 @@ class SheetViewModal {
           cellObj.effectiveTime &&
           cellObj.effectiveTimeOld < cellObj.effectiveTime,
         dghl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
+        fqfybjy: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "1",
@@ -463,8 +467,8 @@ class SheetViewModal {
       for (let j = 0; j < this.countArrangeNameList.length; j++) {
         let baseCount =
           _sheetTableData[i].countArrangeBaseIndexObj[
-            this.countArrangeNameList[j]
-            ];
+          this.countArrangeNameList[j]
+          ];
         /** 计数顺序 */
         let _index = 0;
         /** 基本序号 */

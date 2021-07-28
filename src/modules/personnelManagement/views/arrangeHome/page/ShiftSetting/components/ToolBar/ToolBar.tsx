@@ -200,7 +200,7 @@ export default function ToolBar() {
         <Form.Item label="班次名称">
           {getFieldDecorator("shiftName", {
             rules: [{ required: false, message: "班次名称在同一科室下为唯一" }]
-          })(<Input style={{ width: inputWidth }}/>)}
+          })(<Input style={{ width: inputWidth }} />)}
         </Form.Item>
         <Form.Item label="所属类别">
           {getFieldDecorator("type", {
@@ -210,17 +210,17 @@ export default function ToolBar() {
               style={{ width: inputWidth }}
               dataSource={bangci}
               placeholder=""
-              // filterOption={(inputValue: any, option: any) =>
-              //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-              //   bangci.indexOf(inputValue.toUpperCase()) > -1
-              // }
+            // filterOption={(inputValue: any, option: any) =>
+            //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
+            //   bangci.indexOf(inputValue.toUpperCase()) > -1
+            // }
             />
           )}
         </Form.Item>
         <Form.Item label="上班时间">
           {getFieldDecorator("workTime", {
             rules: [{ required: false, message: "" }]
-          })(<Input style={{ width: inputWidth }}/>)}
+          })(<Input style={{ width: inputWidth }} />)}
         </Form.Item>
         {/* <Form.Item label='开始时间'>
           {getFieldDecorator('startTime', {
@@ -235,7 +235,7 @@ export default function ToolBar() {
         <Form.Item label="标准工时">
           {getFieldDecorator("workHour", {
             rules: [{ required: false, message: "" }]
-          })(<Input style={{ width: inputWidth }} placeholder="标准工时"/>)}
+          })(<Input style={{ width: inputWidth }} placeholder="标准工时" />)}
         </Form.Item>
 
         <Form.Item label="颜色标记">
@@ -258,7 +258,7 @@ export default function ToolBar() {
         </Form.Item>
         <Form.Item label="启用状态">
           {getFieldDecorator("status", { valuePropName: "checked" })(
-            <Switch/>
+            <Switch />
           )}
         </Form.Item>
       </Form>
@@ -393,7 +393,7 @@ export default function ToolBar() {
       width: "500px",
       content: (
         <div>
-          <CustomizedForm {...fields} onChange={handleFormChange}/>
+          <CustomizedForm {...fields} onChange={handleFormChange} />
         </div>
       )
     });
@@ -409,6 +409,7 @@ export default function ToolBar() {
       case "wh":
         return authStore.isRoleManage;
       case "dghl":
+      case "fqfybjy":
         return true;
       default:
         return (authStore.isDepartment || authStore.isRoleManage || authStore.isSupervisorNurse || authStore.isAd);
@@ -431,7 +432,7 @@ export default function ToolBar() {
 
       <Wrapper>
         <Title>班次设置</Title>
-        <div style={{ flex: 1 }}/>
+        <div style={{ flex: 1 }} />
         <DeptSelect
           onChange={() => {
             emitter.emit("更新班次列表");
@@ -499,7 +500,7 @@ export default function ToolBar() {
           }}
         />
       </Wrapper>
-      <addShiftModal.Component/>
+      <addShiftModal.Component />
     </div>
   );
 }

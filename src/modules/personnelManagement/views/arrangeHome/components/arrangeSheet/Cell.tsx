@@ -95,7 +95,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'nys', 'jmfy', 'lcey', 'dghl'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -431,7 +431,7 @@ export default observer(function Cell(props: Props) {
     }
 
     // 东莞横沥 按住ctrl 可以选择多个cell  start -----
-    if (['dghl', 'jmfy'].includes(appStore.HOSPITAL_ID)) {
+    if (['dghl', 'jmfy', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       if (e.ctrlKey) {
         const includes = sheetViewModal.selectedCellList.includes(cellObj)
         if (!includes) { // 如果包含也不取消
@@ -484,8 +484,8 @@ export default observer(function Cell(props: Props) {
     wh: () => {
       return (
         (cellObj.schAddOrSubs &&
-        cellObj.schAddOrSubs.length &&
-        cellObj.schAddOrSubs[0].statusType == "1"
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
         ":" +
@@ -509,8 +509,8 @@ export default observer(function Cell(props: Props) {
     lcey: () => {
       return (
         (cellObj.schAddOrSubs &&
-        cellObj.schAddOrSubs.length &&
-        cellObj.schAddOrSubs[0].statusType == "1"
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
         ":" +
@@ -534,8 +534,8 @@ export default observer(function Cell(props: Props) {
     dghl: () => {
       return (
         (cellObj.schAddOrSubs &&
-        cellObj.schAddOrSubs.length &&
-        cellObj.schAddOrSubs[0].statusType == "1"
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
         ":" +
@@ -556,6 +556,31 @@ export default observer(function Cell(props: Props) {
         0}h`
       );
     },
+    fqfybjy: () => {
+      return (
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
+          ? "加班"
+          : "减班") +
+        ":" +
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+          ? cellObj.schAddOrSubs[0].hour
+          : 0) +
+        "h" +
+        "，" +
+        `现:${cellObj.effectiveTime || 0}h，` +
+        `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `白:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingMorningHour) ||
+        0}h，` +
+        `夜:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingNightHour) ||
+        0}h`
+      );
+    }
   });
 
   return (
@@ -575,9 +600,9 @@ export default observer(function Cell(props: Props) {
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
         )}
-        {cellConfig.isAddWordTime ? <div className="sj add"/> : ""}
-        {cellConfig.isJiJiaTime ? <div className="sj jijia"/> : ""}
-        {cellConfig.isReduceWordTime ? <div className="sj reduce"/> : ""}
+        {cellConfig.isAddWordTime ? <div className="sj add" /> : ""}
+        {cellConfig.isJiJiaTime ? <div className="sj jijia" /> : ""}
+        {cellConfig.isReduceWordTime ? <div className="sj reduce" /> : ""}
         {cellConfig.isExpectedScheduling ? (
           <img
             className="expect"
@@ -617,7 +642,7 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
   })
   if (isHidden && !isEdit) {
     return (
-      <Con color={cellObj.nameColor}/>
+      <Con color={cellObj.nameColor} />
     )
   }
   const symbol: any = (cellObj.addSymbols && cellObj.addSymbols[0]) || {}
@@ -643,7 +668,7 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
             </Con>
           </React.Fragment>
         )) ||
-        ""}
+          ""}
         {/* 聊城二院 备注功能 */}
         {(cellObj.schRemarks && cellObj.schRemarks.length) ? (
           <span>({cellObj.schRemarks[0].remark})</span>

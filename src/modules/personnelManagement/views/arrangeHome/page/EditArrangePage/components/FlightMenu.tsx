@@ -100,12 +100,12 @@ export default observer(function FlightMenu() {
           {
             title: "可选班次",
             index: "0",
-            component: <MenuCon dataSource={sheetViewModal.arrangeMenu}/>
+            component: <MenuCon dataSource={sheetViewModal.arrangeMenu} />
           },
           {
             title: "班次套餐",
             index: "1",
-            component: <MealCon dataSource={sheetViewModal.arrangeMeal}/>
+            component: <MealCon dataSource={sheetViewModal.arrangeMeal} />
           }
         ]}
       />
@@ -160,7 +160,7 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = (item: any) => {
-    if (appStore.HOSPITAL_ID === 'dghl') {
+    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       if (sheetViewModal.selectedCellList.length > 0) {
         sheetViewModal.selectedCellList.forEach(cell => {
           setCellData(cell, sheetViewModal.countArrangeNameList, item)

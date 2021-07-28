@@ -26,6 +26,7 @@ export default function PersonnelManagementView() {
       case 'gzhd':
         return menuConfig_gzhd;
       case 'dghl':
+      case 'fqfybjy':
         return menuConfig_dghl;
       case 'lcey':
         return menuConfig_lcey;
@@ -36,7 +37,7 @@ export default function PersonnelManagementView() {
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={leftMenuConfig}/>
+      <LeftMenuPage leftMenuConfig={leftMenuConfig} />
     </Wrapper>
   );
 }

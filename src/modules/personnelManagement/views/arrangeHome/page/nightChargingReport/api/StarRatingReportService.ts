@@ -7,9 +7,10 @@ const hospitalPath: string =
   appStore.hisMatch({
     map: {
       nys: 'schNightTotalContentNys',
-      dghl: 'schNightTotalContentHl',
+      'dghl,fqfybjy': 'schNightTotalContentHl',
       default: 'schNightTotalContent',
-    }
+    },
+    vague: true,
   })
 
 

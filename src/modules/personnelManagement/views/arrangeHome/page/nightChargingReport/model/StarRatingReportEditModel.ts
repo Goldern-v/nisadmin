@@ -106,7 +106,7 @@ class StarRatingReportEditModel {
     const { data } = await starRatingReportService.getReport(query)
     this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
-    if (['dghl'].includes(appStore.HOSPITAL_ID)) {
+    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       this.allData = data.list1
       this.getSectionData("夜班费上报表")!.list = data.list1
       this.getSectionData("夜班费上报表")!.list2 = {

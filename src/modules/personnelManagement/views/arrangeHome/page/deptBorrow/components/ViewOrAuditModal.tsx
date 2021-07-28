@@ -65,7 +65,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
     if (authStore.isDepartment) { // 护士长
       classList.push('auth')
-    } else if (authStore.isRoleManage && appStore.HOSPITAL_ID === 'dghl') {
+    } else if (authStore.isRoleManage && ['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       // 东莞横沥的 护理部也可以审批
       classList.push('auth')
     }
@@ -76,13 +76,13 @@ export default observer(function ViewOrAuditModal(props: Props) {
   const statusTransferFromIcon = (): any => {
     switch (detailInfo.statusTransferFrom.value) {
       case '0':
-        return <YSQ/>
+        return <YSQ />
       case '1':
-        return <YTG/>
+        return <YTG />
       case '2':
-        return <YJS/>
+        return <YJS />
       case '3':
-        return <YJJ/>
+        return <YJJ />
       default:
         return ''
     }
@@ -128,7 +128,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   //同意申请相关
   const openAllow = () => {
-    if (appStore.HOSPITAL_ID === 'dghl' && detailInfo.statusTransferFrom.value === '4') {
+    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) && detailInfo.statusTransferFrom.value === '4') {
       // 东莞横沥 护理部 审批
       handleAllow()
       return
@@ -194,7 +194,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
     }
 
     const statusTransferFrom = (() => {
-      if (appStore.HOSPITAL_ID === 'dghl') {
+      if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
         if (authStore.isRoleManage) return '4' // 护士长
         if (authStore.isDepartment) return '1' // 护理部
       } else {
@@ -271,9 +271,9 @@ export default observer(function ViewOrAuditModal(props: Props) {
               return (
                 <span className='borrow-out-item' key={item.empNo}>
                   <span className='item-img'>
-                    <img src={item.nearImageUrl} alt=''/>
+                    <img src={item.nearImageUrl} alt='' />
                   </span>
-                  <br/>
+                  <br />
                   <span className='item-name'>{item.empName}</span>
                 </span>
               )
@@ -316,22 +316,22 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   return (
     <Wrapper className={modalClassName()}>
-      <div className='mask' onClick={onCancel}/>
+      <div className='mask' onClick={onCancel} />
       <div className='modal'>
         <div className='header'>
           <span className='title'>借用详情</span>
           <div className='float-right' onClick={onCancel}>
-            <Icon type='close'/>
+            <Icon type='close' />
           </div>
         </div>
         <div className='body'>
           <div className='base-info'>
             <span className='applicant'>
-              <img src={detailInfo.nearImageUrlTransferFrom.value} alt=''/>
+              <img src={detailInfo.nearImageUrlTransferFrom.value} alt='' />
             </span>
             <span>
               <span className='title'>{detailInfo.empNameTransferFrom.value}提出的借用申请</span>
-              <br/>
+              <br />
               <span className='statusTransferFrom'>申请</span>
             </span>
             <span className='statusTransferFrom-icon'>{statusTransferFromIcon()}</span>

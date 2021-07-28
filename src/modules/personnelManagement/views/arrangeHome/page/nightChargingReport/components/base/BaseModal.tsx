@@ -64,7 +64,7 @@ export default observer(function BaseModal(props: Props) {
     if (sectionData.sectionId == "夜班费上报表") {
       const params = appStore.hisMatch({
         map: {
-          dghl: {
+          'dghl,fqfybjy': {
             list1: data.list,
             list2: data.list2,
             schNightTotalModel: data.schNightTotalModel
@@ -73,7 +73,8 @@ export default observer(function BaseModal(props: Props) {
             lists: data.list,
             schNightTotalId: appStore.queryObj.id
           }
-        }
+        },
+        vague: true,
       })
 
       starRatingReportService.editReport(params).then(res => {
@@ -120,7 +121,7 @@ export default observer(function BaseModal(props: Props) {
       centered
     >
       {Component && (
-        <Component {...props.sectionData} data={data} setData={setData}/>
+        <Component {...props.sectionData} data={data} setData={setData} />
       )}
     </Modal>
   );

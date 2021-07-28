@@ -37,9 +37,10 @@ export default observer(function Table(props: Props) {
       {appStore.hisMatch({
         map: {
           nys: configNys.getTable(list, otherObj),
-          dghl: configDghl.getTable(list, otherObj, updateOtherObj),
+          'dghl,fqfybjy': configDghl.getTable(list, otherObj, updateOtherObj),
           default: configDefault.getTable(list)
-        }
+        },
+        vague: true
       })}
     </Wrapper>
   );

@@ -36,17 +36,19 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
   const columns: any = appStore.hisMatch({
     map: {
       nys: configNys.getColumns(cloneData, calBack),
-      dghl: configDghl.getColumns(cloneData, calBack),
+      'dghl,fqfybjy': configDghl.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
+    vague: true,
   })
 
   const addAllMoney = (record: any) => {
     const keys = appStore.hisMatch({
       map: {
         nys: configNys.moneyKeyList,
-        dghl: configDghl.moneyKeyList,
+        'dghl,fqfybjy': configDghl.moneyKeyList,
       },
+      vague: true,
     })
     record.totalAll = keys.reduce((acc: number, cur: string) => {
       const num = isNaN(+record[cur]) ? 0 : +record[cur]
@@ -57,7 +59,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
     const item = appStore.hisMatch({
       map: {
         nys: configNys.item,
-        dghl: configDghl.item,
+        'dghl,fqfybjy': configDghl.item,
         default: configDefault.item
       },
     })

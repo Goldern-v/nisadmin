@@ -31,7 +31,7 @@ export interface Props extends ModalComponentProps {
 /** 设置规则 */
 const rules: Rules = appStore.hisMatch({
   map: {
-    dghl: {
+    'dghl,fqfybjy': {
       statusType: (val: any) => !!val || "请选择班次类型",
     },
     other: {
@@ -39,7 +39,8 @@ const rules: Rules = appStore.hisMatch({
       endDate_2: (val: any) => !!val || "请填写结束时间",
       statusType: (val: any) => !!val || "请选择班次类型"
     },
-  }
+  },
+  vague: true,
 })
 
 export default function EditEffectiveTimeModal(props: Props) {
@@ -71,7 +72,7 @@ export default function EditEffectiveTimeModal(props: Props) {
   };
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    if (appStore.HOSPITAL_ID === 'dghl') return
+    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) return
     let time_1 = form.getField("startDate_2");
     let time_2 = form.getField("endDate_2");
     if (time_1 && time_2 && (name == "startDate_2" || name == "endDate_2")) {
@@ -103,21 +104,21 @@ export default function EditEffectiveTimeModal(props: Props) {
         startDate_1: moment(data.workDate),
         startDate_2:
           data.schAddOrSubs &&
-          data.schAddOrSubs[0] &&
-          data.schAddOrSubs[0]!.startDate
+            data.schAddOrSubs[0] &&
+            data.schAddOrSubs[0]!.startDate
             ? moment(data.schAddOrSubs[0]!.startDate)
             : null,
         endDate_1: moment(data.workDate),
         endDate_2:
           data.schAddOrSubs &&
-          data.schAddOrSubs[0] &&
-          data.schAddOrSubs[0]!.endDate
+            data.schAddOrSubs[0] &&
+            data.schAddOrSubs[0]!.endDate
             ? moment(data.schAddOrSubs[0]!.endDate)
             : null,
         statusType:
           data.schAddOrSubs &&
-          data.schAddOrSubs[0] &&
-          data.schAddOrSubs[0]!.statusType
+            data.schAddOrSubs[0] &&
+            data.schAddOrSubs[0]!.statusType
             ? data.schAddOrSubs[0]!.statusType
             : ""
       });
@@ -140,22 +141,22 @@ export default function EditEffectiveTimeModal(props: Props) {
           <Row>
             <Col span={15}>
               <Form.Field label={`开始时间`} name="startDate_1" required>
-                <DatePicker disabled={true}/>
+                <DatePicker disabled={true} />
               </Form.Field>
             </Col>
             <Col span={9}>
               <Form.Field label={``} name="startDate_2" labelWidth={1}>
-                <TimePicker format={"HH:mm"}/>
+                <TimePicker format={"HH:mm"} />
               </Form.Field>
             </Col>
             <Col span={15}>
               <Form.Field label={`结束时间`} name="endDate_1" required>
-                <DatePicker disabled={true}/>
+                <DatePicker disabled={true} />
               </Form.Field>
             </Col>
             <Col span={9}>
               <Form.Field label={``} name="endDate_2" labelWidth={1}>
-                <TimePicker format={"HH:mm"}/>
+                <TimePicker format={"HH:mm"} />
               </Form.Field>
             </Col>
           </Row>
@@ -169,23 +170,23 @@ export default function EditEffectiveTimeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`工时`} name="effectiveTime" required>
-              <InputNumber readOnly={appStore.HOSPITAL_ID !== 'dghl'}/>
+              <InputNumber readOnly={!['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`白工时`} name="settingMorningHour">
-              <InputNumber/>
+              <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`夜工时`} name="settingNightHour">
-              <InputNumber/>
+              <InputNumber />
             </Form.Field>
           </Col>
 
           <Col span={24}>
             <Form.Field label={`备注`} name="detail">
-              <Input.TextArea/>
+              <Input.TextArea />
             </Form.Field>
           </Col>
         </Row>
