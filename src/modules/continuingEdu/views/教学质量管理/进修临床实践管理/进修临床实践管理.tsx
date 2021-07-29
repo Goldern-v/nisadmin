@@ -198,8 +198,15 @@ export default function 进修临床实践管理() {
       <span>最高学历：</span>
       <Select
         value={query.highestEducation}
-        style={{ marginRight: 10 }}>
+        style={{ marginRight: 10 }}
+        onChange={(highestEducation: string) =>
+          setQuery({ ...query, highestEducation, pageIndex: 1 })}>
         <Option value="">全部</Option>
+        <Option value="中专">中专</Option>
+        <Option value="大专">大专</Option>
+        <Option value="本科">本科</Option>
+        <Option value="研究生">研究生</Option>
+        <Option value="博士">博士</Option>
       </Select>
       <Input
         placeholder="请输入关键词"

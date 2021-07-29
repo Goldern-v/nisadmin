@@ -29,7 +29,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
         title: '月度查房汇总统计',
         icon: <CFJL />,
         path: '/checkWard/月度查房汇总统计',
-        component: 护长日查房反馈表
+        component: 月度查房汇总统计
       },
       {
         title: '特殊时段值班记录',

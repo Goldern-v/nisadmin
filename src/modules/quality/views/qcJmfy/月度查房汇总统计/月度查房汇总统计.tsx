@@ -15,6 +15,14 @@ export interface Props { }
 export default function 月度查房汇总统计() {
   const monthList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
+  const [query, setQuery] = useState({
+    year: moment().format('YYYY'),
+    month: moment().format('M'),
+    formCode: 'SR0001',
+    itemCode: 'SR0001019',
+    wardCode: '',
+  })
+
   const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
 
@@ -32,24 +40,32 @@ export default function 月度查房汇总统计() {
     }
   }
 
-  console.log(getMonthDates())
-
-  const dateCols: ColumnProps<any>[] = [
-
-  ]
+  const dateCols: ColumnProps<any>[] = getMonthDates().map((date: string) => {
+    const dataIndex = `${query.month.length > 1 ? query.month : `0${query.month}`}-${date.length > 1 ? date : `0${date}`}`
+    return {
+      title: dataIndex,
+      dataIndex,
+      width: 50,
+      align: 'center',
+    }
+  })
 
   const columns: ColumnProps<any>[] = [
     {
       title: '科室',
-      key: 'wardName',
-      width: 50,
+      dataIndex: 'wardName',
+      width: 180,
       fixed: 'left',
       align: 'center',
     },
-    ...dateCols,
+    {
+      title: '得分/日期',
+      align: 'center',
+      children: [...dateCols],
+    },
     {
       title: '平均分',
-      key: 'avg',
+      dataIndex: 'avg',
       width: 50,
       fixed: 'right',
       align: 'center',
@@ -60,27 +76,60 @@ export default function 月度查房汇总统计() {
       width: 50,
       fixed: 'right',
       align: 'center',
+      render: (text: any, record: any, idx: number) => idx + 1
     },
   ]
-
-  const [query, setQuery] = useState({
-    year: moment().format('YYYY'),
-    month: moment().format('M'),
-    formCode: 'SR0001',
-    itemCode: 'SR0001019',
-    wardCode: '',
-  })
 
   const handleExport = () => {
     console.log('export')
   }
 
+  const formatResData = (newData: any[]) => {
+    let wardGroup = {} as any
+
+    newData.forEach((item: any) => {
+      let wardName = item.wardName
+      let dateIndex = moment(item.createTime).format('MM-DD')
+      if (!wardGroup[wardName]) {
+        wardGroup[wardName] = {
+          ...item,
+          [dateIndex]: item.itemValue,
+          dateSize: 1,
+          totalItemValue: item.itemValue
+        }
+      } else {
+        wardGroup[wardName][dateIndex] = item.itemValue
+        wardGroup[wardName].dateSize++
+        wardGroup[wardName].totalItemValue += item.itemValue
+      }
+    })
+
+    let newList = Object.keys(wardGroup).map((wardName: any) => {
+      let item = wardGroup[wardName]
+      let avg = item.totalItemValue / item.totalItemValue
+
+      avg = parseInt((avg * 1000).toString()) / 1000
+
+      return {
+        ...item,
+        avg,
+      }
+    })
+
+    return newList.sort((prev: any, next: any) => next.avg - prev.avg)
+  }
+
   const getTableData = () => {
+    setLoading(true)
     monthCheckWardSummaryStatisticsService
       .queryFormItemData(query)
       .then(res => {
-        console.log(res)
-      })
+        setLoading(false)
+
+        const newTableData = formatResData(res.data || [])
+
+        setTableData(newTableData)
+      }, () => setLoading(false))
   }
 
   useEffect(() => {
@@ -117,7 +166,7 @@ export default function 月度查房汇总统计() {
           <Option key={month}>{month}月</Option>
         ))}
       </Select>
-      <Button type="primary">查询</Button>
+      <Button type="primary" onClick={() => getTableData()}>查询</Button>
       <Button onClick={() => handleExport()}>导出</Button>
     </PageHeader>
     <TableCon>
@@ -125,7 +174,8 @@ export default function 月度查房汇总统计() {
         surplusHeight={225}
         surplusWidth={1000}
         loading={loading}
-        columns={columns} />
+        columns={columns}
+        dataSource={tableData} />
     </TableCon>
   </Wrapper>
 }
