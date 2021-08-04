@@ -351,6 +351,7 @@ const nightChargingReport = lazy(() =>
     "src/modules/personnelManagement/views/arrangeHome/page/nightChargingReport/StarRatingReportEdit"
   )
 );
+const nightChargingReportJmfy = lazy(() => import('src/modules/personnelManagement/views/arrangeHome/page/nightChargingReportJmfy/nightChargingReportJmfy'))
 
 //学习培训查看结果
 const StudyResultReview = lazy(() =>
@@ -809,7 +810,16 @@ const routes: RouteItem[] = [
   setLayout("/WardLogDetail", WardLogDetail, layouts.MainLayout),
   setLayout("/WardLogEdit", WardLogEdit),
   setLayout("/checkWardReportView", CheckWardReportView, layouts.MainLayout),
-  setLayout("/nightChargingReport", nightChargingReport, layouts.MainLayout),
+  ...appStore.hisMatch({
+    map: {
+      jmfy: [
+        setLayout("/nightChargingReport", nightChargingReportJmfy, layouts.MainLayout)
+      ],
+      default: [
+        setLayout("/nightChargingReport", nightChargingReport, layouts.MainLayout)
+      ]
+    }
+  }),
   setLayout("/InfectedAreasCount", InfectedAreasCount, layouts.MainLayout),
   setLayout("/BadEventReportView", BadEventReportView, layouts.MainLayout),
   {

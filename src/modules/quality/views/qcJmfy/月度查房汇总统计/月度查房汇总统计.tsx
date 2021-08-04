@@ -90,31 +90,33 @@ export default function 月度查房汇总统计() {
     newData.forEach((item: any) => {
       let wardName = item.wardName
       let dateIndex = moment(item.createTime).format('MM-DD')
+
       if (!wardGroup[wardName]) {
         wardGroup[wardName] = {
           ...item,
           [dateIndex]: item.itemValue,
           dateSize: 1,
-          totalItemValue: item.itemValue
+          totalItemValue: Number(item.itemValue || 0)
         }
       } else {
         wardGroup[wardName][dateIndex] = item.itemValue
         wardGroup[wardName].dateSize++
-        wardGroup[wardName].totalItemValue += item.itemValue
+        wardGroup[wardName].totalItemValue += Number(item.itemValue || 0)
       }
     })
 
-    let newList = Object.keys(wardGroup).map((wardName: any) => {
-      let item = wardGroup[wardName]
-      let avg = item.totalItemValue / item.totalItemValue
+    let newList = Object.keys(wardGroup)
+      .map((wardName: any) => {
+        let item = wardGroup[wardName]
+        let avg = item.totalItemValue / item.dateSize
 
-      avg = parseInt((avg * 1000).toString()) / 1000
+        avg = parseInt((avg * 1000).toString()) / 1000
 
-      return {
-        ...item,
-        avg,
-      }
-    })
+        return {
+          ...item,
+          avg,
+        }
+      })
 
     return newList.sort((prev: any, next: any) => next.avg - prev.avg)
   }

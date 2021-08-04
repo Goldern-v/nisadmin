@@ -199,6 +199,7 @@ export default observer(function NursingWorkPlainList() {
     history.push(
       `/nightChargingReport?${qs.stringify({
         deptCode: record.deptCode,
+        deptName: authStore.selectedDeptName,
         startDate: record.startDate,
         endDate: record.endDate,
         name: record.name,
@@ -280,7 +281,7 @@ export default observer(function NursingWorkPlainList() {
           </Select>
 
           <span>科室:</span>
-          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })}/>
+          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })} />
 
           <span>标准:</span>
           <Text
@@ -330,11 +331,12 @@ export default observer(function NursingWorkPlainList() {
         visible={createVisible}
         onCancel={handleCancel}
       />
-      <editSchNightStandardModal.Component/>
+      <editSchNightStandardModal.Component />
     </Wrapper>
   );
 });
 
+// @ts-ignore
 const TableWrapper = styled(TabledCon)`
   td {
     position: relative;
