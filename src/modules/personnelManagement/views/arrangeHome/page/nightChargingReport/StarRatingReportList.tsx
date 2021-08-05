@@ -108,11 +108,14 @@ export default observer(function NursingWorkPlainList() {
     //   }
     // },
     {
-      dataIndex: "",
+      dataIndex: "deptCode",
       title: "科室",
       width: 200,
-      render(text: any, index: any) {
-        return authStore.selectedDeptName;
+      render(text: any, record: any) {
+        const target = authStore.deptList.find((item: any) => text === item.code)
+
+        return target ? target.name : record.deptCode
+        // return authStore.selectedDeptName;
       }
     },
     {
@@ -196,10 +199,12 @@ export default observer(function NursingWorkPlainList() {
   };
 
   const handleEdit = (record: any) => {
+    let target = authStore.deptList.find((item: any) => item.code === record.deptCode)
+
     history.push(
       `/nightChargingReport?${qs.stringify({
         deptCode: record.deptCode,
-        deptName: authStore.selectedDeptName,
+        deptName: target ? target.name : record.deptCode,
         startDate: record.startDate,
         endDate: record.endDate,
         name: record.name,
@@ -327,7 +332,7 @@ export default observer(function NursingWorkPlainList() {
       </TableWrapper>
       <ReportCreateModal
         onOk={handleOk}
-        deptCode={query.deptCode}
+        deptCode={query.deptCode || authStore.defaultDeptCode}
         visible={createVisible}
         onCancel={handleCancel}
       />

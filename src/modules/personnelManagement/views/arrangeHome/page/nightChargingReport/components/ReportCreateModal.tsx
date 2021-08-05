@@ -43,7 +43,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
   const wardTarget = authStore.deptList.find(
     (item: any) => item.code === wardCode
   );
-  const wardName = wardTarget ? wardTarget.name : authStore.selectedDeptName;
+  const wardName = wardTarget ? wardTarget.name : authStore.defaultDeptName;
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format("YYYY"),
@@ -224,6 +224,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
   );
 });
 
+// @ts-ignore
 const ScrollBody = styled(ScrollBox)`
   position: absolute;
   left: 0;

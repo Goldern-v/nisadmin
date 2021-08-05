@@ -19,8 +19,6 @@ export default function 月度查房汇总统计() {
     year: moment().format('YYYY'),
     month: moment().format('M'),
     formCode: 'SR0001',
-    itemCode: 'SR0001019',
-    wardCode: '',
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -45,7 +43,7 @@ export default function 月度查房汇总统计() {
     return {
       title: dataIndex,
       dataIndex,
-      width: 50,
+      width: 56,
       align: 'center',
     }
   })
@@ -88,12 +86,18 @@ export default function 月度查房汇总统计() {
     let wardGroup = {} as any
 
     newData.forEach((item: any) => {
-      let wardName = item.wardName
+      const dataMap = item.itemDataMap || {}
+
+      let wardName = dataMap.SR0001002 || ''
+      let wardCode = dataMap.SR0001021 || ''
+      item.itemValue = dataMap.SR0001019 ? Number(dataMap.SR0001019) : 0
+
       let dateIndex = moment(item.createTime).format('MM-DD')
 
       if (!wardGroup[wardName]) {
         wardGroup[wardName] = {
           ...item,
+          wardCode,
           [dateIndex]: item.itemValue,
           dateSize: 1,
           totalItemValue: Number(item.itemValue || 0)
@@ -106,6 +110,7 @@ export default function 月度查房汇总统计() {
     })
 
     let newList = Object.keys(wardGroup)
+      .filter((wardName: string) => wardName)
       .map((wardName: any) => {
         let item = wardGroup[wardName]
         let avg = item.totalItemValue / item.dateSize
@@ -128,7 +133,7 @@ export default function 月度查房汇总统计() {
       .then(res => {
         setLoading(false)
 
-        const newTableData = formatResData(res.data || [])
+        const newTableData = formatResData(res.data.list || [])
 
         setTableData(newTableData)
       }, () => setLoading(false))
@@ -174,7 +179,7 @@ export default function 月度查房汇总统计() {
     <TableCon>
       <BaseTable
         surplusHeight={225}
-        surplusWidth={1000}
+        surplusWidth={220}
         loading={loading}
         columns={columns}
         dataSource={tableData} />

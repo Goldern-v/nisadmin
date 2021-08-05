@@ -62,16 +62,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       id: props.match.params.id || '',
       token: `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`,
       badEvent: formName,
-      // badEventType: eventType,
+      badEventType: formName,
       badEventCode: formCode,
       operation: 'view',
       // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
-      isIndependent: 1,
+      isIndependent: 0,
       timeset: timeSet
     }
 
     for (let x in query) {
-      if (!query[x]) return ''
+      if (!query[x] && query[x] !== 0) return ''
     }
 
     return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
@@ -228,12 +228,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             })}>
             事件轨迹打印
           </Button> */}
-          <Button
+          {/* <Button
             disabled={iframeLoading}
             className='audit'
             onClick={handlePrint}>
             打印
-          </Button>
+          </Button> */}
         </div>
         <div className='status'>状态：{stepCurrent?.nodeName}</div>
       </div>

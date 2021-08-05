@@ -6,7 +6,6 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
   // return 'https://info.cr-health.com:20202' //外网
   // return 'http://192.168.1.54:9864' //内网
   // return 'http://192.168.20.68:8062' //广豪本地
-  return 'https://info.cr-health.com:20203'
 
   switch (HOSPITAL_ID) {
     /** 厚街 */
@@ -32,8 +31,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 江门妇幼 */
     case 'jmfy':
       // return 'http://218.14.180.38:9094' // 江门妇幼正式
-      return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
-    // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
+      // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
+      return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
     /** 东莞横沥 */
     case 'dghl':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
