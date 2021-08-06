@@ -21,10 +21,10 @@ export default observer(function SelectCon(props: any, context: any) {
   };
 
   const onChange = (value: string) => {
-    nurseFilesListViewModel.loadNursingList();
+    nurseFilesListViewModel.loadNursingList(true);
   };
-  const onSearch = () => {
-    nurseFilesListViewModel.loadNursingList();
+  const onSearch = (initPageIndex?: any) => {
+    nurseFilesListViewModel.loadNursingList(!!initPageIndex);
   };
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
     nurseFilesListViewModel.filterText = e.target.value;
@@ -43,16 +43,17 @@ export default observer(function SelectCon(props: any, context: any) {
     <React.Fragment>
       <Wrapper>
         <Title>护士档案</Title>
-        <Place/>
+        <Place />
         <span>科室：</span>
-        <DeptSelect deptCode={authStore.selectedDeptCode} onChange={onChange}/>
+        <DeptSelect deptCode={authStore.selectedDeptCode} onChange={onChange} />
         <Input
           placeholder="请输入搜索关键字"
           value={nurseFilesListViewModel.filterText}
           style={{ width: 160 }}
           onChange={SearchByText}
+          onKeyUp={(e) => e.keyCode === 13 && onSearch(true)}
         />
-        <Button type="primary" onClick={onSearch}>
+        <Button type="primary" onClick={() => onSearch(true)}>
           搜索
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>

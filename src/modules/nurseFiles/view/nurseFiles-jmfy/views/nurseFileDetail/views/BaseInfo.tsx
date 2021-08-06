@@ -24,6 +24,16 @@ export default observer(function BaseInfo() {
   const [id, setId] = useState(0)
 
   const limitsComponent = () => {
+    return [
+      {
+        label: '修改',
+        onClick: () => {
+          editBaseInfoModal.show({
+            id: id,
+            data: info
+          })
+        }
+      }]
     if (info.statusColor === '1') {
       return [
         {
@@ -187,7 +197,8 @@ export default observer(function BaseInfo() {
             }
 
             let name = mapCfgItem.fieldName
-            let lastItem = newTableData[orgin.length - 1]
+            let lastItem = newTableData[newTableData.length - 1]
+
             if (Object.keys(lastItem).length > 1) {
               newTableData.push({ [name]: val })
             } else {

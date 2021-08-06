@@ -93,7 +93,7 @@ export default observer(function FilterCon() {
   const setOpen = (value: boolean) => {
     if (!value && nurseFilesListViewModel.pageSize < 20) {
       nurseFilesListViewModel.pageSize = 20;
-      nurseFilesListViewModel.loadNursingList();
+      nurseFilesListViewModel.loadNursingList(true);
     }
     nurseFilesListViewModel.isOpenFilter = value;
   };

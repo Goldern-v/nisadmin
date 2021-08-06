@@ -46,6 +46,7 @@ import 护士离职原因分析 from './views/护士离职原因分析/护士离
 // 全院护理人员一览表
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
 import NurseList_nys from './views/nursingStatistics/nurseList_nys/NurseList'
+import NurseList_jmfy from './views/nursingStatistics/nurseList_jmfy/NurseList'
 
 // import { RouteComponentProps } from 'src/components/RouterView'
 // import NurseSchedule from './components/NurseSchedule'
@@ -102,6 +103,7 @@ export default function StatisticView() {
     appStore.hisMatch({
       map: {
         nys: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_nys },
+        jmfy: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_jmfy },
         other: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
       }
     }),

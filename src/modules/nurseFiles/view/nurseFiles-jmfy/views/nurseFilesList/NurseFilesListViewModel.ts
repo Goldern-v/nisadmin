@@ -23,7 +23,7 @@ class NurseFilesListViewModel {
         this.filterZw +
         this.filterKs,
       () => {
-        this.loadNursingList();
+        this.loadNursingList(true);
       }
     );
   }
@@ -42,7 +42,9 @@ class NurseFilesListViewModel {
   @observable public isOpenFilter: boolean = true;
 
   @action
-  public loadNursingList = () => {
+  public loadNursingList = (initPageIndex?: boolean) => {
+    if (initPageIndex) this.pageIndex = 1
+
     // this.title = newTitle
     let obj: NurseQuery = {
       deptCode: authStore.selectedDeptCode /** 部门编码 */,

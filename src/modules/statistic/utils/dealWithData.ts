@@ -14,6 +14,7 @@ export const delWithResData = (options?: {
 
   if (!baseColums) baseColums = ['NUM', 'DEPTNAME']
   let _otherName = otherName || '其他'
+  let needOtherCol = true //是否需要额外的其他列（如果数据有返回就不需要添加其他列）
 
   let newData = [] as any[]
   let newChartData = [] as any[]
@@ -36,6 +37,11 @@ export const delWithResData = (options?: {
     //过滤空科室数据
     dataList = dataList.filter((item: any) => item.DEPTNAME)
       .map((item: any) => {
+        // 如果已经存在其他列就不重新计算剩余人数了
+        if (Object.keys(item).includes(_otherName)) {
+          needOtherCol = false
+          return item
+        }
 
         let remainVal = extraKeys.reduce((prev, current) => {
           if (typeof prev == 'number')
@@ -51,7 +57,7 @@ export const delWithResData = (options?: {
       })
 
     //统计完未统计人数，把 其他otherName分类加入
-    extraKeys.push(_otherName)
+    if (needOtherCol) extraKeys.push(_otherName)
 
     newExtraColumns = extraKeys.map((key: string) => ({
       title: key,

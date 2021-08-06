@@ -61,8 +61,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let query: any = {
       id: props.match.params.id || '',
       token: `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`,
-      badEvent: formName,
-      badEventType: formName,
+      badEvent: eventType,
+      badEventType: eventType,
       badEventCode: formCode,
       operation: 'view',
       // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
@@ -202,7 +202,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         </div>
         <div className='title'>
           <span className='bad-event-order-no'>
-            {master.formName}
+            {master.eventType}
           </span>
           <Button
             className='audit'

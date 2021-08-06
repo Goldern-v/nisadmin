@@ -115,7 +115,10 @@ export default function EditWorkHistoryModal(props: Props) {
               if (item.fieldSelectContent) {
                 try {
                   options = JSON.parse(item.fieldSelectContent)
-                } catch (e) { }
+                  console.log(options)
+                } catch (e) {
+                  console.log(e)
+                }
               }
               return {
                 ...item,

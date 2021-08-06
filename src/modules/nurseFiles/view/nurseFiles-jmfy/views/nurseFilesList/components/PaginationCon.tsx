@@ -22,7 +22,8 @@ export default observer(function PaginationCon(props: Props) {
       <Pagination
         showSizeChanger
         showQuickJumper
-        defaultCurrent={1}
+        showTotal={(total) => <span style={{ marginRight: 10 }}>搜索结果：共{total}人</span>}
+        current={nurseFilesListViewModel.pageIndex}
         total={totalCount}
         pageSizeOptions={pageSizeOptions}
         onChange={onChange}
