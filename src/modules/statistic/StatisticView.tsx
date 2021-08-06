@@ -118,7 +118,7 @@ export default function StatisticView() {
     { name: '护士离职原因分析', path: '/statistic/护士离职原因分析', component: 护士离职原因分析 },
     ...appStore.hisMatch({
       map: {
-        jmfy: [{ name: '科室护士明细表', path: '/statistic/科室护士明细表', component: 护士职称统计 }],
+        jmfy: [{ name: '护士职称分布', path: '/statistic/护士职称分布', component: 护士职称统计 }],
         default: []
       }
     })

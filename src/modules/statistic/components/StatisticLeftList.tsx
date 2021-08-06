@@ -9,7 +9,7 @@ import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
 const LEFT_MENU_CONFIG = [
   {
     title: "排班统计",
-    icon: <PBTJ/>,
+    icon: <PBTJ />,
     children: [
       { title: "护士排班表", path: "/statistic/护士排班表" },
       {
@@ -62,45 +62,71 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: "护理人员统计",
-    icon: <HLRYTJ/>,
-    children: [
-      {
-        title: "护士学历分布",
-        path: "/statistic/护士学历分布",
-      },
-      {
-        title: "护士初始学历分布",
-        path: "/statistic/护士初始学历分布",
-        hide: appStore.HOSPITAL_ID !== "jmfy"
-      },
-      {
-        title: "护士男女分布", path: "/statistic/护士男女分布",
-      },
-      {
-        title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
-      },
-      {
-        title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
-      },
-      {
-        title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
-      },
-      {
-        title: "护理人员统计",
-        path: "/statistic/护理人员统计",
-        hide: appStore.HOSPITAL_ID == "jmfy"
-      },
-      { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
-      {
-        title: "科室护士明细表",
-        path: "/statistic/科室护士明细表",
-      },
-      // {
-      //   title: "科室护士结构信息汇总表",
-      //   path: "/statistic/科室护士结构信息汇总表"
-      // },
-      // { title: "护士离职率", path: "/statistic/护士离职率" }
-    ]
+    icon: <HLRYTJ />,
+    children: appStore.hisMatch({
+      map: {
+        jmfy: [
+          {
+            title: "护士学历分布",
+            path: "/statistic/护士学历分布",
+          },
+          {
+            title: "护士初始学历分布",
+            path: "/statistic/护士初始学历分布",
+          },
+          {
+            title: "护士男女分布", path: "/statistic/护士男女分布",
+          },
+          {
+            title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
+          },
+          {
+            title: "护士职称分布",
+            path: "/statistic/护士职称分布",
+          },
+          {
+            title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
+          },
+          {
+            title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
+          },
+          { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
+        ],
+        default: [
+          {
+            title: "护士学历分布",
+            path: "/statistic/护士学历分布",
+          },
+          {
+            title: "护士男女分布", path: "/statistic/护士男女分布",
+          },
+          {
+            title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
+          },
+          {
+            title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
+          },
+          {
+            title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
+          },
+          {
+            title: "护理人员统计",
+            path: "/statistic/护理人员统计",
+            hide: appStore.HOSPITAL_ID == "jmfy"
+          },
+          { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
+          {
+            title: "科室护士明细表",
+            path: "/statistic/科室护士明细表",
+          },
+          // {
+          //   title: "科室护士结构信息汇总表",
+          //   path: "/statistic/科室护士结构信息汇总表"
+          // },
+          // { title: "护士离职率", path: "/statistic/护士离职率" }
+        ]
+      }
+    })
   },
   // {
   //   title: "患者查询统计",
@@ -124,7 +150,7 @@ const LEFT_MENU_CONFIG = [
       nys: [
         {
           title: "护理质量统计",
-          icon: <HZCXTJ/>,
+          icon: <HZCXTJ />,
           path: "/statistic/护理质量统计",
         }
       ],
@@ -137,7 +163,7 @@ export default function BedSituation() {
   });
   return (
     <Con>
-      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="统计查询"/>
+      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="统计查询" />
     </Con>
   );
 }

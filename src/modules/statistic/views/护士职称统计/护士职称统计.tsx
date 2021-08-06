@@ -91,6 +91,9 @@ export default observer(function 护士职称统计() {
     }
   }, [])
 
+  let pathArr = appStore.location.pathname.split('/')
+  let formName = pathArr[pathArr.length - 1]
+
   return <CommonLayout
     header={<div>
       <Select
@@ -108,7 +111,7 @@ export default observer(function 护士职称统计() {
       <Button type="primary" onClick={handleSearch}>查询</Button>
     </div>}
     body={<Spin spinning={loading}>
-      <div className="main-title">科室护士明细表</div>
+      <div className="main-title">{formName || '科室护士明细表'}</div>
       <div className="right-group">
         <Radio.Group
           size="small"

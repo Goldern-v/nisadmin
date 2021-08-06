@@ -2,16 +2,16 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from 'src/components/DeptSelect'
-import SelectData from 'src/modules/statistic/common/SelectData.tsx'
+import SelectData from 'src/modules/statistic/common/SelectData'
 import { Button } from 'antd'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation() {
-  useEffect(() => {})
+  useEffect(() => { })
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
   }
-  function searchButtonClick() {}
+  function searchButtonClick() { }
   return (
     <Con>
       <DeptSelect onChange={onChange} />
