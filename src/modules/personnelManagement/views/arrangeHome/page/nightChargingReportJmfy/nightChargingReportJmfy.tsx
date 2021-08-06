@@ -153,7 +153,7 @@ export default observer(function nightChargingReportJmfy() {
       schNightTotalModel: data.schNightTotalModel,
     }
 
-    console.log(saveParams)
+    // console.log(saveParams)
 
     let reqMethod = nightChargingReportJmfyService.saveListOne.bind(nightChargingReportJmfyService)
 

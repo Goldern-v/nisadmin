@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Icon, Input, InputNumber } from 'antd'
 import { numToRmb } from './../utils/numToRmb'
+import { oneTableDataSumUp } from '../utils/sumUpMethods'
 
 export interface Props {
   deptName: string,
@@ -67,9 +68,9 @@ export default function OneEditTable(props: Props) {
 
   const handleRecordChange = (newRecord: any, idx: number, needSum?: boolean) => {
     let newList1 = [...list1]
-    newList1[idx] = newRecord
-
     let newList2 = { ...list2 }
+
+    newList1[idx] = newRecord
 
     if (needSum) {
       newRecord.moneyP = newRecord.standardP * newRecord.daysP
@@ -79,43 +80,12 @@ export default function OneEditTable(props: Props) {
       newRecord.totalAll = newRecord.moneyP + newRecord.moneyN
       newRecord.totalAll = parseInt((newRecord.totalAll * 100).toString()) / 100
 
-      let allDaysP = 0
-      let allMoneySimpleP = 0
-      let allMoneyComplexP = ''
-
-      let allDaysN = 0
-      let allMoneySimpleN = 0
-      let allMoneyComplexN = ''
-
-      newList1.forEach((item: any) => {
-        allDaysP += item.daysP
-        allMoneySimpleP += item.moneyP
-
-        allDaysN += item.daysN
-        allMoneySimpleN += item.moneyN
-      })
-
-      allMoneySimpleP = parseInt((allMoneySimpleP * 100).toString()) / 100
-      allMoneySimpleN = parseInt((allMoneySimpleN * 100).toString()) / 100
-
-      allMoneyComplexP = numToRmb(allMoneySimpleP)
-      allMoneyComplexN = numToRmb(allMoneySimpleN)
-
-      newList2 = {
-        ...newList2,
-        allDaysP,
-        allMoneySimpleP,
-        allMoneyComplexP,
-        allDaysN,
-        allMoneySimpleN,
-        allMoneyComplexN,
-        allMoney: allMoneySimpleP + allMoneySimpleN
-      }
+      newList2 = oneTableDataSumUp(newList1, newList2)
     }
 
     onDataChange({
       list1: newList1,
-      list2: newList2,
+      list2: oneTableDataSumUp(newList1, list2),
       schNightTotalModel
     })
   }

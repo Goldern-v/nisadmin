@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Icon, Input, InputNumber } from 'antd'
 import { numToRmb } from './../utils/numToRmb'
+import { twoTableDataSumUp } from '../utils/sumUpMethods'
 
 export interface Props {
   deptName: string,
@@ -62,32 +63,15 @@ export default function TwoEditTable(props: Props) {
 
   const handleRecordChange = (newRecord: any, idx: number, needSum?: boolean) => {
     let newList1 = [...list1]
-    newList1[idx] = newRecord
-
     let newList2 = { ...list2 }
+
+    newList1[idx] = newRecord
 
     if (needSum) {
       newRecord.money = newRecord.standard * newRecord.days
       newRecord.money = parseInt((newRecord.money * 100).toString()) / 100
 
-      let allDays = 0
-      let allMoneySimple = 0
-      let allMoneyComplex = ''
-
-      newList1.forEach((item: any) => {
-        allDays += item.days
-        allMoneySimple += item.money
-      })
-
-      allMoneySimple = parseInt((allMoneySimple * 100).toString()) / 100
-      allMoneyComplex = numToRmb(allMoneySimple)
-
-      newList2 = {
-        ...newList2,
-        allDays,
-        allMoneySimple,
-        allMoneyComplex,
-      }
+      newList2 = twoTableDataSumUp(newList1, newList2)
     }
 
     onDataChange({
