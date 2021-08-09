@@ -436,6 +436,9 @@ const BadEventReportView = lazy(() =>
   import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView")
 );
 
+// 护理随访整体模块
+const NursingFollowUp = lazy(() => import("src/modules/nursingFollowUp/NursingFollowUpRouter"))
+
 //移动端界面
 import TraineeInfoSubmit from "src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit"
 import RefresherInfoSubmit from "src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit"
@@ -831,6 +834,7 @@ const routes: RouteItem[] = [
     InfectedAreasCountDetail,
     layouts.MainLayout
   ),
+  setLayout("/nursingFollowUp", NursingFollowUp, layouts.MainLayout),
   {
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"

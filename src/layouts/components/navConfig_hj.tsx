@@ -93,6 +93,11 @@ const baseConfig: navConfigItem[] = [
     // hidden: !appStore.isDev
   },
   {
+    name: "护理随访",
+    path: "/nursingFollowUp/随访患者管理",
+    hidden: !appStore.isDev
+  },
+  {
     name: "统计查询",
     path: "/statistic"
   },

@@ -24,16 +24,6 @@ export default observer(function BaseInfo() {
   const [id, setId] = useState(0)
 
   const limitsComponent = () => {
-    return [
-      {
-        label: '修改',
-        onClick: () => {
-          editBaseInfoModal.show({
-            id: id,
-            data: info
-          })
-        }
-      }]
     if (info.statusColor === '1') {
       return [
         {
