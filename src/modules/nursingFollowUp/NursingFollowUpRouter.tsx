@@ -4,6 +4,9 @@ import { Button, Spin } from 'antd'
 import LeftMenu from 'src/components/LeftMenu'
 import { observer } from 'mobx-react';
 import FollowUpPatientsManage from './views/followUpPatientsManage/FollowUpPatientsManage'
+import FollowUpGroupManage from './views/followUpGroupManage/FollowUpGroupManage'
+import DiseaseManage from './views/diseaseManage/DiseaseManage'
+import FollowUpQuestionnaireManage from './views/followUpQuestionnaireManage/FollowUpQuestionnaireManage'
 
 export interface Props { }
 
@@ -74,6 +77,33 @@ export default observer(function NursingFollowUpRouter(props: any) {
             可随访分配护士: false
           },
           component: FollowUpPatientsManage,
+        },
+        {
+          title: '随访小组管理',
+          path: '/NursingFollowUp/随访小组管理',
+          props: {
+            可随访: true,
+            可随访分配护士: false
+          },
+          component: FollowUpGroupManage,
+        },
+        {
+          title: '病种管理',
+          path: '/NursingFollowUp/病种管理',
+          props: {
+            可随访: true,
+            可随访分配护士: false
+          },
+          component: DiseaseManage,
+        },
+        {
+          title: '随访问卷管理',
+          path: '/NursingFollowUp/随访问卷管理',
+          props: {
+            可随访: true,
+            可随访分配护士: false
+          },
+          component: FollowUpQuestionnaireManage,
         },
       ])
 
