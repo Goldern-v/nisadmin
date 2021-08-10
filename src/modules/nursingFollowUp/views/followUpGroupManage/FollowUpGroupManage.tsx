@@ -10,10 +10,13 @@ import emitter from 'src/libs/ev'
 import FollowUpGroupModal from '../components/FollowUpGroupModal'
 import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
+import FollowUpGroupManageServices from './services/FollowUpGroupManageServices'
 
 
 
 export interface Props { }
+const api = new FollowUpGroupManageServices();
+
 
 export default function FollowUpGroupManage(props: any) {
   const [date, setDate]: any = useState(getCurrentMonthNow())
@@ -26,7 +29,8 @@ export default function FollowUpGroupManage(props: any) {
   const [loadingTable, setLoadingTable] = useState(false)
   
   const followUpGroupModal = createModal(FollowUpGroupModal)
-
+  //科室列表
+  const [deptList, setDeptList] = useState([] as any)
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -143,6 +147,15 @@ export default function FollowUpGroupManage(props: any) {
     }
   ]
   
+  useEffect(() => {
+    getDeptList();
+  }, []);
+
+  const getDeptList = () => {
+    api.getNursingUnitAll().then(res => {
+      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
+    })
+  }
 
   return <Wrapper>
     <PageHeader>
@@ -151,13 +164,13 @@ export default function FollowUpGroupManage(props: any) {
         {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
         <Select
           value={deptSelect}
-          style={{ width: 180 }}
+          style={{ width: 230 }}
           showSearch
           filterOption={(input: any, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {deptListAll.map((item: any, idx: any) =>
+          {deptList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
         <span className='label'>随访小组:</span>
