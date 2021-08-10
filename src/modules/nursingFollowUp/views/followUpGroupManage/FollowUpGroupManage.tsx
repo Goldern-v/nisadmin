@@ -26,6 +26,7 @@ export default function FollowUpGroupManage(props: any) {
   const [loadingTable, setLoadingTable] = useState(false)
   
   const followUpGroupModal = createModal(FollowUpGroupModal)
+
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -160,7 +161,7 @@ export default function FollowUpGroupManage(props: any) {
             <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
         <span className='label'>随访小组:</span>
-        <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
+        <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
           {templateList.map((item: any, index: number) => (
             <Select.Option key={index} value={item.id}>
@@ -169,7 +170,7 @@ export default function FollowUpGroupManage(props: any) {
           ))}
         </Select>
         <span className='label'>分配情况:</span>
-        <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
+        <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
           {templateList.map((item: any, index: number) => (
             <Select.Option key={index} value={item.id}>
