@@ -7,6 +7,7 @@ import { PageHeader, PageTitle, Place } from 'src/components/common'
 import BaseTable from 'src/components/BaseTable'
 import { monthCheckWardSummaryStatisticsService } from './services/monthCheckWardSummaryStatisticsService'
 import { ColumnProps } from 'src/vendors/antd'
+import { authStore } from 'src/stores'
 
 const Option = Select.Option
 
@@ -18,7 +19,7 @@ export default function 月度查房汇总统计() {
   const [query, setQuery] = useState({
     year: moment().format('YYYY'),
     month: moment().format('M'),
-    formCode: 'SR0001',
+    wardCode: '',
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -82,58 +83,64 @@ export default function 月度查房汇总统计() {
     console.log('export')
   }
 
-  const formatResData = (newData: any[]) => {
-    let wardGroup = {} as any
-
-    newData.forEach((item: any) => {
-      const dataMap = item.itemDataMap || {}
-
-      let wardName = dataMap.SR0001002 || ''
-      let wardCode = dataMap.SR0001021 || ''
-      item.itemValue = dataMap.SR0001019 ? Number(dataMap.SR0001019) : 0
-
-      let dateIndex = moment(item.createTime).format('MM-DD')
-
-      if (!wardGroup[wardName]) {
-        wardGroup[wardName] = {
-          ...item,
-          wardCode,
-          [dateIndex]: item.itemValue,
-          dateSize: 1,
-          totalItemValue: Number(item.itemValue || 0)
-        }
-      } else {
-        wardGroup[wardName][dateIndex] = item.itemValue
-        wardGroup[wardName].dateSize++
-        wardGroup[wardName].totalItemValue += Number(item.itemValue || 0)
+  const formatResData = (originList: any[]) => {
+    let newList = originList.map((item: any) => {
+      let newItem = {
+        ...item,
+        avg: 0,
+        size: 0,
+        total: 0,
       }
+
+      if (newItem.dateDataList) {
+        newItem.dateDataList.forEach((dateItem: any) => {
+          let date = moment(dateItem.showDate)
+          if (date.isValid()) {
+            let score = Number(dateItem.score || 0)
+            newItem[date.format('MM-DD')] = score
+            newItem.total += score
+            newItem.size++
+          }
+        })
+
+        newItem.avg = parseInt(Math.round((newItem.total / newItem.size) * 100).toString()) / 100
+
+        if (isNaN(newItem.avg)) newItem.avg = 0
+      }
+
+      return newItem
+
     })
-
-    let newList = Object.keys(wardGroup)
-      .filter((wardName: string) => wardName)
-      .map((wardName: any) => {
-        let item = wardGroup[wardName]
-        let avg = item.totalItemValue / item.dateSize
-
-        avg = parseInt((avg * 1000).toString()) / 1000
-
-        return {
-          ...item,
-          avg,
-        }
-      })
 
     return newList.sort((prev: any, next: any) => next.avg - prev.avg)
   }
 
   const getTableData = () => {
+
+    let beginTime = moment(`${query.year}-${query.month}`).format('YYYY-MM-01 00:00')
+    let endMoment = moment(beginTime)
+    endMoment.add(1, 'M')
+    endMoment.subtract(1, 'd')
+
+    let endTime = endMoment.format('YYYY-MM-DD 23:59')
+
+    let reqQuery = {
+      wardCode: query.wardCode,
+      beginTime,
+      endTime,
+      formCode: 'SR0001',
+      scoreItemCode: 'SR0001019',
+    }
+
     setLoading(true)
     monthCheckWardSummaryStatisticsService
-      .queryFormItemData(query)
+      .queryFormItemData(reqQuery)
       .then(res => {
         setLoading(false)
 
-        const newTableData = formatResData(res.data.list || [])
+        const newTableData = formatResData(res.data || [])
+
+        // console.log(newTableData)
 
         setTableData(newTableData)
       }, () => setLoading(false))
@@ -168,9 +175,21 @@ export default function 月度查房汇总统计() {
             ...query,
             month,
           })}>
-        <Option value="">全部</Option>
         {monthList.map((month: string) => (
           <Option key={month}>{month}月</Option>
+        ))}
+      </Select>
+      <span>科室：</span>
+      <Select
+        value={query.wardCode}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        onChange={(wardCode: string) => setQuery({ ...query, wardCode })}>
+        <Option value="">全部</Option>
+        {authStore.deptList.map((item: any) => (
+          <Option value={item.code}>{item.name}</Option>
         ))}
       </Select>
       <Button type="primary" onClick={() => getTableData()}>查询</Button>
