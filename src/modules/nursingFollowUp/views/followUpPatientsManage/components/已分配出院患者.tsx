@@ -6,7 +6,9 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 export interface Props { }
+const api = new FollowUpPatientsManageServices();
 export default function 已分配出院患者() {
   const [query, setQuery] = useState({
     submitTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
@@ -23,12 +25,13 @@ export default function 已分配出院患者() {
   const [dataTotal, setDataTotal] = useState(0)
   const [loadingTable, setLoadingTable] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
   const [searchText, setSearchText] = useState('')
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+  //科室列表
+  const [deptList, setDeptList] = useState([] as any)
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20
@@ -179,6 +182,16 @@ export default function 已分配出院患者() {
     
   }
 
+  useEffect(() => {
+    getDeptList();
+  }, []);
+
+  const getDeptList = () => {
+    api.getNursingUnitAll().then(res => {
+      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
+    })
+  }
+
   const getData = () => {
     // setPageLoading(true)
     // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
@@ -236,7 +249,7 @@ export default function 已分配出院患者() {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(val: string) => setDeptSelect(val)}>
         <Select.Option value={''}>全部</Select.Option>
-        {deptListAll.map((item: any, idx: any) =>
+        {deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
       </Select>
       <span className='label'>出院时间:</span>
@@ -265,8 +278,6 @@ export default function 已分配出院患者() {
       <Button type='primary' onClick={() => getData()}>
         查询
       </Button>
-      {/* {status == '1' && <Button onClick={handleAddNew}>新建</Button>}
-      <Button onClick={handleExport}>导出</Button> */}
       <span className='label'>隐藏已结束:</span>
       <Switch 
         defaultChecked 
@@ -294,7 +305,7 @@ export default function 已分配出院患者() {
         }}
         loading={loadingTable}
         surplusHeight={260}
-        surplusWidth={700} />
+        surplusWidth={300} />
     </MainCon>
   </Wrapper>
 }

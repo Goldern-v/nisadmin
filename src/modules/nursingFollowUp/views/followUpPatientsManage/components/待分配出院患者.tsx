@@ -8,9 +8,11 @@ import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
 import createModal from 'src/libs/createModal'
 import BatchDistribution from '../../components/BatchDistribution'
-// import deptNameList from './utils/deptNameList'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 export interface Props { }
+const api = new FollowUpPatientsManageServices();
+
 export default function 已分配出院患者() {
   const batchDistribution = createModal(BatchDistribution)
   const [query, setQuery] = useState({
@@ -26,7 +28,8 @@ export default function 已分配出院患者() {
   //表格数据载入状态
   const [pageLoading, setPageLoading] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
+  //科室列表
+  const [deptList, setDeptList] = useState([] as any)
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [searchText, setSearchText] = useState('')
@@ -159,7 +162,17 @@ export default function 已分配出院患者() {
     batchDistribution
       .show({})
   }
+  
+  useEffect(() => {
+    getDeptList();
+  }, []);
 
+  const getDeptList = () => {
+    api.getNursingUnitAll().then(res => {
+      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
+    })
+  }
+  
   useEffect(() => {
     getData()
   }, [
@@ -183,7 +196,7 @@ export default function 已分配出院患者() {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(val: string) => setDeptSelect(val)}>
         <Select.Option value={''}>全部</Select.Option>
-        {deptListAll.map((item: any, idx: any) =>
+        {deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
       </Select>
       <span className='label'>出院时间:</span>

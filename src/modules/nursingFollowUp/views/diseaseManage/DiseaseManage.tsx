@@ -26,7 +26,6 @@ export default function DiseaseManage(props: any) {
   const [dataTotal, setDataTotal] = useState(0)
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
