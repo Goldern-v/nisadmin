@@ -17,22 +17,16 @@ const api = new FollowUpQuestionnaireManageServices();
 export default function FollowUpQuestionnaireManage(props: any) {
   const [mealList, setMealList] = useState(new Array())
   const { history, location } = appStore;
-  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
   const [searchText, setSearchText] = useState('')
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
-  const [templateList, setTemplateList]: any = useState([])
   const [tableData, setTableData] = useState([])
-  const [loadingTable, setLoadingTable] = useState(false)
   const followUpGroupModal = createModal(FollowUpGroupModal)
   //表格数据载入状态
   const [dataLoading, setDataLoading] = useState(false);
    //科室列表
    const [deptList, setDeptList] = useState([] as any)
    //宣教接口请求参数
-   const [queryInited, setQueryInited] = useState(false);
-   const [cacheDeptCode, setCacheDeptCode] = useState('');
    const [query, setQuery] = useState({
      type: '',
      name: '',
@@ -42,19 +36,10 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-
-  const setFollowUpGroup = (record:any) => {
-    followUpGroupModal
-      .show({
-      })
-  }
-
   const handleDeptSelect = (item: any) => {
     setQuery({ ...query, deptCode: item.code });
   }
-
   const getData = () => {}
-
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -96,13 +81,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
             />
           </span>
     },
-    // {
-    //   title: '是否启用',
-    //   dataIndex: 'creatorName',
-    //   key: 'creatorName',
-    //   align: 'center',
-    //   width: 120
-    // },
     {
       title: '操作',
       dataIndex: '',
@@ -159,9 +137,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
         <Button type='primary' onClick={() => getData()}>
           保存
         </Button>
-        {/* <Button onClick={setFollowUpGroup}>
-          设置随访小组
-        </Button> */}
       </PageHeader>
       <div className="main-contain">
       <div className="left">
@@ -203,14 +178,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
       <followUpGroupModal.Component />
   </Wrapper>
 }
-// const Wrapper = styled.div`
-// width: 100%;
-// margin-left:20px;
-// .input_hj {
-//   margin-left: 20px;
-// }
-// `
-
 const Wrapper = styled.div`
 width: 100%;
 height: 100%;
@@ -272,7 +239,7 @@ position: relative;
   position: absolute;
   left: 0;
   right: 0;
-  top: 40px;
+  top: 35px;
   bottom: 0;
   padding: 15px;
   height: calc(100vh - 95px);

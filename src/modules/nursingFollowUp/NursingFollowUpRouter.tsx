@@ -7,19 +7,14 @@ import FollowUpPatientsManage from './views/followUpPatientsManage/FollowUpPatie
 import FollowUpGroupManage from './views/followUpGroupManage/FollowUpGroupManage'
 import DiseaseManage from './views/diseaseManage/DiseaseManage'
 import FollowUpQuestionnaireManage from './views/followUpQuestionnaireManage/FollowUpQuestionnaireManage'
-
 export interface Props { }
-
 export default observer(function NursingFollowUpRouter(props: any) {
   const { location } = props
   const [modlueLoading, setModuleLoading] = useState(false)
   const [authMenu, setAuthMenu] = useState([] as any[])
-
   const LEFT_MENU = [
-
     ...authMenu
   ] as any[]
-
   const targetComponent = () => {
     const BaseCon = (
       <MainCon>
@@ -28,46 +23,35 @@ export default observer(function NursingFollowUpRouter(props: any) {
         </Spin>
       </MainCon>
     )
-
     const getTagetMenu = () => {
       let currentPathName = location.pathname || ''
-
       let targetMenu = null as any
-
       LEFT_MENU.forEach((menuItem: any) => {
         if (targetMenu) return
-
         if (menuItem.children) {
           const targetChild = menuItem.children
             .find((childItem: any) => {
               childItem.path = currentPathName
             })
-
           if (targetChild) targetMenu = targetChild
         } else if (currentPathName === menuItem.path) {
           targetMenu = menuItem
         }
       })
-
       return targetMenu
     }
 
     if (modlueLoading)
       return BaseCon
-
     const targetMenu = getTagetMenu()
-
     if (targetMenu) return <targetMenu.component {...targetMenu.props || {}} />
-
     return BaseCon
   }
-
   const getAuthMenu = () => {
     setModuleLoading(true)
 
     setTimeout(() => {
       setModuleLoading(false)
-
       setAuthMenu([
         {
           title: '随访患者管理',
@@ -109,11 +93,9 @@ export default observer(function NursingFollowUpRouter(props: any) {
 
     }, 1000)
   }
-
   useEffect(() => {
     getAuthMenu()
   }, [])
-
   return <Wrapper>
     <LeftMenuCon>
       <LeftMenu config={LEFT_MENU} menuTitle="护理随访" />
@@ -121,7 +103,6 @@ export default observer(function NursingFollowUpRouter(props: any) {
     {targetComponent()}
   </Wrapper>
 })
-
 const Wrapper = styled.div`
   height: calc(100vh - 50px);
   display: flex;

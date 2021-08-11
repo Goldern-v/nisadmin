@@ -40,9 +40,6 @@ export default function EidtModal(props: Props) {
       }
     })
   }
-
-  
-
   const handleOk = () => {
     // let currentRules = rules(userType) as any
     // let errMsgList = []

@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Col, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
-import BaseTable from 'src/components/BaseTable'
-import { DoCon } from 'src/components/BaseTable'
 
 export interface Props {
   visible: boolean,
@@ -15,34 +13,18 @@ export interface Props {
 
 export default function AddDiseaseModal(props: Props) {
   const { visible, isAdd, params, onOk, onCancel } = props
-  const [editUserType, setEditUserType] = useState('1')
   const [loading, setLoading] = useState(false)
-  const [editParams, setEidtParams] = useState({} as any)
-  const [tableData, setTableData] = useState([])
-  const [loadingTable, setLoadingTable] = useState(false)
-  
-  const addFollowUpGroup = () => {}
-
-  //删除
-  const onDelete = (record: any) => {
-    Modal.confirm({
-      title: '确认删除该记录吗',
-      centered: true,
-      onOk: () => {
-        // setPageLoading(true)
-
-        // wardLogService
-        //   .deleteRecord(record.id)
-        //   .then(res => {
-        //     message.success('删除成功', 1, () => getData())
-        //   }, err => setPageLoading(false))
-
-      }
-    })
+  const [searchText, setSearchText] = useState('')
+  const { Option } = Select;
+  const onChangeSearchText = (e: any) => {
+    setSearchText(e.target.value)
   }
-
-  
-
+  const handleChange = (e: any) => {
+  }
+  const children = [];
+  for (let i = 1; i <= 12; i++) {
+    children.push(<Option key={i}>{i}个月</Option>);
+  }
   const handleOk = () => {
     // let currentRules = rules(userType) as any
     // let errMsgList = []
@@ -79,8 +61,6 @@ export default function AddDiseaseModal(props: Props) {
     //     onOk && onOk()
     //   }, () => setLoading(false))
   }
-  
-
   return <Modal
     title={'添加疾病'}
     width={500}
@@ -91,53 +71,49 @@ export default function AddDiseaseModal(props: Props) {
     onCancel={() => onCancel()}>
     <Wrapper>
       <Row>
-            <Col span={6}>
-              疾病名称：
-            </Col>
-            <Col span={16}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6}>
-              随访周期：
-            </Col>
-            <Col span={16}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6}>
-              随访问卷：
-            </Col>
-            <Col span={16}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
-            </Col>
-          </Row>
+        <Col span={6}>
+          疾病名称：
+        </Col>
+        <Col span={16}>
+        <Input
+          style={{ width: 300 }}
+          value={searchText}
+          onChange={onChangeSearchText}
+        />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>
+          随访周期：
+        </Col>
+        <Col span={16}>
+        <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder=""
+            onChange={handleChange}
+          >
+            {children}
+          </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>
+          随访问卷：
+        </Col>
+        <Col span={16}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder=""
+            onChange={handleChange}
+          >
+            {children}
+          </Select>
+        </Col>
+      </Row>
     </Wrapper>
   </Modal>
 }

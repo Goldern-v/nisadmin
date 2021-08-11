@@ -12,37 +12,28 @@ import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import FollowUpGroupManageServices from './services/FollowUpGroupManageServices'
 
-
-
 export interface Props { }
 const api = new FollowUpGroupManageServices();
 
-
 export default function FollowUpGroupManage(props: any) {
-  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  
   const followUpGroupModal = createModal(FollowUpGroupModal)
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-  
   //设置随访小组
   const setFollowUpGroup = (record:any) => {
     followUpGroupModal
       .show({
       })
   }
-  
-
   const getData = () => {
     // setPageLoading(true)
     // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
