@@ -34,10 +34,6 @@ const baseConfig: navConfigItem[] = [
   //   path: '/badEventsNewList',
   //   hidden: !appStore.isDev,
   // },
-  // {
-  //   name: '不良事件分析报告',
-  //   path: '/badEvents/alanysis/1/1'
-  // },
   {
     name: "质量管理",
     children: [
@@ -75,17 +71,18 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/continuingEdu"
-    // hidden: !appStore.isDev
+    path: "/continuingEdu",
+    hidden: true
   },
   {
     name: "敏感指标",
-    path: "/indicator"
+    path: "/indicator",
+    hidden: true
   },
   {
     name: "敏感指标登记本",
     path: "/sensitiveRegister",
-    // hidden: !appStore.isDev
+    hidden: true
   },
   {
     name: "统计查询",
