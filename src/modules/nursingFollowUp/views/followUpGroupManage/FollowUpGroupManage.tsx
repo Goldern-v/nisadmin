@@ -16,6 +16,12 @@ export interface Props { }
 const api = new FollowUpGroupManageServices();
 
 export default function FollowUpGroupManage(props: any) {
+  let [query, setQuery] = useState({
+    bookName: '',
+    pageSize: 20,
+    pageIndex: 1
+  })
+  const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
@@ -34,6 +40,18 @@ export default function FollowUpGroupManage(props: any) {
       .show({
       })
   }
+  const handlePageSizeChange = (current: number, size: number) => {
+    setQuery({ ...query, pageSize: size, pageIndex: 1 })
+  }
+
+  const handlePageChange = (current: number) => {
+    setQuery({ ...query, pageIndex: current })
+  }
+
+  const handleDetailView = (bookId: string) => {
+    
+  }
+
   const getData = () => {
     // setPageLoading(true)
     // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
@@ -199,13 +217,25 @@ export default function FollowUpGroupManage(props: any) {
           设置随访小组
         </Button>
       </PageHeader>
-      <BaseTable
-        dataSource={tableData}
-        columns={columns}
-        surplusHeight={180}
-        bordered
-        loading={loadingTable}
-      />
+      <BaseTable columns={columns}
+          dataSource={tableData}
+          onRow={record => {
+            return {
+              onDoubleClick: () => handleDetailView(record.id)
+            }
+          }}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: handlePageSizeChange,
+            onChange: handlePageChange,
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
+          loading={loadingTable}
+          surplusHeight={220} />
       <followUpGroupModal.Component />
   </Wrapper>
 }

@@ -18,6 +18,12 @@ export interface Props { }
 const api = new DiseaseManageServices();
 
 export default function DiseaseManage(props: any) {
+  let [query, setQuery] = useState({
+    bookName: '',
+    pageSize: 20,
+    pageIndex: 1
+  })
+  const [dataTotal, setDataTotal] = useState(0)
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
@@ -40,7 +46,19 @@ export default function DiseaseManage(props: any) {
       .show({
       })
   }
-  
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    setQuery({ ...query, pageSize: size, pageIndex: 1 })
+  }
+
+  const handlePageChange = (current: number) => {
+    setQuery({ ...query, pageIndex: current })
+  }
+
+
+  const handleDetailView = (bookId: string) => {
+    
+  }
 
   const getData = () => {
     // setPageLoading(true)
@@ -72,14 +90,14 @@ export default function DiseaseManage(props: any) {
       key: 'key',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50,
+      width: 15,
     },
     {
       title: '疾病名称',
       dataIndex: 'type',
       key: 'type',
       align: 'left',
-      width: 150,
+      width: 50,
     }
     ,
     {
@@ -87,20 +105,20 @@ export default function DiseaseManage(props: any) {
       dataIndex: 'messageTypeName',
       key: 'messageTypeName',
       align: 'left',
-      width: 150
+      width: 50
     },
     {
       title: '随访问卷',
       dataIndex: 'messageTypeName',
       key: 'messageTypeName',
       align: 'left',
-      width: 300
+      width: 150
     },
     {
       title: '操作',
       dataIndex: 'cz',
       key: 'cz',
-      width: 150,
+      width: 50,
       align: 'center',
       render: (text: string, record: any) => {
         const DoCon = styled.div`
@@ -161,13 +179,25 @@ export default function DiseaseManage(props: any) {
           添加疾病
         </Button>
       </PageHeader>
-      <BaseTable
-        dataSource={tableData}
-        columns={columns}
-        surplusHeight={180}
-        bordered
-        loading={loadingTable}
-      />
+      <BaseTable columns={columns}
+          dataSource={tableData}
+          onRow={record => {
+            return {
+              onDoubleClick: () => handleDetailView(record.id)
+            }
+          }}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: handlePageSizeChange,
+            onChange: handlePageChange,
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
+          loading={loadingTable}
+          surplusHeight={220} />
       <addDiseaseModal.Component />
   </Wrapper>
 }

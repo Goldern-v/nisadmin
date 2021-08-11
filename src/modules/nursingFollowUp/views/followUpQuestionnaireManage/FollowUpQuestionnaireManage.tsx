@@ -15,6 +15,7 @@ export interface Props { }
 
 const api = new FollowUpQuestionnaireManageServices();
 export default function FollowUpQuestionnaireManage(props: any) {
+  const [dataTotal, setDataTotal] = useState(0)
   const [mealList, setMealList] = useState(new Array())
   const { history, location } = appStore;
   const [deptSelect, setDeptSelect] = useState('')
@@ -22,15 +23,20 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const [searchText, setSearchText] = useState('')
   const [tableData, setTableData] = useState([])
   const followUpGroupModal = createModal(FollowUpGroupModal)
+  const [loadingTable, setLoadingTable] = useState(false)
+
   //表格数据载入状态
   const [dataLoading, setDataLoading] = useState(false);
    //科室列表
    const [deptList, setDeptList] = useState([] as any)
    //宣教接口请求参数
    const [query, setQuery] = useState({
-     type: '',
-     name: '',
-     deptCode: ''
+    type: '',
+    name: '',
+    deptCode: '',
+    bookName: '',
+    pageSize: 20,
+    pageIndex: 1
    });
 
   const onChangeSearchText = (e: any) => {
@@ -40,11 +46,23 @@ export default function FollowUpQuestionnaireManage(props: any) {
     setQuery({ ...query, deptCode: item.code });
   }
   const getData = () => {}
+  const handlePageSizeChange = (current: number, size: number) => {
+    setQuery({ ...query, pageSize: size, pageIndex: 1 })
+  }
+
+  const handlePageChange = (current: number) => {
+    setQuery({ ...query, pageIndex: current })
+  }
+
+
+  const handleDetailView = (bookId: string) => {
+    
+  }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
       key: 'key',
-      width: 50,
+      width: 15,
       align: 'center',
       render: (text: string, record: any, index: number) => index + 1
     },
@@ -54,7 +72,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
       key: 'type',
       className: 'type',
       align: 'left',
-      width: 300
+      width: 150
     },
     {
       title: '病种',
@@ -62,13 +80,13 @@ export default function FollowUpQuestionnaireManage(props: any) {
       key: 'deptName',
       align: 'left',
       className: 'dept-name',
-      width: 120
+      width: 50
     },
     {
       title: '是否启用',
       dataIndex: 'status',
       key: '是否排班',
-      width: 120,
+      width: 50,
       render: (text: any, record: any, index: any) => 
           <span>
             <Switch
@@ -86,7 +104,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
       dataIndex: '',
       key: 'operation',
       align: 'center',
-      width: 120,
+      width: 50,
       render: (text: string, record: any) => {
         return <Fragment>
           <span onClick={e => viewContent(record)} className="operation-span">查看</span>
@@ -161,18 +179,25 @@ export default function FollowUpQuestionnaireManage(props: any) {
         </div>
       </div>
       <div className="right">
-        <BaseTable
-          loading={dataLoading}
-          columns={columns}
-          dataSource={tableData.sort((a: any, b: any) => {
-            let aTimeset = 0;
-            let bTimeset = 0;
-            if (a.creatDate) aTimeset = Number(Moment(a.creatDate).format('x'));
-            if (b.creatDate) bTimeset = Number(Moment(b.creatDate).format('x'));
-            return bTimeset - aTimeset
-          })}
-          pagination={false}
-          surplusHeight={205} />
+        <BaseTable columns={columns}
+          dataSource={tableData}
+          onRow={record => {
+            return {
+              onDoubleClick: () => handleDetailView(record.id)
+            }
+          }}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: handlePageSizeChange,
+            onChange: handlePageChange,
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
+          loading={loadingTable}
+          surplusHeight={220} />
       </div>
     </div>
       <followUpGroupModal.Component />
@@ -242,6 +267,7 @@ position: relative;
   top: 35px;
   bottom: 0;
   padding: 15px;
+  padding-bottom: 0;
   height: calc(100vh - 95px);
   &>div{
     background: #fff;

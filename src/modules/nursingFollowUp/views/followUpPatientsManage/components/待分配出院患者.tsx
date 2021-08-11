@@ -198,12 +198,12 @@ export default function 已分配出院患者() {
         style={{ width: 220 }}
         value={searchText}
         onChange={onChangeSearchText}
-        className='input_hj'
+        className='ml-20'
       />
       <Button type='primary' onClick={() => getData()}>
         查询
       </Button>
-      <Button  onClick={onDistribution}>
+      <Button  onClick={onDistribution} className='mr-20'>
         批量分配
       </Button>
 
@@ -217,7 +217,7 @@ export default function 已分配出院患者() {
           type={['index']}
           rowKey='id'
           surplusHeight={260}
-          surplusWidth={80}
+          surplusWidth={300}
           pagination={{
             current: pageOptions.pageIndex,
             pageSize: pageOptions.pageSize,
@@ -251,8 +251,11 @@ const Wrapper = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
-  .input_hj {
+  .ml-20 {
     margin-left: 20px
+  }
+  .mr-20 {
+    margin-right: 20px
   }
   .file-item{
     cursor: pointer;
@@ -272,7 +275,7 @@ const Wrapper = styled.div`
 `
 const MainCon = styled.div`
   flex: 1;
-  padding: 15px;
+  padding: 0px;
   padding-bottom: 0;
   padding-top: 0;
 `

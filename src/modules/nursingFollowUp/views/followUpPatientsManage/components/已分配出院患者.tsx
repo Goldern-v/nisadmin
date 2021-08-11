@@ -1,12 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Select, Input, DatePicker, message, Modal, Switch } from 'antd'
-import { PaginationConfig } from 'src/vendors/antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
-// import deptNameList from './utils/deptNameList'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 export interface Props { }
 export default function 已分配出院患者() {
@@ -21,21 +19,28 @@ export default function 已分配出院患者() {
     pageIndex: 1,
   })
   //表格数据载入状态
-  const [pageLoading, setPageLoading] = useState(false)
+  const [tableData, setTableData] = useState([])
+  const [dataTotal, setDataTotal] = useState(0)
+  const [loadingTable, setLoadingTable] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
   const [searchText, setSearchText] = useState('')
-  const [dataSource, setDataSource] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20
   })
-  const [total, setTotal]: any = useState(0)
   const columns: ColumnProps<any>[] = [
+    {
+      title: '序号',
+      key: 'key',
+      width: 50,
+      align: 'center',
+      render: (text: string, record: any, index: number) => index + 1
+    },
     {
       title: '护理单元',
       dataIndex: '',
@@ -161,6 +166,19 @@ export default function 已分配出院患者() {
     console.log(`1`);
   }
 
+  const handlePageSizeChange = (current: number, size: number) => {
+    setQuery({ ...query, pageSize: size, pageIndex: 1 })
+  }
+
+  const handlePageChange = (current: number) => {
+    setQuery({ ...query, pageIndex: current })
+  }
+
+
+  const handleDetailView = (bookId: string) => {
+    
+  }
+
   const getData = () => {
     // setPageLoading(true)
     // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
@@ -242,7 +260,7 @@ export default function 已分配出院患者() {
         style={{ width: 220 }}
         value={searchText}
         onChange={onChangeSearchText}
-        className='input_hj'
+        className='ml-20'
       />
       <Button type='primary' onClick={() => getData()}>
         查询
@@ -253,42 +271,30 @@ export default function 已分配出院患者() {
       <Switch 
         defaultChecked 
         onChange={onChangeSwitch} 
+        className='mr-20'
       />
     </PageHeader>
     <MainCon>
-      <BaseTable
-        loading={pageLoading}
-        dataSource={dataSource}
-        columns={columns}
-        wrapperStyle={{ margin: '0 15px' }}
-        type={['index']}
-        rowKey='id'
-        surplusHeight={260}
-        surplusWidth={80}
+      <BaseTable columns={columns}
+        dataSource={tableData}
+        onRow={record => {
+          return {
+            onDoubleClick: () => handleDetailView(record.id)
+          }
+        }}
         pagination={{
-          current: pageOptions.pageIndex,
-          pageSize: pageOptions.pageSize,
-          total: total
+          pageSizeOptions: ['10', '20', '30', '40', '50'],
+          onShowSizeChange: handlePageSizeChange,
+          onChange: handlePageChange,
+          total: dataTotal,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          pageSize: query.pageSize,
+          current: query.pageIndex
         }}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: handleRowSelect,
-          getCheckboxProps: (record: any) => ({
-            // disabled: !deptSelect || !selectedTemplate,
-            disabled: !selectedTemplate,
-            name: record.name
-          })
-        }}
-        onChange={(pagination: PaginationConfig) => {
-          setPageOptions({
-            pageIndex: pagination.current,
-            pageSize: pagination.pageSize
-          })
-        }}
-        onRow={(record: any) => {
-          return { onDoubleClick: () => onDetail(record) }
-        }}
-      />
+        loading={loadingTable}
+        surplusHeight={260}
+        surplusWidth={700} />
     </MainCon>
   </Wrapper>
 }
@@ -297,8 +303,11 @@ const Wrapper = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
-  .input_hj {
+  .ml-20 {
     margin-left: 20px
+  }
+  .mr-20 {
+    margin-right: 20px
   }
   .file-item{
     cursor: pointer;
