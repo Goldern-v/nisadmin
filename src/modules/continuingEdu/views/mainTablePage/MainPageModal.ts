@@ -33,11 +33,11 @@ class MainPageModal {
       secondLevelMenuId: this.id, //二级菜单id
       thirdLevelMenuId:
         appStore.HOSPITAL_ID === "hj" &&
-        stepViewModal.getParentsName == "在线学习"
+          stepViewModal.getParentsName == "在线学习"
           ? this.hjSelectedType
           : stepViewModal.getParentsName == "集中培训"
-          ? ""
-          : this.selectedType, //三级菜单id(类型)
+            ? ""
+            : this.selectedType, //三级菜单id(类型)
       status: this.selectedState, //状态
       keyWord: this.keyWord, //菜单名
       pageIndex: this.pageIndex, //页码
@@ -53,14 +53,14 @@ class MainPageModal {
       mainPageApi.getTypeData(this.id).then(res => {
         const nameList = ["集中培训", "在线学习"];
         if (appStore.HOSPITAL_ID === "hj" && nameList.includes(stepViewModal.getParentsName)) {
-          this.hjSelectedType = res.data[this.key]?.id || res.data[0].id;
+          this.hjSelectedType = res.data[this.key]?.id || res.data[0]?.id || '';
         }
         this.selectTypeList = res.data;
       })
     ]);
   }
 
-  /** 获取表格数据 */ 
+  /** 获取表格数据 */
   onload() {
     this.tableLoading = true;
     mainPageApi.getMainData(this.postObj).then(res => {
@@ -84,7 +84,7 @@ class MainPageModal {
     this.hjSelectedType = this.selectTypeList[Number(key)].id;
   }
 
-  /** 三级联 */ 
+  /** 三级联 */
   getTree() {
     mainPageApi.getTrainingItemsTree().then(res => {
       this.trainingKeyPointTree = res.data || [];

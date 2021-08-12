@@ -167,7 +167,7 @@ export default observer(function NursingRulesNewDetail() {
     <div className="topbar">
       <NavCon>
         <Link to="/nursingRulesNew">护理制度</Link>
-        <span> > </span>
+        <span> {'>'} </span>
         <span>{baseInfo.bookName || '书籍详情'}</span>
       </NavCon>
     </div>

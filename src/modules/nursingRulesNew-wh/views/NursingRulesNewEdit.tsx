@@ -126,7 +126,7 @@ export default observer(function NursingRulesNewEdit() {
     <div className="topbar">
       <NavCon>
         <Link to="/nursingRulesNew">护理制度</Link>
-        <span> > </span>
+        <span> {'>'} </span>
         <span>{taskName}</span>
       </NavCon>
       <div className="edit-title">
