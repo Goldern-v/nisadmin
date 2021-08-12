@@ -55,7 +55,7 @@ export default observer(function NursingFollowUpRouter(props: any) {
       setAuthMenu([
         {
           title: '随访患者管理',
-          path: '/NursingFollowUp/随访患者管理',
+          path: '/nursingFollowUp/随访患者管理',
           props: {
             可随访: true,
             可随访分配护士: false
@@ -64,7 +64,7 @@ export default observer(function NursingFollowUpRouter(props: any) {
         },
         {
           title: '随访小组管理',
-          path: '/NursingFollowUp/随访小组管理',
+          path: '/nursingFollowUp/随访小组管理',
           props: {
             可随访: true,
             可随访分配护士: false
@@ -73,7 +73,7 @@ export default observer(function NursingFollowUpRouter(props: any) {
         },
         {
           title: '病种管理',
-          path: '/NursingFollowUp/病种管理',
+          path: '/nursingFollowUp/病种管理',
           props: {
             可随访: true,
             可随访分配护士: false
@@ -82,7 +82,7 @@ export default observer(function NursingFollowUpRouter(props: any) {
         },
         {
           title: '随访问卷管理',
-          path: '/NursingFollowUp/随访问卷管理',
+          path: '/nursingFollowUp/随访问卷管理',
           props: {
             可随访: true,
             可随访分配护士: false

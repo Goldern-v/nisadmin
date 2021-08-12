@@ -9,7 +9,7 @@ export interface Props { }
 export default function FollowUpPatientsManage(props: any) {
   const { queryObj, history } = appStore
   const handleTagChange = (tabId: string) => {
-    history.replace(`/NursingFollowUp/随访患者管理?tabId=${tabId}`)
+    history.replace(`/nursingFollowUp/随访患者管理?tabId=${tabId}`)
   }
   const tabList = [
     { name: '已分配出院患者', id: '1' },

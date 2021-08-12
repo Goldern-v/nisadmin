@@ -10,18 +10,14 @@ import createModal from 'src/libs/createModal'
 import BatchDistribution from '../../components/BatchDistribution'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
+import moment from 'moment'
+
 export interface Props { }
 const api = new FollowUpPatientsManageServices();
 
 export default function 已分配出院患者() {
   const batchDistribution = createModal(BatchDistribution)
-  const [query, setQuery] = useState({
-    submitTimeBegin: getCurrentMonthNow()[0].format('YYYY-MM-DD'),
-    submitTimeEnd: getCurrentMonthNow()[1].format('YYYY-MM-DD'),
-    keyWord: '',
-    deptCode: '',
-    audited: '0',
-    noteType: '学习笔记',
+  const [query, setQuery]: any = useState({
     pageSize: 20,
     pageIndex: 1,
   })
@@ -35,31 +31,31 @@ export default function 已分配出院患者() {
   const [searchText, setSearchText] = useState('')
   const [dataSource, setDataSource] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
-  const [pageOptions, setPageOptions]: any = useState({
-    pageIndex: 1,
-    pageSize: 20
-  })
   const [total, setTotal]: any = useState(0)
   const columns: ColumnProps<any>[] = [
     {
       title: '护理单元',
-      dataIndex: '',
-      width: 120
+      dataIndex: 'wardName',
+      align: 'center',
+      width: 150
     },
     {
       title: '床号',
       dataIndex: '',
-      width: 50
+      align: 'center',
+      width: 60
     },
     {
       title: '姓名',
       dataIndex: 'remark',
-      width: 70
+      align: 'center',
+      width: 80
     },
     {
       title: '性别',
       dataIndex: '',
-      width: 50
+      align: 'center',
+      width: 60
     },
     {
       title: '联系电话',
@@ -70,13 +66,13 @@ export default function 已分配出院患者() {
     {
       title: '联系人',
       dataIndex: '',
-      width: 120,
+      width: 150,
       align: 'center'
     },
     {
       title: '病人ID',
       dataIndex: '',
-      width: 120,
+      width: 100,
       align: 'center'
     },
     {
@@ -99,8 +95,8 @@ export default function 已分配出院患者() {
     },
     {
       title: '出院日期',
-      dataIndex: '',
-      width: 140,
+      dataIndex: 'createTime',
+      width: 200,
       align: 'center'
     },
     {
@@ -111,7 +107,7 @@ export default function 已分配出院患者() {
     },
     {
       title: '操作',
-      width: status == '1' ? 120 : 80,
+      width: 150,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
@@ -125,26 +121,26 @@ export default function 已分配出院患者() {
     setSearchText(e.target.value)
   }
   const getData = () => {
-    // setPageLoading(true)
-    // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-    // let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
-    // wardLogService
-    //   .findLog({
-    //     ...pageOptions,
-    //     wardCode: deptSelect,
-    //     startDate,
-    //     endDate,
-    //     templateId: selectedTemplate,
-    //     status
-    //   })
-    //   .then((res) => {
-    //     setPageLoading(false)
+    setPageLoading(true)
+    let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+    let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    api
+      .findLog({
+        ...query,
+        wardCode: deptSelect,
+        startDate,
+        endDate,
+        searchText: searchText,
+        status
+      })
+      .then((res) => {
+        setPageLoading(false)
 
-    //     setSelectedRowKeys([])
+        setSelectedRowKeys([])
 
-    //     setTotal(res.data.totalCount)
-    //     setDataSource(res.data.list)
-    //   }, err => setPageLoading(false))
+        setTotal(res.data.totalCount)
+        setDataSource(res.data.list)
+      }, err => setPageLoading(false))
   }
   const getTableData = (newQuery: any) => {
   }
@@ -176,10 +172,9 @@ export default function 已分配出院患者() {
   useEffect(() => {
     getData()
   }, [
-    pageOptions.pageIndex,
-    pageOptions.pageSize,
+    query.pageIndex,
+    query.pageSize,
     date,
-    selectedTemplate,
     deptSelect
   ])
 
@@ -230,23 +225,21 @@ export default function 已分配出院患者() {
           type={['index']}
           rowKey='id'
           surplusHeight={260}
-          surplusWidth={300}
+          surplusWidth={200}
           pagination={{
-            current: pageOptions.pageIndex,
-            pageSize: pageOptions.pageSize,
+            current: query.pageIndex,
+            pageSize: query.pageSize,
             total: total
           }}
           rowSelection={{
             selectedRowKeys,
             onChange: handleRowSelect,
             getCheckboxProps: (record: any) => ({
-              // disabled: !deptSelect || !selectedTemplate,
-              disabled: !selectedTemplate,
               name: record.name
             })
           }}
           onChange={(pagination: PaginationConfig) => {
-            setPageOptions({
+            setQuery({
               pageIndex: pagination.current,
               pageSize: pagination.pageSize
             })

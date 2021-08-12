@@ -8,9 +8,11 @@ import BaseTable from 'src/components/BaseTable'
 import { globalModal } from 'src/global/globalModal'
 import emitter from 'src/libs/ev'
 import AddDiseaseModal from '../components/AddDiseaseModal'
+import DetailModal from '../components/DetailModal'
 import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import DiseaseManageServices from './services/DiseaseManageServices'
+import moment from 'moment'
 
 
 
@@ -19,10 +21,10 @@ const api = new DiseaseManageServices();
 
 export default function DiseaseManage(props: any) {
   let [query, setQuery] = useState({
-    bookName: '',
     pageSize: 20,
     pageIndex: 1
   })
+  const [pageLoading, setPageLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
@@ -30,9 +32,10 @@ export default function DiseaseManage(props: any) {
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
   const [tableData, setTableData] = useState([])
-  const [loadingTable, setLoadingTable] = useState(false)
-  
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const addDiseaseModal = createModal(AddDiseaseModal)
+  const detailModal = createModal(DetailModal)
+
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
   const onChangeSearchText = (e: any) => {
@@ -42,6 +45,13 @@ export default function DiseaseManage(props: any) {
   //设置随访小组
   const setAddDiseaseModal = (record:any) => {
     addDiseaseModal
+      .show({
+      })
+  }
+
+  //查看随访问卷
+  const setDetailModal = (record:any) => {
+    detailModal
       .show({
       })
   }
@@ -60,26 +70,22 @@ export default function DiseaseManage(props: any) {
   }
 
   const getData = () => {
-    // setPageLoading(true)
-    // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-    // let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
-    // wardLogService
-    //   .findLog({
-    //     ...pageOptions,
-    //     wardCode: deptSelect,
-    //     startDate,
-    //     endDate,
-    //     templateId: selectedTemplate,
-    //     status
-    //   })
-    //   .then((res) => {
-    //     setPageLoading(false)
+    setPageLoading(true)
+    api
+      .findLog({
+        ...query,
+        wardCode: deptSelect,
+        searchText: searchText,
+        status
+      })
+      .then((res) => {
+        setPageLoading(false)
 
-    //     setSelectedRowKeys([])
+        setSelectedRowKeys([])
 
-    //     setTotal(res.data.totalCount)
-    //     setDataSource(res.data.list)
-    //   }, err => setPageLoading(false))
+        setDataTotal(res.data.totalCount)
+        setTableData(res.data.list)
+      }, err => setPageLoading(false))
   }
   
   const columns: any = [
@@ -93,25 +99,39 @@ export default function DiseaseManage(props: any) {
     },
     {
       title: '疾病名称',
-      dataIndex: 'type',
-      key: 'type',
-      align: 'left',
+      dataIndex: 'wardName',
+      key: 'wardName',
+      align: 'center',
       width: 50,
     }
     ,
     {
       title: '随访周期',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
       width: 50
     },
     {
       title: '随访问卷',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
-      width: 150
+      dataIndex: 'sfwj',
+      key: 'sfwj',
+      align: 'center',
+      width: 150,
+      render: (text: string, record: any) => {
+        const DoCon = styled.div`
+          display: flex;
+          justify-content: space-around;
+          font-size: 12px;
+          color: ${(p) => p.theme.$mtc};
+        `
+        return (
+          <div>
+            <a href='javascript:;'onClick={() => setDetailModal(record)}>《脑卒中随访调查表》</a>
+            <a href='javascript:;'onClick={() => setDetailModal(record)} className='ml-20'>《2021年脑卒中随访调查表》</a>
+          </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -129,13 +149,21 @@ export default function DiseaseManage(props: any) {
         return (
           <div>
             <a href='javascript:;'onClick={() => setAddDiseaseModal(record)}>编辑</a>
-            <a href='javascript:;'onClick={() => setAddDiseaseModal(record)}>删除</a>
+            <a href='javascript:;'onClick={() => setAddDiseaseModal(record)} className='ml-20'>删除</a>
           </div>
         )
       }
     }
   ]
   
+  useEffect(() => {
+    getData()
+  }, [
+    query.pageIndex,
+    query.pageSize,
+    deptSelect
+  ])
+
   useEffect(() => {
     getDeptList();
   }, []);
@@ -169,7 +197,7 @@ export default function DiseaseManage(props: any) {
           style={{ width: 300 }}
           value={searchText}
           onChange={onChangeSearchText}
-          className='input_hj'
+          className='ml-20'
         />
         <Button onClick={() => getData()}>
           查询
@@ -195,15 +223,16 @@ export default function DiseaseManage(props: any) {
             pageSize: query.pageSize,
             current: query.pageIndex
           }}
-          loading={loadingTable}
+          loading={pageLoading}
           surplusHeight={220} />
       <addDiseaseModal.Component />
+      <detailModal.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`
 width: 100%;
 margin-left:20px;
-.input_hj {
+.ml-20 {
   margin-left: 20px;
 }
 `

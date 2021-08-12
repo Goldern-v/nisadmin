@@ -18,7 +18,20 @@ export default function EidtModal(props: Props) {
   const [editUserType, setEditUserType] = useState('1')
   const [loading, setLoading] = useState(false)
   const [editParams, setEidtParams] = useState({} as any)
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState([
+    {
+      "id": 1,
+      "name": "神内1组",
+    },
+    {
+      "id": 2,
+      "name": "神内2组",
+    },
+    {
+      "id": 3,
+      "name": "神内3组",
+    },
+  ])
   const [loadingTable, setLoadingTable] = useState(false)
   
   const addFollowUpGroup = () => {}
@@ -87,9 +100,9 @@ export default function EidtModal(props: Props) {
     },
     {
       title: '小组名称',
-      dataIndex: 'type',
-      key: 'type',
-      align: 'left',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
       width: 100,
     },
     {
@@ -114,7 +127,7 @@ export default function EidtModal(props: Props) {
     onOk={handleOk}
     onCancel={() => onCancel()}>
     <Wrapper>
-      <Button onClick={addFollowUpGroup}>
+      <Button onClick={addFollowUpGroup} className='ml-20'>
         添加小组
       </Button>
       <BaseTable
@@ -128,6 +141,8 @@ export default function EidtModal(props: Props) {
 }
 
 const Wrapper = styled.div`
-
+.ml-20 {
+  margin-left: 20px;
+}
   
 `

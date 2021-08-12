@@ -8,36 +8,35 @@ import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpGroupModal from '../components/FollowUpGroupModal'
 import createModal from 'src/libs/createModal'
 import { authStore, appStore } from 'src/stores'
-import Moment from 'moment'
+import moment from 'moment'
 import FollowUpQuestionnaireManageServices from './services/FollowUpQuestionnaireManageServices'
 
 export interface Props { }
 
 const api = new FollowUpQuestionnaireManageServices();
 export default function FollowUpQuestionnaireManage(props: any) {
+  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [dataTotal, setDataTotal] = useState(0)
   const [mealList, setMealList] = useState(new Array())
   const { history, location } = appStore;
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
+  const [diseasList, setDiseasList] = useState([])
   const [searchText, setSearchText] = useState('')
   const [tableData, setTableData] = useState([])
   const followUpGroupModal = createModal(FollowUpGroupModal)
   const [loadingTable, setLoadingTable] = useState(false)
-
+  const [pageLoading, setPageLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   //表格数据载入状态
   const [dataLoading, setDataLoading] = useState(false);
    //科室列表
-   const [deptList, setDeptList] = useState([] as any)
+  const [deptList, setDeptList] = useState([] as any)
    //宣教接口请求参数
-   const [query, setQuery] = useState({
-    type: '',
-    name: '',
+  const [query, setQuery] = useState({
     deptCode: '',
-    bookName: '',
     pageSize: 20,
     pageIndex: 1
-   });
+  });
 
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
@@ -45,7 +44,26 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const handleDeptSelect = (item: any) => {
     setQuery({ ...query, deptCode: item.code });
   }
-  const getData = () => {}
+  const getData = () => {
+    setPageLoading(true)
+    let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+    let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    api
+      .findLog({
+        ...query,
+        diseasId: deptSelect,
+        searchText: searchText,
+        status
+      })
+      .then((res) => {
+        setPageLoading(false)
+
+        setSelectedRowKeys([])
+
+        setDataTotal(res.data.totalCount)
+        setTableData(res.data.list)
+      }, err => setPageLoading(false))
+  }
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
@@ -68,17 +86,16 @@ export default function FollowUpQuestionnaireManage(props: any) {
     },
     {
       title: '随访问卷',
-      dataIndex: 'type',
-      key: 'type',
-      className: 'type',
-      align: 'left',
+      dataIndex: 'themeName',
+      key: 'themeName',
+      align: 'center',
       width: 150
     },
     {
       title: '病种',
-      dataIndex: 'deptName',
-      key: 'deptName',
-      align: 'left',
+      dataIndex: 'remark',
+      key: 'remark',
+      align: 'center',
       className: 'dept-name',
       width: 50
     },
@@ -87,6 +104,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
       dataIndex: 'status',
       key: '是否排班',
       width: 50,
+      align: 'center',
       render: (text: any, record: any, index: any) => 
           <span>
             <Switch
@@ -114,17 +132,36 @@ export default function FollowUpQuestionnaireManage(props: any) {
   ];
   
   const viewContent = (record: any) => {
-    history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
+    // history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
   }
+  
+  useEffect(() => {
+    getData()
+  }, [
+    query.pageIndex,
+    query.pageSize,
+    query.deptCode,
+    deptSelect
+  ])
 
   useEffect(() => {
     getDeptList();
+    getDiseasList();
   }, []);
 
   const getDeptList = () => {
     api.getDeptList().then(res => {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
+  }
+  const getDiseasList = () => {
+    // api.getNursingUnitAll().then(res => {
+    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
+    // })
+    const a : any = [
+    {code: "1", name: "脑卒中"},
+    ]
+    setDiseasList(a)
   }
   return <Wrapper>
     <PageHeader>
@@ -139,8 +176,8 @@ export default function FollowUpQuestionnaireManage(props: any) {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+          {diseasList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.name}>{item.name}</Select.Option>)}
         </Select>
         <Input
           placeholder='请输入随访问卷关键字检索'
@@ -196,7 +233,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
             pageSize: query.pageSize,
             current: query.pageIndex
           }}
-          loading={loadingTable}
+          loading={pageLoading}
           surplusHeight={220} />
       </div>
     </div>

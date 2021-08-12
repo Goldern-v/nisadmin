@@ -11,23 +11,27 @@ import FollowUpGroupModal from '../components/FollowUpGroupModal'
 import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import FollowUpGroupManageServices from './services/FollowUpGroupManageServices'
+import moment from 'moment'
 
 export interface Props { }
 const api = new FollowUpGroupManageServices();
 
 export default function FollowUpGroupManage(props: any) {
   let [query, setQuery] = useState({
-    bookName: '',
     pageSize: 20,
     pageIndex: 1
   })
+  const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
+  const [selectedDistribution, setSelectedDistribution]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
+  const [distributionList, setDistributionList]: any = useState([])
   const [tableData, setTableData] = useState([])
-  const [loadingTable, setLoadingTable] = useState(false)
+  const [pageLoading, setPageLoading] = useState(false)
   const followUpGroupModal = createModal(FollowUpGroupModal)
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
@@ -53,26 +57,24 @@ export default function FollowUpGroupManage(props: any) {
   }
 
   const getData = () => {
-    // setPageLoading(true)
-    // let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-    // let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
-    // wardLogService
-    //   .findLog({
-    //     ...pageOptions,
-    //     wardCode: deptSelect,
-    //     startDate,
-    //     endDate,
-    //     templateId: selectedTemplate,
-    //     status
-    //   })
-    //   .then((res) => {
-    //     setPageLoading(false)
+    setPageLoading(true)
+    api
+      .findLog({
+        ...query,
+        wardCode: deptSelect,
+        templateId: selectedTemplate,
+        distributionId: selectedDistribution,
+        searchText: searchText,
+        status
+      })
+      .then((res) => {
+        setPageLoading(false)
 
-    //     setSelectedRowKeys([])
+        setSelectedRowKeys([])
 
-    //     setTotal(res.data.totalCount)
-    //     setDataSource(res.data.list)
-    //   }, err => setPageLoading(false))
+        setDataTotal(res.data.totalCount)
+        setTableData(res.data.list)
+      }, err => setPageLoading(false))
   }
   
   const columns: any = [
@@ -86,58 +88,58 @@ export default function FollowUpGroupManage(props: any) {
     },
     {
       title: '护理单元',
-      dataIndex: 'type',
-      key: 'type',
-      align: 'left',
+      dataIndex: 'wardName',
+      key: 'wardName',
+      align: 'center',
       width: 150,
     }
     ,
     {
       title: '工号',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center',
       width: 80
     },
     {
       title: '姓名',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'senderName',
+      key: 'senderName',
+      align: 'center',
       width: 80
     },
     {
       title: '性别',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'senderName',
+      key: 'senderName',
+      align: 'center',
       width: 50
     },
     {
       title: '职称',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
       width: 100
     },
     {
       title: '职务',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
       width: 100
     },
     {
       title: '层级',
-      dataIndex: 'messageTypeName',
-      key: 'messageTypeName',
-      align: 'left',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'center',
       width: 100
     },
     {
       title: '随访小组',
-      dataIndex: 'cz',
-      key: 'cz',
+      dataIndex: 'name',
+      key: 'name',
       width: 100,
       align: 'center',
       render: (text: string, record: any) => {
@@ -155,9 +157,21 @@ export default function FollowUpGroupManage(props: any) {
       }
     }
   ]
+
+  useEffect(() => {
+    getData()
+  }, [
+    query.pageIndex,
+    query.pageSize,
+    selectedTemplate,
+    selectedDistribution,
+    deptSelect
+  ])
   
   useEffect(() => {
     getDeptList();
+    getTemplateList();
+    getDistributionList();
   }, []);
 
   const getDeptList = () => {
@@ -166,11 +180,32 @@ export default function FollowUpGroupManage(props: any) {
     })
   }
 
+  const getTemplateList = () => {
+    // api.getNursingUnitAll().then(res => {
+    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
+    // })
+    const a : any = [
+    {code: "1", name: "随访1组"},
+    {code: "2", name: "随访2组"},
+    {code: "3", name: "随访3组"},
+    {code: "4", name: "随访4组"}]
+    setTemplateList(a)
+  }
+
+  const getDistributionList = () => {
+    // api.getNursingUnitAll().then(res => {
+    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
+    // })
+    const b : any = [
+    {code: "1", name: "已分配"},
+    {code: "2", name: "未分配"},]
+    setDistributionList(b)
+  }
+
   return <Wrapper>
     <PageHeader>
       <Place />
       <span className='label'>护理单元:</span>
-        {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
         <Select
           value={deptSelect}
           style={{ width: 230 }}
@@ -186,16 +221,16 @@ export default function FollowUpGroupManage(props: any) {
         <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
           {templateList.map((item: any, index: number) => (
-            <Select.Option key={index} value={item.id}>
+            <Select.Option key={index} value={item.name}>
               {item.name}
             </Select.Option>
           ))}
         </Select>
         <span className='label'>分配情况:</span>
-        <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
+        <Select style={{ width: 180 }} value={selectedDistribution} onChange={(value: any) => setSelectedDistribution(value)}>
           <Select.Option value=''>全部</Select.Option>
-          {templateList.map((item: any, index: number) => (
-            <Select.Option key={index} value={item.id}>
+          {distributionList.map((item: any, index: number) => (
+            <Select.Option key={index} value={item.name}>
               {item.name}
             </Select.Option>
           ))}
@@ -205,7 +240,7 @@ export default function FollowUpGroupManage(props: any) {
           style={{ width: 220 }}
           value={searchText}
           onChange={onChangeSearchText}
-          className='input_hj'
+          className='ml-20'
         />
         <Button onClick={() => getData()}>
           查询
@@ -234,7 +269,7 @@ export default function FollowUpGroupManage(props: any) {
             pageSize: query.pageSize,
             current: query.pageIndex
           }}
-          loading={loadingTable}
+          loading={pageLoading}
           surplusHeight={220} />
       <followUpGroupModal.Component />
   </Wrapper>
@@ -242,7 +277,7 @@ export default function FollowUpGroupManage(props: any) {
 const Wrapper = styled.div`
 width: 100%;
 margin-left:20px;
-.input_hj {
+.ml-20 {
   margin-left: 20px;
 }
 `
