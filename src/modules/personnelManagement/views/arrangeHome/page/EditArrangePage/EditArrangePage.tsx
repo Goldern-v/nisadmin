@@ -9,6 +9,7 @@ import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { DatePicker, Modal } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore } from "src/stores";
+import JmfyFlightMenu from './components/JmfyFlightMenu'
 
 export interface Props { }
 
@@ -27,6 +28,7 @@ export default observer(function EditArrangePage() {
           {appStore.hisMatch({
             map: {
               gzhd: <HDFlightMenu />,
+              jmfy: <JmfyFlightMenu />,
               other: <FlightMenu />
             }
           })}
@@ -40,6 +42,7 @@ const Wrapper = styled.div`
   padding-bottom: 15px;
   margin-bottom: -80px;
   overflow: hidden;
+  height: calc(100vh - 50px);
   .contain {
     display: flex;
     padding: 0 20px;
