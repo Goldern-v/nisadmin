@@ -13,6 +13,8 @@ export interface Props {
 export default function MainCon(props: Props) {
   const { loading } = props
 
+  const [itemData, setItemData] = useState({} as any)
+
   const handlePrint = () => {
     let printEl = document.querySelector('.form-page-wrapper') as HTMLElement
 
@@ -49,7 +51,14 @@ export default function MainCon(props: Props) {
       <Button>刷新</Button>
     </div>
     <FormPageContainer>
-      <FormPage editable={true} formCode="脑卒中高危人群院内综合干预量表" />
+      <FormPage
+        editable={true}
+        formCode="脑卒中高危人群院内综合干预量表"
+        itemData={itemData}
+        onItemDataChange={(payload: any) => {
+          setItemData(payload)
+          console.log(payload)
+        }} />
     </FormPageContainer>
   </Wrapper>
 }

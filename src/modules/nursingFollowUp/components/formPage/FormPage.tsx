@@ -1,12 +1,14 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense, lazy } from 'react'
 import { Button, Spin } from 'antd'
-import 脑卒中高危人群院内综合干预量表 from './脑卒中高危人群院内综合干预量表'
+const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
 
 export interface Props {
   formCode?: string,
   editable?: boolean,
   loading?: boolean,
+  itemData?: any,
+  onItemDataChange?: Function
 }
 
 export default function FormPage(props: Props) {
@@ -28,7 +30,10 @@ export default function FormPage(props: Props) {
   }
 
   return <Wrapper className="form-page-wrapper">
-    {formPageByFormCode()}
+    <Suspense
+      fallback={<div className="page-item"></div>}>
+      {formPageByFormCode()}
+    </Suspense>
   </Wrapper >
 }
 

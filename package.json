@@ -26,8 +26,7 @@
     "tslint": "5.16.0",
     "tslint-config-standard": "8.0.1",
     "tslint-react": "4.0.0",
-    "typescript": "^3.7.4",
-    "vuepress": "^1.8.0"
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "@antv/data-set": "0.10.2",
@@ -148,9 +147,6 @@
     "publish:9872": "npm run build:jmfy && node publish.js",
     "publish:be": "npm run build:hj-be && node publish-be.js",
     "publish:nys-be": "npm run build:nys-be && node publish-be.js",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "publish:docs": "vuepress build docs && node publish.js",
     "test": "react-app-rewired test --env=jsdom",
     "lint:ts": "tslint --fix",
     "lint:style": "stylelint ./src/**/*.{ts,tsx}"
