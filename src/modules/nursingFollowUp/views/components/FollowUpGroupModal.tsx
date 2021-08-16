@@ -18,6 +18,10 @@ export default function EidtModal(props: Props) {
   const [editUserType, setEditUserType] = useState('1')
   const [loading, setLoading] = useState(false)
   const [editParams, setEidtParams] = useState({} as any)
+  const [searchText, setSearchText] = useState('')
+  const onChangeSearchText = (e: any) => {
+    setSearchText(e.target.value)
+  }
   const [tableData, setTableData] = useState([
     {
       "id": 1,
@@ -34,26 +38,30 @@ export default function EidtModal(props: Props) {
   ])
   const [loadingTable, setLoadingTable] = useState(false)
   
-  const addFollowUpGroup = () => {}
+  const addFollowUpGroup = () => {
+    let index = tableData.length + 1
+    let tableArr = [...tableData,{id :index, name:""}]
+    setTableData(tableArr)
+  }
 
   //删除
-  const onDelete = (record: any) => {
+  const onDelete = (record: any, index: any) => {
     Modal.confirm({
       title: '确认删除该记录吗',
       centered: true,
       onOk: () => {
-        // setPageLoading(true)
-
-        // wardLogService
-        //   .deleteRecord(record.id)
-        //   .then(res => {
-        //     message.success('删除成功', 1, () => getData())
-        //   }, err => setPageLoading(false))
-
+        tableData.splice(index, 1);
+        let newArr = [...tableData];
+        console.log(newArr);
+        console.log(tableData);
+        
+        setTableData(newArr)
       }
     })
   }
   const handleOk = () => {
+    console.log(tableData);
+    
     // let currentRules = rules(userType) as any
     // let errMsgList = []
     // let ruleKeys = Object.keys(currentRules)
@@ -104,6 +112,20 @@ export default function EidtModal(props: Props) {
       key: 'name',
       align: 'center',
       width: 100,
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            <Input
+              style={{ width: 150 }}
+              value={text}
+              onChange={(e: any) => {
+                record.name = e.currentTarget.value
+                setTableData([...tableData])
+              }}
+            />
+          </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -111,7 +133,7 @@ export default function EidtModal(props: Props) {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onDelete(record)}>删除</span>
+            <span onClick={() => onDelete(record,index)}>删除</span>
           </DoCon>
         )
       }
@@ -122,6 +144,7 @@ export default function EidtModal(props: Props) {
     title={'设置随访小组'}
     width={500}
     centered
+    okText={'保存'}
     confirmLoading={loading}
     visible={visible}
     onOk={handleOk}

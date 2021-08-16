@@ -25,10 +25,14 @@ export default function FollowUpGroupManage(props: any) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
+  const [selectValue, setSelectValue] = useState(new Array())
+
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
+  const [selectedTeam, setSelectedTeam]: any = useState('')
   const [selectedDistribution, setSelectedDistribution]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
+  const [teamList, setTeamList]: any = useState([])
   const [distributionList, setDistributionList]: any = useState([])
   const [tableData, setTableData] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
@@ -56,7 +60,13 @@ export default function FollowUpGroupManage(props: any) {
     
   }
 
+  const onSave = () => { 
+    console.log(tableData);
+    
+  }
+  
   const getData = () => {
+    
     setPageLoading(true)
     api
       .findLog({
@@ -136,22 +146,42 @@ export default function FollowUpGroupManage(props: any) {
       align: 'center',
       width: 100
     },
+    
     {
       title: '随访小组',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'team',
+      key: 'team',
       width: 100,
       align: 'center',
       render: (text: string, record: any) => {
-        const DoCon = styled.div`
-          display: flex;
-          justify-content: space-around;
-          font-size: 12px;
-          color: ${(p) => p.theme.$mtc};
-        `
         return (
           <div>
-            <a href='javascript:;'onClick={() => setFollowUpGroup(record)}>神内1组</a>
+            <Select 
+              style={{ width: 75 }}
+              id="box_select"
+              showArrow={false}
+              onChange={(value: any) => {
+                record.value = value
+
+              }}>
+              {teamList.map((item: any, index: number) => (
+                <Select.Option key={index} value={item.name}>
+                {item.name}
+              </Select.Option>
+              ))}
+            </Select>
+            {/* <select 
+              style={{ width: 75 }}
+              onChange={(value: any) => {
+                record.value = value
+              }}>
+              {teamList.map((item: any, index: number) => (
+                <option key={index} value={item.name}>
+                {item.name}
+                </option>
+              ))}
+            </select> */}
+            
           </div>
         )
       }
@@ -190,6 +220,7 @@ export default function FollowUpGroupManage(props: any) {
     {code: "3", name: "随访3组"},
     {code: "4", name: "随访4组"}]
     setTemplateList(a)
+    setTeamList(a)
   }
 
   const getDistributionList = () => {
@@ -245,7 +276,7 @@ export default function FollowUpGroupManage(props: any) {
         <Button onClick={() => getData()}>
           查询
         </Button>
-        <Button type='primary' onClick={() => getData()}>
+        <Button type='primary' onClick={() => onSave()}>
           保存
         </Button>
         <Button onClick={setFollowUpGroup}>
@@ -275,9 +306,16 @@ export default function FollowUpGroupManage(props: any) {
   </Wrapper>
 }
 const Wrapper = styled.div`
-width: 100%;
-margin-left:20px;
-.ml-20 {
-  margin-left: 20px;
-}
+  height: 100%;
+  width: calc(100vw - 200px);
+  margin-left:20px;
+  .ml-20 {
+    margin-left: 20px;
+  }
+  #box_select {
+    .ant-select-selection{
+      border: 0;
+      background: #fff;
+    }
+  }
 `

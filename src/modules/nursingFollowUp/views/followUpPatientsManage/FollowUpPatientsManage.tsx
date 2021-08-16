@@ -9,7 +9,7 @@ export interface Props { }
 export default function FollowUpPatientsManage(props: any) {
   const { queryObj, history } = appStore
   const handleTagChange = (tabId: string) => {
-    history.replace(`/nursingFollowUp/随访患者管理?tabId=${tabId}`)
+    history.replace(`/nursingFollowUp?tabId=${tabId}`)
   }
   const tabList = [
     { name: '已分配出院患者', id: '1' },
@@ -50,7 +50,7 @@ export default function FollowUpPatientsManage(props: any) {
 }
 const Wrapper = styled.div`
   height: 100%;
-  width: 90vw;
+  width: calc(100vw - 200px);
   display: flex;
   flex-direction: column;
   .tab-nav-header{

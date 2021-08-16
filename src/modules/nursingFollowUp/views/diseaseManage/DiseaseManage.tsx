@@ -230,9 +230,10 @@ export default function DiseaseManage(props: any) {
   </Wrapper>
 }
 const Wrapper = styled.div`
-width: 100%;
-margin-left:20px;
-.ml-20 {
-  margin-left: 20px;
-}
+  height: 100%;
+  width: calc(100vw - 200px);
+  margin-left:20px;
+  .ml-20 {
+    margin-left: 20px;
+  }
 `

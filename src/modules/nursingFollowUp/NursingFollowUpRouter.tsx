@@ -7,6 +7,7 @@ import FollowUpPatientsManage from './views/followUpPatientsManage/FollowUpPatie
 import FollowUpGroupManage from './views/followUpGroupManage/FollowUpGroupManage'
 import DiseaseManage from './views/diseaseManage/DiseaseManage'
 import FollowUpQuestionnaireManage from './views/followUpQuestionnaireManage/FollowUpQuestionnaireManage'
+
 export interface Props { }
 export default observer(function NursingFollowUpRouter(props: any) {
   const { location } = props
@@ -55,7 +56,7 @@ export default observer(function NursingFollowUpRouter(props: any) {
       setAuthMenu([
         {
           title: '随访患者管理',
-          path: '/nursingFollowUp/随访患者管理',
+          path: '/nursingFollowUp',
           props: {
             可随访: true,
             可随访分配护士: false
