@@ -7,8 +7,16 @@ export default class FollowUpPatientsManageServices extends BaseApiService {
     return this.get(`/user/nursingUnit/all`);
   }
 
-  public findLog(obj: PageOptions | any) {
-    return this.post(`/InpatientAreaLog/findLog`, obj)
+  public visitPatientData(obj: PageOptions | any) {
+    return this.post(`/visit/visitPatientData/queryPageList`, obj)
+  }
+
+  public visitTeam(obj: PageOptions | any) {
+    return this.post(`/visit/visitTeam/queryPageList`, obj)
+  }
+
+  public visitDiseaseType(obj: PageOptions | any) {
+    return this.post(`/visit/visitDiseaseType/queryPageList`, obj)
   }
 
 }

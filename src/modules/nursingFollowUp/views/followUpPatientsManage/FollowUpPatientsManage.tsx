@@ -3,14 +3,48 @@ import React, { useState, useEffect } from 'react'
 import { appStore } from 'src/stores'
 import 已分配出院患者 from './components/已分配出院患者'
 import 待分配出院患者 from './components/待分配出院患者'
+import FollowUpPatientsManageServices from './services/FollowUpPatientsManageServices'
+const api = new FollowUpPatientsManageServices();
 
 export interface Props { }
 
 export default function FollowUpPatientsManage(props: any) {
+  const [query, setQuery] = useState({
+    pageSize: 20,
+    pageIndex: 1,
+  })
   const { queryObj, history } = appStore
   const handleTagChange = (tabId: string) => {
     history.replace(`/nursingFollowUp?tabId=${tabId}`)
   }
+  const [templateList, setTemplateList]: any = useState([])
+  const [deptList, setDeptList] = useState([] as any)
+  const [diseaseList, setDiseaseList]: any = useState([])
+  
+  useEffect(() => {
+    getDeptList();
+    getTemplateList();
+    getDiseaseList();
+  }, []);
+
+  const getDeptList = () => {
+    api.getNursingUnitAll().then(res => {
+      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
+    })
+  }
+
+  const getTemplateList = () => {
+    api.visitTeam({...query} ).then(res => {
+      if (res.data.list instanceof Array) setTemplateList(res.data.list);
+    })
+  }
+
+  const getDiseaseList = () => {
+    api.visitDiseaseType({...query} ).then(res => {
+      if (res.data.list instanceof Array) setDiseaseList(res.data.list);
+    })
+  }
+
   const tabList = [
     { name: '已分配出院患者', id: '1' },
     { name: '待分配出院患者', id: '2' },
@@ -18,9 +52,9 @@ export default function FollowUpPatientsManage(props: any) {
   const currentView = () => {
     switch (queryObj.tabId) {
       case '2':
-        return <待分配出院患者 />
+        return <待分配出院患者 templateList={templateList} deptList={deptList} diseaseList={diseaseList}/>
       default:
-        return <已分配出院患者 />
+        return <已分配出院患者 templateList={templateList} deptList={deptList}/>
     }
   }
   return <Wrapper>

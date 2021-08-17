@@ -52,9 +52,6 @@ export default function EidtModal(props: Props) {
       onOk: () => {
         tableData.splice(index, 1);
         let newArr = [...tableData];
-        console.log(newArr);
-        console.log(tableData);
-        
         setTableData(newArr)
       }
     })

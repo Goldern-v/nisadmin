@@ -1,38 +1,39 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Col, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'antd'
-
-export interface Props {
-  visible: boolean,
-  onOk: Function,
-  onCancel: Function,
-  params?: any,
-  isAdd?: boolean
+import { Col, Modal, Row, Select, Spin } from 'antd'
+import FollowUpPatientsManageServices from '../followUpPatientsManage/services/FollowUpPatientsManageServices'
+import { ModalComponentProps } from 'src/libs/createModal'
+export interface Props extends ModalComponentProps {
+  templateList: any,
+  diseaseList: any,
 }
-
-export default function EidtModal(props: Props) {
-  const { visible, isAdd, params, onOk, onCancel } = props
+const api = new FollowUpPatientsManageServices();
+export default function BatchDistribution(props: Props) {
+  const { visible, onCancel,  } = props
   const [loading, setLoading] = useState(false)
   const [editParams, setEidtParams] = useState({} as any)
-  const handleOk = () => {
+  const [selectedTemplate1, setSelectedTemplate1]: any = useState('')
+  const [selectedTemplate2, setSelectedTemplate2]: any = useState('')
+  const [selectedTemplate3, setSelectedTemplate3]: any = useState('')
+  const handleOk = () => { 
   }
-
-  const editPannel = () => {
+  
+  const editPannel = (props:Props) => {
+       let templateList = props.templateList || []
+       let diseaseList = props.diseaseList || []
         return <div>
           <Row>
             <Col span={6}>
-              随访小组：
+              随访小组
             </Col>
             <Col span={18}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
+            <Select style={{ width: '100%' }} value={selectedTemplate1} onChange={(value: any) => setSelectedTemplate1(value)}>
+              {templateList.map((item: any, index: number) => (
+                <Select.Option key={index} value={item.teamId}>
+                  {item.teamName}
+                </Select.Option>
+              ))}
+            </Select>
             </Col>
           </Row>
           <Row>
@@ -40,15 +41,13 @@ export default function EidtModal(props: Props) {
               病种：
             </Col>
             <Col span={18}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
+            <Select style={{ width: '100%' }} value={selectedTemplate2} onChange={(value: any) => setSelectedTemplate2(value)}>
+              {diseaseList.map((item: any, index: number) => (
+                <Select.Option key={index} value={item.diseaseTypeId}>
+                  {item.diseaseTypeName}
+                </Select.Option>
+              ))}
+            </Select>
             </Col>
           </Row>
           <Row>
@@ -56,15 +55,13 @@ export default function EidtModal(props: Props) {
               随访周期：
             </Col>
             <Col span={18}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.education}
-                onChange={(education: any) => setEidtParams({
-                  ...editParams,
-                  education,
-                })}>
-                {/* {educationList.map((item: any) => <Option value={item.name} key={item.name}>{item.name}</Option>)} */}
-              </Select>
+            <Select style={{ width: '100%' }} value={selectedTemplate3} onChange={(value: any) => setSelectedTemplate3(value)}>
+              {diseaseList.map((item: any, index: number) => (
+                <Select.Option key={index} value={item.periods}>
+                  {item.periods}
+                </Select.Option>
+              ))}
+            </Select>
             </Col>
           </Row>
         </div>
@@ -80,7 +77,7 @@ export default function EidtModal(props: Props) {
     onCancel={() => onCancel()}>
     <Wrapper>
       <Spin spinning={loading}>
-        {editPannel()}
+        {editPannel(props)}
       </Spin>
     </Wrapper>
   </Modal>

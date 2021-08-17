@@ -12,10 +12,13 @@ import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
 
-export interface Props { }
+export interface Props { 
+  templateList: any,
+  deptList: any,
+  diseaseList: any,
+}
 const api = new FollowUpPatientsManageServices();
-
-export default function 已分配出院患者() {
+export default function 待分配出院患者(props:Props) {
   const batchDistribution = createModal(BatchDistribution)
   const [query, setQuery]: any = useState({
     pageSize: 20,
@@ -25,9 +28,7 @@ export default function 已分配出院患者() {
   const [pageLoading, setPageLoading] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
   //科室列表
-  const [deptList, setDeptList] = useState([] as any)
   const [date, setDate]: any = useState(getCurrentMonthNow())
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [searchText, setSearchText] = useState('')
   const [dataSource, setDataSource] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
@@ -35,73 +36,76 @@ export default function 已分配出院患者() {
   const columns: ColumnProps<any>[] = [
     {
       title: '护理单元',
-      dataIndex: 'wardName',
+      dataIndex: 'wardCode',
       align: 'center',
       width: 150
     },
     {
       title: '床号',
-      dataIndex: '',
+      dataIndex: 'bedNumber',
       align: 'center',
       width: 60
     },
     {
       title: '姓名',
-      dataIndex: 'remark',
+      dataIndex: 'patientName',
       align: 'center',
       width: 80
     },
     {
       title: '性别',
-      dataIndex: '',
+      dataIndex: 'sex',
       align: 'center',
-      width: 60
+      width: 60,
+      render(sex: any) {
+        return sex === 0 ? "男" : sex === 1 ? "女" : "";
+      }
     },
     {
       title: '联系电话',
-      dataIndex: 'name',
+      dataIndex: 'contactsPhone',
       width: 120,
       align: 'center'
     },
     {
       title: '联系人',
-      dataIndex: '',
+      dataIndex: 'contactsName',
       width: 150,
       align: 'center'
     },
     {
       title: '病人ID',
-      dataIndex: '',
+      dataIndex: 'patientId',
       width: 100,
       align: 'center'
     },
     {
       title: '住院号',
-      dataIndex: '',
+      dataIndex: 'hospitalNumber',
       width: 100,
       align: 'center'
     },
     {
       title: '住院次数',
-      dataIndex: '',
+      dataIndex: 'hospitalFrequency',
       width: 100,
       align: 'center'
     },
     {
       title: '管床医生',
-      dataIndex: '',
+      dataIndex: 'doctorName',
       width: 100,
       align: 'center'
     },
     {
       title: '出院日期',
-      dataIndex: 'createTime',
+      dataIndex: 'dischargeDate',
       width: 200,
       align: 'center'
     },
     {
       title: '诊断',
-      dataIndex: '',
+      dataIndex: 'diagnosis',
       width: 180,
       align: 'center'
     },
@@ -117,21 +121,23 @@ export default function 已分配出院患者() {
       }
     }
   ]
+
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
+
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
     let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
     api
-      .findLog({
+      .visitPatientData({
         ...query,
+        status: 2, //1已分配 2未分配
         wardCode: deptSelect,
         startDate,
         endDate,
-        searchText: searchText,
-        status
+        keyword: searchText,
       })
       .then((res) => {
         setPageLoading(false)
@@ -142,33 +148,21 @@ export default function 已分配出院患者() {
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
-  const getTableData = (newQuery: any) => {
-  }
-  useEffect(() => {
-    getTableData(query)
-  }, [query])
 
   const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
 
   const onDetail = (record: any) => {
-    appStore.history.push(`/wardLogDetail?id=${record.id}`)
+    
   }
 
   const onDistribution = (record: any) => {
     batchDistribution
-      .show({})
+      .show({
+        diseaseList: props.diseaseList,
+        templateList: props.templateList,
+      })
   }
-  
-  useEffect(() => {
-    getDeptList();
-  }, []);
 
-  const getDeptList = () => {
-    api.getNursingUnitAll().then(res => {
-      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
-    })
-  }
-  
   useEffect(() => {
     getData()
   }, [
@@ -191,7 +185,7 @@ export default function 已分配出院患者() {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(val: string) => setDeptSelect(val)}>
         <Select.Option value={''}>全部</Select.Option>
-        {deptList.map((item: any, idx: any) =>
+        {props.deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
       </Select>
       <span className='label'>出院时间:</span>
@@ -249,7 +243,7 @@ export default function 已分配出院患者() {
           }}
         />
     </MainCon>
-    <batchDistribution.Component />
+    <batchDistribution.Component/>
   </Wrapper>
 }
 

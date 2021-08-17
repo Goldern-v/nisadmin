@@ -3,15 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { Button, Select, Input, DatePicker, message, Modal, Switch } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
+import { ColumnProps } from 'antd/lib/table'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
 
-export interface Props { }
+export interface Props { 
+  templateList: any, //随访小组列表
+  deptList: any, //科室列表
+}
 const api = new FollowUpPatientsManageServices();
-export default function 已分配出院患者() {
+export default function 已分配出院患者(props:Props) {
   const [query, setQuery] = useState({
     pageSize: 20,
     pageIndex: 1,
@@ -19,16 +22,12 @@ export default function 已分配出院患者() {
   //表格数据载入状态
   const [tableData, setTableData] = useState([])
   const [dataTotal, setDataTotal] = useState(0)
-  const [loadingTable, setLoadingTable] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
   const [deptSwitch, setDeptSwitch] = useState(false)
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
-  const [templateList, setTemplateList]: any = useState([])
   const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
   //科室列表
-  const [deptList, setDeptList] = useState([] as any)
   const [pageLoading, setPageLoading] = useState(false)
   const columns: ColumnProps<any>[] = [
     {
@@ -40,109 +39,124 @@ export default function 已分配出院患者() {
     },
     {
       title: '护理单元',
-      dataIndex: 'wardName',
+      dataIndex: 'wardCode',
       align: 'center',
       width: 120
     },
     {
       title: '床号',
-      dataIndex: '',
+      dataIndex: 'bedNumber',
       align: 'center',
       width: 50
     },
     {
       title: '姓名',
-      dataIndex: 'remark',
+      dataIndex: 'patientName',
       align: 'center',
       width: 70
     },
     {
       title: '性别',
-      dataIndex: '',
+      dataIndex: 'sex',
       align: 'center',
-      width: 50
+      width: 50,
+      render(sex: any) {
+        return sex === 0 ? "男" : sex === 1 ? "女" : "";
+      }
     },
     {
       title: '联系电话',
-      dataIndex: 'name',
+      dataIndex: 'contactsPhone',
       width: 120,
       align: 'center'
     },
     {
       title: '联系人',
-      dataIndex: '',
+      dataIndex: 'contactsName',
       width: 150,
       align: 'center'
     },
     {
       title: '病种',
-      dataIndex: '',
+      dataIndex: 'visitDiseaseType.diseaseTypeName',
       width: 150,
       align: 'center'
     },
     {
       title: '随访周期',
-      dataIndex: '',
+      dataIndex: 'visitDiseaseType.periods',
       width: 120,
       align: 'center'
     },
     {
       title: '随访开始时间',
-      dataIndex: 'createTime',
+      dataIndex: 'visitStartDate',
       width: 200,
       align: 'center'
     },
     {
       title: '随访结束时间',
-      dataIndex: 'createTime',
+      dataIndex: 'visitEndDate',
       width: 200,
       align: 'center'
     },
     {
       title: '随访小组',
-      dataIndex: '',
+      dataIndex: 'visitTeam.teamName',
       width: 120,
       align: 'center'
     },
     {
       title: '最近随访护士',
-      dataIndex: '',
+      dataIndex: 'newestVisitNurse',
       width: 120,
       align: 'center'
     },
     {
       title: '最新随访时间',
-      dataIndex: 'createTime',
+      dataIndex: 'newestVisitDate',
       width: 200,
       align: 'center'
     },
     {
       title: '随访方式',
-      dataIndex: '',
+      dataIndex: 'visitType',
       width: 120,
-      align: 'center'
+      align: 'center',
+      render(visitType: any) {
+        return visitType === 1 ? "" : "电话";
+      }
     },
     {
       title: '是否失访',
-      dataIndex: '',
+      dataIndex: 'isLostVisit',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(isLostVisit: any) {
+        return isLostVisit === 0 ? "否" : isLostVisit === 1 ? "是" : "";
+      }
     },
     {
       title: '是否死亡',
-      dataIndex: '',
+      dataIndex: 'isDead',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(isDead: any) {
+        return isDead === 0 ? "否" : isDead === 1 ? "是" : "";
+      }
     },
     {
       title: '随访状态',
-      dataIndex: 'senderName',
+      dataIndex: 'visitStatus',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(visitStatus: any) {
+        return visitStatus === 0 ? "结束" : visitStatus === 1 ? "进行中" : "";
+      }
     },
     {
       title: '备注',
-      dataIndex: '',
+      dataIndex: 'remarks',
       width: 150,
       align: 'center'
     },
@@ -159,12 +173,9 @@ export default function 已分配出院患者() {
       }
     }
   ]
+
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
-  }
-
-  const onChangeSwitch = (e: any) => {
-    console.log(`1`);
   }
 
   const handlePageSizeChange = (current: number, size: number) => {
@@ -175,70 +186,39 @@ export default function 已分配出院患者() {
     setQuery({ ...query, pageIndex: current })
   }
 
-
   const handleDetailView = (bookId: string) => {
     
-  }
-
-  useEffect(() => {
-    getDeptList();
-    getTemplateList();
-  }, []);
-
-  const getDeptList = () => {
-    api.getNursingUnitAll().then(res => {
-      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
-    })
-  }
-
-  const getTemplateList = () => {
-    // api.getNursingUnitAll().then(res => {
-    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
-    // })
-    const a : any = [
-    {code: "1", name: "随访1组"},
-    {code: "2", name: "随访2组"},
-    {code: "3", name: "随访3组"},
-    {code: "4", name: "随访4组"}]
-    setTemplateList(a)
   }
 
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
     let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    let iEnd = deptSwitch ? 1 : 0 //0不隐藏 1隐藏
     api
-      .findLog({
+      .visitPatientData({
         ...query,
+        status: 1, //1已分配 2未分配
         wardCode: deptSelect,
-        isHidden: deptSwitch,
         startDate,
         endDate,
-        templateId: selectedTemplate,
-        searchText: searchText,
-        status
+        teamId: selectedTemplate,
+        keyword: searchText,
+        iEnd,
       })
       .then((res) => {
         setPageLoading(false)
 
-        setSelectedRowKeys([])
 
         setDataTotal(res.data.totalCount)
         setTableData(res.data.list)
       }, err => setPageLoading(false))
   }
-  const getTableData = (newQuery: any) => {
-    
-  }
-  useEffect(() => {
-    getTableData(query)
-  }, [query])
-
-  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
 
   const onDetail = (record: any) => {
-    // appStore.history.push(`/wardLogDetail?id=${record.id}`)
+    
   }
+
   useEffect(() => {
     getData()
   }, [
@@ -263,7 +243,7 @@ export default function 已分配出院患者() {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(val: string) => setDeptSelect(val)}>
         <Select.Option value={''}>全部</Select.Option>
-        {deptList.map((item: any, idx: any) =>
+        {props.deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
       </Select>
       <span className='label'>出院时间:</span>
@@ -276,9 +256,9 @@ export default function 已分配出院患者() {
       <span className='label'>随访小组:</span>
         <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
-          {templateList.map((item: any, index: number) => (
-            <Select.Option key={index} value={item.name}>
-              {item.name}
+          {props.templateList.map((item: any, index: number) => (
+            <Select.Option key={index} value={item.teamId}>
+              {item.teamName}
             </Select.Option>
           ))}
         </Select>
