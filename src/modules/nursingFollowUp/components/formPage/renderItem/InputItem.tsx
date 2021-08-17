@@ -18,9 +18,10 @@ export default function InputItem(props: Props) {
     (<input
       type="text"
       className={['input-item', className].join(' ')}
-      value={value}
+      value={value || ''}
       style={style}
       disabled={disabled}
+      onChange={() => { }}
       onInput={(e) => onChange && onChange(e)} />) :
     (<CustomSpan className={['input-item', className].join(' ')} style={style}>{value}</CustomSpan>)
 }

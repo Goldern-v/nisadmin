@@ -67,7 +67,8 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "系统设置",
-    path: "/setting"
+    path: "/setting",
+    hidden: !appStore.isDev,
   },
   {
     name: "不良事件",

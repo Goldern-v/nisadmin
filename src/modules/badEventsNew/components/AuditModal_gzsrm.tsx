@@ -171,6 +171,8 @@ export default observer(function AduitModal(props: Props) {
         break
       case 'nursing_minister_comfirm':
         opionTitle = ' 护理部确认'
+        if (auditInfo.noPass)
+          opionTitle = ' 回退原因'
         auditDateTitle = ' 护理部确认日期'
         break
       default:

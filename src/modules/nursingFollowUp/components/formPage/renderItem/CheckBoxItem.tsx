@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import FillingQuestionTemplate from 'src/modules/questionBankManagement/components/fillingQuestion/FillingQuestionTemplate'
+import { Tracing } from 'trace_events'
 
 export interface Props {
   editable?: boolean,
@@ -9,74 +10,86 @@ export interface Props {
   originValue: string,
   onChange?: Function,
   className?: string,
-  radioClassName?: string,
+  checkboxClassName?: string,
   style?: React.CSSProperties,
-  radioStyle?: React.CSSProperties,
+  checkboxStyle?: React.CSSProperties,
   showValue?: boolean,
   children?: any,
 }
 
-export default function RadioItem(props: Props) {
+export default function CheckBoxItem(props: Props) {
   const {
     editable,
     value,
     originValue,
     className,
-    radioClassName,
+    checkboxClassName,
     onChange,
     style,
-    radioStyle,
+    checkboxStyle,
     showValue,
     children
   } = props
 
-  const getCheckStatus = (): boolean => {
-    if (!originValue) return false
-    if (value !== originValue) return false
+  const valueArr = (value || '').split(',') as string[]
 
-    return true
+  const getCheckStatus = (): boolean => {
+    if (valueArr.length < 0 || !value) return false
+
+    if (valueArr.includes(originValue)) {
+      return true
+    } else {
+      return false
+    }
   }
 
   const checked = getCheckStatus()
 
   return (
-    <CustomRadio
-      className={['radio-item', className].join(' ')}
+    <CustomCheckbox
+      className={['checkbox-item', className].join(' ')}
       style={style}
       onClick={() => {
-        if (!editable) return
+        if (!editable || !originValue) return
 
-        let newVal = checked ? '' : originValue
+        let newVal = ''
+        let newValueArr = [...valueArr]
+
+        if (checked) {
+          let spliceIdx = valueArr.indexOf(originValue)
+          newValueArr.splice(spliceIdx, 1)
+        } else {
+          newValueArr.push(originValue)
+        }
+        newVal = newValueArr.filter((str: string) => str).join(',')
         onChange && onChange(newVal)
       }}>
       <span
-        className={['radio-wrapper', radioClassName].join(' ')}
-        style={radioStyle}>
-        {checked && <span className="radio-fill"></span>}
+        className={['checkbox-wrapper', checkboxClassName].join(' ')}
+        style={checkboxStyle}>
+        {checked && <span className="checkbox-fill"></span>}
       </span>
       {showValue ? (<span>{originValue}</span>) : children}
-    </CustomRadio>
+    </CustomCheckbox>
   )
 }
 
-const CustomRadio = styled.div`
+const CustomCheckbox = styled.div`
   cursor: pointer;
   display: inline-block;
   margin-right: 5px;
   &>*{
     vertical-align: middle;
   }
-  .radio-wrapper{
+  .checkbox-wrapper{
     border: 1px solid #00A680;
-    border-radius: 50%;
     display: inline-block;
     width: 14px;
     height: 14px;
     position: relative;
     margin-right: 5px;
-    .radio-fill{
+    .checkbox-fill{
       display: inline-block;
-      border-radius: 50%;
       width: 8px;
       height: 8px;
       background-color: #00A680;
