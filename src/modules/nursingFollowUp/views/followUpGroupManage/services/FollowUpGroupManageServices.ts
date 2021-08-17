@@ -9,9 +9,13 @@ export default class  FollowUpGroupManageServices extends BaseApiService {
   public getNursingUnitAll() {
     return this.get(`/user/nursingUnit/all`);
   }
-
-  public findLog(obj: PageOptions | any) {
-    return this.post(`/InpatientAreaLog/findLog`, obj)
+  //获取随访小组分页信息
+  public queryNursePageList(obj: PageOptions | any) {
+    return this.post(`/visit/visitTeam/queryNursePageList`, obj)
+  }
+  //获取全部随访小组列表
+  public visitTeam() {
+    return this.get(`/visit/visitTeam/getAllList`)
   }
 }
 

@@ -9,8 +9,8 @@ export default class DiseaseManageServices extends BaseApiService {
     return this.get(`/user/nursingUnit/all`);
   }
   
-  public findLog(obj: PageOptions | any) {
-    return this.post(`/InpatientAreaLog/findLog`, obj)
+  public visitDiseaseType(obj: PageOptions | any) {
+    return this.post(`/visit/visitDiseaseType/queryPageList`, obj)
   }
 }
 

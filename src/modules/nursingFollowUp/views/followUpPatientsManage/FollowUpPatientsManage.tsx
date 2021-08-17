@@ -34,14 +34,14 @@ export default function FollowUpPatientsManage(props: any) {
   }
 
   const getTemplateList = () => {
-    api.visitTeam({...query} ).then(res => {
-      if (res.data.list instanceof Array) setTemplateList(res.data.list);
+    api.visitTeam().then(res => {
+      if (res.data instanceof Array) setTemplateList(res.data);
     })
   }
 
   const getDiseaseList = () => {
-    api.visitDiseaseType({...query} ).then(res => {
-      if (res.data.list instanceof Array) setDiseaseList(res.data.list);
+    api.visitDiseaseType( ).then(res => {
+      if (res.data instanceof Array) setDiseaseList(res.data);
     })
   }
 

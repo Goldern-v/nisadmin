@@ -72,11 +72,10 @@ export default function DiseaseManage(props: any) {
   const getData = () => {
     setPageLoading(true)
     api
-      .findLog({
+      .visitDiseaseType({
         ...query,
         wardCode: deptSelect,
-        searchText: searchText,
-        status
+        keyword: searchText,
       })
       .then((res) => {
         setPageLoading(false)
@@ -99,39 +98,39 @@ export default function DiseaseManage(props: any) {
     },
     {
       title: '疾病名称',
-      dataIndex: 'wardName',
-      key: 'wardName',
+      dataIndex: 'diseaseTypeName',
+      key: 'diseaseTypeName',
       align: 'center',
       width: 50,
     }
     ,
     {
       title: '随访周期',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'periods',
+      key: 'periods',
       align: 'center',
       width: 50
     },
     {
       title: '随访问卷',
-      dataIndex: 'sfwj',
-      key: 'sfwj',
+      dataIndex: 'visitTemplateList[0].formName',
+      key: 'visitTemplateList[0].formName',
       align: 'center',
       width: 150,
-      render: (text: string, record: any) => {
-        const DoCon = styled.div`
-          display: flex;
-          justify-content: space-around;
-          font-size: 12px;
-          color: ${(p) => p.theme.$mtc};
-        `
-        return (
-          <div>
-            <a href='javascript:;'onClick={() => setDetailModal(record)}>《脑卒中随访调查表》</a>
-            <a href='javascript:;'onClick={() => setDetailModal(record)} className='ml-20'>《2021年脑卒中随访调查表》</a>
-          </div>
-        )
-      }
+      // render: (text: string, record: any) => {
+      //   const DoCon = styled.div`
+      //     display: flex;
+      //     justify-content: space-around;
+      //     font-size: 12px;
+      //     color: ${(p) => p.theme.$mtc};
+      //   `
+      //   return (
+      //     <div>
+      //       <a href='javascript:;'onClick={() => setDetailModal(record)}>《脑卒中随访调查表》</a>
+      //       <a href='javascript:;'onClick={() => setDetailModal(record)} className='ml-20'>《2021年脑卒中随访调查表》</a>
+      //     </div>
+      //   )
+      // }
     },
     {
       title: '操作',

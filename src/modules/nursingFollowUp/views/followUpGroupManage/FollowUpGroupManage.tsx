@@ -69,13 +69,12 @@ export default function FollowUpGroupManage(props: any) {
     
     setPageLoading(true)
     api
-      .findLog({
+      .queryNursePageList({
         ...query,
         wardCode: deptSelect,
-        templateId: selectedTemplate,
-        distributionId: selectedDistribution,
-        searchText: searchText,
-        status
+        teamId: selectedTemplate,
+        status: selectedDistribution,
+        keyword: searchText,
       })
       .then((res) => {
         setPageLoading(false)
@@ -98,59 +97,62 @@ export default function FollowUpGroupManage(props: any) {
     },
     {
       title: '护理单元',
-      dataIndex: 'wardName',
-      key: 'wardName',
+      dataIndex: 'deptName',
+      key: 'deptName',
       align: 'center',
       width: 150,
     }
     ,
     {
       title: '工号',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'empNo',
+      key: 'empNo',
       align: 'center',
       width: 80
     },
     {
       title: '姓名',
-      dataIndex: 'senderName',
-      key: 'senderName',
+      dataIndex: 'empName',
+      key: 'empName',
       align: 'center',
       width: 80
     },
     {
       title: '性别',
-      dataIndex: 'senderName',
-      key: 'senderName',
+      dataIndex: 'sex',
+      key: 'sex',
       align: 'center',
-      width: 50
+      width: 50,
+      render(sex: any) {
+        return sex == "0" ? "男" : sex == "1" ? "女" : "";
+      }
     },
     {
       title: '职称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'newTitle',
+      key: 'newTitle',
       align: 'center',
       width: 100
     },
     {
       title: '职务',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'job',
+      key: 'job',
       align: 'center',
       width: 100
     },
     {
       title: '层级',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'nurseHierarchy',
+      key: 'nurseHierarchy',
       align: 'center',
       width: 100
     },
     
     {
       title: '随访小组',
-      dataIndex: 'team',
-      key: 'team',
+      dataIndex: 'visitTeamList',
+      key: 'visitTeamList',
       width: 100,
       align: 'center',
       render: (text: string, record: any) => {
@@ -162,11 +164,10 @@ export default function FollowUpGroupManage(props: any) {
               showArrow={false}
               onChange={(value: any) => {
                 record.value = value
-
               }}>
               {teamList.map((item: any, index: number) => (
-                <Select.Option key={index} value={item.name}>
-                {item.name}
+                <Select.Option key={index} value={item.teamId}>
+                {item.teamName}
               </Select.Option>
               ))}
             </Select>
@@ -211,22 +212,12 @@ export default function FollowUpGroupManage(props: any) {
   }
 
   const getTemplateList = () => {
-    // api.getNursingUnitAll().then(res => {
-    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
-    // })
-    const a : any = [
-    {code: "1", name: "随访1组"},
-    {code: "2", name: "随访2组"},
-    {code: "3", name: "随访3组"},
-    {code: "4", name: "随访4组"}]
-    setTemplateList(a)
-    setTeamList(a)
+    api.visitTeam().then(res => {
+      if (res.data instanceof Array) setTemplateList(res.data);
+    })
   }
 
   const getDistributionList = () => {
-    // api.getNursingUnitAll().then(res => {
-    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
-    // })
     const b : any = [
     {code: "1", name: "已分配"},
     {code: "2", name: "未分配"},]
@@ -252,8 +243,8 @@ export default function FollowUpGroupManage(props: any) {
         <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
           {templateList.map((item: any, index: number) => (
-            <Select.Option key={index} value={item.name}>
-              {item.name}
+            <Select.Option key={index} value={item.teamId}>
+              {item.teamName}
             </Select.Option>
           ))}
         </Select>
@@ -261,7 +252,7 @@ export default function FollowUpGroupManage(props: any) {
         <Select style={{ width: 180 }} value={selectedDistribution} onChange={(value: any) => setSelectedDistribution(value)}>
           <Select.Option value=''>全部</Select.Option>
           {distributionList.map((item: any, index: number) => (
-            <Select.Option key={index} value={item.name}>
+            <Select.Option key={index} value={item.code}>
               {item.name}
             </Select.Option>
           ))}

@@ -9,9 +9,13 @@ export default class FollowUpQuestionnaireManageServices extends BaseApiService 
   public async getDeptList() {
     return this.post(`/briefMission/getBriefMissionDept`);
   }
-
-  public findLog(obj: PageOptions | any) {
-    return this.post(`/InpatientAreaLog/findLog`, obj)
+  //查询调查问卷分页
+  public visitTemplate(obj: PageOptions | any) {
+    return this.post(`/visit/visitTemplate/queryPageList`, obj)
+  }
+  //获取病种列表
+  public getAllList() {
+    return this.get(`/visit/visitDiseaseType/getAllList`)
   }
 
 }

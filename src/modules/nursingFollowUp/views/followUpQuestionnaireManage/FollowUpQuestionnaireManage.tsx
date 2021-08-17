@@ -33,7 +33,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const [deptList, setDeptList] = useState([] as any)
    //宣教接口请求参数
   const [query, setQuery] = useState({
-    deptCode: '',
+    wardCode: '',
     pageSize: 20,
     pageIndex: 1
   });
@@ -42,18 +42,17 @@ export default function FollowUpQuestionnaireManage(props: any) {
     setSearchText(e.target.value)
   }
   const handleDeptSelect = (item: any) => {
-    setQuery({ ...query, deptCode: item.code });
+    setQuery({ ...query, wardCode: item.code });
   }
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
     let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
     api
-      .findLog({
+      .visitTemplate({
         ...query,
-        diseasId: deptSelect,
-        searchText: searchText,
-        status
+        diseaseTypeId: deptSelect,
+        keyword: searchText,
       })
       .then((res) => {
         setPageLoading(false)
@@ -86,15 +85,15 @@ export default function FollowUpQuestionnaireManage(props: any) {
     },
     {
       title: '随访问卷',
-      dataIndex: 'themeName',
-      key: 'themeName',
+      dataIndex: 'formName',
+      key: 'formName',
       align: 'center',
       width: 150
     },
     {
       title: '病种',
-      dataIndex: 'remark',
-      key: 'remark',
+      dataIndex: 'visitDiseaseTypeList[0].diseaseTypeName',
+      key: 'visitDiseaseTypeList[0].diseaseTypeName',
       align: 'center',
       className: 'dept-name',
       width: 50
@@ -140,13 +139,13 @@ export default function FollowUpQuestionnaireManage(props: any) {
   }, [
     query.pageIndex,
     query.pageSize,
-    query.deptCode,
+    query.wardCode,
     deptSelect
   ])
 
   useEffect(() => {
     getDeptList();
-    getDiseasList();
+    getAllList();
   }, []);
 
   const getDeptList = () => {
@@ -154,20 +153,15 @@ export default function FollowUpQuestionnaireManage(props: any) {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
   }
-  const getDiseasList = () => {
-    // api.getNursingUnitAll().then(res => {
-    //   if (res.data.deptList instanceof Array) setTemplateList(res.data.deptList);
-    // })
-    const a : any = [
-    {code: "1", name: "脑卒中"},
-    ]
-    setDiseasList(a)
+  const getAllList = () => {
+    api.getAllList().then(res => {
+      if (res.data instanceof Array) setDiseasList(res.data);
+    })
   }
   return <Wrapper>
     <PageHeader>
       <Place />
       <span className='label'>病种:</span>
-        {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
         <Select
           value={deptSelect}
           style={{ width: 180 }}
@@ -177,7 +171,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
           {diseasList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.name}>{item.name}</Select.Option>)}
+            <Select.Option key={idx} value={item.diseaseTypeId}>{item.diseaseTypeName}</Select.Option>)}
         </Select>
         <Input
           placeholder='请输入随访问卷关键字检索'
@@ -198,13 +192,13 @@ export default function FollowUpQuestionnaireManage(props: any) {
         <div className="title">科室</div>
         <div className="content">
           <div
-            className={query.deptCode == '000000' ? 'dept-item selected' : 'dept-item'}
-            onClick={() => handleDeptSelect({ code: '000000' })}>
+            className={query.wardCode == '' ? 'dept-item selected' : 'dept-item'}
+            onClick={() => handleDeptSelect({ code: '' })}>
             <span className="before" />公共<span className="after" />
           </div>
           {deptList.map((item: any) => {
             let classes = ['dept-item'];
-            if (query.deptCode == item.code) classes.push('selected')
+            if (query.wardCode == item.code) classes.push('selected')
             return <div
               key={item.code}
               className={classes.join(' ')}
