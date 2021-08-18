@@ -46,8 +46,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
   }
   const getData = () => {
     setPageLoading(true)
-    let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-    let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
     api
       .visitTemplate({
         ...query,
@@ -61,6 +59,36 @@ export default function FollowUpQuestionnaireManage(props: any) {
 
         setDataTotal(res.data.totalCount)
         setTableData(res.data.list)
+      }, err => setPageLoading(false))
+  }
+  const onSave = (record: any) => {
+
+    setPageLoading(true)
+    api
+      .setVisitTemplateDiseaseType({
+        formCode: record.formCode,
+        diseaseTypeId: record.visitDiseaseTypeList[0].diseaseTypeId,
+      })
+      .then((res) => {
+        setPageLoading(false)
+        // getData()
+      }, err => setPageLoading(false))
+  }
+  //是否启用
+  const changeStatus = (record: any, check: any) => {
+    record.status = check ? 1 : 0
+    setTableData([...tableData])
+    setPageLoading(true)
+    api
+      .setVisitTemplateStatus({
+        formCode: record.formCode,
+        status: record.status,
+      })
+      .then((res) => {
+        setPageLoading(false)
+        if (res.code == "200") {
+          message.success("操作成功！");
+        } 
       }, err => setPageLoading(false))
   }
   const handlePageSizeChange = (current: number, size: number) => {
@@ -92,11 +120,44 @@ export default function FollowUpQuestionnaireManage(props: any) {
     },
     {
       title: '病种',
-      dataIndex: 'visitDiseaseTypeList[0].diseaseTypeName',
-      key: 'visitDiseaseTypeList[0].diseaseTypeName',
+      dataIndex: 'visitDiseaseTypeList',
+      key: 'visitDiseaseTypeList',
       align: 'center',
-      className: 'dept-name',
-      width: 50
+      width: 50,
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            <Select 
+              style={{ width: 75 }}
+              id="box_select"
+              showArrow={false}
+              value={record.visitDiseaseTypeList[0].diseaseTypeId}
+              onChange={(value: any) => {
+                record.visitDiseaseTypeList[0].diseaseTypeId = value
+                setTableData([...tableData])
+                onSave(record)
+              }}>
+              {diseasList.map((item: any, index: number) => (
+                <Select.Option key={index} value={item.diseaseTypeId}>
+                {item.diseaseTypeName}
+              </Select.Option>
+              ))}
+            </Select>
+            {/* <select 
+              style={{ width: 75 }}
+              onChange={(value: any) => {
+                record.value = value
+              }}>
+              {teamList.map((item: any, index: number) => (
+                <option key={index} value={item.name}>
+                {item.name}
+                </option>
+              ))}
+            </select> */}
+            
+          </div>
+        )
+      }
     },
     {
       title: '是否启用',
@@ -108,10 +169,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
           <span>
             <Switch
               size='small'
-              onChange={(check: any) => {
-                record.status = check
-                setMealList([...mealList])
-              }}
+              onChange={(check:any) => changeStatus(record, check)}
               checked={text}
             />
           </span>
@@ -183,7 +241,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
         <Button onClick={() => getData()}>
           查询
         </Button>
-        <Button type='primary' onClick={() => getData()}>
+        <Button type='primary' >
           保存
         </Button>
       </PageHeader>
@@ -246,7 +304,12 @@ position: relative;
 .input_hj {
   margin-left: 20px;
 }
-
+#box_select {
+  .ant-select-selection{
+    border: 0;
+    background: #fff;
+  }
+}
 .topbar{
   height: 60px;
   // border-bottom: 1px solid #ddd;

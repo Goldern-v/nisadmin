@@ -17,7 +17,14 @@ export default class FollowUpQuestionnaireManageServices extends BaseApiService 
   public getAllList() {
     return this.get(`/visit/visitDiseaseType/getAllList`)
   }
-
+  //问卷是否启用
+  public setVisitTemplateStatus(obj: PageOptions | any) {
+    return this.post(`/visit/visitTemplate/setVisitTemplateStatus`, obj)
+  }
+  //保存问卷病种
+  public setVisitTemplateDiseaseType(obj: PageOptions | any) {
+    return this.post(`/visit/visitTemplate/setVisitTemplateDiseaseType`, obj)
+  }
 }
 
 export const followUpQuestionnaireManageServices = new FollowUpQuestionnaireManageServices()

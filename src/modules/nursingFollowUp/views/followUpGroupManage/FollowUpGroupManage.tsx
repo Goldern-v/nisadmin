@@ -46,6 +46,9 @@ export default function FollowUpGroupManage(props: any) {
   const setFollowUpGroup = (record:any) => {
     followUpGroupModal
       .show({
+        templateList:templateList,
+        getData:getData,
+        getTemplateList:getTemplateList,
       })
   }
   const handlePageSizeChange = (current: number, size: number) => {
@@ -151,8 +154,8 @@ export default function FollowUpGroupManage(props: any) {
     
     {
       title: '随访小组',
-      dataIndex: 'visitTeamList',
-      key: 'visitTeamList',
+      dataIndex: 'visitTeamList[0].teamId',
+      key: 'visitTeamList[0].teamId',
       width: 100,
       align: 'center',
       render: (text: string, record: any) => {
@@ -162,10 +165,12 @@ export default function FollowUpGroupManage(props: any) {
               style={{ width: 75 }}
               id="box_select"
               showArrow={false}
+              value={record.teamId}
               onChange={(value: any) => {
-                record.value = value
+                record.teamId = value
+                setTableData([...tableData])
               }}>
-              {teamList.map((item: any, index: number) => (
+              {templateList.map((item: any, index: number) => (
                 <Select.Option key={index} value={item.teamId}>
                 {item.teamName}
               </Select.Option>

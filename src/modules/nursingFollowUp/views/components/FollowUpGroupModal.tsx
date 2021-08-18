@@ -3,18 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { Button, Col, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
 import BaseTable from 'src/components/BaseTable'
 import { DoCon } from 'src/components/BaseTable'
-
-export interface Props {
-  visible: boolean,
-  onOk: Function,
-  onCancel: Function,
-  params?: any,
-  isAdd?: boolean
-}
+import FollowUpGroupManageServices from '../followUpGroupManage/services/FollowUpGroupManageServices'
+const api = new FollowUpGroupManageServices();
 
 
-export default function EidtModal(props: Props) {
-  const { visible, isAdd, params, onOk, onCancel } = props
+
+
+export default function EidtModal(props: any) {
+  const { visible, onCancel } = props
   const [editUserType, setEditUserType] = useState('1')
   const [loading, setLoading] = useState(false)
   const [editParams, setEidtParams] = useState({} as any)
@@ -22,26 +18,19 @@ export default function EidtModal(props: Props) {
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-  const [tableData, setTableData] = useState([
-    {
-      "id": 1,
-      "name": "神内1组",
-    },
-    {
-      "id": 2,
-      "name": "神内2组",
-    },
-    {
-      "id": 3,
-      "name": "神内3组",
-    },
-  ])
+  const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  
+
+  useEffect(() => {
+    let {templateList = [], setTemplateList} = props;
+    setTableData(templateList)
+  }, [
+    props.templateList
+  ])
   const addFollowUpGroup = () => {
-    let index = tableData.length + 1
-    let tableArr = [...tableData,{id :index, name:""}]
-    setTableData(tableArr)
+    // let index = tableData.length + 1
+    // let tableArr = [...tableData,{id :index, name:""}]
+    // setTableData(tableArr)
   }
 
   //删除
@@ -50,49 +39,24 @@ export default function EidtModal(props: Props) {
       title: '确认删除该记录吗',
       centered: true,
       onOk: () => {
-        tableData.splice(index, 1);
-        let newArr = [...tableData];
-        setTableData(newArr)
+        
+        api
+          .delete({
+            teamId: record.teamId,
+          })
+          .then((res) => {
+            tableData.splice(index, 1);
+            let newArr = [...tableData];
+            setTableData(newArr)
+          }, )
       }
     })
   }
   const handleOk = () => {
     console.log(tableData);
+    props.getData();
+    props.getTemplateList();
     
-    // let currentRules = rules(userType) as any
-    // let errMsgList = []
-    // let ruleKeys = Object.keys(currentRules)
-    // for (let key in currentRules) {
-    //   let item = currentRules[key]
-    //   let val = editParams[key] || ''
-    //   for (let i = 0; i < item.length; i++) {
-    //     let rule = item[i]
-    //     let result = rule(val)
-    //     if (result !== true) errMsgList.push(result)
-    //   }
-    // }
-
-    // if (errMsgList.length > 0) {
-    //   Modal.error({
-    //     title: '提示',
-    //     content: <div>
-    //       {errMsgList.map((text: string, idx: number) => <div key={idx}>{text}</div>)}
-    //     </div>
-    //   })
-    //   return
-    // }
-
-    // let saveParams = { ...editParams }
-    // if (isAdd) saveParams.userType = editUserType
-
-    // setLoading(true)
-    // otherEmpService
-    //   .addOrUpdatePerson(saveParams)
-    //   .then(res => {
-    //     setLoading(false)
-    //     message.success('操作成功')
-    //     onOk && onOk()
-    //   }, () => setLoading(false))
   }
   const columns: any = [
     {
@@ -105,8 +69,8 @@ export default function EidtModal(props: Props) {
     },
     {
       title: '小组名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'teamName',
+      key: 'teamName',
       align: 'center',
       width: 100,
       render: (text: string, record: any) => {
@@ -114,9 +78,9 @@ export default function EidtModal(props: Props) {
           <div>
             <Input
               style={{ width: 150 }}
-              value={text}
+              value={record.teamName}
               onChange={(e: any) => {
-                record.name = e.currentTarget.value
+                record.teamName = e.currentTarget.value
                 setTableData([...tableData])
               }}
             />

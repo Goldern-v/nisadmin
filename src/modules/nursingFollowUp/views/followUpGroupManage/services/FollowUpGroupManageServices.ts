@@ -17,6 +17,10 @@ export default class  FollowUpGroupManageServices extends BaseApiService {
   public visitTeam() {
     return this.get(`/visit/visitTeam/getAllList`)
   }
+  //获取通过id删除小组
+  public delete(obj: PageOptions | any) {
+    return this.post(`/visit/visitTeam/delete`, obj)
+  }
 }
 
 export const followUpGroupManageServices = new FollowUpGroupManageServices()

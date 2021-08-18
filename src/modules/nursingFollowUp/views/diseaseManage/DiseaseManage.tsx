@@ -42,8 +42,9 @@ export default function DiseaseManage(props: any) {
     setSearchText(e.target.value)
   }
   
-  //设置随访小组
+  //添加疾病
   const setAddDiseaseModal = (record:any) => {
+    
     addDiseaseModal
       .show({
       })
@@ -113,24 +114,19 @@ export default function DiseaseManage(props: any) {
     },
     {
       title: '随访问卷',
-      dataIndex: 'visitTemplateList[0].formName',
-      key: 'visitTemplateList[0].formName',
+      dataIndex: 'visitTemplateList',
+      key: 'visitTemplateList',
       align: 'center',
       width: 150,
-      // render: (text: string, record: any) => {
-      //   const DoCon = styled.div`
-      //     display: flex;
-      //     justify-content: space-around;
-      //     font-size: 12px;
-      //     color: ${(p) => p.theme.$mtc};
-      //   `
-      //   return (
-      //     <div>
-      //       <a href='javascript:;'onClick={() => setDetailModal(record)}>《脑卒中随访调查表》</a>
-      //       <a href='javascript:;'onClick={() => setDetailModal(record)} className='ml-20'>《2021年脑卒中随访调查表》</a>
-      //     </div>
-      //   )
-      // }
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            {record.visitTemplateList.map((item: any, index: number) => (
+              <a href='javascript:;'onClick={() => setDetailModal(record)} key={index}>{item.formName}</a>
+            ))}
+          </div>
+        )
+      }
     },
     {
       title: '操作',
