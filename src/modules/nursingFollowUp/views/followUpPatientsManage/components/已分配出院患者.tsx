@@ -151,7 +151,7 @@ export default function 已分配出院患者(props:Props) {
       width: 100,
       align: 'center',
       render(visitStatus: any) {
-        return visitStatus === 0 ? "结束" : visitStatus === 1 ? "进行中" : "";
+        return visitStatus === 0 ? "已结束" : visitStatus === 1 ? "进行中" : "";
       }
     },
     {

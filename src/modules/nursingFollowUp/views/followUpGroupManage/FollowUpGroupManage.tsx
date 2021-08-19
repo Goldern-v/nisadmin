@@ -154,8 +154,8 @@ export default function FollowUpGroupManage(props: any) {
     
     {
       title: '随访小组',
-      dataIndex: 'visitTeamList[0].teamId',
-      key: 'visitTeamList[0].teamId',
+      dataIndex: 'visitTeam.teamId',
+      key: 'visitTeam.teamId',
       width: 100,
       align: 'center',
       render: (text: string, record: any) => {
@@ -165,9 +165,9 @@ export default function FollowUpGroupManage(props: any) {
               style={{ width: 75 }}
               id="box_select"
               showArrow={false}
-              value={record.teamId}
+              value={record.visitTeam==null?'':record.visitTeam.teamId}
               onChange={(value: any) => {
-                record.teamId = value
+                record.visitTeam.teamId = value
                 setTableData([...tableData])
               }}>
               {templateList.map((item: any, index: number) => (

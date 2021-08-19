@@ -119,47 +119,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
       width: 150
     },
     {
-      title: '病种',
-      dataIndex: 'visitDiseaseTypeList',
-      key: 'visitDiseaseTypeList',
-      align: 'center',
-      width: 50,
-      render: (text: string, record: any) => {
-        return (
-          <div>
-            <Select 
-              style={{ width: 75 }}
-              id="box_select"
-              showArrow={false}
-              value={record.visitDiseaseTypeList[0].diseaseTypeId}
-              onChange={(value: any) => {
-                record.visitDiseaseTypeList[0].diseaseTypeId = value
-                setTableData([...tableData])
-                onSave(record)
-              }}>
-              {diseasList.map((item: any, index: number) => (
-                <Select.Option key={index} value={item.diseaseTypeId}>
-                {item.diseaseTypeName}
-              </Select.Option>
-              ))}
-            </Select>
-            {/* <select 
-              style={{ width: 75 }}
-              onChange={(value: any) => {
-                record.value = value
-              }}>
-              {teamList.map((item: any, index: number) => (
-                <option key={index} value={item.name}>
-                {item.name}
-                </option>
-              ))}
-            </select> */}
-            
-          </div>
-        )
-      }
-    },
-    {
       title: '是否启用',
       dataIndex: 'status',
       key: '是否排班',

@@ -28,9 +28,9 @@ export default function EidtModal(props: any) {
     props.templateList
   ])
   const addFollowUpGroup = () => {
-    // let index = tableData.length + 1
-    // let tableArr = [...tableData,{id :index, name:""}]
-    // setTableData(tableArr)
+    let index = tableData.length + 1
+    let tableArr:any = [...tableData,{teamId :index, teamName:""}]
+    setTableData(tableArr)
   }
 
   //删除
@@ -54,9 +54,19 @@ export default function EidtModal(props: any) {
   }
   const handleOk = () => {
     console.log(tableData);
-    props.getData();
-    props.getTemplateList();
+    // props.getData();
+    // props.getTemplateList();
     
+  }
+  const onAdd =(record: any) => {
+    api
+      .saveOrUpdate({
+        teamId: record.teamId,
+        teamName: record.teamName,
+      })
+      .then((res) => {
+        
+      }, )
   }
   const columns: any = [
     {
@@ -94,6 +104,7 @@ export default function EidtModal(props: any) {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
+            <span onClick={() => onAdd(record)}>保存</span>
             <span onClick={() => onDelete(record,index)}>删除</span>
           </DoCon>
         )

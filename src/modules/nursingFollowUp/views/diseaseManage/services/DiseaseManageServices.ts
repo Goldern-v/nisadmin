@@ -12,6 +12,15 @@ export default class DiseaseManageServices extends BaseApiService {
   public visitDiseaseType(obj: PageOptions | any) {
     return this.post(`/visit/visitDiseaseType/queryPageList`, obj)
   }
+  public getAllList(obj: PageOptions | any) {
+    return this.post(`/visit/visitTemplate/getAllList`, obj)
+  }
+  public saveOrUpdate(obj: PageOptions | any) {
+    return this.post(`/visit/visitDiseaseType/saveOrUpdate`, obj)
+  }
+  public delete(obj: PageOptions | any) {
+    return this.post(`/visit/visitDiseaseType/delete`, obj)
+  }
 }
 
 export const diseaseManageServices = new DiseaseManageServices()
