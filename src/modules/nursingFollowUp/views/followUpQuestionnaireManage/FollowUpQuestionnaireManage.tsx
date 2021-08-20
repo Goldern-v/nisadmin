@@ -129,7 +129,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
             <Switch
               size='small'
               onChange={(check:any) => changeStatus(record, check)}
-              checked={text}
+              checked={record.status == 1 ? true : false}
             />
           </span>
     },

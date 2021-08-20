@@ -11,16 +11,17 @@ export interface Props {
   visible: boolean,
   onOk?: Function,
   onCancel?: Function,
-  title?: string
+  title?: string,
 }
 
 export default observer(function FormCreateModal(props: Props) {
-  const { visible, onOk, onCancel, title, } = props
+  const { visible, onOk, onCancel, title } = props
   const [formList, setFormList] = useState([] as any)
   const [formListLoading, setFormListLoaindg] = useState(false)
 
   const [filter, setFilter] = useState('')
   const [activeIdx, setActiveIdx] = useState(-1)
+  const [changeFormList, setChangeFormList] = useState([] as any)
 
   const filterList: any[] =
     formList.filter((item: any) => item.formName.indexOf(filter) >= 0) || []
@@ -37,13 +38,12 @@ export default observer(function FormCreateModal(props: Props) {
       }, () => setFormListLoaindg(false))
     }
   }, [visible])
-  const onChange = (item: any) => {
-    console.log(item);
   
+  const onChange = (item: any, idx: number) => {
+    setChangeFormList([...changeFormList,item])
+    setActiveIdx(idx)
   }
   const handleOk = (activeIdx: number) => {
-    console.log(activeIdx);
-    
     // if (activeIdx < 0) {
     //   message.warning('未选择表单')
     //   return
@@ -62,14 +62,16 @@ export default observer(function FormCreateModal(props: Props) {
   return <Modal
     width={545}
     visible={visible}
+    mask={false}
     centered
     bodyStyle={{ padding: '0' }}
     onOk={() => {
       handleOk(activeIdx)
-      onOk && onOk()
+      onOk && onOk(changeFormList)
     }}
     okText="确认"
     onCancel={() => onCancel && onCancel()}
+    afterClose={() => setChangeFormList([])}
     title={'添加随访问卷'}>
     <Wrapper>
       <div className="filter-area">
@@ -86,12 +88,9 @@ export default observer(function FormCreateModal(props: Props) {
             <div
               key={item.formCode}
               className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
-              onClick={() => onChange(item)}
+              onClick={() => onChange(item,idx)}
               title={item.formName}
-              onDoubleClick={() => {
-                onOk && onOk()
-                handleOk(idx)
-              }}>
+              >
               <div className="icon">
                 <img src={require('../../assets/报告单@3x.png')} alt="" />
               </div>

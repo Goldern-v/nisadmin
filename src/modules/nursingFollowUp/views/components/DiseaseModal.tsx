@@ -18,6 +18,7 @@ export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
   const [loading, setLoading] = useState(false)
   const [formCreateVisible, setFormCreateVisible] = useState(false)
+  const [formList, setFormList] = useState([] as any)
   const [editParmas, setEditPrams] = useState({
     periodsList: [],
     diseaseTypeName: '',
@@ -43,7 +44,11 @@ export default function editModal(props: Props) {
       message.error('疾病周期不能为空')
       return
     }
-    console.log(editParmas);
+    editParmas.formCodeList = formList.map((item:any)=>item.formCode)
+    if (editParmas.formCodeList.length == 0) {
+      message.error('随访问卷不能为空')
+      return
+    }
     setLoading(true)
     api
       .saveOrUpdate(editParmas)
@@ -51,8 +56,12 @@ export default function editModal(props: Props) {
           setLoading(false)
           message.success('操作成功')
         }, () => setLoading(false))
+    onOk && onOk()
   }
-
+  const setDetailModal = (item:any) => {
+    console.log(item);
+    
+  }
   useEffect(() => {
     if (visible) {
       if (!isAdd) {
@@ -60,15 +69,14 @@ export default function editModal(props: Props) {
           diseaseTypeName: params.diseaseTypeName,
           diseaseTypeId: params.diseaseTypeId,
           periodsList: params.visitDiseaseTypeVsPeriodsList.map((item:any)=>item.periods),
-          formCodeList: ["1A1B","2A2B"],
-
         })
+        setFormList([...params.visitTemplateList])
       }
     } else {
       setEditPrams({
         periodsList: [],
         diseaseTypeName: '',
-        formCodeList: [],
+        formList: [],
       })
     }
   }, [visible])
@@ -78,7 +86,9 @@ export default function editModal(props: Props) {
     confirmLoading={loading}
     centered
     visible={visible}
-    onOk={() => handleOk()}
+    onOk={() => {
+      handleOk()
+    }}
     onCancel={() => onCancel()}>
     <Wrapper>
       <Row>
@@ -108,11 +118,25 @@ export default function editModal(props: Props) {
         <Col span={6} className="label">随访问卷：</Col>
         <Col span={15}>
           <Button onClick={handleCreate}>+添加</Button>
+          {formList.map((item: any, index: number) => (
+            <div key={index}>
+              <a href='javascript:;'onClick={() => setDetailModal(item.formCode)}>{item.formName}</a>
+              <span onClick={() => {
+                formList.splice(index, 1)
+                setFormList([...formList])
+               } 
+              }>删除</span>
+            </div>
+              
+            ))}
         </Col>
       </Row>
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
-        onOk={() => setFormCreateVisible(false)}
+        onOk={(item:any) => {
+          setFormList(item)
+          setFormCreateVisible(false)
+        }}
         visible={formCreateVisible}
       />
     </Wrapper>

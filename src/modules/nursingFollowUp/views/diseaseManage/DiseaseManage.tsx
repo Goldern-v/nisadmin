@@ -252,8 +252,8 @@ export default function DiseaseManage(props: any) {
         isAdd={isAdd}
         visible={editVisible}
         onOk={() => {
-          // getGroupData()
           setEditVisible(false)
+          getData()
         }}
         onCancel={() => setEditVisible(false)} />
       <detailModal.Component />
