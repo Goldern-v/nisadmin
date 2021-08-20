@@ -311,6 +311,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   ]);
 } else if (appStore.HOSPITAL_ID == 'jmfy') {
   specialModule = [
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_jmfy, layouts.MainLayout),
     setLayout(

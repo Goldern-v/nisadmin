@@ -4,6 +4,7 @@ import { Button, Spin } from 'antd'
 const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
 
 export interface Props {
+  style?: React.CSSProperties,
   formCode?: string,
   editable?: boolean,
   loading?: boolean,
@@ -12,7 +13,7 @@ export interface Props {
 }
 
 export default function FormPage(props: Props) {
-  const { formCode, loading } = props
+  const { formCode, loading, style } = props
 
   const formPageByFormCode = () => {
     if (loading) return (
@@ -29,7 +30,7 @@ export default function FormPage(props: Props) {
     }
   }
 
-  return <Wrapper className="form-page-wrapper">
+  return <Wrapper className="form-page-wrapper" style={style}>
     <Suspense
       fallback={<div className="page-item"></div>}>
       {formPageByFormCode()}
@@ -39,9 +40,9 @@ export default function FormPage(props: Props) {
 
 const Wrapper = styled.div`
   margin: 20px auto;
-  width: 720px;
+  width: 760px;
   .page-item{
-    width: 720px;
+    width: 760px;
     background-color: #fff;
     background: #fff;
     border-radius: 2px;

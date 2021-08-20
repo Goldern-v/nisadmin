@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Tag, Menu, Icon } from 'antd'
+import { Button, Tag, Menu, Icon, Modal } from 'antd'
 import { ScrollBox } from 'src/components/common'
+import moment from 'src/vendors/moment'
 
 const maleImg = require('./../assets/male.png')
 const femaleImg = require('./../assets/female.png')
@@ -10,15 +11,37 @@ const { SubMenu } = Menu
 
 
 export interface Props {
+  baseInfo: any,
+  loading?: boolean,
   followUpList?: any[],
   selectedKey: string,
-  onSelectedKeyChange: Function
+  onSelectedKeyChange: Function,
+  onCloseFollowUp?: Function,
+  onAddOpen?: Function,
 }
 
 export default function LeftCon(props: Props) {
-  const { followUpList, selectedKey, onSelectedKeyChange } = props
+  const {
+    followUpList,
+    selectedKey,
+    onSelectedKeyChange,
+    baseInfo,
+    loading,
+    onCloseFollowUp,
+    onAddOpen
+  } = props
 
   const [openKeys, setOpenKeys] = useState([] as string[])
+
+  const statusCon = () => {
+
+    return (
+      <div className="status">
+        {baseInfo.visitStatus === 0 && (<Tag color="green">已结束</Tag>)}
+        {baseInfo.visitStatus === 1 && (<Tag color="green">进行中</Tag>)}
+      </div>
+    )
+  }
 
   const handleOpenChange = (newOpenKeys: string[]) => {
     console.log(newOpenKeys)
@@ -28,6 +51,16 @@ export default function LeftCon(props: Props) {
   const handleSelect = (payload: any) => {
     const { item, key, keyPath, selectedKeys, domEvent } = payload
     onSelectedKeyChange(key, keyPath)
+  }
+
+  const handleCloseConfirm = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否要结束随访?',
+      onOk: () => {
+        onCloseFollowUp && onCloseFollowUp()
+      }
+    })
   }
 
   useEffect(() => {
@@ -45,28 +78,34 @@ export default function LeftCon(props: Props) {
       </div>
       <div className="base-info">
         <div className="base-info-row-1">
-          <div className="name">谢军</div>
-          <div className="status">
-            {/* <Tag color="red">已结束</Tag> */}
-            <Tag color="green">进行中</Tag>
-          </div>
+          <div className="name">{baseInfo.patientName || '患者姓名'}</div>
+          {!loading && (statusCon())}
         </div>
-        <div>男|28岁</div>
+        <div>{baseInfo.sex === 1 ? '女' : '男'}|{baseInfo.age || '_'}岁</div>
       </div>
     </div>
     <div className="time-info">
-      <div>随访周期：12个月</div>
-      <div>开始时间：2021-06-01</div>
-      <div>结束时间：2022-06-01</div>
+      <div>随访周期：{baseInfo.visitPeriods || '_'}个月</div>
+      <div>开始时间：{baseInfo.visitStartDate ? moment(baseInfo.visitStartDate).format('YYYY-MM-DD') : '...'}</div>
+      <div>结束时间：{baseInfo.visitEndDate ? moment(baseInfo.visitEndDate).format('YYYY-MM-DD') : '...'}</div>
     </div>
-    <div className="close-button">
-      <Button type="danger" size="small">结束随访</Button>
-    </div>
+    {baseInfo.visitStatus === 1 && (
+      <div className="close-button">
+        <Button
+          type="danger"
+          size="small"
+          loading={loading}
+          onClick={() => handleCloseConfirm()}>
+          结束随访
+        </Button>
+      </div>
+    )}
     <div className="sub-title">
       随访记录：
     </div>
     <FollowUpListCon>
       <Menu
+        style={{ display: loading ? 'none' : 'block' }}
         openKeys={openKeys}
         selectedKeys={[selectedKey]}
         onSelect={handleSelect}
@@ -82,22 +121,34 @@ export default function LeftCon(props: Props) {
                 ) : (
                   <Icon type="folder" theme="filled" />
                 )}
-                <span>{followUpItem.formName}</span>
+                <span title={followUpItem.formName}>
+                  {followUpItem.formName}
+                </span>
               </span>
             }>
             {(followUpItem.formList || []).map((formItem: any) => (
               <Menu.Item
-                key={`${followUpItem.formCode}-${formItem.id}`}>
+                key={`${followUpItem.formCode}-${formItem.masterId}`}>
                 <Icon type="file" />
-                {`${formItem.createTime} ${formItem.creatorName}`}
+                <span title={formItem.title}>{formItem.title}</span>
               </Menu.Item>
             ))}
           </SubMenu>
         ))}
       </Menu>
+      {(followUpList || []).length <= 0 && (
+        <div className="no-result">
+          <span>暂无随访表</span>
+          <span style={{ position: 'relative', top: 5 }}>~</span>
+        </div>
+      )}
     </FollowUpListCon>
     <div className="add-button">
-      <Button type="primary">添加随访表</Button>
+      <Button
+        type="primary"
+        onClick={() => onAddOpen && onAddOpen()}>
+        添加随访表
+      </Button>
     </div>
   </Wrapper>
 }
@@ -108,6 +159,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(0,0,0,0.105);
+  .no-result{
+    padding: 15px 12px;
+    color: #888;
+  }
   .patient-info{
     padding: 15px;
     display: flex;
@@ -143,7 +198,6 @@ const Wrapper = styled.div`
     padding-top: 0;
   }
   .close-button{
-    border-bottom: 1px solid rgba(0,0,0,0.045);
     padding: 15px;
     padding-top: 0;
   }
@@ -154,6 +208,7 @@ const Wrapper = styled.div`
     color: #000;
     padding: 0 15px;
     border-bottom: 1px solid rgba(0,0,0,0.045);
+    border-top: 1px solid rgba(0,0,0,0.045);
   }
   .add-button{
     .ant-btn{
