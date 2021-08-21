@@ -178,18 +178,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
   return <Wrapper>
     <PageHeader>
       <Place />
-      <span className='label'>病种:</span>
-        <Select
-          value={deptSelect}
-          style={{ width: 180 }}
-          showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(val: string) => setDeptSelect(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {diseasList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.diseaseTypeId}>{item.diseaseTypeName}</Select.Option>)}
-        </Select>
         <Input
           placeholder='请输入随访问卷关键字检索'
           style={{ width: 220 }}
@@ -199,9 +187,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
         />
         <Button onClick={() => getData()}>
           查询
-        </Button>
-        <Button type='primary' >
-          保存
         </Button>
       </PageHeader>
       <div className="main-contain">

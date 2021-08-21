@@ -78,15 +78,34 @@ export default function 已分配出院患者(props:Props) {
     },
     {
       title: '病种',
-      dataIndex: 'visitDiseaseType.diseaseTypeName',
+      dataIndex: 'visitDiseaseTypeList[0].diseaseTypeName',
       width: 150,
-      align: 'center'
+      align: 'center',
+      render:( text: string, record: any) => {
+        return (
+          <div>
+            {record.visitDiseaseTypeList.map((item: any, index: number) => {
+              if(index == record.visitDiseaseTypeList.length-1){
+                return (
+                  <span key={index}>{item.diseaseTypeName}</span>
+                )
+              }
+              return (
+                <span key={index}>{item.diseaseTypeName}、</span>
+              )
+            })}
+          </div>
+        )
+      }
     },
     {
       title: '随访周期',
-      dataIndex: 'visitDiseaseType.periods',
+      dataIndex: 'visitPeriods',
       width: 120,
-      align: 'center'
+      align: 'center',
+      render(visitPeriods: any) {
+        return visitPeriods + "个月";
+      }
     },
     {
       title: '随访开始时间',
@@ -216,7 +235,7 @@ export default function 已分配出院患者(props:Props) {
   }
 
   const onDetail = (record: any) => {
-    
+    appStore.history.push(`/nursingFollowUpDetail?patientId=${record.patientId}`)
   }
 
   useEffect(() => {

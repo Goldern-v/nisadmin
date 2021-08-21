@@ -41,7 +41,7 @@ export default function editModal(props: Props) {
       return
     }
     if (editParmas.periodsList.length == 0) {
-      message.error('疾病周期不能为空')
+      message.error('随访周期不能为空')
       return
     }
     editParmas.formCodeList = formList.map((item:any)=>item.formCode)
@@ -55,8 +55,9 @@ export default function editModal(props: Props) {
         .then(res => {
           setLoading(false)
           message.success('操作成功')
+          onOk && onOk()
         }, () => setLoading(false))
-    onOk && onOk()
+    
   }
   const setDetailModal = (item:any) => {
     console.log(item);
@@ -82,7 +83,7 @@ export default function editModal(props: Props) {
   }, [visible])
 
   return <Modal
-    title={isAdd ? "添加疾病" : "修改疾病"}
+    title={isAdd ? "添加疾病" : "编辑疾病"}
     confirmLoading={loading}
     centered
     visible={visible}

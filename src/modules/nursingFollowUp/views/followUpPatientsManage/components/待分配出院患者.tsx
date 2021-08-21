@@ -19,7 +19,6 @@ export interface Props {
 }
 const api = new FollowUpPatientsManageServices();
 export default function 待分配出院患者(props:Props) {
-  const batchDistribution = createModal(BatchDistribution)
   const [query, setQuery]: any = useState({
     pageSize: 20,
     pageIndex: 1,
@@ -29,6 +28,10 @@ export default function 待分配出院患者(props:Props) {
   const [deptSelect, setDeptSelect] = useState('')
   //科室列表
   const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [recordSelected, setRecordSelected] = useState({} as any)
+  const [isAdd, setIsAdd] = useState(false)
+  const [editVisible, setEditVisible] = useState(false)
+
   const [searchText, setSearchText] = useState('')
   const [dataSource, setDataSource] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
@@ -151,18 +154,18 @@ export default function 待分配出院患者(props:Props) {
 
   const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
 
-  const onDetail = (record: any) => {
-    
+  const onBatchDistribution = (record:any) => {
+    if(selectedRowKeys.length == 0) {
+      message.warning('请先选择出院患者');
+    }else{
+      onDistribution(record)
+    }
   }
-
-  const onDistribution = (record: any) => {
-    batchDistribution
-      .show({
-        diseaseList: props.diseaseList,
-        templateList: props.templateList,
-      })
+  const onDistribution = (record:any) => {
+    setRecordSelected(record)
+    setIsAdd(false)
+    setEditVisible(true)
   }
-
   useEffect(() => {
     getData()
   }, [
@@ -205,7 +208,7 @@ export default function 待分配出院患者(props:Props) {
       <Button type='primary' onClick={() => getData()}>
         查询
       </Button>
-      <Button  onClick={onDistribution} className='mr-20'>
+      <Button  onClick={onBatchDistribution} className='mr-20'>
         批量分配
       </Button>
 
@@ -217,7 +220,7 @@ export default function 待分配出院患者(props:Props) {
           columns={columns}
           wrapperStyle={{ margin: '0 15px' }}
           type={['index']}
-          rowKey='id'
+          rowKey='patientId'
           surplusHeight={260}
           surplusWidth={200}
           pagination={{
@@ -238,12 +241,21 @@ export default function 待分配出院患者(props:Props) {
               pageSize: pagination.pageSize
             })
           }}
-          onRow={(record: any) => {
-            return { onDoubleClick: () => onDetail(record) }
-          }}
+          
         />
     </MainCon>
-    <batchDistribution.Component/>
+    <BatchDistribution
+        params={recordSelected}
+        templateList={props.templateList}
+        diseaseList={props.diseaseList}
+        patientId={selectedRowKeys}
+        isAdd={isAdd}
+        visible={editVisible}
+        onOk={() => {
+          setEditVisible(false)
+          getData()
+        }}
+        onCancel={() => setEditVisible(false)} />
   </Wrapper>
 }
 

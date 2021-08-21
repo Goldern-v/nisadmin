@@ -8,7 +8,6 @@ import BaseTable from 'src/components/BaseTable'
 import { globalModal } from 'src/global/globalModal'
 import emitter from 'src/libs/ev'
 import DiseaseModal from '../components/DiseaseModal'
-import DetailModal from '../components/DetailModal'
 import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import DiseaseManageServices from './services/DiseaseManageServices'
@@ -37,7 +36,6 @@ export default function DiseaseManage(props: any) {
   const [templateList, setTemplateList]: any = useState([])
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-  const detailModal = createModal(DetailModal)
 
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
@@ -46,10 +44,8 @@ export default function DiseaseManage(props: any) {
   }
   
   //查看随访问卷
-  const setDetailModal = (record:any) => {
-    detailModal
-      .show({
-      })
+  const setDetailModal = (formCode: any) => {
+    appStore.history.push(`/nursingFollowUpDetail?patientId=${formCode}`)
   }
 
   const handlePageSizeChange = (current: number, size: number) => {
@@ -133,7 +129,7 @@ export default function DiseaseManage(props: any) {
         return (
           <div>
             {record.visitTemplateList.map((item: any, index: number) => (
-              <a href='javascript:;'onClick={() => setDetailModal(record)} key={index}>{item.formName}</a>
+              <a href='javascript:;'onClick={() => setDetailModal(item.formCode)} key={item.formCode}>{item.formName}</a>
             ))}
           </div>
         )
@@ -194,7 +190,7 @@ export default function DiseaseManage(props: any) {
         diseaseTypeId : record.diseaseTypeId
       })
       .then((res) => {
-        message.success('操作成功')
+        message.success('删除成功')
         getData();
       }, err => setPageLoading(false))
   }
@@ -256,7 +252,6 @@ export default function DiseaseManage(props: any) {
           getData()
         }}
         onCancel={() => setEditVisible(false)} />
-      <detailModal.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`

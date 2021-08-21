@@ -4,17 +4,25 @@ import { Button, Col, DatePicker, Input, InputNumber, Modal, Radio, Row, Select,
 import BaseTable from 'src/components/BaseTable'
 import { DoCon } from 'src/components/BaseTable'
 import FollowUpGroupManageServices from '../followUpGroupManage/services/FollowUpGroupManageServices'
+import { message } from 'antd/es'
+
 const api = new FollowUpGroupManageServices();
 
 
 
 
 export default function EidtModal(props: any) {
+  let [query, setQuery] = useState({
+    pageSize: 20,
+    pageIndex: 1
+  })
   const { visible, onCancel } = props
   const [editUserType, setEditUserType] = useState('1')
   const [loading, setLoading] = useState(false)
   const [editParams, setEidtParams] = useState({} as any)
   const [searchText, setSearchText] = useState('')
+  const [pageLoading, setPageLoading] = useState(false)
+  const [dataTotal, setDataTotal] = useState(0)
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -22,51 +30,71 @@ export default function EidtModal(props: any) {
   const [loadingTable, setLoadingTable] = useState(false)
 
   useEffect(() => {
-    let {templateList = [], setTemplateList} = props;
-    setTableData(templateList)
+    getData()
   }, [
-    props.templateList
+    query.pageIndex,
+    query.pageSize,
+    
   ])
+
+  const getData = () => { 
+    setPageLoading(true)
+    api
+      .queryPageList({
+        ...query,
+      })
+      .then((res) => {
+        setPageLoading(false)
+        setDataTotal(res.data.totalCount)
+        setTableData(res.data.list)
+      }, err => setPageLoading(false))
+  }
+  
+
   const addFollowUpGroup = () => {
-    let index = tableData.length + 1
-    let tableArr:any = [...tableData,{teamId :index, teamName:""}]
+    let tableArr:any = [...tableData,{teamId :"", teamName:""}]
     setTableData(tableArr)
+  }
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    setQuery({ ...query, pageSize: size, pageIndex: 1 })
+  }
+
+  const handlePageChange = (current: number) => {
+    setQuery({ ...query, pageIndex: current })
   }
 
   //删除
   const onDelete = (record: any, index: any) => {
     Modal.confirm({
-      title: '确认删除该记录吗',
+      title: '确认删除该随访小组？',
       centered: true,
       onOk: () => {
-        
-        api
+        tableData.splice(index, 1);
+        let newArr = [...tableData];
+        setTableData(newArr)
+        if(record.teamId) {
+          api
           .delete({
             teamId: record.teamId,
           })
           .then((res) => {
-            tableData.splice(index, 1);
-            let newArr = [...tableData];
-            setTableData(newArr)
+            message.success('删除成功')
           }, )
+        }
       }
     })
   }
   const handleOk = () => {
-    console.log(tableData);
-    // props.getData();
-    // props.getTemplateList();
-    
-  }
-  const onAdd =(record: any) => {
     api
-      .saveOrUpdate({
-        teamId: record.teamId,
-        teamName: record.teamName,
-      })
-      .then((res) => {
-        
-      }, )
+    .saveOrUpdate({
+      visitTeamList:tableData
+    })
+    .then((res) => {
+      message.success('操作成功')
+      props.getData();
+      props.getTemplateList();
+    }, )
   }
   const columns: any = [
     {
@@ -104,7 +132,6 @@ export default function EidtModal(props: any) {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onAdd(record)}>保存</span>
             <span onClick={() => onDelete(record,index)}>删除</span>
           </DoCon>
         )
@@ -118,6 +145,7 @@ export default function EidtModal(props: any) {
     centered
     okText={'保存'}
     confirmLoading={loading}
+    afterClose={() => getData()}
     visible={visible}
     onOk={handleOk}
     onCancel={() => onCancel()}>
@@ -125,12 +153,19 @@ export default function EidtModal(props: any) {
       <Button onClick={addFollowUpGroup} className='ml-20'>
         添加小组
       </Button>
-      <BaseTable
-        dataSource={tableData}
-        columns={columns}
-        bordered
-        loading={loadingTable}
-      />
+      <BaseTable columns={columns}
+          dataSource={tableData}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: handlePageSizeChange,
+            onChange: handlePageChange,
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
+          loading={pageLoading}/>
     </Wrapper>
   </Modal>
 }

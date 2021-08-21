@@ -64,7 +64,18 @@ export default function FollowUpGroupManage(props: any) {
   }
 
   const onSave = () => { 
-    console.log(tableData);
+    setPageLoading(true)
+    let visitTeamList = tableData.map((item:any)=>{return {teamId:item.visitTeam.teamId,empNo:item.empNo}})
+    console.log(visitTeamList);
+    
+    visitTeamList = visitTeamList.filter((item:any)=>{return !!item.teamId})
+    console.log(visitTeamList);
+    api
+      .setVisitTeam({visitTeamList})
+      .then((res) => {
+        setPageLoading(false)
+        message.success('保存成功')
+      }, err => setPageLoading(false))
     
   }
   
@@ -83,9 +94,13 @@ export default function FollowUpGroupManage(props: any) {
         setPageLoading(false)
 
         setSelectedRowKeys([])
-
+        
         setDataTotal(res.data.totalCount)
-        setTableData(res.data.list)
+        let list = res.data.list.map((item:any)=> {
+         item.visitTeam = item.visitTeam || [{}]
+         return item
+        })
+        setTableData(list)
       }, err => setPageLoading(false))
   }
   
@@ -162,10 +177,10 @@ export default function FollowUpGroupManage(props: any) {
         return (
           <div>
             <Select 
-              style={{ width: 75 }}
-              id="box_select"
+              style={{ width: '100%' }}
+              id={"box_select"}
               showArrow={false}
-              value={record.visitTeam==null?'':record.visitTeam.teamId}
+              value={record.visitTeam == null ? '' : record.visitTeam.teamId}
               onChange={(value: any) => {
                 record.visitTeam.teamId = value
                 setTableData([...tableData])
@@ -309,9 +324,9 @@ const Wrapper = styled.div`
     margin-left: 20px;
   }
   #box_select {
-    .ant-select-selection{
-      border: 0;
-      background: #fff;
+    /deep/.ant-select-selection{
+      text-align:center;
+      text-align-last:center;
     }
   }
 `
