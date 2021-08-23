@@ -12,8 +12,8 @@ export default class  FollowUpGroupManageServices extends BaseApiService {
     return this.post(`/visit/visitTeam/queryNursePageList`, obj)
   }
   //获取全部随访小组列表
-  public visitTeam() {
-    return this.get(`/visit/visitTeam/getAllList`)
+  public visitTeam(obj: PageOptions | any) {
+    return this.post(`/visit/visitTeam/getAllList`, obj)
   }
   //获取全部随访小组分页
   public queryPageList(obj: PageOptions | any) {

@@ -11,8 +11,8 @@ export default class FollowUpPatientsManageServices extends BaseApiService {
     return this.post(`/visit/visitPatientData/queryPageList`, obj)
   }
   //获取全部随访小组列表
-  public visitTeam() {
-    return this.get(`/visit/visitTeam/getAllList`)
+  public visitTeam(obj: PageOptions | any) {
+    return this.post(`/visit/visitTeam/getAllList`, obj)
   }
   //获取全部病种列表
   public visitDiseaseType() {

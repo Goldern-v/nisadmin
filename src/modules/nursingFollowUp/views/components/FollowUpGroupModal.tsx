@@ -13,7 +13,8 @@ export default function EidtModal(props: any) {
   })
   const { visible, onCancel } = props
   const [loading, setLoading] = useState(false)
-  const [searchText, setSearchText] = useState('')
+  const [deptSelect, setDeptSelect] = useState('')
+  const [deptList, setDeptList] = useState([] as any)
   const [pageLoading, setPageLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
   const [tableData, setTableData] = useState([])
@@ -22,12 +23,20 @@ export default function EidtModal(props: any) {
   }, [
     query.pageIndex,
     query.pageSize,
+    deptSelect,
+  ])
+  useEffect(() => {
+    let list = props.deptList || []
+    setDeptList([...list])
+  }, [
+    props
   ])
   const getData = () => { 
     setPageLoading(true)
     api
       .queryPageList({
         ...query,
+        wardCode: deptSelect,
       })
       .then((res) => {
         setPageLoading(false)
@@ -36,7 +45,7 @@ export default function EidtModal(props: any) {
       }, err => setPageLoading(false))
   }
   const addFollowUpGroup = () => {
-    let tableArr: any = [...tableData,{teamId :"", teamName:""}]
+    let tableArr: any = [...tableData,{teamId :"", teamName:"",wardCode:deptSelect}]
     setTableData(tableArr)
   }
   const handlePageSizeChange = (current: number, size: number) => {
@@ -67,15 +76,24 @@ export default function EidtModal(props: any) {
     })
   }
   const handleOk = () => {
-    api
-    .saveOrUpdate({
-      visitTeamList:tableData
-    })
-    .then((res) => {
-      message.success('操作成功')
-      props.getData();
-      props.getTemplateList();
+    if (deptSelect == "") {
+      message.error('请先选择护理单元！')
+      return
+    }
+    let b = tableData.every((item: any) => item.teamName != "")
+    if(b) {
+      api
+      .saveOrUpdate({
+        visitTeamList:tableData
+      })
+      .then((res) => {
+        message.success('操作成功')
+        props.getData();
+        props.getTemplateList();
     }, )
+    }else {
+      message.error('小组名称不能为空！')
+    }
   }
   const columns: any = [
     {
@@ -130,8 +148,20 @@ export default function EidtModal(props: any) {
     onOk={handleOk}
     onCancel={() => onCancel()}>
     <Wrapper>
+      <span className='ml-20'>护理单元:</span>
+      <Select
+        value={deptSelect}
+        style={{ width: 200 }}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        onChange={(val: string) => setDeptSelect(val)}>
+        <Select.Option value={''}>全部</Select.Option>
+        {deptList.map((item: any, idx: any) =>
+          <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+      </Select>
       <Button onClick={addFollowUpGroup} className='ml-20'>
-        添加小组
+      添加小组
       </Button>
       <BaseTable 
         columns={columns}

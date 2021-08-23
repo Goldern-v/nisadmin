@@ -29,7 +29,7 @@ export default function FollowUpPatientsManage(props: any) {
     })
   }
   const getTemplateList = () => {
-    api.visitTeam().then(res => {
+    api.visitTeam({}).then(res => {
       if (res.data instanceof Array) setTemplateList(res.data);
     })
   }
@@ -45,9 +45,9 @@ export default function FollowUpPatientsManage(props: any) {
   const currentView = () => {
     switch (queryObj.tabId) {
       case '2':
-        return <待分配出院患者 templateList={templateList} deptList={deptList} diseaseList={diseaseList}/>
+        return <待分配出院患者 deptList={deptList} diseaseList={diseaseList}/>
       default:
-        return <已分配出院患者 templateList={templateList} deptList={deptList}/>
+        return <已分配出院患者 deptList={deptList}/>
     }
   }
   return <Wrapper>

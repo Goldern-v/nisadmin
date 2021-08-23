@@ -9,7 +9,6 @@ import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
 export interface Props { 
-  templateList: any, //随访小组列表
   deptList: any, //科室列表
 }
 const api = new FollowUpPatientsManageServices();
@@ -26,7 +25,7 @@ export default function 已分配出院患者(props:Props) {
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [searchText, setSearchText] = useState('')
-  //科室列表
+  const [templateList, setTemplateList]: any = useState([])
   const [pageLoading, setPageLoading] = useState(false)
   const columns: ColumnProps<any>[] = [
     {
@@ -38,7 +37,7 @@ export default function 已分配出院患者(props:Props) {
     },
     {
       title: '护理单元',
-      dataIndex: 'wardCode',
+      dataIndex: 'wardName',
       align: 'center',
       width: 120
     },
@@ -205,6 +204,11 @@ export default function 已分配出院患者(props:Props) {
     setQuery({ ...query, pageIndex: current })
   }
   const handleDetailView = (bookId: string) => {}
+  const getTemplateList = (val: any) => {
+    api.visitTeam({wardCode:val}).then(res => {
+      if (res.data instanceof Array) setTemplateList(res.data);
+    })
+  }
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
@@ -231,6 +235,9 @@ export default function 已分配出院患者(props:Props) {
     appStore.history.push(`/nursingFollowUpDetail?patientId=${record.patientId}`)
   }
   useEffect(() => {
+    getTemplateList("")
+  }, [])
+  useEffect(() => {
     getData()
   }, [
     query.pageIndex,
@@ -250,7 +257,10 @@ export default function 已分配出院患者(props:Props) {
         showSearch
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        onChange={(val: string) => setDeptSelect(val)}>
+        onChange={(val: string) => {
+          setDeptSelect(val)
+          getTemplateList(val)
+        }}>
         <Select.Option value={''}>全部</Select.Option>
         {props.deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
@@ -265,7 +275,7 @@ export default function 已分配出院患者(props:Props) {
       <span className='label'>随访小组:</span>
         <Select style={{ width: 180 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
-          {props.templateList.map((item: any, index: number) => (
+          {templateList.map((item: any, index: number) => (
             <Select.Option key={index} value={item.teamId}>
               {item.teamName}
             </Select.Option>

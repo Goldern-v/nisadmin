@@ -43,7 +43,7 @@ export default function FollowUpGroupManage(props: any) {
   const setFollowUpGroup = (record: any) => {
     followUpGroupModal
       .show({
-        templateList:templateList,
+        deptList:deptList,
         getData:getData,
         getTemplateList:getTemplateList,
       })
@@ -153,7 +153,7 @@ export default function FollowUpGroupManage(props: any) {
       title: '随访小组',
       dataIndex: 'visitTeam.teamId',
       key: 'visitTeam.teamId',
-      width: 100,
+      width: 70,
       align: 'center',
       render: (text: string, record: any) => {
         return (
@@ -185,11 +185,11 @@ export default function FollowUpGroupManage(props: any) {
     query.pageSize,
     selectedTemplate,
     selectedDistribution,
-    deptSelect
+    deptSelect,
   ])
   useEffect(() => {
     getDeptList();
-    getTemplateList();
+    getTemplateList("");
     getDistributionList();
   }, []);
   const getDeptList = () => {
@@ -197,8 +197,8 @@ export default function FollowUpGroupManage(props: any) {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
   }
-  const getTemplateList = () => {
-    api.visitTeam().then(res => {
+  const getTemplateList = (val: any) => {
+    api.visitTeam({wardCode:val}).then(res => {
       if (res.data instanceof Array) setTemplateList(res.data);
     })
   }
@@ -218,7 +218,11 @@ export default function FollowUpGroupManage(props: any) {
           showSearch
           filterOption={(input: any, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(val: string) => setDeptSelect(val)}>
+          onChange={(val: string) => {
+            setDeptSelect(val)
+            getTemplateList(val)
+
+          }}>
           <Select.Option value={''}>全部</Select.Option>
           {deptList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
