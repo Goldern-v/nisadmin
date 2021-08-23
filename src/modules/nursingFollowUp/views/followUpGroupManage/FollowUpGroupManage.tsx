@@ -12,10 +12,8 @@ import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import FollowUpGroupManageServices from './services/FollowUpGroupManageServices'
 import moment from 'moment'
-
 export interface Props { }
 const api = new FollowUpGroupManageServices();
-
 export default function FollowUpGroupManage(props: any) {
   let [query, setQuery] = useState({
     pageSize: 20,
@@ -26,7 +24,6 @@ export default function FollowUpGroupManage(props: any) {
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
   const [selectValue, setSelectValue] = useState(new Array())
-
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [selectedTeam, setSelectedTeam]: any = useState('')
@@ -43,7 +40,7 @@ export default function FollowUpGroupManage(props: any) {
     setSearchText(e.target.value)
   }
   //设置随访小组
-  const setFollowUpGroup = (record:any) => {
+  const setFollowUpGroup = (record: any) => {
     followUpGroupModal
       .show({
         templateList:templateList,
@@ -54,33 +51,22 @@ export default function FollowUpGroupManage(props: any) {
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
-
-  const handleDetailView = (bookId: string) => {
-    
-  }
-
+  const handleDetailView = (bookId: string) => {}
   const onSave = () => { 
     setPageLoading(true)
-    let visitTeamList = tableData.map((item:any)=>{return {teamId:item.visitTeam.teamId,empNo:item.empNo}})
-    console.log(visitTeamList);
-    
-    visitTeamList = visitTeamList.filter((item:any)=>{return !!item.teamId})
-    console.log(visitTeamList);
+    let visitTeamList = tableData.map((item: any)=>{return {teamId:item.visitTeam.teamId,empNo:item.empNo}})
+    visitTeamList = visitTeamList.filter((item: any)=>{return !!item.teamId})
     api
       .setVisitTeam({visitTeamList})
       .then((res) => {
         setPageLoading(false)
         message.success('保存成功')
       }, err => setPageLoading(false))
-    
   }
-  
   const getData = () => {
-    
     setPageLoading(true)
     api
       .queryNursePageList({
@@ -92,18 +78,15 @@ export default function FollowUpGroupManage(props: any) {
       })
       .then((res) => {
         setPageLoading(false)
-
         setSelectedRowKeys([])
-        
         setDataTotal(res.data.totalCount)
-        let list = res.data.list.map((item:any)=> {
+        let list = res.data.list.map((item: any)=> {
          item.visitTeam = item.visitTeam || [{}]
          return item
         })
         setTableData(list)
       }, err => setPageLoading(false))
   }
-  
   const columns: any = [
     {
       title: '序号',
@@ -166,7 +149,6 @@ export default function FollowUpGroupManage(props: any) {
       align: 'center',
       width: 100
     },
-    
     {
       title: '随访小组',
       dataIndex: 'visitTeam.teamId',
@@ -191,24 +173,11 @@ export default function FollowUpGroupManage(props: any) {
               </Select.Option>
               ))}
             </Select>
-            {/* <select 
-              style={{ width: 75 }}
-              onChange={(value: any) => {
-                record.value = value
-              }}>
-              {teamList.map((item: any, index: number) => (
-                <option key={index} value={item.name}>
-                {item.name}
-                </option>
-              ))}
-            </select> */}
-            
           </div>
         )
       }
     }
   ]
-
   useEffect(() => {
     getData()
   }, [
@@ -218,32 +187,27 @@ export default function FollowUpGroupManage(props: any) {
     selectedDistribution,
     deptSelect
   ])
-  
   useEffect(() => {
     getDeptList();
     getTemplateList();
     getDistributionList();
   }, []);
-
   const getDeptList = () => {
     api.getNursingUnitAll().then(res => {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
   }
-
   const getTemplateList = () => {
     api.visitTeam().then(res => {
       if (res.data instanceof Array) setTemplateList(res.data);
     })
   }
-
   const getDistributionList = () => {
     const b : any = [
     {code: "1", name: "已分配"},
     {code: "2", name: "未分配"},]
     setDistributionList(b)
   }
-
   return <Wrapper>
     <PageHeader>
       <Place />

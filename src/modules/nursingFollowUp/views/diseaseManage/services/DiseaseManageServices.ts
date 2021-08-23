@@ -8,16 +8,19 @@ export default class DiseaseManageServices extends BaseApiService {
   public getNursingUnitAll() {
     return this.get(`/user/nursingUnit/all`);
   }
-  
+  //获取病种列表 -（分页查询）
   public visitDiseaseType(obj: PageOptions | any) {
     return this.post(`/visit/visitDiseaseType/queryPageList`, obj)
   }
+  //获取全部病种列表
   public getAllList(obj: PageOptions | any) {
     return this.post(`/visit/visitTemplate/getAllList`, obj)
   }
+  //保存或更新病种
   public saveOrUpdate(obj: PageOptions | any) {
     return this.post(`/visit/visitDiseaseType/saveOrUpdate`, obj)
   }
+  //通过ID删除病种
   public delete(obj: PageOptions | any) {
     return this.post(`/visit/visitDiseaseType/delete`, obj)
   }

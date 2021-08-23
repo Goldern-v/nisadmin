@@ -8,7 +8,6 @@ import { ColumnProps } from 'antd/lib/table'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
-
 export interface Props { 
   templateList: any, //随访小组列表
   deptList: any, //科室列表
@@ -169,8 +168,12 @@ export default function 已分配出院患者(props:Props) {
       dataIndex: 'visitStatus',
       width: 100,
       align: 'center',
-      render(visitStatus: any) {
-        return visitStatus === 0 ? "已结束" : visitStatus === 1 ? "进行中" : "";
+      render( visitStatus: any,record: any, index: number) {
+        return (
+          <div>
+            <span className={visitStatus == 1 ? "active" : ""}>{visitStatus == 0 ? "已结束" :  "进行中" }</span>
+          </div>
+        )
       }
     },
     {
@@ -186,34 +189,27 @@ export default function 已分配出院患者(props:Props) {
         return (
           <DoCon>
             <span onClick={() => onDetail(record)}>查看</span>
-            <span>随访</span>
+            <span style={{display:record.visitStatus==0 ? "none" : ""}} onClick={() => onDetail(record)}>随访</span>
           </DoCon>
         )
       }
     }
   ]
-
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
-
-  const handleDetailView = (bookId: string) => {
-    
-  }
-
+  const handleDetailView = (bookId: string) => {}
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
     let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
-    let iEnd = deptSwitch ? 1 : 0 //0不隐藏 1隐藏
+    let isEnd = deptSwitch ? 1 : 0 //0不隐藏 1隐藏
     api
       .visitPatientData({
         ...query,
@@ -223,21 +219,17 @@ export default function 已分配出院患者(props:Props) {
         endDate,
         teamId: selectedTemplate,
         keyword: searchText,
-        iEnd,
+        isEnd,
       })
       .then((res) => {
         setPageLoading(false)
-
-
         setDataTotal(res.data.totalCount)
         setTableData(res.data.list)
       }, err => setPageLoading(false))
   }
-
   const onDetail = (record: any) => {
     appStore.history.push(`/nursingFollowUpDetail?patientId=${record.patientId}`)
   }
-
   useEffect(() => {
     getData()
   }, [
@@ -248,12 +240,10 @@ export default function 已分配出院患者(props:Props) {
     deptSelect,
     deptSwitch
   ])
-
   return <Wrapper>
     <PageHeader>
     <Place />
     <span className='label'>护理单元:</span>
-      {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
       <Select
         value={deptSelect}
         style={{ width: 180 }}
@@ -300,7 +290,8 @@ export default function 已分配出院患者(props:Props) {
       />
     </PageHeader>
     <MainCon>
-      <BaseTable columns={columns}
+      <BaseTable 
+        columns={columns}
         dataSource={tableData}
         onRow={record => {
           return {
@@ -323,7 +314,6 @@ export default function 已分配出院患者(props:Props) {
     </MainCon>
   </Wrapper>
 }
-
 const Wrapper = styled.div`
   padding: 0;
   display: flex;
@@ -348,6 +338,7 @@ const Wrapper = styled.div`
       width: 12px; 
       margin-right: 5px;
     }
+    
   }
 `
 const MainCon = styled.div`
@@ -355,4 +346,7 @@ const MainCon = styled.div`
   padding: 15px;
   padding-bottom: 0;
   padding-top: 0;
+  .active{
+    color: #00A680;
+  }
 `

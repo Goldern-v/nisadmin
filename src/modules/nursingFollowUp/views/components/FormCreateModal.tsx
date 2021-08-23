@@ -12,23 +12,21 @@ export interface Props {
   onOk?: Function,
   onCancel?: Function,
   title?: string,
+  formListNow?: any,
 }
-
 export default observer(function FormCreateModal(props: Props) {
-  const { visible, onOk, onCancel, title } = props
+  const { visible, onOk, onCancel, title, formListNow } = props
   const [formList, setFormList] = useState([] as any)
   const [formListLoading, setFormListLoaindg] = useState(false)
-
   const [filter, setFilter] = useState('')
-  const [activeIdx, setActiveIdx] = useState(-1)
+  const [activeIdx, setActiveIdx] = useState([] as any)
   const [changeFormList, setChangeFormList] = useState([] as any)
-
   const filterList: any[] =
     formList.filter((item: any) => item.formName.indexOf(filter) >= 0) || []
-
   useEffect(() => {
     if (visible) {
-      setActiveIdx(-1)
+      setActiveIdx([])
+      setChangeFormList([])
       setFormListLoaindg(true)
       api.getAllList({
         diseaseTypeId: ''
@@ -38,25 +36,23 @@ export default observer(function FormCreateModal(props: Props) {
       }, () => setFormListLoaindg(false))
     }
   }, [visible])
-  
   const onChange = (item: any, idx: number) => {
-    setChangeFormList([...changeFormList,item])
-    setActiveIdx(idx)
+    let index = activeIdx.indexOf(idx)
+    let formIndex = changeFormList.indexOf(item)
+    if(index != -1) {
+      activeIdx.splice(index,1)
+      setActiveIdx([...activeIdx])
+    }else {
+      setActiveIdx([...activeIdx,idx])
+    }
+    if(formIndex != -1) {
+      changeFormList.splice(formIndex,1)
+      setChangeFormList([...changeFormList])
+    }else {
+      setChangeFormList([...changeFormList,item])
+    }
   }
   const handleOk = (activeIdx: number) => {
-    // if (activeIdx < 0) {
-    //   message.warning('未选择表单')
-    //   return
-    // }
-
-    // let formCode = '';
-
-    // if (filterList[activeIdx]) formCode = filterList[activeIdx].formCode
-
-    // setTimeout(() => appStore
-    //   .history
-    //   .push(`/qualityControlRecordEdit?formCode=${formCode}`), 300)
-
   }
 
   return <Modal
@@ -80,14 +76,14 @@ export default observer(function FormCreateModal(props: Props) {
           disabled={formListLoading}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          placeholder="请输入质控表单名称" />
+          placeholder="请输入随访问卷名称" />
       </div>
       <ContentArea className="content-area">
         <Spin spinning={formListLoading} style={{ minHeight: 300 }}>
           {filterList.map((item: any, idx: number) =>
             <div
               key={item.formCode}
-              className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
+              className={activeIdx.indexOf(idx) != -1  ? 'qc-item active' : 'qc-item'}
               onClick={() => onChange(item,idx)}
               title={item.formName}
               >
@@ -102,7 +98,6 @@ export default observer(function FormCreateModal(props: Props) {
     </Wrapper>
   </Modal>
 })
-
 const ContentArea = styled.div`
   padding: 10px;
   min-height: 300px;
@@ -117,7 +112,6 @@ const ContentArea = styled.div`
     float: left;
     padding: 5px;
     transition: all .3s;
-
     .icon{
       width: 40px;
       margin-right: 10px;
@@ -140,7 +134,6 @@ const ContentArea = styled.div`
     }
   }
 `
-
 const Wrapper = styled.div`
   padding-top: 54px;
   .filter-area{

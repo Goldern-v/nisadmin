@@ -5,19 +5,11 @@ import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, Input, ColumnProps, PaginationConfig, Modal, message, Switch } from 'src/vendors/antd'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import BaseTable from 'src/components/BaseTable'
-import { globalModal } from 'src/global/globalModal'
-import emitter from 'src/libs/ev'
 import DiseaseModal from '../components/DiseaseModal'
-import createModal from 'src/libs/createModal'
 import { appStore, authStore } from 'src/stores'
 import DiseaseManageServices from './services/DiseaseManageServices'
-import moment from 'moment'
-
-
-
 export interface Props { }
 const api = new DiseaseManageServices();
-
 export default function DiseaseManage(props: any) {
   let [query, setQuery] = useState({
     pageSize: 20,
@@ -26,41 +18,29 @@ export default function DiseaseManage(props: any) {
   const [recordSelected, setRecordSelected] = useState({} as any)
   const [isAdd, setIsAdd] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
- 
   const [pageLoading, setPageLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
-  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [deptSelect, setDeptSelect] = useState('')
   const [searchText, setSearchText] = useState('')
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
-  const [templateList, setTemplateList]: any = useState([])
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-  
   //查看随访问卷
   const setDetailModal = (formCode: any) => {
     appStore.history.push(`/nursingFollowUpDetail?patientId=${formCode}`)
   }
-
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
-
-
   const handleDetailView = (bookId: string) => {
-    
   }
-
   const getData = () => {
     setPageLoading(true)
     api
@@ -78,7 +58,6 @@ export default function DiseaseManage(props: any) {
         setTableData(res.data.list)
       }, err => setPageLoading(false))
   }
-  
   const columns: any = [
     {
       title: '序号',
@@ -142,12 +121,6 @@ export default function DiseaseManage(props: any) {
       width: 50,
       align: 'center',
       render: (text: string, record: any) => {
-        const DoCon = styled.div`
-          display: flex;
-          justify-content: space-around;
-          font-size: 12px;
-          color: ${(p) => p.theme.$mtc};
-        `
         return (
           <div>
             <a href='javascript:;'onClick={() => handleEdit(record)}>编辑</a>
@@ -157,7 +130,6 @@ export default function DiseaseManage(props: any) {
       }
     }
   ]
-  
   useEffect(() => {
     getData()
   }, [
@@ -165,11 +137,9 @@ export default function DiseaseManage(props: any) {
     query.pageSize,
     deptSelect
   ])
-
   useEffect(() => {
     getDeptList();
   }, []);
-
   const getDeptList = () => {
     api.getNursingUnitAll().then(res => {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
@@ -199,59 +169,60 @@ export default function DiseaseManage(props: any) {
       <Place />
       <span className='label'>护理单元:</span>
         {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
-        <Select
-          value={deptSelect}
-          style={{ width: 230 }}
-          showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(val: string) => setDeptSelect(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {deptList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
-        </Select>
-        <Input
-          placeholder='请输入疾病名称随访问卷关键字检索'
-          style={{ width: 300 }}
-          value={searchText}
-          onChange={onChangeSearchText}
-          className='ml-20'
-        />
-        <Button onClick={() => getData()}>
-          查询
-        </Button>
-        <Button onClick={() => handleAddGroup()}>
-          添加疾病
-        </Button>
-      </PageHeader>
-      <BaseTable columns={columns}
-          dataSource={tableData}
-          onRow={record => {
-            return {
-              onDoubleClick: () => handleDetailView(record.id)
-            }
-          }}
-          pagination={{
-            pageSizeOptions: ['10', '20', '30', '40', '50'],
-            onShowSizeChange: handlePageSizeChange,
-            onChange: handlePageChange,
-            total: dataTotal,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            pageSize: query.pageSize,
-            current: query.pageIndex
-          }}
-          loading={pageLoading}
-          surplusHeight={220} />
-      <DiseaseModal
-        params={recordSelected}
-        isAdd={isAdd}
-        visible={editVisible}
-        onOk={() => {
-          setEditVisible(false)
-          getData()
-        }}
-        onCancel={() => setEditVisible(false)} />
+      <Select
+        value={deptSelect}
+        style={{ width: 230 }}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        onChange={(val: string) => setDeptSelect(val)}>
+        <Select.Option value={''}>全部</Select.Option>
+        {deptList.map((item: any, idx: any) =>
+          <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+      </Select>
+      <Input
+        placeholder='请输入疾病名称随访问卷关键字检索'
+        style={{ width: 300 }}
+        value={searchText}
+        onChange={onChangeSearchText}
+        className='ml-20'
+      />
+      <Button onClick={() => getData()}>
+        查询
+      </Button>
+      <Button onClick={() => handleAddGroup()}>
+        添加疾病
+      </Button>
+    </PageHeader>
+    <BaseTable 
+      columns={columns}
+      dataSource={tableData}
+      onRow={record => {
+        return {
+          onDoubleClick: () => handleDetailView(record.id)
+        }
+      }}
+      pagination={{
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
+        onShowSizeChange: handlePageSizeChange,
+        onChange: handlePageChange,
+        total: dataTotal,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSize: query.pageSize,
+        current: query.pageIndex
+      }}
+      loading={pageLoading}
+      surplusHeight={220} />
+    <DiseaseModal
+      params={recordSelected}
+      isAdd={isAdd}
+      visible={editVisible}
+      onOk={() => {
+        setEditVisible(false)
+        getData()
+      }}
+      onCancel={() => setEditVisible(false)} />
   </Wrapper>
 }
 const Wrapper = styled.div`

@@ -5,20 +5,17 @@ import { PaginationConfig } from 'src/vendors/antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
-import { appStore, authStore } from 'src/stores'
-import createModal from 'src/libs/createModal'
 import BatchDistribution from '../../components/BatchDistribution'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
-
 export interface Props { 
   templateList: any,
   deptList: any,
   diseaseList: any,
 }
 const api = new FollowUpPatientsManageServices();
-export default function 待分配出院患者(props:Props) {
+export default function 待分配出院患者(props: Props) {
   const [query, setQuery]: any = useState({
     pageSize: 20,
     pageIndex: 1,
@@ -31,7 +28,6 @@ export default function 待分配出院患者(props:Props) {
   const [recordSelected, setRecordSelected] = useState({} as any)
   const [isAdd, setIsAdd] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
-
   const [searchText, setSearchText] = useState('')
   const [dataSource, setDataSource] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
@@ -124,11 +120,9 @@ export default function 待分配出院患者(props:Props) {
       }
     }
   ]
-
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
-
   const getData = () => {
     setPageLoading(true)
     let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
@@ -144,16 +138,12 @@ export default function 待分配出院患者(props:Props) {
       })
       .then((res) => {
         setPageLoading(false)
-
         setSelectedRowKeys([])
-
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
-
   const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
-
   const onBatchDistribution = (record:any) => {
     if(selectedRowKeys.length == 0) {
       message.warning('请先选择出院患者');
@@ -174,12 +164,10 @@ export default function 待分配出院患者(props:Props) {
     date,
     deptSelect
   ])
-
   return <Wrapper>
     <PageHeader>
     <Place />
     <span className='label'>护理单元:</span>
-      {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
       <Select
         value={deptSelect}
         style={{ width: 180 }}
@@ -211,51 +199,49 @@ export default function 待分配出院患者(props:Props) {
       <Button  onClick={onBatchDistribution} className='mr-20'>
         批量分配
       </Button>
-
     </PageHeader>
     <MainCon>
       <BaseTable
-          loading={pageLoading}
-          dataSource={dataSource}
-          columns={columns}
-          wrapperStyle={{ margin: '0 15px' }}
-          type={['index']}
-          rowKey='patientId'
-          surplusHeight={260}
-          surplusWidth={200}
-          pagination={{
-            current: query.pageIndex,
-            pageSize: query.pageSize,
-            total: total
-          }}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect,
-            getCheckboxProps: (record: any) => ({
-              name: record.name
-            })
-          }}
-          onChange={(pagination: PaginationConfig) => {
-            setQuery({
-              pageIndex: pagination.current,
-              pageSize: pagination.pageSize
-            })
-          }}
-          
-        />
+        loading={pageLoading}
+        dataSource={dataSource}
+        columns={columns}
+        wrapperStyle={{ margin: '0 15px' }}
+        type={['index']}
+        rowKey='patientId'
+        surplusHeight={260}
+        surplusWidth={200}
+        pagination={{
+          current: query.pageIndex,
+          pageSize: query.pageSize,
+          total: total
+        }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: handleRowSelect,
+          getCheckboxProps: (record: any) => ({
+            name: record.name
+          })
+        }}
+        onChange={(pagination: PaginationConfig) => {
+          setQuery({
+            pageIndex: pagination.current,
+            pageSize: pagination.pageSize
+          })
+        }}
+      />
     </MainCon>
     <BatchDistribution
-        params={recordSelected}
-        templateList={props.templateList}
-        diseaseList={props.diseaseList}
-        patientId={selectedRowKeys}
-        isAdd={isAdd}
-        visible={editVisible}
-        onOk={() => {
-          setEditVisible(false)
-          getData()
-        }}
-        onCancel={() => setEditVisible(false)} />
+      params={recordSelected}
+      templateList={props.templateList}
+      diseaseList={props.diseaseList}
+      patientId={selectedRowKeys}
+      isAdd={isAdd}
+      visible={editVisible}
+      onOk={() => {
+        setEditVisible(false)
+        getData()
+      }}
+      onCancel={() => setEditVisible(false)} />
   </Wrapper>
 }
 

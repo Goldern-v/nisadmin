@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Col, Input, InputNumber, Modal, Row, Select } from 'antd'
+import { Button, Col, Input, InputNumber, Modal, Row, Select, Icon } from 'antd'
 import FormCreateModal from './FormCreateModal'
 import DiseaseManageServices from '../diseaseManage/services/DiseaseManageServices'
 import { message } from 'antd/es'
+import { appStore, authStore } from 'src/stores'
 const api = new DiseaseManageServices();
 export interface Props {
   visible: boolean,
@@ -13,7 +14,6 @@ export interface Props {
   isOtherEmp?: boolean,
   isAdd?: boolean,
 }
-
 export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
   const [loading, setLoading] = useState(false)
@@ -24,8 +24,6 @@ export default function editModal(props: Props) {
     diseaseTypeName: '',
     diseaseTypeId: '',
     formCodeList: [],
-
-
   } as any)
   const { Option } = Select;
   const periodList = [];
@@ -34,6 +32,9 @@ export default function editModal(props: Props) {
   }
   const handleCreate = () => {
     setFormCreateVisible(true)
+  }
+  const afterClose = () => {
+    setFormList([])
   }
   const handleOk = () => {
     if (editParmas.diseaseTypeName.trim() == '') {
@@ -57,11 +58,9 @@ export default function editModal(props: Props) {
           message.success('操作成功')
           onOk && onOk()
         }, () => setLoading(false))
-    
   }
-  const setDetailModal = (item:any) => {
-    console.log(item);
-    
+  const setDetailModal = (formCode: any) => {
+    appStore.history.push(`/nursingFollowUpDetail?patientId=${formCode}`)
   }
   useEffect(() => {
     if (visible) {
@@ -69,7 +68,7 @@ export default function editModal(props: Props) {
         setEditPrams({
           diseaseTypeName: params.diseaseTypeName,
           diseaseTypeId: params.diseaseTypeId,
-          periodsList: params.visitDiseaseTypeVsPeriodsList.map((item:any)=>item.periods),
+          periodsList: params.visitDiseaseTypeVsPeriodsList.map((item: any)=>item.periods),
         })
         setFormList([...params.visitTemplateList])
       }
@@ -81,12 +80,12 @@ export default function editModal(props: Props) {
       })
     }
   }, [visible])
-
   return <Modal
     title={isAdd ? "添加疾病" : "编辑疾病"}
     confirmLoading={loading}
     centered
     visible={visible}
+    afterClose={() => afterClose()}
     onOk={() => {
       handleOk()
     }}
@@ -120,20 +119,20 @@ export default function editModal(props: Props) {
         <Col span={15}>
           <Button onClick={handleCreate}>+添加</Button>
           {formList.map((item: any, index: number) => (
-            <div key={index}>
+            <div key={index} className="formList">
               <a href='javascript:;'onClick={() => setDetailModal(item.formCode)}>{item.formName}</a>
               <span onClick={() => {
                 formList.splice(index, 1)
                 setFormList([...formList])
-               } 
-              }>删除</span>
-            </div>
-              
-            ))}
+               }}
+              ><Icon type="rest" theme="filled" className="delet" /></span>
+            </div> 
+          ))}
         </Col>
       </Row>
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
+        formListNow={formList}
         onOk={(item:any) => {
           setFormList(item)
           setFormCreateVisible(false)
@@ -151,5 +150,13 @@ const Wrapper = styled.div`
   .label{
     padding-right: 15px;
     text-align: right;
+  }
+  .formList {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .delet {
+    cursor: pointer;
   }
 `

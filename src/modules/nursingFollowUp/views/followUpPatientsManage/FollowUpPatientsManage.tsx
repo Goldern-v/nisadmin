@@ -5,9 +5,7 @@ import 已分配出院患者 from './components/已分配出院患者'
 import 待分配出院患者 from './components/待分配出院患者'
 import FollowUpPatientsManageServices from './services/FollowUpPatientsManageServices'
 const api = new FollowUpPatientsManageServices();
-
 export interface Props { }
-
 export default function FollowUpPatientsManage(props: any) {
   const [query, setQuery] = useState({
     pageSize: 20,
@@ -20,31 +18,26 @@ export default function FollowUpPatientsManage(props: any) {
   const [templateList, setTemplateList]: any = useState([])
   const [deptList, setDeptList] = useState([] as any)
   const [diseaseList, setDiseaseList]: any = useState([])
-  
   useEffect(() => {
     getDeptList();
     getTemplateList();
     getDiseaseList();
   }, []);
-
   const getDeptList = () => {
     api.getNursingUnitAll().then(res => {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
   }
-
   const getTemplateList = () => {
     api.visitTeam().then(res => {
       if (res.data instanceof Array) setTemplateList(res.data);
     })
   }
-
   const getDiseaseList = () => {
     api.visitDiseaseType( ).then(res => {
       if (res.data instanceof Array) setDiseaseList(res.data);
     })
   }
-
   const tabList = [
     { name: '已分配出院患者', id: '1' },
     { name: '待分配出院患者', id: '2' },

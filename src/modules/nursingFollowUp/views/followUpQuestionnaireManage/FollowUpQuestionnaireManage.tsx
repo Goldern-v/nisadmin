@@ -4,31 +4,21 @@ import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import BaseTable from 'src/components/BaseTable'
 import { DatePicker, Select, Input, ColumnProps, PaginationConfig, Modal, message, Switch } from 'src/vendors/antd'
-import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpGroupModal from '../components/FollowUpGroupModal'
 import createModal from 'src/libs/createModal'
 import { authStore, appStore } from 'src/stores'
-import moment from 'moment'
 import FollowUpQuestionnaireManageServices from './services/FollowUpQuestionnaireManageServices'
-
 export interface Props { }
-
 const api = new FollowUpQuestionnaireManageServices();
 export default function FollowUpQuestionnaireManage(props: any) {
-  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [dataTotal, setDataTotal] = useState(0)
-  const [mealList, setMealList] = useState(new Array())
-  const { history, location } = appStore;
   const [deptSelect, setDeptSelect] = useState('')
   const [diseasList, setDiseasList] = useState([])
   const [searchText, setSearchText] = useState('')
   const [tableData, setTableData] = useState([])
   const followUpGroupModal = createModal(FollowUpGroupModal)
-  const [loadingTable, setLoadingTable] = useState(false)
   const [pageLoading, setPageLoading] = useState(false)
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-  //表格数据载入状态
-  const [dataLoading, setDataLoading] = useState(false);
    //科室列表
   const [deptList, setDeptList] = useState([] as any)
    //宣教接口请求参数
@@ -37,7 +27,6 @@ export default function FollowUpQuestionnaireManage(props: any) {
     pageSize: 20,
     pageIndex: 1
   });
-
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -54,15 +43,12 @@ export default function FollowUpQuestionnaireManage(props: any) {
       })
       .then((res) => {
         setPageLoading(false)
-
         setSelectedRowKeys([])
-
         setDataTotal(res.data.totalCount)
         setTableData(res.data.list)
       }, err => setPageLoading(false))
   }
   const onSave = (record: any) => {
-
     setPageLoading(true)
     api
       .setVisitTemplateDiseaseType({
@@ -94,15 +80,10 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
-
-
-  const handleDetailView = (bookId: string) => {
-    
-  }
+  const handleDetailView = (bookId: string) => {}
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -125,13 +106,13 @@ export default function FollowUpQuestionnaireManage(props: any) {
       width: 50,
       align: 'center',
       render: (text: any, record: any, index: any) => 
-          <span>
-            <Switch
-              size='small'
-              onChange={(check:any) => changeStatus(record, check)}
-              checked={record.status == 1 ? true : false}
-            />
-          </span>
+        <span>
+          <Switch
+            size='small'
+            onChange={(check:any) => changeStatus(record, check)}
+            checked={record.status == 1 ? true : false}
+          />
+        </span>
     },
     {
       title: '操作',
@@ -146,11 +127,10 @@ export default function FollowUpQuestionnaireManage(props: any) {
       }
     },
   ];
-  
+   //查看随访问卷
   const viewContent = (record: any) => {
-    // history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
+    appStore.history.push(`/nursingFollowUpDetail?patientId=${record.formCode}`)
   }
-  
   useEffect(() => {
     getData()
   }, [
@@ -159,12 +139,10 @@ export default function FollowUpQuestionnaireManage(props: any) {
     query.wardCode,
     deptSelect
   ])
-
   useEffect(() => {
     getDeptList();
     getAllList();
   }, []);
-
   const getDeptList = () => {
     api.getDeptList().then(res => {
       if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
@@ -203,7 +181,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
             if (query.wardCode == item.code) classes.push('selected')
             return <div
               key={item.code}
-              className={classes.join(' ')}
+              className={classes.join('')}
               id={`dept${item.code}`}
               onClick={() => handleDeptSelect(item)}>
               <span className="before" />{item.name}<span className="after" />
@@ -233,28 +211,28 @@ export default function FollowUpQuestionnaireManage(props: any) {
           surplusHeight={220} />
       </div>
     </div>
-      <followUpGroupModal.Component />
+      <followUpGroupModal.Component/>
   </Wrapper>
 }
 const Wrapper = styled.div`
-width: 100%;
-height: 100%;
-margin-left:20px;
-position: relative;
+  width: 100%;
+  height: 100%;
+  margin-left:20px;
+  position: relative;
 
-.float-right{
+  .float-right{
   float: right;
-}
-.input_hj {
+  }
+  .input_hj {
   margin-left: 20px;
-}
-#box_select {
+  }
+  #box_select {
   .ant-select-selection{
     border: 0;
     background: #fff;
   }
-}
-.topbar{
+  }
+  .topbar{
   height: 60px;
   // border-bottom: 1px solid #ddd;
   // background: #f8f8f8;
@@ -414,7 +392,6 @@ position: relative;
         padding-left: 8px!important;
       }
     }
-
     .operation-span{
       color: rgb(0, 166, 128);
       cursor: pointer;
@@ -448,12 +425,10 @@ position: relative;
   }
 }
 `
-
 const ModalWrapper = styled.div`
-text-align:center;
-
-.file-name-input{
-  width: 250px;
-  margin-right: 20px;
-}
+  text-align:center;
+  .file-name-input{
+    width: 250px;
+    margin-right: 20px;
+  }
 `

@@ -7,7 +7,6 @@ import FollowUpPatientsManage from './views/followUpPatientsManage/FollowUpPatie
 import FollowUpGroupManage from './views/followUpGroupManage/FollowUpGroupManage'
 import DiseaseManage from './views/diseaseManage/DiseaseManage'
 import FollowUpQuestionnaireManage from './views/followUpQuestionnaireManage/FollowUpQuestionnaireManage'
-
 export interface Props { }
 export default observer(function NursingFollowUpRouter(props: any) {
   const { location } = props
@@ -41,7 +40,6 @@ export default observer(function NursingFollowUpRouter(props: any) {
       })
       return targetMenu
     }
-
     if (modlueLoading)
       return BaseCon
     const targetMenu = getTagetMenu()
@@ -50,7 +48,6 @@ export default observer(function NursingFollowUpRouter(props: any) {
   }
   const getAuthMenu = () => {
     setModuleLoading(true)
-
     setTimeout(() => {
       setModuleLoading(false)
       setAuthMenu([
@@ -122,7 +119,6 @@ const Wrapper = styled.div`
     box-sizing: border-box;
   }
 `;
-
 const BaseMatchCon = styled.div`
   width: 100%;
   height: 100%;
@@ -130,19 +126,17 @@ const BaseMatchCon = styled.div`
   text-align: center;
   font-size: 24px;
 `
-
 const LeftMenuCon = styled.div`
   width: 200px;
 `;
-
 const MainCon = styled.div`
-    box-sizing: border-box;
-    flex: 1;
-    width: 0px;
-    align-items: stretch;
-    display: flex;
-    height: 100%;
-    overflow: hidden;
-    flex-direction: column;
-    padding: 5px 15px;
+  box-sizing: border-box;
+  flex: 1;
+  width: 0px;
+  align-items: stretch;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 5px 15px;
 `
