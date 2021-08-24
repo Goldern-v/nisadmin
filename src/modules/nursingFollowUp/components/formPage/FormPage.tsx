@@ -8,8 +8,10 @@ export interface Props {
   formCode?: string,
   editable?: boolean,
   loading?: boolean,
-  itemData?: any,
-  onItemDataChange?: Function
+  itemDataMap?: any,
+  master?: any,
+  onItemDataMapChange?: Function,
+  onMasterChange?: Function
 }
 
 export default function FormPage(props: Props) {
@@ -23,7 +25,7 @@ export default function FormPage(props: Props) {
     )
 
     switch (formCode) {
-      case '脑卒中高危人群院内综合干预量表':
+      case 'V0001':
         return <脑卒中高危人群院内综合干预量表 {...props} />
       default:
         return <div className="page-item"></div>

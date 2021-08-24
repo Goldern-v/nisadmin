@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Icon, Modal } from 'antd'
+import { Button, Icon, message, Modal } from 'antd'
 import { Place, ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
 import FormPage from 'src/modules/nursingFollowUp/components/formPage/FormPage'
@@ -8,6 +8,7 @@ import printing from 'printing'
 import { followUpDetailService } from '../services/FollowUpDetailService'
 
 export interface Props {
+  formCode?: string,
   loading?: boolean,
   masterId?: string | number,
   onAddOpen?: Function,
@@ -15,11 +16,12 @@ export interface Props {
 }
 
 export default function MainCon(props: Props) {
-  const { masterId, onRefresh, loading, onAddOpen } = props
+  const { masterId, onRefresh, loading, onAddOpen, formCode } = props
 
   const [editable, setEditable] = useState(true)
 
-  const [itemData, setItemData] = useState({} as any)
+  const [itemDataMap, setItemDataMap] = useState({} as any)
+  const [master, setMaster] = useState({} as any)
 
   const [formDataLoading, setFormDataLoading] = useState(false)
 
@@ -32,8 +34,10 @@ export default function MainCon(props: Props) {
     setTimeout(() => {
       let printEl = document.querySelector('.form-page-wrapper') as HTMLElement
 
+      const printMethod = appStore.isDev ? printing.preview : printing
+
       if (printEl)
-        printing.preview(
+        printMethod(
           printEl,
           {
             injectGlobalCss: true,
@@ -65,7 +69,10 @@ export default function MainCon(props: Props) {
       .getFormDetailById(masterId || '')
       .then((res) => {
         setFormDataLoading(false)
-        console.log(res.data)
+        if (res.data) {
+          setMaster(res.data.master)
+          setItemDataMap(res.data.itemDataMap)
+        }
 
       }, () => setFormDataLoading(false))
   }
@@ -76,16 +83,43 @@ export default function MainCon(props: Props) {
       content: '是否删除该记录?',
       onOk: () => {
         setFormDataLoading(true)
-        console.log('删除')
-        setTimeout(() => {
-          setFormDataLoading(true)
-          onRefresh && onRefresh({
-            deleteSelected: true
-          })
-        }, 500)
+
+        followUpDetailService
+          .deleteFormItem(masterId || '')
+          .then(res => {
+            setFormDataLoading(false)
+            message.success('删除成功')
+            onRefresh && onRefresh({
+              deleteSelected: true
+            })
+          }, () => setFormDataLoading(false))
       }
     })
   }
+
+  const handleSave = () => {
+    setFormDataLoading(true)
+
+    followUpDetailService.
+      saveOrUpdate({
+        master,
+        itemDataMap
+      })
+      .then(res => {
+        setFormDataLoading(false)
+        message.success('保存成功')
+      }, () => setFormDataLoading(false))
+  }
+
+  useEffect(() => {
+    console.log(itemDataMap)
+  }, [itemDataMap])
+
+  useEffect(() => {
+    if (appStore.isDev && formCode)
+      followUpDetailService.formCodeItemDict(formCode)
+        .then(res => console.log('表单字段配置：', res.data))
+  }, [formCode])
 
   useEffect(() => {
     if (masterId) getFormData()
@@ -106,10 +140,13 @@ export default function MainCon(props: Props) {
         <FormPage
           style={{ display: masterId ? '' : 'none' }}
           editable={editable}
-          formCode="脑卒中高危人群院内综合干预量表"
-          itemData={itemData}
-          onItemDataChange={(payload: any) =>
-            setItemData(payload)} />
+          formCode={formCode}
+          master={master}
+          itemDataMap={itemDataMap}
+          onMasterChange={(payload: any) =>
+            setMaster(payload)}
+          onItemDataMapChange={(payload: any) =>
+            setItemDataMap(payload)} />
       )
 
     return (
@@ -136,7 +173,8 @@ export default function MainCon(props: Props) {
       <Button
         className="mr-10"
         disabled={btnDisabled}
-        type="primary">
+        type="primary"
+        onClick={() => handleSave()}>
         保存
       </Button>
       <Button

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+import { Button } from 'antd'
 import LeftCon from './components/LeftCon'
 import MainCon from './components/MainCon'
 import AddFormModal from './components/AddFormModal'
@@ -7,15 +8,23 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
 import qs from 'qs'
 import { followUpDetailService } from './services/FollowUpDetailService'
+
 export interface Props { }
+
 export default observer(function followUpDetailView() {
   const { queryObj, history, location } = appStore
+
   const [selectedMenuKey, setSelectedMenuKey] = useState(queryObj.selectedMenuKey || '')
+
+  const selectedFormCode = selectedMenuKey ? selectedMenuKey.split('-')[0] : ''
   const selectedId = selectedMenuKey ? selectedMenuKey.split('-')[1] : ''
   const [baseInfo, setBaseInfo] = useState({} as any)
   const [loading, setLoading] = useState(false)
+
   const [addModalVisible, setAddModalVisible] = useState(false)
+
   const [followUpList, setFollowUpList] = useState([] as any[])
+
   /** 获取病人详情包括 */
   const getDetail = () => {
     setLoading(true)
@@ -27,6 +36,7 @@ export default observer(function followUpDetailView() {
         if (data) {
           let newBaseInfo = { ...data }
           delete newBaseInfo.visitDiseaseTypeList
+
           let newFollowUpList = (data.templateList || [])
             .filter((item: any) => item.visitMasterDataList && item.visitMasterDataList.length > 0)
             .map((item: any) => {
@@ -46,6 +56,7 @@ export default observer(function followUpDetailView() {
         }
       }, () => setLoading(false))
   }
+
   const handleCloseFollowUp = () => {
     if (baseInfo.patientId) {
       setLoading(true)
@@ -56,11 +67,13 @@ export default observer(function followUpDetailView() {
         }, () => setLoading(false))
     }
   }
+
   const handleCreateNewForm = (payload: any) => {
     setAddModalVisible(false)
     setLoading(true)
+
     followUpDetailService
-      .saveOrUpdateForm({
+      .createForm({
         ...payload,
         patientId: queryObj.patientId,
         empNo: authStore.user?.empNo
@@ -74,12 +87,15 @@ export default observer(function followUpDetailView() {
         }
       }, () => setLoading(true))
   }
+
   useEffect(() => {
     getDetail()
   }, [])
+
   useEffect(() => {
     history.replace(`${location.pathname}?${qs.stringify({ ...queryObj, selectedMenuKey })}`)
   }, [selectedMenuKey])
+
   return <Wrapper>
     <LeftCon
       selectedKey={selectedMenuKey}
@@ -92,11 +108,13 @@ export default observer(function followUpDetailView() {
       followUpList={followUpList} />
     <MainCon
       masterId={selectedId}
+      formCode={selectedFormCode}
       loading={loading}
       onAddOpen={() => setAddModalVisible(true)}
       onRefresh={(payload?: any) => {
         const { deleteSelected } = (payload || {})
         if (deleteSelected) setSelectedMenuKey('')
+
         getDetail()
       }}
     />
@@ -108,6 +126,7 @@ export default observer(function followUpDetailView() {
     />
   </Wrapper>
 })
+
 const Wrapper = styled.div`
   height: calc(100vh - 50px);
   display: flex;

@@ -61,9 +61,6 @@ export default function AddFormModal(props: Props) {
           newFormOrigin = newFormOrigin.concat(itemFormList)
         })
 
-        console.log(newFormGroup)
-        console.log(newFormOrigin)
-
         setFormListOrgin(newFormOrigin)
         setFormGroup(newFormGroup)
 
