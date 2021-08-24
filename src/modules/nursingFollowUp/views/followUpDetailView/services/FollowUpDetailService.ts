@@ -28,7 +28,7 @@ class FollowUpDetailService extends BaseApiService {
 
   /** 创建随访表单 */
   public createForm(payload: any) {
-    return this.post('/visit/visitReportMaster/saveOrUpdate', payload)
+    return this.post('/visit/visitMasterData/saveOrUpdate', payload)
   }
 
   /** 保存或更新问卷内容 护士 */
@@ -41,7 +41,7 @@ class FollowUpDetailService extends BaseApiService {
 
 
   /** 通过ID获取随访表记录 */
-  public getFormDetailById(masterId: string | number | number) {
+  public getFormDetailById(masterId: string | number) {
     return this.post('/visit/visitReportMaster/getById', { masterId })
   }
 

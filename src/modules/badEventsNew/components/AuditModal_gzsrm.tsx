@@ -93,6 +93,7 @@ export default observer(function AduitModal(props: Props) {
         saveParams['B0002062'] = auditInfo.handleContent
         saveParams['B0002057'] = auditInfo.handleContent
         saveParams['B0002056'] = auditInfo.auditDate
+        params.noPass = false
         break
       case 'nursing_minister_comfirm':
         // 意见和日期
@@ -234,26 +235,6 @@ export default observer(function AduitModal(props: Props) {
       case 'dept_handle':
         return (
           <div className='form1'>
-            <Row>
-              <Col span={6} className="row-title">
-                是否提出整改意见：
-              </Col>
-              <Col span={18}>
-                <Radio.Group
-                  className='radio-group'
-                  value={auditInfo.noPass}
-                  onChange={(e) => {
-                    setAuditInfo({
-                      ...auditInfo,
-                      noPass: e.target.value,
-                      handleContent: e.target.value ? auditInfo.handleContent : ""
-                    })
-                  }}>
-                  <Radio value={false}>否</Radio>
-                  <Radio value={true}>是</Radio>
-                </Radio.Group>
-              </Col>
-            </Row>
             <Row>
               <Col span={6} className="row-title">
                 {opionTitle}：

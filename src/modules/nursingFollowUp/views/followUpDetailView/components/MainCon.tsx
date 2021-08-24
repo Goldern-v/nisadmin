@@ -6,6 +6,7 @@ import { appStore } from 'src/stores'
 import FormPage from 'src/modules/nursingFollowUp/components/formPage/FormPage'
 import printing from 'printing'
 import { followUpDetailService } from '../services/FollowUpDetailService'
+import moment from 'src/vendors/moment'
 
 export interface Props {
   formCode?: string,
@@ -64,6 +65,8 @@ export default function MainCon(props: Props) {
 
   const getFormData = () => {
     setFormDataLoading(true)
+    setMaster({})
+    setItemDataMap({})
 
     followUpDetailService
       .getFormDetailById(masterId || '')
@@ -102,7 +105,11 @@ export default function MainCon(props: Props) {
 
     followUpDetailService.
       saveOrUpdate({
-        master,
+        master: {
+          ...master,
+          happenDate: moment().format('YYYY-MM-DD HH:mm'),
+          status: master.status || 1
+        },
         itemDataMap
       })
       .then(res => {
@@ -111,8 +118,19 @@ export default function MainCon(props: Props) {
       }, () => setFormDataLoading(false))
   }
 
+  const handlePush = () => {
+    setFormDataLoading(true)
+
+    followUpDetailService.
+      pushToPatient(masterId || '')
+      .then(res => {
+        setFormDataLoading(false)
+        message.success('推送成功')
+      }, () => setFormDataLoading(false))
+  }
+
   useEffect(() => {
-    console.log(itemDataMap)
+    if (appStore.isDev && Object.keys(itemDataMap).length > 0) console.log(itemDataMap)
   }, [itemDataMap])
 
   useEffect(() => {
@@ -163,6 +181,29 @@ export default function MainCon(props: Props) {
     )
   }
 
+  const statusContent = () => {
+    if (loading || Object.keys(master).length <= 0) return <span></span>
+
+    const saveStatusCon = (<React.Fragment>
+      <div className="status-icon save"></div>
+      <span className="status-text">保存</span>
+    </React.Fragment>)
+
+    const submitedStatusCon = (<React.Fragment>
+      <div className="status-icon submited"></div>
+      <span className="status-text">提交</span>
+    </React.Fragment>)
+
+    switch (master.status || null) {
+      case 1:
+        return saveStatusCon
+      case 2:
+        return submitedStatusCon
+      default:
+        return saveStatusCon
+    }
+  }
+
   return <Wrapper>
     <div className="tool-bar">
       <Button
@@ -186,9 +227,13 @@ export default function MainCon(props: Props) {
       </Button>
       <Button
         className="mr-10"
-        disabled={btnDisabled} >
+        disabled={btnDisabled}
+        onClick={() => handlePush()}>
         推送给患者
       </Button>
+      <div className="status-con">
+        {statusContent()}
+      </div>
       <Place />
       <Button
         className="mr-10"
@@ -224,6 +269,27 @@ const Wrapper = styled.div`
   }
   .form-page-container{
     flex: 1;
+  }
+  .status-con{
+    line-height: 30px;
+    &>*{
+      vertical-align: middle;
+    }
+    .status-icon{
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 5px;
+      background-color: #00A680;
+      &.submited{
+        background-color: red;
+      }
+    }
+    .status-text{
+      color: #999;
+      font-size: 14px;
+    }
   }
   .full-pannel{
     width: 100%;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, Suspense, lazy } from 'react'
-import { Button, Spin } from 'antd'
+import { Button, Icon, Spin } from 'antd'
 const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
 
 export interface Props {
@@ -28,7 +28,12 @@ export default function FormPage(props: Props) {
       case 'V0001':
         return <脑卒中高危人群院内综合干预量表 {...props} />
       default:
-        return <div className="page-item"></div>
+        return <div className="page-item null">
+          <span className="null-text">
+            <Icon type="file-exclamation" style={{ marginRight: 10 }} />
+            <span>暂无对应表单</span>
+          </span>
+        </div>
     }
   }
 
@@ -56,6 +61,12 @@ const Wrapper = styled.div`
     color: #000;
     font-size: 12px;
     line-height: 12px;
+    &.null{
+      font-size: 16px;
+      color: #999;
+      line-height: 500px;
+      text-align: center;
+    }
     .form-title{
       &>div{
         font-size: 24px;

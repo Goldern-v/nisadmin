@@ -293,7 +293,7 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
           <InputItem
             value={editData['V001011']}
             className="underline"
-            style={{ width: 40 }}
+            style={{ width: 60 }}
             editable={editable}
             onChange={(e: any) =>
               onItemDataMapChange && onItemDataMapChange({
@@ -472,7 +472,7 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
             <InputItem
               value={editData['V001016']}
               className="underline"
-              style={{ width: 180 }}
+              style={{ width: 150 }}
               editable={editable}
               onChange={(e: any) =>
                 onItemDataMapChange && onItemDataMapChange({
@@ -634,7 +634,7 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
             <InputItem
               value={editData['V001022']}
               className="underline"
-              style={{ width: 60 }}
+              style={{ width: 180 }}
               editable={editable}
               onChange={(e: any) =>
                 onItemDataMapChange && onItemDataMapChange({
