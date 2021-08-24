@@ -23,7 +23,7 @@ export default function 待分配出院患者(props: Props) {
   const [pageLoading, setPageLoading] = useState(false)
   const [deptSelect, setDeptSelect] = useState('')
   //科室列表
-  const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [date, setDate]: any = useState([])
   const [recordSelected, setRecordSelected] = useState({} as any)
   const [isAdd, setIsAdd] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
@@ -86,7 +86,7 @@ export default function 待分配出院患者(props: Props) {
     },
     {
       title: '住院次数',
-      dataIndex: 'hospitalFrequency',
+      dataIndex: 'visitId',
       width: 100,
       align: 'center'
     },
@@ -192,7 +192,7 @@ export default function 待分配出院患者(props: Props) {
       </Select>
       <span className='label'>出院时间:</span>
       <DatePicker.RangePicker
-        allowClear={false}
+        allowClear
         style={{ width: 220 }}
         value={date}
         onChange={(value: any) => setDate(value)}

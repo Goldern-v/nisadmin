@@ -22,7 +22,7 @@ export default function 已分配出院患者(props:Props) {
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
   const [deptSwitch, setDeptSwitch] = useState(false)
-  const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [date, setDate]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [searchText, setSearchText] = useState('')
   const [templateList, setTemplateList]: any = useState([])
@@ -267,7 +267,7 @@ export default function 已分配出院患者(props:Props) {
       </Select>
       <span className='label'>出院时间:</span>
       <DatePicker.RangePicker
-        allowClear={false}
+        allowClear
         style={{ width: 220 }}
         value={date}
         onChange={(value: any) => setDate(value)}
