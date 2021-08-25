@@ -8,6 +8,8 @@ import BaseTable from 'src/components/BaseTable'
 import DiseaseModal from '../components/DiseaseModal'
 import { appStore, authStore } from 'src/stores'
 import DiseaseManageServices from './services/DiseaseManageServices'
+import FormPageBody from '../components/FormPageBody'
+
 export interface Props { }
 const api = new DiseaseManageServices();
 export default function DiseaseManage(props: any) {
@@ -18,6 +20,8 @@ export default function DiseaseManage(props: any) {
   const [recordSelected, setRecordSelected] = useState({} as any)
   const [isAdd, setIsAdd] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
+  const [editVisible2, setEditVisible2] = useState(false)
+  const [formCodeChange, setFormCodeChange] = useState("")
   const [pageLoading, setPageLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
@@ -31,7 +35,8 @@ export default function DiseaseManage(props: any) {
   }
   //查看随访问卷
   const setDetailModal = (formCode: any) => {
-    appStore.history.push(`/nursingFollowUpDetail?patientId=${formCode}`)
+    setEditVisible2(true)
+    setFormCodeChange(formCode)
   }
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
@@ -223,6 +228,11 @@ export default function DiseaseManage(props: any) {
         getData()
       }}
       onCancel={() => setEditVisible(false)} />
+    <FormPageBody
+      visible={editVisible2}
+      formCode={formCodeChange}
+      onOk={() => {}}
+      onCancel={() => setEditVisible2(false)} />
   </Wrapper>
 }
 const Wrapper = styled.div`

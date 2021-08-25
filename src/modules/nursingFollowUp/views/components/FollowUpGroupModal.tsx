@@ -6,35 +6,54 @@ import { DoCon } from 'src/components/BaseTable'
 import FollowUpGroupManageServices from '../followUpGroupManage/services/FollowUpGroupManageServices'
 import { message } from 'antd/es'
 const api = new FollowUpGroupManageServices();
+export interface Props {
+  visible: boolean,
+  onOk: Function,
+  onCancel: Function,
+  params?: any,
+  isOtherEmp?: boolean,
+  isAdd?: boolean,
+}
 export default function EidtModal(props: any) {
   let [query, setQuery] = useState({
     pageSize: 20,
     pageIndex: 1
   })
-  const { visible, onCancel } = props
+  const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
   const [loading, setLoading] = useState(false)
-  const [deptSelect, setDeptSelect] = useState('')
+  let user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [deptList, setDeptList] = useState([] as any)
   const [pageLoading, setPageLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
   const [tableData, setTableData] = useState([])
-  useEffect(() => {
-    getData()
-  }, [
-    query.pageIndex,
-    query.pageSize,
-    deptSelect,
-  ])
+  let [c, setC] = useState(0);
+  
   useEffect(() => {
     let list = props.deptList || []
     setDeptList([...list])
   }, [
     props
   ])
+
+  useEffect(() => {
+    setDeptSelect(user.deptCode)
+  }, []);
+
+  useEffect(() => {
+    if(c == 0){
+      getData();
+      setC(c++)
+    }
+  }, [
+    query.pageIndex,
+    query.pageSize,
+    deptSelect,
+  ])
+  
   const getData = () => { 
     setPageLoading(true)
-    api
-      .queryPageList({
+    api.queryPageList({
         ...query,
         wardCode: deptSelect,
       })
@@ -88,8 +107,7 @@ export default function EidtModal(props: any) {
       })
       .then((res) => {
         message.success('操作成功')
-        props.getData();
-        props.getTemplateList();
+        onOk && onOk()
     }, )
     }else {
       message.error('小组名称不能为空！')

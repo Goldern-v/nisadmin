@@ -4,6 +4,8 @@ import { Button, Col, Input, InputNumber, Modal, Row, Select, Icon } from 'antd'
 import FormCreateModal from './FormCreateModal'
 import DiseaseManageServices from '../diseaseManage/services/DiseaseManageServices'
 import { message } from 'antd/es'
+import FormPageBody from '../components/FormPageBody'
+
 import { appStore, authStore } from 'src/stores'
 const api = new DiseaseManageServices();
 export interface Props {
@@ -19,6 +21,8 @@ export default function editModal(props: Props) {
   const [loading, setLoading] = useState(false)
   const [formCreateVisible, setFormCreateVisible] = useState(false)
   const [formList, setFormList] = useState([] as any)
+  const [editVisible, setEditVisible] = useState(false)
+  const [formCodeChange, setFormCodeChange] = useState("")
   const [editParmas, setEditPrams] = useState({
     periodsList: [],
     diseaseTypeName: '',
@@ -60,7 +64,8 @@ export default function editModal(props: Props) {
         }, () => setLoading(false))
   }
   const setDetailModal = (formCode: any) => {
-    appStore.history.push(`/nursingFollowUpDetail?patientId=${formCode}`)
+    setEditVisible(true)
+    setFormCodeChange(formCode)
   }
   useEffect(() => {
     if (visible) {
@@ -139,6 +144,11 @@ export default function editModal(props: Props) {
         }}
         visible={formCreateVisible}
       />
+      <FormPageBody
+      visible={editVisible}
+      formCode={formCodeChange}
+      onOk={() => {}}
+      onCancel={() => setEditVisible(false)} />
     </Wrapper>
   </Modal>
 }

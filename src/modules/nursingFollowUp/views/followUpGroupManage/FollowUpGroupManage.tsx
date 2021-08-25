@@ -5,13 +5,8 @@ import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, Input, ColumnProps, PaginationConfig, Modal, message, Switch } from 'src/vendors/antd'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import BaseTable from 'src/components/BaseTable'
-import { globalModal } from 'src/global/globalModal'
-import emitter from 'src/libs/ev'
 import FollowUpGroupModal from '../components/FollowUpGroupModal'
-import createModal from 'src/libs/createModal'
-import { appStore, authStore } from 'src/stores'
 import FollowUpGroupManageServices from './services/FollowUpGroupManageServices'
-import moment from 'moment'
 export interface Props { }
 const api = new FollowUpGroupManageServices();
 export default function FollowUpGroupManage(props: any) {
@@ -19,21 +14,19 @@ export default function FollowUpGroupManage(props: any) {
     pageSize: 20,
     pageIndex: 1
   })
-  const [date, setDate]: any = useState(getCurrentMonthNow())
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [dataTotal, setDataTotal] = useState(0)
-  const [deptSelect, setDeptSelect] = useState('')
-  const [selectValue, setSelectValue] = useState(new Array())
+  let user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [searchText, setSearchText] = useState('')
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
-  const [selectedTeam, setSelectedTeam]: any = useState('')
   const [selectedDistribution, setSelectedDistribution]: any = useState('')
   const [templateList, setTemplateList]: any = useState([])
-  const [teamList, setTeamList]: any = useState([])
   const [distributionList, setDistributionList]: any = useState([])
   const [tableData, setTableData] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const followUpGroupModal = createModal(FollowUpGroupModal)
+  const [editVisible, setEditVisible] = useState(false)
+
   //科室列表
   const [deptList, setDeptList] = useState([] as any)
   const onChangeSearchText = (e: any) => {
@@ -41,12 +34,7 @@ export default function FollowUpGroupManage(props: any) {
   }
   //设置随访小组
   const setFollowUpGroup = (record: any) => {
-    followUpGroupModal
-      .show({
-        deptList:deptList,
-        getData:getData,
-        getTemplateList:getTemplateList,
-      })
+    setEditVisible(true)
   }
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
@@ -188,8 +176,9 @@ export default function FollowUpGroupManage(props: any) {
     deptSelect,
   ])
   useEffect(() => {
+    setDeptSelect(user.deptCode)
+    getTemplateList(user.deptCode)
     getDeptList();
-    getTemplateList("");
     getDistributionList();
   }, []);
   const getDeptList = () => {
@@ -281,7 +270,15 @@ export default function FollowUpGroupManage(props: any) {
           }}
           loading={pageLoading}
           surplusHeight={220} />
-      <followUpGroupModal.Component />
+      <FollowUpGroupModal
+        visible={editVisible}
+        deptList={deptList}
+        onOk={() => {
+          getData()
+          getTemplateList(deptSelect)
+          setEditVisible(false)
+        }}
+        onCancel={() => setEditVisible(false)} />  
   </Wrapper>
 }
 const Wrapper = styled.div`

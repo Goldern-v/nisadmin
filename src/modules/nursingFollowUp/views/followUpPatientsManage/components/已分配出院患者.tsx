@@ -20,7 +20,8 @@ export default function 已分配出院患者(props:Props) {
   //表格数据载入状态
   const [tableData, setTableData] = useState([])
   const [dataTotal, setDataTotal] = useState(0)
-  const [deptSelect, setDeptSelect] = useState('')
+  let user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [deptSwitch, setDeptSwitch] = useState(false)
   const [date, setDate]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
@@ -39,7 +40,7 @@ export default function 已分配出院患者(props:Props) {
       title: '护理单元',
       dataIndex: 'wardName',
       align: 'center',
-      width: 120
+      width: 250
     },
     {
       title: '床号',
@@ -194,6 +195,11 @@ export default function 已分配出院患者(props:Props) {
       }
     }
   ]
+  useEffect(() => {
+    setDeptSelect(user.deptCode)
+    getTemplateList(user.deptCode)
+  }, [])
+
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -234,9 +240,7 @@ export default function 已分配出院患者(props:Props) {
   const onDetail = (record: any) => {
     appStore.history.push(`/nursingFollowUpDetail?patientId=${record.patientId}`)
   }
-  useEffect(() => {
-    getTemplateList("")
-  }, [])
+  
   useEffect(() => {
     getData()
   }, [

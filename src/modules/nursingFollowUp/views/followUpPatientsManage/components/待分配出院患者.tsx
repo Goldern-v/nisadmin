@@ -21,7 +21,8 @@ export default function 待分配出院患者(props: Props) {
   })
   //表格数据载入状态
   const [pageLoading, setPageLoading] = useState(false)
-  const [deptSelect, setDeptSelect] = useState('')
+  let user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const [deptSelect, setDeptSelect] = useState(user.deptCode)
   //科室列表
   const [date, setDate]: any = useState([])
   const [recordSelected, setRecordSelected] = useState({} as any)
@@ -37,7 +38,7 @@ export default function 待分配出院患者(props: Props) {
       title: '护理单元',
       dataIndex: 'wardName',
       align: 'center',
-      width: 150
+      width: 250
     },
     {
       title: '床号',
@@ -162,8 +163,10 @@ export default function 待分配出院患者(props: Props) {
     setEditVisible(true)
   }
   useEffect(() => {
-    getTemplateList("")
+    setDeptSelect(user.deptCode)
+    getTemplateList(user.deptCode)
   }, [])
+  
   useEffect(() => {
     getData()
   }, [

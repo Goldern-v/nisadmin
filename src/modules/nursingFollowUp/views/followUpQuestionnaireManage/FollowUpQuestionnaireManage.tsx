@@ -6,17 +6,18 @@ import BaseTable from 'src/components/BaseTable'
 import { DatePicker, Select, Input, ColumnProps, PaginationConfig, Modal, message, Switch } from 'src/vendors/antd'
 import FollowUpGroupModal from '../components/FollowUpGroupModal'
 import createModal from 'src/libs/createModal'
-import { authStore, appStore } from 'src/stores'
+import FormPageBody from '../components/FormPageBody'
 import FollowUpQuestionnaireManageServices from './services/FollowUpQuestionnaireManageServices'
 export interface Props { }
 const api = new FollowUpQuestionnaireManageServices();
 export default function FollowUpQuestionnaireManage(props: any) {
+  const [editVisible, setEditVisible] = useState(false)
+  const [formCodeChange, setFormCodeChange] = useState("")
   const [dataTotal, setDataTotal] = useState(0)
   const [deptSelect, setDeptSelect] = useState('')
   const [diseasList, setDiseasList] = useState([])
   const [searchText, setSearchText] = useState('')
   const [tableData, setTableData] = useState([])
-  const followUpGroupModal = createModal(FollowUpGroupModal)
   const [pageLoading, setPageLoading] = useState(false)
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
    //科室列表
@@ -129,7 +130,8 @@ export default function FollowUpQuestionnaireManage(props: any) {
   ];
    //查看随访问卷
   const viewContent = (record: any) => {
-    appStore.history.push(`/nursingFollowUpDetail?patientId=${record.formCode}`)
+    setEditVisible(true)
+    setFormCodeChange(record.formCode)
   }
   useEffect(() => {
     getData()
@@ -181,7 +183,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
             if (query.wardCode == item.code) classes.push('selected')
             return <div
               key={item.code}
-              className={classes.join('')}
+              className={classes.join(' ')}
               id={`dept${item.code}`}
               onClick={() => handleDeptSelect(item)}>
               <span className="before" />{item.name}<span className="after" />
@@ -211,7 +213,14 @@ export default function FollowUpQuestionnaireManage(props: any) {
           surplusHeight={220} />
       </div>
     </div>
-      <followUpGroupModal.Component/>
+    <FormPageBody
+      visible={editVisible}
+      formCode={formCodeChange}
+      onOk={() => {
+        setEditVisible(false)
+        getData()
+      }}
+      onCancel={() => setEditVisible(false)} />
   </Wrapper>
 }
 const Wrapper = styled.div`

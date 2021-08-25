@@ -114,7 +114,6 @@ export default observer(function followUpDetailView() {
       onRefresh={(payload?: any) => {
         const { deleteSelected } = (payload || {})
         if (deleteSelected) setSelectedMenuKey('')
-
         getDetail()
       }}
     />
