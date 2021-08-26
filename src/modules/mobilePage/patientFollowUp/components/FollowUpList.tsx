@@ -4,9 +4,9 @@ export interface Props {}
 
 export default function FollowUpList(props: any) {
   const [listNum, setListNum] = useState(5);
-  const toDetail = (masterId: any, formCode: any) => {
+  const toDetail = (masterId: any, formCode: any,isRead:any) => {
     console.log(props);
-    let state = { masterId, formCode, patientId: props.patientId };
+    let state = { masterId, formCode, patientId: props.patientId,isRead };
     sessionStorage.setItem("state", JSON.stringify(state));
     props.history.replace({
       pathname: "/FollowUpDetail",
@@ -25,12 +25,12 @@ export default function FollowUpList(props: any) {
             <div
               className="list-item"
               key={item.masterId}
-              onClick={() => toDetail(item.masterId, item.formCode)}
+              onClick={() => toDetail(item.masterId, item.formCode,item.isRead)}
             >
               <div className="fl-top">
                 <div
                   className="tips-point"
-                  style={{ display: item.isRead ? "block" : "none" }}
+                  style={{ display: !item.isRead ? "block" : "none" }}
                 />
                 <div className="fl-title">{item.formName}</div>
                 <div

@@ -76,10 +76,10 @@ const CustomRadio = styled.div`
     margin-right: 5px;
     .radio-fill{
       display: inline-block;
-      border-radius: 50%;
-      width: 8px;
-      height: 8px;
-      background-color: #00A680;
+      border-radius: 100%;
+      width: 4px;
+      height: 4px;
+      border:4px solid #00A680;
       position: absolute;
       top: 50%;
       left: 50%;

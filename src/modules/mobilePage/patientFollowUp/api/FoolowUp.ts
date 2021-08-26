@@ -17,6 +17,9 @@ export default class FoolowUp extends BaseApiService {
   public saveOrUpdateByPatient (params:any){
     return httpLoginToken.post('/visit/visitReportMaster/saveOrUpdateByPatient',params)
   }
+  public setIsRead (params:any){
+    return httpLoginToken.post('visit/visitMasterData/setIsRead',params)
+  }
   
   // /**护理实习生花名册-将信息提交审核(手机端H5页面) */
   // public submitInfoToAudit(params: any) {

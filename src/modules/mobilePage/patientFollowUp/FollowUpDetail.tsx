@@ -12,7 +12,7 @@ import zhCN from "antd-mobile/lib/date-picker/locale/zh_CN";
 export interface Props {
   location: {
     search: "";
-    state: { formCode: any; masterId: any; patientId: any };
+    state: { formCode: any; masterId: any; patientId: any,isRead:any };
   };
 }
 
@@ -23,7 +23,7 @@ export default function FollowUpDetail(props: Props) {
   const [docParams, setDocParams] = useState({});
   const [finished, setFinished] = useState(false);
   const [master, setMaster] = useState({} as any);
-
+  const [rules,setRules] = useState({})
   const isShow = (item: any) => {
     if (item.jsInteractive) {
       let key = item.jsInteractive.split("_")[0];
@@ -35,6 +35,7 @@ export default function FollowUpDetail(props: Props) {
   };
   const getParams = (arr: any) => {
     arr.map((item: any) => {
+      console.log(item);
       if (
         item.name &&
         item.type != "checkbox" &&
@@ -64,7 +65,7 @@ export default function FollowUpDetail(props: Props) {
 
     foolowUp
       .saveOrUpdateByPatient({
-        master: { ...master, status: 2 },
+        master: { ...master, status: 1 },
         itemDataMap: subParams,
       })
       .then((res) => {
@@ -92,12 +93,18 @@ export default function FollowUpDetail(props: Props) {
   };
   useEffect(() => {
     let localState = sessionStorage.getItem("state");
+    let locationState:any = {}
     if (typeof localState == "string") {
-      localState = JSON.parse(localState);
+      locationState = JSON.parse(localState);
     }
-    let { formCode, masterId, patientId } = props.location.state || localState;
+    let { formCode, masterId, patientId } = props.location.state || locationState;
     foolowUp.getReportMaster({ masterId }).then((res) => {
       setMaster(res.data.master);
+      if(!locationState.isRead){
+        foolowUp.setIsRead({
+          masterId
+        })
+      }
       document.title = res.data.master.formName;
       setWritedParams(res.data.itemDataMap);
       foolowUp
@@ -138,15 +145,17 @@ export default function FollowUpDetail(props: Props) {
               }
             });
             let { documentName, module, type, name, documentItemLists } = item;
-            let firstObj = {
-              // documentName,
-              // module,
-              type,
-              name,
-              ...item,
-              // documentItemLists,
-            };
-            realParams[item.module][firstObj.name] = firstObj;
+            if(item.documentUserSelect==0||item.documentUserSelect==2){
+              let firstObj = {
+                // documentName,
+                // module,
+                type,
+                name,
+                ...item,
+                // documentItemLists,
+              };
+              realParams[item.module][firstObj.name] = firstObj;
+            }
           });
           setDocParams(realParams);
         });
@@ -216,7 +225,7 @@ export default function FollowUpDetail(props: Props) {
                             <label>
                               <div className="radio-box">
                                 <input
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   type="radio"
                                   name={item.name}
                                   value={item.saveValue}
@@ -238,7 +247,7 @@ export default function FollowUpDetail(props: Props) {
                                 <input
                                   type="radio"
                                   name={item.name}
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   checked={params[item.name] == item.saveValue}
                                   value={item.saveValue}
                                   onClick={(e: any) => {
@@ -250,7 +259,7 @@ export default function FollowUpDetail(props: Props) {
                                 <input
                                   className="r-text"
                                   type="text"
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   placeholder="请输入"
                                   value={params[item.documentItemLists[0].name]}
                                   onChange={(e: any) => {
@@ -269,7 +278,7 @@ export default function FollowUpDetail(props: Props) {
                               <div className="radio-box">
                                 <input
                                   type="checkbox"
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   name={item.name}
                                   value={item.saveValue}
                                   checked={params[item.name].includes(
@@ -305,7 +314,7 @@ export default function FollowUpDetail(props: Props) {
                                 <input
                                   type="checkbox"
                                   name={item.name}
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   value={item.saveValue}
                                   checked={params[item.name].includes(
                                     item.saveValue
@@ -328,7 +337,7 @@ export default function FollowUpDetail(props: Props) {
                                 <input
                                   className="r-text"
                                   type="text"
-                                  disabled={master.status == 2}
+                                  disabled={master.status == 1}
                                   placeholder="请输入"
                                   value={params[item.documentItemLists[0].name]}
                                   onChange={(e: any) => {
@@ -343,7 +352,7 @@ export default function FollowUpDetail(props: Props) {
                         } else if (item.type == "date(yyyy-mm-dd)") {
                           return (
                             <DatePicker
-                              disabled={master.status == 2}
+                              disabled={master.status == 1}
                               value={
                                 params[item.name]
                                   ? moment(params[item.name]).toDate()
@@ -377,7 +386,7 @@ export default function FollowUpDetail(props: Props) {
       </div>
       <div className="footer">
         <ButtonMb
-          disabled={master.status == 2}
+          disabled={master.status == 1}
           type="primary"
           className="sumbit-btn"
           onClick={(e: any) => {
