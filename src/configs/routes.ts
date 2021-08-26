@@ -451,6 +451,9 @@ import SatisfiedPatSubmit from "src/modules/mobilePage/satisfiedPatSubmit/Satisf
 //单点登录
 const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/SingleSignOnDefault"))
 const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/SingleSignOnGzsrm"))
+// 移动端界面-患者随访问卷首页
+import FollowUpIndex from "src/modules/mobilePage/patientFollowUp/FollowUpIndex"
+import FollowUpDetail from "src/modules/mobilePage/patientFollowUp/FollowUpDetail"
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -460,6 +463,9 @@ const routes: RouteItem[] = [
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
+  setLayout("/followUpIndex", FollowUpIndex),
+  setLayout("/followUpDetail", FollowUpDetail),
+
   ...specialModule,
   setLayout("/autoLogin", appStore.hisMatch({
     map: {
