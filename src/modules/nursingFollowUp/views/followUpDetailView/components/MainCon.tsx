@@ -35,10 +35,10 @@ export default function MainCon(props: Props) {
     setTimeout(() => {
       let printEl = document.querySelector('.form-page-wrapper') as HTMLElement
 
-      const printMethod = appStore.isDev ? printing.preview : printing
+      // const printMethod = appStore.isDev ? printing.preview : printing
 
       if (printEl)
-        printMethod(
+        printing(
           printEl,
           {
             injectGlobalCss: true,
@@ -74,7 +74,13 @@ export default function MainCon(props: Props) {
         setFormDataLoading(false)
         if (res.data) {
           setMaster(res.data.master)
-          setItemDataMap(res.data.itemDataMap)
+
+          let newItemDataMap = { ...res.data.itemDataMap }
+          // 初始化随访时间
+          if ((newItemDataMap['V001072'] || '').trim().length <= 0)
+            newItemDataMap['V001072'] = moment().format('YYYY-MM-DD')
+
+          setItemDataMap(newItemDataMap)
         }
 
       }, () => setFormDataLoading(false))
