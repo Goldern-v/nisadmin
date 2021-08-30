@@ -241,7 +241,6 @@ export default observer(function AduitModal(props: Props) {
               </Col>
               <Col span={18}>
                 <TextArea
-                  disabled={!auditInfo.noPass}
                   autosize={{ minRows: 2 }}
                   value={auditInfo.handleContent}
                   onChange={(e) =>

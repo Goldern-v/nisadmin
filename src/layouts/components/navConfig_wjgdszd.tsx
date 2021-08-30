@@ -29,10 +29,19 @@ const baseConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile"
   },
+  {
+    name: "病区登记本",
+    path: "/wardRegister",
+    hidden: !appStore.isDev
+  },
+  {
+    name: '不良事件',
+    path: '/badEventsNew',
+    hidden: !appStore.isDev,
+  },
   // {
-  //   name: '不良事件',
-  //   path: '/badEventsNewList',
-  //   hidden: !appStore.isDev,
+  //   name: '不良事件分析报告',
+  //   path: '/badEvents/alanysis/1/1'
   // },
   {
     name: "质量管理",
@@ -71,19 +80,18 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/continuingEdu",
-    hidden: true
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
   },
-  // {
-  //   name: "敏感指标",
-  //   path: "/indicator",
-  //   hidden: true
-  // },
-  // {
-  //   name: "敏感指标登记本",
-  //   path: "/sensitiveRegister",
-  //   hidden: true
-  // },
+  {
+    name: "敏感指标",
+    path: "/indicator"
+  },
+  {
+    name: "敏感指标登记本",
+    path: "/sensitiveRegister",
+    // hidden: !appStore.isDev
+  },
   {
     name: "统计查询",
     path: "/statistic"

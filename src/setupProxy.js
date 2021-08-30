@@ -48,6 +48,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'fqfybjy':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
       return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+    /** 武警广东省总队医院 */
+    case 'wjgdszd':
+    // return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
+    // 暂无对应的测试环境
     default:
       return 'http://192.168.1.54:9866'
   }
