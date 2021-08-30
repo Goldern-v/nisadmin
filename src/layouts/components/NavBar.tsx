@@ -23,6 +23,8 @@ import { navConfig as navConfig_yczyy } from "./navConfig_yczyy";
 import { navConfig as navConfig_nfzxy } from "./navConfig_nfzxy";
 import { navConfig as navConfig_fqfybjy } from "./navConfig_fqfybjy";
 import { navConfig as navConfig_wjgdszd } from "./navConfig_wjgdszd";
+import { navConfig as navConfig_bhsrm } from "./navConfig_bhsrm";
+import { navConfig as navConfig_qzxyy } from "./navConfig_qzxyy";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -108,6 +110,7 @@ const MenuCon = observer(function (props: {
 
 export default observer(function NavBar(props: any) {
   const realNavConfig = (() => {
+    console.log(appStore.HOSPITAL_ID)
     if (authStore.isOnlyInternsManage) {
       return navConfig_hjInterns;
     }
@@ -140,6 +143,10 @@ export default observer(function NavBar(props: any) {
       return navConfig_fqfybjy
     } else if (appStore.HOSPITAL_ID == 'wjgdszd') {
       return navConfig_wjgdszd
+    } else if (appStore.HOSPITAL_ID == 'bhsrm') {
+      return navConfig_bhsrm
+    } else if (appStore.HOSPITAL_ID == 'qzxyy') {
+      return navConfig_qzxyy
     }
     return navConfig;
   })();

@@ -91,6 +91,8 @@ const LEFT_MENU_CONFIG = [
     hide: appStore.hisMatch({
       map: {
         gzsrm: true,
+        bhsrm: true,
+        qzxyy: true,
         other: false,
       }
     })
@@ -102,6 +104,8 @@ const LEFT_MENU_CONFIG = [
     hide: appStore.hisMatch({
       map: {
         gzsrm: true,
+        bhsrm: true,
+        qzxyy: true,
         other: false,
       }
     }),

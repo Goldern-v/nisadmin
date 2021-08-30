@@ -524,6 +524,10 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
+} else if (appStore.HOSPITAL_ID == 'bhsrm') {
+  specialModule = [...homeRouter(SettingView)]
+} else if (appStore.HOSPITAL_ID == 'qzxyy') {
+  specialModule = [...homeRouter(SettingView)]
 }
 
 export { specialModule };
