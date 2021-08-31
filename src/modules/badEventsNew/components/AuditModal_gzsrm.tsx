@@ -170,7 +170,7 @@ export default observer(function AduitModal(props: Props) {
         auditDateTitle = '审核日期'
         break
       case 'dept_handle':
-        opionTitle = '整改意见'
+        opionTitle = '整改情况'
         auditDateTitle = '整改日期'
         auditTimeEditable = true
         break
