@@ -4,7 +4,7 @@ import { Button, Select } from 'antd'
 import { PageHeader, PageTitle, Place, ScrollBox } from 'src/components/common'
 import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
-import { currentMonth } from 'src/utils/date/rangeMethod'
+import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import { qcDghlService } from './api/qcDghlService'
 import { DatePicker, message, Spin } from 'src/vendors/antd'
 import BaseTable from 'src/components/BaseTable'
@@ -17,7 +17,11 @@ const RangePicker = DatePicker.RangePicker
 export interface Props { }
 
 export default observer(function 质控表单汇总() {
-  const [beginDate, endDate] = currentMonth()
+  let _currentMonth = currentMonth()
+  let _currentQuater = currentQuater()
+  let _currentYear = currentYear()
+
+  const [beginDate, endDate] = _currentMonth
 
   const { queryObj } = appStore
 
@@ -286,7 +290,19 @@ export default observer(function 质控表单汇总() {
       <RangePicker
         allowClear={false}
         value={[moment(query.beginDate), moment(query.endDate)]}
-        style={{ marginRight: 10, width: 210 }} />
+        style={{ marginRight: 10, width: 210 }}
+        ranges={{
+          '本月': _currentMonth,
+          '本季度': _currentQuater,
+          '本年度': _currentYear,
+        }}
+        onChange={(moments: any[]) => {
+          setQuery({
+            ...query,
+            beginDate: moments[0].format('YYYY-MM-DD'),
+            endDate: moments[1].format('YYYY-MM-DD'),
+          })
+        }} />
       <span>质控科室：</span>
       <Select
         style={{ marginRight: 10, width: 180 }}
