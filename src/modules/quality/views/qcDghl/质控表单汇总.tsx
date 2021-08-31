@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Divider, Select } from 'antd'
+import { Button, Select } from 'antd'
 import { PageHeader, PageTitle, Place, ScrollBox } from 'src/components/common'
 import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
@@ -145,7 +145,7 @@ export default observer(function 质控表单汇总() {
     {
       title: '题目',
       dataIndex: 'qcItemName',
-      align: 'center',
+      align: 'left',
       width: 240,
       render: (text: string, record: any) => `${record.itemShowCode}.${text}`
     },
@@ -257,9 +257,9 @@ export default observer(function 质控表单汇总() {
               return {
                 ...item,
                 totalSize,
-                yesPercent,
-                noPercent,
-                inApplicablePercent
+                yesPercent: yesPercent || '0%',
+                noPercent: noPercent || '0%',
+                inApplicablePercent: inApplicablePercent || '0%',
               }
             }),
             levelInstanceCountList: levelInstanceCountList || [],
@@ -283,10 +283,13 @@ export default observer(function 质控表单汇总() {
       <PageTitle>质控表单汇总</PageTitle>
       <Place />
       <span>质控时间：</span>
-      <RangePicker allowClear={false} value={[moment(query.beginDate)]} />
+      <RangePicker
+        allowClear={false}
+        value={[moment(query.beginDate), moment(query.endDate)]}
+        style={{ marginRight: 10, width: 210 }} />
       <span>质控科室：</span>
       <Select
-        style={{ marginRight: 10, width: 220 }}
+        style={{ marginRight: 10, width: 180 }}
         value={query.wardCode}
         onChange={(wardCode: string) => setQuery({
           ...query,
@@ -302,6 +305,7 @@ export default observer(function 质控表单汇总() {
       </Select>
       <span>质控表单：</span>
       <Select
+        style={{ marginRight: 10, width: 220 }}
         value={query.qcCode}
         onChange={(qcCode: string) =>
           setQuery({
@@ -336,7 +340,8 @@ export default observer(function 质控表单汇总() {
           <BaseTable
             className="summary-table"
             columns={columns3}
-            dataSource={itemCountList} />
+            dataSource={itemCountList}
+            rowKey="itemShowCode" />
           <div className="sub-title">备注统计</div>
           <BaseTable
             className="summary-table"
@@ -362,6 +367,9 @@ const TableCon = styled.div`
   width: 100%;
   min-height: 100%;
   padding: 15px;
+  #baseTable .ant-table-content .ant-table-body{
+    overflow-y: hidden!important;
+  }
   .main-title{
     text-align: center;
     font-size: 20px;

@@ -11,13 +11,24 @@ import 防疫专项检查汇总 from './views/防疫专项检查汇总列表/防
 import { Provider, KeepAlive } from 'react-keep-alive'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
+import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import { appStore } from 'src/stores'
 import { observer } from 'src/vendors/mobx-react-lite'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 
 export default observer(function QcTwoRouter(props: Props) {
+
+  const route_质控表单汇总 = {
+    title: "单个质控表单汇总",
+    icon: <HZBG />,
+    path: "/qcTwo/质控表单汇总?qcLevel=2",
+    component: 质控表单汇总,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+  }
 
   const extra_menu = appStore.hisMatch({
     map: {
@@ -41,7 +52,7 @@ export default observer(function QcTwoRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
         },
       ],
-      "dghl,gzsrm,yczyy": [
+      "gzsrm,yczyy": [
         {
           title: '护理质量巡查情况汇总表',
           icon: <YDBG />,
@@ -51,6 +62,18 @@ export default observer(function QcTwoRouter(props: Props) {
           // hide: !appStore.isDev,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
+      ],
+      "dghl": [
+        {
+          title: '护理质量巡查情况汇总表',
+          icon: <YDBG />,
+          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          component: 护理质量巡查情况汇总表,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        route_质控表单汇总
       ],
       default: [
         {
