@@ -7,6 +7,7 @@ import { foolowUp } from "./api/FoolowUp";
 
 export interface Props {
   location: {
+    search: "",
     state: {
       patientId: 71007865;
     };
@@ -17,7 +18,7 @@ export default function FollowUpIndex(props: Props) {
   // 当前激活的tab-item的key值
   const [activeKey, setActiveKey] = useState("1");
 
-  const [patientId, setPatientId] = useState(71007865);
+  const [patientId, setPatientId] = useState('');
   const [visitId, setVisitId] = useState(1);
 
   // 顶部tab栏渲染数组
@@ -83,12 +84,12 @@ export default function FollowUpIndex(props: Props) {
   };
 
   useEffect(() => {
+    let patientId: any;
+    if (typeof props.location.search == 'string') {
+      patientId = props.location.search.split("?")[1].split("=")[1]
+    }
     document.title = "随访问卷";
-    setPatientId(
-      props.location.state
-        ? props.location.state.patientId || 71007865
-        : 71007865
-    );
+    setPatientId(patientId);
     getFoolowUp(patientId);
   }, []);
 
