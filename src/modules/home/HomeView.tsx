@@ -93,6 +93,8 @@ export default observer(function HomeView() {
 
   const visibleListWjgdszd = visibleListDefault.filter((key) => !['patientSituation', 'wardSituation', 'wardCodeEmpName'].includes(key))
 
+  const visibleListdgxg = visibleListDefault.filter((key) => !['performChart'].includes(key))
+
   const visibleListOther = visibleListDefault.filter((key) => !['wardCodeEmpName'].includes(key))
 
   const visibleCon = (visibleList: string[]) => {
@@ -116,6 +118,7 @@ export default observer(function HomeView() {
           dghl: visibleListDghl,
           fqfybjy: visibleListFqfybjy,
           wjgdszd: visibleListWjgdszd,
+          dgxg: visibleListdgxg,
           other: visibleListOther,
         }
       }))}
