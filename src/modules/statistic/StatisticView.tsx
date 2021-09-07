@@ -24,6 +24,12 @@ import DepartmentWhiteByMonthView from './views/departmentWhiteByMonth/Departmen
 import DepartmentNightByMonthView from './views/departmentNightByMonth/DepartmentNightByMonthView'
 // 科室休假统计（按月份）
 import DepartmentVacationByMonthView from './views/departmentVacationByMonth/DepartmentVacationByMonthView'
+// 科室白班统计（按季度）
+import DepartmentWhiteByQuarterView from './views/departmentWhiteByQuarter/DepartmentWhiteByQuarterView'
+// 科室夜班统计（按季度）
+import DepartmentNightByQuarterView from './views/departmentNightByQuarter/DepartmentNightByQuarterView'
+// 科室休假统计（按季度）
+import DepartmentVacationByQuarterView from './views/departmentVacationByQuarter/DepartmentVacationByQuarterView'
 // 科室节假日排班统计
 import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/DepartmentHolidayScheduleView'
 //护理质量统计
@@ -99,6 +105,15 @@ export default function StatisticView() {
       path: '/statistic/科室休假统计（按月份）',
       component: DepartmentVacationByMonthView
     },
+    
+    ...appStore.hisMatch({
+      map: {
+        dgxg: [{ name: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', component: DepartmentWhiteByQuarterView },
+              { name: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', component: DepartmentNightByQuarterView },
+              { name: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', component: DepartmentVacationByQuarterView }],
+        default: []
+      }
+    }),
     { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
     appStore.hisMatch({
       map: {
