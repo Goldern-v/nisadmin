@@ -57,11 +57,11 @@ export default observer(function followUpDetailView() {
       }, () => setLoading(false))
   }
 
-  const handleCloseFollowUp = () => {
+  const handleCloseFollowUp = (reason: string) => {
     if (baseInfo.patientId) {
       setLoading(true)
       followUpDetailService
-        .setVisitEndStatus(baseInfo.patientId)
+        .setVisitEndStatus(baseInfo.patientId, reason)
         .then(res => {
           getDetail()
         }, () => setLoading(false))
@@ -104,7 +104,7 @@ export default observer(function followUpDetailView() {
       baseInfo={baseInfo}
       loading={loading}
       onAddOpen={() => setAddModalVisible(true)}
-      onCloseFollowUp={() => handleCloseFollowUp()}
+      onCloseFollowUp={(reson: string) => handleCloseFollowUp(reson)}
       followUpList={followUpList} />
     <MainCon
       masterId={selectedId}

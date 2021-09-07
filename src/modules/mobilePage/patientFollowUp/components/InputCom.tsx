@@ -13,7 +13,7 @@ export default function InputCom(props: any) {
         <input
           value={props.value}
           placeholder="请输入"
-          disabled={props.status == 2}
+          disabled={props.status == 1}
           onInput={(e: any) => {
             item[props.keyWord] = e.currentTarget.value;
             setParams({ ...props.params, ...item });

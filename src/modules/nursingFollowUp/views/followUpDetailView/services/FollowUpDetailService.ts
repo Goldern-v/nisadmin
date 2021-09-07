@@ -7,8 +7,8 @@ class FollowUpDetailService extends BaseApiService {
   }
 
   /** 结束随访 */
-  public setVisitEndStatus(patientId: string) {
-    return this.post('/visit/visitMasterData/setVisitEndStatus', { patientId })
+  public setVisitEndStatus(patientId: string, reason: string) {
+    return this.post('/visit/visitMasterData/setVisitEndStatus', { patientId, reason })
   }
 
   /** 随访表推送给患者 */
