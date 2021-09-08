@@ -51,7 +51,7 @@ export default function SelectQuarter(props: Props) {
   )
 }
 const SelectCon = styled.div`
-  width: 15%;
+  width: 13%;
   display: flex;
   align-items: center;
   .ant-calendar-picker-input {

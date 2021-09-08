@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from 'src/components/DeptSelect'
-import SelectData from 'src/modules/statistic/common/SelectData.tsx'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import SelectQuarter from 'src/modules/statistic/common/SelectQuarter'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
@@ -49,7 +49,7 @@ export default function BedSituation() {
     }
   }
   const exportButtonClick = () => {
-    StatisticsApi.postDepartmentByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime, false).then(
+    StatisticsApi.postDepartmentByQuarter(statisticViewModel.whiteBlack, statisticViewModel.hourTime, false).then(
       (res) => {
         fileDownload(res)
       }
@@ -64,7 +64,7 @@ export default function BedSituation() {
       <DeptSelect onChange={onChange} />
       {/* <SelectDepartment /> */}
       <Spacing />
-      <SelectData />
+      <SelectQuarter />
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>

@@ -5,9 +5,9 @@ import TableFirst from './components/TableFirst'
 import TableSecond from './components/TableSecond'
 import { Button, Radio } from 'antd'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartment'
+import StatisticMIdHeaderByQuarter from '../../common/StatisticMIdHeaderByQuarter'
 import TableModel from '../../common/TableModel'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 // import TableDate from './components/TableData'
 // const ButtonGroup = Button.Group
 
@@ -24,7 +24,7 @@ export default function StatisticView() {
     <Con>
       <StatisticHeader />
       <TableCon>
-        <StatisticMIdHeaderDepartment />
+        <StatisticMIdHeaderByQuarter />
         <div className='buttonCon'>
           <Radio.Group value={showType} buttonStyle='solid' onChange={selectShowType}>
             <Radio.Button value='按时数'>按时数</Radio.Button>
