@@ -269,6 +269,10 @@ const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
 );
+//护士长手册
+const NurseHandBookRouter = lazy(() =>
+  import("src/modules/nurseHandBook/NurseHandBookRouter")
+);
 const checkWardRecordView = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView")
 )
@@ -761,6 +765,7 @@ const routes: RouteItem[] = [
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
+  setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {
