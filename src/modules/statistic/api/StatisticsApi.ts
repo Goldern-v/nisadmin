@@ -160,6 +160,40 @@ class StatisticsApi extends BaseApiService {
       return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData)
     }
   }
+
+  // 科室白班统计（按季度）
+  // 科室夜班统计（按季度）
+  // 科室休假统计（按季度）
+  public async postDepartmentByQuarter(classShow: any, showType: any, exportData: any = true) {
+    if (classShow === '白班') {
+      classShow = 'A班'
+    } else if (classShow === '夜班') {
+      classShow = 'P班'
+    } else if (classShow === '休假') {
+      classShow = '休假'
+    } else {
+      return classShow
+    }
+    if (showType === '按时数') {
+      showType = true
+    } else if (showType === '按次数') {
+      showType = false
+    }
+    let postData = {
+      shiftType: classShow,
+      // deptCode: authStore.selectedDeptCode,
+      hourOrNum: showType,
+      month: statisticViewModel.startDate,
+      status: exportData
+    }
+    let trancePostData = this.stringify(postData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countShiftTypeDeptCodeByQuarter`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countShiftTypeDeptCodeByQuarter`, trancePostData)
+    }
+  }
+
   // 测试1
   public async postNurseByMonthttt(classShow: string, showType: any, getDeptCode: any, exportData: any = true) {
     if (classShow === '白班') {

@@ -1,4 +1,4 @@
-// 科室白班统计（按月份)
+// 科室白班统计（按季度)
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
@@ -12,8 +12,8 @@ export interface Props {
 export default observer(function BedSituation (props: Props) {
   // 
   const [bodyTable, setBodyTable]: any = useState([])
-  const postDepartmentByMonthMethod = () =>
-    StatisticsApi.postDepartmentByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
+  const postDepartmentByQuarterMethod = () =>
+    StatisticsApi.postDepartmentByQuarter(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res.data) {
         let addLength = 8 - res.data.length
         if (addLength > 0&& addLength !== 8) {
@@ -27,12 +27,12 @@ export default observer(function BedSituation (props: Props) {
   useEffect(() => {
     statisticViewModel.whiteBlack = '白班'
     statisticViewModel.hourTime = props.showType
-    postDepartmentByMonthMethod()
+    postDepartmentByQuarterMethod()
   }, [])
   emitter.removeAllListeners('科室白班统计')
   emitter.addListener('科室白班统计', () => {
     if (statisticViewModel.hourTime === '按次数') {
-      postDepartmentByMonthMethod()
+      postDepartmentByQuarterMethod()
     }
   })
   function trClickChange (e: any) {
