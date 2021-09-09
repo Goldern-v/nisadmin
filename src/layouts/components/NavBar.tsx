@@ -215,12 +215,13 @@ export default observer(function NavBar(props: any) {
                 className="logo"
                 style={{ height: 30 }}
               />
-              <img
+              {/* <img
                 src={require("../images/护理管理系统.png")}
                 alt=""
                 className="name"
                 style={{ paddingRight: 30 }}
-              />
+              /> */}
+              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
             </React.Fragment>
           );
           break;
@@ -239,6 +240,25 @@ export default observer(function NavBar(props: any) {
                 className="name"
                 style={{ paddingRight: 30 }}
               />
+            </React.Fragment>
+          );
+          break;
+        case 'gzhd':
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../../assets/images/gzhdLogo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              {/* <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              /> */}
+              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
             </React.Fragment>
           );
           break;
@@ -366,12 +386,19 @@ const LogoCon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 6px;
   .logo {
     height: 26px;
     margin-right: 10px;
   }
   .name {
     height: 16px;
+  }
+  .nameTitle {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+    margin-right: 4px;
   }
 `;
 

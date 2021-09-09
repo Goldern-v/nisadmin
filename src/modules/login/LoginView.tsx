@@ -151,8 +151,8 @@ export default withRouter(function LoginView(props: Props) {
   const Title = () => {
     if (appStore.onlyBadEvent)
       return '不良事件管理系统'
-
-    return '护理管理系统'
+    let titlePrefix = appStore.hospitalOtherName ? appStore.hospitalOtherName : "";
+    return `${titlePrefix}护理管理系统`
   }
 
   return (
