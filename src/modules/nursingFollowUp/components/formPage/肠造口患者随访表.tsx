@@ -5,7 +5,7 @@ import InputItem from './renderItem/InputItem'
 import RadioItem from './renderItem/RadioItem'
 import CheckBoxItem from './renderItem/CheckBoxItem'
 
-export default function 脑卒中高危人群院内综合干预量表(props: any) {
+export default function 肠造口患者随访表(props: any) {
   const { editable, itemDataMap, onItemDataMapChange, master, onMasterChange, } = props
 
   const editData = itemDataMap || {}
@@ -15,7 +15,7 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
   return <PageGroup>
     <div className="page-item">
       <div className="form-title">
-        <div>脑卒中高危人群院内综合干预量表</div>
+        <div>肠造口患者随访表</div>
         <div>（随访部分）</div>
       </div>
       <div
@@ -30,37 +30,88 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
         <div className="data-row">
           <span className="row-title">本次随访时间：</span>
           <InputItem
-            value={editData['V001072']}
+            value={editData['V002001']}
             className="underline align-center"
             style={{ width: 180 }}
             editable={editable}
             onChange={(e: any) =>
               onItemDataMapChange && onItemDataMapChange({
                 ...editData,
-                ['V001072']: e.currentTarget.value
+                ['V002001']: e.currentTarget.value
               })} />
         </div>
         <div className="data-row">
           <span className="row-title">随访方式：</span>
           <RadioItem
-            value={editData['V001001']}
+            value={editData['V002002']}
             originValue={'门诊'}
             editable={editable}
             showValue
             onChange={(newVal: string) => {
-              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V002002']: newVal })
             }} />
           <RadioItem
-            value={editData['V001001']}
+            value={editData['V002002']}
             originValue={'家访'}
             editable={editable}
             showValue
             onChange={(newVal: string) => {
-              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V002002']: newVal })
             }} />
           <RadioItem
-            value={editData['V001001']}
+            value={editData['V002002']}
             originValue={'电话'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V002002']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V002002']}
+            originValue={'网络'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V002002']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V002002']}
+            originValue={'其他'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V002002']: newVal })
+            }} />
+          <span>:</span>
+          <InputItem
+            value={editData['V001071']}
+            className="underline"
+            style={{ width: 180 }}
+            editable={editable}
+            onChange={(e: any) =>
+              onItemDataMapChange && onItemDataMapChange({
+                ...editData,
+                ['V001071']: e.currentTarget.value
+              })} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造肠口手术日期：</span>
+          <InputItem
+            value={editData['V009001']}
+            className="underline align-center"
+            style={{ width: 180 }}
+            editable={editable}
+            onChange={(e: any) =>
+              onItemDataMapChange && onItemDataMapChange({
+                ...editData,
+                ['V009001']: e.currentTarget.value
+              })} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造口类型：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'结肠造口'}
             editable={editable}
             showValue
             onChange={(newVal: string) => {
@@ -68,7 +119,15 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
             }} />
           <RadioItem
             value={editData['V001001']}
-            originValue={'网络'}
+            originValue={'回肠造口'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'尿路造口'}
             editable={editable}
             showValue
             onChange={(newVal: string) => {
@@ -93,6 +152,292 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
                 ...editData,
                 ['V001071']: e.currentTarget.value
               })} />
+        </div>
+        <div className="data-row">
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'永久性造口'}
+            style={{ marginLeft: 65 }}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+            <RadioItem
+            value={editData['V001001']}
+            originValue={'临时性造口'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造口高度：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'凸出腹壁'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'与腹壁平齐'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'低于腹壁平面'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造口黏膜颜色：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'红润'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'发紫'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'发黑'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造口用品类型：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'一件式'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'二件式'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">底盘类型：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'平面'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'凸面'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'透明袋'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'不透明袋'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'尿路造口袋'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title" style={{marginLeft: 26}}>袋子：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'闭口袋'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'开口袋'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">是否失访：</span>
+          <RadioItem
+            value={editData['V001002']}
+            originValue={'否'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001002']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">造口附件：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'腰带'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'防漏膏'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'防漏条/环'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'护肤粉'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'皮肤保护膜'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'过滤片'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">获得造口产品的途径：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'在医院购买'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'网购'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+        </div>
+        <div className="data-row">
+          <span className="row-title">医保状况：</span>
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'城镇职工基本医疗保险'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'城镇居民医疗保险'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'新农合'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'商业保险'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'部队医疗'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
+          <RadioItem
+            value={editData['V001001']}
+            originValue={'全自付'}
+            editable={editable}
+            showValue
+            onChange={(newVal: string) => {
+              onItemDataMapChange && onItemDataMapChange({ ...editData, ['V001001']: newVal })
+            }} />
         </div>
         <div className="data-row">
           <span className="row-title">是否失访：</span>

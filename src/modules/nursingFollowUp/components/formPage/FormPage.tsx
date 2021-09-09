@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect, Suspense, lazy } from 'react'
 import { Button, Icon, Spin } from 'antd'
 const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
+const 肠造口患者随访表 = lazy(() => import('./肠造口患者随访表'))
 
 export interface Props {
   style?: React.CSSProperties,
@@ -27,6 +28,28 @@ export default function FormPage(props: Props) {
     switch (formCode) {
       case 'V0001':
         return <脑卒中高危人群院内综合干预量表 {...props} />
+      // case 'V0002':
+      //   return <病毒性肝炎出院随访表 {...props} />
+      // case 'V0003':
+      //   return <剖宫产产后随访表 {...props} />
+      // case 'V0004':
+      //   return <异常子宫出血出院随访 {...props} />
+      // case 'V0005':
+      //   return <妊娠剧吐人群院外综合干预量表 {...props} />
+      // case 'V0006':
+      //   return <足踝内固定术后患者随访表 {...props} />
+      // case 'V0007':
+      //   return <髋关节术后出院随访 {...props} />
+      // case 'V0008':
+      //   return <乳腺癌出院随访 {...props} />
+      // case 'V0009':
+      //   return <肠造口患者随访表 {...props} />
+      // case 'V00010':
+      //   return <糖尿病足随访表 {...props} />
+      // case 'V0011':
+      //   return <肝功能失代偿期患者随便表 {...props} />
+      // case 'V0012':
+      //   return <慢性鼻窦炎出院随访 {...props} />
       default:
         return <div className="page-item null">
           <span className="null-text">
