@@ -36,7 +36,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 东莞横沥 */
     case 'dghl':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      return 'http://192.168.20.18:9091' // 宏群本地
+      // return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
     /** 聊城二院 */
     case 'lcey':
       return 'http://192.168.1.54:9871' // 聊城二院测试

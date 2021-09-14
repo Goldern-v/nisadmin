@@ -3,21 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
 import NurseHandBookModal from '../components/NurseHandBookModal'
-import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { DictItem } from 'src/services/api/CommonApiService'
-import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
-import createModal from 'src/libs/createModal'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
+import FormPageBody from '../components/FormPageBody'
+
 export interface Props { }
 
 export default observer(function MyCreateList() {
@@ -34,6 +31,10 @@ export default observer(function MyCreateList() {
   const [searchText, setSearchText] = useState('')
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [editVisible, setEditVisible] = useState(false)
+  const [editVisible2, setEditVisible2] = useState(false)
+  const [pathChange, setPathChange] = useState("")
+  const [idChange, setIdChange] = useState("")
+
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
 
@@ -67,9 +68,9 @@ export default observer(function MyCreateList() {
     },
     {
       title: '时间',
-      dataIndex: 'month',
+      dataIndex: 'date',
       width: 50,
-      align: 'center'
+      align: 'center',
     },
     {
       title: '创建时间',
@@ -85,9 +86,18 @@ export default observer(function MyCreateList() {
     },
     {
       title: '上传附件',
-      dataIndex: 'files[0].name',
-      width: 150,
-      align: 'center'
+      dataIndex: 'files',
+      width: 200,
+      align: 'center',
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            {record.files.map((item: any, index: number) => (
+               <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+            ))}
+          </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -121,7 +131,10 @@ export default observer(function MyCreateList() {
       title: '年份',
       dataIndex: 'year',
       width: 50,
-      align: 'center'
+      align: 'center',
+      render(year: any) {
+        return year + "年";
+      }
     },
     {
       title: '创建时间',
@@ -138,8 +151,17 @@ export default observer(function MyCreateList() {
     {
       title: '上传附件',
       dataIndex: 'files[0].name',
-      width: 150,
-      align: 'center'
+      width: 200,
+      align: 'center',
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            {record.files.map((item: any, index: number) => (
+              <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+            ))}
+          </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -181,16 +203,13 @@ export default observer(function MyCreateList() {
 
   const getData = () => {
     setPageLoading(true)
-    let startYear = year[0] ? moment(year[0]).format('YYYY') : ''
-    let endYear = year[0] ? moment(year[1]).format('YYYY') : ''
     nurseHandBookService
       .getPage(status,{
         ...pageOptions,
         deptCode: deptSelect,
-        month: "",
-        creatorName: "",
+        month: month,
         keyWord: searchText,
-        year,
+        year:year,
       })
       .then((res) => {
         setPageLoading(false)
@@ -205,6 +224,14 @@ export default observer(function MyCreateList() {
   const handleAddNew = (record: any) => {
     setIsAdd(true)
     setEditVisible(true)
+  }
+
+  //查看随访问卷
+  const setDetailModal = (item: any) => {
+    // window.open(item.path)
+    setEditVisible2(true)
+    setPathChange(item.path)
+    setIdChange(item.id)
   }
 
   const onEdit = (record: any) => {
@@ -233,42 +260,19 @@ export default observer(function MyCreateList() {
   const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
 
   const handleExport = () => {
-    if (total <= 0) {
-      message.warn('导出日志不能为空')
-      return
-    }
-    if (!selectedTemplate) {
-      message.warn('请选择打印模板')
-      return
-    }
-    if (selectedRowKeys.length <= 0) {
-      let startDate = year[0] ? moment(year[0]).format('YYYY-MM-DD') : ''
-      let endDate = year[0] ? moment(year[1]).format('YYYY-MM-DD') : ''
-
-      // nurseHandBookService.allExcel({
-      //   wardCode: deptSelect,
-      //   startDate,
-      //   endDate,
-      //   templateId: selectedTemplate,
-      //   status
-      // })
-    } else {
-
-      setPageLoading(true)
-
-      nurseHandBookService
-        // .exportDetailList({
-        //   ids: selectedRowKeys,
-        //   wardCode: deptSelect,
-        //   templateId: selectedTemplate
-        // })
-        // .then(res => {
-        //   setPageLoading(false)
-        //   setSelectedRowKeys([])
-        //   fileDownload(res)
-        // }, err => setPageLoading(false))
-
-    }
+    setPageLoading(true)
+    nurseHandBookService.export(status,{
+      ...pageOptions,
+      deptCode: deptSelect,
+      month: month,
+      keyWord: searchText,
+      year: year,
+    })
+    .then(res => {
+      setPageLoading(false)
+      setSelectedRowKeys([])
+      fileDownload(res)
+    }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -323,7 +327,6 @@ export default observer(function MyCreateList() {
         </div>
         }
         <span className='label'>科室:</span>
-        {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
         <Select
           value={deptSelect}
           style={{ width: 180 }}
@@ -347,7 +350,7 @@ export default observer(function MyCreateList() {
           查询
         </Button>
         <Button onClick={handleExport}>导出</Button>
-        <Button onClick={handleExport}>打印</Button>
+        {/* <Button onClick={handleExport}>打印</Button> */}
         <Button type='primary' onClick={handleAddNew}>新建</Button>
       
       </PageHeader>
@@ -390,7 +393,16 @@ export default observer(function MyCreateList() {
           getData()
           setEditVisible(false)
         }}
-        onCancel={() => setEditVisible(false)} />  
+        onCancel={() => {
+          getData()
+          setEditVisible(false)
+        }}/>  
+      <FormPageBody
+        visible={editVisible2}
+        path={pathChange}
+        id={idChange}
+        onOk={() => {}}
+        onCancel={() => setEditVisible2(false)} />
     </Wrapper>
   )
 })
