@@ -26,7 +26,7 @@ class QcDghlService extends BaseApiService {
 
   /*导出文件*/
   public export(obj: PageOptions | any) {
-    return this.post(`/qcCount/individualCountDetail`, obj ,{ responseType: 'blob' })
+    return this.post(`/qcCount/individualCountDetail/export`, obj ,{ responseType: 'blob' })
   }
 
 }
