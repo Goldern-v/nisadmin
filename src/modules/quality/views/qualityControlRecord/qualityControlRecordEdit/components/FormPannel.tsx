@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { DatePicker, Select, Input, Checkbox } from 'antd'
 import { authStore, appStore } from 'src/stores'
-import { qualityControlRecordEditModel as qcModel, Emp, BedNurse } from './../model/QualityControlRecordEditModel'
+import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit } from './../model/QualityControlRecordEditModel'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import QcItemGroup from './QcItemGroup'
@@ -28,7 +28,8 @@ export default observer(function FormPannel() {
     bedNurseList,
     writeMoreNurse,
     selectedBedNurse,
-    causeList
+    causeList,
+    auditList
   } = qcModel
 
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
@@ -108,6 +109,14 @@ export default observer(function FormPannel() {
     else
       return ''
   }
+
+  useEffect(() => {
+    // setTimeout(() => {
+    //   console.log(auditList)
+    //   console.log(qcModel)
+    //   console.log("auditList")
+    // }, 2000)
+  }, [])
 
   return <Wrapper>
     <div className="master-area" id="masterArea">
@@ -225,6 +234,24 @@ export default observer(function FormPannel() {
           key={groupIdx} />
       )}
     </QuestionCon>
+    {/* <AuditList>
+      <h3 className="auditListTitle">人员指定</h3>
+      <ul className="list">
+        {
+          auditList.map((item: IAudit, index: number) => {
+            return (
+              <li key={index} className="auditItem">
+                <div className="auditItemName">{index + 1}、{item.showItemName}</div>
+                <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}>
+                  <Option value="a">a</Option>
+                </Select>
+              </li>
+            )
+          })
+        }
+
+      </ul>
+    </AuditList> */}
     {causeList.length > 0 &&
       <ReasonCon>
         <div className="title">问题可能原因</div>
@@ -294,4 +321,42 @@ const QuestionCon = styled.div`
   height: 0; */
   font-size: 12px;
   padding-bottom: 10px;
+`
+
+const AuditList = styled.div`
+    position: relative;
+    font-size: 12px;
+    border-bottom: 0.5px dashed #bbbbbb;
+    padding-bottom: 10px;
+    .auditListTitle{
+      position: relative;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .list{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      .auditItem{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        display: flex;
+        -webkit-display: flex;
+        -moz-display: flex;
+        -ms-display: flex;
+        align-items: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        .auditItemName{
+          position: relative;
+          margin-right: 10px;
+        }
+        .auditSelectList{
+          width: 130px;
+        }
+      }
+    }
 `
