@@ -10,6 +10,8 @@ import { DatePicker, message, Spin } from 'src/vendors/antd'
 import BaseTable from 'src/components/BaseTable'
 import moment from 'moment'
 import { ColumnProps } from 'antd/lib/table'
+import { fileDownload } from 'src/utils/file/file'
+
 
 const Option = Select.Option
 const RangePicker = DatePicker.RangePicker
@@ -229,6 +231,18 @@ export default observer(function 质控表单汇总() {
     }
   }
 
+  const handleExport = () => {
+    qcDghlService.export({
+      wardCode: query.wardCode,
+      qcCode: query.qcCode,
+      beginDate: moment(query.beginDate).format('YYYY-MM-DD'),
+      endDate: moment(query.endDate).format('YYYY-MM-DD'),
+    })
+    .then(res => {
+      fileDownload(res)
+    })
+  }
+
   const getTableData = () => {
     setLoading(true)
     qcDghlService
@@ -337,6 +351,7 @@ export default observer(function 质控表单汇总() {
         ))}
       </Select>
       <Button type="primary" onClick={() => getTableData()}>查询</Button>
+      <Button onClick={() => handleExport()}>导出</Button>
     </PageHeader>
     <MainCon>
       <TableCon>

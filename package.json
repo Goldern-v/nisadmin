@@ -153,6 +153,7 @@
     "publish:8062": "npm run build:nys && node publish.js",
     "publish:9868": "npm run build:gzhd && node publish.js",
     "publish:9872": "npm run build:jmfy && node publish.js",
+    "publish:9874": "npm run build:dghl && node publish.js",
     "publish:be": "npm run build:hj-be && node publish-be.js",
     "publish:nys-be": "npm run build:nys-be && node publish-be.js",
     "test": "react-app-rewired test --env=jsdom",
