@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, Suspense, lazy } from 'react'
 import { Button, Icon, Spin } from 'antd'
+const AllTemplate = lazy(() => import("./formTemplate/AllTemplate"))
 const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
 const 肠造口患者随访表 = lazy(() => import('./肠造口患者随访表'))
 
@@ -27,7 +28,7 @@ export default function FormPage(props: Props) {
 
     switch (formCode) {
       case 'V0001':
-        return <脑卒中高危人群院内综合干预量表 {...props} />
+      // return <脑卒中高危人群院内综合干预量表 {...props} />
       // case 'V0002':
       //   return <病毒性肝炎出院随访表 {...props} />
       // case 'V0003':
@@ -51,12 +52,13 @@ export default function FormPage(props: Props) {
       // case 'V0012':
       //   return <慢性鼻窦炎出院随访 {...props} />
       default:
-        return <div className="page-item null">
-          <span className="null-text">
-            <Icon type="file-exclamation" style={{ marginRight: 10 }} />
-            <span>暂无对应表单</span>
-          </span>
-        </div>
+        return <AllTemplate {...props} />
+      // <div className="page-item null">
+      //   <span className="null-text">
+      //     <Icon type="file-exclamation" style={{ marginRight: 10 }} />
+      //     <span>暂无对应表单</span>
+      //   </span>
+      // </div>
     }
   }
 
