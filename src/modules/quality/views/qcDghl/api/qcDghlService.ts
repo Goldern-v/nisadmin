@@ -1,4 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
+import { PageOptions } from 'src/components/BaseTable'
 
 class QcDghlService extends BaseApiService {
   /**
@@ -22,6 +23,12 @@ class QcDghlService extends BaseApiService {
   public formTemplateList(query: { level: number, templateName: string }) {
     return this.post(`/qcItem/template/findList`, query)
   }
+
+  /*导出文件*/
+  public export(obj: PageOptions | any) {
+    return this.post(`/qcCount/individualCountDetail/export`, obj ,{ responseType: 'blob' })
+  }
+
 }
 
 export const qcDghlService = new QcDghlService()
