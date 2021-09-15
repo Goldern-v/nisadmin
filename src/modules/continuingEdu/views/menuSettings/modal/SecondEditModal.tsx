@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Input, Row, Col, Modal, message as Message, Select } from "antd";
+import { Input, Row, Button, Col, Modal, message as Message, Select } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { meunSettingApi } from "../api/MeunSettingApi";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
 import { appStore } from "src/stores";
+import BulkImportModal from './bulkImportModal'
+
 export interface Props {
   secondVisible: boolean;
   params: any;
@@ -24,6 +26,7 @@ export interface CheckUserItem {
 
 export default function SecondEditModal(props: Props) {
   const [effect, setEffect] = useState(true);
+  const [editVisible, setEditVisible] = useState(false)
   const selectPeopleModal = createModal(SelectPeopleModal);
   const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
@@ -251,6 +254,8 @@ export default function SecondEditModal(props: Props) {
   };
 
   const checkForm = () => {
+    console.log(submit);
+    
     let current = formRef.current;
     if (current) {
       current
@@ -300,7 +305,10 @@ export default function SecondEditModal(props: Props) {
         .catch(e => { });
     }
   };
-
+  
+  const bulkImport =() => {
+    setEditVisible(true)
+  }
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
@@ -326,6 +334,17 @@ export default function SecondEditModal(props: Props) {
           onOk={checkForm}
           confirmLoading={editLoading}
           title="修改二级菜单"
+          footer={[
+            <Button key="bulkImport" onClick={bulkImport}>
+              批量导入
+            </Button>,
+            <Button key="back" onClick={handleCancel}>
+              取消
+            </Button>,
+            <Button key="submit" type="primary"  onClick={checkForm}>
+              确定
+            </Button>,
+          ]}
         >
           <Wrapper>
             <Form ref={formRef} rules={rules}>
@@ -493,6 +512,16 @@ export default function SecondEditModal(props: Props) {
           </Wrapper>
         </Modal>
         <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
+        <BulkImportModal
+          visible={editVisible}
+          onOk={() => {}}
+          onCancel={(list:any) => {
+            setEditVisible(false)
+            setSubmit(list?.submitEmployees)
+            setFirstAudit(list?.firstAuditEmployees)
+            setSecondAudit(list?.secondAuditEmployees)
+            setThirdAudit(list?.thirdAuditEmployees)
+          }} />
       </Spin>
     </ModalSpin>
   );

@@ -85,5 +85,18 @@ export default class MeunSettingApi extends BaseApiService {
       obj
     );
   }
+   // 导出批量导入提交人和审核人的模板
+  public async exportPersonList() {
+    return this.get(`/studyAndTrain/menuManage/exportPersonList`,{ responseType: 'blob' });
+  }
+
+  // 通过模板批量导入提交人和审核人
+  public async importPersonList(obj: any) {
+    return this.post(
+      `/studyAndTrain/menuManage/importPersonList`,
+      obj
+    );
+  }
+
 }
 export const meunSettingApi = new MeunSettingApi();
