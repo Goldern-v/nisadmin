@@ -26,8 +26,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return 'http://nurse.cr-health.com:34022' // 武汉测试
     /** 花都 */
     case 'gzhd':
-      // return 'https://info.cr-health.com:20206' // 公司-花都测试-外网
-      return 'http://192.168.1.54:9868' // 公司-花都测试-内网
+      return 'https://info.cr-health.com:20206' // 公司-花都测试-外网
+    //return 'http://192.168.1.54:9868' // 公司-花都测试-内网
     /** 江门妇幼 */
     case 'jmfy':
       // return 'http://218.14.180.38:9094' // 江门妇幼正式
@@ -47,8 +47,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9875" // 公司-贵州省人民医院-内网
     /** 福清妇幼保健院 */
     case 'fqfybjy':
-      // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      return 'http://183.63.206.194:9091' // 东莞横沥正式
+    //return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
     /** 武警广东省总队医院 */
     case 'wjgdszd':
     // return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
