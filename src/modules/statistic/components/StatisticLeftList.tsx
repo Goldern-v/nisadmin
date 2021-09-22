@@ -53,6 +53,14 @@ const LEFT_MENU_CONFIG = [
         path: "/statistic/科室休假统计（按月份）",
         hide: appStore.HOSPITAL_ID == "nys"
       },
+      ...appStore.hisMatch({
+        map: {
+          dgxg: [{ title: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
+                { title: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
+                { title: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" }],
+          default: []
+        }
+      }),
       {
         title: "科室节假日排班表",
         path: "/statistic/科室节假日排班表",

@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "gzsrm" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -62,6 +62,9 @@ export default class AppStore {
   /** 全局进度条 */
   @observable public fullLoadingBarObj: FullLoadingBarObj | null = null;
 
+  /** 医院别名（简称）*/
+  @observable public hospitalOtherName: string | undefined = process.env.REACT_APP_OTHER_NAME;
+
   /** url 参数 */
   @computed
   public get HOSPITAL_LOGO() {
@@ -76,21 +79,51 @@ export default class AppStore {
     if (process.env.REACT_APP_BLANK_DEMO)
       return require("src/assets/images/logo.png")
 
-    if (this.HOSPITAL_ID == "wh") {
-      return require("src/assets/images/武汉logo.png");
-    } else if (this.HOSPITAL_ID == "hj") {
-      return require("src/assets/images/厚街logo.png");
-    } else if (this.HOSPITAL_ID == "nys") {
-      return require("src/assets/images/南医三logo.png");
-    } else if (this.HOSPITAL_ID == "dgxg") {
-      return require("src/assets/images/东莞谢岗.png");
-    } else if (this.HOSPITAL_ID == "nfzxy") {
-      return require("src/assets/images/南方中西医logo.png")
-    } else if (this.HOSPITAL_ID == "gzsrm") {
-      return require("src/assets/images/贵州省人民医院.png")
-    } else {
-      return require("src/assets/images/logo.png");
+    // if (this.HOSPITAL_ID == "wh") {
+    //   return require("src/assets/images/武汉logo.png");
+    // } else if (this.HOSPITAL_ID == "hj") {
+    //   return require("src/assets/images/厚街logo.png");
+    // } else if (this.HOSPITAL_ID == "nys") {
+    //   return require("src/assets/images/南医三logo.png");
+    // } else if (this.HOSPITAL_ID == "dgxg") {
+    //   return require("src/assets/images/东莞谢岗.png");
+    // } else if (this.HOSPITAL_ID == "nfzxy") {
+    //   return require("src/assets/images/南方中西医logo.png")
+    // } else if (this.HOSPITAL_ID == "gzsrm") {
+    //   return require("src/assets/images/贵州省人民医院.png")
+    // } else {
+    //   return require("src/assets/images/logo.png");
+    // }
+    let logoUrl = require("src/assets/images/logo.png");
+    switch (this.HOSPITAL_ID) {
+      case "wh":
+        logoUrl = require("src/assets/images/武汉logo.png");
+        break;
+      case "hj":
+        logoUrl = require("src/assets/images/厚街logo.png");
+        break;
+      case "nys":
+        logoUrl = require("src/assets/images/南医三logo.png");
+        break;
+      case "dgxg":
+        logoUrl = require("src/assets/images/东莞谢岗.png");
+        break;
+      case "nfzxy":
+        logoUrl = require("src/assets/images/南方中西医logo.png")
+        break;
+      case "gzsrm":
+        logoUrl = require("src/assets/images/贵州省人民医院.png")
+        break;
+      case "dgxg":
+        logoUrl = require("src/assets/images/东莞谢岗.png");
+        break;
+      case "gzhd":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
+        break;
+      default:
+        break;
     }
+    return logoUrl;
   }
 
   /** url 参数 */

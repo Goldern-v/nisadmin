@@ -389,7 +389,7 @@ export default function 脑卒中高危人群院内综合干预量表(props: any
             }} />
         </div>
       </div>
-      <div className="sub-title">二、随访期间基本情况</div>
+      <div className="sub-title">三、随访期间新发事件</div>
       <div className="form-area no-padding">
         <div className="data-row with-padding border-bottom">
           <span className="row-title">3.1随访期间新发疾病事件</span>

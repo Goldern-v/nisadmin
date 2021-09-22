@@ -30,10 +30,11 @@ export default function SettingEditModal(props: Props) {
   ]
   // 考核形式
   const assessmentFormArr = [
-    { name: "护理助手", code: "护理助手" },
-    { name: "床边考核+护理助手", code: "床边考核+护理助手" },
-    { name: "床边提问", code: "床边提问" },
+    { name: "提问法", code: "提问法" },
+    { name: "现场提问", code: "现场提问" },
+    { name: "直接观察法", code: "直接观察法" },
     { name: "床边考核", code: "床边考核" },
+    { name: "线上/线下理论考核", code: "线上/线下理论考核" },
     { name: "个案汇报", code: "个案汇报" }
   ]
 

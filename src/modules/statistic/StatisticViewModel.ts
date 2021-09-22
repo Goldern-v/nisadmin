@@ -33,6 +33,38 @@ class StatisticViewModel {
   public get getEndDate () {
     return this.endDate
   }
+  @computed
+  public get getStartDateByQuarter () {
+    let nowMonth = this.startDate.slice(5,7)
+    if(nowMonth == "01" || nowMonth == "02" || nowMonth == "03") {
+      return this.startDate.substr(0, 5) + "01-01"
+    }
+    if(nowMonth == "04" || nowMonth == "05" || nowMonth == "06") {
+      return this.startDate.substr(0, 5) + "04-01"
+    }
+    if(nowMonth == "07" || nowMonth == "08" || nowMonth == "09") {
+      return this.startDate.substr(0, 5) + "07-01"
+    }
+    if(nowMonth == "10" || nowMonth == "11" || nowMonth == "12") {
+      return this.startDate.substr(0, 5) + "10-01"
+    }
+  }
+  @computed
+  public get getEndDateByQuarter () {
+    let nowMonth = this.startDate.slice(5,7)
+    if(nowMonth == "01" || nowMonth == "02" || nowMonth == "03") {
+      return this.startDate.substr(0, 5) + "03-31"
+    }
+    if(nowMonth == "04" || nowMonth == "05" || nowMonth == "06") {
+      return this.startDate.substr(0, 5) + "06-30"
+    }
+    if(nowMonth == "07" || nowMonth == "08" || nowMonth == "09") {
+      return this.startDate.substr(0, 5) + "09-30"
+    }
+    if(nowMonth == "10" || nowMonth == "11" || nowMonth == "12") {
+      return this.startDate.substr(0, 5) + "12-31"
+    }
+  }
   @action
   public setTitle = (newTitle: any) => {
     this.title = newTitle

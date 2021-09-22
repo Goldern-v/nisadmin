@@ -9,6 +9,7 @@ import { Menu, Dropdown, Tooltip } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_hjInterns } from "./navConfig_hjInterns";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
+import { navConfig as navConfig_fssdy } from "./navConfig_fssdy";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { navConfig as navConfig_nys } from "./navConfig_nys";
@@ -146,6 +147,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_bhsrm
     } else if (appStore.HOSPITAL_ID == 'qzxyy') {
       return navConfig_qzxyy
+    } else if (appStore.HOSPITAL_ID == 'fssdy') {
+      return navConfig_fssdy
     }
     return navConfig;
   })();
@@ -215,12 +218,13 @@ export default observer(function NavBar(props: any) {
                 className="logo"
                 style={{ height: 30 }}
               />
-              <img
+              {/* <img
                 src={require("../images/护理管理系统.png")}
                 alt=""
                 className="name"
                 style={{ paddingRight: 30 }}
-              />
+              /> */}
+              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
             </React.Fragment>
           );
           break;
@@ -239,6 +243,25 @@ export default observer(function NavBar(props: any) {
                 className="name"
                 style={{ paddingRight: 30 }}
               />
+            </React.Fragment>
+          );
+          break;
+        case 'gzhd':
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../../assets/images/gzhdLogo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 30 }}
+              />
+              {/* <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+                style={{ paddingRight: 30 }}
+              /> */}
+              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
             </React.Fragment>
           );
           break;
@@ -366,12 +389,19 @@ const LogoCon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 6px;
   .logo {
     height: 26px;
     margin-right: 10px;
   }
   .name {
     height: 16px;
+  }
+  .nameTitle {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+    margin-right: 4px;
   }
 `;
 

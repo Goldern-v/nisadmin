@@ -12,7 +12,7 @@ import zhCN from "antd-mobile/lib/date-picker/locale/zh_CN";
 export interface Props {
   location: {
     search: "";
-    state: { formCode: any; masterId: any; patientId: any,isRead:any };
+    state: { formCode: any; masterId: any; patientId: any };
   };
 }
 
@@ -23,7 +23,7 @@ export default function FollowUpDetail(props: Props) {
   const [docParams, setDocParams] = useState({});
   const [finished, setFinished] = useState(false);
   const [master, setMaster] = useState({} as any);
-  const [rules,setRules] = useState({})
+
   const isShow = (item: any) => {
     if (item.jsInteractive) {
       let key = item.jsInteractive.split("_")[0];
@@ -35,7 +35,6 @@ export default function FollowUpDetail(props: Props) {
   };
   const getParams = (arr: any) => {
     arr.map((item: any) => {
-      console.log(item);
       if (
         item.name &&
         item.type != "checkbox" &&
@@ -93,18 +92,12 @@ export default function FollowUpDetail(props: Props) {
   };
   useEffect(() => {
     let localState = sessionStorage.getItem("state");
-    let locationState:any = {}
     if (typeof localState == "string") {
-      locationState = JSON.parse(localState);
+      localState = JSON.parse(localState);
     }
-    let { formCode, masterId, patientId } = props.location.state || locationState;
+    let { formCode, masterId, patientId } = props.location.state || localState;
     foolowUp.getReportMaster({ masterId }).then((res) => {
       setMaster(res.data.master);
-      if(!locationState.isRead){
-        foolowUp.setIsRead({
-          masterId
-        })
-      }
       document.title = res.data.master.formName;
       setWritedParams(res.data.itemDataMap);
       foolowUp
@@ -145,17 +138,15 @@ export default function FollowUpDetail(props: Props) {
               }
             });
             let { documentName, module, type, name, documentItemLists } = item;
-            if(item.documentUserSelect==0||item.documentUserSelect==2){
-              let firstObj = {
-                // documentName,
-                // module,
-                type,
-                name,
-                ...item,
-                // documentItemLists,
-              };
-              realParams[item.module][firstObj.name] = firstObj;
-            }
+            let firstObj = {
+              // documentName,
+              // module,
+              type,
+              name,
+              ...item,
+              // documentItemLists,
+            };
+            realParams[item.module][firstObj.name] = firstObj;
           });
           setDocParams(realParams);
         });

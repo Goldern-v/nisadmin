@@ -24,6 +24,19 @@ export interface Cause {
   checked: boolean
 }
 
+/**
+ * 人员指定类型
+ */
+export interface IAudit extends Record<string, any> {
+  chainCode: string;//流程编码
+  nodeCode: string;//流程节点编码
+  appointUserCode: string;//指定人类型编码
+  showItemName: string;//项目显示名称
+  indexNo: number;//序号
+  required: boolean;//是否必填
+  multiSelect: boolean;//是否多选
+}
+
 class QualityControlRecordEditModel {
   //浏览器查询参数
   @observable query = {} as any
@@ -46,6 +59,8 @@ class QualityControlRecordEditModel {
   @observable bedNurseList = [] as BedNurse[]
   //原因列表
   @observable causeList = [] as Cause[]
+  //人员指定列表
+  @observable auditList: Array<IAudit> = [];
 
   //基本填写信息
   @observable master = {
@@ -90,6 +105,7 @@ class QualityControlRecordEditModel {
     this.userList = []
     this.bedNurseList = []
     this.causeList = []
+    this.auditList = []
 
     this.itemListErrObj = {}
 
@@ -141,6 +157,8 @@ class QualityControlRecordEditModel {
       qualityControlRecordApi
         .formTemplateDetail(this.query.qcCode)
         .then(res => {
+          console.log(res);//质控数据
+          console.log("res质控数据");//质控数据
           if (res.data) {
             this.loading = false
 
@@ -161,7 +179,10 @@ class QualityControlRecordEditModel {
             if (res.data.causeList)
               this.causeList = [...res.data.causeList]
 
-            if (this.baseInfo.qcGroupRoles) this.getUserList()
+            if (this.baseInfo.qcGroupRoles) this.getUserList();
+
+            //赋值人员指定列表
+            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList)
           }
         })
     } else {
@@ -199,7 +220,9 @@ class QualityControlRecordEditModel {
             if (causeList) this.causeList = [...causeList]
 
             if (this.baseInfo.qcGroupRoles) this.getUserList()
-            if (this.master.wardCode) this.getBedNurseList()
+            if (this.master.wardCode) this.getBedNurseList();
+            //赋值人员指定列表
+            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList)
           }
 
         })

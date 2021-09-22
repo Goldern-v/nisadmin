@@ -24,6 +24,7 @@ import { appStore } from "src/stores";
 import update from "immutability-helper";
 import AddUpHourCell from "./AddUpHourCell";
 import BalanceHour from "./BalanceHour";
+import WeekBalanceHour from "./WeekBalanceHour";//本周结余时数
 import PublicHour from "./PublicHour";
 import HolidayHour from "./HolidayHour";
 import service from "src/services/api";
@@ -88,6 +89,23 @@ export default observer(function ArrangeSheet(props: Props) {
       }]
       : []
     ;
+  
+  /**
+   * 工时小计显示
+   */
+  //
+  const manHourTitle = ():string=> { 
+    let title="工时小计"
+    switch(appStore.HOSPITAL_ID){
+      case "dghl":
+        title="本周上班时数";
+        break;
+      default:
+        title="工时小计";
+        break;
+    }
+    return title
+  } 
 
 
   let columns: any = [
@@ -183,7 +201,7 @@ export default observer(function ArrangeSheet(props: Props) {
     {
       title: (
         <div>
-          <div>工时小计</div>
+          <div>{manHourTitle()}</div>
           <div>（小时）</div>
         </div>
       ),
@@ -194,6 +212,24 @@ export default observer(function ArrangeSheet(props: Props) {
       }
     }
   ];
+
+  /** 东莞横沥特殊字段 */
+  if (['dghl'].includes(appStore.HOSPITAL_ID)) {
+    columns.push({
+      title: (
+        <div>
+          <div>本周结余时数</div>
+          <div>（小时）</div>
+        </div>
+      ),
+      width: 70,
+      align: "center",
+      render(text: string, record: any) {
+        return <WeekBalanceHour id={record.id}/>;
+      }
+    });
+  }
+
 
   /** 厚街特殊字段 */
   if (appStore.HOSPITAL_ID == "hj") {
@@ -475,7 +511,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 hj: () => 3,
                 wh: () => 6,
                 jmfy: () => 6,
-                dghl: () => 5,
+                dghl: () => 6,
                 fqfybjy: () => 5,
                 gzsrm: () => 6,
                 lcey: () => 2,

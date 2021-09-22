@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Button, Tag, Menu, Icon, Modal } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import moment from 'src/vendors/moment'
+import StopModal from '../../components/StopModal'
+
 
 const maleImg = require('./../assets/male.png')
 const femaleImg = require('./../assets/female.png')
@@ -30,6 +32,7 @@ export default function LeftCon(props: Props) {
     onCloseFollowUp,
     onAddOpen
   } = props
+  const [formCreateVisible, setFormCreateVisible] = useState(false)
 
   const [openKeys, setOpenKeys] = useState([] as string[])
 
@@ -54,13 +57,7 @@ export default function LeftCon(props: Props) {
   }
 
   const handleCloseConfirm = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '是否要结束随访?',
-      onOk: () => {
-        onCloseFollowUp && onCloseFollowUp()
-      }
-    })
+    setFormCreateVisible(true)
   }
 
   useEffect(() => {
@@ -150,6 +147,14 @@ export default function LeftCon(props: Props) {
         添加随访表
       </Button>
     </div>
+    <StopModal
+      onCancel={() => setFormCreateVisible(false)}
+      onOk={(reson: any) => {
+        onCloseFollowUp && onCloseFollowUp(reson)
+        setFormCreateVisible(false)
+      }}
+      visible={formCreateVisible}
+    />
   </Wrapper>
 }
 
