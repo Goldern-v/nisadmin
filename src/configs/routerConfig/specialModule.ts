@@ -528,6 +528,44 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'qzxyy') {
   specialModule = [...homeRouter(SettingView)]
+} else if (process.env.REACT_APP_HOSPITAL_ID == "fssdy") {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/selfNurseFile/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
+    setLayout("/wh_single_point_login", SingleSignOnWh),
+    ...homeRouter(HomeView_wh),
+  ];
+
+  //武汉护理制度
+  specialModule = specialModule.concat([
+    setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/nursingRulesNewEdit",
+      NursingRulesNewEdit_wh,
+      layouts.MainLayout
+    )
+  ]);
 }
 
 export { specialModule };
