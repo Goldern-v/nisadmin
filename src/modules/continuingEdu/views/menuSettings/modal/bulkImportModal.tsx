@@ -18,7 +18,6 @@ export default function editModal(props: Props) {
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp} = props
   const [loading, setLoading] = useState(false)
-  const handleOk = () => {}
   const afterClose = () => {}
   const uploadOnChange = (info:any) => {
     let fileList = [...info.fileList];
@@ -26,7 +25,7 @@ export default function editModal(props: Props) {
     fileList = fileList.map(file => {
       if (file.response) {
         message.success('导入成功')
-        onCancel && onCancel(file.response.data)
+        onOk && onOk(file.response.data)
       }
       return file;
     });
@@ -48,7 +47,7 @@ export default function editModal(props: Props) {
     centered
     visible={visible}
     onOk={() => {
-      handleOk()
+      onOk()
     }}
     onCancel={() => onCancel()}>
     <Wrapper>
