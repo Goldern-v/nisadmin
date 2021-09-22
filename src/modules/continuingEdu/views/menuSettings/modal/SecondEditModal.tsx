@@ -439,7 +439,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="secondAudit">
-                    {isSecondAudit ? (
+                    {/* {isSecondAudit ? ( */}
                       <div className="divStyle">
                         <Select
                           mode="tags"
@@ -454,11 +454,12 @@ export default function SecondEditModal(props: Props) {
                           ...
                         </ClickBtn>
                       </div>
-                    ) : (
+                    {/* )  */}
+                    {/* : (
                       <EditClickBtn onClick={editSecondAudit}>
                         + 添加二级审核人
                       </EditClickBtn>
-                    )}
+                    )} */}
                   </Form.Field>
                 </Col>
               </Row>
@@ -468,7 +469,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="thirdAudit">
-                    {isThirdAudit ? (
+                    {/* {isThirdAudit ? ( */}
                       <div className="divStyle">
                         <Select
                           mode="tags"
@@ -483,11 +484,11 @@ export default function SecondEditModal(props: Props) {
                           ...
                         </ClickBtn>
                       </div>
-                    ) : (
+                    {/* ) : (
                       <EditClickBtn onClick={editThirdAudit}>
                         + 添加三级审核人
                       </EditClickBtn>
-                    )}
+                    )} */}
                   </Form.Field>
                 </Col>
               </Row>
@@ -514,13 +515,15 @@ export default function SecondEditModal(props: Props) {
         <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
         <BulkImportModal
           visible={editVisible}
-          onOk={() => {}}
-          onCancel={(list:any) => {
+          onOk={(list:any) => {
             setEditVisible(false)
             setSubmit(list?.submitEmployees)
             setFirstAudit(list?.firstAuditEmployees)
             setSecondAudit(list?.secondAuditEmployees)
             setThirdAudit(list?.thirdAuditEmployees)
+          }}
+          onCancel={() => {
+            setEditVisible(false)
           }} />
       </Spin>
     </ModalSpin>
