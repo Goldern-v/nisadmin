@@ -53,7 +53,7 @@ export default function FormPage(props: Props) {
       //   return <慢性鼻窦炎出院随访 {...props} />
       default:
         return <AllTemplate {...props} />
-      // <div className="page-item null">
+      // return <div className="page-item null">
       //   <span className="null-text">
       //     <Icon type="file-exclamation" style={{ marginRight: 10 }} />
       //     <span>暂无对应表单</span>
