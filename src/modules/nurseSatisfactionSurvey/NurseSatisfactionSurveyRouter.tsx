@@ -12,37 +12,29 @@ export interface Props {}
 export default function WardLog() {
   const leftMenuConfig = [
     {
-      title: '护士长年计划',
-      path: '/nurseSatisfactionSurvey/year',
+      title: '护士长满意度调查表',
+      path: '/nurseSatisfactionSurvey/questionnaire',
       icon: <WCJD />,
       component: { ...NurseSatisfactionSurvey },
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
     {
-      title: '护士长月计划',
-      path: '/nurseSatisfactionSurvey/month',
+      title: '满意度调查表结果统计',
+      path: '/nurseSatisfactionSurvey/statistical',
       icon: <BKES />,
       component: { ...NurseSatisfactionSurvey },
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
     {
-      title: '护士长年总结',
-      path: '/nurseSatisfactionSurvey/conclusion',
+      title: '满意度调查表设置',
+      path: '/nurseSatisfactionSurvey/set',
       icon: <CSWD />,
       component: { ...NurseSatisfactionSurvey },
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
-    {
-      title: '护理创新项目记录',
-      path: '/nurseSatisfactionSurvey/innovation',
-      icon: <CSWD />,
-      component: { ...NurseSatisfactionSurvey },
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    }
   ]
   return (
     <Wrapper>

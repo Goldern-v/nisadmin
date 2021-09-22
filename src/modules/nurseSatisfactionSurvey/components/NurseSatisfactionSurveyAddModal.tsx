@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Col, Icon, Upload, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
 import moment from 'moment'
 import { authStore, appStore } from "src/stores";
-import NurseHandBookService from '../services/NurseHandBookService'
+import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
 import { message } from 'antd/es'
 const api = new NurseHandBookService();
 export interface Props {
@@ -14,67 +14,27 @@ export interface Props {
   isOtherEmp?: boolean,
   isAdd?: boolean,
 }
-export default function NurseHandBookModal(props: any) {
+export default function NurseSatisfactionSurveyAddModal(props: any) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
   const [loading, setLoading] = useState(false)
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [deptSelect, setDeptSelect] = useState(user.deptCode)
-  const [deptList, setDeptList] = useState([] as any)
+  const [questionnaire, setQuestionnaire] = useState('')
+  const [questionnaireList, setQuestionnaireList] = useState([] as any)
   const [year, setYear]:any = useState(+moment().format('YYYY'))
   const [month, setMonth]:any  = useState(+moment().format('MM'))
-  const [id, setId]  = useState<String>('')
   const [yearList, setYearList] = useState([] as number[])
   const [monthList, setMonthList] = useState([] as string[])
   const [searchText, setSearchText] = useState('')
   const [searchText1, setSearchText1] = useState(user.empName)
-  const [fileList, setFileList]:any = useState([])
   const [fileIdList, setFileIdList]:any = useState([])
   const [titleType, setTitleType]  = useState<String>('')
-  let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
   useEffect(() => {
     if(isAdd){
-      if(props.type == 'year') {
-        setTitleType("新建年计划")
-      }else if(props.type == 'month') {
-        setTitleType("新建月计划")
-        setMonth(+moment().format('MM'))
-      }else if(props.type == 'conclusion') {
-        setTitleType("新建年总结")
-      }else if(props.type == 'innovation') {
-        setTitleType("新建创新项目记录")
-      }
-      setId('')  
-      setSearchText('')
-      setSearchText1(user.empName)  
-      setYear(+moment().format('YYYY'))
-      setDeptSelect(user.deptCode)
+      setTitleType("新建")
     }else{
-      if(props.type == 'year') {
-        setTitleType("编辑年计划")
-      }else if(props.type == 'month') {
-        setTitleType("编辑月计划")
-        setMonth(params.month)
-      }else if(props.type == 'conclusion') {
-        setTitleType("编辑年总结")
-      }else if(props.type == 'innovation') {
-        setTitleType("编辑创新项目记录")
-      }
-      setId(params.id)
-      setSearchText(params.title)
-      setYear(params.year)
-      setSearchText1(user.empName)
-      setDeptSelect(user.deptCode)
-      params.files?.forEach((item:any) => {
-        item.uid = item.id
-      })
-      let idList = params.files?.map((item:any) => {
-        return item.id
-      })
-      setFileIdList(idList)
-      setFileList(params.files)//展示列表
+      setTitleType("修改")
     }
-    let list = props.deptList || []
-    setDeptList([...list])
     let nowYear:number = +moment().format('YYYY')
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
     setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
@@ -87,41 +47,6 @@ export default function NurseHandBookModal(props: any) {
     setMonth('')
     setDeptSelect('')
     setFileIdList([])
-    setFileList([])
-  }
-  const uploadOnChange = (info:any) => {
-    let fileList = [...info.fileList];
-    fileList = fileList.slice(-5);
-    fileList = fileList.map(file => {
-      if (file.response) {
-        file.id = file?.response?.data[0];
-      }
-      return file;
-    });
-    setFileList(fileList);
-    let idList = fileList?.map((item:any) => {
-      return item.id
-    })
-    setFileIdList(idList)
-  };
-  const removeOnChange = (info:any) => {
-    let pro = new Promise((resolve,reject)=>{
-      Modal.confirm({
-        title: '确认删除该附件？',
-        centered: true,
-        onOk: () => {
-          api
-          .deleteAttachment(info.id).then((res) => {
-            resolve(true)
-            message.success('删除成功')
-          })
-        },
-        onCancel:()=>{
-          resolve(false)
-        }
-      })
-    })
-    return pro.then(res=>res)
   }
   const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
   const onChangeSearchText1 = (e: any) => {setSearchText1(e.target.value)}
@@ -132,7 +57,6 @@ export default function NurseHandBookModal(props: any) {
     }
       api
       .saveOrUpdate(props.type,{
-        id:id,
         month:month,
         year: year,
         title: searchText,
@@ -171,18 +95,18 @@ export default function NurseHandBookModal(props: any) {
       </Row>
       <Row>
         <Col span={6}>
-          科室:
+          调查表:
         </Col>
         <Col span={18}>
           <Select
-            value={deptSelect}
+            value={questionnaire}
             style={{ width: 250 }}
             disabled={true}
             showSearch
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            onChange={(val: string) => setDeptSelect(val)}>
-            {deptList.map((item: any, idx: any) =>
+            onChange={(val: string) => setQuestionnaire(val)}>
+            {questionnaireList.map((item: any, idx: any) =>
               <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
           </Select>
         </Col>
@@ -237,28 +161,6 @@ export default function NurseHandBookModal(props: any) {
             value={searchText1}
             onChange={onChangeSearchText1}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col span={6}>
-          上传附件:
-        </Col>
-        <Col span={18}>
-        <Upload 
-          {...props} 
-          action="/crNursing/api/nurseManual/attachment/nurseManual" 
-          accept={".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.jpg,.png"} 
-          headers={header} 
-          fileList={fileList} 
-          onChange={uploadOnChange}
-          onRemove={removeOnChange}
-          multiple={true}
-          >
-        <Button type="primary" className="mb-20">
-          <Icon type="upload" /> 上传
-        </Button>
-        <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
-      </Upload>
         </Col>
       </Row>
     </Wrapper>

@@ -197,7 +197,7 @@ export default observer(function MyCreateList() {
     
     let nowYear:number = +moment().format('YYYY')
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
-    setMonthList(['01','02','03','04','05','06','07','08','09','10','11','12'])
+    setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
   }
   const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
 
@@ -281,6 +281,7 @@ export default observer(function MyCreateList() {
     pageOptions.pageIndex,
     pageOptions.pageSize,
     year,
+    month,
     selectedTemplate,
     deptSelect
   ])

@@ -1,9 +1,9 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
-export default class NurseHandBookService extends BaseApiService {
+export default class NurseSatisfactionSurveyService extends BaseApiService {
   /*查询分页*/
-  public getPage(type: string, obj: PageOptions | any) {
-    return this.post(`/nurseManual/getPage/${type}`, obj)
+  public getPage(obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/getPage`, obj)
   }
   /*新增编辑*/
   public saveOrUpdate(type: string, obj: PageOptions | any) {
@@ -35,4 +35,4 @@ export default class NurseHandBookService extends BaseApiService {
   }
 }
 
-export const nurseHandBookService = new NurseHandBookService()
+export const nurseSatisfactionSurveyService = new NurseSatisfactionSurveyService()

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Col, Input, InputNumber, Modal, Row, Select, Icon, Spin } from 'antd'
-import NurseHandBookService from '../services/NurseHandBookService'
+import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
 import { fileDownload } from 'src/utils/file/file'
 
 const api = new NurseHandBookService();
