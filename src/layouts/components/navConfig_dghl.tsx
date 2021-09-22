@@ -44,10 +44,6 @@ const baseConfig: navConfigItem[] = [
     icon: require('../images/menu-icon/病区登记本@2x.png')
   },
   {
-    name: "一级质控",
-    path: "/qcOne/nursingWorkPlainList"
-  },
-  {
     name: "质量管理",
     children: [
       {
@@ -62,7 +58,8 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOneHj",
+        path: "/qcOneDghl",
+        // path: "/qcOne/nursingWorkPlainList",
         icon: require("../images/menu-icon/一级质控@2x.png")
       },
       {
