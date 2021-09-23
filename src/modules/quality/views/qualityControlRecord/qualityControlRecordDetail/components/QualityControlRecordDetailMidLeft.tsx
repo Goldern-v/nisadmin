@@ -10,6 +10,7 @@ import { useRef } from "src/types/react";
 const { TextArea } = Input;
 import printing from "printing";
 import { appStore } from "src/stores";
+import { INodeAppoint } from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
 export interface Props {
   detailData: any;
 }
@@ -155,6 +156,16 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     </div>
   }
 
+  const getNodeAppointList = () => {
+    if (appStore.HOSPITAL_ID === 'gzsrm' && detailData?.nodeAppointList && detailData?.nodeAppointList.length > 0 && detailData?.nodeAppointList[0].userList.length > 0) {
+      return <div>
+        {detailData?.nodeAppointList.map((item: INodeAppoint) => {
+          return item.userList.length > 0 ? <div key={item.appointUserCode}>{item.showItemName}：{item.userList[0].empName}</div> : ""
+        })}
+      </div>
+    }
+  }
+
   const itemRadioChange = (e: any) => { };
   // 附件
   const itemAttachmentCheck = () => { };
@@ -184,6 +195,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {messageBoxData.hasArchiveItem && (
             <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
           )}
+          {getNodeAppointList()}
         </div>
 
         <div className="boxRight">

@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
+import { IRespose } from 'src/configs/api'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -11,6 +12,15 @@ export interface NurseQuery {
   pageSize: number /**   每页页数 */
   empName: string /**   每页页数 */
 }
+
+/**
+ * 审核人列表
+ */
+export interface IUserCode {
+  code: string,//code
+  name: string,//姓名
+}
+
 
 export default class QualityControlRecordApi extends BaseApiService {
   // 获取护士列表
@@ -101,6 +111,13 @@ export default class QualityControlRecordApi extends BaseApiService {
   /** 质控详情全部导出*/
   public exportAll(exportParams: any) {
     return this.post(`/qcItem/instance/exportListByCondition`, exportParams, { responseType: 'blob' })
+  }
+
+  /**
+   * 字典：获取某节点审核人列表
+   */
+  public async getListByAppointUserCode(qcCode: string, wardCode: string, appointUserCode: string) {
+    return this.post(`/qcItem/dict/getListByAppointUserCode`, { qcCode, wardCode, appointUserCode })
   }
 }
 

@@ -37,6 +37,36 @@ export interface IAudit extends Record<string, any> {
   multiSelect: boolean;//是否多选
 }
 
+export interface ICode {
+  code: string,
+  name: string
+}
+
+/**
+ * 指定人员对象
+ */
+export interface IAuditUser {
+  appointUserCode: string,
+  codeList: Array<ICode>
+}
+
+export interface IuserEmpNo {
+  empNo: string,
+  empName: string
+}
+
+/**
+ * 指定人员类型
+ */
+export interface INodeAppoint extends IAudit {
+  userList: Array<IuserEmpNo> | []
+}
+
+
+
+
+
+
 class QualityControlRecordEditModel {
   //浏览器查询参数
   @observable query = {} as any
@@ -47,6 +77,7 @@ class QualityControlRecordEditModel {
     qcName: '',
     qcGroupRoles: '',
     useScore: false,
+    qcCode: ''
   }
   //加载状态
   @observable loading = false
@@ -61,6 +92,8 @@ class QualityControlRecordEditModel {
   @observable causeList = [] as Cause[]
   //人员指定列表
   @observable auditList: Array<IAudit> = [];
+  //指定人员类型及名单
+  @observable nodeAppointList: Array<INodeAppoint> = [];
 
   //基本填写信息
   @observable master = {
@@ -106,6 +139,7 @@ class QualityControlRecordEditModel {
     this.bedNurseList = []
     this.causeList = []
     this.auditList = []
+    this.nodeAppointList = []
 
     this.itemListErrObj = {}
 
@@ -115,6 +149,7 @@ class QualityControlRecordEditModel {
       qcName: '',
       qcGroupRoles: '',
       useScore: false,
+      qcCode: ''
     }
 
     for (let x in this.master) {
@@ -157,8 +192,8 @@ class QualityControlRecordEditModel {
       qualityControlRecordApi
         .formTemplateDetail(this.query.qcCode)
         .then(res => {
-          console.log(res);//质控数据
-          console.log("res质控数据");//质控数据
+          // console.log(res);//质控数据
+          // console.log("res质控数据");//质控数据
           if (res.data) {
             this.loading = false
 
@@ -169,7 +204,8 @@ class QualityControlRecordEditModel {
                 qcName: template.qcName,
                 intro: template.intro,
                 qcGroupRoles: template.qcGroupRoles,
-                useScore: template.useScore || false
+                useScore: template.useScore || false,
+                qcCode: template.qcCode || ''
               }
             }
 
@@ -182,7 +218,15 @@ class QualityControlRecordEditModel {
             if (this.baseInfo.qcGroupRoles) this.getUserList();
 
             //赋值人员指定列表
-            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList)
+            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList);
+            //
+            if (res?.data?.nodeAppointList && res?.data?.nodeAppointList.length > 0) {
+              this.nodeAppointList = res?.data?.nodeAppointList.map((item: IAudit) => {
+                let newItem = JSON.parse(JSON.stringify(item))
+                newItem.userList = []
+                return newItem
+              })
+            }
           }
         })
     } else {
@@ -209,7 +253,8 @@ class QualityControlRecordEditModel {
                 qcName: master.qcName,
                 intro: master.intro,
                 qcGroupRoles: master.qcGroupRoles,
-                useScore: master.useScore || false
+                useScore: master.useScore || false,
+                qcCode: master?.qcCode || ''
               }
             }
 
@@ -449,6 +494,10 @@ class QualityControlRecordEditModel {
       causeList
     } as any
 
+    if (appStore.HOSPITAL_ID === 'gzsrm') {
+      params.nodeAppointList = this.nodeAppointList
+    }
+
     return params
   }
 
@@ -493,6 +542,11 @@ class QualityControlRecordEditModel {
           success && success()
         }
       }, () => this.loading = false)
+  }
+
+  //更新setNodeAppointListr对象信息
+  @action public setNodeAppointList = (newNodeAppointList: Array<INodeAppoint>) => {
+    this.nodeAppointList = [...newNodeAppointList]
   }
 }
 
