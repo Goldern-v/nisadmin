@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { DatePicker, Select, Input, Checkbox } from 'antd'
+import { DatePicker, Select, Input, Checkbox, message } from 'antd'
 import { authStore, appStore } from 'src/stores'
-import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit } from './../model/QualityControlRecordEditModel'
+import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit, ICode, INodeAppoint } from './../model/QualityControlRecordEditModel'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import QcItemGroup from './QcItemGroup'
+import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
 
 const Option = Select.Option
 
@@ -29,11 +30,15 @@ export default observer(function FormPannel() {
     writeMoreNurse,
     selectedBedNurse,
     causeList,
-    auditList
+    auditList,
+    baseInfo,
+    nodeAppointList
   } = qcModel
 
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
+
+  const [codeList, setCodeList] = useState<Array<ICode>>([]);//指定人员 选择列表
 
   const handleUserListChange = (empNo: any) => {
     let target = userList.find((item: Emp) => item.empNo == empNo)
@@ -108,6 +113,38 @@ export default observer(function FormPannel() {
       return master.userList[0].empName
     else
       return ''
+  }
+
+  //获取下拉数据
+  const getAuditList = (item: IAudit) => {
+    qualityControlRecordApi.getListByAppointUserCode(baseInfo.qcCode, master.wardCode, item.appointUserCode).then(res => {
+      console.log(res);
+      (res?.data) && (setCodeList(res?.data));
+    }).catch(error => {
+      console.log(error)
+      message.error(error)
+    })
+  }
+
+  /**
+   * 更新nodeAppointList
+   * @param item 
+   * @param value 
+   */
+
+  const setAuditSelect = (item: IAudit, value: string, codeList: Array<ICode>) => {
+    let newNodeAppointList = nodeAppointList.map((itemNodeAppoint: INodeAppoint) => {
+      let newItemNodeAppoint = { ...itemNodeAppoint };
+      if (newItemNodeAppoint.appointUserCode === item.appointUserCode) {
+        let codeItem = codeList.find(findItem => findItem.code == value);
+        (codeItem) && (newItemNodeAppoint.userList = [{ empNo: codeItem.code, empName: codeItem.name }])
+
+      }
+      return newItemNodeAppoint
+
+    })
+    qcModel.setNodeAppointList(newNodeAppointList)
+
   }
 
   useEffect(() => {
@@ -221,7 +258,37 @@ export default observer(function FormPannel() {
                   }} />
               </div>
             </div>
+            {/* 指定人员 */}
+            {appStore.HOSPITAL_ID === 'gzsrm' ?
+              <AuditList>
+                <h3 className="auditListTitle">人员指定</h3>
+                <ul className="list">
+                  {
+                    auditList.map((item: IAudit, index: number) => {
+                      return (
+                        <li key={index} className="auditItem">
+                          <div className="auditItemName">{index + 1}、{item.showItemName}</div>
+                          <div onClick={() => { getAuditList(item) }}>
+                            <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}
+                              onSelect={(value: string) => { setAuditSelect(item, value, codeList) }}>
+                              {
+                                codeList.map((codeItem: ICode) =>
+                                  <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
+                                )
+                              }
+                              {/* <Option value="a" >a</Option> */}
+                            </Select>
+                          </div>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </AuditList> : ''
+            }
+
           </React.Fragment>
+
         },
         currentHospitalId: qcMatchCode
       })}
@@ -234,25 +301,8 @@ export default observer(function FormPannel() {
           key={groupIdx} />
       )}
     </QuestionCon>
-    {/* <AuditList>
-      <h3 className="auditListTitle">人员指定</h3>
-      <ul className="list">
-        {
-          auditList.map((item: IAudit, index: number) => {
-            return (
-              <li key={index} className="auditItem">
-                <div className="auditItemName">{index + 1}、{item.showItemName}</div>
-                <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}>
-                  <Option value="a">a</Option>
-                </Select>
-              </li>
-            )
-          })
-        }
-
-      </ul>
-    </AuditList> */}
-    {causeList.length > 0 &&
+    {
+      causeList.length > 0 &&
       <ReasonCon>
         <div className="title">问题可能原因</div>
         {causeList.map((item: any, idx: any) =>
@@ -262,8 +312,9 @@ export default observer(function FormPannel() {
             checked={item.checked}>
             {item.causeContent}
           </Checkbox>)}
-      </ReasonCon>}
-  </Wrapper>
+      </ReasonCon>
+    }
+  </Wrapper >
 })
 const ReasonCon = styled.div`
   font-size: 12px;
@@ -326,12 +377,13 @@ const QuestionCon = styled.div`
 const AuditList = styled.div`
     position: relative;
     font-size: 12px;
-    border-bottom: 0.5px dashed #bbbbbb;
+    /* border-bottom: 0.5px dashed #bbbbbb; */
     padding-bottom: 10px;
     .auditListTitle{
       position: relative;
       font-size: 14px;
       font-weight: bold;
+      padding-top: 5px;
     }
     .list{
       list-style: none;
@@ -355,7 +407,7 @@ const AuditList = styled.div`
           margin-right: 10px;
         }
         .auditSelectList{
-          width: 130px;
+          width: 190px;
         }
       }
     }

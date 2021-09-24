@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, Input, message } from 'antd'
+import { Button, Select, Input, message, DatePicker } from 'antd'
 import BaseTabs from 'src/components/BaseTabs'
 import BaseTable, { DoCon } from "src/components/BaseTable"
 import { scoreManageService } from './api/ScoreManageService'
 import { Place } from "src/components/common"
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 import qs from 'qs'
 // import createModal from "src/libs/createModal"
 
@@ -15,7 +16,7 @@ const Option = Select.Option
 export interface Props { }
 
 export default observer(function ScoreManage(props: Props) {
-
+  const [date, setDate]: any = useState([])
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,8 @@ export default observer(function ScoreManage(props: Props) {
     firstLevelMenuId: queryObj.firstLevelMenuId || '',
     secondLevelMenuId: queryObj.secondLevelMenuId || '',
     keyWord: queryObj.keyWord || '',
+    beginTime: queryObj.beginTime || '',
+    endTime: queryObj.endTime || '',
     pageSize: queryObj.pageSize ? Number(queryObj.pageSize) : 20,
     pageIndex: queryObj.pageIndex ? Number(queryObj.pageIndex) : 1
   })
@@ -286,7 +289,9 @@ export default observer(function ScoreManage(props: Props) {
   }
 
   const handleSearch = () => {
-    setQuery({ ...query, pageIndex: 1 })
+    let beginTime = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+    let endTime = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    setQuery({ ...query, pageIndex: 1, beginTime, endTime })
   }
   const getMenuInfo = () => {
     scoreManageService
@@ -352,6 +357,13 @@ export default observer(function ScoreManage(props: Props) {
               {item.name}
             </Option>)}
       </Select>
+      <span style={{ marginLeft: 15 }}>开始时间：</span>
+      <DatePicker.RangePicker
+        allowClear
+        style={{ width: 220 }}
+        value={date}
+        onChange={(value: any) => setDate(value)}
+      />
       <Input
         placeholder="输入关键字，包括标题、评分负责人"
         style={{ width: 265, marginLeft: 15 }}
@@ -359,7 +371,7 @@ export default observer(function ScoreManage(props: Props) {
         defaultValue={query.keyWord}
         onBlur={(e: any) => setQuery({ ...query, pageIndex: 1, keyWord: e.target.value })} />
       <Button type="primary" onClick={handleSearch} style={{ marginLeft: 15 }}>
-        搜索
+        查询
       </Button>
     </HeaderCon>
     <ScrollCon>

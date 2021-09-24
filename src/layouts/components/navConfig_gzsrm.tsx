@@ -30,6 +30,16 @@ const baseConfig: navConfigItem[] = [
     path: "/wardRegister"
   },
   {
+    name: "质量管理",
+    children: [
+      {
+        name: "护士长手册",
+        path: "/nurseHandBook",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+    ]
+  },
+  {
     name: "一级质控",
     path: "/qcOneHj"
   },
