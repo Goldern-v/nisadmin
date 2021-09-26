@@ -27,6 +27,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   const [monthList, setMonthList] = useState([] as string[])
   const [searchText, setSearchText] = useState('')
   const [searchText1, setSearchText1] = useState(user.empName)
+  const [openDate, setOpenDate] = useState('')
   const [fileIdList, setFileIdList]:any = useState([])
   const [titleType, setTitleType]  = useState<String>('')
   useEffect(() => {
@@ -41,6 +42,17 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   }, [
     props
   ])
+  
+  useEffect(() => {
+    getSettingList()
+  }, [])
+  const getSettingList = () => {
+    api
+    .getSettingList()
+    .then((res) => {
+      setQuestionnaireList(res.data)
+    })
+  }
   const onClose = () => {
     setSearchText('')
     setSearchText1('')
@@ -50,6 +62,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   }
   const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
   const onChangeSearchText1 = (e: any) => {setSearchText1(e.target.value)}
+  const onChangeOpenDate = (e: any) => {setOpenDate(e.target.value)}
   const handleOk = () => {
     if (searchText == "") {
       message.error('标题不能为空！')
@@ -101,32 +114,16 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
           <Select
             value={questionnaire}
             style={{ width: 250 }}
-            disabled={true}
             showSearch
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onChange={(val: string) => setQuestionnaire(val)}>
             {questionnaireList.map((item: any, idx: any) =>
-              <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+              <Select.Option key={idx} value={item.id}>{item.text}</Select.Option>)}
           </Select>
         </Col>
       </Row>
-      {props.type != 'month' && <Row>
-        <Col span={6}>
-          年份:
-        </Col>
-        <Col span={18}>
-          <Select
-            value={year}
-            style={{ width: 250 }}
-            showSearch
-            onChange={(val: any) => setYear(val)}>
-            {yearList.map((item: any, idx: any) =>
-              <Select.Option key={idx} value={item}>{item}</Select.Option>)}
-          </Select>
-        </Col>
-      </Row>}
-      {props.type == 'month' && <Row>
+      <Row>
         <Col span={6}>
           月份:
         </Col>
@@ -149,10 +146,35 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
               <Select.Option key={idx} value={item}>{item}</Select.Option>)}
           </Select>
         </Col>
-      </Row>}
+      </Row>
+      <Row>
+        <Col span={6}>
+          开放时间:
+        </Col>
+        <Col span={18}>
+          <Input
+            style={{ width: 250 }}
+            value={openDate}
+            onChange={onChangeOpenDate}
+          />
+        </Col>
+      </Row>
       <Row>
         <Col span={6}>
           创建人:
+        </Col>
+        <Col span={18}>
+          <Input
+            style={{ width: 250 }}
+            disabled={true}
+            value={searchText1}
+            onChange={onChangeSearchText1}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>
+          调查对象:
         </Col>
         <Col span={18}>
           <Input

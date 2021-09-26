@@ -143,6 +143,7 @@
     "build:gzsrm": "env-cmd -e gzsrm react-app-rewired build && env-cmd -e gzsrm node buildZip",
     "build:gzsrm-be": "env-cmd -e gzsrm-be react-app-rewired build && env-cmd -e gzsrm-be node buildZip",
     "build:dghl": "env-cmd -e dghl react-app-rewired build && env-cmd -e dghl node buildZip",
+    "build:wjgdszd": "env-cmd -e wjgdszd react-app-rewired build && env-cmd -e wjgdszd node buildZip",
     "build:dgxg": "env-cmd -e dgxg react-app-rewired build && env-cmd -e dgxg node buildZip",
     "build:yczyy": "env-cmd -e yczyy react-app-rewired build && env-cmd -e yczyy node buildZip",
     "build:nfzxy": "env-cmd -e nfzxy react-app-rewired build && env-cmd -e nfzxy node buildZip",
