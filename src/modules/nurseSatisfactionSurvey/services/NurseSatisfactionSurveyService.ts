@@ -5,6 +5,18 @@ export default class NurseSatisfactionSurveyService extends BaseApiService {
   public getPage(obj: PageOptions | any) {
     return this.post(`/satisfaction/survey/getPage`, obj)
   }
+  /*下拉框获取调查表*/
+  public getSettingList() {
+    return this.get(`/satisfaction/setting/getSettingList`)
+  }
+
+
+
+
+
+
+
+
   /*新增编辑*/
   public saveOrUpdate(type: string, obj: PageOptions | any) {
     return this.post(`/nurseManual/saveOrUpdate/${type}`, obj)
