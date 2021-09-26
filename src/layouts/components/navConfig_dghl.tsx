@@ -40,7 +40,7 @@ const baseConfig: navConfigItem[] = [
   // },
   {
     name: '病区登记本',
-    path: '',
+    path: '/wardRegister',
     icon: require('../images/menu-icon/病区登记本@2x.png')
   },
   {
@@ -58,7 +58,8 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOneHj",
+        path: "/qcOneDghl",
+        // path: "/qcOne/nursingWorkPlainList",
         icon: require("../images/menu-icon/一级质控@2x.png")
       },
       {

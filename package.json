@@ -81,7 +81,7 @@
     "dev:hj-be": "npm run start:hj-be",
     "dev:wh": "npm run start:wh",
     "dev:ys": "npm run start:ys",
-    "dev:nys": "npm run start:nys",
+    "dev:nys": "npm run start:nys", 
     "dev:nys-be": "npm run start:nys-be",
     "dev:dzlc": "npm run start:dzlc",
     "dev:gyd": "npm run start:gyd",
