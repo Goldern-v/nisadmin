@@ -159,7 +159,7 @@ function AddNursingModal(props: Props) {
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
               style={{ width: '100%' }}
-              placeholder='选择所属科室'
+              placeholder='选择职称'
             >
               {TITLE_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
