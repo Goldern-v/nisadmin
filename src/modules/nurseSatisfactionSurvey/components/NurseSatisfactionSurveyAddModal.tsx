@@ -3,8 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Button, Col, Icon, Upload, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
 import moment from 'moment'
 import { authStore, appStore } from "src/stores";
+import Form from "src/components/Form/Form";
 import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
 import { message } from 'antd/es'
+import SelectPeopleModal from "./SelectPeopleModal";
+import createModal from "src/libs/createModal";
+
+
 const api = new NurseHandBookService();
 export interface Props {
   visible: boolean,
@@ -14,44 +19,64 @@ export interface Props {
   isOtherEmp?: boolean,
   isAdd?: boolean,
 }
+interface User {
+  label?: string;
+  key: string;
+}
+export interface CheckUserItem {
+  key: string;
+  userList: any[];
+}
 export default function NurseSatisfactionSurveyAddModal(props: any) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
   const [loading, setLoading] = useState(false)
+  const selectPeopleModal = createModal(SelectPeopleModal);
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [questionnaire, setQuestionnaire] = useState('')
   const [questionnaireList, setQuestionnaireList] = useState([] as any)
-  const [year, setYear]:any = useState(+moment().format('YYYY'))
-  const [month, setMonth]:any  = useState(+moment().format('MM'))
+  const [year, setYear]: any = useState(+moment().format('YYYY'))
+  const [month, setMonth]: any = useState(+moment().format('MM'))
   const [yearList, setYearList] = useState([] as number[])
   const [monthList, setMonthList] = useState([] as string[])
   const [searchText, setSearchText] = useState('')
   const [searchText1, setSearchText1] = useState(user.empName)
   const [openDate, setOpenDate] = useState('')
-  const [fileIdList, setFileIdList]:any = useState([])
-  const [titleType, setTitleType]  = useState<String>('')
+  const [fileIdList, setFileIdList]: any = useState([])
+  const [titleType, setTitleType] = useState<String>('')
+  const [respondent, setRespondent]: any = useState([]);
+  const dataArray = [respondent];
+  const setArray = [setRespondent];
+
+  const onOkCallBack = (
+    checkedUserList: CheckUserItem[],
+    type: any,
+    presentIndex: any
+  ) => {
+    setArray[type](checkedUserList);
+  };
   useEffect(() => {
-    if(isAdd){
+    if (isAdd) {
       setTitleType("新建")
-    }else{
+    } else {
       setTitleType("修改")
     }
-    let nowYear:number = +moment().format('YYYY')
-    setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
-    setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
+    let nowYear: number = +moment().format('YYYY')
+    setYearList([nowYear - 5, nowYear - 4, nowYear - 3, nowYear - 2, nowYear - 1, nowYear, nowYear + 1, nowYear + 2, nowYear + 3, nowYear + 4, nowYear + 5])
+    setMonthList(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
   }, [
     props
   ])
-  
+
   useEffect(() => {
     getSettingList()
   }, [])
   const getSettingList = () => {
     api
-    .getSettingList()
-    .then((res) => {
-      setQuestionnaireList(res.data)
-    })
+      .getSettingList()
+      .then((res) => {
+        setQuestionnaireList(res.data)
+      })
   }
   const onClose = () => {
     setSearchText('')
@@ -60,17 +85,61 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
     setDeptSelect('')
     setFileIdList([])
   }
-  const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
-  const onChangeSearchText1 = (e: any) => {setSearchText1(e.target.value)}
-  const onChangeOpenDate = (e: any) => {setOpenDate(e.target.value)}
+  const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
+  const onChangeSearchText1 = (e: any) => { setSearchText1(e.target.value) }
+  const onChangeOpenDate = (e: any) => { setOpenDate(e.target.value) }
+  // 取消标签审核人
+  const onDeselect = (user: User | User[], number: any) => {
+    let data = dataArray[number];
+    let setData = setArray[number];
+    if (user instanceof Array) {
+      for (let i = 0; i < user.length; i++) {
+        let index = data.findIndex((item: any) => item.key === user[i].key);
+        if (index > -1) {
+          data.splice(index, 1);
+        }
+      }
+      setData([...data]);
+    } else {
+      let index = data.findIndex((item: any) => item.key === user.key);
+      if (index > -1) {
+        data.splice(index, 1);
+        setData([...data]);
+      }
+    }
+  };
+  // 判断当前选择的是哪种类型 1-人员 2-角色
+  // const judgeTypeItem = (value: any) => {
+  //   let data = dataArray[value];
+  //   if (data && data.length === 0) {
+  //     return 1;
+  //   } else {
+  //     if (data[0].userList) {
+  //       return data[0].userList[0].empNo ? 2 : 3;
+  //     } else {
+  //       return data[0].type === 1 ? 2 : 3;
+  //     }
+  //   }
+  // };
+
+  const openSelectPeopleModal = (value: any) => {
+    // value 用于区分哪一种数据类型 0-提交人 1-审核人 2-二级 3-三级
+    selectPeopleModal.show({
+      checkedUserList: dataArray[value],
+      messageType: 1,
+      type: value,
+      presentIndex: 0 // 这个数据没用
+    });
+  };
+
   const handleOk = () => {
     if (searchText == "") {
       message.error('标题不能为空！')
       return
     }
-      api
-      .saveOrUpdate(props.type,{
-        month:month,
+    api
+      .saveOrUpdate(props.type, {
+        month: month,
         year: year,
         title: searchText,
         deptCode: deptSelect,
@@ -81,7 +150,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       .then((res) => {
         message.success('操作成功')
         onOk && onOk()
-    }, )
+      })
   }
   return <Modal
     title={titleType}
@@ -177,15 +246,26 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
           调查对象:
         </Col>
         <Col span={18}>
-          <Input
-            style={{ width: 250 }}
-            disabled={true}
-            value={searchText1}
-            onChange={onChangeSearchText1}
-          />
+          <Form.Field name="respondent">
+            <div className="divStyle">
+              <Select
+                mode="tags"
+                placeholder="调查对象"
+                value={respondent}
+                labelInValue={true}
+                style={{ width: "100%" }}
+                open={false}
+                onDeselect={(user: any) => onDeselect(user, 1)}
+              />
+              <ClickBtn onClick={() => openSelectPeopleModal(1)}>
+                ...
+              </ClickBtn>
+            </div>
+          </Form.Field>
         </Col>
       </Row>
     </Wrapper>
+    <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
   </Modal>
 }
 const Wrapper = styled.div`
@@ -216,3 +296,18 @@ const Wrapper = styled.div`
   }
 }
 `
+const ClickBtn = styled.span`
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 1px solid #ccc;
+  border-left: none;
+  width: 50px;
+  height: 100%;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+} 
+`;
