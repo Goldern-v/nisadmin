@@ -50,9 +50,9 @@ export default observer(function BaseTable(props: Props) {
     },
     props
   );
-  console.log("props-----"+props);
-  console.log("option-----"+option);
-  console.log("option.column-----"+option.columns);
+  // console.log("props-----"+props);
+  // console.log("option-----"+option);
+  // console.log("option.column-----"+option.columns);
   option.columns =
     option.columns &&
     option.columns.map((item: any, index: number) => {
