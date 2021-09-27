@@ -104,3 +104,29 @@ export interface AllData {
   currentImproveItemList: Partial<CurrentImproveItem>[]
   [p: string]: any
 }
+
+
+//审核状态
+export interface IApprovalStatus extends Record<string, any> {
+  approvalStatus: number,//状态
+  str: string,//状态说明
+}
+
+export const approvalStatusList: Array<IApprovalStatus> = [
+  {
+    approvalStatus: 0,
+    str: "待提交",
+  },
+  {
+    approvalStatus: 1,
+    str: "通过",
+  },
+  {
+    approvalStatus: 2,
+    str: "驳回",
+  },
+  {
+    approvalStatus: 3,
+    str: "待区护长审核",
+  }
+]

@@ -9,6 +9,7 @@ import { meunConfig as menuConfig_hj } from "./config/menuConfig_hj";
 import { meunConfig as menuConfig_nys } from "./config/menuConfig_nys";
 import { meunConfig as menuConfig_dghl } from "./config/menuConfig_dghl";
 import { meunConfig as menuConfig_lcey } from "./config/menuConfig_lcey";
+import { meunConfig as menuConfig_gzsrm } from "./config/menuConfig_gzsrm";
 
 export interface Props {
 }
@@ -17,8 +18,9 @@ export default function PersonnelManagementView() {
   const leftMenuConfig = (() => {
     switch (appStore.HOSPITAL_ID) {
       case 'wh':
-      case 'gzsrm':
         return menuConfig_wh;
+      case 'gzsrm':
+        return menuConfig_gzsrm;
       case 'jmfy':
         return menuConfig_jmfy;
       case 'nys':
