@@ -108,12 +108,13 @@ export const meunConfig: meunConfigItem[] = [
         component: StarRatingReportList,
         hide: !authStore.isRoleManage
       },
-      // {暂时隐藏20210926
-      //   title: "夜班费统计汇总",
-      //   path: "/personnelManagement/nightChargingTotle",
-      //   component: nightChargingTotle,
-      //   hide: !authStore.isRoleManage
-      // },
+      //暂时隐藏20210926
+      {
+        title: "夜班费统计汇总",
+        path: "/personnelManagement/nightChargingTotle",
+        component: nightChargingTotle,
+        hide: !authStore.isRoleManage
+      },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",

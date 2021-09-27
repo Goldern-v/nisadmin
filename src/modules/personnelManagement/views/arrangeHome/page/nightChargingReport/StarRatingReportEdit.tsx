@@ -224,8 +224,9 @@ export default observer(function StarRatingReportEdit() {
             </Page>
           </ScrollCon>
         );
-      // case 'gzsrm':20210926暂时隐藏
-      //   return ScrollConGzsrm();
+      //20210926暂时隐藏
+      case 'gzsrm':
+        return ScrollConGzsrm();
       default:
         return ScrollConCommon();
     }

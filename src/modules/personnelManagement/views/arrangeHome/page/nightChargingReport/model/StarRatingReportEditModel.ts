@@ -152,16 +152,17 @@ class StarRatingReportEditModel {
   /** 数据初始化 */
   async initData(query?: any) {
     let data;
-    // if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {暂时隐藏20210926
-    //   let res = await starRatingReportService.getSgyReport(query.id)
-    //   data = res.data.contentSgyList
-    //   this.gzsrmReport = res.data
-    // } else {
-    //   let res = await starRatingReportService.getReport(query)
-    //   data = res.data
-    // }
-    let res = await starRatingReportService.getReport(query)
-    data = res.data
+    //暂时隐藏20210926
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+      let res = await starRatingReportService.getSgyReport(query.id)
+      data = res.data.contentSgyList
+      this.gzsrmReport = res.data
+    } else {
+      let res = await starRatingReportService.getReport(query)
+      data = res.data
+    }
+    // let res = await starRatingReportService.getReport(query)
+    // data = res.data
 
     this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
