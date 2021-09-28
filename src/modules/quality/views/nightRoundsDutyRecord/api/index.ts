@@ -15,7 +15,7 @@ class Api extends BaseApiService {
   }
 
   exportData(params: {}) {
-    return this.post(`/dutyRoster/download`, params, { responseType: 'blob' })
+    return this.post(`/dutyRosterForGZ/exportDutyRosterForGZ`, params, { responseType: 'blob' })
   }
 
   getAllNurse() {

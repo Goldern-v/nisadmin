@@ -6,6 +6,9 @@ import { Button, Icon, DatePicker, Select } from "antd";
 import moment from 'moment'
 import api from './api'
 import { fileDownload } from "src/utils/file/file";
+import AddModal from './Calendar/AddModal'
+import printing from "printing";
+import { useRef } from "src/types/react";
 
 interface Props {
   type: string
@@ -20,6 +23,8 @@ export default observer((props: Props) => {
   const [yearList, setYearList] = useState([] as number[])
   const [month, setMonth]  = useState<String>("01")
   const [monthList, setMonthList] = useState([] as string[])
+  const [isAdd, setIsAdd] = useState(false)
+  const [editVisible, setEditVisible] = useState(false)
 
   const titleMap: any = {
     '1': '护士长夜查房排班表',
@@ -81,14 +86,58 @@ export default observer((props: Props) => {
     const res = await api.saveData({ dutyRosterList })
     statusData()
   }
+  const handleAddNew = (record: any) => {
+    setIsAdd(true)
+    setEditVisible(true)
+  }
 
   const handleExport = async () => {
     const res = await api.exportData({
-      dutyType: type,
-      dutyTime: current.format('YYYY-MM-DD'),
+      dutyTime: year + "-" + month
     })
     fileDownload(res)
   }
+  const pageRef: any = useRef<HTMLElement>();
+  const handlePrint = (isPrint: boolean) => {
+    let printFun = isPrint ? printing : printing.preview;
+    // let title = document.title
+    // document.title = report.reportName
+    printFun(pageRef.current, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+          .ant-btn {
+            display: none;
+          }
+          .print-page {
+            box-shadow: none;
+            -webkit-print-color-adjust: exact;
+            margin: 0 auto;
+          }
+          .page-title {
+            min-height: 20px;
+            padding: 0px 30px 20px;
+          }
+          .page-title .title {
+            text-align: center;
+            margin-right: 0;
+          }
+          table, img {
+            page-break-inside: avoid;
+          }
+          pre {
+          page-break-after: avoid;
+          }
+          * {
+            color: #000 !important;
+          }
+          .footer-title {
+            min-height: 0;
+            margin-bottom: 0;
+          }
+      `
+    });
+  };
 
   useEffect(() => {
     api.getAllNurse().then(res => {
@@ -132,9 +181,9 @@ export default observer((props: Props) => {
               <Select.Option key={idx} value={item}>{item}</Select.Option>)}
           </Select>
           <Button onClick={() => statusData()}>查询</Button>
-          <Button type='primary' onClick={() => handleExport()}>新建</Button>
+          <Button type='primary' onClick={handleAddNew}>新建</Button>
           <Button type='primary' onClick={() => handleExport()}>导出</Button>
-          <Button onClick={() => statusData()}>打印</Button>
+          <Button onClick={() => handlePrint(true)}>打印</Button>
         </div>
       </SearchBar>
       <MainWrapper>
@@ -146,6 +195,18 @@ export default observer((props: Props) => {
           <Calendar data={dataArr} updateData={updateData} nurseList={nurseList}/>
         </div>
       </MainWrapper>
+      <AddModal
+        visible={editVisible}
+        isAdd={isAdd}
+        type={status}
+        onOk={() => {
+          getData()
+          setEditVisible(false)
+        }}
+        onCancel={() => {
+          getData()
+          setEditVisible(false)
+        }}/>  
     </Wrapper>
   )
 })

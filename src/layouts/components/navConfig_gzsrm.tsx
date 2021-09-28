@@ -33,16 +33,6 @@ const baseConfig: navConfigItem[] = [
     name: "质量管理",
     children: [
       {
-        name: "护理查房",
-        path: "/checkWard",
-        icon: require("../images/menu-icon/护理查房@2x.png")
-      },
-      {
-        name: "护士长手册",
-        path: "/nurseHandBook",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-      },
-      {
         name: "一级质控",
         path: "/qcOneHj",
         icon: require("../images/menu-icon/护理查房@2x.png"),
@@ -55,6 +45,17 @@ const baseConfig: navConfigItem[] = [
       {
         name: "三级质控",
         path: "/qcThree",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+      {
+        name: "护理查房",
+        path: "/checkWard",
+        hidden: !appStore.isDev,
+        icon: require("../images/menu-icon/护理查房@2x.png")
+      },
+      {
+        name: "护士长手册",
+        path: "/nurseHandBook",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
     ]
