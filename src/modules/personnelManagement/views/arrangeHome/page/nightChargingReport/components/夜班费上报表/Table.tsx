@@ -39,7 +39,8 @@ export default observer(function Table(props: Props) {
         map: {
           nys: configNys.getTable(list, otherObj),
           'dghl,fqfybjy': configDghl.getTable(list, otherObj, updateOtherObj),
-          //gzsrm: configGzsrm.getTable(list),暂时隐藏20210926
+          //暂时隐藏20210926
+          gzsrm: configGzsrm.getTable(list),
           default: configDefault.getTable(list)
         },
         vague: true

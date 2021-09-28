@@ -8,7 +8,8 @@ const hospitalPath: string =
     map: {
       nys: 'schNightTotalContentNys',
       'dghl,fqfybjy': 'schNightTotalContentHl',
-      //gzsrm: 'nightTotalContentSgy',暂时隐藏20210926
+      //20210926暂时隐藏
+      gzsrm: 'nightTotalContentSgy',
       default: 'schNightTotalContent',
     },
     vague: true,
@@ -18,7 +19,8 @@ const hospitalPath: string =
 const hospitalPathGetList: string =
   appStore.hisMatch({
     map: {
-      //gzsrm: 'schNightTotalModelSgy',暂时隐藏20210926
+      //20210926暂时隐藏
+      gzsrm: 'schNightTotalModelSgy',
       default: 'schNightTotalModel',
     },
     vague: true,

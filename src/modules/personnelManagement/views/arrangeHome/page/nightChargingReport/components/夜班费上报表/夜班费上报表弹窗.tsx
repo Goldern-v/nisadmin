@@ -38,7 +38,8 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
     map: {
       nys: configNys.getColumns(cloneData, calBack),
       'dghl,fqfybjy': configDghl.getColumns(cloneData, calBack),
-      //'gzsrm': configGzsrm.getColumns(cloneData, calBack),暂时隐藏20210926
+      //暂时隐藏20210926
+      'gzsrm': configGzsrm.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
     vague: true,
