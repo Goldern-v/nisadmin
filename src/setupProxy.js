@@ -42,7 +42,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 聊城二院 */
     case 'lcey':
-      return 'http://192.168.1.54:9871' // 聊城二院测试
+      // return 'http://192.168.1.54:9871' // 聊城二院测试
+      return 'http://192.168.20.18:9091' // 后端本机ip
     /** 默认公司本地内网厚街测试环境 */
     case 'gzsrm':
       // return 'http://192.168.8.204:9091' // 贵州人民医院-内网
@@ -56,6 +57,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'wjgdszd':
     return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
     // 暂无对应的测试环境
+    case 'gxjb':
+      return 'http://192.168.1.54:9871' // 聊城二院测试
     default:
       return 'http://192.168.1.54:9866'
   }

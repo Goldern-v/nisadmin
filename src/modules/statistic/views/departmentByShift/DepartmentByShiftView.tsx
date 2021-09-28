@@ -121,7 +121,7 @@ export default function StatisticView() {
             .map((deptName: string) =>
               newTableDataObj[deptName])
 
-          // console.log(newTableData)
+          // console.log(newTableData, 999)
 
           setTableData(newTableData)
         })
