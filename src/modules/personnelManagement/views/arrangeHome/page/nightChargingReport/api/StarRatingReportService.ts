@@ -8,7 +8,20 @@ const hospitalPath: string =
     map: {
       nys: 'schNightTotalContentNys',
       'dghl,fqfybjy': 'schNightTotalContentHl',
+      //20210926暂时隐藏
+      gzsrm: 'nightTotalContentSgy',
       default: 'schNightTotalContent',
+    },
+    vague: true,
+  })
+
+//查询
+const hospitalPathGetList: string =
+  appStore.hisMatch({
+    map: {
+      //20210926暂时隐藏
+      gzsrm: 'schNightTotalModelSgy',
+      default: 'schNightTotalModel',
     },
     vague: true,
   })
@@ -23,15 +36,25 @@ export interface ListQuery {
   pageSize: number;
 }
 
+export interface ISgyParmas {
+  deptCode?: string;//科室编码
+  year?: string;
+  month?: string;
+  approvalStatus?: string;//测试
+  pageIndex: number | 1;
+  pageSize: number | 20;
+}
+
+
 export default class StarRatingReportService extends BaseApiService {
   /**列表接口 */
   public getPage(query: ListQuery) {
-    return this.post("/schNightTotalModel/getList", query);
+    return this.post(`/${hospitalPathGetList}/getList`, query);
   }
 
   /**新建编辑 */
   public createReport(query: any) {
-    return this.post("/schNightTotalModel/saveOrUpdate", query);
+    return this.post(`/${hospitalPathGetList}/saveOrUpdate`, query);
   }
 
   /**获取报告 */
@@ -110,6 +133,67 @@ export default class StarRatingReportService extends BaseApiService {
       standard
     });
   }
+  /**
+   * 贵州省人民医院
+   * @returns 
+   */
+
+  // public async getSgyList(parmas: ISgyParmas) {
+  //   return this.post("/schNightTotalModelSgy/getList", parmas)
+  // }
+
+  // /**新建编辑 */
+  // public createSgyReport(query: any) {
+  //   return this.post("/schNightTotalModelSgy/saveOrUpdate", query);
+  // }
+
+  /**查看获取报告 */
+  public getSgyReport(id: string | number) {
+    return this.get(`/nightTotalContentSgy/getListOne?id=${id}`);
+  }
+
+  /**导出夜班费 */
+  public sgyExport(query: any) {
+    return this.post(`/nightTotalContentSgy/excelOne`, query, {
+      responseType: "blob"
+    });
+  }
+
+  /**提交审核 */
+  public sgySubmit(query: any) {
+    return this.post(`/schNightTotalModelSgy/submit`, query);
+  }
+  /**片区护长审核驳回 */
+  public sgyReject(query: any) {
+    return this.post(`/schNightTotalModelSgy/reject`, query);
+  }
+  /**撤销*/
+  public sgyUndo(query: any) {
+    return this.post(`/schNightTotalModelSgy/undo`, query);
+  }
+  /**片区护长审核通过*/
+  public sgyAccess(query: any) {
+    return this.post(`/schNightTotalModelSgy/access`, query);
+  }
+  /**删除*/
+  public sgyDel(id: any) {
+    return this.post(`/schNightTotalModelSgy/delete/${id}`);
+  }
+  /**科室夜班费统计查询*/
+  public sgyGetListTwol(query: any) {
+    return this.post(`/nightTotalContentSgy/getListTwo`, query);
+  }
+  /**科室统计导出*/
+  public sgyExcelTwo(query: any) {
+    return this.post(`/nightTotalContentSgy/excelTwo`, query, {
+      responseType: "blob"
+    });
+  }
+  /**人员夜班费列表修改*/
+  public sgySaveOrUpdate(query: any) {
+    return this.post(`/nightTotalContentSgy/saveOrUpdate`, query);
+  }
+
 }
 
 export const starRatingReportService = new StarRatingReportService();

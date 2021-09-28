@@ -37,12 +37,13 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 东莞横沥 */
     case 'dghl':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
-      // return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
+      // return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
 
     /** 聊城二院 */
     case 'lcey':
-      return 'http://192.168.1.54:9871' // 聊城二院测试
+      // return 'http://192.168.1.54:9871' // 聊城二院测试
+      return 'http://192.168.20.18:9091' // 后端本机ip
     /** 默认公司本地内网厚街测试环境 */
     case 'gzsrm':
       // return 'http://192.168.8.204:9091' // 贵州人民医院-内网
@@ -54,8 +55,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     //return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
     /** 武警广东省总队医院 */
     case 'wjgdszd':
-    return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
+      return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
     // 暂无对应的测试环境
+    case 'gxjb':
+      return 'http://192.168.1.54:9871' // 聊城二院测试
     default:
       return 'http://192.168.1.54:9866'
   }

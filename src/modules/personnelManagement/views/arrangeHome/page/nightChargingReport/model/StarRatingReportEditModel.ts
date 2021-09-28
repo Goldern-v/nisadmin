@@ -41,12 +41,60 @@ interface SectionCase {
   section?: any;
 }
 
+export interface IGzsrmReport extends Record<string, any> {
+  id: number;
+  deptCode: string;
+  deptName: string;
+  name: string;
+  year: string;
+  month: string;
+  startDate: string;
+  endDate: string;
+  creatorNo: string;
+  creatorName: string;
+  createDate: string;
+  status: string;
+  approvalStatus: string;
+  nrSignature: string;
+  areaNrSignature: string;
+  nrSignatureDate?: any;
+  areaNrSignatureDate?: any;
+  pageIndex?: any;
+  pageSize?: any;
+  contentSgyList: any[];
+  sumTotal: number;
+}
+
 class StarRatingReportEditModel {
   @observable baseModal: ModalCase | null = null;
   @observable public sectionList: SectionListItem[] = sectionList;
   @observable public allData: Partial<AllData> = {
     report: {}
   };
+  //贵州省夜班统计报告
+  @observable public gzsrmReport: IGzsrmReport = {
+    id: 0,
+    deptCode: "",
+    deptName: "",
+    name: "",
+    year: "",
+    month: "",
+    startDate: "",
+    endDate: "",
+    creatorNo: "",
+    creatorName: "",
+    createDate: "",
+    status: "",
+    approvalStatus: "",
+    nrSignature: "",
+    areaNrSignature: "",
+    nrSignatureDate: [],
+    areaNrSignatureDate: "",
+    pageIndex: "",
+    pageSize: "",
+    contentSgyList: [],
+    sumTotal: 0,
+  }
 
   /** 返回组件实例 */
   @action
@@ -103,7 +151,19 @@ class StarRatingReportEditModel {
 
   /** 数据初始化 */
   async initData(query?: any) {
-    const { data } = await starRatingReportService.getReport(query)
+    let data;
+    //暂时隐藏20210926
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+      let res = await starRatingReportService.getSgyReport(query.id)
+      data = res.data.contentSgyList
+      this.gzsrmReport = res.data
+    } else {
+      let res = await starRatingReportService.getReport(query)
+      data = res.data
+    }
+    // let res = await starRatingReportService.getReport(query)
+    // data = res.data
+
     this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
@@ -123,7 +183,10 @@ class StarRatingReportEditModel {
       }
       this.getSectionData("夜班费上报表")!.schNightTotalModel = data.schNightTotalModel
     } else {
+      //debugger
       this.allData = data
+      //console.log(this.getSectionData("夜班费上报表"))
+      // console.log('this.getSectionData("夜班费上报表")')
       this.getSectionData("夜班费上报表")!.list = data
     }
   }

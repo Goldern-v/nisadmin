@@ -69,6 +69,11 @@ export default observer(function BaseModal(props: Props) {
             list2: data.list2,
             schNightTotalModel: data.schNightTotalModel
           },
+          //20210926暂时隐藏
+          gzsrm: {
+            list: data.list,
+            schModelSgyId: appStore.queryObj.id
+          },
           other: {
             lists: data.list,
             schNightTotalId: appStore.queryObj.id
@@ -76,7 +81,6 @@ export default observer(function BaseModal(props: Props) {
         },
         vague: true,
       })
-
       starRatingReportService.editReport(params).then(res => {
         message.success("修改成功");
         starRatingReportEditModel.setSectionData(sectionData.sectionId, {

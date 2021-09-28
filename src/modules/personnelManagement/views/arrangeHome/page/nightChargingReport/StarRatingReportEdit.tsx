@@ -14,7 +14,8 @@ import { globalModal } from "src/global/globalModal";
 import { starRatingReportService } from "./api/StarRatingReportService";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file";
-import PageJmfy from './components/nightReport_jmfy'
+import PageJmfy from './components/nightReport_jmfy';
+import moment from "moment";
 
 export interface Props extends RouteComponentProps {
 }
@@ -138,6 +139,99 @@ export default observer(function StarRatingReportEdit() {
         });
     });
   };
+
+  //通用模板渲染
+  const ScrollConCommon = () => {
+    return (
+      <ScrollCon>
+        <Page
+          ref={pageRef}
+          className={['nys', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+        >
+          {starRatingReportEditModel.sectionList.map((item, index) => {
+            if (item.sectionId) {
+              let Components = starRatingReportEditModel.getSection(
+                item.sectionId
+              );
+              if (Components && Components.section) {
+                return (
+                  <Components.section
+                    key={index}
+                    sectionId={item.sectionId}
+                    modalTitle={item.modalTitle}
+                    sectionTitle={item.sectionTitle}
+                  />
+                );
+              }
+            }
+          })}
+        </Page>
+        {starRatingReportEditModel.baseModal && (
+          <starRatingReportEditModel.baseModal.Component />
+        )}
+      </ScrollCon>
+    )
+  }
+
+  //贵州渲染
+  const ScrollConGzsrm = () => {
+    return (
+      <ScrollCon>
+        <Page
+          ref={pageRef}
+          className="gzsrmWith"
+        >
+          {starRatingReportEditModel.sectionList.map((item, index) => {
+            if (item.sectionId) {
+              let Components = starRatingReportEditModel.getSection(
+                item.sectionId
+              );
+              if (Components && Components.section) {
+                return (
+                  <Components.section
+                    key={index}
+                    sectionId={item.sectionId}
+                    modalTitle={item.modalTitle}
+                    sectionTitle={item.sectionTitle}
+                  />
+                );
+              }
+            }
+          })}
+          <div className="table-nrSignatureDate">{starRatingReportEditModel?.gzsrmReport?.nrSignatureDatemoment ? (starRatingReportEditModel.gzsrmReport.nrSignatureDate).format("YYYY年MM月DD日") : ''}</div>
+          <div className="table-nrSignature">{starRatingReportEditModel?.gzsrmReport?.nrSignature != '' ? '护   士   长   签   名：' + starRatingReportEditModel?.gzsrmReport?.nrSignature : ''}</div>
+          <div className="table-areaNrSignature">{starRatingReportEditModel?.gzsrmReport?.areaNrSignature != '' ? '片区护长审核签名：' + starRatingReportEditModel?.gzsrmReport?.areaNrSignature : ''}</div>
+        </Page>
+        {starRatingReportEditModel.baseModal && (
+          <starRatingReportEditModel.baseModal.Component />
+        )}
+
+      </ScrollCon>
+    )
+  }
+
+  /**
+   * 渲染ScrollCon
+   * @returns 
+   */
+  const ScrollConRender = () => {
+    switch (appStore.HOSPITAL_ID) {
+      case 'jmfy':
+        return (
+          <ScrollCon>
+            <Page ref={pageRef} className={"nysWidth"}>
+              <PageJmfy />
+            </Page>
+          </ScrollCon>
+        );
+      //20210926暂时隐藏
+      case 'gzsrm':
+        return ScrollConGzsrm();
+      default:
+        return ScrollConCommon();
+    }
+  }
+
   return (
     <Wrapper>
       <HeadCon>
@@ -170,39 +264,8 @@ export default observer(function StarRatingReportEdit() {
         </div>
       </HeadCon>
       {
-        appStore.HOSPITAL_ID === 'jmfy' ?
-          <ScrollCon>
-            <Page ref={pageRef} className={"nysWidth"}>
-              <PageJmfy />
-            </Page>
-          </ScrollCon> :
-          <ScrollCon>
-            <Page
-              ref={pageRef}
-              className={['nys', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
-            >
-              {starRatingReportEditModel.sectionList.map((item, index) => {
-                if (item.sectionId) {
-                  let Components = starRatingReportEditModel.getSection(
-                    item.sectionId
-                  );
-                  if (Components && Components.section) {
-                    return (
-                      <Components.section
-                        key={index}
-                        sectionId={item.sectionId}
-                        modalTitle={item.modalTitle}
-                        sectionTitle={item.sectionTitle}
-                      />
-                    );
-                  }
-                }
-              })}
-            </Page>
-            {starRatingReportEditModel.baseModal && (
-              <starRatingReportEditModel.baseModal.Component />
-            )}
-          </ScrollCon>
+
+        ScrollConRender()
       }
     </Wrapper>
   );
@@ -213,6 +276,9 @@ const Wrapper = styled.div`
   }
   .nysWidth {
     width: 1350px !important;
+  }
+  .gzsrmWith{
+    width: 900px !important;
   }
 `;
 
@@ -247,6 +313,25 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  .table-nrSignatureDate{
+    text-align: right;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 18px;
+    color: #333333;
+    margin-top: -24px;
+    margin-right: 50px;
+  }
+  .table-nrSignature,.table-areaNrSignature{
+    font-weight: 700;
+    font-style: normal;
+    font-size: 18px;
+    color: #333333;
+    margin-left: 46px;
+  }
+  .table-areaNrSignature{
+    margin-top: 20px;
+  }
 `;
 
 // @ts-ignore

@@ -145,7 +145,8 @@ export default observer(function SelectCon() {
 
   // 导出排班Excel
   const exportRosterExcel = () => {
-    arrangeService.exportRoster(2).then(res => {
+    let status = appStore.HOSPITAL_ID === "lcey"
+    arrangeService.exportRoster(2, status).then(res => {
       fileDownload(res);
     });
   };

@@ -146,7 +146,7 @@ export default class ArrangeService extends BaseApiService {
   }
 
   // 聊城导出排班
-  public async exportRoster(type:number) {
+  public async exportRoster(type:number, status: boolean = false) {
     const list = authStore.deptList;
     const current = list.find((item:any)=>item.code === selectViewModal.params.deptCode) || {name:''}
     const postData = {
@@ -163,7 +163,8 @@ export default class ArrangeService extends BaseApiService {
         .format("YYYY-MM-DD"),
       excelType:type
     };
-    const url ='/scheduling/exportExcel'
+    const url = `/scheduling/${status ? 'exportExcelLC' : 'exportExcel'}`
+    
     return this.post(url, postData, { responseType: "blob" });
   }
 

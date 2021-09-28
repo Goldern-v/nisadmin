@@ -42,20 +42,35 @@ const baseConfig: navConfigItem[] = [
         path: "/nurseHandBook",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
+      {
+        name: "一级质控",
+        path: "/qcOneHj",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+      {
+        name: "二级质控",
+        path: "/qcTwo",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+      {
+        name: "三级质控",
+        path: "/qcThree",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
     ]
   },
-  {
-    name: "一级质控",
-    path: "/qcOneHj"
-  },
-  {
-    name: "二级质控",
-    path: "/qcTwo"
-  },
-  {
-    name: "三级质控",
-    path: "/qcThree"
-  },
+  // {
+  //   name: "一级质控",
+  //   path: "/qcOneHj"
+  // },
+  // {
+  //   name: "二级质控",
+  //   path: "/qcTwo"
+  // },
+  // {
+  //   name: "三级质控",
+  //   path: "/qcThree"
+  // },
   // {
   //   name: "学习培训",
   //   path: "/continuingEdu"
@@ -64,10 +79,10 @@ const baseConfig: navConfigItem[] = [
     name: "通知公告",
     path: "/notice"
   },
-  {
-    name: "护理制度",
-    path: "/nursingRulesNew"
-  },
+  // {
+  //   name: "护理制度",
+  //   path: "/nursingRulesNew"
+  // },
   {
     name: "档案管理",
     path: "/nurseFile"

@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import configDefault from './config/default'
 import configNys from './config/nys'
 import configDghl from './config/dghl'
+import configGzsrm from './config/gzsrm'
 import { starRatingReportEditModel } from "src/modules/personnelManagement/views/arrangeHome/page/nightChargingReport/model/StarRatingReportEditModel";
 
 export interface Props {
@@ -38,6 +39,8 @@ export default observer(function Table(props: Props) {
         map: {
           nys: configNys.getTable(list, otherObj),
           'dghl,fqfybjy': configDghl.getTable(list, otherObj, updateOtherObj),
+          //暂时隐藏20210926
+          gzsrm: configGzsrm.getTable(list),
           default: configDefault.getTable(list)
         },
         vague: true
@@ -76,6 +79,10 @@ const Wrapper = styled.div`
         border:none;
       }
     }
+  }
+  .table-gzsrm-total{
+    text-align: left;
+    padding-left: 4px;
   }
   .lm-arrow {
     height: 12px;
