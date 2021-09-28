@@ -20,6 +20,7 @@ import 月度查房汇总统计 from './views/qcJmfy/月度查房汇总统计/�
 
 import { appStore } from "src/stores";
 import DutyRecord from './views/dutyRecord'
+import nightRoundsDutyRecord from './views/nightRoundsDutyRecord'
 import ScoringRecord from './views/scoringRecord'
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
@@ -84,6 +85,13 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
           // },
         ]
       }
+    ],
+    gzsrm: [
+      {
+        title: '护士长夜查房排班表',
+        path: '/checkWard',
+        component: nightRoundsDutyRecord,
+      },
     ],
     default: [
       {
