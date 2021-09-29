@@ -671,6 +671,10 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   }
 
+  const addPatient = () => {
+    console.log(1);
+
+  }
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)
     // console.log(payload)
@@ -799,6 +803,11 @@ export default observer(function 敏感指标登记本(props: Props) {
             ))}
           </Select>
         </React.Fragment>}
+        {/* {
+          location.href.includes('QCRG_GSY_07') && (
+            <Button onClick={addPatient}>添加患者</Button>
+          )
+        } */}
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
