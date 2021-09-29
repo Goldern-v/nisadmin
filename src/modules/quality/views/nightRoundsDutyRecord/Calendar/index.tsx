@@ -17,8 +17,6 @@ export default observer((props: Props) => {
 
   const DayCmp = (day: any, key: string) => {
     const date = day.date ? day.date.format('DD') : ''
-    const weekArr = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-    const [, week]: any = key.split('-')
 
     const handleChange = (val: any) => {
       const newData = data.map((item: any) => {
@@ -33,16 +31,43 @@ export default observer((props: Props) => {
       updateData(newData)
     }
 
+    const handleChangeText = (e: any) => {
+      day.dutyPlace = e.target.value
+      const newData = data.map((item: any) => {
+        return item
+      })
+      updateData(newData)
+    }
+
+    const changeState = (type: any) => {
+      if(type==0){
+        day.workState = 1
+      }else if (type==1){
+        day.workState = 2
+      }else if (type==2){
+        day.workState = 0
+      }else{
+        day.workState = 1
+      }
+      const newData = data.map((item: any) => {
+        return item
+      })
+      updateData(newData)
+    }
+
     return (
       <DayWrapper key={key}>
-        <div className='week'>{weekArr[week]}</div>
         <div className='date'>
-          <div className='left'>{date}</div>
+        {/* （0：正常 1：休 2：班） */}
+        {(day.workState=="1" || day.workState=="2") && <div className='left' onClick={() => changeState(day.workState)}>{date}<span className='redSpan'>({day.workState==1?"休":"班"})</span></div>}
+        {day.workState=="0" && day.workState!="1" && day.workState!="2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
+        {day.workState!="0" && day.workState!="1" && day.workState!="2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
           <div className='right'>
           {
             day.date &&
             <Select
               showSearch
+              showArrow={false}
               value={day.empNo}
               onChange={handleChange}
               optionFilterProp="children"
@@ -56,14 +81,9 @@ export default observer((props: Props) => {
             </Select>}
           </div>
         </div>
-        <div>
-          内科北楼（7-10F）
-          {/* <Input
-            style={{ width: 220 }}
-            value={day.dutyPlace}
-            onChange={(val: any) => setYear(val)}
-            className='ml-20'
-          /> */}
+        <div className='text'>
+          <input type="text" id="dutyPlace" name="dutyPlace" value={day.dutyPlace || ""} onChange={handleChangeText}/>
+          
         </div>
 
       </DayWrapper>
@@ -130,21 +150,45 @@ const WeekWrapper = styled.div`
 const DayWrapper = styled.div`
   flex: 1;
   border: 1px solid #ccc;
+  height: 80px;
   display: flex;
   flex-direction: column;
   .week{
      background: #B9B4FF;
   }
-  .data{
-    border: 1px solid #ccc;
+  .date{
+    margin-top:-1px;
   }
   .left{
     height:100%;
+    width:40%;
     background: #FFFFB6;
+    cursor:pointer;
+    user-select:none;
+    span{
+      cursor:pointer;
+      color: #FFFFB6;
+    }
+    .redSpan{
+      color: red;
+      cursor:pointer;
+    }
   }
   .right{
     height:100%;
+    width:60% !importent ;
+    background: #fff;
     border-left: 1px solid #ccc;
+  }
+  .text{
+    border-top: 1px solid #ccc;
+    input{
+      width: 90%;
+      border:none;
+      border-radius:0;
+      box-shadow: 0px 0px 0px 0px;
+      text-align:center;
+    }
   }
   .person{
     padding: 2px;
