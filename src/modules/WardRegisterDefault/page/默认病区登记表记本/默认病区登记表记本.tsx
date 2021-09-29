@@ -38,6 +38,7 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 
 export interface Props {
   payload: any;
@@ -47,6 +48,23 @@ const throttler = throttle();
 const throttler2 = throttle();
 
 export default observer(function 敏感指标登记本(props: Props) {
+  const [patientVisible, setPatientVisible] = useState(false)
+  const handlePatientSelect = (item: any) => {
+    setPatientVisible(false)
+    setDataSource([...dataSource, {
+      blockId: selectedBlockId,
+      description: "",
+      editType: "new",
+      modified: true,
+      range: "",
+      rangeIndexNo: 0,
+      recordDate: item.admissionDate.format('YYYY-MM-DD'),
+      key: 'key0',
+      '床号': item.bedLabel,
+      '患者姓名': item.patientName,
+      registerCode: "QCRG_GSY_07"
+    }])
+  }
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
@@ -57,7 +75,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
-  const [date, setDate]: any = useState(getCurrentMonth());
+  const [date, setDate]: any = useState('');
   const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(220);
   const [pageOptions, setPageOptions]: any = useState({
@@ -671,6 +689,10 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   }
 
+  const addPatient = () => {
+    console.log(1);
+
+  }
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)
     // console.log(payload)
@@ -718,6 +740,10 @@ export default observer(function 敏感指标登记本(props: Props) {
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
+
+  useEffect(() => {
+    console.log(dataSource);
+  }, [dataSource]);
 
   useEffect(() => {
     // selectedBlockId && getPage();
@@ -799,6 +825,11 @@ export default observer(function 敏感指标登记本(props: Props) {
             ))}
           </Select>
         </React.Fragment>}
+        {
+          location.href.includes('QCRG_GSY_07') && (
+            <Button onClick={() => setPatientVisible(true)}>添加患者</Button>
+          )
+        }
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
@@ -897,6 +928,12 @@ export default observer(function 敏感指标登记本(props: Props) {
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
+      {/* 患者弹窗 */}
+      <PatientDialog
+        visible={patientVisible}
+        onOk={handlePatientSelect}
+        onCancel={() => setPatientVisible(false)}
+      />
     </Container >
   );
 });
