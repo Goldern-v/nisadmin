@@ -7,6 +7,8 @@ import moment from 'moment'
 import api from './api'
 import { fileDownload } from "src/utils/file/file";
 import { useRef } from "src/types/react";
+import printing from "printing"
+
 const { TextArea } = Input;
 interface Props {
   type: string
@@ -14,16 +16,16 @@ interface Props {
 
 export default observer((props: Props) => {
   const { type } = props
-  const [current, setCurrent]:any = useState(moment(new Date))
+  const [current, setCurrent]: any = useState(moment(new Date))
   const [dataArr, setDataArr]: any[] = useState([])
   const [nurseList, setNurseList]: any[] = useState([])
   const [year, setYear] = useState<Number>(+moment().format('YYYY'))
   const [yearList, setYearList] = useState([] as number[])
-  const [month, setMonth]  = useState<string>(moment().format('MM'))
+  const [month, setMonth] = useState<string>(moment().format('MM'))
   const [monthList, setMonthList] = useState([] as string[])
   const [weekList, setWeekList] = useState([] as string[])
-  const [remarks, setRemarks]:any = useState({})
-  const [isPublish, setIsPublish]:any = useState('')
+  const [remarks, setRemarks]: any = useState({})
+  const [isPublish, setIsPublish]: any = useState('')
 
   const titleMap: any = {
     '1': '护士长夜查房排班表',
@@ -79,19 +81,21 @@ export default observer((props: Props) => {
     setDataArr(data)
   }
   const handlePublish = () => {
-    if(isPublish=="0"){
+    if (isPublish == "0") {
       setIsPublish(1)
-      api.setIsPublish({ 
+      api.setIsPublish({
         dutyTime: year + "-" + month,
-        isPublish: 1})
+        isPublish: 1
+      })
         .then(
           message.success('发布成功'),
         )
-    }else{
+    } else {
       setIsPublish(0)
-      api.setIsPublish({ 
+      api.setIsPublish({
         dutyTime: year + "-" + month,
-        isPublish: 0})
+        isPublish: 0
+      })
         .then(
           message.success('撤销成功')
         )
@@ -99,16 +103,21 @@ export default observer((props: Props) => {
   }
   const handleSave = async () => {
     const dutyRosterList = dataArr.filter((item: any) => item.date)
-    const res = await api.saveData({ 
+    const res = await api.saveData({
       dutyTime: year + "-" + month,
       remarks: remarks,
-      dutyRosterList })
+      dutyRosterList
+    })
       .then(
         message.success('保存成功')
       )
     statusData()
   }
-
+  let defaultPrintCss = `
+    @page{
+      margin: 0mm;
+    }
+  `
   const handleExport = async () => {
     const res = await api.exportData({
       dutyTime: year + "-" + month
@@ -116,17 +125,22 @@ export default observer((props: Props) => {
     fileDownload(res)
   }
   const handlePrint = () => {
-    
+    printing(document.getElementById('printPage') as HTMLElement, {
+      direction: "horizontal",
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: defaultPrintCss
+    })
   };
 
   useEffect(() => {
     api.getAllNurse().then(res => {
       setNurseList(res.data)
     })
-    let nowYear:number = +moment().format('YYYY')
-    setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
-    setMonthList(['01','02','03','04','05','06','07','08','09','10','11','12'])
-    setWeekList(['星期一','星期二','星期三','星期四','星期五','星期六','星期日'])
+    let nowYear: number = +moment().format('YYYY')
+    setYearList([nowYear - 5, nowYear - 4, nowYear - 3, nowYear - 2, nowYear - 1, nowYear, nowYear + 1, nowYear + 2, nowYear + 3, nowYear + 4, nowYear + 5])
+    setMonthList(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    setWeekList(['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'])
   }, [])
 
   useEffect(() => {
@@ -137,11 +151,11 @@ export default observer((props: Props) => {
     statusData()
   }, [type, current])
 
-  
+
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>{titleMap[type]? titleMap[type] : "护士长夜查房排班表"}</div>
+        <div className='page-title'>{titleMap[type] ? titleMap[type] : "护士长夜查房排班表"}</div>
         <div className='button-group'>
           <span className='label'>年份:</span>
           <Select
@@ -170,18 +184,20 @@ export default observer((props: Props) => {
         <div className='calendar-title'>
           <span>{moment(current).format('YYYY 年 M 月')} {titleMap[type]}</span>
           <span className='button1'><Button type='primary' onClick={() => handleSave()}>保存</Button></span>
-          <span className='button2'><Button type='primary' onClick={() => handlePublish()}>{isPublish==0?"发布":"撤销"}</Button></span>
+          <span className='button2'><Button type='primary' onClick={() => handlePublish()}>{isPublish == 0 ? "发布" : "撤销"}</Button></span>
         </div>
-        <div className='weekBody'>{weekList.map((item: any, idx: any) =><div className='week'>{item}</div>)}</div>
-        <div className='calendar-wrapper'>
-          <Calendar data={dataArr} updateData={updateData} nurseList={nurseList}/>
-        </div>
-        <div>
-        <h2>备注信息：</h2>
-          <TextArea 
-            autosize={true}
-            value={remarks}
-            onChange={(e)=>setRemarks(e.target.value)}/>
+        <div id='printPage'>
+          <div className='weekBody'>{weekList.map((item: any, idx: any) => <div className='week'>{item}</div>)}</div>
+          <div className='calendar-wrapper'>
+            <Calendar data={dataArr} updateData={updateData} nurseList={nurseList} />
+          </div>
+          <div>
+            <h2>备注信息：</h2>
+            <TextArea
+              autosize={true}
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)} />
+          </div>
         </div>
       </MainWrapper>
     </Wrapper>
