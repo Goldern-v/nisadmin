@@ -26,6 +26,7 @@ import { navConfig as navConfig_fqfybjy } from "./navConfig_fqfybjy";
 import { navConfig as navConfig_wjgdszd } from "./navConfig_wjgdszd";
 import { navConfig as navConfig_bhsrm } from "./navConfig_bhsrm";
 import { navConfig as navConfig_qzxyy } from "./navConfig_qzxyy";
+import { navConfig as navConfig_gxjb } from "./navConfig_gxjb";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -149,6 +150,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_qzxyy
     } else if (appStore.HOSPITAL_ID == 'fssdy') {
       return navConfig_fssdy
+    } else if (appStore.HOSPITAL_ID == 'gxjb') {
+      return navConfig_gxjb
     }
     return navConfig;
   })();

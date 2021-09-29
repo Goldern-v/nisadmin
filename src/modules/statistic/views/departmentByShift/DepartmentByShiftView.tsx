@@ -34,6 +34,7 @@ export default function StatisticView() {
   })
 
   const [tableData, setTableData] = useState([] as any[])
+  const [hourMap, setHourMap] = useState({})
 
   const handleFilterObjChange = (newFilterObj: any) => {
     setFilterObj(newFilterObj)
@@ -82,7 +83,8 @@ export default function StatisticView() {
         ls: filterList.join(',')
       })
         .then(res => {
-          setTableData(res.data || [])
+          setTableData(res.data.list || [])
+          setHourMap(res.data.hourMap || {})
         })
     } else {
       Promise.all(filterTypes.map((type: string) => {
@@ -120,8 +122,6 @@ export default function StatisticView() {
           let newTableData = Object.keys(newTableDataObj)
             .map((deptName: string) =>
               newTableDataObj[deptName])
-
-          // console.log(newTableData)
 
           setTableData(newTableData)
         })
@@ -173,7 +173,7 @@ export default function StatisticView() {
           <StatisticMIdHeaderDepartment />
           {/* 对应表 */}
           <TableCon>
-            <TableFirst tableData={tableData} filterObj={filterObj} />
+            <TableFirst tableData={tableData} hourMap={hourMap} filterObj={filterObj} />
           </TableCon>
         </LeftCon>
         <RigthCon>

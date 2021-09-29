@@ -8,10 +8,12 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export interface Props {
   tableData: any[],
   filterObj: any,
+  hourMap: {}
 }
 
 export default function BedSituation(props: Props) {
-  const { tableData, filterObj } = props
+  const { tableData, filterObj, hourMap } = props
+  Object.assign(hourMap, {科室: '工时合计'})
   const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
 
@@ -47,11 +49,9 @@ export default function BedSituation(props: Props) {
       })
     })
 
-    visibleData.push(sumupRow)
-
+    visibleData.push(sumupRow, hourMap)
     return visibleData
   }
-
   // useEffect(() => {
   // }, [])
 

@@ -248,7 +248,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'lcey' || appStore.HOSPITAL_ID == 'fssdy') {
+} else if (appStore.HOSPITAL_ID == 'lcey' || appStore.HOSPITAL_ID == 'fssdy' || appStore.HOSPITAL_ID == 'gxjb') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),

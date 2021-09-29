@@ -34,6 +34,8 @@ export default function PersonnelManagementView() {
         return menuConfig_lcey;
       case 'fssdy':
         return menuConfig_wh;
+      case 'gxjb':
+        return menuConfig_lcey;
       default:
         return menuConfig_hj;
     }
