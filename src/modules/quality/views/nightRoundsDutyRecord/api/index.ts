@@ -11,7 +11,11 @@ class Api extends BaseApiService {
   }
 
   saveData(params: {}) {
-    return this.post(`/dutyRoster/updateDutyRoster`, params)
+    return this.post(`/dutyRosterForGZ/saveOrUpdate`, params)
+  }
+
+  setIsPublish(params: {}) {
+    return this.post(`/dutyRosterForGZ/setIsPublish`, params)
   }
 
   exportData(params: {}) {
