@@ -236,7 +236,28 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   </Button>
                 </React.Fragment>
               )}
-            {master &&
+            { currentNode.canUpdate && (
+                <React.Fragment>
+                  {currentNode.nodeCode === 'commit' && <Button
+                    onClick={handleDelete}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
+                    删除
+                  </Button>}
+                  <Button
+                    onClick={handleCancel}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
+                    撤销
+                  </Button>
+                </React.Fragment>
+              )
+            }
+            {/* {master &&
               master.canUpdate &&
               appStore.hisMatch({
                 map: {
@@ -262,7 +283,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                     撤销
                   </Button>
                 </React.Fragment>
-              )}
+              )
+            } */}
             {appStore.hisMatch({
               map: {
                 wh: false,
