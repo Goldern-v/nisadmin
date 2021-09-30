@@ -2,42 +2,40 @@ import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import Calendar from './Calendar'
-import { Button, Icon, DatePicker, Select } from "antd";
+import { Button, Icon, DatePicker, Select, message, Input } from "antd";
 import moment from 'moment'
 import api from './api'
 import { fileDownload } from "src/utils/file/file";
-import AddModal from './Calendar/AddModal'
-import printing from "printing";
 import { useRef } from "src/types/react";
+import printing from "printing"
 
+const { TextArea } = Input;
 interface Props {
   type: string
 }
 
 export default observer((props: Props) => {
   const { type } = props
-  const [current, setCurrent]:any = useState(moment(new Date))
+  const [current, setCurrent]: any = useState(moment(new Date))
   const [dataArr, setDataArr]: any[] = useState([])
   const [nurseList, setNurseList]: any[] = useState([])
   const [year, setYear] = useState<Number>(+moment().format('YYYY'))
   const [yearList, setYearList] = useState([] as number[])
-  const [month, setMonth]  = useState<String>("01")
+  const [month, setMonth] = useState<string>(moment().format('MM'))
   const [monthList, setMonthList] = useState([] as string[])
-  const [isAdd, setIsAdd] = useState(false)
-  const [editVisible, setEditVisible] = useState(false)
+  const [weekList, setWeekList] = useState([] as string[])
+  const [remarks, setRemarks]: any = useState({})
+  const [isPublish, setIsPublish]: any = useState('')
 
   const titleMap: any = {
     '1': '护士长夜查房排班表',
   }
-
   const getData = async () => {
     const { data } = await api.getDataGZ({
       dutyTime: year + "-" + month
     })
     return data
   }
-    
-
   // 构造日历数据
   const statusData = () => {
     const monthStr = moment(current).format('YYYY-MM-DD')
@@ -63,6 +61,8 @@ export default observer((props: Props) => {
     }
     setDataArr(daysArr)
     getData().then(data => {
+      setRemarks(data?.dutyMonth?.remarks)
+      setIsPublish(data?.dutyMonth?.isPublish)
       const temp = daysArr.map((item, index) => {
         if (item.date) {
           const dateStr = moment(item.date).format('YYYY-MM-DD')
@@ -80,72 +80,67 @@ export default observer((props: Props) => {
   const updateData = (data: any[]) => {
     setDataArr(data)
   }
-
+  const handlePublish = () => {
+    if (isPublish == "0") {
+      setIsPublish(1)
+      api.setIsPublish({
+        dutyTime: year + "-" + month,
+        isPublish: 1
+      })
+        .then(
+          message.success('发布成功'),
+        )
+    } else {
+      setIsPublish(0)
+      api.setIsPublish({
+        dutyTime: year + "-" + month,
+        isPublish: 0
+      })
+        .then(
+          message.success('撤销成功')
+        )
+    }
+  }
   const handleSave = async () => {
     const dutyRosterList = dataArr.filter((item: any) => item.date)
-    const res = await api.saveData({ dutyRosterList })
+    const res = await api.saveData({
+      dutyTime: year + "-" + month,
+      remarks: remarks,
+      dutyRosterList
+    })
+      .then(
+        message.success('保存成功')
+      )
     statusData()
   }
-  const handleAddNew = (record: any) => {
-    setIsAdd(true)
-    setEditVisible(true)
-  }
-
+  let defaultPrintCss = `
+    @page{
+      margin: 0mm;
+    }
+  `
   const handleExport = async () => {
     const res = await api.exportData({
       dutyTime: year + "-" + month
     })
     fileDownload(res)
   }
-  const pageRef: any = useRef<HTMLElement>();
-  const handlePrint = (isPrint: boolean) => {
-    let printFun = isPrint ? printing : printing.preview;
-    // let title = document.title
-    // document.title = report.reportName
-    printFun(pageRef.current, {
+  const handlePrint = () => {
+    printing(document.getElementById('printPage') as HTMLElement, {
+      direction: "horizontal",
       injectGlobalCss: true,
       scanStyles: false,
-      css: `
-          .ant-btn {
-            display: none;
-          }
-          .print-page {
-            box-shadow: none;
-            -webkit-print-color-adjust: exact;
-            margin: 0 auto;
-          }
-          .page-title {
-            min-height: 20px;
-            padding: 0px 30px 20px;
-          }
-          .page-title .title {
-            text-align: center;
-            margin-right: 0;
-          }
-          table, img {
-            page-break-inside: avoid;
-          }
-          pre {
-          page-break-after: avoid;
-          }
-          * {
-            color: #000 !important;
-          }
-          .footer-title {
-            min-height: 0;
-            margin-bottom: 0;
-          }
-      `
-    });
+      css: defaultPrintCss
+    })
   };
 
   useEffect(() => {
     api.getAllNurse().then(res => {
       setNurseList(res.data)
     })
-    let nowYear:number = +moment().format('YYYY')
-    setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
-    setMonthList(['01','02','03','04','05','06','07','08','09','10','11','12'])
+    let nowYear: number = +moment().format('YYYY')
+    setYearList([nowYear - 5, nowYear - 4, nowYear - 3, nowYear - 2, nowYear - 1, nowYear, nowYear + 1, nowYear + 2, nowYear + 3, nowYear + 4, nowYear + 5])
+    setMonthList(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    setWeekList(['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'])
   }, [])
 
   useEffect(() => {
@@ -156,11 +151,11 @@ export default observer((props: Props) => {
     statusData()
   }, [type, current])
 
-  
+
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>{titleMap[type]? titleMap[type] : "护士长夜查房排班表"}</div>
+        <div className='page-title'>{titleMap[type] ? titleMap[type] : "护士长夜查房排班表"}</div>
         <div className='button-group'>
           <span className='label'>年份:</span>
           <Select
@@ -181,32 +176,30 @@ export default observer((props: Props) => {
               <Select.Option key={idx} value={item}>{item}</Select.Option>)}
           </Select>
           <Button onClick={() => statusData()}>查询</Button>
-          <Button type='primary' onClick={handleAddNew}>新建</Button>
           <Button type='primary' onClick={() => handleExport()}>导出</Button>
-          <Button onClick={() => handlePrint(true)}>打印</Button>
+          <Button onClick={() => handlePrint()}>打印</Button>
         </div>
       </SearchBar>
       <MainWrapper>
         <div className='calendar-title'>
           <span>{moment(current).format('YYYY 年 M 月')} {titleMap[type]}</span>
-          <Button type='primary' onClick={() => handleSave()}>保存</Button>
+          <span className='button1'><Button type='primary' onClick={() => handleSave()}>保存</Button></span>
+          <span className='button2'><Button type='primary' onClick={() => handlePublish()}>{isPublish == 0 ? "发布" : "撤销"}</Button></span>
         </div>
-        <div className='calendar-wrapper'>
-          <Calendar data={dataArr} updateData={updateData} nurseList={nurseList}/>
+        <div id='printPage'>
+          <div className='weekBody'>{weekList.map((item: any, idx: any) => <div className='week'>{item}</div>)}</div>
+          <div className='calendar-wrapper'>
+            <Calendar data={dataArr} updateData={updateData} nurseList={nurseList} />
+          </div>
+          <div>
+            <h2>备注信息：</h2>
+            <TextArea
+              autosize={true}
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)} />
+          </div>
         </div>
       </MainWrapper>
-      <AddModal
-        visible={editVisible}
-        isAdd={isAdd}
-        type={status}
-        onOk={() => {
-          getData()
-          setEditVisible(false)
-        }}
-        onCancel={() => {
-          getData()
-          setEditVisible(false)
-        }}/>  
     </Wrapper>
   )
 })
@@ -216,6 +209,24 @@ const Wrapper = styled.div`
   padding: 0 20px 20px;
   .ml-20 {
     margin-left: 20px;
+  }
+  .pb-30 {
+    padding-bottom: 30px;
+  }
+  .weekBody {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+  }
+  .week {
+    flex: 1;
+    height:50px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    background: #B9B4FF;
   }
 `
 
@@ -241,6 +252,7 @@ const MainWrapper = styled.div`
   background: #fff;
   height: calc(100% - 50px);
   padding: 0 40px 20px;
+  overflow: auto;
   .calendar-title{
     height: 60px;
     display: flex;
@@ -249,12 +261,18 @@ const MainWrapper = styled.div`
     font-weight: bold;
     font-size: 20px;
     position: relative;
-    button{
+    .button1{
+      position: absolute;
+      right: 75px;
+    }
+    .button2{
       position: absolute;
       right: 0px;
     }
   }
   .calendar-wrapper{
-    height: calc(100% - 60px);
+  }
+  h2{
+    margin-top:10px;
   }
 `

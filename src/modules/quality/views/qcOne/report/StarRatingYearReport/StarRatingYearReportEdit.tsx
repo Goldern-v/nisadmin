@@ -126,8 +126,8 @@ export default observer(function StarRatingReportEdit() {
             {report.status == '1' ? (
               <Button onClick={onCancelPublish}>撤销</Button>
             ) : (
-                <Button onClick={onPublish}>提交</Button>
-              )}
+              <Button onClick={onPublish}>提交</Button>
+            )}
           </React.Fragment>}
           {(isRoleManage || isSupervisorNurse || isDepartment) && <Button onClick={() => onPrint(true)}>打印</Button>}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
