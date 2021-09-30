@@ -1,6 +1,7 @@
 import { appStore } from "src/stores";
 import { observable, computed, action } from "mobx";
 import React from "react";
+import {message} from "antd";
 
 import createModal from "src/libs/createModal";
 import BaseModal from "./../components/base/BaseModal";
@@ -8,9 +9,10 @@ import BaseModal from "./../components/base/BaseModal";
 import { sectionList } from "./../config/sectionList";
 
 import { starRatingReportService } from "./../api/StarRatingReportService";
-import { AllData, DeptItem, DetailItem } from "./../types";
+import { AllData, DeptItem, DetailItem,IStandardItem } from "./../types";
 import qs from "qs";
 import { numToChinese } from "src/utils/number/numToChinese";
+
 
 export interface SectionListItem {
   sectionId?: string;
@@ -94,7 +96,25 @@ class StarRatingReportEditModel {
     pageSize: "",
     contentSgyList: [],
     sumTotal: 0,
+  };
+  //贵州夜班费标准字典
+  @observable public gzsrmStandardList:Array<IStandardItem> | []=[];
+
+  //设置贵州
+  @action
+  setGzsrmStandardList(gzsrmStandardList:Array<IStandardItem> | []){
+    this.gzsrmStandardList=gzsrmStandardList;
   }
+  //获取接口字典
+  async getApiGzsrmStandardList(){
+    if(this.gzsrmStandardList && this.gzsrmStandardList.length>0){
+      return this.gzsrmStandardList
+    }else {
+      let res= await this.getGzsrmStandardList();
+      return this.getGzsrmStandardList
+    }
+  }
+
 
   /** 返回组件实例 */
   @action
@@ -194,6 +214,15 @@ class StarRatingReportEditModel {
   async init(query?: any) {
     await this.initData(query);
     this.baseModal = createModal(BaseModal);
+  }
+
+  //获取贵州夜班统计标准字典
+  async getGzsrmStandardList(){
+    starRatingReportService.getStandardList().then(res=>{
+      this.setGzsrmStandardList(res.data)
+    }).catch(error=>{
+      message.error(error)
+    })
   }
 }
 

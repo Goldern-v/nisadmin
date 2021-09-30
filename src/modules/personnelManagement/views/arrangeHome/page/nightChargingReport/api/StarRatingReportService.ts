@@ -15,7 +15,7 @@ const hospitalPath: string =
     vague: true,
   })
 
-//查询
+//查询删除
 const hospitalPathGetList: string =
   appStore.hisMatch({
     map: {
@@ -74,7 +74,14 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**删除 */
   public delete(query: any) {
-    return this.get(`/schNightTotalModel/delete/${query.id}`);
+    // gzsrm: 'schNightTotalModelSgy',
+    // default: 'schNightTotalModel',
+    if(hospitalPathGetList==='schNightTotalModelSgy'){
+      return this.post(`/schNightTotalModelSgy/delete/${query.id}`);
+    }else {
+      return this.get(`/schNightTotalModel/delete/${query.id}`);
+    }
+    // return this.get(`/${hospitalPathGetList}/delete/${query.id}`);
   }
 
   /**提交报告 */
@@ -114,9 +121,18 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**导出 */
   public export(query: any) {
-    return this.post(`/${hospitalPath}/excel`, query, {
-      responseType: "blob"
-    });
+    if(hospitalPathGetList==='schNightTotalModelSgy'){
+      return this.post(`/${hospitalPath}/excelOne`, query, {
+        responseType: "blob"
+      });
+    }else {
+      return this.post(`/${hospitalPath}/excel`, query, {
+        responseType: "blob"
+      });
+    }
+    // return this.post(`/${hospitalPath}/excel`, query, {
+    //   responseType: "blob"
+    // });
   }
 
   /**获取标准 */
@@ -160,7 +176,7 @@ export default class StarRatingReportService extends BaseApiService {
   }
 
   /**提交审核 */
-  public sgySubmit(query: any) {
+  public sgySubmit<T=any>(query: T) {
     return this.post(`/schNightTotalModelSgy/submit`, query);
   }
   /**片区护长审核驳回 */
@@ -181,7 +197,9 @@ export default class StarRatingReportService extends BaseApiService {
   }
   /**科室夜班费统计查询*/
   public sgyGetListTwol(query: any) {
-    return this.post(`/nightTotalContentSgy/getListTwo`, query);
+    return this.post(`/nightTotalContentSgy/getListTwo`, query, {
+      responseType: "blob"
+    });
   }
   /**科室统计导出*/
   public sgyExcelTwo(query: any) {
@@ -189,10 +207,21 @@ export default class StarRatingReportService extends BaseApiService {
       responseType: "blob"
     });
   }
+  /**科室统计导出*/
+  // public sgyExcelTwo(query: any) {
+  //   return this.post(`/nightTotalContentSgy/excelTwo`, query, {
+  //     responseType: "blob"
+  //   });
+  // }
   /**人员夜班费列表修改*/
   public sgySaveOrUpdate(query: any) {
     return this.post(`/nightTotalContentSgy/saveOrUpdate`, query);
   }
+  //贵州字典
+  public getStandardList() {
+    return this.get(`/nightTotalContentSgy/getStandardList`);
+  }
+  
 
 }
 

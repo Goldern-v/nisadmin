@@ -1,9 +1,14 @@
-import { Input } from "src/vendors/antd";
+import { Input,Select } from "src/vendors/antd";
 import { DoCon } from "src/components/BaseTable";
 import React, { useEffect } from "react";
 import { starRatingReportEditModel } from "../../../model/StarRatingReportEditModel"
+import {standardList} from "../../../types"
+
+const { Option } = Select;
+let standardItem=standardList[0];
 
 const getColumns = (cloneData: any, calBack: Function) => {
+  //let newStandardList= starRatingReportEditModel.getApiGzsrmStandardList()
   return [
     {
       title: "序号",
@@ -97,7 +102,8 @@ const getColumns = (cloneData: any, calBack: Function) => {
             value={record.num}
             onChange={(e: any) => {
               record.num = e.target.value;
-              record.totalMoney = record.standard * record.num;
+              //record.totalMoney = record.standard * record.num;
+              record.totalMoney = parseInt(standardItem.name) * record.num;
               calBack('setData', cloneData)
             }}
           />
@@ -109,17 +115,38 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "标准",
       render(text: any, record: any, index: number) {
         return (
-          <Input
-            value={record.standard}
-            onChange={(e: any) => {
-              record.standard = e.target.value;
-              record.totalMoney = record.standard * record.num;
+          // <Input
+          //   value={record.standard}
+          //   onChange={(e: any) => {
+          //     record.standard = e.target.value;
+          //     record.totalMoney = record.standard * record.num;
+          //     calBack('setData', cloneData)
+          //   }}
+          // />
+          <Select 
+          defaultValue={standardItem.code} 
+          style={{ width: "100%" }} 
+          onChange={(value:string)=>{
+            console.log(value);
+            const findItem=standardList.find(item=>item.code==value);
+            console.log(findItem)
+            if(findItem){
+              standardItem=findItem;
+              record.totalMoney = parseInt(findItem.name) * record.num;
+              record.standard=value;
               calBack('setData', cloneData)
-            }}
-          />
+            }
+          }}
+          >
+            {
+              (standardList as any).map((item:any,index:number)=>{
+               return(<Option value={item.code} key={index}>{item.code}</Option>) 
+              })
+            }
+          </Select>
         );
       },
-      width: 90
+      width: 270
     },
     {
       title: "合计金额(元)",
@@ -153,38 +180,38 @@ const getColumns = (cloneData: any, calBack: Function) => {
       },
       width: 90
     },
-    {
-      title: "年",
-      render(text: any, record: any, index: number) {
-        return (
-          <Input
-            value={record.year}
-            onChange={(e: any) => {
-              record.year = e.target.value;
-              // record.total = record.standard * record.num;
-              calBack('setData', cloneData)
-            }}
-          />
-        );
-      },
-      width: 90
-    },
-    {
-      title: "月",
-      render(text: any, record: any, index: number) {
-        return (
-          <Input
-            value={record.month}
-            onChange={(e: any) => {
-              record.month = e.target.value;
-              // record.total = record.standard * record.num;
-              calBack('setData', cloneData)
-            }}
-          />
-        );
-      },
-      width: 90
-    },
+    // {
+    //   title: "年",
+    //   render(text: any, record: any, index: number) {
+    //     return (
+    //       <Input
+    //         value={record.year}
+    //         onChange={(e: any) => {
+    //           record.year = e.target.value;
+    //           // record.total = record.standard * record.num;
+    //           calBack('setData', cloneData)
+    //         }}
+    //       />
+    //     );
+    //   },
+    //   width: 90
+    // },
+    // {
+    //   title: "月",
+    //   render(text: any, record: any, index: number) {
+    //     return (
+    //       <Input
+    //         value={record.month}
+    //         onChange={(e: any) => {
+    //           record.month = e.target.value;
+    //           // record.total = record.standard * record.num;
+    //           calBack('setData', cloneData)
+    //         }}
+    //       />
+    //     );
+    //   },
+    //   width: 90
+    // },
     // {
     //   title: "操作",
     //   key: "操作",
@@ -216,7 +243,7 @@ const item = () => {
     deptName: starRatingReportEditModel?.gzsrmReport?.deptName,//科室信息
     num: 0,
     totalMoney: 0,//合计金额
-    standard: "",//标准
+    standard: standardItem.code,//标准
     approvedSignature: "",//认可标签
     year: starRatingReportEditModel?.gzsrmReport?.year,
     month: starRatingReportEditModel?.gzsrmReport?.month,
@@ -247,6 +274,7 @@ const getTable = (list: any[]) => {
             <td>姓名</td>
             <td>职称</td>
             <td>数量（个）</td>
+            <td style={{width:180}}>标准</td>
             <td>合计金额(元)</td>
             <td>认可签名</td>
           </tr>
@@ -256,16 +284,17 @@ const getTable = (list: any[]) => {
               <td style={{ textAlign: "center" }}>{item.empName}</td>
               <td style={{ textAlign: "center" }}>{item.newTitle}</td>
               <td style={{ textAlign: "center" }}>{item.num}</td>
+              <td style={{ textAlign: "center",width:180 }}>{item.standard}</td>
               <td style={{ textAlign: "center" }}>{item.totalMoney}</td>
               <td style={{ textAlign: "center" }}>{item.approvedSignature}</td>
             </tr>
           ))}
           <tr>
             <td colSpan={1}>合计</td>
-            <td className="table-gzsrm-total" colSpan={5}>{getTotle(list)}</td>
+            <td className="table-gzsrm-total" colSpan={6}>{getTotle(list)}</td>
           </tr>
           <tr>
-            <td colSpan={6} className="table-gzsrm-total">备注：护理信息系统无护工/工人信息，请手填输入姓名及个数。</td>
+            <td colSpan={7} className="table-gzsrm-total">备注：护理信息系统无护工/工人信息，请手填输入姓名及个数。</td>
           </tr>
         </tbody>
       </table>

@@ -24,7 +24,9 @@ import { observer } from "mobx-react-lite";
 import ReportCreateModal from "./components/ReportCreateModal";
 import EditSchNightStandardModal from "./model/EditSchNightStandardModal";
 import createModal from "src/libs/createModal";
-import { approvalStatusList, IApprovalStatus } from "./types"
+import { approvalStatusList, IApprovalStatus } from "./types";
+import {IGzsrmReport} from "./model/StarRatingReportEditModel";
+import { globalModal } from "src/global/globalModal";
 
 export interface Props {
 }
@@ -58,6 +60,8 @@ export default observer(function NursingWorkPlainList() {
   const [schNightStandard, setSchNightStandard] = useState(0);
 
   const editSchNightStandardModal = createModal(EditSchNightStandardModal);
+
+  
 
 
   /**
@@ -145,12 +149,15 @@ export default observer(function NursingWorkPlainList() {
       key: "operate",
       title: "操作",
       width: 180,
-      render: (text: string, record: any) => {
+      render: (text: string, record: IGzsrmReport) => {
         return (
           <DoCon className="operate-group">
             <span onClick={() => handleEdit(record)}>查看</span>
-            {record.approvalStatus == '0' || record.approvalStatus == '2' ? <span className="status2">删除</span> : ''}
-            {record.approvalStatus == '3' ? <span className="status3">撤销</span> : ''}
+            {record.approvalStatus == '0' || record.approvalStatus == '2' ? <span onClick={()=>{del(record)}} className="status2">删除</span> : ''}
+            {record.approvalStatus == '3' ? <span className="status3" onClick={()=>{undo(record)}}>撤销</span> : ''}
+            {record.approvalStatus == '3' ? <span className="status3" onClick={()=>{access(record)}}>通过</span> : ''}
+            {record.approvalStatus == '3' ? <span className="status3" onClick={()=>{reject(record)}}>驳回</span> : ''}
+            {record.approvalStatus == '0' ? <span className="status3" onClick={()=>{sgySubmit(record)}}>提交</span> : ''}
           </DoCon>
         );
       }
@@ -178,6 +185,7 @@ export default observer(function NursingWorkPlainList() {
     }
     return monthArr;
   })();
+  
 
   const getList = (query: any) => {
     setLoading(true);
@@ -193,6 +201,74 @@ export default observer(function NursingWorkPlainList() {
       () => setLoading(false)
     );
   };
+
+  //删除列表
+  const del=(item:IGzsrmReport)=>{
+    globalModal.confirm("删除确认", "你确定要删除该报告吗？").then(res => {
+      starRatingReportService.delete({id:item.id}).then(res=>{
+        message.success(res.desc);
+        getList(query)
+      }).catch(error=>{
+        message.error(error)
+      })
+    });
+    // starRatingReportService.delete({id:item.id}).then(res=>{
+    //   console.log(res)
+    //   message.success(res.desc);
+    //   getList(query)
+    // }).catch(error=>{
+    //   message.error(error)
+    // })
+  }
+
+   //提交审核
+   const sgySubmit = (item:IGzsrmReport)=>{
+    globalModal.confirm("提交确认", "你确定要提交该报告审核吗？").then(res => {
+      starRatingReportService.sgySubmit({schModelSgyId:item.id,signature:authStore.adminNurse}).then(res=>{
+        message.success(res.desc);
+        getList(query);
+      }).catch(error=>{
+        message.error(error)
+      })
+    });
+    
+  }
+  //片区护士审核驳回
+  const reject = (item:IGzsrmReport)=>{
+    globalModal.confirm("驳回确认", "你确定要驳回审核吗？").then(res => {
+      starRatingReportService.sgyReject({schModelSgyId:item.id}).then(res=>{
+        message.success(res.desc);
+        getList(query)
+      }).catch(error=>{
+        message.error(error)
+      })
+    });
+  }
+
+  //撤销
+  const undo = (item:IGzsrmReport)=>{
+    globalModal.confirm("撤销确认", "你确定要撤销该报告吗？").then(res => {
+      starRatingReportService.sgyUndo({id:item.id}).then(res=>{
+        message.success(res.desc);
+        getList(query)
+      }).catch(error=>{
+        message.error(error)
+      })
+    });
+  }
+
+  //通过
+  const access = (item:IGzsrmReport)=>{
+    globalModal.confirm("通过确认", "你确定要通过该报告吗？").then(res => {
+      starRatingReportService.sgyAccess({schModelSgyId:item.id,signature:authStore.adminNurse}).then(res=>{
+        message.success(res.desc);
+        getList(query)
+      }).catch(error=>{
+        message.error(error)
+      })
+    });
+    
+  }
 
   const handleCreate = () => {
     setCreateVisible(true);
@@ -241,6 +317,8 @@ export default observer(function NursingWorkPlainList() {
       setSchNightStandard(res.data && res.data.standard);
     });
   };
+
+  
 
   useEffect(() => {
     query.deptCode && getList(query);
