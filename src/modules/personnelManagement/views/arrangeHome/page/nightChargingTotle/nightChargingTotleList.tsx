@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import qs from "qs";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import { Button, Select, message, Modal, Table, Tag } from "antd";
+import { Button, Select, message, Modal, Table, Tag,Input } from "antd";
 import BaseTable, {
   TabledCon,
   DoCon,
@@ -14,6 +14,12 @@ import YearPicker from "src/components/YearPicker";
 
 import { ColumnProps } from "src/vendors/antd";
 import { starRatingReportService } from "../nightChargingReport/api/StarRatingReportService";
+import {INightThiftItem, INightThiftMoney} from "./types"
+import service from "src/services/api/index";
+import { DictItem } from "src/services/api/CommonApiService";
+import { fileDownload } from "src/utils/file/file";
+import { useRef } from "src/types/react";
+import printing from "printing";
 
 const { Column, ColumnGroup } = Table;
 
@@ -23,8 +29,14 @@ export default observer(function nightChargingTotleList() {
   const { history } = appStore;
   const defaultQuery = {
     year: moment().format("YYYY"),
-    month: "9",
+    month: moment().format("MM"),
   } as any;
+
+  const defaultMark={
+    markUser:authStore.adminNurse as any,//制表人
+    auditUser:"",//区域人
+    accraditation:"",//院领导
+  }
 
   const [query, setQuery] = useState(defaultQuery);
   const [cacheQuery, setCacheQuery] = useState(defaultQuery);
@@ -37,6 +49,63 @@ export default observer(function nightChargingTotleList() {
   const [loading, setLoading] = useState(false);
 
   const [dataTotal, setDataTotal] = useState(0);
+  const [nightThiftList, setNightThiftList] = useState<Array<INightThiftItem> | []>([]);//夜班统计list
+  const [nightNum, setNightNum] = useState<INightThiftMoney | null>();
+  const [nightMoney, setNightMoney] = useState<INightThiftMoney | null>();
+  const [markUsrList, setMarkUsrList] = useState(defaultMark);
+
+  const tableWrapper: any = useRef<HTMLElement>();
+
+
+  const onPrint = (isPrint: boolean) => {
+    return false
+    let printFun = isPrint ? printing : printing.preview;
+    let title = document.title;
+    document.title = "护理系统夜班绩效统计汇总表";
+    printFun(tableWrapper.current, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+         .ant-btn,.hidden {
+           display: none;
+         }
+         .print-page {
+           box-shadow: none;
+           -webkit-print-color-adjust: exact;
+           margin: 0 auto;
+         }
+         .page-title {
+           min-height: 20px;
+           padding: 0px 30px 20px;
+         }
+         .page-title .title {
+           text-align: center;
+           margin-right: 0;
+         }
+         table, img {
+           page-break-inside: avoid;
+         }
+         pre {
+          page-break-after: avoid;
+         }
+         * {
+           color: #000 !important;
+         }
+         .footer-title {
+           min-height: 0;
+           margin-bottom: 0;
+         }
+         .img-group{
+           margin-top: 0 !important;
+         }
+         table { page-break-inside:auto }
+         tr{ page-break-inside:avoid; page-break-after:auto }
+      `
+    });
+    setTimeout(() => {
+      document.title = title;
+    }, 500);
+  };
 
 
   //获取月份
@@ -50,13 +119,6 @@ export default observer(function nightChargingTotleList() {
   })();
 
 
-  const handlePageChange = (current: number) => {
-    setQuery({ ...query, pageIndex: current });
-  };
-
-  const handleSizeChange = (current: number, size: number) => {
-    setQuery({ ...query, pageSize: size, pageIndex: 1 });
-  };
 
   const columns: ColumnProps<any>[] = [
     {
@@ -65,74 +127,160 @@ export default observer(function nightChargingTotleList() {
       width: 80,
       align: "center",
       render: (text: string, record: any, idx: number) =>
-        (query.pageIndex - 1) * query.pageSize + idx + 1
+        idx + 1
     },
     {
-      dataIndex: "name",
+      key: "deptName",
+      dataIndex: "deptName",
       title: "科室",
       align: "left",
-      render: (text: string, record: any, idx: number) => (
-        <div className="ellips" title={text}>
-          {text}
-        </div>
-      )
+      width: 180,
     },
     {
-      dataIndex: "month",
-      title: "护士",
+      key: "hs",
+      dataIndex: "hs",
+      title: "护士 120元/个",
       align: "center",
       width: 110,
-      render: (text: string, record: any, idx: number) =>
-        `${record.year}年${record.month}月`
     },
     {
-      dataIndex: "deptCode",
-      title: "主管护师",
+      key: "zghs",
+      dataIndex: "zghs",
+      title: "主管护师 130元/个",
+      align: "center",
       width: 200,
-      render(text: any, record: any) {
-        const target = authStore.deptList.find((item: any) => text === item.code)
-
-        return target ? target.name : record.deptCode
-        // return authStore.selectedDeptName;
-      }
     },
     {
-      dataIndex: "creatorName",
-      key: "creatorName",
-      title: "副主任护师",
-      align: "center",
-      width: 100
-    },
-    {
-      dataIndex: "createDate",
-      key: "createDate",
-      title: "早晚助班",
+      dataIndex: "fzrhs",
+      key: "fzrhs",
+      title: "副主任护师 150元/个",
       align: "center",
       width: 180
     },
     {
-      dataIndex: "createDate",
-      key: "createDate",
-      title: "护工/工人",
+      dataIndex: "zwzb",
+      key: "zwzb",
+      title: "早晚助班 60元/个",
       align: "center",
       width: 180
     },
     {
-      dataIndex: "createDate",
-      key: "createDate",
+      dataIndex: "hggr",
+      key: "hggr",
+      title: "护工/工人 40元/个",
+      align: "center",
+      width: 180
+    },
+    {
+      dataIndex: "money",
+      key: "money",
       title: "金额（元）",
       align: "center",
       width: 180
     },
   ];
 
-  useEffect(() => {
+  /**
+   * 获取接口数据
+   */
+  const getSgyGetListTwol = ()=>{
     starRatingReportService.sgyGetListTwol(query).then(res => {
       console.log(res)
+      if(res?.data){
+        let resData=res.data;
+        setNightNum(resData.rowNum);
+        setNightMoney(resData.rowMoney);
+        setNightThiftList(resData.dataList)
+      }
     }).catch(error => {
       console.log(error)
+      message.error(error)
+    });
+   // commonApiService
+  //  starRatingReportService.getStandardList().then((res:any)=>{
+  //     console.log(res);
+  //     //fileDownload(res);
+  //   }).catch((error:any)=>{
+  //     message.error(error)
+  //   })
+  }
+
+  //导出
+  const exportExcel=()=>{
+    starRatingReportService.sgyExcelTwo(query).then(res=>{
+      console.log(res);
+      fileDownload(res);
+    }).catch(error=>{
+      message.error(error)
     })
-  })
+  }
+
+  //初始化数据
+  const initData = ()=>{
+    setNightNum({
+       zghs: 3,
+       money: 2086,
+       hggr: 6,
+       hs: 2,
+       zwzb: 2,
+       fzrhs: 5
+    });
+    setNightMoney({
+      zghs: 8,
+      money: 3086,
+      hggr: 4,
+      hs: 7,
+      zwzb: 6,
+      fzrhs: 9
+   });
+   setNightThiftList([
+     {
+      deptName: "急诊护理科室",
+      zghs: 6,
+      money: 150,
+      hggr: 2,
+      hs: 6,
+      zwzb: 3,
+      fzrhs: 4,
+     },
+     {
+      deptName: "神经内科护理单元",
+      zghs: 6,
+      money: 150,
+      hggr: 2,
+      hs: 6,
+      zwzb: 3,
+      fzrhs: 4,
+     },
+     {
+      deptName: "神经外科护理单元",
+      zghs: 6,
+      money: 150,
+      hggr: 2,
+      hs: 6,
+      zwzb: 3,
+      fzrhs: 4,
+     },
+     {
+      deptName: "心血管内科护理单元",
+      zghs: 6,
+      money: 150,
+      hggr: 2,
+      hs: 6,
+      zwzb: 3,
+      fzrhs: 4,
+     }
+   ])
+  }
+
+
+
+
+  useEffect(() => {
+    getSgyGetListTwol()
+    //initData()
+  },[query])
+  
 
 
   return (
@@ -154,25 +302,26 @@ export default observer(function nightChargingTotleList() {
           </span>
           <span>月份:</span>
           <Select
+            value={query.month}
             className="month-select"
             onChange={(month: string) => setQuery({ ...query, month })}
           >
-            <Option value="">全部</Option>
+            {/* <Option value="">全部</Option> */}
             {monthList.map((month: number) => (
               <Option value={`${month}`} key={month}>
                 {month}
               </Option>
             ))}
           </Select>
-          <Button type="primary">
+          <Button type="primary" onClick={exportExcel}>
             导出
           </Button>
-          <Button type="primary">
+          <Button type="primary" onClick={()=>{onPrint(true)}}>
             打印
           </Button>
         </RightIcon>
       </HeaderCon>
-      <TableWrapper>
+      <TableWrapper ref={tableWrapper}>
         <h3 className="table-wrapper-title">护理系统夜班绩效统计汇总表</h3>
         {/* <BaseTable
           className="table-wrapper-body"
@@ -195,12 +344,12 @@ export default observer(function nightChargingTotleList() {
         //   onShowSizeChange: handleSizeChange
         // }}
         /> */}
-        <Table dataSource={tableData} columns={columns} />;
+        <Table dataSource={nightThiftList} columns={columns} bordered   rowKey='id' pagination={false}/>;
         <div className="night-other">
-          <div className="night-tabel-make-user">制 表  人：张震</div>
-          <div className="night-tabel-make-time">制表时间：2021-05-20</div>
-          <div className="night-tabel-make-audit">审核人签字：赤道</div>
-          <div className="night-tabel-make-accraditation">院领导审批：张学友</div>
+          <div className="night-tabel-make-user">制 表  人：<Input value={markUsrList.markUser} onChange={(e)=>{const markUser=e.target.value;setMarkUsrList({...markUsrList,markUser})}}/></div>
+          <div className="night-tabel-make-time">制表时间：{moment().format("YYYY-MM-DD")}</div>
+          <div className="night-tabel-make-audit">审核人签字：<Input value={markUsrList.auditUser} onChange={(e)=>{const auditUser=e.target.value;setMarkUsrList({...markUsrList,auditUser})}}/></div>
+          <div className="night-tabel-make-accraditation">院领导审批：<Input value={markUsrList.accraditation} onChange={(e)=>{const accraditation=e.target.value;setMarkUsrList({...markUsrList,accraditation})}}/></div>
         </div>
       </TableWrapper>
     </Wrapper>
@@ -248,10 +397,20 @@ const TableWrapper = styled(TabledCon)`
       font-weight: 700;
       font-style: normal;
       font-size: 18px;
+      display: flex;
+      
+      input{
+        width: 130px;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.65);
+        border-radius: 0;
+        padding: 0 auto;
+      }
     }
    .night-tabel-make-user,.night-tabel-make-time{
       text-align: left;
       padding-left: 76%;
+      margin-bottom: 4px;
    }
    .night-tabel-make-accraditation{
      padding: 10px 0;

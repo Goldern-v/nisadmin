@@ -130,3 +130,45 @@ export const approvalStatusList: Array<IApprovalStatus> = [
     str: "待区护长审核",
   }
 ]
+
+//夜班费统计标准
+export const standardList = [
+  {
+      "code": "护士/护师 120元/个",
+      "name": "120"
+  },
+  {
+      "code": "带教晚夜班 120元/个",
+      "name": "120"
+  },
+  {
+      "code": "主管护师 130元/个",
+      "name": "130"
+  },
+  {
+      "code": "副主任护师 150元/个",
+      "name": "150"
+  },
+  {
+      "code": "早晚助班 60元/个",
+      "name": "60"
+  },
+  {
+      "code": "早晚助带教 60元/个",
+      "name": "60"
+  },
+  {
+      "code": "护士长夜查房 60元/个",
+      "name": "60"
+  },
+  {
+      "code": "护工/工人 40元/个",
+      "name": "40"
+  }
+]
+
+//夜班统计标准字典
+export interface IStandardItem{
+  code:string,
+  name:string,
+}

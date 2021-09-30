@@ -72,16 +72,34 @@ export default observer(function WorkPlainEditModal(props: Props) {
     }
 
     setLoading(true);
-
+    
+    let reportParmas:any={
+      deptCode: params.wardCode,
+      year: params.year,
+      month: params.month,
+      startDate: params.beginDate,
+      endDate: params.endDate,
+      name: params.reportName
+    };
+    //['gzsrm'].includes(appStore.HOSPITAL_ID)
+    switch(appStore.HOSPITAL_ID){
+      case 'gzsrm':
+        reportParmas={
+          deptCode:params.wardCode,
+          deptName:wardName,
+          name:params.reportName,
+          startDate: params.beginDate,
+          endDate: params.endDate,
+          year: params.year,
+          month: params.month,
+        }
+        break;
+      default:
+        break;
+    }
+    //return false;
     starRatingReportService
-      .createReport({
-        deptCode: params.wardCode,
-        year: params.year,
-        month: params.month,
-        startDate: params.beginDate,
-        endDate: params.endDate,
-        name: params.reportName
-      })
+      .createReport(reportParmas)
       .then(
         res => {
           message.success("创建成功", 1, () => {

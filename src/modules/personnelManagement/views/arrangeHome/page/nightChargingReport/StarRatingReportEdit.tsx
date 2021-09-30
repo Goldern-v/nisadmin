@@ -22,11 +22,17 @@ export interface Props extends RouteComponentProps {
 
 export default observer(function StarRatingReportEdit() {
   const pageRef: any = useRef<HTMLElement>();
+  //获取贵州夜班统计标准字典
+  const getStandardList = () =>{
+    if(['gzsrm'].includes(appStore.HOSPITAL_ID))  starRatingReportEditModel.getGzsrmStandardList();
+  }
   useEffect(() => {
     let search = appStore.location.search;
     let query = qs.parse(search.replace("?", ""));
 
     starRatingReportEditModel.init(query);
+    //获取贵州夜班统计标准字典
+    getStandardList();
   }, []);
 
   let report: Report = starRatingReportEditModel.getDataInAllData("report");
@@ -34,6 +40,7 @@ export default observer(function StarRatingReportEdit() {
   let reportName =
     starRatingReportEditModel.getSectionData("报告名称")!.text ||
     report.reportName;
+    
 
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview;
@@ -99,13 +106,18 @@ export default observer(function StarRatingReportEdit() {
       const item = { ...i }
       delete item.key
       return item
-    })
+    });
+    let search = appStore.location.search;
+    let query = qs.parse(search.replace("?", ""));
     const params = appStore.hisMatch({
       map: {
         'dghl,fqfybjy': {
           list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
+        },
+        'gzsrm':{
+          id:query.id,
         },
         default: {
           lists: list
@@ -183,6 +195,8 @@ export default observer(function StarRatingReportEdit() {
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
+              console.log(item)
+              console.log("item")
               let Components = starRatingReportEditModel.getSection(
                 item.sectionId
               );
@@ -191,7 +205,7 @@ export default observer(function StarRatingReportEdit() {
                   <Components.section
                     key={index}
                     sectionId={item.sectionId}
-                    modalTitle={item.modalTitle}
+                    modalTitle={item.modalTitle!="编辑报告名称"?"护理系统夜班绩效统计表":item.modalTitle}
                     sectionTitle={item.sectionTitle}
                   />
                 );
@@ -259,6 +273,10 @@ export default observer(function StarRatingReportEdit() {
             // <Button onClick={onPublish}>提交</Button>
           )} */}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
+          {
+            ['gzsrm'].includes(appStore.HOSPITAL_ID)?
+            <Button onClick={() => onPrint(true)}>打印</Button>:''
+          }
           <Button onClick={onExport}>导出</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>

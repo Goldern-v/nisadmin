@@ -105,7 +105,7 @@ export const meunConfig: meunConfigItem[] = [
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
-        component: StarRatingReportList,
+        component: StarRatingReportListGzsrm,
         hide: !authStore.isRoleManage
       },
       //暂时隐藏20210926
