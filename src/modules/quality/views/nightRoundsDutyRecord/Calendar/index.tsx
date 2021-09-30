@@ -2,7 +2,7 @@ import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import moment from 'moment'
-import { Select,Input } from "antd";
+import { Select, Input } from "antd";
 import api from "src/modules/quality/views/dutyRecord/api";
 
 interface Props {
@@ -40,13 +40,13 @@ export default observer((props: Props) => {
     }
 
     const changeState = (type: any) => {
-      if(type==0){
+      if (type == 0) {
         day.workState = 1
-      }else if (type==1){
+      } else if (type == 1) {
         day.workState = 2
-      }else if (type==2){
+      } else if (type == 2) {
         day.workState = 0
-      }else{
+      } else {
         day.workState = 1
       }
       const newData = data.map((item: any) => {
@@ -56,34 +56,34 @@ export default observer((props: Props) => {
     }
 
     return (
-      <DayWrapper key={key}>
+      <DayWrapper key={key} className='day-wrapper'>
         <div className='date'>
-        {/* （0：正常 1：休 2：班） */}
-        {(day.workState=="1" || day.workState=="2") && <div className='left' onClick={() => changeState(day.workState)}>{date}<span className='redSpan'>({day.workState==1?"休":"班"})</span></div>}
-        {day.workState=="0" && day.workState!="1" && day.workState!="2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
-        {day.workState!="0" && day.workState!="1" && day.workState!="2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
+          {/* （0：正常 1：休 2：班） */}
+          {(day.workState == "1" || day.workState == "2") && <div className='left' onClick={() => changeState(day.workState)}>{date}<span className='redSpan'>({day.workState == 1 ? "休" : "班"})</span></div>}
+          {day.workState == "0" && day.workState != "1" && day.workState != "2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
+          {day.workState != "0" && day.workState != "1" && day.workState != "2" && <div onClick={() => changeState(day.workState)} className='left'>{date}</div>}
           <div className='right'>
-          {
-            day.date &&
-            <Select
-              showSearch
-              showArrow={false}
-              value={day.empNo}
-              onChange={handleChange}
-              optionFilterProp="children"
-              filterOption={(input, option: any) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {nurseList.map((user: any, index: number) => {
-                return <Select.Option value={user.empNo} key={user.empNo}>{user.empName}</Select.Option>
-              })}
-            </Select>}
+            {
+              day.date &&
+              <Select
+                showSearch
+                showArrow={false}
+                value={day.empNo}
+                onChange={handleChange}
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {nurseList.map((user: any, index: number) => {
+                  return <Select.Option value={user.empNo} key={user.empNo}>{user.empName}</Select.Option>
+                })}
+              </Select>}
           </div>
         </div>
         <div className='text'>
-          <input type="text" id="dutyPlace" name="dutyPlace" value={day.dutyPlace || ""} onChange={handleChangeText}/>
-          
+          <input type="text" id="dutyPlace" name="dutyPlace" value={day.dutyPlace || ""} onChange={handleChangeText} />
+
         </div>
 
       </DayWrapper>
@@ -92,7 +92,7 @@ export default observer((props: Props) => {
 
   const WeekCmp = (weekData: any[], key: number) => {
     return (
-      <WeekWrapper key={key}>
+      <WeekWrapper key={key} className='week-wrapper'>
         {/* <div className='week-title'>姓名时间</div> */}
         {weekData.map((item, index) => {
           return DayCmp(item, key + '-' + index)

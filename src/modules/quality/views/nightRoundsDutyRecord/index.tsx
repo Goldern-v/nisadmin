@@ -115,7 +115,84 @@ export default observer((props: Props) => {
   }
   let defaultPrintCss = `
     @page{
-      margin: 0mm;
+      margin:0mm;
+    }
+    #print-page{
+      padding:20px;
+      transform: scaleX(1) scaleY(0.8);
+    }
+    .weekBody{
+      display: flex;
+      border-bottom: none;
+      width:286mm;
+    }
+    .week{
+      flex: 1;
+      height: 50px;
+      border: 1px solid #ccc;
+      border-right: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      background: #B9B4FF;
+      margin:0;
+    }
+    .week:last-child{
+      border-right: 1px solid #ccc;
+    }
+    .day-wrapper{
+      border: 1px solid #ccc;
+      border-right: none;
+    }
+    .day-wrapper:last-child{
+      border-right: 1px solid #ccc;
+    }
+    .day-wrapper .text{
+      flex: 1;
+      display:block;
+      font-size: 16px;
+      text-align:center;
+      line-height:40px;
+      max-height:40px;
+    }
+    .day-wrapper .text input{
+      width:100%;
+    }
+    .calendar-wrapper{
+      align-content:flex-start;
+      width:286mm;
+      height:110mm;
+    }
+    .ant-select-selection.ant-select-selection--single{
+      border: none;
+      background:none;
+      max-height:38px;
+    }
+    .ant-input{
+      max-height: unset;
+      height:unset;
+    }
+    .date .left{
+      background: none;
+      height:40px;
+    }
+    .date .right{
+      background: none;
+      height:40px;
+    }
+    .brejrd{
+      display:block;
+    }
+    .week-wrapper{
+      border: none;
+    }
+    .week-wrapper .day-wrapper{
+      border-bottom: none;
+    }
+    .week-wrapper:last-child .day-wrapper{
+      border-bottom: 1px solid #ccc;
     }
   `
   const handleExport = async () => {
@@ -125,10 +202,10 @@ export default observer((props: Props) => {
     fileDownload(res)
   }
   const handlePrint = () => {
-    printing(document.getElementById('printPage') as HTMLElement, {
+    printing(document.getElementById('print-page') as HTMLElement, {
       direction: "horizontal",
       injectGlobalCss: true,
-      scanStyles: false,
+      scanStyles: true,
       css: defaultPrintCss
     })
   };
@@ -186,7 +263,7 @@ export default observer((props: Props) => {
           <span className='button1'><Button type='primary' onClick={() => handleSave()}>保存</Button></span>
           <span className='button2'><Button type='primary' onClick={() => handlePublish()}>{isPublish == 0 ? "发布" : "撤销"}</Button></span>
         </div>
-        <div id='printPage'>
+        <div id='print-page'>
           <div className='weekBody'>{weekList.map((item: any, idx: any) => <div className='week'>{item}</div>)}</div>
           <div className='calendar-wrapper'>
             <Calendar data={dataArr} updateData={updateData} nurseList={nurseList} />
