@@ -85,14 +85,19 @@ export default observer(function TopCon() {
             </span>
           </Tip>
         ) : (
-            <Tip />
-            // <Tip>你没有待审核的信息</Tip>
-          )}
+          <Tip />
+          // <Tip>你没有待审核的信息</Tip>
+        )}
       </Name>
       {authStore.isRoleManage && !isSelf() && (
         <React.Fragment>
-          <ExportBtn onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
-          <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
+          {/* <ExportBtn onClick={() => setExportVisible(true)}>导出档案</ExportBtn> */}
+          <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
+          {
+            !["gzsrm"].includes(appStore.HOSPITAL_ID) ?
+              <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> : ""
+          }
+          {/* <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> */}
           <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
         </React.Fragment>
       )}
@@ -116,6 +121,10 @@ const Wrapper = styled.div`
   border-bottom: 1px solid #dbe0e4;
   font-size: 13px;
   position: relative;
+  .gzsrmExportBtn{
+    right: 120px;
+    top: 34px;
+  }
 `
 const BreadcrumbCon = styled.div`
   padding: 12px 15px;

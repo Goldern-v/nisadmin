@@ -10,7 +10,7 @@ import PersonelSecondModal from "./modal/PersonelSecondModal";
 import { personelSecondServices } from "./service/PersonelSecondServices";
 import { appStore, authStore } from "src/stores";
 import DeptSelect from "src/components/DeptSelect";
-export interface Props {}
+export interface Props { }
 
 export default function PersonnelSecondment() {
   const [dataSource, setDataSource] = useState([]);
@@ -110,12 +110,15 @@ export default function PersonnelSecondment() {
           <Select.Option value="1">借出</Select.Option>
           <Select.Option value="2">借入</Select.Option>
         </Select>
-        <Button
-          onClick={() => personelSecondModal.show({ onOkCallBack: getData })}
-          style={{ marginLeft: 10 }}
-        >
-          人员借出
-        </Button>
+        {
+          !['gzsrm'].includes(appStore.HOSPITAL_ID) ?
+            <Button
+              onClick={() => personelSecondModal.show({ onOkCallBack: getData })}
+              style={{ marginLeft: 10 }}
+            >
+              人员借出
+            </Button> : ""
+        }
         <Button onClick={() => getData()} style={{ marginLeft: 10 }}>
           刷新
         </Button>
