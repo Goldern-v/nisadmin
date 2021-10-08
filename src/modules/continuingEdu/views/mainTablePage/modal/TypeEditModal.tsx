@@ -159,14 +159,14 @@ export default observer(function TypeEditModal(props: Props) {
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
-          {appStore.HOSPITAL_ID == 'hj' && params.id &&
+          {appStore.HOSPITAL_ID == 'hj' &&
             <Row>
               <Col span={5} className="label">
                 名称:
             </Col>
               <Col span={19}>
                 <Form.Field name="name">
-                  <Input placeholder="名称" disabled />
+                  <Input placeholder="名称" disabled={params.id} />
                 </Form.Field>
               </Col>
             </Row>
@@ -209,7 +209,7 @@ export default observer(function TypeEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {appStore.HOSPITAL_ID == 'hj' && (
+          {/* {appStore.HOSPITAL_ID == 'hj' && (
             <div>
               <Row>
                 <Col span={5} className="label">
@@ -296,7 +296,7 @@ export default observer(function TypeEditModal(props: Props) {
                 </Col>
               </Row>
             </div>
-          )}
+          )} */}
         </Form>
       </Wrapper>
     </Modal>
