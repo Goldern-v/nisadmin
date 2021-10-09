@@ -72,7 +72,7 @@ export default class MainPageApi extends BaseApiService {
   /** 厚街类型管理新增修改单独接口 */ 
   public async updateTypeDataHJ(obj: any) {
     return this.post(
-      `/studyAndTrain/menuManage/hj/addOrUpdateThreeLevelMenuItem`,
+      `/studyAndTrain/menuManage/hj/addOrUpdateThreeLevelMenuItemForNew`,
       obj
     );
   }

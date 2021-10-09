@@ -157,7 +157,7 @@
     "build:bhsrm": "env-cmd -e bhsrm react-app-rewired build && env-cmd -e bhsrm node buildZip",
     "build:qzxyy": "env-cmd -e qzxyy react-app-rewired build && env-cmd -e qzxyy node buildZip",
     "build:fssdy": "env-cmd -e fssdy react-app-rewired build && env-cmd -e fssdy node buildZip",
-    "build:gxjb": "env-cmd -e fssdy react-app-rewired build && env-cmd -e gxjb node buildZip",
+    "build:gxjb": "env-cmd -e gxjb react-app-rewired build && env-cmd -e gxjb node buildZip",
     "build": "env-cmd -e hj react-app-rewired build",
     "zip": "env-cmd -e wh node buildZip",
     "deploy": "yarn build && node publish.js",
