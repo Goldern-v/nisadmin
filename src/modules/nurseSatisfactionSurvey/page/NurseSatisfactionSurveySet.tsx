@@ -2,10 +2,10 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
+import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input, Switch } from 'src/vendors/antd'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
-import { nurseSatisfactionSurveyService } from '../services/NurseSatisfactionSurveyService'
+import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import NurseSatisfactionSurveyAddModal from '../components/NurseSatisfactionSurveyAddModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
@@ -14,8 +14,10 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
+import SetImportModal from '../components/SetImportModal'
 
 export interface Props { }
+const api = new NurseSatisfactionSurveyService();
 
 export default observer(function MyCreateList() {
   const [year, setYear] = useState<Number>(+moment().format('YYYY'))
@@ -35,10 +37,30 @@ export default observer(function MyCreateList() {
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
+  const [date, setDate]: any = useState([])
+  const [previewPaperData, setPreviewPaperData]: any = useState([])
+  
 
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
 
+   //是否启用
+   const changeStatus = (record: any, check: any) => {
+    record.useStatus = check ? 1 : 0
+    setDataSource([...dataSource])
+    setPageLoading(true)
+    api
+      .setUseStatus({
+        id: record.id,
+        useStatus: record.useStatus,
+      })
+      .then((res) => {
+        setPageLoading(false)
+        if (res.code == "200") {
+          message.success("操作成功！");
+        } 
+      }, err => setPageLoading(false))
+  }
 
   /** 类别 */
   const pathMap: any = {
@@ -55,53 +77,42 @@ export default observer(function MyCreateList() {
   columns =
     [
       {
-        title: '标题',
+        title: '状态',
         dataIndex: 'title',
+        width: 50,
+        align: 'center',
+        render: (text: any, record: any, index: any) => 
+        <span>
+          <Switch
+            size='small'
+            onChange={(check:any) => changeStatus(record, check)}
+            checked={record.useStatus == 1 ? true : false}
+          />
+        </span>
+      },
+      {
+        title: '名称',
+        dataIndex: 'text',
         width: 150,
         align: 'center'
       },
       {
-        title: '满意度调查表',
-        dataIndex: 'text',
-        width: 100,
-        align: 'center'
-      },
-      {
-        title: '月份',
-        dataIndex: 'yearAndMonth',
-        width: 50,
+        title: '标签',
+        dataIndex: 'lable',
+        width: 150,
         align: 'center',
       },
       {
         title: '创建时间',
         dataIndex: 'createTime',
-        width: 50,
-        align: 'center'
-      },
-      {
-        title: '开放时间',
-        dataIndex: 'openDate',
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
         title: '创建人',
         dataIndex: 'creatorName',
-        width: 50,
+        width: 80,
         align: 'center'
-      },
-      {
-        title: '状态',
-        dataIndex: 'status',
-        width: 50,
-        align: 'center',
-        render(status: any) {
-          return (
-            <div>
-              <span className={status == "0" ? "active" : status == "1" ? "active1" : ""}>{status == "0" ? "未开始" : status == "1" ? "进行中" : "已结束"}</span>
-            </div>
-          )
-        }
       },
       {
         title: '操作',
@@ -110,8 +121,7 @@ export default observer(function MyCreateList() {
           return (
             <DoCon>
               <span onClick={() => onEdit(record)}>查看</span>
-              {record.status == 0 && <span onClick={() => onEdit(record)}>修改</span>}
-              {record.status != 2 && <span onClick={() => onDelete(record)}>删除</span>}
+              <span onClick={() => onDelete(record)}>删除</span>
             </DoCon>
           )
         }
@@ -125,29 +135,19 @@ export default observer(function MyCreateList() {
   const [total, setTotal]: any = useState(0)
 
   const initData = () => {
-    nurseSatisfactionSurveyService.findTemplates().then((res) => {
-      setTemplateList([...res.data.publicTemplates, ...res.data.deptTemplates].map((item: any) => item.template))
-    })
-
-    service.commonApiService
-      .getNursingUnitAll().then(res => {
-        setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
-      })
-
-    let nowYear: number = +moment().format('YYYY')
-    setYearList([nowYear - 5, nowYear - 4, nowYear - 3, nowYear - 2, nowYear - 1, nowYear, nowYear + 1, nowYear + 2, nowYear + 3, nowYear + 4, nowYear + 5])
-    setMonthList(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
 
   const getData = () => {
     setPageLoading(true)
-    nurseSatisfactionSurveyService
-      .getPage({
+    let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+    let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    api
+      .getSetPage({
         ...pageOptions,
-        month: month,
-        state: state,
-        year: year,
+        startDate,
+        endDate,
+        keyWord: searchText,
       })
       .then((res) => {
         setPageLoading(false)
@@ -157,34 +157,22 @@ export default observer(function MyCreateList() {
       }, err => setPageLoading(false))
   }
 
-  const handleAddNew = (record: any) => {
-    setIsAdd(true)
-    setEditVisible(true)
-  }
-
-  //查看随访问卷
-  const setDetailModal = (item: any) => {
-    // window.open(item.path)
-    setEditVisible2(true)
-    setPathChange(item.path)
-    setIdChange(item.id)
-  }
-
   const onEdit = (record: any) => {
-    setIsAdd(false)
-    setEditVisible(true)
-    setRecord(record)
+    api.previewPaper(record.id)
+    .then((res) => {
+      setEditVisible(true)
+      setPreviewPaperData(res.data)
+    }, err => setPageLoading(false))
   }
 
   const onDelete = (record: any) => {
     Modal.confirm({
-      title: '确认删除该记录吗',
+      title: '确认删除该调查表吗？',
       centered: true,
       onOk: () => {
         setPageLoading(true)
-
-        nurseSatisfactionSurveyService
-          .delete(record.id, { id: record.id })
+        api
+          .setDelete(record.id, { id: record.id })
           .then(res => {
             message.success('删除成功', 1, () => getData())
           }, err => setPageLoading(false))
@@ -193,22 +181,8 @@ export default observer(function MyCreateList() {
     })
   }
 
-  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
-
-  const handleExport = () => {
-    setPageLoading(true)
-    nurseSatisfactionSurveyService.export(status, {
-      ...pageOptions,
-      deptCode: deptSelect,
-      month: month,
-      keyWord: searchText,
-      year: year,
-    })
-      .then(res => {
-        setPageLoading(false)
-        setSelectedRowKeys([])
-        fileDownload(res)
-      }, err => setPageLoading(false))
+  const handleImport = () => {
+    setEditVisible2(true)
   }
 
   useEffect(() => {
@@ -216,9 +190,7 @@ export default observer(function MyCreateList() {
   }, [
     pageOptions.pageIndex,
     pageOptions.pageSize,
-    year,
-    month,
-    state,
+    date,
   ])
 
   useEffect(() => {
@@ -236,56 +208,25 @@ export default observer(function MyCreateList() {
       <PageHeader>
         <PageTitle>满意度调查表设置</PageTitle>
         <Place />
-        <span className='label'>年份:</span>
-        <Select
-          value={year}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setYear(val)}>
-          {yearList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item}>{item}</Select.Option>)}
-        </Select>
-        <span className='label ml-20'>月份:</span>
-        <Select
-          value={month}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setMonth(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {monthList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item}>{item}</Select.Option>)}
-        </Select>
-        {/* <span className='label'>科室:</span>
-        <Select
-          value={deptSelect}
-          style={{ width: 180 }}
-          showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(val: string) => setDeptSelect(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
-        </Select> */}
-        <span className='label ml-20'>状态:</span>
-        <Select
-          value={state}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setState(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          <Select.Option value={'0'}>待开始</Select.Option>
-          <Select.Option value={'1'}>进行中</Select.Option>
-          <Select.Option value={'2'}>已结束</Select.Option>
-        </Select>
-
+        <span className='label'>创建时间:</span>
+        <DatePicker.RangePicker
+          allowClear
+          style={{ width: 220 }}
+          value={date}
+          placeholder={['开始时间', '结束时间']}
+          onChange={(value: any) => setDate(value)}
+        />
+        <span className='label ml-20'>关键字:</span>
+        <Input
+          placeholder='请输入名称/标签关键字'
+          style={{ width: 220 }}
+          value={searchText}
+          onChange={onChangeSearchText}
+        />
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
-        <Button onClick={handleExport}>导出</Button>
-        {/* <Button onClick={handleExport}>打印</Button> */}
-        <Button type='primary' onClick={handleAddNew}>新建</Button>
-
+        <Button onClick={handleImport}>导入</Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -307,26 +248,20 @@ export default observer(function MyCreateList() {
           })
         }}
       />
-      <NurseSatisfactionSurveyAddModal
-        params={record}
+      <FormPageBody
         visible={editVisible}
-        deptList={deptListAll}
-        isAdd={isAdd}
-        type={status}
+        previewPaperData={previewPaperData}
+        onOk={() => { }}
+        onCancel={() => setEditVisible(false)} />
+      <SetImportModal
+        visible={editVisible2}
         onOk={() => {
           getData()
-          setEditVisible(false)
+          setEditVisible2(false)
         }}
         onCancel={() => {
-          getData()
-          setEditVisible(false)
+          setEditVisible2(false)
         }} />
-      <FormPageBody
-        visible={editVisible2}
-        path={pathChange}
-        id={idChange}
-        onOk={() => { }}
-        onCancel={() => setEditVisible2(false)} />
     </Wrapper>
   )
 })
