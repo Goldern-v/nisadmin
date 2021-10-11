@@ -7,6 +7,8 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import BaseTable from 'src/components/BaseTable'
+import { fileDownload } from 'src/utils/file/file'
+
 const api = new NurseSatisfactionSurveyService();
 import qs from 'qs'
 import { DoCon } from 'src/components/BaseTable'
@@ -18,11 +20,18 @@ export default observer(function followUpDetailView() {
   const [pageLoading, setPageLoading] = useState(false)
   const [dataSource, setDataSource] = useState([])
   const [total, setTotal]: any = useState(0)
+  const [data, setData]: any = useState([])
+  const [surveyTitle, setSurveyTitle]: any = useState("")
 
   const onload = () => {
     let id = queryObj.Id
+    setPageLoading(true)
     api.surveyShow(id).then((res) => {
-      console.log(res);
+      setPageLoading(false)
+      setTotal(res.data.participationNum)
+      setDataSource(res.data.showDtoList)
+      setSurveyTitle(res.data.showDtoList[0].surveyTitle)
+      setData(res.data)
     })
   }
 
@@ -35,74 +44,70 @@ export default observer(function followUpDetailView() {
   }
 
   const handleExport = () => {
-    // nurseSatisfactionSurveyService.export(status,{
-    //   ...pageOptions,
-    //   deptCode: deptSelect,
-    //   month: month,
-    //   keyWord: searchText,
-    //   year: year,
-    // })
-    // .then(res => {
-    //   setPageLoading(false)
-    //   setSelectedRowKeys([])
-    //   fileDownload(res)
-    // }, err => setPageLoading(false))
+    setPageLoading(true)
+    api.exportFillRecord(queryObj.Id,{
+      id:queryObj.Id
+    })
+    .then(res => {
+      setPageLoading(false)
+      fileDownload(res)
+    }, err => setPageLoading(false))
   }
   let columns: ColumnProps<any>[] = []
     columns = 
   [
     {
       title: '工号',
-      dataIndex: 'title',
+      dataIndex: 'empNo',
       width: 50,
       align: 'center'
     },
     {
       title: '姓名',
-      dataIndex: 'text',
+      dataIndex: 'empName',
       width: 50,
       align: 'center'
     },
     {
       title: '职称',
-      dataIndex: 'yearAndMonth',
+      dataIndex: 'title',
       width: 50,
       align: 'center',
     },
     {
       title: '职务',
-      dataIndex: 'createTime',
+      dataIndex: 'job',
       width: 50,
       align: 'center'
     },
     {
       title: '科室',
-      dataIndex: 'openDate',
+      dataIndex: 'deptName',
       width: 80,
       align: 'center'
     },
     {
       title: '调查表',
-      dataIndex: 'status',
+      dataIndex: 'fillStatusName',
       width: 50,
       align: 'center',
-      render(status: any) {
+      render(fillStatusName: any) {
         return (
           <div>
-            <span className={status == "0" ? "active" : status == "1" ? "active1" : "" }>{status == "0" ? "未开始" : status == "1" ? "进行中" : "已结束" }</span>
+            <span className={fillStatusName == "已填写" ? "active" : fillStatusName == "未填写" ? "active1" : "" }>{fillStatusName}</span>
           </div>
         )
       }
     },
     {
       title: '评分',
-      dataIndex: 'creatorName',
+      dataIndex: 'totalscore',
       width: 50,
       align: 'center'
     },
     {
       title: '填写时间',
-      dataIndex: 'creatorName',
+      dataIndex: 'fillTime',
       width: 80,
       align: 'center'
     },
@@ -125,16 +130,16 @@ export default observer(function followUpDetailView() {
   return <Wrapper>
     <div className="topCon">
       <div className="title">护士长满意度调查表/详情</div>
-      <div className="name">2021年01月急诊护士满意度调查表</div>
+      <div className="name">{surveyTitle}</div>
       <div className="message">
-        <span>由张艳于2021-01-25 13:39创建</span>
-        <span>参与人数：2</span>
-        <span>已完成数：2</span>
-        <span>平均评分：96.5</span>
+        <span>由{data.creatorName}于{data.createTime}创建</span>
+        <span>参与人数：{data.participationNum}</span>
+        <span>已完成数：{data.finishNum}</span>
+        <span>平均评分：{data.avgScore}</span>
       </div>
       <div className="buttonBody">
       <Button onClick={handleExport}>导出</Button>
-      <Button className="ml-20" onClick={handleExport}>返回</Button>
+      <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
       </div>
     </div>
     <div className="mainCon">
@@ -145,7 +150,7 @@ export default observer(function followUpDetailView() {
         wrapperStyle={{ margin: '30px 40px' }}
         type={['index']}
         rowKey='id'
-        surplusHeight={100}
+        surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
@@ -167,6 +172,12 @@ const Wrapper = styled.div`
   height: calc(100vh - 50px);
   .ml-20{
     margin-left: 20px;
+  }
+  .active{
+    color: #09a9f0;
+  }
+  .active1{
+    color: #f6ac4b;
   }
   .topCon{
     width: 100%;
