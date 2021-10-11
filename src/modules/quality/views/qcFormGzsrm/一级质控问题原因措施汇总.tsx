@@ -10,17 +10,18 @@ import { qcFormGzsrmService } from './api/qcFormGzsrmService'
 import { appStore } from 'src/stores'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
+import TextAreaCom from './TextAreaCom'
 
 const RangePicker = DatePicker.RangePicker
 
 export interface Props { }
 
-export default observer(function 问题原因措施汇总() {
+export default observer(function 三级问题原因措施汇总() {
   const { queryObj } = appStore
   const [startDate, endDate] = currentMonth()
 
   const [query, setQuery] = useState({
-    qcLevel: queryObj.qclevel || '3',
+    qcLevel: queryObj.qclevel || '1',
     beginDate: startDate.format('YYYY-MM-DD'),
     endDate: endDate.format('YYYY-MM-DD'),
   })
@@ -40,8 +41,8 @@ export default observer(function 问题原因措施汇总() {
       }),
     },
     {
-      title: '年月',
-      dataIndex: 'yearAndMonth',
+      title: '日期',
+      dataIndex: 'evalDate',
       align: 'center',
       width: 100,
       render: (text: string, record: any) => ({
@@ -49,12 +50,12 @@ export default observer(function 问题原因措施汇总() {
         children: text
       }),
     },
-    {
-      title: '重点内容（质控、教学、日常管理）',
-      dataIndex: 'groupName',
-      align: 'center',
-      width: 120,
-    },
+    // {
+    //   title: '重点内容（质控、教学、日常管理）',
+    //   dataIndex: 'groupName',
+    //   align: 'center',
+    //   width: 120,
+    // },
     {
       title: '存在问题',
       dataIndex: 'problem',
@@ -67,21 +68,45 @@ export default observer(function 问题原因措施汇总() {
       dataIndex: 'cause',
       align: 'left',
       width: 220,
-      render: (text: string) => <PreCon>{text}</PreCon>,
+      render: (text: string, record: any) => <TextAreaCom
+        text={text}
+        label='cause'
+        qcMasterId={record.qcMasterId}
+        input={(val: any) => {
+          record.cause = val
+          setTableData([...tableData])
+        }}
+      ></TextAreaCom>,
     },
     {
       title: '整改措施',
       dataIndex: 'measure',
       align: 'left',
       width: 220,
-      render: (text: string) => <PreCon>{text}</PreCon>,
+      render: (text: string, record: any) => <TextAreaCom
+        text={text}
+        label='measure'
+        qcMasterId={record.qcMasterId}
+        input={(val: any) => {
+          record.measure = val
+          setTableData([...tableData])
+        }}
+      ></TextAreaCom>,
     },
     {
-      title: '质控、教学、日常管理复查情况（含上周一级质控存在问题）',
+      title: '日常管理者复查情况',
       dataIndex: 'rectificationResult',
       align: 'left',
       width: 220,
-      render: (text: string) => <PreCon>{text}</PreCon>,
+      render: (text: string, record: any) => <TextAreaCom
+        text={text}
+        label='rectificationResult'
+        qcMasterId={record.qcMasterId}
+        input={(val: any) => {
+          record.rectificationResult = val
+          setTableData([...tableData])
+        }}
+      ></TextAreaCom>,
     },
   ]
 
@@ -141,7 +166,7 @@ export default observer(function 问题原因措施汇总() {
 
   return <Wrapper>
     <PageHeader>
-      <PageTitle>{numToChinese(Number(queryObj.qclevel || '3'))}质控问题原因措施汇总</PageTitle>
+      <PageTitle>{numToChinese(Number(queryObj.qclevel || '1')) + '级'}质控问题原因措施汇总</PageTitle>
       <Place></Place>
       <span>汇总时间：</span>
       <RangePicker
