@@ -137,20 +137,20 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       message.error('标题不能为空！')
       return
     }
-    api
-      .saveOrUpdate(props.type, {
-        month: month,
-        year: year,
-        title: searchText,
-        deptCode: deptSelect,
-        deptName: user.deptName,
-        creatorName: searchText1,
-        fileIds: fileIdList,
-      })
-      .then((res) => {
-        message.success('操作成功')
-        onOk && onOk()
-      })
+    // api
+    //   .saveOrUpdate(props.type, {
+    //     month: month,
+    //     year: year,
+    //     title: searchText,
+    //     deptCode: deptSelect,
+    //     deptName: user.deptName,
+    //     creatorName: searchText1,
+    //     fileIds: fileIdList,
+    //   })
+    //   .then((res) => {
+    //     message.success('操作成功')
+    //     onOk && onOk()
+    //   })
   }
   return <Modal
     title={titleType}
@@ -253,7 +253,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
                 placeholder="调查对象"
                 value={respondent}
                 labelInValue={true}
-                style={{ width: "100%" }}
+                style={{ width: 200 }}
                 open={false}
                 onDeselect={(user: any) => onDeselect(user, 1)}
               />
@@ -295,10 +295,13 @@ const Wrapper = styled.div`
     color: red;
   }
 }
+.divStyle {
+  width: 200px;
+}
 `
 const ClickBtn = styled.span`
   position: absolute;
-  right: 0;
+  right: 89px;
   top: 0;
   border: 1px solid #ccc;
   border-left: none;
@@ -310,4 +313,5 @@ const ClickBtn = styled.span`
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 } 
+
 `;

@@ -109,7 +109,7 @@ export default observer(function MyCreateList() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onEdit(record)}>查看</span>
+            <span onClick={() => onDetail(record)}>查看</span>
             {record.status==0 &&<span onClick={() => onEdit(record)}>修改</span>}
             {record.status!=2 &&<span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
@@ -125,15 +125,6 @@ export default observer(function MyCreateList() {
   const [total, setTotal]: any = useState(0)
 
   const initData = () => {
-    nurseSatisfactionSurveyService.findTemplates().then((res) => {
-      setTemplateList([...res.data.publicTemplates, ...res.data.deptTemplates].map((item: any) => item.template))
-    })
-
-    service.commonApiService
-      .getNursingUnitAll().then(res => {
-        setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
-    })
-    
     let nowYear:number = +moment().format('YYYY')
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
     setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
@@ -176,6 +167,10 @@ export default observer(function MyCreateList() {
     setRecord(record)
   }
 
+  const onDetail = (record: any) => {
+    appStore.history.push(`/nurseSatisfactionSurveyDetailView/?Id=${record.id}`)
+  }
+
   const onDelete = (record: any) => {
     Modal.confirm({
       title: '确认删除该记录吗',
@@ -183,11 +178,11 @@ export default observer(function MyCreateList() {
       onOk: () => {
         setPageLoading(true)
 
-        nurseSatisfactionSurveyService
-          .delete(record.id,{id:record.id})
-          .then(res => {
-            message.success('删除成功', 1, () => getData())
-          }, err => setPageLoading(false))
+        // nurseSatisfactionSurveyService
+        //   .delete(record.id,{id:record.id})
+        //   .then(res => {
+        //     message.success('删除成功', 1, () => getData())
+        //   }, err => setPageLoading(false))
 
       }
     })
@@ -197,18 +192,18 @@ export default observer(function MyCreateList() {
 
   const handleExport = () => {
     setPageLoading(true)
-    nurseSatisfactionSurveyService.export(status,{
-      ...pageOptions,
-      deptCode: deptSelect,
-      month: month,
-      keyWord: searchText,
-      year: year,
-    })
-    .then(res => {
-      setPageLoading(false)
-      setSelectedRowKeys([])
-      fileDownload(res)
-    }, err => setPageLoading(false))
+    // nurseSatisfactionSurveyService.export(status,{
+    //   ...pageOptions,
+    //   deptCode: deptSelect,
+    //   month: month,
+    //   keyWord: searchText,
+    //   year: year,
+    // })
+    // .then(res => {
+    //   setPageLoading(false)
+    //   setSelectedRowKeys([])
+    //   fileDownload(res)
+    // }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -323,8 +318,6 @@ export default observer(function MyCreateList() {
         }}/>  
       <FormPageBody
         visible={editVisible2}
-        path={pathChange}
-        id={idChange}
         onOk={() => {}}
         onCancel={() => setEditVisible2(false)} />
     </Wrapper>

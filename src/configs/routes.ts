@@ -450,7 +450,8 @@ const NursingFollowUp = lazy(() => import("src/modules/nursingFollowUp/NursingFo
 
 // 护理随访详情
 const FollowUpDetailView = lazy(() => import("src/modules/nursingFollowUp/views/followUpDetailView/FollowUpDetailView"))
-
+// 护士长满意度调查详情
+const NurseSatisfactionSurveyDetailView = lazy(() => import("src/modules/nurseSatisfactionSurvey/components/NurseSatisfactionSurveyDetailView"))
 //移动端界面
 import TraineeInfoSubmit from "src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit"
 import RefresherInfoSubmit from "src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit"
@@ -773,6 +774,7 @@ const routes: RouteItem[] = [
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurvey", NurseSatisfactionSurveyRouter, layouts.MainLayout),
+  setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {

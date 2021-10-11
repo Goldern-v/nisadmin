@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import LeftMenuPage from 'src/components/LeftMenuPage'
 import NurseSatisfactionSurvey from './page/NurseSatisfactionSurvey'
 import NurseSatisfactionSurveySet from './page/NurseSatisfactionSurveySet'
+import NurseSatisfactionSurveyStatistical from './page/NurseSatisfactionSurveyStatistical'
 import { ReactComponent as WCJD } from './images/WCJD.svg'
 import { ReactComponent as CSWD } from './images/CSWD.svg'
 import { ReactComponent as BKES } from './images/BKSD.svg'
@@ -20,14 +21,14 @@ export default function WardLog() {
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
-    // {
-    //   title: '满意度调查表结果统计',
-    //   path: '/nurseSatisfactionSurvey/statistical',
-    //   icon: <BKES />,
-    //   component: { ...NurseSatisfactionSurvey },
-    //   keepAlive: true,
-    //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    // },
+    {
+      title: '满意度调查表结果统计',
+      path: '/nurseSatisfactionSurvey/statistical',
+      icon: <BKES />,
+      component: NurseSatisfactionSurveyStatistical,
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
     {
       title: '满意度调查表设置',
       path: '/nurseSatisfactionSurvey/set',

@@ -12,42 +12,22 @@ export interface Props {
   params?: any,
   isOtherEmp?: boolean,
   isAdd?: boolean,
-  path?: string,
-  id?: any,
-
+  previewPaperData?: any,
 }
 export default function editModal(props: Props) {
-  const { visible, onOk, onCancel, isAdd, params, isOtherEmp, path, id } = props
+  const { visible, onOk, onCancel, isAdd, params, isOtherEmp, previewPaperData } = props
   const [loading, setLoading] = useState(false)
   const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "90vh"}
-  const afterClose = () => {
-
-  }
-  const handleDownload = () => {
-    api.
-    download(id).then((res) => {
-      fileDownload(res)
-    })
-  }
-  let str:any = path;
-  let index = str.lastIndexOf("\.");
-  let type = str.substr(index+1,str.length);
+  const afterClose = () => {}
   
   return <Modal
-    title={"文档预览"}
+    title={"满意度调查表详情"}
     width={1000}
     bodyStyle={bdstyle}
     afterClose={afterClose}
     confirmLoading={loading}
-    footer={[
-      <Button key="download" loading={loading} type="primary" onClick={() => handleDownload()}>
-      下载
-      </Button>,
-      <Button key="back" onClick={() => onCancel()}>
-      关闭
-      </Button>,
-    ]}
+    okText={"保存"}
     centered
     visible={visible}
     onOk={() => {
@@ -55,11 +35,12 @@ export default function editModal(props: Props) {
     }}
     onCancel={() => onCancel()}>
     <Wrapper>
-      <div className="father">
-      {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
-      {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
-      {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />}
+      <p>{previewPaperData?.text}</p>
+      <div>
+        {previewPaperData?.questionList?.map((item: any, idx: any) =>
+        <div key={idx}>{item.questionContent}</div>)}
       </div>
+      
     </Wrapper>
   </Modal>
 }
