@@ -55,6 +55,36 @@ export default class NurseSatisfactionSurveyService extends BaseApiService {
   public surveyShow(id: string) {
     return this.get(`/satisfaction/survey/show?id=${id}`)
   }
+
+  /*调查表详情导出*/
+  public exportFillRecord(id: string, obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/exportFillRecord/${id}`, obj ,{ responseType: 'blob' })
+  }
+
+  /*调查表详情导出*/
+  public urveyExport(obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/export`, obj ,{ responseType: 'blob' })
+  }
+
+  /*调查表编辑获取详情*/
+  public surveyDetail(id: string) {
+    return this.get(`/satisfaction/survey/detail?id=${id}`)
+  }
+  
+  /*修改调查表*/
+  public surveyEdit(obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/edit`, obj)
+  }
+  
+  /*新建调查表*/
+  public surveyCreate(obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/create`, obj)
+  }
+  
+  /*删除调查表*/
+  public surveyDelete(id: string,obj: PageOptions | any) {
+    return this.post(`/satisfaction/survey/delete/${id}`, obj)
+  }
 }
 
 export const nurseSatisfactionSurveyService = new NurseSatisfactionSurveyService()

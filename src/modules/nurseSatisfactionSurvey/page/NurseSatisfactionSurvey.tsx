@@ -5,7 +5,7 @@ import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
-import { nurseSatisfactionSurveyService } from '../services/NurseSatisfactionSurveyService'
+import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import NurseSatisfactionSurveyAddModal from '../components/NurseSatisfactionSurveyAddModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
@@ -14,7 +14,7 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
-
+const api = new NurseSatisfactionSurveyService();
 export interface Props { }
 
 export default observer(function MyCreateList() {
@@ -133,11 +133,11 @@ export default observer(function MyCreateList() {
 
   const getData = () => {
     setPageLoading(true)
-    nurseSatisfactionSurveyService
+    api
       .getPage({
         ...pageOptions,
         month: month,
-        state: state,
+        status: state,
         year:year,
       })
       .then((res) => {
@@ -162,9 +162,11 @@ export default observer(function MyCreateList() {
   }
 
   const onEdit = (record: any) => {
+    api.surveyDetail(record.id).then((res) => {
+      setRecord(res.data)
+    })
     setIsAdd(false)
     setEditVisible(true)
-    setRecord(record)
   }
 
   const onDetail = (record: any) => {
@@ -177,12 +179,11 @@ export default observer(function MyCreateList() {
       centered: true,
       onOk: () => {
         setPageLoading(true)
-
-        // nurseSatisfactionSurveyService
-        //   .delete(record.id,{id:record.id})
-        //   .then(res => {
-        //     message.success('删除成功', 1, () => getData())
-        //   }, err => setPageLoading(false))
+        api
+          .surveyDelete(record.id,{id:record.id})
+          .then(res => {
+            message.success('删除成功', 1, () => getData())
+          }, err => setPageLoading(false))
 
       }
     })
@@ -192,18 +193,16 @@ export default observer(function MyCreateList() {
 
   const handleExport = () => {
     setPageLoading(true)
-    // nurseSatisfactionSurveyService.export(status,{
-    //   ...pageOptions,
-    //   deptCode: deptSelect,
-    //   month: month,
-    //   keyWord: searchText,
-    //   year: year,
-    // })
-    // .then(res => {
-    //   setPageLoading(false)
-    //   setSelectedRowKeys([])
-    //   fileDownload(res)
-    // }, err => setPageLoading(false))
+    api.urveyExport({
+      month: month,
+      year: year,
+      status: state,
+    })
+    .then(res => {
+      setPageLoading(false)
+      setSelectedRowKeys([])
+      fileDownload(res)
+    }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -302,7 +301,7 @@ export default observer(function MyCreateList() {
           })
         }}
       />
-      <NurseSatisfactionSurveyAddModal
+      {editVisible && <NurseSatisfactionSurveyAddModal
         params={record}
         visible={editVisible}
         deptList={deptListAll}
@@ -315,7 +314,7 @@ export default observer(function MyCreateList() {
         onCancel={() => {
           getData()
           setEditVisible(false)
-        }}/>  
+        }}/>  }
       <FormPageBody
         visible={editVisible2}
         onOk={() => {}}

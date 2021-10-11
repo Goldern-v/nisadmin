@@ -262,7 +262,7 @@ export default observer(function SelectPeopleModal(props: Props) {
     </Modal>
   );
 });
-const CheckListCon = observer(function (props: any) {
+const CheckListCon = observer(function(props: any) {
   let {
     checkedUserList,
     setCheckedUserList,
@@ -293,7 +293,7 @@ const CheckListCon = observer(function (props: any) {
         return false;
       })();
     }
-  } catch (error) { }
+  } catch (error) {}
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
     if (e.target.checked) {
@@ -357,38 +357,40 @@ const CheckListCon = observer(function (props: any) {
                   </Checkbox>
                   {selectPeopleViewModel!.currentTreeData!.type !==
                     "userList" && (
-                      <div style={{ minWidth: 54 }}>
-                        <span style={{ padding: "0 4px" }}>|</span>
-                        <span
-                          className={classNames({
-                            open: true,
-                            inChecked: inCheckedUser(item)
-                          })}
-                          onClick={() =>
-                            selectPeopleViewModel.pushStep(
-                              item[
-                                selectPeopleViewModel!.currentTreeData!.stepLabel
-                              ]
-                                ? `${item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .stepLabel
-                                ]
-                                }-${item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel
-                                ]
+                    <div style={{ minWidth: 54 }}>
+                      <span style={{ padding: "0 4px" }}>|</span>
+                      <span
+                        className={classNames({
+                          open: true,
+                          inChecked: inCheckedUser(item)
+                        })}
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(
+                            item[
+                              selectPeopleViewModel!.currentTreeData!.stepLabel
+                            ]
+                              ? `${
+                                  item[
+                                    selectPeopleViewModel!.currentTreeData!
+                                      .stepLabel
+                                  ]
+                                }-${
+                                  item[
+                                    selectPeopleViewModel!.currentTreeData!
+                                      .dataLabel
+                                  ]
                                 }`
-                                : item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel || ""
+                              : item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .dataLabel || ""
                                 ]
-                            )
-                          }
-                        >
-                          展开
-                        </span>
-                      </div>
-                    )}
+                          )
+                        }
+                      >
+                        展开
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             }

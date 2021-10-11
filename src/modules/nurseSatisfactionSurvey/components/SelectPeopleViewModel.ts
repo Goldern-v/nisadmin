@@ -9,18 +9,18 @@ class SelectPeopleViewModel {
   @observable selectTreeDataAll: any = [];
 
   @observable public newSelectTreeDataAll = [
-    {
-      step: "按片区选择",
-      label: "按片区选择",
-      data: [],
-      dataLabel: "deptName",
-      stepLabel: "deptCode"
-    },
-    {
-      step: "默认科室",
-      label: "",
-      data: []
-    },
+    // {
+    //   step: "按片区选择",
+    //   label: "按片区选择",
+    //   data: [],
+    //   dataLabel: "deptName",
+    //   stepLabel: "deptCode"
+    // },
+    // {
+    //   step: "默认科室",
+    //   label: "",
+    //   data: []
+    // },
 
     {
       step: "按护理单元选择",

@@ -290,10 +290,11 @@ export default observer(function MyCreateList() {
           <div className={type == "图" ? "bgc right": "right"} onClick={() => setType("图")}>图</div>
         </div>
       </PageHeader>
-      {type == "表" && <BaseTable
+      <BaseTable
         loading={pageLoading}
         dataSource={dataSource}
         columns={columns}
+        className={type == "表" ? "": "dis"}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
         rowKey='id'
@@ -309,12 +310,12 @@ export default observer(function MyCreateList() {
             pageSize: pagination.pageSize
           })
         }}
-      />}
-      {type == "图" && <div className='statisticalFigure'>
+      />
+      <div className={type == "图" ? "statisticalFigure": "statisticalFigure dis"}>
         <div className='echartsBody'>
             <ReactEcharts option={getOption()}/>
         </div>
-      </div>}
+      </div>
       
     </Wrapper>
   )
@@ -322,6 +323,9 @@ export default observer(function MyCreateList() {
 const Wrapper = styled.div`
 .ml-20 {
   margin-left: 20px;
+}
+.dis{
+  display: none;
 }
 .active{
   color: #09a9f0;

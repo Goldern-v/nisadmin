@@ -64,6 +64,7 @@ export default observer(function PushModal(props: Props) {
         .saveQuestionsToTeachingPlanTask(obj)
         .then((res: any) => {
           setEditLoading(false);
+          res.data.map((item: any) => item.pickQuestionCount = item.questionCount)
           quesBankView.saveData = res.data;
           quesBankView.questionIdList = [];
           quesBankView.questionList = [];
