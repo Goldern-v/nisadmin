@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import qs from "qs";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import { Button, Select, message, Modal, Table, Tag,Input } from "antd";
+import { Button, Select, message, Modal, Table, Tag, Input, Row, Col } from "antd";
 import BaseTable, {
   TabledCon,
   DoCon,
@@ -14,7 +14,7 @@ import YearPicker from "src/components/YearPicker";
 
 import { ColumnProps } from "src/vendors/antd";
 import { starRatingReportService } from "../nightChargingReport/api/StarRatingReportService";
-import {INightThiftItem, INightThiftMoney} from "./types"
+import { INightThiftItem, INightThiftMoney } from "./types"
 import service from "src/services/api/index";
 import { DictItem } from "src/services/api/CommonApiService";
 import { fileDownload } from "src/utils/file/file";
@@ -32,10 +32,10 @@ export default observer(function nightChargingTotleList() {
     month: moment().format("MM"),
   } as any;
 
-  const defaultMark={
-    markUser:authStore.adminNurse as any,//制表人
-    auditUser:"",//区域人
-    accraditation:"",//院领导
+  const defaultMark = {
+    markUser: authStore.adminNurse as any,//制表人
+    auditUser: "",//区域人
+    accraditation: "",//院领导
   }
 
   const [query, setQuery] = useState(defaultQuery);
@@ -58,23 +58,21 @@ export default observer(function nightChargingTotleList() {
 
 
   const onPrint = (isPrint: boolean) => {
-    return false
+    //return false
     let printFun = isPrint ? printing : printing.preview;
     let title = document.title;
     document.title = "护理系统夜班绩效统计汇总表";
     printFun(tableWrapper.current, {
       injectGlobalCss: true,
       scanStyles: false,
+      // max-height:500px;
       css: `
-         .ant-btn,.hidden {
-           display: none;
-         }
-         .print-page {
+          print-page {
            box-shadow: none;
            -webkit-print-color-adjust: exact;
            margin: 0 auto;
          }
-         .page-title {
+        .page-title {
            min-height: 20px;
            padding: 0px 30px 20px;
          }
@@ -83,12 +81,12 @@ export default observer(function nightChargingTotleList() {
            margin-right: 0;
          }
          table, img {
-           page-break-inside: avoid;
-         }
-         pre {
+          page-break-inside: avoid;
+        }
+        pre {
           page-break-after: avoid;
-         }
-         * {
+        }
+        * {
            color: #000 !important;
          }
          .footer-title {
@@ -98,8 +96,76 @@ export default observer(function nightChargingTotleList() {
          .img-group{
            margin-top: 0 !important;
          }
-         table { page-break-inside:auto }
-         tr{ page-break-inside:avoid; page-break-after:auto }
+         table { 
+           page-break-inside:avoid 
+        }
+        tr{ 
+          page-break-inside:avoid; page-break-after:avoid 
+        }
+        .newtable{
+          position: relative;
+          .ant-table-footer{
+            padding: 0 !important;
+           }
+        }
+         th, td{
+           padding:4px !important;
+         }
+         .night-other{
+          .night-tabel-make-user,.night-tabel-make-time, 
+          .night-tabel-make-audit,.night-tabel-make-accraditation{
+            font-weight: 700;
+            font-style: normal;
+            font-size: 18px;
+            display: flex;
+            input{
+              width: 130px;
+              border: none;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.65);
+              border-radius: 0;
+              padding: 0 auto;
+            }
+          }
+         .night-tabel-make-user,.night-tabel-make-time{
+            text-align: left;
+            padding-left: 68%;
+            margin-bottom: 4px;
+         }
+         .night-tabel-make-accraditation{
+           padding: 10px 0;
+         }
+        }
+        
+       .ant-input{
+          width: 130px;
+          border: none;
+          border-bottom: 1px solid rgba(0,0,0,0.65);
+          border-radius: 0;
+        }
+       .night-tabel-make-user,.night-tabel-make-time{
+          text-align: left;
+          padding-left: 67% !important;
+          margin-bottom: 4px;
+       }
+       .ant-spin-nested-loading{
+         height:auto;
+       }
+       
+       .nightNum-td1, .nightNum-td2, .nightNum-tr{
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+       }
+      .nightNum-td1{
+        width: 320px !important;
+        text-align: center;
+      }
+      .nightNum-td2{
+        width: 189px;
+        text-align: center;
+      }
+      .ant-table-body{
+        overflow-x: hidden !important;
+       }
       `
     });
     setTimeout(() => {
@@ -124,7 +190,7 @@ export default observer(function nightChargingTotleList() {
     {
       key: "index",
       title: "序号",
-      width: 80,
+      width: 40,
       align: "center",
       render: (text: string, record: any, idx: number) =>
         idx + 1
@@ -134,96 +200,97 @@ export default observer(function nightChargingTotleList() {
       dataIndex: "deptName",
       title: "科室",
       align: "left",
-      width: 180,
+      width: 140,
     },
     {
       key: "hs",
       dataIndex: "hs",
       title: "护士 120元/个",
       align: "center",
-      width: 110,
+      width: 100,
     },
     {
       key: "zghs",
       dataIndex: "zghs",
       title: "主管护师 130元/个",
       align: "center",
-      width: 200,
+      width: 100,
     },
     {
       dataIndex: "fzrhs",
       key: "fzrhs",
       title: "副主任护师 150元/个",
       align: "center",
-      width: 180
+      width: 100
     },
     {
       dataIndex: "zwzb",
       key: "zwzb",
       title: "早晚助班 60元/个",
       align: "center",
-      width: 180
+      width: 100
     },
     {
       dataIndex: "hggr",
       key: "hggr",
       title: "护工/工人 40元/个",
       align: "center",
-      width: 180
+      width: 100
     },
     {
       dataIndex: "money",
       key: "money",
       title: "金额（元）",
       align: "center",
-      width: 180
+      width: 100
     },
+
   ];
 
   /**
    * 获取接口数据
    */
-  const getSgyGetListTwol = ()=>{
+  const getSgyGetListTwol = () => {
     starRatingReportService.sgyGetListTwol(query).then(res => {
       console.log(res)
-      if(res?.data){
-        let resData=res.data;
+      if (res?.data) {
+        let resData = res.data;
         setNightNum(resData.rowNum);
         setNightMoney(resData.rowMoney);
-        setNightThiftList(resData.dataList)
+        setNightThiftList(resData.dataList);
       }
     }).catch(error => {
       console.log(error)
       message.error(error)
     });
-   // commonApiService
-  //  starRatingReportService.getStandardList().then((res:any)=>{
-  //     console.log(res);
-  //     //fileDownload(res);
-  //   }).catch((error:any)=>{
-  //     message.error(error)
-  //   })
+    // commonApiService
+    //  starRatingReportService.getStandardList().then((res:any)=>{
+    //     console.log(res);
+    //     //fileDownload(res);
+    //   }).catch((error:any)=>{
+    //     message.error(error)
+    //   })
   }
 
   //导出
-  const exportExcel=()=>{
-    starRatingReportService.sgyExcelTwo(query).then(res=>{
+  const exportExcel = () => {
+    starRatingReportService.sgyExcelTwo(query).then(res => {
       console.log(res);
       fileDownload(res);
-    }).catch(error=>{
+    }).catch(error => {
       message.error(error)
     })
   }
 
   //初始化数据
-  const initData = ()=>{
+  const initData = () => {
     setNightNum({
-       zghs: 3,
-       money: 2086,
-       hggr: 6,
-       hs: 2,
-       zwzb: 2,
-       fzrhs: 5
+      zghs: 3,
+      money: 2086,
+      hggr: 6,
+      hs: 2,
+      zwzb: 2,
+      fzrhs: 5
     });
     setNightMoney({
       zghs: 8,
@@ -232,45 +299,70 @@ export default observer(function nightChargingTotleList() {
       hs: 7,
       zwzb: 6,
       fzrhs: 9
-   });
-   setNightThiftList([
-     {
-      deptName: "急诊护理科室",
-      zghs: 6,
-      money: 150,
-      hggr: 2,
-      hs: 6,
-      zwzb: 3,
-      fzrhs: 4,
-     },
-     {
-      deptName: "神经内科护理单元",
-      zghs: 6,
-      money: 150,
-      hggr: 2,
-      hs: 6,
-      zwzb: 3,
-      fzrhs: 4,
-     },
-     {
-      deptName: "神经外科护理单元",
-      zghs: 6,
-      money: 150,
-      hggr: 2,
-      hs: 6,
-      zwzb: 3,
-      fzrhs: 4,
-     },
-     {
-      deptName: "心血管内科护理单元",
-      zghs: 6,
-      money: 150,
-      hggr: 2,
-      hs: 6,
-      zwzb: 3,
-      fzrhs: 4,
-     }
-   ])
+    });
+    setNightThiftList([
+      {
+        deptName: "急诊护理科室",
+        zghs: 6,
+        money: 150,
+        hggr: 2,
+        hs: 6,
+        zwzb: 3,
+        fzrhs: 4,
+      },
+      {
+        deptName: "神经内科护理单元",
+        zghs: 6,
+        money: 150,
+        hggr: 2,
+        hs: 6,
+        zwzb: 3,
+        fzrhs: 4,
+      },
+      {
+        deptName: "神经外科护理单元",
+        zghs: 6,
+        money: 150,
+        hggr: 2,
+        hs: 6,
+        zwzb: 3,
+        fzrhs: 4,
+      },
+      {
+        deptName: "心血管内科护理单元",
+        zghs: 6,
+        money: 150,
+        hggr: 2,
+        hs: 6,
+        zwzb: 3,
+        fzrhs: 4,
+      }
+    ])
+  }
+
+  const tableSummary = () => {
+    if (!nightMoney || !nightNum) {
+      return <div></div>
+      //   border-right: 1px solid #e8e8e8;
+      // border-left: 1px solid #e8e8e8;
+    }
+    return (
+      <table>
+        <tr className="nightNum-tr">
+          <td className="nightNum-td1" >合计(个)</td>
+          {Object.keys(nightNum as any).map(key => {
+            return <td key={key} className="nightNum-td2">{nightNum[key]}</td>
+          })}
+        </tr>
+        <tr className="nightNum-tr">
+          <td className="nightNum-td1" >金额(元)</td>
+          {Object.keys(nightMoney as any).map(key => {
+            return <td key={key} className="nightNum-td2">{nightMoney[key]}</td>
+          })}
+        </tr>
+      </table>
+
+    )
   }
 
 
@@ -279,8 +371,8 @@ export default observer(function nightChargingTotleList() {
   useEffect(() => {
     getSgyGetListTwol()
     //initData()
-  },[query])
-  
+  }, [query])
+
 
 
   return (
@@ -316,14 +408,15 @@ export default observer(function nightChargingTotleList() {
           <Button type="primary" onClick={exportExcel}>
             导出
           </Button>
-          <Button type="primary" onClick={()=>{onPrint(true)}}>
+          <Button type="primary" onClick={() => { onPrint(true) }}>
             打印
           </Button>
         </RightIcon>
       </HeaderCon>
-      <TableWrapper ref={tableWrapper}>
-        <h3 className="table-wrapper-title">护理系统夜班绩效统计汇总表</h3>
-        {/* <BaseTable
+      <TableBox>
+        <TableWrapper ref={tableWrapper}>
+          <h3 className="table-wrapper-title">护理系统夜班绩效统计汇总表</h3>
+          {/* <BaseTable
           className="table-wrapper-body"
           onRow={(record: any) => {
             return {
@@ -344,14 +437,25 @@ export default observer(function nightChargingTotleList() {
         //   onShowSizeChange: handleSizeChange
         // }}
         /> */}
-        <Table dataSource={nightThiftList} columns={columns} bordered   rowKey='id' pagination={false}/>;
-        <div className="night-other">
-          <div className="night-tabel-make-user">制 表  人：<Input value={markUsrList.markUser} onChange={(e)=>{const markUser=e.target.value;setMarkUsrList({...markUsrList,markUser})}}/></div>
-          <div className="night-tabel-make-time">制表时间：{moment().format("YYYY-MM-DD")}</div>
-          <div className="night-tabel-make-audit">审核人签字：<Input value={markUsrList.auditUser} onChange={(e)=>{const auditUser=e.target.value;setMarkUsrList({...markUsrList,auditUser})}}/></div>
-          <div className="night-tabel-make-accraditation">院领导审批：<Input value={markUsrList.accraditation} onChange={(e)=>{const accraditation=e.target.value;setMarkUsrList({...markUsrList,accraditation})}}/></div>
-        </div>
-      </TableWrapper>
+          <Table
+            className="newtable"
+            dataSource={nightThiftList}
+            columns={columns}
+            bordered rowKey='index'
+            pagination={false}
+            scroll={{ x: true }}
+            footer={() => tableSummary()}
+          />
+          {/* footer={() => tableSummary()} */}
+          <div className="night-other">
+            <div className="night-tabel-make-user">制 表  人：<Input value={markUsrList.markUser} onChange={(e) => { const markUser = e.target.value; setMarkUsrList({ ...markUsrList, markUser }) }} /></div>
+            <div className="night-tabel-make-time">制表时间：{moment().format("YYYY-MM-DD")}</div>
+            <div className="night-tabel-make-audit">审核人签字：<Input value={markUsrList.auditUser} onChange={(e) => { const auditUser = e.target.value; setMarkUsrList({ ...markUsrList, auditUser }) }} /></div>
+            <div className="night-tabel-make-accraditation">院领导审批：<Input value={markUsrList.accraditation} onChange={(e) => { const accraditation = e.target.value; setMarkUsrList({ ...markUsrList, accraditation }) }} /></div>
+          </div>
+        </TableWrapper>
+      </TableBox>
+
     </Wrapper>
   );
 });
@@ -360,16 +464,39 @@ export default observer(function nightChargingTotleList() {
 const Wrapper = styled.div`
  position: relative;
 `;
+const TableBox = styled.div`
+ padding: 0 115px;
+ min-height: 600px;
+ background-color:#FFFFFF;
+ height: 88vh;
+ overflow: auto;
+`
+//const TableWrapper = styled(TabledCon)`
 // @ts-ignore
-const TableWrapper = styled(TabledCon)`
-  padding: 0 115px;
-  min-height: 600px;
-  .table-wrapper-body{
-    height: 300px !important;
+const TableWrapper = styled.div`
+/* height: 100px; */
+ table {
+    page-break-inside:avoid 
   }
-  td {
+  tr{ 
+    page-break-inside:avoid; 
+    page-break-after:avoid
+  }
+  position: relative;
+  .table-wrapper-body{
+    //height: 300px !important;
+  }
+  .newtable{
+    position: relative;
+    min-height: 200px;
+    /* max-height: 200px; */
+    .ant-table-footer{
+      padding: 0 !important;
+    }
+    td {
     position: relative;
     word-break: break-all;
+    padding: 5px 5px !important;
     .ellips {
       position: absolute;
       left: 0;
@@ -383,6 +510,8 @@ const TableWrapper = styled(TabledCon)`
       white-space: nowrap;
     }
   }
+  }
+  
   .table-wrapper-title{
     padding-top: 50px;
     position: relative;
@@ -415,6 +544,18 @@ const TableWrapper = styled(TabledCon)`
    .night-tabel-make-accraditation{
      padding: 10px 0;
    }
+  }
+  .nightNum-td1, .nightNum-td2, .nightNum-tr{
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .nightNum-td1{
+    width: 354px;
+    text-align: center;
+  }
+  .nightNum-td2{
+    width: 189px;
+    text-align: center;
   }
 `;
 

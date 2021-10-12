@@ -76,9 +76,9 @@ export default class StarRatingReportService extends BaseApiService {
   public delete(query: any) {
     // gzsrm: 'schNightTotalModelSgy',
     // default: 'schNightTotalModel',
-    if(hospitalPathGetList==='schNightTotalModelSgy'){
+    if (hospitalPathGetList === 'schNightTotalModelSgy') {
       return this.post(`/schNightTotalModelSgy/delete/${query.id}`);
-    }else {
+    } else {
       return this.get(`/schNightTotalModel/delete/${query.id}`);
     }
     // return this.get(`/${hospitalPathGetList}/delete/${query.id}`);
@@ -121,11 +121,11 @@ export default class StarRatingReportService extends BaseApiService {
 
   /**导出 */
   public export(query: any) {
-    if(hospitalPathGetList==='schNightTotalModelSgy'){
+    if (hospitalPathGetList === 'schNightTotalModelSgy') {
       return this.post(`/${hospitalPath}/excelOne`, query, {
         responseType: "blob"
       });
-    }else {
+    } else {
       return this.post(`/${hospitalPath}/excel`, query, {
         responseType: "blob"
       });
@@ -176,7 +176,7 @@ export default class StarRatingReportService extends BaseApiService {
   }
 
   /**提交审核 */
-  public sgySubmit<T=any>(query: T) {
+  public sgySubmit<T = any>(query: T) {
     return this.post(`/schNightTotalModelSgy/submit`, query);
   }
   /**片区护长审核驳回 */
@@ -197,9 +197,7 @@ export default class StarRatingReportService extends BaseApiService {
   }
   /**科室夜班费统计查询*/
   public sgyGetListTwol(query: any) {
-    return this.post(`/nightTotalContentSgy/getListTwo`, query, {
-      responseType: "blob"
-    });
+    return this.post(`/nightTotalContentSgy/getListTwo`, query);
   }
   /**科室统计导出*/
   public sgyExcelTwo(query: any) {
@@ -221,7 +219,7 @@ export default class StarRatingReportService extends BaseApiService {
   public getStandardList() {
     return this.get(`/nightTotalContentSgy/getStandardList`);
   }
-  
+
 
 }
 

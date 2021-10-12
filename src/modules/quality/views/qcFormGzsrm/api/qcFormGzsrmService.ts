@@ -13,7 +13,7 @@ class QcFormGzsrmService extends BaseApiService {
     beginDate: string,
     endDate: string,
   }) {
-    return this.post('/qcCount/problemCauseMeasureSummary', query)
+    return this.post('/qcPdca/getList', query)
   }
 
   /**
@@ -27,8 +27,20 @@ class QcFormGzsrmService extends BaseApiService {
     beginDate: string,
     endDate: string,
   }) {
-    return this.post('/qcCount/problemCauseMeasureSummary/export', query, { responseType: 'blob' })
+    return this.post('/qcPdca/getList/export', query, { responseType: 'blob' })
       .then(res => fileDownload(res))
+  }
+  public cause(query: {}) {
+    return this.post('/qcPdca/save/cause', query)
+  }
+  public measure(query: {}) {
+    return this.post('/qcPdca/save/measure', query)
+  }
+  public opinions(query: {}) {
+    return this.post('/qcPdca/save/opinions', query)
+  }
+  public rectificationResult(query: {}) {
+    return this.post('/qcPdca/save/rectificationResult', query)
   }
 }
 

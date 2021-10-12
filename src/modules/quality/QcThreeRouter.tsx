@@ -28,7 +28,9 @@ import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
 import 护理质量巡查情况汇总表Nys from './views/qcFormNys/护理质量巡查情况汇总表'
 
-import 问题原因措施汇总 from './views/qcFormGzsrm/问题原因措施汇总'
+import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
+import 二级质控问题原因措施汇总 from './views/qcFormGzsrm/二级质控问题原因措施汇总'
+import 三级质控问题原因措施汇总 from './views/qcFormGzsrm/三级质控问题原因措施汇总'
 
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 
@@ -81,12 +83,23 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/problemSummary",
     component: ProblemSummary
   }
-
-  const route_问题原因措施汇总 = {
-    title: "三级质控问题原因措施汇总",
-    path: "/qcThree/问题原因措施汇总?qcLevel=3",
+  const route_一级质控问题原因措施汇总 = {
+    title: "一级质控问题原因措施汇总",
+    path: "/qcThree/一级质控问题原因措施汇总?qcLevel=1",
     icon: <JCTJ />,
-    component: 问题原因措施汇总
+    component: 一级质控问题原因措施汇总
+  }
+  const route_二级质控问题原因措施汇总 = {
+    title: "二级质控问题原因措施汇总",
+    path: "/qcThree/二级质控问题原因措施汇总?qcLevel=2",
+    icon: <JCTJ />,
+    component: 二级质控问题原因措施汇总
+  }
+  const route_三级质控问题原因措施汇总 = {
+    title: "三级质控问题原因措施汇总",
+    path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
+    icon: <JCTJ />,
+    component: 三级质控问题原因措施汇总
   }
 
   const route_三级质控月度报告 = {
@@ -122,7 +135,9 @@ export default function QcThreeRouter(props: Props) {
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,
         route_检查表单统计表,
-        route_问题原因措施汇总
+        route_一级质控问题原因措施汇总,
+        route_二级质控问题原因措施汇总,
+        route_三级质控问题原因措施汇总,
       ],
       'nys': [
         route_护理质量巡查情况汇总表_nys,
