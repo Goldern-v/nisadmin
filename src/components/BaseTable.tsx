@@ -157,8 +157,8 @@ export default observer(function BaseTable(props: Props) {
           });
         }
         option.type.includes("fixedIndex") &&
-        !props.nohorizontalScroll &&
-        (option.columns[0].fixed = "left");
+          !props.nohorizontalScroll &&
+          (option.columns[0].fixed = "left");
       }
     }
 
@@ -180,7 +180,7 @@ export default observer(function BaseTable(props: Props) {
     doCols.forEach((doCol: any) => {
       let callback = doCol.render;
       doCol.render = (text: any, row: any, index: any) => {
-        if (Object.keys(row).length <= 1) return <span/>;
+        if (Object.keys(row).length <= 1) return <span />;
         return callback && callback(text, row, index);
       };
     });
@@ -334,7 +334,7 @@ export default observer(function BaseTable(props: Props) {
           style={{
             float: 'right',
             marginTop: '15px'
-          }}/>}
+          }} />}
       </React.Fragment>}
       {!props.useOuterPagination && <TableComponent {...option} />}
     </Wrapper>
@@ -403,6 +403,12 @@ const Wrapper = styled.div`
       border-radius: 2px;
       & tr :last-child {
         /* border-bottom: 0 !important; */
+      }
+      /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+      ::-webkit-scrollbar{
+        width: 0px;
+        height: 7px;
+        background-color: #F5F5F5;
       }
     }
     .ant-table-footer {
