@@ -395,6 +395,10 @@ export default observer(function HjTable(props: Props) {
                 function: checkMessage
               },
               {
+                text: "修改",
+                function: handReWrite
+              },
+              {
                 text: "删除",
                 function: handleDelete
               },
