@@ -139,7 +139,9 @@ export default observer(function LeftMenu(props: Props) {
   // let path = appStore.match.url
   let path = appStore.location.pathname;
   let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(
-    props.config,
+    props.config.filter((item: any) => {
+      return !isHide(item.hide);
+    }),
     path,
     []
   ) || [[], []];

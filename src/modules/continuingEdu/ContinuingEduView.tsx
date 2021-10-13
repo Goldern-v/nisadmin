@@ -192,7 +192,7 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/评分管理",
       component: 评分管理,
       hide: () =>
-        queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage
+        appStore.HOSPITAL_ID !== "hj" ? queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage : true
     },
     {
       title: "培训统计分析",
@@ -284,7 +284,14 @@ export default function ContinuingEdu(props: Props) {
         {
           title: "教学质量评价",
           path: "/continuingEdu/教学质量评价",
-          component: 教学质量评价
+          component: 教学质量评价,
+        },
+        {
+          title: "评分管理",
+          path: "/continuingEdu/评分管理",
+          component: 评分管理,
+          hide: () =>
+            appStore.HOSPITAL_ID === "hj" ? queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage : false
         },
         {
           title: "进修临床实践详情",
