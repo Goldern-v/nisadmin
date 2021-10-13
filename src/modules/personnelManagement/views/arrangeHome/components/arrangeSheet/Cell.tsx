@@ -95,7 +95,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'gzsrm', 'fssdy', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'gzsrm', 'fssdy', 'fsxt', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -582,6 +582,31 @@ export default observer(function Cell(props: Props) {
       );
     },
     fssdy: () => {
+      return (
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
+          ? "加班"
+          : "减班") +
+        ":" +
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+          ? cellObj.schAddOrSubs[0].hour
+          : 0) +
+        "h" +
+        "，" +
+        `现:${cellObj.effectiveTime || 0}h，` +
+        `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `白:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingMorningHour) ||
+        0}h，` +
+        `夜:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingNightHour) ||
+        0}h`
+      );
+    },
+    fsxt: () => {
       return (
         (cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&

@@ -152,6 +152,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_fssdy
     } else if (appStore.HOSPITAL_ID == 'gxjb') {
       return navConfig_gxjb
+    } else if (appStore.HOSPITAL_ID == 'fsxt') {
+      return navConfig_fssdy
     }
     return navConfig;
   })();
