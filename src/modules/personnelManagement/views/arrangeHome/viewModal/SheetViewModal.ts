@@ -264,7 +264,7 @@ class SheetViewModal {
     return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
-      if (appStore.HOSPITAL_ID == "wh") {
+      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy") {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );
@@ -389,6 +389,7 @@ class SheetViewModal {
 
   /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
   handleSheetTableData(sheetTableData: any, countObj: any = {}) {
+    
     /** for 优化速度 */
     let _sheetTableData = cloneJson(sheetTableData);
     for (let i = 0; i < _sheetTableData.length; i++) {
