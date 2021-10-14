@@ -14,6 +14,8 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import * as echarts from 'echarts';
 import ReactEcharts from 'echarts-for-react';
+import printing from 'printing'
+import { useRef } from 'src/types/react'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
 import SetImportModal from '../components/SetImportModal'
@@ -43,12 +45,13 @@ export default observer(function MyCreateList() {
   const [type, setType] = useState("表")
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
+  const pageRef: any = useRef<HTMLElement>()
 
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
 
-   //是否启用
-   const changeStatus = (record: any, check: any) => {
+  //是否启用
+  const changeStatus = (record: any, check: any) => {
     record.status = check ? 1 : 0
     setDataSource([...dataSource])
     setPageLoading(true)
@@ -76,22 +79,22 @@ export default observer(function MyCreateList() {
 
   const status = pathMap[path]
 
-  const getOption = ()=>{
+  const getOption = () => {
     let option = {
       legend: {
-        itemWidth:50,
-        itemHeight:30,
+        itemWidth: 50,
+        itemHeight: 30,
       },
       tooltip: {
         formatter:
-        '{b}<br />\
+          '{b}<br />\
         {a}：{c}%<br />'
       },
       dataset: {
         source: []
       },
-      grid:{
-        height:220
+      grid: {
+        height: 220
       },
       xAxis: {
         type: 'category',  // 设置为类目轴
@@ -99,14 +102,14 @@ export default observer(function MyCreateList() {
       },
       yAxis: {
         type: 'value',  // 设置为数值轴，该值有series的data传入
-        max : 100,
-        min : 0,
-        splitNumber : 2,
-        axisLabel: {  
-          show: true,  
-          interval: 'auto',  
-          formatter: '{value} %'  
-        },  
+        max: 100,
+        min: 0,
+        splitNumber: 2,
+        axisLabel: {
+          show: true,
+          interval: 'auto',
+          formatter: '{value} %'
+        },
       },
       series: [{
         type: 'bar',
@@ -124,10 +127,10 @@ export default observer(function MyCreateList() {
         },
         data: participationRatePerList
       }]
-      
+
     };
     return option;
-};
+  };
 
   let columns: ColumnProps<any>[] = []
   columns =
@@ -210,7 +213,7 @@ export default observer(function MyCreateList() {
         setPageLoading(false)
         let a: any = [];
         let b: any = [];
-        res.data.list.map((item: any)=>{
+        res.data.list.map((item: any) => {
           a.push(item.participationRatePer.substring(0, item.participationRatePer.lastIndexOf('%')))
           b.push(item.satisfactionPer.substring(0, item.participationRatePer.lastIndexOf('%')))
         })
@@ -227,7 +230,66 @@ export default observer(function MyCreateList() {
     // setPathChange(item.path)
     // setIdChange(item.id)
   }
-
+  const handlePrint = () => {
+    let printbox = document.createElement('div')
+    printbox.id = "printpage"
+    let titlebox = document.createElement('div')
+    titlebox.className = 'print-title'
+    let title = `横沥医院${moment(date[0]).format('YYYY')}年${moment(date[0]).format('MM')}月 - ${moment(date[1]).format('MM')}月护士长满意度统计汇总`
+    titlebox.innerText = title
+    let tablebox = (document.getElementById('baseTable') || document.createElement('div')).cloneNode(true)
+    let chartsPart = document.getElementById('charts') || document.createElement('div')
+    chartsPart.classList.remove('dis')
+    let charts = document.getElementsByTagName('canvas')[0] || document.createElement('div')
+    let chartsbox = document.createElement('img')
+    chartsbox.id = "canvasImg"
+    setTimeout(() => {
+      chartsbox.src = charts.toDataURL()
+      printbox.appendChild(titlebox)
+      printbox.appendChild(chartsbox)
+      printbox.appendChild(tablebox)
+      document.body.appendChild(printbox)
+      printing(printbox, {
+        injectGlobalCss: true,
+        css: `
+          #printpage{
+            padding-top:1cm;
+          }
+          #canvasImg{
+            width:21cm;
+          }
+          .ant-table-wrapper{
+            width:17cm;
+            margin:0 auto;
+          }
+          .ant-pagination,.ant-table-pagination{
+            display:none;
+          }
+          .print-title{
+            line-height:40px;
+            font-weight:700;
+            font-size:18px;
+            text-align:center;
+            margin-bottom:5px;
+          }
+          @page{
+            margin:0mm;
+          }
+          .ant-spin-nested-loading{
+            height:auto;
+          }
+          .ant-table-body{
+            overflow-y:hidden !important;
+          }
+        `
+      })
+    }, 500);
+    // setTimeout(() => {
+    //   printing(printbox, {
+    //     injectGlobalCss: true,
+    //   })
+    // }, 500);
+  }
   const handleExport = () => {
     setPageLoading(true)
     let startYear = date[0] ? +moment(date[0]).format('YYYY') : ''
@@ -240,10 +302,10 @@ export default observer(function MyCreateList() {
       startMonth,
       endMonth,
     })
-    .then(res => {
-      setPageLoading(false)
-      fileDownload(res)
-    }, err => setPageLoading(false))
+      .then(res => {
+        setPageLoading(false)
+        fileDownload(res)
+      }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -284,17 +346,17 @@ export default observer(function MyCreateList() {
           查询
         </Button>
         <Button onClick={handleExport}>导出</Button>
-        <Button onClick={handleExport}>打印</Button>
+        <Button onClick={handlePrint}>打印</Button>
         <div className='ml-20 boxButton'>
-          <div className={type == "表" ? "bgc left": "left"} onClick={() => setType("表")}>表</div>
-          <div className={type == "图" ? "bgc right": "right"} onClick={() => setType("图")}>图</div>
+          <div className={type == "表" ? "bgc left" : "left"} onClick={() => setType("表")}>表</div>
+          <div className={type == "图" ? "bgc right" : "right"} onClick={() => setType("图")}>图</div>
         </div>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
         dataSource={dataSource}
         columns={columns}
-        className={type == "表" ? "": "dis"}
+        className={type == "表" ? "" : "dis"}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
         rowKey='id'
@@ -311,12 +373,12 @@ export default observer(function MyCreateList() {
           })
         }}
       />
-      <div className={type == "图" ? "statisticalFigure": "statisticalFigure dis"}>
+      <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
         <div className='echartsBody'>
-            <ReactEcharts option={getOption()}/>
+          <ReactEcharts option={getOption()} />
         </div>
       </div>
-      
+
     </Wrapper>
   )
 })
