@@ -15,6 +15,7 @@ import 进修生详情 from "./进修生详情";
 import 其他人员详情 from "./其他人员详情";
 import TableView from "./TableView";
 import { userTypeList } from "../其他人员/data/options";
+import { fileDownload } from "src/utils/file/file";
 
 export interface Props extends RouteComponentProps { }
 
@@ -182,6 +183,14 @@ export default observer(function Main(props: any) {
 
   const TargetRoute = targetComponent();
 
+  // 导出个人学习档案
+  const exportStudyExcel = () => {
+    // let status = appStore.HOSPITAL_ID === "lcey"
+    // arrangeService.exportRoster(2, status).then(res => {
+    //   fileDownload(res);
+    // });
+  };
+
   return (
     <Wrapper>
       <div className="topbar">
@@ -217,6 +226,7 @@ export default observer(function Main(props: any) {
         </div>
         <div className="btn-group">
           {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
+          <Button onClick={ exportStudyExcel }>导出个人学习档案</Button>
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>
