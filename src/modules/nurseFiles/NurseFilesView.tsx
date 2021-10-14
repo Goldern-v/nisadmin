@@ -76,11 +76,11 @@ export default observer(function NurseFilesView(props: Props) {
       case "wjgdszd":
         return NurseFilesListView_wjgdszd;
       case "fssdy":
-        return NurseFilesListView_lcey;
+        return NurseFilesListView_wh;
       case "gxjb":
         return NurseFilesListView_wh;
       case "fsxt":
-        return NurseFilesListView_lcey;
+        return NurseFilesListView_wh;
       default:
         return NurseFilesListView_hj;
     }
