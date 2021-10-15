@@ -125,9 +125,16 @@ export default observer(function StarRatingReportEdit() {
       },
       vague: true,
     })
-    starRatingReportService.export(params).then(res => {
-      fileDownload(res);
-    });
+    if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+      starRatingReportService.exportFQ(params).then(res => {
+        fileDownload(res);
+      });
+    }else{
+      starRatingReportService.export(params).then(res => {
+        fileDownload(res);
+      });
+    }
+    
   };
   const onPublish = () => {
     globalModal.confirm("提交确认", "你确定要提交该报告吗？").then(res => {
