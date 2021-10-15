@@ -76,11 +76,11 @@ export default observer(function NurseFilesView(props: Props) {
       case "wjgdszd":
         return NurseFilesListView_wjgdszd;
       case "fssdy":
-        return NurseFilesListView_lcey;
+        return NurseFilesListView_wh;
       case "gxjb":
         return NurseFilesListView_wh;
       case "fsxt":
-        return NurseFilesListView_lcey;
+        return NurseFilesListView_wh;
       default:
         return NurseFilesListView_hj;
     }
@@ -328,7 +328,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "gzhd", "lcey", "gxjb", "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
+      ["hj", "gzhd", "lcey", "gxjb", 'fssdy', 'fsxt', "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();

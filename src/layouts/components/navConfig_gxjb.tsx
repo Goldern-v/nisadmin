@@ -1,6 +1,7 @@
 // 佛山第一人民医院 用聊城二院模板
 import React from "react";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
+console.log(!authStore.isRoleManage, 98)
 
 export interface navConfigItem {
   onClick?: any;
@@ -19,7 +20,8 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "审核管理",
-    path: "/auditsManagement"
+    path: "/auditsManagement",
+    hidden: !authStore.isRoleManage
   },
   {
     name: "病区日志",
@@ -28,7 +30,8 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "档案管理",
-    path: "/nurseFile"
+    path: "/nurseFile",
+    hidden: !authStore.isRoleManage
   },
   // {
   //   name: '不良事件',
