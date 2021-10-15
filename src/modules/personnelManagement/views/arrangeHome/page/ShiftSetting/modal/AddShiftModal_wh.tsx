@@ -159,6 +159,17 @@ export default function AddShiftModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
+              <Form.Field label={`是否为责护`} name="shiftType" required>
+                <Select>
+                  {shiftList.map((item: any, index: number) => (
+                    <Select.Option key={index} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
               <Form.Field label={`上班时间`} name="workTime">
                 <Input />
               </Form.Field>
