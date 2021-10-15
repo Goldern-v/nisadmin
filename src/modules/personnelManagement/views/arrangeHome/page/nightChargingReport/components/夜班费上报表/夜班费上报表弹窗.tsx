@@ -9,6 +9,7 @@ import service from "src/services/api";
 import configDefault from './config/default'
 import configNys from './config/nys'
 import configDghl from './config/dghl'
+import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
 
 const commonApi = service.commonApiService;
@@ -37,7 +38,8 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
   const columns: any = appStore.hisMatch({
     map: {
       nys: configNys.getColumns(cloneData, calBack),
-      'dghl,fqfybjy': configDghl.getColumns(cloneData, calBack),
+      dghl: configDghl.getColumns(cloneData, calBack),
+      fqfybjy: configFqfybjy.getColumns(cloneData, calBack),
       //暂时隐藏20210926
       'gzsrm': configGzsrm.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
@@ -49,7 +51,8 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
     const keys = appStore.hisMatch({
       map: {
         nys: configNys.moneyKeyList,
-        'dghl,fqfybjy': configDghl.moneyKeyList,
+        dghl: configDghl.moneyKeyList,
+        fqfybjy: configFqfybjy.moneyKeyList,
       },
       vague: true,
     })
@@ -62,7 +65,8 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
     const item = appStore.hisMatch({
       map: {
         nys: configNys.item,
-        'dghl,fqfybjy': configDghl.item,
+        dghl: configDghl.item,
+        fqfybjy: configFqfybjy.item,
         'gzsrm': configGzsrm.item(),
         default: configDefault.item
       },

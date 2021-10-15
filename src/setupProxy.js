@@ -37,8 +37,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 东莞横沥 */
     case 'dghl':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      // return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
-      return 'http://192.168.20.61:9091' // 宏群本地
+      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      // return 'http://192.168.20.61:9091' // 宏群本地
       // return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
 
     /** 聊城二院 */
@@ -54,8 +54,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 福清妇幼保健院 */
     case 'fqfybjy':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      return 'http://110.90.211.113:9091/' // 正式
-    //return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      // return 'http://110.90.211.113:9091/' // 正式
+      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      // return 'http://192.168.20.61:9091' // 宏群本地
+
     /** 武警广东省总队医院 */
     case 'wjgdszd':
       return "http://120.24.240.231:15091 " // 武警广东省总队医院正式

@@ -251,7 +251,7 @@ export default observer(function MyCreateList() {
       <FormPageBody
         visible={editVisible}
         previewPaperData={previewPaperData}
-        onOk={() => { }}
+        onOk={() => setEditVisible(false)}
         onCancel={() => setEditVisible(false)} />
       <SetImportModal
         visible={editVisible2}

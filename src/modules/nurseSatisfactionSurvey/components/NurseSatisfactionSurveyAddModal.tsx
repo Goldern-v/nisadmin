@@ -64,7 +64,10 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       setYear(params.year)
       setOpenDate([moment(params.startTime),moment(params.endTime)])
       setQuestionnaire(params.settingId)
-      // setRespondent(params.participantList) 未处理问题bug
+      let tempParticipantList = params.participantList&&params.participantList.length&&params.participantList.map((item:any)=>{
+        return {...item,key:item.empNo,label:item.empName}
+      })
+      setRespondent(tempParticipantList) 
     }
     let nowYear: number = +moment().format('YYYY')
     setYearList([nowYear - 5, nowYear - 4, nowYear - 3, nowYear - 2, nowYear - 1, nowYear, nowYear + 1, nowYear + 2, nowYear + 3, nowYear + 4, nowYear + 5])
@@ -98,12 +101,14 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   const onChangeSearchText1 = (e: any) => { setSearchText1(e.target.value) }
   const onChangeOpenDate = (e: any) => { setOpenDate(e.target.value) }
   // 取消标签审核人
-  const onDeselect = (user: User | User[]) => {
+  const onDeselect = (user:any) => {
     
     let data = dataArray;
     let setData = setArray;
-    console.log(setData);
-
+    let delIndex;
+    delIndex = respondent.findIndex((item:any)=>item.empNo == user.key)
+    respondent.splice(delIndex,1)
+    setRespondent([...respondent])
     if (user instanceof Array) {
       console.log(1);
       
@@ -146,14 +151,20 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       presentIndex: 0
     });
   };
-
+  
   const handleOk = () => {
-    console.log(openDate);
-    
     if (searchText == "") {
       message.error('标题不能为空！')
       return
     }
+    let tempArr:any = JSON.parse(JSON.stringify(respondent))
+    respondent.map((item:any,index:any)=>{
+      if(!item.empNo){
+        let arr:any = []
+        arr.splice(arr.length,0,...item.userList)
+        tempArr.splice(index,1,...arr)
+      }
+    })
     let startTime = openDate[0] ? moment(openDate[0]).format('YYYY-MM-DD') : ''
     let endTime = openDate[0] ? moment(openDate[1]).format('YYYY-MM-DD') : ''
     if(isAdd){
@@ -164,12 +175,13 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
         year: year,
         startTime,
         endTime,
-        participantList:respondent,
+        participantList:tempArr,
         settingId:questionnaire,
       })
       .then((res) => {
         message.success('保存成功')
         onOk && onOk()
+        onClose()
       })
     }else{
       api
@@ -179,7 +191,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
         year: year,
         startTime,
         endTime,
-        participantList:respondent,
+        participantList:tempArr,
         settingId:questionnaire,
         id:params.id,
         status:params.status,
@@ -187,6 +199,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       .then((res) => {
         message.success('保存成功')
         onOk && onOk()
+        onClose()
       })
     }
     
@@ -200,7 +213,10 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
     afterClose={() => onClose()}
     visible={visible}
     onOk={handleOk}
-    onCancel={() => onCancel && onCancel()}>
+    onCancel={() => {
+      onCancel && onCancel()
+      onClose()
+    }}>
     <Wrapper>
       <Row>
         <Col span={6}>
@@ -295,7 +311,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
                 labelInValue={true}
                 style={{ width: 300 }}
                 open={false}
-                onDeselect={(user: any) => onDeselect(user)}
+                onDeselect={onDeselect}
               />
               <ClickBtn onClick={() => openSelectPeopleModal()}>
                 ...
