@@ -9,6 +9,7 @@ export interface Props {
   style?: React.CSSProperties,
   formCode?: string,
   editable?: boolean,
+  masterId?: any,
   loading?: boolean,
   itemDataMap?: any,
   master?: any,
