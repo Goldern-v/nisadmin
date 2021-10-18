@@ -2,71 +2,28 @@ import styled from 'styled-components'
 import React, { useState, useEffect, Component } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input, Switch } from 'src/vendors/antd'
+import { DatePicker, ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
-import NurseSatisfactionSurveyAddModal from '../components/NurseSatisfactionSurveyAddModal'
-import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
-import * as echarts from 'echarts';
 import ReactEcharts from 'echarts-for-react';
 import printing from 'printing'
 import { useRef } from 'src/types/react'
-import service from 'src/services/api'
-import FormPageBody from '../components/FormPageBody'
-import SetImportModal from '../components/SetImportModal'
 const ButtonGroup = Button.Group;
 export interface Props { }
 const api = new NurseSatisfactionSurveyService();
 
 export default observer(function MyCreateList() {
-  const [year, setYear] = useState<Number>(+moment().format('YYYY'))
-  const [month, setMonth] = useState<String>('')
-  const [state, setState] = useState<String>('')
-  const [templateList, setTemplateList]: any = useState([])
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
-  const [deptSelect, setDeptSelect] = useState('')
-  const [yearList, setYearList] = useState([] as number[])
-  const [monthList, setMonthList] = useState([] as string[])
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-  const [editVisible, setEditVisible] = useState(false)
-  const [editVisible2, setEditVisible2] = useState(false)
-  const [pathChange, setPathChange] = useState("")
-  const [idChange, setIdChange] = useState("")
   const [date, setDate]: any = useState([])
   const [type, setType] = useState("表")
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
-  const pageRef: any = useRef<HTMLElement>()
-
-  const [isAdd, setIsAdd] = useState(false)
-  const [record, setRecord] = useState({} as any)
-
-  //是否启用
-  const changeStatus = (record: any, check: any) => {
-    record.status = check ? 1 : 0
-    setDataSource([...dataSource])
-    setPageLoading(true)
-    // api
-    //   .setVisitTemplateStatus({
-    //     formCode: record.formCode,
-    //     status: record.status,
-    //   })
-    //   .then((res) => {
-    //     setPageLoading(false)
-    //     if (res.code == "200") {
-    //       message.success("操作成功！");
-    //     } 
-    //   }, err => setPageLoading(false))
-  }
 
   /** 类别 */
   const pathMap: any = {
@@ -76,8 +33,6 @@ export default observer(function MyCreateList() {
     innovation: 'innovation'
   }
   const path = window.location.hash.split('/').reverse()[0]
-
-  const status = pathMap[path]
 
   const getOption = () => {
     let option = {
@@ -191,10 +146,6 @@ export default observer(function MyCreateList() {
   })
   const [total, setTotal]: any = useState(0)
 
-  const initData = () => {
-  }
-  const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
-
   const getData = () => {
     setPageLoading(true)
     let startYear = date[0] ? +moment(date[0]).format('YYYY') : ''
@@ -219,17 +170,11 @@ export default observer(function MyCreateList() {
         })
         setSatisfactionPerList(a)
         setParticipationRatePerList(b)
-        setSelectedRowKeys([])
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
 
-  const onEdit = (record: any) => {
-    setEditVisible(true)
-    // setPathChange(item.path)
-    // setIdChange(item.id)
-  }
   const handlePrint = () => {
     let printbox = document.createElement('div')
     printbox.id = "printpage"
@@ -284,11 +229,6 @@ export default observer(function MyCreateList() {
         `
       })
     }, 500);
-    // setTimeout(() => {
-    //   printing(printbox, {
-    //     injectGlobalCss: true,
-    //   })
-    // }, 500);
   }
   const handleExport = () => {
     setPageLoading(true)
@@ -315,10 +255,6 @@ export default observer(function MyCreateList() {
     pageOptions.pageSize,
     date,
   ])
-
-  useEffect(() => {
-    initData()
-  }, [])
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {

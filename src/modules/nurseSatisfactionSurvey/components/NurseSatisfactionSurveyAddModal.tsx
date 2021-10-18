@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Col, Icon, Upload, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
+import { Col, DatePicker, Input, Modal, Row, Select } from 'src/vendors/antd'
 import moment from 'moment'
-import { authStore, appStore } from "src/stores";
 import Form from "src/components/Form/Form";
 import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
 import { message } from 'antd/es'
@@ -31,7 +30,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   const [loading, setLoading] = useState(false)
   const selectPeopleModal = createModal(SelectPeopleModal);
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
-  const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [questionnaire, setQuestionnaire] = useState('')
   const [questionnaireList, setQuestionnaireList] = useState([] as any)
   const [year, setYear]: any = useState(+moment().format('YYYY'))
@@ -41,7 +39,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   const [searchText, setSearchText] = useState('')
   const [searchText1, setSearchText1] = useState(user.empName)
   const [openDate, setOpenDate]: any = useState([])
-  const [fileIdList, setFileIdList]: any = useState([])
   const [titleType, setTitleType] = useState<String>('')
   const [respondent, setRespondent]: any = useState([]);
   const setArray = [setRespondent];
@@ -78,7 +75,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   }, [
     props
   ])
-
   useEffect(() => {
     getSettingList()
   }, [])
@@ -99,50 +95,13 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
   const onChangeSearchText1 = (e: any) => { setSearchText1(e.target.value) }
-  const onChangeOpenDate = (e: any) => { setOpenDate(e.target.value) }
-  // 取消标签审核人
+  // 取消调查对象
   const onDeselect = (user:any) => {
-    
-    let data = dataArray;
-    let setData = setArray;
     let delIndex;
     delIndex = respondent.findIndex((item:any)=>item.empNo == user.key)
     respondent.splice(delIndex,1)
     setRespondent([...respondent])
-    if (user instanceof Array) {
-      console.log(1);
-      
-      // for (let i = 0; i < user.length; i++) {
-      //   let index = data.findIndex((item: any) => item.key === user[i].key);
-      //   if (index > -1) {
-      //     data.splice(index, 1);
-      //   }
-      // }
-      // setData[0]([...data]);
-    } else {
-      console.log(2);
-      
-      // let index = data.findIndex((item: any) => item.key === user.key);
-      // if (index > -1) {
-      //   data.splice(index, 1);
-      //   setData[0]([...data]);
-      // }
-    }
   };
-  // 判断当前选择的是哪种类型 1-人员 2-角色
-  // const judgeTypeItem = (value: any) => {
-  //   let data = dataArray[value];
-  //   if (data && data.length === 0) {
-  //     return 1;
-  //   } else {
-  //     if (data[0].userList) {
-  //       return data[0].userList[0].empNo ? 2 : 3;
-  //     } else {
-  //       return data[0].type === 1 ? 2 : 3;
-  //     }
-  //   }
-  // };
-
   const openSelectPeopleModal = () => {
     selectPeopleModal.show({
       checkedUserList: respondent || [],
@@ -151,7 +110,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       presentIndex: 0
     });
   };
-  
   const handleOk = () => {
     if (searchText == "") {
       message.error('标题不能为空！')
