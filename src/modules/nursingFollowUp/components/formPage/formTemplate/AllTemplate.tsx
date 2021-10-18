@@ -106,11 +106,10 @@ export default function AllTemplate(props: any) {
     })
     if (JSON.stringify(temp) !== JSON.stringify(editableSoup)) {
       setEditableSoup({ ...temp })
-      // props.onItemDataMapChange && props.onItemDataMapChange({ ...editable })
+      props.onItemDataMapChange && props.onItemDataMapChange(temp)
     }
   }, [editable])
   useEffect(() => {
-    // setRes(resTest.data.documentItemDtos)
     Promise.all(
       [foolowUp.getFollowUpContont({ formCode: props.formCode }),
       followUpDetailService.getFormDetailById(props.masterId)
@@ -124,18 +123,17 @@ export default function AllTemplate(props: any) {
           titleObj[item.module].push(item)
         })
         setRes(titleObj)
-        console.log(editable);
         let itemDataMap = res[1].data.itemDataMap
         Object.keys(itemDataMap).map((key: any, index: any) => {
           if (typeof editable[key] == 'string') {
-            editable[key] = props.itemDataMap[key]
+            editable[key] = itemDataMap[key]
           } else {
-            editable[key] = props.itemDataMap[key].split(',')
+            editable[key] = itemDataMap[key].split(',')
           }
-          console.log(res[1].data.itemDataMap);
         })
+        setEditable({ ...editable })
       })
-  }, [props.formCode])
+  }, [props.formCode, props.masterId])
 
   // 问卷分页
   useEffect(() => {

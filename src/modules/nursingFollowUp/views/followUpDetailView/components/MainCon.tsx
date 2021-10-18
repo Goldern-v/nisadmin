@@ -68,22 +68,22 @@ export default function MainCon(props: Props) {
     setMaster({})
     setItemDataMap({})
 
-    // followUpDetailService
-    //   .getFormDetailById(masterId || '')
-    //   .then((res) => {
-    //     setFormDataLoading(false)
-    //     if (res.data) {
-    //       setMaster(res.data.master)
+    followUpDetailService
+      .getFormDetailById(masterId || '')
+      .then((res) => {
+        setFormDataLoading(false)
+        if (res.data) {
+          setMaster(res.data.master)
 
-    //       let newItemDataMap = { ...res.data.itemDataMap }
-    //       // 初始化随访时间
-    //       if ((newItemDataMap['V001072'] || '').trim().length <= 0)
-    //         newItemDataMap['V001072'] = moment().format('YYYY-MM-DD')
+          // let newItemDataMap = { ...res.data.itemDataMap }
+          // // 初始化随访时间
+          // if ((newItemDataMap['V001072'] || '').trim().length <= 0)
+          //   newItemDataMap['V001072'] = moment().format('YYYY-MM-DD')
 
-    //       setItemDataMap(newItemDataMap)
-    //     }
+          // setItemDataMap(newItemDataMap)
+        }
 
-    //   }, () => setFormDataLoading(false))
+      }, () => setFormDataLoading(false))
   }
 
   const handleDeleteConfirm = () => {
@@ -108,7 +108,6 @@ export default function MainCon(props: Props) {
 
   const handleSave = () => {
     setFormDataLoading(true)
-
     followUpDetailService.
       saveOrUpdate({
         master: {
