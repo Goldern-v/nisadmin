@@ -35,11 +35,8 @@ export default observer(function MyCreateList() {
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
-
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
-
-
   /** 类别 */
   const pathMap: any = {
     year: 'year',  
@@ -48,9 +45,7 @@ export default observer(function MyCreateList() {
     innovation: 'innovation'
   }
   const path = window.location.hash.split('/').reverse()[0]
-  
   const status = pathMap[path]
-
   let columns: ColumnProps<any>[] = []
     columns = 
   [
@@ -189,8 +184,6 @@ export default observer(function MyCreateList() {
     })
   }
 
-  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
-
   const handleExport = () => {
     setPageLoading(true)
     api.urveyExport({
@@ -249,18 +242,6 @@ export default observer(function MyCreateList() {
           {monthList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item}>{item}</Select.Option>)}
         </Select>
-        {/* <span className='label'>科室:</span>
-        <Select
-          value={deptSelect}
-          style={{ width: 180 }}
-          showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(val: string) => setDeptSelect(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
-        </Select> */}
         <span className='label ml-20'>状态:</span>
         <Select
           value={state}
@@ -272,14 +253,12 @@ export default observer(function MyCreateList() {
           <Select.Option value={'1'}>进行中</Select.Option>
           <Select.Option value={'2'}>已结束</Select.Option>
         </Select>
-
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
         <Button onClick={handleExport}>导出</Button>
         {/* <Button onClick={handleExport}>打印</Button> */}
         <Button type='primary' onClick={handleAddNew}>新建</Button>
-      
       </PageHeader>
       <BaseTable
         loading={pageLoading}

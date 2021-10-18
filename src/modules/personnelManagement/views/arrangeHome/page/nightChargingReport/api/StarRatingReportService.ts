@@ -62,6 +62,11 @@ export default class StarRatingReportService extends BaseApiService {
     return this.post(`/${hospitalPath}/getList`, query);
   }
 
+  /**福清妇幼获取报告 */
+  public getReportFQ(query: any) {
+    return this.post(`/schNightTotalContentFQ/getList`, query);
+  }
+
   /**修改报告 */
   public editReport(query: any) {
     return this.post(`/${hospitalPath}/saveOrUpdate`, query);
@@ -118,7 +123,12 @@ export default class StarRatingReportService extends BaseApiService {
 
     return this.post("/qcAnalysis/sr/update/workScheduleList", query);
   }
-
+  /**福清妇幼导出 */
+  public exportFQ(query: any) {
+    return this.post(`/schNightTotalContentFQ/excel`, query, {
+      responseType: "blob"
+    });
+  }
   /**导出 */
   public export(query: any) {
     if (hospitalPathGetList === 'schNightTotalModelSgy') {

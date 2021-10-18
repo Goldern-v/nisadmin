@@ -177,6 +177,9 @@ class StarRatingReportEditModel {
       let res = await starRatingReportService.getSgyReport(query.id)
       data = res.data.contentSgyList
       this.gzsrmReport = res.data
+    }else if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+      let res = await starRatingReportService.getReportFQ(query)
+      data = res.data
     } else {
       let res = await starRatingReportService.getReport(query)
       data = res.data

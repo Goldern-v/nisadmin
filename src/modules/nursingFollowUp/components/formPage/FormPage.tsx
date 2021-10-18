@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, Suspense, lazy } from 'react'
+import React, { useState, useEffect, Suspense, lazy, useRef } from 'react'
 import { Button, Icon, Spin } from 'antd'
 const AllTemplate = lazy(() => import("./formTemplate/AllTemplate"))
 const 脑卒中高危人群院内综合干预量表 = lazy(() => import('./脑卒中高危人群院内综合干预量表'))
@@ -9,6 +9,7 @@ export interface Props {
   style?: React.CSSProperties,
   formCode?: string,
   editable?: boolean,
+  masterId?: any,
   loading?: boolean,
   itemDataMap?: any,
   master?: any,
@@ -17,6 +18,7 @@ export interface Props {
 }
 
 export default function FormPage(props: Props) {
+  let template = React.useRef()
   const { formCode, loading, style } = props
 
   const formPageByFormCode = () => {
@@ -52,7 +54,7 @@ export default function FormPage(props: Props) {
       // case 'V0012':
       //   return <慢性鼻窦炎出院随访 {...props} />
       default:
-        return <AllTemplate {...props} />
+        return <AllTemplate {...props} ref={template} />
       // return <div className="page-item null">
       //   <span className="null-text">
       //     <Icon type="file-exclamation" style={{ marginRight: 10 }} />

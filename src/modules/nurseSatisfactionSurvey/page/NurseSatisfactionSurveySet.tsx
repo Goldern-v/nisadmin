@@ -15,7 +15,6 @@ import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
 import SetImportModal from '../components/SetImportModal'
-
 export interface Props { }
 const api = new NurseSatisfactionSurveyService();
 
@@ -39,8 +38,6 @@ export default observer(function MyCreateList() {
   const [idChange, setIdChange] = useState("")
   const [date, setDate]: any = useState([])
   const [previewPaperData, setPreviewPaperData]: any = useState([])
-  
-
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
 
@@ -251,7 +248,7 @@ export default observer(function MyCreateList() {
       <FormPageBody
         visible={editVisible}
         previewPaperData={previewPaperData}
-        onOk={() => { }}
+        onOk={() => setEditVisible(false)}
         onCancel={() => setEditVisible(false)} />
       <SetImportModal
         visible={editVisible2}

@@ -6,6 +6,7 @@ import RadioItem from "../../input/RadioItem"
 import CheckboxItem from "../../input/CheckboxItem"
 import InputItem from "../../input/InputItem"
 import CheckText from "../../input/CheckText"
+import { followUpDetailService } from '../../../views/followUpDetailView/services/FollowUpDetailService'
 
 export default function AllTemplate(props: any) {
   // 渲染的问卷题目数据
@@ -66,7 +67,7 @@ export default function AllTemplate(props: any) {
       );
     }
     setEditable({ ...editable });
-    props.onItemDataMapChange && syncItemDataMap()
+    // props.onItemDataMapChange && syncItemDataMap()
   }
 
   const itemRadioFn = (e: any, itemAnswer: any) => { // 单选框的事件
@@ -79,7 +80,22 @@ export default function AllTemplate(props: any) {
     setEditable({ ...editable });
   }
 
-  const syncItemDataMap = () => {
+  // const syncItemDataMap = () => {
+  //   let temp = {}
+  //   Object.keys(editable).map((key: any) => {
+  //     if (typeof editable[key] == 'string' && editable[key]) {
+  //       temp[key] = editable[key]
+  //     } else if (editable[key]) {
+  //       temp[key] = editable[key].join(',')
+  //     }
+  //   })
+  //   props.onItemDataMapChange({ ...temp })
+  // }
+  const [editableSoup, setEditableSoup] = useState({} as any)
+  // 每一个大区域的ref数组
+  const refDom: Array<any> = []
+
+  useEffect(() => {
     let temp = {}
     Object.keys(editable).map((key: any) => {
       if (typeof editable[key] == 'string' && editable[key]) {
@@ -88,27 +104,36 @@ export default function AllTemplate(props: any) {
         temp[key] = editable[key].join(',')
       }
     })
-    props.onItemDataMapChange({ ...temp })
-  }
-  // 每一个大区域的ref数组
-  const refDom: Array<any> = []
-
+    if (JSON.stringify(temp) !== JSON.stringify(editableSoup)) {
+      setEditableSoup({ ...temp })
+      props.onItemDataMapChange && props.onItemDataMapChange(temp)
+    }
+  }, [editable])
   useEffect(() => {
-    // setRes(resTest.data.documentItemDtos)
-    foolowUp.getFollowUpContont({ formCode: props.formCode }).then(res => {
-      let respone = res.data.documentItemDtos
-      let titleObj = {}
-      setFormTitle(res.data.documentName)
-      getParams(respone)
-      respone.map((item: any) => {
-        titleObj[item.module] = titleObj[item.module] || []
-        titleObj[item.module].push(item)
+    Promise.all(
+      [foolowUp.getFollowUpContont({ formCode: props.formCode }),
+      followUpDetailService.getFormDetailById(props.masterId)
+      ]).then(res => {
+        let respone = res[0].data.documentItemDtos
+        let titleObj = {}
+        setFormTitle(res[0].data.documentName)
+        getParams(respone)
+        respone.map((item: any) => {
+          titleObj[item.module] = titleObj[item.module] || []
+          titleObj[item.module].push(item)
+        })
+        setRes(titleObj)
+        let itemDataMap = res[1].data.itemDataMap
+        Object.keys(itemDataMap).map((key: any, index: any) => {
+          if (typeof editable[key] == 'string') {
+            editable[key] = itemDataMap[key]
+          } else {
+            editable[key] = itemDataMap[key].split(',')
+          }
+        })
+        setEditable({ ...editable })
       })
-      setRes(titleObj)
-    }).catch((err: any) => {
-      setRes({})
-    })
-  }, [props.formCode])
+  }, [props.formCode, props.masterId])
 
   // 问卷分页
   useEffect(() => {
@@ -153,23 +178,23 @@ export default function AllTemplate(props: any) {
       }
     })
   }, [refDom])
-  useEffect(() => {
-    if (!props.itemDataMap) return
-    let isChange = false
-    foolowUp.getFollowUpContont({ formCode: props.formCode }).then(res => {
-      getParams(res.data.documentItemDtos)
-      Object.keys(props.itemDataMap).map((key: any, index: any) => {
-        if (typeof editable[key] == 'string' && editable[key] != props.itemDataMap[key]) {
-          editable[key] = props.itemDataMap[key]
-          isChange = true
-        } else if (editable[key] != props.itemDataMap[key].split(',')) {
-          editable[key] = props.itemDataMap[key].split(',')
-          isChange = true
-        }
-      })
-      if (isChange) setEditable({ ...editable })
-    })
-  }, [props.itemDataMap])
+  // useEffect(() => {
+  //   if (!props.itemDataMap) return
+  //   let isChange = false
+  //   foolowUp.getFollowUpContont({ formCode: props.formCode }).then(res => {
+  //     getParams(res.data.documentItemDtos)
+  //     Object.keys(props.itemDataMap).map((key: any, index: any) => {
+  //       if (typeof editable[key] == 'string' && editable[key] != props.itemDataMap[key]) {
+  //         editable[key] = props.itemDataMap[key]
+  //         isChange = true
+  //       } else if (editable[key] && props.itemDataMap[key] && editable[key] != props.itemDataMap[key].split(',')) {
+  //         editable[key] = props.itemDataMap[key].split(',')
+  //         isChange = true
+  //       }
+  //     })
+  //     if (isChange) setEditable({ ...editable })
+  //   })
+  // }, [props.itemDataMap])
 
   return <PageGroup>
     <div className="page-item">
