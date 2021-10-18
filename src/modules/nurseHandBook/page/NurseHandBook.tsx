@@ -230,7 +230,15 @@ export default observer(function MyCreateList() {
   const setDetailModal = (item: any) => {
     // window.open(item.path)
     setEditVisible2(true)
-    setPathChange(item.path)
+    let str:any = item.path;
+    let index = str.lastIndexOf("\.");
+    let type = str.substr(index+1,str.length);
+    console.log(type);
+    if(type=='jpg'||type=='png'||type=='pdf'){
+      setPathChange(item.path)
+    }else{
+      setPathChange(item.pdfPath)
+    }
     setIdChange(item.id)
   }
 
