@@ -1,3 +1,4 @@
+// 护士 暂时不拥有模块 审核管理、档案管理模块
 import React from "react";
 import { appStore, authStore } from "src/stores";
 
@@ -16,20 +17,21 @@ const baseConfig: navConfigItem[] = [
     name: "首页",
     path: "/home"
   },
-  {
-    name: "审核管理",
-    path: "/auditsManagement",
-    hidden: !authStore.isRoleManage
-  },
+  // {
+  //   name: "审核管理",
+  //   path: "/auditsManagement",
+  //   hidden: !authStore.isRoleManage
+  // },
   {
     name: "病区日志",
     path: "/wardLog"
     // hidden: !appStore.isDev
   },
-  {
-    name: "档案管理",
-    path: "/nurseFile",
-  },
+  // {
+  //   name: "档案管理",
+  //   path: "/nurseFile",
+  //   hidden: !authStore.isRoleManage
+  // },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',

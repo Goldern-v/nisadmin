@@ -47,25 +47,25 @@ export const meunConfig: meunConfigItem[] = [
         path: "/personnelManagement/personnelSecondment",
         component: PersonnelSecondment,
         style: { background: "#fff" },
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "排班套餐设置",
@@ -87,37 +87,37 @@ export const meunConfig: meunConfigItem[] = [
         title: "加减班列表查询",
         path: "/personnelManagement/addSubClass",
         component: AddSubClass,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "节假日查询",
         path: "/personnelManagement/holidaysList",
         component: HolidaysList,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",
         component: ArrangStatistics,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       },
       {
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
       }
     ]
   },

@@ -27,6 +27,7 @@ import { navConfig as navConfig_wjgdszd } from "./navConfig_wjgdszd";
 import { navConfig as navConfig_bhsrm } from "./navConfig_bhsrm";
 import { navConfig as navConfig_qzxyy } from "./navConfig_qzxyy";
 import { navConfig as navConfig_gxjb } from "./navConfig_gxjb";
+import { navConfig as navConfig_gxjbSelf } from "./navConfig_gxjbSelf";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -91,7 +92,6 @@ const MenuCon = observer(function (props: {
             style={itemHidden(item.hidden) ? { display: "none" } : {}}
             key={index}
             onClick={() => {
-              console.log("12321");
               toNavLink(item.path);
               item.onClick && item.onClick();
             }}
@@ -151,7 +151,9 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == 'fssdy') {
       return navConfig_fssdy
     } else if (appStore.HOSPITAL_ID == 'gxjb') {
-      return navConfig_gxjb
+      // return navConfig_gxjb
+      if (authStore.isRoleManage) return navConfig_gxjb;
+      else return navConfig_gxjbSelf;
     } else if (appStore.HOSPITAL_ID == 'fsxt') {
       return navConfig_fssdy
     }
