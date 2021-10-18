@@ -38,8 +38,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'dghl':
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
       // return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
-      // return 'http://192.168.20.61:9091' // 宏群本地
-      return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
+      return 'http://192.168.20.61:9091' // 宏群本地
+      // return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
 
     /** 聊城二院 */
     case 'lcey':

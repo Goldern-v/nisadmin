@@ -12,6 +12,7 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import ReactEcharts from 'echarts-for-react';
 import printing from 'printing'
+
 import { useRef } from 'src/types/react'
 const ButtonGroup = Button.Group;
 export interface Props { }
@@ -20,19 +21,10 @@ const api = new NurseSatisfactionSurveyService();
 export default observer(function MyCreateList() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const [date, setDate]: any = useState([])
+  const [date, setDate]: any = useState([moment(moment().format('YYYY-01')),moment(moment().format('YYYY-12'))])
   const [type, setType] = useState("表")
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
-
-  /** 类别 */
-  const pathMap: any = {
-    year: 'year',
-    month: 'month',
-    conclusion: 'conclusion',
-    innovation: 'innovation'
-  }
-  const path = window.location.hash.split('/').reverse()[0]
 
   const getOption = () => {
     let option = {
@@ -68,7 +60,7 @@ export default observer(function MyCreateList() {
       },
       series: [{
         type: 'bar',
-        name: '满意度',
+        name: '参与率',
         backgroundStyle: {
           color: 'rgba(84, 112, 198, 0.2)',
         },
@@ -76,7 +68,7 @@ export default observer(function MyCreateList() {
       },
       {
         type: 'bar',
-        name: '参与率',
+        name: '满意度',
         backgroundStyle: {
           color: 'rgba(146, 204, 118, 0.2)',
         },
@@ -228,6 +220,8 @@ export default observer(function MyCreateList() {
           }
         `
       })
+      document.body.removeChild(printbox)
+      chartsPart.classList.add('dis')
     }, 500);
   }
   const handleExport = () => {
@@ -310,6 +304,7 @@ export default observer(function MyCreateList() {
         }}
       />
       <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
+        <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
         <div className='echartsBody'>
           <ReactEcharts option={getOption()} />
         </div>
@@ -365,8 +360,11 @@ const Wrapper = styled.div`
   margin: 0 15px;
   margin-bottom: 15px;
   background-color: #fff;
+  h1{
+    text-align: center;
+  }
 }
 .echartsBody {
-  padding-top: 150px;
+  padding-top: 120px;
 }
 `

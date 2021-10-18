@@ -115,12 +115,12 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
       message.error('标题不能为空！')
       return
     }
-    let tempArr:any = JSON.parse(JSON.stringify(respondent))
-    respondent.map((item:any,index:any)=>{
+    let arr:any = []
+    respondent?.map((item:any,index:any)=>{
       if(!item.empNo){
-        let arr:any = []
         arr.splice(arr.length,0,...item.userList)
-        tempArr.splice(index,1,...arr)
+      }else{
+        arr.push(item)
       }
     })
     let startTime = openDate[0] ? moment(openDate[0]).format('YYYY-MM-DD') : ''
@@ -133,7 +133,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
         year: year,
         startTime,
         endTime,
-        participantList:tempArr,
+        participantList:arr,
         settingId:questionnaire,
       })
       .then((res) => {
@@ -149,7 +149,7 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
         year: year,
         startTime,
         endTime,
-        participantList:tempArr,
+        participantList:arr,
         settingId:questionnaire,
         id:params.id,
         status:params.status,
