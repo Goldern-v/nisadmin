@@ -37,27 +37,44 @@ export default function MainCon(props: Props) {
 
       // const printMethod = appStore.isDev ? printing.preview : printing
 
-      if (printEl)
-        printing(
-          printEl,
-          {
-            injectGlobalCss: true,
-            scanStyles: false,
-            css: `
-              @page{
-                margin: 0mm 0mm;
-                padding: 0mm 0mm;
-              }
-              .form-page-wrapper{
-                margin: 0 auto;
-              }
-              .page-item{
-                box-shadow: none!important;
-                page-break-after: always;
-              }
-            `
-          }
-        )
+      if (printEl) {
+        let html = printEl.parentElement?.innerHTML || ''
+        let inpArr = document.getElementsByTagName('input')
+
+
+        document.body.innerHTML = html
+        for (let i = 0; i < inpArr.length; i++) {
+          inpArr[i].checked = inpArr[i].getAttribute('data-checked') == 'true' ? true : false
+        }
+        window.print()
+        setTimeout(() => {
+          location.reload();
+        })
+      }
+
+      // printing(
+      //   printEl,
+      //   {
+      //     injectGlobalCss: true,
+      //     scanStyles: false,
+      //     css: `
+      //       @page{
+      //         margin: 0mm 0mm;
+      //         padding: 0mm 0mm;
+      //       }
+      //       .form-page-wrapper{
+      //         margin: 0 auto;
+      //       }
+      //       .page-item{
+      //         box-shadow: none!important;
+      //         page-break-after: always;
+      //       }
+      //       .white-part{
+      //         display:none!important;
+      //       }
+      //     `
+      //   }
+      // )
 
       setEditable(true)
     }, 300)

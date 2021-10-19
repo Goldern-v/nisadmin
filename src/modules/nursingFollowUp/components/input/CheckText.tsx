@@ -11,6 +11,7 @@ export default function CheckText(props: any) {
           name={props.name}
           value={props.saveValue}
           checked={props.checked}
+          data-checked={props.checked || false}
           onClick={props.checkEvent}
         />
         {props.value} - {props.prefixDescription}：
