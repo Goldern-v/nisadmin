@@ -25,6 +25,7 @@ export default observer(function MyCreateList() {
   const [type, setType] = useState("表")
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
+  const [monthList, setMonthList]: any = useState([])
 
   const getOption = () => {
     let option = {
@@ -45,7 +46,7 @@ export default observer(function MyCreateList() {
       },
       xAxis: {
         type: 'category',  // 设置为类目轴
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']  // 横坐标的刻度标签
+        data: monthList  // 横坐标的刻度标签
       },
       yAxis: {
         type: 'value',  // 设置为数值轴，该值有series的data传入
@@ -156,12 +157,15 @@ export default observer(function MyCreateList() {
         setPageLoading(false)
         let a: any = [];
         let b: any = [];
+        let c: any = [];
         res.data.list.map((item: any) => {
           a.push(item.participationRatePer.substring(0, item.participationRatePer.lastIndexOf('%')))
           b.push(item.satisfactionPer.substring(0, item.participationRatePer.lastIndexOf('%')))
+          c.push(item.month+"月")
         })
         setSatisfactionPerList(a)
         setParticipationRatePerList(b)
+        setMonthList(c)
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
@@ -172,7 +176,7 @@ export default observer(function MyCreateList() {
     printbox.id = "printpage"
     let titlebox = document.createElement('div')
     titlebox.className = 'print-title'
-    let title = `横沥医院${moment(date[0]).format('YYYY')}年${moment(date[0]).format('MM')}月 - ${moment(date[1]).format('MM')}月护士长满意度统计汇总`
+    let title = `横沥医院${moment(date[0]).format('YYYY')}年${moment(date[0]).format('MM')}月 - ${moment(date[1]).format('YYYY')}年${moment(date[1]).format('MM')}月护士长满意度统计汇总`
     titlebox.innerText = title
     let tablebox = (document.getElementById('baseTable') || document.createElement('div')).cloneNode(true)
     let chartsPart = document.getElementById('charts') || document.createElement('div')
@@ -306,7 +310,7 @@ export default observer(function MyCreateList() {
         }}
       />
       <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
-        <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
+        <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('YYYY')}年{moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
         <div className='echartsBody'>
           <ReactEcharts option={getOption()} />
         </div>
@@ -373,6 +377,6 @@ const Wrapper = styled.div`
   }
 }
 .echartsBody {
-  padding-top: 120px;
+  padding-top: 70px;
 }
 `
