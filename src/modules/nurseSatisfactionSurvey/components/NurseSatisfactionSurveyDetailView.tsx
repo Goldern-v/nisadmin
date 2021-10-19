@@ -106,7 +106,7 @@ export default observer(function followUpDetailView() {
     },
     {
       title: '评分',
-      dataIndex: 'totalscore',
+      dataIndex: 'totalScore',
       width: 50,
       align: 'center'
     },
