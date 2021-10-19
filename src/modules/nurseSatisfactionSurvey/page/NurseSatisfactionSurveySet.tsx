@@ -19,28 +19,13 @@ export interface Props { }
 const api = new NurseSatisfactionSurveyService();
 
 export default observer(function MyCreateList() {
-  const [year, setYear] = useState<Number>(+moment().format('YYYY'))
-  const [month, setMonth] = useState<String>('')
-  const [state, setState] = useState<String>('')
-  const [templateList, setTemplateList]: any = useState([])
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
-  const [deptSelect, setDeptSelect] = useState('')
-  const [yearList, setYearList] = useState([] as number[])
-  const [monthList, setMonthList] = useState([] as string[])
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [editVisible, setEditVisible] = useState(false)
   const [editVisible2, setEditVisible2] = useState(false)
-  const [pathChange, setPathChange] = useState("")
-  const [idChange, setIdChange] = useState("")
   const [date, setDate]: any = useState([])
   const [previewPaperData, setPreviewPaperData]: any = useState([])
-  const [isAdd, setIsAdd] = useState(false)
-  const [record, setRecord] = useState({} as any)
-
    //是否启用
    const changeStatus = (record: any, check: any) => {
     record.useStatus = check ? 1 : 0
@@ -148,7 +133,6 @@ export default observer(function MyCreateList() {
       })
       .then((res) => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
