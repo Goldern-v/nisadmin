@@ -41,7 +41,7 @@ export default observer(function MyCreateList() {
         source: []
       },
       grid: {
-        height: 220
+        height: 400
       },
       xAxis: {
         type: 'category',  // 设置为类目轴
@@ -221,7 +221,9 @@ export default observer(function MyCreateList() {
         `
       })
       document.body.removeChild(printbox)
-      chartsPart.classList.add('dis')
+      if(type == "表"){
+        chartsPart.classList.add('dis')
+      }
     }, 500);
   }
   const handleExport = () => {
@@ -326,6 +328,7 @@ const Wrapper = styled.div`
 .active1{
   color: #f6ac4b;
 }
+
 .boxButton {
   display:flex;
   border-radius: 5px;
@@ -362,6 +365,11 @@ const Wrapper = styled.div`
   background-color: #fff;
   h1{
     text-align: center;
+  }
+  .echartsBody{
+    .echarts-for-react {
+      height: 500px !important;
+    }
   }
 }
 .echartsBody {
