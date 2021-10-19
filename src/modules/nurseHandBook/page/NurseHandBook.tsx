@@ -44,7 +44,10 @@ export default observer(function MyCreateList() {
     year: 'year',  
     month: 'month',
     conclusion: 'conclusion',
-    innovation: 'innovation'
+    innovation: 'innovation',
+    businessStudy: 'businessStudy',
+    meetingRecord: 'meetingRecord',
+    holidayRecord: 'holidayRecord',
   }
   const path = window.location.hash.split('/').reverse()[0]
   
@@ -231,13 +234,16 @@ export default observer(function MyCreateList() {
     // window.open(item.path)
     setEditVisible2(true)
     let str:any = item.path;
+    let pdfStr:any = item.pdfPath;
     let index = str.lastIndexOf("\.");
     let type = str.substr(index+1,str.length);
-    console.log(type);
+    let start = str.indexOf("/crNursing/")
     if(type=='jpg'||type=='png'||type=='pdf'){
-      setPathChange(item.path)
+      let path = str.substring(start,start+item.path.length)
+      setPathChange(path)
     }else{
-      setPathChange(item.pdfPath)
+      let pdfPath = pdfStr.substring(start,start+pdfStr.length)
+      setPathChange(pdfPath)
     }
     setIdChange(item.id)
   }
@@ -311,7 +317,9 @@ export default observer(function MyCreateList() {
       {status == 'month' &&  <PageTitle>护士长月计划</PageTitle>}
       {status == 'conclusion' &&  <PageTitle>护士长年总结</PageTitle>}
       {status == 'innovation' &&  <PageTitle>护理创新项目记录</PageTitle>}
-       
+      {status == 'businessStudy' &&  <PageTitle>业务学习项目</PageTitle>}
+      {status == 'meetingRecord' &&  <PageTitle>管理小组会议记录</PageTitle>}
+      {status == 'holidayRecord' &&  <PageTitle>公休会记录</PageTitle>}
         <Place />
         <span className='label'>年份:</span>
         <Select
