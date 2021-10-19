@@ -42,7 +42,7 @@ export default observer(function MyCreateList() {
         source: []
       },
       grid: {
-        height: 400
+        height: 350
       },
       xAxis: {
         type: 'category',  // 设置为类目轴
@@ -372,7 +372,7 @@ const Wrapper = styled.div`
   }
   .echartsBody{
     .echarts-for-react {
-      height: 500px !important;
+      height: 450px !important;
     }
   }
 }
