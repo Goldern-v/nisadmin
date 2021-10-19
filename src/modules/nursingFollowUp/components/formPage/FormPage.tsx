@@ -114,4 +114,24 @@ const Wrapper = styled.div`
       border-bottom: 1px solid #000;
     }
   }
+  @media print{
+    .white-part{
+      background:#fff;
+      box-shadow: none!important;
+    }
+    .white-top{
+      box-shadow: none!important;
+    }
+    .white-bottom{
+      box-shadow: none!important;
+    }
+    .page-item{
+      box-shadow: none!important;
+      page-break-after: always;
+    }
+    @page{
+      margin:0mm;
+    }
+    margin:0;
+  }
 `

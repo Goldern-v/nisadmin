@@ -7,6 +7,7 @@ import CheckboxItem from "../../input/CheckboxItem"
 import InputItem from "../../input/InputItem"
 import CheckText from "../../input/CheckText"
 import { followUpDetailService } from '../../../views/followUpDetailView/services/FollowUpDetailService'
+import moment from 'src/vendors/moment'
 
 export default function AllTemplate(props: any) {
   // 渲染的问卷题目数据
@@ -80,17 +81,6 @@ export default function AllTemplate(props: any) {
     setEditable({ ...editable });
   }
 
-  // const syncItemDataMap = () => {
-  //   let temp = {}
-  //   Object.keys(editable).map((key: any) => {
-  //     if (typeof editable[key] == 'string' && editable[key]) {
-  //       temp[key] = editable[key]
-  //     } else if (editable[key]) {
-  //       temp[key] = editable[key].join(',')
-  //     }
-  //   })
-  //   props.onItemDataMapChange({ ...temp })
-  // }
   const [editableSoup, setEditableSoup] = useState({} as any)
   // 每一个大区域的ref数组
   const refDom: Array<any> = []
@@ -110,29 +100,43 @@ export default function AllTemplate(props: any) {
     }
   }, [editable])
   useEffect(() => {
-    Promise.all(
-      [foolowUp.getFollowUpContont({ formCode: props.formCode }),
-      followUpDetailService.getFormDetailById(props.masterId)
-      ]).then(res => {
-        let respone = res[0].data.documentItemDtos
+    if (props.masterId) {
+      Promise.all(
+        [foolowUp.getFollowUpContont({ formCode: props.formCode }),
+        followUpDetailService.getFormDetailById(props.masterId)
+        ]).then(res => {
+          let respone = res[0].data.documentItemDtos
+          let titleObj = {}
+          setFormTitle(res[0].data.documentName)
+          getParams(respone)
+          respone.map((item: any) => {
+            titleObj[item.module] = titleObj[item.module] || []
+            titleObj[item.module].push(item)
+          })
+          setRes(titleObj)
+          let itemDataMap = res[1].data.itemDataMap
+          Object.keys(itemDataMap).map((key: any, index: any) => {
+            if (typeof editable[key] == 'string') {
+              editable[key] = itemDataMap[key]
+            } else {
+              editable[key] = itemDataMap[key].split(',')
+            }
+          })
+          setEditable({ ...editable })
+        })
+    } else {
+      foolowUp.getFollowUpContont({ formCode: props.formCode }).then(res => {
+        let respone = res.data.documentItemDtos
         let titleObj = {}
-        setFormTitle(res[0].data.documentName)
+        setFormTitle(res.data.documentName)
         getParams(respone)
         respone.map((item: any) => {
           titleObj[item.module] = titleObj[item.module] || []
           titleObj[item.module].push(item)
         })
         setRes(titleObj)
-        let itemDataMap = res[1].data.itemDataMap
-        Object.keys(itemDataMap).map((key: any, index: any) => {
-          if (typeof editable[key] == 'string') {
-            editable[key] = itemDataMap[key]
-          } else {
-            editable[key] = itemDataMap[key].split(',')
-          }
-        })
-        setEditable({ ...editable })
       })
+    }
   }, [props.formCode, props.masterId])
 
   // 问卷分页
@@ -140,7 +144,7 @@ export default function AllTemplate(props: any) {
     if (length == refDom.length) return
     setLength(refDom.length)
     // 问卷总高度
-    let height = 1000;
+    let height = 1096;
     // 遍历目录级别区域ref元素数组
     refDom.map((item: any, index: any) => {
       // 小题目级别,以下用htmlArr代替
@@ -151,25 +155,25 @@ export default function AllTemplate(props: any) {
         if (item.offsetTop + 24 > height - 30) {
           let marginTop = height - item.offsetTop
           // 如果是,则给当前目录区域添加上外边距,使其达到分页的视觉效果
-          item.style.marginTop = marginTop + 20 + 40 + 'px'
+          item.style.marginTop = marginTop + 20 + 40 + 10 + 'px'
           // 换页/更改当前问卷页高度
           height += 1020
         }
         // 判断答题区域是否超出问卷高度
         else if (item.children[1].offsetTop > height - 30) {
           let marginTop = height - item.children[1].offsetTop
-          item.children[1].style.marginTop = marginTop + 20 + 40 + 'px'
+          item.children[1].style.marginTop = marginTop + 20 + 40 + 10 + 'px'
           height += 1020
           // 判断每一道题的区域是否超出问卷高度
         } else if (item.children[1].offsetTop + htmlArr[i].offsetTop + htmlArr[i].offsetHeight > height - 30) {
           let marginTop = height - (item.children[1].offsetTop + htmlArr[i].offsetTop)
-          htmlArr[i].style.marginTop = marginTop + 20 + 40 + 'px'
+          htmlArr[i].style.marginTop = marginTop + 20 + 40 + 10 + 'px'
           height += 1020
         }
       }
       // 计算问卷画到目录最后一个区域时共需多少页
       if (index == refDom.length - 1) {
-        let length = (height - 1000) / 1020
+        let length = (height - 1096) / 1020
         let arr = []
         for (let i = 0; i < length; i++) {
           arr.push(1)
@@ -178,23 +182,6 @@ export default function AllTemplate(props: any) {
       }
     })
   }, [refDom])
-  // useEffect(() => {
-  //   if (!props.itemDataMap) return
-  //   let isChange = false
-  //   foolowUp.getFollowUpContont({ formCode: props.formCode }).then(res => {
-  //     getParams(res.data.documentItemDtos)
-  //     Object.keys(props.itemDataMap).map((key: any, index: any) => {
-  //       if (typeof editable[key] == 'string' && editable[key] != props.itemDataMap[key]) {
-  //         editable[key] = props.itemDataMap[key]
-  //         isChange = true
-  //       } else if (editable[key] && props.itemDataMap[key] && editable[key] != props.itemDataMap[key].split(',')) {
-  //         editable[key] = props.itemDataMap[key].split(',')
-  //         isChange = true
-  //       }
-  //     })
-  //     if (isChange) setEditable({ ...editable })
-  //   })
-  // }, [props.itemDataMap])
 
   return <PageGroup>
     <div className="page-item">
@@ -312,6 +299,8 @@ export default function AllTemplate(props: any) {
 }
 const PageGroup = styled.div`
   .page-item{
+    height:29cm;
+    width:21cm;
     padding: 30px 40px!important;
     margin-bottom:20px;
     position:relative;
