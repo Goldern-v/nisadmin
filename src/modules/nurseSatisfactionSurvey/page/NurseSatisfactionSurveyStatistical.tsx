@@ -12,6 +12,7 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import ReactEcharts from 'echarts-for-react';
 import printing from 'printing'
+
 import { useRef } from 'src/types/react'
 const ButtonGroup = Button.Group;
 export interface Props { }
@@ -20,19 +21,11 @@ const api = new NurseSatisfactionSurveyService();
 export default observer(function MyCreateList() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const [date, setDate]: any = useState([])
+  const [date, setDate]: any = useState([moment(moment().format('YYYY-01')),moment(moment().format('YYYY-12'))])
   const [type, setType] = useState("表")
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
-
-  /** 类别 */
-  const pathMap: any = {
-    year: 'year',
-    month: 'month',
-    conclusion: 'conclusion',
-    innovation: 'innovation'
-  }
-  const path = window.location.hash.split('/').reverse()[0]
+  const [monthList, setMonthList]: any = useState([])
 
   const getOption = () => {
     let option = {
@@ -49,11 +42,11 @@ export default observer(function MyCreateList() {
         source: []
       },
       grid: {
-        height: 220
+        height: 350
       },
       xAxis: {
         type: 'category',  // 设置为类目轴
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']  // 横坐标的刻度标签
+        data: monthList  // 横坐标的刻度标签
       },
       yAxis: {
         type: 'value',  // 设置为数值轴，该值有series的data传入
@@ -68,7 +61,7 @@ export default observer(function MyCreateList() {
       },
       series: [{
         type: 'bar',
-        name: '满意度',
+        name: '参与率',
         backgroundStyle: {
           color: 'rgba(84, 112, 198, 0.2)',
         },
@@ -76,7 +69,7 @@ export default observer(function MyCreateList() {
       },
       {
         type: 'bar',
-        name: '参与率',
+        name: '满意度',
         backgroundStyle: {
           color: 'rgba(146, 204, 118, 0.2)',
         },
@@ -164,12 +157,15 @@ export default observer(function MyCreateList() {
         setPageLoading(false)
         let a: any = [];
         let b: any = [];
+        let c: any = [];
         res.data.list.map((item: any) => {
           a.push(item.participationRatePer.substring(0, item.participationRatePer.lastIndexOf('%')))
           b.push(item.satisfactionPer.substring(0, item.participationRatePer.lastIndexOf('%')))
+          c.push(item.month+"月")
         })
         setSatisfactionPerList(a)
         setParticipationRatePerList(b)
+        setMonthList(c)
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
@@ -180,7 +176,7 @@ export default observer(function MyCreateList() {
     printbox.id = "printpage"
     let titlebox = document.createElement('div')
     titlebox.className = 'print-title'
-    let title = `横沥医院${moment(date[0]).format('YYYY')}年${moment(date[0]).format('MM')}月 - ${moment(date[1]).format('MM')}月护士长满意度统计汇总`
+    let title = `横沥医院${moment(date[0]).format('YYYY')}年${moment(date[0]).format('MM')}月 - ${moment(date[1]).format('YYYY')}年${moment(date[1]).format('MM')}月护士长满意度统计汇总`
     titlebox.innerText = title
     let tablebox = (document.getElementById('baseTable') || document.createElement('div')).cloneNode(true)
     let chartsPart = document.getElementById('charts') || document.createElement('div')
@@ -228,6 +224,10 @@ export default observer(function MyCreateList() {
           }
         `
       })
+      document.body.removeChild(printbox)
+      if(type == "表"){
+        chartsPart.classList.add('dis')
+      }
     }, 500);
   }
   const handleExport = () => {
@@ -310,6 +310,7 @@ export default observer(function MyCreateList() {
         }}
       />
       <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
+        <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('YYYY')}年{moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
         <div className='echartsBody'>
           <ReactEcharts option={getOption()} />
         </div>
@@ -331,6 +332,7 @@ const Wrapper = styled.div`
 .active1{
   color: #f6ac4b;
 }
+
 .boxButton {
   display:flex;
   border-radius: 5px;
@@ -365,8 +367,16 @@ const Wrapper = styled.div`
   margin: 0 15px;
   margin-bottom: 15px;
   background-color: #fff;
+  h1{
+    text-align: center;
+  }
+  .echartsBody{
+    .echarts-for-react {
+      height: 450px !important;
+    }
+  }
 }
 .echartsBody {
-  padding-top: 150px;
+  padding-top: 70px;
 }
 `

@@ -9,6 +9,7 @@ export default function RadioItem(props: any) {
           name={props.name}
           value={props.saveValue}
           checked={props.checked}
+          data-checked={props.checked || false}
           onClick={props.event}
         />{props.value}
       </label>

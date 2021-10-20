@@ -7,6 +7,7 @@ import { appStore, authStore } from 'src/stores'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import BaseTable from 'src/components/BaseTable'
 import { fileDownload } from 'src/utils/file/file'
+import FormPageBody from '../components/FormPageBody'
 
 const api = new NurseSatisfactionSurveyService();
 import { DoCon } from 'src/components/BaseTable'
@@ -20,6 +21,8 @@ export default observer(function followUpDetailView() {
   const [total, setTotal]: any = useState(0)
   const [data, setData]: any = useState([])
   const [surveyTitle, setSurveyTitle]: any = useState("")
+  const [editVisible, setEditVisible] = useState(false)
+  const [previewPaperData, setPreviewPaperData]: any = useState([])
 
   const onload = () => {
     let id = queryObj.Id
@@ -38,7 +41,11 @@ export default observer(function followUpDetailView() {
   }, [])
 
   const onDetail = (record: any) => {
-    appStore.history.push(`/nurseSatisfactionSurveyDetailView/?Id=${record.id}`)
+    api.getAppPaper(record.fillRecordId)
+    .then((res) => {
+      setEditVisible(true)
+      setPreviewPaperData(res.data)
+    }, err => setPageLoading(false))
   }
 
   const handleExport = () => {
@@ -99,7 +106,7 @@ export default observer(function followUpDetailView() {
     },
     {
       title: '评分',
-      dataIndex: 'totalscore',
+      dataIndex: 'totalScore',
       width: 50,
       align: 'center'
     },
@@ -162,7 +169,11 @@ export default observer(function followUpDetailView() {
         }}
       />
     </div>
-    
+    <FormPageBody
+        visible={editVisible}
+        previewPaperData={previewPaperData}
+        onOk={() => setEditVisible(false)}
+        onCancel={() => setEditVisible(false)} />
   </Wrapper>
 })
 

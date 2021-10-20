@@ -40,14 +40,14 @@ export default function editModal(props: Props) {
         {previewPaperData?.questionList?.map((item: any, idx: any) =>
         <div className="body" key={idx}>
           <div className="title">
-            {item.sortNum}、<span className={item.questionType==1?"questionType":"questionType essayQuestion"}>{item.questionType==1?"[单选题]":"[问答题]"}</span>
-            {item.questionContent}
+            {item.sortNum}、<span className={item.questionType==1?"questionType":"questionType"}>{item.questionType==1?"[单选题]":"[问答题]"}</span>
+          <p>{item.questionContent}</p>
           </div>
-          {previewPaperData?.questionList[idx]?.choiceList.map((item: any, i: any) =>
-          <div className="options" key={`${idx}_${i}`}>{item.questionOption}、{item.optionContent}
+          {item.questionType==1&&previewPaperData?.questionList[idx]?.choiceList.map((e: any, i: any) =>
+          <div className="options" key={`${idx}_${i}`}><span className={e.isSelected==1?"check":"dis"}><Icon type="check" style={{fontSize:"20px"}}/></span>{e.questionOption}、{e.optionContent}({e.optionScore}分)
           </div>
           )}
-          
+          {item.questionType==2&&<div className="essayQuestion">&nbsp;&nbsp;{item.shortQuestionAnswer}</div>}
         </div>)}
       </div>
     </Wrapper>
@@ -108,12 +108,15 @@ const Wrapper = styled.div`
       color: #f69d2a;
     }
     .title{
+      width: 90%;
       font-size: 16px;
       display: flex;
-      justify-content: start;
-      line-height :  22px ;
+      line-height: 22px ;
       span{
-        width: 80px;
+        width: 70px;
+      }
+      p{
+        width: 80%;
       }
     }
     .options{
@@ -121,9 +124,22 @@ const Wrapper = styled.div`
       height: 25px;
       line-height: 25px;
       margin-left: 10px;
+      position: relative;
     }
     .essayQuestion{
-      margin-bottom: 100px;
+      width: 80%;
+      line-height: 22px ;
+      min-height: 70px;
+      font-size: 16px;
+    }
+    .check{
+      color: #03b615;
+      position: absolute;
+      left: -4px;
+      top: 4px;
+    }
+    .dis{
+      display: none;
     }
   }
 `

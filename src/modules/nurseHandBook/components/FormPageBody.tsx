@@ -19,6 +19,7 @@ export interface Props {
 export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp, path, id } = props
   const [loading, setLoading] = useState(false)
+  const [pdf, setPdf] = useState(false)
   const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "90vh"}
   const afterClose = () => {
@@ -30,9 +31,18 @@ export default function editModal(props: Props) {
       fileDownload(res)
     })
   }
-  let str:any = path;
-  let index = str.lastIndexOf("\.");
-  let type = str.substr(index+1,str.length);
+
+  useEffect(() => {
+    initData()
+  }, [props.path])
+
+  const initData = () => {
+    let str:any = path;
+    let index = str.lastIndexOf("\.");
+    let type = str.substr(index+1,str.length);
+    let arrList = ["pdf","doc","docx","ppt","pptx","xls","xlsx"]
+    setPdf(arrList.includes(type))
+  }
   
   return <Modal
     title={"文档预览"}
@@ -56,9 +66,11 @@ export default function editModal(props: Props) {
     onCancel={() => onCancel()}>
     <Wrapper>
       <div className="father">
-      {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
+      {/* {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
       {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
-      {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />}
+      {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />} */}
+      {pdf && <div className="back"></div>}
+      <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />
       </div>
     </Wrapper>
   </Modal>

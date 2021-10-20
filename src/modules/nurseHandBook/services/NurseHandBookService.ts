@@ -1,5 +1,16 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
+import { appStore } from "src/stores";
+
+const hospitalPath: string =
+  appStore.hisMatch({
+    map: {
+      dghl: 'export',
+      gzsrm: 'exportSgy',
+      default: 'export',
+    },
+    vague: true,
+  })
 export default class NurseHandBookService extends BaseApiService {
   /*查询分页*/
   public getPage(type: string, obj: PageOptions | any) {
@@ -23,7 +34,7 @@ export default class NurseHandBookService extends BaseApiService {
   }
   /*导出文件*/
   public export(type: string, obj: PageOptions | any) {
-    return this.post(`/nurseManual/export/${type}`, obj ,{ responseType: 'blob' })
+    return this.post(`/nurseManual/${hospitalPath}/${type}`, obj ,{ responseType: 'blob' })
   }
   /*删除附件*/
   public deleteAttachment(id: string) {
