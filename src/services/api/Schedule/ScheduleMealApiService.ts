@@ -67,4 +67,8 @@ export default class ScheduleMealApiService extends BaseApiService {
     }
     return this.post(`/schMealSetting/saveOrUpdate`, postData)
   }
+  // 5.武汉班次套餐查询是否责护
+  public async check (id: string) {
+    return this.get(`/schShiftSetting/check/${id}`)
+  }
 }
