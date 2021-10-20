@@ -11,7 +11,6 @@ import { meunConfig as menuConfig_dghl } from "./config/menuConfig_dghl";
 import { meunConfig as menuConfig_lcey } from "./config/menuConfig_lcey";
 import { meunConfig as menuConfig_gzsrm } from "./config/menuConfig_gzsrm";
 import { meunConfig as menuConfig_gxjb } from "./config/menuConfig_gxjb";
-import { meunConfig as menuConfig_gxjbSelf } from "./config/menuConfig_gxjbSelf";
 
 export interface Props {
 }
@@ -37,19 +36,31 @@ export default function PersonnelManagementView() {
       case 'fssdy':
         return menuConfig_wh;
       case 'gxjb':
-        // return menuConfig_wh;
-        if (authStore.isRoleManage) return menuConfig_gxjb;
-        return menuConfig_gxjbSelf
+        return menuConfig_gxjb;
+        // if (authStore.isRoleManage) return menuConfig_gxjb;
+        // return menuConfig_gxjbSelf
       case 'fsxt':
         return menuConfig_wh;
       default:
         return menuConfig_hj;
     }
   })();
+  const list = ((array: any) => {
+    return array.map((item: any) => {
+      if (item.iSlimit) {
+        if (!item.special) item['hide'] = !authStore.isRoleManage
+        else item['hide'] = !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+      }
+      if (item.children?.length > 0) {
+        list(item.children)
+      }
+      return item
+    })
+  })
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={leftMenuConfig} />
+      <LeftMenuPage leftMenuConfig={list(leftMenuConfig)} />
     </Wrapper>
   );
 }

@@ -22,6 +22,7 @@ export interface meunConfigItem {
   children?: meunConfigItem[];
   hide?: boolean | Function;
   style?: React.CSSProperties;
+  iSlimit?: boolean | Function;
 }
 
 export const meunConfig: meunConfigItem[] = [
@@ -39,31 +40,36 @@ export const meunConfig: meunConfigItem[] = [
         title: "科室借用",
         path: "/personnelManagement/DeptBorrowNew",
         component: DeptBorrowNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "积假设置",
@@ -74,25 +80,29 @@ export const meunConfig: meunConfigItem[] = [
         title: "加减班列表查询",
         path: "/personnelManagement/addSubClass",
         component: AddSubClass,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班统计属性统计",
         path: "/personnelManagement/nurseByShiftView",
         component: NurseByShiftView,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "科室排班统计",
         path: "/personnelManagement/departmentByShiftView",
         component: DepartmentByShiftView,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       }
     ]
   },
@@ -102,7 +112,8 @@ export const meunConfig: meunConfigItem[] = [
         {
           title: "请假管理",
           path: "/personnelManagement/请假管理",
-          hide: !authStore.isRoleManage,
+          // hide: !authStore.isRoleManage,
+          iSlimit: true,
           children: [
             {
               title: "请假审核",
