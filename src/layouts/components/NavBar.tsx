@@ -447,6 +447,7 @@ const RightCon = styled.div`
   font-size: 13px;
   color: #fff;
   margin-right: 15px;
+  min-width: 132px;
   span {
     height: 50px;
     line-height: 50px;
