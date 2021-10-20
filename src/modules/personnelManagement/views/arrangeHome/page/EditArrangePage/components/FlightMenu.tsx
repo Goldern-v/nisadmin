@@ -202,8 +202,11 @@ function MealCon(props: { dataSource: any[] }) {
     }
   `;
 
-  const onClick = (item: any) => {
+  const onClick = async (item: any) => {
     /** 套餐同步 */
+    if (appStore.HOSPITAL_ID == 'wh') {
+      let res = await service.scheduleMealApiService.checkMeal(item.id)
+    }
     if (sheetViewModal.selectedCell) {
       let list = sheetViewModal.getSelectCellList(true);
       for (let i = 0; i < list.length; i++) {
