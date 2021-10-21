@@ -21,6 +21,9 @@ export interface Props {}
 export default observer(function AddSubClass() {
   const [searchWord, setSearchWord] = useState("");
   const [dataSource, setDataSource] = useState([]);
+  const [addCount, setAddCount] = useState("0");
+  const [subCount, setSubCount] = useState("0");
+  const [totalCount, setTotalCount] = useState("0");
   const [pageLoading, setPageLoading] = useState(false);
   const [selectedStatusType, setSelectedStatusType] = useState("");
   const [publishType, setPublishType]: any = useState(1); // 状态
@@ -136,6 +139,21 @@ export default observer(function AddSubClass() {
         setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 });
         setPageLoading(false);
       });
+    arrangeService
+    .getCount({
+      ...pageOptions,
+      wardCode: authStore.selectedDeptCode,
+      statusType: selectedStatusType,
+      empNo: searchWord,
+      publishType,
+      startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
+      endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
+    })
+    .then(res => {
+      setAddCount(res.data.addCount)
+      setSubCount(res.data.subCount)
+      setTotalCount(res.data.totalCount)
+    });
   };
 
   const onDetail = (record: any) => {};
@@ -149,6 +167,11 @@ export default observer(function AddSubClass() {
       <PageHeader>
         <PageTitle maxWidth={1450}>加减班记录查询</PageTitle>
         <Place />
+        <div className="sum">
+          <span>加班总和：{addCount}</span>
+          <span>减班总和：{subCount}</span>
+          <span>全部总和：{totalCount}</span>
+        </div>
         <span className="label">日期:</span>
         <DatePicker.RangePicker
           allowClear={true}
@@ -218,4 +241,12 @@ export default observer(function AddSubClass() {
     </Wrapper>
   );
 });
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+.sum{
+  width: 300px;
+  display: flex;
+  margin-right: 50px;
+  justify-content: space-evenly;
+  font-weight: 700;
+}
+`;
