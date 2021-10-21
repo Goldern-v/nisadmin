@@ -11,9 +11,15 @@ export interface Props {
 }
 
 export default observer(function BalanceHour(props: Props) {
+  let total = balanceHour(props.id)
+  return <Wrapper>{total}</Wrapper>;
+});
+
+export const balanceHour = (id: any) => {
+ 
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
-    return item.id == props.id;
+    return item.id == id;
   });
   if (user) {
     list = user.settingDtos;
@@ -51,15 +57,10 @@ export default observer(function BalanceHour(props: Props) {
       // real_balanceHour = real_week;
     }
   }
+  return Number(user.balanceHour + real_balanceHour - user.current_balanceHour).toFixed(1)
 
-  return (
-    <Wrapper>
-      {Number(
-        user.balanceHour + real_balanceHour - user.current_balanceHour
-      ).toFixed(1)}
-    </Wrapper>
-  );
-});
+}
+
 const Wrapper = styled.div`
   margin: 0 -2px;
   input {

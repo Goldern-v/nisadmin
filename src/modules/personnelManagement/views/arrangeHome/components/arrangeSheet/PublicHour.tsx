@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
-import { observer } from "src/vendors/mobx-react-lite.ts";
+import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../types/Sheet";
 import { Input, message } from "src/vendors/antd";
@@ -10,9 +10,14 @@ export interface Props {
 }
 
 export default observer(function PublicHour(props: Props) {
+  let total = publicHour(props.id)
+  return <Wrapper className={total < 0 ? "public-hour-warning" : ""}>{total}</Wrapper>;
+});
+
+export const publicHour = (id: any) => {
   let user =
     sheetViewModal.sheetTableData.find((item: any) => {
-      return item.id == props.id;
+      return item.id == id;
     }) || {};
 
   /** 计算总公修 */
@@ -30,12 +35,8 @@ export default observer(function PublicHour(props: Props) {
   if (total < 0) {
     message.warning(`${user.empName}的公休天数小于0，请修正`);
   }
-  return (
-    <Wrapper className={total < 0 ? "public-hour-warning" : ""}>
-      {total}
-    </Wrapper>
-  );
-});
+  return Number(total)
+}
 const Wrapper = styled.div`
   margin: 0 -2px;
   input {

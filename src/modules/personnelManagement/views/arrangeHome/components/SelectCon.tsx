@@ -239,6 +239,32 @@ export default observer(function SelectCon() {
           printModal.printArrangeNys(visibleArr)
         }
       })
+    } else if (appStore.HOSPITAL_ID == "dghl") {
+      let visibleArr = ['empNo', 'groupName', 'nurseHierarchy', 'newTitle', 'year', 'thisWeekHour', 'thisWeekHoliday', 'balanceHour','totalHoliday']
+      Modal.confirm({
+        title: '选择要打印的列',
+        centered: true,
+        width: 660,
+        content: <div style={{ marginTop: 30 }}>
+          <Checkbox.Group
+            defaultValue={visibleArr}
+            onChange={(newArr: any[]) => visibleArr = newArr}>
+            <Checkbox value="empNo">工号</Checkbox>
+            <Checkbox value="groupName">分组名称</Checkbox>
+            <Checkbox value="nurseHierarchy">层级</Checkbox>
+            <Checkbox value="newTitle">职称</Checkbox>
+            <Checkbox value="year">年限</Checkbox><br/>
+            <Checkbox value="thisWeekHour">本周上班时数</Checkbox>
+            <Checkbox value="thisWeekHoliday">本周结余时数</Checkbox>
+            <Checkbox value="balanceHour">累计结余</Checkbox>
+            <Checkbox value="totalHoliday">年假天数</Checkbox>
+          </Checkbox.Group>
+        </div>,
+        onOk: () => {
+          // console.log(visibleArr)
+          printModal.printArrangeDghl(visibleArr)
+        }
+      })
     } else if (appStore.HOSPITAL_ID == "dgxg") {
       printModal.printArrangeDgxg();
     } else {
@@ -487,7 +513,7 @@ export default observer(function SelectCon() {
         )}
         {appStore.hisMatch({
           map: {
-            'hj,nys,dgxg': (
+            'hj,nys,dgxg,dghl': (
               <div className="item">
                 <Button
                   className="statistics getExcel"
