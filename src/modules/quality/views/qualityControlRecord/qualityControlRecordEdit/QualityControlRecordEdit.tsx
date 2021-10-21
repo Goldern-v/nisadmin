@@ -55,8 +55,8 @@ export default observer(function QualityControlRecordEdit() {
               other: [7],
             }
           })
-
-          if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
+          //贵州不做数字校验
+          if (!['gzsrm'].includes(appStore.HOSPITAL_ID) && (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)) {
             qcModel.setMasterErrObj(x, true)
             masterErr = true
             errMsg = `住院号必须为${inpNoLengthArr.join(',')}位数字`
