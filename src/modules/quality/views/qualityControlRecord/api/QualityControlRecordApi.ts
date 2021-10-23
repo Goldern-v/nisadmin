@@ -119,6 +119,31 @@ export default class QualityControlRecordApi extends BaseApiService {
   public async getListByAppointUserCode(qcCode: string, wardCode: string, appointUserCode: string) {
     return this.post(`/qcItem/dict/getListByAppointUserCode`, { qcCode, wardCode, appointUserCode })
   }
+  /**
+   * 我创建的（贵州）
+   * 待我处理的（贵州）
+   * @param data 
+   * @returns 
+   */
+  public async getPageByNewNoType(readWay:number=-3,data: any) {
+    console.log(readWay)
+    console.log("readWay")
+    switch(readWay.toString()){
+      case '-3':
+        //我创建的（贵州）
+        return this.post(`/qcItem/instance/getPageByCreatorNo`, data);
+      case '-4':
+        //待我处理的（贵州）
+        return this.post(`/qcItem/instance/getPageCanHandle`, data);
+      case '-5':
+        //我已处理的（贵州）
+        return this.post(`/qcItem/instance/getPageByMyHandled`, data);
+      default:
+        //我创建的（贵州）
+        return this.post(`/qcItem/instance/getPageByCreatorNo`, data);
+    }
+    //return this.post(`/qcItem/instance/getPageByCreatorNo`, data)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()
