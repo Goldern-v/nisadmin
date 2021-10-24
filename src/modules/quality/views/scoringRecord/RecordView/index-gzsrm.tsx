@@ -23,8 +23,10 @@ export default observer((props: Props) => {
   const [master, setMaster]: any = useState({})
   const [process, setProcess]: any[] = useState([])
   const [form, setForm]: any = useState({})
-  const [num, setNum]: any = useState('')
+  // const [num, setNum]: any = useState('')
   const setFormItem = (item: object) => {
+    console.log(form, 89)
+    console.log(item, 8)
     const keys = ['SR0004021','SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011']
     const sum = keys.reduce((acc: number, cur: string) => {
       const val = form[cur]
@@ -58,7 +60,8 @@ export default observer((props: Props) => {
     setMaster(data.master)
     setProcess(data.handlenodeDto)
     setFormItem(data.itemDataMap)
-    setNum(data.itemDataMap.SR0004022)
+    setForm(data.itemDataMap)
+    // setNum(data.itemDataMap.SR0004022)
     if (data.handlenodeDto.length > 0) {
       data.handlenodeDto.forEach((item: { nodeName: string; handleContent: any; }) => {
         if (item.nodeName === '片区护士长填写意见') {
@@ -103,7 +106,7 @@ export default observer((props: Props) => {
     if (JSON.stringify(form) === '{}') {
       return false
     } else {
-      delete form.SR0004022
+      // delete form.SR0004022
       let newArr:any = []
       for (let key in form) {
         newArr.push({name: key, title: form[key]})
@@ -386,8 +389,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004011} min={0} max={15} step={0.1}
-                      onChange={(value) =>
+                      onChange={(value) =>{
+                        form.SR0004011 = value
                         setFormItem({ 'SR0004011': value })
+                      }
                       }
                     />
                   </td>
@@ -418,8 +423,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004013} min={0} max={9} step={0.1}
-                      onChange={(value) =>
+                      onChange={(value) =>{
+                        form.SR0004013 = value
                         setFormItem({ 'SR0004013': value })
+                      }
                       }
                     />
                   </td>
@@ -452,9 +459,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004015} min={0} max={24} step={0.1}
-                      onChange={(value) =>
+                      onChange={(value) =>{
+                        form.SR0004015 = value
                         setFormItem({ 'SR0004015': value })
-                      }
+                      }}
                     />
                   </td>
                 </tr>
@@ -486,8 +494,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004017} min={0} max={24} step={0.1}
-                      onChange={(value) =>
-                        setFormItem({ 'SR0004017': value })
+                      onChange={(value) =>{
+                          form.SR0004017 = value
+                          setFormItem({ 'SR0004017': value })
+                        }
                       }
                     />
                   </td>
@@ -516,8 +526,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004019} min={0} max={8} step={0.1}
-                      onChange={(value) =>
+                      onChange={(value) => {
+                        form.SR0004019 = value
                         setFormItem({ 'SR0004019': value })
+                      }
                       }
                     />
                   </td>
@@ -550,8 +562,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004021} min={0} max={20} step={0.1}
-                      onChange={(value) =>
+                      onChange={(value) => {
+                        form.SR0004021 = value
                         setFormItem({ 'SR0004021': value })
+                        }
                       }
                     />
                   </td>
@@ -565,12 +579,12 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004022': e.target.value })
                       }
                     /> */}
-                    {/* {form.SR0004022 || num} */}
-                    <InputNumber value={form.SR0004022 || num}
+                    {form.SR0004022}
+                    {/* <InputNumber value={form.SR0004022}
                       onChange={(value) =>
                         setFormItem({ 'SR0004022': value })
                       }
-                    />
+                    /> */}
                   </td>
                 </tr>
                 {/* <tr>
