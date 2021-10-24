@@ -52,33 +52,25 @@ export default observer(function QualityControlRecord() {
     setSelectedRowKeys([])
     setLoading(true)
 
-    let sendData = {
-      pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
-      pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
-      wardCode: qualityControlRecordVM.filterDeptCode,
-      qcGroupRole: qualityControlRecordVM.filterForm,
-      type: qualityControlRecordVM.readWay,
-      nodeCode: qualityControlRecordVM.filterState,
-      level: qualityControlRecordVM.level,
-      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
-    }
-
-    qualityControlRecordApi
-      .instanceGetPageByCondition(sendData)
-      .then((res: any) => {
-        qualityControlRecordVM.allData = res.data
-        setLoading(false)
-      })
-      .catch((err: any) => {
-        setLoading(false)
-      })
-  }
-
-  const exportSelected = () => {
-    // 未勾选则全局导出
-    if (selectedRowKeys.length <= 0) {
-      const exportParams = {
+    //贵州且类型为"我创建的","待我处理","我已处理"
+    if(['gzsrm'].includes(appStore.HOSPITAL_ID) && [-3,-4,-5].includes(qualityControlRecordVM.readWay)){
+      let parms = {
+        pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
+        pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
+      };
+      qualityControlRecordApi
+        .getPageByNewNoType(qualityControlRecordVM.readWay,parms)
+        .then((res: any) => {
+          qualityControlRecordVM.allData = res.data
+          setLoading(false)
+        })
+        .catch((err: any) => {
+          setLoading(false)
+        })
+    }else {
+      let sendData = {
+        pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
+        pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
         wardCode: qualityControlRecordVM.filterDeptCode,
         qcGroupRole: qualityControlRecordVM.filterForm,
         type: qualityControlRecordVM.readWay,
@@ -86,22 +78,66 @@ export default observer(function QualityControlRecord() {
         level: qualityControlRecordVM.level,
         beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
         endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
-      }
+      };
+      qualityControlRecordApi
+        .instanceGetPageByCondition(sendData)
+        .then((res: any) => {
+          qualityControlRecordVM.allData = res.data
+          setLoading(false)
+        })
+        .catch((err: any) => {
+          setLoading(false)
+        })
+    }
+  }
 
-      Modal.confirm({
-        title: '导出',
-        content: '是否导出全部？',
-        onOk: () => {
-          setLoading(true)
-          qualityControlRecordApi
-            .exportAll(exportParams)
-            .then(res => {
-              setLoading(false)
-              fileDownload(res)
-              setSelectedRowKeys([])
-            }, () => setLoading(false))
+  const exportSelected = () => {
+    // 未勾选则全局导出
+    if (selectedRowKeys.length <= 0) {
+      //贵州且类型为"我创建的","待我处理","我已处理"
+      if(['gzsrm'.includes(appStore.HOSPITAL_ID) && [-3,-4,-5].includes(qualityControlRecordVM.readWay)]){
+        let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
+        .map((item: any) => item.id)
+        Modal.confirm({
+          title: '导出',
+          content: '是否导出全部？',
+          onOk: () => {
+            setLoading(true)
+            qualityControlRecordApi
+              .exportList(selectedRecordIds)
+              .then(res => {
+                setLoading(false)
+                fileDownload(res)
+                setSelectedRowKeys([])
+              }, () => setLoading(false))
+          }
+        })
+      }else {
+        const exportParams = {
+          wardCode: qualityControlRecordVM.filterDeptCode,
+          qcGroupRole: qualityControlRecordVM.filterForm,
+          type: qualityControlRecordVM.readWay,
+          nodeCode: qualityControlRecordVM.filterState,
+          level: qualityControlRecordVM.level,
+          beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+          endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
         }
-      })
+  
+        Modal.confirm({
+          title: '导出',
+          content: '是否导出全部？',
+          onOk: () => {
+            setLoading(true)
+            qualityControlRecordApi
+              .exportAll(exportParams)
+              .then(res => {
+                setLoading(false)
+                fileDownload(res)
+                setSelectedRowKeys([])
+              }, () => setLoading(false))
+          }
+        })
+      }
     } else {
       let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
         .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
@@ -134,7 +170,8 @@ export default observer(function QualityControlRecord() {
           tableData={qualityControlRecordVM.allData.list || []}
           allData={qualityControlRecordVM.allData}
           loadingGet={loading}
-          showSelection={appStore.HOSPITAL_ID == 'hj'}
+          // showSelection={appStore.HOSPITAL_ID == 'hj'}
+          showSelection={['hj','gzsrm'].includes(appStore.HOSPITAL_ID)}
           selectionChange={(payload: any) => setSelectedRowKeys(payload)}
           selectedRowKeys={selectedRowKeys}
           getTableData={getTableData}

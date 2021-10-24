@@ -269,6 +269,7 @@ export default function ToolBar() {
   const handleFormChange = (changedFields: any) => {
     fields = { ...fields, ...changedFields }
     console.log('handleFormChange', changedFields, customizedForm)
+   
     // console.log('onFieldsChange', props, changedFields)
     //   let diff = 0
     //   // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -331,8 +332,7 @@ export default function ToolBar() {
     }
   }
 
-  const onOk = () => {
-    console.log('提交表单', fields, shiftList)
+  const onOk = async () => {
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次套餐名称
       name: fields.mealName.value, // 	Long 必须参数 班次套餐名称
@@ -346,7 +346,15 @@ export default function ToolBar() {
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
       status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
     }
-    console.log('提交表单postData', postData)
+    if (appStore.HOSPITAL_ID == 'wh') {
+      for(let key in postData){
+        if(key=='monday'||key=='tuesday'||key=='wednesday'||key=='thursday'||key=='friday'||key=='saturday'||key=='sunday'){
+          if(postData[key]){
+          let res = await service.scheduleMealApiService.check(postData[key])
+          }
+        }
+      }
+    }
     service.scheduleMealApiService.save(postData).then((res) => {
       message.success('添加班次套餐成功')
       emitter.emit('更新班次套餐列表')

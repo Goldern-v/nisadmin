@@ -13,9 +13,14 @@ export interface Props {
 }
 
 export default observer(function WeekBalanceHour(props: Props) {
+  let total = weekBalanceHour(props.id)
+  return <Wrapper>{total}</Wrapper>;
+});
+
+export const weekBalanceHour = (id: any) => {
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
-    return item.id == props.id;
+    return item.id == id;
   });
   if (user) {
     list = user.settingDtos;
@@ -23,7 +28,7 @@ export default observer(function WeekBalanceHour(props: Props) {
 
   /** 计算总工时 */
   let real_balanceHour = 0;
-  for (let j = 0; j < (user.settingDtos || []).length; j++) {
+  for (let j = 0; j < (list || []).length; j++) {
     real_balanceHour += Number(user.settingDtos[j].effectiveTime);
   }
 
@@ -67,16 +72,8 @@ export default observer(function WeekBalanceHour(props: Props) {
   //     // real_balanceHour = real_week;
   //   }
   // }
-
-  return (
-    <Wrapper>
-      {/* <div>{user.balanceHour} +"的士速递所"+ {real_balanceHour} +"的士速递所"+ {user.current_balanceHour}</div> */}
-      {Number(
-       real_balanceHour - weekShouldDate
-      ).toFixed(1)}
-    </Wrapper>
-  );
-});
+  return (Number(real_balanceHour - weekShouldDate).toFixed(1));
+}
 const Wrapper = styled.div`
   margin: 0 -2px;
   input {

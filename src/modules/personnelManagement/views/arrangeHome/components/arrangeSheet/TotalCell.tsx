@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
-import { observer } from "src/vendors/mobx-react-lite.ts";
+import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../types/Sheet";
 import { cloneJson } from "src/utils/json/clone";

@@ -377,6 +377,7 @@ const Wrapper = styled.div`
         /* padding: 0 !important; */
         /* font-weight: 600; */
         height: ${p => p.theme.$tableRowHeight} !important;
+        word-break: break-all;//解决数字不换行
       }
       /* 补充th下降的高度 */
       .ant-table-align-center {

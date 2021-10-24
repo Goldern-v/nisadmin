@@ -259,7 +259,7 @@ export default observer(function FormPannel() {
               </div>
             </div>
             {/* 指定人员 */}
-            {appStore.HOSPITAL_ID === 'gzsrm' ?
+            {appStore.HOSPITAL_ID === 'gzsrm' && auditList && auditList.length > 0 ?
               <AuditList>
                 <h3 className="auditListTitle">人员指定</h3>
                 <ul className="list">

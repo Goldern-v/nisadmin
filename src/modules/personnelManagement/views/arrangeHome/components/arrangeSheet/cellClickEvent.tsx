@@ -7,6 +7,8 @@ import { message } from "src/vendors/antd";
 import { appStore } from "src/stores";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
+import service from 'src/services/api'
+
 export function getAddArrangeMenuList(
   list: ArrangeItem[],
   selectedCellObj: ArrangeItem
@@ -32,7 +34,10 @@ export function getAddArrangeMenuList(
         ),
         type: "text",
         dataSource: obj[keys[i]][j],
-        onClick(item: any) {
+        async onClick(item: any) {
+          if (appStore.HOSPITAL_ID == 'wh') {
+            let res = await service.scheduleMealApiService.check(item.dataSource.id)
+          }
           if (selectedCellObj!.rangeName) {
             selectedCellObj.settings = [
               {

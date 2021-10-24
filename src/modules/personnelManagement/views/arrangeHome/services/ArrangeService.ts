@@ -242,6 +242,11 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schAddOrSub/findBylist`, obj);
   }
 
+  //加减班总和查询
+  public getCount(obj: PageObj) {
+    return this.post(`/schAddOrSub/getCount`, obj);
+  }
+
   //夜小时数查询
   public schNightHourFindBylist(obj: any) {
     return this.post(`schNightHour/findBylist`, obj);

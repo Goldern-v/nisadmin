@@ -131,6 +131,24 @@ export default observer(function TopCon(props: any) {
               </Radio.Group>
             </div>
           )),
+          gzsrm: (qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
+            <div className='radio-con'>
+              <Radio.Group
+                name='radiogroup'
+                value={qualityControlRecordVM.readWay}
+                onChange={(e) => {
+                  qualityControlRecordVM.readWay = e.target.value
+                  props.refreshData()
+                }}
+              >
+                <Radio value={1}>按科室查看</Radio>
+                <Radio value={2}>按质控组查看</Radio>
+                <Radio value={-3}>我创建的</Radio>
+                <Radio value={-4}>待我处理</Radio>
+                <Radio value={-5}>我已处理</Radio>
+              </Radio.Group>
+            </div>
+          )),
           default: (qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
             <div className='radio-con'>
               <Radio.Group
@@ -157,7 +175,7 @@ export default observer(function TopCon(props: any) {
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
-            style={{ width: 200 }}
+            style={{ width: 180 }}
             value={qualityControlRecordVM.filterDeptCode}
             onChange={(value: any) => {
               qualityControlRecordVM.filterDeptCode = value
@@ -231,13 +249,16 @@ const Wrapper = styled.div`
   .radio-con {
     background: #fff;
     border: 1px solid #ddd;
-    white-space: nowrap;
-    height: 32px;
+    white-space: wrap;
+    min-height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     padding: 0 4px 0 10px;
     margin-left: 15px;
+    overflow: auto;
+    min-width: 248px;
   }
 `
 const QualityControlCon = styled.div`
