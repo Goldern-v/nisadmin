@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Button, DatePicker, Select } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import api from './api';
 import DeptSelect from "src/components/DeptSelect";
 import moment from 'moment'
+// import AuthStore from "src/stores/AuthStore";
+// import AddModal from './wardsView/components/addModal'
 
 interface Props {
 
@@ -20,7 +22,7 @@ export default observer((props: Props) => {
     status: undefined,
     beginDate: undefined,
     endDate: undefined,
-    formCodes: ['SR0001'],
+    formCodes: [],
     pageIndex: 1,
     pageSize: 20
   }
@@ -30,6 +32,8 @@ export default observer((props: Props) => {
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
+  // 新建-modal
+  // const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns: any[] = [
     {
@@ -52,13 +56,13 @@ export default observer((props: Props) => {
     },
     {
       title: "检查病区",
-      dataIndex: "SR0001002",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004004' : "SR0001002",
       width: 120,
       align: "center"
     },
     {
       title: "得分",
-      dataIndex: "SR0001019",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004022':"SR0001019",
       width: 80,
       align: "center"
     },
@@ -70,13 +74,13 @@ export default observer((props: Props) => {
     },
     {
       title: "值班护士",
-      dataIndex: "SR0001005",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004007' : "SR0001005",
       width: 80,
       align: "center"
     },
     {
       title: "值班护长",
-      dataIndex: "SR0001001",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004001' :"SR0001001",
       width: 80,
       align: "center"
     },
@@ -117,9 +121,18 @@ export default observer((props: Props) => {
       }
     }))
   }
+  const addTable = () => {
+    // appStore.history.push(`/checkWard/wardsView`)
+    // setIsModalVisible(true)
+    appStore.history.push(`/checkWard/recordViewGZ`)
+  }
 
   const handleView = (row: any) => {
-    appStore.history.push(`/checkWard/recordView?id=${row.id}`)
+    if (appStore.HOSPITAL_ID === 'gzsrm') {
+      appStore.history.push(`/checkWard/recordViewGZ?id=${row.id}`)
+    } else {
+      appStore.history.push(`/checkWard/recordView?id=${row.id}`)
+    }
   }
 
   useEffect(() => {
@@ -150,6 +163,7 @@ export default observer((props: Props) => {
             }
           </Select>
           <Button onClick={() => getList()}> 查询</Button>
+          {(appStore.HOSPITAL_ID === 'gzsrm' && authStore.isRoleManage) && <Button onClick={() => addTable()}> 新增</Button>}
           <Button type='primary' onClick={() => {
           }}>导出</Button>
         </div>
@@ -175,6 +189,7 @@ export default observer((props: Props) => {
           }}
         />
       </MainWrapper>
+      {/* { isModalVisible && <AddModal isModalVisible={isModalVisible} />} */}
     </Wrapper>
   )
 })

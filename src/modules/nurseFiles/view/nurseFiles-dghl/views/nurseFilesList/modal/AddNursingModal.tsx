@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import service from 'src/services/api'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
