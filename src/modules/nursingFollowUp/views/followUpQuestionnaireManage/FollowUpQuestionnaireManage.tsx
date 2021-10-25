@@ -20,9 +20,9 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const [tableData, setTableData] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-   //科室列表
+  //科室列表
   const [deptList, setDeptList] = useState([] as any)
-   //宣教接口请求参数
+  //宣教接口请求参数
   const [query, setQuery] = useState({
     wardCode: '',
     pageSize: 20,
@@ -75,7 +75,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
         setPageLoading(false)
         if (res.code == "200") {
           message.success("操作成功！");
-        } 
+        }
       }, err => setPageLoading(false))
   }
   const handlePageSizeChange = (current: number, size: number) => {
@@ -84,7 +84,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
-  const handleDetailView = (bookId: string) => {}
+  const handleDetailView = (bookId: string) => { }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -106,11 +106,11 @@ export default function FollowUpQuestionnaireManage(props: any) {
       key: '是否排班',
       width: 50,
       align: 'center',
-      render: (text: any, record: any, index: any) => 
+      render: (text: any, record: any, index: any) =>
         <span>
           <Switch
             size='small'
-            onChange={(check:any) => changeStatus(record, check)}
+            onChange={(check: any) => changeStatus(record, check)}
             checked={record.status == 1 ? true : false}
           />
         </span>
@@ -128,7 +128,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
       }
     },
   ];
-   //查看随访问卷
+  //查看随访问卷
   const viewContent = (record: any) => {
     setEditVisible(true)
     setFormCodeChange(record.formCode)
@@ -158,18 +158,18 @@ export default function FollowUpQuestionnaireManage(props: any) {
   return <Wrapper>
     <PageHeader>
       <Place />
-        <Input
-          placeholder='请输入随访问卷关键字检索'
-          style={{ width: 220 }}
-          value={searchText}
-          onChange={onChangeSearchText}
-          className='input_hj'
-        />
-        <Button onClick={() => getData()}>
-          查询
-        </Button>
-      </PageHeader>
-      <div className="main-contain">
+      <Input
+        placeholder='请输入随访问卷关键字检索'
+        style={{ width: 220 }}
+        value={searchText}
+        onChange={onChangeSearchText}
+        className='input_hj'
+      />
+      <Button onClick={() => getData()}>
+        查询
+      </Button>
+    </PageHeader>
+    <div className="main-contain">
       <div className="left">
         <div className="title">科室</div>
         <div className="content">
@@ -213,14 +213,16 @@ export default function FollowUpQuestionnaireManage(props: any) {
           surplusHeight={220} />
       </div>
     </div>
-    <FormPageBody
-      visible={editVisible}
-      formCode={formCodeChange}
-      onOk={() => {
-        setEditVisible(false)
-        getData()
-      }}
-      onCancel={() => setEditVisible(false)} />
+    {
+      editVisible && <FormPageBody
+        visible={editVisible}
+        formCode={formCodeChange}
+        onOk={() => {
+          setEditVisible(false)
+          getData()
+        }}
+        onCancel={() => setEditVisible(false)} />
+    }
   </Wrapper>
 }
 const Wrapper = styled.div`

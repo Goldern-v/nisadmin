@@ -19,7 +19,8 @@ export default function AllTemplate(props: any) {
   // 目录字段切割
   const nameSplit = (name: String) => {
     while (name.includes("-")) {
-      name = name.split("-")[1]
+      let nameArr = name.split("-")
+      name = name.split("-")[nameArr.length - 1]
     }
     return name
   }
@@ -114,6 +115,8 @@ export default function AllTemplate(props: any) {
             titleObj[item.module].push(item)
           })
           setRes(titleObj)
+          console.log(titleObj);
+
           let itemDataMap = res[1].data.itemDataMap
           Object.keys(itemDataMap).map((key: any, index: any) => {
             if (typeof editable[key] == 'string') {
@@ -144,7 +147,7 @@ export default function AllTemplate(props: any) {
     if (length == refDom.length) return
     setLength(refDom.length)
     // 问卷总高度
-    let height = 1096;
+    let height = 1066.06;
     // 遍历目录级别区域ref元素数组
     refDom.map((item: any, index: any) => {
       // 小题目级别,以下用htmlArr代替
@@ -152,28 +155,28 @@ export default function AllTemplate(props: any) {
       // 遍历每个目录的每个小题目
       for (let i = 0; i < htmlArr.length; i++) {
         // 判断当前目录区域 + 目录标题高度是否超出问卷高度
-        if (item.offsetTop + 24 > height - 30) {
+        if (item.offsetTop + 24 > height) {
           let marginTop = height - item.offsetTop
           // 如果是,则给当前目录区域添加上外边距,使其达到分页的视觉效果
-          item.style.marginTop = marginTop + 20 + 40 + 10 + 'px'
+          item.style.marginTop = marginTop + 30 + 20 + 40 + 10 + 'px'
           // 换页/更改当前问卷页高度
-          height += 1020
+          height = height + 30 + 20 + 1066.06
         }
         // 判断答题区域是否超出问卷高度
-        else if (item.children[1].offsetTop > height - 30) {
+        else if (item.children[1].offsetTop > height) {
           let marginTop = height - item.children[1].offsetTop
-          item.children[1].style.marginTop = marginTop + 20 + 40 + 10 + 'px'
-          height += 1020
+          item.children[1].style.marginTop = marginTop + 30 + 20 + 40 + 10 + 'px'
+          height = height + 30 + 20 + 1066.06
           // 判断每一道题的区域是否超出问卷高度
-        } else if (item.children[1].offsetTop + htmlArr[i].offsetTop + htmlArr[i].offsetHeight > height - 30) {
+        } else if (item.children[1].offsetTop + htmlArr[i].offsetTop + htmlArr[i].offsetHeight > height) {
           let marginTop = height - (item.children[1].offsetTop + htmlArr[i].offsetTop)
-          htmlArr[i].style.marginTop = marginTop + 20 + 40 + 10 + 'px'
-          height += 1020
+          htmlArr[i].style.marginTop = marginTop + 30 + 20 + 40 + 10 + 'px'
+          height = height + 30 + 20 + 1066.06
         }
       }
       // 计算问卷画到目录最后一个区域时共需多少页
       if (index == refDom.length - 1) {
-        let length = (height - 1096) / 1020
+        let length = (height - 1096.06) / 1116.06
         let arr = []
         for (let i = 0; i < length; i++) {
           arr.push(1)
@@ -303,6 +306,7 @@ const PageGroup = styled.div`
     width:21cm;
     padding: 30px 40px!important;
     margin-bottom:20px;
+    box-sizing:border-box;
     position:relative;
     .white-part{
       width: 100%;
