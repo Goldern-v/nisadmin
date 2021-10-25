@@ -269,7 +269,7 @@ export default function ToolBar() {
   const handleFormChange = (changedFields: any) => {
     fields = { ...fields, ...changedFields }
     console.log('handleFormChange', changedFields, customizedForm)
-   
+
     // console.log('onFieldsChange', props, changedFields)
     //   let diff = 0
     //   // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -346,11 +346,11 @@ export default function ToolBar() {
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
       status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
     }
-    if (appStore.HOSPITAL_ID == 'wh') {
-      for(let key in postData){
-        if(key=='monday'||key=='tuesday'||key=='wednesday'||key=='thursday'||key=='friday'||key=='saturday'||key=='sunday'){
-          if(postData[key]){
-          let res = await service.scheduleMealApiService.check(postData[key])
+    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
+      for (let key in postData) {
+        if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
+          if (postData[key]) {
+            let res = await service.scheduleMealApiService.check(postData[key])
           }
         }
       }

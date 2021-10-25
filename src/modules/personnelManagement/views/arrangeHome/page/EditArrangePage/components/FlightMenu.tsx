@@ -161,7 +161,7 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = async (item: any) => {
-    if (appStore.HOSPITAL_ID == 'wh') {
+    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
       let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
@@ -204,7 +204,7 @@ function MealCon(props: { dataSource: any[] }) {
 
   const onClick = async (item: any) => {
     /** 套餐同步 */
-    if (appStore.HOSPITAL_ID == 'wh') {
+    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
       let res = await service.scheduleMealApiService.checkMeal(item.id)
     }
     if (sheetViewModal.selectedCell) {

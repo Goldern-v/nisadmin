@@ -153,6 +153,10 @@ export default class EmpManageService extends BaseApiService {
   public async getPersonInfoByIdentifier(identifier: string) {
     return this.post('/studyAndTrain/personelManage/otherperson/getPersonInfoByIdentifier', { identifier })
   }
+  // 厚街-人员学习档案模块-个人学习档案导出
+  public async getAllStudyTrainList(empNo: string) {
+    return this.post('/studyAndTrain/personelManage/getAllStudyTrainList', { empNo })
+  };
 
   /**
    * 387.pc端-南医三院-考试记录-修改“其他”
@@ -168,6 +172,6 @@ export default class EmpManageService extends BaseApiService {
   }) {
     return this.post('/studyAndTrain/personelManage/updateExamRecordOther', params)
   }
-}
+};
 
 export const empManageService = new EmpManageService()

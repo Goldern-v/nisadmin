@@ -528,7 +528,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'qzxyy') {
   specialModule = [...homeRouter(SettingView)]
-} 
+}
 // else if (process.env.REACT_APP_HOSPITAL_ID == "fssdy") {
 //   specialModule = [
 //     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),

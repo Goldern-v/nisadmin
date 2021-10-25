@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import LeftMenuPage from "src/components/LeftMenuPage";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { meunConfig as menuConfig_wh } from "./config/menuConfig_wh";
 import { meunConfig as menuConfig_jmfy } from "./config/menuConfig_jmfy";
 import { meunConfig as menuConfig_gzhd } from "./config/menuConfig_gzhd";
@@ -10,6 +10,8 @@ import { meunConfig as menuConfig_nys } from "./config/menuConfig_nys";
 import { meunConfig as menuConfig_dghl } from "./config/menuConfig_dghl";
 import { meunConfig as menuConfig_lcey } from "./config/menuConfig_lcey";
 import { meunConfig as menuConfig_gzsrm } from "./config/menuConfig_gzsrm";
+import { meunConfig as menuConfig_gxjb } from "./config/menuConfig_gxjb";
+import { meunConfig as menuConfig_dgxg } from "./config/menuConfig_dgxg";
 
 export interface Props {
 }
@@ -35,17 +37,33 @@ export default function PersonnelManagementView() {
       case 'fssdy':
         return menuConfig_wh;
       case 'gxjb':
-        return menuConfig_wh;
+        return menuConfig_gxjb;
+        // if (authStore.isRoleManage) return menuConfig_gxjb;
+        // return menuConfig_gxjbSelf
       case 'fsxt':
         return menuConfig_wh;
+      case 'dgxg':
+        return menuConfig_dgxg;
       default:
         return menuConfig_hj;
     }
   })();
+  const list = ((array: any) => {
+    return array.map((item: any) => {
+      if (item.iSlimit) {
+        if (!item.special) item['hide'] = !authStore.isRoleManage
+        else item['hide'] = !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+      }
+      if (item.children?.length > 0) {
+        list(item.children)
+      }
+      return item
+    })
+  })
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={leftMenuConfig} />
+      <LeftMenuPage leftMenuConfig={list(leftMenuConfig)} />
     </Wrapper>
   );
 }

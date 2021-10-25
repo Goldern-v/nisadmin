@@ -55,11 +55,16 @@ export default observer(function QualityControlRecordEdit() {
               other: [7],
             }
           })
-
-          if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
+          ////非贵州
+          if (!['gzsrm'].includes(appStore.HOSPITAL_ID) && (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)) {
+            //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
             qcModel.setMasterErrObj(x, true)
             masterErr = true
             errMsg = `住院号必须为${inpNoLengthArr.join(',')}位数字`
+          } else if (['gzsrm'].includes(appStore.HOSPITAL_ID) && isNaN(inpNo)) {
+            qcModel.setMasterErrObj(x, true)
+            masterErr = true
+            errMsg = `住院号必须为数字`
           }
         }
       } else if (master[x] instanceof Array) {

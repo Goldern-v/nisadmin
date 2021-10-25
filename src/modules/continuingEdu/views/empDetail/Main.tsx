@@ -16,6 +16,8 @@ import 其他人员详情 from "./其他人员详情";
 import TableView from "./TableView";
 import { userTypeList } from "../其他人员/data/options";
 import { fileDownload } from "src/utils/file/file";
+import { empManageService } from "./api/EmpManageService"
+import ExportContinuingEduFile from './components/ExportContinuingEduFile'
 
 export interface Props extends RouteComponentProps { }
 
@@ -25,6 +27,7 @@ export default observer(function Main(props: any) {
   let userTypeName = ''
   let usetTypeTarget = userTypeList.find((item: any) => item.type == userType)
   if (usetTypeTarget) userTypeName = usetTypeTarget.name
+  const [inPrint, setInPrint] = useState(false)
 
   let Routes_Config = appStore.hisMatch({
     map: {
@@ -184,12 +187,12 @@ export default observer(function Main(props: any) {
   const TargetRoute = targetComponent();
 
   // 导出个人学习档案
-  const exportStudyExcel = () => {
-    // let status = appStore.HOSPITAL_ID === "lcey"
-    // arrangeService.exportRoster(2, status).then(res => {
-    //   fileDownload(res);
-    // });
-  };
+  // const exportStudyExcel = () => {
+  //   // let status = appStore.HOSPITAL_ID === "lcey"
+  //   empManageService.getAllStudyTrainList(appStore.queryObj.empNo).then(res => {
+  //     fileDownload(res);
+  //   });
+  // };
 
   return (
     <Wrapper>
@@ -226,7 +229,7 @@ export default observer(function Main(props: any) {
         </div>
         <div className="btn-group">
           {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
-          <Button onClick={ exportStudyExcel }>导出个人学习档案</Button>
+          {appStore.HOSPITAL_ID === 'hj' && <Button onClick={() => setInPrint(true)} loading={inPrint} >导出个人学习档案</Button>}
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>
@@ -258,6 +261,8 @@ export default observer(function Main(props: any) {
         onOk={handleSourceAppend}
         onCancel={() => setSorceAppendVisible(false)}
       />
+      {/* 打印 */}
+      {inPrint && <ExportContinuingEduFile empNo={appStore.queryObj.empNo} onCallBack={() => setInPrint(false)} />}
     </Wrapper>
   );
 });

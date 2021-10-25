@@ -280,8 +280,15 @@ const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/com
 const NurseSatisfactionSurveyRouter = lazy(() =>
   import("src/modules/nurseSatisfactionSurvey/NurseSatisfactionSurveyRouter")
 );
+const checkWardRecordViewGzsrm = lazy(() =>
+  import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
+)
 const checkWardRecordView = lazy(() =>
-  import("src/modules/quality/views/scoringRecord/RecordView")
+  import("src/modules/quality/views/scoringRecord/RecordView/index")
+)
+
+const checkWardwardsView = lazy(() =>
+  import("src/modules/quality/views/scoringRecord/wardsView")
 )
 /** 月度查房统计报告详情 */
 const 月护长查房反馈表详情 = lazy(() => import("src/modules/quality/views/qcJmfy/特殊时段查房统计报告/月护长查房反馈表/月护长查房反馈表详情"))
@@ -592,7 +599,8 @@ const routes: RouteItem[] = [
       map: {
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
-        other: BadEventsNewDetail
+        fqfybjy:BadEventsNewDetailNys,
+        other: BadEventsNewDetail,
       }
     }),
     layouts.MainLayout
@@ -771,6 +779,8 @@ const routes: RouteItem[] = [
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
+  setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
+  setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),

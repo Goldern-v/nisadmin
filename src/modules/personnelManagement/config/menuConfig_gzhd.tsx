@@ -14,6 +14,7 @@ export interface meunConfigItem {
   path?: string;
   children?: meunConfigItem[];
   hide?: boolean | Function;
+  iSlimit?: boolean | Function;
   style?: React.CSSProperties;
 }
 
@@ -32,37 +33,43 @@ export const meunConfig: meunConfigItem[] = [
         title: "科室借用",
         path: "/personnelManagement/DeptBorrowNew",
         component: DeptBorrowNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班套餐设置",
         path: "/personnelManagement/HDMealSettingViewNew",
         component: HDMealSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       }
     ]
   }

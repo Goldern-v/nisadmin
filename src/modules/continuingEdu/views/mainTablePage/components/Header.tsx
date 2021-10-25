@@ -111,6 +111,7 @@ export default observer(function Header(props: Props) {
           }
         ],
         wh: () => [],
+        gxjb: () => [],
         nys: () => [
           {
             step: "按实习生选择",
@@ -119,7 +120,7 @@ export default observer(function Header(props: Props) {
             dataLabel: "year"
           }
         ],
-        lcey:()=>[
+        lcey: () => [
           {
             step: "按实习生选择",
             label: "按实习生选择",

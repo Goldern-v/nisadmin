@@ -22,6 +22,7 @@ export interface meunConfigItem {
   children?: meunConfigItem[];
   hide?: boolean | Function;
   style?: React.CSSProperties;
+  iSlimit?: boolean | Function;
 }
 
 export const meunConfig: meunConfigItem[] = [
@@ -39,62 +40,72 @@ export const meunConfig: meunConfigItem[] = [
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
         component: PersonnelSecondment,
         style: { background: "#fff" },
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "节假日设置",
         path: "/personnelManagement/节假日设置",
         component: 节假日设置,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",
         component: ArrangStatistics,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "加减班列表查询",
         path: "/personnelManagement/addSubClass",
         component: AddSubClass,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
       {
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
-        hide: !authStore.isRoleManage
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
       },
     ]
   },

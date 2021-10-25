@@ -22,7 +22,7 @@ export default observer(function Step2() {
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
-  const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' ? [
+  const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb' ? [
     { name: "国家级", code: 1 },
     { name: "省级", code: 2 },
     { name: "市级", code: 3 }
@@ -42,9 +42,9 @@ export default observer(function Step2() {
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0)
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
-  const bxNursing =appStore.hisMatch({
-    map:{
-      lcey:[
+  const bxNursing = appStore.hisMatch({
+    map: {
+      lcey: [
         { name: "N0", code: "nurse0" },
         { name: "N1-1", code: "nurse1_1" },
         { name: "N1-2", code: "nurse1_2" },
@@ -57,7 +57,7 @@ export default observer(function Step2() {
         { name: "N4-2", code: "nurse4_2" },
         { name: "其他", code: "nurseOther" }
       ],
-      other:[
+      other: [
         { name: "N0", code: "nurse0" },
         { name: "N1", code: "nurse1" },
         { name: "N2", code: "nurse2" },
@@ -67,7 +67,7 @@ export default observer(function Step2() {
         { name: "其他", code: "nurseOther" }
       ]
     }
-  }) ;
+  });
   const openTimeUnitList = [
     { name: "小时", code: "小时" },
     { name: "天", code: "天" },
@@ -164,7 +164,7 @@ export default observer(function Step2() {
               />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID == "wh" && (
+          {(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
                 <Select style={{ width: 120 }}>
