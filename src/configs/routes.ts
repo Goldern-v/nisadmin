@@ -597,7 +597,8 @@ const routes: RouteItem[] = [
       map: {
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
-        other: BadEventsNewDetail
+        fqfybjy:BadEventsNewDetailNys,
+        other: BadEventsNewDetail,
       }
     }),
     layouts.MainLayout
