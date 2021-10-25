@@ -18,10 +18,11 @@ import FormPageBody from '../components/FormPageBody'
 export interface Props { }
 
 export default observer(function MyCreateList() {
-  const [year, setYear] = useState<Number>(+moment().format('YYYY'))
+  const [year, setYear] = useState<String>('')
   const [month, setMonth]  = useState<String>('')
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
+  const [filterDate, setFilterDate]:any = useState([])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
   const [yearList, setYearList] = useState([] as number[])
@@ -34,27 +35,51 @@ export default observer(function MyCreateList() {
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
+  const [state, setState]  = useState<String>('')
 
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
+  //控制年份
+  const controlYear : string =
+  appStore.hisMatch({
+    map: {
+      jmfy: false,
+      default: true,
+    },
+    vague: true,
+  })
+  //控制时间控件
+  const controlDatePicker : string =
+  appStore.hisMatch({
+    map: {
+      jmfy: true,
+      default: false,
+    },
+    vague: true,
+  })
 
-
-  /** 类别 */
-  const pathMap: any = {
-    year: 'year',  
-    month: 'month',
-    conclusion: 'conclusion',
-    innovation: 'innovation',
-    businessStudy: 'businessStudy',
-    meetingRecord: 'meetingRecord',
-    holidayRecord: 'holidayRecord',
+  const titleArr:any = {
+    year: '护士长年计划',  
+    month: '护士长月计划',
+    conclusion: '护士长年总结',
+    innovation: '护理创新项目记录',
+    businessStudy: '业务学习项目',
+    meetingRecord: '管理小组会议记录',
+    holidayRecord: '公休会记录',
+    weekPlan: '护士长周计划',
+    monthPlan: '护士长月度计划',
+    quarterPlan: '护士长季度计划',
+    yearPlan: '护士长年度计划',
+    weekConclusion: '护士长周总结',
+    monthConclusion: '护士长月度总结',
+    quarterConclusion: '护士长季度总结',
+    yearConclusion: '护士长年度总结',
   }
+
   const path = window.location.hash.split('/').reverse()[0]
-  
-  const status = pathMap[path]
 
   let columns: ColumnProps<any>[] = []
-  if(status == 'month') {
+  if(path == 'month') {
     columns = 
   [
     {
@@ -115,6 +140,76 @@ export default observer(function MyCreateList() {
       }
     }
   ]
+  }else if(appStore.HOSPITAL_ID == "jmfy"){
+    columns = 
+  [
+    {
+      title: '标题',
+      dataIndex: 'title',
+      width: 150,
+      align: 'center',
+    },
+    {
+      title: '科室',
+      dataIndex: 'deptName',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      width: 50,
+      align: 'center'
+    },
+    {
+      title: '创建人',
+      dataIndex: 'creatorName',
+      width: 50,
+      align: 'center'
+    },
+    {
+      title: '上传附件',
+      dataIndex: 'files[0].name',
+      width: 200,
+      align: 'center',
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            {record.files.map((item: any, index: number) => (
+              <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+            ))}
+          </div>
+        )
+      }
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'status',
+      width: 50,
+      align: 'center',
+      render(status: any) {
+        return (
+          <div>
+            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿" }</span>
+          </div>
+        )
+      }
+    },
+    {
+      title: '操作',
+      width: 60,
+      render(text: any, record: any, index: number) {
+        return (
+          <DoCon>
+            {record.status==1&&<span onClick={() => onEdit(record)}>查看</span>}
+            {(record.status==2||record.status==3)&&<span onClick={() => onEdit(record)}>编辑</span>}
+            {(record.status==0||record.status==2)&&<span onClick={() => onEdit(record)}>撤销</span>}
+            {record.status!=1&&<span onClick={() => onDelete(record)}>删除</span>}
+          </DoCon>
+        )
+      }
+    }
+  ]
   }else{
     columns = 
   [
@@ -122,7 +217,7 @@ export default observer(function MyCreateList() {
       title: '标题',
       dataIndex: 'title',
       width: 150,
-      align: 'center'
+      align: 'center',
     },
     {
       title: '科室',
@@ -181,7 +276,6 @@ export default observer(function MyCreateList() {
   ]
   }
   
-
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20
@@ -201,18 +295,34 @@ export default observer(function MyCreateList() {
     let nowYear:number = +moment().format('YYYY')
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
     setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
+    
+    if(path == 'weekPlan' || path == 'weekConclusion'){
+      setFilterDate([moment().startOf("week"), moment().endOf("week")])
+    }else if(path == 'monthPlan' || path == 'monthConclusion'){
+      setFilterDate([moment().startOf("month"), moment().endOf("month")])
+    }else if(path == 'quarterPlan' || path == 'quarterConclusion'){
+      setFilterDate([moment().startOf('quarter'), moment().endOf('quarter')])
+    }else if(path == 'yearPlan' || path == 'yearConclusion'){
+      setYear(moment().format('YYYY'))
+    }
+    getData()
   }
   const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
 
   const getData = () => {
     setPageLoading(true)
+    let startTime = filterDate[0] ? moment(filterDate[0]).format('YYYY-MM-DD') : ''
+    let endTime = filterDate[0] ? moment(filterDate[1]).format('YYYY-MM-DD') : ''
     nurseHandBookService
-      .getPage(status,{
+      .getPage(path,{
         ...pageOptions,
         deptCode: deptSelect,
         month: month,
         keyWord: searchText,
         year:year,
+        status: state,
+        startTime,
+        endTime,
       })
       .then((res) => {
         setPageLoading(false)
@@ -225,8 +335,12 @@ export default observer(function MyCreateList() {
   }
 
   const handleAddNew = (record: any) => {
-    setIsAdd(true)
-    setEditVisible(true)
+    if(appStore.HOSPITAL_ID == "jmfy"){
+      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=true`)
+    }else{
+      setIsAdd(true)
+      setEditVisible(true)
+    }
   }
 
   //查看随访问卷
@@ -249,9 +363,13 @@ export default observer(function MyCreateList() {
   }
 
   const onEdit = (record: any) => {
-    setIsAdd(false)
-    setEditVisible(true)
-    setRecord(record)
+    if(appStore.HOSPITAL_ID == "jmfy"){
+      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=`)
+    }else{
+      setIsAdd(false)
+      setEditVisible(true)
+      setRecord(record)
+    }
   }
 
   const onDelete = (record: any) => {
@@ -275,12 +393,16 @@ export default observer(function MyCreateList() {
 
   const handleExport = () => {
     setPageLoading(true)
-    nurseHandBookService.export(status,{
+    let startTime = filterDate[0] ? moment(filterDate[0]).format('YYYY-MM-DD') : ''
+    let endTime = filterDate[0] ? moment(filterDate[1]).format('YYYY-MM-DD') : ''
+    nurseHandBookService.export(path,{
       ...pageOptions,
       deptCode: deptSelect,
       month: month,
       keyWord: searchText,
       year: year,
+      startTime,
+      endTime,
     })
     .then(res => {
       setPageLoading(false)
@@ -290,10 +412,14 @@ export default observer(function MyCreateList() {
   }
 
   useEffect(() => {
-    getData()
+    if(filterDate[0]&&filterDate[1]){
+      getData()
+    }
   }, [
     pageOptions.pageIndex,
     pageOptions.pageSize,
+    state,
+    filterDate,
     year,
     month,
     selectedTemplate,
@@ -304,23 +430,20 @@ export default observer(function MyCreateList() {
     initData()
   }, [])
 
-  useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP') {
-      getData()
-    }
-  })
+  // useKeepAliveEffect(() => {
+  //   if ((appStore.history && appStore.history.action) === 'POP') {
+  //     if(filterDate[0]&&filterDate[1]){
+  //       getData()
+  //     }
+  //   }
+  // })
 
   return (
     <Wrapper>
       <PageHeader>
-      {status == 'year' &&  <PageTitle>护士长年计划</PageTitle>}
-      {status == 'month' &&  <PageTitle>护士长月计划</PageTitle>}
-      {status == 'conclusion' &&  <PageTitle>护士长年总结</PageTitle>}
-      {status == 'innovation' &&  <PageTitle>护理创新项目记录</PageTitle>}
-      {status == 'businessStudy' &&  <PageTitle>业务学习项目</PageTitle>}
-      {status == 'meetingRecord' &&  <PageTitle>管理小组会议记录</PageTitle>}
-      {status == 'holidayRecord' &&  <PageTitle>公休会记录</PageTitle>}
+        {<PageTitle>{titleArr[path]}</PageTitle>}
         <Place />
+        {controlYear && <div>
         <span className='label'>年份:</span>
         <Select
           value={year}
@@ -330,7 +453,8 @@ export default observer(function MyCreateList() {
           {yearList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item}>{item}</Select.Option>)}
         </Select>
-        {status == 'month' && <div>
+        </div>}
+        {path == 'month' && <div>
         <span className='label ml-20'>月份:</span>
         <Select
           value={month}
@@ -343,6 +467,40 @@ export default observer(function MyCreateList() {
         </Select>
         </div>
         }
+        {controlDatePicker && <div>
+          {(path != 'yearPlan' && path != 'yearConclusion') && <span>
+            <span className='label ml-20'>时间:</span>
+            <DatePicker.RangePicker
+              allowClear={false}
+              value={[filterDate[0], filterDate[1]]}
+              onChange={(value: any) => setFilterDate(value)}
+              style={{ width: 220 }}
+            />
+          </span>}
+          {(path == 'yearPlan' || path == 'yearConclusion') && <span>
+          <span className='label'>年份:</span>
+          <Select
+            value={year}
+            style={{ width: 100 }}
+            showSearch
+            onChange={(val: any) => setYear(val)}>
+            {yearList.map((item: any, idx: any) =>
+              <Select.Option key={idx} value={item}>{item}</Select.Option>)}
+          </Select>
+          </span>}
+          <span className='label ml-20'>状态:</span>
+          <Select
+            value={state}
+            style={{ width: 100 }}
+            showSearch
+            onChange={(val: any) => setState(val)}>
+            <Select.Option value={''}>全部</Select.Option>
+            <Select.Option value={'3'}>草稿</Select.Option>
+            <Select.Option value={'2'}>驳回</Select.Option>
+            <Select.Option value={'0'}>待审核</Select.Option>
+            <Select.Option value={'1'}>审核通过</Select.Option>
+          </Select>
+        </div>}
         <span className='label'>科室:</span>
         <Select
           value={deptSelect}
@@ -405,7 +563,7 @@ export default observer(function MyCreateList() {
         visible={editVisible}
         deptList={deptListAll}
         isAdd={isAdd}
-        type={status}
+        type={path}
         onOk={() => {
           getData()
           setEditVisible(false)
@@ -426,5 +584,14 @@ export default observer(function MyCreateList() {
 const Wrapper = styled.div`
 .ml-20 {
   margin-left: 20px;
+}
+.active{
+  color: #09a9f0;
+}
+.active1{
+  color: #f6ac4b;
+}
+.active2{
+  color: red;
 }
 `

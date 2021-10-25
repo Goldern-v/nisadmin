@@ -254,11 +254,11 @@ export default function NurseHandBookModal(props: any) {
           onRemove={removeOnChange}
           multiple={true}
           >
-        <Button type="primary" className="mb-20">
-          <Icon type="upload" /> 上传
-        </Button>
-        <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
-      </Upload>
+          <Button type="primary" className="mb-20">
+            <Icon type="upload" /> 上传
+          </Button>
+          <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
+        </Upload>
         </Col>
       </Row>
     </Wrapper>

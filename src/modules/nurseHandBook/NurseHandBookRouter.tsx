@@ -70,6 +70,72 @@ export default function WardLog() {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         }
       ],
+      jmfy: [
+        {
+          title: '护士长周计划',
+          path: '/nurseHandBook/weekPlan',
+          icon: <WCJD />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长月度计划',
+          path: '/nurseHandBook/monthPlan',
+          icon: <BKES />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长季度计划',
+          path: '/nurseHandBook/quarterPlan',
+          icon: <BKES />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长年度计划',
+          path: '/nurseHandBook/yearPlan',
+          icon: <BKES />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长周总结',
+          path: '/nurseHandBook/weekConclusion',
+          icon: <CSWD />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长月度总结',
+          path: '/nurseHandBook/monthConclusion',
+          icon: <CSWD />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长季度总结',
+          path: '/nurseHandBook/quarterConclusion',
+          icon: <CSWD />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士长年度总结',
+          path: '/nurseHandBook/yearConclusion',
+          icon: <CSWD />,
+          component: { ...NurseHandBook },
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+      ],
       default: [
         {
           title: '护士长年计划',

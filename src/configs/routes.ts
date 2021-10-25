@@ -274,6 +274,8 @@ const CheckWardRouter = lazy(() =>
 const NurseHandBookRouter = lazy(() =>
   import("src/modules/nurseHandBook/NurseHandBookRouter")
 );
+// 护士长满意度调查详情
+const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookDetailView"))
 //护士长满意度调查
 const NurseSatisfactionSurveyRouter = lazy(() =>
   import("src/modules/nurseSatisfactionSurvey/NurseSatisfactionSurveyRouter")
@@ -775,6 +777,7 @@ const routes: RouteItem[] = [
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurvey", NurseSatisfactionSurveyRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
+  setLayout("/nurseHandBookDetailView", NurseHandBookDetailView, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {
