@@ -149,7 +149,7 @@ export default observer(function StudyResultReview() {
         </span>
         <span className="label">类型:</span>
         <span className="content">
-          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb') && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">
@@ -160,6 +160,7 @@ export default observer(function StudyResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
+            gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}

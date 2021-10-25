@@ -43,9 +43,9 @@ export default observer(function Step1() {
   const [studyTime, setStudyTime] = useState(0);
   const [studentCreditTypeList, setStudentCreditTypeList]: any = useState([]);
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
-  const bxNursing =appStore.hisMatch({
-    map:{
-      lcey:[
+  const bxNursing = appStore.hisMatch({
+    map: {
+      lcey: [
         { name: "N0", code: "nurse0" },
         { name: "N1-1", code: "nurse1_1" },
         { name: "N1-2", code: "nurse1_2" },
@@ -58,7 +58,7 @@ export default observer(function Step1() {
         { name: "N4-2", code: "nurse4_2" },
         { name: "其他", code: "nurseOther" }
       ],
-      other:[
+      other: [
         { name: "N0", code: "nurse0" },
         { name: "N1", code: "nurse1" },
         { name: "N2", code: "nurse2" },
@@ -68,7 +68,7 @@ export default observer(function Step1() {
         { name: "其他", code: "nurseOther" }
       ]
     }
-  }) ;
+  });
   const openTimeUnitList = [
     { name: "小时", code: "小时" },
     { name: "天", code: "天" },
@@ -77,7 +77,7 @@ export default observer(function Step1() {
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
   const getStudentCreditTypeList = () => {
-    if (appStore.HOSPITAL_ID === "wh") {
+    if (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID === "gxjb") {
       setStudentCreditTypeList([
         { name: "国家级", code: 1 },
         { name: "省级", code: 2 },
@@ -186,7 +186,7 @@ export default observer(function Step1() {
                       <Select>
                         {openTimeUnitList.map(item => (
                           <Select.Option value={item.code} key={item.name}>
-                            { item.name}
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -212,7 +212,7 @@ export default observer(function Step1() {
               >
                 {zzfs.map(item => (
                   <Select.Option value={item.code} key={item.name}>
-                    { item.name}
+                    {item.name}
                   </Select.Option>
                 ))}
               </Select>
@@ -318,6 +318,16 @@ export default observer(function Step1() {
               </Form.Field>
             </Col>
           )}
+          {appStore.HOSPITAL_ID == "gxjb" && (
+            <Col span={24}>
+              <Form.Field label={`类别`} name="category">
+                <Select style={{ width: 120 }}>
+                  <Select.Option value={1}>中医类</Select.Option>
+                  <Select.Option value={2}>非中医类</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
+          )}
           <Col span={24}>
             <Form.Field label={`学员学分`} name="hasStudentCredit">
               <Select style={{ width: 120 }}>
@@ -337,7 +347,7 @@ export default observer(function Step1() {
                   >
                     {studentCreditTypeList.map((item: any) => (
                       <Select.Option value={item.code} key={item.name}>
-                        { item.name}
+                        {item.name}
                       </Select.Option>
                     ))}
                   </Select>
@@ -373,14 +383,14 @@ export default observer(function Step1() {
                   >
                     {studyTime && ![0.5, 1, 2, 3].indexOf(studyTime) ? (
                       <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        { studyTime}
+                        {studyTime}
                       </Select.Option>
                     ) : (
                       ""
                     )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
-                        { item.name}
+                        {item.name}
                       </Select.Option>
                     ))}
                   </Select>
@@ -409,7 +419,7 @@ export default observer(function Step1() {
                   >
                     {studentCreditTypeList.map((item: any) => (
                       <Select.Option value={item.code} key={item.name}>
-                        { item.name}
+                        {item.name}
                       </Select.Option>
                     ))}
                   </Select>
@@ -449,14 +459,14 @@ export default observer(function Step1() {
                       studyTime !== 2 &&
                       studyTime !== 3 ? (
                       <Select.Option value={studyTime} key={`${studyTime}-`}>
-                        { studyTime}
+                        {studyTime}
                       </Select.Option>
                     ) : (
                       ""
                     )}
                     {studentTimeTypeList.map(item => (
                       <Select.Option value={item.code} key={item.name}>
-                        { item.name}
+                        {item.name}
                       </Select.Option>
                     ))}
                   </Select>
@@ -514,7 +524,7 @@ export default observer(function Step1() {
                       key={item.code}
                       value={item.code}
                     >
-                      { item.name}
+                      {item.name}
                     </Checkbox>
                   ))}
                 </Checkbox.Group>

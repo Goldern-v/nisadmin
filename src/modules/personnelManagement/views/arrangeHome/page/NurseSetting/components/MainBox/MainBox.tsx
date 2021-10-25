@@ -166,6 +166,20 @@ export default observer(function MainBox() {
           key: "timeLimit",
           width: 70
         }
+      ],
+      gxjb: () => [
+        {
+          title: "开始时间",
+          dataIndex: "startDate",
+          key: "startDate",
+          width: 120
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70
+        }
       ]
     }),
     {

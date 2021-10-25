@@ -53,7 +53,7 @@ export const totalCellContent = (id: any) => {
 
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
-    return isOk && appStore.HOSPITAL_ID === "wh"
+    return isOk && (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == 'gxjb')
       ? total
       : total + Number(current.effectiveTime);
   }, 0);

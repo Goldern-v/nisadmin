@@ -84,6 +84,7 @@ export default observer(function TopCon(props: any) {
         // 武汉默认只有二级质控能在pc端添加
         wh: qualityControlRecordVM.level == 2 ? defaultCreateCon : <span></span>,
         hj: defaultCreateCon,
+        gxjb: defaultCreateCon,
         other: withOutAuditCreateCon
       }
     })

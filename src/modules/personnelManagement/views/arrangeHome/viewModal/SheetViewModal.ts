@@ -183,6 +183,10 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "1",
+        gxjb: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
         fssdy: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
@@ -201,14 +205,18 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2",
+        gxjb: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
         fssdy: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2",
         fsxt: () =>
-            (cellObj.schAddOrSubs &&
-              cellObj.schAddOrSubs.length &&
-              cellObj.schAddOrSubs[0].statusType) == "2"
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2"
       }),
       isJiJiaTime: appStore.hisMatch({
         map: {
@@ -264,7 +272,7 @@ class SheetViewModal {
     return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
-      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy") {
+      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy" || appStore.HOSPITAL_ID == "gxjb") {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );
@@ -389,7 +397,7 @@ class SheetViewModal {
 
   /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
   handleSheetTableData(sheetTableData: any, countObj: any = {}) {
-    
+
     /** for 优化速度 */
     let _sheetTableData = cloneJson(sheetTableData);
     for (let i = 0; i < _sheetTableData.length; i++) {

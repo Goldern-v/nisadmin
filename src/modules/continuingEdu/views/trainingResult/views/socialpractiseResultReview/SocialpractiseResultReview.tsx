@@ -151,7 +151,7 @@ export default observer(function SocialpractiseResultReview() {
             style={{ color: 'blue', cursor: 'pointer' }}
             onClick={itemScoreConfirm}>
             有效
-            </span>
+          </span>
         else
           return <span
             style={{ color: 'red', cursor: 'pointer' }}
@@ -345,7 +345,7 @@ export default observer(function SocialpractiseResultReview() {
         <span className="label">类型:</span>
         <span className="content">
           {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
-          {appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
+          {(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID == "gxjb") && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">
@@ -356,6 +356,7 @@ export default observer(function SocialpractiseResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
+            gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
