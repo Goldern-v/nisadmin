@@ -251,6 +251,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
 } else if (appStore.HOSPITAL_ID == 'lcey') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),//敏感指标
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
