@@ -132,7 +132,24 @@ export default observer(function TopCon(props: any) {
               </Radio.Group>
             </div>
           )),
-          gzsrm: (qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
+          gzsrm: (qualityControlRecordVM.level == 3 ? (
+            <div className='radio-con'>
+              <Radio.Group
+                name='radiogroup'
+                value={qualityControlRecordVM.readWay}
+                onChange={(e) => {
+                  qualityControlRecordVM.readWay = e.target.value
+                  props.refreshData()
+                }}
+              >
+                <Radio value={1}>按科室查看</Radio>
+                <Radio value={-3}>我创建的</Radio>
+                <Radio value={-4}>待我处理</Radio>
+                <Radio value={-5}>我已处理</Radio>
+              </Radio.Group>
+            </div>
+          ) : qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2?//一级质控
+          (
             <div className='radio-con'>
               <Radio.Group
                 name='radiogroup'
@@ -144,12 +161,10 @@ export default observer(function TopCon(props: any) {
               >
                 <Radio value={1}>按科室查看</Radio>
                 <Radio value={2}>按质控组查看</Radio>
-                <Radio value={-3}>我创建的</Radio>
-                <Radio value={-4}>待我处理</Radio>
-                <Radio value={-5}>我已处理</Radio>
               </Radio.Group>
             </div>
-          )),
+          ) :''
+          ),
           default: (qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
             <div className='radio-con'>
               <Radio.Group
