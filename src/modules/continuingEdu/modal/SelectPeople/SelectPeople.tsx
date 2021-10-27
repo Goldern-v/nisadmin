@@ -18,7 +18,8 @@ import {
 import { ModalComponentProps } from "src/libs/createModal";
 import { ScrollBox } from "src/components/common";
 import { authStore, appStore } from "src/stores";
-import { selectPeopleViewModel } from "./SelectPeopleViewModel";
+import { selectPeopleViewModel as selectPeopleViewModel_lcey } from "./SelectPeopleViewModel_lcey"
+import { selectPeopleViewModel as selectPeopleViewModel_com } from "./SelectPeopleViewModel"
 import { observer } from "mobx-react-lite";
 const { Search } = Input;
 const Option = Select.Option;
@@ -31,6 +32,15 @@ import { toJS } from "src/vendors/mobx-react-lite";
 import { stepViewModal } from "../stepComponent/StepViewModal";
 import GroupsSettingModal from './modal/GroupsSettingModal'
 import { stepServices } from "../stepComponent/services/stepServices";
+
+const selectPeopleViewModel = (() => {
+  switch (appStore.HOSPITAL_ID) {
+    case 'lcey':
+      return selectPeopleViewModel_lcey;
+    default:
+      return selectPeopleViewModel_com;
+  }
+})();
 
 export interface Props {
   /** 表单提交成功后的回调 */
@@ -249,8 +259,9 @@ export default observer(function SelectPeople(props: Props) {
           });
       }
     });
-
   }
+  console.log(selectPeopleViewModel.currentTreeData, 113)
+  console.log(selectPeopleViewModel.selectedBigDeptCode, 7777)
 
   return (
     <Wrapper>
@@ -281,85 +292,85 @@ export default observer(function SelectPeople(props: Props) {
                 </div>
               </ListCon>
             ) : (
-                <div>
-                  {selectPeopleViewModel.selectedBigDeptCode ? (
-                    <div
-                      className="title"
-                      onClick={() => selectPeopleViewModel.popStep()}
-                      style={{
-                        color: "#333",
-                        marginBottom: "10px",
-                        marginLeft: "-3px",
-                        cursor: "pointer"
-                      }}
-                    >
-                      <Icon type="left" />
-                      <span style={{ paddingLeft: 5 }}>
-                        {selectPeopleViewModel.selectedBigDeptName}
-                      </span>
-                    </div>
-                  ) : (
-                      <AutoComplete
-                        dataSource={searchUserList}
-                        style={{ width: "100%" }}
-                        onSelect={onSelect}
-                        onSearch={handleSearch}
-                        value={searchWord}
+              <div>
+                {selectPeopleViewModel.selectedBigDeptCode ? (
+                  <div
+                    className="title"
+                    onClick={() => selectPeopleViewModel.popStep()}
+                    style={{
+                      color: "#333",
+                      marginBottom: "10px",
+                      marginLeft: "-3px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    <Icon type="left" />
+                    <span style={{ paddingLeft: 5 }}>
+                      {selectPeopleViewModel.selectedBigDeptName}
+                    </span>
+                  </div>
+                ) : (
+                  <AutoComplete
+                    dataSource={searchUserList}
+                    style={{ width: "100%" }}
+                    onSelect={onSelect}
+                    onSearch={handleSearch}
+                    value={searchWord}
+                  >
+                    <Search placeholder="请输入搜索关键字" />
+                  </AutoComplete>
+                )}
+                <FileList>
+                  {selectPeopleViewModel.selectTreeData.map(
+                    (item: any, index: any) => (
+                      <div
+                        className="item-box"
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(item.step)
+                        }
+                        key={index}
                       >
-                        <Search placeholder="请输入搜索关键字" />
-                      </AutoComplete>
-                    )}
-                  <FileList>
-                    {selectPeopleViewModel.selectTreeData.map(
-                      (item: any, index: any) => (
-                        <div
-                          className="item-box"
-                          onClick={() =>
-                            selectPeopleViewModel.pushStep(item.step)
-                          }
-                          key={index}
-                        >
+                        <img src={require("../../images/文件夹.png")} alt="" />
+                        <span>{item.label}</span>
+                      </div>
+                    )
+                  )}
+                  {appStore.HOSPITAL_ID == 'nys' && selectPeopleViewModel.groupsList.map(
+                    (item: any, index: any) => (
+                      <div
+                        className="item-box"
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(item.groupName, item.id)
+                        }
+                        key={index}
+                      >
+                        <div id='groups'>
                           <img src={require("../../images/文件夹.png")} alt="" />
-                          <span>{item.label}</span>
-                        </div>
-                      )
-                    )}
-                    {appStore.HOSPITAL_ID == 'nys' && selectPeopleViewModel.groupsList.map(
-                      (item: any, index: any) => (
-                        <div
-                          className="item-box"
-                          onClick={() =>
-                            selectPeopleViewModel.pushStep(item.groupName, item.id)
-                          }
-                          key={index}
-                        >
-                          <div id='groups'>
-                            <img src={require("../../images/文件夹.png")} alt="" />
-                            <span>{item.groupName}</span>
-                            <span
+                          <span>{item.groupName}</span>
+                          <span
 
-                              className='button settingBtn'
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setGroupId(item.id);
-                                handleGroupSetting()
-                              }}
-                            >
-                              设置
-                            </span>
-                            <span
-                              className='button deleteBtn'
-                              onClick={(e) => deleteGroup(e, item.id)}
-                            >
-                              删除
-                            </span>
-                          </div>
+                            className='button settingBtn'
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setGroupId(item.id);
+                              handleGroupSetting()
+                            }}
+                          >
+                            设置
+                          </span>
+                          <span
+                            className='button deleteBtn'
+                            onClick={(e) => deleteGroup(e, item.id)}
+                          >
+                            删除
+                          </span>
                         </div>
-                      )
-                    )}
-                  </FileList>
-                </div>
-              )}
+                      </div>
+                    )
+                  )}
+                </FileList>
+              </div>
+            )}
           </Spin>
         </div>
         <div className="right-part">
@@ -462,70 +473,88 @@ const CheckListCon = observer(function (props: any) {
       }
     }
   `;
-  console.log(selectPeopleViewModel.currentTreeData,'sssssssssss')
+  console.log(selectPeopleViewModel.currentTreeData, 'sssssssssss')
 
   return (
-    <Con>
-      <div className="check-row">
-        <Checkbox
-          checked={checkAll}
-          indeterminate={indeterminate}
-          onChange={e => onCheckAll(e)}
-        >
-          全选
-        </Checkbox>
-      </div>
-
-      <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
-        {selectPeopleViewModel.currentTreeData!.list.map(
-          (item: any, index: number) => {
-            return (
-              <div className="check-row" key={index}>
-                <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
-                  {item.label}
-                </Checkbox>
-                {selectPeopleViewModel!.currentTreeData!.type !==
-                  "userList" && (
-                    <div style={{ minWidth: 54 }}>
-                      <span style={{ padding: "0 4px" }}>|</span>
-                      <span
-                        className={classNames({
-                          open: true,
-                          inChecked: inCheckedUser(item)
-                        })}
-                        onClick={() =>
-                          selectPeopleViewModel.pushStep(
-                            item[
-                              selectPeopleViewModel!.currentTreeData!.stepLabel
-                            ]
-                              ? `${
-                              item[
-                              selectPeopleViewModel!.currentTreeData!
-                                .stepLabel
-                              ]
-                              }-${
-                              item[
-                              selectPeopleViewModel!.currentTreeData!
-                                .dataLabel
-                              ]
-                              }`
-                              : item[
-                              selectPeopleViewModel!.currentTreeData!
-                                .dataLabel || ""
-                              ]
-                          )
-                        }
-                      >
-                        展开
-                    </span>
-                    </div>
-                  )}
+    <div>
+      {selectPeopleViewModel!.currentTreeData!.parent === '本院' || selectPeopleViewModel!.currentTreeData!.parent === '华美院区' ? (
+        <FileList>
+          {selectPeopleViewModel.currentTreeData!.list.map(
+            (item: any, index: any) => (
+              <div
+                className="item-box"
+                onClick={() =>
+                  selectPeopleViewModel.pushStep(item.step)
+                }
+                key={index}
+              >
+                <img src={require("../../images/文件夹.png")} alt="" />
+                <span>{item.label}</span>
               </div>
-            );
-          }
-        )}
-      </Checkbox.Group>
-    </Con>
+            )
+          )}
+        </FileList>
+      ) :
+        (<Con>
+          <div className="check-row">
+            <Checkbox
+              checked={checkAll}
+              indeterminate={indeterminate}
+              onChange={e => onCheckAll(e)}
+            >
+              全选
+            </Checkbox>
+          </div>
+
+          <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
+            {selectPeopleViewModel.currentTreeData!.list.map(
+              (item: any, index: number) => {
+                return (
+                  <div className="check-row" key={index}>
+                    <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
+                      {item.label}
+                    </Checkbox>
+                    {selectPeopleViewModel!.currentTreeData!.type !==
+                      "userList" && (
+                        <div style={{ minWidth: 54 }}>
+                          <span style={{ padding: "0 4px" }}>|</span>
+                          <span
+                            className={classNames({
+                              open: true,
+                              inChecked: inCheckedUser(item)
+                            })}
+                            onClick={() =>
+                              selectPeopleViewModel.pushStep(
+                                item[
+                                  selectPeopleViewModel!.currentTreeData!.stepLabel
+                                ]
+                                  ? `${item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .stepLabel
+                                  ]
+                                  }-${item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .dataLabel
+                                  ]
+                                  }`
+                                  : item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .dataLabel || ""
+                                  ], item.deptCode
+                              )
+                            }
+                          >
+                            展开
+                          </span>
+                        </div>
+                      )}
+                  </div>
+                );
+              }
+            )}
+          </Checkbox.Group>
+        </Con>)}
+    </div>
   );
 });
 const Wrapper = styled.div`
