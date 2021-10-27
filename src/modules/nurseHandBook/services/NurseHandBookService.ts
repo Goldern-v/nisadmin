@@ -30,7 +30,7 @@ export default class NurseHandBookService extends BaseApiService {
   }
   /*删除*/
   public delete(id: string, obj: PageOptions | any) {
-    return this.post(`/nurseManual/delete/${id}`, obj)
+    return this.post(`/${hospital}/delete/${id}`, obj)
   }
   /*获取科室*/
   public findTemplates() {
@@ -56,6 +56,19 @@ export default class NurseHandBookService extends BaseApiService {
   public saveDraft(type: string, obj: PageOptions | any) {
     return this.post(`/nurseManualJM/saveDraft/${type}`, obj)
   }
+  /*江门删除附件*/
+  public deleteAttachmentJM(id: string) {
+    return this.post(`/nurseManualJM/deleteAttachment/${id}`)
+  }
+  /*江门提交审核*/
+  public auditJM(type: string, obj: PageOptions | any) {
+    return this.post(`/nurseManualJM/audit/${type}`, obj)
+  }
+  /*江门撤销*/
+  public undo(obj: PageOptions | any) {
+    return this.post(`/nurseManualJM/undo`, obj)
+  }
+  
 }
 
 export const nurseHandBookService = new NurseHandBookService()

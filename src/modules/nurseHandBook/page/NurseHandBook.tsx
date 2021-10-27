@@ -203,7 +203,7 @@ export default observer(function MyCreateList() {
           <DoCon>
             {record.status==1&&<span onClick={() => onEdit(record)}>查看</span>}
             {(record.status==2||record.status==3)&&<span onClick={() => onEdit(record)}>编辑</span>}
-            {(record.status==0||record.status==2)&&<span onClick={() => onEdit(record)}>撤销</span>}
+            {(record.status==0||record.status==2)&&<span onClick={() => onUndo(record)}>撤销</span>}
             {record.status!=1&&<span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
@@ -372,13 +372,42 @@ export default observer(function MyCreateList() {
     }
   }
 
-  const onDelete = (record: any) => {
+  const onUndo = (record: any) => {
+    let undoTitle = ""
+    if(path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion"){
+      undoTitle = '确认撤销该总结吗？'
+    }else{
+      undoTitle = '确认撤销该计划吗？'
+    }
     Modal.confirm({
-      title: '确认删除该记录吗',
+      title: undoTitle,
       centered: true,
       onOk: () => {
         setPageLoading(true)
+        nurseHandBookService
+          .undo({id:record.id,status:record.status})
+          .then(res => {
+            message.success('撤销成功', 1, () => getData())
+          }, err => setPageLoading(false))
+      }
+    })
+  }
 
+  const onDelete = (record: any) => {
+    let deleteTitle = ""
+    if(path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion" || path == "conclusion"){
+      deleteTitle = '确认删除该总结吗？'
+    }else if(path == "weekPlan" || path == "monthPlan" || path == "quarterPlan" || path == "yearPlan" || path == "year" || path == "month"){
+      deleteTitle = '确认删除该计划吗？'
+    }else{
+      deleteTitle = '确认删除该记录吗？'
+    }
+
+    Modal.confirm({
+      title: deleteTitle,
+      centered: true,
+      onOk: () => {
+        setPageLoading(true)
         nurseHandBookService
           .delete(record.id,{id:record.id})
           .then(res => {

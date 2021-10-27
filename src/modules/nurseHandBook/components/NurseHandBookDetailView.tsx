@@ -88,6 +88,24 @@ export default observer(function followUpDetailView(props: any) {
     })
   }
 
+  const handleSubmit = () => {
+    if (searchText == "") {
+      message.error('标题不能为空！')
+      return
+    }
+    api.auditJM(queryObj.type,{
+      id: "",
+      content: searchText,
+      field_3: textValue,
+      fileIds: fileIdList,
+    })
+    .then((res) => {
+      message.success('提交成功')
+      appStore.history.goBack()
+
+    })
+  }
+
   const uploadOnChange = (info:any) => {
     let fileList = [...info.fileList];
     fileList = fileList.slice(-5);
@@ -110,7 +128,7 @@ export default observer(function followUpDetailView(props: any) {
         centered: true,
         onOk: () => {
           api
-          .deleteAttachment(info.id).then((res) => {
+          .deleteAttachmentJM(info.id).then((res) => {
             resolve(true)
             message.success('删除成功')
           })
@@ -132,7 +150,7 @@ export default observer(function followUpDetailView(props: any) {
       <div className="buttonBody">
       {queryObj.isAdd &&<Button onClick={handleSave}>保存</Button>}
       {!queryObj.isAdd &&<Button onClick={handleSave} className="red">撤销</Button>}
-      <Button className="ml-20" type="primary" onClick={handleSave}>提交</Button>
+      <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>
       <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
       </div>
     </div>
@@ -153,7 +171,7 @@ export default observer(function followUpDetailView(props: any) {
         <h2>上传附件：</h2>
         <Upload 
           {...props} 
-          action="/crNursing/api/nurseManual/attachment/nurseManual" 
+          action="/crNursing/api/nurseManualJM/attachment/nurseManual" 
           accept={".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.jpg,.png"} 
           headers={header} 
           fileList={fileList} 
