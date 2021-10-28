@@ -76,7 +76,6 @@ export default function WardLog() {
           path: '/nurseHandBook/weekPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -84,7 +83,6 @@ export default function WardLog() {
           path: '/nurseHandBook/monthPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -92,7 +90,6 @@ export default function WardLog() {
           path: '/nurseHandBook/quarterPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -100,7 +97,6 @@ export default function WardLog() {
           path: '/nurseHandBook/yearPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -108,7 +104,6 @@ export default function WardLog() {
           path: '/nurseHandBook/weekConclusion',
           icon: <BKES />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -116,7 +111,6 @@ export default function WardLog() {
           path: '/nurseHandBook/monthConclusion',
           icon: <BKES />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -124,7 +118,6 @@ export default function WardLog() {
           path: '/nurseHandBook/quarterConclusion',
           icon: <BKES />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
@@ -132,7 +125,6 @@ export default function WardLog() {
           path: '/nurseHandBook/yearConclusion',
           icon: <BKES />,
           component: { ...NurseHandBook },
-          keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
