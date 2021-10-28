@@ -145,7 +145,7 @@ export default observer(function MyCreateList() {
   [
     {
       title: '标题',
-      dataIndex: 'title',
+      dataIndex: 'content',
       width: 150,
       align: 'center',
     },
@@ -364,7 +364,7 @@ export default observer(function MyCreateList() {
 
   const onEdit = (record: any) => {
     if(appStore.HOSPITAL_ID == "jmfy"){
-      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=`)
+      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&id=${record.id}&&isAdd=`)
     }else{
       setIsAdd(false)
       setEditVisible(true)

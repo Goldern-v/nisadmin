@@ -68,6 +68,10 @@ export default class NurseHandBookService extends BaseApiService {
   public undo(obj: PageOptions | any) {
     return this.post(`/nurseManualJM/undo`, obj)
   }
+  /*江门查看*/
+  public getByIdAudited(id: string) {
+    return this.get(`/nurseManualJM/getByIdAudited?id=${id}`)
+  }
   
 }
 
