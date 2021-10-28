@@ -1,9 +1,9 @@
 import { observable, computed, action } from "mobx";
-import { authStore, appStore } from "src/stores";
+// import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { stepViewModal } from "../stepComponent/StepViewModal";
-import { stepServices } from "../stepComponent/services/stepServices";
+// import React, { useState, useEffect, useLayoutEffect } from "react";
+// import { stepViewModal } from "../stepComponent/StepViewModal";
+// import { stepServices } from "../stepComponent/services/stepServices";
 
 class SelectPeopleViewModel {
   @observable public groupsList: any = [];
@@ -109,42 +109,45 @@ class SelectPeopleViewModel {
   ];
   @observable stepState: string[] = [];
   @observable public currentData: any = {};
-  async pushStep(step: string, id?: any) {
+  async pushStep(step: string, id?: any, status = true) {
     this.modalLoading = true;
     let ser = service.commonApiService;
     if (this.stepState.indexOf(step) == -1) {
       this.currentData = {};
-      this.stepState.push(step);
+      if (status) this.stepState.push(step);
 
       let hsName = this.stepState[0] === '本院' ? 'BY' : 'HMYQ'
       if (this.stepState.length == 2 || this.stepState.length == 3) {
+        let isId = ''
+        if (this.stepState.length == 2) isId = ''
+        else isId = id
         if (this.stepState[0] == "默认科室") {
           this.currentData = (await ser.defaultDeptUser("", {
             showAuthDept: false
           })).data;
         } else if (this.stepState[1] == "护理单元") {
           this.currentData = {
-            list: (await ser.groupByDeptInDeptListLcey({ hospitalDistrict: hsName, deptCode: '' }))
+            list: (await ser.groupByDeptInDeptListLcey({ hospitalDistrict: hsName, deptCode: isId }))
               .data
           };
         } else if (this.stepState[1] == "科室层级") {
           this.currentData = {
-            list: (await ser.groupByLevelInDeptListLcey({ hospitalDistrict: hsName, level: '' }))
+            list: (await ser.groupByLevelInDeptListLcey({ hospitalDistrict: hsName, level: isId }))
               .data
           };
         } else if (this.stepState[1] == "科室职务") {
           this.currentData = {
-            list: (await ser.groupByJobInDeptListLcey({ hospitalDistrict: hsName, job: '' }))
+            list: (await ser.groupByJobInDeptListLcey({ hospitalDistrict: hsName, job: isId }))
               .data
           };
         } else if (this.stepState[1] == "护理实习生") {
           this.currentData = {
-            list: (await ser.QGIILGroupByYearLcey({ hospitalDistrict: hsName, year: '' }))
+            list: (await ser.QGIILGroupByYearLcey({ hospitalDistrict: hsName, year: isId }))
               .data
           };
         } else if (this.stepState[1] == "护理进修生用户") {
           this.currentData = {
-            list: (await ser.qRStudentInfoListGroupByYearLcey({ hospitalDistrict: hsName, year: '' }))
+            list: (await ser.qRStudentInfoListGroupByYearLcey({ hospitalDistrict: hsName, year: isId }))
               .data
           };
         }
@@ -159,6 +162,9 @@ class SelectPeopleViewModel {
       this.selectedBigDeptName = "";
     } else {
       this.stepState.pop();
+      if (this.stepState.length == 2) {
+        this.pushStep('', '', false)
+      }
     }
   }
 
@@ -197,8 +203,7 @@ class SelectPeopleViewModel {
         list: (this.currentData.list || []).map(
           (item: any, index: number, arr: any[]) => ({
             ...item,
-            label:
-              dataLabel && `${item[dataLabel]}（${item.userList.length}）人`,
+            label: dataLabel && `${item[dataLabel]}（${item.userList.length}）人`,
             key: dataLabel && item[dataLabel]
           })
         ),
@@ -224,7 +229,8 @@ class SelectPeopleViewModel {
           ...item,
           label: item.empName,
           key: item.empNo,
-          userList: [item]
+          userList: [item],
+          settingDataList: item?.settingDataList || []
         })),
         type: "userList",
         dataLabel: "empName"

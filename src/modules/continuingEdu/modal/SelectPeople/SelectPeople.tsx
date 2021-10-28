@@ -512,7 +512,12 @@ const CheckListCon = observer(function (props: any) {
                 return (
                   <div className="check-row" key={index}>
                     <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
-                      {item.label}
+                      <span>{item.label}</span>
+                      {(appStore.HOSPITAL_ID == 'lcey' && item.settingDataList?.length > 0) && item.settingDataList.map((items: any, indexs: number) => {
+                        return (
+                          <span key={indexs} style={{ color: items.nameColor }}>({items.rangeName})</span>
+                        )
+                      })}
                     </Checkbox>
                     {selectPeopleViewModel!.currentTreeData!.type !==
                       "userList" && (
@@ -540,7 +545,7 @@ const CheckListCon = observer(function (props: any) {
                                   : item[
                                   selectPeopleViewModel!.currentTreeData!
                                     .dataLabel || ""
-                                  ], item.deptCode
+                                  ], item.deptCode || item.level || item.job || item.year
                               )
                             }
                           >
