@@ -18,6 +18,7 @@ import NurseAudit_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nur
 import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
 import NurseAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/NurseAudit";
+import NurseHandBookAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseHandBookAudit/NurseHandBookAudit";
 import NurseAuditNew from "src/modules/auditNurseFileNew/NurseAudit";
 //档案详情
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
@@ -318,6 +319,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_jmfy, layouts.MainLayout),
+    setLayout("/nurseHandBookAudit", NurseHandBookAudit_jmfy, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
       NurseFileDetailView_jmfy,
