@@ -73,6 +73,10 @@ export default class AMServices extends BaseApiService {
   public auditeList(obj: any) {
     return this.post(`/auditeNurseFileIndexNys/findNurseFileAudited`, obj);
   }
+  /** 护士长手册-按照人员批量审核 */
+  public batchAudited(obj: any) {
+    return this.post(`/nurseManualJM/batchAudited`, obj);
+  }
   /** 批量审核质控表 */
   public batchHandleNode(obj: any) {
     return this.post(`/qcItem/instance/batchHandleNode`, obj);

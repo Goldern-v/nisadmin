@@ -292,6 +292,14 @@ export default class NurseFilesService extends BaseApiService {
       responseType: "blob"
     });
   }
+  /** 护士长手册 - 待我审核 */
+  public nurseManualAuditPending(committedNo: any) {
+    return this.get(`/nurseManualJM/findNurseManualPendingFlow?committedNo=${committedNo}`)
+  }
+  /** 护士长手册 - 我已审核 */
+  public nurseManualAuditProcessed(committedNo: any) {
+    return this.get(`/nurseManualJM/findNurseManualProcessedFlow?committedNo=${committedNo}`)
+  }
   /** 待我审核 */
   public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
     return this.post(`/auditeNurseFileIndexNys/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
