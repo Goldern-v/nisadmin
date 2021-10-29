@@ -75,6 +75,16 @@ export default class CommonApiService extends BaseApiService {
     return this.post('/studyAndTrain/userPersonManage/queryRefresherStudentInfoListGroupByYear', postData)
   }
 
+  // 聊城二院-有分院-根据角色编号获取用户列表
+  public queryUserListByRoleCodeLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/queryUserListByRoleCode', postData)
+  }
+
+  // 聊城二院-有分院-获取职称用户列表
+  public groupByTitleInDeptListLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/groupByTitleInDeptList', postData)
+  }
+
   // // 聊城二院-有分院-获取全院用户列表
   // public getAllUserListLcey(postData: any = {}) {
   //   return this.post('/studyAndTrain/userPersonManage/getAllUserList', postData)

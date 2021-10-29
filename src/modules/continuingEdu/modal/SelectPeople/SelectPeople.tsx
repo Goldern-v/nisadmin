@@ -477,7 +477,7 @@ const CheckListCon = observer(function (props: any) {
 
   return (
     <div>
-      {selectPeopleViewModel!.currentTreeData!.parent === '本院' || selectPeopleViewModel!.currentTreeData!.parent === '华美院区' ? (
+      {appStore.HOSPITAL_ID === 'lcey' && (selectPeopleViewModel!.currentTreeData!.parent === '本院' || selectPeopleViewModel!.currentTreeData!.parent === '华美院区') ? (
         <FileList>
           {selectPeopleViewModel.currentTreeData!.list.map(
             (item: any, index: any) => (
@@ -512,10 +512,10 @@ const CheckListCon = observer(function (props: any) {
                 return (
                   <div className="check-row" key={index}>
                     <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
-                      <span>{item.label}</span>
+                      <span>{item.label} </span>
                       {(appStore.HOSPITAL_ID == 'lcey' && item.settingDataList?.length > 0) && item.settingDataList.map((items: any, indexs: number) => {
                         return (
-                          <span key={indexs} style={{ color: items.nameColor }}>({items.rangeName})</span>
+                          <span key={indexs} style={{ color: items.nameColor, fontSize: '12px' }}>({items.rangeName})</span>
                         )
                       })}
                     </Checkbox>
@@ -545,7 +545,7 @@ const CheckListCon = observer(function (props: any) {
                                   : item[
                                   selectPeopleViewModel!.currentTreeData!
                                     .dataLabel || ""
-                                  ], item.deptCode || item.level || item.job || item.year
+                                  ], appStore.HOSPITAL_ID == 'lcey' ? (item.deptCode || item.level || item.job || item.title || item.year) : ''
                               )
                             }
                           >

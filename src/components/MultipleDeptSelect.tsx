@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { authStore, appStore } from "src/stores";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import { Select } from "src/vendors/antd";
+import service from 'src/services/api'
 
 export interface Props {
   onChange?: (value: string[]) => void;
@@ -21,9 +22,10 @@ export interface DeptType {
 
 export default observer(function MultipleDeptSelect(props: Props) {
   const [deptList, setDeptList]: any = useState([]);
+  const [deptAllList, setDeptAllList] = useState([] as any);
 
   const onChange = (value: string[]) => {
-    if(props.deptList && !value.length) return
+    if (props.deptList && !value.length) return
     if (value.length > 1) {
       if (value[value.length - 1] == "全院") {
         value = ["全院"];
@@ -48,16 +50,33 @@ export default observer(function MultipleDeptSelect(props: Props) {
     props.onChange && props.onChange(value);
   };
 
+  const getDeptAll = () => {
+    service.commonApiService.getNursingUnitAll().then(res => {
+      if (res.data.deptList) setDeptAllList(res.data.deptList)
+    })
+  }
+
+  const deptOptions = () => {
+    if (authStore.isDepartment) {
+      return deptAllList
+    } else {
+      return authStore.deptList
+    }
+  }
+
   useEffect(() => {
+    if (appStore.HOSPITAL_ID === 'gxjb') {
+      getDeptAll()
+    }
     statisticsViewModal.init().then(res => {
-      if(props.deptList){
+      if (props.deptList) {
         setDeptList(props.deptList);
-      }else {
+      } else {
         setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
       }
       if (props.deptKey == "完整科室") {
         statisticsViewModal.selectedDeptCode = ["全院"];
-      }else if(props.deptList){
+      } else if (props.deptList) {
         statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
       }
     });
@@ -76,10 +95,16 @@ export default observer(function MultipleDeptSelect(props: Props) {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
       >
-        {props.deptKey == "完整科室" && (
+        {/* 处理权限问题 */}
+        {(appStore.HOSPITAL_ID === 'gxjb' ? (authStore.isDepartment) : props.deptKey == "完整科室") && (
           <Select.Option value="全院">全院</Select.Option>
         )}
-        {deptList.map((item: DeptType) => (
+        {appStore.HOSPITAL_ID === 'gxjb' && deptOptions().map((item: DeptType) => (
+          <Select.Option key={item.name} value={item.code}>
+            {item.name}
+          </Select.Option>
+        ))}
+        {appStore.HOSPITAL_ID !== 'gxjb' && deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>
             {item.name}
           </Select.Option>

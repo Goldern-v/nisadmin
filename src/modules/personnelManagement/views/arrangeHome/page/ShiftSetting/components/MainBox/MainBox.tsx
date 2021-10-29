@@ -59,7 +59,7 @@ export default function MainBox() {
     appStore.hisMatch({
       map: {
         wh: AddShiftModal_wh,
-        gxjb: AddShiftModal_wh,
+        // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       }
     }),

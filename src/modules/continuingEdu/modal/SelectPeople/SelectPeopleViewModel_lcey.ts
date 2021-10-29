@@ -31,43 +31,64 @@ class SelectPeopleViewModel {
     // 本院children
     owrHospital: [
       {
-        step: "护理单元",
-        label: "护理单元",
+        step: "按护理单元选择",
+        label: "按护理单元选择",
         dataLabel: "deptName",
-      },
-      {
-        step: "科室层级",
-        label: "科室层级",
+      }, {
+        step: "按层级选择",
+        label: "按层级选择",
         dataLabel: "level"
-      },
-      {
-        step: "科室职务",
-        label: "科室职务",
+      }, {
+        step: "按职务选择",
+        label: "按职务选择",
         dataLabel: "job",
-      },
-      {
+      }, {
+        step: "按职称选择",
+        label: "按职称选择",
+        data: [],
+        dataLabel: "title"
+      }, {
         step: "护理实习生",
         label: "护理实习生",
         dataLabel: "year"
-      },
-      {
+      }, {
         step: "护理进修生用户",
         label: "护理进修生用户",
+        dataLabel: "year"
+      }, {
+        step: "科室总带教",
+        label: "科室总带教",
+        data: [],
+        dataLabel: "year"
+      }, {
+        step: "院级培训师",
+        label: "院级培训师",
+        data: [],
+        dataLabel: "year"
+      }, {
+        step: "护理专业小组",
+        label: "护理专业小组",
+        data: [],
         dataLabel: "year"
       }],
     ColorfulCampus: [
       {
-        step: "护理单元",
-        label: "护理单元",
+        step: "按护理单元选择",
+        label: "按护理单元选择",
         dataLabel: "deptName",
       }, {
-        step: "科室层级",
-        label: "科室层级",
+        step: "按层级选择",
+        label: "按层级选择",
         dataLabel: "level"
       }, {
-        step: "科室职务",
-        label: "科室职务",
+        step: "按职务选择",
+        label: "按职务选择",
         dataLabel: "job",
+      }, {
+        step: "按职称选择",
+        label: "按职称选择",
+        data: [],
+        dataLabel: "title"
       }, {
         step: "护理实习生",
         label: "护理实习生",
@@ -77,7 +98,23 @@ class SelectPeopleViewModel {
         step: "护理进修生用户",
         label: "护理进修生用户",
         dataLabel: "year"
-      }],
+      }, {
+        step: "科室总带教",
+        label: "科室总带教",
+        data: [],
+        dataLabel: "year"
+      }, {
+        step: "院级培训师",
+        label: "院级培训师",
+        data: [],
+        dataLabel: "year"
+      }, {
+        step: "护理专业小组",
+        label: "护理专业小组",
+        data: [],
+        dataLabel: "year"
+      }
+    ],
   }
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
@@ -125,20 +162,24 @@ class SelectPeopleViewModel {
           this.currentData = (await ser.defaultDeptUser("", {
             showAuthDept: false
           })).data;
-        } else if (this.stepState[1] == "护理单元") {
+        } else if (this.stepState[1] == "按护理单元选择") {
           this.currentData = {
             list: (await ser.groupByDeptInDeptListLcey({ hospitalDistrict: hsName, deptCode: isId }))
               .data
           };
-        } else if (this.stepState[1] == "科室层级") {
+        } else if (this.stepState[1] == "按层级选择") {
           this.currentData = {
             list: (await ser.groupByLevelInDeptListLcey({ hospitalDistrict: hsName, level: isId }))
               .data
           };
-        } else if (this.stepState[1] == "科室职务") {
+        } else if (this.stepState[1] == "按职务选择") {
           this.currentData = {
             list: (await ser.groupByJobInDeptListLcey({ hospitalDistrict: hsName, job: isId }))
               .data
+          };
+        } else if (this.stepState[1] == "按职称选择") {
+          this.currentData = {
+            list: (await ser.groupByTitleInDeptListLcey({ hospitalDistrict: hsName, title: isId })).data
           };
         } else if (this.stepState[1] == "护理实习生") {
           this.currentData = {
@@ -149,6 +190,18 @@ class SelectPeopleViewModel {
           this.currentData = {
             list: (await ser.qRStudentInfoListGroupByYearLcey({ hospitalDistrict: hsName, year: isId }))
               .data
+          };
+        } else if (this.stepState[1] == "科室总带教") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCodeLcey({ roleCode: 'LC_KSZDJ', hospitalDistrict: hsName })).data
+          };
+        } else if (this.stepState[1] == "院级培训师") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCodeLcey({ roleCode: 'LC_YJPXS', hospitalDistrict: hsName })).data
+          };
+        } else if (this.stepState[1] == "护理专业小组") {
+          this.currentData = {
+            list: (await ser.queryUserListByRoleCodeLcey({ roleCode: 'LC_HLZYXZ', hospitalDistrict: hsName })).data
           };
         }
       }
@@ -178,6 +231,16 @@ class SelectPeopleViewModel {
     return this.stepState[1] === '本院' ? this.userList.owrHospital : this.userList.ColorfulCampus
   }
   @computed get currentTreeData() {
+    const arr: any = [
+      "科室总带教",
+      "院级培训师",
+      "护理专业小组",
+    ];
+    // 处理没有展开的情况
+    let isGroupName: any = !!arr.find(
+      (item: any) => item === this.stepState[1]
+    );
+
     if (this.stepState.length == 1) {
       if (this.stepState[0] === '本院') {
         return {
@@ -191,7 +254,7 @@ class SelectPeopleViewModel {
         }
       }
     }
-    if (this.stepState.length == 2) {
+    if (this.stepState.length == 2 && !isGroupName) {
       let { dataLabel, stepLabel } = this.secondSelectTreeData.find(
         (item: any) => item.step == this.stepState[1]
       ) || {
@@ -211,9 +274,8 @@ class SelectPeopleViewModel {
         stepLabel,
         type: "parentList"
       };
-
     }
-    if (this.stepState.length == 3) {
+    if (this.stepState.length == 3 || isGroupName) {
       let { dataLabel } = this.secondSelectTreeData.find(
         (item: any) => item.step == this.stepState[1]
       ) || {
@@ -224,8 +286,8 @@ class SelectPeopleViewModel {
           (item: any) => item[dataLabel || ""] == this.stepState[2]
         ) || {};
       return {
-        parent: userData[dataLabel || ""],
-        list: (userData.userList || []).map((item: any) => ({
+        parent: isGroupName ? this.stepState[1] : userData[dataLabel || ""],
+        list: ((isGroupName ? this.currentData.list : userData.userList) || []).map((item: any) => ({
           ...item,
           label: item.empName,
           key: item.empNo,

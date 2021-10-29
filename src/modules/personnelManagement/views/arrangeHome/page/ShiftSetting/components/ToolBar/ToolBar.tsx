@@ -39,7 +39,7 @@ export default function ToolBar() {
     appStore.hisMatch({
       map: {
         wh: AddShiftModal_wh,
-        gxjb: AddShiftModal_wh,
+        // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       }
     }),
@@ -409,8 +409,8 @@ export default function ToolBar() {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
         return authStore.isRoleManage;
-      case "gxjb":
-        return authStore.isRoleManage;
+      // case "gxjb":
+      //   return authStore.isRoleManage;
       case "dghl":
       case "fqfybjy":
         return true;
