@@ -71,10 +71,10 @@ const baseConfig: navConfigItem[] = [
   //   name: "三级质控",
   //   path: "/qcThree"
   // },
-  // {
-  //   name: "学习培训",
-  //   path: "/continuingEdu"
-  // },
+  {
+    name: "学习培训",
+    path: "/continuingEdu"
+  },
   {
     name: "通知公告",
     path: "/notice"
