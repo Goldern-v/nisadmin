@@ -18,11 +18,13 @@ import FormPageBody from '../components/FormPageBody'
 export interface Props { }
 
 export default observer(function MyCreateList() {
-  const [year, setYear] = useState<String>('')
+  const [year, setYear] = useState<String>(moment().format('YYYY'))
   const [month, setMonth]  = useState<String>('')
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
-  const [filterDate, setFilterDate]:any = useState([])
+  const [monthDate, setMonthDate]:any = useState([moment().startOf("month"), moment().endOf("month")])
+  const [weekDate, setWeekDate]:any = useState([moment().startOf("week"), moment().endOf("week")])
+  const [quarterDate, setQuarterDate]:any = useState([moment().startOf("quarter"), moment().endOf("quarter")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
   const [yearList, setYearList] = useState([] as number[])
@@ -295,24 +297,21 @@ export default observer(function MyCreateList() {
     let nowYear:number = +moment().format('YYYY')
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
     setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
-    
-    if(path == 'weekPlan' || path == 'weekConclusion'){
-      setFilterDate([moment().startOf("week"), moment().endOf("week")])
-    }else if(path == 'monthPlan' || path == 'monthConclusion'){
-      setFilterDate([moment().startOf("month"), moment().endOf("month")])
-    }else if(path == 'quarterPlan' || path == 'quarterConclusion'){
-      setFilterDate([moment().startOf('quarter'), moment().endOf('quarter')])
-    }else if(path == 'yearPlan' || path == 'yearConclusion'){
-      setYear(moment().format('YYYY'))
-    }
-    getData()
   }
   const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
 
   const getData = () => {
     setPageLoading(true)
-    let startTime = filterDate[0] ? moment(filterDate[0]).format('YYYY-MM-DD') : ''
-    let endTime = filterDate[0] ? moment(filterDate[1]).format('YYYY-MM-DD') : ''
+    let data = []
+    if(path == 'weekPlan' || path == 'weekConclusion'){
+      data = weekDate
+    }else if(path == 'monthPlan' || path == 'monthConclusion'){
+      data = monthDate
+    }else if(path == 'quarterPlan' || path == 'quarterConclusion'){
+      data = quarterDate
+    }
+    let startTime = data[0] ? moment(data[0]).format('YYYY-MM-DD') : ''
+    let endTime = data[1] ? moment(data[1]).format('YYYY-MM-DD') : ''
     nurseHandBookService
       .getPage(path,{
         ...pageOptions,
@@ -364,7 +363,7 @@ export default observer(function MyCreateList() {
 
   const onEdit = (record: any) => {
     if(appStore.HOSPITAL_ID == "jmfy"){
-      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=`)
+      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&id=${record.id}&&isAdd=`)
     }else{
       setIsAdd(false)
       setEditVisible(true)
@@ -422,8 +421,16 @@ export default observer(function MyCreateList() {
 
   const handleExport = () => {
     setPageLoading(true)
-    let startTime = filterDate[0] ? moment(filterDate[0]).format('YYYY-MM-DD') : ''
-    let endTime = filterDate[0] ? moment(filterDate[1]).format('YYYY-MM-DD') : ''
+    let data = []
+    if(path == 'weekPlan' || path == 'weekConclusion'){
+      data = weekDate
+    }else if(path == 'monthPlan' || path == 'monthConclusion'){
+      data = monthDate
+    }else if(path == 'quarterPlan' || path == 'quarterConclusion'){
+      data = quarterDate
+    }
+    let startTime = data[0] ? moment(data[0]).format('YYYY-MM-DD') : ''
+    let endTime = data[1] ? moment(data[1]).format('YYYY-MM-DD') : ''
     nurseHandBookService.export(path,{
       ...pageOptions,
       deptCode: deptSelect,
@@ -441,16 +448,16 @@ export default observer(function MyCreateList() {
   }
 
   useEffect(() => {
-    if(filterDate[0]&&filterDate[1]){
-      getData()
-    }
+    getData()
   }, [
     pageOptions.pageIndex,
     pageOptions.pageSize,
     state,
-    filterDate,
     year,
     month,
+    monthDate,
+    weekDate,
+    quarterDate,
     selectedTemplate,
     deptSelect
   ])
@@ -458,14 +465,6 @@ export default observer(function MyCreateList() {
   useEffect(() => {
     initData()
   }, [])
-
-  // useKeepAliveEffect(() => {
-  //   if ((appStore.history && appStore.history.action) === 'POP') {
-  //     if(filterDate[0]&&filterDate[1]){
-  //       getData()
-  //     }
-  //   }
-  // })
 
   return (
     <Wrapper>
@@ -499,12 +498,24 @@ export default observer(function MyCreateList() {
         {controlDatePicker && <div>
           {(path != 'yearPlan' && path != 'yearConclusion') && <span>
             <span className='label ml-20'>时间:</span>
-            <DatePicker.RangePicker
+            {(path == 'weekPlan' || path == 'weekConclusion') && <DatePicker.RangePicker
               allowClear={false}
-              value={[filterDate[0], filterDate[1]]}
-              onChange={(value: any) => setFilterDate(value)}
+              value={[weekDate[0], weekDate[1]]}
+              onChange={(value: any) => setWeekDate(value)}
               style={{ width: 220 }}
-            />
+            />}
+            {(path == 'monthPlan' || path == 'monthConclusion') && <DatePicker.RangePicker
+              allowClear={false}
+              value={[monthDate[0], monthDate[1]]}
+              onChange={(value: any) => setMonthDate(value)}
+              style={{ width: 220 }}
+            />}
+            {(path == 'quarterPlan' || path == 'quarterConclusion') && <DatePicker.RangePicker
+              allowClear={false}
+              value={[quarterDate[0], quarterDate[1]]}
+              onChange={(value: any) => setQuarterDate(value)}
+              style={{ width: 220 }}
+            />}
           </span>}
           {(path == 'yearPlan' || path == 'yearConclusion') && <span>
           <span className='label'>年份:</span>
