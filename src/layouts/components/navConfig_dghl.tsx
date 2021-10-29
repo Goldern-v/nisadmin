@@ -103,6 +103,10 @@ const baseConfig: navConfigItem[] = [
     path: "/statistic"
   },
   {
+    name: "病区管理",
+    path: "/wardManagement"
+  },
+  {
     name: "通知公告",
     path: "/notice"
   },

@@ -57,6 +57,7 @@ export default observer(function QualityControlRecord() {
       let parms = {
         pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
         pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
+        level: qualityControlRecordVM.level?qualityControlRecordVM.level:'3',
       };
       qualityControlRecordApi
         .getPageByNewNoType(qualityControlRecordVM.readWay, parms)
