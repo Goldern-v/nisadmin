@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Upload, Icon, Modal, message, Input} from 'antd'
+import { Button, Upload, Icon, Modal, message, Input, Spin} from 'antd'
 import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
@@ -9,7 +9,8 @@ import BaseTable from 'src/components/BaseTable'
 import { fileDownload } from 'src/utils/file/file'
 import { DoCon } from 'src/components/BaseTable'
 import AuditProcessDetail from './AuditProcessDetail'
-
+import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
+import createModal from 'src/libs/createModal'
 import CKEditorFn from "./CKEditor"
 const api = new NurseHandBookService();
 
@@ -17,14 +18,8 @@ export interface Props { }
 
 export default observer(function followUpDetailView(props: any) {
   let [detailData, setDetailData]: any = useState([])
-  const { queryObj, history, location } = appStore
-  const [pageLoading, setPageLoading] = useState(false)
-  const [dataSource, setDataSource] = useState([])
-  const [total, setTotal]: any = useState(0)
+  const { queryObj } = appStore
   const [data, setData]: any = useState({})
-  const [surveyTitle, setSurveyTitle]: any = useState("")
-  const [editVisible, setEditVisible] = useState(false)
-  const [previewPaperData, setPreviewPaperData]: any = useState([])
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
   const [fileList, setFileList]:any = useState([])
   const [fileIdList, setFileIdList]:any = useState([])
@@ -48,33 +43,28 @@ export default observer(function followUpDetailView(props: any) {
     quarterConclusion: '护士长季度总结',
     yearConclusion: '护士长年度总结',
   }
-
+  const groupsAduitModalJM = createModal(GroupsAduitModalJM)
+  const [spinning, setSpinning] = useState(false)
   const onload = () => {
     if(!queryObj.isAdd){
+      setSpinning(true)
       api.getByIdAudited(queryObj.id).then((res) => {
         setData(res.data)
         setSearchText(res.data.title)
         setTextValue(res.data.content)
-        // 附件
-        // let idList = res.data.files.map((item:any) => {
-        //   return item.id
-        // })
-        // setFileIdList(idList)
+        setDetailData(res.data.flowList)
+        res.data.files?.forEach((item:any) => {
+          item.uid = item.id
+        })
+        setFileList(res.data.files)
+        setSpinning(false)
       })
     }
   }
-
+  
   useEffect(() => {
     onload()
   }, [])
-
-  const onDetail = (record: any) => {
-    // api.getAppPaper(record.fillRecordId)
-    // .then((res) => {
-    //   setEditVisible(true)
-    //   setPreviewPaperData(res.data)
-    // }, err => setPageLoading(false))
-  }
 
   const handleUndo = (record: any) => {
     let undoTitle = ""
@@ -87,12 +77,12 @@ export default observer(function followUpDetailView(props: any) {
       title: undoTitle,
       centered: true,
       onOk: () => {
-        setPageLoading(true)
         api
           .undo({id:queryObj.id,status:data.status})
           .then(res => {
             message.success('撤销成功')
-          }, err => setPageLoading(false))
+            appStore.history.goBack()
+          },)
       }
     })
   }
@@ -103,7 +93,7 @@ export default observer(function followUpDetailView(props: any) {
       return
     }
     api.saveDraft(queryObj.type,{
-      id: "",
+      id: queryObj.id || "",
       title: searchText,
       content: textValue,
       fileIds: fileIdList,
@@ -111,7 +101,6 @@ export default observer(function followUpDetailView(props: any) {
     .then((res) => {
       message.success('保存成功')
       appStore.history.goBack()
-
     })
   }
 
@@ -121,7 +110,7 @@ export default observer(function followUpDetailView(props: any) {
       return
     }
     api.auditJM(queryObj.type,{
-      id: "",
+      id: queryObj.id || "",
       title: searchText,
       content: textValue,
       fileIds: fileIdList,
@@ -129,8 +118,11 @@ export default observer(function followUpDetailView(props: any) {
     .then((res) => {
       message.success('提交成功')
       appStore.history.goBack()
-
     })
+  }
+  
+  const handleAudit = () => {
+    groupsAduitModalJM.show({})
   }
 
   const uploadOnChange = (info:any) => {
@@ -147,7 +139,20 @@ export default observer(function followUpDetailView(props: any) {
       return item.id
     })
     setFileIdList(idList)
-  };
+  }
+
+  const isNone = () => {
+    if(queryObj.isAdd){
+      return "新建"
+    }else if(queryObj.audit){
+      return "审核"
+    }else if(data.status=="1"){
+      return "查看"
+    }else{
+      return "编辑"
+    }
+  }
+
   const removeOnChange = (info:any) => {
     let pro = new Promise((resolve,reject)=>{
       Modal.confirm({
@@ -169,57 +174,61 @@ export default observer(function followUpDetailView(props: any) {
   }
 
   return <Wrapper>
-    <div className="topCon">
-      <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{queryObj.isAdd?"新建":"编辑"}{titleArr[queryObj.type]}</div>
-      {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
-      {!queryObj.isAdd && <div className="name">{data.title}</div>}
-      {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿" }</span></div>}
-      <div className="buttonBody">
-      {queryObj.isAdd &&<Button onClick={handleSave}>保存</Button>}
-      {!queryObj.isAdd &&<Button onClick={handleUndo} className="red">撤销</Button>}
-      <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>
-      <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
+    <Spin spinning={spinning}>
+      <div className="topCon">
+        <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>
+        {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
+        {!queryObj.isAdd && <div className="name">{data.title}</div>}
+        {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿" }</span></div>}
+        <div className="buttonBody">
+        {queryObj.isAdd &&<Button onClick={handleSave}>保存</Button>}
+        {!queryObj.isAdd && data.status == "2" &&<Button onClick={handleUndo} className="red">撤销</Button>}
+        {data.status != "1" && !queryObj.audit &&<Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
+        {queryObj.audit &&<Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
+        <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
+        </div>
       </div>
-    </div>
-    <div className="mainCon">
-      <div className="leftCon">
-        <div className="titleName">
-          <h2>总结名称：</h2>
-          <Input
-            style={{ width: 600 }}
-            value={searchText}
-            onChange={(e)=>setSearchText(e.target.value)}
-          />
-        </div>
-        <div className="Editor">
-          {CKEditorFn({textValue,setTextValue})}
-        </div>
-        <div className="footer">
-          <div className="upload">
-            <h2>上传附件：</h2>
-            <Upload 
-              {...props} 
-              action="/crNursing/api/nurseManualJM/attachment/nurseManual" 
-              accept={".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.jpg,.png"} 
-              headers={header} 
-              fileList={fileList} 
-              onChange={uploadOnChange}
-              onRemove={removeOnChange}
-              multiple={true}
-              >
-              <Button type="primary" className="button">
-                <Icon type="upload" /> 上传
-              </Button>
-            </Upload>
-            <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
+      <div className="mainCon">
+        {data.status == "1"&&<div className="noEditor"></div>}
+        <div className="leftCon">
+          <div className="titleName">
+            <h2>总结名称：</h2>
+            <Input
+              style={{ width: 600 }}
+              value={searchText}
+              onChange={(e)=>setSearchText(e.target.value)}
+            />
+          </div>
+          <div className="Editor">
+            {CKEditorFn({textValue,setTextValue})}
+          </div>
+          <div className="footer">
+            <div className="upload">
+              <h2>上传附件：</h2>
+              <Upload 
+                {...props} 
+                action="/crNursing/api/nurseManualJM/attachment/nurseManual" 
+                accept={".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.jpg,.png"} 
+                headers={header} 
+                fileList={fileList} 
+                onChange={uploadOnChange}
+                onRemove={removeOnChange}
+                multiple={true}
+                >
+                <Button type="primary" className="button">
+                  <Icon type="upload" /> 上传
+                </Button>
+              </Upload>
+              <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
+            </div>
           </div>
         </div>
+        {!queryObj.isAdd && <div className="rightCon">
+          <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+        </div>}
       </div>
-      {!queryObj.isAdd && <div className="rightCon">
-        <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
-      </div>}
-      
-    </div>
+    </Spin>
+    <groupsAduitModalJM.Component/>
   </Wrapper>
 })
 
@@ -242,10 +251,11 @@ const Wrapper = styled.div`
     height: 100px;
     background-color: #fff;
     padding-left: 30px;
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    position: relative;
+    z-index:9;
     .title{
       color: #666666;
     }
@@ -265,7 +275,14 @@ const Wrapper = styled.div`
       right: 30px;
     }
   }
+  .noEditor{
+    width: 56%;
+    height: 100%;
+    position: fixed;
+    z-index: 999;
+  }
   .mainCon{
+    padding-top: 100px;
     margin: 0 auto;
     width: 75%;
     display: flex;
