@@ -52,7 +52,10 @@ export default observer((props: Props) => {
       // } else {
       //   day.workState = 1
       // }
-      if (type != 3) {
+      if (!type) {
+        day.workState = 0
+        day.workState++
+      } else if (type != 3) {
         day.workState++
       } else {
         day.workState = 0
