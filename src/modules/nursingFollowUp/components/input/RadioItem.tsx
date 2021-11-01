@@ -7,6 +7,7 @@ export default function RadioItem(props: any) {
       <label>
         <input type="radio"
           name={props.name}
+          disabled={props.disabled}
           value={props.saveValue}
           checked={props.checked}
           data-checked={props.checked || false}

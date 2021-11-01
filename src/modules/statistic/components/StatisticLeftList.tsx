@@ -56,8 +56,8 @@ const LEFT_MENU_CONFIG = [
       ...appStore.hisMatch({
         map: {
           dgxg: [{ title: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
-                { title: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
-                { title: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" }],
+          { title: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
+          { title: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" }],
           default: []
         }
       }),
@@ -127,6 +127,17 @@ const LEFT_MENU_CONFIG = [
             title: "科室护士明细表",
             path: "/statistic/科室护士明细表",
           },
+          ...appStore.hisMatch({
+            map: {
+              lcey: [
+                {
+                  title: "护士职称分布",
+                  path: "/statistic/护士职称分布",
+                },
+              ],
+              other: []
+            }
+          })
           // {
           //   title: "科室护士结构信息汇总表",
           //   path: "/statistic/科室护士结构信息汇总表"

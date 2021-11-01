@@ -53,7 +53,7 @@ import 护士离职原因分析 from './views/护士离职原因分析/护士离
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
 import NurseList_nys from './views/nursingStatistics/nurseList_nys/NurseList'
 import NurseList_jmfy from './views/nursingStatistics/nurseList_jmfy/NurseList'
-
+// import NurseList_lcey from './views/nursingStatistics/nurseList_lcey/NurseList'
 // import { RouteComponentProps } from 'src/components/RouterView'
 // import NurseSchedule from './components/NurseSchedule'
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
@@ -105,12 +105,12 @@ export default function StatisticView() {
       path: '/statistic/科室休假统计（按月份）',
       component: DepartmentVacationByMonthView
     },
-    
+
     ...appStore.hisMatch({
       map: {
         dgxg: [{ name: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', component: DepartmentWhiteByQuarterView },
-              { name: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', component: DepartmentNightByQuarterView },
-              { name: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', component: DepartmentVacationByQuarterView }],
+        { name: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', component: DepartmentNightByQuarterView },
+        { name: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', component: DepartmentVacationByQuarterView }],
         default: []
       }
     }),
@@ -119,6 +119,7 @@ export default function StatisticView() {
       map: {
         nys: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_nys },
         jmfy: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_jmfy },
+        // lcey: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList_lcey },
         other: { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
       }
     }),
@@ -134,6 +135,7 @@ export default function StatisticView() {
     ...appStore.hisMatch({
       map: {
         jmfy: [{ name: '护士职称分布', path: '/statistic/护士职称分布', component: 护士职称统计 }],
+        lcey: [{ name: '护士职称分布', path: '/statistic/护士职称分布', component: 护士职称统计 }],
         default: []
       }
     })

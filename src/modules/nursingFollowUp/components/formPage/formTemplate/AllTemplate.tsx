@@ -218,6 +218,7 @@ export default function AllTemplate(props: any) {
                         itemRow.documentItemLists.map((itemAnswer: any) => {
                           return (itemAnswer.type == 'radio' && // 判断类型,返回对应的表单控件
                             <RadioItem
+                              disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
                               name={itemAnswer.name} // 单选功能
                               value={itemAnswer.value} // 展示的值
                               saveValue={itemAnswer.saveValue} // 展示的值
@@ -227,6 +228,7 @@ export default function AllTemplate(props: any) {
                             ||
                             (itemAnswer.type == 'checkbox' && (
                               <CheckboxItem
+                                disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
                                 name={itemAnswer.name}
                                 saveValue={itemAnswer.saveValue} // 真正保存的值
                                 value={itemAnswer.value}  // 选项展示的值
@@ -240,6 +242,7 @@ export default function AllTemplate(props: any) {
                             (
                               (itemAnswer.type == 'date(yyyy-mm-dd)' || itemAnswer.type == 'text') && (
                                 <InputItem
+                                  disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
                                   type={itemAnswer.type}
                                   name={itemAnswer.name}
                                   value={editable[itemAnswer.name]}
@@ -253,6 +256,7 @@ export default function AllTemplate(props: any) {
                             (
                               itemAnswer.type == 'checkbox_text' && (
                                 <CheckText
+                                  disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
                                   name={itemAnswer.name}
                                   saveValue={itemAnswer.saveValue} // 真正保存的值
                                   value={itemAnswer.value}  // 选项展示的值

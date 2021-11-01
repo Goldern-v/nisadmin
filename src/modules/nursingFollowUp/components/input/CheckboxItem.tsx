@@ -8,6 +8,7 @@ export default function CheckboxItem(props: any) {
       <div className="itemAnswer">
         <input
           type="checkbox"
+          disabled={props.disabled}
           name={props.name}
           value={props.saveValue}
           checked={props.checked}
