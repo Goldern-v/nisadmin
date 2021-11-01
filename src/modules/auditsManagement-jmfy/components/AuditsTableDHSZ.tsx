@@ -16,6 +16,7 @@ import qs from "qs";
 import { observer } from "src/vendors/mobx-react-lite";
 import createModal from "src/libs/createModal";
 import GroupsEmpNoAduitModal from "../modal/GroupsEmpNoAduitModal";
+import GroupsHandBookAduitModal from "../modal/GroupsHandBookAduitModal";
 import { type } from "os";
 import GroupsHlbModal from "../modal/GroupsHlbModal";
 import { message } from "src/vendors/antd";
@@ -47,6 +48,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const [searchText, setSearchText] = useState(false);
 
   const groupsEmpNoAduitModal = createModal(GroupsEmpNoAduitModal);
+  const groupsHandBookAduitModal = createModal(GroupsHandBookAduitModal);
   const groupsHlbModal = createModal(GroupsHlbModal);
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
 
@@ -72,6 +74,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         `/crNursing/manage/#/qualityScheduleRecordDetails/${row.othersMessage.id
         }`
       );
+    } else if (showType == "nurseManual") {//护士长手册
+      window.open(`/crNursing/manage/#/nurseHandBookAudit?commiterNo=${row.commiterNo}`);
     }
   };
 
@@ -100,7 +104,9 @@ export default observer(function AuditsTableDHSZ(props: Props) {
               ? "二级质控"
               : text == "sr"
                 ? "特殊时段查房"
-                : "";
+                : text == "nurseManual"
+                  ? "护士长手册"
+                  : "";
       }
     },
     {
@@ -268,6 +274,15 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           emitter.emit("refreshNurseAuditTable");
         }
       });
+    } else if (showType == "nurseManual") {
+      groupsHandBookAduitModal.show({
+        selectedRows,
+        getTableData: () => {
+          setSelectedRows([]);
+          setSelectedRowKeys([]);
+          emitter.emit("refreshNurseAuditTable");
+        }
+      });
     }
   };
 
@@ -324,6 +339,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         }}
       />
       <groupsEmpNoAduitModal.Component />
+      <groupsHandBookAduitModal.Component />
       <groupsHlbModal.Component />
       <goupsSrAduitModal.Component />
     </Wrapper>

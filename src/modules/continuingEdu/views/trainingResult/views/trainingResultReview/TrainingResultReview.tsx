@@ -150,7 +150,7 @@ export default observer(function TrainingResultReview() {
             style={{ color: 'blue', cursor: 'pointer' }}
             onClick={itemScoreConfirm}>
             有效
-            </span>
+          </span>
         else
           return <span
             style={{ color: 'red', cursor: 'pointer' }}
@@ -319,7 +319,7 @@ export default observer(function TrainingResultReview() {
         </span>
         <span className="label">类型:</span>
         <span className="content">
-          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb') && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">{
@@ -330,9 +330,10 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
+            gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
-              <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+                <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
               <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
             </React.Fragment>
           }
@@ -348,7 +349,7 @@ export default observer(function TrainingResultReview() {
           onChange={(tab: any) => setActiveTab(tab)}
           style={{ height: '100%' }}>
           <TabPane tab={`${baseInfo.teachingMethodName ? baseInfo.teachingMethodName : '实践'}结果`} key="1">
-            <QueryPannel/>
+            <QueryPannel />
             <BaseTable
               loading={loading}
               rowSelection={{
@@ -422,7 +423,7 @@ export default observer(function TrainingResultReview() {
                                   src: item.path,
                                   backdrop: 'rgba(0,0,0, .8)'
                                 })
-                              }} alt=""/>
+                              }} alt="" />
                           </div>
                         ) : <NoPicCon>暂无图片</NoPicCon>
                       }
@@ -433,7 +434,7 @@ export default observer(function TrainingResultReview() {
                         current={imgListQuery.pageIndex}
                         pageSize={imgListQuery.pageSize}
                         onChange={(pageIndex: number) => setImgListQuery({ ...imgListQuery, pageIndex })}
-                        total={imgTotal}/>
+                        total={imgTotal} />
                     </div>
                   </FullContent> :
                   <div className="loading-wrapper">
@@ -447,8 +448,8 @@ export default observer(function TrainingResultReview() {
         </Tabs>
       </TableWrapper>
     </MainPannel>
-    <scorceConfirm.Component/>
-    <answerSheetModal.Component/>
+    <scorceConfirm.Component />
+    <answerSheetModal.Component />
   </Wrapper>
 })
 

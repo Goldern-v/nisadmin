@@ -264,7 +264,7 @@ export default function BaseSetting(props: Props) {
         <div className="label" style={{ width: _labelWidth }}>
           类别：
         </div>
-        {appStore.HOSPITAL_ID === "wh" && (
+        {(appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == "gxjb") && (
           <div className="content">{info.categoryName}</div>
         )}
       </div>

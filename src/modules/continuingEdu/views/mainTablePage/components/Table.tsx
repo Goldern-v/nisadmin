@@ -17,9 +17,9 @@ export default observer(function Table(props: Props) {
 
   /** 培训对象函数封装 */
   const setTableConfig = () => {
-    const bxNursing =appStore.hisMatch({
-      map:{
-        lcey:[
+    const bxNursing = appStore.hisMatch({
+      map: {
+        lcey: [
           { name: "N0", code: "nurse0" },
           { name: "N1-1", code: "nurse1_1" },
           { name: "N1-2", code: "nurse1_2" },
@@ -32,7 +32,7 @@ export default observer(function Table(props: Props) {
           { name: "N4-2", code: "nurse4_2" },
           { name: "其他", code: "nurseOther" }
         ],
-        other:[
+        other: [
           { name: "N0", code: "nurse0" },
           { name: "N1", code: "nurse1" },
           { name: "N2", code: "nurse2" },
@@ -43,7 +43,7 @@ export default observer(function Table(props: Props) {
         ]
       }
     })
-    return bxNursing.map((item:any)=>{
+    return bxNursing.map((item: any) => {
       return {
         title: item.name,
         dataIndex: item.code,
@@ -103,7 +103,7 @@ export default observer(function Table(props: Props) {
       width: 100,
       align: "center"
     },
-    appStore.HOSPITAL_ID == "wh" && {
+    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && {
       title: "类别",
       dataIndex: "category",
       width: 120,

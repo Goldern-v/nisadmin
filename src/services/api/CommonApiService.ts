@@ -50,6 +50,45 @@ export default class CommonApiService extends BaseApiService {
   public getBigDeptListSelfList() {
     return this.get(`/qcItem/dict/bigDeptListSelf`);
   }
+  // 聊城二院-有分院-获取护理单元用户列表
+  public groupByDeptInDeptListLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/groupByDeptInDeptList', postData)
+  }
+
+  // 聊城二院-有分院-获取科室层级用户列表
+  public groupByLevelInDeptListLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/groupByLevelInDeptList', postData)
+  }
+
+  // 聊城二院-有分院-获取科室职务用户列表
+  public groupByJobInDeptListLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/groupByJobInDeptList', postData)
+  }
+
+  // 聊城二院-有分院-获取护理实习生用户列表
+  public QGIILGroupByYearLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/queryGraduateInternInfoListGroupByYear', postData)
+  }
+
+  // 聊城二院-有分院-获取护理进修生用户列表
+  public qRStudentInfoListGroupByYearLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/queryRefresherStudentInfoListGroupByYear', postData)
+  }
+
+  // 聊城二院-有分院-根据角色编号获取用户列表
+  public queryUserListByRoleCodeLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/queryUserListByRoleCode', postData)
+  }
+
+  // 聊城二院-有分院-获取职称用户列表
+  public groupByTitleInDeptListLcey(postData: any = {}) {
+    return this.post('/studyAndTrain/userPersonManage/groupByTitleInDeptList', postData)
+  }
+
+  // // 聊城二院-有分院-获取全院用户列表
+  // public getAllUserListLcey(postData: any = {}) {
+  //   return this.post('/studyAndTrain/userPersonManage/getAllUserList', postData)
+  // }
 
   /** 根据科室获取人员列表 */
   public groupByDeptInDeptList(
@@ -134,7 +173,7 @@ export default class CommonApiService extends BaseApiService {
     );
   }
   /** 根据 科室总带教 获取人员列表 ---厚街学习培训 新建类型*/
-  public queryUserListByRoleCode(roleCode:string) {
+  public queryUserListByRoleCode(roleCode: string) {
     let obj: any = {
       roleCode
     };

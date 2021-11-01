@@ -35,7 +35,7 @@ export function getAddArrangeMenuList(
         type: "text",
         dataSource: obj[keys[i]][j],
         async onClick(item: any) {
-          if (appStore.HOSPITAL_ID == 'wh') {
+          if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -80,7 +80,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].addSymbols = copyRow[i].addSymbols;
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
-      if (appStore.HOSPITAL_ID == "wh") {
+      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
 
@@ -96,7 +96,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].settings = [];
         copyRow[i].addSymbols = [];
 
-        if (appStore.HOSPITAL_ID == "wh") {
+        if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
           copyRow[i].schAddOrSubs = [];
         }
       } /** 序号同步 */
@@ -134,7 +134,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.schJiJias = cloneJson(copyCell.schJiJias);
     cell.schRemarks = cloneJson(copyCell.schRemarks);
 
-    if (appStore.HOSPITAL_ID == "wh") {
+    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
 
@@ -173,7 +173,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schRemarks = [];
   cellObj.schJiJias = [];
 
-  if (appStore.HOSPITAL_ID == "wh") {
+  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;

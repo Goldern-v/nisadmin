@@ -193,7 +193,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               link:
                 master.qcLevel == "3" ? "/qcThree" :
                   master.qcLevel == "2" ? "/qcTwo" :
-                    appStore.HOSPITAL_ID == 'hj' ? '/qcOneHj' :
+                    (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb') ? '/qcOneHj' :
                       appStore.HOSPITAL_ID == 'nys' ? '/qcOneNys' : '/qcOne'
             },
             {
@@ -236,26 +236,26 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   </Button>
                 </React.Fragment>
               )}
-            { currentNode.canUpdate && (
-                <React.Fragment>
-                  {currentNode.nodeCode === 'commit' && <Button
-                    onClick={handleDelete}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    删除
-                  </Button>}
-                  <Button
-                    onClick={handleCancel}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    撤销
-                  </Button>
-                </React.Fragment>
-              )
+            {currentNode.canUpdate && (
+              <React.Fragment>
+                {currentNode.nodeCode === 'commit' && <Button
+                  onClick={handleDelete}
+                  type="danger"
+                  ghost
+                  disabled={deleteLoading}
+                >
+                  删除
+                </Button>}
+                <Button
+                  onClick={handleCancel}
+                  type="danger"
+                  ghost
+                  disabled={deleteLoading}
+                >
+                  撤销
+                </Button>
+              </React.Fragment>
+            )
             }
             {/* {master &&
               master.canUpdate &&

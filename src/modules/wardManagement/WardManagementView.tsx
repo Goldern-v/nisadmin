@@ -41,12 +41,25 @@ const LEFT_MENU_CONFIG = [
       }
     ]
   },
-  {
-    title: '病区文件',
-    path: '/wardManagement/病区文件',
-    component: DeptFileShare,
-    icon: <KSPHSZ />
-  },
+  ...appStore.hisMatch({
+    map: {
+      dghl: [],//东莞横沥屏蔽
+      default: [
+        {
+            title: '病区文件',
+            path: '/wardManagement/病区文件',
+            component: DeptFileShare,
+            icon: <KSPHSZ />
+        }
+      ]
+    }
+  }),
+  // {
+  //   title: '病区文件',
+  //   path: '/wardManagement/病区文件',
+  //   component: DeptFileShare,
+  //   icon: <KSPHSZ />
+  // },
   ...appStore.hisMatch({
     map: {
       wh: [

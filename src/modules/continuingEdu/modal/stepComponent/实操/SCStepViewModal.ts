@@ -150,8 +150,8 @@ class StepViewModal {
       organizationWay: this.stepData2.organizationWay,
       address: this.stepData2.address,
       ...appStore.hisMatch({
-        map:{
-          lcey:{
+        map: {
+          lcey: {
             nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
             nurse1_1: this.stepData2.bxNurse.includes("nurse1_1") ? 1 : 0,
             nurse1_2: this.stepData2.bxNurse.includes("nurse1_2") ? 1 : 0,
@@ -164,7 +164,7 @@ class StepViewModal {
             nurse4_2: this.stepData2.bxNurse.includes("nurse4_2") ? 1 : 0,
             nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
           },
-          other:{
+          other: {
             nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
             nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
             nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,

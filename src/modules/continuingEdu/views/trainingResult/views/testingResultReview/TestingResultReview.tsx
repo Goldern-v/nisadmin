@@ -451,7 +451,7 @@ export default observer(function TestingResultReview() {
         </span>
         <span className="label">类型:</span>
         <span className="content">
-          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb') && baseInfo.categoryName}
         </span>
         <span className="label">总成绩:</span>
         <span className="content">{baseInfo.totalScores}</span>
@@ -502,6 +502,7 @@ export default observer(function TestingResultReview() {
           {appStore.hisMatch({
             map: {
               wh: <span></span>,
+              gxjb: <span></span>,
               other: <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
             }
           })}

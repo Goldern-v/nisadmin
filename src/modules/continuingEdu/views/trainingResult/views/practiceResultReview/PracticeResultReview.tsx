@@ -297,7 +297,7 @@ export default observer(function PracticeResultReview(props: Props) {
         </span>
         <span className="label">类型:</span>
         <span className="content">
-          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{appStore.HOSPITAL_ID === 'wh' && baseInfo.categoryName}
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）{(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID == "gxjb") && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">{

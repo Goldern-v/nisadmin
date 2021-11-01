@@ -196,7 +196,7 @@ export default function PreviewModal(props: Props) {
   // console.log(filePath)
   let defaultWidth = 900;
   //武汉市一要加宽预览窗口大小
-  if (appStore.HOSPITAL_ID == "wh") defaultWidth = 1100;
+  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") defaultWidth = 1100;
 
   // 插题完成回调
   const onOkCallBack = () => {

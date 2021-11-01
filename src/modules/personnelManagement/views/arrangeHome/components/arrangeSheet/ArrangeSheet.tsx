@@ -48,6 +48,7 @@ export default observer(function ArrangeSheet(props: Props) {
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
       wh: () => EditVacationCountModal_wh,
+      gxjb: () => EditVacationCountModal_wh,
       lcey: () => EditVacationCountModal_wh,
       dghl: () => EditVacationCountModal_wh,
       fqfybjy: () => EditVacationCountModal_wh,
@@ -91,23 +92,23 @@ export default observer(function ArrangeSheet(props: Props) {
       }]
       : []
     ;
-  
+
   /**
    * 工时小计显示
    */
   //
-  const manHourTitle = ():string=> { 
-    let title="工时小计"
-    switch(appStore.HOSPITAL_ID){
+  const manHourTitle = (): string => {
+    let title = "工时小计"
+    switch (appStore.HOSPITAL_ID) {
       case "dghl":
-        title="本周上班时数";
+        title = "本周上班时数";
         break;
       default:
-        title="工时小计";
+        title = "工时小计";
         break;
     }
     return title
-  } 
+  }
 
 
   let columns: any = [
@@ -227,7 +228,7 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 70,
       align: "center",
       render(text: string, record: any) {
-        return <WeekBalanceHour id={record.id}/>;
+        return <WeekBalanceHour id={record.id} />;
       }
     });
   }
@@ -322,7 +323,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 武汉特殊字段*/
-  if (['wh', 'gzsrm'].includes(appStore.HOSPITAL_ID)) {
+  if (['wh', 'gzsrm', 'gxjb'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -512,6 +513,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 nys: () => isEdit ? 6 : 5,
                 hj: () => 3,
                 wh: () => 6,
+                gxjb: () => 6,
                 jmfy: () => 6,
                 dghl: () => 6,
                 fqfybjy: () => 5,

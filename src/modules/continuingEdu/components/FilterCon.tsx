@@ -72,6 +72,7 @@ export default observer(function FilterCon(props: Props) {
     职称: appStore.hisMatch({
       map: {
         'wh': ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
+        'gxjb': ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
         'lcey': ['全部', ...TITLE_LIST_lcey],
         default: ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师']
       }
@@ -79,6 +80,7 @@ export default observer(function FilterCon(props: Props) {
     层级: appStore.hisMatch({
       map: {
         wh: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
+        gxjb: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
         lcey: ['全部', ...CURRENTLEVEL_LIST_lcey],
         default: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
       }
@@ -86,6 +88,16 @@ export default observer(function FilterCon(props: Props) {
     职务: appStore.hisMatch({
       map: {
         'wh': [
+          '全部',
+          '无',
+          '护士',
+          '护士长',
+          '科护士长',
+          '护理部干事',
+          '护理部副主任',
+          '护理部主任',
+        ],
+        'gxjb': [
           '全部',
           '无',
           '护士',

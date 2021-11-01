@@ -17,8 +17,9 @@ import {
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import { ScrollBox } from "src/components/common";
-import { authStore } from "src/stores";
-import { selectPeopleViewModel } from "./SelectPeopleViewModel";
+import { appStore } from "src/stores";
+import { selectPeopleViewModel as selectPeopleViewModel_com } from "./SelectPeopleViewModel";
+import { selectPeopleViewModel as selectPeopleViewModel_lcey } from "../../../../modal/SelectPeople/SelectPeopleViewModel_lcey";
 import { observer } from "mobx-react-lite";
 const { Search } = Input;
 const Option = Select.Option;
@@ -35,6 +36,15 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: (checkedUserList: CheckUserItem[]) => void;
   checkedUserList: CheckUserItem[];
 }
+
+const selectPeopleViewModel = (() => {
+  switch (appStore.HOSPITAL_ID) {
+    case 'lcey':
+      return selectPeopleViewModel_lcey;
+    default:
+      return selectPeopleViewModel_com;
+  }
+})();
 
 interface User {
   label?: string;
@@ -255,7 +265,7 @@ export default observer(function SelectPeopleModal(props: Props) {
     </Modal>
   );
 });
-const CheckListCon = observer(function(props: any) {
+const CheckListCon = observer(function (props: any) {
   let {
     checkedUserList,
     setCheckedUserList,
@@ -286,7 +296,7 @@ const CheckListCon = observer(function(props: any) {
       }
       return false;
     })();
-  } catch (error) {}
+  } catch (error) { }
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
     if (e.target.checked) {
@@ -329,68 +339,92 @@ const CheckListCon = observer(function(props: any) {
   `;
 
   return (
-    <Con>
-      <div className="check-row">
-        <Checkbox
-          checked={checkAll}
-          indeterminate={indeterminate}
-          onChange={e => onCheckAll(e)}
-        >
-          全选
-        </Checkbox>
-      </div>
-      <Checkbox.Group
-        value={checkedUserList && checkedUserList.map((item: any) => item.key)}
-      >
-        {selectPeopleViewModel.currentTreeData!.list.map(
-          (item: any, index: number) => {
-            return (
-              <div className="check-row" key={index}>
-                <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
-                  {item.label}
-                </Checkbox>
-                {selectPeopleViewModel!.currentTreeData!.type !==
-                  "userList" && (
-                  <div style={{ minWidth: 54 }}>
-                    <span style={{ padding: "0 4px" }}>|</span>
-                    <span
-                      className={classNames({
-                        open: true,
-                        inChecked: inCheckedUser(item)
+    <div>
+      {appStore.HOSPITAL_ID === 'lcey' && (selectPeopleViewModel!.currentTreeData!.parent === '本院' || selectPeopleViewModel!.currentTreeData!.parent === '华美院区') ? (
+        <FileList>
+          {selectPeopleViewModel.currentTreeData!.list.map(
+            (item: any, index: any) => (
+              <div
+                className="item-box"
+                onClick={() =>
+                  selectPeopleViewModel.pushStep(item.step)
+                }
+                key={index}
+              >
+                <img src={require("../../../../images/文件夹.png")} alt="" />
+                <span>{item.label}</span>
+              </div>
+            )
+          )}
+        </FileList>
+      ) :
+        (<Con>
+          <div className="check-row">
+            <Checkbox
+              checked={checkAll}
+              indeterminate={indeterminate}
+              onChange={e => onCheckAll(e)}
+            >
+              全选
+            </Checkbox>
+          </div>
+          <Checkbox.Group
+            value={checkedUserList && checkedUserList.map((item: any) => item.key)}
+          >
+            {selectPeopleViewModel.currentTreeData!.list.map(
+              (item: any, index: number) => {
+                return (
+                  <div className="check-row" key={index}>
+                    <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
+                      <span>{item.label} </span>
+                      {(appStore.HOSPITAL_ID == 'lcey' && item.settingDataList?.length > 0) && item.settingDataList.map((items: any, indexs: number) => {
+                        return (
+                          <span key={indexs} style={{ color: items.nameColor, fontSize: '12px' }}>({items.rangeName})</span>
+                        )
                       })}
-                      onClick={() =>
-                        selectPeopleViewModel.pushStep(
-                          item[
-                            selectPeopleViewModel!.currentTreeData!.stepLabel
-                          ]
-                            ? `${
+                    </Checkbox>
+                    {selectPeopleViewModel!.currentTreeData!.type !==
+                      "userList" && (
+                        <div style={{ minWidth: 54 }}>
+                          <span style={{ padding: "0 4px" }}>|</span>
+                          <span
+                            className={classNames({
+                              open: true,
+                              inChecked: inCheckedUser(item)
+                            })}
+                            onClick={() =>
+                              selectPeopleViewModel.pushStep(
                                 item[
+                                  selectPeopleViewModel!.currentTreeData!.stepLabel
+                                ]
+                                  ? `${item[
                                   selectPeopleViewModel!.currentTreeData!
                                     .stepLabel
-                                ]
-                              }-${
-                                item[
+                                  ]
+                                  }-${item[
                                   selectPeopleViewModel!.currentTreeData!
                                     .dataLabel
-                                ]
-                              }`
-                            : item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel || ""
-                              ]
-                        )
-                      }
-                    >
-                      展开
-                    </span>
+                                  ]
+                                  }`
+                                  : item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .dataLabel || ""
+                                  ], appStore.HOSPITAL_ID == 'lcey' ? (item.deptCode || item.level || item.title || item.job || item.year) : ''
+                              )
+                            }
+                          >
+                            展开
+                          </span>
+                        </div>
+                      )}
                   </div>
-                )}
-              </div>
-            );
-          }
+                );
+              }
+            )}
+          </Checkbox.Group>
+        </Con>
         )}
-      </Checkbox.Group>
-    </Con>
+    </div>
   );
 });
 const Wrapper = styled.div`

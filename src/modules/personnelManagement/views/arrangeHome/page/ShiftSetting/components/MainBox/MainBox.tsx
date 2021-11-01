@@ -59,6 +59,7 @@ export default function MainBox() {
     appStore.hisMatch({
       map: {
         wh: AddShiftModal_wh,
+        // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       }
     }),
@@ -187,7 +188,7 @@ export default function MainBox() {
 
   // new:南医三护士长可以编辑排班设置
   let promise =
-    appStore.HOSPITAL_ID == "wh"
+    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb")
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
@@ -397,7 +398,7 @@ export default function MainBox() {
         )}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
-      <addShiftModal.Component/>
+      <addShiftModal.Component />
     </Wrapper>
   );
 }

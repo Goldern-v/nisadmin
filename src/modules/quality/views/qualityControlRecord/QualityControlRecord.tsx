@@ -53,13 +53,14 @@ export default observer(function QualityControlRecord() {
     setLoading(true)
 
     //贵州且类型为"我创建的","待我处理","我已处理"
-    if(['gzsrm'].includes(appStore.HOSPITAL_ID) && [-3,-4,-5].includes(qualityControlRecordVM.readWay)){
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID) && [-3, -4, -5].includes(qualityControlRecordVM.readWay)) {
       let parms = {
         pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
         pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
+        level: qualityControlRecordVM.level?qualityControlRecordVM.level:'3',
       };
       qualityControlRecordApi
-        .getPageByNewNoType(qualityControlRecordVM.readWay,parms)
+        .getPageByNewNoType(qualityControlRecordVM.readWay, parms)
         .then((res: any) => {
           qualityControlRecordVM.allData = res.data
           setLoading(false)
@@ -67,7 +68,7 @@ export default observer(function QualityControlRecord() {
         .catch((err: any) => {
           setLoading(false)
         })
-    }else {
+    } else {
       let sendData = {
         pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
         pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
@@ -95,9 +96,9 @@ export default observer(function QualityControlRecord() {
     // 未勾选则全局导出
     if (selectedRowKeys.length <= 0) {
       //贵州且类型为"我创建的","待我处理","我已处理"
-      if(['gzsrm'.includes(appStore.HOSPITAL_ID) && [-3,-4,-5].includes(qualityControlRecordVM.readWay)]){
+      if (['gzsrm'.includes(appStore.HOSPITAL_ID) && [-3, -4, -5].includes(qualityControlRecordVM.readWay)]) {
         let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
-        .map((item: any) => item.id)
+          .map((item: any) => item.id)
         Modal.confirm({
           title: '导出',
           content: '是否导出全部？',
@@ -112,7 +113,7 @@ export default observer(function QualityControlRecord() {
               }, () => setLoading(false))
           }
         })
-      }else {
+      } else {
         const exportParams = {
           wardCode: qualityControlRecordVM.filterDeptCode,
           qcGroupRole: qualityControlRecordVM.filterForm,
@@ -122,7 +123,7 @@ export default observer(function QualityControlRecord() {
           beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
           endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
         }
-  
+
         Modal.confirm({
           title: '导出',
           content: '是否导出全部？',
@@ -171,7 +172,7 @@ export default observer(function QualityControlRecord() {
           allData={qualityControlRecordVM.allData}
           loadingGet={loading}
           // showSelection={appStore.HOSPITAL_ID == 'hj'}
-          showSelection={['hj','gzsrm'].includes(appStore.HOSPITAL_ID)}
+          showSelection={['hj', 'gzsrm', 'gxjb'].includes(appStore.HOSPITAL_ID)}
           selectionChange={(payload: any) => setSelectedRowKeys(payload)}
           selectedRowKeys={selectedRowKeys}
           getTableData={getTableData}
