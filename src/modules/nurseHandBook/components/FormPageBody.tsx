@@ -22,6 +22,7 @@ export default function editModal(props: Props) {
   const [pdf, setPdf] = useState(false)
   const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "90vh"}
+  const [spinning, setSpinning] = useState(false)
   const afterClose = () => {
 
   }
@@ -37,11 +38,16 @@ export default function editModal(props: Props) {
   }, [props.path])
 
   const initData = () => {
+    setSpinning(true)
     let str:any = path;
     let index = str.lastIndexOf("\.");
     let type = str.substr(index+1,str.length);
     let arrList = ["pdf","doc","docx","ppt","pptx","xls","xlsx"]
     setPdf(arrList.includes(type))
+    setTimeout(()=>{
+      setSpinning(false)
+    },500)
+    
   }
   
   return <Modal
@@ -65,13 +71,15 @@ export default function editModal(props: Props) {
     }}
     onCancel={() => onCancel()}>
     <Wrapper>
-      <div className="father">
-      {/* {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
-      {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
-      {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />} */}
-      {pdf && <div className="back"></div>}
-      <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />
-      </div>
+      <Spin spinning={spinning}>
+        <div className="father">
+        {/* {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
+        {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
+        {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />} */}
+        {pdf && <div className="back"></div>}
+        <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />
+        </div>
+      </Spin>
     </Wrapper>
   </Modal>
 }

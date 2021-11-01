@@ -12,6 +12,8 @@ import AuditProcessDetail from './AuditProcessDetail'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
 import CKEditorFn from "./CKEditor"
+import FormPageBody from '../components/FormPageBody'
+
 const api = new NurseHandBookService();
 
 export interface Props { }
@@ -43,6 +45,11 @@ export default observer(function followUpDetailView(props: any) {
     quarterConclusion: '护士长季度总结',
     yearConclusion: '护士长年度总结',
   }
+  const [editVisible2, setEditVisible2] = useState(false)
+  const [pathChange, setPathChange] = useState("")
+  const [idChange, setIdChange] = useState("")
+
+
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
   const onload = () => {
@@ -65,7 +72,7 @@ export default observer(function followUpDetailView(props: any) {
   useEffect(() => {
     onload()
   }, [])
-
+  
   const handleUndo = (record: any) => {
     let undoTitle = ""
     if(path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion"){
@@ -172,7 +179,22 @@ export default observer(function followUpDetailView(props: any) {
     })
     return pro.then(res=>res)
   }
-
+  const PreviewOnChange = (info:any) => {
+    setEditVisible2(true)
+    let str:any = info.path;
+    let pdfStr:any = info.pdfPath;
+    let index = str.lastIndexOf("\.");
+    let type = str.substr(index+1,str.length);
+    let start = str.indexOf("/crNursing/")
+    if(type=='jpg'||type=='png'||type=='pdf'){
+      let path = str.substring(start,start+info.path.length)
+      setPathChange(path)
+    }else{
+      let pdfPath = pdfStr.substring(start,start+pdfStr.length)
+      setPathChange(pdfPath)
+    }
+    setIdChange(info.id)
+  }
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
@@ -213,10 +235,11 @@ export default observer(function followUpDetailView(props: any) {
                 fileList={fileList} 
                 onChange={uploadOnChange}
                 onRemove={removeOnChange}
+                onPreview={PreviewOnChange}
                 multiple={true}
                 >
                 <Button type="primary" className="button">
-                  <Icon type="upload" /> 上传
+                  <Icon type="upload" />上传
                 </Button>
               </Upload>
               <div className="accept">支持格式：*.jpg;*.png;*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;</div>
@@ -229,6 +252,12 @@ export default observer(function followUpDetailView(props: any) {
       </div>
     </Spin>
     <groupsAduitModalJM.Component/>
+    <FormPageBody
+        visible={editVisible2}
+        path={pathChange}
+        id={idChange}
+        onOk={() => {}}
+        onCancel={() => setEditVisible2(false)} />
   </Wrapper>
 })
 
@@ -335,6 +364,9 @@ const Wrapper = styled.div`
         top: 20px;
         left: 190px;
         margin-left: 20px;
+      }
+      .ant-upload-list-item-name{
+        color: #03A613;
       }
     }
     .footer{
