@@ -1,5 +1,6 @@
 import React from "react";
 import { DoCon } from "src/components/BaseTable";
+import { appStore } from "src/stores";
 import { iModalForm } from "./modal";
 
 const statusOption = [
@@ -16,6 +17,84 @@ const typeOption = [
 ]
 
 const creatColumns = (calBack?: Function): {}[] => {
+  const NOW_OLD_DEP = ['jmfy'];
+  if (NOW_OLD_DEP.includes(appStore.HOSPITAL_ID)) {
+    return [
+      {
+        title: "序号",
+        align: "center",
+      },
+      {
+        title: "姓名",
+        dataIndex: "empName",
+        align: "center",
+      },
+      {
+        title: "现科室",
+        dataIndex: "deptName",
+        align: "center",
+      },
+      {
+        title: "原科室",
+        dataIndex: "oldDeptName",
+        align: "center",
+      },
+      {
+        title: "预产期",
+        dataIndex: "expectedDate",
+        align: "center",
+      },
+      {
+        title: "当前孕周",
+        dataIndex: "gestationalAge",
+        align: "center",
+      },
+      {
+        title: "末次月经",
+        dataIndex: "lastMenstrualPeriod",
+        align: "center",
+      },
+      {
+        title: "分娩方式",
+        dataIndex: "deliveryMode",
+        align: "center",
+      },
+      {
+        title: "分娩日期",
+        dataIndex: "deliveryDate",
+        align: "center",
+      },
+      {
+        title: "产假开始日期",
+        dataIndex: "babyBreakStartDate",
+        align: "center",
+      },
+      {
+        title: "产假结束日期",
+        dataIndex: "babyBreakEndDate",
+        align: "center",
+      },
+      {
+        title: "哺乳结束日期",
+        dataIndex: "lactationEndDate",
+        align: "center",
+      },
+      {
+        title: "操作",
+        dataIndex: "",
+        align: "center",
+        width: 150,
+        render(text: '', record: iModalForm) {
+          return (
+            <DoCon>
+              <span onClick={() => calBack && calBack('edit', record)}>编辑</span>
+              <span onClick={() => calBack && calBack('delete', record)}>删除</span>
+            </DoCon>
+          )
+        }
+      }
+    ]
+  }
   return [
     {
       title: "序号",
