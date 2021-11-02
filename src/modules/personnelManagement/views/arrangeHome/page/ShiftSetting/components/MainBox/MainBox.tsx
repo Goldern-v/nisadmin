@@ -272,6 +272,22 @@ export default function MainBox() {
       }
     });
   }
+  // new: 武汉市一增加是否为责护
+  let isWh = appStore.HOSPITAL_ID === 'wh'
+  if (isWh) {
+    columns.splice(4, 0, {
+      title: "是否为责护",
+      dataIndex: "isZh",
+      key: "isZh",
+      width: 100,
+      render: (text: string, record: any) => {
+        console.log(text, record);
+        return <div>
+          {record.isZh === 1 ? "是" : "否"}
+        </div>
+      }
+    });
+  }
   let data = {
     key: "",
     id: "",
