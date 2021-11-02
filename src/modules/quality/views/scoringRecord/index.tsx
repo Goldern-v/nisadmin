@@ -32,6 +32,7 @@ export default observer((props: Props) => {
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
+  const statusMap_gzsrm = ['待病区审核', '待片区填写意见', '审核完成']
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -62,7 +63,7 @@ export default observer((props: Props) => {
     },
     {
       title: "得分",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004022':"SR0001019",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004022' : "SR0001019",
       width: 80,
       align: "center"
     },
@@ -74,13 +75,13 @@ export default observer((props: Props) => {
     },
     {
       title: "值班护士",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004007' : "SR0001005",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004007' : "SR0001005",
       width: 80,
       align: "center"
     },
     {
       title: "值班护长",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004001' :"SR0001001",
+      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004001' : "SR0001001",
       width: 80,
       align: "center"
     },
@@ -90,8 +91,9 @@ export default observer((props: Props) => {
       width: 100,
       align: "center",
       render: (text: string, row: any, c: any) => {
+
         return (
-          isNaN(row.status) ? '' : statusMap[+row.status]
+          isNaN(row.status) ? '' : (appStore.HOSPITAL_ID !== 'gzsrm' ? statusMap[+row.status] : statusMap_gzsrm[row.status - 1])
         )
       }
     },
@@ -145,12 +147,12 @@ export default observer((props: Props) => {
         <div className='page-title'>护长夜查房评分记录</div>
         <div className='button-group'>
           <span className='label'>科室：</span>
-          <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })}/>
+          <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
           <span className='label'>日期：</span>
           <DatePicker.RangePicker
             style={{ width: 220 }}
             value={[form.beginDate, form.endDate]}
-            onChange={(val) => setFormItem({ beginDate: val[0], endDate: val[1] })}/>
+            onChange={(val) => setFormItem({ beginDate: val[0], endDate: val[1] })} />
           <span className='label'>状态：</span>
           <Select
             value={form.status}

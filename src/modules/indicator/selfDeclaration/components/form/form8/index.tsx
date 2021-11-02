@@ -55,12 +55,12 @@ export default observer((props: Props) => {
         <Col span={4} className='title'>发生病区名称</Col>
         <Col span={8}>
           <DeptSelect deptCode={master.wardCode} style={{ width: '100%' }}
-                      onChange={deptCode => setMaster("wardCode", deptCode)}/>
+            onChange={deptCode => setMaster("wardCode", deptCode)} />
         </Col>
         <Col span={4} className='title'>住院患者病案号</Col>
         <Col span={8} style={{ 'display': 'flex' }}>
           <Input value={master.inpNo} style={{ marginRight: '10px' }}
-                 onChange={(event => setMaster('inpNo', event.target.value))}/>
+            onChange={(event => setMaster('inpNo', event.target.value))} />
           <Button onClick={() => props.handlePatientClick()}>+</Button>
         </Col>
       </Row>
@@ -68,7 +68,7 @@ export default observer((props: Props) => {
         <Col span={4} className='title'>入院时间</Col>
         <Col span={8}>
           <DatePicker className='full' value={master.admissionDate}
-                      onChange={(val) => setMaster('admissionDate', val)}/>
+            onChange={(val) => setMaster('admissionDate', val)} />
         </Col>
         <Col span={4} className='title'>性别</Col>
         <Col span={8}>
@@ -95,10 +95,10 @@ export default observer((props: Props) => {
         <Col span={4} className='title'>发生日期</Col>
         <Col span={20}>
           <DateTimePicker value={master.happenDate}
-                          onChange={(v: string) => setMaster('happenDate', v)}/>
+            onChange={(v: string) => setMaster('happenDate', v)} />
         </Col>
       </Row>
-      <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }}/>
+      <div style={{ borderTop: '1px solid #eee', margin: '20px 0' }} />
       <Row>
         <Col span={8} className='title'>留置导管的主要原因：</Col>
         <Col span={16}>
@@ -155,7 +155,7 @@ export default observer((props: Props) => {
         <Col span={8} className='title'>发生CLABS时CVC留置时长：</Col>
         <Col span={16}>
           <Input value={itemDataMap.R0008005} suffix="天"
-                 onChange={(event => setItemDataMap('R0008005', event.target.value))}/>
+            onChange={(event => setItemDataMap('R0008005', event.target.value))} />
         </Col>
       </Row>
     </Wrapper>

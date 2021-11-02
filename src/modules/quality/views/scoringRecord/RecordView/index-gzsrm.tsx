@@ -2,12 +2,15 @@ import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import { Button, Input, Timeline, Modal, Col, Row, Radio,InputNumber,Select, message } from "src/vendors/antd";
+import { Button, Input, Timeline, Modal, Col, Row, Radio, InputNumber, Select, message, DatePicker } from "src/vendors/antd";
 import { appStore, authStore } from "src/stores";
 import api from '../api'
-import moment from 'moment'
+import moment from 'moment';
 import { stringify } from "qs";
 import verify from './verify'
+import service from 'src/services/api'
+
+const { MonthPicker, RangePicker } = DatePicker;
 
 interface Props {
 
@@ -18,24 +21,37 @@ export interface DeptType {
 }
 
 export default observer((props: Props) => {
-  let deptList = authStore.deptList;
+  // let deptList = authStore.deptList;
+  const _user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const userName = _user.empName
+  const [deptList, setDeptList] = useState([])
   const { history, location, match } = appStore
   const [master, setMaster]: any = useState({})
   const [process, setProcess]: any[] = useState([])
   const [form, setForm]: any = useState({})
+  // form['SR0004001'] = userName
   // const [num, setNum]: any = useState('')
-  const setFormItem = (item: object) => {
-    console.log(form, 89)
-    console.log(item, 8)
-    const keys = ['SR0004021','SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011']
+  // console.log(form.SR0004001, 89)
+  function setFormItem(item: object) {
+    console.log(form, 89);
+    console.log(item, 8);
+    const keys = ['SR0004021', 'SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011'];
     const sum = keys.reduce((acc: number, cur: string) => {
-      const val = form[cur]
-      const valNum = isNaN(+val) ? 0 : +val
-      return acc + valNum
-    }, 0)
-    setForm({ ...form, ...item, 'SR0004022': sum })
+      const val = form[cur];
+      const valNum = isNaN(+val) ? 0 : +val;
+      return acc + valNum;
+    }, 0);
+    setForm({ ...form, ...item, 'SR0004022': sum });
   }
-  const [wardString, setWardCode] = useState({wardCode: '', wardName: ''})
+  console.log(form, 890)
+  // 全部科室
+  const getDeptAll = () => {
+    service.commonApiService.getNursingUnitAll().then(res => {
+      if (res.data.deptList) setDeptList(res.data.deptList)
+    })
+  }
+
+  const [wardString, setWardCode] = useState({ wardCode: '', wardName: '' })
   // const [master, setMaster] = useState({})
   // {
   //   formCode: 'SR0001',
@@ -48,7 +64,7 @@ export default observer((props: Props) => {
   const [processVisible, setProcessVisible] = useState(false)
   const [checkUserVisible, setCheckUserVisible] = useState(false)
   const defaultUser = {
-    nopass: undefined,
+    noPass: undefined,
     handleContent: '',
     empNo: '',
     password: '',
@@ -62,16 +78,24 @@ export default observer((props: Props) => {
     setFormItem(data.itemDataMap)
     setForm(data.itemDataMap)
     // setNum(data.itemDataMap.SR0004022)
-    if (data.handlenodeDto.length > 0) {
-      data.handlenodeDto.forEach((item: { nodeName: string; handleContent: any; }) => {
-        if (item.nodeName === '片区护士长填写意见') {
-          form.SR0004023 = item.handleContent
-          // console.log(form.SR0004023, 99)
-        } else if (item.nodeName === '病区护士长填写病区整改') {
-          form.SR0004024 = item.handleContent
-        }
-      })
-    }
+    // if (data.handlenodeDto.length > 0) {
+    //   data.handlenodeDto.forEach((item: { nodeName: string; handleContent: any; }) => {
+    //     if (item.nodeName === '片区护士长填写意见') {
+    //       form.SR0004023 = item.handleContent
+    //       // console.log(form.SR0004023, 99)
+    //     } else if (item.nodeName === '病区护士长填写病区整改') {
+    //       form.SR0004024 = item.handleContent
+    //     }
+    //   })
+    // }
+  }
+  // 当前审核节点
+  const currentNode = () => {
+    if (!(master.currentNodeCode && process.length)) return false
+    const current = process.find((item: any) => {
+      return master.nextNodeCode === item.nodeCode
+    })
+    return current
   }
 
   const hasSubmit = () => {
@@ -81,17 +105,18 @@ export default observer((props: Props) => {
     })
     return current?.canUpdate
   }
+
   const notFullMarks = (key: any, num: number) => {
     // const keys = ['SR0004021','SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011']
     // eslint-disable-next-line default-case
-    switch(key) {
-      case 'SR0004011': 
-      // console.log(num, 6)
+    switch (key) {
+      case 'SR0004011':
+        // console.log(num, 6)
         if (num < 15.0) {
           if (!form.SR0004010) {
             return false
           } else return true
-        } else if(num == 15.0) return true
+        } else if (num == 15.0) return true
         else return false
       default:
         return true
@@ -107,9 +132,9 @@ export default observer((props: Props) => {
       return false
     } else {
       // delete form.SR0004022
-      let newArr:any = []
+      let newArr: any = []
       for (let key in form) {
-        newArr.push({name: key, title: form[key]})
+        newArr.push({ name: key, title: form[key] })
       }
       // console.log(newArr, 80)
       newArr.forEach((item: { name: string; title: any; }) => {
@@ -126,21 +151,21 @@ export default observer((props: Props) => {
   const handleSubmit = async () => {
     if (onVerify()) {
       if (notFullMarks('SR0004011', form.SR0004011)) {
-        
+
         // if (!appStore.queryObj.id) {
-          let obj = {
-            formCode: 'SR0004',
-            formName: '护士长班查房评分表',
-            deptCode: '',
-            deptName: '',
-            wardCode: wardString.wardCode,
-            wardName: wardString.wardName
-          }
+        let obj = {
+          formCode: 'SR0004',
+          formName: '护士长班查房评分表',
+          deptCode: '',
+          deptName: '',
+          wardCode: wardString.wardCode,
+          wardName: wardString.wardName
+        }
         // }
         const res = await api.saveItem({
           master: !appStore.queryObj.id ? obj : master,
           itemDataMap: form,
-          commit: false
+          commit: true
         })
         if (!appStore.queryObj.id) {
           if (res.code === '200') {
@@ -178,7 +203,7 @@ export default observer((props: Props) => {
     const params = {
       id: master.id,
       nodeCode: 'commit',
-      nopass: user.nopass,
+      noPass: user.noPass,
       handleContent: user.handleContent,
       empNo: user.empNo,
       password: user.password,
@@ -186,6 +211,17 @@ export default observer((props: Props) => {
     try {
       await api.auditItem(params)
       await getData()
+      // todo
+      // const current = process.find((item: any) => {
+      //   return master.nextNodeCode === item.nodeCode
+      // })
+      // if (current.nodeName === '片区护士长填写意见') {
+      //   setForm({ ...form, 'SR0004023': user.handleContent });
+
+      // } else if (current.nodeName === '病区护士长填写病区整改') {
+      //   form.SR0004024 = user.handleContent
+      //   setForm({ ...form, 'SR0004024': user.handleContent });
+      // }
     } finally {
       setCheckUserVisible(false)
     }
@@ -195,6 +231,8 @@ export default observer((props: Props) => {
     if (appStore.queryObj.id) {
       getData().then()
     }
+    getDeptAll()
+    setForm({ 'SR0004001': userName, 'SR0004003': moment(new Date).format("YYYY-MM-DD HH:mm") })
   }, [])
 
 
@@ -216,7 +254,7 @@ export default observer((props: Props) => {
           {appStore.queryObj.id && <div>状态：待提交</div>}
         </div>
         <div className='right-bottom'>
-          {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>}
+          {/* {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
           {!appStore.queryObj.id && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>}
           {hasAudit() && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
@@ -228,7 +266,7 @@ export default observer((props: Props) => {
             <div className='table-title'>
               护士长班查房评分表
             </div>
-            <table className={!appStore.queryObj.id ? '' : hasSubmit() ? '' : 'disable'}>
+            <table className={!appStore.queryObj.id ? '' : 'disable'}>
               {/* <colgroup>
                 <col/>
                 <col/>
@@ -263,15 +301,31 @@ export default observer((props: Props) => {
                     >
                       <Select.Option key='夜班' value='夜班'>夜班</Select.Option>
                       <Select.Option key='晚班' value='晚班'>晚班</Select.Option>
+                      <Select.Option key='白班' value='白班'>白班</Select.Option>
                     </Select>
                   </td>
                   <td className='required'>查房时间:</td>
                   <td>
-                    <Input
+                    {/* <Input
                       value={form.SR0004003}
                       onChange={(e) =>
                         setFormItem({ 'SR0004003': e.target.value })
                       }
+                    /> */}
+                    <DatePicker
+                      format="YYYY-MM-DD HH:mm"
+                      allowClear={false}
+                      value={moment(form.SR0004003)}
+                      showTime={{ defaultValue: moment('00:00', 'HH:mm') }}
+                      onChange={_date => {
+                        // console.log(_date, 981)
+                        setFormItem({ 'SR0004003': moment(_date).format("YYYY-MM-DD HH:mm") })
+                      }}
+                      onOk={_data => {
+                        // console.log(_data, 112)
+                        setFormItem({ 'SR0004003': moment(_data).format("YYYY-MM-DD HH:mm") })
+                        console.log(form, 1234)
+                      }}
                     />
                   </td>
                 </tr>
@@ -284,19 +338,22 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004004': e.target.value })
                       }
                     /> */}
-                      <Select className='select' value={form.SR0004004} onChange={(val: string) => {
-                        // console.log(value, 990)
-                        let newarr = deptList.filter((item: DeptType) => {
-                          return item.code === val
-                        })
-                        // console.log(newarr, newarr[0].name, 78)
-                        let obj = {
-                          wardCode: newarr[0].code,
-                          wardName: newarr[0].name
-                        }
-                        setWardCode(obj)
-                        setFormItem({ 'SR0004004': newarr[0].name })}
-                      }>
+                    <Select className='select' value={form.SR0004004} onChange={(val: string) => {
+                      // console.log(value, 990)
+                      let newarr: any = deptList.filter((item: DeptType) => {
+                        console.log(item, 89)
+                        return item.code === val
+                      })
+                      console.log(newarr, 56)
+                      // console.log(newarr, newarr[0].name, 78)
+                      let obj = {
+                        wardCode: newarr[0].code,
+                        wardName: newarr[0].name
+                      }
+                      setWardCode(obj)
+                      setFormItem({ 'SR0004004': newarr[0].name })
+                    }
+                    }>
                       {deptList.map((item: DeptType) => (
                         <Select.Option key={item.name} value={item.code}>
                           {item.name}
@@ -365,7 +422,7 @@ export default observer((props: Props) => {
                   <td>护理单元(15分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、护士坚守岗位，无自行换班情况。</p>
-                    <p>2、护士着装整洁、佩戴胸牌、头花、服务热情。</p>	
+                    <p>2、护士着装整洁、佩戴胸牌、头花、服务热情。</p>
                     <p>3、病房地面、盥洗间及卫生间清洁，无垃圾。</p>
                     <p>4、治疗室、办公室、处置室整洁，物品放置规范。</p>
                     <p>5、饮水机、微波炉等清洁、无污垢。 </p>
@@ -389,7 +446,7 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004011} min={0} max={15} step={0.1}
-                      onChange={(value) =>{
+                      onChange={(value) => {
                         form.SR0004011 = value
                         setFormItem({ 'SR0004011': value })
                       }
@@ -401,7 +458,7 @@ export default observer((props: Props) => {
                   <td>危重、一及术后患者护理(9分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、床单位整洁。</p>
-                    <p>2、患者三短六洁	。</p>	
+                    <p>2、患者三短六洁	。</p>
                     <p>3、导管护理符合规范	。</p>
                     <p>4、跌倒、压疮、VTE预防及护理符合规范，翻身卡按要求填写。</p>
                   </td>
@@ -423,7 +480,7 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004013} min={0} max={9} step={0.1}
-                      onChange={(value) =>{
+                      onChange={(value) => {
                         form.SR0004013 = value
                         setFormItem({ 'SR0004013': value })
                       }
@@ -435,12 +492,12 @@ export default observer((props: Props) => {
                   <td>护士操作(24分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、随机查看护士是否按规范操作。</p>
-                    <p>2、操作过程中严格执行手卫生。</p>	
+                    <p>2、操作过程中严格执行手卫生。</p>
                     <p>3、有无实习护生单独操作	。</p>
                     <p>4、按要求使用PDA。</p>
                     <p>5、查看病人输液有无渗漏。 </p>
                     <p>6、询问病人护士有无及时巡视。</p>
-                  </td>	
+                  </td>
                   <td>
                     <Input.TextArea
                       value={form.SR0004014}
@@ -459,7 +516,7 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004015} min={0} max={24} step={0.1}
-                      onChange={(value) =>{
+                      onChange={(value) => {
                         form.SR0004015 = value
                         setFormItem({ 'SR0004015': value })
                       }}
@@ -470,12 +527,12 @@ export default observer((props: Props) => {
                   <td>医院感染(24分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、医疗垃圾、生活垃圾分类放置，记录正确有签名，大垃圾桶上锁。</p>
-                    <p>2、液体标明开启日期、时间及用途	。</p>	
+                    <p>2、液体标明开启日期、时间及用途	。</p>
                     <p>3、一次性物品开启后注明日期、时间及开启人姓名。</p>
                     <p>4、治疗车清洁，清洁物品和污染物品分开放置。</p>
                     <p>5、多重耐药菌管理规范。 </p>
                     <p>6、消毒隔离工作落实到位（如：瓶装碘伏开启后密闭保存，有效期≤30天；溶媒有效期≤24h，静脉用药有效期≤2h；湿化瓶定期更换）。</p>
-                  </td>	
+                  </td>
                   <td>
                     <Input.TextArea
                       value={form.SR0004016}
@@ -494,10 +551,10 @@ export default observer((props: Props) => {
                       }
                     /> */}
                     <InputNumber value={form.SR0004017} min={0} max={24} step={0.1}
-                      onChange={(value) =>{
-                          form.SR0004017 = value
-                          setFormItem({ 'SR0004017': value })
-                        }
+                      onChange={(value) => {
+                        form.SR0004017 = value
+                        setFormItem({ 'SR0004017': value })
+                      }
                       }
                     />
                   </td>
@@ -506,7 +563,7 @@ export default observer((props: Props) => {
                   <td>急救药品、物品(8分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、抢救车、抢救仪器完好，处于备用状态。</p>
-                    <p>2、抢救药品、物品登记本填写规范。</p>	
+                    <p>2、抢救药品、物品登记本填写规范。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -538,7 +595,7 @@ export default observer((props: Props) => {
                   <td>药品管理(20分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、高危药品单独放置。</p>
-                    <p>2、药品标签清楚、无过期、变质、裸放、混放等。</p>	
+                    <p>2、药品标签清楚、无过期、变质、裸放、混放等。</p>
                     <p>3、内服、外用药分开放置。</p>
                     <p>4、冰箱内无药物混放。</p>
                     <p>5、药物使用符合规范（避光、冷藏等）。</p>
@@ -565,7 +622,7 @@ export default observer((props: Props) => {
                       onChange={(value) => {
                         form.SR0004021 = value
                         setFormItem({ 'SR0004021': value })
-                        }
+                      }
                       }
                     />
                   </td>
@@ -587,19 +644,9 @@ export default observer((props: Props) => {
                     /> */}
                   </td>
                 </tr>
-                {/* <tr>
-                  <td>片区护士长意见</td>
-                  <td colSpan={5}>
-                    <Input.TextArea
-                      value={form.SR0004023}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004023': e.target.value })
-                      }
-                      />
-                  </td>
-                </tr>
-                <tr>
+              </tbody>
+              {appStore.queryObj.id && <tbody >
+                <tr className='disable'>
                   <td>病区整改</td>
                   <td colSpan={5}>
                     <Input.TextArea
@@ -608,10 +655,22 @@ export default observer((props: Props) => {
                       onChange={(e) =>
                         setFormItem({ 'SR0004024': e.target.value })
                       }
-                      />
+                    />
                   </td>
-                </tr> */}
-              </tbody>
+                </tr>
+                <tr className='disable'>
+                  <td>片区护士长意见</td>
+                  <td colSpan={5}>
+                    <Input.TextArea
+                      value={form.SR0004023}
+                      rows={6}
+                      onChange={(e) =>
+                        setFormItem({ 'SR0004023': e.target.value })
+                      }
+                    />
+                  </td>
+                </tr>
+              </tbody>}
             </table>
           </div>
           {appStore.queryObj.id && <div className='audit-wrapper'>
@@ -625,17 +684,17 @@ export default observer((props: Props) => {
                       <div className='timeline-item'>{item.handlerName}</div>
                       <div className='timeline-item'>{item.handleTime}</div>
                       <div className='timeline-item'
-                           style={{
-                             background: 'rgb(238,238,238)',
-                             borderRadius: '5px',
-                             padding: '0 5px'
-                           }}>
+                        style={{
+                          background: 'rgb(238,238,238)',
+                          borderRadius: '5px',
+                          padding: '0 5px'
+                        }}>
                         {
-                          item.nodeName === '病区处理'?
+                          item.nodeName === '病区处理' ?
                             <React.Fragment>
                               {item.expand && <div>整改措施:{item.expand}</div>}
                               {item.handleContent && <div>原因分析:{item.handleContent}</div>}
-                            </React.Fragment>:
+                            </React.Fragment> :
                             <span>{item.handleContent}</span>
                         }
                       </div>
@@ -660,17 +719,18 @@ export default observer((props: Props) => {
         }}
       >
         <div style={{ lineHeight: '28px', fontSize: '16px' }}>
-          <Row style={{ marginBottom: '10px' }}>
-            <Col span={4}>审核结果:</Col>
-            <Col span={20}>
-              <Radio.Group
-                value={user.nopass}
-                onChange={(e) => setUser({ ...user, 'nopass': e.target.value })}>
-                <Radio value={true}>通过</Radio>
-                <Radio value={false}>驳回</Radio>
-              </Radio.Group>
-            </Col>
-          </Row>
+          {currentNode().nodeName === '病区护士长填写病区整改' &&
+            <Row style={{ marginBottom: '10px' }}>
+              <Col span={4}>审核结果:</Col>
+              <Col span={20}>
+                <Radio.Group
+                  value={user.noPass}
+                  onChange={(e) => setUser({ ...user, 'noPass': e.target.value })}>
+                  <Radio value={false}>通过</Radio>
+                  <Radio value={true}>驳回</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>}
           <Row style={{ marginBottom: '10px' }}>
             <Col span={4}>审核意见:</Col>
             <Col span={20}>
@@ -679,7 +739,7 @@ export default observer((props: Props) => {
                 rows={4}
                 onChange={(e) =>
                   setUser({ ...user, 'handleContent': e.target.value })
-                }/>
+                } />
             </Col>
           </Row>
           <Row>
@@ -705,7 +765,7 @@ export default observer((props: Props) => {
                 value={user.empNo}
                 onChange={(e) =>
                   setUser({ ...user, 'empNo': e.target.value })
-                }/>
+                } />
             </Col>
           </Row>
           <Row>
@@ -716,7 +776,7 @@ export default observer((props: Props) => {
                 value={user.password}
                 onChange={(e) =>
                   setUser({ ...user, 'password': e.target.value })
-                }/>
+                } />
             </Col>
           </Row>
         </div>
@@ -797,6 +857,12 @@ const MainWrapper = styled.div`
           }
           .ant-input-number-handler-wrap{
             border: none;
+          }
+          .ant-calendar-picker{
+            min-width: 126px !important;
+            svg{
+              display: none;
+            }
           }
         }
         .text-left{
