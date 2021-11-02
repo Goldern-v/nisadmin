@@ -77,7 +77,7 @@ export default function editModal(props: Props) {
         {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
         {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />} */}
         {pdf && <div className="back"></div>}
-        <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />
+        <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path+"'#toolbar=0'"} />
         </div>
       </Spin>
     </Wrapper>
