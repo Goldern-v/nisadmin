@@ -292,6 +292,21 @@ export default class NurseFilesService extends BaseApiService {
       responseType: "blob"
     });
   }
+  /**下载导入护士需要的模板 */
+  public downloadUploadExcel() {
+    return this.post('/nurseInformation/downloadTemplate', {}, { responseType: 'blob' })
+  }
+  /**导入护士模板返回对应的字段数据 */
+  public importExcel(file: any) {
+    let formData = new FormData()
+
+    formData.append('upfile', file)
+    return this.post('/nurseInformation/importTemplate', formData)
+  }
+  /**批量保存导入得护士数据 */
+  public saveListImport(nurseInformationDtos: any[]) {
+    return this.post(`/nurseInformation/saveListImport`, { nurseInformationDtos })
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();
