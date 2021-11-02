@@ -6,6 +6,7 @@ export default function RadioItem(props: any) {
     <div className="itemAnswer">
       {props.type == 'date(yyyy-mm-dd)' ? '' : props.prefixDescription}
       <input type="text"
+        disabled={props.disabled}
         value={props.value}
         onInput={props.event}
       />

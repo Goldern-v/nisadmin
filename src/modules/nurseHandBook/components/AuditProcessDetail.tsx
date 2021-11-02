@@ -1,82 +1,35 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Steps } from 'antd'
-import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
+import { BaseStepCon, BaseStepBox, BaseStepBoxImg } from 'src/components/BaseStep'
 import { getWeekString } from 'src/utils/date/week'
 
 interface Props {
   detailData?: any
 }
 export default function auditProcessDetail(props: Props) {
-  let { nodeDataList } = props.detailData
-
+  
   return (
     <Con>
       <TopTitleCon>
         <div className='topTitleIcon' />
-        <div className='topTitle'>质控轨迹</div>
+        <div className='topTitle'>审核信息</div>
       </TopTitleCon>
 
       <BaseStepCon>
-        {nodeDataList &&
-          nodeDataList?.map((item: any, index: number) => (
-            <BaseStepBox success={item.status == '1' && (item.noPass ? 'fail' : 'success')} key={index}>
+        {props.detailData?.map((item: any, index: number) => (
+            <BaseStepBoxImg imgurl={item.nearImageUrl} success={(item.taskType == '2' || item.taskType == '3') ? 'fail' : 'success'} key={index}>
               <StepBox>
-                {item.status == '1' ? (
-                  <React.Fragment>
-                    <div className='title'>{item.nodeName}</div>
-                    <div className='info'>{item.handlerName}</div>
-                    <div className='info'>
-                      {item.handleTime} ({getWeekString(item.handleTime)})
-                    </div>
-                    {item.handleContent && item.nodeCode != 'dept_handle' && (
-                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                        {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
-                        {item.handleContent}
-                      </div>
-                    )}
-                    {/* 三级质控 */}
-                    {item.nodeCode == 'dept_handle' && (
-                      <React.Fragment>
-                        {
-                          <div className='text-box'>
-                            <div className='text-box-title'>原因分析：</div>
-                            {item.expand}
-                          </div>
-                        }
-                        {item.handleContent && (
-                          <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                            {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
-                            {item.handleContent}
-                          </div>
-                        )}
-                      </React.Fragment>
-                    )}
-                    {/* 二级质控 */}
-                    {item.nodeCode == 'big_dept_handle' && (
-                      <React.Fragment>
-                        {item.measureGroupList &&
-                          item.measureGroupList.map((item: any, index: number) => (
-                            <div className='text-box' key={index}>
-                              <div className='text-box-title'>{index + 1 + '、' + item.itemName}：</div>
-                              <div>
-                                {item.measureList.map((item: any, index: number) => (
-                                  <span key={index}>{item.measureName};</span>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                      </React.Fragment>
-                    )}
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <div className='title'>{item.nodeName}</div>
-                    <span className='nodo'>未完成</span>
-                  </React.Fragment>
-                )}
+                <React.Fragment>
+                  <div className='title'>{item.taskDesc}</div>
+                  <div className='info'>{item.handlerEmpName}</div>
+                  <div className='info'>
+                    {item.handleTime} ({getWeekString(item.handleTime)})
+                  </div>
+                  <div className='remark'>{item.handleRemark}</div>
+                </React.Fragment>
               </StepBox>
-            </BaseStepBox>
+            </BaseStepBoxImg>
           ))}
       </BaseStepCon>
     </Con>
@@ -140,6 +93,9 @@ const StepBox = styled.div`
   .nodo {
     color: #687179;
     margin-bottom: 3px;
+  }
+  .remark {
+    background-color: #eeeeee;
   }
   .text-box {
     color: 12px;

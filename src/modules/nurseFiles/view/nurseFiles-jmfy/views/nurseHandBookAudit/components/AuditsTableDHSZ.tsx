@@ -12,6 +12,10 @@ import { globalModal } from 'src/global/globalModal'
 import { getTitle } from '../../nurseFileDetail/config/title'
 import { openAuditModal } from '../../nurseFileDetail/config/auditModalConfig'
 import { message } from 'src/vendors/antd'
+import FormPageBody from '../../../../../../nurseHandBook/components/FormPageBody'
+import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
+import createModal from 'src/libs/createModal'
+
 export interface Props {
   type: string
   needAudit: boolean
@@ -28,13 +32,27 @@ export default function AuditsTableDHSZ(props: Props) {
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
+  const [editVisible2, setEditVisible2] = useState(false)
+  const [pathChange, setPathChange] = useState("")
+  const [idChange, setIdChange] = useState("")
+  const groupsAduitModalJM = createModal(GroupsAduitModalJM)
 
-  const toDetails = (row: any) => {
-    openAuditModal(
-      getTitle(row.othersMessage.auditedEntityName),
-      { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
-      () => emitter.emit('refreshNurseAuditTable')
-    )
+  const toDetails = (record: any) => {
+    // openAuditModal(
+    //   getTitle(row.othersMessage.auditedEntityName),
+    //   { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
+    //   () => emitter.emit('refreshNurseAuditTable')
+    // )
+    appStore.history.push(`/nurseHandBookDetailView/?type=${record.auditedManageDto.entityName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=1&&isAdd=`)
+  }
+  
+  const onEdit = (record: any) => {
+    // openAuditModal(
+    //   getTitle(row.othersMessage.auditedEntityName),
+    //   { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
+    //   () => emitter.emit('refreshNurseAuditTable')
+    // )
+    appStore.history.push(`/nurseHandBookDetailView/?type=${record.auditedManageDto.entityName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=&&isAdd=`)
   }
 
   const columns: any = [
@@ -89,7 +107,7 @@ export default function AuditsTableDHSZ(props: Props) {
         return (
           <div>
             {record.files.map((item: any, index: number) => (
-              <div><a href='javascript:;' key={item.name}>{item.name}</a></div>
+              <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
             ))}
           </div>
         )
@@ -103,9 +121,8 @@ export default function AuditsTableDHSZ(props: Props) {
       render: (text: any, row: any, c: any) => {
         return (
           <DoCon>
-            <span onClick={() => {
-              toDetails(row)
-            }}>{needAudit ? '审核' : '查看'}</span>
+            {needAudit&&<span onClick={() => toDetails(row)}>审核</span>}
+            {!needAudit&&<span onClick={() => onEdit(row)}>查看</span>}
           </DoCon>
         )
       }
@@ -136,11 +153,30 @@ export default function AuditsTableDHSZ(props: Props) {
     }
   }
 
+  //查看随访问卷
+  const setDetailModal = (item: any) => {
+    // window.open(item.path)
+    setEditVisible2(true)
+    let str:any = item.path;
+    let pdfStr:any = item.pdfPath;
+    let index = str.lastIndexOf("\.");
+    let type = str.substr(index+1,str.length);
+    let start = str.indexOf("/crNursing/")
+    if(type=='jpg'||type=='png'||type=='pdf'){
+      let path = str.substring(start,start+item.path.length)
+      setPathChange(path)
+    }else{
+      let pdfPath = pdfStr.substring(start,start+pdfStr.length)
+      setPathChange(pdfPath)
+    }
+    setIdChange(item.id)
+  }
+
   const openGroupModal = () => {
     if (selectedRows.length == 0) {
       return message.warning('请至少勾选一条记录')
     }
-    globalModal.groupsAduitModal.show({
+    groupsAduitModalJM.show({
       selectedRows,
       getTableData: () => {
         setSelectedRows([])
@@ -189,6 +225,13 @@ export default function AuditsTableDHSZ(props: Props) {
         rowSelection={rowSelection}
         loading={loading}
       />
+      <FormPageBody
+        visible={editVisible2}
+        path={pathChange}
+        id={idChange}
+        onOk={() => {}}
+        onCancel={() => setEditVisible2(false)} />
+      <groupsAduitModalJM.Component/>
     </Wrapper>
   )
 }

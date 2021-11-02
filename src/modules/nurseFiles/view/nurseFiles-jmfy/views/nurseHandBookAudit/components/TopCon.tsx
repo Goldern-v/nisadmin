@@ -32,9 +32,7 @@ export default observer(function TopCon() {
           <Breadcrumb.Item>
             <A onClick={() => history.push('/nurseFile/onTheJob')}>护士档案</A>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <A onClick={() => history.push(`/nurseFileDetail/baseInfo?${query}`)}>护士长手册</A>
-          </Breadcrumb.Item>
+          <Breadcrumb.Item>护士长手册</Breadcrumb.Item>
           <Breadcrumb.Item>批量审核</Breadcrumb.Item>
         </Breadcrumb>
       </BreadcrumbCon>

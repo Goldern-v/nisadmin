@@ -38,7 +38,6 @@ export default observer(function MyCreateList() {
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
   const [state, setState]  = useState<String>('')
-
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
   //控制年份

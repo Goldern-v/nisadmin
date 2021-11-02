@@ -190,12 +190,14 @@ export default observer(function SelectPeople(props: Props) {
     setCheckedUserList((prevList: any[]) => {
       let user = prevList.find((item: any) => item.key === ev);
       if (!user) {
+        setNumber(selectedUser, 1);
         return [...prevList, selectedUser];
       } else {
         message.warning("已经添加过此分组或护士了");
         return [...prevList];
       }
     });
+
   };
 
   const onClean = () => {
