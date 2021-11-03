@@ -86,7 +86,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     for (let x in query) {
       if (!query[x]) return ''
     }
-    return `${formUrl}/不良事件病人安全通报单${appStore.isDev ? '.html' : ''}?${qs.stringify(query)}`
+    return `${formUrl}/不良事件病人安全通报单${appStore.isDev || ['fqfybjy'].includes(appStore.HOSPITAL_ID) ? '.html' : ''}?${qs.stringify(query)}`
   }
 
   useEffect(() => {
