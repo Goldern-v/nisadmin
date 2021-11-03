@@ -67,11 +67,14 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 武警广东省总队医院 */
     case 'wjgdszd':
       return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
-    // 暂无对应的测试环境
     case 'gxjb':
       return 'http://58.59.133.37:9091'
     case 'yczyy'://阳春
       return 'http://192.168.1.54:9866' // 聊城二院测试
+    /** 佛山杏坛 */
+    case 'fsxt':
+      // return 'http://192.168.1.54:9866'
+      return 'http://192.168.20.61:9091' // 宏群本地
     default:
       return 'http://192.168.1.54:9866'
   }
