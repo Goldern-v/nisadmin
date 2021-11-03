@@ -281,9 +281,12 @@ export default function MainBox() {
       key: "isZh",
       width: 100,
       render: (text: string, record: any) => {
-        console.log(text, record);
+        const enumsType = {
+          "1": "是",
+          "0": "否"
+        }
         return <div>
-          {record.isZh === 1 ? "是" : "否"}
+          {Object.keys(enumsType).includes(text + '') ? enumsType[text] : ""}
         </div>
       }
     });
