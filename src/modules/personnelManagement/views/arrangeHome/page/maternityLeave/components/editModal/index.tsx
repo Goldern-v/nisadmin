@@ -35,7 +35,6 @@ export default observer((props: Props) => {
   }
 
   const handleDateChange = (date: moment.Moment) => {
-    console.log('test-date', date);
     if (!date) {
       setFormItem({ lastMenstrualPeriod: date })
       return
