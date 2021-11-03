@@ -6,13 +6,13 @@ import ArrangeSheet from "./components/arrangeSheet/ArrangeSheet";
 import { arrangeService } from "./services/ArrangeService";
 import { sheetViewModal } from "./viewModal/SheetViewModal";
 import { observer } from "src/vendors/mobx-react-lite";
-export interface Props {}
+export interface Props { }
 
 export default observer(function ArrangeHome() {
   return (
     <Wrapper>
       <SelectCon />
-      <ArrangeSheet isEdit={false} surplusHeight={155} />
+      <ArrangeSheet isEdit={false} surplusHeight={155} isEditable={false} />
     </Wrapper>
   );
 });
