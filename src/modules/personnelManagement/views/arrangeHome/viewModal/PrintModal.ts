@@ -83,7 +83,7 @@ class PrintModal {
     //td指定样式
     let tdStyle = (other?: string) => {
       return `height:${tdHeight}px!important;padding:0!important;${other ||
-      ""}`;
+        ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};
@@ -122,8 +122,8 @@ class PrintModal {
       let colgroup = `
         <colgroup>
           ${cols
-        .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-        .join("")}
+          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+          .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -147,14 +147,14 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-        .map((item: any) =>
-          tdEl({
-            class:
-              item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-            content: item.weekDay == "七" ? "日" : item.weekDay
-          })
-        )
-        .join("")}
+          .map((item: any) =>
+            tdEl({
+              class:
+                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+              content: item.weekDay == "七" ? "日" : item.weekDay
+            })
+          )
+          .join("")}
         </tr>
       `;
       //表格底部模板
@@ -462,7 +462,7 @@ class PrintModal {
     //td指定样式
     let tdStyle = (other?: string) => {
       return `height:${tdHeight}px!important;padding:0!important;${other ||
-      ""}`;
+        ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};
@@ -505,8 +505,8 @@ class PrintModal {
       let colgroup = `
         <colgroup>
           ${cols
-        .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-        .join("")}
+          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+          .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -532,14 +532,14 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-        .map((item: any) =>
-          tdEl({
-            class:
-              item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-            content: item.weekDay == "七" ? "日" : item.weekDay
-          })
-        )
-        .join("")}
+          .map((item: any) =>
+            tdEl({
+              class:
+                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+              content: item.weekDay == "七" ? "日" : item.weekDay
+            })
+          )
+          .join("")}
         </tr>
       `;
       //表格底部模板
@@ -619,7 +619,7 @@ class PrintModal {
         //分组
         tr += tdEl({ content: nurse.groupName || "" });
         //分管床位
-        tr += tdEl({ content: "" });
+        tr += tdEl({ content: nurse.chargeBed || "" });
         //排班列
         let groups = [] as any;
         for (let k = 0; k < dateRow.length; k++) {
@@ -985,8 +985,8 @@ class PrintModal {
       let colgroup = `
         <colgroup>
           ${cols
-        .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-        .join("")}
+          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+          .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -1008,14 +1008,14 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-        .map((item: any) =>
-          tdEl({
-            class:
-              item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-            content: item.weekDay == "七" ? "日" : item.weekDay
-          })
-        )
-        .join("")}
+          .map((item: any) =>
+            tdEl({
+              class:
+                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+              content: item.weekDay == "七" ? "日" : item.weekDay
+            })
+          )
+          .join("")}
         </tr>
       `;
 
@@ -1468,8 +1468,8 @@ class PrintModal {
       let colgroup = `
         <colgroup>
           ${cols
-        .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-        .join("")}
+          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+          .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -1491,17 +1491,17 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-        .map((item: any) =>
-          tdEl({
-            class:
-              item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-            content: item.weekDay == "七" ? "日" : item.weekDay
-          })
-        )
-        .join("")}
+          .map((item: any) =>
+            tdEl({
+              class:
+                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+              content: item.weekDay == "七" ? "日" : item.weekDay
+            })
+          )
+          .join("")}
         </tr>
       `;
-      let renderNurse =  NurseGroup.filter((item:any)=>item.id)
+      let renderNurse = NurseGroup.filter((item: any) => item.id)
       for (let j = 0; j < renderNurse.length; j++) {
         let nurse = renderNurse[j];
         let nowPageEl = document.getElementById(tableId);
