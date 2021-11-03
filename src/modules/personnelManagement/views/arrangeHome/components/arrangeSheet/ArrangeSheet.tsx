@@ -182,24 +182,29 @@ export default observer(function ArrangeSheet(props: Props) {
       fixed: "left",
       align: "center"
     },
-    {
-      title: "分管床位",
-      dataIndex: "chargeBed",
-      width: 100,
-      fixed: "left",
-      align: "center",
-      render: (text: string, record: any) => {
-        return isEditable ?
-          <Input
-            style={{ background: "#fff" }}
-            defaultValue={text}
-            onChange={(e: any) => {
-              record.chargeBed = e.target.value;
-            }}
-          /> :
-          <span>{text}</span>
-      }
-    },
+    ...appStore.hisMatch({
+      map: {
+        dgxg: [{
+          title: "分管床位",
+          dataIndex: "chargeBed",
+          width: 100,
+          fixed: "left",
+          align: "center",
+          render: (text: string, record: any) => {
+            return isEditable ?
+              <Input
+                style={{ background: "#fff" }}
+                defaultValue={text}
+                onChange={(e: any) => {
+                  record.chargeBed = e.target.value;
+                }}
+              /> :
+              <span>{text}</span>
+          }
+        }],
+        other: []
+      },
+    }),
     ...sheetViewModal.dateList.map((date, index) => {
       return {
         title: <Th date={date} />,
