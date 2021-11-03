@@ -28,8 +28,10 @@ export default function BedSituation(props: any) {
   const [checkedList, setCheckedList]: any = useState([])
   const [indeterminate, setIndeterminate]: any = useState(false)
   const [checkAll, setCheckAll]: any = useState([])
+  // const [checkOther, setCheckOther] = useState(true)
+  const [checkValue, setcheckValue] = useState('')
   // const [checkedList, setCheckedList]: any = useState([])
-
+  let checkOther: any = []
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
       let listData = res.data
@@ -45,6 +47,9 @@ export default function BedSituation(props: any) {
       classState = [...ClassListInfo]
       setClassList(ClassListInfo)
       setCheckedList(ClassListInfo)
+      listData.forEach(() => {
+        checkOther.push(true)
+      })
     })
   }, [])
   emitter.emit('设置班次大类', classList)
@@ -62,10 +67,15 @@ export default function BedSituation(props: any) {
     // setClassList(data)
     // console.log(checkAll, 87)
     // console.log(data, 888)
-    console.log(e.target.checked, 89)
+    console.log(e.target, 89)
+
+    setCheckAll(e.target.checked)
 
     let target = e.target
+
+    // setCheckOther(e.target.checked)
     let targetValue = target.value
+    setcheckValue(targetValue)
     if (target.checked) {
       for (let i = 0; i < startClassList.length; i++) {
         if (targetValue === startClassList[i]) {
@@ -92,6 +102,8 @@ export default function BedSituation(props: any) {
     setIndeterminate(false)
     setCheckAll(e.target.checked)
     setClassList(e.target.checked ? startClassList : [])
+    // setCheckOther(e.target.checked)
+
   }
 
 
@@ -150,8 +162,8 @@ export default function BedSituation(props: any) {
       </div>
       {startClassList.map((item: any, index: number) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
-          <Checkbox defaultChecked onChange={onChange} value={item}>
-            {item}
+          <Checkbox checked={checkOther[index]} defaultChecked onChange={onChange} value={item} >
+            {item} {checkOther + '00'}
           </Checkbox>
         </div>
       ))}
