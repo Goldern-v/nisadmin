@@ -4,6 +4,8 @@ import { Radio, Checkbox } from 'antd'
 import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+const CheckboxGroup = Checkbox.Group;
 
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
@@ -11,16 +13,22 @@ let classState: any = []
 
 export interface Props extends RouteComponentProps {
 }
-
+BedSituation.defaultProps = {
+  defaultChecked_gxjb: true
+}
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState([])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
   const [startClassList, setStartClassList]: any = useState([])
   const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
-
   const [checkboxItem, setCheckboxItem] = useState([])
   // const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
   const [classList, setClassList]: any = useState([])
+  // 全选按钮
+  const [checkedList, setCheckedList]: any = useState([])
+  const [indeterminate, setIndeterminate]: any = useState(false)
+  const [checkAll, setCheckAll]: any = useState([])
+  // const [checkedList, setCheckedList]: any = useState([])
 
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
@@ -36,12 +44,26 @@ export default function BedSituation(props: any) {
       setStartClassList(ClassListInfo)
       classState = [...ClassListInfo]
       setClassList(ClassListInfo)
+      setCheckedList(ClassListInfo)
     })
   }, [])
   emitter.emit('设置班次大类', classList)
   emitter.emit('设置自定义班次', checkboxItem)
 
+  // const onChange = (checkedList: string | any[]) => {
+  //   setCheckedList(checkedList)
+  //   setIndeterminate(!!checkedList.length && (checkedList.length < startClassList.length))
+  //   setCheckAll(checkedList.length === startClassList.length)
+  // }
   function onChange(e: any) {
+    // setCheckedList(data)
+    // setIndeterminate(!!data.length && (data.length < startClassList.length))
+    // setCheckAll(data.length === startClassList.length)
+    // setClassList(data)
+    // console.log(checkAll, 87)
+    // console.log(data, 888)
+    console.log(e.target.checked, 89)
+
     let target = e.target
     let targetValue = target.value
     if (target.checked) {
@@ -63,6 +85,15 @@ export default function BedSituation(props: any) {
       setClassList(cacheClassList)
     }
   }
+
+  // 全选按钮
+  const onCheckAllChange = (e: { target: { checked: any } }) => {
+    setCheckedList(e.target.checked ? startClassList : [])
+    setIndeterminate(false)
+    setCheckAll(e.target.checked)
+    setClassList(e.target.checked ? startClassList : [])
+  }
+
 
   // checkbox变动
   function checkboxChange(e: any) {
@@ -107,7 +138,16 @@ export default function BedSituation(props: any) {
 
   // 组件
   const RightChooseByShiftCheckbox = (
-    <div className='RightChooseByShiftCheckbox'>
+    <div className='RightChooseByShiftCheckbox '>
+      <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+        <Checkbox
+          indeterminate={indeterminate}
+          onChange={onCheckAllChange}
+          checked={checkAll}
+        >
+          全选
+        </Checkbox>
+      </div>
       {startClassList.map((item: any, index: number) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
           <Checkbox defaultChecked onChange={onChange} value={item}>
@@ -115,6 +155,7 @@ export default function BedSituation(props: any) {
           </Checkbox>
         </div>
       ))}
+      {/* <CheckboxGroup options={startClassList} value={checkedList} onChange={onChange} /> */}
     </div>
   )
   // 接口组件
@@ -190,6 +231,14 @@ const RightChooseByShift = styled.div`
     flex-wrap: wrap; */
     overflow-y: scroll;
     height: 270px;
+    .ant-checkbox-group{
+      label{
+        width: 104px;
+        height: 36px;
+        line-height: 36px;
+        display: inline-block;
+      }
+    }
   }
   .RightChooseByShiftCheckboxItem {
     width: 104px;
