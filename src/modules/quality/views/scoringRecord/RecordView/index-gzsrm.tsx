@@ -2,7 +2,7 @@ import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import { Button, Input, Timeline, Modal, Col, Row, Radio, InputNumber, Select, message, DatePicker } from "src/vendors/antd";
+import { Button, Input, Timeline, Modal, Col, Row, Radio, InputNumber, Select, message, DatePicker, Icon } from "src/vendors/antd";
 import { appStore, authStore } from "src/stores";
 import api from '../api'
 import moment from 'moment';
@@ -101,7 +101,7 @@ export default observer((props: Props) => {
   const hasSubmit = () => {
     if (!(master.currentNodeCode && process.length)) return false
     const current = process.find((item: any) => {
-      return master.nextNodeCode === item.nodeCode
+      return master.nextNodeCode === item.nodeCode && item.status === '0'
     })
     return current?.canUpdate
   }
@@ -189,7 +189,7 @@ export default observer((props: Props) => {
   const hasAudit = () => {
     if (!(master.currentNodeCode && process.length)) return false
     const current = process.find((item: any) => {
-      return master.nextNodeCode === item.nodeCode
+      return master.nextNodeCode === item.nodeCode && item.status === '0'
     })
     return current?.canHandle
   }
@@ -207,7 +207,11 @@ export default observer((props: Props) => {
       handleContent: user.handleContent,
       empNo: user.empNo,
       password: user.password,
+      itemDataMap: form,
+      formId: appStore.queryObj.id || '',
+      formCode: 'SR0004',
     }
+    console.log(params, 998)
     try {
       await api.auditItem(params)
       await getData()
@@ -251,7 +255,7 @@ export default observer((props: Props) => {
       <HeadWrapper>
         <div>
           <div style={{ fontWeight: "bold" }}>{master.deptName}护士长班查房评分表</div>
-          {appStore.queryObj.id && <div>状态：待提交</div>}
+          {/* {appStore.queryObj.id && <div>状态：待提交</div>} */}
         </div>
         <div className='right-bottom'>
           {/* {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
@@ -266,7 +270,7 @@ export default observer((props: Props) => {
             <div className='table-title'>
               护士长班查房评分表
             </div>
-            <table className={!appStore.queryObj.id ? '' : 'disable'}>
+            <table className={!appStore.queryObj.id ? '' : hasSubmit() ? '' : 'disable'}>
               {/* <colgroup>
                 <col/>
                 <col/>
@@ -679,29 +683,35 @@ export default observer((props: Props) => {
               <Timeline>
                 {
                   process.map((item: any, index: number) => {
-                    return <Timeline.Item key={index} color={item.status === '1' ? 'green' : 'rgba(0,0,0,.25)'}>
-                      <div className='timeline-item'>{item.nodeName}</div>
-                      <div className='timeline-item'>{item.handlerName}</div>
-                      <div className='timeline-item'>{item.handleTime}</div>
-                      <div className='timeline-item'
-                        style={{
-                          background: 'rgb(238,238,238)',
-                          borderRadius: '5px',
-                          padding: '0 5px'
-                        }}>
-                        {
-                          item.nodeName === '病区处理' ?
-                            <React.Fragment>
-                              {item.expand && <div>整改措施:{item.expand}</div>}
-                              {item.handleContent && <div>原因分析:{item.handleContent}</div>}
-                            </React.Fragment> :
-                            <span>{item.handleContent}</span>
-                        }
-                      </div>
-                    </Timeline.Item>
+                    return <div>
+                      {item.status === '1' && <Timeline.Item key={index} dot={<Icon type={item.noPass ? 'close-circle' : 'check-circle'} style={{ fontSize: '12px' }} />} color={item.status === '1' ? (item.noPass ? 'red' : 'green') : 'rgba(0,0,0,.25)'}>
+                        <div className='timeline-item'>{item.nodeName}</div>
+                        <div className='timeline-item'>{item.status === '1' ? item.handlerName : ''}</div>
+                        <div className='timeline-item'>{item.status === '1' ? item.handleTime : ''}</div>
+                        <div className='timeline-item'
+                          style={{
+                            background: 'rgb(238,238,238)',
+                            borderRadius: '5px',
+                            padding: '0 5px'
+                          }}> <span>{item.status === '1' ? item.handleContent : ''}</span>
+                        </div>
+                      </Timeline.Item>}
+                      {item.status === '0' && <Timeline.Item key={index} color={item.status === '1' ? (item.noPass ? 'red' : 'green') : 'rgba(0,0,0,.25)'}>
+                        <div className='timeline-item'>{item.nodeName}</div>
+                        <div className='timeline-item'>{item.status === '1' ? item.handlerName : ''}</div>
+                        <div className='timeline-item'>{item.status === '1' ? item.handleTime : ''}</div>
+                        <div className='timeline-item'
+                          style={{
+                            background: 'rgb(238,238,238)',
+                            borderRadius: '5px',
+                            padding: '0 5px'
+                          }}> <span>{item.status === '1' ? item.handleContent : ''}</span>
+                        </div>
+                      </Timeline.Item>}
+                    </div>
                   })
                 }
-              </Timeline>,
+              </Timeline>
             </div>
           </div>}
         </div>
@@ -907,6 +917,11 @@ const MainWrapper = styled.div`
       }
       .timeline-item{
         line-height:22px;
+      }
+      .ant-timeline-item-last{
+        .ant-timeline-item-tail{
+          display: none
+        }
       }
    }
 `

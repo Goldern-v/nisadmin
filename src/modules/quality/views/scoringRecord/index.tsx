@@ -91,11 +91,14 @@ export default observer((props: Props) => {
       width: 100,
       align: "center",
       render: (text: string, row: any, c: any) => {
-
+        console.log(isNaN(row.status))
         return (
-          isNaN(row.status) ? '' : (appStore.HOSPITAL_ID !== 'gzsrm' ? statusMap[+row.status] : statusMap_gzsrm[row.status - 1])
+          appStore.HOSPITAL_ID !== 'gzsrm' ? (isNaN(row.status) ? '' : statusMap[+row.status]) : (
+            isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status - 1]
+          )
         )
       }
+
     },
     {
       title: "操作",
