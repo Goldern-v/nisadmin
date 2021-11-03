@@ -35,6 +35,7 @@ export interface IAudit extends Record<string, any> {
   indexNo: number;//序号
   required: boolean;//是否必填
   multiSelect: boolean;//是否多选
+  codeList:Array<ICode> | [];//员工列表
 }
 
 export interface ICode {
@@ -267,7 +268,17 @@ class QualityControlRecordEditModel {
             if (this.baseInfo.qcGroupRoles) this.getUserList()
             if (this.master.wardCode) this.getBedNurseList();
             //赋值人员指定列表
-            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList)
+            //(res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList) && (this.nodeAppointList=res.data.nodeAppointList)
+            if((res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0)){
+              //this.auditList = res.data.nodeAppointList;
+              this.nodeAppointList=res.data.nodeAppointList
+              this.auditList=res?.data?.nodeAppointList.map((item: INodeAppoint) => {
+                let newItem:INodeAppoint = JSON.parse(JSON.stringify(item))
+                //设置codeList值
+                newItem.codeList = item?.userList?(item.userList as Array<IuserEmpNo>).map((newItem:IuserEmpNo)=>({code:newItem.empNo,name:newItem.empName})):[]
+                return newItem
+              })
+            }
           }
 
         })
@@ -547,6 +558,10 @@ class QualityControlRecordEditModel {
   //更新setNodeAppointListr对象信息
   @action public setNodeAppointList = (newNodeAppointList: Array<INodeAppoint>) => {
     this.nodeAppointList = [...newNodeAppointList]
+  }
+  //更新auditList值
+  @action public setAuditList = (auditList: Array<IAudit>) => {
+    this.auditList = [...auditList]
   }
 }
 
