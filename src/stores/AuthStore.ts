@@ -135,9 +135,9 @@ export default class AuthStore {
       )
         return true;
 
-      return "";
+      return false;
     } catch (error) {
-      return "";
+      return false;
     }
   }
 
@@ -152,9 +152,9 @@ export default class AuthStore {
 
       if (this.user && this.user.roleManageCode === "QCR0003") return true;
 
-      return "";
+      return false;
     } catch (error) {
-      return "";
+      return false;
     }
   }
 

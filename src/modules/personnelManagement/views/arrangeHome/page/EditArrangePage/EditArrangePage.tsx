@@ -8,9 +8,8 @@ import HDFlightMenu from './components/HDFlightMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { DatePicker, Modal } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import JmfyFlightMenu from './components/JmfyFlightMenu'
-
 export interface Props { }
 
 export default observer(function EditArrangePage() {
@@ -22,7 +21,7 @@ export default observer(function EditArrangePage() {
       <TopPart />
       <div className='contain'>
         <div className='left-part'>
-          <ArrangeSheet isEdit={true} surplusHeight={172} />
+          <ArrangeSheet isEdit={true} surplusHeight={172} isEditable={authStore.isNotANormalNurse} />
         </div>
         <div className='right-part'>
           {appStore.hisMatch({
