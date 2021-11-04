@@ -69,7 +69,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
     // 暂无对应的测试环境
     case 'gxjb':
-      return 'http://192.168.1.54:9866'
+      return 'http://58.59.133.37:9091'
     case 'yczyy'://阳春
       return 'http://192.168.1.54:9866' // 聊城二院测试
     default:

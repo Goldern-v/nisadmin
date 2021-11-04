@@ -6,11 +6,19 @@ export interface Props {
   filterObj?: any
   onFilterObjChange?: Function
 }
+let checkOther: any = []
 
 export default function BedSituation(props: Props) {
   const { filterObj, onFilterObjChange } = props
 
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
+  // 控制全选
+  const [checkAll, setCheckAll]: any = useState([])
+  // const [checkAll1, setCheckAll1]: any = useState([])
+  // 初始化-控制复选框
+  filterObj[visibleType || '']?.list?.forEach(() => {
+    checkOther.push(true)
+  })
 
   const handleTypeChange = (currentType: string) => {
     let newFilterObj = { ...filterObj }
@@ -41,24 +49,70 @@ export default function BedSituation(props: Props) {
     onFilterObjChange && onFilterObjChange(newFilterObj)
   }
 
+  // 全选按钮
+  const onCheckAllChange = (e: { target: { checked: any } }) => {
+    // 控制全选样式
+    setCheckAll(e.target.checked)
+    checkOther = []
+    filterObj[visibleType || '']?.list?.forEach((item: { checked: any }) => {
+      checkOther.push(e.target.checked)
+      item.checked = e.target.checked
+    })
+
+    // // 控制表格隐藏 显示
+    onFilterObjChange && onFilterObjChange(filterObj)
+  }
+
   const handleFilterChange = ($e: any, typeName: string, idx: number) => {
     let newFilterObj = { ...filterObj }
+
+    // 控制当选checkbox
+    checkOther[idx] = $e.target.checked
 
     newFilterObj[typeName].list[idx].checked = $e.target.checked
 
     onFilterObjChange && onFilterObjChange(newFilterObj)
   }
 
+  // const filterList = () => {
+  //   return Object.keys(filterObj).map((key: string) => (
+  //     <React.Fragment key={key}>
+  //       {filterObj[key].list.map((item: any, itemIdx: number) => (
+  //         <div
+  //           key={`${key}-${itemIdx}`}
+  //           className="RightChooseByShiftCheckboxItem"
+  //           style={{ display: (visibleType === key || !visibleType) ? 'block' : 'none' }}>
+  //           <Checkbox
+  //             checked={item.checked}
+  //             onChange={(e) => handleFilterChange(e, key, itemIdx)}>
+  //             {item.name}
+  //           </Checkbox>
+  //         </div>
+  //       ))}
+  //     </React.Fragment>
+  //   ))
+  // }
+  // console.log(filterObj, 111)
+
   const filterList = () => {
     return Object.keys(filterObj).map((key: string) => (
       <React.Fragment key={key}>
+        <div style={{ display: (visibleType === key || !visibleType) ? 'block' : 'none' }}>
+          <Checkbox
+            // indeterminate={indeterminate}
+            onChange={onCheckAllChange}
+            checked={checkAll}
+          >
+            全选
+          </Checkbox>
+        </div>
         {filterObj[key].list.map((item: any, itemIdx: number) => (
           <div
             key={`${key}-${itemIdx}`}
             className="RightChooseByShiftCheckboxItem"
             style={{ display: (visibleType === key || !visibleType) ? 'block' : 'none' }}>
             <Checkbox
-              checked={item.checked}
+              checked={checkOther[itemIdx]}
               onChange={(e) => handleFilterChange(e, key, itemIdx)}>
               {item.name}
             </Checkbox>

@@ -10,6 +10,7 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
 let classState: any = []
+let checkOther: any = []
 
 export interface Props extends RouteComponentProps {
 }
@@ -31,7 +32,7 @@ export default function BedSituation(props: any) {
   // const [checkOther, setCheckOther] = useState(true)
   const [checkValue, setcheckValue] = useState('')
   // const [checkedList, setCheckedList]: any = useState([])
-  let checkOther: any = []
+
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
       let listData = res.data
@@ -61,20 +62,14 @@ export default function BedSituation(props: any) {
   //   setCheckAll(checkedList.length === startClassList.length)
   // }
   function onChange(e: any) {
-    // setCheckedList(data)
-    // setIndeterminate(!!data.length && (data.length < startClassList.length))
-    // setCheckAll(data.length === startClassList.length)
-    // setClassList(data)
-    // console.log(checkAll, 87)
-    // console.log(data, 888)
-    console.log(e.target, 89)
-
-    setCheckAll(e.target.checked)
-
     let target = e.target
-
-    // setCheckOther(e.target.checked)
     let targetValue = target.value
+    setCheckAll(target.checked)
+    startClassList.forEach((item: any, index: string | number) => {
+      if (item === targetValue) {
+        checkOther[index] = e.target.checked
+      }
+    })
     setcheckValue(targetValue)
     if (target.checked) {
       for (let i = 0; i < startClassList.length; i++) {
@@ -102,8 +97,10 @@ export default function BedSituation(props: any) {
     setIndeterminate(false)
     setCheckAll(e.target.checked)
     setClassList(e.target.checked ? startClassList : [])
-    // setCheckOther(e.target.checked)
-
+    checkOther = []
+    startClassList.forEach(() => {
+      checkOther.push(e.target.checked)
+    })
   }
 
 
@@ -151,7 +148,7 @@ export default function BedSituation(props: any) {
   // 组件
   const RightChooseByShiftCheckbox = (
     <div className='RightChooseByShiftCheckbox '>
-      <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+      <div style={{ marginBottom: '0px' }}>
         <Checkbox
           indeterminate={indeterminate}
           onChange={onCheckAllChange}
@@ -163,7 +160,7 @@ export default function BedSituation(props: any) {
       {startClassList.map((item: any, index: number) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
           <Checkbox checked={checkOther[index]} defaultChecked onChange={onChange} value={item} >
-            {item} {checkOther + '00'}
+            {item}
           </Checkbox>
         </div>
       ))}
