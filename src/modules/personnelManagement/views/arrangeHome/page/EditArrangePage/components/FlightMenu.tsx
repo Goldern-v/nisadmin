@@ -161,8 +161,10 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = async (item: any) => {
-    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
-      let res = await service.scheduleMealApiService.check(item.id)
+    if (appStore.HOSPITAL_ID == 'wh') {
+      console.log(appStore.HOSPITAL_ID);
+      
+      // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       if (sheetViewModal.selectedCellList.length > 0) {
@@ -204,7 +206,7 @@ function MealCon(props: { dataSource: any[] }) {
 
   const onClick = async (item: any) => {
     /** 套餐同步 */
-    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
+    if (appStore.HOSPITAL_ID == 'wh') {
       let res = await service.scheduleMealApiService.checkMeal(item.id)
     }
     if (sheetViewModal.selectedCell) {
