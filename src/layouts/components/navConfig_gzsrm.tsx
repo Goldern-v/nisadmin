@@ -76,6 +76,10 @@ const baseConfig: navConfigItem[] = [
     path: "/continuingEdu"
   },
   {
+    name: "敏感指标",
+    path: "/indicator"
+  },
+  {
     name: "通知公告",
     path: "/notice"
   },
