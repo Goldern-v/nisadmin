@@ -7,9 +7,12 @@ import StatisticHeader from './components/StatisticHeader'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
+import NurseByShiftChoose_gxjb from './components/NurseByShiftChoose_gxjb'
+
 import TableFirst from './components/TableFirst'
 import { Button } from 'antd'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+import { appStore } from 'src/stores'
 export default function StatisticView() {
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -22,6 +25,8 @@ export default function StatisticView() {
   const testClick = () => {
     StatisticsApi.dictInfo().then((res) => { })
   }
+
+
   return (
     <Con>
       <StatisticHeader />
@@ -36,7 +41,7 @@ export default function StatisticView() {
         </LeftCon>
         <RightCon>
           <div className='NurseByShiftChooseCon'>
-            <NurseByShiftChoose />
+            {appStore.HOSPITAL_ID === 'gxjb' ? <NurseByShiftChoose_gxjb /> : <NurseByShiftChoose />}
           </div>
         </RightCon>
       </MidMidCon>

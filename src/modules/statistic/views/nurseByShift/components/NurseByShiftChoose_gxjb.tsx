@@ -4,23 +4,30 @@ import { Radio, Checkbox } from 'antd'
 import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+const CheckboxGroup = Checkbox.Group;
 
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
 let classState: any = []
+let checkOther: any = []
 
 export interface Props extends RouteComponentProps {
 }
-
+BedSituation.defaultProps = {
+  defaultChecked_gxjb: true
+}
 export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState([])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
   const [startClassList, setStartClassList]: any = useState([])
   const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
-
   const [checkboxItem, setCheckboxItem] = useState([])
   // const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
   const [classList, setClassList]: any = useState([])
+  // 全选按钮
+  const [indeterminate, setIndeterminate]: any = useState(false)
+  const [checkAll, setCheckAll]: any = useState([])
 
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
@@ -36,6 +43,9 @@ export default function BedSituation(props: any) {
       setStartClassList(ClassListInfo)
       classState = [...ClassListInfo]
       setClassList(ClassListInfo)
+      listData.forEach(() => {
+        checkOther.push(true)
+      })
     })
   }, [])
   emitter.emit('设置班次大类', classList)
@@ -44,6 +54,16 @@ export default function BedSituation(props: any) {
   function onChange(e: any) {
     let target = e.target
     let targetValue = target.value
+    startClassList.forEach((item: any, index: string | number) => {
+      if (item === targetValue) {
+        checkOther[index] = e.target.checked
+      }
+    })
+    // 处理点击不是全选复选框 控制全选复选框勾选与否
+    let arr = checkOther.find((item: boolean) => item === false)
+    if (arr === undefined) setCheckAll(true)
+    else setCheckAll(false)
+
     if (target.checked) {
       for (let i = 0; i < startClassList.length; i++) {
         if (targetValue === startClassList[i]) {
@@ -59,10 +79,23 @@ export default function BedSituation(props: any) {
           classState[i] = null
         }
       }
-      let cacheClassList = classState.filter((n: any) => n)
+      let cacheClassList = classState.filter((n: any) => n !== null)
       setClassList(cacheClassList)
     }
   }
+
+  // 全选按钮
+  const onCheckAllChange = (e: { target: { checked: any } }) => {
+    setIndeterminate(false)
+    setCheckAll(e.target.checked)
+    setClassList(e.target.checked ? startClassList : [])
+    classState = e.target.checked ? [...startClassList] : []
+    checkOther = []
+    startClassList.forEach(() => {
+      checkOther.push(e.target.checked)
+    })
+  }
+
 
   // checkbox变动
   function checkboxChange(e: any) {
@@ -96,6 +129,11 @@ export default function BedSituation(props: any) {
     classState = [...startClassList]
     setCheckboxItem([])
     checkboxItemState = []
+    setCheckAll(true)
+    checkOther = []
+    startClassList.forEach(() => {
+      checkOther.push(true)
+    })
   }
 
   function radioClickRight() {
@@ -104,13 +142,21 @@ export default function BedSituation(props: any) {
     checkboxItemState = [...checkboxItemStandard]
     setClassList([])
   }
-
   // 组件
   const RightChooseByShiftCheckbox = (
-    <div className='RightChooseByShiftCheckbox'>
+    <div className='RightChooseByShiftCheckbox '>
+      <div style={{ marginBottom: '0px' }}>
+        <Checkbox
+          indeterminate={indeterminate}
+          onChange={onCheckAllChange}
+          checked={checkAll}
+        >
+          全选
+        </Checkbox>
+      </div>
       {startClassList.map((item: any, index: number) => (
         <div className='RightChooseByShiftCheckboxItem' key={index}>
-          <Checkbox defaultChecked onChange={onChange} value={item}>
+          <Checkbox checked={checkOther[index] === undefined ? true : checkOther[index]} defaultChecked onChange={onChange} value={item} >
             {item}
           </Checkbox>
         </div>
@@ -190,6 +236,14 @@ const RightChooseByShift = styled.div`
     flex-wrap: wrap; */
     overflow-y: scroll;
     height: 270px;
+    .ant-checkbox-group{
+      label{
+        width: 104px;
+        height: 36px;
+        line-height: 36px;
+        display: inline-block;
+      }
+    }
   }
   .RightChooseByShiftCheckboxItem {
     width: 104px;

@@ -7,11 +7,13 @@ import StatisticHeader from './components/StatisticHeader'
 import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartment'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
+import NurseByShiftChoose_gxjb from './components/NurseByShiftChoose_gxjb'
 import TableFirst from './components/TableFirst'
 import { statisticsApi } from '../../api/StatisticsApi'
 import moment from 'src/vendors/moment'
 import { fileDownload } from 'src/utils/file/file'
 import { message } from 'antd'
+import { appStore } from 'src/stores'
 
 export default function StatisticView() {
   const [inited, setInited] = useState(false)
@@ -77,6 +79,7 @@ export default function StatisticView() {
       let filterList = currentFilterObj[reqQuery.type].list
         .filter((item: any) => item.checked)
         .map((item: any) => item.name)
+      console.log(11)
 
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
@@ -85,6 +88,9 @@ export default function StatisticView() {
         .then(res => {
           setTableData(res.data.list || [])
           setHourMap(res.data.hourMap || {})
+        }).catch(() => { // 防止没有选的情况下 接口拦截 前端合计没有清零的问题
+          setTableData([])
+          setHourMap({})
         })
     } else {
       Promise.all(filterTypes.map((type: string) => {
@@ -100,7 +106,6 @@ export default function StatisticView() {
       }))
         .then((resArr) => {
           let newTableDataObj = {} as any
-
           resArr.forEach((res: any, resIdx: number) => {
             if (res.data)
               res.data.forEach((item: any, itemIdx: number) => {
@@ -178,9 +183,13 @@ export default function StatisticView() {
         </LeftCon>
         <RigthCon>
           <div className='NurseByShiftChooseCon'>
-            <NurseByShiftChoose
+            {appStore.HOSPITAL_ID === 'gxjb' ? <NurseByShiftChoose_gxjb
               filterObj={filterObj}
               onFilterObjChange={handleFilterObjChange} />
+              :
+              <NurseByShiftChoose
+                filterObj={filterObj}
+                onFilterObjChange={handleFilterObjChange} />}
           </div>
         </RigthCon>
       </MidMidCon>
