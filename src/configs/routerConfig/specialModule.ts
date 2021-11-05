@@ -279,6 +279,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   ];
 } else if (appStore.HOSPITAL_ID == 'gzsrm') {
   specialModule = [
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),//南医三版本敏感指标
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(

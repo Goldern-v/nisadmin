@@ -137,19 +137,23 @@ export default function SettingEditModal(props: Props) {
                 let msg = "培训计划修改成功";
                 Message.success(msg);
                 onOk();
-              });
+              }).catch(e => {
+                setEditLoading(false);
+              })
             } else {
               trainingManualApi.addOrUpdateTrainingListRecord(newParams).then(res => {
                 setEditLoading(false);
                 let msg = "培训计划添加成功";
                 Message.success(msg);
                 onOk(res);
-              });
+              }).catch(e => {
+                setEditLoading(false);
+              })
             }
           }
         }).catch(e => {
-        console.log(e);
-      });
+          console.log(e);
+        });
     }
   };
 
@@ -191,7 +195,7 @@ export default function SettingEditModal(props: Props) {
             </Col>
             <Col span={19}>
               <Form.Field name="officialRank">
-                <Input placeholder="名称" disabled/>
+                <Input placeholder="名称" disabled />
               </Form.Field>
             </Col>
           </Row>
