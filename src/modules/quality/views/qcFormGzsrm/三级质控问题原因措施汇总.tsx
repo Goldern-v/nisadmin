@@ -51,8 +51,8 @@ export default observer(function 三级问题原因措施汇总() {
       }),
     },
     {
-      title: '重点内容（质控、教学、日常管理）',
-      dataIndex: 'groupName',
+      title: '质控项目',
+      dataIndex: 'qcName',
       align: 'center',
       width: 120,
     },

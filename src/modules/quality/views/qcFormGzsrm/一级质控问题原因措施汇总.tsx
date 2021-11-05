@@ -50,12 +50,12 @@ export default observer(function 三级问题原因措施汇总() {
         children: text
       }),
     },
-    // {
-    //   title: '重点内容（质控、教学、日常管理）',
-    //   dataIndex: 'groupName',
-    //   align: 'center',
-    //   width: 120,
-    // },
+    {
+      title: '质控项目',
+      dataIndex: 'qcName',
+      align: 'center',
+      width: 120,
+    },
     {
       title: '存在问题',
       dataIndex: 'problem',
@@ -94,7 +94,7 @@ export default observer(function 三级问题原因措施汇总() {
       ></TextAreaCom>,
     },
     {
-      title: '日常管理者复查情况',
+      title: '护士长意见',
       dataIndex: 'rectificationResult',
       align: 'left',
       width: 220,
