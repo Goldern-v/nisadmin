@@ -62,57 +62,59 @@ export default observer(function Table(props: Props) {
       align: "center",
       rowSpan: 7,
       width: isTrainingManualSetting ? 195 : 120,
-      render(text: any) {
-        // const obj: any = {
-        //   children: text,
-        //   props: {
-        //     rowSpan: 0
-        //   },
-        // };
-        // obj.props.rowSpan = mergeRowSpan(text, isTrainingManualSetting ? trainingManualModal.allTableList : trainingManualModal.myTableList, 'officialRank');
-        // return obj;
-        return <span>{levelName}</span>
-      }
+      // render(text: any) {
+      // const obj: any = {
+      //   children: text,
+      //   props: {
+      //     rowSpan: 0
+      //   },
+      // };
+      // obj.props.rowSpan = mergeRowSpan(text, isTrainingManualSetting ? trainingManualModal.allTableList : trainingManualModal.myTableList, 'officialRank');
+      // return obj;
+      // return <span>{levelName}</span>
+      // }
     },
     {
-      title: "专业训练重点",
-      dataIndex: "trainingKeyPointName",
+      title: "教学模块划分",
+      dataIndex: "modulesDivision",
       align: "center"
     },
     {
-      title: "知识点划分",
-      dataIndex: "knowledgePointDivisionName",
+      title: "划分说明",
+      dataIndex: "divisionExplain",
       align: "center"
     },
     {
-      title: "学习形式",
-      dataIndex: "learningFormName",
+      title: "教学方法划分",
+      dataIndex: "methodDivision",
       width: isTrainingManualSetting ? 220 : 150,
       align: "center"
     },
     {
-      title: "考核形式",
-      dataIndex: "assessmentForm",
+      title: "评价方法",
+      dataIndex: "evaluateMethod",
       width: isTrainingManualSetting ? 220 : 150,
       align: "center"
     },
-    ...handleArr,
+    // ...handleArr,
     ...appStore.hisMatch({
       map: {
-        hj: [{
-          title: "操作 ",
-          dataIndex: "id",
-          width: 120,
-          align: "center",
-          render(text: any, record: any) {
-            return (
-              <DoCon>
-                <span onClick={() => saveOrUpload(record)}>修改</span>
-                <span onClick={() => handleDelete(text)}>删除</span>
-              </DoCon>
-            )
+        hj: [
+          {
+            title: "操作 ",
+            dataIndex: "id",
+            width: 120,
+            align: "center",
+            render(text: any, record: any) {
+              return (
+                <DoCon>
+                  <span onClick={() => saveOrUpload(record)}>修改</span>
+                  <span onClick={() => handleDelete(text)}>删除</span>
+                </DoCon>
+              )
+            }
           }
-        }],
+        ],
         other: []
       },
     }),

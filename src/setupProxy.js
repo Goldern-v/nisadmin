@@ -14,6 +14,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://120.197.141.41:9094' // 厚街测试
       return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
     // return "http://192.168.1.54:9866" // 公司-厚街测试-内网
+    // return 'http://192.168.20.57:9091' // 伟贤本地
     /** 南医三 */
     case 'nys':
       // return 'http://119.145.71.86:9801' // 南医三正式
@@ -56,7 +57,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
       return "http://192.168.1.54:9867"
-      // return 'http://192.168.20.45:8080' // 本地
+    // return 'http://192.168.20.45:8080' // 本地
     // return "http://192.168.1.54:9875" // 公司-贵州省人民医院-内网
     /** 福清妇幼保健院 */
     case 'fqfybjy':
