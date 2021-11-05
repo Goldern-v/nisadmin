@@ -55,7 +55,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://192.168.8.204:9091' // 贵州人民医院-内网
       // return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
-      return 'http://192.168.20.45:8080' // 本地
+      return "http://192.168.1.54:9867"
+      // return 'http://192.168.20.45:8080' // 本地
     // return "http://192.168.1.54:9875" // 公司-贵州省人民医院-内网
     /** 福清妇幼保健院 */
     case 'fqfybjy':
