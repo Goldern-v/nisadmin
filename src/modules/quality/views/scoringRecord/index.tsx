@@ -46,12 +46,12 @@ export default observer((props: Props) => {
     },
     {
       title: "日期",
-      dataIndex: "createTime",
+      dataIndex: `${appStore.HOSPITAL_ID === 'gzsrm' ? 'itemDataMap.SR0004003' : 'createTime'}`,
       width: 120,
       align: "center",
       render: (text: string) => {
         return (
-          moment(text).format('YYYY-MM-DD')
+          moment(text).format('YYYY-MM-DD HH:mm')
         )
       }
     },
@@ -68,10 +68,10 @@ export default observer((props: Props) => {
       align: "center"
     },
     {
-      title: "检查人员",
-      dataIndex: "creatorName",
+      title: `检查人员`,
+      dataIndex: `creatorName`,
       width: 80,
-      align: "center"
+      align: "center",
     },
     {
       title: "值班护士",
@@ -80,7 +80,7 @@ export default observer((props: Props) => {
       align: "center"
     },
     {
-      title: "值班护长",
+      title: `${appStore.HOSPITAL_ID === 'gzsrm' ? '查房护士长' : '值班护长'}`,
       dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004001' : "SR0001001",
       width: 80,
       align: "center"
@@ -91,7 +91,6 @@ export default observer((props: Props) => {
       width: 100,
       align: "center",
       render: (text: string, row: any, c: any) => {
-        console.log(isNaN(row.status))
         return (
           appStore.HOSPITAL_ID !== 'gzsrm' ? (isNaN(row.status) ? '' : statusMap[+row.status]) : (
             isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status - 1]

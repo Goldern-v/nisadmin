@@ -10,7 +10,6 @@ import { stringify } from "qs";
 import verify from './verify'
 import service from 'src/services/api'
 
-const { MonthPicker, RangePicker } = DatePicker;
 
 interface Props {
 
@@ -236,7 +235,10 @@ export default observer((props: Props) => {
       getData().then()
     }
     getDeptAll()
-    setForm({ 'SR0004001': userName, 'SR0004003': moment(new Date).format("YYYY-MM-DD HH:mm") })
+    setForm({
+      'SR0004001': userName, 'SR0004003': moment(new Date).format("YYYY-MM-DD HH:mm"),
+      'SR0004011': 15, 'SR0004013': 9, 'SR0004015': 24, 'SR0004017': 24, 'SR0004019': 8, 'SR0004021': 20
+    })
   }, [])
 
 
@@ -268,7 +270,7 @@ export default observer((props: Props) => {
         <div style={{ overflow: 'auto', height: '100%' }}>
           <div className='table-wrapper'>
             <div className='table-title'>
-              护士长班查房评分表
+              护士长查房评分表
             </div>
             <table className={!appStore.queryObj.id ? '' : hasSubmit() ? '' : 'disable'}>
               {/* <colgroup>
@@ -342,22 +344,23 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004004': e.target.value })
                       }
                     /> */}
-                    <Select className='select' value={form.SR0004004} onChange={(val: string) => {
-                      // console.log(value, 990)
-                      let newarr: any = deptList.filter((item: DeptType) => {
-                        console.log(item, 89)
-                        return item.code === val
-                      })
-                      console.log(newarr, 56)
-                      // console.log(newarr, newarr[0].name, 78)
-                      let obj = {
-                        wardCode: newarr[0].code,
-                        wardName: newarr[0].name
+                    <Select className='select'
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      value={form.SR0004004} onChange={(val: string) => {
+                        let newarr: any = deptList.filter((item: DeptType) => {
+                          console.log(item, 89)
+                          return item.code === val
+                        })
+                        let obj = {
+                          wardCode: newarr[0].code,
+                          wardName: newarr[0].name
+                        }
+                        setWardCode(obj)
+                        setFormItem({ 'SR0004004': newarr[0].name })
                       }
-                      setWardCode(obj)
-                      setFormItem({ 'SR0004004': newarr[0].name })
-                    }
-                    }>
+                      }>
                       {deptList.map((item: DeptType) => (
                         <Select.Option key={item.name} value={item.code}>
                           {item.name}
@@ -729,7 +732,7 @@ export default observer((props: Props) => {
         }}
       >
         <div style={{ lineHeight: '28px', fontSize: '16px' }}>
-          {currentNode().nodeName === '病区护士长填写病区整改' &&
+          {currentNode().nodeName === '片区护士长填写意见' &&
             <Row style={{ marginBottom: '10px' }}>
               <Col span={4}>审核结果:</Col>
               <Col span={20}>
