@@ -66,6 +66,16 @@ export default observer(function 护士离职原因分析() {
       align: 'left',
       render: (text: any, record: any) => `${record.empName}: ${text || '(无)'}`
     },
+    {
+      title: '离职率',
+      width: 80,
+      dataIndex: 'quitRate',
+      align: 'center',
+      render: (text: any, record: any) => ({
+        props: { rowSpan: record.rowSpan },
+        children: text
+      })
+    },
   ]
 
   const handleSearch = () => getData()

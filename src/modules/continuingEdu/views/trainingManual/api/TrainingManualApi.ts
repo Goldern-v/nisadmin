@@ -3,10 +3,11 @@ import qs from "qs";
 
 export default class TrainingManualApi extends BaseApiService {
   // 我的培训清单（首页主列表）--查询
-  public async queryMyTrainingListByList(nurseHierarchy: any) {
-    return this.post(
-      `/studyAndTrain/trainManualManage/queryMyTrainingListByList/${nurseHierarchy}`
-    );
+  public async queryMyTrainingListByList(nurseHierarchy: any, empNo: any) {
+    return this.post('/studyAndTrain/trainingList/getTrainingList', { nurseHierarchy, empNo })
+    // return this.post(
+    //   `/studyAndTrain/trainManualManage/queryMyTrainingListByList/${nurseHierarchy}`
+    // );
   }
 
   // 各层级培训清单--查询
@@ -32,18 +33,20 @@ export default class TrainingManualApi extends BaseApiService {
 
   // 删除培训清单
   public async deleteTrainingListRecord(id: any) {
-    return this.post(
-      `/studyAndTrain/trainManualManage/deleteTrainingListRecord`,
-      { id }
-    );
+    return this.post('studyAndTrain/trainingList/delete', { id })
+    // return this.post(
+    //   `/studyAndTrain/trainManualManage/deleteTrainingListRecord`,
+    //   { id }
+    // );
   }
 
   // 新增或保存培训清单记录
   public async addOrUpdateTrainingListRecord(obj: any) {
-    return this.post(
-      `/studyAndTrain/trainManualManage/addOrUpdateTrainingListRecord`,
-      obj
-    );
+    return this.post(`studyAndTrain/trainingList/saveOrUpdate`, obj);
+    // return this.post(
+    //   `/studyAndTrain/trainManualManage/addOrUpdateTrainingListRecord`,
+    //   obj
+    // );
   }
 }
 export const trainingManualApi = new TrainingManualApi();

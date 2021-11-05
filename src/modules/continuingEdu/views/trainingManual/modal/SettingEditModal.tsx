@@ -5,6 +5,7 @@ import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { trainingManualModal } from '../TrainingManualModal'
 import { trainingManualApi } from "../api/TrainingManualApi";
+import { authStore } from "src/stores/index";
 
 export interface Props {
   visible: boolean;
@@ -42,10 +43,12 @@ export default function SettingEditModal(props: Props) {
   const rules: Rules = {
     nurseHierarchy: val => !!val || "层级不能为空",
     officialRank: val => !!val || "职称不能为空",
-    trainingKeyPointId: val => !!val || "类型名称不能为空",
-    knowledgePointDivisionId: val => !!val || "知识点划分不能为空",
-    learningFormId: val => !!val || "教学方式不能为空",
-    assessmentForm: val => !!val || "考核形式不能为空"
+    // trainingKeyPointId: val => !!val || "类型名称不能为空",
+    // knowledgePointDivisionId: val => !!val || "知识点划分不能为空",
+    modulesDivision: val => !!val || "教学模块划分不能为空",
+    divisionExplain: val => !!val || "划分说明不能为空",
+    methodDivision: val => !!val || "教学方法划分",
+    evaluateMethod: val => !!val || "评价方法不能为空"
   };
 
   // 根据层级获取职级
@@ -87,22 +90,27 @@ export default function SettingEditModal(props: Props) {
         if (!current) return;
         if (params.id) {
           // 修改回显数据
-          const { nurseHierarchy, trainingKeyPointId, knowledgePointDivisionId, learningFormId, assessmentForm } = params;
+          const { nurseHierarchy, trainingKeyPointId, knowledgePointDivisionId, learningFormId, assessmentForm, modulesDivision, divisionExplain, methodDivision, evaluateMethod, officialRank } = params;
           getTree(trainingKeyPointId, knowledgePointDivisionId)
           current.setFields({
             nurseHierarchy,
-            officialRank: getOfficialRank(nurseHierarchy),
-            trainingKeyPointId,
-            knowledgePointDivisionId,
-            learningFormId,
-            assessmentForm
+            // officialRank: getOfficialRank(nurseHierarchy),
+            // trainingKeyPointId,
+            // knowledgePointDivisionId,
+            // learningFormId,
+            assessmentForm,
+            modulesDivision,
+            divisionExplain,
+            methodDivision,
+            evaluateMethod,
+            officialRank
           });
         } else {
           // 新增清空内容，层级职称赋予默认值不可改
           current.clear();
           current.setFields({
             nurseHierarchy: trainingManualModal.tabKeyName,
-            officialRank: getOfficialRank(trainingManualModal.tabKeyName),
+            // officialRank: getOfficialRank(trainingManualModal.tabKeyName),
             // trainingKeyPointId: trainingManualModal.trainingKeyPointTree.name,
             // knowledgePointDivisionId: trainingManualModal.knowledgePointDivisionTree.name,
             // learningFormId: trainingManualModal.learningFormTree.name,
@@ -129,6 +137,13 @@ export default function SettingEditModal(props: Props) {
           if (current) {
             let newParams = current.getFields();
             newParams.sort = Number(newParams.sort);
+            if (!newParams.empNo) {
+              newParams.empNo = authStore.user?.empNo
+            }
+            if (!newParams.empName) {
+              newParams.empName = authStore.user?.empName
+            }
+            newParams.assessmentForm = newParams.evaluateMethod
             if (params.id) {
               newParams.id = params.id;
               setEditLoading(true);
@@ -137,19 +152,23 @@ export default function SettingEditModal(props: Props) {
                 let msg = "培训计划修改成功";
                 Message.success(msg);
                 onOk();
-              });
+              }).catch(e => {
+                setEditLoading(false);
+              })
             } else {
               trainingManualApi.addOrUpdateTrainingListRecord(newParams).then(res => {
                 setEditLoading(false);
                 let msg = "培训计划添加成功";
                 Message.success(msg);
                 onOk(res);
-              });
+              }).catch(e => {
+                setEditLoading(false);
+              })
             }
           }
         }).catch(e => {
-        console.log(e);
-      });
+          console.log(e);
+        });
     }
   };
 
@@ -170,10 +189,10 @@ export default function SettingEditModal(props: Props) {
       <Wrapper>
         <Form ref={formRef} rules={rules} onChange={onFormChange}>
           <Row>
-            <Col span={5} className="label">
+            <Col span={6} className="label">
               层级:
             </Col>
-            <Col span={19}>
+            <Col span={18}>
               <Form.Field name="nurseHierarchy">
                 <Select disabled>
                   {nurseHierarchyArr.map(item => (
@@ -186,21 +205,21 @@ export default function SettingEditModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={5} className="label">
+            <Col span={6} className="label">
               职称:
             </Col>
-            <Col span={19}>
+            <Col span={18}>
               <Form.Field name="officialRank">
-                <Input placeholder="名称" disabled/>
+                <Input placeholder="名称" />
               </Form.Field>
             </Col>
           </Row>
           <Row>
-            <Col span={5} className="label">
-              类型名称:
+            <Col span={6} className="label">
+              教学模块划分:
             </Col>
-            <Col span={19}>
-              <Form.Field name="trainingKeyPointId">
+            <Col span={18}>
+              {/* <Form.Field name="trainingKeyPointId">
                 <Select>
                   {trainingManualModal.trainingKeyPointTree.map((item: any) => (
                     <Select.Option value={item.id} key={item.name}>
@@ -208,15 +227,19 @@ export default function SettingEditModal(props: Props) {
                     </Select.Option>
                   ))}
                 </Select>
+              </Form.Field> */}
+              <Form.Field name="modulesDivision">
+                <Input placeholder="教学模块划分" />
               </Form.Field>
             </Col>
           </Row>
           <Row>
-            <Col span={5} className="label">
-              知识点划分:
+            <Col span={6} className="label">
+              划分说明:
             </Col>
-            <Col span={19}>
-              <Form.Field name="knowledgePointDivisionId">
+            <Col span={18}>
+
+              {/* <Form.Field name="knowledgePointDivisionId">
                 <Select>
                   {
                     list.map((item: any) => (
@@ -226,18 +249,21 @@ export default function SettingEditModal(props: Props) {
                     ))
                   }
                 </Select>
+              </Form.Field> */}
+              <Form.Field name="divisionExplain">
+                <Input placeholder="划分说明" />
               </Form.Field>
             </Col>
           </Row>
           <Row>
-            <Col span={5} className="label">
-              教学方式:
+            <Col span={6} className="label">
+              教学方式划分:
             </Col>
-            <Col span={19}>
-              <Form.Field name="learningFormId">
+            <Col span={18}>
+              <Form.Field name="methodDivision">
                 <Select>
                   {trainingManualModal.learningFormTree.childList && trainingManualModal.learningFormTree.childList.map((item: any) => (
-                    <Select.Option value={item.id} key={item.name}>
+                    <Select.Option value={item.name} key={item.name}>
                       {item.name}
                     </Select.Option>
                   ))}
@@ -246,11 +272,11 @@ export default function SettingEditModal(props: Props) {
             </Col>
           </Row>
           <Row>
-            <Col span={5} className="label">
-              考核形式:
+            <Col span={6} className="label">
+              评价方法:
             </Col>
-            <Col span={19}>
-              <Form.Field name="assessmentForm">
+            <Col span={18}>
+              <Form.Field name="evaluateMethod">
                 <Select>
                   {assessmentFormArr.map(item => (
                     <Select.Option value={item.code} key={item.name}>

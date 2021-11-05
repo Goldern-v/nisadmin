@@ -5,7 +5,7 @@ import { RouteComponentProps } from "react-router";
 import loginViewModel from "./LoginViewModel";
 
 import service from "src/services/api";
-import { appStore } from "src/stores";
+import { appStore, scheduleStore } from "src/stores";
 import { Button } from "src/vendors/antd";
 import { AutoComplete, message } from "antd";
 import { withRouter } from 'react-router-dom'
@@ -23,7 +23,10 @@ export default withRouter(function LoginView(props: Props) {
   // console.log(formatInfoStr)
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationImg, setVerificationImg] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
 
   const [isSavePassword, setIsSavePassword] = useState(false);
   let userRef: any = useRef<HTMLInputElement>();
@@ -72,10 +75,16 @@ export default withRouter(function LoginView(props: Props) {
       _password = options.password
     }
 
-    setLoginLoading(true);
-
+    if (!(username && password)) {
+      message.warning("请填写账号和密码！")
+      return;
+    }
+    if (showVerification&&!verificationCode) {
+      message.warning("请填写验证码！")
+      return;
+    }
     service.authApiService
-      .login(_username, _password)
+      .login(_username, _password, verificationCode, "")
       .then(() => {
         if (isSavePassword) {
           const userLoginInfoMap = JSON.parse(
@@ -86,11 +95,18 @@ export default withRouter(function LoginView(props: Props) {
           /** 最后登录的用户 */
           localStorage.lastLoginUserName = _username.toLowerCase();
         }
-        setLoginLoading(false);
       })
       .catch(() => {
-        if (formatInfoStr) history.replace('/login')
-        setLoginLoading(false);
+        // if (formatInfoStr) history.replace('/login')
+        let errorCode = scheduleStore.getErrorData().errorCode
+        let data = scheduleStore.getErrorData().data
+        if (errorCode == "301") {
+          setShowVerification(true)
+          setVerificationImg(data)
+        } else if (errorCode == "403") {
+          setShowVerification(true)
+          refreshImg()
+        }
       });
   }
 
@@ -138,7 +154,17 @@ export default withRouter(function LoginView(props: Props) {
       login();
     }
   };
-
+  const refreshImg = () => {
+    setShowVerification(true)
+    service.authApiService
+      .login(username, password, "", true)
+        .then((res:any) => {
+          setVerificationImg(res.data)
+        })
+        .catch(() => {
+          
+        });
+  }
   const userLoginInfoMap = JSON.parse(localStorage.userLoginInfoMap || "{}");
   const keys = Object.keys(userLoginInfoMap);
   let userNameDataSource: any = [];
@@ -166,25 +192,27 @@ export default withRouter(function LoginView(props: Props) {
         //   handleKeyUp(e)
         // }}
         >
-          <img src={appStore.HOSPITAL_LOGO} alt="logo" className="BoxLogin" />
-          {appStore.hisMatch({
-            map: {
-              'nys': appStore.onlyBadEvent ? (
-                <h1
-                  className="Title"
-                  style={{
-                    margin: 0,
-                    marginBottom: '-10px',
-                    letterSpacing: '2px'
-                  }}>
-                  {appStore.HOSPITAL_Name}
-                </h1>
-              ) : null,
-              default: null
-            }
-          })}
-          <h1 className="Title">{Title()}</h1>
-
+          <div className="Top">
+            <img src={appStore.HOSPITAL_LOGO} alt="logo" className="BoxLogin" />
+            {appStore.hisMatch({
+              map: {
+                'nys': appStore.onlyBadEvent ? (
+                  <h1
+                    className="Title"
+                    style={{
+                      margin: 0,
+                      marginBottom: '-10px',
+                      letterSpacing: '2px'
+                    }}>
+                    {appStore.HOSPITAL_Name}
+                  </h1>
+                ) : null,
+                default: null
+              }
+            })}
+            <h1 className="Title">{Title()}</h1>
+          </div>
+          
           <div className="TextItem">
             <div className="iconfont NameIcon">&#xe648;</div>
             {/* {JSON.stringify(userNameDataSource)} */}
@@ -209,6 +237,20 @@ export default withRouter(function LoginView(props: Props) {
               onKeyDown={passwordEnter}
             />
           </div>
+          {showVerification&&<div className="TextItem">
+            <div className="iconfont NameIcon">&#xe6cb;</div>
+            <input
+              onChange={e => setVerificationCode(e.target.value)}
+              style={{ width: 180 }}
+              type="password"
+              placeholder="验证码，单击图片刷新"
+              value={verificationCode}
+              onKeyDown={passwordEnter}
+            />
+            <div className="verificationImg">
+              <img src={verificationImg} alt="" onClick={() => {refreshImg()}}/>
+            </div>
+          </div>}
           <div style={{ display: "flex" }}>
             <div
               className="CheckItem"
@@ -298,16 +340,19 @@ const BoxInput = styled.div`
   padding: 22px 20px 32px;
   background: #fafcff;
   border-radius: 2px;
-  width: 300px;
-  text-align: center;
-  .BoxLogin {
-    width: 67px;
-  }
-  .Title {
-    margin: 12px 0 24px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #333;
+  width: 310px;
+  /* text-align: center; */
+  .Top {
+    text-align: center;
+    .BoxLogin {
+      width: 67px;
+    }
+    .Title {
+      margin: 12px 0 24px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+    }
   }
   .TextItem {
     position: relative;
@@ -322,6 +367,17 @@ const BoxInput = styled.div`
     }
     input {
       font-size: 14px !important;
+    }
+    .verificationImg {
+      width: 80px;
+      height: 35px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      img {
+        width: 80px;
+        height: 35px;
+      }
     }
   }
   input[type="text"] {

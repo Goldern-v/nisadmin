@@ -32,6 +32,7 @@ export default observer((props: Props) => {
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
+  const statusMap_gzsrm = ['待病区审核', '待片区填写意见', '审核完成']
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -45,42 +46,42 @@ export default observer((props: Props) => {
     },
     {
       title: "日期",
-      dataIndex: "createTime",
+      dataIndex: `createTime`,
       width: 120,
       align: "center",
       render: (text: string) => {
         return (
-          moment(text).format('YYYY-MM-DD')
+          moment(text).format('YYYY-MM-DD HH:mm')
         )
       }
     },
     {
       title: "检查病区",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004004' : "SR0001002",
+      dataIndex: "SR0001002",
       width: 120,
       align: "center"
     },
     {
       title: "得分",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004022':"SR0001019",
+      dataIndex: "SR0001019",
       width: 80,
       align: "center"
     },
     {
-      title: "检查人员",
-      dataIndex: "creatorName",
+      title: `检查人员`,
+      dataIndex: `creatorName`,
       width: 80,
-      align: "center"
+      align: "center",
     },
     {
       title: "值班护士",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm'? 'SR0004007' : "SR0001005",
+      dataIndex: "SR0001005",
       width: 80,
       align: "center"
     },
     {
-      title: "值班护长",
-      dataIndex: appStore.HOSPITAL_ID === 'gzsrm' ? 'SR0004001' :"SR0001001",
+      title: `值班护长`,
+      dataIndex: "SR0001001",
       width: 80,
       align: "center"
     },
@@ -94,6 +95,84 @@ export default observer((props: Props) => {
           isNaN(row.status) ? '' : statusMap[+row.status]
         )
       }
+
+    },
+    {
+      title: "操作",
+      width: 100,
+      align: "center",
+      render: (text: any, row: any, c: any) => {
+        return (
+          <DoCon>
+            <span onClick={() => handleView(row)}>
+              查看
+            </span>
+          </DoCon>
+        );
+      }
+    }
+  ]
+  const columns_gzsrm: any[] = [
+    {
+      title: "序号",
+      dataIndex: "",
+      render: (text: any, record: any, index: number) => index + 1,
+      align: "center",
+      width: 30
+    },
+    {
+      title: "日期",
+      dataIndex: `itemDataMap.SR0004003`,
+      width: 120,
+      align: "center",
+      render: (text: string) => {
+        return (
+          moment(text).format('YYYY-MM-DD HH:mm')
+        )
+      }
+    },
+    {
+      title: "检查病区",
+      dataIndex: 'SR0004004',
+      width: 120,
+      align: "center"
+    },
+    {
+      title: "得分",
+      dataIndex: 'SR0004022',
+      width: 80,
+      align: "center"
+    },
+    // {
+    //   title: `检查人员`,
+    //   dataIndex: `creatorName`,
+    //   width: 80,
+    //   align: "center",
+    //   className: appStore.HOSPITAL_ID === 'gzsrm' ? 'itemHide' : ""
+    // },
+    {
+      title: "值班护士",
+      dataIndex: 'SR0004007',
+      width: 80,
+      align: "center"
+    },
+    {
+      title: `查房护士长`,
+      dataIndex: 'SR0004001',
+      width: 80,
+      align: "center"
+    },
+    {
+      title: "状态",
+      dataIndex: "status",
+      width: 100,
+      align: "center",
+      render: (text: string, row: any, c: any) => {
+        return (
+          isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status - 1]
+        )
+      }
+
     },
     {
       title: "操作",
@@ -145,12 +224,12 @@ export default observer((props: Props) => {
         <div className='page-title'>护长夜查房评分记录</div>
         <div className='button-group'>
           <span className='label'>科室：</span>
-          <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })}/>
+          <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
           <span className='label'>日期：</span>
           <DatePicker.RangePicker
             style={{ width: 220 }}
             value={[form.beginDate, form.endDate]}
-            onChange={(val) => setFormItem({ beginDate: val[0], endDate: val[1] })}/>
+            onChange={(val) => setFormItem({ beginDate: val[0], endDate: val[1] })} />
           <span className='label'>状态：</span>
           <Select
             value={form.status}
@@ -172,7 +251,7 @@ export default observer((props: Props) => {
         <BaseTable
           type={'index'}
           loading={tableLoading}
-          columns={columns}
+          columns={appStore.HOSPITAL_ID === 'gzsrm' ? columns_gzsrm : columns}
           dataSource={tableData}
           surplusHeight={200}
           wrapperStyle={{ borderRadius: '5px' }}
@@ -225,4 +304,7 @@ const MainWrapper = styled.div`
   background: #fff;
   height: calc(100% - 50px);
   padding: 0 20px;
+  .itemHide{
+    display: none
+  }
 `

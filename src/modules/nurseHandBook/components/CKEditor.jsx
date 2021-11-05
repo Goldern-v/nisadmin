@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { appStore, authStore } from 'src/stores'
 import CKEditor from 'ckeditor4-react'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
@@ -12,6 +12,11 @@ export default function CKEditorFn(props) {
     setEditorData(evt.editor.getData())
     setTextValue(evt.editor.getData())
   }
+
+  useEffect(() => {
+    setEditorData(props.textValue)
+  }, [props.textValue])
+
   return <Wrapper>
     <CKEditor
       ref={editorRef}

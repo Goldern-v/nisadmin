@@ -14,6 +14,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://120.197.141.41:9094' // 厚街测试
       return 'https://info.cr-health.com:20203' // 公司-厚街测试-外网
     // return "http://192.168.1.54:9866" // 公司-厚街测试-内网
+    // return 'http://192.168.20.57:9091' // 伟贤本地
     /** 南医三 */
     case 'nys':
       // return 'http://119.145.71.86:9801' // 南医三正式
@@ -33,9 +34,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 江门妇幼 */
     case 'jmfy':
       // return 'http://218.14.180.38:9094' // 江门妇幼正式
-      return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
-    // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
-    // return 'http://192.168.20.61:9091' // 宏群本地
+      // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
+      // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
+      return 'http://192.168.20.61:9091' // 宏群本地
 
     /** 东莞横沥 */
     case 'dghl':
@@ -67,11 +68,14 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 武警广东省总队医院 */
     case 'wjgdszd':
       return "http://120.24.240.231:15091 " // 武警广东省总队医院正式
-    // 暂无对应的测试环境
     case 'gxjb':
-      return 'http://58.59.133.37:9091' // 聊城二院测试
+      return 'http://58.59.133.37:9091'
     case 'yczyy'://阳春
       return 'http://192.168.1.54:9866' // 聊城二院测试
+    /** 佛山杏坛 */
+    case 'fsxt':
+      // return 'http://192.168.1.54:9866'
+      return 'http://192.168.20.61:9091' // 宏群本地
     default:
       return 'http://192.168.1.54:9866'
   }

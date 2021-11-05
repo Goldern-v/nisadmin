@@ -19,11 +19,23 @@ export default class ScheduleStore {
   @observable public groupList: any[] = sessionStorage.groupList ? JSON.parse(sessionStorage.groupList) : []
   @observable public selectedGroupId: any = ''
   @observable private weekStartTime: string
+  @observable private errorData: any
   @observable private weekEndTime: string
   @observable private startTime: string
   @observable private endTime: string
   @observable private selectedWeekIndex: string
   @observable private department: any
+
+  @action
+  public setErrorData = (errorData: any) => {
+    sessionStorage.scheduleWeekEndTime = errorData
+    this.errorData = errorData
+  }
+
+  @action
+  public getErrorData = () => {
+    return this.errorData
+  }
 
   @action
   public setSelectedWeekIndex = (selectedWeekIndex: string) => {

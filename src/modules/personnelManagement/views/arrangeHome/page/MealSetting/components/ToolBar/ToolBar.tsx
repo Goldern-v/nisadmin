@@ -346,7 +346,7 @@ export default function ToolBar() {
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
       status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
     }
-    if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
+    if (appStore.HOSPITAL_ID == 'wh') {
       for (let key in postData) {
         if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
           if (postData[key]) {

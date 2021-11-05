@@ -13,7 +13,7 @@ import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
@@ -102,19 +102,22 @@ export default observer(function BaseInfo() {
                   职务: `job`
                 },
                 {
-                  参加工作时间: `goWorkTime`,
+                  参加工作时间: `workYear`,
                   最高学历: `highestEducation`
                 },
                 {
+                  入职时间: "entryDate",
                   技术职称: `newTitle`,
-                  护士执业证书编号: `zyzsNumber`
                 },
                 {
                   身份证号: `cardNumber`,
-                  社会团体职务: `socialGroup`
+                  护士执业证书编号: `zyzsNumber`
                 },
                 {
                   手机号: `phone`,
+                  社会团体职务: `socialGroup`
+                },
+                {
                   家庭住址: `address`
                 }
               ],
@@ -124,10 +127,10 @@ export default observer(function BaseInfo() {
                 },
                 ...(info.zyzsUrl
                   ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                      return {
-                        ['执业证书' + (index + 1)]: item
-                      }
-                    })
+                    return {
+                      ['执业证书' + (index + 1)]: item
+                    }
+                  })
                   : [])
               ],
               allData: info
@@ -170,19 +173,22 @@ export default observer(function BaseInfo() {
           职务: data.job
         },
         {
-          参加工作时间: data.goWorkTime,
+          参加工作时间: data.workYear,
           最高学历: data.highestEducation
         },
         {
-          技术职称: data.newTitle,
-          护士执业证书编号: data.zyzsNumber
+          入职时间: data.entryDate,
+          技术职称: data.newTitle
         },
         {
           身份证号: data.cardNumber,
-          社会团体职务: data.socialGroup
+          护士执业证书编号: data.zyzsNumber
         },
         {
           手机号: data.phone,
+          社会团体职务: data.socialGroup
+        },
+        {
           家庭住址: data.address
         }
       ])

@@ -3,7 +3,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { message, notification } from "antd";
 // import commonConfig from '../../configs/common'
 import ResponseError from "./ResponseError";
-import { authStore, appStore } from "src/stores";
+import { authStore, appStore, scheduleStore } from "src/stores";
 import { Modal } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
 
@@ -76,7 +76,7 @@ export function onResponseFulfilled(response: AxiosResponse) {
           message.error(desc || "未知异常");
         }
         // console.log(desc, desc.indexOf('\n'), 'desc')
-
+        scheduleStore.setErrorData(response.data)
         return Promise.reject(response.data.desc || desc);
       }
     case StatusCode.logout: {

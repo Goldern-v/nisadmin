@@ -35,7 +35,7 @@ export function getAddArrangeMenuList(
         type: "text",
         dataSource: obj[keys[i]][j],
         async onClick(item: any) {
-          if (appStore.HOSPITAL_ID == 'wh' || appStore.HOSPITAL_ID == 'gxjb') {
+          if (appStore.HOSPITAL_ID == 'wh') {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {

@@ -43,7 +43,8 @@ export default observer(() => {
   const getData = async () => {
     if (!form.deptCode) return
     if (!form.date) {
-      setFormItem({ date: [moment().year(moment().year() - 1), moment().year(moment().year() + 1)] })
+      // setFormItem({ date: [moment().year(moment().year() - 1), moment().year(moment().year() + 1)] })
+      setFormItem({ date: ['', ''] })
       return
     }
 
@@ -76,7 +77,7 @@ export default observer(() => {
     <Wrapper>
       {/* 搜索栏 */}
       <PageHeader>
-        <Place/>
+        <Place />
         <span className="label">姓名</span>
         <Input
           value={form.empName}
@@ -84,11 +85,11 @@ export default observer(() => {
           onChange={e => setFormItem({ empName: e.target.value })}
         />
         <span className="label">科室</span>
-        <DeptSelect hasAllDept onChange={deptCode => setFormItem({ 'deptCode': deptCode })}/>
+        <DeptSelect hasAllDept onChange={deptCode => setFormItem({ 'deptCode': deptCode })} />
         <span className="label">分娩日期</span>
         <DatePicker.RangePicker
           value={form.date}
-          onChange={(dates) => setFormItem({ 'date': dates })}/>
+          onChange={(dates) => setFormItem({ 'date': dates })} />
         <span className="label">申请状态</span>
         <Select value={form.status} onChange={(value: string) => setFormItem({ 'status': value })}>
           {config.statusOption.map((item, index) => (

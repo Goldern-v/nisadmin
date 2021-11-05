@@ -23,6 +23,7 @@ export interface DeptType {
 export default observer(function MultipleDeptSelect(props: Props) {
   const [deptList, setDeptList]: any = useState([]);
   const [deptAllList, setDeptAllList] = useState([] as any);
+  const [selectedDeptCode_gxjb, setSelectedDeptCode_gxjb] = useState([] as any);
 
   const onChange = (value: string[]) => {
     if (props.deptList && !value.length) return
@@ -54,6 +55,11 @@ export default observer(function MultipleDeptSelect(props: Props) {
     service.commonApiService.getNursingUnitAll().then(res => {
       if (res.data.deptList) setDeptAllList(res.data.deptList)
     })
+    if (authStore.isDepartment) {
+      setSelectedDeptCode_gxjb(["全院"])
+    } else {
+      setSelectedDeptCode_gxjb([authStore.deptList[0]?.code])
+    }
   }
 
   const deptOptions = () => {
@@ -67,26 +73,27 @@ export default observer(function MultipleDeptSelect(props: Props) {
   useEffect(() => {
     if (appStore.HOSPITAL_ID === 'gxjb') {
       getDeptAll()
+    } else {
+      statisticsViewModal.init().then(res => {
+        if (props.deptList) {
+          setDeptList(props.deptList);
+        } else {
+          setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+        }
+        if (props.deptKey == "完整科室") {
+          statisticsViewModal.selectedDeptCode = ["全院"];
+        } else if (props.deptList) {
+          statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
+        }
+      });
     }
-    statisticsViewModal.init().then(res => {
-      if (props.deptList) {
-        setDeptList(props.deptList);
-      } else {
-        setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
-      }
-      if (props.deptKey == "完整科室") {
-        statisticsViewModal.selectedDeptCode = ["全院"];
-      } else if (props.deptList) {
-        statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
-      }
-    });
   }, []);
 
   return (
     <Wrapper>
       <Select
         mode="multiple"
-        value={statisticsViewModal.selectedDeptCode as any}
+        value={appStore.HOSPITAL_ID !== 'gxjb' ? (statisticsViewModal.selectedDeptCode as any) : selectedDeptCode_gxjb}
         showSearch
         allowClear
         style={{ width: 200 }}

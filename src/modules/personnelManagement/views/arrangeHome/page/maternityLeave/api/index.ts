@@ -7,8 +7,8 @@ class Api extends BaseApiService {
   getList(data: iSearchForm) {
     const params = {
       ...data,
-      'deliveryStartDate': data.date && moment(data.date[0]).format('YYYY-MM-DD'),
-      'deliveryEndDate': data.date && moment(data.date[1]).format('YYYY-MM-DD')
+      'deliveryStartDate': data.date && data.date[0] ? moment(data.date[0]).format('YYYY-MM-DD') : '',
+      'deliveryEndDate': data.date && data.date[1] ? moment(data.date[1]).format('YYYY-MM-DD') : ''
     }
     params.deptCode = params.deptCode === '全院' ? '' : params.deptCode
     delete params.date

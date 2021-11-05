@@ -8,6 +8,7 @@ import moment from 'moment'
 import { ModalForm } from "../../modal"
 import config from "../../config"
 import api from '../../api'
+import { appStore } from "src/stores"
 
 interface Props {
   modalId?: string
@@ -34,7 +35,16 @@ export default observer((props: Props) => {
   }
 
   const handleDateChange = (date: moment.Moment) => {
+    if (!date) {
+      setFormItem({ lastMenstrualPeriod: date })
+      return
+    }
     const expectedDate = moment(date).add(9, 'months').add(7, 'days')
+    const blockDeliveryDate = ['jmfy']
+    if (blockDeliveryDate.includes(appStore.HOSPITAL_ID)) {
+      setFormItem({ lastMenstrualPeriod: date, expectedDate, deliveryDate: '' })
+      return;
+    }
     setFormItem({ lastMenstrualPeriod: date, expectedDate, deliveryDate: expectedDate })
   }
 
@@ -86,7 +96,7 @@ export default observer((props: Props) => {
                 style={{ width: '100%' }}
                 onChange={deptCode => {
                   setFormItem({ 'deptCode': deptCode })
-                }}/>
+                }} />
             </Col>
           </Row>
           <Row>

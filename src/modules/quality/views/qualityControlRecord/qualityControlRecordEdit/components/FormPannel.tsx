@@ -119,7 +119,17 @@ export default observer(function FormPannel() {
   const getAuditList = (item: IAudit) => {
     qualityControlRecordApi.getListByAppointUserCode(baseInfo.qcCode, master.wardCode, item.appointUserCode).then(res => {
       console.log(res);
-      (res?.data) && (setCodeList(res?.data));
+      if(res?.data && res?.data.length>0){
+        //设置auditList
+        qcModel.setAuditList(auditList.map((itemModel:IAudit)=>{
+          if(itemModel.appointUserCode===item.appointUserCode){
+            itemModel.codeList=res.data;
+          }
+          return itemModel;
+        }))
+      }
+      
+      //(res?.data) && (setCodeList(res?.data));
     }).catch(error => {
       console.log(error)
       message.error(error)
@@ -270,11 +280,12 @@ export default observer(function FormPannel() {
                           <div className="auditItemName">{index + 1}、{item.showItemName}</div>
                           <div onClick={() => { getAuditList(item) }}>
                             <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}
-                              onSelect={(value: string) => { setAuditSelect(item, value, codeList) }}>
+                              value={nodeAppointList && nodeAppointList.length>0 && nodeAppointList[index].userList &&  nodeAppointList[index].userList.length>0?nodeAppointList[index].userList[0].empNo:''}
+                              onSelect={(value: string) => { setAuditSelect(item, value, item.codeList) }}>
                               {
-                                codeList.map((codeItem: ICode) =>
+                                item?.codeList && item.codeList.length>0?(item.codeList as Array<ICode>).map((codeItem: ICode) =>
                                   <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
-                                )
+                                ):''
                               }
                               {/* <Option value="a" >a</Option> */}
                             </Select>
