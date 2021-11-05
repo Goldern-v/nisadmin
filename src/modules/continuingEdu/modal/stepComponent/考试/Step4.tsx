@@ -47,6 +47,8 @@ export default observer(function Step4() {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
+  // 允许切换交卷后显示分数的医院
+  let allowShowScoreInstantly = ['nys', 'lcey'].includes(appStore.HOSPITAL_ID);
 
   const onFormChange = async (name: string, value: any, from: Form) => {
     let data: any = from.getFields();
@@ -128,9 +130,9 @@ export default observer(function Step4() {
     stepViewModal.stepData2.needScorePerson = false
     stepViewModal.stepData2.scorePersonList = []
     refForm.current && refForm.current.setField('scorePersonList', []);
-    if (appStore.HOSPITAL_ID != 'nys') stepViewModal.stepData2.showScoreInstantly = true
+    if (!allowShowScoreInstantly) stepViewModal.stepData2.showScoreInstantly = true
   } else {
-    if (appStore.HOSPITAL_ID != 'nys') stepViewModal.stepData2.showScoreInstantly = false
+    if (!allowShowScoreInstantly) stepViewModal.stepData2.showScoreInstantly = false
   }
 
   // 习题预览弹窗
@@ -229,7 +231,7 @@ export default observer(function Step4() {
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">
-              <UpdateTableNys/>
+              <UpdateTableNys />
             </Form.Field>
           </Col>
         )
@@ -237,7 +239,7 @@ export default observer(function Step4() {
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">
-              <UpdateTable/>
+              <UpdateTable />
             </Form.Field>
           </Col>
         )
@@ -254,19 +256,19 @@ export default observer(function Step4() {
         <Row>
           <Col span={24}>
             <Form.Field label={`最大考试次数`} name="maxExamTimes">
-              <InputNumber/>
+              <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`总成绩`} name="totalScores">
               <span>
-                <Input readOnly value={stepViewModal.stepData2.totalScores}/>
+                <Input readOnly value={stepViewModal.stepData2.totalScores} />
               </span>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`及格分数线`} name="passScores">
-              <InputNumber/>
+              <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -276,11 +278,11 @@ export default observer(function Step4() {
               suffix={"分钟"}
               aside="注：从点击“开始答题”按钮时，单独给每个人开始计时"
             >
-              <InputNumber/>
+              <InputNumber />
             </Form.Field>
           </Col>
 
-          <UpdateTablePage/>
+          <UpdateTablePage />
 
           <Col span={24}>
             <span
@@ -322,7 +324,7 @@ export default observer(function Step4() {
               </Row>
               <Row style={{ marginTop: 10 }}>
                 <Checkbox
-                  disabled={appStore.HOSPITAL_ID != 'nys'}
+                  disabled={!allowShowScoreInstantly}
                   checked={!!stepViewModal.stepData2.showScoreInstantly}
                   onClick={() => {
                     stepViewModal.stepData2.showScoreInstantly = !stepViewModal
@@ -348,7 +350,7 @@ export default observer(function Step4() {
               }}
             >
               评分
-          </span>
+            </span>
             <Checkbox
               disabled={!hasWdt}
               checked={!!stepViewModal.stepData2.needScorePerson}
@@ -368,7 +370,7 @@ export default observer(function Step4() {
 
           {!!stepViewModal.stepData2.needScorePerson && (
             <React.Fragment>
-              <Col span={2}/>
+              <Col span={2} />
               <Col span={22}>
                 <Form.Field
                   label={`评分负责人`}
@@ -390,7 +392,7 @@ export default observer(function Step4() {
                 </Form.Field>
               </Col>
               {stepViewModal.stepData2.scorePersonList.length > 0 && (<React.Fragment>
-                <Col span={2}/>
+                <Col span={2} />
                 <Col span={22}>
                   <Form.Field label={`评分人学时`} name="hasScorePersonClassHours">
                     <Select style={{ width: 120 }}>
@@ -401,7 +403,7 @@ export default observer(function Step4() {
                 </Col>
                 {stepViewModal.stepData2.hasScorePersonClassHours == 1 && (
                   <React.Fragment>
-                    <Col span={2}/>
+                    <Col span={2} />
                     <Col span={22}>
                       <Form.Field
                         label={``}
@@ -447,9 +449,9 @@ export default observer(function Step4() {
         </Button>
       </span>
       }
-      <testPage.Component/>
+      <testPage.Component />
 
-      <selectNurseModal.Component/>
+      <selectNurseModal.Component />
     </Wrapper>
   );
 });
