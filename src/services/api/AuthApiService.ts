@@ -11,9 +11,11 @@ import BaseApiService from './BaseApiService'
 import { compileStr } from 'src/utils/encode/encode';
 
 export default class AuthApiService extends BaseApiService {
-  public login(username: string, password: string) {
-    return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password })).then((res) => {
-      // console.log('登陆成功',res)
+  public login(username: string, password: string, code: string, repaint: any,) {
+    return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password, code: code, repaint: repaint })).then((res:any) => {
+      if(res.errorCode){
+        return res
+      }
       let { adminNurse, authToken, user } = res.data
       user = { ...user, wsp: compileStr(password) }
       sessionStorage.setItem('adminNurse', adminNurse)
