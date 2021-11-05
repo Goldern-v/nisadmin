@@ -14,13 +14,19 @@ export default observer(function TrainingManual(props: Props) {
   useEffect(() => {
     trainingManualModal.myOnload()
   }, [trainingManualModal.tabKey]);
-
+  useEffect(() => {
+    trainingManualModal.init()
+  }, []);
   return (
     <Wrapper>
       <Header>
         <Title>培训手册</Title>
         <HandleBtn>
-          <Button type="primary" onClick={() => appStore.history.push(`/trainingManualSetting?nameType=trainingManualSetting`)}>培训清单管理</Button>
+          {appStore.HOSPITAL_ID == 'hj' ?
+            <Button type="primary" onClick={() => trainingManualModal.modalBtn = true}>添加培训计划</Button>
+            :
+            <Button type="primary" onClick={() => appStore.history.push(`/trainingManualSetting?nameType=trainingManualSetting`)}>培训清单管理</Button>
+          }
         </HandleBtn>
       </Header>
       <Content>

@@ -43,16 +43,16 @@ export default observer(function Table(props: Props) {
       }
     }
   ] : [
-      {
-        title: "状态",
-        dataIndex: "status",
-        width: 80,
-        align: "center",
-        render(text: string) {
-          return <Checkbox checked={!!text} disabled />
-        }
+    {
+      title: "状态",
+      dataIndex: "status",
+      width: 80,
+      align: "center",
+      render(text: string) {
+        return <Checkbox checked={!!text} disabled />
       }
-    ]
+    }
+  ]
 
   // 表格数据
   const columns: any = [
@@ -96,7 +96,26 @@ export default observer(function Table(props: Props) {
       width: isTrainingManualSetting ? 220 : 150,
       align: "center"
     },
-    ...handleArr
+    ...handleArr,
+    ...appStore.hisMatch({
+      map: {
+        hj: [{
+          title: "操作 ",
+          dataIndex: "id",
+          width: 120,
+          align: "center",
+          render(text: any, record: any) {
+            return (
+              <DoCon>
+                <span onClick={() => saveOrUpload(record)}>修改</span>
+                <span onClick={() => handleDelete(text)}>删除</span>
+              </DoCon>
+            )
+          }
+        }],
+        other: []
+      },
+    }),
   ]
 
   // 修改
@@ -124,7 +143,7 @@ export default observer(function Table(props: Props) {
           .then((res: any) => {
             if (res.code == 200) {
               Message.success("删除成功！");
-              trainingManualModal.allOnload();
+              appStore.HOSPITAL_ID == 'hj' ? trainingManualModal.myOnload() : trainingManualModal.allOnload();
             } else {
               Message.error(`${res.dec}`);
             }
@@ -140,7 +159,7 @@ export default observer(function Table(props: Props) {
     setEditParams({});
   };
   const handleEditOk = () => {
-    trainingManualModal.allOnload();
+    appStore.HOSPITAL_ID == 'hj' ? trainingManualModal.myOnload() : trainingManualModal.allOnload();
     handleEditCancel();
   };
 
