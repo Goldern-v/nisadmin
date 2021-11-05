@@ -10,7 +10,7 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group
 let checkboxItemState: any = []
 let classState: any = []
-let checkOther: any = []
+// let checkOther: any = []
 
 export interface Props extends RouteComponentProps {
 }
@@ -28,6 +28,7 @@ export default function BedSituation(props: any) {
   // 全选按钮
   const [indeterminate, setIndeterminate]: any = useState(false)
   const [checkAll, setCheckAll]: any = useState([])
+  const [checkOther, setCheckOther]: any = useState([])
 
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
@@ -43,9 +44,12 @@ export default function BedSituation(props: any) {
       setStartClassList(ClassListInfo)
       classState = [...ClassListInfo]
       setClassList(ClassListInfo)
+      setCheckOther([])
+      let arr: boolean[] = []
       listData.forEach(() => {
-        checkOther.push(true)
+        arr.push(true)
       })
+      setCheckOther(arr)
     })
   }, [])
   emitter.emit('设置班次大类', classList)
@@ -90,10 +94,20 @@ export default function BedSituation(props: any) {
     setCheckAll(e.target.checked)
     setClassList(e.target.checked ? startClassList : [])
     classState = e.target.checked ? [...startClassList] : []
-    checkOther = []
+    // checkOther = []
+    // startClassList.forEach(() => {
+    //   checkOther.push(e.target.checked)
+    // })
+    // 处理取消全选的情况下点击其他模块  在返回这个模块 出现不勾选的情况
+    setCheckOther([])
+    let arr: boolean[] = []
     startClassList.forEach(() => {
-      checkOther.push(e.target.checked)
+      arr.push(e.target.checked)
     })
+    setCheckOther(arr)
+
+    // 解决 取消全选的情况下 自定义有数据会有影响 
+    setCheckboxItem([])
   }
 
 
@@ -130,10 +144,16 @@ export default function BedSituation(props: any) {
     setCheckboxItem([])
     checkboxItemState = []
     setCheckAll(true)
-    checkOther = []
+    // checkOther = []
+    // startClassList.forEach(() => {
+    //   checkOther.push(true)
+    // })
+    setCheckOther([])
+    let arr: boolean[] = []
     startClassList.forEach(() => {
-      checkOther.push(true)
+      arr.push(true)
     })
+    setCheckOther(arr)
   }
 
   function radioClickRight() {
