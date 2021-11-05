@@ -28,12 +28,7 @@ export default observer((props: Props) => {
   const [master, setMaster]: any = useState({})
   const [process, setProcess]: any[] = useState([])
   const [form, setForm]: any = useState({})
-  // form['SR0004001'] = userName
-  // const [num, setNum]: any = useState('')
-  // console.log(form.SR0004001, 89)
   function setFormItem(item: object) {
-    console.log(form, 89);
-    console.log(item, 8);
     const keys = ['SR0004021', 'SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011'];
     const sum = keys.reduce((acc: number, cur: string) => {
       const val = form[cur];
@@ -42,7 +37,6 @@ export default observer((props: Props) => {
     }, 0);
     setForm({ ...form, ...item, 'SR0004022': sum });
   }
-  console.log(form, 890)
   // 全部科室
   const getDeptAll = () => {
     service.commonApiService.getNursingUnitAll().then(res => {
@@ -76,17 +70,6 @@ export default observer((props: Props) => {
     setProcess(data.handlenodeDto)
     setFormItem(data.itemDataMap)
     setForm(data.itemDataMap)
-    // setNum(data.itemDataMap.SR0004022)
-    // if (data.handlenodeDto.length > 0) {
-    //   data.handlenodeDto.forEach((item: { nodeName: string; handleContent: any; }) => {
-    //     if (item.nodeName === '片区护士长填写意见') {
-    //       form.SR0004023 = item.handleContent
-    //       // console.log(form.SR0004023, 99)
-    //     } else if (item.nodeName === '病区护士长填写病区整改') {
-    //       form.SR0004024 = item.handleContent
-    //     }
-    //   })
-    // }
   }
   // 当前审核节点
   const currentNode = () => {
@@ -110,7 +93,6 @@ export default observer((props: Props) => {
     // eslint-disable-next-line default-case
     switch (key) {
       case 'SR0004011':
-        // console.log(num, 6)
         if (num < 15.0) {
           if (!form.SR0004010) {
             return false
@@ -122,20 +104,15 @@ export default observer((props: Props) => {
     }
   }
 
-
-  // let required:any = []
   const onVerify = () => {
     // required = []
-    // console.log(required, 89)
     if (JSON.stringify(form) === '{}') {
       return false
     } else {
-      // delete form.SR0004022
       let newArr: any = []
       for (let key in form) {
         newArr.push({ name: key, title: form[key] })
       }
-      // console.log(newArr, 80)
       newArr.forEach((item: { name: string; title: any; }) => {
         verify.forEach((items, index) => {
           if (item.name === items.name) {
@@ -210,7 +187,6 @@ export default observer((props: Props) => {
       formId: appStore.queryObj.id || '',
       formCode: 'SR0004',
     }
-    console.log(params, 998)
     try {
       await api.auditItem(params)
       await getData()
@@ -324,13 +300,10 @@ export default observer((props: Props) => {
                       value={moment(form.SR0004003)}
                       showTime={{ defaultValue: moment('00:00', 'HH:mm') }}
                       onChange={_date => {
-                        // console.log(_date, 981)
                         setFormItem({ 'SR0004003': moment(_date).format("YYYY-MM-DD HH:mm") })
                       }}
                       onOk={_data => {
-                        // console.log(_data, 112)
                         setFormItem({ 'SR0004003': moment(_data).format("YYYY-MM-DD HH:mm") })
-                        console.log(form, 1234)
                       }}
                     />
                   </td>
@@ -350,7 +323,6 @@ export default observer((props: Props) => {
                       filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                       value={form.SR0004004} onChange={(val: string) => {
                         let newarr: any = deptList.filter((item: DeptType) => {
-                          console.log(item, 89)
                           return item.code === val
                         })
                         let obj = {
