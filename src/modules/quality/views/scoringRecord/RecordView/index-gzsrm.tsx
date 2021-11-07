@@ -206,6 +206,12 @@ export default observer((props: Props) => {
     }
   }
 
+  //状态str
+  const getCheckStr = () =>{
+    const checkStatus=master?.nextNodeCode;//下一步审核状态
+    return ['ward_nurse_audit'].includes(checkStatus)?'病区整改':'审核';
+  }
+
   useEffect(() => {
     if (appStore.queryObj.id) {
       getData().then()
@@ -238,7 +244,7 @@ export default observer((props: Props) => {
         <div className='right-bottom'>
           {/* {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
           {!appStore.queryObj.id && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>}
-          {hasAudit() && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
+          {hasAudit() && <Button type='primary' className="con-item" onClick={() => handleAudit()}>{getCheckStr()}</Button>}
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
         </div>
       </HeadWrapper>
@@ -317,7 +323,7 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004004': e.target.value })
                       }
                     /> */}
-                    <Select className='select'
+                    <Select className='select inpatientAreaSel'
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -658,7 +664,7 @@ export default observer((props: Props) => {
               <Timeline>
                 {
                   process.map((item: any, index: number) => {
-                    return <div>
+                    return <div key={index}>
                       {item.status === '1' && <Timeline.Item key={index} dot={<Icon type={item.noPass ? 'close-circle' : 'check-circle'} style={{ fontSize: '12px' }} />} color={item.status === '1' ? (item.noPass ? 'red' : 'green') : 'rgba(0,0,0,.25)'}>
                         <div className='timeline-item'>{item.nodeName}</div>
                         <div className='timeline-item'>{item.status === '1' ? item.handlerName : ''}</div>
@@ -692,9 +698,9 @@ export default observer((props: Props) => {
         </div>
       </MainWrapper>
       <Modal
-        title="审核"
+        title={getCheckStr()}
         visible={processVisible}
-        width={500}
+        width={680}
         onOk={() => {
           setProcessVisible(false)
           setCheckUserVisible(true)
@@ -717,7 +723,7 @@ export default observer((props: Props) => {
               </Col>
             </Row>}
           <Row style={{ marginBottom: '10px' }}>
-            <Col span={4}>审核意见:</Col>
+            <Col span={4}>{getCheckStr()}意见:</Col>
             <Col span={20}>
               <Input.TextArea
                 value={user.handleContent}
@@ -728,7 +734,7 @@ export default observer((props: Props) => {
             </Col>
           </Row>
           <Row>
-            <Col span={4}>审核时间:</Col>
+            <Col span={4}>{getCheckStr()}时间:</Col>
             <Col span={20}>{moment().format("YYYY-MM-DD HH:mm")}</Col>
           </Row>
         </div>
@@ -871,6 +877,13 @@ const MainWrapper = styled.div`
           line-height: 1;
           font-size: 12px;
           color: #f04134;
+        }
+        //病区选择
+        .inpatientAreaSel{
+          .ant-select-selection-selected-value{
+            white-space: break-spaces;
+            text-align: left;
+          }
         }
       }
    }
