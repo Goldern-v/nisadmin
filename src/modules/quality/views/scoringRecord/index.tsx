@@ -28,11 +28,14 @@ export default observer((props: Props) => {
   }
   const [form, setForm]: any = useState(defaultForm)
   const setFormItem = (item = {}) => {
+    //(['gzsrm'].includes(appStore.HOSPITAL_ID)) && (item?.status===0) && (item.status='')
     setForm({ ...form, ...item })
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
   const statusMap_gzsrm = ['待病区审核', '待片区填写意见', '审核完成']
+  const statusMapSelect_gzsrm = ['全部','待病区审核', '待片区审核','审核完成']
+
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -236,6 +239,11 @@ export default observer((props: Props) => {
             style={{ width: '140px' }}
             onChange={(val: string) => setFormItem({ status: val })}>
             {
+              ['gzsrm'].includes(appStore.HOSPITAL_ID)?
+              statusMapSelect_gzsrm.map((item, index) => {
+                return <Select.Option key={index} value={'' + (index===0?'':index)}>{item}</Select.Option>
+              })
+              :
               statusMap.map((item, index) => {
                 return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
               })

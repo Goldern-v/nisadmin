@@ -98,7 +98,7 @@ export default observer(function TopCon() {
               <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> : ""
           }
           {/* <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> */}
-          <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
+          <DeptChangeBtn onClick={() => openDeptChangeModal()}>{appStore.HOSPITAL_ID === 'gxjb' ? '院内调动' : '片区内调动'}</DeptChangeBtn>
         </React.Fragment>
       )}
 
