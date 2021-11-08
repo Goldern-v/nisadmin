@@ -2,21 +2,24 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { appStore } from "src/stores/index";
-import { Checkbox, Modal, message as Message } from "antd";
-import { trainingManualModal } from '../TrainingManualModal'
+import { appStore, authStore } from "src/stores/index";
+import { Checkbox, Modal, message as Message, Button } from "antd";
+import { trainingManualModal } from "../TrainingManualModal";
 import { trainingManualApi } from "../api/TrainingManualApi";
-import SettingEditModal from '../modal/SettingEditModal'
+import SettingEditModal from "../modal/SettingEditModal";
 interface Props {
   levelName: string;
-  titleName: string
+  titleName: string;
 }
 
 export default observer(function Table(props: Props) {
-  const { levelName, titleName } = props
-  const isTrainingManualSetting: boolean = !!appStore.queryObj.nameType
+  const { levelName, titleName } = props;
+  const isTrainingManualSetting: boolean = !!appStore.queryObj.nameType;
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
-
+  let tableRef: any = React.createRef<HTMLDivElement>();
+  useEffect(() => {
+    trainingManualModal.tableRef = tableRef;
+  }, []);
   //判断合并数据的行数
   // const mergeRowSpan = (text: any, arry: any, key: any) => {
   //   let i = 0;
@@ -27,32 +30,34 @@ export default observer(function Table(props: Props) {
   // };
 
   // 操作特殊处理
-  const handleArr = isTrainingManualSetting ? [
-    {
-      title: "操作 ",
-      dataIndex: "id",
-      width: 120,
-      align: "center",
-      render(text: any, record: any) {
-        return (
-          <DoCon>
-            <span onClick={() => saveOrUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(text)}>删除</span>
-          </DoCon>
-        )
-      }
-    }
-  ] : [
-    {
-      title: "状态",
-      dataIndex: "status",
-      width: 80,
-      align: "center",
-      render(text: string) {
-        return <Checkbox checked={!!text} disabled />
-      }
-    }
-  ]
+  const handleArr = isTrainingManualSetting
+    ? [
+        {
+          title: "操作 ",
+          dataIndex: "id",
+          width: 120,
+          align: "center",
+          render(text: any, record: any) {
+            return (
+              <DoCon>
+                <span onClick={() => saveOrUpload(record)}>修改</span>
+                <span onClick={() => handleDelete(text)}>删除</span>
+              </DoCon>
+            );
+          },
+        },
+      ]
+    : [
+        {
+          title: "状态",
+          dataIndex: "status",
+          width: 80,
+          align: "center",
+          render(text: string) {
+            return <Checkbox checked={!!text} disabled />;
+          },
+        },
+      ];
 
   // 表格数据
   const columns: any = [
@@ -77,24 +82,24 @@ export default observer(function Table(props: Props) {
     {
       title: "教学模块划分",
       dataIndex: "modulesDivision",
-      align: "center"
+      align: "center",
     },
     {
       title: "划分说明",
       dataIndex: "divisionExplain",
-      align: "center"
+      align: "center",
     },
     {
       title: "教学方法划分",
       dataIndex: "methodDivision",
       width: isTrainingManualSetting ? 220 : 150,
-      align: "center"
+      align: "center",
     },
     {
       title: "评价方法",
       dataIndex: "evaluateMethod",
       width: isTrainingManualSetting ? 220 : 150,
-      align: "center"
+      align: "center",
     },
     // ...handleArr,
     ...appStore.hisMatch({
@@ -108,23 +113,37 @@ export default observer(function Table(props: Props) {
             render(text: any, record: any) {
               return (
                 <DoCon>
-                  <span onClick={() => saveOrUpload(record)}>修改</span>
-                  <span onClick={() => handleDelete(text)}>删除</span>
+                  <Button
+                    type="primary"
+                    size="small"
+                    disabled={!authStore.isHeadNurse}
+                    onClick={() => saveOrUpload(record)}
+                  >
+                    修改
+                  </Button>
+                  <Button
+                    type="danger"
+                    size="small"
+                    disabled={!authStore.isHeadNurse}
+                    onClick={() => handleDelete(text)}
+                  >
+                    删除
+                  </Button>
                 </DoCon>
-              )
-            }
-          }
+              );
+            },
+          },
         ],
-        other: []
+        other: [],
       },
     }),
-  ]
+  ];
 
   // 修改
   const saveOrUpload = (record: any) => {
     setEditParams(record);
     trainingManualModal.modalBtn = true;
-  }
+  };
 
   // 删除
   const handleDelete = (id: any) => {
@@ -145,15 +164,17 @@ export default observer(function Table(props: Props) {
           .then((res: any) => {
             if (res.code == 200) {
               Message.success("删除成功！");
-              appStore.HOSPITAL_ID == 'hj' ? trainingManualModal.myOnload() : trainingManualModal.allOnload();
+              appStore.HOSPITAL_ID == "hj"
+                ? trainingManualModal.myOnload()
+                : trainingManualModal.allOnload();
             } else {
               Message.error(`${res.dec}`);
             }
           })
-          .catch(e => { });
-      }
+          .catch((e) => {});
+      },
     });
-  }
+  };
 
   // 弹窗控制
   const handleEditCancel = () => {
@@ -161,16 +182,26 @@ export default observer(function Table(props: Props) {
     setEditParams({});
   };
   const handleEditOk = () => {
-    appStore.HOSPITAL_ID == 'hj' ? trainingManualModal.myOnload() : trainingManualModal.allOnload();
+    appStore.HOSPITAL_ID == "hj"
+      ? trainingManualModal.myOnload()
+      : trainingManualModal.allOnload();
     handleEditCancel();
   };
 
   return (
-    <Page>
-      <div className='title'>{`${titleName}`}层级护士培训清单</div>
+    <Page ref={tableRef}>
+      <div className="title">{`${titleName}`}层级护士培训清单</div>
       <BaseTable
-        loading={isTrainingManualSetting ? trainingManualModal.allTableLoading : trainingManualModal.myTableLoading}
-        dataSource={isTrainingManualSetting ? trainingManualModal.allTableList : trainingManualModal.myTableList}
+        loading={
+          isTrainingManualSetting
+            ? trainingManualModal.allTableLoading
+            : trainingManualModal.myTableLoading
+        }
+        dataSource={
+          isTrainingManualSetting
+            ? trainingManualModal.allTableList
+            : trainingManualModal.myTableList
+        }
         columns={columns}
         surplusHeight={280}
       />
@@ -180,10 +211,9 @@ export default observer(function Table(props: Props) {
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
-
     </Page>
-  )
-})
+  );
+});
 
 // 样式
 const Page = styled.div`
@@ -194,4 +224,4 @@ const Page = styled.div`
     font-size: 15px;
     box-sizing: border-box;
   }
-`
+`;
