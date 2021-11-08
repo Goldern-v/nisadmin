@@ -48,5 +48,13 @@ export default class TrainingManualApi extends BaseApiService {
     //   obj
     // );
   }
+
+  //导出培训清单
+  public async exportTrainingList(data: any) {
+    return this.post('studyAndTrain/trainingList/exportTrainingList',data,  {
+      responseType: "blob"
+    })
+  }
+
 }
 export const trainingManualApi = new TrainingManualApi();

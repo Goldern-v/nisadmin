@@ -1,7 +1,8 @@
 import { observable, computed, action } from "mobx";
 import { appStore, authStore } from "src/stores/index";
 import { trainingManualApi } from "./api/TrainingManualApi";
-
+import { fileDownload } from "src/utils/file/file";
+import printing from "printing";
 class TrainingManualModal {
   @observable public tabKey = 0; //tab对应key值
   @observable public tabKeyName = "N0"; //tab对应名称
@@ -16,6 +17,9 @@ class TrainingManualModal {
   @observable public allTableList: any = [];
   @observable public allTableLoading: any = false;
   @observable public modalBtn = false; //弹窗开关
+
+  @observable public tableRef : any; //表单DOM
+  
 
   async initData() {
     await Promise.all([
@@ -44,6 +48,30 @@ class TrainingManualModal {
     trainingManualApi.queryTrainingListByList(this.tabKeyName).then(res => {
       this.allTableLoading = false;
       this.allTableList = res.data || [];
+    });
+  }
+
+  // 导出培训清单
+  export() {
+    const data = {
+      empNo: authStore.user?.empNo,
+      nurseHierarchy:this.tabKeyName
+    }
+    trainingManualApi.exportTrainingList(data).then(res => {
+      fileDownload(res)
+    })
+  }
+
+  //打印培训清单
+  print() {
+    printing(this.tableRef.current, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+      @page {
+        margin: 0;
+      }
+      `,
     });
   }
 

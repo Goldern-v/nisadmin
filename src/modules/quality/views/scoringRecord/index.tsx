@@ -195,7 +195,8 @@ export default observer((props: Props) => {
 
   const getList = async () => {
     const { data } = await api.getList(form)
-    setTotal(data.totalPage)
+    //setTotal(data.totalPage)
+    setTotal(data.totalCount)
     setTableData(data.list.map((item: any) => {
       return {
         ...item,

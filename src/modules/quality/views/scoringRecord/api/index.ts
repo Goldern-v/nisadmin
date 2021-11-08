@@ -1,6 +1,6 @@
 import BaseApiService from "src/services/api/BaseApiService"
 import moment from 'moment'
-
+import { appStore } from "src/stores";
 class Api extends BaseApiService {
   // 获取列表
   getList(data: any) {
@@ -9,7 +9,12 @@ class Api extends BaseApiService {
       beginDate: data.beginDate ? moment(data.beginDate).format('YYYY-MM-DD HH:mm') : '',
       endDate: data.endDate ? moment(data.endDate).format('YYYY-MM-DD HH:mm') : '',
     }
-    return this.post(`/form/searchRoom/master/getPage`, params)
+    if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
+      return this.post(`/form/searchRoom/master/getPageByUserDept`, params)
+    }else {
+      return this.post(`/form/searchRoom/master/getPage`, params)
+    }
+    
   }
 
   // 获取详情
