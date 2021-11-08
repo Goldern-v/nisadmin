@@ -289,7 +289,7 @@ export default observer(function MyCreateList() {
     })
 
     service.commonApiService
-      .getNursingUnitAll().then(res => {
+      .getUintList().then(res => {
         setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
     })
     
