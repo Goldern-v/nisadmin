@@ -6,7 +6,7 @@ import loginViewModel from "./LoginViewModel";
 
 import service from "src/services/api";
 import { appStore, scheduleStore } from "src/stores";
-import { Button } from "src/vendors/antd";
+import { Button, Icon } from "src/vendors/antd";
 import { AutoComplete, message } from "antd";
 import { withRouter } from 'react-router-dom'
 
@@ -237,8 +237,8 @@ export default withRouter(function LoginView(props: Props) {
               onKeyDown={passwordEnter}
             />
           </div>
-          {showVerification&&<div className="TextItem">
-            <div className="iconfont NameIcon">&#xe6cb;</div>
+          {true&&<div className="TextItem">
+            <div className="iconfont NameIcon"><Icon type="safety-certificate" /></div>
             <input
               onChange={e => setVerificationCode(e.target.value)}
               style={{ width: 180 }}
