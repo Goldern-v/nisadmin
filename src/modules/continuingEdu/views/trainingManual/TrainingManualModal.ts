@@ -1,5 +1,5 @@
 import { observable, computed, action } from "mobx";
-import { appStore } from "src/stores/index";
+import { appStore, authStore } from "src/stores/index";
 import { trainingManualApi } from "./api/TrainingManualApi";
 
 class TrainingManualModal {
@@ -32,7 +32,7 @@ class TrainingManualModal {
   // 获取我的培训清单
   myOnload() {
     this.myTableLoading = true;
-    trainingManualApi.queryMyTrainingListByList(this.tabKeyName).then(res => {
+    trainingManualApi.queryMyTrainingListByList(this.tabKeyName, authStore.user?.empNo).then(res => {
       this.myTableLoading = false;
       this.myTableList = res.data || [];
     });

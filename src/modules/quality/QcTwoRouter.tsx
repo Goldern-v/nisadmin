@@ -18,6 +18,8 @@ import { appStore } from 'src/stores'
 import { observer } from 'src/vendors/mobx-react-lite'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
+import 二级质控问题原因措施汇总 from './views/qcFormGzsrm/二级质控问题原因措施汇总'
+import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 
 export default observer(function QcTwoRouter(props: Props) {
 
@@ -29,10 +31,15 @@ export default observer(function QcTwoRouter(props: Props) {
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
   }
-
+  const route_二级质控问题原因措施汇总 = {
+    title: "二级质控问题原因措施汇总",
+    path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
+    icon: <JCTJ />,
+    component: 二级质控问题原因措施汇总
+  }
   const extra_menu = appStore.hisMatch({
     map: {
-      'hj,gzsrm,gxjb': [
+      'hj,gxjb': [
         {
           title: '护理质量巡查情况汇总表',
           icon: <YDBG />,
@@ -52,7 +59,7 @@ export default observer(function QcTwoRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
         },
       ],
-      "gzsrm,yczyy": [
+      "yczyy": [
         {
           title: '护理质量巡查情况汇总表',
           icon: <YDBG />,
@@ -62,6 +69,27 @@ export default observer(function QcTwoRouter(props: Props) {
           // hide: !appStore.isDev,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
+      ],
+      'gzsrm': [
+        {
+          title: '护理质量巡查情况汇总表',
+          icon: <YDBG />,
+          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          component: 护理质量巡查情况汇总表,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: "护理质量检查小结",
+          icon: <YDBG />,
+          path: "/qcTwo/护理质量检查小结?qcLevel=2",
+          component: 护理质量检查小结,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+        },
+        route_二级质控问题原因措施汇总,
       ],
       "dghl": [
         {
