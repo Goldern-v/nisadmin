@@ -237,7 +237,7 @@ export default withRouter(function LoginView(props: Props) {
               onKeyDown={passwordEnter}
             />
           </div>
-          {true&&<div className="TextItem">
+          {showVerification&&<div className="TextItem">
             <div className="iconfont NameIcon"><Icon type="safety-certificate" /></div>
             <input
               onChange={e => setVerificationCode(e.target.value)}
