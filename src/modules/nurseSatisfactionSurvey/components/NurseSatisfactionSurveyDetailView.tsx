@@ -15,7 +15,7 @@ import { DoCon } from 'src/components/BaseTable'
 export interface Props { }
 
 export default observer(function followUpDetailView() {
-  const { queryObj, history, location } = appStore
+  const { queryObj } = appStore
   const [pageLoading, setPageLoading] = useState(false)
   const [dataSource, setDataSource] = useState([])
   const [total, setTotal]: any = useState(0)

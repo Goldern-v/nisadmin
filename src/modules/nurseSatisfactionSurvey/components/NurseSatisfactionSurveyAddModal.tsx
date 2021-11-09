@@ -27,7 +27,6 @@ export interface CheckUserItem {
 }
 export default function NurseSatisfactionSurveyAddModal(props: any) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
-  const [loading, setLoading] = useState(false)
   const selectPeopleModal = createModal(SelectPeopleModal);
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [questionnaire, setQuestionnaire] = useState('')
@@ -42,7 +41,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
   const [titleType, setTitleType] = useState<String>('')
   const [respondent, setRespondent]: any = useState([]);
   const setArray = [setRespondent];
-  const dataArray = [respondent];
 
   const onOkCallBack = (
     checkedUserList: CheckUserItem[],
@@ -167,7 +165,6 @@ export default function NurseSatisfactionSurveyAddModal(props: any) {
     width={600}
     centered
     okText={'保存'}
-    confirmLoading={loading}
     afterClose={() => onClose()}
     visible={visible}
     onOk={handleOk}

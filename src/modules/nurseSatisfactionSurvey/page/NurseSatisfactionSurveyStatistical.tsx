@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, ColumnProps, PaginationConfig } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import { observer } from 'mobx-react-lite'
@@ -13,8 +13,6 @@ import { fileDownload } from 'src/utils/file/file'
 import ReactEcharts from 'echarts-for-react';
 import printing from 'printing'
 
-import { useRef } from 'src/types/react'
-const ButtonGroup = Button.Group;
 export interface Props { }
 const api = new NurseSatisfactionSurveyService();
 
@@ -75,7 +73,6 @@ export default observer(function MyCreateList() {
         },
         data: participationRatePerList
       }]
-
     };
     return option;
   };
@@ -315,7 +312,6 @@ export default observer(function MyCreateList() {
           <ReactEcharts option={getOption()} />
         </div>
       </div>
-
     </Wrapper>
   )
 })
