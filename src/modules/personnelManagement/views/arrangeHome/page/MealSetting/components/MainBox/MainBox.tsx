@@ -184,7 +184,7 @@ export default function MainBox() {
 
   emitter.addListener('获取选中班次套餐列表', (callback: any) => {
     if (callback) {
-      callback(selectedRowsArray)
+      callback(mealList)
     }
   })
 
