@@ -10,10 +10,42 @@ export interface Props {
 
 export default function OnePage(props: Props) {
   const { baseInfo } = props;
+  // 根据层级获取职级
+  const getOfficialRank = (val: any) => {
+    const nurseHierarchyObj: any = {
+      N0: "轮科护士",
+      N1: "初级责任护士",
+      N2: "初级责任护士",
+      N3: "高级责任护士",
+      N4: "高级责任护士",
+      N5: "专科护士",
+    };
+    return nurseHierarchyObj[val];
+  };
   return (
     <Wrapper>
-      <div className="title-1 title">{appStore.HOSPITAL_Name}</div>
-      <div className="title-2 title">护理人员信息档案</div>
+      <div className="logo">
+        <img
+          src={require("../../../../../../assets/images/厚街logo.png")}
+          alt=""
+        />
+      </div>
+      <div
+        className={[
+          "title",
+          appStore.HOSPITAL_ID == "hj" ? "none" : "title-1",
+        ].join(" ")}
+      >
+        {appStore.HOSPITAL_Name}
+      </div>
+      {appStore.HOSPITAL_ID == "hj" ? (
+        <div className="title-hj">
+          <div className="title">护理人员层级培训实施手册</div>
+          <p className="title-bottom">(个人使用)</p>
+        </div>
+      ) : (
+        <div className="title-2 title">护理人员信息档案</div>
+      )}
       <div className="input-con">
         <div className="label">姓&nbsp;&nbsp;名：</div>
         <div className="input">{baseInfo.empName}</div>
@@ -22,11 +54,34 @@ export default function OnePage(props: Props) {
         <div className="label">科&nbsp;&nbsp;室：</div>
         <div className="input">{baseInfo.deptName}</div>
       </div>
-      <div className="aside">{appStore.HOSPITAL_Name}</div>
+      {appStore.HOSPITAL_ID == "hj" && (
+        <div>
+          <div className="input-con">
+            <div className="label">所在层级：</div>
+            <div className="input">
+              {getOfficialRank(baseInfo.nurseHierarchy)}
+            </div>
+          </div>
+          <div className="input-con">
+            <div className="label">毕业时间：</div>
+            <div className="input" />
+          </div>
+          <div className="input-con">
+            <div className="label">启用时间：</div>
+            <div className="input" />
+          </div>
+        </div>
+      )}
+      <div className="aside">
+        {appStore.HOSPITAL_ID == "hj" ? "护理部编制" : appStore.HOSPITAL_Name}
+      </div>
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
+  .logo {
+    height: 180px;
+  }
   .title {
     font-size: 46px;
     text-align: center;
@@ -39,6 +94,13 @@ const Wrapper = styled.div`
   .title-2 {
     padding-top: 50px;
     padding-bottom: 300px;
+  }
+  .title-hj {
+    padding-bottom: 220px;
+  }
+  .title-bottom {
+    font-size: 22px;
+    text-align: center;
   }
   .input-con {
     text-align: center;
