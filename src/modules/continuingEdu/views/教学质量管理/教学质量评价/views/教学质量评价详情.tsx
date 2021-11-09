@@ -45,7 +45,7 @@ export default function 护理教学质量评价详情() {
     {
       title: '序号',
       key: 'id',
-      width: 50,
+      width: 40,
       align: 'center',
       render: (text: string, record: any, idx: number) =>
         query.pageSize * (query.pageIndex - 1) + idx + 1
@@ -54,61 +54,61 @@ export default function 护理教学质量评价详情() {
       title: '姓名',
       dataIndex: 'empName',
       align: 'center',
-      width: 120,
+      width: 80,
     },
     {
       title: '性别',
       dataIndex: 'sex',
       align: 'center',
-      width: 80,
+      width: 50,
     },
     {
       title: '年龄',
       dataIndex: 'age',
       align: 'center',
-      width: 80,
+      width: 50,
     },
     {
       title: '最高学历',
       dataIndex: 'education',
       align: 'center',
-      width: 80,
+      width: 50,
     },
     {
       title: '毕业院校',
       dataIndex: '毕业院校',
       align: 'center',
-      width: 120,
+      width: 135,
     },
     {
       title: '专业',
       dataIndex: '专业',
       align: 'center',
-      width: 80,
+      width: 90,
     },
     {
       title: '实习科室',
       dataIndex: 'deptName',
       align: 'center',
-      width: 80,
+      width: 90,
     },
     {
       title: '提交时间',
       dataIndex: 'submitTime',
       align: 'center',
-      width: 80,
+      width: 90,
     },
     {
       title: '状态',
       dataIndex: 'taskStatusDesc',
       align: 'center',
-      width: 80,
+      width: 60,
     },
     {
       title: '操作',
       dataIndex: '操作',
       align: 'center',
-      width: 80,
+      width: 60,
       render: (text: any, record: any) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看详情</span>
@@ -210,7 +210,7 @@ export default function 护理教学质量评价详情() {
       </div>
       <BaseTable
         surplusHeight={260}
-        surplusWidth={200}
+        surplusWidth={240}
         loading={loading}
         dataSource={tableData}
         columns={columns}
