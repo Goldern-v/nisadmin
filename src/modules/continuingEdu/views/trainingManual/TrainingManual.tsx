@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import { Button, message as Message } from "antd";
 import { trainingManualModal } from "./TrainingManualModal";
 import Tabs from "./components/Tabs";
-
-import { appStore } from "src/stores";
+import { trainingManualApi } from "./api/TrainingManualApi";
+import { appStore, authStore } from "src/stores";
 interface Props {}
 
 export default observer(function TrainingManual(props: Props) {
+  let fileRef = React.createRef<any>();
+  let user: any = authStore.user || {};
   // 初始化表格数据
   useEffect(() => {
     trainingManualModal.myOnload();
@@ -24,6 +26,46 @@ export default observer(function TrainingManual(props: Props) {
   const print = () => {
     trainingManualModal.print();
   };
+  const importData = () => {
+    if (fileRef.current) {
+      fileRef.current.click();
+    }
+  };
+  const importTemplate = () => {
+    trainingManualModal.importTemplate();
+  };
+
+  const handleFileChange = (e: any) => {
+    let files = e.target.files;
+    if (files.length > 0) {
+      let formData = new FormData();
+      formData.append("file", files[0]);
+      formData.append("nurseHierarchy", trainingManualModal.tabKeyName);
+      formData.append("empName", user.empName);
+      formData.append("empNo", user.empNo);
+      formData.append("deptCode", user.deptCode);
+      formData.append("deptName", user.deptName);
+      trainingManualApi.importTrainingData(formData).then((res: any) => {
+        if (res.code == 200) {
+          Message.success("导入成功");
+          trainingManualModal.myOnload();
+        }
+      });
+    }
+  };
+
+  //上传文件组件
+  const FileInput = () => {
+    return (
+      <input
+        type="file"
+        style={{ display: "none" }}
+        ref={fileRef}
+        onChange={handleFileChange}
+        accept=".xls"
+      />
+    );
+  };
   return (
     <Wrapper>
       <Header>
@@ -31,13 +73,24 @@ export default observer(function TrainingManual(props: Props) {
         <HandleBtn>
           {appStore.HOSPITAL_ID == "hj" ? (
             <div>
-              <Button className="btn" onClick={print}>
-                打印
+              <Button className="btn" onClick={importTemplate}>
+                下载导入模版
+              </Button>
+              <Button
+                className="btn"
+                onClick={importData}
+                disabled={!authStore.isHeadNurse}
+              >
+                导入
               </Button>
               <Button className="btn" onClick={exportList}>
                 导出
               </Button>
+              <Button className="btn" onClick={print}>
+                打印
+              </Button>
               <Button
+                disabled={!authStore.isHeadNurse}
                 type="primary"
                 onClick={() => (trainingManualModal.modalBtn = true)}
               >
@@ -61,6 +114,7 @@ export default observer(function TrainingManual(props: Props) {
       <Content>
         <Tabs />
       </Content>
+      {FileInput()}
     </Wrapper>
   );
 });
