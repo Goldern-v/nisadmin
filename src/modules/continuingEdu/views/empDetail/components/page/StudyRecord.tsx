@@ -1,13 +1,23 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
+import { empDetailModel } from "../../models/EmpDetailModel";
 import { observer } from "mobx-react-lite";
 export default observer(function TableView(props: any) {
   const { studyRecordList } = props;
-  const emptyList = new Array(25).fill(1);
+  const [emptyList, setEmptyList] = useState<number[]>([]);
+  let tableRef: any = React.createRef<HTMLDivElement>();
+  useEffect(() => {
+    if (studyRecordList.length !== 0) {
+      setEmptyList(empDetailModel.getReserve(tableRef));
+    } else {
+      const list = new Array(25).fill(1);
+      setEmptyList(list);
+    }
+  }, []);
   return (
     <Wrapper>
       <div className="title">学习记录</div>
-      <table>
+      <table className="table" ref={tableRef}>
         <tbody>
           <tr className="head">
             <td>序号</td>
@@ -29,19 +39,17 @@ export default observer(function TableView(props: any) {
               <td>{item.taskStatusDesc}</td>
             </tr>
           ))}
-          {studyRecordList.length == 0
-            ? emptyList.map((item: any, index: number) => (
-                <tr key={index}>
-                  <td>{item.index}</td>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                </tr>
-              ))
-            : ""}
+          {emptyList.map((item: any, index: number) => (
+            <tr key={index}>
+              <td>{item.index}</td>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
         </tbody>
       </table>
     </Wrapper>
