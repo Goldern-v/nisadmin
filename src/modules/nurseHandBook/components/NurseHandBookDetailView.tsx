@@ -48,8 +48,6 @@ export default observer(function followUpDetailView(props: any) {
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
-
-
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
   const onload = () => {

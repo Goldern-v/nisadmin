@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Steps } from 'antd'
-import { BaseStepCon, BaseStepBox, BaseStepBoxImg } from 'src/components/BaseStep'
+import React from 'react'
+import { BaseStepCon, BaseStepBoxImg } from 'src/components/BaseStep'
 import { getWeekString } from 'src/utils/date/week'
 
 interface Props {
@@ -15,7 +14,6 @@ export default function auditProcessDetail(props: Props) {
         <div className='topTitleIcon' />
         <div className='topTitle'>审核信息</div>
       </TopTitleCon>
-
       <BaseStepCon>
         {props.detailData?.map((item: any, index: number) => (
             <BaseStepBoxImg imgurl={item.nearImageUrl} success={(item.taskType == '2' || item.taskType == '3') ? 'fail' : 'success'} key={index}>
@@ -43,13 +41,7 @@ const Con = styled.div`
   padding: 20px;
 
   .ant-steps-item-icon {
-    /* width: 20px;
-    height: 20px;
-    border-radius: 20px; */
     margin-right: 8px;
-    /* svg {
-      font-size: 18px;
-    } */
   }
   .ant-steps-item-title {
     font-size: 14px;
