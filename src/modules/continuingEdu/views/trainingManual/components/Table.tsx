@@ -62,7 +62,7 @@ export default observer(function Table(props: Props) {
   // 表格数据
   const columns: any = [
     {
-      title: "职级",
+      title: "职称",
       dataIndex: "officialRank",
       align: "center",
       rowSpan: 7,
@@ -122,7 +122,7 @@ export default observer(function Table(props: Props) {
                     修改
                   </Button>
                   <Button
-                    type="danger"
+                    type={authStore.isHeadNurse ? "danger" : "primary"}
                     size="small"
                     disabled={!authStore.isHeadNurse}
                     onClick={() => handleDelete(text)}

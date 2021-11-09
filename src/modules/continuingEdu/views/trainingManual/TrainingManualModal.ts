@@ -36,7 +36,7 @@ class TrainingManualModal {
   // 获取我的培训清单
   myOnload() {
     this.myTableLoading = true;
-    trainingManualApi.queryMyTrainingListByList(this.tabKeyName, authStore.user?.empNo).then(res => {
+    trainingManualApi.queryMyTrainingListByList(this.tabKeyName, authStore.user?.deptCode).then(res => {
       this.myTableLoading = false;
       this.myTableList = res.data || [];
     });
@@ -54,7 +54,7 @@ class TrainingManualModal {
   // 导出培训清单
   export() {
     const data = {
-      empNo: authStore.user?.empNo,
+      deptCode: authStore.user?.deptCode,
       nurseHierarchy:this.tabKeyName
     }
     trainingManualApi.exportTrainingList(data).then(res => {
@@ -75,6 +75,12 @@ class TrainingManualModal {
     });
   }
 
+  //下载导入模版
+  importTemplate() {
+    trainingManualApi.importTemplate().then(res => {
+      fileDownload(res)
+    })
+  }
   async init() {
     await this.initData();
     await this.allOnload();
