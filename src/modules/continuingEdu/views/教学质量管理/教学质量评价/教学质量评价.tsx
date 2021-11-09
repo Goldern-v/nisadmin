@@ -11,12 +11,16 @@ import { teachingQualityEvalService } from './services/TeachingQualityEvalServic
 import { appStore } from 'src/stores'
 import qs from 'qs'
 import { evalTypeGroup } from './utils/evalType'
+import { continuningEduAuth } from 'src/modules/continuingEdu/data/continuningEduAuth'
+import { observer } from 'mobx-react'
+import AddEvaluationModal from './modal/AddEvaluationModal'
+import createModal from 'src/libs/createModal'
 
 const RangePicker = DatePicker.RangePicker
 
 export interface Props { }
 
-export default function 护理教学质量评价() {
+export default observer(function 护理教学质量评价() {
   let _currentMonth = currentMonth()
   let _currentQuater = currentQuater()
   let _currentYear = currentYear()
@@ -127,6 +131,23 @@ export default function 护理教学质量评价() {
         evalType: record.evalType,
       })}`)
   }
+  // 新增权限
+  const addAuth = continuningEduAuth.teachingQualityEvaluationAddAuth
+  const allowHospitalRoleCode = ['hj']
+  const allowHospitalAuth = allowHospitalRoleCode.includes(appStore.HOSPITAL_ID)
+
+  // 添加新增弹窗
+  const addEvaluationModal = createModal(AddEvaluationModal)
+
+  const setShowAdd = () => {
+    addEvaluationModal.show({
+      evalType: query.evalType,
+      onOkCallBack: () => {
+        addEvaluationModal.hide()
+        getTableData()
+      }
+    })
+  }
 
   useEffect(() => {
     getTableData()
@@ -176,7 +197,16 @@ export default function 护理教学质量评价() {
         style={{ width: 150, marginRight: 10 }}
         defaultValue={query.keyWord}
         onBlur={(e) => setQuery({ ...query, keyWord: e.target.value })} />
-      <Button onClick={() => setQuery({ ...query, pageIndex: 1 })}>查询</Button>
+      <Button
+        className="sub"
+        onClick={() => setQuery({ ...query, pageIndex: 1 })}>查询</Button>
+      {addAuth
+        && allowHospitalAuth
+        && <Button
+          type="primary"
+          className="sub"
+          onClick={() => setShowAdd()}>新增计划</Button>}
+
     </HeaderCon>
     <MainCon>
       <BaseTabs
@@ -191,8 +221,9 @@ export default function 护理教学质量评价() {
           setQuery({ ...query, pageIndex: 1, evalType: key })
         }} />
     </MainCon>
+    <addEvaluationModal.Component />
   </Wrapper>
-}
+})
 const Wrapper = styled.div`
 `
 
@@ -203,6 +234,12 @@ const HeaderCon = styled.div`
   display: flex;
   padding: 0 15px;
   margin: 10px 0;
+  .sub{
+    margin-left: 10px;
+    &:first-of-type{
+      margin-left:0;
+    }
+  }
 `
 
 const Title = styled.div`

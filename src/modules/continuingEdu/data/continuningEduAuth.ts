@@ -1,3 +1,4 @@
+import { teachingQualityEvalService } from './../views/教学质量管理/教学质量评价/services/TeachingQualityEvalService';
 import { message } from 'antd'
 import { action, observable, computed } from 'mobx'
 import { authStore } from 'src/stores'
@@ -35,6 +36,22 @@ class ContinuningEduAuth {
       .map((item: any) => item.roleCode)
       .find((code: string) => this.studyResourcesRoleCodes.indexOf(code) >= 0)
 
+    if (target) return true
+
+    return false
+  }
+
+  // 教学质量评价新增评价计划权限列表
+  private teachingQualityEvaluationRoleCodes = [
+    'ROLE_005',
+    'ROLE_010',
+  ]
+
+  // 教学质量评价新增评价计划权限
+  @computed get teachingQualityEvaluationAddAuth() {
+    let target = this.authList
+      .map((item: any) => item.roleCode)
+      .find((code: string) => this.teachingQualityEvaluationRoleCodes.indexOf(code) >= 0)
     if (target) return true
 
     return false

@@ -42,6 +42,20 @@ class TeachingQualityEvalService extends BaseApiService {
   }) {
     return this.post('/studyAndTrain/teachingQualityEval/queryEvalPlanStatListByPage', query)
   }
+  /**376.护理app-厚街-教学质量评价-评教计划-保存评教计划 */
+  public saveOrUpdateEvalPlan(query: {
+    evalType: '1' | '2' | '3', // 评分类型（评教计划类型） “1”实习生带教评价 “2”规培生带教评价 “3”临床护理教学质量督导
+    title: string, // 标题
+    beginTime: string, // 开始时间
+    endTime: string, // 结束时间
+    evalPersonList: Array<{
+      empNo: string | Number,
+      empName: string
+    }>
+
+  }) {
+    return this.post('/studyAndTrain/teachingQualityEval/saveOrUpdateEvalPlan', query)
+  }
 }
 
 export const teachingQualityEvalService = new TeachingQualityEvalService()
