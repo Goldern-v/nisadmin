@@ -142,6 +142,10 @@ export default observer(function 护理教学质量评价() {
   const setShowAdd = () => {
     addEvaluationModal.show({
       evalType: query.evalType,
+      onOkCallBack: () => {
+        addEvaluationModal.hide()
+        getTableData()
+      }
     })
   }
 
