@@ -58,4 +58,5 @@ export default interface User {
   roleManage: string; //是否有权限进入管理系统
   wsp?: string;
   userType: string; //是否为实习生 1——实习生
+  nurseHierarchy: string;
 }
