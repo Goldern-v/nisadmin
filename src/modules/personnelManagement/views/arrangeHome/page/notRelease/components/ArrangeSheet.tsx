@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Button } from "antd";
+// import { Button } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
+// import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
 import { createContextMenu } from "../../../components/arrangeSheet/ContextMenu";
 import Cell from "../../../components/arrangeSheet/Cell";
 import { sheetViewModal } from "../../../viewModal/SheetViewModal";
@@ -11,24 +11,12 @@ import { getWeekString, getWeekString2 } from "src/utils/date/week";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import createModal from "src/libs/createModal";
-import EditEffectiveTimeModal from "../../../modal/EditEffectiveTimeModal";
 import EditVacationCountModal from "../../../modal/EditVacationCountModal";
 import EditVacationCountModal_wh from "../../../modal/EditEffectiveTimeModal_wh";
 import AddAccumulativeLeaveModal from "../../../modal/AddAccumulativeLeaveModal";
 import AddRemakeModal from "../../../modal/AddRemakeModal";
-import TotalCell from "../../../components/arrangeSheet/TotalCell";
-import NightHourCell from "../../../components/arrangeSheet/NightHourCell";
-import TotalHoliday from "../../../components/arrangeSheet/TotalHoliday";
+import TotalCell from "./TotalCell";
 import { appStore } from "src/stores";
-import update from "immutability-helper";
-import BalanceHour from "../../../components/arrangeSheet/BalanceHour";
-import WeekBalanceHour from "../../../components/arrangeSheet/WeekBalanceHour";//本周结余时数
-import PublicHour from "../../../components/arrangeSheet/PublicHour";
-import HolidayHour from "../../../components/arrangeSheet/HolidayHour";
-import service from "src/services/api";
-import { cloneJson } from "src/utils/json/clone";
-
-import { arrangeService } from '../../../services/ArrangeService'
 
 export interface Props {
   /** 编辑模式 */
@@ -45,17 +33,7 @@ export default observer(function ArrangeSheet(props: Props) {
 
   let editEffectiveTimeModal = createModal(
     appStore.hisAdapter({
-      hj: () => EditEffectiveTimeModal,
-      wh: () => EditVacationCountModal_wh,
-      gxjb: () => EditVacationCountModal_wh,
       lcey: () => EditVacationCountModal_wh,
-      dghl: () => EditVacationCountModal_wh,
-      fqfybjy: () => EditVacationCountModal_wh,
-      jmfy: () => EditVacationCountModal_wh,
-      nys: () => EditVacationCountModal_wh,
-      gzsrm: () => EditVacationCountModal_wh,
-      fssdy: () => EditVacationCountModal_wh,
-      fsxt: () => EditVacationCountModal_wh
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal)
@@ -125,7 +103,6 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center"
     },
     ...sheetViewModal.dateList.map((date, index) => {
-      // console.log(date, 999)
       return {
         title: <Th date={date} />,
         width: 70,
@@ -161,7 +138,6 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   useLayoutEffect(() => {
-
     try {
       (document as any)
         .getElementById("baseTable")!
@@ -174,16 +150,6 @@ export default observer(function ArrangeSheet(props: Props) {
     } catch (error) {
       console.log("同步备注滚动报错");
     }
-    // try {
-    //   (document as any)
-    //     .querySelector(".ant-table-body")!
-    //     .addEventListener("scroll", (e: any) => {
-    //       (document as any).querySelector(
-    //         ".remark-con.real"
-    //       )!.style.marginLeft = e.target.scrollLeft + "px";
-    //     });
-    // } catch (error) {
-    // }
     try {
       setTimeout(() => {
         if (
@@ -197,24 +163,14 @@ export default observer(function ArrangeSheet(props: Props) {
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
           ).style.margin = 'auto'
-          let widthNys = appStore.HOSPITAL_ID == 'nys' ? 210 : 250;
+          let widthNys = 250;
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({
-                yczyy: () => 2,
-                nys: () => isEdit ? 6 : 5,
-                hj: () => 3,
-                wh: () => 6,
-                gxjb: () => 6,
-                jmfy: () => 6,
-                dghl: () => 6,
-                fqfybjy: () => 5,
-                gzsrm: () => 6,
                 lcey: () => 2,
-                dgxg: () => 2,
               })) *
             70 +
             widthNys +
@@ -260,22 +216,22 @@ export default observer(function ArrangeSheet(props: Props) {
             type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
           />
         )}
-        {sheetViewModal.sheetTableData.length <= 0 && (
+        {sheetViewModal.notSheetTableData.length <= 0 && (
           <BaseTable
             loading={sheetViewModal.tableLoading}
             surplusHeight={surplusHeight}
             surplusWidth={surplusWidth}
             columns={columns}
             // fixedFooter={true}
-            dataSource={sheetViewModal.sheetTableData}
+            dataSource={sheetViewModal.notSheetTableData}
             type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
           />
         )}
-        <contextMenu.Component />
+        {/* <contextMenu.Component />
         <editEffectiveTimeModal.Component />
         <editVacationCountModal.Component />
         <addAccumulativeLeaveModal.Component />
-        <addRemakeModal.Component />
+        <addRemakeModal.Component /> */}
       </div>
     </Wrapper>
   );

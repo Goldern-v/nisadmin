@@ -31,6 +31,7 @@ class SheetViewModal {
   @observable public dateList: string[] = [];
   @observable public remark: string = "";
   @observable public arrangeMenu: any[] = [];
+  @observable public notArrangeMenu: any[] = [];
   @observable public arrangeMeal = [];
   @observable public hdArrangeMeal = [];
   @observable public schSymbolList: SymbolItem[] = [];
@@ -335,7 +336,7 @@ class SheetViewModal {
       this.dateList = this.notGetDateList();
       this.tableLoading = false;
       if (res.code === '200') {
-        this.notSheetTableData = res.data
+        this.notSheetTableData = this.handleSheetTableData(res.data, {})
       }
     })
   }
@@ -381,6 +382,12 @@ class SheetViewModal {
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then(res => {
       this.arrangeMenu = res.data;
+    });
+  }
+  // 未发布班排模块
+  notGetArrangeMenu() {
+    notArrangeService.getArrangeMenu().then(res => {
+      this.notArrangeMenu = res.data;
     });
   }
 
@@ -585,7 +592,7 @@ class SheetViewModal {
   /** 根据日期获取当前的时间的标准工时 */
   getStandTime(date: string) {
     let initialHour = 37.5;
-    console.log(this.standardTimeList, "this.standardTimeList");
+    // console.log(this.standardTimeList, "this.standardTimeList");
     for (let i = 0; i < this.standardTimeList.length; i++) {
       let dateNum = new Date(date).getTime();
       let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
@@ -610,6 +617,7 @@ class SheetViewModal {
       this.getSheetTableData();
       this.getData()
       this.getArrangeMenu();
+      this.notGetArrangeMenu()
       this.getArrangeMeal();
       this.getSchSymbol();
       appStore.HOSPITAL_ID == 'gzhd' && this.getHDArrangeMeal();
