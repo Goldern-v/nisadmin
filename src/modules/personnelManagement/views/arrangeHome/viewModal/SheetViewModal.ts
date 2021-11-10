@@ -4,9 +4,11 @@ import { appStore, authStore } from "./../../../../../stores/index";
 import { SymbolItem, ArrangeItem } from "./../types/Sheet";
 import { observable, computed, action } from "mobx";
 import { selectViewModal } from "./SelectViewModal";
+import { notSelectViewModal } from "../page/notRelease/components/SelectViewModal";
 import { dateDiff } from "src/utils/date/dateDiff";
 import moment from "moment";
 import { arrangeService } from "../services/ArrangeService";
+import { notArrangeService } from "../services/notReleaseService";
 import monnet from "src/vendors/moment";
 import { message } from "src/vendors/antd";
 import {
@@ -19,6 +21,9 @@ class SheetViewModal {
   /** 是否已经初始化字典数据 */
   @observable public isInitEd: boolean = false;
   @observable public sheetTableData: any = [];
+
+  // 聊城二院-未发布排班记录数据
+  @observable public notSheetTableData: any = [];
   /** 期望排班 */
   @observable public expectList: any = [];
   /** 申请加减班 */
@@ -89,6 +94,28 @@ class SheetViewModal {
     return days;
   }
 
+  /** 时间段  未发布排班模块 */
+  notGetDateList() {
+    let days = [];
+    let dayDiff =
+      notSelectViewModal.params.startTime && notSelectViewModal.params.endTime
+        ? dateDiff(
+          notSelectViewModal.params.startTime,
+          notSelectViewModal.params.endTime
+        )
+        : 0;
+    if (dayDiff >= 0) {
+      for (let i = 0; i <= dayDiff; i++) {
+        days.push(
+          moment(notSelectViewModal.params.startTime)
+            .add(i, "d")
+            .format("YYYY-MM-DD")
+        );
+      }
+    }
+    return days;
+  }
+
   getAllCell(canEdit: boolean) {
     let cellList = [];
     for (let i = 0; i < this.sheetTableData.length; i++) {
@@ -106,6 +133,7 @@ class SheetViewModal {
     }
     return cellList;
   }
+
 
   getNextCell() {
     if (this.selectedCell) {
@@ -297,6 +325,19 @@ class SheetViewModal {
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });
+
+  }
+  // 未发布排班记录查询 
+  getData() {
+    if (!this.isInitEd) return this.init();
+    this.tableLoading = true;
+    return notArrangeService.countSettingByStatus().then((res: { code: string; data: any; }) => {
+      this.dateList = this.notGetDateList();
+      this.tableLoading = false;
+      if (res.code === '200') {
+        this.notSheetTableData = res.data
+      }
+    })
   }
 
   @computed
@@ -567,6 +608,7 @@ class SheetViewModal {
       this.isInitEd = true;
       this.getExpectList();
       this.getSheetTableData();
+      this.getData()
       this.getArrangeMenu();
       this.getArrangeMeal();
       this.getSchSymbol();
