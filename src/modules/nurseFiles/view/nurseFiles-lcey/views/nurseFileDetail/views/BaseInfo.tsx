@@ -20,6 +20,40 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
+  let clothingInfo = [
+    {
+      type: "summer_jacket_size",
+      name: "夏装-上衣"
+    },
+    {
+      type: "summer_trousers_size",
+      name: "夏装-裤子"
+    },
+    {
+      type: "winter_jacket_size",
+      name: "冬装-上衣"
+    },
+    {
+      type: "winter_trousers_size",
+      name: "冬装-裤子"
+    },
+    {
+      type: "summer_isolation_suit_size",
+      name: "夏装-医生款"
+    },
+    {
+      type: "winter_isolation_suit_size",
+      name: "冬装-医生款"
+    },
+    {
+      type: "nurse_shoes_style",
+      name: "鞋款式"
+    },
+    {
+      type: "nurse_shoes_size",
+      name: "鞋码"
+    },
+  ]
   // const btnList = [
   //   {
   //     label: '修改',
@@ -119,7 +153,7 @@ export default observer(function BaseInfo() {
                 },
                 {
                   家庭住址: `address`,
-                  鞋码: `shoeSize`,
+                  // 鞋码: `shoeSize`,
                 }
               ],
               fileData: [
@@ -192,7 +226,7 @@ export default observer(function BaseInfo() {
         },
         {
           家庭住址: data.address,
-          鞋码: data.shoeSize,
+          // 鞋码: data.shoeSize,
         }
       ]
       setTableData(newTableData)
@@ -229,8 +263,9 @@ export default observer(function BaseInfo() {
 
             if (target) val = target.name
           }
-
-          let name = mapCfgItem.fieldName
+          let fieldCode = mapCfgItem.fieldCode
+          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0].name
+          // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]
 
           if (Object.keys(lastItem).length > 1) {
