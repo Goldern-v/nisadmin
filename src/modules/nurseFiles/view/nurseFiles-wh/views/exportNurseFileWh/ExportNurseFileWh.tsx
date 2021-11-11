@@ -536,7 +536,7 @@ export default function ExportNurseFileWh(props: Props) {
       scanStyles: false,
       css: `
         @page {
-          margin: 20mm;
+          margin: 10mm;
         }
         *{
           color:#000;
@@ -629,12 +629,13 @@ export default function ExportNurseFileWh(props: Props) {
         {renderCfg.map((cfg: any, tableIdx: any) => (
           <TableCon
             key={tableIdx}
-            style={{ top: -(tableIdx + 1) }}>
+          >
             <colgroup>
               {cfg.columns.map((column: any, columnIdx: number) => (
                 <col width={column.col || ''} key={`${tableIdx}-${columnIdx}-col`} />
               ))}
             </colgroup>
+            <thead></thead>
             <tbody>
               <tr className="main-title-row">
                 <td colSpan={cfg.columns.length}>{cfg.mainTitle}</td>
@@ -668,7 +669,7 @@ const Wrapper = styled.div`
   display:none;
   .render-container{
     width: 660px;
-    margin: 0mm auto;
+    margin: auto;
     table{
       position: relative;
     }
