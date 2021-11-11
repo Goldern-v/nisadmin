@@ -33,8 +33,8 @@ export default observer((props: Props) => {
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
-  const statusMap_gzsrm = ['待病区审核', '待片区填写意见', '审核完成']
-  const statusMapSelect_gzsrm = ['全部','待病区审核', '待片区审核','审核完成']
+  const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
+  const statusMapSelect_gzsrm = ['全部', '待病区审核', '待片区审核', '审核完成']
 
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
@@ -172,7 +172,7 @@ export default observer((props: Props) => {
       align: "center",
       render: (text: string, row: any, c: any) => {
         return (
-          isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status - 1]
+          isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status]
         )
       }
 
@@ -240,14 +240,14 @@ export default observer((props: Props) => {
             style={{ width: '140px' }}
             onChange={(val: string) => setFormItem({ status: val })}>
             {
-              ['gzsrm'].includes(appStore.HOSPITAL_ID)?
-              statusMapSelect_gzsrm.map((item, index) => {
-                return <Select.Option key={index} value={'' + (index===0?'':index)}>{item}</Select.Option>
-              })
-              :
-              statusMap.map((item, index) => {
-                return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
-              })
+              ['gzsrm'].includes(appStore.HOSPITAL_ID) ?
+                statusMapSelect_gzsrm.map((item, index) => {
+                  return <Select.Option key={index} value={'' + (index === 0 ? '' : index)}>{item}</Select.Option>
+                })
+                :
+                statusMap.map((item, index) => {
+                  return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
+                })
             }
           </Select>
           <Button onClick={() => getList()}> 查询</Button>

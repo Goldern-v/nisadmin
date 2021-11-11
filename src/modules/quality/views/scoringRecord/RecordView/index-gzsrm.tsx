@@ -18,6 +18,7 @@ export interface DeptType {
   code: string;
   name: string;
 }
+const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
 
 export default observer((props: Props) => {
   // let deptList = authStore.deptList;
@@ -63,6 +64,8 @@ export default observer((props: Props) => {
     password: '',
   }
   const [user, setUser] = useState(defaultUser)
+  const [tableId, setTableId] = useState('')
+  const [checkStatus, setCheckStatus] = useState(false)
 
   const getData = async (id = appStore.queryObj.id) => {
     const { data } = await api.getItem(id)
@@ -124,7 +127,7 @@ export default observer((props: Props) => {
       return is
     }
   }
-  const handleSubmit = async () => {
+  const handleSubmit = async (status: boolean) => {
     if (onVerify()) {
       if (notFullMarks('SR0004011', form.SR0004011)) {
 
@@ -141,19 +144,27 @@ export default observer((props: Props) => {
         const res = await api.saveItem({
           master: !appStore.queryObj.id ? obj : master,
           itemDataMap: form,
-          commit: true
+          commit: status
         })
-        if (!appStore.queryObj.id) {
-          if (res.code === '200') {
-            message.success('新建成功')
-            appStore.history.push(`/checkWard/scoringRecord`)
-          } else {
-            message.warning(res.desc)
-          }
+        // if (!appStore.queryObj.id) {
+        if (res.code === '200') {
+          // message.success('新建成功')
+          // appStore.history.push(`/checkWard/scoringRecord`)
+          message.success(!status ? '暂存成功' : '保存成功')
+          // 控制是否出来审核模块
+          setCheckStatus(status)
+          setTableId(res.data.master.id)
+          await getData(res.data.master.id)
+
+
         } else {
-          message.success('保存成功')
-          await getData()
+          message.warning(res.desc)
         }
+        // }
+        // else {
+        // message.success(!status ? '暂存成功' : '保存成功')
+        // await getData(res.data.master.id)
+        // }
       } else {
         message.warning("护理单元不是满分必须填写存在问题")
       }
@@ -189,7 +200,7 @@ export default observer((props: Props) => {
     }
     try {
       await api.auditItem(params)
-      await getData()
+      await getData(tableId || appStore.queryObj.id)
       // todo
       // const current = process.find((item: any) => {
       //   return master.nextNodeCode === item.nodeCode
@@ -206,11 +217,38 @@ export default observer((props: Props) => {
     }
   }
 
-  //状态str
-  const getCheckStr = () =>{
-    const checkStatus=master?.nextNodeCode;//下一步审核状态
-    return ['ward_nurse_audit'].includes(checkStatus)?'病区整改':'审核';
+  // 删除
+  const [deleteVisible, setDeleteVisible] = useState(false)
+  const okModal = () => {
+    api.deleteitem({ id: tableId || appStore.queryObj.id }).then(res => {
+      if (res.code === '200') {
+        message.success('删除成功')
+        appStore.history.push(`/checkWard/scoringRecord`)
+      } else {
+        message.warning(res.desc)
+      }
+    })
   }
+  const cancelCommit = () => {
+    api.cancelCommit({ id: tableId || appStore.queryObj.id }).then(async res => {
+      if (res.code === '200') {
+        message.success('撤销提交成功')
+        // appStore.history.push(`/checkWard/scoringRecord`)
+        await getData(tableId || appStore.queryObj.id)
+      } else {
+        message.warning(res.desc)
+      }
+    })
+  }
+
+
+  //状态str
+  const getCheckStr = () => {
+    const checkStatus = master?.nextNodeCode;//下一步审核状态
+    return ['ward_nurse_audit'].includes(checkStatus) ? '病区整改' : '审核';
+  }
+
+
 
   useEffect(() => {
     if (appStore.queryObj.id) {
@@ -239,12 +277,16 @@ export default observer((props: Props) => {
       <HeadWrapper>
         <div>
           <div style={{ fontWeight: "bold" }}>{master.deptName}护士长班查房评分表</div>
-          {/* {appStore.queryObj.id && <div>状态：待提交</div>} */}
+          {appStore.queryObj.id && <div>状态: {statusMap_gzsrm[master.status]}</div>}
         </div>
         <div className='right-bottom'>
-          {/* {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
-          {!appStore.queryObj.id && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>}
-          {hasAudit() && <Button type='primary' className="con-item" onClick={() => handleAudit()}>{getCheckStr()}</Button>}
+          {/* hasSubmit() && */}
+          {<Button type='primary' className="con-item" onClick={() => handleSubmit(false)}>暂存</Button>}
+          {<Button type='primary' className="con-item" onClick={() => handleSubmit(true)}>提交</Button>}
+          {/* {!appStore.queryObj.id && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
+          {(hasAudit() && master.status !== '0') && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
+          {<Button type='primary' className="con-item" onClick={() => setDeleteVisible(true)}>删除</Button>}
+          {<Button type='primary' className="con-item" onClick={() => cancelCommit()}>撤销提交</Button>}
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
         </div>
       </HeadWrapper>
@@ -658,7 +700,7 @@ export default observer((props: Props) => {
               </tbody>}
             </table>
           </div>
-          {appStore.queryObj.id && <div className='audit-wrapper'>
+          {(hasAudit() && master.status !== '0') && <div className='audit-wrapper'>
             <div className='audit-title'>审核流程</div>
             <div>
               <Timeline>
@@ -771,6 +813,17 @@ export default observer((props: Props) => {
             </Col>
           </Row>
         </div>
+      </Modal>
+      {/* 删除提示框 */}
+      <Modal
+        title="提示"
+        visible={deleteVisible}
+        onOk={okModal}
+        onCancel={() => setDeleteVisible(false)}
+        okText="确认"
+        cancelText="取消"
+      >
+        <p style={{ fontSize: '16px' }}>确定要删除吗？</p>
       </Modal>
     </Wrapper>
   )
