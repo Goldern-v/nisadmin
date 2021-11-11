@@ -102,7 +102,7 @@ export default observer(function TopCon() {
         </React.Fragment>
       )}
 
-      <deptChangeModal.Component title='片区内调动' />
+      <deptChangeModal.Component title={appStore.HOSPITAL_ID === 'gxjb' ? '院内调动' : '片区内调动'} />
       <leaveModal.Component title='离职/退休' />
       {/* 档案导出 */}
       {exportVisible && (

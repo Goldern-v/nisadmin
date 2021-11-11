@@ -33,7 +33,7 @@ export default function DeptChangeModal(props: Props) {
   let { visible, onCancel, onOk, info, title } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async () => {
     if (!refForm.current) return
@@ -51,8 +51,9 @@ export default function DeptChangeModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (info && refForm.current && visible) {
-      service.commonApiService.deptInbigDeptListSelf().then((res) => {
-        setDeptList(res.data)
+      let api = appStore.HOSPITAL_ID === 'gxjb' ? service.commonApiService.getNursingUnitAll() : service.commonApiService.deptInbigDeptListSelf()
+      api.then((res) => {
+        setDeptList(appStore.HOSPITAL_ID === 'gxjb' ? res.data?.deptList : res.data)
       })
       refForm!.current!.setFields({
         date: moment(),

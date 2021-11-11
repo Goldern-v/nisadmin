@@ -153,7 +153,7 @@ const ROUTE_LIST = [
   //   component: Leave,
   //   name: '离职'
   // }
-  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb' || appStore.HOSPITAL_ID === 'fsxt' ? [{
+  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' ? [{
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'
