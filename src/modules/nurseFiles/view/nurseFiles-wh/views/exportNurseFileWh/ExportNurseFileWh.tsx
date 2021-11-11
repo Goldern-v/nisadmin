@@ -51,8 +51,10 @@ export default function ExportNurseFileWh(props: Props) {
   const [workExperience, setWorkExperience] = useState([] as any[])
   /** 医学学历教育 */
   const [medicalEducation, setMedicalEducation] = useState([] as any[])
-  /** 岗位变动 */
+  /** 职称变动 */
   const [title, setTitle] = useState([] as any[])
+  // 岗位变动
+  const [transferPost, setTransferPost] = useState([] as any[])
   /** 层级变动 */
   const [hierarchy, setHierarchy] = useState([] as any[])
   /** 编制变动 */
@@ -415,6 +417,29 @@ export default function ExportNurseFileWh(props: Props) {
       ]
     },
     {
+      mainTitle: "职称变动",
+      data: title,
+      minRow: 4,
+      columns: [
+        {
+          title: '原职称名称',
+          dataKey: 'titleOld',
+        },
+        {
+          title: '现职称名称',
+          dataKey: 'titleNew',
+        },
+        {
+          title: '考取专业技术资格证书时间',
+          dataKey: 'winNewTiTleDate',
+        },
+        {
+          title: '聘用专业技术资格时间',
+          dataKey: "employNewTiTleDate"
+        }
+      ]
+    },
+    {
       mainTitle: '医学学历教育',
       data: medicalEducation,
       minRow: 5,
@@ -443,7 +468,7 @@ export default function ExportNurseFileWh(props: Props) {
     },
     {
       mainTitle: '岗位变动',
-      data: title,
+      data: transferPost,
       minRow: 4,
       columns: [
         {
@@ -569,6 +594,9 @@ export default function ExportNurseFileWh(props: Props) {
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHTitle', empNo)
         .then(res => setTitle(res.data)),
+      nurseFilesService
+        .commonfindByEmpNoSubmit('nurseWHTransferPost', empNo)
+        .then(res => setTransferPost(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHHierarchy', empNo)
         .then(res => setHierarchy(res.data)),
