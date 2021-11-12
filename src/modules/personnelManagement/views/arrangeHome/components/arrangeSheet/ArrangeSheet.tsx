@@ -558,8 +558,9 @@ export default observer(function ArrangeSheet(props: Props) {
                 gzsrm: () => 6,
                 lcey: () => 2,
                 dgxg: () => 2,
+                fsxt: () => 6,
               })) *
-              70 +
+            70 +
             widthNys +
             10 +
             "px";
@@ -572,13 +573,13 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) {}
+    } catch (error) { }
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) {}
+    } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   // 拖拽排序
@@ -633,7 +634,7 @@ export default observer(function ArrangeSheet(props: Props) {
           });
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-        } catch (error) {}
+        } catch (error) { }
     }
   };
 
@@ -831,7 +832,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-        getWeekString(date).indexOf("日") > -1
+          getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }
