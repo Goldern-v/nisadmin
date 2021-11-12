@@ -67,33 +67,33 @@ export default observer(function ArrangeSheet(props: Props) {
   const nysGroupName =
     appStore.HOSPITAL_ID == "nys"
       ? [
-          {
-            title: "类别标题",
-            dataIndex: "groupName",
-            width: 70,
-            fixed: "left",
-            align: "center",
-          },
-        ]
+        {
+          title: "类别标题",
+          dataIndex: "groupName",
+          width: 70,
+          fixed: "left",
+          align: "center",
+        },
+      ]
       : [];
 
   const nysHandleDel =
     appStore.HOSPITAL_ID == "nys" && isEdit
       ? [
-          {
-            title: "操作",
-            dataIndex: "",
-            width: 70,
-            align: "center",
-            render(text: any, record: any, index: number) {
-              return (
-                <DoCon>
-                  <span onClick={() => handleDelete(record)}>删除</span>
-                </DoCon>
-              );
-            },
+        {
+          title: "操作",
+          dataIndex: "",
+          width: 70,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <DoCon>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
           },
-        ]
+        },
+      ]
       : [];
 
   /**
@@ -357,7 +357,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -525,22 +525,22 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) {}
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (
           (document as any).querySelector("#arrangeSheet .ant-table-body") &&
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .scrollWidth ==
-            (document as any).querySelector("#arrangeSheet .ant-table-body")
-              .clientWidth
+          (document as any).querySelector("#arrangeSheet .ant-table-body")
+            .clientWidth
         ) {
           let widthNys =
             appStore.HOSPITAL_ID == "nys"
               ? 210
               : appStore.HOSPITAL_ID == "dgxg"
-              ? 350
-              : 250;
+                ? 350
+                : 250;
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
