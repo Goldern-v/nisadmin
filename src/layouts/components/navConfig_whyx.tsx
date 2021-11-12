@@ -21,23 +21,23 @@ const baseConfig: navConfigItem[] = [
     path: "/auditsManagement"
   },
   {
+    name: "档案管理",
+    path: "/nurseFile"
+  },
+  {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
     name: "病区日志",
     path: "/wardLog"
     // hidden: !appStore.isDev
   },
   {
-    name: "档案管理",
-    path: "/nurseFile"
-  },
-  {
     name: "病区登记本",
     path: "/wardRegister",
     hidden: !appStore.isDev
-  },
-  {
-    name: '不良事件',
-    path: '/badEventsNew',
-    hidden: !appStore.isDev,
   },
   // {
   //   name: '不良事件分析报告',
@@ -79,11 +79,6 @@ const baseConfig: navConfigItem[] = [
   //   ]
   // },
   {
-    name: "学习培训",
-    path: "/continuingEdu"
-    // hidden: !appStore.isDev
-  },
-  {
     name: "敏感指标",
     path: "/indicator"
   },
@@ -93,33 +88,46 @@ const baseConfig: navConfigItem[] = [
     // hidden: !appStore.isDev
   },
   {
-    name: "护理随访",
-    path: "/nursingFollowUp",
-    // hidden: !appStore.isDev,
-  },
-  {
     name: "统计查询",
     path: "/statistic"
   },
   {
-    name: "通知公告",
-    path: "/notice"
+    name: "排班管理",
+    path: "/personnelManagement"
   },
+  // {
+  //   name: "健康宣教",
+  //   path: "/setting/typeDict",
+  //   children: [
+  //     {
+  //       name: "健康宣教",
+  //       path: "/setting/typeDict",
+  //       icon: require("../images/menu-icon/三级质控@2x.png")
+  //     }
+  //   ]
+  // },
   {
     name: "护理制度",
     path: "/nursingRulesNew"
-  },
-  {
-    name: "系统设置",
-    path: "/setting"
   },
   {
     name: "我的档案",
     path: "/selfNurseFile"
   },
   {
-    name: "排班管理",
-    path: "/personnelManagement"
+    name: "通知公告",
+    path: "/notice"
+  },
+  {
+    name: "系统设置",
+    path: "/setting",
+    children: [
+      {
+        name: "健康宣教",
+        path: "/setting/typeDict",
+        icon: require("../images/menu-icon/三级质控@2x.png")
+      }
+    ]
   }
 ];
 
