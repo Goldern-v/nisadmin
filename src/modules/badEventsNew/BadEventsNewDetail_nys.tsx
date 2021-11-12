@@ -14,7 +14,8 @@ import { timelinePrint } from './utils/timelinePrint'
 const api = new badEventsNewService()
 
 const baseFormUrl = '/crNursing/formUrl'
-const formUrl = baseFormUrl
+//const formUrl = baseFormUrl
+const formUrl = process.env.NODE_ENV !== 'development' ? baseFormUrl : 'http://' + window.location.hostname + ':8088' + baseFormUrl
 
 const { Step } = Steps
 
@@ -61,7 +62,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   //不良事件状态对应的文本显示
   const [eventStatusList, setEventStatusList] = useState([] as any[])
   const getTypeList = () => {
-    service.commonApiService.dictInfo('badEvent_status').then((res: any) => {
+    //福清走badevent_status_fqfy
+    let badEventStatus = appStore.HOSPITAL_ID == 'fqfybjy' ? 'badevent_status_fqfy' : 'badEvent_status';
+    service.commonApiService.dictInfo(badEventStatus).then((res: any) => {
       setEventStatusList(res.data)
     })
   }
