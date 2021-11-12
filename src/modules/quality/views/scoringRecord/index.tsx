@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Button, DatePicker, Select } from "antd";
+import { Button, DatePicker, Select, Checkbox } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { appStore, authStore } from "src/stores";
 import api from './api';
@@ -194,7 +194,9 @@ export default observer((props: Props) => {
   ]
 
   const getList = async () => {
+    setTableLoading(true)
     const { data } = await api.getList(form)
+    setTableLoading(false)
     //setTotal(data.totalPage)
     setTotal(data.totalCount)
     setTableData(data.list.map((item: any) => {
@@ -217,6 +219,30 @@ export default observer((props: Props) => {
       appStore.history.push(`/checkWard/recordView?id=${row.id}`)
     }
   }
+  const onCheckboxChange = (e: { target: { checked: any; }; }) => {
+    console.log(form, e.target.checked)
+    setTableLoading(true)
+    if (e.target.checked) {
+      const data = {
+        pageIndex: form.pageIndex,
+        pageSize: form.pageSize
+      }
+      api.getPageByCreatorNo(data).then(res => {
+        setTableLoading(false)
+        if (res.code === '200') {
+          setTotal(res.data?.totalCount)
+          setTableData(res.data?.list?.map((item: any) => {
+            return {
+              ...item,
+              ...item.itemDataMap
+            }
+          }))
+        }
+      })
+    } else {
+      getList().then()
+    }
+  }
 
   useEffect(() => {
     getList().then()
@@ -226,6 +252,7 @@ export default observer((props: Props) => {
     <Wrapper>
       <SearchBar>
         <div className='page-title'>护长夜查房评分记录</div>
+        {appStore.HOSPITAL_ID === 'gzsrm' && <Checkbox style={{ marginLeft: '14px' }} onChange={onCheckboxChange}>我的创建</Checkbox>}
         <div className='button-group'>
           <span className='label'>科室：</span>
           <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
@@ -294,7 +321,7 @@ const SearchBar = styled.div`
   justify-content: space-between;
   .page-title{
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
   }
   .button-group{
     display: flex;

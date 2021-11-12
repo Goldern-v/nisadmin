@@ -42,6 +42,20 @@ class Api extends BaseApiService {
     return this.post(`/form/searchRoom/master/cancelCommit`, params)
   }
 
+  // 查询我创建的表格
+  getPageByCreatorNo(data: any) {
+    const params = {
+      beginDate: '',
+      endDate: '',
+      formCodes: '',
+      type: '',
+      status: '',
+      deptCodes: [],
+      keyword: '',
+      ...data
+    }
+    return this.post(`/form/searchRoom/master/getPageByCreatorNo`, params)
+  }
 
 }
 
