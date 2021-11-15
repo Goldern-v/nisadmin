@@ -14,6 +14,7 @@ import LeaveRecord from "src/modules/personnelManagement/views/arrangeHome/page/
 import ArrangStatistics from "src/modules/personnelManagement/views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "src/modules/personnelManagement/views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import 节假日设置 from "src/modules/setting/view/节假日设置";
+import notReleaseView from "../views/arrangeHome/page/notRelease";
 
 export interface meunConfigItem {
   title?: string;
@@ -107,6 +108,13 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
+      {
+        title: "未发布排班记录查询",
+        path: "/personnelManagement/NotRelease",
+        component: notReleaseView,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      }
     ]
   },
 ];
