@@ -4,9 +4,11 @@ import { appStore, authStore } from "./../../../../../stores/index";
 import { SymbolItem, ArrangeItem } from "./../types/Sheet";
 import { observable, computed, action } from "mobx";
 import { selectViewModal } from "./SelectViewModal";
+import { notSelectViewModal } from "../page/notRelease/components/SelectViewModal";
 import { dateDiff } from "src/utils/date/dateDiff";
 import moment from "moment";
 import { arrangeService } from "../services/ArrangeService";
+import { notArrangeService } from "../services/notReleaseService";
 import monnet from "src/vendors/moment";
 import { message } from "src/vendors/antd";
 import {
@@ -19,6 +21,9 @@ class SheetViewModal {
   /** 是否已经初始化字典数据 */
   @observable public isInitEd: boolean = false;
   @observable public sheetTableData: any = [];
+
+  // 聊城二院-未发布排班记录数据
+  @observable public notSheetTableData: any = [];
   /** 期望排班 */
   @observable public expectList: any = [];
   /** 申请加减班 */
@@ -26,6 +31,7 @@ class SheetViewModal {
   @observable public dateList: string[] = [];
   @observable public remark: string = "";
   @observable public arrangeMenu: any[] = [];
+  @observable public notArrangeMenu: any[] = [];
   @observable public arrangeMeal = [];
   @observable public hdArrangeMeal = [];
   @observable public schSymbolList: SymbolItem[] = [];
@@ -89,6 +95,28 @@ class SheetViewModal {
     return days;
   }
 
+  /** 时间段  未发布排班模块 */
+  notGetDateList() {
+    let days = [];
+    let dayDiff =
+      notSelectViewModal.params.startTime && notSelectViewModal.params.endTime
+        ? dateDiff(
+          notSelectViewModal.params.startTime,
+          notSelectViewModal.params.endTime
+        )
+        : 0;
+    if (dayDiff >= 0) {
+      for (let i = 0; i <= dayDiff; i++) {
+        days.push(
+          moment(notSelectViewModal.params.startTime)
+            .add(i, "d")
+            .format("YYYY-MM-DD")
+        );
+      }
+    }
+    return days;
+  }
+
   getAllCell(canEdit: boolean) {
     let cellList = [];
     for (let i = 0; i < this.sheetTableData.length; i++) {
@@ -106,6 +134,7 @@ class SheetViewModal {
     }
     return cellList;
   }
+
 
   getNextCell() {
     if (this.selectedCell) {
@@ -297,6 +326,19 @@ class SheetViewModal {
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });
+
+  }
+  // 未发布排班记录查询 
+  getData() {
+    if (!this.isInitEd) return this.init();
+    this.tableLoading = true;
+    return notArrangeService.countSettingByStatus().then((res: { code: string; data: any; }) => {
+      this.dateList = this.notGetDateList();
+      this.tableLoading = false;
+      if (res.code === '200') {
+        this.notSheetTableData = this.handleSheetTableData(res.data, {})
+      }
+    })
   }
 
   @computed
@@ -340,6 +382,12 @@ class SheetViewModal {
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then(res => {
       this.arrangeMenu = res.data;
+    });
+  }
+  // 未发布班排模块
+  notGetArrangeMenu() {
+    notArrangeService.getArrangeMenu().then(res => {
+      this.notArrangeMenu = res.data;
     });
   }
 
@@ -544,7 +592,7 @@ class SheetViewModal {
   /** 根据日期获取当前的时间的标准工时 */
   getStandTime(date: string) {
     let initialHour = 37.5;
-    console.log(this.standardTimeList, "this.standardTimeList");
+    // console.log(this.standardTimeList, "this.standardTimeList");
     for (let i = 0; i < this.standardTimeList.length; i++) {
       let dateNum = new Date(date).getTime();
       let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
@@ -567,7 +615,9 @@ class SheetViewModal {
       this.isInitEd = true;
       this.getExpectList();
       this.getSheetTableData();
+      this.getData()
       this.getArrangeMenu();
+      this.notGetArrangeMenu()
       this.getArrangeMeal();
       this.getSchSymbol();
       appStore.HOSPITAL_ID == 'gzhd' && this.getHDArrangeMeal();
