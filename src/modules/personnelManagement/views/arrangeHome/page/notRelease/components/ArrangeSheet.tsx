@@ -16,7 +16,8 @@ import EditVacationCountModal_wh from "../../../modal/EditEffectiveTimeModal_wh"
 import AddAccumulativeLeaveModal from "../../../modal/AddAccumulativeLeaveModal";
 import AddRemakeModal from "../../../modal/AddRemakeModal";
 import TotalCell from "./TotalCell";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
+import { notSelectViewModal } from './SelectViewModal'
 
 export interface Props {
   /** 编辑模式 */
@@ -137,6 +138,11 @@ export default observer(function ArrangeSheet(props: Props) {
     }
   ];
 
+  const deptName = () => {
+    let newArr = authStore.deptList?.find(item => item.code === notSelectViewModal.params.deptCode)
+    return newArr
+  }
+
   useLayoutEffect(() => {
     try {
       (document as any)
@@ -201,7 +207,7 @@ export default observer(function ArrangeSheet(props: Props) {
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
       <div className='module'>
         <div className='tebleHeader'>
-          <div className='title'>全院未发布护士排班表</div>
+          <div className='title'>{deptName() ? deptName()?.name : '全院'}未发布护士排班表</div>
           <div>日期：<span>2021-11-08</span> 至 <span>2021-11-14</span></div>
         </div>
         {sheetViewModal.notSheetTableData.length > 0 && (
