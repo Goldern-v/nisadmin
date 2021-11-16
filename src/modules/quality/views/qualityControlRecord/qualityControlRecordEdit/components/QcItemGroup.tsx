@@ -11,13 +11,15 @@ import { appStore } from 'src/stores'
 
 export interface Props {
   itemGroup: any
+  baseInfo: any
   index: number
 }
 
 export default observer(function QcItemGroup(props: Props) {
-  const { itemGroup, index } = props
+  const { itemGroup, baseInfo, index } = props
   const { itemListErrObj } = qcModel
-
+  let deductMarksType = baseInfo.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
+  
   const handleAttachUrlsChange = (urls: any, ids: any, idx: number) => {
     let newItemGroup = { ...itemGroup }
     let newItem = newItemGroup.itemList[idx]
@@ -201,11 +203,15 @@ export default observer(function QcItemGroup(props: Props) {
                     qcItemValue: !currentChecked ? '否' : item.qcItemValue,
                     subItemList: newSubItemList,
                   }, itemIndex)
+                  
                 }}>
                 <Icon
                   type="close-square"
                   className={subItem.checked ? 'checked' : 'unchecked'} />
-                <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
+                <span style={{ verticalAlign: 'middle' }}>
+                  {subItem.subItemName}
+                  {baseInfo.useSubItemFixedScore && <span>({subItem.fixedScore})</span>}
+                </span>
               </div>
             ))}
             <div>
@@ -216,7 +222,7 @@ export default observer(function QcItemGroup(props: Props) {
                   verticalAlign: 'middle',
                   color: 'rgba(0, 0, 0, 0.65)',
                 }}>
-                自定义扣分
+                {deductMarksType}
               </span>
               <InputNumber
                 style={{
@@ -229,13 +235,38 @@ export default observer(function QcItemGroup(props: Props) {
                 value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
                 onChange={(val) => {
                   qcModel.setItemListErrObj(item.qcItemCode, false)
-
                   handleItemChange({
                     ...item,
                     qcItemValue: '否',
                     remarkDeductScore: val?.toString() || '',
                   }, itemIndex)
                 }} />
+              {baseInfo.useSubItemFixedScore && <span
+                style={{
+                  marginRight: '5px',
+                  marginLeft: '26px',
+                  verticalAlign: 'middle',
+                  color: 'rgba(0, 0, 0, 0.65)',
+                }}>
+                问题总扣分
+              </span>}
+              {baseInfo.useSubItemFixedScore && <InputNumber
+                style={{
+                  display: 'inline-block',
+                  verticalAlign: 'middle'
+                }}
+                size="small"
+                readOnly={true}
+                value={
+                  (item.subItemList || []).reduce((pre:any,itemScore:any)=>{
+                    if(itemScore.checked){
+                      return Number(pre + itemScore.fixedScore)
+                    }else{
+                      return Number(pre)
+                    }
+                  },Number(item.remarkDeductScore))
+                }
+              />}
             </div>
             <div style={{ marginTop: 5 }}>
               <Input.TextArea
