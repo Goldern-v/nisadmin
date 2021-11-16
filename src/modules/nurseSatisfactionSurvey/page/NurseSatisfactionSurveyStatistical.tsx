@@ -25,6 +25,7 @@ export default observer(function MyCreateList() {
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
   const [monthList, setMonthList]: any = useState([])
 
+
   const getOption = () => {
     let option = {
       legend: {
@@ -132,7 +133,7 @@ export default observer(function MyCreateList() {
 
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
-    pageSize: 20
+    pageSize: 30
   })
   const [total, setTotal]: any = useState(0)
 
@@ -293,7 +294,6 @@ export default observer(function MyCreateList() {
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
         rowKey='id'
-        surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
@@ -306,6 +306,7 @@ export default observer(function MyCreateList() {
           })
         }}
       />
+      <div className={type == "表" ? "bottomDiv" : "bottomDiv dis"}></div>
       <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
         <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('YYYY')}年{moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
         <div className='echartsBody'>
@@ -374,5 +375,12 @@ const Wrapper = styled.div`
 }
 .echartsBody {
   padding-top: 70px;
+}
+.bottomDiv {
+  height: ${(p: any) => {
+    let height = document.getElementById('baseTable')?.offsetHeight||0
+    height += 100
+    return `calc(100vh - ${height}px)`
+  }};
 }
 `
