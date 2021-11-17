@@ -1,4 +1,5 @@
 import { globalModal } from 'src/global/globalModal'
+import { appStore } from 'src/stores'
 
 export function openAuditModal(title: string, row: any, callBack: any) {
   switch (title) {
@@ -56,11 +57,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               现职务任职起始时间: 'jobStartDate',
               院内工作地点: 'workAddress'
             },
-
-            {
-              工作护理单元: 'deptName',
-              鞋码大小: 'shoeSize'
-            }
+            appStore.HOSPITAL_ID === 'gxjb' ?
+              {
+                工作护理单元: 'deptName',
+                家庭住址: 'address'
+              }
+              : {
+                工作护理单元: 'deptName',
+                鞋码大小: 'shoeSize'
+              }
           ],
           fileData: [
             {
