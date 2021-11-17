@@ -99,7 +99,7 @@ export default withRouter(function LoginView(props: Props) {
       .catch(() => {
         // if (formatInfoStr) history.replace('/login')
         let errorCode = scheduleStore.getErrorData()?.errorCode
-        let data = scheduleStore.getErrorData().data
+        let data = scheduleStore.getErrorData()?.data
         if (errorCode == "301") {
           setShowVerification(true)
           setVerificationImg(data)
