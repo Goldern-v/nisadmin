@@ -246,7 +246,7 @@ export default observer(function Step1() {
             </React.Fragment>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && (
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24}>
               <Form.Field
                 label={`签到开始时间`}
@@ -257,7 +257,7 @@ export default observer(function Step1() {
             </Col>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && (
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24}>
               <Form.Field
                 label={`签到结束时间`}
@@ -268,7 +268,7 @@ export default observer(function Step1() {
             </Col>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && (
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24} className="rowDivF">
               <Form.Field
                 label={`二维码`}
@@ -280,11 +280,11 @@ export default observer(function Step1() {
                 </Radio.Group>
               </Form.Field>
               
-              <div className="rowDiv">
+              {stepViewModal.stepData2.qrCodeType == "2" && <div className="rowDiv">
                 <Form.Field label={`刷新时间`} name="refreshTime">
                   <Input style={{ width: '150px' }} addonAfter="秒"/>
                 </Form.Field>
-              </div>
+              </div>}
               
             </Col>
           )}

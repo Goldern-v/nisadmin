@@ -124,8 +124,29 @@ export default observer(function Step5() {
                 </td>
               </tr>
               <tr>
+                <td className="key">签到开始时间：</td>
+                <td className="value">
+                  {pxStepViewModal.stepData2.signInStartTime &&
+                    moment(pxStepViewModal.stepData2.signInStartTime).format(
+                      "YYYY-MM-DD HH:mm"
+                    )}
+                </td>
+              </tr>
+              <tr>
+                <td className="key">签到结束时间：</td>
+                <td className="value">
+                  {pxStepViewModal.stepData2.signInEndTime &&
+                    moment(pxStepViewModal.stepData2.signInEndTime).format(
+                      "YYYY-MM-DD HH:mm"
+                    )}
+                </td>
+              </tr>
+              <tr>
                 <td className="key">签到方式：</td>
-                <td className="value">二维码</td>
+                <td className="value">
+                  {pxStepViewModal.stepData2.qrCodeType==1?"静态二维码":"动态二维码"}  
+                  {pxStepViewModal.stepData2.qrCodeType==2&&<span style={{marginLeft: "20px"}}>刷新时间:{pxStepViewModal.stepData2.refreshTime}秒</span>}
+                </td>
               </tr>
             </React.Fragment>
           )}
@@ -368,7 +389,7 @@ const Wrapper = styled.div`
     .key {
       width: 100px;
       text-align: right;
-      vertical-align: top;
+      vertical-align: center;
     }
     .value {
       padding-left: 10px;
