@@ -1,6 +1,6 @@
 import { crrentMonth } from 'src/utils/moment/crrentMonth';
 import { computed, observable } from "mobx";
-import { trainingChartAnalysisApi} from './api/TrainingChartAnalysisApi'
+import { trainingChartAnalysisApi } from './api/TrainingChartAnalysisApi'
 import printing from "printing";
 
 export type selectedTabType = 'all' | 'department' | 'person'

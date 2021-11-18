@@ -210,7 +210,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL/>,
       path: "/continuingEdu/trainingChartAnalysis",
       component: TrainingChartAnalysis,
-      hide: () => appStore.HOSPITAL_ID != 'hj'
+      hide: () => !['hj'].includes(appStore.HOSPITAL_ID)
     },
     ...dataList,
     {
