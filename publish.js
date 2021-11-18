@@ -31,7 +31,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-dongguanhengli'
   }
 
-  //补充打包上传地址，未验证
+  //贵州省人医护理管理测试环境
+  if (process.env.npm_lifecycle_event.indexOf('9875') >= 0) {
+    folderSrc = '/crdata/webProject/manage-guizhourenyi'
+  }
+
   //武汉护理管理测试环境
   if (process.env.npm_lifecycle_event.indexOf('9964') >= 0) {
     folderSrc = '/crdata/webProject/manage-wuhan'
@@ -42,10 +46,6 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-liaochengeryuan'
   }
 
-  //贵州省人医护理管理测试环境
-  if (process.env.npm_lifecycle_event.indexOf('9875') >= 0) {
-    folderSrc = '/crdata/webProject/manage-guizhoushengrenmin'
-  }
 
   //武警广东省总队医院护理管理测试环境
   if (process.env.npm_lifecycle_event.indexOf('9869') >= 0) {

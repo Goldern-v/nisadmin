@@ -1,33 +1,40 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, Select } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { PageTitle, Place, PageHeader } from 'src/components/common'
 import BaseTable from 'src/components/BaseTable'
 import { currentMonth } from 'src/utils/date/rangeMethod'
 import { ColumnProps, DatePicker } from 'src/vendors/antd'
 import { qcFormGzsrmService } from './api/qcFormGzsrmService'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import TextAreaCom from './TextAreaCom'
+import { qualityControlRecordApi } from '../qualityControlRecord/api/QualityControlRecordApi'
 
+const Option = Select.Option
 const RangePicker = DatePicker.RangePicker
 
 export interface Props { }
 
 export default observer(function 三级问题原因措施汇总() {
   const { queryObj } = appStore
+  const { deptList } = authStore
   const [startDate, endDate] = currentMonth()
 
   const [query, setQuery] = useState({
     qcLevel: queryObj.qclevel || '1',
     beginDate: startDate.format('YYYY-MM-DD'),
     endDate: endDate.format('YYYY-MM-DD'),
+    wardCode: (authStore.isDepartment || authStore.isSupervisorNurse) ? '' : authStore.defaultDeptCode,
+    qcCode: '',
   })
+  const [formList, setFormList] = useState([] as any)
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
+  const [formListLoading, setFormListLoaindg] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -163,11 +170,52 @@ export default observer(function 三级问题原因措施汇总() {
   useEffect(() => {
     getTableData()
   }, [query])
+  const getFormList = () => {
+    setFormListLoaindg(true)
+    qualityControlRecordApi.formTemplateList({
+      level: Number(queryObj.qcLevel || '1'),
+      templateName: ''
+    })
+      .then(res => {
+        setFormListLoaindg(false)
+        if (res.data) setFormList(res.data)
+      }, () => setFormListLoaindg(false))
+  }
 
+  useEffect(() => {
+    getFormList()
+  }, [])
   return <Wrapper>
     <PageHeader>
       <PageTitle>{numToChinese(Number(queryObj.qclevel || '1')) + '级'}质控问题原因措施汇总</PageTitle>
       <Place></Place>
+      <span>表单：</span>
+      <Select
+        value={query.qcCode}
+        loading={formListLoading}
+        style={{ width: 220, marginRight: 15 }}
+        showSearch
+        onChange={(qcCode: string) => setQuery({ ...query, qcCode })}
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }>
+        <Option value="">全部</Option>
+        {formList.map((item: any, index: number) =>
+          <Option value={item.qcCode} key={index}>{item.qcName}</Option>)}
+      </Select>
+      <span>科室：</span>
+      <Select
+        value={query.wardCode}
+        style={{ width: 180, marginRight: 15 }}
+        showSearch
+        onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }>
+        {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
+        {deptList.map((item: any, index: number) =>
+          <Option value={item.code} key={index}>{item.name}</Option>)}
+      </Select>
       <span>汇总时间：</span>
       <RangePicker
         allowClear={false}
