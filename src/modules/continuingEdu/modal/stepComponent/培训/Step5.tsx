@@ -144,7 +144,7 @@ export default observer(function Step5() {
               <tr>
                 <td className="key">签到方式：</td>
                 <td className="value">
-                  {pxStepViewModal.stepData2.qrCodeType==1?"静态二维码":"动态二维码"}  
+                  {pxStepViewModal.stepData2.qrCodeType==2?"动态二维码":"静态二维码"}  
                   {pxStepViewModal.stepData2.qrCodeType==2&&<span style={{marginLeft: "20px"}}>刷新时间:{pxStepViewModal.stepData2.refreshTime}秒</span>}
                 </td>
               </tr>
