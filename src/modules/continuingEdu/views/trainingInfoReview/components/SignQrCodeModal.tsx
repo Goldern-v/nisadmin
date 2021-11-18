@@ -61,7 +61,7 @@ export default function SignQrCodeModal(props: Props) {
       setTimer(null)
       setTimer(setInterval(() => {
         getQrCodeInfo()
-      }, expirationTime / 10))
+      }, expirationTime))
     }
   },[expirationTime])
 
