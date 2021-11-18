@@ -33,8 +33,10 @@ export default observer((props: Props) => {
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
-  const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
-  const statusMapSelect_gzsrm = ['全部', '待病区审核', '待片区审核', '审核完成']
+  // const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
+  const statusMap_gzsrm = ['待提交', '待病区整改', '待科护士长审核', '完成']
+  // const statusMapSelect_gzsrm = ['全部', '待病区审核', '待片区审核', '审核完成']
+  const statusMapSelect_gzsrm = ['全部', '待病区整改', '待科护士长审核', '完成']
 
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
