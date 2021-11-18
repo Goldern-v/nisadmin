@@ -74,6 +74,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         `/crNursing/manage/#/qualityScheduleRecordDetails/${row.othersMessage.id
         }`
       );
+    } else if (showType == "csr") {
+      appStore.history.push(`/CommunityDetailsView/${row.othersMessage.id}`);
     }
   };
 
