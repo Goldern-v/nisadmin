@@ -47,9 +47,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 聊城二院 */
     case 'lcey':
-      // return 'http://192.168.1.54:9871' // 聊城二院测试
-      // return 'http://192.168.20.18:9091' // 后端本机ip
-      return 'http://192.168.20.57:9091' // 伟贤本地
+      return 'http://192.168.1.54:9871' // 聊城二院测试
+    // return 'http://192.168.20.18:9091' // 后端本机ip
+    // return 'http://192.168.20.57:9091' // 伟贤本地
 
     /** 默认公司本地内网厚街测试环境 */
     case 'gzsrm':
