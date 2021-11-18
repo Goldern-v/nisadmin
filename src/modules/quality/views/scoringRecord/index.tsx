@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Button, DatePicker, Select } from "antd";
+import { Button, DatePicker, Select, Checkbox } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { appStore, authStore } from "src/stores";
 import api from './api';
@@ -28,11 +28,16 @@ export default observer((props: Props) => {
   }
   const [form, setForm]: any = useState(defaultForm)
   const setFormItem = (item = {}) => {
+    //(['gzsrm'].includes(appStore.HOSPITAL_ID)) && (item?.status===0) && (item.status='')
     setForm({ ...form, ...item })
   }
   const [total, setTotal] = useState(1)
   const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
-  const statusMap_gzsrm = ['待病区审核', '待片区填写意见', '审核完成']
+  // const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
+  const statusMap_gzsrm = ['待提交', '待病区整改', '待科护士长审核', '完成']
+  // const statusMapSelect_gzsrm = ['全部', '待病区审核', '待片区审核', '审核完成']
+  const statusMapSelect_gzsrm = ['全部', '待病区整改', '待科护士长审核', '完成']
+
   // 新建-modal
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -169,7 +174,7 @@ export default observer((props: Props) => {
       align: "center",
       render: (text: string, row: any, c: any) => {
         return (
-          isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status - 1]
+          isNaN(row.status) ? '待提交' : statusMap_gzsrm[row.status]
         )
       }
 
@@ -191,8 +196,11 @@ export default observer((props: Props) => {
   ]
 
   const getList = async () => {
+    setTableLoading(true)
     const { data } = await api.getList(form)
-    setTotal(data.totalPage)
+    setTableLoading(false)
+    //setTotal(data.totalPage)
+    setTotal(data.totalCount)
     setTableData(data.list.map((item: any) => {
       return {
         ...item,
@@ -213,6 +221,30 @@ export default observer((props: Props) => {
       appStore.history.push(`/checkWard/recordView?id=${row.id}`)
     }
   }
+  const onCheckboxChange = (e: { target: { checked: any; }; }) => {
+    console.log(form, e.target.checked)
+    setTableLoading(true)
+    if (e.target.checked) {
+      const data = {
+        pageIndex: form.pageIndex,
+        pageSize: form.pageSize
+      }
+      api.getPageByCreatorNo(data).then(res => {
+        setTableLoading(false)
+        if (res.code === '200') {
+          setTotal(res.data?.totalCount)
+          setTableData(res.data?.list?.map((item: any) => {
+            return {
+              ...item,
+              ...item.itemDataMap
+            }
+          }))
+        }
+      })
+    } else {
+      getList().then()
+    }
+  }
 
   useEffect(() => {
     getList().then()
@@ -222,6 +254,7 @@ export default observer((props: Props) => {
     <Wrapper>
       <SearchBar>
         <div className='page-title'>护长夜查房评分记录</div>
+        {appStore.HOSPITAL_ID === 'gzsrm' && <Checkbox style={{ marginLeft: '14px' }} onChange={onCheckboxChange}>我的创建</Checkbox>}
         <div className='button-group'>
           <span className='label'>科室：</span>
           <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
@@ -236,9 +269,14 @@ export default observer((props: Props) => {
             style={{ width: '140px' }}
             onChange={(val: string) => setFormItem({ status: val })}>
             {
-              statusMap.map((item, index) => {
-                return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
-              })
+              ['gzsrm'].includes(appStore.HOSPITAL_ID) ?
+                statusMapSelect_gzsrm.map((item, index) => {
+                  return <Select.Option key={index} value={'' + (index === 0 ? '' : index)}>{item}</Select.Option>
+                })
+                :
+                statusMap.map((item, index) => {
+                  return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
+                })
             }
           </Select>
           <Button onClick={() => getList()}> 查询</Button>
@@ -285,7 +323,7 @@ const SearchBar = styled.div`
   justify-content: space-between;
   .page-title{
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
   }
   .button-group{
     display: flex;

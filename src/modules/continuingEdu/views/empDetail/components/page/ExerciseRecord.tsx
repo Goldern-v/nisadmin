@@ -1,0 +1,83 @@
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { empDetailModel } from "../../models/EmpDetailModel";
+import { observer } from "mobx-react-lite";
+export default observer(function TableView(props: any) {
+  const { exerciseRecordList } = props;
+  const [emptyList, setEmptyList] = useState<number[]>([]);
+  let tableRef: any = React.createRef<HTMLDivElement>();
+  useEffect(() => {
+    if (exerciseRecordList.length !== 0) {
+      setEmptyList(exerciseRecordList.getReserve(tableRef));
+    } else {
+      const list = new Array(25).fill(1);
+      setEmptyList(list);
+    }
+  }, []);
+  return (
+    <Wrapper>
+      <div className="title">练习记录</div>
+      <table className="table" ref={tableRef}>
+        <tbody>
+          <tr className="head">
+            <td>序号</td>
+            <td>类型</td>
+            <td>项目</td>
+            <td>时间</td>
+            <td>正确率</td>
+            <td>学时</td>
+            <td>练习情况</td>
+          </tr>
+          {exerciseRecordList.map((item: any, index: number) => (
+            <tr key={index}>
+              <td>{item.index}</td>
+              <td>{item.firstLevelMenuName}</td>
+              <td>{item.title}</td>
+              <td>{item.startTime}</td>
+              <td>{item.correctRateDesc}</td>
+              <td>{item.classHoursDesc}</td>
+              <td>{item.taskStatusDesc}</td>
+            </tr>
+          ))}
+          {emptyList.map((item: any, index: number) => (
+            <tr key={index}>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Wrapper>
+  );
+});
+
+const Wrapper = styled.div`
+  .title {
+    font-size: 30px;
+    text-align: center;
+    font-weight: 600;
+    font-family: "黑体" !important;
+    margin-bottom: 15px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    td {
+      border: 1px solid #000;
+      height: 32px;
+      text-align: center;
+    }
+  }
+  .footer {
+    margin-top: 5px;
+    font-weight: bold;
+    font-family: "黑体" !important;
+    color: #444;
+    font-size: 12px;
+  }
+`;

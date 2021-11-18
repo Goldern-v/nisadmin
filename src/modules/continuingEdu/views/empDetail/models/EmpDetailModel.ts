@@ -182,6 +182,18 @@ class EmpDetailModel {
   // @action getBaseInfo() {
 
   // }
+
+  //获取填充表格的行数
+   getReserve(dom: any) {
+    let reserve:number[] = []
+    //表格最大高度834
+     const tableHeight: number = Number(dom.current.offsetHeight);
+    if (tableHeight < 866) {
+      const remain: number = Math.floor((834 - tableHeight) / 32);
+       reserve = new Array(remain).fill(1);
+    }
+    return reserve
+  }
 }
 
 export const empDetailModel = new EmpDetailModel()

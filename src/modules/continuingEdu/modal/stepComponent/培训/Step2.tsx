@@ -8,7 +8,8 @@ import {
   Select,
   Checkbox,
   InputNumber,
-  message
+  message,
+  Radio
 } from "antd";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
@@ -243,6 +244,49 @@ export default observer(function Step1() {
                 </Form.Field>
               </Col>
             </React.Fragment>
+          )}
+
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+            <Col span={24}>
+              <Form.Field
+                label={`签到开始时间`}
+                name="signInStartTime"
+              >
+                <DateTimePicker />
+              </Form.Field>
+            </Col>
+          )}
+
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+            <Col span={24}>
+              <Form.Field
+                label={`签到结束时间`}
+                name="signInEndTime"
+              >
+                <DateTimePicker />
+              </Form.Field>
+            </Col>
+          )}
+
+          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+            <Col span={24} className="rowDivF">
+              <Form.Field
+                label={`二维码`}
+                name="qrCodeType"
+              >
+                <Radio.Group style={{ lineHeight: '30px' }}>
+                  <Radio value={1}>静态码</Radio>
+                  <Radio value={2}>动态码</Radio>
+                </Radio.Group>
+              </Form.Field>
+              
+              {stepViewModal.stepData2.qrCodeType == "2" && <div className="rowDiv">
+                <Form.Field label={`刷新时间`} name="refreshTime">
+                  <Input style={{ width: '150px' }} addonAfter="秒"/>
+                </Form.Field>
+              </div>}
+              
+            </Col>
           )}
 
           <Col span={24}>
@@ -552,6 +596,14 @@ export default observer(function Step1() {
 });
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
+  .rowDivF{
+    position: relative;
+    .rowDiv{
+      position: absolute;
+      top: 0;
+      right: 270px;
+    }
+  }
 `;
 
 const DateSelectCon = styled.div`

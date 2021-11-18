@@ -1,13 +1,10 @@
 /** 科室选择器全局使用  */
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
-
+// import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react-lite";
-import { authStore, appStore } from "src/stores";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import { Select } from "src/vendors/antd";
-import service from 'src/services/api'
 
 export interface Props {
   onChange?: (value: string[]) => void;
@@ -22,8 +19,6 @@ export interface DeptType {
 
 export default observer(function MultipleDeptSelect(props: Props) {
   const [deptList, setDeptList]: any = useState([]);
-  const [deptAllList, setDeptAllList] = useState([] as any);
-  const [selectedDeptCode_gxjb, setSelectedDeptCode_gxjb] = useState([] as any);
 
   const onChange = (value: string[]) => {
     if (props.deptList && !value.length) return
@@ -50,50 +45,26 @@ export default observer(function MultipleDeptSelect(props: Props) {
     statisticsViewModal.selectedDeptCode = value;
     props.onChange && props.onChange(value);
   };
-
-  const getDeptAll = () => {
-    service.commonApiService.getNursingUnitAll().then(res => {
-      if (res.data.deptList) setDeptAllList(res.data.deptList)
-    })
-    if (authStore.isDepartment) {
-      setSelectedDeptCode_gxjb(["全院"])
-    } else {
-      setSelectedDeptCode_gxjb([authStore.deptList[0]?.code])
-    }
-  }
-
-  const deptOptions = () => {
-    if (authStore.isDepartment) {
-      return deptAllList
-    } else {
-      return authStore.deptList
-    }
-  }
-
   useEffect(() => {
-    if (appStore.HOSPITAL_ID === 'gxjb') {
-      getDeptAll()
-    } else {
-      statisticsViewModal.init().then(res => {
-        if (props.deptList) {
-          setDeptList(props.deptList);
-        } else {
-          setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
-        }
-        if (props.deptKey == "完整科室") {
-          statisticsViewModal.selectedDeptCode = ["全院"];
-        } else if (props.deptList) {
-          statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
-        }
-      });
-    }
+    statisticsViewModal.init().then(res => {
+      if (props.deptList) {
+        setDeptList(props.deptList);
+      } else {
+        setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+      }
+      if (props.deptKey == "完整科室") {
+        statisticsViewModal.selectedDeptCode = ["全院"];
+      } else if (props.deptList) {
+        statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
+      }
+    });
   }, []);
 
   return (
     <Wrapper>
       <Select
         mode="multiple"
-        value={appStore.HOSPITAL_ID !== 'gxjb' ? (statisticsViewModal.selectedDeptCode as any) : selectedDeptCode_gxjb}
+        value={statisticsViewModal.selectedDeptCode as any}
         showSearch
         allowClear
         style={{ width: 200 }}
@@ -103,15 +74,10 @@ export default observer(function MultipleDeptSelect(props: Props) {
         }
       >
         {/* 处理权限问题 */}
-        {(appStore.HOSPITAL_ID === 'gxjb' ? (authStore.isDepartment) : props.deptKey == "完整科室") && (
+        {props.deptKey == "完整科室" && (
           <Select.Option value="全院">全院</Select.Option>
         )}
-        {appStore.HOSPITAL_ID === 'gxjb' && deptOptions().map((item: DeptType) => (
-          <Select.Option key={item.name} value={item.code}>
-            {item.name}
-          </Select.Option>
-        ))}
-        {appStore.HOSPITAL_ID !== 'gxjb' && deptList.map((item: DeptType) => (
+        {deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>
             {item.name}
           </Select.Option>

@@ -24,7 +24,7 @@ import { appStore } from "src/stores";
 import update from "immutability-helper";
 import AddUpHourCell from "./AddUpHourCell";
 import BalanceHour from "./BalanceHour";
-import WeekBalanceHour from "./WeekBalanceHour";//本周结余时数
+import WeekBalanceHour from "./WeekBalanceHour"; //本周结余时数
 import PublicHour from "./PublicHour";
 import HolidayHour from "./HolidayHour";
 import service from "src/services/api";
@@ -57,49 +57,51 @@ export default observer(function ArrangeSheet(props: Props) {
       nys: () => EditVacationCountModal_wh,
       gzsrm: () => EditVacationCountModal_wh,
       fssdy: () => EditVacationCountModal_wh,
-      fsxt: () => EditVacationCountModal_wh
+      fsxt: () => EditVacationCountModal_wh,
     })
   );
-  const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal)
-  const addRemakeModal = createModal(AddRemakeModal)
+  const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
+  const addRemakeModal = createModal(AddRemakeModal);
   let editVacationCountModal = createModal(EditVacationCountModal);
 
   const nysGroupName =
     appStore.HOSPITAL_ID == "nys"
-      ? [{
-        title: "类别标题",
-        dataIndex: "groupName",
-        width: 70,
-        fixed: "left",
-        align: "center"
-      }]
-      : []
-    ;
+      ? [
+        {
+          title: "类别标题",
+          dataIndex: "groupName",
+          width: 70,
+          fixed: "left",
+          align: "center",
+        },
+      ]
+      : [];
 
   const nysHandleDel =
     appStore.HOSPITAL_ID == "nys" && isEdit
-      ? [{
-        title: "操作",
-        dataIndex: "",
-        width: 70,
-        align: "center",
-        render(text: any, record: any, index: number) {
-          return (
-            <DoCon>
-              <span onClick={() => handleDelete(record)}>删除</span>
-            </DoCon>
-          );
-        }
-      }]
-      : []
-    ;
+      ? [
+        {
+          title: "操作",
+          dataIndex: "",
+          width: 70,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <DoCon>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
+          },
+        },
+      ]
+      : [];
 
   /**
    * 工时小计显示
    */
   //
   const manHourTitle = (): string => {
-    let title = "工时小计"
+    let title = "工时小计";
     switch (appStore.HOSPITAL_ID) {
       case "dghl":
         title = "本周上班时数";
@@ -108,9 +110,8 @@ export default observer(function ArrangeSheet(props: Props) {
         title = "工时小计";
         break;
     }
-    return title
-  }
-
+    return title;
+  };
 
   let columns: any = [
     {
@@ -118,7 +119,7 @@ export default observer(function ArrangeSheet(props: Props) {
       render: (text: string, row: any, index: number) => index + 1,
       fixed: "left",
       width: 40,
-      align: "center"
+      align: "center",
     },
     ...nysGroupName,
     {
@@ -126,12 +127,12 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "empNo",
       width: 50,
       fixed: "left",
-      align: "center"
+      align: "center",
     },
     //  分组名称 分组颜色
     ...appStore.hisMatch({
       map: {
-        'dghl,fqfybjy': [
+        "dghl,fqfybjy": [
           {
             title: "分组名称",
             dataIndex: "groupName",
@@ -139,11 +140,15 @@ export default observer(function ArrangeSheet(props: Props) {
             fixed: "left",
             align: "center",
             render(text: any, record: any) {
-              return <div style={{ color: record.groupColor }}>{record.groupName}</div>
-            }
-          }
+              return (
+                <div style={{ color: record.groupColor }}>
+                  {record.groupName}
+                </div>
+              );
+            },
+          },
         ],
-        default: []
+        default: [],
       },
       vague: true,
     }),
@@ -152,20 +157,20 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "empName",
       width: 50,
       fixed: "left",
-      align: "center"
+      align: "center",
     },
     ...appStore.hisMatch({
       map: {
         nys: [],
         other: [
           {
-            title: '层级',
+            title: "层级",
             dataIndex: "nurseHierarchy",
             width: 40,
             fixed: "left",
-            align: "center"
-          }
-        ]
+            align: "center",
+          },
+        ],
       },
     }),
     {
@@ -173,36 +178,40 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "newTitle",
       width: 70,
       fixed: "left",
-      align: "center"
+      align: "center",
     },
     {
       title: "年限",
       dataIndex: "year",
       width: 70,
       fixed: "left",
-      align: "center"
+      align: "center",
     },
     ...appStore.hisMatch({
       map: {
-        dgxg: [{
-          title: "分管床位",
-          dataIndex: "chargeBed",
-          width: 100,
-          fixed: "left",
-          align: "center",
-          render: (text: string, record: any) => {
-            return isEditable ?
-              <Input
-                style={{ background: "#fff" }}
-                defaultValue={text}
-                onChange={(e: any) => {
-                  record.chargeBed = e.target.value;
-                }}
-              /> :
-              <span>{text}</span>
-          }
-        }],
-        other: []
+        dgxg: [
+          {
+            title: "分管床位",
+            dataIndex: "chargeBed",
+            width: 100,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.chargeBed = e.target.value;
+                  }}
+                />
+              ) : (
+                <span>{text}</span>
+              );
+            },
+          },
+        ],
+        other: [],
       },
     }),
     ...sheetViewModal.dateList.map((date, index) => {
@@ -222,7 +231,7 @@ export default observer(function ArrangeSheet(props: Props) {
               isEdit={isEdit}
             />
           );
-        }
+        },
       };
     }),
     {
@@ -236,12 +245,12 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center",
       render(text: string, record: any) {
         return <TotalCell id={record.id} />;
-      }
-    }
+      },
+    },
   ];
 
   /** 东莞横沥特殊字段 */
-  if (['dghl'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl"].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -253,10 +262,9 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center",
       render(text: string, record: any) {
         return <WeekBalanceHour id={record.id} />;
-      }
+      },
     });
   }
-
 
   /** 厚街特殊字段 */
   if (appStore.HOSPITAL_ID == "hj") {
@@ -271,7 +279,7 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center",
       render(text: string, record: any) {
         return <NightHourCell id={record.id} />;
-      }
+      },
     });
   }
 
@@ -290,15 +298,17 @@ export default observer(function ArrangeSheet(props: Props) {
         dataIndex: "thisWeekHoliday",
         render: (text: string, record: any) => {
           // return <HolidayHourNys id={record.id}/>;
-          return <Input
-            style={{ background: "#fff" }}
-            disabled={!isEdit}
-            defaultValue={text}
-            onChange={(e: any) => {
-              record.thisWeekHoliday = e.target.value;
-            }}
-          />
-        }
+          return (
+            <Input
+              style={{ background: "#fff" }}
+              disabled={!isEdit}
+              defaultValue={text}
+              onChange={(e: any) => {
+                record.thisWeekHoliday = e.target.value;
+              }}
+            />
+          );
+        },
       },
       {
         title: (
@@ -312,15 +322,17 @@ export default observer(function ArrangeSheet(props: Props) {
         dataIndex: "totalHoliday",
         render: (text: string, record: any) => {
           // return <TotalHolidayHourNys id={record.id}/>;
-          return <Input
-            style={{ background: "#fff", color: "#000" }}
-            disabled={!isEdit}
-            defaultValue={text}
-            onChange={(e: any) => {
-              record.totalHoliday = e.target.value;
-            }}
-          />
-        }
+          return (
+            <Input
+              style={{ background: "#fff", color: "#000" }}
+              disabled={!isEdit}
+              defaultValue={text}
+              onChange={(e: any) => {
+                record.totalHoliday = e.target.value;
+              }}
+            />
+          );
+        },
       },
       ...nysHandleDel
     );
@@ -336,18 +348,16 @@ export default observer(function ArrangeSheet(props: Props) {
       centered: true,
       maskClosable: true,
       onOk: () => {
-        service.scheduleUserApiService
-          .delete(record.id)
-          .then(res => {
-            message.success("删除成功");
-            sheetViewModal.init();
-          });
-      }
+        service.scheduleUserApiService.delete(record.id).then((res) => {
+          message.success("删除成功");
+          sheetViewModal.init();
+        });
+      },
     });
-  }
+  };
 
   /** 武汉特殊字段*/
-  if (['wh', 'gzsrm', 'gxjb'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -360,7 +370,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <NightHourCell id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -373,7 +383,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <BalanceHour id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -386,7 +396,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <PublicHour id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -399,13 +409,13 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <HolidayHour id={record.id} />;
-        }
+        },
       }
     );
   }
 
   /** 江门妇幼特殊字段*/
-  if (['jmfy'].includes(appStore.HOSPITAL_ID)) {
+  if (["jmfy"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -418,7 +428,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <NightHourCell id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -431,7 +441,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <TotalHoliday id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -444,7 +454,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <PublicHour id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -457,13 +467,13 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <HolidayHour id={record.id} />;
-        }
+        },
       }
     );
   }
 
   /** 东莞横沥特殊字段*/
-  if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fqfybjy"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -476,7 +486,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <BalanceHour id={record.id} />;
-        }
+        },
       },
       {
         title: (
@@ -489,7 +499,7 @@ export default observer(function ArrangeSheet(props: Props) {
         align: "center",
         render(text: string, record: any) {
           return <PublicHour id={record.id} />;
-        }
+        },
       }
     );
   }
@@ -515,8 +525,7 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) {
-    }
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (
@@ -526,7 +535,12 @@ export default observer(function ArrangeSheet(props: Props) {
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .clientWidth
         ) {
-          let widthNys = appStore.HOSPITAL_ID == 'nys' ? 210 : 250;
+          let widthNys =
+            appStore.HOSPITAL_ID == "nys"
+              ? 210
+              : appStore.HOSPITAL_ID == "dgxg"
+                ? 350
+                : 250;
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -534,7 +548,7 @@ export default observer(function ArrangeSheet(props: Props) {
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({
                 yczyy: () => 2,
-                nys: () => isEdit ? 6 : 5,
+                nys: () => (isEdit ? 6 : 5),
                 hj: () => 3,
                 wh: () => 6,
                 gxjb: () => 6,
@@ -544,6 +558,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 gzsrm: () => 6,
                 lcey: () => 2,
                 dgxg: () => 2,
+                fsxt: () => 6,
               })) *
             70 +
             widthNys +
@@ -558,29 +573,24 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) {
-    }
+    } catch (error) { }
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) {
-    }
+    } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   // 拖拽排序
   const moveRow = (dragIndex: number, hoverIndex: number) => {
     switch (appStore.HOSPITAL_ID) {
-      case 'hj':
+      case "hj":
         const dragRow = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRow) return;
-        sheetViewModal.sheetTableData = update(
-          sheetViewModal.sheetTableData,
-          {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-          }
-        );
+        sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
+        });
         break;
       default:
         try {
@@ -600,44 +610,33 @@ export default observer(function ArrangeSheet(props: Props) {
           if (pc == "ant-table-body") {
             /** min */
             rightList = update(rightList, {
-              $splice: [
-                [dragIndex, 1],
-                [hoverIndex, 0, rightList[dragIndex]]
-              ]
+              $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]],
             });
             // 东莞横沥移动单独处理：右边移动 护士信息一起移动
-            if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+            if (["dghl", "fqfybjy"].includes(appStore.HOSPITAL_ID)) {
               leftList = update(leftList, {
-                $splice: [
-                  [dragIndex, 1],
-                  [hoverIndex, 0, leftList[dragIndex]]
-                ]
+                $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
               });
             }
           } else if (pc == "ant-table-body-outer") {
             /** left */
             leftList = update(leftList, {
-              $splice: [
-                [dragIndex, 1],
-                [hoverIndex, 0, leftList[dragIndex]]
-              ]
+              $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
             });
           }
 
           let list = leftList.map((item: any, index: number) => {
             item.settingDtos = rightList[index].map((r: any) => ({
               ...r,
-              userId: item.id
+              userId: item.id,
             }));
             return item;
           });
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-        } catch (error) {
-        }
+        } catch (error) { }
     }
-  }
-
+  };
 
   return (
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
@@ -660,10 +659,10 @@ export default observer(function ArrangeSheet(props: Props) {
                     readOnly={!isEdit}
                     defaultValue={sheetViewModal.remark}
                     autosize={!isEdit}
-                    onBlur={e => {
+                    onBlur={(e) => {
                       sheetViewModal.remark = e.target.value;
                     }}
-                    style={{ minHeight: 100, textAlign: 'left' }}
+                    style={{ minHeight: 100, textAlign: "left" }}
                     className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
                   />
                 </div>
@@ -674,7 +673,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   <Input.TextArea
                     value={sheetViewModal.remark}
                     autosize={!isEdit}
-                    style={{ minHeight: 100, textAlign: 'left' }}
+                    style={{ minHeight: 100, textAlign: "left" }}
                     className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
                   />
                 </div>

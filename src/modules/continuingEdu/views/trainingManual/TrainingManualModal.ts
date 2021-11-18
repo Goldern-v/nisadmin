@@ -1,7 +1,8 @@
 import { observable, computed, action } from "mobx";
 import { appStore, authStore } from "src/stores/index";
 import { trainingManualApi } from "./api/TrainingManualApi";
-
+import { fileDownload } from "src/utils/file/file";
+import printing from "printing";
 class TrainingManualModal {
   @observable public tabKey = 0; //tab对应key值
   @observable public tabKeyName = "N0"; //tab对应名称
@@ -16,6 +17,9 @@ class TrainingManualModal {
   @observable public allTableList: any = [];
   @observable public allTableLoading: any = false;
   @observable public modalBtn = false; //弹窗开关
+
+  @observable public tableRef : any; //表单DOM
+  
 
   async initData() {
     await Promise.all([
@@ -32,7 +36,7 @@ class TrainingManualModal {
   // 获取我的培训清单
   myOnload() {
     this.myTableLoading = true;
-    trainingManualApi.queryMyTrainingListByList(this.tabKeyName, authStore.user?.empNo).then(res => {
+    trainingManualApi.queryMyTrainingListByList(this.tabKeyName, authStore.user?.deptCode).then(res => {
       this.myTableLoading = false;
       this.myTableList = res.data || [];
     });
@@ -47,6 +51,36 @@ class TrainingManualModal {
     });
   }
 
+  // 导出培训清单
+  export() {
+    const data = {
+      deptCode: authStore.user?.deptCode,
+      nurseHierarchy:this.tabKeyName
+    }
+    trainingManualApi.exportTrainingList(data).then(res => {
+      fileDownload(res)
+    })
+  }
+
+  //打印培训清单
+  print() {
+    printing(this.tableRef.current, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+      @page {
+        margin: 0;
+      }
+      `,
+    });
+  }
+
+  //下载导入模版
+  importTemplate() {
+    trainingManualApi.importTemplate().then(res => {
+      fileDownload(res)
+    })
+  }
   async init() {
     await this.initData();
     await this.allOnload();

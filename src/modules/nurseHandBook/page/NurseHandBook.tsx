@@ -3,14 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
 import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
-import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
@@ -20,8 +19,6 @@ export interface Props { }
 export default observer(function MyCreateList() {
   const [year, setYear] = useState<String>(moment().format('YYYY'))
   const [month, setMonth]  = useState<String>('')
-  const [templateList, setTemplateList]: any = useState([])
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [monthDate, setMonthDate]:any = useState([moment().startOf("month"), moment().endOf("month")])
   const [weekDate, setWeekDate]:any = useState([moment().startOf("week"), moment().endOf("week")])
   const [quarterDate, setQuarterDate]:any = useState([moment().startOf("quarter"), moment().endOf("quarter")])
@@ -79,141 +76,7 @@ export default observer(function MyCreateList() {
 
   const path = window.location.hash.split('/').reverse()[0]
 
-  let columns: ColumnProps<any>[] = []
-  if(path == 'month') {
-    columns = 
-  [
-    {
-      title: '标题',
-      dataIndex: 'title',
-      width: 150,
-      align: 'center'
-    },
-    {
-      title: '科室',
-      dataIndex: 'deptName',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '时间',
-      dataIndex: 'date',
-      width: 50,
-      align: 'center',
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      width: 50,
-      align: 'center'
-    },
-    {
-      title: '创建人',
-      dataIndex: 'creatorName',
-      width: 50,
-      align: 'center'
-    },
-    {
-      title: '上传附件',
-      dataIndex: 'files',
-      width: 200,
-      align: 'center',
-      render: (text: string, record: any) => {
-        return (
-          <div>
-            {record.files.map((item: any, index: number) => (
-               <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
-            ))}
-          </div>
-        )
-      }
-    },
-    {
-      title: '操作',
-      width: 60,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span onClick={() => onEdit(record)}>编辑</span>
-            <span onClick={() => onDelete(record)}>删除</span>
-          </DoCon>
-        )
-      }
-    }
-  ]
-  }else if(appStore.HOSPITAL_ID == "jmfy"){
-    columns = 
-  [
-    {
-      title: '标题',
-      dataIndex: 'title',
-      width: 150,
-      align: 'center',
-    },
-    {
-      title: '科室',
-      dataIndex: 'deptName',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      width: 50,
-      align: 'center'
-    },
-    {
-      title: '创建人',
-      dataIndex: 'creatorName',
-      width: 50,
-      align: 'center'
-    },
-    {
-      title: '上传附件',
-      dataIndex: 'files[0].name',
-      width: 200,
-      align: 'center',
-      render: (text: string, record: any) => {
-        return (
-          <div>
-            {record.files.map((item: any, index: number) => (
-              <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
-            ))}
-          </div>
-        )
-      }
-    },
-    {
-      title: '审核状态',
-      dataIndex: 'status',
-      width: 50,
-      align: 'center',
-      render(status: any) {
-        return (
-          <div>
-            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿" }</span>
-          </div>
-        )
-      }
-    },
-    {
-      title: '操作',
-      width: 60,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            {record.status==1&&<span onClick={() => onEdit(record)}>查看</span>}
-            {(record.status==2||record.status==3)&&<span onClick={() => onEdit(record)}>编辑</span>}
-            {(record.status==0||record.status==2)&&<span onClick={() => onUndo(record)}>撤销</span>}
-            {record.status!=1&&<span onClick={() => onDelete(record)}>删除</span>}
-          </DoCon>
-        )
-      }
-    }
-  ]
-  }else{
-    columns = 
-  [
+  let columns:any = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -275,6 +138,46 @@ export default observer(function MyCreateList() {
       }
     }
   ]
+  //护士长月计划时间特殊处理
+  if (path == 'month') {
+    columns.splice(2, 1, {
+      title: '时间',
+      dataIndex: 'date',
+      width: 50,
+      align: 'center',
+    });
+  }
+
+  //江门妇幼版本标题
+  if (appStore.HOSPITAL_ID == "jmfy") {
+    columns.splice(2, 1);
+    columns.splice(5, 0, {
+      title: '审核状态',
+      dataIndex: 'status',
+      width: 50,
+      align: 'center',
+      render(status: any) {
+        return (
+          <div>
+            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿" }</span>
+          </div>
+        )
+      }
+    });
+    columns.splice(6, 1, {
+      title: '操作',
+      width: 60,
+      render(text: any, record: any, index: number) {
+        return (
+          <DoCon>
+            {record.status==1&&<span onClick={() => onEdit(record)}>查看</span>}
+            {(record.status==2||record.status==3)&&<span onClick={() => onEdit(record)}>编辑</span>}
+            {(record.status==0||record.status==2)&&<span onClick={() => onUndo(record)}>撤销</span>}
+            {record.status!=1&&<span onClick={() => onDelete(record)}>删除</span>}
+          </DoCon>
+        )
+      }
+    });
   }
   
   const [pageOptions, setPageOptions]: any = useState({
@@ -284,12 +187,8 @@ export default observer(function MyCreateList() {
   const [total, setTotal]: any = useState(0)
 
   const initData = () => {
-    nurseHandBookService.findTemplates().then((res) => {
-      setTemplateList([...res.data.publicTemplates, ...res.data.deptTemplates].map((item: any) => item.template))
-    })
-
     service.commonApiService
-      .getNursingUnitAll().then(res => {
+      .getUintList().then(res => {
         setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
     })
     
@@ -324,9 +223,7 @@ export default observer(function MyCreateList() {
       })
       .then((res) => {
         setPageLoading(false)
-
         setSelectedRowKeys([])
-
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
@@ -400,7 +297,6 @@ export default observer(function MyCreateList() {
     }else{
       deleteTitle = '确认删除该记录吗？'
     }
-
     Modal.confirm({
       title: deleteTitle,
       centered: true,
@@ -411,7 +307,6 @@ export default observer(function MyCreateList() {
           .then(res => {
             message.success('删除成功', 1, () => getData())
           }, err => setPageLoading(false))
-
       }
     })
   }
@@ -457,7 +352,6 @@ export default observer(function MyCreateList() {
     monthDate,
     weekDate,
     quarterDate,
-    selectedTemplate,
     deptSelect
   ])
 
@@ -469,7 +363,9 @@ export default observer(function MyCreateList() {
     <Wrapper>
       <PageHeader>
         {<PageTitle>{titleArr[path]}</PageTitle>}
+
         <Place />
+
         {controlYear && <div>
         <span className='label'>年份:</span>
         <Select
@@ -481,6 +377,7 @@ export default observer(function MyCreateList() {
             <Select.Option key={idx} value={item}>{item}</Select.Option>)}
         </Select>
         </div>}
+
         {path == 'month' && <div>
         <span className='label ml-20'>月份:</span>
         <Select
@@ -492,8 +389,8 @@ export default observer(function MyCreateList() {
           {monthList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item}>{item}</Select.Option>)}
         </Select>
-        </div>
-        }
+        </div>}
+
         {controlDatePicker && <div>
           {(path != 'yearPlan' && path != 'yearConclusion') && <span>
             <span className='label ml-20'>时间:</span>
@@ -516,6 +413,7 @@ export default observer(function MyCreateList() {
               style={{ width: 220 }}
             />}
           </span>}
+
           {(path == 'yearPlan' || path == 'yearConclusion') && <span>
           <span className='label'>年份:</span>
           <Select
@@ -559,14 +457,12 @@ export default observer(function MyCreateList() {
           onChange={onChangeSearchText}
           className='ml-20'
         />
-
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
         <Button onClick={handleExport}>导出</Button>
         {/* <Button onClick={handleExport}>打印</Button> */}
         <Button type='primary' onClick={handleAddNew}>新建</Button>
-      
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -585,8 +481,6 @@ export default observer(function MyCreateList() {
           selectedRowKeys,
           onChange: handleRowSelect,
           getCheckboxProps: (record: any) => ({
-            // disabled: !deptSelect || !selectedTemplate,
-            // disabled: !selectedTemplate,
             name: record.name
           })
         }}

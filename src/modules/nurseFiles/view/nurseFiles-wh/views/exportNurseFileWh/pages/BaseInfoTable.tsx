@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import { Button } from 'antd'
 import { TableCon } from './../components/TableCon'
+import { appStore } from 'src/stores'
 
 export interface Props {
   baseInfo?: any
@@ -67,6 +68,10 @@ export default function BaseInfoTable(props: Props) {
         <td>联系电话</td>
         <td>{baseInfo.phone}</td>
       </tr>
+      {appStore.HOSPITAL_ID === 'gxjb' && <tr>
+        <td>家庭住址</td>
+        <td colSpan={4}>{baseInfo.address}</td>
+      </tr>}
     </tbody>
   </Wrapper>
 }

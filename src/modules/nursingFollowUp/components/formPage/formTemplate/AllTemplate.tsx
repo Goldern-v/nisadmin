@@ -6,6 +6,7 @@ import RadioItem from "../../input/RadioItem"
 import CheckboxItem from "../../input/CheckboxItem"
 import InputItem from "../../input/InputItem"
 import CheckText from "../../input/CheckText"
+import RadioText from "../../input/RadioText"
 import { followUpDetailService } from '../../../views/followUpDetailView/services/FollowUpDetailService'
 import moment from 'src/vendors/moment'
 
@@ -25,8 +26,14 @@ export default function AllTemplate(props: any) {
     return name
   }
   // 联动功能(暂未开发)
-  const isShow = () => {
-    return "none"
+  const disabled = (itemAnswer: any) => {
+    if (itemAnswer.jsInteractive) {
+      let jsInteractive = editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]]
+      let answer = itemAnswer.jsInteractive.split('/')[1].split('_')[1]
+      return !(jsInteractive == answer || jsInteractive.includes(answer))
+    } else {
+      return false
+    }
   }
   // 问卷页数
   const [pageNum, setPageNum] = useState<any>([])
@@ -218,7 +225,7 @@ export default function AllTemplate(props: any) {
                         itemRow.documentItemLists.map((itemAnswer: any) => {
                           return (itemAnswer.type == 'radio' && // 判断类型,返回对应的表单控件
                             <RadioItem
-                              disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
+                              disabled={disabled(itemAnswer)}
                               name={itemAnswer.name} // 单选功能
                               value={itemAnswer.value} // 展示的值
                               saveValue={itemAnswer.saveValue} // 展示的值
@@ -228,7 +235,7 @@ export default function AllTemplate(props: any) {
                             ||
                             (itemAnswer.type == 'checkbox' && (
                               <CheckboxItem
-                                disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
+                                disabled={disabled(itemAnswer)}
                                 name={itemAnswer.name}
                                 saveValue={itemAnswer.saveValue} // 真正保存的值
                                 value={itemAnswer.value}  // 选项展示的值
@@ -242,7 +249,7 @@ export default function AllTemplate(props: any) {
                             (
                               (itemAnswer.type == 'date(yyyy-mm-dd)' || itemAnswer.type == 'text') && (
                                 <InputItem
-                                  disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
+                                  disabled={disabled(itemAnswer)}
                                   type={itemAnswer.type}
                                   name={itemAnswer.name}
                                   value={editable[itemAnswer.name]}
@@ -256,7 +263,7 @@ export default function AllTemplate(props: any) {
                             (
                               itemAnswer.type == 'checkbox_text' && (
                                 <CheckText
-                                  disabled={itemAnswer.jsInteractive && !(editable[itemAnswer.jsInteractive.split('/')[1].split('_')[0]] == itemAnswer.jsInteractive.split('/')[1].split('_')[1])}
+                                  disabled={disabled(itemAnswer)}
                                   name={itemAnswer.name}
                                   saveValue={itemAnswer.saveValue} // 真正保存的值
                                   value={itemAnswer.value}  // 选项展示的值
@@ -270,10 +277,25 @@ export default function AllTemplate(props: any) {
                                 />
                               )
                             )
+                            ||
+                            (
+                              itemAnswer.type == 'radio_text' && (
+                                <RadioText
+                                  disabled={disabled(itemAnswer)}
+                                  name={itemAnswer.name} // 单选功能
+                                  value={itemAnswer.value} // 展示的值
+                                  saveValue={itemAnswer.saveValue} // 展示的值
+                                  checked={editable[itemAnswer.name] == itemAnswer.saveValue} // 决定选框是否选中
+                                  checkEvent={(e: any) => itemRadioFn(e, itemAnswer)}
+                                  InpValue={editable[itemAnswer.documentItemLists[0].name]}
+                                  prefixDescription={itemAnswer.documentItemLists[0].prefixDescription}
+                                  InpEvent={(e: any) => itemInputFn(e, itemAnswer.documentItemLists[0].name)}
+                                />
+                              )
+                            )
                         })
                       }
                     </div>
-                    <div style={{ display: isShow() }}></div>
                   </div>
                 )
               })}
@@ -385,6 +407,20 @@ const PageGroup = styled.div`
     }
     &.border-bottom{
       border-bottom: 1px solid #000;
+    }
+  }
+  @media print{
+    *{
+      margin-top:0px!important;
+    }
+    @page{
+      margin:30px 0 30px;
+    }
+    @page:first{
+      margin-top:0px;
+    }
+    .white-part{
+      visibility:hidden;
     }
   }
 `

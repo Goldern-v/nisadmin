@@ -30,6 +30,7 @@ import { navConfig as navConfig_gxjb } from "./navConfig_gxjb";
 import { navConfig as navConfig_gxjbSelf } from "./navConfig_gxjbSelf";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
+import { navConfig as navConfig_whyx } from "./navConfig_whyx";
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -156,6 +157,8 @@ export default observer(function NavBar(props: any) {
       else return navConfig_gxjbSelf;
     } else if (appStore.HOSPITAL_ID == 'fsxt') {
       return navConfig_fssdy
+    } else if (appStore.HOSPITAL_ID == 'whyx') {
+      return navConfig_whyx
     }
     return navConfig;
   })();

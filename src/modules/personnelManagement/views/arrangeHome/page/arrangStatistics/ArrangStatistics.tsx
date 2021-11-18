@@ -13,7 +13,7 @@ import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
 import BaseTabs, { ConfigItem } from "src/components/BaseTabs";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { arrangStatisticsService } from "./services/ArrangStatisticsService";
 import BaseTable from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
@@ -101,7 +101,7 @@ export default observer(function ArrangStatistics() {
           total += record[current];
           return total;
         }, 0);
-        return Number(
+        return appStore.HOSPITAL_ID === 'wh' ? Number(sum) : Number(
           sum + Number(record["加班"]) - Number(record["减班"])
         ).toFixed(2);
       }
@@ -142,8 +142,8 @@ export default observer(function ArrangStatistics() {
     showType == "班次统计"
       ? columns_1
       : showType == "工时统计"
-      ? columns_2
-      : [];
+        ? columns_2
+        : [];
 
   const onLoad = () => {
     if (showType == "班次统计") {
@@ -188,7 +188,7 @@ export default observer(function ArrangStatistics() {
     <Wrapper>
       <PageHeader>
         <PageTitle>排班统计</PageTitle>
-        <Place/>
+        <Place />
         <span className="label">日期:</span>
         <DatePicker.RangePicker
           allowClear={false}
@@ -198,7 +198,7 @@ export default observer(function ArrangStatistics() {
         />
         <span className="label">科室:</span>
         <DeptSelect onChange={() => {
-        }}/>
+        }} />
         <span className="label">类型:</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>
           {showTypeList.map(item => (

@@ -16,7 +16,6 @@ export interface Props {
 }
 export default function NurseHandBookModal(props: any) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
-  const [loading, setLoading] = useState(false)
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [deptList, setDeptList] = useState([] as any)
@@ -151,7 +150,6 @@ export default function NurseHandBookModal(props: any) {
     width={500}
     centered
     okText={'保存'}
-    confirmLoading={loading}
     afterClose={() => onClose()}
     visible={visible}
     onOk={handleOk}

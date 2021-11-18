@@ -6,7 +6,7 @@ import loginViewModel from "./LoginViewModel";
 
 import service from "src/services/api";
 import { appStore, scheduleStore } from "src/stores";
-import { Button } from "src/vendors/antd";
+import { Button, Icon } from "src/vendors/antd";
 import { AutoComplete, message } from "antd";
 import { withRouter } from 'react-router-dom'
 
@@ -98,8 +98,8 @@ export default withRouter(function LoginView(props: Props) {
       })
       .catch(() => {
         // if (formatInfoStr) history.replace('/login')
-        let errorCode = scheduleStore.getErrorData().errorCode
-        let data = scheduleStore.getErrorData().data
+        let errorCode = scheduleStore.getErrorData()?.errorCode
+        let data = scheduleStore.getErrorData()?.data
         if (errorCode == "301") {
           setShowVerification(true)
           setVerificationImg(data)
@@ -238,7 +238,7 @@ export default withRouter(function LoginView(props: Props) {
             />
           </div>
           {showVerification&&<div className="TextItem">
-            <div className="iconfont NameIcon">&#xe6cb;</div>
+            <div className="iconfont NameIcon"><Icon type="safety-certificate" /></div>
             <input
               onChange={e => setVerificationCode(e.target.value)}
               style={{ width: 180 }}

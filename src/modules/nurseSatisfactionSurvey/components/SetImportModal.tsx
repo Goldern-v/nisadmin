@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, Upload, Modal, message, Select, Icon, Spin } from 'antd'
+import React, { useState } from 'react'
+import { Button, Upload, Modal, message } from 'antd'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 
 import { fileDownload } from 'src/utils/file/file'
-import { authStore, appStore } from "src/stores";
+import { authStore } from "src/stores";
 
 const api = new NurseSatisfactionSurveyService();
 export interface Props {

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, ColumnProps, PaginationConfig } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import { observer } from 'mobx-react-lite'
@@ -13,8 +13,6 @@ import { fileDownload } from 'src/utils/file/file'
 import ReactEcharts from 'echarts-for-react';
 import printing from 'printing'
 
-import { useRef } from 'src/types/react'
-const ButtonGroup = Button.Group;
 export interface Props { }
 const api = new NurseSatisfactionSurveyService();
 
@@ -26,6 +24,7 @@ export default observer(function MyCreateList() {
   const [satisfactionPerList, setSatisfactionPerList]: any = useState([])
   const [participationRatePerList, setParticipationRatePerList]: any = useState([])
   const [monthList, setMonthList]: any = useState([])
+
 
   const getOption = () => {
     let option = {
@@ -75,7 +74,6 @@ export default observer(function MyCreateList() {
         },
         data: participationRatePerList
       }]
-
     };
     return option;
   };
@@ -135,7 +133,7 @@ export default observer(function MyCreateList() {
 
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
-    pageSize: 20
+    pageSize: 30
   })
   const [total, setTotal]: any = useState(0)
 
@@ -296,7 +294,6 @@ export default observer(function MyCreateList() {
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
         rowKey='id'
-        surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
@@ -309,13 +306,13 @@ export default observer(function MyCreateList() {
           })
         }}
       />
+      <div className={type == "表" ? "bottomDiv" : "bottomDiv dis"}></div>
       <div className={type == "图" ? "statisticalFigure" : "statisticalFigure dis"} id="charts">
         <h1>横沥医院{moment(date[0]).format('YYYY')}年{moment(date[0]).format('MM')}月 - {moment(date[1]).format('YYYY')}年{moment(date[1]).format('MM')}月护士长满意度统计汇总</h1>
         <div className='echartsBody'>
           <ReactEcharts option={getOption()} />
         </div>
       </div>
-
     </Wrapper>
   )
 })
@@ -378,5 +375,12 @@ const Wrapper = styled.div`
 }
 .echartsBody {
   padding-top: 70px;
+}
+.bottomDiv {
+  height: ${(p: any) => {
+    let height = document.getElementById('baseTable')?.offsetHeight||0
+    height += 100
+    return `calc(100vh - ${height}px)`
+  }};
 }
 `

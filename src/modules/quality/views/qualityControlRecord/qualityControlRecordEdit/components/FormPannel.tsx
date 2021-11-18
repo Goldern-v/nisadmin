@@ -308,6 +308,7 @@ export default observer(function FormPannel() {
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
         <QcItemGroup
           itemGroup={itemGroup}
+          baseInfo={baseInfo}
           index={groupIdx}
           key={groupIdx} />
       )}

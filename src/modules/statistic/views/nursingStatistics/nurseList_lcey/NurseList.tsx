@@ -3,7 +3,7 @@ import StatisticHeader from './StatisticHeader'
 import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
-import { Spin, Button } from 'antd'
+import { Spin, Button, message, Switch } from 'antd'
 import MidHeader from './MidHeader'
 export default function BedSituation() {
   const [leftList, setLeftList] = useState([])
@@ -12,6 +12,10 @@ export default function BedSituation() {
   const [rightList, setRightList] = useState([])
   const [spinning, setSpinning] = useState(false)
   const [dataType, setDataType] = useState(['本院', '华美'])
+  const [showYear, setShowYear] = useState(false)
+  const changShowYear = (flag: any) => {
+    setShowYear(flag)
+  }
   const changeDataType = (type: any) => {
     let arr = [...dataType]
     let index = arr.indexOf(type)
@@ -24,7 +28,15 @@ export default function BedSituation() {
   }
   useEffect(() => {
     setSpinning(true)
-    statisticsApi.getTotalUser().then((res: any) => {
+    let userType = 0
+    let typeToCode = { '华美': 2, '本院': 1 }
+    if (dataType.length == 1) {
+      userType = typeToCode[dataType[0]]
+    } else if (dataType.length == 0) {
+      message.error('请至少选择一项！')
+      return
+    }
+    statisticsApi.getTotalUserForLC(userType).then((res: any) => {
       let users = res.data[0]!.users
       // let res = data
       // let l: any = []
@@ -85,7 +97,8 @@ export default function BedSituation() {
           <MidHeader />
           <div className="btn-group">
             <Button className="firstBtn" type={dataType.includes('本院') ? 'primary' : 'default'} onClick={() => changeDataType('本院')}>本院</Button>
-            <Button type={dataType.includes('华美') ? 'primary' : 'default'} onClick={() => changeDataType('华美')}>华美</Button>
+            <Button className="firstBtn" type={dataType.includes('华美') ? 'primary' : 'default'} onClick={() => changeDataType('华美')}>华美</Button>
+            <Switch className="switchBtn" onChange={changShowYear} /> 显示年限
           </div>
           <Info>
             {infoList.map((item: any) => (
@@ -99,7 +112,7 @@ export default function BedSituation() {
               <MainPart>
                 <CardCon>
                   {leftList.map((item) => (
-                    <CardItem data={item} />
+                    <CardItem showYear={showYear} data={item} />
                   ))}
                 </CardCon>
                 {/* <CardCon>
@@ -151,8 +164,12 @@ const Container = styled.div`
   overflow: hidden;
   .btn-group{
     display:flex;
+    line-height:32px;
     .firstBtn{
       margin-right:5px;
+    }
+    .switchBtn{
+      margin-top:4px;
     }
   }
 `

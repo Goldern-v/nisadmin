@@ -143,6 +143,7 @@ export default function FollowUpGroupManage(props: any) {
       key: 'visitTeam.teamId',
       width: 70,
       align: 'center',
+      className: 'ipt-cell',
       render: (text: string, record: any) => {
         return (
           <div>
@@ -292,6 +293,21 @@ const Wrapper = styled.div`
     /deep/.ant-select-selection{
       text-align:center;
       text-align-last:center;
+    }
+  }
+  .ipt-cell{
+    padding:0!important;
+    textarea,.ant-select-selection,.ant-input{
+      border:0;
+      outline:0;
+      border-radius:0;
+      resize: none;
+    }
+    .ant-select-arrow{
+      display:none;
+    }
+    .ant-select-selection-selected-value{
+      padding-right:0!important;
     }
   }
 `

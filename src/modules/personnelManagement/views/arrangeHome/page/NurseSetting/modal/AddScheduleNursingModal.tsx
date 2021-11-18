@@ -190,9 +190,20 @@ export default observer(function AddScheduleNursingModal(props: Props) {
         >
           <Row>
             <Col span={24}>
-              <Form.Field label={`姓名`} name="empName" required>
+              {appStore.HOSPITAL_ID !== 'hj' ? <Form.Field label={`姓名`} name="empName" required>
                 <Input />
-              </Form.Field>
+              </Form.Field> :
+                <Form.Field label={`姓名`} name="empName">
+                  <Select>
+                    <Select.Option value="实习">
+                      实习
+                    </Select.Option>
+                    <Select.Option value="进修">
+                      进修
+                    </Select.Option>
+                  </Select>
+                </Form.Field>
+              }
             </Col>
             <Col span={24}>
               <Form.Field label={`姓别`} name="sex">

@@ -18,7 +18,6 @@ export interface Props {
 }
 export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp, path, id } = props
-  const [loading, setLoading] = useState(false)
   const [pdf, setPdf] = useState(false)
   const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "90vh"}
@@ -55,9 +54,8 @@ export default function editModal(props: Props) {
     width={1000}
     bodyStyle={bdstyle}
     afterClose={afterClose}
-    confirmLoading={loading}
     footer={[
-      <Button key="download" loading={loading} type="primary" onClick={() => handleDownload()}>
+      <Button key="download"  type="primary" onClick={() => handleDownload()}>
       下载
       </Button>,
       <Button key="back" onClick={() => onCancel()}>
@@ -73,9 +71,6 @@ export default function editModal(props: Props) {
     <Wrapper>
       <Spin spinning={spinning}>
         <div className="father">
-        {/* {(type != 'png'||type != 'jpg') &&<div className="back"></div>}
-        {(type == 'png'||type == 'jpg') && <iframe id="iframePrint"  className="iframeStyle" scrolling='no' src={path} />}
-        {(type != 'png'||type != 'jpg') && <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />} */}
         {pdf && <div className="back"></div>}
         <iframe id="iframePrint" className="iframeStyle" style={{top:"-30px"}}  scrolling='no' src={path} />
         </div>

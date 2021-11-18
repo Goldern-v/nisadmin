@@ -7,21 +7,7 @@ class SelectPeopleViewModel {
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
   @observable selectTreeDataAll: any = [];
-
   @observable public newSelectTreeDataAll = [
-    // {
-    //   step: "按片区选择",
-    //   label: "按片区选择",
-    //   data: [],
-    //   dataLabel: "deptName",
-    //   stepLabel: "deptCode"
-    // },
-    // {
-    //   step: "默认科室",
-    //   label: "",
-    //   data: []
-    // },
-
     {
       step: "按护理单元选择",
       label: "按护理单元选择",

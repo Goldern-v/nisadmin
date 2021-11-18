@@ -115,7 +115,9 @@ export default observer(function BaseInfo() {
           院内工作地点: data.workAddress,
           工作护理单元: data.deptName
         },
-        {
+        appStore.HOSPITAL_ID === 'gxjb' ? {
+          家庭住址: data.address
+        } : {
           鞋码大小: data.shoeSize
         }
       ])

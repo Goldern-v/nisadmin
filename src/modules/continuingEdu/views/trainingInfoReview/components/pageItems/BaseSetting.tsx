@@ -176,10 +176,23 @@ export default function BaseSetting(props: Props) {
           </div>
           <div className="row">
             <div className="label" style={{ width: _labelWidth }}>
+              签到开始时间：
+            </div>
+            <div className="content">{info.signInStartTime}</div>
+          </div>
+          <div className="row">
+            <div className="label" style={{ width: _labelWidth }}>
+              签到结束时间：
+            </div>
+            <div className="content">{info.signInEndTime}</div>
+          </div>
+          <div className="row">
+            <div className="label" style={{ width: _labelWidth }}>
               签到方式：
             </div>
             <div className="content">
-              <span>二维码</span>
+              <span>{info.qrCodeType==1?"静态二维码":"动态二维码"}</span>
+              {info.qrCodeType==2&&<span style={{marginLeft: "20px"}}>刷新时间:{info.refreshTime}秒</span>}
               <Button
                 style={{ marginLeft: 10, height: 20 }}
                 size="small"

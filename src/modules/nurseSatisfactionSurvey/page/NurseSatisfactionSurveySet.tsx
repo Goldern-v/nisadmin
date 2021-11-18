@@ -2,17 +2,14 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input, Switch } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
+import { DatePicker, ColumnProps, PaginationConfig, Modal, message, Input, Switch } from 'src/vendors/antd'
+import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
-import NurseSatisfactionSurveyAddModal from '../components/NurseSatisfactionSurveyAddModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
-import { fileDownload } from 'src/utils/file/file'
-import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
 import SetImportModal from '../components/SetImportModal'
 export interface Props { }
@@ -52,8 +49,6 @@ export default observer(function MyCreateList() {
     innovation: 'innovation'
   }
   const path = window.location.hash.split('/').reverse()[0]
-
-  const status = pathMap[path]
 
   let columns: ColumnProps<any>[] = []
   columns =
@@ -157,7 +152,6 @@ export default observer(function MyCreateList() {
           .then(res => {
             message.success('删除成功', 1, () => getData())
           }, err => setPageLoading(false))
-
       }
     })
   }

@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
+import {  Select, ColumnProps, PaginationConfig, Modal, message } from 'src/vendors/antd'
+import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyService'
 import NurseSatisfactionSurveyAddModal from '../components/NurseSatisfactionSurveyAddModal'
@@ -12,7 +12,6 @@ import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import { fileDownload } from 'src/utils/file/file'
-import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
 const api = new NurseSatisfactionSurveyService();
 export interface Props { }
@@ -21,20 +20,12 @@ export default observer(function MyCreateList() {
   const [year, setYear] = useState<Number>(+moment().format('YYYY'))
   const [month, setMonth]  = useState<String>('')
   const [state, setState]  = useState<String>('')
-  const [templateList, setTemplateList]: any = useState([])
-  const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
-  const [deptSelect, setDeptSelect] = useState('')
   const [yearList, setYearList] = useState([] as number[])
   const [monthList, setMonthList] = useState([] as string[])
-  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [editVisible, setEditVisible] = useState(false)
   const [editVisible2, setEditVisible2] = useState(false)
-  const [pathChange, setPathChange] = useState("")
-  const [idChange, setIdChange] = useState("")
   const [isAdd, setIsAdd] = useState(false)
   const [record, setRecord] = useState({} as any)
   /** 类别 */
@@ -124,7 +115,6 @@ export default observer(function MyCreateList() {
     setYearList([nowYear-5,nowYear-4,nowYear-3,nowYear-2,nowYear-1,nowYear,nowYear+1,nowYear+2,nowYear+3,nowYear+4,nowYear+5])
     setMonthList(['1','2','3','4','5','6','7','8','9','10','11','12'])
   }
-  const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
 
   const getData = () => {
     setPageLoading(true)
@@ -137,7 +127,6 @@ export default observer(function MyCreateList() {
       })
       .then((res) => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
@@ -146,14 +135,6 @@ export default observer(function MyCreateList() {
   const handleAddNew = (record: any) => {
     setIsAdd(true)
     setEditVisible(true)
-  }
-
-  //查看随访问卷
-  const setDetailModal = (item: any) => {
-    // window.open(item.path)
-    setEditVisible2(true)
-    setPathChange(item.path)
-    setIdChange(item.id)
   }
 
   const onEdit = (record: any) => {
@@ -193,7 +174,6 @@ export default observer(function MyCreateList() {
     })
     .then(res => {
       setPageLoading(false)
-      setSelectedRowKeys([])
       fileDownload(res)
     }, err => setPageLoading(false))
   }
@@ -283,7 +263,6 @@ export default observer(function MyCreateList() {
       {editVisible && <NurseSatisfactionSurveyAddModal
         params={record}
         visible={editVisible}
-        deptList={deptListAll}
         isAdd={isAdd}
         type={status}
         onOk={() => {

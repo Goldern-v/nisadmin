@@ -3,8 +3,8 @@ import qs from "qs";
 
 export default class TrainingManualApi extends BaseApiService {
   // 我的培训清单（首页主列表）--查询
-  public async queryMyTrainingListByList(nurseHierarchy: any, empNo: any) {
-    return this.post('/studyAndTrain/trainingList/getTrainingList', { nurseHierarchy, empNo })
+  public async queryMyTrainingListByList(nurseHierarchy: any, deptCode: any) {
+    return this.post('/studyAndTrain/trainingList/getTrainingList', { nurseHierarchy, deptCode })
     // return this.post(
     //   `/studyAndTrain/trainManualManage/queryMyTrainingListByList/${nurseHierarchy}`
     // );
@@ -48,5 +48,24 @@ export default class TrainingManualApi extends BaseApiService {
     //   obj
     // );
   }
+
+  //导出培训清单
+  public async exportTrainingList(data: any) {
+    return this.post('studyAndTrain/trainingList/exportTrainingList',data,  {
+      responseType: "blob"
+    })
+  }
+
+  //下载导入培训清单模版
+  public async importTemplate() {
+    return this.post('studyAndTrain/trainingList/downloadTrainingListTemplate', {},{
+      responseType: "blob"
+    })
+  }
+  // 导入培训清单模版
+  public async importTrainingData(formData: any) {
+    return this.post('studyAndTrain/trainingList/importTrainingList', formData,{headers: {'Content-Type': 'multipart/form-data'}})
+  }
+
 }
 export const trainingManualApi = new TrainingManualApi();

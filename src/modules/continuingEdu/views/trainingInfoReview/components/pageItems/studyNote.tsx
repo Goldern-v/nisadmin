@@ -67,6 +67,7 @@ export default function Participation(props: Props) {
   }
 
   const setKey = (arr = []) => {
+    arr = arr || []
     return arr.map((i: any) => {
       return {
         ...i,

@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Input, InputNumber, Modal, Row, Select, Icon, Spin } from 'antd'
+import React from 'react'
+import { Modal, Icon } from 'antd'
 import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
-import { fileDownload } from 'src/utils/file/file'
 
 const api = new NurseHandBookService();
 export interface Props {
@@ -16,8 +15,6 @@ export interface Props {
 }
 export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp, previewPaperData } = props
-  const [loading, setLoading] = useState(false)
-  const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "88vh"}
   const afterClose = () => {}
   
@@ -26,7 +23,6 @@ export default function editModal(props: Props) {
     width={1000}
     bodyStyle={bdstyle}
     afterClose={afterClose}
-    confirmLoading={loading}
     okText={"保存"}
     centered
     visible={visible}

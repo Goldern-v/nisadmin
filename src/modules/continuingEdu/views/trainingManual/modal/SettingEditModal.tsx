@@ -143,6 +143,12 @@ export default function SettingEditModal(props: Props) {
             if (!newParams.empName) {
               newParams.empName = authStore.user?.empName
             }
+            if (!newParams.deptCode) {
+              newParams.deptCode = authStore.user?.deptCode
+            }
+            if (!newParams.deptName) {
+              newParams.deptName = authStore.user?.deptName
+            }
             newParams.assessmentForm = newParams.evaluateMethod
             if (params.id) {
               newParams.id = params.id;
