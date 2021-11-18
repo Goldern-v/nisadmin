@@ -127,12 +127,13 @@ export default function EidtModal(props: any) {
       dataIndex: 'teamName',
       key: 'teamName',
       align: 'center',
+      className: 'ipt-cell',
       width: 100,
       render: (text: string, record: any) => {
         return (
           <div>
             <Input
-              style={{ width: 150 }}
+              style={{ width: 170 }}
               value={record.teamName}
               onChange={(e: any) => {
                 record.teamName = e.currentTarget.value
@@ -202,4 +203,19 @@ const Wrapper = styled.div`
 .ml-20 {
   margin-left: 20px;
 }
+.ipt-cell{
+    padding:0!important;
+    textarea,.ant-select-selection,.ant-input{
+      border:0;
+      outline:0;
+      border-radius:0;
+      resize: none;
+    }
+    .ant-select-arrow{
+      display:none;
+    }
+    .ant-select-selection-selected-value{
+      padding-right:0!important;
+    }
+  }
 `

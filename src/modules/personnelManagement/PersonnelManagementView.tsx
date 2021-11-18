@@ -38,12 +38,14 @@ export default function PersonnelManagementView() {
         return menuConfig_wh;
       case 'gxjb':
         return menuConfig_gxjb;
-        // if (authStore.isRoleManage) return menuConfig_gxjb;
-        // return menuConfig_gxjbSelf
+      // if (authStore.isRoleManage) return menuConfig_gxjb;
+      // return menuConfig_gxjbSelf
       case 'fsxt':
         return menuConfig_wh;
       case 'dgxg':
         return menuConfig_dgxg;
+      case 'whyx'://武汉亚心
+        return menuConfig_wh;
       default:
         return menuConfig_hj;
     }

@@ -9,12 +9,12 @@ class Api extends BaseApiService {
       beginDate: data.beginDate ? moment(data.beginDate).format('YYYY-MM-DD HH:mm') : '',
       endDate: data.endDate ? moment(data.endDate).format('YYYY-MM-DD HH:mm') : '',
     }
-    if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       return this.post(`/form/searchRoom/master/getPageByUserDept`, params)
-    }else {
+    } else {
       return this.post(`/form/searchRoom/master/getPage`, params)
     }
-    
+
   }
 
   // 获取详情
@@ -32,6 +32,30 @@ class Api extends BaseApiService {
     return this.post(`/form/searchRoom/master/handleNode`, params)
   }
 
+  // 删除
+  deleteitem(params: Object) {
+    return this.post(`/form/searchRoom/master/delete`, params)
+  }
+
+  // 撤销
+  cancelCommit(params: Object) {
+    return this.post(`/form/searchRoom/master/cancelCommit`, params)
+  }
+
+  // 查询我创建的表格
+  getPageByCreatorNo(data: any) {
+    const params = {
+      beginDate: '',
+      endDate: '',
+      formCodes: '',
+      type: '',
+      status: '',
+      deptCodes: [],
+      keyword: '',
+      ...data
+    }
+    return this.post(`/form/searchRoom/master/getPageByCreatorNo`, params)
+  }
 
 }
 

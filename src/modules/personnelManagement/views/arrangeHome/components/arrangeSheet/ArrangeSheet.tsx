@@ -67,33 +67,33 @@ export default observer(function ArrangeSheet(props: Props) {
   const nysGroupName =
     appStore.HOSPITAL_ID == "nys"
       ? [
-          {
-            title: "类别标题",
-            dataIndex: "groupName",
-            width: 70,
-            fixed: "left",
-            align: "center",
-          },
-        ]
+        {
+          title: "类别标题",
+          dataIndex: "groupName",
+          width: 70,
+          fixed: "left",
+          align: "center",
+        },
+      ]
       : [];
 
   const nysHandleDel =
     appStore.HOSPITAL_ID == "nys" && isEdit
       ? [
-          {
-            title: "操作",
-            dataIndex: "",
-            width: 70,
-            align: "center",
-            render(text: any, record: any, index: number) {
-              return (
-                <DoCon>
-                  <span onClick={() => handleDelete(record)}>删除</span>
-                </DoCon>
-              );
-            },
+        {
+          title: "操作",
+          dataIndex: "",
+          width: 70,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <DoCon>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
           },
-        ]
+        },
+      ]
       : [];
 
   /**
@@ -357,7 +357,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -525,22 +525,22 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) {}
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (
           (document as any).querySelector("#arrangeSheet .ant-table-body") &&
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .scrollWidth ==
-            (document as any).querySelector("#arrangeSheet .ant-table-body")
-              .clientWidth
+          (document as any).querySelector("#arrangeSheet .ant-table-body")
+            .clientWidth
         ) {
           let widthNys =
             appStore.HOSPITAL_ID == "nys"
               ? 210
               : appStore.HOSPITAL_ID == "dgxg"
-              ? 350
-              : 250;
+                ? 350
+                : 250;
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -558,8 +558,9 @@ export default observer(function ArrangeSheet(props: Props) {
                 gzsrm: () => 6,
                 lcey: () => 2,
                 dgxg: () => 2,
+                fsxt: () => 6,
               })) *
-              70 +
+            70 +
             widthNys +
             10 +
             "px";
@@ -572,13 +573,13 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) {}
+    } catch (error) { }
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) {}
+    } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   // 拖拽排序
@@ -633,7 +634,7 @@ export default observer(function ArrangeSheet(props: Props) {
           });
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-        } catch (error) {}
+        } catch (error) { }
     }
   };
 
@@ -831,7 +832,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-        getWeekString(date).indexOf("日") > -1
+          getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }

@@ -51,12 +51,21 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9869') >= 0) {
     folderSrc = '/crdata/webProject/manage-wujing'
   }
+  //武汉亚心
+  if (process.env.npm_lifecycle_event.indexOf('9885') >= 0) {
+    folderSrc = '/crdata/webProject/manage-wuhanyaxin'
+  }
+  //佛山市一
+  if (process.env.npm_lifecycle_event.indexOf('9883') >= 0) {
+    folderSrc = '/crdata/webProject/manage-foshanshiyi'
+  }
 
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'
     folderSrc = '/crdata/webProject/front-end-doc/manage'
   }
+
   // localSrc = './build'
 
   let serverInfo = {

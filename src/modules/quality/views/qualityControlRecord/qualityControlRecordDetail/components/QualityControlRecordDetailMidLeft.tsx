@@ -25,10 +25,10 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   let [causeList, setCauseList]: any = useState([]);
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
-
+  
   //
   const { detailData } = props;
-
+  let deductMarksType = detailData.master?.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
   const qcCode = detailData?.master?.qcCode || ''
   let qcMatchCode = appStore.HOSPITAL_ID as string
   if (appStore.HOSPITAL_ID == 'wh' && qcCode == 'QCTP209') qcMatchCode = 'QCTP209'
@@ -292,7 +292,10 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                           <Icon
                             type="close-square"
                             className={subItem.checked ? 'checked' : 'unchecked'} />
-                          <span style={{ verticalAlign: 'middle' }}>{subItem.subItemName}</span>
+                          <span style={{ verticalAlign: 'middle' }}>
+                            {subItem.subItemName}
+                            {detailData.master?.useSubItemFixedScore && <span>({subItem.fixedScore})</span>}
+                            </span>
                         </div>
                       ))}
                       <div>
@@ -303,7 +306,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                             verticalAlign: 'middle',
                             color: 'rgba(0, 0, 0, 0.65)',
                           }}>
-                          自定义扣分
+                          {deductMarksType}
                         </span>
                         <Input
                           size="small"
@@ -314,6 +317,33 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                           }}
                           readOnly
                           value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0} />
+                        {detailData.master?.useSubItemFixedScore && <span
+                          style={{
+                            marginRight: '5px',
+                            marginLeft: '26px',
+                            verticalAlign: 'middle',
+                            color: 'rgba(0, 0, 0, 0.65)',
+                          }}>
+                          问题总扣分
+                        </span>}
+                        {detailData.master?.useSubItemFixedScore && <Input
+                          size="small"
+                          style={{
+                            width: 80,
+                            display: 'inline-block',
+                            verticalAlign: 'middle'
+                          }}
+                          readOnly
+                          value={
+                            (item.subItemList || []).reduce((pre:any,itemScore:any)=>{
+                              if(itemScore.checked){
+                                return Number(pre + itemScore.fixedScore)
+                              }else{
+                                return Number(pre)
+                              }
+                            },Number(item.remarkDeductScore))
+                          }
+                        />}
                       </div>
                     </React.Fragment>}
                     <div style={{ marginTop: 5 }}>

@@ -4,7 +4,7 @@ import { Place } from "src/components/common";
 import { Select, Input, Button } from "antd";
 import DeptSelect from "src/components/DeptSelect";
 import emitter from "src/libs/ev";
-import store from "src/stores";
+import store, { appStore } from "src/stores";
 import service from "src/services/api";
 import MultipleDeptSelect from "src/components/MultipleDeptSelect";
 import { DatePicker } from "src/vendors/antd";
@@ -42,7 +42,7 @@ export default function SelectCon(props: Props) {
   const onSearch = () => {
     emitter.emit("refreshNurseAuditTable");
   };
-  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => { };
 
   useEffect(() => {
     service.commonApiService.dictInfo("audit_type").then(res => {
@@ -88,7 +88,7 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey="完整科室" />
+        <MultipleDeptSelect deptKey={appStore.HOSPITAL_ID === 'gxjb' ? '全部科室' : '完整科室'} />
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

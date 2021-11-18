@@ -9,6 +9,14 @@ const defaultStepData2 = {
   title: "",
   /**  培训开始时间 */
   startTime: "",
+  /**  签到开始时间 */
+  signInStartTime: "",
+  /**  签到结束时间 */
+  signInEndTime: "",
+  /**二维码类型（1：静态码 2:动态码）*/
+  qrCodeType: 1,
+   /**刷新时间 单位：秒*/
+  refreshTime: "",
   /**  开放时长 */
   openTime: "1",
   /**  开放时长单位（小时、天、周） */
@@ -213,6 +221,10 @@ class StepViewModal {
       category: this.stepData2.category,
       pointsForAttention: this.stepData2.pointsForAttention,
       detailInfo: {
+        signInStartTime: this.stepData2.signInStartTime,
+        signInEndTime: this.stepData2.signInEndTime,
+        qrCodeType: this.stepData2.qrCodeType,
+        refreshTime: this.stepData2.refreshTime,
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         hasTeacherCredit: this.stepData2.hasTeacherCredit,

@@ -78,7 +78,8 @@ class QualityControlRecordEditModel {
     qcName: '',
     qcGroupRoles: '',
     useScore: false,
-    qcCode: ''
+    qcCode: '',
+    useSubItemFixedScore: false,
   }
   //加载状态
   @observable loading = false
@@ -150,7 +151,8 @@ class QualityControlRecordEditModel {
       qcName: '',
       qcGroupRoles: '',
       useScore: false,
-      qcCode: ''
+      qcCode: '',
+      useSubItemFixedScore: false,
     }
 
     for (let x in this.master) {
@@ -206,7 +208,8 @@ class QualityControlRecordEditModel {
                 intro: template.intro,
                 qcGroupRoles: template.qcGroupRoles,
                 useScore: template.useScore || false,
-                qcCode: template.qcCode || ''
+                qcCode: template.qcCode || '',
+                useSubItemFixedScore: template.useSubItemFixedScore
               }
             }
 
@@ -255,7 +258,8 @@ class QualityControlRecordEditModel {
                 intro: master.intro,
                 qcGroupRoles: master.qcGroupRoles,
                 useScore: master.useScore || false,
-                qcCode: master?.qcCode || ''
+                qcCode: master?.qcCode || '',
+                useSubItemFixedScore: master.useSubItemFixedScore
               }
             }
 

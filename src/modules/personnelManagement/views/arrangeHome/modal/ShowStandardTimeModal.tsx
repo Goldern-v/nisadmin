@@ -58,8 +58,11 @@ export default function ShowStandardTimeModal(props: Props) {
         endDate: selectViewModal.params.endTime
       })
       .then((res: any) => {
-        setList(res.data);
+        // setList(res.data);
       });
+    arrangeService.schInitialHourGetList({ deptCode: authStore.selectedDeptCode }).then((res: any) => {
+      setList(res.data);
+    });
   };
 
   useLayoutEffect(() => {
@@ -81,8 +84,9 @@ export default function ShowStandardTimeModal(props: Props) {
     >
       <Wrapper>
         <div className="row">
-          <span className="key">默认:</span>
-          <span className="value">37.5h</span>
+          {/* <span className="key">默认:</span> */}
+          {/* <span className="value">37.5h</span> */}
+          {list.length == 0 && <span>暂无设置标准工时</span>}
         </div>
         {list.map((item: any) => (
           <div className="row" key={item.startDate}>
