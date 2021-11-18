@@ -240,7 +240,10 @@ class StatisticsApi extends BaseApiService {
   public async getTotalUser() {
     return this.get(`/total/totalUser`)
   }
-
+  // 护士节假日排班表 -- 聊城
+  public async getTotalUserForLC(type: any = 0) {
+    return this.post(`/totalUserForLC`, { type })
+  }
   //// 患者查询统计模块
   // 住院病人认知情况统计表 查询
   public async patientStatistics(exportData: any = true) {

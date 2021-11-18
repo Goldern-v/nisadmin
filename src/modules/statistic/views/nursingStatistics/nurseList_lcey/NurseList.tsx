@@ -24,7 +24,12 @@ export default function BedSituation() {
   }
   useEffect(() => {
     setSpinning(true)
-    statisticsApi.getTotalUser().then((res: any) => {
+    let userType = 0
+    let typeToCode = { '华美': 2, '本院': 1 }
+    if (dataType.length == 1) {
+      userType = typeToCode[dataType[0]]
+    }
+    statisticsApi.getTotalUserForLC(userType).then((res: any) => {
       let users = res.data[0]!.users
       // let res = data
       // let l: any = []
