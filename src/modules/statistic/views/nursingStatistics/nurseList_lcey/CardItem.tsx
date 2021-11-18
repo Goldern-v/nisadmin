@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { numberToArray } from 'src/utils/array/array'
 export interface Props {
-  data: any
+  data: any,
+  showYear: Boolean,
 }
 const TITLE_COLOR: any = {
   培训护士: '#D3D2D7',
@@ -34,7 +35,6 @@ export default function CardItem(props: Props) {
     }
     return result
   }
-
   let deptName = props.data && props.data.deptName
   let userSortList: any[] = ((props.data && props.data.users) || [])
     .map((item: any) => {
@@ -59,6 +59,7 @@ export default function CardItem(props: Props) {
             <tr key={index}>
               {item.map((obj: any, i: number) => (
                 <td
+                  className="relative-box"
                   key={i}
                   style={
                     obj.empName
@@ -69,6 +70,16 @@ export default function CardItem(props: Props) {
                   }
                 >
                   {obj.empName}
+                  <div
+                    style={{
+                      display: props.showYear && obj.goWorkTime || obj.goWorkTime === 0 ? 'block' : 'none',
+                      width: '100%',
+                      position: "relative",
+                      left: 0,
+                      textAlign: 'center'
+                    }}>
+                    {`${obj.goWorkTime}\n年`}
+                  </div>
                 </td>
               ))}
             </tr>
@@ -80,6 +91,9 @@ export default function CardItem(props: Props) {
 }
 
 const Wrapper = styled.div`
+  .relative-box{
+    position:relative;
+  }
   width: 100%;
   /* height: 100%; */
   margin: 15px 10px;
