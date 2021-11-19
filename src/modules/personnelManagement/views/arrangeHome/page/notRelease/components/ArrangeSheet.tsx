@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 // import { Button } from "antd";
-import BaseTable, { DoCon } from "src/components/BaseTable";
-// import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
 import { createContextMenu } from "../../../components/arrangeSheet/ContextMenu";
 import Cell from "../../../components/arrangeSheet/Cell";
 import { sheetViewModal } from "../../../viewModal/SheetViewModal";
@@ -18,6 +16,7 @@ import AddRemakeModal from "../../../modal/AddRemakeModal";
 import TotalCell from "./TotalCell";
 import { appStore, authStore } from "src/stores";
 import { notSelectViewModal } from './SelectViewModal'
+import { Table } from "src/vendors/antd";
 
 export interface Props {
   /** 编辑模式 */
@@ -28,7 +27,6 @@ export interface Props {
 
 export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight, isEditable } = props;
-  const [surplusWidth, setSurplusWidth]: any = useState(false);
   let contextMenu = createContextMenu();
   /** 修改工时 or 加减班 */
 
@@ -57,56 +55,54 @@ export default observer(function ArrangeSheet(props: Props) {
     }
     return title
   }
-
-
   let columns: any = [
     {
       title: "序号",
       render: (text: string, row: any, index: number) => index + 1,
       fixed: "left",
-      width: 40,
+      width: 60,
       align: "center"
     },
     {
       title: "工号",
       dataIndex: "empNo",
-      width: 50,
+      width: 80,
       fixed: "left",
       align: "center"
     },
-
     {
       title: "姓名",
       dataIndex: "empName",
-      width: 50,
+      width: 100,
       fixed: "left",
       align: "center"
     },
     {
       title: "所属科室",
       dataIndex: "deptName",
-      width: 70,
+      width: 180,
       fixed: "left",
       align: "center"
     },
     {
       title: '层级',
       dataIndex: "nurseHierarchy",
-      width: 40,
+      width: 74,
       fixed: "left",
       align: "center"
     },
     {
       title: "职称",
       dataIndex: "newTitle",
-      width: 70,
+      width: 120,
       fixed: "left",
       align: "center"
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
         title: <Th date={date} />,
-        width: 70,
+        width: 72,
+        align: "center",
         render(text: any, record: any) {
           return (
             <Cell
@@ -130,7 +126,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 70,
+      width: 72,
       align: "center",
       render(text: string, record: any) {
         return <TotalCell id={record.id} />;
@@ -144,63 +140,17 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   useLayoutEffect(() => {
-    try {
-      (document as any)
-        .getElementById("baseTable")!
-        .querySelector(
-          ".ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed"
-        )!.style.marginBottom =
-        (document as any)
-          .getElementById("baseTable")!
-          .querySelector(".ant-table-footer")!.offsetHeight + "px";
-    } catch (error) {
-      console.log("同步备注滚动报错");
-    }
-    try {
-      setTimeout(() => {
-        if (
-          (document as any).querySelector("#arrangeSheet .ant-table-body") &&
-          (document as any).querySelector("#arrangeSheet .ant-table-body")
-            .scrollWidth ==
-          (document as any).querySelector("#arrangeSheet .ant-table-body")
-            .clientWidth
-        ) {
-
-          (document as any).querySelector(
-            "#arrangeSheet #baseTable"
-          ).style.margin = 'auto'
-          let widthNys = 250;
-          /** noscorll */
-          (document as any).querySelector(
-            "#arrangeSheet #baseTable"
-          ).style.width =
-            (sheetViewModal.dateList.length +
-              appStore.hisAdapter({
-                lcey: () => 2,
-              })) *
-            70 +
-            widthNys +
-            10 +
-            "px";
-          setSurplusWidth(false);
-        } else {
-          (document as any).querySelector("#arrangeSheet #baseTable") &&
-            ((document as any).querySelector(
-              "#arrangeSheet #baseTable"
-            ).style.width = "auto");
-          setSurplusWidth(isEdit ? 300 : 240);
-        }
-      }, 10);
-    } catch (error) {
-    }
-    try {
-      let remark = sheetViewModal.remark;
+    if (sheetViewModal && sheetViewModal.dateList.length === 7) {
       (document as any).querySelector(
-        ".remark-con.real textarea"
-      ).value = remark;
-    } catch (error) {
+        "#arrangeSheet #baseTable"
+      ).style.width = 1240 + 'px'
+    } else {
+      (document as any).querySelector("#arrangeSheet #baseTable") &&
+        ((document as any).querySelector(
+          "#arrangeSheet #baseTable"
+        ).style.width = "auto");
     }
-  }, [sheetViewModal.notSheetTableData, surplusWidth, sheetViewModal.remark]);
+  }, [sheetViewModal.notSheetTableData]);
 
 
   return (
@@ -210,43 +160,26 @@ export default observer(function ArrangeSheet(props: Props) {
           <div className='title'>{deptName() ? deptName()?.name : '全院'}未发布护士排班表</div>
           <div>日期：<span>2021-11-08</span> 至 <span>2021-11-14</span></div>
         </div>
-        {sheetViewModal.notSheetTableData.length > 0 && (
-          <BaseTable
-            loading={sheetViewModal.tableLoading}
-            surplusHeight={surplusHeight}
-            surplusWidth={surplusWidth}
-            columns={columns}
-            // fixedFooter={true}
-            dataSource={sheetViewModal.notSheetTableData}
 
-            type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-          />
-        )}
-        {sheetViewModal.notSheetTableData.length <= 0 && (
-          <BaseTable
+        <div id='baseTable' className='notTabel'>
+          <Table
             loading={sheetViewModal.tableLoading}
-            surplusHeight={surplusHeight}
-            surplusWidth={surplusWidth}
+            className='tableList'
+            size="small"
+            pagination={false}
+            bordered
             columns={columns}
-            // fixedFooter={true}
             dataSource={sheetViewModal.notSheetTableData}
-            type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-          />
-        )}
-        {/* <contextMenu.Component />
-        <editEffectiveTimeModal.Component />
-        <editVacationCountModal.Component />
-        <addAccumulativeLeaveModal.Component />
-        <addRemakeModal.Component /> */}
+            scroll={{ x: 1100, y: 'calc(100vh - 280px)' }} />
+        </div>
       </div>
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   .module{
-    // margin: 10px;
-    height: 100%;
-    // background: #fff;
+    height: calc(100vh - 100px);
+    background: #fff;
     .tebleHeader{
       text-align: center;
       padding: 30px 0 10px 0;
@@ -255,116 +188,50 @@ const Wrapper = styled.div`
         margin-bottom: 10px;
       }
     }
-  }
-  background: #fff;
-  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
-  .ant-table-row-hover {
-    background: #fff !important;
-    > td {
-      background: #fff !important;
-    }
-  }
-  .ant-input {
-    border: 0;
-    border-radius: 0;
-    text-align: center;
-    outline: 0;
-    box-shadow: none !important;
-    padding: 4px;
-    height: 27px;
-  }
-  #baseTable {
-    /* margin: 10px;
-    border-radius: 5px; */
-    .ant-table-body td,
-    .ant-table-tbody td {
-      padding: 0 2px !important;
-      font-size: 12px !important;
-      height: 25px !important;
-    }
-    td {
-      word-break: break-all;
-    }
-    /* tr {
-      cursor: auto !important;
-    } */
-    .ant-table-column-title {
-      font-size: 12px !important;
-    }
-    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
-    .ant-table-row-hover > td {
-      background: none;
+    .notTabel{
+      margin: 0 auto;
+      .ant-table-body{
+        overflow: auto !important;
+      }
+      .tableList{
+        margin: 20px
+      }
+      .ant-table-thead{
+        background: rgba(242,244,245,1);
+      }
+      *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: #eaeaea;
+      }
+      *::-webkit-scrollbar-x {
+        width: 8px;
+        height: 8px;
+        background-color: #fff;
+      }
+      *::-webkit-scrollbar-track {
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+        border-radius: 50px;
+        background-color: #eaeaea;
+      }
+      *::-webkit-scrollbar-thumb {
+        border-radius: 50px;
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+        background-color: #c2c2c2;
+      }
+  
+      .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+        padding-bottom: 4px;
+        margin-bottom: -8px !important;
+      }
+      .ant-table-fixed-left .ant-table-body-outer{
+        margin-bottom: -8px !important;
+      }
     }
   }
   .ant-table-column-title {
     font-size: 13px !important;
     line-height: 1.3;
-  }
-  .ant-table-fixed-left {
-    box-shadow: none;
-    z-index: 0 !important;
-  }
-  /** fix table scroll bug */
-  div.ant-table-body {
-    background: #fafafa !important;
-  }
-  tbody.ant-table-tbody {
-    background: #fff;
-  }
-  .ant-table-footer {
-    border: 0 !important;
-    background: #fafafa !important;
-    z-index: 10;
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
-  .ant-table-body-outer::after {
-    background: #fafafa !important;
-  }
-  &.isEdit {
-    .ant-table-fixed-left {
-      td {
-        background: #f8f8f8 !important;
-      }
-    }
-  }
-  .remark-con {
-    margin-top: -10px;
-    width: 100%;
-    textarea {
-      resize: none;
-    }
-    .remark-title {
-      margin-bottom: 5px;
-      font-size: 12px;
-    }
-    &.space {
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      pointer-events: none;
-      padding: 0 0 10px;
-    }
-    &.real {
-      position: absolute;
-      left: 0;
-      z-index: 10;
-      padding: 10px;
-    }
-  }
-  &.isEdit {
-    .ant-table-body {
-      tr {
-        cursor: auto !important;
-        /* pointer-events: none; */
-      }
-    }
-  }
-  .nysCss {
-    text-align: left !important;
-    padding: 0 20px;
-    box-sizing: border-box;
   }
 `;
 

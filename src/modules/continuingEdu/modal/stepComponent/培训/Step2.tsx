@@ -246,7 +246,7 @@ export default observer(function Step1() {
             </React.Fragment>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+          {stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24}>
               <Form.Field
                 label={`签到开始时间`}
@@ -257,7 +257,7 @@ export default observer(function Step1() {
             </Col>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+          {stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24}>
               <Form.Field
                 label={`签到结束时间`}
@@ -268,7 +268,7 @@ export default observer(function Step1() {
             </Col>
           )}
 
-          {appStore.HOSPITAL_ID == "lcey" && stepViewModal.stepData2.organizationWay == "2" && (
+          {stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24} className="rowDivF">
               <Form.Field
                 label={`二维码`}
