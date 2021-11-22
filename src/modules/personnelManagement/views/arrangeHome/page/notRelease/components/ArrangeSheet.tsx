@@ -28,6 +28,7 @@ export interface Props {
 export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight, isEditable } = props;
   let contextMenu = createContextMenu();
+  let [isFixed, setIsFixed] = useState(false)
   /** 修改工时 or 加减班 */
 
   let editEffectiveTimeModal = createModal(
@@ -140,15 +141,18 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (sheetViewModal && sheetViewModal.dateList.length === 7) {
+    if (sheetViewModal && sheetViewModal.dateList.length <= 7) {
+      let fixWidth = 614;
       (document as any).querySelector(
         "#arrangeSheet #baseTable"
-      ).style.width = 1240 + 'px'
+      ).style.width = fixWidth + sheetViewModal.dateList.length * 72 + 72 + 50 + 'px'
+      setIsFixed(false)
     } else {
       (document as any).querySelector("#arrangeSheet #baseTable") &&
         ((document as any).querySelector(
           "#arrangeSheet #baseTable"
         ).style.width = "auto");
+      setIsFixed(true)
     }
   }, [sheetViewModal.notSheetTableData]);
 
@@ -158,7 +162,7 @@ export default observer(function ArrangeSheet(props: Props) {
       <div className='module'>
         <div className='tebleHeader'>
           <div className='title'>{deptName() ? deptName()?.name : '全院'}未发布护士排班表</div>
-          <div>日期：<span>2021-11-08</span> 至 <span>2021-11-14</span></div>
+          <div>日期：<span>{notSelectViewModal.params.startTime}</span> 至 <span>{notSelectViewModal.params.endTime}</span></div>
         </div>
 
         <div id='baseTable' className='notTabel'>
@@ -170,7 +174,7 @@ export default observer(function ArrangeSheet(props: Props) {
             bordered
             columns={columns}
             dataSource={sheetViewModal.notSheetTableData}
-            scroll={{ x: 1100, y: 'calc(100vh - 280px)' }} />
+            scroll={!isFixed ? { y: 'calc(100vh - 280px)' } : { x: 1100, y: 'calc(100vh - 280px)' }} />
         </div>
       </div>
     </Wrapper>
