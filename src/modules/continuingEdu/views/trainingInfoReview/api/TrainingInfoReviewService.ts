@@ -98,6 +98,10 @@ export default class TrainingInfoReviewService extends BaseApiService {
     return this.post('/studyAndTrain/teachingPlanManage/genSignInCode', qs.stringify({ cetpId }))
   }
 
+  public genSignInCodeLC(cetpId: string | number) {
+    return this.post('/studyAndTrain/teachingPlanManage/genSignInCodeForLC', qs.stringify({ cetpId }))
+  }
+
   // 保存学笔记
   public saveStudyNote(params: any) {
     return this.post('/studyAndTrain/studyNoteManage/saveStudyNote', params)

@@ -191,7 +191,7 @@ export default function BaseSetting(props: Props) {
               签到方式：
             </div>
             <div className="content">
-              <span>{info.qrCodeType==1?"静态二维码":"动态二维码"}</span>
+              <span>{info.qrCodeType==2?"动态二维码":"静态二维码"}</span>
               {info.qrCodeType==2&&<span style={{marginLeft: "20px"}}>刷新时间:{info.refreshTime}秒</span>}
               <Button
                 style={{ marginLeft: 10, height: 20 }}

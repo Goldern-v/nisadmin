@@ -19,6 +19,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 二级质控问题原因措施汇总 from './views/qcFormGzsrm/二级质控问题原因措施汇总'
+import 福清二级质控问题原因措施汇总 from './views/qcFormFqfybjy/二级质控问题原因措施汇总'
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 
 export default observer(function QcTwoRouter(props: Props) {
@@ -36,6 +37,12 @@ export default observer(function QcTwoRouter(props: Props) {
     path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
     icon: <JCTJ />,
     component: 二级质控问题原因措施汇总
+  }
+  const route_福清二级质控问题原因措施汇总 = {
+    title: "二级质控问题原因措施汇总",
+    path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
+    icon: <JCTJ />,
+    component: 福清二级质控问题原因措施汇总
   }
   const extra_menu = appStore.hisMatch({
     map: {
@@ -102,6 +109,35 @@ export default observer(function QcTwoRouter(props: Props) {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         route_质控表单汇总
+      ],
+      "fqfybjy": [
+        {
+          title: '二级质控月度报告',
+          icon: <YDBG />,
+          path: '/qcTwo/workSummaryReportList',
+          component: WorkSummaryReportList,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '防疫专项检查分析报告',
+          icon: <YDBG />,
+          path: '/qcTwo/防疫专项检查分析报告',
+          component: 防疫专项检查片区汇总,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '防疫专项检查汇总报告',
+          icon: <YDBG />,
+          path: '/qcTwo/防疫专项检查汇总',
+          component: 防疫专项检查汇总,
+          keepAlive: true,
+          // hide: !appStore.isDev,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        route_福清二级质控问题原因措施汇总,
       ],
       default: [
         {

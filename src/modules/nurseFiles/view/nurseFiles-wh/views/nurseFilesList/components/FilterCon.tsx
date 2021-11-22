@@ -11,7 +11,7 @@ import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/Stat
 import AgeRangePicker from "src/components/AgeRangePicker";
 import YearTimeRangePicker from "src/components/YearTimeRangePicker";
 import MonthTimeRangePicker from "src/components/MonthTimeRangePicker";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
 
@@ -229,19 +229,33 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={5}>
-              <Form.Field label={"鞋码大小"} name={"shoeSize"}>
-                <Select allowClear={true}>
-                  {statisticsViewModal
-                    .getDict("鞋码大小")
-                    .map((item, index) => (
-                      <Select.Option value={item.code} key={index}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                </Select>
-              </Form.Field>
-            </Col>
+            {appStore.HOSPITAL_ID === 'gxjb' ?
+              <Col span={5}>
+                <Form.Field label={"家庭住址"} name={"address"}>
+                  <Select allowClear={true}>
+                    {statisticsViewModal
+                      .getDict("家庭住址")
+                      .map((item, index) => (
+                        <Select.Option value={item.code} key={index}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Form.Field>
+              </Col> :
+              <Col span={5}>
+                <Form.Field label={"鞋码大小"} name={"shoeSize"}>
+                  <Select allowClear={true}>
+                    {statisticsViewModal
+                      .getDict("鞋码大小")
+                      .map((item, index) => (
+                        <Select.Option value={item.code} key={index}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Form.Field>
+              </Col>}
 
             <Col span={7} className="long">
               <Form.Field label={"执业证书有效期"} name={"zyzsEffectiveUp"}>

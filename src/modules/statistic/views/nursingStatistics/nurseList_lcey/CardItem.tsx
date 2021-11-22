@@ -17,7 +17,7 @@ const TITLE_COLOR: any = {
 }
 export default function CardItem(props: Props) {
   useEffect(() => { })
-
+  const star = require("./收藏.png")
   const adapter = (list: any[] = []) => {
     if (!list) return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},]]
     let length = 30
@@ -70,6 +70,16 @@ export default function CardItem(props: Props) {
                   }
                 >
                   {obj.empName}
+                  <div
+                    style={{
+                      display: obj.isNurseHead ? 'block' : 'none',
+                      width: '16px',
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                    }}>
+                    <img style={{ width: '100%' }} src={star} alt="" />
+                  </div>
                   <div
                     style={{
                       display: props.showYear && obj.goWorkTime || obj.goWorkTime === 0 ? 'block' : 'none',

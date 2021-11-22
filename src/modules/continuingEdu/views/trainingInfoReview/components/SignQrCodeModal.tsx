@@ -20,16 +20,19 @@ export default function SignQrCodeModal(props: Props) {
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
   const [qrCodeData, setQrCodeData] = useState('')
+  const [expirationTime, setExpirationTime]:any = useState("")
 
   const getQrCodeInfo = () => {
     setLoading(true)
     setMsg('')
-
     trainingInfoReviewService
-      .genSignInCode(ceptId)
+      .genSignInCodeLC(ceptId)
       .then((res) => {
         console.log()
-        if (res.data) setQrCodeData(res.data)
+        if (res.data){
+          setExpirationTime(res.data.expirationTime*1000)
+          setQrCodeData(res.data.signInCode)
+        } 
 
         setLoading(false)
       }, (err) => {
@@ -48,6 +51,26 @@ export default function SignQrCodeModal(props: Props) {
       })
   }
 
+  const [timer,setTimer]:any = useState(null)
+  const handleCancel = ()=>{
+    setExpirationTime(0)
+    onCancel()
+  }
+  useEffect(()=>{
+    if(expirationTime){
+      setTimer(null)
+      setTimer(setInterval(() => {
+        getQrCodeInfo()
+      }, expirationTime))
+    }
+  },[expirationTime])
+
+  useEffect(()=>{
+    if(!visible){
+      clearInterval(timer)
+    }
+  },[visible])
+  
   const handlePrint = () => {
     const d = document.getElementById("signQrCode") as any;
     var imgdata = d.toDataURL()
@@ -139,7 +162,7 @@ export default function SignQrCodeModal(props: Props) {
     visible={visible}
     width={240}
     bodyStyle={{ padding: 0 }}
-    onCancel={() => onCancel()}
+    onCancel={() => handleCancel()}
     footer={<FooterCon>
       <Button disabled={msg.length > 0} loading={loading} onClick={() => handlePrint()}>打印</Button>
       <Button type="primary" disabled={msg.length > 0} loading={loading} onClick={handleSave}>保存</Button>
