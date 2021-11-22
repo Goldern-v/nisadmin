@@ -91,6 +91,7 @@ export default observer(function FilterCon() {
       politicsLook: value.politicsLook,
       workAddress: value.workAddress,
       shoeSize: value.shoeSize,
+      address: value.address,
       workConversion: value.workConversion,
       ageStart: value.age ? value.age[0] : "",
       ageEnd: value.age ? value.age[1] : "",
@@ -232,15 +233,7 @@ export default observer(function FilterCon() {
             {appStore.HOSPITAL_ID === 'gxjb' ?
               <Col span={5}>
                 <Form.Field label={"家庭住址"} name={"address"}>
-                  <Select allowClear={true}>
-                    {statisticsViewModal
-                      .getDict("家庭住址")
-                      .map((item, index) => (
-                        <Select.Option value={item.code} key={index}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                  </Select>
+                  <Input />
                 </Form.Field>
               </Col> :
               <Col span={5}>

@@ -26,7 +26,7 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 导出护士列表
   public async countExcel(obj: any, onDownloadProgress: (progressEvent: any) => void) {
-    return this.post(`/auditeNurseListWH/countExcel`, obj, {
+    return this.post(`/auditeNurseListWH/${appStore.HOSPITAL_ID === 'gxjb' ? 'countExcelForJB' : 'countExcel'}`, obj, {
       responseType: 'blob',
       onDownloadProgress: onDownloadProgress
     })
