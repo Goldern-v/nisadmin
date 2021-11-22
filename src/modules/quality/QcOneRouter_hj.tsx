@@ -19,6 +19,7 @@ import { appStore } from 'src/stores'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
+import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 
 export default function QcOneRouterHj(props: Props) {
@@ -66,6 +67,13 @@ export default function QcOneRouterHj(props: Props) {
     icon: <JCTJ />,
     component: 一级质控问题原因措施汇总
   }
+  const route_福清一级质控问题原因措施汇总 = {
+    title: "一级质控问题原因措施汇总",
+    path: "/qcOneHj/一级质控问题原因措施汇总?qcLevel=1",
+    icon: <JCTJ />,
+    component: 福清一级质控问题原因措施汇总
+  }
+
   const LEFT_MENU_CONFIG: any = [
     route_质控记录,
     route_护理质量巡查情况汇总表,
@@ -74,6 +82,7 @@ export default function QcOneRouterHj(props: Props) {
       map: {
         dghl: [route_质控表单汇总],
         gzsrm: [route_一级质控问题原因措施汇总,],
+        fqfybjy: [route_福清一级质控问题原因措施汇总],
         other: []
       }
     })
