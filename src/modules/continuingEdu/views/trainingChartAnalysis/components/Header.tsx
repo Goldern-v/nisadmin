@@ -17,7 +17,7 @@ export default observer(function Header(props: Props) {
             <Radio.Button value={v.key} key={v.key}>{v.label}</Radio.Button>
           ))
         }
-        </Radio.Group>
+      </Radio.Group>
       <RightIcon>
         <span className="label">科室</span>
         <Select

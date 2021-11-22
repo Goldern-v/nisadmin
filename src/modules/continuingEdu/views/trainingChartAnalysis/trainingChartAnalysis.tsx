@@ -5,7 +5,6 @@ import Header from "./components/Header"
 
 import {trainingChartAnalysisModal } from './trainingChartAnalysisModal'
 import AnalysisChart from './components/AnalysisChart'
-import content from 'src/modules/indicator2/main/components/content'
 
 export interface Props {
 }
