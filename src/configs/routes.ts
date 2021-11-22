@@ -94,6 +94,9 @@ const BadEventsNewDetailNys = lazy(() =>
 const BadEventsNewDetailGzsrm = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail_gzsrm")
 );
+const BadEventsNewDetailFqfybjy = lazy(() =>
+  import("src/modules/badEventsNew/BadEventsNewDetail_fqfybjy")
+);
 //培训考核
 const TrainingExamination = lazy(() =>
   import("src/modules/trainingExamination/TrainingExamination")
@@ -599,7 +602,8 @@ const routes: RouteItem[] = [
       map: {
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
-        fqfybjy:BadEventsNewDetailNys,
+        // fqfybjy:BadEventsNewDetailNys,
+        fqfybjy: BadEventsNewDetailFqfybjy,
         other: BadEventsNewDetail,
       }
     }),
@@ -610,6 +614,7 @@ const routes: RouteItem[] = [
     appStore.hisMatch({
       map: {
         gzsrm: BadEventsNewDetailGzsrm,
+        fqfybjy: BadEventsNewDetailFqfybjy,
         other: BadEventsNewDetail
       }
     }),
