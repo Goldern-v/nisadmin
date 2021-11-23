@@ -85,27 +85,23 @@ export default class CourseLibraryModal {
       this[key] = val ? val.target.value : ''
     } else {
       this[key] = val
+      this.page = 1
+      this.getData()
     }
-    this.page = 1
-    this.getData()
   }
   @observable public tableLoading = false
   public getData() {
     this.tableLoading = true
     getResponseData(() => courseLibraryApi.getData(this.getParams)).then(res => {
-      console.log('test-res', res)
       this.tableList = res.list || []
       this.total = res.totalCount;
-      (this.page as number) += 1
     }).finally(() => {
       this.tableLoading = false
     })
-
   }
   public async getDeptList() {
     try {
       const res = await getResponseData(() => service.commonApiService.getNursingUnitAll())
-      console.log('test-res', res)
       if (res.deptList) {
         this.deptList = [
           {
@@ -147,7 +143,7 @@ export default class CourseLibraryModal {
     }
     if (s<=0) return [undefined, '']
     for(let key in obj) {
-      let val = parseInt((s / obj[key]) + '')
+      let val = parseFloat((s / obj[key]).toFixed(2))
       if (key == 'h') return [val, key]
       if (val < 60) {
         return [val, key]

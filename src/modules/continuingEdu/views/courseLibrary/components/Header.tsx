@@ -1,15 +1,15 @@
-import { Select, DatePicker, Button, Input } from 'antd'
-import { observer } from 'mobx-react'
-import React from 'react'
-import styled from 'styled-components'
-import { courseLibraryModal, SelectItem } from '../modal'
+import { Select, DatePicker, Button, Input } from "antd";
+import { observer } from "mobx-react";
+import React from "react";
+import styled from "styled-components";
+import { courseLibraryModal, SelectItem } from "../modal";
 
 export interface Prop {
-  openAdd: () => any
+  openAdd: () => any;
 }
 export default observer(function Header(props: Prop) {
-  const { typeList } = courseLibraryModal
-  const { openAdd } = props
+  const { typeList } = courseLibraryModal;
+  const { openAdd } = props;
   return (
     <Wrapper>
       <h1 className="title">课件库</h1>
@@ -17,9 +17,10 @@ export default observer(function Header(props: Prop) {
       <span className="label">上传时间：</span>
       <DatePicker.RangePicker
         value={courseLibraryModal.date}
-        onChange={(val: any) => courseLibraryModal.setFormData('date', val)}
-        format="YYYY-MM-DD HH:mm:ss"/>
-      
+        onChange={(val: any) => courseLibraryModal.setFormData("date", val)}
+        format="YYYY-MM-DD"
+      />
+
       <span className="label">科室：</span>
       <Select
         showSearch
@@ -27,7 +28,9 @@ export default observer(function Header(props: Prop) {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         value={courseLibraryModal.deptCode}
-        onChange={(val: string) => courseLibraryModal.setFormData('deptCode', val)}
+        onChange={(val: string) =>
+          courseLibraryModal.setFormData("deptCode", val)
+        }
       >
         {courseLibraryModal.deptList.map((item: SelectItem) => (
           <Select.Option value={item.code} key={item.code}>
@@ -38,24 +41,36 @@ export default observer(function Header(props: Prop) {
 
       <span className="label">课件类型：</span>
       <Select
-      value={courseLibraryModal.type}
-      onChange={(val:string) => courseLibraryModal.setFormData('type', val)}>
-        { typeList.map((item: SelectItem) => {
-          return <Select.Option value={item.code} key={item.code}>{ item.name}</Select.Option>
+        value={courseLibraryModal.type}
+        onChange={(val: string) => courseLibraryModal.setFormData("type", val)}
+      >
+        {typeList.map((item: SelectItem) => {
+          return (
+            <Select.Option value={item.code} key={item.code}>
+              {item.name}
+            </Select.Option>
+          );
         })}
       </Select>
       <Input
         placeholder="请输入要搜索的关键词"
         value={courseLibraryModal.keyword}
-        onChange={(val: any) => courseLibraryModal.setFormData('keyword', val)}/>
-      <Button onClick={() => {
-        courseLibraryModal.page = 1
-        courseLibraryModal.getData()
-      }}>查询</Button>
-      <Button type="primary" onClick={() => openAdd()}>添加课件</Button>
+        onChange={(val: any) => courseLibraryModal.setFormData("keyword", val)}
+      />
+      <Button
+        onClick={() => {
+          courseLibraryModal.page = 1;
+          courseLibraryModal.getData();
+        }}
+      >
+        查询
+      </Button>
+      <Button type="primary" onClick={() => openAdd()}>
+        添加课件
+      </Button>
     </Wrapper>
-  )
-})
+  );
+});
 
 const Wrapper = styled.div`
   display: flex;
@@ -70,21 +85,24 @@ const Wrapper = styled.div`
     color: #333;
     flex: 1;
   }
-  .label, >.ant-select, >.ant-calendar-picker, >.ant-input {
+  .label,
+  > .ant-select,
+  > .ant-calendar-picker,
+  > .ant-input {
     margin-right: 15px;
     margin-bottom: 12px;
   }
   .label {
     margin-right: 0;
   }
-  >.ant-select {
+  > .ant-select {
     max-width: 150px;
     min-width: 100px;
   }
   .ant-calendar-picker {
     max-width: 250px;
   }
-  >.ant-input {
+  > .ant-input {
     max-width: 200px;
   }
   .ant-btn {
@@ -93,4 +111,4 @@ const Wrapper = styled.div`
   .ant-btn + .ant-btn {
     margin-left: 10px;
   }
-`
+`;

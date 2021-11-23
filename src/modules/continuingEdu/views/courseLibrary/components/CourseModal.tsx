@@ -86,7 +86,6 @@ export default observer(function courseModal(props: Prop) {
     if (data) {
       let arr = courseLibraryModal.formatSec(data.viewingTime)
       let { courseName, isDownload, state, remark } = data
-      console.log('test-', state)
       return {
         courseName,
         isDownload,
@@ -158,7 +157,6 @@ export default observer(function courseModal(props: Prop) {
     postData.append("file", files[0]);
     getResponseData(() => courseLibraryApi.updateFile(postData))
       .then((res) => {
-        console.log("test-res", res);
         setCourseFile(res)
       })
       .catch((err) => {
@@ -169,7 +167,6 @@ export default observer(function courseModal(props: Prop) {
       });
   };
   const onSave = () => {
-    console.log("test-ormData", formData);
     let errMsgList = [] as string[];
     if (!formData.courseName) {
       errMsgList.push("课件名称不能为空");
