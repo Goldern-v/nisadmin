@@ -330,7 +330,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "gzhd", "lcey", "gxjb", 'fssdy', 'fsxt', "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
+      ["hj", "wjgdszd", "gzhd", "lcey", "gxjb", 'fssdy', 'fsxt', "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();
