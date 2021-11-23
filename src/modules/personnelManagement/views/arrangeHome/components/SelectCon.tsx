@@ -138,9 +138,27 @@ export default observer(function SelectCon() {
 
   // 打印排班Excel
   const printRosterExcel = () => {
-    arrangeService.exportRoster(1).then(res => {
-      fileDownload(res);
-    });
+    let visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1']
+      Modal.confirm({
+        title: '选择要打印的列',
+        centered: true,
+        width: 660,
+        content: <div style={{ marginTop: 30 }}>
+          <Checkbox.Group
+            defaultValue={visibleArr}
+            onChange={(newArr: any[]) => visibleArr = newArr}>
+            <Checkbox value="empNo">工号</Checkbox>
+            <Checkbox value="nurseHierarchy">层级</Checkbox>
+            <Checkbox value="newTitle">职称</Checkbox>
+            <Checkbox value="year">年限</Checkbox>
+            <Checkbox value="total1">工时小计</Checkbox>
+          </Checkbox.Group>
+        </div>,
+        onOk: () => {
+          // console.log(visibleArr)
+          printModal.printArrangeDghl(visibleArr)
+        }
+      })
   };
 
   // 导出排班Excel
