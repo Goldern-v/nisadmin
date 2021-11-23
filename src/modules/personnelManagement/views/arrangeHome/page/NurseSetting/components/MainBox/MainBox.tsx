@@ -21,7 +21,7 @@ import AppStore from "src/stores/AppStore";
 import { observer } from "mobx-react-lite";
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default observer(function MainBox() {
   const [userList, setUserList] = useState(new Array());
@@ -36,7 +36,7 @@ export default observer(function MainBox() {
       dataIndex: "index",
       key: "index",
       width: 35,
-      render: (text: string, record: any, index: any) => index + 1
+      render: (text: string, record: any, index: any) => index + 1,
     },
     {
       title: "列入排班",
@@ -58,13 +58,13 @@ export default observer(function MainBox() {
           </span>
         ) : (
           ""
-        )
+        ),
     },
     {
       title: "所在科室",
       dataIndex: "deptName",
       width: 180,
-      key: "deptName"
+      key: "deptName",
     },
     {
       title: "工号(类型)",
@@ -80,13 +80,13 @@ export default observer(function MainBox() {
           if (target && target.name) usetTypeName = target.name;
         }
         return empNo || usetTypeName;
-      }
+      },
     },
     {
       title: "姓名",
       dataIndex: "empName",
       key: "empName",
-      width: 90
+      width: 90,
     },
     {
       title: "性别",
@@ -97,7 +97,7 @@ export default observer(function MainBox() {
         if (text === "0") return "男";
         if (text === "1") return "女";
         return text;
-      }
+      },
     },
     // {
     //   title: '年龄',
@@ -112,75 +112,89 @@ export default observer(function MainBox() {
           title: "职称",
           dataIndex: "newTitle",
           width: "10%",
-          key: "newTitle"
+          key: "newTitle",
         },
         {
           title: "层级",
           dataIndex: "nurseHierarchy",
           key: "nurseHierarchy",
-          width: "10%"
+          width: "10%",
         },
         {
           title: "职务",
           dataIndex: "job",
           key: "job",
-          width: 120
-        }
+          width: 120,
+        },
       ],
       nys: () => [
         {
           title: "职称",
           dataIndex: "newTitle",
           width: "10%",
-          key: "newTitle"
+          key: "newTitle",
         },
         {
           title: "类型",
           dataIndex: "nurseHierarchy",
           key: "nurseHierarchy",
-          width: "10%"
+          width: "10%",
         },
         {
           title: "职务",
           dataIndex: "job",
           key: "job",
-          width: 120
+          width: 120,
         },
         {
           title: "周工时",
           dataIndex: "timeLimit",
           key: "timeLimit",
-          width: 70
-        }
+          width: 70,
+        },
       ],
       wh: () => [
         {
           title: "开始时间",
           dataIndex: "startDate",
           key: "startDate",
-          width: 120
+          width: 120,
         },
         {
           title: "周工时",
           dataIndex: "timeLimit",
           key: "timeLimit",
-          width: 70
-        }
+          width: 70,
+        },
+      ],
+      gzsrm: () => [
+        {
+          title: "开始时间",
+          dataIndex: "startDate",
+          key: "startDate",
+          width: 120,
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70,
+        },
       ],
       gxjb: () => [
         {
           title: "开始时间",
           dataIndex: "startDate",
           key: "startDate",
-          width: 120
+          width: 120,
         },
         {
           title: "周工时",
           dataIndex: "timeLimit",
           key: "timeLimit",
-          width: 70
-        }
-      ]
+          width: 70,
+        },
+      ],
     }),
     {
       title: "操作",
@@ -202,7 +216,7 @@ export default observer(function MainBox() {
                     if (appStore.HOSPITAL_ID == "nys") {
                       service.scheduleUserApiService
                         .delete(row.id)
-                        .then(res => {
+                        .then((res) => {
                           message.success("删除成功");
                           getUserList();
                         });
@@ -210,7 +224,7 @@ export default observer(function MainBox() {
                       if (!row.empNo) {
                         service.scheduleUserApiService
                           .delete(row.id)
-                          .then(res => {
+                          .then((res) => {
                             message.success("删除成功");
                             getUserList();
                           });
@@ -218,7 +232,7 @@ export default observer(function MainBox() {
                         message.warning("只有工号为空的护士才能删除");
                       }
                     }
-                  }
+                  },
                 });
               }}
             >
@@ -226,12 +240,12 @@ export default observer(function MainBox() {
             </span>
           </DoCon>
         );
-      }
-    }
+      },
+    },
   ];
 
   useEffect(() => {
-    service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
+    service.commonApiService.dictInfo("sch_wh_user_type").then((res) => {
       setUserTypeList(res.data);
     });
   }, []);
@@ -269,14 +283,14 @@ export default observer(function MainBox() {
 
   emitter.addListener("添加排班人员", () => {
     addScheduleNursingModal.show({
-      getTableData: getUserList
+      getTableData: getUserList,
     });
   });
 
   const getUserList = () => {
     let deptCode = scheduleStore.getDeptCode(); // '2508' ||
     setLoading(true);
-    service.scheduleUserApiService.getByDeptCode(deptCode).then(res => {
+    service.scheduleUserApiService.getByDeptCode(deptCode).then((res) => {
       setLoading(false);
 
       let tableData = res.data
@@ -293,7 +307,7 @@ export default observer(function MainBox() {
     if (!dragRow) return;
     setUserList(
       update(userList, {
-        $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+        $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
       })
     );
   };

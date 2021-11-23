@@ -1,6 +1,6 @@
 import qs from 'qs'
 import BaseTable from 'src/components/BaseTable'
-import store from 'src/stores'
+import store, { appStore } from 'src/stores'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
@@ -17,7 +17,7 @@ import SelectCon from './components/SelectCon'
 
 import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 let rowNum: number = 5
 const ThemeContext = React.createContext({
@@ -149,13 +149,21 @@ const columns: ColumnProps<any>[] = [
       return (text || 0) + '年'
     }
   },
-  {
-    title: '鞋码',
-    dataIndex: 'shoeSize',
-    key: 'shoeSize',
-    width: 80,
-    align: 'center'
-  },
+  appStore.HOSPITAL_ID === 'gxjb' ?
+    {
+      title: '家庭住址',
+      dataIndex: 'address',
+      key: 'address',
+      width: 180,
+      align: 'center'
+    } :
+    {
+      title: '鞋码',
+      dataIndex: 'shoeSize',
+      key: 'shoeSize',
+      width: 80,
+      align: 'center'
+    },
   {
     title: '编制',
     dataIndex: 'workConversion',

@@ -11,7 +11,7 @@ import {
   Row,
   Col,
   message,
-  Icon
+  Icon,
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -31,7 +31,7 @@ import service from "src/services/api";
 import {
   TITLE_LIST,
   POST_LIST,
-  CURRENTLEVEL_LIST
+  CURRENTLEVEL_LIST,
 } from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/modal/AddNursingModal";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import { Spin } from "src/vendors/antd";
@@ -41,15 +41,15 @@ import { sheetViewModal } from "../../../viewModal/SheetViewModal";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   getTableData?: () => void;
-  init?: boolean
+  init?: boolean;
 }
 const uploadCard = () => Promise.resolve("123");
 const rules: Rules = {
-  empName: val => !!val || "请输入姓名"
+  empName: (val) => !!val || "请输入姓名",
 };
 
-if (appStore.HOSPITAL_ID == "wh") {
-  rules.userType = val => !!val || "请选择类型";
+if (["wh", "gzsrm"].includes(appStore.HOSPITAL_ID)) {
+  rules.userType = (val) => !!val || "请选择类型";
 }
 
 const TYPE_LIST = ["实习", "进修"];
@@ -64,7 +64,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
   const [modalLoading, setModalLoading]: any = useState(false);
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => { };
+  const onFieldChange = () => {};
 
   const onSave = async () => {
     if (!refForm.current) return;
@@ -78,7 +78,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
       value.startDate = value.startDate
         ? value.startDate.format("YYYY-MM-DD")
         : "";
-    service.scheduleUserApiService.saveOrUpdate(value).then(res => {
+    service.scheduleUserApiService.saveOrUpdate(value).then((res) => {
       message.success("保存成功");
       onCancel && onCancel();
       init && sheetViewModal.init();
@@ -97,7 +97,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             sex: "1",
             newTitle: "",
             nurseHierarchy: "",
-            job: ""
+            job: "",
           });
         },
         wh: () => {
@@ -106,9 +106,18 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             sex: "1",
 
             userType: "",
-            startDate: moment()
+            startDate: moment(),
           });
-        }
+        },
+        gzsrm: () => {
+          refForm!.current!.setFields({
+            empName: "",
+            sex: "1",
+
+            userType: "",
+            startDate: moment(),
+          });
+        },
       });
 
       setTitle("添加排班人员");
@@ -116,58 +125,78 @@ export default observer(function AddScheduleNursingModal(props: Props) {
 
       const getDictInfo = appStore.hisMatch({
         map: {
-          'wh': () => {
-            statisticsViewModal.initDict().then(res => {
+          wh: () => {
+            statisticsViewModal.initDict().then((res) => {
               setTitleList(statisticsViewModal.getDict("技术职称"));
               setPostList(statisticsViewModal.getDict("职务"));
               setLevelList(statisticsViewModal.getDict("层级"));
               setModalLoading(false);
             });
-            service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
-              setUserTypeList(res.data);
-            });
+            service.commonApiService
+              .dictInfo("sch_wh_user_type")
+              .then((res) => {
+                setUserTypeList(res.data);
+              });
           },
-          'nys': () => {
-            /** 层级 */
-            service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
-              setLevelList(res.data);
+          gzsrm: () => {
+            statisticsViewModal.initDict().then((res) => {
+              setTitleList(statisticsViewModal.getDict("技术职称"));
+              setPostList(statisticsViewModal.getDict("职务"));
+              setLevelList(statisticsViewModal.getDict("层级"));
+              setModalLoading(false);
             });
+            service.commonApiService
+              .dictInfo("sch_wh_user_type")
+              .then((res) => {
+                setUserTypeList(res.data);
+              });
+          },
+          nys: () => {
+            /** 层级 */
+            service.commonApiService
+              .dictInfo("user_new_hierarchy")
+              .then((res) => {
+                setLevelList(res.data);
+              });
 
             /** 职务 */
-            service.commonApiService.dictInfo("user_new_job").then(res => {
+            service.commonApiService.dictInfo("user_new_job").then((res) => {
               setPostList(res.data);
             });
 
             /** 职称 */
-            service.commonApiService.dictInfo("user_new_title").then(res => {
+            service.commonApiService.dictInfo("user_new_title").then((res) => {
               setTitleList(res.data);
             });
 
             /** 类型 --南医三专有 */
-            service.commonApiService.dictInfo("user_new_nansan_type").then(res => {
-              setNansanTypeList(res.data);
-            });
+            service.commonApiService
+              .dictInfo("user_new_nansan_type")
+              .then((res) => {
+                setNansanTypeList(res.data);
+              });
           },
           default: () => {
             /** 层级 */
-            service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
-              setLevelList(res.data);
-            });
+            service.commonApiService
+              .dictInfo("user_new_hierarchy")
+              .then((res) => {
+                setLevelList(res.data);
+              });
 
             /** 职务 */
-            service.commonApiService.dictInfo("user_new_job").then(res => {
+            service.commonApiService.dictInfo("user_new_job").then((res) => {
               setPostList(res.data);
             });
 
             /** 职称 */
-            service.commonApiService.dictInfo("user_new_title").then(res => {
+            service.commonApiService.dictInfo("user_new_title").then((res) => {
               setTitleList(res.data);
             });
-          }
-        }
-      })
-
-      getDictInfo()
+          },
+        },
+      });
+      getDictInfo();
     }
   }, [visible]);
 
@@ -190,20 +219,18 @@ export default observer(function AddScheduleNursingModal(props: Props) {
         >
           <Row>
             <Col span={24}>
-              {appStore.HOSPITAL_ID !== 'hj' ? <Form.Field label={`姓名`} name="empName" required>
-                <Input />
-              </Form.Field> :
+              {appStore.HOSPITAL_ID !== "hj" ? (
+                <Form.Field label={`姓名`} name="empName" required>
+                  <Input />
+                </Form.Field>
+              ) : (
                 <Form.Field label={`姓名`} name="empName">
                   <Select>
-                    <Select.Option value="实习">
-                      实习
-                    </Select.Option>
-                    <Select.Option value="进修">
-                      进修
-                    </Select.Option>
+                    <Select.Option value="实习">实习</Select.Option>
+                    <Select.Option value="进修">进修</Select.Option>
                   </Select>
                 </Form.Field>
-              }
+              )}
             </Col>
             <Col span={24}>
               <Form.Field label={`姓别`} name="sex">
@@ -268,7 +295,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
               nys: () => (
                 <React.Fragment>
                   <Col span={24}>
-                    <Form.Field label={`工号`} name="empNo" >
+                    <Form.Field label={`工号`} name="empNo">
                       <Input />
                     </Form.Field>
                   </Col>
@@ -346,6 +373,31 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               ),
+              gzsrm: () => (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`类型`} name="userType" required>
+                      <Select>
+                        {userTypeList.map((item: DictItem) => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`开始时间`} name="startDate">
+                      <DatePicker />
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`周工时`} name="timeLimit">
+                      <Input />
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              ),
             })}
           </Row>
         </Form>
@@ -354,14 +406,14 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             type="info-circle"
             style={{ color: "#fa8c16", marginRight: "5px" }}
           />
-          {appStore.HOSPITAL_ID == "wh"
+          {["wh", "gzsrm"].includes(appStore.HOSPITAL_ID)
             ? "注：只能添加没有工号的人员，有工号的正式人员请联系管理员进行添加"
             : "注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加"}
         </Aside>
       </Spin>
     </Modal>
   );
-})
+});
 const Aside = styled.div`
   font-size: 12px;
   color: #666;

@@ -332,6 +332,7 @@ class SheetViewModal {
   getData() {
     if (!this.isInitEd) return this.init();
     this.tableLoading = true;
+    if (!notSelectViewModal.params.startTime) return Promise.resolve(() =>{})
     return notArrangeService.countSettingByStatus().then((res: { code: string; data: any; }) => {
       this.dateList = this.notGetDateList();
       this.tableLoading = false;
