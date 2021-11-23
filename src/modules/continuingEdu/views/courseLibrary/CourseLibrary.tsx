@@ -45,7 +45,6 @@ export default observer(function(props) {
       onOk: () => {
         getResponseData(() => courseLibraryApi.deleteCourse(item.id))
           .then((res) => {
-            console.log("test-res", res);
             courseLibraryModal.page = 1;
             courseLibraryModal.getData();
           })
