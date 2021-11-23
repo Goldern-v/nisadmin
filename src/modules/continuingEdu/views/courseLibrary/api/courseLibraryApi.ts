@@ -13,10 +13,13 @@ export default class CourseLibraryApi extends BaseApiService {
   saveOrUpdate(params: any) {
     return this.post('/studyAndTrain/courseLibrary/saveOrUpdate', params)
   }
+  // 删除课件
+  deleteCourse(id: string) {
+    return this.post('studyAndTrain/courseLibrary/delete', { id })
+  }
 }
 export const courseLibraryApi = new CourseLibraryApi()
 export const formatResponseData = (res: any) => {
-  console.log('test-formatResponseData', res)
   if (res.code === '200') {
     if (res.data) {
       return res.data

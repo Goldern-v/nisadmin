@@ -4,7 +4,6 @@ import BaseTable from "src/components/BaseTable";
 import styled from "styled-components";
 import { courseLibraryModal } from "../modal";
 import Moment from "moment";
-import { Button } from "antd";
 
 export interface Props {
   onOpenDetail: (item: any, key: number) => void;
@@ -57,8 +56,8 @@ export default observer(function Table(props: Props) {
       align: "center",
       dataIndex: "viewingTime",
       render: (text: number) => {
-        // if (text < 60) return text + 's'
-        return text;
+        const [val, suffix] = courseLibraryModal.formatSec(text);
+        return val ? val + suffix : 0;
       },
       width: 70,
     },

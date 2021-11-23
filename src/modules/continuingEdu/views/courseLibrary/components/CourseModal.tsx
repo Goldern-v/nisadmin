@@ -5,6 +5,7 @@ import React, {
   useState,
   useLayoutEffect,
   ChangeEvent,
+  useEffect
 } from "react";
 import { ModalComponentProps } from "src/libs/createModal";
 import styled from "styled-components";
@@ -35,18 +36,18 @@ export default observer(function courseModal(props: Prop) {
         return [
           {
             label: "全院可见",
-            value: "1",
+            value: 1,
           },
           {
             label: "授权可见",
-            value: "2",
+            value: 2,
           },
         ];
       case 2:
         return [
           {
             label: "个人可见",
-            value: "3",
+            value: 3,
           },
         ];
       default:
@@ -72,7 +73,7 @@ export default observer(function courseModal(props: Prop) {
     },
     {
       name: "分",
-      code: "m",
+      code: "min",
       multi: 60
     },
     {
@@ -82,11 +83,23 @@ export default observer(function courseModal(props: Prop) {
     },
   ];
   const defaultFormData = () => {
-    if (data) return data;
+    if (data) {
+      let arr = courseLibraryModal.formatSec(data.viewingTime)
+      let { courseName, isDownload, state, remark } = data
+      console.log('test-', state)
+      return {
+        courseName,
+        isDownload,
+        state,
+        remark,
+        duration: arr[0] || undefined,
+        durationType: arr[1] || ''
+      }
+    };
     let state = statusList.length > 0 ? statusList[0].value : "";
     return {
       courseName: "",
-      duration: "",
+      duration: undefined,
       durationType: durationTypeList[0].code,
       isDownload: 1,
       state,
@@ -110,20 +123,20 @@ export default observer(function courseModal(props: Prop) {
     e.persist();
     let files = e.target.files || [];
     // 视频只允许MP4格式
-    const videoExtList = [
-      "avi",
-      "rmvb",
-      "rm",
-      "asf",
-      "divx",
-      "mpg",
-      "mpeg",
-      "mpe",
-      "wmv",
-      "mkv",
-      "vob",
+    const extList = [
+      'doc',
+      'docx',
+      'pdf',
+      'ppt',
+      'pptx',
+      'xls',
+      'xlsx',
+      'mp4',
+      'png',
+      'jpg',
+      'jpeg',
+      'gif',
     ];
-    console.log("test-files", files);
     // 过滤不符合的后缀的文件
     let fileExtList: any = [];
     for (let key in files) {
@@ -134,9 +147,9 @@ export default observer(function courseModal(props: Prop) {
         fileExtList.push(ext);
       }
     }
-    let isOk = fileExtList.find((item: any) => videoExtList.indexOf(item) > -1);
+    let isOk = fileExtList.find((item: any) => extList.indexOf(item) == -1);
     if (isOk) {
-      message.warning("暂时只支持上传MP4格式视频！");
+      message.warning("暂不支持该该类型的文件 ");
       return;
     }
     let hideLoading = message.loading("正在上传，请稍等", 0);
@@ -146,13 +159,6 @@ export default observer(function courseModal(props: Prop) {
     getResponseData(() => courseLibraryApi.updateFile(postData))
       .then((res) => {
         console.log("test-res", res);
-        // const data = {
-        //   ...formData,
-        //   file: res,
-        // };
-        // Object.assign(formData,  { file: res })
-        // setFormData(formData);
-        // console.log('test-form', formData)
         setCourseFile(res)
       })
       .catch((err) => {
@@ -174,6 +180,9 @@ export default observer(function courseModal(props: Prop) {
     if (!formData.duration || formData.duration <= 0) {
       errMsgList.push("课件时长不能为空或小于等于0");
     }
+    if (!formData.remark) {
+      errMsgList.push("备注不能为空");
+    }
     if (errMsgList.length > 0) {
       errMsgList.length > 1
         ? Modal.error({
@@ -194,13 +203,12 @@ export default observer(function courseModal(props: Prop) {
     let { duration, durationType, ...other } = formData;
     let params = {
       ...other,
-      viewingTime: duration * (durationTypeList.find(v => v.code === durationType)?.multi || 1),
-      field_2	: data ? data.type : courseType,
+      id: data ? data.id : '',
+      viewingTime: (duration as number) * (durationTypeList.find(v => v.code === durationType)?.multi || 1),
+      type: data ? data.type : courseType,
       attachmentId: courseFile.id
     };
-    data && (params = { ...params , id: data.id })
     getResponseData(() => courseLibraryApi.saveOrUpdate(params)).then(res => {
-      console.log('test-res', res)
       message.success('保存成功')
       onOkCallback && onOkCallback()
     }).catch(err => {
@@ -209,13 +217,34 @@ export default observer(function courseModal(props: Prop) {
       setLoading(false)
     })
   };
+  const preview = () => {
+    window.open(courseFile.path)
+  }
+  const download = () => {
+    let a = document.createElement("a");
+      a.href = courseFile.path;
+      a.download = courseFile.name; // 自定义文件名
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a); // 移除a元素
+  }
+  useEffect(() => {
+    statusList = setStatusList();
+    Object.assign(formData, defaultFormData())
+    setFormData(formData)
+  }, [data])
   // 初始化数据
   useLayoutEffect(() => {
     // if (!visible) return;
     if (refForm.current && visible) refForm!.current!.clean();
-    setFormData(defaultFormData);
-    console.log("test-formData", formData);
-    setCourseFile({})
+    Object.assign(formData, defaultFormData())
+    setFormData(formData)
+    let file = data ? {
+      id: data.attachmentId,
+      path: data.coursePath,
+      name: data.courseName + data.coursePath.slice(data.coursePath.lastIndexOf('.'))
+    }: {}
+    setCourseFile(file)
     /** 如果是修改 */
     refForm.current && refForm!.current!.setFields(formData);
   }, [visible]);
@@ -236,11 +265,14 @@ export default observer(function courseModal(props: Prop) {
       <Wrapper>
         <Form ref={refForm} labelWidth={70} onChange={onFormChange}>
           <Row>
-            <Col span={24}>
-              <Form.Field label="课件名称：" name="courseName">
-                <Input value={formData.courseName} />
-              </Form.Field>
-            </Col>
+            { modalType < 2
+              ? <Col span={24}>
+                <Form.Field label="课件名称：" name="courseName">
+                  <Input value={formData.courseName} />
+                </Form.Field>
+              </Col>
+              : <p className="title">{formData.courseName}</p>
+            }
             <Col span={24}>
               <Form.Field label="上传课件：" name="file">
                 <FileBox>
@@ -264,44 +296,58 @@ export default observer(function courseModal(props: Prop) {
                         />
                       )}
                       <div className="name">{courseFile.name}</div>
-                      <Button type="primary" onClick={() => {}}>
-                        预览
-                      </Button>
+                      { modalType < 2 
+                          ?<Button type="primary" onClick={preview}>
+                            预览
+                          </Button>
+                          :<Button type="primary" onClick={download}>
+                            下载
+                          </Button>}
                     </div>
                   )}
-                  <div className="tip">
-                    *仅支持上传.word、.pdf、.excel、ppt、.mp4、图片等类型文件
-                  </div>
+                  {
+                    modalType < 2
+                      ? 
+                      <div className="tip">
+                        *仅支持上传.word、.pdf、.excel、ppt、.mp4、图片等类型文件
+                      </div>
+                      : ''
+                  }
                 </FileBox>
               </Form.Field>
             </Col>
-            <Col span={24} className="duration">
-              <Form.Field label="观看时长：" name="duration">
-                <InputNumber min={0.1} value={formData.duration} />
-              </Form.Field>
-              <Form.Field labelWidth={0} name="durationType">
-                <Select value={formData.durationType}>
-                  {durationTypeList.map((val: any) => (
-                    <Select.Option value={val.code} key={val.code}>
-                      {val.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label="允许下载：" name="isDownload">
-                <Radio.Group
-                  options={downloadList}
-                  value={formData.isDownload}
-                />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`状    态：`} name="state">
-                <Radio.Group options={statusList} value={formData.state} />
-              </Form.Field>
-            </Col>
+            {modalType < 2
+              ?
+              <>
+                <Col span={24} className="duration">
+                <Form.Field label="观看时长：" name="duration">
+                  <InputNumber min={0.1} value={formData.duration} />
+                </Form.Field>
+                <Form.Field labelWidth={0} name="durationType">
+                  <Select value={formData.durationType}>
+                    {durationTypeList.map((val: any) => (
+                      <Select.Option value={val.code} key={val.code}>
+                        {val.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label="允许下载：" name="isDownload">
+                    <Radio.Group
+                      options={downloadList}
+                      value={formData.isDownload}
+                    />
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`状    态：`} name="state">
+                    <Radio.Group options={statusList} value={formData.state} />
+                  </Form.Field>
+                </Col>
+              </>
+              : ''}
             <Col span={24}>
               <Form.Field label={"备   注："} name="remark">
                 <Input.TextArea rows={4} value={formData.remark} />
@@ -314,6 +360,7 @@ export default observer(function courseModal(props: Prop) {
             </Col>
           </Row>
         </Form>
+        
         <input
           type="file"
           style={{ display: "none" }}
@@ -327,6 +374,10 @@ export default observer(function courseModal(props: Prop) {
 });
 
 const Wrapper = styled.div`
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+  }
   .ant-col .label {
     display: block;
     margin-right: 0;

@@ -137,8 +137,24 @@ export default class CourseLibraryModal {
     this.page = 1
     this.getData()
   }
-  // modal
-  public modalTitle = '添加课件'
+
+
+  formatSec = (s: number): [number| undefined, string] => {
+    let obj = {
+      s: 1,
+      min: 60,
+      h: 3600
+    }
+    if (s<=0) return [undefined, '']
+    for(let key in obj) {
+      let val = parseInt((s / obj[key]) + '')
+      if (key == 'h') return [val, key]
+      if (val < 60) {
+        return [val, key]
+      }
+    }
+    return [undefined, '']
+  }
 
   public reset = () => {
     this.date = currentMonth(),

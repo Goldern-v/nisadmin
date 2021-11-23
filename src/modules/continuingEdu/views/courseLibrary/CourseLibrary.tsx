@@ -1,8 +1,10 @@
-import { Radio } from "antd";
+import { Modal, Radio } from "antd";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import createModal from "src/libs/createModal";
+import { message } from "src/vendors/antd";
 import styled from "styled-components";
+import { courseLibraryApi, getResponseData } from "./api/courseLibraryApi";
 import CourseModal from "./components/CourseModal";
 import Header from "./components/Header";
 import Table from "./components/Table";
@@ -21,14 +23,39 @@ export default observer(function(props) {
     });
   };
   const onOpenDetail = (item: any, key: number) => {
-    console.log("test-item, key", item, key);
+    const keyTipList = ["", "修改", "查看"];
+    const keyFlagList = ["", "isModify", "isReview"];
+    if (keyFlagList[key] && item[keyFlagList[key]] === 0) {
+      message.warning("没有权限" + keyTipList[key] + "该课件");
+      return;
+    }
     courseModal.show({
       modalType: key,
       data: item,
     });
   };
   const onDeleteItem = (item: any) => {
-    console.log("test-item", item);
+    if (item.isDelete === 0) {
+      return message.warning("没有权限删除该课件");
+    }
+
+    Modal.confirm({
+      title: "删除",
+      content: "是否删除该课件",
+      onOk: () => {
+        getResponseData(() => courseLibraryApi.deleteCourse(item.id))
+          .then((res) => {
+            console.log("test-res", res);
+            courseLibraryModal.page = 1;
+            courseLibraryModal.getData();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      okText: "确认",
+      cancelText: "取消",
+    });
   };
   const onOkCallback = () => {
     courseModal.hide();
