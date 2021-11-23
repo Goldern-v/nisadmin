@@ -96,7 +96,7 @@ export default observer(function Step5() {
             </tr>
           ) : (
             <tr>
-              <td className="key">类&nbsp;&nbsp;别：</td>
+              <td className="key">类&nbsp;别：</td>
               <td className="value">非中医类</td>
             </tr>
           )}
