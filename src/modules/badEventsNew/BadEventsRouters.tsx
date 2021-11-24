@@ -128,7 +128,18 @@ export default function BadEventsRouters(props: Props) {
     }
     return chooseRoute;
   }
-
+  let autoLoginInfo: any = {
+    blank: true,
+    redictUri: '/crNursing/badEvent',
+    loginUri: '/crNursing/login'
+  }
+  if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+    autoLoginInfo = {
+      blank: true,
+      redictUri: '/crNursing/badevents/index',
+      loginUri: '/crNursing/badevents/login'
+    }
+  }
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -136,11 +147,7 @@ export default function BadEventsRouters(props: Props) {
           config={LEFT_MENU_CONFIG}
           beforRouter={(payload: any) => {
             if (payload.key === `${baseRouter}/不良事件上报`) {
-              autoLoginTnNisInfoBe({
-                blank: true,
-                redictUri: '/crNursing/badEvent',
-                loginUri: '/crNursing/login'
-              })
+              autoLoginTnNisInfoBe(autoLoginInfo)
               return false
             } else {
               return true
