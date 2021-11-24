@@ -109,7 +109,7 @@ const 进修临床实践详情 = lazy(() => import('./views/教学质量管理/�
 // 培训图表统计分析
 const TrainingChartAnalysis = lazy(() => import('./views/trainingChartAnalysis/trainingChartAnalysis'))
 // 课件库
-const CourseLibrary = lazy(() => import ('./views/courseLibrary/CourseLibrary'))
+const CourseLibrary = lazy(() => import('./views/courseLibrary/CourseLibrary'))
 
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
@@ -205,18 +205,18 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/培训统计分析",
       component: 培训统计分析,
       // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
-      hide: () => appStore.HOSPITAL_ID != "hj" || authStore.isOnlyInternsManage
+      hide: () => (appStore.HOSPITAL_ID != "hj" && appStore.HOSPITAL_ID != "gxjb") || authStore.isOnlyInternsManage
     },
     {
       title: "培训图表统计分析",
-      icon: <JSGL/>,
+      icon: <JSGL />,
       path: "/continuingEdu/trainingChartAnalysis",
       component: TrainingChartAnalysis,
       hide: () => !['hj'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "课件库",
-      icon: <JSGL/>,
+      icon: <JSGL />,
       path: "/continuingEdu/courseLibrary",
       component: CourseLibrary,
       hide: () => !['lcey'].includes(appStore.HOSPITAL_ID)
