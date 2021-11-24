@@ -43,7 +43,6 @@ export default observer(function 三级问题原因措施汇总() {
       align: 'center',
       width: 130,
       render: (text: string, record: any) => ({
-        props: { rowSpan: record.rowSpan1 || 0, },
         children: text
       }),
     },
@@ -53,7 +52,6 @@ export default observer(function 三级问题原因措施汇总() {
       align: 'center',
       width: 80,
       render: (text: string, record: any) => ({
-        props: { rowSpan: record.rowSpan1 || 0, },
         children: text
       }),
     },
