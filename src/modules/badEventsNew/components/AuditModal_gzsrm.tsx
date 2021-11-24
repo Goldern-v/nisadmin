@@ -73,10 +73,10 @@ export default observer(function AduitModal(props: Props) {
         // 片区护长审核是否通过
         if (auditInfo.noPass) {
           saveParams['B0002060'] = auditInfo.handleContent
-          if (auditInfo.handleContent.trim().length <= 0) {
-            message.warning('审核意见不能为空')
-            return
-          }
+          // if (auditInfo.handleContent.trim().length <= 0) {//去除回退原因限制
+          //   message.warning('审核意见不能为空')
+          //   return
+          // }
         } else {
           saveParams['B0002060'] = ''
         }
