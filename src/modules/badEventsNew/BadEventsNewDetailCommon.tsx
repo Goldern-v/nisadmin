@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Steps, Icon, Spin, Modal, Divider } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import AuditModal_gzsrm from './components/AuditModal_gzsrm'
+import AuditModalCommon from './components/AuditModalCommon'
 import badEventsNewService from './api/badEventsNewService'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
@@ -295,7 +295,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             className='iframe-loading' />
         </div>
       </div>
-      <AuditModal_gzsrm
+      <AuditModalCommon
         visible={auditModalVisible}
         onOk={handleOk}
         dataOrigin={detailData}

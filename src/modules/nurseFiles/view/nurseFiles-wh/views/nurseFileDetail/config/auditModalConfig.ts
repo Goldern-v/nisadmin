@@ -65,8 +65,17 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               : {
                 工作护理单元: 'deptName',
                 鞋码大小: 'shoeSize'
-              }
+              },
+            ...appStore.hisMatch({
+              map: {
+                'gzsrm': [{
+                  职称: 'newTitle'
+                }],
+                other: []
+              },
+            })
           ],
+          // table:,
           fileData: [
             {
               个人头像: row.nearImageUrl

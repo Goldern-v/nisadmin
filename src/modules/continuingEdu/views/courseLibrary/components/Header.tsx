@@ -41,6 +41,7 @@ export default observer(function Header(props: Prop) {
 
       <span className="label">课件类型：</span>
       <Select
+        className="course-type__content"
         value={courseLibraryModal.type}
         onChange={(val: string) => courseLibraryModal.setFormData("type", val)}
       >
@@ -96,8 +97,10 @@ const Wrapper = styled.div`
     margin-right: 0;
   }
   > .ant-select {
-    max-width: 150px;
-    min-width: 100px;
+    width: 150px;
+  }
+  > .ant-select.course-type__content {
+    width: 100px;
   }
   .ant-calendar-picker {
     max-width: 250px;

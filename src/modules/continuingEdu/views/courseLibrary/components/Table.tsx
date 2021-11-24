@@ -51,16 +51,16 @@ export default observer(function Table(props: Props) {
       dataIndex: "empName",
       width: 80,
     },
-    {
-      title: "观看时长",
-      align: "center",
-      dataIndex: "viewingTime",
-      render: (text: number) => {
-        const [val, suffix] = courseLibraryModal.formatSec(text);
-        return val ? val + suffix : 0;
-      },
-      width: 70,
-    },
+    // {
+    //   title: "观看时长",
+    //   align: "center",
+    //   dataIndex: "viewingTime",
+    //   render: (text: number) => {
+    //     const [val, suffix] = courseLibraryModal.formatSec(text);
+    //     return val ? val + suffix : 0;
+    //   },
+    //   width: 70,
+    // },
     {
       title: "允许下载",
       align: "center",

@@ -23,7 +23,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/badeventM
     console.log('贵州不良事件管理系统')
     folderSrc = '/crdata/webProject/badeventManage/guizhourenyi'
   }
-  if (process.env.npm_lifecycle_event.indexOf('gzsrm-be') >= 0) {
+  if (process.env.npm_lifecycle_event.indexOf('yczyy-be') >= 0) {
     console.log('阳春不良事件管理系统')
     folderSrc = '/crdata/webProject/badeventManage/yczy'
   }

@@ -12,7 +12,7 @@ import { appStore, authStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import BadEventsNewList_nys from './BadEventsNewList_nys'
 import BadEventsNewList_gzsrm from './BadEventsNewList_gzsrm'
-import BadEventsNewList_fqfybjy from './BadEventsNewList_fqfybjy'
+import BadEventsNewListCommon from './BadEventsNewListCommon'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
@@ -54,7 +54,7 @@ export default function BadEventsRouters(props: Props) {
             title: " 不良事件查询",
             // icon: <SJZK />,
             path: baseRouter,
-            component: BadEventsNewList_fqfybjy,
+            component: BadEventsNewListCommon,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
@@ -128,7 +128,18 @@ export default function BadEventsRouters(props: Props) {
     }
     return chooseRoute;
   }
-
+  let autoLoginInfo: any = {
+    blank: true,
+    redictUri: '/crNursing/badEvent',
+    loginUri: '/crNursing/login'
+  }
+  if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+    autoLoginInfo = {
+      blank: true,
+      redictUri: '/crNursing/badevents/index',
+      loginUri: '/crNursing/badevents/login'
+    }
+  }
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -136,11 +147,7 @@ export default function BadEventsRouters(props: Props) {
           config={LEFT_MENU_CONFIG}
           beforRouter={(payload: any) => {
             if (payload.key === `${baseRouter}/不良事件上报`) {
-              autoLoginTnNisInfoBe({
-                blank: true,
-                redictUri: '/crNursing/badEvent',
-                loginUri: '/crNursing/login'
-              })
+              autoLoginTnNisInfoBe(autoLoginInfo)
               return false
             } else {
               return true

@@ -1,141 +1,157 @@
-import Zimage from 'src/components/Zimage'
-import createModal from 'src/libs/createModal'
-import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { nurseFilesService } from '../../../services/NurseFilesService'
-import { appStore, authStore } from 'src/stores'
-import { sexEnum } from 'src/libs/enum/common'
-import { observer } from 'mobx-react-lite'
-import { globalModal } from 'src/global/globalModal'
+import Zimage from "src/components/Zimage";
+import createModal from "src/libs/createModal";
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
+import { nurseFilesService } from "../../../services/NurseFilesService";
+import { appStore, authStore } from "src/stores";
+import { sexEnum } from "src/libs/enum/common";
+import { observer } from "mobx-react-lite";
+import { globalModal } from "src/global/globalModal";
 
-import BaseLayout from '../components/BaseLayout'
-import EditBaseInfoModal from '../modal/EditBaseInfoModal'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { ScrollBox } from 'src/components/common'
-import { openAuditModal } from '../config/auditModalConfig'
+import BaseLayout from "../components/BaseLayout";
+import EditBaseInfoModal from "../modal/EditBaseInfoModal";
+import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
+import { ScrollBox } from "src/components/common";
+import { openAuditModal } from "../config/auditModalConfig";
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 /* 判断是否本人 */
 export const isSelf = () => {
   // return appStore.queryObj.empNo == authStore!.user!.empNo
-  return appStore.match.path == '/selfNurseFile/:type'
-}
+  return appStore.match.path == "/selfNurseFile/:type";
+};
 export default observer(function BaseInfo() {
-  const editBaseInfoModal = createModal(EditBaseInfoModal)
-  let [tableData, setTableData]: [any, any] = useState([])
-  let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
-  const [idData, setIdData] = useState(0)
-  const [id, setId] = useState(0)
+  const editBaseInfoModal = createModal(EditBaseInfoModal);
+  let [tableData, setTableData]: [any, any] = useState([]);
+  let [info, setInfo]: [any, any] = useState(
+    nurseFileDetailViewModal.nurserInfo
+  );
+  const [idData, setIdData] = useState(0);
+  const [id, setId] = useState(0);
 
   const limitsComponent = () => {
-    let btnList = []
+    let btnList = [];
     if (isSelf()) {
       btnList = [
         {
-          label: '修改',
+          label: "修改",
           onClick: () => {
             editBaseInfoModal.show({
               id: id,
-              data: info
-            })
-          }
+              data: info,
+            });
+          },
         },
         {
-          label: '查看',
+          label: "查看",
           onClick: () => {
-            openAuditModal('基本信息', info, getTableData)
-          }
-        }
-      ]
+            openAuditModal("基本信息", info, getTableData);
+          },
+        },
+      ];
     } else {
       btnList = [
         {
-          label: info.statusColor === '1' ? '审核' : '查看',
+          label: info.statusColor === "1" ? "审核" : "查看",
           onClick: () => {
-            openAuditModal('基本信息', info, getTableData)
-          }
-        }
-      ]
+            openAuditModal("基本信息", info, getTableData);
+          },
+        },
+      ];
     }
-    return btnList
-  }
+    return btnList;
+  };
 
   const getTableData = () => {
-    let fun = isSelf() ? nurseFilesService.nurseInformationSelf : nurseFilesService.nurseInformation
-    setInfo({})
+    let fun = isSelf()
+      ? nurseFilesService.nurseInformationSelf
+      : nurseFilesService.nurseInformation;
+    setInfo({});
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
-      let data = res.data || info
-      setInfo(data)
-      setIdData(data.empNo)
-      setId(data.id)
+      let data = res.data || info;
+      setInfo(data);
+      setIdData(data.empNo);
+      setId(data.id);
       setTableData([
         {
           民族: data.nation,
-          籍贯: data.nativePlace
+          籍贯: data.nativePlace,
         },
         {
           工号: data.empNo,
-          身份证号: data.cardNumber
+          身份证号: data.cardNumber,
         },
         {
           政治面貌: data.politicsLook,
-          出生年月: data.birthday
+          出生年月: data.birthday,
         },
         {
           年龄: data.age,
-          手机号: data.phone
+          手机号: data.phone,
         },
         {
           参加工作时间: data.takeWorkTime,
-          来院工作时间: data.goHospitalWorkDate
+          来院工作时间: data.goHospitalWorkDate,
         },
 
         {
           护士执业证书编号: data.zyzsNumber,
-          取得护士执业证书时间: data.zyzsDate
+          取得护士执业证书时间: data.zyzsDate,
         },
         {
           取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
-          护士执业证书有效截止日期: data.zyzsEffectiveUpDate
+          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         },
         {
           初始学历: data.initialEducation,
-          最高学历: data.highestEducation
+          最高学历: data.highestEducation,
         },
         {
           取得最高学历时间: data.highestEducationDate,
-          最高学历学位: data.highestEducationDegree
+          最高学历学位: data.highestEducationDegree,
         },
         {
           职务: data.job,
-          现职务任职起始时间: data.jobStartDate
+          现职务任职起始时间: data.jobStartDate,
         },
         {
           院内工作地点: data.workAddress,
-          工作护理单元: data.deptName
+          工作护理单元: data.deptName,
         },
-        appStore.HOSPITAL_ID === 'gxjb' ? {
-          家庭住址: data.address
-        } : {
-          鞋码大小: data.shoeSize
-        }
-      ])
-    })
-  }
+        (() => {
+          switch (appStore.HOSPITAL_ID) {
+            case "gxjb":
+              return {
+                家庭住址: data.address,
+              };
+            case "gzsrm":
+              return {
+                鞋码大小: data.shoeSize,
+                职称: data.newTitle,
+              };
+            default:
+              return {
+                鞋码大小: data.shoeSize,
+              };
+          }
+        })(),
+      ]);
+    });
+  };
   useEffect(() => {
-    getTableData()
-  }, [appStore.queryObj])
+    getTableData();
+  }, [appStore.queryObj]);
   return (
-    <BaseLayout title='基本信息' btnList={limitsComponent()}>
+    <BaseLayout title="基本信息" btnList={limitsComponent()}>
       <ScrollCon>
         <InfoTable>
           <colgroup>
-            <col width='200' />
+            <col width="200" />
             <col />
-            <col width='200' />
+            <col width="200" />
             <col />
-            <col width='200' />
+            <col width="200" />
           </colgroup>
           <tbody>
             <tr>
@@ -149,9 +165,17 @@ export default observer(function BaseInfo() {
               </td>
               <td rowSpan={5}>
                 {info && info.nearImageUrl ? (
-                  <Zimage className='head-img' src={info && info.nearImageUrl} alt='' />
+                  <Zimage
+                    className="head-img"
+                    src={info && info.nearImageUrl}
+                    alt=""
+                  />
                 ) : (
-                  <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
+                  <img
+                    className="head-img"
+                    src={require("../../../images/护士默认头像.png")}
+                    alt=""
+                  />
                 )}
               </td>
             </tr>
@@ -171,19 +195,23 @@ export default observer(function BaseInfo() {
         </InfoTable>
         <ZyzsCon>
           <span>护士执业证书：</span>
-          <div className='img-con'>
+          <div className="img-con">
             {info.zyzsUrl ? (
-              info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+              info.zyzsUrl
+                .split(",")
+                .map((item: any, index: number) => (
+                  <Zimage src={item} alt="" key={index} />
+                ))
             ) : (
-              <img src={require('../../../images/证件空态度.png')} alt='' />
+              <img src={require("../../../images/证件空态度.png")} alt="" />
             )}
           </div>
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
-  )
-})
+  );
+});
 const InfoTable = styled.table`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
@@ -208,14 +236,14 @@ const InfoTable = styled.table`
   & tr td:nth-of-type(1),
   & tr td:nth-of-type(3) {
   }
-`
+`;
 const Value = styled.div`
   background: rgba(238, 239, 240, 1);
   border-radius: 2px;
   border: 1px solid rgba(227, 228, 230, 1);
   padding: 3px 13px;
   min-height: 27px;
-`
+`;
 
 const ZyzsCon = styled.div`
   min-height: 220px;
@@ -243,10 +271,10 @@ const ZyzsCon = styled.div`
     border: 1px solid rgba(219, 224, 228, 1);
     object-fit: contain;
   }
-`
+`;
 
 // @ts-ignore
 const ScrollCon = styled(ScrollBox)`
   overflow: auto;
   height: calc(100vh - 190px);
-`
+`;
