@@ -8,13 +8,26 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/badeventM
   node_ssh = require('node-ssh')
   ssh = new node_ssh()
   if (['/', '', '\\', undefined, null].indexOf(folderSrc) > -1) {
-    folderSrc = '/crdata/webProject/badeventManage'
+    folderSrc = '/crdata/webProject/badeventManage/nys'
   }
 
   if (process.env.npm_lifecycle_event.indexOf('nys-be') >= 0) {
     console.log('南医三不良事件管理系统')
     folderSrc = '/crdata/webProject/badeventManage/nys'
   }
+  if (process.env.npm_lifecycle_event.indexOf('fqfybjy-be') >= 0) {
+    console.log('福清妇幼不良事件管理系统')
+    folderSrc = '/crdata/webProject/badeventManage/fqfybjy'
+  }
+  if (process.env.npm_lifecycle_event.indexOf('gzsrm-be') >= 0) {
+    console.log('贵州不良事件管理系统')
+    folderSrc = '/crdata/webProject/badeventManage/guizhourenyi'
+  }
+  if (process.env.npm_lifecycle_event.indexOf('yczyy-be') >= 0) {
+    console.log('阳春不良事件管理系统')
+    folderSrc = '/crdata/webProject/badeventManage/yczy'
+  }
+
   // localSrc = './build'
 
   let serverInfo = {

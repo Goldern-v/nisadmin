@@ -326,13 +326,12 @@ class SheetViewModal {
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });
-
   }
   // 未发布排班记录查询 
   getData() {
     if (!this.isInitEd) return this.init();
     this.tableLoading = true;
-    if (!notSelectViewModal.params.startTime) return Promise.resolve(() =>{})
+    if (!notSelectViewModal.params.startTime) return Promise.resolve(() => { })
     return notArrangeService.countSettingByStatus().then((res: { code: string; data: any; }) => {
       this.dateList = this.notGetDateList();
       this.tableLoading = false;
