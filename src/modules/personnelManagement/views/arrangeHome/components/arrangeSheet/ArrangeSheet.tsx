@@ -250,7 +250,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl"].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt"].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -372,19 +372,39 @@ export default observer(function ArrangeSheet(props: Props) {
           return <NightHourCell id={record.id} />;
         },
       },
-      {
-        title: (
-          <div>
-            <div>累计结余</div>
-            <div>（小时）</div>
-          </div>
-        ),
-        width: 70,
-        align: "center",
-        render(text: string, record: any) {
-          return <BalanceHour id={record.id} />;
-        },
-      },
+      // {
+      //   title: (
+      //     <div>
+      //       <div>累计结余</div>
+      //       <div>（小时）</div>
+      //     </div>
+      //   ),
+      //   width: 70,
+      //   align: "center",
+      //   render(text: string, record: any) {
+      //     return <BalanceHour id={record.id} />;
+      //   },
+      // },
+      ...appStore.hisMatch({
+        map: {
+          fsxt: [],//佛山杏坛去除累计结余添加本周结余
+          other: [
+            {
+              title: (
+                <div>
+                  <div>累计结余</div>
+                  <div>（小时）</div>
+                </div>
+              ),
+              width: 70,
+              align: "center",
+              render(text: string, record: any) {
+                return <BalanceHour id={record.id} />;
+              },
+            },
+          ],
+        }
+      }),
       {
         title: (
           <div>
