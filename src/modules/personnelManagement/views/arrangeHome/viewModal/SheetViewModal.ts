@@ -615,7 +615,7 @@ class SheetViewModal {
       this.isInitEd = true;
       this.getExpectList();
       this.getSheetTableData();
-      this.getData()
+      // this.getData()
       this.getArrangeMenu();
       this.notGetArrangeMenu()
       this.getArrangeMeal();
