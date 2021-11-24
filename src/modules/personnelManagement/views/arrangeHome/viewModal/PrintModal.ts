@@ -1360,6 +1360,18 @@ class PrintModal {
           return publicHour(record.id) || '0'
         }
       },
+      {
+        title: '工时小计（小时）',
+        key: 'total1',
+        width: 60,
+        visible: colVisibleList.indexOf('total1') >= 0,
+        render: (record: any) => {
+          if (!record.empName)
+            return ''
+
+          return totalCellContent(record.id)
+        }
+      },
     ] as column[]
     const colsAfterVisible = colsAfter.filter((item) => item.visible)
 
@@ -1386,8 +1398,13 @@ class PrintModal {
       let newMoment = moment(timeset);
       let date = newMoment.format("D");
       let weekDay = newMoment.format("E");
-
-      if (i % 31 == 0) {
+      
+      if (i == 0) {
+        appendIdx++;
+        dateRowGroup.push([] as any);
+      }
+      
+      if (date == '1' && i != 0) {
         appendIdx++;
         dateRowGroup.push([] as any);
       }
@@ -1505,7 +1522,7 @@ class PrintModal {
       for (let j = 0; j < renderNurse.length; j++) {
         let nurse = renderNurse[j];
         let nowPageEl = document.getElementById(tableId);
-        if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
+        // if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
         let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight);
 
         if (j == 0 || nextPage) {
