@@ -67,12 +67,15 @@ export default observer(function AduitModal(props: Props) {
     delete params.auditDate
 
     let saveParams = {} as any
-
+    /**
+     * 还未与后端协商修改统一字段名
+     */
     switch (nodeCode) {
-      case 'nurse_handle':
+      case 'nurse_handle':  //科护士长审核
+        console.log('1111111')
         // 片区护长审核是否通过
         if (auditInfo.noPass) {
-          saveParams['B0002060'] = auditInfo.handleContent
+          // saveParams['B0002060'] = auditInfo.handleContent
           if (auditInfo.handleContent.trim().length <= 0) {
             message.warning('审核意见不能为空')
             return
@@ -81,21 +84,28 @@ export default observer(function AduitModal(props: Props) {
           saveParams['B0002060'] = ''
         }
         break
-      case 'nursing_minister_audit':
+      case 'nursing_minister_audit': //护理部审核
         // 是否不良事件
+        if (auditInfo.noPass) {
+          if (auditInfo.handleContent.trim().length <= 0) {
+            message.warning('审核意见不能为空')
+            return
+          }
+        }
         saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
         // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
+        saveParams['B0009020'] = userAudit.empNo   //B0009020未跟后端做统一（待修改）
         break
-      case 'dept_handle':
+      case 'dept_handle':  //病区处理
         // 意见和日期
         saveParams['B0002062'] = auditInfo.handleContent
         saveParams['B0002057'] = auditInfo.handleContent
         saveParams['B0002056'] = auditInfo.auditDate
         params.noPass = false
         break
-      case 'nursing_minister_comfirm':
+      case 'nursing_minister_comfirm': //护理部确认
         // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
