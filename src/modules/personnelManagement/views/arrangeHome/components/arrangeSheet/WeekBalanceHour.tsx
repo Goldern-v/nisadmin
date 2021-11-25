@@ -38,6 +38,9 @@ export const weekBalanceHour = (id: any) => {
     case "dghl":
       weekDate=38.5;
       break;
+    case "fsxt":
+      weekDate=40;
+      break;
     default:
       weekDate=38.5;
       break;
