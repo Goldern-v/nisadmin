@@ -330,7 +330,7 @@ export default observer(function OperateResultReview() {
           {appStore.hisMatch({
             map: {
               wh: <span></span>,
-              gxjb: <span></span>,
+              // gxjb: <span></span>,
               other: <React.Fragment>
                 {isSignType && (<Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>)}
                 <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>

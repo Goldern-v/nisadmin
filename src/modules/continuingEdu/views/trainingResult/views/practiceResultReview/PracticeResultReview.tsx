@@ -195,7 +195,7 @@ export default observer(function PracticeResultReview(props: Props) {
 
   // 针对不同医院打开不同界面
   const getPage = () => {
-    const HOSPITAL_ID: any = ['hj', 'nys'];
+    const HOSPITAL_ID: any = ['hj', 'nys', 'gxjb'];
     let isOk: any = HOSPITAL_ID.find((item: any) => item == appStore.HOSPITAL_ID)
     if (isOk) {
       return (

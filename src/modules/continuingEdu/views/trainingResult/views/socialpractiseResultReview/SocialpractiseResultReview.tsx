@@ -356,7 +356,7 @@ export default observer(function SocialpractiseResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
-            gxjb: <span></span>,
+            // gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}

@@ -89,7 +89,7 @@ export default observer(function TrainingResultReview() {
 
   /**是否显示线下培训的现场图片 */
   const pictrueVisible = (() => {
-    if (appStore.HOSPITAL_ID === 'hj') {
+    if (appStore.HOSPITAL_ID === 'hj' || appStore.HOSPITAL_ID === 'gxjb') {
       if (baseInfo.organizationWay == '线下') return true
     }
     return false
@@ -330,7 +330,7 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
-            gxjb: <span></span>,
+            // gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}

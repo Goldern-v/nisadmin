@@ -321,14 +321,15 @@ export default observer(function Table(props: Props) {
 
   // 查看结果
   const checkResult = (record: any) => {
+    console.log(record.teachingMethod - 1, 900)
     const teachingMethodArray = [
-      "studyResultReview",
-      "trainingResultReview",
-      "testingResultReview",
-      "practiceResultReview",
-      "operateResultReview",
-      "simulateResultReview",
-      "socialpractiseResultReview"
+      "studyResultReview", // 学习
+      "trainingResultReview", // 培训
+      "testingResultReview", // 考试
+      "practiceResultReview", // 练习
+      "operateResultReview", // 实操
+      "simulateResultReview", // 演练
+      "socialpractiseResultReview" //实践
     ];
     let router = teachingMethodArray[record.teachingMethod - 1];
     appStore.history.push(`/${router}?id=${record.id}&teachingMethod=${record.teachingMethodName}`);
