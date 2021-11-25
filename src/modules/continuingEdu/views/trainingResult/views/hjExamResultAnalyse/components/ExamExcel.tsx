@@ -14,7 +14,7 @@ export default observer(function ExamExcel() {
 
   // 南医三根据当前页面tab值显示页面
   const getPage = () => {
-    if (appStore.HOSPITAL_ID == 'hj') {
+    if (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb') {
       return (
         <React.Fragment>
           <Report>
