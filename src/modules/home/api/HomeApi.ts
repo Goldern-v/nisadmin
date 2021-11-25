@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { authStore } from "src/stores/index";
 import qs from "qs";
+import { appStore } from "src/stores";
 
 class StatisticsApi extends BaseApiService {
   /** 1、待我审核列表 */
@@ -10,13 +11,22 @@ class StatisticsApi extends BaseApiService {
     showType?: string,
     keyword?: string
   ) {
-    let data = {
+    let data:any = {
       pageIndex: current || 0, //页码，number
       pageSize: pageSize || 10, //条数，number
       type: showType, //类型（质量检查or档案管理），string
       keyword,
       wardCode: authStore.selectedDeptCode //科室，string
     };
+    if(['gxjb'].includes(appStore.HOSPITAL_ID)){
+      data = {
+        pageIndex: current || 0, //页码，number
+        pageSize: pageSize || 10, //条数，number
+        type: showType, //类型（质量检查or档案管理），string
+        keyword,
+        deptCodes: [authStore.selectedDeptCode] //科室，string
+      };
+    }
     return this.post(`/flow/task/pendingPage`, data);
   }
 
