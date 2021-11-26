@@ -49,21 +49,7 @@ export default function BadEventsRouters(props: Props) {
             path: `${baseRouter}/不良事件上报`,
           }
         ],
-        'fqfybjy,yczyy': [
-          {
-            title: " 不良事件查询",
-            // icon: <SJZK />,
-            path: baseRouter,
-            component: BadEventsNewListCommon,
-            keepAlive: true,
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-          },
-          {
-            title: " 不良事件上报",
-            path: `${baseRouter}/不良事件上报`,
-          }
-        ],
-        other: [
+        'hj': [  //旧版other其他(迁移过来的)
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
@@ -77,7 +63,21 @@ export default function BadEventsRouters(props: Props) {
             hide: !appStore.isDev,
             path: `${baseRouter}/不良事件上报`,
           }
-        ]
+        ],
+        other: [  //新版不良事件fqfybjy,yczyy
+          {
+            title: " 不良事件查询",
+            // icon: <SJZK />,
+            path: baseRouter,
+            component: BadEventsNewListCommon,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+          {
+            title: " 不良事件上报",
+            path: `${baseRouter}/不良事件上报`,
+          }
+        ],
       },
       vague: true,
     }),
@@ -133,7 +133,7 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  if (['fqfybjy', 'yczyy'].includes(appStore.HOSPITAL_ID)) {
+  if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) { //福清特殊跳转单独的上报系统
     autoLoginInfo = {
       blank: true,
       redictUri: '/crNursing/badevents/index',
