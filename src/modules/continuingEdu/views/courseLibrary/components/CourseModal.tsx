@@ -16,6 +16,7 @@ import React, {
   useLayoutEffect,
   ChangeEvent,
   useEffect,
+  useMemo,
 } from "react";
 import createModal, { ModalComponentProps } from "src/libs/createModal";
 import styled from "styled-components";
@@ -29,7 +30,7 @@ import PreviewModal from "src/utils/file/modal/PreviewModal";
 import ReactZmage from "react-zmage";
 
 export interface Prop extends ModalComponentProps {
-  courseType?: string;
+  courseType?: number;
   data?: any;
   modalType: number; // 弹窗类型 0: 新建 1: 修改 2: 查看
   onOkCallback?: () => void;
@@ -48,8 +49,33 @@ export default observer(function courseModal(props: Prop) {
   const titleArr = ["添加课件", "修改", "查看"];
   const [loading, setLoading] = useState(false);
 
-  const setStatusList = () => {
-    const type = data ? data.type : courseType;
+  // const setStatusList = () => {
+  //   const type = data ? data.type : courseLibraryModal.courseType;
+  //   switch (type) {
+  //     case 1:
+  //       return [
+  //         {
+  //           label: "全院可见",
+  //           value: 1,
+  //         },
+  //         {
+  //           label: "授权可见",
+  //           value: 2,
+  //         },
+  //       ];
+  //     case 2:
+  //       return [
+  //         {
+  //           label: "个人可见",
+  //           value: 3,
+  //         },
+  //       ];
+  //     default:
+  //       return [];
+  //   }
+  // };
+  let statusList = useMemo(() => {
+    const type = data ? data.type : courseLibraryModal.courseType;
     switch (type) {
       case 1:
         return [
@@ -72,8 +98,7 @@ export default observer(function courseModal(props: Prop) {
       default:
         return [];
     }
-  };
-  let statusList: RadioItem[] = setStatusList();
+  }, [courseLibraryModal.curTab]);
   const downloadList = [
     {
       label: "是",
@@ -186,6 +211,7 @@ export default observer(function courseModal(props: Prop) {
       });
   };
   const delFile = () => {
+    fileInputRef.current && (fileInputRef.current.value = "");
     setCourseFile({});
   };
   const onSave = () => {
@@ -199,9 +225,6 @@ export default observer(function courseModal(props: Prop) {
     // if (!formData.duration || formData.duration <= 0) {
     //   errMsgList.push("课件时长不能为空或小于等于0");
     // }
-    if (!formData.remark) {
-      errMsgList.push("备注不能为空");
-    }
     if (errMsgList.length > 0) {
       errMsgList.length > 1
         ? Modal.error({
@@ -225,7 +248,7 @@ export default observer(function courseModal(props: Prop) {
       id: data ? data.id : "",
       viewingTime: 0,
       // viewingTime: (duration as number) * (durationTypeList.find(v => v.code === durationType)?.multi || 1),
-      type: data ? data.type : courseType,
+      type: data ? data.type : courseLibraryModal.courseType,
       attachmentId: courseFile.id,
     };
     getResponseData(() => courseLibraryApi.saveOrUpdate(params))
@@ -240,20 +263,20 @@ export default observer(function courseModal(props: Prop) {
         setLoading(false);
       });
   };
-  // const previewModal = createModal(PreviewModal);
+  const previewModal = createModal(PreviewModal);
 
-  // const preview = () => {
-  //   if (getFileType(courseFile.path) == "img")
-  //     ReactZmage.browsing({
-  //       backdrop: "rgba(0,0,0, .8)",
-  //       set: [{ src: courseFile.path }],
-  //     });
-  //   else
-  //     previewModal.show({
-  //       title: formData.courseName || courseFile.name,
-  //       path: courseFile.path,
-  //     });
-  // };
+  const preview = () => {
+    if (getFileType(courseFile.path) == "img")
+      ReactZmage.browsing({
+        backdrop: "rgba(0,0,0, .8)",
+        set: [{ src: courseFile.path }],
+      });
+    else
+      previewModal.show({
+        title: formData.courseName || courseFile.name,
+        path: courseFile.path,
+      });
+  };
   const download = () => {
     let a = document.createElement("a");
     a.href = courseFile.path;
@@ -263,7 +286,7 @@ export default observer(function courseModal(props: Prop) {
     document.body.removeChild(a); // 移除a元素
   };
   useEffect(() => {
-    statusList = setStatusList();
+    // statusList = setStatusList();
     Object.assign(formData, defaultFormData());
     setFormData(formData);
   }, [data]);
@@ -289,7 +312,7 @@ export default observer(function courseModal(props: Prop) {
 
   return (
     <Modal
-      width={500}
+      width={600}
       title={titleArr[modalType]}
       visible={visible}
       onCancel={onCancel}
@@ -341,14 +364,16 @@ export default observer(function courseModal(props: Prop) {
                         </div>
                       )}
                       {modalType < 2 ? (
-                        // <Button type="primary" onClick={preview}>
-                        //   预览
-                        // </Button>
                         ""
                       ) : (
-                        <Button type="primary" onClick={download}>
-                          下载
-                        </Button>
+                        <>
+                          <Button type="primary" onClick={preview}>
+                            预览
+                          </Button>
+                          <Button type="primary" onClick={download}>
+                            下载
+                          </Button>
+                        </>
                       )}
                     </div>
                   )}
@@ -419,7 +444,7 @@ export default observer(function courseModal(props: Prop) {
           onChange={onFileChange}
           multiple={false}
         />
-        {/* <previewModal.Component /> */}
+        <previewModal.Component />
       </Wrapper>
     </Modal>
   );
@@ -489,6 +514,9 @@ const FileBox = styled.div`
       line-height: 20px;
       margin: 0 4px;
       cursor: pointer;
+    }
+    .ant-btn + .ant-btn {
+      margin-left: 10px;
     }
   }
   .tip {

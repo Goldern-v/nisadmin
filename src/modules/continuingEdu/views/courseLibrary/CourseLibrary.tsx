@@ -9,12 +9,14 @@ import CourseModal from "./components/CourseModal";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import { courseLibraryModal } from "./modal";
+import BaseTabs from "src/components/BaseTabs";
 
 export default observer(function(props) {
   const { init } = courseLibraryModal;
   useEffect(() => {
     init();
   }, []);
+
   // modal
   const courseModal = createModal(CourseModal);
   const openAdd = () => {
@@ -61,24 +63,33 @@ export default observer(function(props) {
     courseLibraryModal.page = 1;
     courseLibraryModal.getData();
   };
+  const table = (
+    <Table onDeleteItem={onDeleteItem} onOpenDetail={onOpenDetail} />
+  );
+
+  const tabList = [
+    {
+      title: "公共课件",
+      code: 1,
+      component: table,
+    },
+    {
+      title: "个人课件",
+      code: 2,
+      component: table,
+    },
+  ];
   return (
     <Wrapper>
       <Header openAdd={openAdd} />
       <Content>
-        <Radio.Group
-          onChange={(val: any) => courseLibraryModal.selectTab(val)}
-          value={courseLibraryModal.curTab}
-          style={{ marginBottom: 8 }}
-        >
-          {courseLibraryModal.tabList.map((val: any) => {
-            return (
-              <Radio.Button value={val.code} key={val.code}>
-                {val.name}
-              </Radio.Button>
-            );
-          })}
-        </Radio.Group>
-        <Table onDeleteItem={onDeleteItem} onOpenDetail={onOpenDetail} />
+        <BaseTabs
+          defaultActiveKey={courseLibraryModal.curTab}
+          config={tabList}
+          onChange={(key: any) => {
+            courseLibraryModal.selectTab(key);
+          }}
+        />
       </Content>
       <courseModal.Component
         courseType={courseLibraryModal.curTab}
@@ -93,14 +104,14 @@ const Wrapper = styled.div`
   width: 100%;
   padding-top: 12px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 `;
 const Content = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  background: #fff;
-  padding: 0 10px;
+  /* flex: 1; */
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+  /* overflow-y: auto; */
   .ant-radio-button-wrapper {
     border: none;
     height: 50px;

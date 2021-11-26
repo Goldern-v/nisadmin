@@ -75,7 +75,7 @@ export default class CourseLibraryModal {
       deptCode: this.deptCode,
       courseType: this.type,
       courseName: this.keyword,
-      type: this.curTab,
+      type: this.tabList[this.curTab].code,
       pageIndex: this.page,
       pageSize: this.pageSize
     }
@@ -117,7 +117,11 @@ export default class CourseLibraryModal {
       console.log(err)
     }
   }
-  @observable public curTab: number = 1
+  @observable public curTab: number = 0
+  @computed
+  get courseType() {
+    return this.tabList[this.curTab].code
+  }
   public readonly tabList = [
     {
       name: '公共课件',
@@ -128,8 +132,8 @@ export default class CourseLibraryModal {
       code: 2
     }
   ]
-  public selectTab = (val: any) => {
-    this.curTab = val.target.value
+  public selectTab = (val: any) => {   
+    this.curTab = val 
     this.page = 1
     this.getData()
   }
