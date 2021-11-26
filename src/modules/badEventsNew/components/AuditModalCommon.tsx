@@ -97,6 +97,7 @@ export default observer(function AduitModal(props: Props) {
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
         saveParams['B0009020'] = userAudit.empNo   //B0009020未跟后端做统一（待修改）
+        saveParams["B0010018"] = userAudit.empNo   //护理优良事件报告表（待修改）
         break
       case 'dept_handle':  //病区处理
         // 意见和日期

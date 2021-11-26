@@ -49,7 +49,7 @@ export default function BadEventsRouters(props: Props) {
             path: `${baseRouter}/不良事件上报`,
           }
         ],
-        'fqfybjy': [
+        'fqfybjy,yczyy': [
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
@@ -133,7 +133,7 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+  if (['fqfybjy', 'yczyy'].includes(appStore.HOSPITAL_ID)) {
     autoLoginInfo = {
       blank: true,
       redictUri: '/crNursing/badevents/index',
