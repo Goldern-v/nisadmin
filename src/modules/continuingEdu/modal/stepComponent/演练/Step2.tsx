@@ -16,21 +16,24 @@ import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from 'src/stores'
+import { newStudentCreditTypeList } from "./../StepCommon"
 export interface Props { }
 
 export default observer(function Step2() {
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   // 学分
-  const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb' ? [
-    { name: "国家级", code: 1 },
-    { name: "省级", code: 2 },
-    { name: "市级", code: 3 }
-  ] : [
-    { name: "院级学分", code: 1 },
-    { name: "片区学分", code: 2 },
-    { name: "病区学分", code: 3 }
-  ];
+  // const studentCreditTypeList = appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'gxjb' ? [
+  //   { name: "国家级", code: 1 },
+  //   { name: "省级", code: 2 },
+  //   { name: "市级", code: 3 }
+  // ] : [
+  //   { name: "院级学分", code: 1 },
+  //   { name: "片区学分", code: 2 },
+  //   { name: "病区学分", code: 3 }
+  // ];
+  // 学分
+  const studentCreditTypeList = newStudentCreditTypeList;
   //学时
   const studentTimeTypeList = [
     { name: 0, code: 0 },
@@ -164,7 +167,8 @@ export default observer(function Step2() {
               />
             </Form.Field>
           </Col>
-          {(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && (
+          {/* {(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && ( */}
+          {(appStore.HOSPITAL_ID == "wh") && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
                 <Select style={{ width: 120 }}>

@@ -8,6 +8,7 @@ import moment from "moment";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
 import { appStore } from "src/stores";
+import { newStudentCreditTypeMap } from "./../StepCommon";
 
 export interface Props { }
 
@@ -27,11 +28,12 @@ export default observer(function Step5() {
     nurse5: "N5",
     nurseOther: "其他"
   };
-  const studentCreditTypeMap: any = {
-    1: "国家级",
-    2: "省级",
-    3: "市级"
-  };
+  // const studentCreditTypeMap: any = {
+  //   1: "国家级",
+  //   2: "省级",
+  //   3: "市级"
+  // };
+  const studentCreditTypeMap = newStudentCreditTypeMap;
 
   let totalNum =
     ksStepViewModal.stepData2.questionStatList &&
@@ -151,8 +153,24 @@ export default observer(function Step5() {
               <td className="value">无</td>
             </tr>
           )}
-
-          {ksStepViewModal.stepData2.category == 1 ? (
+          {appStore.hisMatch({
+            map: {
+              gxjb: [],
+              other:
+                ksStepViewModal.stepData2.category == 1 ? (
+                  <tr>
+                    <td className="key">类&nbsp;&nbsp;别：</td>
+                    <td className="value">中医类</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td className="key">类&nbsp;别：</td>
+                    <td className="value">非中医类</td>
+                  </tr>
+                )
+            }
+          })}
+          {/* {ksStepViewModal.stepData2.category == 1 ? (
             <tr>
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">中医类</td>
@@ -162,7 +180,7 @@ export default observer(function Step5() {
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">非中医类</td>
             </tr>
-          )}
+          )} */}
 
           {ksStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>
@@ -222,7 +240,7 @@ export default observer(function Step5() {
                 <div>
                   <span style={{ marginRight: 10 }}>
                     卷面题目共 {totalNum} 题
-              </span>
+                  </span>
                   {!!ksStepViewModal.stepData2.randomOrderQue && (
                     <span style={{ marginRight: 10 }}>随机显示题目顺序</span>
                   )}
@@ -242,7 +260,7 @@ export default observer(function Step5() {
                     className="ab"
                   >
                     试卷预览
-              </Button>
+                  </Button>
                 </div>
               </td>
             </tr>
