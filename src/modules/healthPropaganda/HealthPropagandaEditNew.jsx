@@ -8,6 +8,7 @@ import TemplatesPannel from './components/TemplatesPannel'
 import { healthProagandaService } from './api/healthProgandaService'
 import service from 'src/services/api'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
+import { throttle } from "src/utils/throttle/throttle";
 
 import CKEditor from 'ckeditor4-react'
 
@@ -224,8 +225,10 @@ export default observer(function HealthPropagandaEditNew(props) {
       }
     }
   }
-
-  const saveEdit = () => {
+  let requestFlag = false
+  const getThrottle = throttle(1000)
+  
+  const saveEdit = () => getThrottle(() => {
     let content = editorData
 
     if (content === '' || content === '<p></p>') return Message.error('请输入宣教内容')
@@ -266,7 +269,8 @@ export default observer(function HealthPropagandaEditNew(props) {
     })
 
     content = content.join('')
-
+    if (requestFlag) return
+    requestFlag = true
     healthProagandaService
       .save({
         ...params,
@@ -279,12 +283,23 @@ export default observer(function HealthPropagandaEditNew(props) {
       .then((res) => {
         if (res.code === '200') {
           Message.success('健康宣教保存成功')
-          setTimeout(() => history.goBack(), 1000)
+          setTimeout(() => {
+            history.goBack()
+            // requestFlag = false
+          }, 1000)
         } else {
           if (res.desc) Message.error(res.desc)
+          requestFlag = false
         }
+      }).catch(() => {
+        requestFlag = false
       })
-  }
+  })
+  useEffect(()=> {
+    return () => {
+      requestFlag = false
+    }
+  },[])
 
   const handleCancel = () => {
     Modal.confirm({

@@ -29,7 +29,7 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = appStore.hisMatch({
     map: {
-      'wh,gzsrm,gxjb,fsxt': createModal(AduitModalWh),
+      'wh,gzsrm,gxjb,fsxt,fssdy': createModal(AduitModalWh),
       other: createModal(AduitModal)
     },
     vague: true
