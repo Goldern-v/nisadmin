@@ -406,7 +406,7 @@ export default observer(function TrainingResultReview() {
               {
                 !imgListLoading ?
                   <FullContent>
-                    {appStore.HOSPITAL_ID === 'hj' && <div className={'add-button'}>
+                    {(appStore.HOSPITAL_ID === 'hj' || appStore.HOSPITAL_ID === 'gxjb') && <div className={'add-button'}>
                       <Upload beforeUpload={uploadImg} showUploadList={false}>
                         <Button type='primary'>添加</Button>
                       </Upload>
