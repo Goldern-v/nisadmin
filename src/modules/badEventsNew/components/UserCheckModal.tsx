@@ -27,7 +27,7 @@ export default function UserCheckModal(props: Props) {
       .then(res => {
         setConfirmLoading(false)
         if (res.data !== null) {
-          onOk(userAudit);
+          onOk(userAudit, res.data);
         } else {
           if (res.desc) Message.error(res.desc);
         }
@@ -48,6 +48,7 @@ export default function UserCheckModal(props: Props) {
     confirmLoading={confirmLoading}
     onCancel={onCancel}
     visible={visible}
+    maskClosable={false}
     className="badevent-user-check-modal">
     <Wrapper>
       <Row>

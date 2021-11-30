@@ -191,7 +191,7 @@ export default function BaseSetting(props: Props) {
               签到方式：
             </div>
             <div className="content">
-              <span>{info.qrCodeType==2?"动态二维码":"静态二维码"}</span>
+            <span>{info.qrCodeType==2?"动态二维码":"静态二维码"}</span>
               {info.qrCodeType==2&&<span style={{marginLeft: "20px"}}>刷新时间:{info.refreshTime}秒</span>}
               <Button
                 style={{ marginLeft: 10, height: 20 }}
@@ -273,14 +273,14 @@ export default function BaseSetting(props: Props) {
           {info.teachingTypeName} ({info.teachingMethodName})
         </div>
       </div>
-      <div className="row">
+      {!["gxjb"].includes(appStore.HOSPITAL_ID) && <div className="row">
         <div className="label" style={{ width: _labelWidth }}>
           类别：
         </div>
         {(appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == "gxjb") && (
           <div className="content">{info.categoryName}</div>
         )}
-      </div>
+      </div>}
       <div className="row">
         <div className="label" style={{ width: _labelWidth }}>
           组织方式：
