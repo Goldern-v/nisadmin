@@ -33,7 +33,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               手机号: 'phone'
             },
             {
-              参加工作时间: 'takeWorkTime',
+              参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime',
               护士执业证书编号: 'zyzsNumber'
             },
 

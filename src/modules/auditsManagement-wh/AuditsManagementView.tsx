@@ -7,7 +7,7 @@ import BaseTabs from 'src/components/BaseTabs'
 import { authStore, appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function AuditsManagementView() {
   const [showType, setShowType] = useState('')

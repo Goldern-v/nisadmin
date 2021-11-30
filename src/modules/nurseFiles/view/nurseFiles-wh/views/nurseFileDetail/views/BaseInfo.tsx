@@ -15,7 +15,7 @@ import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import { ScrollBox } from "src/components/common";
 import { openAuditModal } from "../config/auditModalConfig";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
   // return appStore.queryObj.empNo == authStore!.user!.empNo
@@ -91,7 +91,7 @@ export default observer(function BaseInfo() {
           手机号: data.phone,
         },
         {
-          参加工作时间: data.takeWorkTime,
+          参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? data.goWorkTime : data.takeWorkTime,
           来院工作时间: data.goHospitalWorkDate,
         },
 
