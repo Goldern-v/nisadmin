@@ -12,6 +12,8 @@ class SelectViewModal {
   @observable public params = {
     startTime: '', // 开始时间
     endTime: '', // 截止时间
+    copyStartTime: '', // 贵州复制排班 开始时间
+    copyEndTime: '', // 贵州复制排班截止时间
     deptCode: null, // 科室
     group: '', // 分组
     groupList: [] // 分组
@@ -23,7 +25,7 @@ class SelectViewModal {
   }
   @action
   public setParams = (type: any, value: any) => {
-    ;(this.params as any)[type] = value
+    ; (this.params as any)[type] = value
 
     sessionStorage.arrangeParams = JSON.stringify(this.params)
 

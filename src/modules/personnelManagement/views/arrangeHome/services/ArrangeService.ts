@@ -141,14 +141,14 @@ export default class ArrangeService extends BaseApiService {
         .weekday(6)
         .format("YYYY-MM-DD")
     };
-    const url ='/scheduling/exportExcel'
+    const url = '/scheduling/exportExcel'
     return this.post(url, postData, { responseType: "blob" });
   }
 
   // 聊城导出排班
-  public async exportRoster(type:number, status: boolean = false) {
+  public async exportRoster(type: number, status: boolean = false) {
     const list = authStore.deptList;
-    const current = list.find((item:any)=>item.code === selectViewModal.params.deptCode) || {name:''}
+    const current = list.find((item: any) => item.code === selectViewModal.params.deptCode) || { name: '' }
     const postData = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
@@ -161,10 +161,10 @@ export default class ArrangeService extends BaseApiService {
       endTimeWeek: moment(selectViewModal.params.endTime)
         .weekday(6)
         .format("YYYY-MM-DD"),
-      excelType:type
+      excelType: type
     };
     const url = `/scheduling/${status ? 'exportExcelLC' : 'exportExcel'}`
-    
+
     return this.post(url, postData, { responseType: "blob" });
   }
 
@@ -189,20 +189,36 @@ export default class ArrangeService extends BaseApiService {
   }
 
   //复制排班
-  public copyPrevSettingRange(obj?: any) {
-    obj = {
-      startTime: selectViewModal.params.startTime,
-      endTime: selectViewModal.params.endTime,
-      ids: sheetViewModal.sheetTableData.map((item: any) => item.id),
-      empNames: sheetViewModal.sheetTableData.map((item: any) => item.empName),
-      startTimeWeek: moment(selectViewModal.params.startTime)
-        .weekday(0)
-        .format("YYYY-MM-DD"),
-      endTimeWeek: moment(selectViewModal.params.endTime)
-        .weekday(6)
-        .format("YYYY-MM-DD"),
-      deptCode: selectViewModal.params.deptCode
-    };
+  public copyPrevSettingRange(statusCopy: Boolean = true, obj?: any) {
+    if (statusCopy) {
+      obj = {
+        startTime: selectViewModal.params.startTime,
+        endTime: selectViewModal.params.endTime,
+        ids: sheetViewModal.sheetTableData.map((item: any) => item.id),
+        empNames: sheetViewModal.sheetTableData.map((item: any) => item.empName),
+        startTimeWeek: moment(selectViewModal.params.startTime)
+          .weekday(0)
+          .format("YYYY-MM-DD"),
+        endTimeWeek: moment(selectViewModal.params.endTime)
+          .weekday(6)
+          .format("YYYY-MM-DD"),
+        deptCode: selectViewModal.params.deptCode
+      };
+    } else {
+      obj = {
+        startTime: selectViewModal.params.copyStartTime,
+        endTime: selectViewModal.params.copyEndTime,
+        ids: sheetViewModal.sheetTableData.map((item: any) => item.id),
+        empNames: sheetViewModal.sheetTableData.map((item: any) => item.empName),
+        startTimeWeek: moment(selectViewModal.params.copyStartTime)
+          .weekday(0)
+          .format("YYYY-MM-DD"),
+        endTimeWeek: moment(selectViewModal.params.copyEndTime)
+          .weekday(6)
+          .format("YYYY-MM-DD"),
+        deptCode: selectViewModal.params.deptCode
+      };
+    }
     const url = appStore.HOSPITAL_ID === 'jmfy' ? '/schedulingJm/copyPrevSettingRange' : '/scheduling/copyPrevSettingRange'
     return this.post(url, obj);
   }

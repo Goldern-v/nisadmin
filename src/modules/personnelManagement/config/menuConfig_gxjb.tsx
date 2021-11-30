@@ -26,7 +26,6 @@ export interface meunConfigItem {
   iSlimit?: boolean | Function;
   special?: boolean | Function;
 }
-console.log(!authStore.isRoleManage, 87)
 
 export const meunConfig: meunConfigItem[] = [
   {
