@@ -8,7 +8,7 @@ import { appStore, authStore } from "src/stores";
 import { sexEnum } from "src/libs/enum/common";
 import { observer } from "mobx-react-lite";
 import { globalModal } from "src/global/globalModal";
-
+import service from 'src/services/api'
 import BaseLayout from "../components/BaseLayout";
 import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
@@ -29,7 +29,40 @@ export default observer(function BaseInfo() {
   );
   const [idData, setIdData] = useState(0);
   const [id, setId] = useState(0);
-
+  let clothingInfo = [
+    {
+      type: "summer_jacket_size",
+      name: "夏装-上衣"
+    },
+    {
+      type: "summer_trousers_size",
+      name: "夏装-裤子"
+    },
+    {
+      type: "winter_jacket_size",
+      name: "冬装-上衣"
+    },
+    {
+      type: "winter_trousers_size",
+      name: "冬装-裤子"
+    },
+    {
+      type: "summer_isolation_suit_size",
+      name: "夏装-医生款"
+    },
+    {
+      type: "winter_isolation_suit_size",
+      name: "冬装-医生款"
+    },
+    {
+      type: "nurse_shoes_style",
+      name: "鞋款式"
+    },
+    {
+      type: "nurse_shoes_size",
+      name: "鞋码"
+    },
+  ]
   const limitsComponent = () => {
     let btnList = [];
     if (isSelf()) {
@@ -70,10 +103,11 @@ export default observer(function BaseInfo() {
     setInfo({});
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info;
+      let maps = res.data.maps || {}
       setInfo(data);
       setIdData(data.empNo);
       setId(data.id);
-      setTableData([
+      let newTableData = [
         {
           民族: data.nation,
           籍贯: data.nativePlace,
@@ -136,8 +170,58 @@ export default observer(function BaseInfo() {
               };
           }
         })(),
-      ]);
-    });
+      ]
+      setTableData(newTableData);
+      // 处理扩展字段
+      if (Object.keys(data).includes('maps'))
+        return new Promise((resolve, reject) => {
+          service.commonApiService.listNurseExpand('User')
+            .then(res => {
+              resolve({
+                maps,
+                mapsConfig: res.data,
+                orgin: newTableData
+              })
+            }, (e) => reject(e))
+        })
+    }).then((payload: any) => {
+      if (payload) {
+        const { maps, mapsConfig, orgin } = payload
+        const newTableData = [...orgin]
+
+        for (let i = 0; i < mapsConfig.length; i++) {
+          let mapCfgItem = mapsConfig[i]
+          let key = mapCfgItem.fieldCode
+          let val = maps[key] || ''
+
+          if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
+            let options = []
+            try {
+              options = JSON.parse(mapCfgItem.fieldSelectContent)
+            } catch (e) {
+
+            }
+            let target = options.find((opt: any) => opt.code === val)
+
+            if (target) val = target.name
+          }
+          let fieldCode = mapCfgItem.fieldCode
+          // let name = clothingInfo.find((item, index) => item.type == fieldCode).name
+          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0].name
+          // let name = mapCfgItem.fieldName
+          let lastItem = newTableData[newTableData.length - 1]
+
+          if (Object.keys(lastItem).length > 1) {
+            newTableData.push({ [name]: val })
+          } else {
+            lastItem[name] = val
+          }
+        }
+        if (['fsxt'].includes(appStore.HOSPITAL_ID)) {
+          setTableData(newTableData)
+        }
+      }
+    }, e => { })
   };
   useEffect(() => {
     getTableData();
