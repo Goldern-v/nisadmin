@@ -32,7 +32,8 @@ export default observer(function BadEventNewList() {
   const defaultWardCode = authStore.isDepartment ? '' : authStore.defaultDeptCode
   //列表请求参数
   const [query, setQuery] = useState({
-    wardCode: defaultWardCode,
+    // wardCode: defaultWardCode,
+    wardCode: "",
     // dateBegin: dateRange[0].format("YYYY-MM-DD"),
     // dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
