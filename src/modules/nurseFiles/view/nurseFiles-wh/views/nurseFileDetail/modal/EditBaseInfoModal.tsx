@@ -305,7 +305,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name="takeWorkTime">
+            <Form.Field label={`参加工作时间`} name={appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime'}>
               <DatePicker />
             </Form.Field>
           </Col>
