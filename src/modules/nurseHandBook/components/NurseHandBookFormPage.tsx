@@ -52,20 +52,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
   const onload = () => {
-    if(!queryObj.isAdd){
-      setSpinning(true)
-      api.getByIdAudited(queryObj.id).then((res) => {
-        setData(res.data)
-        setSearchText(res.data.title)
-        setTextValue(res.data.content)
-        setDetailData(res.data.flowList)
-        res.data.files?.forEach((item:any) => {
-          item.uid = item.id
-        })
-        setFileList(res.data.files)
-        setSpinning(false)
-      })
-    }
+    // if(!queryObj.isAdd){
+    //   setSpinning(true)
+    //   api.getByIdAudited(queryObj.id).then((res) => {
+    //     setData(res.data)
+    //     setSearchText(res.data.title)
+    //     setTextValue(res.data.content)
+    //     setDetailData(res.data.flowList)
+    //     res.data.files?.forEach((item:any) => {
+    //       item.uid = item.id
+    //     })
+    //     setFileList(res.data.files)
+    //     setSpinning(false)
+    //   })
+    // }
   }
   
   useEffect(() => {
@@ -83,12 +83,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
       title: undoTitle,
       centered: true,
       onOk: () => {
-        api
-          .undo({id:queryObj.id,status:data.status})
-          .then(res => {
-            message.success('撤销成功')
-            appStore.history.goBack()
-          },)
+        // api
+        //   .undo({id:queryObj.id,status:data.status})
+        //   .then(res => {
+        //     message.success('撤销成功')
+        //     appStore.history.goBack()
+        //   },)
       }
     })
   }
@@ -97,37 +97,37 @@ export default observer(function nurseHandBookFormPage(props: any) {
     
   }
   const handleSave = () => {
-    if (searchText == "") {
-      message.error('标题不能为空！')
-      return
-    }
-    api.saveDraft(queryObj.type,{
-      id: queryObj.id || "",
-      title: searchText,
-      content: textValue,
-      fileIds: fileIdList,
-    })
-    .then((res) => {
-      message.success('保存成功')
-      appStore.history.goBack()
-    })
+    // if (searchText == "") {
+    //   message.error('标题不能为空！')
+    //   return
+    // }
+    // api.saveDraft(queryObj.type,{
+    //   id: queryObj.id || "",
+    //   title: searchText,
+    //   content: textValue,
+    //   fileIds: fileIdList,
+    // })
+    // .then((res) => {
+    //   message.success('保存成功')
+    //   appStore.history.goBack()
+    // })
   }
 
   const handleSubmit = () => {
-    if (searchText == "") {
-      message.error('标题不能为空！')
-      return
-    }
-    api.auditJM(queryObj.type,{
-      id: queryObj.id || "",
-      title: searchText,
-      content: textValue,
-      fileIds: fileIdList,
-    })
-    .then((res) => {
-      message.success('提交成功')
-      appStore.history.goBack()
-    })
+    // if (searchText == "") {
+    //   message.error('标题不能为空！')
+    //   return
+    // }
+    // api.auditJM(queryObj.type,{
+    //   id: queryObj.id || "",
+    //   title: searchText,
+    //   content: textValue,
+    //   fileIds: fileIdList,
+    // })
+    // .then((res) => {
+    //   message.success('提交成功')
+    //   appStore.history.goBack()
+    // })
   }
   
   const handleAudit = () => {
@@ -163,23 +163,23 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const removeOnChange = (info:any) => {
-    let pro = new Promise((resolve,reject)=>{
-      Modal.confirm({
-        title: '确认删除该附件？',
-        centered: true,
-        onOk: () => {
-          api
-          .deleteAttachmentJM(info.id).then((res) => {
-            resolve(true)
-            message.success('删除成功')
-          })
-        },
-        onCancel:()=>{
-          resolve(false)
-        }
-      })
-    })
-    return pro.then(res=>res)
+    // let pro = new Promise((resolve,reject)=>{
+    //   Modal.confirm({
+    //     title: '确认删除该附件？',
+    //     centered: true,
+    //     onOk: () => {
+    //       api
+    //       .deleteAttachmentJM(info.id).then((res) => {
+    //         resolve(true)
+    //         message.success('删除成功')
+    //       })
+    //     },
+    //     onCancel:()=>{
+    //       resolve(false)
+    //     }
+    //   })
+    // })
+    // return pro.then(res=>res)
   }
   const PreviewOnChange = (info:any) => {
     setEditVisible2(true)
