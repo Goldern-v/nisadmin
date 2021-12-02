@@ -78,6 +78,12 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png"),
         hidden: !appStore.isDev,
       },
+      {
+        name: "护士长手册表单",
+        path: "/NurseHandBookFormPage",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+        hidden: !appStore.isDev,
+      },
     ]
   },
   {
