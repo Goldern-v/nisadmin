@@ -164,6 +164,8 @@ export default observer(function BaseInfo() {
                 鞋码大小: data.shoeSize,
                 职称: data.newTitle,
               };
+            case "fsxt":
+              return {}
             default:
               return {
                 鞋码大小: data.shoeSize,
