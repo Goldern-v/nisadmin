@@ -399,6 +399,7 @@ export default function NurseHandBookFormPage(props: Props) {
       <div className="page">
         <div className="space-div"></div>
         <div className="bottom-list">
+          <div className="table-head">新生儿监护单</div>
           <div style={{ background: '#f9f9f9', display: 'flex', justifyContent: 'center', }}>
             {tHead.map((item: any, idx: any) =>
               <div className="t-b-1" key={idx}>{item}</div>)}
@@ -438,15 +439,22 @@ export default function NurseHandBookFormPage(props: Props) {
 
 const Wrapper = styled.div`
   .page {
-    padding:50px;
-    display:flex;
-    background-color:#fff;
+    margin: 20px 0;
+    padding: 50px;
+    padding-top: 0px;
+    display: flex;
+    background-color: #fff;
   }
   .space-div{
   }
   .bottom-list{
-    width: 1000px;
-
+    .table-head {
+      font-size: 21px;
+      padding: 10px 0;
+      text-align: center;
+      font-weight: 700;
+      font-family: 'simsun', 'Times New Roman', 'Georgia', 'Serif'!important;
+    }
   }
   .bottom-list .t-b-1{
     border: 1px solid #000;
