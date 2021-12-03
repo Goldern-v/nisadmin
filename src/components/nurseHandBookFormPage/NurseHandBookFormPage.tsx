@@ -10,14 +10,14 @@ export default function NurseHandBookFormPage(props: Props) {
   const [bodyModal, setBodyModal]: any = useState([])
   const [domReact, setDomReact]: any = useState({})
   const [visible, setVisible]: any = useState(false)
-  const [col, setCol]: any = useState({})
+  const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
   let selectRow: any = {}
   const [selectIndex, setSelectIndex] = useState(-1)
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
     scheduleStore.setIsSave(false)
-    filterList(item, item.value)
+    // filterList(item, item.value)
   }
 
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -26,21 +26,20 @@ export default function NurseHandBookFormPage(props: Props) {
     e.preventDefault()
     let domReact = e.currentTarget.getBoundingClientRect()
     setDomReact(domReact)//给下拉弹框传定位
-    if (col.select?.length > 0) {
-      setCol(col)
+    if (col.select) {
+      setColIdx(colIdx)
       setSelectList(col.select)
-      setVisible(true)//打开下拉框
+      if (visible) {
+        setVisible(false)//打开下拉框
+      }
+      setTimeout(() => {
+        setVisible(true)//打开下拉框
+      })
     } else {
       setVisible(false)//
     }
   }
-  //过滤下拉框数组（智能联想） 
-  const filterList = (col: any, value: String) => {
-    let arr = col.select.filter((selectItem: any) => {
-      return selectItem.includes(value);
-    });
-    setSelectList(arr)
-  }
+
 
   const onBlur = () => {
     // setTimeout(()=>{
@@ -50,7 +49,7 @@ export default function NurseHandBookFormPage(props: Props) {
 
   const refresh = () => {
     setBodyModal([...bodyModal])
-    if (col.multiple) {
+    if (bodyModal[selectIndex][colIdx].multiple) {
 
     } else {
       setVisible(false)//关闭下拉框
@@ -425,7 +424,7 @@ export default function NurseHandBookFormPage(props: Props) {
         </div>
         <div className="space-div"></div>
       </div>
-      <SelectModal visible={visible} domReact={domReact} refresh={refresh} col={col} selectList={selectList}></SelectModal>
+      {visible && <SelectModal domReact={domReact} refresh={refresh} col={bodyModal[selectIndex][colIdx]} selectList={selectList}></SelectModal>}
     </Wrapper>
   )
 }

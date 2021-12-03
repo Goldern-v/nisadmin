@@ -2,14 +2,16 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 export interface Props {
   domReact: any
-  visible: Boolean
   col: any
   selectList: Array<any>
   refresh: Function
 }
 export default function SelectModal(props: Props) {
-  const { domReact, visible, col, refresh, selectList } = props
+  const { domReact, col, refresh, selectList } = props
   const [selectTop, setSelectTop]: any = useState(0)
+  const [renderList, setRenderList]: any = useState([])
+  // const [timer, setTimer]: any = useState(null)
+  let timer: any = null
   const [selectLeft, setSelectLeft]: any = useState(0)
   const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;//浏览器窗口宽度
   const H = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//浏览器窗口高度
@@ -18,11 +20,29 @@ export default function SelectModal(props: Props) {
   const maxTop = H - 350
 
   const open = () => {
+    console.log(111);
+
+    setRenderList(selectList || [])
     setSelectLeft(selectw)
     if (domReact.top >= maxTop) {
       setSelectTop(maxTop - 20)
     } else {
       setSelectTop(selectH)
+    }
+    timer && clearInterval(timer)
+    timer = setInterval(() => {
+      filterArr(props.col.value)
+    }, 1000)
+  }
+
+  const filterArr = (key: any) => {
+    let arr = selectList.filter(item => {
+      return item.includes(key)
+    })
+    if (arr.length) {
+      setRenderList([...arr])
+    } else {
+      setRenderList([...selectList])
     }
   }
 
@@ -38,11 +58,14 @@ export default function SelectModal(props: Props) {
 
   useEffect(() => {
     open()
-  }, [props])
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
   return (
     <Wrapper>
-      {visible && <div className="selectBody" style={{ top: `${selectTop || 0}px`, left: `${selectLeft || 0}px` }}>
-        {selectList?.map((item: String, index: any) =>
+      {<div className="selectBody" style={{ top: `${selectTop || 0}px`, left: `${selectLeft || 0}px` }}>
+        {renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
           </div>)}
       </div>}
