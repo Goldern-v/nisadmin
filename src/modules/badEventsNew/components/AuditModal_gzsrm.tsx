@@ -18,7 +18,9 @@ const initAuditInfo = () => {
     handleContent: '',
     expand: '',
     auditDate: moment().format('YYYY-MM-DD'),
-    noPass: false,
+    //添加是否为不良事件
+    //noPass: false,
+    noPass: "0",//"0"通过,1为不通过，2为不良事件
   }
 }
 
@@ -71,7 +73,7 @@ export default observer(function AduitModal(props: Props) {
     switch (nodeCode) {
       case 'nurse_handle':
         // 片区护长审核是否通过
-        if (auditInfo.noPass) {
+        if (auditInfo.noPass=='1') {
           saveParams['B0002060'] = auditInfo.handleContent
           // if (auditInfo.handleContent.trim().length <= 0) {//去除回退原因限制
           //   message.warning('审核意见不能为空')
@@ -83,7 +85,8 @@ export default observer(function AduitModal(props: Props) {
         break
       case 'nursing_minister_audit':
         // 是否不良事件
-        saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
+        // saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
+        saveParams['B0002061'] = auditInfo.noPass
         // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
@@ -127,6 +130,7 @@ export default observer(function AduitModal(props: Props) {
         })
         .then(res => {
           if (res.code === '200')
+          params.noPass= params.noPass=='1'?true:false;
             return badEventsNewService
               .auditBadEventMaster(params)
         })
@@ -160,12 +164,14 @@ export default observer(function AduitModal(props: Props) {
       case 'nurse_handle':
         opionTitle = '片区护长审核意见'
         auditDateTitle = '审核日期'
-        if (auditInfo.noPass)
+        //if (auditInfo.noPass)
+        if (auditInfo.noPass=='1')
           opionTitle = ' 回退原因'
         break
       case 'nursing_minister_audit':
         opionTitle = '护理部审核意见'
-        if (auditInfo.noPass)
+        //if (auditInfo.noPass)
+        if (auditInfo.noPass=='1')
           opionTitle = ' 回退原因'
         auditDateTitle = '审核日期'
         break
@@ -176,7 +182,8 @@ export default observer(function AduitModal(props: Props) {
         break
       case 'nursing_minister_comfirm':
         opionTitle = ' 护理部确认'
-        if (auditInfo.noPass)
+        //if (auditInfo.noPass)
+        if (auditInfo.noPass=='1')
           opionTitle = ' 回退原因'
         auditDateTitle = ' 护理部确认日期'
         break
@@ -201,8 +208,11 @@ export default observer(function AduitModal(props: Props) {
                       noPass: e.target.value,
                     })
                   }>
-                  <Radio value={false} >是</Radio>
-                  <Radio value={true}>否</Radio>
+                  {/* <Radio value={false} >是</Radio>
+                  <Radio value={true}>否</Radio> */}
+                  <Radio value={"0"} >是</Radio>
+                  <Radio value={"1"}>否</Radio>
+                  <Radio value={"2"}>非护理不良事件</Radio>
                 </Radio.Group>
               </Col>
             </Row>
@@ -278,8 +288,10 @@ export default observer(function AduitModal(props: Props) {
                       noPass: e.target.value,
                     })
                   }>
-                  <Radio value={false} >通过</Radio>
-                  <Radio value={true}>退回</Radio>
+                  {/* <Radio value={false} >通过</Radio>
+                  <Radio value={true}>退回</Radio> */}
+                  <Radio value={"0"} >通过</Radio>
+                  <Radio value={"1"}>退回</Radio>
                 </Radio.Group>
               </Col>
             </Row>

@@ -59,8 +59,9 @@ export default function AduitModal(props: Props) {
       setSpinning(true)
       if (props.type === 'nurseWHInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
+
           setSpinning(false)
-          let data = res.data
+          let data = { ...res.data, ...res.data.maps }
           setResData(data)
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
@@ -89,10 +90,10 @@ export default function AduitModal(props: Props) {
             },
             ...(data.zyzsUrl
               ? data.zyzsUrl.split(',').map((item: any, index: number) => {
-                  return {
-                    ['执业证书' + (index + 1)]: item
-                  }
-                })
+                return {
+                  ['执业证书' + (index + 1)]: item
+                }
+              })
               : [])
           ])
           // }
@@ -138,8 +139,8 @@ export default function AduitModal(props: Props) {
                   fileList.map((fileItem) =>
                     data[fileItem.code]
                       ? data[fileItem.code]
-                          .split(',')
-                          .map((item: any, index: number) => ({ [fileItem.name + (index + 1)]: item }))
+                        .split(',')
+                        .map((item: any, index: number) => ({ [fileItem.name + (index + 1)]: item }))
                       : []
                   )
                 ])
@@ -149,10 +150,10 @@ export default function AduitModal(props: Props) {
             setFileData(
               data.urlImageOne
                 ? data.urlImageOne.split(',').map((item: any, index: number) => {
-                    return {
-                      ['附件' + (index + 1)]: item
-                    }
-                  })
+                  return {
+                    ['附件' + (index + 1)]: item
+                  }
+                })
                 : []
             )
           }
