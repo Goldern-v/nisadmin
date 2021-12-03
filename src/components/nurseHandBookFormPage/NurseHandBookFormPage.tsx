@@ -56,7 +56,9 @@ export default function NurseHandBookFormPage(props: Props) {
     }
 
   }
-
+  const tick = () => {
+    console.log("tick");
+  }
   let masterInfo = {
     defaulLength: 17
   }
@@ -74,6 +76,7 @@ export default function NurseHandBookFormPage(props: Props) {
       name: "一",
       value: "",
       select: ['但是格式的', '水电费第三方士大夫', '是大富大贵', '很过分', '华润广东', '爱我去', '表格内', 'SaaS', '按时的说法', '讽德诵功'],
+      click: tick,
     },
     {
       key: "preInputTwo",
@@ -363,7 +366,9 @@ export default function NurseHandBookFormPage(props: Props) {
     },
 
   ]
-
+  const handlerClick = (e: any, col: any) => {
+    col.click && col.click()
+  }
   useEffect(() => {
     let tempArr = []
     let rows = 0
@@ -375,7 +380,21 @@ export default function NurseHandBookFormPage(props: Props) {
       needNullRows = true
     }
     for (let index = 0; index < rows; index++) {
-      let nullRow = JSON.parse(JSON.stringify(tbody))
+      let nullRow: any = []
+      tbody.map((config: any, index: any) => {
+        nullRow.push({})
+        for (let key in config) {
+          console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
+          if (Object.prototype.toString.call(config[key]) == "[object Function]") {
+            nullRow[index][key] = config[key].bind()
+          } else {
+            nullRow[index][key] = JSON.parse(JSON.stringify(config[key]))
+          }
+        }
+      })
+      // let nullRow = JSON.parse(JSON.stringify(tbody))
+      console.log(nullRow);
+
       nullRow.map((item: any) => {
         if (needNullRows && index >= text.length) {
           item.value = ""
@@ -416,6 +435,7 @@ export default function NurseHandBookFormPage(props: Props) {
                     onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
                     onBlur={(e: any) => onBlur()}
                     onInput={(e) => changeValue(e, col)}
+                    onClick={(e) => { handlerClick(e, col) }}
                     key={`${rowIdx}_${colIdx}`}
                   >
                     {col.value}
