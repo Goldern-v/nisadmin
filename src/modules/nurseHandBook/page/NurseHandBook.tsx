@@ -231,7 +231,8 @@ export default observer(function MyCreateList() {
 
   const handleAddNew = (record: any) => {
     if(appStore.HOSPITAL_ID == "jmfy"){
-      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=true`)
+      appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&isAdd=true`) //2.0版本
+      // appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&isAdd=true`) //3.0版本
     }else{
       setIsAdd(true)
       setEditVisible(true)

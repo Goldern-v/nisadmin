@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
 
 import { compileStr, uncompileStr } from 'src/utils/encode/encode'
 import qs from "qs";
+import md5 from 'js-md5';
 
 export interface Props extends RouteComponentProps { }
 
@@ -83,6 +84,7 @@ export default withRouter(function LoginView(props: Props) {
       message.warning("请填写验证码！")
       return;
     }
+    (["fssdy"].includes(appStore.HOSPITAL_ID)) && (_password=md5(_password));
     service.authApiService
       .login(_username, _password, verificationCode, "")
       .then(() => {

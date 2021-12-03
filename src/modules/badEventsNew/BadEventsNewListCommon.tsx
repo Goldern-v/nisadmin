@@ -32,7 +32,8 @@ export default observer(function BadEventNewList() {
   const defaultWardCode = authStore.isDepartment ? '' : authStore.defaultDeptCode
   //列表请求参数
   const [query, setQuery] = useState({
-    wardCode: defaultWardCode,
+    // wardCode: defaultWardCode,
+    wardCode: "",
     // dateBegin: dateRange[0].format("YYYY-MM-DD"),
     // dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
@@ -145,15 +146,15 @@ export default observer(function BadEventNewList() {
   })
 
   const getDeptListAll = () => {
-    api.getDeptList("2")
+    api.nursingUnit()
       .then(res => {
-        let data = res.data;
+        let data = res.data.deptList
         if (data instanceof Array)
           setDeptList(
             data.map((item: any) => {
               return {
-                name: item.deptName,
-                code: item.deptCode
+                name: item.name,
+                code: item.code
               }
             })
           )
@@ -272,8 +273,10 @@ export default observer(function BadEventNewList() {
                   filterOption={(input: any, option: any) =>
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                  {authStore.isDepartment && <Select.Option value="">全部</Select.Option>}
-                  {(authStore.isDepartment ? deptList : authStore.deptList).map((item: any, idx: number) => {
+                  {/* {authStore.isDepartment && <Select.Option value="">全部</Select.Option>} */}
+                  <Select.Option value="">全部</Select.Option>
+                  {/* {(authStore.isDepartment ? deptList : authStore.deptList).map((item: any, idx: number) => { */}
+                  {deptList.map((item: any, idx: number) => {
                     return (
                       <Select.Option value={item.code} key={idx}>
                         {item.name}
