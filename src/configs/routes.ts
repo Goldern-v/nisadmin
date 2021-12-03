@@ -51,6 +51,7 @@ const BadEventEditorView = lazy(() =>
 const Indicator = lazy(() => import("src/modules/indicator/Indicator"));
 
 const SettingView = lazy(() => import("src/modules/setting/SettingView"));
+const Sheetpage = lazy(() => import("src/modules/Sheetpage/Sheetpage"));
 const AuditsManagementView = lazy(() =>
   import("src/modules/auditsManagement/AuditsManagementView")
 );
@@ -480,6 +481,7 @@ import FollowUpDetail from "src/modules/mobilePage/patientFollowUp/FollowUpDetai
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/demo1", demo1),
+  setLayout("/Sheetpage", Sheetpage),
 
   setLayout("/login", LoginView),
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
