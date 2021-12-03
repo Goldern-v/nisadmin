@@ -3,52 +3,52 @@ import React, { useState, useEffect } from 'react'
 export interface Props {
   domReact: any
   visible: Boolean
-  col:any
+  col: any
   selectList: Array<any>
   refresh: Function
 }
 export default function SelectModal(props: Props) {
   const { domReact, visible, col, refresh, selectList } = props
-  const [selectTop,setSelectTop]:any = useState(0)
-  const [selectLeft,setSelectLeft]:any = useState(0)
+  const [selectTop, setSelectTop]: any = useState(0)
+  const [selectLeft, setSelectLeft]: any = useState(0)
   const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;//浏览器窗口宽度
   const H = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//浏览器窗口高度
-  const selectw = Math.ceil(domReact.left)+Math.ceil(domReact.width);//下拉框弹窗宽度
-  const selectH = Math.ceil(domReact.top)+Math.ceil(domReact.height);//下拉框弹窗高度
+  const selectw = Math.ceil(domReact.left) + Math.ceil(domReact.width);//下拉框弹窗宽度
+  const selectH = Math.ceil(domReact.top) + Math.ceil(domReact.height);//下拉框弹窗高度
   const maxTop = H - 350
-  
-  const open = () =>{
+
+  const open = () => {
     setSelectLeft(selectw)
-    if(domReact.top>=maxTop){
-      setSelectTop(maxTop-20)
-    }else{
+    if (domReact.top >= maxTop) {
+      setSelectTop(maxTop - 20)
+    } else {
       setSelectTop(selectH)
     }
   }
 
-  const selectOptionClick = (item:String) => {
-    
-    if(col.multiple){
-      col.value =col.value + col.multiple + item
-    }else{
+  const selectOptionClick = (item: String) => {
+
+    if (col.multiple) {
+      col.value = col.value + col.multiple + item
+    } else {
       col.value = item
     }
     refresh()
   }
-  
+
   useEffect(() => {
     open()
   }, [props])
   return (
     <Wrapper>
-      {visible&&<div className="selectBody" style={{top:selectTop,left:selectLeft}}>
-        {selectList?.map((item:String)=>
-        <div className="selectOption" onClick={()=>selectOptionClick(item)}>{item}
-        </div>)}
+      {visible && <div className="selectBody" style={{ top: `${selectTop || 0}px`, left: `${selectLeft || 0}px` }}>
+        {selectList?.map((item: String, index: any) =>
+          <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
+          </div>)}
       </div>}
     </Wrapper>
   )
-  
+
 }
 
 const Wrapper = styled.div`
