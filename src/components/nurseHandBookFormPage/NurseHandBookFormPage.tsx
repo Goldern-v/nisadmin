@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Select } from 'src/vendors/antd'
 import SelectModal from './selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
+import { tick } from "./function/click"
 export interface Props {
 
 }
@@ -30,21 +31,19 @@ export default function NurseHandBookFormPage(props: Props) {
       setColIdx(colIdx)
       setSelectList(col.select)
       if (visible) {
-        setVisible(false)//打开下拉框
+        setVisible(false)
       }
       setTimeout(() => {
-        setVisible(true)//打开下拉框
+        setVisible(true)
       })
     } else {
-      setVisible(false)//
+      setVisible(false)
     }
   }
 
 
   const onBlur = () => {
-    // setTimeout(()=>{
-    //   setVisible(false)//关闭下拉框
-    // })
+    setVisible(false)//关闭下拉框
   }
 
   const refresh = () => {
@@ -62,12 +61,13 @@ export default function NurseHandBookFormPage(props: Props) {
   let masterInfo = {
     defaulLength: 17
   }
-  let tHead = ["第1列", "第2列", "第3列", "第4列", "第5列", "第6列", "第7列", "第8列"];
+  let tHead = ["第1列", "第2列", "第3列", "第4列", "第5列", "第6列"];
   let tbody = [
     {
       key: "contractionOne",
       name: "时间",
       value: "",
+      width: "100px",
       select: ['1', '2', '3', '1', '2', '3', '1', '2', '3', '1', '2', '3', '1', '2', '3'],
       multiple: "/",
     },
@@ -75,28 +75,33 @@ export default function NurseHandBookFormPage(props: Props) {
       key: "preInputOne",
       name: "一",
       value: "",
+      width: "100px",
       select: ['但是格式的', '水电费第三方士大夫', '是大富大贵', '很过分', '华润广东', '爱我去', '表格内', 'SaaS', '按时的说法', '讽德诵功'],
       click: tick,
     },
     {
       key: "preInputTwo",
       name: "二",
-      value: ""
+      value: "",
+      width: "100px",
     },
     {
       key: "uterineOne",
       name: "三",
-      value: ""
+      value: "",
+      width: "100px",
     },
     {
       key: "uterineTwo",
       name: "四",
-      value: ""
+      value: "",
+      width: "100px",
     },
     {
       key: "uterineThree",
       name: "五",
-      value: ""
+      value: "",
+      width: "100px",
     }]
 
   let text = [
@@ -430,6 +435,7 @@ export default function NurseHandBookFormPage(props: Props) {
                   <div
                     id={`${col.key}_${rowIdx}_${colIdx}`}
                     className="t-b-2"
+                    style={{ width: col.width }}
                     suppressContentEditableWarning
                     contentEditable
                     onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
@@ -464,15 +470,16 @@ const Wrapper = styled.div`
   .bottom-list .t-b-1{
     border: 1px solid #000;
     min-height: 30px;
-    width: 20%;
+    width: 100px;
     font-size: 16px;
     text-align: center;
+    margin-right:-1px; 
+    margin-bottom:-1px;
   }
   .bottom-list .t-b-2{
     border: 1px solid #000;
     font-size: 16px;
     min-height: 35px;
-    width: 20%;
     text-align: center;
     outline: none;
     margin-right:-1px; 

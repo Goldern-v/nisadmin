@@ -8,11 +8,11 @@ export interface Props {
 }
 export default function SelectModal(props: Props) {
   const { domReact, col, refresh, selectList } = props
-  const [selectTop, setSelectTop]: any = useState(0)
+  const [selectTop, setSelectTop]: any = useState()
+  const [selectLeft, setSelectLeft]: any = useState()
   const [renderList, setRenderList]: any = useState([])
   // const [timer, setTimer]: any = useState(null)
   let timer: any = null
-  const [selectLeft, setSelectLeft]: any = useState(0)
   const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;//浏览器窗口宽度
   const H = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//浏览器窗口高度
   const selectw = Math.ceil(domReact.left) + Math.ceil(domReact.width);//下拉框弹窗宽度
@@ -20,7 +20,6 @@ export default function SelectModal(props: Props) {
   const maxTop = H - 350
 
   const open = () => {
-    console.log(111);
 
     setRenderList(selectList || [])
     setSelectLeft(selectw)
@@ -47,7 +46,6 @@ export default function SelectModal(props: Props) {
   }
 
   const selectOptionClick = (item: String) => {
-
     if (col.multiple) {
       col.value = col.value + col.multiple + item
     } else {
@@ -64,7 +62,7 @@ export default function SelectModal(props: Props) {
   }, [])
   return (
     <Wrapper>
-      {<div className="selectBody" style={{ top: `${selectTop || 0}px`, left: `${selectLeft || 0}px` }}>
+      {<div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
         {renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
           </div>)}
