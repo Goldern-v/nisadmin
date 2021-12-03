@@ -1,14 +1,62 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-
+import { Select } from 'src/vendors/antd'
+import SelectModal from './selectModal/SelectModal'
+import { authStore, appStore, scheduleStore } from "src/stores";
 export interface Props {
   
 }
 export default function NurseHandBookFormPage(props: Props) {
+  const [bodyModal,setBodyModal]:any = useState([])
+  const [domReact,setDomReact]:any = useState({})
+  const [visible,setVisible]:any = useState(false)
+  const [col,setCol]:any = useState({})
+  const [selectList,setSelectList]:any = useState([])
+  let selectRow:any = {}
+  const [selectIndex,setSelectIndex] = useState(-1)
   const changeValue = (e:any,item:any)=>{
     item.value = e.currentTarget.innerText
+    scheduleStore.setIsSave(false)
+    filterList(item,item.value)
   }
-  const [bodyModal,setBodyModal]:any = useState([])
+
+  const onFocus = (e:any,colIdx:any,col:any,rowIdx:any)=>{
+    setSelectIndex(rowIdx)
+    selectRow = bodyModal[rowIdx]
+    e.preventDefault()
+    let domReact = e.currentTarget.getBoundingClientRect()
+    setDomReact(domReact)//给下拉弹框传定位
+    if(col.select?.length>0){
+      setCol(col)
+      setSelectList(col.select)
+      setVisible(true)//打开下拉框
+    }else{
+      setVisible(false)//
+    }
+  }
+  //过滤下拉框数组（智能联想） 
+  const filterList = (col:any, value:String) => {
+    let arr = col.select.filter((selectItem:any) => {
+      return selectItem.includes(value);
+    });
+    setSelectList(arr)
+  }
+
+  const onBlur = ()=>{
+    // setTimeout(()=>{
+    //   setVisible(false)//关闭下拉框
+    // })
+  }
+
+  const refresh = ()=> {
+    setBodyModal([...bodyModal])
+    if(col.multiple){
+      
+    }else{
+      setVisible(false)//关闭下拉框
+    }
+    
+  }
 
   let masterInfo = {
     defaulLength:17
@@ -18,12 +66,15 @@ export default function NurseHandBookFormPage(props: Props) {
     {
       key:"contractionOne",
       name:"时间",
-      value:""
+      value:"",
+      select: ['1','2','3','1','2','3','1','2','3','1','2','3','1','2','3'],
+      multiple: "/",
     },
     {
       key:"preInputOne",
       name:"一",
-      value:""
+      value:"",
+      select: ['但是格式的','水电费第三方士大夫','是大富大贵','很过分','华润广东','爱我去','表格内','SaaS','按时的说法','讽德诵功'],
     },
     {
       key:"preInputTwo",
@@ -70,7 +121,248 @@ export default function NurseHandBookFormPage(props: Props) {
       "uterineOne": "强",
       "uterineTwo": "44",
       "uterineThree": "2",
-    }
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+    {
+      "contractionOne": "40",
+      "preInputOne": "sda",
+      "preInputTwo": "140",
+      "uterineOne": "强",
+      "uterineTwo": "44",
+      "uterineThree": "2",
+    },
+
   ]
 
   useEffect(()=>{
@@ -94,38 +386,49 @@ export default function NurseHandBookFormPage(props: Props) {
       })
       tempArr.push(nullRow)
     }
-    console.log(tempArr);
-    
     setBodyModal([...tempArr])
+    scheduleStore.setIsSave(true)
   },[])
   return (
     <Wrapper>
+      <div className="page">
       <div className="bottom-list">
-        {/* <div style={{background:'#f9f9f9',display: 'flex',justifyContent: 'center',}}>
+        <div style={{background:'#f9f9f9',display: 'flex',justifyContent: 'center',}}>
           {tHead.map((item: any, idx: any) =>
             <div className="t-b-1">{item}</div>)}
-        </div> */}
+        </div>
         {
           bodyModal.map((row: any, rowIdx: any) =>
-          <div style={{background:'#fff',display: 'flex',justifyContent: 'center',}} key={rowIdx}>
+          <div style={{background:selectIndex==rowIdx?'#fef8b9':'#fff',display: 'flex',justifyContent: 'center',}} key={rowIdx}>
             {row.map((col: any, colIdx: any) =>
               <div 
                 id={`${col.key}_${rowIdx}_${colIdx}`}
                 className="t-b-2"
                 suppressContentEditableWarning
                 contentEditable 
+                onFocus={(e:any)=>onFocus(e,colIdx,col,rowIdx)}
+                onBlur={(e:any)=>onBlur()}
                 onInput={(e)=>changeValue(e,col)}
                 key={colIdx}
-              >{col.value}</div>)}
+              >
+                {col.value}
+              </div>)}
           </div>)}
       </div>
+      </div>
+      <SelectModal visible={visible} domReact={domReact} refresh={refresh} col={col} selectList={selectList}></SelectModal>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
+  .page {
+    padding:50px;
+    background-color:#fff;
+  }
   .bottom-list{
     width: 1000px;
+
   }
   .bottom-list .t-b-1{
     border: 1px solid #000;
@@ -150,4 +453,5 @@ const Wrapper = styled.div`
     -webkit-box-align: center; 
     box-align: center;
   }
+  
 `

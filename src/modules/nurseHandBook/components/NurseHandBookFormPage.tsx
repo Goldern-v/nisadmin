@@ -212,8 +212,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
         <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </div>
-      <div className="mainCon">
-        <NurseHandBookFormPage></NurseHandBookFormPage>
+      <div className="main">
+        <div className="formPage">
+          <NurseHandBookFormPage></NurseHandBookFormPage>
+        </div>
         {!queryObj.isAdd && <div className="rightCon">
           <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
         </div>}
@@ -221,11 +223,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
     </Spin>
     <groupsAduitModalJM.Component/>
     <FormPageBody
-        visible={editVisible2}
-        path={pathChange}
-        id={idChange}
-        onOk={() => {}}
-        onCancel={() => setEditVisible2(false)} />
+      visible={editVisible2}
+      path={pathChange}
+      id={idChange}
+      onOk={() => {}}
+      onCancel={() => setEditVisible2(false)} />
   </Wrapper>
 })
 
@@ -272,19 +274,34 @@ const Wrapper = styled.div`
       right: 30px;
     }
   }
-  .noEditor{
+  .main {
+    flex: 1;
+    padding-top: 100px;
+    display: flex;
+    .formPage{
+      width: 100%;
+      min-height: 85vh;
+      display: flex;
+      justify-Content: center;
+    }
+    .rightCon{
+      width: 20%;
+      background-color: #fff;
+      margin-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+    
+  }
+  
+  .noEditor {
     width: 56%;
     height: 100%;
     position: fixed;
     z-index: 999;
   }
-  .mainCon{
-    padding-top: 100px;
-    margin: 0 auto;
-    width: 75%;
-    display: flex;
-    /* background-color: #fff; */
-  }
+  
   .ant-upload-list{
     width: 50%;
     margin-top: 30px;
