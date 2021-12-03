@@ -31,21 +31,19 @@ export default function NurseHandBookFormPage(props: Props) {
       setColIdx(colIdx)
       setSelectList(col.select)
       if (visible) {
-        setVisible(false)//打开下拉框
+        setVisible(false)
       }
       setTimeout(() => {
-        setVisible(true)//打开下拉框
+        setVisible(true)
       })
     } else {
-      setVisible(false)//
+      setVisible(false)
     }
   }
 
 
   const onBlur = () => {
-    // setTimeout(()=>{
-    //   setVisible(false)//关闭下拉框
-    // })
+    setVisible(false)//关闭下拉框
   }
 
   const refresh = () => {
@@ -56,10 +54,6 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)//关闭下拉框
     }
 
-  }
-  const handelderClick = (e:any,col:any,colIdx:any)=>{
-    console.log(e,col,colIdx);
-    
   }
   let masterInfo = {
     defaulLength: 17
@@ -86,7 +80,6 @@ export default function NurseHandBookFormPage(props: Props) {
       name: "二",
       value: "",
       width: "100px",
-      click: tick,
     },
     {
       key: "uterineOne",
@@ -430,9 +423,6 @@ export default function NurseHandBookFormPage(props: Props) {
                     onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
                     onBlur={(e: any) => onBlur()}
                     onInput={(e) => changeValue(e, col)}
-                    onClick={(e:any) => {
-                      handelderClick(e,col,colIdx)
-                    }}
                     key={`${rowIdx}_${colIdx}`}
                   >
                     {col.value}
