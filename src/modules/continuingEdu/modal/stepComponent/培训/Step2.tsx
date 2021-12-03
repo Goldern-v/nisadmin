@@ -21,6 +21,7 @@ import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";
+import { newStudentCreditTypeList } from "./../StepCommon";
 const { TextArea } = Input;
 export interface Props {
 }
@@ -79,11 +80,12 @@ export default observer(function Step1() {
   let refForm = React.createRef<Form>();
   const getStudentCreditTypeList = () => {
     if (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID === "gxjb") {
-      setStudentCreditTypeList([
-        { name: "国家级", code: 1 },
-        { name: "省级", code: 2 },
-        { name: "市级", code: 3 }
-      ]);
+      // setStudentCreditTypeList([
+      //   { name: "国家级", code: 1 },
+      //   { name: "省级", code: 2 },
+      //   { name: "市级", code: 3 }
+      // ]);
+      setStudentCreditTypeList(newStudentCreditTypeList)
     } else {
       if (allStepViewModal.getThirdName == "院级") {
         setStudentCreditTypeList([{ name: "院级学分", code: 1 }]);
@@ -279,13 +281,13 @@ export default observer(function Step1() {
                   <Radio value={2}>动态码</Radio>
                 </Radio.Group>
               </Form.Field>
-              
+
               {stepViewModal.stepData2.qrCodeType == "2" && <div className="rowDiv">
                 <Form.Field label={`刷新时间`} name="refreshTime">
                   <Input style={{ width: '150px' }} addonAfter="秒"/>
                 </Form.Field>
               </div>}
-              
+
             </Col>
           )}
 
@@ -362,7 +364,7 @@ export default observer(function Step1() {
               </Form.Field>
             </Col>
           )}
-          {appStore.HOSPITAL_ID == "gxjb" && (
+          {/* {appStore.HOSPITAL_ID == "gxjb" && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
                 <Select style={{ width: 120 }}>
@@ -371,7 +373,7 @@ export default observer(function Step1() {
                 </Select>
               </Form.Field>
             </Col>
-          )}
+          )} */}
           <Col span={24}>
             <Form.Field label={`学员学分`} name="hasStudentCredit">
               <Select style={{ width: 120 }}>

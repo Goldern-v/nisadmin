@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import moment from "moment";
 import ShowTable from "../公共/table/ShowTable";
 import { appStore } from "src/stores";
+import { newStudentCreditTypeMap } from "./../StepCommon";
 export interface Props { }
 
 export default observer(function Step5() {
@@ -25,11 +26,12 @@ export default observer(function Step5() {
     nurse5: "N5",
     nurseOther: "其他"
   };
-  const studentCreditTypeMap: any = {
-    1: "国家级",
-    2: "省级",
-    3: "市级"
-  };
+  // const studentCreditTypeMap: any = {
+  //   1: "国家级",
+  //   2: "省级",
+  //   3: "市级"
+  // };
+  const studentCreditTypeMap = newStudentCreditTypeMap;
 
   return (
     <Wrapper>
@@ -90,7 +92,24 @@ export default observer(function Step5() {
             <td className="key">学习地址：</td>
             <td className="value">{xxStepViewModal.stepData2.address}</td>
           </tr>
-          {xxStepViewModal.stepData2.category == 1 ? (
+          {appStore.hisMatch({
+            map: {
+              gxjb: [],
+              other:
+                xxStepViewModal.stepData2.category == 1 ? (
+                  <tr>
+                    <td className="key">类&nbsp;&nbsp;别：</td>
+                    <td className="value">中医类</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td className="key">类&nbsp;别：</td>
+                    <td className="value">非中医类</td>
+                  </tr>
+                )
+            }
+          })}
+          {/* {xxStepViewModal.stepData2.category == 1 ? (
             <tr>
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">中医类</td>
@@ -100,7 +119,7 @@ export default observer(function Step5() {
               <td className="key">类&nbsp;&nbsp;别：</td>
               <td className="value">非中医类</td>
             </tr>
-          )}
+          )} */}
 
           {xxStepViewModal.stepData2.hasStudentCredit == 1 ? (
             <tr>

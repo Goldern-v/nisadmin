@@ -19,6 +19,7 @@ import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
 import AsClassModal from "../../../modal/AsClassModal";
 import AddScheduleNursingModal from "../../NurseSetting/modal/AddScheduleNursingModal";
+import CopyScheduling from './modal'
 
 export interface Props {
 }
@@ -30,6 +31,13 @@ export default observer(function TopPart() {
   let asClassModal = createModal(AsClassModal);
   let arrangAnalysisModal = createModal(ArrangAnalysisModal);
   const addScheduleNursingModal = createModal(AddScheduleNursingModal);
+  let [visible, setVisible] = useState(false)
+  const handleOk = () => {
+    setVisible(false);
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
   //重置排班
   const handleReset = () => {
@@ -64,6 +72,10 @@ export default observer(function TopPart() {
       }
     });
   };
+  const gzsrmhandleCopy = () => {
+    setVisible(true)
+  }
+
 
   //撤回排班
   const cancelPush = () => {
@@ -312,7 +324,7 @@ export default observer(function TopPart() {
         )}
 
         <div className="item">
-          <Button onClick={handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
+          <Button onClick={appStore.HOSPITAL_ID === 'gzsrm' ? gzsrmhandleCopy : handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
         {['hj', 'dgxg'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
@@ -386,6 +398,10 @@ export default observer(function TopPart() {
       <asClassModal.Component />
       <arrangAnalysisModal.Component />
       <addScheduleNursingModal.Component />
+      <CopyScheduling
+        visible={visible}
+        handleOk={handleOk}
+        handleCancel={handleCancel} />
     </Wrapper>
   );
 });

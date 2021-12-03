@@ -114,7 +114,8 @@ export default observer(function Table(props: Props) {
       width: 100,
       align: "center"
     },
-    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID === "gxjb") && {
+    //(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID === "gxjb") && {
+    (appStore.HOSPITAL_ID == "wh") && {
       title: "类别",
       dataIndex: "category",
       width: 120,
@@ -321,7 +322,6 @@ export default observer(function Table(props: Props) {
 
   // 查看结果
   const checkResult = (record: any) => {
-    console.log(record.teachingMethod - 1, 900)
     const teachingMethodArray = [
       "studyResultReview", // 学习
       "trainingResultReview", // 培训

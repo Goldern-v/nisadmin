@@ -37,7 +37,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     [p: string]: any
   })
 
-  const { master, handlenodeDto } = detailData
+  const { master, handlenodeDto,itemDataMap } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
 
@@ -240,7 +240,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       <div className='main-contain'>
         <div className='status-line'>
           <div className='right-pannel-title'>事件轨迹:</div>
-          <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
+          {/* 非不良事件去除 */}
+          {(!itemDataMap.B0002061 || itemDataMap.B0002061!='2') ? <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
             {handlenodeDto.map((item, idx: number) => {
               let icon: any
 
@@ -275,7 +276,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                   key={idx} />
               )
             })}
-          </Steps>
+          </Steps>:<div style={{textIndent: 15,color:"red"}}>非不良事件</div>}
         </div>
         <div className='event-detail'>
           <iframe

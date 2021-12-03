@@ -33,7 +33,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               手机号: 'phone'
             },
             {
-              参加工作时间: 'takeWorkTime',
+              参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime',
               护士执业证书编号: 'zyzsNumber'
             },
 
@@ -62,10 +62,44 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                 工作护理单元: 'deptName',
                 家庭住址: 'address'
               }
-              : {
-                工作护理单元: 'deptName',
-                鞋码大小: 'shoeSize'
+              // 工作护理单元: 'deptName',
+              : (() => {
+                switch (appStore.HOSPITAL_ID) {
+                  case "fsxt":
+                    // return  `'鞋码大小': 'shoeSize'`
+                    return {
+                      工作护理单元: 'deptName',
+                      "夏装-上衣": "summer_jacket_size",
+                    }
+                  default:
+                    return {
+                      工作护理单元: 'deptName',
+                      鞋码大小: 'shoeSize'
+                    };
+                }
+              })(),
+            ...appStore.hisMatch({
+              map: {
+                'fsxt': [
+                  {
+                    "夏装-裤子": "summer_trousers_size",
+                    "冬装-上衣": "winter_jacket_size",
+                  },
+                  {
+                    "冬装-裤子": "winter_trousers_size",
+                    "夏装-医生款": "summer_isolation_suit_size",
+                  },
+                  {
+                    "冬装-医生款": "winter_isolation_suit_size",
+                    "鞋款式": "nurse_shoes_style",
+                  },
+                  {
+                    "鞋码": "nurse_shoes_size",
+                  }
+                ],
+                other: []
               },
+            }),
             ...appStore.hisMatch({
               map: {
                 'gzsrm': [{

@@ -50,12 +50,13 @@ export default observer(function AduitModal(props: Props) {
   const handleOkBtn = () => {
     setUserCheckVisible(true)
   }
-  const handleUserCheckOk = (userAudit: any) => {
-    auditFormSubmit(userAudit)
-    setUserCheckVisible(false)
+  const handleUserCheckOk = (userAudit: any, userInfo: any) => {
+    // 片区护长审核是否通过
+    auditFormSubmit(userAudit, userInfo)
+    // setUserCheckVisible(false)
   }
 
-  const auditFormSubmit = (userAudit: any) => {
+  const auditFormSubmit = (userAudit: any, userInfo: any) => {
     let params = {
       nodeCode,
       ...auditInfo,
@@ -96,8 +97,8 @@ export default observer(function AduitModal(props: Props) {
         // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
-        saveParams['B0009020'] = userAudit.empNo   //B0009020未跟后端做统一（待修改）
-        saveParams["B0010018"] = userAudit.empNo   //护理优良事件报告表（待修改）
+        saveParams['B0009020'] = userInfo.empName   //B0009020未跟后端做统一（待修改）
+        saveParams["B0010018"] = userInfo.empName   //护理优良事件报告表（待修改）
         break
       case 'dept_handle':  //病区处理
         // 意见和日期
@@ -119,6 +120,8 @@ export default observer(function AduitModal(props: Props) {
       if (res.code === "200") {
         onOk()
         Message.success('操作成功')
+        setUserCheckVisible(false)
+        onCancel()
       } else {
         if (res.desc) Message.error(res.desc)
       }

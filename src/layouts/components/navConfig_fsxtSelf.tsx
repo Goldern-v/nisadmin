@@ -1,3 +1,4 @@
+// 佛山第一人民医院 用聊城二院模板
 import React from "react";
 import { appStore, authStore } from "src/stores";
 
@@ -16,25 +17,21 @@ const baseConfig: navConfigItem[] = [
     name: "首页",
     path: "/home"
   },
-  {
-    name: "审核管理",
-    path: "/auditsManagement",
-    hidden: () => !authStore.isRoleManage
-  },
   // {
-  //   name: "病区日志",
-  //   path: "/wardLog"
-  //   // hidden: !appStore.isDev
+  //   name: "审核管理",
+  //   path: "/auditsManagement",
+  //   hidden: !authStore.isRoleManage
   // },
   {
-    name: "档案管理",
-    path: "/nurseFile"
+    name: "病区日志",
+    path: "/wardLog"
+    // hidden: !appStore.isDev
   },
-  {
-    name: '病区登记本',
-    path: '/wardRegister',
-    icon: require('../images/menu-icon/病区登记本@2x.png')
-  },
+  // {
+  //   name: "档案管理",
+  //   path: "/nurseFile",
+  //   hidden: !authStore.isRoleManage
+  // },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',
@@ -59,9 +56,14 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOne/nursingWorkPlainList",
+        path: "/qcOneHj",
         icon: require("../images/menu-icon/一级质控@2x.png")
       },
+      // {
+      //   name: '病区登记本',
+      //   path: '',
+      //   icon: require('../images/menu-icon/病区登记本@2x.png')
+      // },
       {
         name: "查询统计",
         path: "/queryStatistics",
@@ -71,19 +73,7 @@ const baseConfig: navConfigItem[] = [
         name: "护理查房",
         path: "/checkWard",
         icon: require("../images/menu-icon/护理查房@2x.png")
-      },
-      {
-        name: "护士长手册",
-        path: "/nurseHandBook",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-        hidden: !appStore.isDev,
-      },
-      {
-        name: "护士长手册表单",
-        path: "/NurseHandBookFormPage",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-        hidden: !appStore.isDev,
-      },
+      }
     ]
   },
   {
@@ -117,7 +107,7 @@ const baseConfig: navConfigItem[] = [
     path: "/setting"
   },
   {
-    name: "排班管理",
+    name: "护理排班",
     path: "/personnelManagement"
   }
 ];

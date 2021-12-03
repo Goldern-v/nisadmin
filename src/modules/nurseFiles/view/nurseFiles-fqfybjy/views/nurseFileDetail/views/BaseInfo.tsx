@@ -14,6 +14,13 @@ import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import service from 'src/services/api'
 
+/* 判断是否本人 */
+export const isSelf = () => {
+  // return appStore.queryObj.empNo == authStore!.user!.empNo
+  // return appStore.match.path == "/selfNurseFile/:type";
+  return appStore.match.path == "/nurseFileDetail/:type";
+};
+
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
@@ -21,6 +28,8 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
+
+
 
   const limitsComponent = () => {
     if (info.statusColor === '1') {
@@ -96,8 +105,20 @@ export default observer(function BaseInfo() {
           }
         }
       ]
-    } else {
-      return []
+    } else if(isSelf()) {
+      return [
+        {
+          label: '修改',
+          onClick: () => {
+            editBaseInfoModal.show({
+              id: id,
+              data: info
+            })
+          }
+        }
+      ]
+    }else {
+      []
     }
   }
 

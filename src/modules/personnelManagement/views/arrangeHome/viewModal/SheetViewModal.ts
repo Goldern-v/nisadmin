@@ -361,9 +361,9 @@ class SheetViewModal {
   }
 
   /** 复制排班人员数据 */
-  handleCopy() {
+  handleCopy(copyStatus?: boolean) {
     this.tableLoading = true;
-    return arrangeService.copyPrevSettingRange().then(async res => {
+    return arrangeService.copyPrevSettingRange(copyStatus).then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
 

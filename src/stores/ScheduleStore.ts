@@ -4,6 +4,7 @@ import moment from 'moment'
 
 export default class ScheduleStore {
   public constructor() {
+    this.isSave = true //护士长手册表单提示保存状态
     this.startTime = sessionStorage.scheduleStartTime || ''
     this.endTime = sessionStorage.scheduleEndTime || ''
     this.weekStartTime = sessionStorage.scheduleWeekStartTime || ''
@@ -22,6 +23,7 @@ export default class ScheduleStore {
   @observable private errorData: any
   @observable private weekEndTime: string
   @observable private startTime: string
+  @observable private isSave: Boolean
   @observable private endTime: string
   @observable private selectedWeekIndex: string
   @observable private department: any
@@ -77,6 +79,16 @@ export default class ScheduleStore {
   @action
   public getStartTime = () => {
     return this.startTime
+  }
+
+  @action
+  public setIsSave = (isSave: Boolean) => {
+    this.isSave = isSave
+  }
+
+  @action
+  public getIsSave = () => {
+    return this.isSave
   }
 
   @action

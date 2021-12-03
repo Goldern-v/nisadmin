@@ -51,6 +51,7 @@ const BadEventEditorView = lazy(() =>
 const Indicator = lazy(() => import("src/modules/indicator/Indicator"));
 
 const SettingView = lazy(() => import("src/modules/setting/SettingView"));
+const Sheetpage = lazy(() => import("src/modules/Sheetpage/Sheetpage"));
 const AuditsManagementView = lazy(() =>
   import("src/modules/auditsManagement/AuditsManagementView")
 );
@@ -277,7 +278,9 @@ const CheckWardRouter = lazy(() =>
 const NurseHandBookRouter = lazy(() =>
   import("src/modules/nurseHandBook/NurseHandBookRouter")
 );
-// 护士长满意度调查详情
+// 护士长手册表单详情
+const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookFormPage"))
+// 护士长手册详情
 const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookDetailView"))
 //护士长满意度调查
 const NurseSatisfactionSurveyRouter = lazy(() =>
@@ -480,6 +483,7 @@ import FollowUpDetail from "src/modules/mobilePage/patientFollowUp/FollowUpDetai
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/demo1", demo1),
+  setLayout("/Sheetpage", Sheetpage),
 
   setLayout("/login", LoginView),
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
@@ -799,6 +803,7 @@ const routes: RouteItem[] = [
   setLayout("/nurseSatisfactionSurvey", NurseSatisfactionSurveyRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
   setLayout("/nurseHandBookDetailView", NurseHandBookDetailView, layouts.MainLayout),
+  setLayout("/NurseHandBookFormPage", NurseHandBookFormPage, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {

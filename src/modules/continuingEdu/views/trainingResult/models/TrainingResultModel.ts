@@ -116,7 +116,7 @@ class TrainingResultModel {
 
     // 厚街 南医三考试练习类型 详情单独接口特殊处理
     let viewResultsUrlName = null;
-    if (["hj", "nys"].includes(appStore.HOSPITAL_ID)) {
+    if (["hj", "nys", 'gxjb'].includes(appStore.HOSPITAL_ID)) {
       const teachingMethod = appStore.queryObj.teachingMethod;
       if (teachingMethod === "练习")
         viewResultsUrlName = "queryExerciseResultDetailsByPage";

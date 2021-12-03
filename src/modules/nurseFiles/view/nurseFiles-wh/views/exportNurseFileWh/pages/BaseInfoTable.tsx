@@ -46,7 +46,7 @@ export default function BaseInfoTable(props: Props) {
       </tr>
       <tr>
         <td>参加工作时间</td>
-        <td>{baseInfo.takeWorkTime}</td>
+        <td>{appStore.HOSPITAL_ID === 'fsxt' ? baseInfo.goWorkTime : baseInfo.takeWorkTime}</td>
         <td>来院参加工作时间</td>
         <td>{baseInfo.goHospitalWorkDate}</td>
       </tr>

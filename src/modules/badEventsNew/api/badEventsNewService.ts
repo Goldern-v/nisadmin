@@ -30,6 +30,10 @@ export default class BadEventsNewService extends BaseApiService {
   public async getDeptList(types?: string) {
     return this.post(`/badEventDept/getByTypeList`, qs.stringify({ type: types || '1,2' }));
   }
+  // 护理单元(新)
+  public async nursingUnit() {
+    return this.get('user/nursingUnit')
+  }
   //不良事件统计数据
   public async badEventTotal(params: any) {
     return this.post(`/badEventM/badEventTotal`, params);
