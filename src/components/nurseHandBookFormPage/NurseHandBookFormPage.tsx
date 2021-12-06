@@ -40,11 +40,16 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)
     }
   }
-
-
-  const onBlur = () => {
-    setVisible(false)//关闭下拉框
+  const closeSelect = (e: any) => {
+    let targetClass = [...e.target.classList]
+    if (!targetClass.includes("t-b-2")) {
+      setVisible(false)
+    }
   }
+
+  // const onBlur = () => {
+  //   // setVisible(false)//关闭下拉框
+  // }
 
   const refresh = () => {
     setBodyModal([...bodyModal])
@@ -438,7 +443,7 @@ export default function NurseHandBookFormPage(props: Props) {
   }, [])
   return (
     <Wrapper>
-      <div className="page">
+      <div className="page" onClickCapture={closeSelect}>
         <div className="space-div"></div>
         <div className="bottom-list">
           <div className="table-head">新生儿监护单</div>
@@ -464,7 +469,7 @@ export default function NurseHandBookFormPage(props: Props) {
                     suppressContentEditableWarning
                     contentEditable
                     onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
-                    onBlur={(e: any) => onBlur()}
+                    // onBlur={(e: any) => onBlur()}
                     onInput={(e) => changeValue(e, col)}
                     onClick={(e) => { handlerClick(e, col) }}
                     key={`${rowIdx}_${colIdx}`}
@@ -523,6 +528,7 @@ const Wrapper = styled.div`
     box-pack: center;
     -webkit-box-align: center; 
     box-align: center;
+    word-break: break-all;
   }
   
 `
