@@ -10,6 +10,7 @@ import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHan
 import { fileDownload } from 'src/utils/file/file'
 import { DoCon } from 'src/components/BaseTable'
 import AuditProcessDetail from './AuditProcessDetail'
+import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
 import CKEditorFn from "./CKEditor"
@@ -221,7 +222,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
             <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
           </div>
           <div className="rightBottom">
-            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+            <UploadView></UploadView>
           </div>
         </div>}
       </div>
@@ -285,23 +286,23 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     .formPage {
-      min-width: 83vw;
-      max-width: 83vw;
+      min-width: 81vw;
+      max-width: 81vw;
       overflow-x: auto;
       min-height: 85vh; 
       max-height: 85vh; 
     }
     .rightCon {
-      width: 17vw;
-      max-height: 85vh; 
+      width: 19vw;
+      min-height: 82vh; 
       background-color: #fff;
       margin: 20px 10px;
       border-radius: 10px;
       .rightTop {
-        height: 50%;
+        min-height: 50%;
       }
       .rightBottom {
-        height: 50%;
+        min-height: 50%;
       }
     }
     

@@ -529,7 +529,7 @@ const Wrapper = styled.div`
   .bottom-list{
     .table-head {
       font-size: 21px;
-      padding: 10px 0;
+      padding: 20px 0;
       text-align: center;
       font-weight: 700;
       font-family: 'simsun', 'Times New Roman', 'Georgia', 'Serif'!important;
