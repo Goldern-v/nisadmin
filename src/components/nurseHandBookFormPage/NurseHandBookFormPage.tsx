@@ -61,7 +61,7 @@ export default function NurseHandBookFormPage(props: Props) {
   let masterInfo = {
     defaulLength: 17
   }
-  let tHead = ["第1列", "第2列", "第3列", "第4列", "第5列", "第6列"];
+  let tHead = ["第1列", "第2列", "第3列", "第4列", "第5列", "第6列", "第3列", "第4列", "第5列", "第6列"];
   let tbody = [
     {
       key: "contractionOne",
@@ -88,6 +88,30 @@ export default function NurseHandBookFormPage(props: Props) {
     {
       key: "uterineOne",
       name: "三",
+      value: "",
+      width: "100px",
+    },
+    {
+      key: "uterineTwo",
+      name: "四",
+      value: "",
+      width: "100px",
+    },
+    {
+      key: "uterineTwo",
+      name: "四",
+      value: "",
+      width: "100px",
+    },
+    {
+      key: "uterineTwo",
+      name: "四",
+      value: "",
+      width: "100px",
+    },
+    {
+      key: "uterineTwo",
+      name: "四",
       value: "",
       width: "100px",
     },
@@ -458,11 +482,12 @@ export default function NurseHandBookFormPage(props: Props) {
 
 const Wrapper = styled.div`
   .page {
-    margin: 20px 0;
+    margin: 20px auto;
     padding: 50px;
     padding-top: 0px;
     display: flex;
     background-color: #fff;
+    width: fit-content;
   }
   .space-div{
   }

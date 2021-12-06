@@ -217,7 +217,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
           <NurseHandBookFormPage></NurseHandBookFormPage>
         </div>
         {!queryObj.isAdd && <div className="rightCon">
-          <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          <div className="rightTop">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>
+          <div className="rightBottom">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>
         </div>}
       </div>
     </Spin>
@@ -278,19 +283,26 @@ const Wrapper = styled.div`
     flex: 1;
     padding-top: 100px;
     display: flex;
-    .formPage{
-      width: 100%;
-      min-height: 85vh;
-      display: flex;
-      justify-Content: center;
+    justify-content: space-between;
+    .formPage {
+      min-width: 83vw;
+      max-width: 83vw;
+      overflow-x: auto;
+      min-height: 85vh; 
+      max-height: 85vh; 
     }
-    .rightCon{
-      width: 20%;
+    .rightCon {
+      width: 17vw;
+      max-height: 85vh; 
       background-color: #fff;
-      margin-left: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin: 20px 10px;
       border-radius: 10px;
+      .rightTop {
+        height: 50%;
+      }
+      .rightBottom {
+        height: 50%;
+      }
     }
     
   }
