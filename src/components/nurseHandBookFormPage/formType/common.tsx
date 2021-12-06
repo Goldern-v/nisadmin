@@ -13,7 +13,7 @@ export interface Props {
 }
 export default function Common(props: Props) {
   const { bodyModal, setBodyModal, visible, setVisible, masterInfo } = props
-  const {tbody} = masterInfo
+  const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
   const [colIdx, setColIdx]: any = useState(-1)
@@ -77,7 +77,7 @@ export default function Common(props: Props) {
   
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tbody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
       setOperationType('')
       setVisible(false)
     }
