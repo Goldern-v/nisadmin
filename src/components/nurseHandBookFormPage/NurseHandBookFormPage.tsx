@@ -5,10 +5,11 @@ import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
 import masterInfo from "./config/testCode"
 export interface Props {
-
+  bodyModal: any
+  setBodyModal: Function
 }
 export default function NurseHandBookFormPage(props: Props) {
-  const [bodyModal, setBodyModal]: any = useState([])
+  const { bodyModal, setBodyModal } = props
   const [visible, setVisible]: any = useState(false)
 
   // 取代失焦事件,用来关闭弹窗
