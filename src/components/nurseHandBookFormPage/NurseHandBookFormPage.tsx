@@ -4,17 +4,24 @@ import { Select } from 'src/vendors/antd'
 import SelectModal from './selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { tick } from "./function/click"
+import menuOperation from './function/menuOperation';
+import { copyNullRow } from "./function/render"
 export interface Props {
 
 }
 export default function NurseHandBookFormPage(props: Props) {
   const [bodyModal, setBodyModal]: any = useState([])
   const [domReact, setDomReact]: any = useState({})
+  const [operationType, setOperationType]: any = useState("")
+
   const [visible, setVisible]: any = useState(false)
+  // const [menuVisible, setMenuVisible]: any = useState(false)
+  const [menuType, setMenuType] = useState('select')
   const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
   let selectRow: any = {}
   const [selectIndex, setSelectIndex] = useState(-1)
+  const [copyRow, setCopyRow] = useState({})
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
     scheduleStore.setIsSave(false)
@@ -30,6 +37,7 @@ export default function NurseHandBookFormPage(props: Props) {
     if (col.select) {
       setColIdx(colIdx)
       setSelectList(col.select)
+      setMenuType('select')
       if (visible) {
         setVisible(false)
       }
@@ -50,7 +58,6 @@ export default function NurseHandBookFormPage(props: Props) {
   // const onBlur = () => {
   //   // setVisible(false)//关闭下拉框
   // }
-
   const refresh = () => {
     setBodyModal([...bodyModal])
     if (bodyModal[selectIndex][colIdx].multiple) {
@@ -401,8 +408,16 @@ export default function NurseHandBookFormPage(props: Props) {
 
   ]
   const handlerClick = (e: any, col: any) => {
+    setMenuType("select")
     col.click && col.click()
   }
+  const ContextMenu = (e: any) => {
+    setVisible(false)
+    e.preventDefault()
+    setMenuType('Menus')
+    setVisible(true)
+  }
+
   useEffect(() => {
     let tempArr = []
     let rows = 0
@@ -418,12 +433,8 @@ export default function NurseHandBookFormPage(props: Props) {
       tbody.map((config: any, index: any) => {
         nullRow.push({})
         for (let key in config) {
-          console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
-          if (Object.prototype.toString.call(config[key]) == "[object Function]") {
-            nullRow[index][key] = config[key].bind()
-          } else {
-            nullRow[index][key] = JSON.parse(JSON.stringify(config[key]))
-          }
+          // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
+          copyNullRow(nullRow, config, index, key)
         }
       })
       // let nullRow = JSON.parse(JSON.stringify(tbody))
@@ -441,6 +452,13 @@ export default function NurseHandBookFormPage(props: Props) {
     setBodyModal([...tempArr])
     scheduleStore.setIsSave(true)
   }, [])
+  useEffect(() => {
+    if (operationType) {
+      menuOperation[operationType](tbody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      setOperationType('')
+      setVisible(false)
+    }
+  }, [operationType])
   return (
     <Wrapper>
       <div className="page" onClickCapture={closeSelect}>
@@ -470,6 +488,7 @@ export default function NurseHandBookFormPage(props: Props) {
                     contentEditable
                     onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
                     // onBlur={(e: any) => onBlur()}
+                    onContextMenu={ContextMenu}
                     onInput={(e) => changeValue(e, col)}
                     onClick={(e) => { handlerClick(e, col) }}
                     key={`${rowIdx}_${colIdx}`}
@@ -480,7 +499,14 @@ export default function NurseHandBookFormPage(props: Props) {
         </div>
         <div className="space-div"></div>
       </div>
-      {visible && <SelectModal domReact={domReact} refresh={refresh} col={bodyModal[selectIndex][colIdx]} selectList={selectList}></SelectModal>}
+      {visible && <SelectModal
+        menuType={menuType}
+        domReact={domReact}
+        refresh={refresh}
+        col={bodyModal[selectIndex][colIdx]}
+        selectList={selectList}
+        setOperationType={setOperationType}
+      ></SelectModal>}
     </Wrapper>
   )
 }
