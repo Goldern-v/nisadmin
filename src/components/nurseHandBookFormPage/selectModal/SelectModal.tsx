@@ -5,9 +5,11 @@ export interface Props {
   col: any
   selectList: Array<any>
   refresh: Function
+  menuType: String
+  setOperationType: Function
 }
 export default function SelectModal(props: Props) {
-  const { domReact, col, refresh, selectList } = props
+  const { domReact, col, refresh, selectList, menuType, setOperationType } = props
   const [selectTop, setSelectTop]: any = useState()
   const [selectLeft, setSelectLeft]: any = useState()
   const [renderList, setRenderList]: any = useState([])
@@ -18,7 +20,12 @@ export default function SelectModal(props: Props) {
   const selectw = Math.ceil(domReact.left) + Math.ceil(domReact.width);//下拉框弹窗宽度
   const selectH = Math.ceil(domReact.top) + Math.ceil(domReact.height);//下拉框弹窗高度
   const maxTop = H - 350
-
+  const menus = [
+    { name: "复制整行", code: "copyRow" },
+    { name: "粘贴内容", code: "paste" },
+    { name: "上增一行", code: "addRowBefore" },
+    { name: "下增一行", code: "addRowAfter" },
+  ]
   const open = () => {
 
     setRenderList(selectList || [])
@@ -53,7 +60,9 @@ export default function SelectModal(props: Props) {
     }
     refresh()
   }
-
+  const menuOperation = (code: any) => {
+    setOperationType(code)
+  }
   useEffect(() => {
     open()
     return () => {
@@ -62,9 +71,12 @@ export default function SelectModal(props: Props) {
   }, [])
   return (
     <Wrapper>
-      {<div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
-        {renderList.map((item: String, index: any) =>
+      {(menuType == "Menus" || (menuType == "select" && renderList.length)) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+        {menuType == "select" && renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
+          </div>)}
+        {menuType == "Menus" && menus.map((menu: any, index: any) =>
+          <div className="selectOption" onClick={() => menuOperation(menu.code)} key={index}>{menu.name}
           </div>)}
       </div>}
     </Wrapper>
