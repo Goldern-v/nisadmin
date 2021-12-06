@@ -27,20 +27,23 @@ export default function NurseHandBookFormPage(props: Props) {
     scheduleStore.setIsSave(false)
     // filterList(item, item.value)
   }
-
+  // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
-    setSelectIndex(rowIdx)
-    selectRow = bodyModal[rowIdx]
-    e.preventDefault()
-    let domReact = e.currentTarget.getBoundingClientRect()
+    // e:事件对象;  colIdx:列数;
+    // col:列数据;  rowIdx:行数;
+    setSelectIndex(rowIdx) // 聚焦时改变当前选中行数
+    selectRow = bodyModal[rowIdx] // 获取聚焦行数据(不触发渲染)
+    e.preventDefault() // 阻止默认行为
+    let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
     setDomReact(domReact)//给下拉弹框传定位
-    if (col.select) {
+    if (col.select) { // 如果当前单元格有下拉选项
       setColIdx(colIdx)
       setSelectList(col.select)
       setMenuType('select')
       if (visible) {
         setVisible(false)
       }
+      // 设置定时器,防止已有弹窗时不渲染
       setTimeout(() => {
         setVisible(true)
       })
@@ -48,6 +51,7 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)
     }
   }
+  // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
     if (!targetClass.includes("t-b-2")) {
@@ -460,8 +464,8 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }, [operationType])
   return (
-    <Wrapper>
-      <div className="page" onClickCapture={closeSelect}>
+    <Wrapper onClickCapture={closeSelect}>
+      <div className="page">
         <div className="space-div"></div>
         <div className="bottom-list">
           <div className="table-head">新生儿监护单</div>
