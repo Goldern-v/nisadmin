@@ -10,6 +10,7 @@ import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHan
 import { fileDownload } from 'src/utils/file/file'
 import { DoCon } from 'src/components/BaseTable'
 import AuditProcessDetail from './AuditProcessDetail'
+import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
 import CKEditorFn from "./CKEditor"
@@ -217,7 +218,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
           <NurseHandBookFormPage></NurseHandBookFormPage>
         </div>
         {!queryObj.isAdd && <div className="rightCon">
-          <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          <div className="rightTop">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>
+          <div className="rightBottom">
+            <UploadView></UploadView>
+          </div>
         </div>}
       </div>
     </Spin>
@@ -278,19 +284,26 @@ const Wrapper = styled.div`
     flex: 1;
     padding-top: 100px;
     display: flex;
-    .formPage{
-      width: 100%;
-      min-height: 85vh;
-      display: flex;
-      justify-Content: center;
+    justify-content: space-between;
+    .formPage {
+      min-width: 81vw;
+      max-width: 81vw;
+      overflow-x: auto;
+      min-height: 85vh; 
+      max-height: 85vh; 
     }
-    .rightCon{
-      width: 20%;
+    .rightCon {
+      width: 19vw;
+      min-height: 82vh; 
       background-color: #fff;
-      margin-left: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin: 20px 10px;
       border-radius: 10px;
+      .rightTop {
+        min-height: 50%;
+      }
+      .rightBottom {
+        min-height: 50%;
+      }
     }
     
   }
