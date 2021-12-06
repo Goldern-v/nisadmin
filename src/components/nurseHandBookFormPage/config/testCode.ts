@@ -27,6 +27,7 @@ const tbody = [
     name: "三",
     value: "",
     width: "100px",
+    click: tick,
   },
   {
     key: "uterineTwo",

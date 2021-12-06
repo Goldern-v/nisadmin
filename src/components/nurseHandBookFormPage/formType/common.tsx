@@ -56,7 +56,8 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
-    col.click && col.click()
+    col.click && col.click(col)
+    setBodyModal([...bodyModal])
   }
 
   const ContextMenu = (e: any) => {
