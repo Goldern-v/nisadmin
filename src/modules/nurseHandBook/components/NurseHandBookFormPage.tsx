@@ -21,6 +21,7 @@ const api = new NurseHandBookService();
 export interface Props { }
 
 export default observer(function nurseHandBookFormPage(props: any) {
+  const [bodyModal, setBodyModal]: any = useState([])
   let [detailData, setDetailData]: any = useState([])
   const { queryObj } = appStore
   const [data, setData]: any = useState({})
@@ -98,6 +99,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     
   }
   const handleSave = () => {
+    console.log(bodyModal);
     // if (searchText == "") {
     //   message.error('标题不能为空！')
     //   return
@@ -115,6 +117,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
+    console.log(bodyModal);
     // if (searchText == "") {
     //   message.error('标题不能为空！')
     //   return
@@ -215,7 +218,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       </div>
       <div className="main">
         <div className="formPage">
-          <NurseHandBookFormPage></NurseHandBookFormPage>
+          <NurseHandBookFormPage bodyModal={bodyModal} setBodyModal={setBodyModal}></NurseHandBookFormPage>
         </div>
         {!queryObj.isAdd && <div className="rightCon">
           <div className="rightTop">
