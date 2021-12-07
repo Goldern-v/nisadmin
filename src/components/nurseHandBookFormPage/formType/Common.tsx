@@ -74,7 +74,7 @@ export default function Common(props: Props) {
       setVisible(false)//关闭下拉框
     }
   }
-  
+
   useEffect(() => {
     if (operationType) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
@@ -100,7 +100,7 @@ export default function Common(props: Props) {
               <div
                 id={`${col.key}_${rowIdx}_${colIdx}`}
                 className="common"
-                style={{ width: col.width }}
+                style={{ width: `${col.width}px` }}
                 suppressContentEditableWarning
                 contentEditable
                 onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
@@ -113,14 +113,14 @@ export default function Common(props: Props) {
                 {col.value}
               </div>)}
           </div>)}
-          {visible && <SelectModal
-            menuType={menuType}
-            domReact={domReact}
-            refresh={refresh}
-            col={bodyModal[selectIndex][colIdx]}
-            selectList={selectList}
-            setOperationType={setOperationType}
-          ></SelectModal>}
+      {visible && <SelectModal
+        menuType={menuType}
+        domReact={domReact}
+        refresh={refresh}
+        col={bodyModal[selectIndex][colIdx]}
+        selectList={selectList}
+        setOperationType={setOperationType}
+      ></SelectModal>}
     </Wrapper>
   )
 }

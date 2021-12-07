@@ -305,6 +305,18 @@ export default observer(function TraineeFiles(props: Props) {
           </Button>
           <Button
             onClick={() => {
+              traineeFilesModal.getImportTemplate();
+            }}>
+            下载模板
+          </Button>
+          <Button
+            onClick={() => {
+              traineeFilesModal.import();
+            }}>
+            导入
+          </Button>
+          <Button
+            onClick={() => {
               traineeFilesModal.export();
             }}
           >

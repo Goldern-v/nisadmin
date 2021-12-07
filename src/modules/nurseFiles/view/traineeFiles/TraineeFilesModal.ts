@@ -3,6 +3,7 @@ import { traineeFilesApi } from "./api/TraineeFilesApi";
 import { fileDownload } from "src/utils/file/file";
 import moment from "moment";
 import { appStore } from "src/stores";
+import { message } from "antd";
 
 class TraineeFilesModal {
   @observable public selectedYear: any = moment(); //年份
@@ -16,7 +17,7 @@ class TraineeFilesModal {
   @observable public tableLoading = false; //表格loading
   @observable public isOnJob = '1'; //表格loading
 
-  
+
   @computed
   get postObj() {
     return {
@@ -31,6 +32,7 @@ class TraineeFilesModal {
   }
 
   onload() {
+    console.log(1111)
     this.tableLoading = true;
     traineeFilesApi.queryPageList(this.postObj).then(res => {
       this.tableLoading = false;
@@ -49,6 +51,37 @@ class TraineeFilesModal {
     }).then(res => {
       fileDownload(res);
     });
+  }
+  /** 获取导入模板 */
+  getImportTemplate() {
+    traineeFilesApi.exportSheetTemplate()
+      .then(res => fileDownload(res))
+  }
+
+  /** 根据模板导入实习生轮科表 */
+  import() {
+    let importElId = 'sxslrb_import_file_el'
+    let lastEl = document.getElementById('importElId')
+    if (lastEl) document.body.removeChild(lastEl)
+
+    let importEl = document.createElement('input')
+    importEl.id = importElId
+    importEl.style.display = 'none'
+    importEl.type = 'file'
+    importEl.onchange = (e: any) => {
+      let file = e.target.files[0]
+      this.tableLoading = true;
+
+      traineeFilesApi.importSheetFromFile1(file)
+        .then(res => {
+          message.success('导入成功')
+          this.onload()
+        }, err => this.tableLoading = false)
+
+      document.body.removeChild(importEl)
+    }
+    document.body.appendChild(importEl)
+    importEl.click()
   }
 }
 
