@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-import Common from "./formType/Common"
+import Common from "./formType/common"
 import CommonHeader from "./formType/CommonHeader"
 import { appStore, authStore } from 'src/stores'
 
