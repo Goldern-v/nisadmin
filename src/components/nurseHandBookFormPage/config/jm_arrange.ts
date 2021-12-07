@@ -293,75 +293,52 @@ const tHead = {
 }
 const tBody: any = [
   {
-    key: "contractionOne",
-    name: "时间",
-    value: "",
-    width: "100px",
-    select: ['1', '2', '3', '1', '2', '3', '1', '2', '3', '1', '2', '3', '1', '2', '3'],
-    multiple: "/",
-  },
-  {
-    key: "preInputOne",
-    name: "一",
-    value: "",
-    width: "100px",
-    select: ['但是格式的', '水电费第三方士大夫', '是大富大贵', '很过分', '华润广东', '爱我去', '表格内', 'SaaS', '按时的说法', '讽德诵功'],
-    click: tick,
-  },
-  {
-    key: "preInputTwo",
-    name: "二",
+    key: "index",
+    name: "序号",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineOne",
-    name: "三",
-    value: "",
-    width: "100px",
-    click: tick,
-  },
-  {
-    key: "uterineTwo",
-    name: "四",
+    key: "what",
+    name: "what",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineTwo",
-    name: "四",
+    key: "why",
+    name: "why",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineTwo",
-    name: "四",
+    key: "where",
+    name: "where",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineTwo",
-    name: "四",
+    key: "who",
+    name: "who",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineTwo",
-    name: "四",
+    key: "when",
+    name: "when",
     value: "",
     width: "100px",
   },
   {
-    key: "uterineThree",
-    name: "五",
+    key: "how",
+    name: "how",
     value: "",
     width: "100px",
-  }
+  },
 ]
 
 export default {
   defaulLength: 17,
-  tableTitle: "新生儿监护单",
+  tableTitle: "月工作重点及周安排",
   tBody,
   tHead,
 }

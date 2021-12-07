@@ -32,20 +32,20 @@ export default observer(function NurseHandBook_jmfy() {
  
 
   const titleArr:any = {
-    planJM: '护士长工作计划',  
+    planJM: '护士长工作计划',
     conclusionJM: '护士长工作总结',
   }
 
   const manualTypeArr:any = {
     planJM: [
-      { value: "plan1", name: "月工作重点及周安排" },
-      { value: "plan2", name: "年度工作计划" },
-      { value: "plan3", name: "年度工作开展计划" },
+      { value: "jm_arrange", name: "月工作重点及周安排" },
+      { value: "jm_workPlan", name: "年度工作计划" },
+      { value: "jm_launchPlan", name: "年度工作开展计划" },
     ],  
     conclusionJM: [
-      { value: "conclusion1", name: "月度工作总结" },
-      { value: "conclusion2", name: "上半年的工作总结及下半年的工作计划" },
-      { value: "conclusion3", name: "年度工作总结及下年度工作计划" },
+      { value: "jm_monthConclusion", name: "月度工作总结" },
+      { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
+      { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
     ], 
   }
 
@@ -181,7 +181,7 @@ export default observer(function NurseHandBook_jmfy() {
           message.error('类型不能为空')
           return
         }else{
-          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}`) //3.0版本
+          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
       }
     })
@@ -207,7 +207,7 @@ export default observer(function NurseHandBook_jmfy() {
   }
 
   const onEdit = (record: any) => {
-    appStore.history.push(`/nurseHandBookDetailView/?type=${path}&&id=${record.id}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const onUndo = (record: any) => {

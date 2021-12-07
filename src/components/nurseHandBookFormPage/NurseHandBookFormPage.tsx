@@ -8,13 +8,14 @@ import { appStore, authStore } from 'src/stores'
 export interface Props {
   bodyModal: any
   setBodyModal: Function
+  formContent: any
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal } = props
-  const [visible, setVisible]: any = useState(false)
+  const { bodyModal, setBodyModal, formContent } = props
+  const [ visible, setVisible ]: any = useState(false)
   
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -24,8 +25,12 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }
   useEffect(() => {
-    initBodyModal(masterInfo, setBodyModal)
-  }, [])
+    if(!queryObj.isAdd){
+      initBodyModal(masterInfo, setBodyModal, formContent)
+    }else{
+      initBodyModal(masterInfo, setBodyModal, [])
+    }
+  }, [props.formContent])
   return (
     <Wrapper onClickCapture={closeSelect}>
       <div className="page">

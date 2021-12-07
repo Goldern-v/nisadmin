@@ -28,25 +28,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
   const [fileList, setFileList]:any = useState([])
   const [fileIdList, setFileIdList]:any = useState([])
+  const [formContentList, setFormContentList]:any = useState([])
   const [textValue,setTextValue] = useState('')
-  const [searchText, setSearchText] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr:any = {
-    year: '护士长年计划',  
-    month: '护士长月计划',
-    conclusion: '护士长年总结',
-    innovation: '护理创新项目记录',
-    businessStudy: '业务学习项目',
-    meetingRecord: '管理小组会议记录',
-    holidayRecord: '公休会记录',
-    weekPlan: '护士长周计划',
-    monthPlan: '护士长月度计划',
-    quarterPlan: '护士长季度计划',
-    yearPlan: '护士长年度计划',
-    weekConclusion: '护士长周总结',
-    monthConclusion: '护士长月度总结',
-    quarterConclusion: '护士长季度总结',
-    yearConclusion: '护士长年度总结',
+    planJM: '护士长工作计划',  
+    conclusionJM: '护士长工作总结',
   }
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
@@ -54,20 +41,19 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
   const onload = () => {
-    // if(!queryObj.isAdd){
-    //   setSpinning(true)
-    //   api.getByIdAudited(queryObj.id).then((res) => {
-    //     setData(res.data)
-    //     setSearchText(res.data.title)
-    //     setTextValue(res.data.content)
-    //     setDetailData(res.data.flowList)
-    //     res.data.files?.forEach((item:any) => {
-    //       item.uid = item.id
-    //     })
-    //     setFileList(res.data.files)
-    //     setSpinning(false)
-    //   })
-    // }
+    if(!queryObj.isAdd){
+      setSpinning(true)
+      api.getByIdAudited(queryObj.id).then((res) => {
+        setData(res.data)
+        setDetailData(res.data.flowList)
+        res.data.files?.forEach((item:any) => {
+          item.uid = item.id
+        })
+        setFileList(res.data.files)
+        setFormContentList(res.data.formContent)
+        setSpinning(false) 
+      })
+    }
   }
   
   useEffect(() => {
@@ -85,12 +71,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
       title: undoTitle,
       centered: true,
       onOk: () => {
-        // api
-        //   .undo({id:queryObj.id,status:data.status})
-        //   .then(res => {
-        //     message.success('撤销成功')
-        //     appStore.history.goBack()
-        //   },)
+        api
+          .undo({id:queryObj.id,status:data.status})
+          .then(res => {
+            message.success('撤销成功')
+            appStore.history.goBack()
+          },)
       }
     })
   }
@@ -99,39 +85,36 @@ export default observer(function nurseHandBookFormPage(props: any) {
     
   }
   const handleSave = () => {
-    console.log(bodyModal);
-    // if (searchText == "") {
-    //   message.error('标题不能为空！')
-    //   return
-    // }
-    // api.saveDraft(queryObj.type,{
-    //   id: queryObj.id || "",
-    //   title: searchText,
-    //   content: textValue,
-    //   fileIds: fileIdList,
-    // })
-    // .then((res) => {
-    //   message.success('保存成功')
-    //   appStore.history.goBack()
-    // })
+    let formContent:any = []
+    bodyModal.map((tr:any,trIndex:any)=>{
+      formContent.push({})
+      tr.map((td:any,tdIndex:any)=>{
+        // formContent[trIndex][tdIndex] = JSON.parse(JSON.stringify(td))
+        formContent[trIndex][td.key] = td.value
+      })
+    })
+    api.saveDraft(queryObj.type,{
+      id: queryObj.id || "",
+      fileIds: fileIdList,
+      manualType: queryObj.manualType,
+      title: '111',
+      formContent,
+    })
+    .then((res) => {
+      message.success('保存成功')
+      appStore.history.goBack()
+    })
   }
 
   const handleSubmit = () => {
-    console.log(bodyModal);
-    // if (searchText == "") {
-    //   message.error('标题不能为空！')
-    //   return
-    // }
-    // api.auditJM(queryObj.type,{
-    //   id: queryObj.id || "",
-    //   title: searchText,
-    //   content: textValue,
-    //   fileIds: fileIdList,
-    // })
-    // .then((res) => {
-    //   message.success('提交成功')
-    //   appStore.history.goBack()
-    // })
+    api.auditJM(queryObj.type,{
+      id: queryObj.id || "",
+      fileIds: fileIdList,
+    })
+    .then((res) => {
+      message.success('提交成功')
+      appStore.history.goBack()
+    })
   }
   
   const handleAudit = () => {
@@ -167,23 +150,23 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const removeOnChange = (info:any) => {
-    // let pro = new Promise((resolve,reject)=>{
-    //   Modal.confirm({
-    //     title: '确认删除该附件？',
-    //     centered: true,
-    //     onOk: () => {
-    //       api
-    //       .deleteAttachmentJM(info.id).then((res) => {
-    //         resolve(true)
-    //         message.success('删除成功')
-    //       })
-    //     },
-    //     onCancel:()=>{
-    //       resolve(false)
-    //     }
-    //   })
-    // })
-    // return pro.then(res=>res)
+    let pro = new Promise((resolve,reject)=>{
+      Modal.confirm({
+        title: '确认删除该附件？',
+        centered: true,
+        onOk: () => {
+          api
+          .deleteAttachmentJM(info.id).then((res) => {
+            resolve(true)
+            message.success('删除成功')
+          })
+        },
+        onCancel:()=>{
+          resolve(false)
+        }
+      })
+    })
+    return pro.then(res=>res)
   }
   const PreviewOnChange = (info:any) => {
     setEditVisible2(true)
@@ -218,16 +201,16 @@ export default observer(function nurseHandBookFormPage(props: any) {
       </div>
       <div className="main">
         <div className="formPage">
-          <NurseHandBookFormPage bodyModal={bodyModal} setBodyModal={setBodyModal}></NurseHandBookFormPage>
+          <NurseHandBookFormPage bodyModal={bodyModal} setBodyModal={setBodyModal} formContent={formContentList}></NurseHandBookFormPage>
         </div>
-        {!queryObj.isAdd && <div className="rightCon">
-          <div className="rightTop">
+        <div className="rightCon">
+          {!queryObj.isAdd && <div className="rightTop">
             <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
-          </div>
+          </div>}
           <div className="rightBottom">
             <UploadView></UploadView>
           </div>
-        </div>}
+        </div>
       </div>
     </Spin>
     <groupsAduitModalJM.Component/>
