@@ -29,6 +29,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [fileList, setFileList]:any = useState([])
   const [fileIdList, setFileIdList]:any = useState([])
   const [formContentList, setFormContentList]:any = useState([])
+  const [tableTitle, setTableTitle]: any = useState("")
   const [textValue,setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr:any = {
@@ -49,6 +50,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         res.data.files?.forEach((item:any) => {
           item.uid = item.id
         })
+        setTableTitle(res.data.title)
         setFileList(res.data.files)
         setFormContentList(res.data.formContent)
         setSpinning(false) 
@@ -97,7 +99,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
-      title: '111',
+      title: tableTitle,
       formContent,
     })
     .then((res) => {
@@ -109,7 +111,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const handleSubmit = () => {
     api.auditJM(queryObj.type,{
       id: queryObj.id || "",
+      manualType: queryObj.manualType,
       fileIds: fileIdList,
+      title: tableTitle,
     })
     .then((res) => {
       message.success('提交成功')
@@ -201,7 +205,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
       </div>
       <div className="main">
         <div className="formPage">
-          <NurseHandBookFormPage bodyModal={bodyModal} setBodyModal={setBodyModal} formContent={formContentList}></NurseHandBookFormPage>
+          <NurseHandBookFormPage 
+            bodyModal={bodyModal} 
+            setBodyModal={setBodyModal} 
+            formContent={formContentList} 
+            setTableTitle={setTableTitle}
+            tableTitle={tableTitle}
+          ></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
           {!queryObj.isAdd && <div className="rightTop">

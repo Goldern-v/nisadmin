@@ -53,7 +53,7 @@ export default function SelectModal(props: Props) {
   }
 
   const selectOptionClick = (item: String) => {
-    if (col.multiple) {
+    if (col.value && col.multiple) {
       col.value = col.value + col.multiple + item
     } else {
       col.value = item

@@ -3,21 +3,22 @@ import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
 import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
-import { appStore, authStore } from 'src/stores'
 import { Input } from 'src/vendors/antd'
+import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
   bodyModal: any
   setBodyModal: Function
+  setTableTitle: Function
   formContent: any
+  tableTitle: String
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal, formContent } = props
+  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle } = props
   const [ visible, setVisible ]: any = useState(false)
-  const [ tableTitle, seTableTitle ]: any = useState("")
   
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -26,6 +27,13 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)
     }
   }
+
+  const changeValue = (e: any, item: any) => {
+    setTableTitle(e.currentTarget.innerText)
+    scheduleStore.setIsSave(false)
+    // filterList(item, item.value)
+  }
+
   useEffect(() => {
     if(!queryObj.isAdd){
       initBodyModal(masterInfo, setBodyModal, formContent)
@@ -38,9 +46,13 @@ export default function NurseHandBookFormPage(props: Props) {
       <div className="page">
         <div className="space-div"></div>
         <div className="pageBox">
-          <div className="table-head">
-            <input value={tableTitle} onChange={(val)=> seTableTitle(val)} className="tableTitle"></input>
-            {masterInfo.tableTitle}
+          <div 
+            className="table-head"
+            suppressContentEditableWarning
+            contentEditable
+            onInput={(e) => changeValue(e, masterInfo)}
+          >
+            {tableTitle || masterInfo.tableTitle}
           </div>
           <CommonHeader masterInfo={masterInfo}></CommonHeader>
           <Common
