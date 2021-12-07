@@ -4,13 +4,19 @@ const tHead = {
     { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "when", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "how", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "where", colspan: "1", rowspan: "1", style:{ width: 100} },
+    { name: "who", colspan: "1", rowspan: "1", style:{ width: 100} },
+    { name: "when", colspan: "1", rowspan: "1", style:{ width: 100} },
+    { name: "how", colspan: "1", rowspan: "1", style:{ width: 100} },
   ],
-  mid: [],
-  bottom: []
+  mid: [
+    // { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    // { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
+  ],
+  bottom: [
+    // { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    // { name: "why", colspan: "1", rowspan: "1", style:{ width: 100} },
+  ]
 }
 const tBody: any = [
   {

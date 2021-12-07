@@ -4,6 +4,7 @@ import { initBodyModal } from "./function/render"
 import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
 import { appStore, authStore } from 'src/stores'
+import { Input } from 'src/vendors/antd'
 
 export interface Props {
   bodyModal: any
@@ -16,6 +17,7 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent } = props
   const [ visible, setVisible ]: any = useState(false)
+  const [ tableTitle, seTableTitle ]: any = useState("")
   
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -36,7 +38,10 @@ export default function NurseHandBookFormPage(props: Props) {
       <div className="page">
         <div className="space-div"></div>
         <div className="pageBox">
-          <div className="table-head">{masterInfo.tableTitle}</div>
+          <div className="table-head">
+            <input value={tableTitle} onChange={(val)=> seTableTitle(val)} className="tableTitle"></input>
+            {masterInfo.tableTitle}
+          </div>
           <CommonHeader masterInfo={masterInfo}></CommonHeader>
           <Common
             bodyModal={bodyModal}

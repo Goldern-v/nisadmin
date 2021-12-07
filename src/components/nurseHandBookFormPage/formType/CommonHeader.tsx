@@ -137,7 +137,7 @@ const Wrapper = styled.div`
   border:1px solid #000;
   border-bottom:none;
   min-width:30px;
-  min-height:90px;
+  min-height:40px;
   display:flex;
   flex-direction:column;
   .cn-th-mid,.cn-th-bottom{
