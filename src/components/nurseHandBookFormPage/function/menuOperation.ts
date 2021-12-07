@@ -14,9 +14,9 @@ import { message } from 'antd'
 import { copyNullRow } from "./render"
 
 // 插入空行事件
-export const addRowBefore = (tbody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
-  tbody.map((config: any, index: any) => {
+  tBody.map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
@@ -27,9 +27,9 @@ export const addRowBefore = (tbody: any, bodyModal: any, setBodyModal: any, sele
   setBodyModal([...bodyModal])
 }
 // 追加空行事件
-export const addRowAfter = (tbody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
-  tbody.map((config: any, index: any) => {
+  tBody.map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
@@ -40,11 +40,11 @@ export const addRowAfter = (tbody: any, bodyModal: any, setBodyModal: any, selec
   setBodyModal([...bodyModal])
 }
 // 复制整行事件
-export const copyRow = (tbody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
+export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
   setCopyRow(bodyModal[selectIndex])
 }
 // 粘贴事件
-export const paste = (tbody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
+export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
   console.log(copyRow);
 
   if (JSON.stringify(copyRow) == "{}") {

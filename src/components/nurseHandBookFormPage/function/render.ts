@@ -292,7 +292,7 @@ export const initBodyModal = (masterInfo:any,setBodyModal:Function) => {
   }
   for (let index = 0; index < rows; index++) {
     let nullRow: any = []
-    masterInfo.tbody.map((config: any, index: any) => {
+    masterInfo.tBody.map((config: any, index: any) => {
       nullRow.push({})
       for (let key in config) {
         copyNullRow(nullRow, config, index, key)

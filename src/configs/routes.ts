@@ -278,8 +278,12 @@ const CheckWardRouter = lazy(() =>
 const NurseHandBookRouter = lazy(() =>
   import("src/modules/nurseHandBook/NurseHandBookRouter")
 );
+//护士长手册3.0
+const NurseHandBookRouterNew = lazy(() =>
+  import("src/modules/nurseHandBookNew/NurseHandBookRouter")
+);
 // 护士长手册表单详情
-const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookFormPage"))
+const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBookNew/components/NurseHandBookFormPage"))
 // 护士长手册详情
 const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookDetailView"))
 //护士长满意度调查
@@ -800,6 +804,7 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
+  setLayout("/nurseHandBookNew", NurseHandBookRouterNew, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurvey", NurseSatisfactionSurveyRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
   setLayout("/nurseHandBookDetailView", NurseHandBookDetailView, layouts.MainLayout),
