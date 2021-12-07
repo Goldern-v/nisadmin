@@ -37,29 +37,6 @@ export default function CommonHeader(props: Props) {
   return (
     <Wrapper>
       <div className="common-header">
-        {/* {top.map((topTh: any, topIndex: any) => {
-          return (
-            <div className="top-box" style={topTh.style}>
-              <div key={topIndex} className="top-th" style={{ minHeight: topTh.colspan != 1 ? "25px" : "100%", margin: '-1px', border: topTh.colspan != 1 ? "1px solid #000" : "" }} dangerouslySetInnerHTML={{ __html: topTh.name }}></div>
-              {topTh.colspan != 1 && (<div className="mid-bottom-box" style={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
-                {
-                  topTh.mid.map((midTh: any, midIndex: any) => {
-                    return <div className="mid-bot-child" style={{ flex: 1, borderRight: midIndex != topTh.mid.length - 1 ? "1px solid #000" : '', }}>
-                      <div className="mid-th" style={{ minHeight: midTh.colspan != 1 ? "" : "100%", ...midTh.style }} key={midIndex} dangerouslySetInnerHTML={{ __html: midTh.name }}></div>
-                      {
-                        midTh.colspan != 1 && (<div style={{ flex: 1, display: 'flex', justifyContent: 'center', }}>
-                          {midTh.bottom.map((bottomTh: any, bottomIndex: any) => {
-                            return <div className="bottom-th" style={{ flex: 1, borderRight: bottomIndex != midTh.bottom.length - 1 ? "1px solid #000" : '' }} dangerouslySetInnerHTML={{ __html: bottomTh.name }}></div>
-                          })}
-                        </div>)
-                      }
-                    </div>
-                  })
-                }
-              </div>)}
-            </div>
-          )
-        })} */}
         {top.map((topTh: any, topIndex: any) => {
           return (
             <div className="cn-th">
@@ -99,7 +76,7 @@ export default function CommonHeader(props: Props) {
                     return (
                       <div className="bottom-th-box">
                         {
-                          midTh.bottom.map((bottomTh: any, bottomIndex: any) => {
+                          midTh.bottom && midTh.bottom.map((bottomTh: any, bottomIndex: any) => {
                             return (
                               <div
                                 className="bottom-th"
