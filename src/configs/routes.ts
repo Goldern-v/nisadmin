@@ -283,7 +283,7 @@ const NurseHandBookRouterNew = lazy(() =>
   import("src/modules/nurseHandBookNew/NurseHandBookRouter")
 );
 // 护士长手册表单详情
-const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookFormPage"))
+const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBookNew/components/NurseHandBookFormPage"))
 // 护士长手册详情
 const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookDetailView"))
 //护士长满意度调查

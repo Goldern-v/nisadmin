@@ -1,17 +1,21 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-import Common from "./formType/common"
+import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
-import masterInfo from "./config/testCode"
+import { appStore, authStore } from 'src/stores'
+
 export interface Props {
   bodyModal: any
   setBodyModal: Function
 }
 export default function NurseHandBookFormPage(props: Props) {
+  const { queryObj } = appStore
+  let manualType = queryObj.manualType
+  const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal } = props
   const [visible, setVisible]: any = useState(false)
-
+  
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
@@ -26,7 +30,7 @@ export default function NurseHandBookFormPage(props: Props) {
     <Wrapper onClickCapture={closeSelect}>
       <div className="page">
         <div className="space-div"></div>
-        <div className="main">
+        <div className="pageBox">
           <div className="table-head">{masterInfo.tableTitle}</div>
           <CommonHeader masterInfo={masterInfo}></CommonHeader>
           <Common
@@ -54,7 +58,7 @@ const Wrapper = styled.div`
   }
   .space-div{
   }
-  .main{
+  .pageBox{
     .table-head {
       font-size: 21px;
       padding: 20px 0;

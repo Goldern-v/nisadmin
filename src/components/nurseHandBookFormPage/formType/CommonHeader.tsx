@@ -10,7 +10,10 @@ export interface Props {
 }
 export default function CommonHeader(props: Props) {
   const { masterInfo } = props
+  console.log(masterInfo);
+  
   const { tHead } = masterInfo
+  console.log(tHead);
   const { top, mid, bottom } = tHead
   const deepRender = (arr: any) => {
     let i = 0
