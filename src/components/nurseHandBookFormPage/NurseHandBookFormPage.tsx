@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-// import Common from "./formType/Common"
+import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
 import { appStore, authStore } from 'src/stores'
 
@@ -33,13 +33,13 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="pageBox">
           <div className="table-head">{masterInfo.tableTitle}</div>
           <CommonHeader masterInfo={masterInfo}></CommonHeader>
-          {/* <Common
+          <Common
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}
             visible={visible}
             setVisible={setVisible}
             masterInfo={masterInfo}
-          ></Common> */}
+          ></Common>
         </div>
         <div className="space-div"></div>
       </div>
