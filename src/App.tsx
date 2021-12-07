@@ -19,11 +19,15 @@ import 'moment/locale/zh-cn'
 import NavBar from './layouts/components/NavBar'
 import { Provider as KeepAliveProvider } from 'react-keep-alive'
 moment.locale('zh-cn')
+import {initAstrict} from "src/utils/loginTimeOut/astrict"
+//登录超时
+initAstrict();
 export interface Props { }
 
 export interface State { }
 const NavBar2: any = NavBar
 export class App extends React.Component<Props, State> {
+
   public render() {
     return (
       <ComponentDidCatch>

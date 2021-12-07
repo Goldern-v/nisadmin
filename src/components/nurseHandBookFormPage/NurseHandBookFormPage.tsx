@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-import Common from "./formType/Common"
+import Common from "./formType/common"
 import CommonHeader from "./formType/CommonHeader"
 import masterInfo from "./config/testCode"
 export interface Props {
@@ -20,7 +20,7 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }
   useEffect(() => {
-    initBodyModal( masterInfo, setBodyModal )
+    initBodyModal(masterInfo, setBodyModal)
   }, [])
   return (
     <Wrapper onClickCapture={closeSelect}>
@@ -29,11 +29,11 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="main">
           <div className="table-head">{masterInfo.tableTitle}</div>
           <CommonHeader masterInfo={masterInfo}></CommonHeader>
-          <Common 
-            bodyModal={bodyModal} 
-            setBodyModal={setBodyModal} 
-            visible={visible} 
-            setVisible={setVisible} 
+          <Common
+            bodyModal={bodyModal}
+            setBodyModal={setBodyModal}
+            visible={visible}
+            setVisible={setVisible}
             masterInfo={masterInfo}
           ></Common>
         </div>
