@@ -43,21 +43,10 @@ function CopyScheduling(props: Props) {
         'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
       };
       handleOk()
-      // 复制排班 后端的计算逻辑是传入日期往后推一周 所以前端要在算中的日期往前推一周
-      selectViewModal.params.copyStartTime = fun_date(new Date(values['date-picker']), 7)
-      selectViewModal.params.copyEndTime = fun_date(new Date(values['date-picker']), 13)
+      selectViewModal.params.copyTime = values['date-picker']
       sheetViewModal.handleCopy(false);
       resetFields();
     });
-  }
-
-  // 传入日期和天数 计算出传入天数后的日期  
-  const fun_date = (date: Date, num: number) => {
-    var date2 = new Date(date);
-    date2.setDate(date.getDate() + num);
-    //num是正数表示之后的时间，num负数表示之前的时间，0表示今天
-    var time2 = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
-    return time2;
   }
   useEffect(() => {
     if (visible) {
@@ -78,9 +67,9 @@ function CopyScheduling(props: Props) {
             {getFieldDecorator('date-picker', config)(<DatePicker />)}
           </Form.Item>
         </Form>
-        <div style={{ marginLeft: '160px', color: '#ccc' }}>
-          <Icon style={{ color: '#c9c9c9' }} type="exclamation-circle" />
-          <span> 从选择日期起复制这一周的排班</span>
+        <div style={{ marginLeft: '160px', color: 'rgba(0, 0, 0, 0.45)' }}>
+          <Icon style={{ color: 'rgba(0, 0, 0, 0.30)' }} type="exclamation-circle" />
+          <span> 复制选择日期本周的排班数据</span>
         </div>
       </Modal>
     </Wrapper>

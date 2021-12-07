@@ -12,8 +12,9 @@ class SelectViewModal {
   @observable public params = {
     startTime: '', // 开始时间
     endTime: '', // 截止时间
-    copyStartTime: '', // 贵州复制排班 开始时间
-    copyEndTime: '', // 贵州复制排班截止时间
+    // copyStartTime: '', // 贵州复制排班 开始时间
+    // copyEndTime: '', // 贵州复制排班截止时间
+    copyTime: '', // 贵州复制排班时间
     deptCode: null, // 科室
     group: '', // 分组
     groupList: [] // 分组

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-import Common from "./formType/Common"
+import Common from "./formType/common"
 import masterInfo from "./config/testCode"
 export interface Props {
 
@@ -19,9 +19,9 @@ export default function NurseHandBookFormPage(props: Props) {
   }
 
   let tHead = ["第1列", "第2列", "第3列", "第4列", "第5列", "第6列", "第3列", "第4列", "第5列", "第6列"];
- 
+
   useEffect(() => {
-    initBodyModal( masterInfo, setBodyModal )
+    initBodyModal(masterInfo, setBodyModal)
   }, [])
   return (
     <Wrapper onClickCapture={closeSelect}>
@@ -33,7 +33,7 @@ export default function NurseHandBookFormPage(props: Props) {
             {tHead.map((item: any, idx: any) =>
               <div className="t-b-1" key={idx}>{item}</div>)}
           </div>
-            <Common bodyModal={bodyModal} setBodyModal={setBodyModal} visible={visible} setVisible={setVisible} masterInfo={masterInfo}></Common>
+          <Common bodyModal={bodyModal} setBodyModal={setBodyModal} visible={visible} setVisible={setVisible} masterInfo={masterInfo}></Common>
         </div>
         <div className="space-div"></div>
       </div>
