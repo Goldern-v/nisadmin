@@ -6,7 +6,7 @@ import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit, ICode,
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import QcItemGroup from './QcItemGroup'
-import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
+import { qualityControlRecordApi,IAppointUserCode } from './../../api/QualityControlRecordApi'
 
 const Option = Select.Option
 
@@ -117,7 +117,22 @@ export default observer(function FormPannel() {
 
   //获取下拉数据
   const getAuditList = (item: IAudit) => {
-    qualityControlRecordApi.getListByAppointUserCode(baseInfo.qcCode, master.wardCode, item.appointUserCode).then(res => {
+    // qualityControlRecordApi.getListByAppointUserCode(baseInfo.qcCode, master.wardCode, item.appointUserCode).then(res => {
+      let params:IAppointUserCode={
+        qcCode:baseInfo.qcCode,
+        appointUserCode:item.appointUserCode,
+      };
+      appStore.hisMatch({
+        map: {
+          gzsrm: params={},
+          other: params={
+            qcCode:baseInfo.qcCode, 
+            wardCode:master.wardCode, 
+            appointUserCode:item.appointUserCode
+          },
+        }
+      }),
+      qualityControlRecordApi.getListByAppointUserCode(params).then(res => {
       console.log(res);
       if(res?.data && res?.data.length>0){
         //设置auditList

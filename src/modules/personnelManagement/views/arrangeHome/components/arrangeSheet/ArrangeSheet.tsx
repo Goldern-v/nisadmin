@@ -5,6 +5,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
 import { createContextMenu } from "./ContextMenu";
 import Cell from "./Cell";
+// import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import moment from "moment";
 import { getWeekString, getWeekString2 } from "src/utils/date/week";
@@ -158,6 +159,16 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 50,
       fixed: "left",
       align: "center",
+      // render(text: any, record: any) { // 产品提的新需求  等待产品整理好再做
+      //   // console.log(record, 99965)
+      //   return (
+      //     <CellLeft
+      //       contextMenu={contextMenu}
+      //       dataSource={record}
+      //       isEdit={isEdit}
+      //     />
+      //   );
+      // },
     },
     ...appStore.hisMatch({
       map: {

@@ -43,7 +43,7 @@ export default function NurseHandBookFormPage(props: Props) {
         </div>
         <div className="space-div"></div>
       </div>
-    </Wrapper>
+    </Wrapper >
   )
 }
 

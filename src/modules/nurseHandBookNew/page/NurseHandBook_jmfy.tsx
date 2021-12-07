@@ -150,6 +150,7 @@ export default observer(function NurseHandBook_jmfy() {
         deptCode: deptSelect,
         keyWord: searchText,
         status: state,
+        manualType: manualType,
         startTime,
         endTime,
       })
@@ -176,7 +177,12 @@ export default observer(function NurseHandBook_jmfy() {
         </Select>
         </div>,
       onOk: () => {
-        appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}`) //3.0版本
+        if(manualTypeAddNew == ""){
+          message.error('类型不能为空')
+          return
+        }else{
+          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}`) //3.0版本
+        }
       }
     })
   }

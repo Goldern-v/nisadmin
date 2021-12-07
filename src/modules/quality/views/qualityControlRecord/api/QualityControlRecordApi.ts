@@ -21,6 +21,15 @@ export interface IUserCode {
   name: string,//姓名
 }
 
+/**
+ * 字典：获取某节点审核人列表
+ */
+export interface IAppointUserCode{
+  qcCode?: string, //质控code
+  wardCode?: string, //科室code
+  appointUserCode?: string,//指定人类型编码
+}
+
 
 export default class QualityControlRecordApi extends BaseApiService {
   // 获取护士列表
@@ -116,8 +125,15 @@ export default class QualityControlRecordApi extends BaseApiService {
   /**
    * 字典：获取某节点审核人列表
    */
-  public async getListByAppointUserCode(qcCode: string, wardCode: string, appointUserCode: string) {
-    return this.post(`/qcItem/dict/getListByAppointUserCode`, { qcCode, wardCode, appointUserCode })
+  // public async getListByAppointUserCode(qcCode: string, wardCode: string, appointUserCode: string) {
+  public async getListByAppointUserCode(parmas:IAppointUserCode) {
+    // let srcUrl="/qcItem/dict/getListByAppointUserCode";
+    if(["gzsrm"].includes(appStore.HOSPITAL_ID)){
+      return this.get(`/qcItem/dict/getHeadNurseUserList`)
+    }else {
+      return this.post(`/qcItem/dict/getListByAppointUserCode`, parmas)
+    }
+    // return this.post(`/qcItem/dict/getListByAppointUserCode`, parmas)
   }
   /**
    * 我创建的（贵州）

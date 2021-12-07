@@ -76,5 +76,21 @@ export default class TraineeFilesApi extends BaseApiService {
       qs.stringify({ ids: ids.join(",") })
     );
   }
+  /**
+   * 护理实习生花名册导入模版
+   */
+  public exportSheetTemplate() {
+    return this.get('/nursefile/otherPersonInfo/graduateIntern/downLoadGraduateInternInfoTemplate', { responseType: 'blob' })
+  }
+  /**
+   * 导入护理实习生花名册
+   * @param filename 文件
+   * @param sheetId 论课表id
+   */
+  public importSheetFromFile1(filename: any) {
+    let newFormData = new FormData()
+    newFormData.set('file', filename)
+    return this.post('/nursefile/otherPersonInfo/graduateIntern/importGraduateInternInfoTemplate', newFormData)
+  }
 }
 export const traineeFilesApi = new TraineeFilesApi();
