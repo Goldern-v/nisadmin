@@ -15,7 +15,7 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal } = props
   const [visible, setVisible]: any = useState(false)
-  
+
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
