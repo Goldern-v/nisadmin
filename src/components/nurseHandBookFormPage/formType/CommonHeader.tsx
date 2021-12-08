@@ -1,4 +1,5 @@
 import styled, { AnyStyledComponent } from 'styled-components'
+import { Modal, message, Input } from 'src/vendors/antd'
 import React, { useState, useEffect, useRef } from 'react'
 import InfoItem from 'src/modules/notice/components/InfoList/InfoItem'
 import Item from 'antd/lib/list/Item'
@@ -12,6 +13,7 @@ export default function CommonHeader(props: Props) {
   const { masterInfo, showFixHeader } = props
   const { tHead } = masterInfo
   const { top, mid, bottom } = tHead
+  const [renderHeader, setRenderHeader]: any = useState([])
   const deepRender = (arr: any) => {
     let i = 0
     arr.map((item: any, index: any) => {
@@ -29,9 +31,29 @@ export default function CommonHeader(props: Props) {
         i += +item.colspan
       }
     })
+    setRenderHeader(arr)
   }
   const chRef: any = useRef<HTMLElement>()
-
+  const handlerInput = (e: any, item: any) => {
+    e.currentTarget.value && (item.name = e.currentTarget.value)
+  }
+  const changeHeader = (e: any, item: any) => {
+    Modal.confirm({
+      title: "修改标题",
+      centered: true,
+      content: <div style={{ marginTop: 30 }}>
+        <Input defaultValue={item.name} onInput={(e: any) => handlerInput(e, item)}></Input>
+      </div>,
+      onOk: () => {
+        if (item.name == "") {
+          message.error('类型不能为空')
+          return
+        } else {
+          setRenderHeader([...renderHeader])
+        }
+      }
+    })
+  }
   useEffect(() => {
     let fixHeader: any = document.getElementById("fh")
     fixHeader && document.removeChild(fixHeader)
@@ -40,12 +62,14 @@ export default function CommonHeader(props: Props) {
     let box = document.getElementById("fixHeader");
     box?.prepend(fixHeader)
   }, [chRef])
-  deepRender(top)
+  useEffect(() => {
+    deepRender(top)
+  }, [])
   return (
     <Wrapper id="ch">
       <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader ? 'block' : 'none' }}></div>
       <div className="common-header" ref={chRef}>
-        {top.map((topTh: any, topIndex: any) => {
+        {renderHeader.map((topTh: any, topIndex: any) => {
           return (
             <div className="cn-th" key={topIndex}>
               <div
@@ -56,6 +80,7 @@ export default function CommonHeader(props: Props) {
                   ...topTh.style,
                   width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : ''
                 }}
+                onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                 dangerouslySetInnerHTML={{ __html: topTh.name }}></div>
               {topTh.hasMid && (
                 <div className="cn-th-mid">
@@ -74,6 +99,7 @@ export default function CommonHeader(props: Props) {
                               : '',
                           flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1'
                         }}
+                        onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                         dangerouslySetInnerHTML={{ __html: midTh.name }}></div>
                     )
                   })}
@@ -100,6 +126,7 @@ export default function CommonHeader(props: Props) {
                                       : '',
                                   flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1'
                                 }}
+                                onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                                 dangerouslySetInnerHTML={{ __html: bottomTh.name }}></div>
                             )
                           })
@@ -120,6 +147,7 @@ export default function CommonHeader(props: Props) {
 
 const Wrapper = styled.div`
 .cn-th{
+  cursor:default;
   margin-right:-1px;
   border:1px solid #000;
   border-bottom:none;
