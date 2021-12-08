@@ -45,10 +45,10 @@ export default function NurseHandBookFormPage(props: Props) {
   useEffect(() => {
     setTableTitle(masterInfo.tableTitle)
   }, [])
-  
+
   return (
     <Wrapper onClickCapture={closeSelect}>
-      <div className="page">
+      <div className="page" id="print-content">
         <div className="space-div"></div>
         <div className="pageBox">
           <div
