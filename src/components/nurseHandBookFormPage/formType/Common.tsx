@@ -74,7 +74,11 @@ export default function Common(props: Props) {
     }
     scheduleStore.setIsSave(true)
   }
-
+  let lcr = {
+    "left": "start",
+    "center": "center",
+    "right": "end"
+  }
   useEffect(() => {
     if (operationType) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
@@ -100,7 +104,12 @@ export default function Common(props: Props) {
             <div
               id={`${col.key}_${rowIdx}_${colIdx}`}
               className="common"
-              style={{ width: `${col.width}px` }}
+              style={{ 
+                width: `${col.width}px`,
+                ...col.style,
+                '-webkit-box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+                'box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+              }}
               suppressContentEditableWarning
               contentEditable
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
@@ -136,8 +145,6 @@ const Wrapper = styled.div`
   margin-bottom:-1px;
   display: -webkit-box;
   display: box;
-  -webkit-box-pack: center; 
-  box-pack: center;
   -webkit-box-align: center; 
   box-align: center;
   word-break: break-all;

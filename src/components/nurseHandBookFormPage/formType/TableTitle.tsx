@@ -36,9 +36,13 @@ export default function TableTitle(props: Props) {
 const Wrapper = styled.div`
 .table-head {
   font-size: 21px;
-  padding: 20px 0;
+  padding: 10px 0;
   text-align: center;
   font-weight: 700;
   font-family: 'simsun', 'Times New Roman', 'Georgia', 'Serif'!important;
+  border: 1px solid #000;
+  border-bottom: 0;
+  margin-right: -1px;
+  margin-top: 30px;
 }
 `
