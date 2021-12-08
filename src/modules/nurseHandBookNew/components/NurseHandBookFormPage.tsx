@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { Button, Upload, Icon, Modal, message, Input, Spin} from 'antd'
 import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { appStore, authStore } from 'src/stores'
 import NurseHandBookService from '../services/NurseHandBookService'
 import BaseTable from 'src/components/BaseTable'
 import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHandBookFormPage'
@@ -15,6 +14,8 @@ import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
 import CKEditorFn from "./CKEditor"
 import FormPageBody from './FormPageBody'
+import { authStore, appStore, scheduleStore } from "src/stores";
+
 
 const api = new NurseHandBookService();
 
@@ -41,6 +42,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [idChange, setIdChange] = useState("")
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
+
   const onload = () => {
     if(!queryObj.isAdd){
       setSpinning(true)
@@ -109,11 +111,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
+    let formContent:any = []
+    bodyModal.map((tr:any,trIndex:any)=>{
+      formContent.push({})
+      tr.map((td:any,tdIndex:any)=>{
+        // formContent[trIndex][tdIndex] = JSON.parse(JSON.stringify(td))
+        formContent[trIndex][td.key] = td.value
+      })
+    })
     api.auditJM(queryObj.type,{
       id: queryObj.id || "",
       manualType: queryObj.manualType,
       fileIds: fileIdList,
       title: tableTitle,
+      formContent,
     })
     .then((res) => {
       message.success('提交成功')
@@ -123,6 +134,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   
   const handleAudit = () => {
     groupsAduitModalJM.show({})
+  }
+
+  const handleBack = () => {
+    appStore.history.goBack()
   }
 
   const uploadOnChange = (info:any) => {
@@ -200,7 +215,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {!queryObj.isAdd && data.status == "2" &&<Button onClick={handleUndo} className="red">撤销</Button>}
         {data.status != "1" && !queryObj.audit &&<Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
         {queryObj.audit &&<Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
-        <Button className="ml-20" onClick={() => appStore.history.goBack()}>返回</Button>
+        <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
       </div>
       <div className="main">
@@ -214,12 +229,19 @@ export default observer(function nurseHandBookFormPage(props: any) {
           ></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
-          {!queryObj.isAdd && <div className="rightTop">
+          <div className="rightTop">
+            <UploadView 
+              setEditVisible2={setEditVisible2} 
+              setFileIdList={setFileIdList}
+              setFileList={setFileList}
+              fileList={fileList}
+              setIdChange={setIdChange}
+              setPathChange={setPathChange}
+            ></UploadView>
+          </div>
+          {!queryObj.isAdd && <div className="rightBottom">
             <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
           </div>}
-          <div className="rightBottom">
-            <UploadView></UploadView>
-          </div>
         </div>
       </div>
     </Spin>
@@ -290,15 +312,16 @@ const Wrapper = styled.div`
     }
     .rightCon {
       width: 19vw;
-      min-height: 82vh; 
+      height: 80vh; 
       background-color: #fff;
       margin: 20px 10px;
       border-radius: 10px;
+      overflow-y: auto;
       .rightTop {
-        min-height: 50%;
+        min-height: 20%;
       }
       .rightBottom {
-        min-height: 50%;
+        min-height: 60%;
       }
     }
     

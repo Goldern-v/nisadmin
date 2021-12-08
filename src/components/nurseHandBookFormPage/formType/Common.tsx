@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { authStore, appStore, scheduleStore } from "src/stores";
 import React, { useState, useEffect } from 'react'
 import menuOperation from '../function/menuOperation';
 import SelectModal from '../selectModal/SelectModal'
@@ -12,7 +11,7 @@ export interface Props {
   masterInfo: any
 }
 export default function Common(props: Props) {
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -26,8 +25,6 @@ export default function Common(props: Props) {
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
-    scheduleStore.setIsSave(false)
-    // filterList(item, item.value)
   }
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -57,7 +54,7 @@ export default function Common(props: Props) {
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
     col.click && col.click(col)
-    setBodyModal([...bodyModal])
+    col.click && setBodyModal([...bodyModal])
   }
 
   const ContextMenu = (e: any) => {
@@ -86,33 +83,32 @@ export default function Common(props: Props) {
 
   return (
     <Wrapper>
-      {
-        bodyModal.map((row: any, rowIdx: any) =>
-          <div
-            style={{
-              background: selectIndex == rowIdx ? '#fef8b9' : '#fff',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-            key={rowIdx}
-          >
-            {row.map((col: any, colIdx: any) =>
-              <div
-                id={`${col.key}_${rowIdx}_${colIdx}`}
-                className="common"
-                style={{ width: `${col.width}px` }}
-                suppressContentEditableWarning
-                contentEditable
-                onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
-                // onBlur={(e: any) => onBlur()}
-                onContextMenu={ContextMenu}
-                onInput={(e) => changeValue(e, col)}
-                onClick={(e) => { handlerClick(e, col) }}
-                key={`${rowIdx}_${colIdx}`}
-              >
-                {col.value}
-              </div>)}
-          </div>)}
+      {bodyModal.map((row: any, rowIdx: any) =>
+        <div
+          style={{
+            background: selectIndex == rowIdx ? '#fef8b9' : '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+          key={rowIdx}
+        >
+          {row.map((col: any, colIdx: any) =>
+            <div
+              id={`${col.key}_${rowIdx}_${colIdx}`}
+              className="common"
+              style={{ width: `${col.width}px` }}
+              suppressContentEditableWarning
+              contentEditable
+              onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
+              // onBlur={(e: any) => onBlur()}
+              onContextMenu={ContextMenu}
+              onInput={(e) => changeValue(e, col)}
+              onClick={(e) => handlerClick(e, col)}
+              key={`${rowIdx}_${colIdx}`}
+            >
+              {col.value}
+            </div>)}
+        </div>)}
       {visible && <SelectModal
         menuType={menuType}
         domReact={domReact}
