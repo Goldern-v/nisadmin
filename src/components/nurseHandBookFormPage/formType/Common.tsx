@@ -32,11 +32,11 @@ export default function Common(props: Props) {
     // col:列数据;  rowIdx:行数;
     setSelectIndex(rowIdx) // 聚焦时改变当前选中行数
     selectRow = bodyModal[rowIdx] // 获取聚焦行数据(不触发渲染)
+    setColIdx(colIdx)
     e.preventDefault() // 阻止默认行为
     let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
     setDomReact(domReact)//给下拉弹框传定位
     if (col.select) { // 如果当前单元格有下拉选项
-      setColIdx(colIdx)
       setSelectList(col.select)
       setMenuType('select')
       if (visible) {

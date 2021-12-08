@@ -1,17 +1,19 @@
 import styled, { AnyStyledComponent } from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import { Modal, message, Input } from 'src/vendors/antd'
+import React, { useState, useEffect, useRef } from 'react'
 import InfoItem from 'src/modules/notice/components/InfoList/InfoItem'
 import Item from 'antd/lib/list/Item'
 
 
 export interface Props {
   masterInfo: any
-
+  showFixHeader: boolean
 }
 export default function CommonHeader(props: Props) {
-  const { masterInfo } = props
+  const { masterInfo, showFixHeader } = props
   const { tHead } = masterInfo
   const { top, mid, bottom } = tHead
+  const [renderHeader, setRenderHeader]: any = useState([])
   const deepRender = (arr: any) => {
     let i = 0
     arr.map((item: any, index: any) => {
@@ -29,31 +31,64 @@ export default function CommonHeader(props: Props) {
         i += +item.colspan
       }
     })
+    setRenderHeader(arr)
   }
-  const isAllCell = (item: any) => {
-    return item.colspan == 1
+  const chRef: any = useRef<HTMLElement>()
+  const handlerInput = (e: any, item: any) => {
+    e.currentTarget.value && (item.name = e.currentTarget.value)
   }
-  deepRender(top)
+  const changeHeader = (e: any, item: any) => {
+    Modal.confirm({
+      title: "修改标题",
+      centered: true,
+      content: <div style={{ marginTop: 30 }}>
+        <Input defaultValue={item.name} onInput={(e: any) => handlerInput(e, item)}></Input>
+      </div>,
+      onOk: () => {
+        if (item.name == "") {
+          message.error('类型不能为空')
+          return
+        } else {
+          setRenderHeader([...renderHeader])
+        }
+      }
+    })
+  }
+  useEffect(() => {
+    let fixHeader: any = document.getElementById("fh")
+    fixHeader && document.removeChild(fixHeader)
+    fixHeader = chRef.current.cloneNode(true)
+    fixHeader.id = "fh"
+    let box = document.getElementById("fixHeader");
+    box?.prepend(fixHeader)
+  }, [chRef])
+  useEffect(() => {
+    deepRender(top)
+  }, [])
   return (
-    <Wrapper>
-      <div className="common-header">
-        {top.map((topTh: any, topIndex: any) => {
+    <Wrapper id="ch">
+      <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader ? 'block' : 'none' }}></div>
+      <div className="common-header" ref={chRef}>
+        {renderHeader.map((topTh: any, topIndex: any) => {
           return (
-            <div className="cn-th">
+            <div className="cn-th" key={topIndex}>
               <div
                 className="cn-th-top"
                 style={{
                   height: `${topTh.rowspan * 20}px`,
                   flex: topTh.colspan == 1 ? '1' : '',
                   ...topTh.style,
-                  width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : ''
+                  width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : '',
+                  color: topTh.canset ? 'blue' : ''
                 }}
+                onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                 dangerouslySetInnerHTML={{ __html: topTh.name }}></div>
               {topTh.hasMid && (
                 <div className="cn-th-mid">
                   {topTh.mid.map((midTh: any, midIndex: any) => {
                     return (
                       <div
+                        key={`${topIndex}_${midIndex}`}
                         className="mid-th"
                         style={{
                           ...midTh.style,
@@ -63,8 +98,10 @@ export default function CommonHeader(props: Props) {
                                 `${midTh.style.width - 2}px` // 是最后一个,减两像素
                                 : `${midTh.style.width - 1}px`
                               : '',
-                          flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1'
+                          flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1',
+                          color: midTh.canset ? 'blue' : ''
                         }}
+                        onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                         dangerouslySetInnerHTML={{ __html: midTh.name }}></div>
                     )
                   })}
@@ -74,12 +111,13 @@ export default function CommonHeader(props: Props) {
                 <div className="cn-th-bottom">
                   {topTh.mid.map((midTh: any, midIndex: any) => {
                     return (
-                      <div className="bottom-th-box">
+                      <div className="bottom-th-box" key={`${midIndex}`}>
                         {
                           midTh.bottom && midTh.bottom.map((bottomTh: any, bottomIndex: any) => {
                             return (
                               <div
                                 className="bottom-th"
+                                key={`${topIndex}_${midIndex}_${bottomIndex}`}
                                 style={{
                                   ...bottomTh.style,
                                   width:
@@ -88,8 +126,10 @@ export default function CommonHeader(props: Props) {
                                         `${bottomTh.style.width - 2}px` // 不是最后一个,减两像素
                                         : `${bottomTh.style.width - 1}px`
                                       : '',
-                                  flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1'
+                                  flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1',
+                                  color: bottomTh.canset ? 'blue' : ''
                                 }}
+                                onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                                 dangerouslySetInnerHTML={{ __html: bottomTh.name }}></div>
                             )
                           })
@@ -110,6 +150,7 @@ export default function CommonHeader(props: Props) {
 
 const Wrapper = styled.div`
 .cn-th{
+  cursor:default;
   margin-right:-1px;
   border:1px solid #000;
   border-bottom:none;

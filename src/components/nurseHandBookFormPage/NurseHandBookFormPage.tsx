@@ -13,12 +13,13 @@ export interface Props {
   setTableTitle: Function
   formContent: any
   tableTitle: String
+  showFixHeader: boolean
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, } = props
+  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, showFixHeader } = props
   const [visible, setVisible]: any = useState(false)
 
   // 取代失焦事件,用来关闭弹窗
@@ -58,7 +59,7 @@ export default function NurseHandBookFormPage(props: Props) {
           >
             {tableTitle}
           </div>
-          <CommonHeader masterInfo={masterInfo}></CommonHeader>
+          <CommonHeader showFixHeader={showFixHeader} masterInfo={masterInfo}></CommonHeader>
           <Common
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}

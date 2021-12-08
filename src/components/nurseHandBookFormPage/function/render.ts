@@ -13,8 +13,8 @@ export const copyNullRow = (nullRow: any, config: any, index: any, key: any) => 
 }
 
 // 用来复制空行的函数
-export const initBodyModal = (masterInfo:any, setBodyModal:Function, formContent:any) => {
-  console.log(formContent);
+export const initBodyModal = (masterInfo: any, setBodyModal: Function, formContent: any) => {
+  // console.log(formContent);
   let tempArr = []
   let rows = 0
   let needNullRows = false
