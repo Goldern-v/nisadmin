@@ -140,7 +140,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleBack = () => {
-    console.log(scheduleStore.getIsSave());
     if(scheduleStore.getIsSave()){
       Modal.confirm({
         title: "操作还未保存，确认返回吗？",
