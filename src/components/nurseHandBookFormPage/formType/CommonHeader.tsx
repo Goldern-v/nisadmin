@@ -1,15 +1,15 @@
 import styled, { AnyStyledComponent } from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import InfoItem from 'src/modules/notice/components/InfoList/InfoItem'
 import Item from 'antd/lib/list/Item'
 
 
 export interface Props {
   masterInfo: any
-
+  showFixHeader: boolean
 }
 export default function CommonHeader(props: Props) {
-  const { masterInfo } = props
+  const { masterInfo, showFixHeader } = props
   const { tHead } = masterInfo
   const { top, mid, bottom } = tHead
   const deepRender = (arr: any) => {
@@ -30,16 +30,24 @@ export default function CommonHeader(props: Props) {
       }
     })
   }
-  const isAllCell = (item: any) => {
-    return item.colspan == 1
-  }
+  const chRef: any = useRef<HTMLElement>()
+
+  useEffect(() => {
+    let fixHeader: any = document.getElementById("fh")
+    fixHeader && document.removeChild(fixHeader)
+    fixHeader = chRef.current.cloneNode(true)
+    fixHeader.id = "fh"
+    let box = document.getElementById("fixHeader");
+    box?.prepend(fixHeader)
+  }, [chRef])
   deepRender(top)
   return (
-    <Wrapper>
-      <div className="common-header">
+    <Wrapper id="ch">
+      <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader ? 'block' : 'none' }}></div>
+      <div className="common-header" ref={chRef}>
         {top.map((topTh: any, topIndex: any) => {
           return (
-            <div className="cn-th">
+            <div className="cn-th" key={topIndex}>
               <div
                 className="cn-th-top"
                 style={{
@@ -54,6 +62,7 @@ export default function CommonHeader(props: Props) {
                   {topTh.mid.map((midTh: any, midIndex: any) => {
                     return (
                       <div
+                        key={`${topIndex}_${midIndex}`}
                         className="mid-th"
                         style={{
                           ...midTh.style,
@@ -74,12 +83,13 @@ export default function CommonHeader(props: Props) {
                 <div className="cn-th-bottom">
                   {topTh.mid.map((midTh: any, midIndex: any) => {
                     return (
-                      <div className="bottom-th-box">
+                      <div className="bottom-th-box" key={`${midIndex}`}>
                         {
                           midTh.bottom && midTh.bottom.map((bottomTh: any, bottomIndex: any) => {
                             return (
                               <div
                                 className="bottom-th"
+                                key={`${topIndex}_${midIndex}_${bottomIndex}`}
                                 style={{
                                   ...bottomTh.style,
                                   width:
