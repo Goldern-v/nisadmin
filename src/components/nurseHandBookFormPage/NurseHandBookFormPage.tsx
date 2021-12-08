@@ -13,14 +13,14 @@ export interface Props {
   setTableTitle: Function
   formContent: any
   tableTitle: String
+  showFixHeader: boolean
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle } = props
+  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, showFixHeader } = props
   const [visible, setVisible]: any = useState(false)
-  let isSave = scheduleStore.getIsSave()
 
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -30,10 +30,8 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }
 
-  const changeValue = (e: any, item: any) => {
+  const changeValue = (e: any, masterInfo: any) => {
     setTableTitle(e.currentTarget.innerText)
-    scheduleStore.setIsSave(false)
-    // filterList(item, item.value)
   }
 
   useEffect(() => {
@@ -43,9 +41,13 @@ export default function NurseHandBookFormPage(props: Props) {
       initBodyModal(masterInfo, setBodyModal, [])
     }
   }, [props.formContent])
+
+  useEffect(() => {
+    setTableTitle(masterInfo.tableTitle)
+  }, [])
+  
   return (
     <Wrapper onClickCapture={closeSelect}>
-      <Prompt when={!isSave} message={() => '数据还未保存，是否要离开？'} />
       <div className="page">
         <div className="space-div"></div>
         <div className="pageBox">
@@ -53,11 +55,11 @@ export default function NurseHandBookFormPage(props: Props) {
             className="table-head"
             suppressContentEditableWarning
             contentEditable
-            onInput={(e) => changeValue(e, masterInfo)}
+            onBlur={(e) => changeValue(e, masterInfo)}
           >
-            {tableTitle || masterInfo.tableTitle}
+            {tableTitle}
           </div>
-          <CommonHeader masterInfo={masterInfo}></CommonHeader>
+          <CommonHeader showFixHeader={showFixHeader} masterInfo={masterInfo}></CommonHeader>
           <Common
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}

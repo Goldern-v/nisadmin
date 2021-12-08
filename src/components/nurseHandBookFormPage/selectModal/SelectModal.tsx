@@ -37,6 +37,9 @@ export default function SelectModal(props: Props) {
     }
     timer && clearInterval(timer)
     timer = setInterval(() => {
+      console.log(col);
+      console.log(props.col);
+      
       filterArr(props.col.value)
     }, 1000)
   }

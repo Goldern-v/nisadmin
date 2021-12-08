@@ -37,7 +37,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     [p: string]: any
   })
 
-  const { master, handlenodeDto,itemDataMap } = detailData
+  const { master, handlenodeDto, itemDataMap } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
 
@@ -64,8 +64,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEvent: eventType,
       badEventType: eventType,
       badEventCode: formCode,
-      operation: 'view',
-      // operation: stepNext && stepNext.canUpdate? 'edit' : 'view',
+      badEventName: formName,
+      // operation: 'view',
+      operation: stepNext && stepNext.nodeCode == "nurse_handle" ? 'edit' : 'view',
       isIndependent: 0,
       timeset: timeSet
     }
@@ -73,7 +74,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     for (let x in query) {
       if (!query[x] && query[x] !== 0) return ''
     }
-
+    // let { hostname, protocol } = window.location
+    // let port = '8088'
+    // // let devFormUrl = 'http://localhost:8088'
+    // let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
     return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
   }
 
@@ -241,7 +245,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         <div className='status-line'>
           <div className='right-pannel-title'>事件轨迹:</div>
           {/* 非不良事件去除 */}
-          {(!itemDataMap.B0002061 || itemDataMap.B0002061!='2') ? <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
+          {(!itemDataMap.B0002061 || itemDataMap.B0002061 != '2') ? <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
             {handlenodeDto.map((item, idx: number) => {
               let icon: any
 
@@ -276,7 +280,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                   key={idx} />
               )
             })}
-          </Steps>:<div style={{textIndent: 15,color:"red"}}>非不良事件</div>}
+          </Steps> : <div style={{ textIndent: 15, color: "red" }}>非不良事件</div>}
         </div>
         <div className='event-detail'>
           <iframe
@@ -285,6 +289,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             width='100%'
             height='100%'
             style={{ border: '0' }}
+            className={'badEvent-iframe'}
             onError={handleIframeLoad}
             onLoad={handleIframeLoad} />
           <Spin
@@ -295,6 +300,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       </div>
       <AuditModal_gzsrm
         visible={auditModalVisible}
+        iframeRef={iframeRef}
         onOk={handleOk}
         dataOrigin={detailData}
         nodeInfo={stepNext}

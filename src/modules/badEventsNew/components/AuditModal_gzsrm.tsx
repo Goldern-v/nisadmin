@@ -30,31 +30,32 @@ export interface Props {
   onCancel: any //窗口关闭回调
   nodeInfo: any, //当前审核节点信息
   dataOrigin: any, //窗口关闭回调
+  iframeRef: any
 }
 
 export default observer(function AduitModal(props: Props) {
-  const { visible, onOk, onCancel, dataOrigin, nodeInfo } = props
+  const { visible, onOk, onCancel, dataOrigin, nodeInfo, iframeRef } = props
   const nodeCode = nodeInfo?.nodeCode || ''
 
   const [auditInfo, setAuditInfo] = useState(initAuditInfo())
-
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
-
   // useEffect(() => {
   //   if (visible) {
 
   //   }
   // }, [visible])
-
   const handleOkBtn = () => {
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
+    // const iframe: React.RefObject<HTMLIFrameElement> = document.getElementsByClassName("badEvent-iframe")[0] || null;
+    // const iframe: any = document.getElementsByClassName("badEvent-iframe")[0] || null;
+    // iframe.contentWindow.CRForm.controller.saveForm(null, null, {});
     auditFormSubmit(userAudit)
-    setUserCheckVisible(false)
+    // setUserCheckVisible(false)
   }
 
   const auditFormSubmit = (userAudit: any) => {
@@ -69,11 +70,12 @@ export default observer(function AduitModal(props: Props) {
     delete params.auditDate
 
     let saveParams = {} as any
-
+    const iframeWindow: any = iframeRef.current?.contentWindow
+    const itemDataMap = iframeWindow.CRForm.controller.getFormData()
     switch (nodeCode) {
       case 'nurse_handle':
         // 片区护长审核是否通过
-        if (auditInfo.noPass=='1') {
+        if (auditInfo.noPass == '1') {
           saveParams['B0002060'] = auditInfo.handleContent
           // if (auditInfo.handleContent.trim().length <= 0) {//去除回退原因限制
           //   message.warning('审核意见不能为空')
@@ -111,6 +113,8 @@ export default observer(function AduitModal(props: Props) {
       if (res.code === "200") {
         onOk()
         Message.success('操作成功')
+        setUserCheckVisible(false)
+        onCancel()
       } else {
         if (res.desc) Message.error(res.desc)
       }
@@ -124,15 +128,15 @@ export default observer(function AduitModal(props: Props) {
           master: dataOrigin.master,
           commit: dataOrigin.commit,
           itemDataMap: {
-            ...dataOrigin.itemDataMap,
+            ...itemDataMap,
             ...saveParams
           }
         })
         .then(res => {
           if (res.code === '200')
-          params.noPass= params.noPass=='1'?true:false;
-            return badEventsNewService
-              .auditBadEventMaster(params)
+            params.noPass = params.noPass == '1' ? true : false;
+          return badEventsNewService
+            .auditBadEventMaster(params)
         })
         .then(
           (res) => handleResponse(res),
@@ -165,13 +169,13 @@ export default observer(function AduitModal(props: Props) {
         opionTitle = '片区护长审核意见'
         auditDateTitle = '审核日期'
         //if (auditInfo.noPass)
-        if (auditInfo.noPass=='1')
+        if (auditInfo.noPass == '1')
           opionTitle = ' 回退原因'
         break
       case 'nursing_minister_audit':
         opionTitle = '护理部审核意见'
         //if (auditInfo.noPass)
-        if (auditInfo.noPass=='1')
+        if (auditInfo.noPass == '1')
           opionTitle = ' 回退原因'
         auditDateTitle = '审核日期'
         break
@@ -183,7 +187,7 @@ export default observer(function AduitModal(props: Props) {
       case 'nursing_minister_comfirm':
         opionTitle = ' 护理部确认'
         //if (auditInfo.noPass)
-        if (auditInfo.noPass=='1')
+        if (auditInfo.noPass == '1')
           opionTitle = ' 回退原因'
         auditDateTitle = ' 护理部确认日期'
         break

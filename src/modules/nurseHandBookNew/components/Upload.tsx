@@ -5,14 +5,21 @@ import { BaseStepCon, BaseStepBoxImg } from 'src/components/BaseStep'
 import { getWeekString } from 'src/utils/date/week'
 import { Button, Upload, Icon, Modal, message, Input, Spin} from 'antd'
 import { appStore, authStore } from 'src/stores'
+import NurseHandBookService from '../services/NurseHandBookService'
+
+const api = new NurseHandBookService();
 
 interface Props {
-  detailData?: any
+  setEditVisible2: Function
+  setFileIdList: Function
+  setFileList: Function
+  fileList: any
+  setIdChange: Function
+  setPathChange: Function
 }
 export default function auditProcessDetail(props: Props) {
+  const { setEditVisible2, setFileIdList, setFileList, fileList, setIdChange, setPathChange } = props
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
-  const [fileList, setFileList]:any = useState([])
-  const [fileIdList, setFileIdList]:any = useState([])
 
   const uploadOnChange = (info:any) => {
     let fileList = [...info.fileList];
@@ -30,41 +37,41 @@ export default function auditProcessDetail(props: Props) {
     setFileIdList(idList)
   }
 
-  const removeOnChange = (info:any) => {
-    // let pro = new Promise((resolve,reject)=>{
-    //   Modal.confirm({
-    //     title: '确认删除该附件？',
-    //     centered: true,
-    //     onOk: () => {
-    //       api
-    //       .deleteAttachmentJM(info.id).then((res) => {
-    //         resolve(true)
-    //         message.success('删除成功')
-    //       })
-    //     },
-    //     onCancel:()=>{
-    //       resolve(false)
-    //     }
-    //   })
-    // })
-    // return pro.then(res=>res)
+  const removeOnChange:any = (info:any) => {
+    let pro = new Promise((resolve,reject)=>{
+      Modal.confirm({
+        title: '确认删除该附件？',
+        centered: true,
+        onOk: () => {
+          api
+          .deleteAttachmentJM(info.id).then((res) => {
+            resolve(true)
+            message.success('删除成功')
+          })
+        },
+        onCancel:()=>{
+          resolve(false)
+        }
+      })
+    })
+    return pro.then(res=>res)
   }
 
   const PreviewOnChange = (info:any) => {
-    // setEditVisible2(true)
-    // let str:any = info.path;
-    // let pdfStr:any = info.pdfPath;
-    // let index = str.lastIndexOf("\.");
-    // let type = str.substr(index+1,str.length);
-    // let start = str.indexOf("/crNursing/")
-    // if(type=='jpg'||type=='png'||type=='pdf'){
-    //   let path = str.substring(start,start+info.path.length)
-    //   setPathChange(path)
-    // }else{
-    //   let pdfPath = pdfStr.substring(start,start+pdfStr.length)
-    //   setPathChange(pdfPath)
-    // }
-    // setIdChange(info.id)
+    setEditVisible2(true)
+    let str:any = info.path;
+    let pdfStr:any = info.pdfPath;
+    let index = str.lastIndexOf("\.");
+    let type = str.substr(index+1,str.length);
+    let start = str.indexOf("/crNursing/")
+    if(type=='jpg'||type=='png'||type=='pdf'){
+      let path = str.substring(start,start+info.path.length)
+      setPathChange(path)
+    }else{
+      let pdfPath = pdfStr.substring(start,start+pdfStr.length)
+      setPathChange(pdfPath)
+    }
+    setIdChange(info.id)
   }
 
   return (
