@@ -240,24 +240,37 @@ export default observer(function FormPannel() {
         map: {
           nys: <span></span>,
           QCTP209: <span></span>,
-          gzsrm: <div className="item">
-          <div className="label">{hushi}:</div>
-          <div className={checkClass('bedNurseList')}>
-            <Select
-              mode="tags"
-              placeholder={`请输入${hushi}`}
-              value={selectedBedNurse}
-              filterOption={(input: any, option: any) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              onChange={(val: any) => {
-                qcModel.setMasterErrObj('bedNurseList', false)
-                handleBedNurseListChange(val)
-              }}>
-              {bedNurseList.map((item: any, idx: number) => <Option key={idx} value={item.empName}>{item.empName}</Option>)}
-            </Select>
-          </div>
-        </div>,
+          gzsrm: <React.Fragment>
+            {/* 指定人员 */}
+            {auditList && auditList.length > 0 ?
+              <AuditList>
+                <h3 className="auditListTitle">人员指定</h3>
+                <ul className="list">
+                  {
+                    auditList.map((item: IAudit, index: number) => {
+                      return (
+                        <li key={index} className="auditItem">
+                          <div className="auditItemName">{index + 1}、{item.showItemName}</div>
+                          <div onClick={() => { getAuditList(item) }}>
+                            <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}
+                              value={nodeAppointList && nodeAppointList.length>0 && nodeAppointList[index].userList &&  nodeAppointList[index].userList.length>0?nodeAppointList[index].userList[0].empNo:''}
+                              onSelect={(value: string) => { setAuditSelect(item, value, item.codeList) }}>
+                              {
+                                item?.codeList && item.codeList.length>0?(item.codeList as Array<ICode>).map((codeItem: ICode) =>
+                                  <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
+                                ):''
+                              }
+                              {/* <Option value="a" >a</Option> */}
+                            </Select>
+                          </div>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </AuditList> : ''
+            }
+          </React.Fragment>,
           other: <React.Fragment>
             <div className="item">
               <div className="label">{hushi}:</div>
@@ -301,35 +314,7 @@ export default observer(function FormPannel() {
                   }} />
               </div>
             </div>
-            {/* 指定人员 */}
-            {appStore.HOSPITAL_ID === 'gzsrm' && auditList && auditList.length > 0 ?
-              <AuditList>
-                <h3 className="auditListTitle">人员指定</h3>
-                <ul className="list">
-                  {
-                    auditList.map((item: IAudit, index: number) => {
-                      return (
-                        <li key={index} className="auditItem">
-                          <div className="auditItemName">{index + 1}、{item.showItemName}</div>
-                          <div onClick={() => { getAuditList(item) }}>
-                            <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}
-                              value={nodeAppointList && nodeAppointList.length>0 && nodeAppointList[index].userList &&  nodeAppointList[index].userList.length>0?nodeAppointList[index].userList[0].empNo:''}
-                              onSelect={(value: string) => { setAuditSelect(item, value, item.codeList) }}>
-                              {
-                                item?.codeList && item.codeList.length>0?(item.codeList as Array<ICode>).map((codeItem: ICode) =>
-                                  <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
-                                ):''
-                              }
-                              {/* <Option value="a" >a</Option> */}
-                            </Select>
-                          </div>
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              </AuditList> : ''
-            }
+            
 
           </React.Fragment>
 

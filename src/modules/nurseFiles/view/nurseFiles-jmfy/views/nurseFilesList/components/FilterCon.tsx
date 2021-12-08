@@ -4,6 +4,7 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
 import { Button, Tag } from "antd";
 import { theme } from "src/styles/theme";
+import { appStore } from "src/stores";
 
 const FILTER_MAP: any = {
   学历: ["全部", "中专", "大专", "本科", "研究生", "博士"],
@@ -14,7 +15,7 @@ const FILTER_MAP: any = {
     "护师",
     "主管护师",
     "副主任护师",
-    "主任护师"
+    "主任护师",
   ],
   层级: ["全部", "N0", "N1", "N2", "N3", "N4", "N5", "N6"],
   职务: [
@@ -27,9 +28,17 @@ const FILTER_MAP: any = {
     "护士长",
     "科护士长",
     "护理部副主任",
-    "护理部主任"
+    "护理部主任",
   ],
-  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"]
+  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"],
+  ...appStore.hisMatch({
+    map: {
+      jmfy: {
+        年龄: nurseFilesListViewModel.ageList.map((v) => v.label),
+      },
+      other: {},
+    },
+  }),
 };
 
 type FilterMap = typeof FILTER_MAP;
@@ -50,6 +59,9 @@ const getFilterAdapter = (label: string) => {
     }
     case "科室属性": {
       return nurseFilesListViewModel.filterKs;
+    }
+    case "年龄": {
+      return nurseFilesListViewModel.filterNl;
     }
     default: {
       return "";
@@ -145,12 +157,12 @@ export default observer(function FilterCon() {
 const Wrapper = styled.div``;
 const Inner = styled.div<{ open: boolean }>`
   background: rgba(255, 255, 255, 1);
-  box-shadow: ${p => p.theme.$shadow};
+  box-shadow: ${(p) => p.theme.$shadow};
   > div:last-child {
     border: 0;
   }
   /* transition: height 1s; */
-  ${p =>
+  ${(p) =>
     !p.open &&
     `
       height: 0;
@@ -189,8 +201,8 @@ const FilterItem = (props: FilterItemProps) => {
   const Option = styled.div<{ active: boolean }>`
     margin-right: 30px;
     cursor: pointer;
-    color: ${p => (p.active ? p.theme.$mtdc : "inherit")};
-    font-weight: ${p => (p.active ? "bold" : "normal")};
+    color: ${(p) => (p.active ? p.theme.$mtdc : "inherit")};
+    font-weight: ${(p) => (p.active ? "bold" : "normal")};
   `;
   let { label, options, selected } = props;
   return (

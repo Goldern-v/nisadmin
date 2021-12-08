@@ -213,17 +213,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             map: {
               nys: <span></span>,
               QCTP209: <span></span>,
-              gzsrm: <div>
-                {hushi}：
-                {bedNurseList
-                  .map((item: any, index: number, arr: any) => (
-                    <span key={index}>
-                      {item.empName}
-                      {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
-                      {index != arr.length - 1 ? "、" : ""}
-                    </span>
-                  ))}
-              </div>,
+              gzsrm: <span></span>,
               other: <React.Fragment>
                 <div>
                   {hushi}：
