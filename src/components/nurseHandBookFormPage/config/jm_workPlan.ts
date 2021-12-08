@@ -24,7 +24,6 @@ const tBody: any = [
     name: "序号",
     value: "",
     width: 100,
-    select: ["1","2","3"]
   },
   {
     key: "what",

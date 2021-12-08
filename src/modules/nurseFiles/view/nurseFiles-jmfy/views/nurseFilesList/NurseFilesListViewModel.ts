@@ -4,7 +4,7 @@ import {
   nurseFilesService,
   NurseQuery
 } from "../../services/NurseFilesService";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 const kssxMap: any = {
   全部: "",
@@ -40,7 +40,47 @@ class NurseFilesListViewModel {
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
   @observable public isOpenFilter: boolean = true;
+  @observable public filterNl: string = "全部";
+  public readonly ageList: any[] = [
+    { label: "全部", 
+      value: "",
+    },
+    { label: "20岁-25岁", 
+      value: "20-25",
+    },
+    { label: "25岁-30岁",  
+      value: "25-30",
+    },
+    { label: "30岁-35岁",  
+      value: "30-35",
+    },
+    { label: "35岁-40岁",  
+      value: "35-40",
+    },
+    { label: "40岁-45岁",  
+      value: "40-45",
+    },
+    { label: "45岁-50岁",  
+      value: "45-50",
+    },
+    { label: "50岁-55岁",  
+      value: "50-55",
+    },
+    { label: "55岁-60岁",  
+      value: "55-60",
+    }
+  ]
+  @computed
+  get setAge() {
+    if (appStore.HOSPITAL_ID !== 'jmfy') return ''
 
+    let item = this.ageList.find(v => v.label === this.filterNl)
+    item = item ? item.value.split('-') : ['', '']
+    return {
+      minAge: item[0] || '',
+      maxAge: item[1] || ''
+    }
+  }
   @action
   public loadNursingList = (initPageIndex?: boolean) => {
     if (initPageIndex) this.pageIndex = 1
@@ -57,6 +97,7 @@ class NurseFilesListViewModel {
       pageSize: this.pageSize /**   每页页数 */,
       empName: this.filterText /**   工号 */
     };
+    // if ()
     this.listSpinning = true;
     nurseFilesService.getByFormCodePC(obj).then(res => {
       this.pageIndex = res.data.pageIndex;

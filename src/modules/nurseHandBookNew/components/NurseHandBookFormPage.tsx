@@ -111,6 +111,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     })
       .then((res) => {
         message.success('保存成功')
+        scheduleStore.setIsSave(false)
         appStore.history.goBack()
       })
   }
@@ -133,6 +134,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     })
       .then((res) => {
         message.success('提交成功')
+        scheduleStore.setIsSave(false)
         appStore.history.goBack()
       })
   }
@@ -142,7 +144,19 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleBack = () => {
-    appStore.history.goBack()
+    if(scheduleStore.getIsSave()){
+      Modal.confirm({
+        title: "操作还未保存，确认返回吗？",
+        centered: true,
+        onOk: () => {
+          appStore.history.goBack()
+          scheduleStore.setIsSave(false)
+        }
+      })
+    }else{
+      appStore.history.goBack()
+    }
+    
   }
 
   const uploadOnChange = (info: any) => {
@@ -362,6 +376,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
 const Wrapper = styled.div`
   height: calc(100vh - 50px);
+  .ant-spin-nested-loading {
+    overflow: hidden;
+  }
   .ml-20{
     margin-left: 20px;
   }
