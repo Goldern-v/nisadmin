@@ -5,6 +5,7 @@ import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
+import { Prompt } from 'react-router-dom'
 
 export interface Props {
   bodyModal: any
@@ -18,8 +19,9 @@ export default function NurseHandBookFormPage(props: Props) {
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle } = props
-  const [ visible, setVisible ]: any = useState(false)
-  
+  const [visible, setVisible]: any = useState(false)
+  let isSave = scheduleStore.getIsSave()
+
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
@@ -35,18 +37,19 @@ export default function NurseHandBookFormPage(props: Props) {
   }
 
   useEffect(() => {
-    if(!queryObj.isAdd){
+    if (!queryObj.isAdd) {
       initBodyModal(masterInfo, setBodyModal, formContent)
-    }else{
+    } else {
       initBodyModal(masterInfo, setBodyModal, [])
     }
   }, [props.formContent])
   return (
     <Wrapper onClickCapture={closeSelect}>
+      <Prompt when={!isSave} message={() => '数据还未保存，是否要离开？'} />
       <div className="page">
         <div className="space-div"></div>
         <div className="pageBox">
-          <div 
+          <div
             className="table-head"
             suppressContentEditableWarning
             contentEditable

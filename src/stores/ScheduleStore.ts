@@ -23,7 +23,7 @@ export default class ScheduleStore {
   @observable private errorData: any
   @observable private weekEndTime: string
   @observable private startTime: string
-  @observable private isSave: Boolean
+  @observable private isSave: boolean
   @observable private endTime: string
   @observable private selectedWeekIndex: string
   @observable private department: any
@@ -82,7 +82,7 @@ export default class ScheduleStore {
   }
 
   @action
-  public setIsSave = (isSave: Boolean) => {
+  public setIsSave = (isSave: boolean) => {
     this.isSave = isSave
   }
 

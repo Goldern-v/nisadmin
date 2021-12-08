@@ -7,7 +7,6 @@ import api from './api'
 import { departType } from './model'
 import { Button } from "src/vendors/antd"
 import { Prompt } from 'react-router-dom'
-
 interface Props {
 
 }
@@ -138,7 +137,7 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       {/* 路由离开前拦截 */}
-      <Prompt when={hasChange} message={() => '数据还未保存，是否要离开？'}/>
+      <Prompt when={hasChange} message={() => '数据还未保存，是否要离开？'} />
       <TableHeard>
         <Button style={{ marginRight: '10px' }} onClick={() => getData()}>刷新</Button>
         <Button style={{ marginRight: '10px' }} onClick={() => handleSaveAll()}>保存</Button>
