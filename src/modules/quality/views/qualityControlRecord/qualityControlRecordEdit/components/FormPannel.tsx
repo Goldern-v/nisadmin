@@ -240,6 +240,24 @@ export default observer(function FormPannel() {
         map: {
           nys: <span></span>,
           QCTP209: <span></span>,
+          gzsrm: <div className="item">
+          <div className="label">{hushi}:</div>
+          <div className={checkClass('bedNurseList')}>
+            <Select
+              mode="tags"
+              placeholder={`请输入${hushi}`}
+              value={selectedBedNurse}
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              onChange={(val: any) => {
+                qcModel.setMasterErrObj('bedNurseList', false)
+                handleBedNurseListChange(val)
+              }}>
+              {bedNurseList.map((item: any, idx: number) => <Option key={idx} value={item.empName}>{item.empName}</Option>)}
+            </Select>
+          </div>
+        </div>,
           other: <React.Fragment>
             <div className="item">
               <div className="label">{hushi}:</div>
@@ -328,19 +346,26 @@ export default observer(function FormPannel() {
           key={groupIdx} />
       )}
     </QuestionCon>
-    {
-      causeList.length > 0 &&
-      <ReasonCon>
-        <div className="title">问题可能原因</div>
-        {causeList.map((item: any, idx: any) =>
-          <Checkbox
-            key={idx}
-            onChange={(e: any) => qcModel.setCauseListChecked(idx, e.target.checked)}
-            checked={item.checked}>
-            {item.causeContent}
-          </Checkbox>)}
-      </ReasonCon>
-    }
+    {appStore.hisMatch({
+      map: {
+        gzsrm: <span></span>,
+        other: <React.Fragment>{
+          causeList.length > 0 &&
+          <ReasonCon>
+            <div className="title">问题可能原因</div>
+            {causeList.map((item: any, idx: any) =>
+              <Checkbox
+                key={idx}
+                onChange={(e: any) => qcModel.setCauseListChecked(idx, e.target.checked)}
+                checked={item.checked}>
+                {item.causeContent}
+              </Checkbox>)}
+          </ReasonCon>
+        }</React.Fragment>
+      },
+      currentHospitalId: qcMatchCode
+    })}
+    
   </Wrapper >
 })
 const ReasonCon = styled.div`
