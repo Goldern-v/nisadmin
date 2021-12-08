@@ -32,6 +32,8 @@ export default function NurseHandBookFormPage(props: Props) {
 
   const changeValue = (e: any, masterInfo: any) => {
     setTableTitle(e.currentTarget.innerText)
+    scheduleStore.setIsSave(true)
+    console.log(1);
   }
 
   useEffect(() => {

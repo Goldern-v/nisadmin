@@ -4,7 +4,7 @@ import moment from 'moment'
 
 export default class ScheduleStore {
   public constructor() {
-    this.isSave = true //护士长手册表单提示保存状态
+    this.isSave = false //护士长手册表单提示保存状态
     this.startTime = sessionStorage.scheduleStartTime || ''
     this.endTime = sessionStorage.scheduleEndTime || ''
     this.weekStartTime = sessionStorage.scheduleWeekStartTime || ''

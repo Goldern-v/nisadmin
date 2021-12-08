@@ -3,4 +3,5 @@
  */
 export function tick(col:any) {
   col.value == "√" ? col.value = "" : col.value = "√"
+  return true
 }
