@@ -34,7 +34,7 @@ const FILTER_MAP: any = {
   ...appStore.hisMatch({
     map: {
       jmfy: {
-        年龄: nurseFilesListViewModel.ageList.map((v) => v.label),
+        年龄段: nurseFilesListViewModel.ageList.map((v) => v.label),
       },
       other: {},
     },
@@ -60,7 +60,7 @@ const getFilterAdapter = (label: string) => {
     case "科室属性": {
       return nurseFilesListViewModel.filterKs;
     }
-    case "年龄": {
+    case "年龄段": {
       return nurseFilesListViewModel.filterNl;
     }
     default: {
@@ -97,7 +97,7 @@ const setFilterAdapter = (label: string, value: string) => {
         nurseFilesListViewModel.filterKs = value;
       }
       break;
-    case "年龄":
+    case "年龄段":
       {
         nurseFilesListViewModel.filterNl = value;
       }
