@@ -78,7 +78,8 @@ export default function CommonHeader(props: Props) {
                   height: `${topTh.rowspan * 20}px`,
                   flex: topTh.colspan == 1 ? '1' : '',
                   ...topTh.style,
-                  width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : ''
+                  width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : '',
+                  color: topTh.canset ? 'blue' : ''
                 }}
                 onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                 dangerouslySetInnerHTML={{ __html: topTh.name }}></div>
@@ -97,7 +98,8 @@ export default function CommonHeader(props: Props) {
                                 `${midTh.style.width - 2}px` // 是最后一个,减两像素
                                 : `${midTh.style.width - 1}px`
                               : '',
-                          flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1'
+                          flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1',
+                          color: midTh.canset ? 'blue' : ''
                         }}
                         onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                         dangerouslySetInnerHTML={{ __html: midTh.name }}></div>
@@ -124,7 +126,8 @@ export default function CommonHeader(props: Props) {
                                         `${bottomTh.style.width - 2}px` // 不是最后一个,减两像素
                                         : `${bottomTh.style.width - 1}px`
                                       : '',
-                                  flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1'
+                                  flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1',
+                                  color: bottomTh.canset ? 'blue' : ''
                                 }}
                                 onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
                                 dangerouslySetInnerHTML={{ __html: bottomTh.name }}></div>
