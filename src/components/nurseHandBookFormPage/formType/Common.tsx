@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import menuOperation from '../function/menuOperation';
 import SelectModal from '../selectModal/SelectModal'
+import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
   bodyModal: any
@@ -25,6 +26,7 @@ export default function Common(props: Props) {
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
+    scheduleStore.setIsSave(true)
   }
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -53,7 +55,7 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
-    col.click && col.click(col)
+    col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])
   }
 
@@ -70,11 +72,13 @@ export default function Common(props: Props) {
     } else {
       setVisible(false)//关闭下拉框
     }
+    scheduleStore.setIsSave(true)
   }
 
   useEffect(() => {
     if (operationType) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }

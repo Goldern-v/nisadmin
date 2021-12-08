@@ -55,13 +55,16 @@ export default function CommonHeader(props: Props) {
     })
   }
   useEffect(() => {
-    let fixHeader: any = document.getElementById("fh")
-    fixHeader && document.removeChild(fixHeader)
-    fixHeader = chRef.current.cloneNode(true)
-    fixHeader.id = "fh"
-    let box = document.getElementById("fixHeader");
-    box?.prepend(fixHeader)
-  }, [chRef])
+    // let fixHeader: any = document.getElementById("fh")
+    // fixHeader && document.removeChild(fixHeader)
+    if (chRef.current && chRef.current.outerHTML) {
+      let fixHeader = chRef.current
+      let cloneHeader = fixHeader.cloneNode(true)
+      let box: any = document.getElementById("fixHeader");
+      box.innerHTML = ""
+      box.prepend(cloneHeader)
+    }
+  }, [chRef?.current?.outerHTML])
   useEffect(() => {
     deepRender(top)
   }, [])
