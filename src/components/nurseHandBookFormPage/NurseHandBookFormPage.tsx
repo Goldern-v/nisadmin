@@ -43,7 +43,7 @@ export default function NurseHandBookFormPage(props: Props) {
 
   return (
     <Wrapper onClickCapture={closeSelect}>
-      <div className="page">
+      <div className="page" id="print-content">
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>

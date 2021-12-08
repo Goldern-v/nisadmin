@@ -111,7 +111,7 @@ export default function Common(props: Props) {
                 'box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
               }}
               suppressContentEditableWarning
-              contentEditable
+              contentEditable={col.key == "serialNumber" ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               // onBlur={(e: any) => onBlur()}
               onContextMenu={ContextMenu}
@@ -119,7 +119,7 @@ export default function Common(props: Props) {
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
             >
-              {col.value}
+              {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
         </div>)}
       {visible && <SelectModal

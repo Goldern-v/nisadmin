@@ -21,7 +21,8 @@ class NurseFilesListViewModel {
         this.filterZc +
         this.filterCj +
         this.filterZw +
-        this.filterKs,
+        this.filterKs +
+        this.filterNl,
       () => {
         this.loadNursingList(true);
       }
@@ -72,7 +73,7 @@ class NurseFilesListViewModel {
   ]
   @computed
   get setAge() {
-    if (appStore.HOSPITAL_ID !== 'jmfy') return ''
+    if (appStore.HOSPITAL_ID !== 'jmfy') return {}
 
     let item = this.ageList.find(v => v.label === this.filterNl)
     item = item ? item.value.split('-') : ['', '']
@@ -95,9 +96,9 @@ class NurseFilesListViewModel {
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       pageIndex: this.pageIndex /**  当前页数 */,
       pageSize: this.pageSize /**   每页页数 */,
-      empName: this.filterText /**   工号 */
+      empName: this.filterText /**   工号 */,
+      ...this.setAge
     };
-    // if ()
     this.listSpinning = true;
     nurseFilesService.getByFormCodePC(obj).then(res => {
       this.pageIndex = res.data.pageIndex;
@@ -116,7 +117,8 @@ class NurseFilesListViewModel {
       currentLevel: this.filterCj /** 能级、层级 */,
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       post: this.filterZw /**  职务  */,
-      empName: this.filterText /** 工号 */
+      empName: this.filterText /** 工号 */,
+      ...this.setAge
     };
     nurseFilesService.auditeNurseListExcel(obj).then(res => {
       fileDownload(res);

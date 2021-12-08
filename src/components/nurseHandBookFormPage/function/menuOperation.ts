@@ -41,7 +41,15 @@ export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selec
 }
 // 复制整行事件
 export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
-  setCopyRow(bodyModal[selectIndex])
+  let nullRow: any = []
+  bodyModal[selectIndex].map((config: any, index: any) => {
+    nullRow.push({})
+    for (let key in config) {
+      // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
+      copyNullRow(nullRow, config, index, key)
+    }
+  })
+  setCopyRow(nullRow)
 }
 // 粘贴事件
 export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
