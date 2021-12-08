@@ -97,6 +97,11 @@ const setFilterAdapter = (label: string, value: string) => {
         nurseFilesListViewModel.filterKs = value;
       }
       break;
+    case "年龄":
+      {
+        nurseFilesListViewModel.filterNl = value;
+      }
+      break;
     default:
   }
 };
