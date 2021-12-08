@@ -14,7 +14,7 @@ const tHead = {
 }
 const tBody: any = [
   {
-    key: "index",
+    key: "serialNumber",
     name: "序号",
     value: "",
     width: 100,

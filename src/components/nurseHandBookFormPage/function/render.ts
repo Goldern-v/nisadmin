@@ -43,5 +43,4 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
     tempArr.push(nullRow)
   }
   setBodyModal([...tempArr])
-  scheduleStore.setIsSave(true)
 }

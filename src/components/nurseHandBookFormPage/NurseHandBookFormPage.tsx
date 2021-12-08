@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
-import Common from "./formType/Common"
+import TableTitle from "./formType/TableTitle"
 import CommonHeader from "./formType/CommonHeader"
+import Common from "./formType/Common"
+import Compute from "./formType/Compute"
+
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
@@ -30,10 +33,6 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }
 
-  const changeValue = (e: any, masterInfo: any) => {
-    setTableTitle(e.currentTarget.innerText)
-  }
-
   useEffect(() => {
     if (!queryObj.isAdd) {
       initBodyModal(masterInfo, setBodyModal, formContent)
@@ -42,23 +41,12 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }, [props.formContent])
 
-  useEffect(() => {
-    setTableTitle(masterInfo.tableTitle)
-  }, [])
-  
   return (
     <Wrapper onClickCapture={closeSelect}>
-      <div className="page">
+      <div className="page" id="print-content">
         <div className="space-div"></div>
         <div className="pageBox">
-          <div
-            className="table-head"
-            suppressContentEditableWarning
-            contentEditable
-            onBlur={(e) => changeValue(e, masterInfo)}
-          >
-            {tableTitle}
-          </div>
+          <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           <CommonHeader showFixHeader={showFixHeader} masterInfo={masterInfo}></CommonHeader>
           <Common
             bodyModal={bodyModal}
@@ -67,6 +55,7 @@ export default function NurseHandBookFormPage(props: Props) {
             setVisible={setVisible}
             masterInfo={masterInfo}
           ></Common>
+          <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>
         </div>
         <div className="space-div"></div>
       </div>
@@ -75,24 +64,12 @@ export default function NurseHandBookFormPage(props: Props) {
 }
 
 const Wrapper = styled.div`
-  .page {
-    margin: 20px auto;
-    padding: 50px;
-    padding-top: 0px;
-    display: flex;
-    background-color: #fff;
-    width: fit-content;
-  }
-  .space-div{
-  }
-  .pageBox{
-    .table-head {
-      font-size: 21px;
-      padding: 20px 0;
-      text-align: center;
-      font-weight: 700;
-      font-family: 'simsun', 'Times New Roman', 'Georgia', 'Serif'!important;
-    }
-  }
-  
+.page {
+  margin: 20px auto;
+  padding: 30px;
+  padding-top: 0px;
+  display: flex;
+  background-color: #fff;
+  width: fit-content;
+}
 `

@@ -12,6 +12,8 @@ export interface NurseQuery {
   pageIndex: number /**  职务  */;
   pageSize: number /**   每页页数 */;
   empName: string /**   每页页数 */;
+  minAge?: string /**最小年龄 包含 */
+  maxAge?: string /**最大年龄 包含 */
 }
 
 export default class NurseFilesService extends BaseApiService {

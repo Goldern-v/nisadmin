@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import menuOperation from '../function/menuOperation';
 import SelectModal from '../selectModal/SelectModal'
+import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
   bodyModal: any
@@ -25,6 +26,7 @@ export default function Common(props: Props) {
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
+    scheduleStore.setIsSave(true)
   }
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -53,7 +55,7 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
-    col.click && col.click(col)
+    col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])
   }
 
@@ -70,11 +72,17 @@ export default function Common(props: Props) {
     } else {
       setVisible(false)//关闭下拉框
     }
+    scheduleStore.setIsSave(true)
   }
-
+  let lcr = {
+    "left": "start",
+    "center": "center",
+    "right": "end"
+  }
   useEffect(() => {
     if (operationType) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }
@@ -96,9 +104,14 @@ export default function Common(props: Props) {
             <div
               id={`${col.key}_${rowIdx}_${colIdx}`}
               className="common"
-              style={{ width: `${col.width}px` }}
+              style={{ 
+                width: `${col.width}px`,
+                ...col.style,
+                '-webkit-box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+                'box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+              }}
               suppressContentEditableWarning
-              contentEditable
+              contentEditable={col.key == "serialNumber" ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               // onBlur={(e: any) => onBlur()}
               onContextMenu={ContextMenu}
@@ -106,7 +119,7 @@ export default function Common(props: Props) {
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
             >
-              {col.value}
+              {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
         </div>)}
       {visible && <SelectModal
@@ -132,8 +145,6 @@ const Wrapper = styled.div`
   margin-bottom:-1px;
   display: -webkit-box;
   display: box;
-  -webkit-box-pack: center; 
-  box-pack: center;
   -webkit-box-align: center; 
   box-align: center;
   word-break: break-all;
