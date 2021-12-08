@@ -184,6 +184,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             map: {
               nys: <span></span>,
               QCTP209: <span></span>,
+              gzsrm: <span></span>,
               other: <div>
                 床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
               </div>
@@ -212,6 +213,17 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             map: {
               nys: <span></span>,
               QCTP209: <span></span>,
+              gzsrm: <div>
+                {hushi}：
+                {bedNurseList
+                  .map((item: any, index: number, arr: any) => (
+                    <span key={index}>
+                      {item.empName}
+                      {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
+                      {index != arr.length - 1 ? "、" : ""}
+                    </span>
+                  ))}
+              </div>,
               other: <React.Fragment>
                 <div>
                   {hushi}：
@@ -407,19 +419,26 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             })}
           </QuestionItem>
         ))}
-
-        {!onlyReadError && (
-          <QuestionBottomCon>
-            <div className="questionBottomTitle">问题可能原因</div>
-            <div className="questionBottomCheckbox">
-              {causeList.map((item: any, index: number) => (
-                <Checkbox disabled key={index} checked={item.checked}>
-                  {item.causeContent}
-                </Checkbox>
-              ))}
-            </div>
-          </QuestionBottomCon>
-        )}
+        {appStore.hisMatch({
+          map: {
+            gzsrm: <span></span>,
+            other: <React.Fragment>
+              {!onlyReadError && (
+                <QuestionBottomCon>
+                  <div className="questionBottomTitle">问题可能原因</div>
+                  <div className="questionBottomCheckbox">
+                    {causeList.map((item: any, index: number) => (
+                      <Checkbox disabled key={index} checked={item.checked}>
+                        {item.causeContent}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </QuestionBottomCon>
+              )}
+            </React.Fragment>
+          },
+          currentHospitalId: qcMatchCode
+        })}
       </QuestionCon>
       {/* </Spin> */}
     </Con>
