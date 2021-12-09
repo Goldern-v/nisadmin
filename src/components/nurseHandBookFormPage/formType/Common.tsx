@@ -74,7 +74,14 @@ export default function Common(props: Props) {
     }
     scheduleStore.setIsSave(true)
   }
-
+  const getCellTitle = (col: any) => {
+    switch (col.key) {
+      case "serialNumber":
+        return '序号列不允许操作！';
+      default:
+        return '';
+    }
+  }
   const onBlur = (e: any, row: any, col: any) => {
   }
   let lcr = {
@@ -117,7 +124,9 @@ export default function Common(props: Props) {
                 ...col.style,
                 'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
                 'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto'
               }}
+              title={getCellTitle(col)}
               suppressContentEditableWarning
               contentEditable
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
