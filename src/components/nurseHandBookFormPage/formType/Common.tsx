@@ -101,8 +101,8 @@ export default function Common(props: Props) {
       //   })
       // })
       calculation_rules.map((rule: any) => {
-        let val1 = row.find((item: any) => item.key === rule.key1).value
-        let val2 = row.find((item: any) => item.key === rule.key2).value
+        let val1 = Number(row.find((item: any) => item.key === rule.key1).value)
+        let val2 = Number(row.find((item: any) => item.key === rule.key2).value)
         let resul: Number | String = 0
         switch (rule.operator) {
           case '+':

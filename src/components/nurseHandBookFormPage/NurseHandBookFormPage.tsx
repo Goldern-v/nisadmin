@@ -58,8 +58,8 @@ export default function NurseHandBookFormPage(props: Props) {
             setVisible={setVisible}
             masterInfo={masterInfo}
           ></Common>
-          <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>
-          <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>
+          {masterInfo.computeRow && <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>}
+          {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
         </div>
         <div className="space-div"></div>
       </div>

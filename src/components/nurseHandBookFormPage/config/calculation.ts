@@ -7,6 +7,8 @@ const tHead = {
     { name: "年龄", colspan: "1", rowspan: "1", style: { width: 100 } },
     { name: "总收入", colspan: "1", rowspan: "1", style: { width: 100 } },
     { name: "年薪", colspan: "1", rowspan: "1", style: { width: 100 } },
+    { name: "加", colspan: "1", rowspan: "1", style: { width: 100 } },
+    { name: "减", colspan: "1", rowspan: "1", style: { width: 100 } },
     { name: "how", colspan: "1", rowspan: "1", style: { width: 100 } },
   ],
   mid: [],
@@ -48,6 +50,20 @@ const tBody: any = [
     key: "calculation_2",
     name: "年薪",
     calculation_rules: "calculation_1 / age",
+    width: 100,
+    value: ""
+  },
+  {
+    key: "calculation_3",
+    name: "加",
+    calculation_rules: "age + money",
+    width: 100,
+    value: ""
+  },
+  {
+    key: "calculation_4",
+    name: "减",
+    calculation_rules: "money - age",
     width: 100,
     value: ""
   },
