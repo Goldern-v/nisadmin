@@ -13,6 +13,7 @@ import { message } from 'antd'
 // 引入复制空行函数
 import { copyNullRow } from "./render"
 
+// 删除当前行
 export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
   tBody.map((config: any, index: any) => {
@@ -27,6 +28,7 @@ export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, sel
   setBodyModal([...bodyModal])
 }
 
+// 清空当前行数据
 export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
   tBody.map((config: any, index: any) => {
@@ -39,6 +41,7 @@ export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIn
   bodyModal[selectIndex] = nullRow
   setBodyModal([...bodyModal])
 }
+
 // 插入空行事件
 export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
@@ -86,6 +89,8 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
   bodyModal[selectIndex] = copyRow
   setBodyModal([...bodyModal])
 }
+
+// 计算当前行事件
 export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
   let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules).map((item: any) => {
     let [key1, operator, key2] = item.calculation_rules.split(" ")
@@ -116,6 +121,8 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
     bodyModal[selectIndex][colIndex].value = resul
   })
 }
+
+// 计算当前列事件
 export const calculation_currentColumn = () => {
 
 }
