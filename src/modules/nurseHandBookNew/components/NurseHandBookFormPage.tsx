@@ -252,13 +252,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
     context && context.scale(2, 2);
     context && context.translate(-offsetLeft - abs, -offsetTop);
     const iframe: any = document.getElementById("iframe") || document.createElement("iframe")
+    setIsPrint(true)
     setTimeout(() => {
       // 这里默认横向没有滚动条的情况，因为offset.left()，有无滚动条的时候存在差值，因此translate的时候，要把这个差值去掉
       html2canvas(element || document.createElement("div"), {
         allowTaint: true,
         scale: 2 // 提升画面质量，但是会增加文件大小
       }).then(canvas => {
-        setIsPrint(true)
         const contentWidth = canvas.width;
         const contentHeight = canvas.height;
         // 一页pdf显示html页面生成的canvas高度
@@ -309,6 +309,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     let iframeEl = document.getElementById("iframe") as any
     if (iframeEl && isPrint) {
       iframeEl.contentWindow.print()
+      setIsPrint(false)
     }
   }
   useEffect(() => {
@@ -335,6 +336,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       <div className="main">
         <div className="formPage" onScroll={handlerScroll}>
           <NurseHandBookFormPage
+            isPrint={isPrint}
             showFixHeader={showFixHeader}
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}

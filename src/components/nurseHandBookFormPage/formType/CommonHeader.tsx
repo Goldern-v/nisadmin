@@ -8,9 +8,10 @@ import Item from 'antd/lib/list/Item'
 export interface Props {
   masterInfo: any
   showFixHeader: boolean
+  isPrint: any
 }
 export default function CommonHeader(props: Props) {
-  const { masterInfo, showFixHeader } = props
+  const { masterInfo, showFixHeader, isPrint } = props
   const { tHead } = masterInfo
   const { top, mid, bottom } = tHead
   const [renderHeader, setRenderHeader]: any = useState([])
@@ -70,7 +71,7 @@ export default function CommonHeader(props: Props) {
   }, [])
   return (
     <Wrapper id="ch">
-      <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader ? 'block' : 'none' }}></div>
+      <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader && !isPrint ? 'block' : 'none' }}></div>
       <div className="common-header" ref={chRef}>
         {renderHeader.map((topTh: any, topIndex: any) => {
           return (
