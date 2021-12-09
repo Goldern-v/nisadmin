@@ -86,6 +86,7 @@ export default function Common(props: Props) {
   }
 
   const refresh = () => {
+
     setBodyModal([...bodyModal])
     if (bodyModal[selectIndex][colIdx].multiple) {
     } else {
@@ -93,6 +94,7 @@ export default function Common(props: Props) {
     }
     scheduleStore.setIsSave(true)
   }
+
   const onBlur = (e: any, row: any, col: any) => {
     if (rulesKey[col.key]) {
       // let rules = calculation_rules.filter((rule: any) => {
@@ -124,6 +126,20 @@ export default function Common(props: Props) {
         refresh()
       })
     }
+    masterInfo.computeRow.map((col:any)=>{
+      let sum: any = 0
+      bodyModal.map((row:any)=>{
+        if(row.find((item: any) => item.key === col.key)){
+          sum = sum + Number(row.find((item: any) => item.key === col.key).value)
+        }
+      });
+      if(col.key != "合计"){
+        if (Object.is(sum, NaN)) { sum = '数值有误' }
+        col.value = sum
+      }
+      refresh()
+    })
+    
   }
   let lcr = {
     "left": "start",
@@ -174,7 +190,23 @@ export default function Common(props: Props) {
             >
               {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
-        </div>)}
+      </div>)}
+      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center'}}>
+        {masterInfo.computeRow.map((col: any, colIdx: any) =>
+          <div
+            id={`${col.key}_${colIdx}`}
+            className="common"
+            style={{ 
+              width: `${col.width}px`,
+              ...col.style,
+              'WebkitBoxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+              'boxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+            }}
+            key={`${colIdx}`}
+          >
+            {col.value}
+          </div>)}
+      </div>}
       {visible && <SelectModal
         menuType={menuType}
         domReact={domReact}

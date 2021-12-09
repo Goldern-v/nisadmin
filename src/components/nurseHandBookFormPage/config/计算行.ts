@@ -21,7 +21,7 @@ const tBody: any = [
 ]
 
 const computeRow: any = [
-  { key: '', name:'合计', value: "合计", width: 100 },
+  { key: '合计', name:'合计', value: "合计", width: 100 },
   { key: 'one', name:'星期一', value: "", width: 100 },
   { key: 'two', name:'星期二', value: "", width: 100 },
   { key: 'three', name:'星期三', value: "", width: 100 },
@@ -31,7 +31,7 @@ const computeRow: any = [
 
 export default {
   defaulLength: 17,
-  tableTitle: "计算行类型表单",
+  tableTitle: { value:"计算行类型表单", width:600 },
   tBody,
   tHead,
   computeRow,

@@ -4,7 +4,6 @@ import { initBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
 import CommonHeader from "./formType/CommonHeader"
 import Common from "./formType/Common"
-import Compute from "./formType/Compute"
 import Remark from "./formType/Remark"
 
 import { Input } from 'src/vendors/antd'
@@ -58,7 +57,6 @@ export default function NurseHandBookFormPage(props: Props) {
             setVisible={setVisible}
             masterInfo={masterInfo}
           ></Common>
-          {masterInfo.computeRow && <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
         </div>
         <div className="space-div"></div>
