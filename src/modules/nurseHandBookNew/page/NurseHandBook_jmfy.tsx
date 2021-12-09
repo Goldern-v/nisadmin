@@ -17,7 +17,7 @@ import FormPageBody from '../components/FormPageBody'
 export interface Props { }
 
 export default observer(function NurseHandBook_jmfy() {
-  const [weekDate, setWeekDate]:any = useState([moment().startOf("week"), moment().endOf("week")])
+  const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
@@ -27,31 +27,32 @@ export default observer(function NurseHandBook_jmfy() {
   const [editVisible, setEditVisible] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
-  const [state, setState]  = useState<String>('')
-  const [manualType, setManualType]  = useState<String>('')
- 
+  const [state, setState] = useState<String>('')
+  const [manualType, setManualType] = useState<String>('')
 
-  const titleArr:any = {
+
+  const titleArr: any = {
     planJM: '护士长工作计划',
     conclusionJM: '护士长工作总结',
   }
 
-  const manualTypeArr:any = {
+  const manualTypeArr: any = {
     planJM: [
       { value: "jm_arrange", name: "月工作重点及周安排" },
       { value: "jm_workPlan", name: "年度工作计划" },
       { value: "jm_launchPlan", name: "年度工作开展计划" },
-    ],  
+      { value: "calculation", name: "计算列测试表格" },
+    ],
     conclusionJM: [
       { value: "jm_monthConclusion", name: "月度工作总结" },
       { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
       { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
-    ], 
+    ],
   }
 
   const path = window.location.hash.split('/').reverse()[0]
 
-  let columns:any = [
+  let columns: any = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -91,7 +92,7 @@ export default observer(function NurseHandBook_jmfy() {
         return (
           <div>
             {record.files.map((item: any, index: number) => (
-              <div><a href='javascript:;'onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+              <div><a href='javascript:;' onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
             ))}
           </div>
         )
@@ -105,7 +106,7 @@ export default observer(function NurseHandBook_jmfy() {
       render(status: any) {
         return (
           <div>
-            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿" }</span>
+            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿"}</span>
           </div>
         )
       }
@@ -116,10 +117,10 @@ export default observer(function NurseHandBook_jmfy() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {record.status==1&&<span onClick={() => onEdit(record)}>查看</span>}
-            {(record.status==2||record.status==3)&&<span onClick={() => onEdit(record)}>编辑</span>}
-            {(record.status==0||record.status==2)&&<span onClick={() => onUndo(record)}>撤销</span>}
-            {record.status!=1&&<span onClick={() => onDelete(record)}>删除</span>}
+            {record.status == 1 && <span onClick={() => onEdit(record)}>查看</span>}
+            {(record.status == 2 || record.status == 3) && <span onClick={() => onEdit(record)}>编辑</span>}
+            {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>}
+            {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }
@@ -136,16 +137,16 @@ export default observer(function NurseHandBook_jmfy() {
     service.commonApiService
       .getUintList().then(res => {
         setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
-    })
+      })
   }
-  const onChangeSearchText = (e: any) => {setSearchText(e.target.value)}
+  const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
 
   const getData = () => {
     setPageLoading(true)
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
     nurseHandBookService
-      .getPage(path,{
+      .getPage(path, {
         ...pageOptions,
         deptCode: deptSelect,
         keyWord: searchText,
@@ -161,7 +162,7 @@ export default observer(function NurseHandBook_jmfy() {
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
-  
+
   const handleAddNew = (record: any) => {
     let manualTypeAddNew = ""
     Modal.confirm({
@@ -171,16 +172,16 @@ export default observer(function NurseHandBook_jmfy() {
         <Select
           defaultValue={manualTypeAddNew}
           style={{ width: 280 }}
-          onChange={(val: any) => manualTypeAddNew = val }>
+          onChange={(val: any) => manualTypeAddNew = val}>
           {manualTypeArr[path].map((item: any, idx: any) =>
             <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
         </Select>
-        </div>,
+      </div>,
       onOk: () => {
-        if(manualTypeAddNew == ""){
+        if (manualTypeAddNew == "") {
           message.error('类型不能为空')
           return
-        }else{
+        } else {
           appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
       }
@@ -191,16 +192,16 @@ export default observer(function NurseHandBook_jmfy() {
   const setDetailModal = (item: any) => {
     // window.open(item.path)
     setEditVisible(true)
-    let str:any = item.path;
-    let pdfStr:any = item.pdfPath;
+    let str: any = item.path;
+    let pdfStr: any = item.pdfPath;
     let index = str.lastIndexOf("\.");
-    let type = str.substr(index+1,str.length);
+    let type = str.substr(index + 1, str.length);
     let start = str.indexOf("/crNursing/")
-    if(type=='jpg'||type=='png'||type=='pdf'){
-      let path = str.substring(start,start+item.path.length)
+    if (type == 'jpg' || type == 'png' || type == 'pdf') {
+      let path = str.substring(start, start + item.path.length)
       setPathChange(path)
-    }else{
-      let pdfPath = pdfStr.substring(start,start+pdfStr.length)
+    } else {
+      let pdfPath = pdfStr.substring(start, start + pdfStr.length)
       setPathChange(pdfPath)
     }
     setIdChange(item.id)
@@ -212,11 +213,11 @@ export default observer(function NurseHandBook_jmfy() {
 
   const onUndo = (record: any) => {
     let undoTitle = ""
-    if( path == "planJM" ){
+    if (path == "planJM") {
       undoTitle = '确认撤销该总结吗？'
-    } else if( path == "conclusionJM" ){
+    } else if (path == "conclusionJM") {
       undoTitle = '确认撤销该计划吗？'
-    } else{
+    } else {
       undoTitle = '确认删除该记录吗？'
     }
     Modal.confirm({
@@ -225,7 +226,7 @@ export default observer(function NurseHandBook_jmfy() {
       onOk: () => {
         setPageLoading(true)
         nurseHandBookService
-          .undo({id:record.id,status:record.status})
+          .undo({ id: record.id, status: record.status })
           .then(res => {
             message.success('撤销成功', 1, () => getData())
           }, err => setPageLoading(false))
@@ -235,21 +236,21 @@ export default observer(function NurseHandBook_jmfy() {
 
   const onDelete = (record: any) => {
     let deleteTitle = ""
-    if( path == "planJM" ){
+    if (path == "planJM") {
       deleteTitle = '确认删除该计划吗？'
-    } else if( path == "conclusionJM" ){
+    } else if (path == "conclusionJM") {
       deleteTitle = '确认删除该总结吗？'
-    } else{
+    } else {
       deleteTitle = '确认删除该记录吗？'
     }
-    
+
     Modal.confirm({
       title: deleteTitle,
       centered: true,
       onOk: () => {
         setPageLoading(true)
         nurseHandBookService
-          .delete(record.id,{id:record.id})
+          .delete(record.id, { id: record.id })
           .then(res => {
             message.success('删除成功', 1, () => getData())
           }, err => setPageLoading(false))
@@ -264,18 +265,18 @@ export default observer(function NurseHandBook_jmfy() {
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
 
-    nurseHandBookService.export(path,{
+    nurseHandBookService.export(path, {
       ...pageOptions,
       deptCode: deptSelect,
       keyWord: searchText,
       startTime,
       endTime,
     })
-    .then(res => {
-      setPageLoading(false)
-      setSelectedRowKeys([])
-      fileDownload(res)
-    }, err => setPageLoading(false))
+      .then(res => {
+        setPageLoading(false)
+        setSelectedRowKeys([])
+        fileDownload(res)
+      }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -383,7 +384,7 @@ export default observer(function NurseHandBook_jmfy() {
         visible={editVisible}
         path={pathChange}
         id={idChange}
-        onOk={() => {}}
+        onOk={() => { }}
         onCancel={() => setEditVisible(false)} />
     </Wrapper>
   )
