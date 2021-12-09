@@ -280,7 +280,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                   key={idx} />
               )
             })}
-          </Steps> : <div style={{ textIndent: 15, color: "red" }}>非不良事件</div>}
+          </Steps> : <div style={{ textIndent: 15, color: "red" }}>非护理不良事件</div>}
         </div>
         <div className='event-detail'>
           <iframe
