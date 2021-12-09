@@ -75,5 +75,8 @@ const Wrapper = styled.div`
   display: flex;
   background-color: #fff;
   width: fit-content;
+  .space-div{
+    width:1px;
+  }
 }
 `
