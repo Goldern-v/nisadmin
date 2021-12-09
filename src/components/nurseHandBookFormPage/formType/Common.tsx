@@ -22,11 +22,30 @@ export default function Common(props: Props) {
   // const [visible, setVisible]: any = useState(false)
   const [operationType, setOperationType]: any = useState("")
   const [copyRow, setCopyRow] = useState({})
-
+  const [calculation_rules, setCalculation_rules]: any = useState([])
+  const [rulesKey, setRulesKey]: any = useState([])
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
     scheduleStore.setIsSave(true)
+  }
+  const hasCalculation = (tBody: any) => {
+    let rulesKey = {}
+    let rules: any = []
+    let hasCalculation = false
+    tBody.map((item: any) => {
+      if (item.key.includes('calculation')) {
+        hasCalculation = true
+        let calculation_arr = item.calculation_rules.split(" ")
+        let resultKey = item.key
+        let [key1, operator, key2] = calculation_arr
+        rulesKey[key1] = true
+        rulesKey[key2] = true
+        rules = [...rules, { key1, operator, key2, resultKey }]
+      }
+    })
+    setCalculation_rules([...rules])
+    setRulesKey({ ...rulesKey })
   }
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -74,6 +93,38 @@ export default function Common(props: Props) {
     }
     scheduleStore.setIsSave(true)
   }
+  const onBlur = (e: any, row: any, col: any) => {
+    if (rulesKey[col.key]) {
+      // let rules = calculation_rules.filter((rule: any) => {
+      //   return Object.values(rule).some((val: any) => {
+      //     return val === col.key
+      //   })
+      // })
+      calculation_rules.map((rule: any) => {
+        let val1 = row.find((item: any) => item.key === rule.key1).value
+        let val2 = row.find((item: any) => item.key === rule.key2).value
+        let resul: Number | String = 0
+        switch (rule.operator) {
+          case '+':
+            resul = val1 + val2;
+            break;
+          case '-':
+            resul = val1 - val2;
+            break;
+          case '*':
+            resul = val1 * val2;
+            break;
+          case '/':
+            resul = val1 / val2;
+            break;
+        }
+        if (Object.is(resul, NaN)) { resul = '数值有误' }
+        let colIndex = row.findIndex((item: any) => item.key === rule.resultKey)
+        row[colIndex].value = resul
+        refresh()
+      })
+    }
+  }
   let lcr = {
     "left": "start",
     "center": "center",
@@ -87,7 +138,9 @@ export default function Common(props: Props) {
       setVisible(false)
     }
   }, [operationType])
-
+  useEffect(() => {
+    hasCalculation(tBody)
+  }, [])
 
   return (
     <Wrapper>
@@ -104,7 +157,7 @@ export default function Common(props: Props) {
             <div
               id={`${col.key}_${rowIdx}_${colIdx}`}
               className="common"
-              style={{ 
+              style={{
                 width: `${col.width}px`,
                 ...col.style,
                 'WebkitBoxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
@@ -113,7 +166,7 @@ export default function Common(props: Props) {
               suppressContentEditableWarning
               contentEditable={col.key == "serialNumber" ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
-              // onBlur={(e: any) => onBlur()}
+              onBlur={(e: any) => onBlur(e, row, col)}
               onContextMenu={ContextMenu}
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}

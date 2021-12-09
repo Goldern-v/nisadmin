@@ -145,7 +145,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleBack = () => {
-    if(scheduleStore.getIsSave()){
+    if (scheduleStore.getIsSave()) {
       Modal.confirm({
         title: "操作还未保存，确认返回吗？",
         centered: true,
@@ -154,10 +154,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
           scheduleStore.setIsSave(false)
         }
       })
-    }else{
+    } else {
       appStore.history.goBack()
     }
-    
+
   }
 
   const uploadOnChange = (info: any) => {
