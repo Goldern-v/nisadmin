@@ -11,7 +11,7 @@ export default withRouter(function SingleSignOnGzsrm(props: any) {
 
   const authorizeAndSignIn = () => {
     singleSignOnGzsrmServices.autoLogin({
-      token: searchObj.ticket || '',
+      token: searchObj.token || searchObj.ticket || '',
       v_url: searchObj.service || '',
       appcode: "HLTLXT",
       appname: "护理管理系统",

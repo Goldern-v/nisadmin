@@ -164,7 +164,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (!authStore.user) return ''
     if (Object.keys(stepNext).length <= 0) return ''
     if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
-
+    if(itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
     let btnText = stepNext.nodeName
 
     if (stepNext?.canHandle) btnDisable = false
@@ -280,7 +280,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                   key={idx} />
               )
             })}
-          </Steps> : <div style={{ textIndent: 15, color: "red" }}>非不良事件</div>}
+          </Steps> : <div style={{ textIndent: 15, color: "red" }}>非护理不良事件</div>}
         </div>
         <div className='event-detail'>
           <iframe

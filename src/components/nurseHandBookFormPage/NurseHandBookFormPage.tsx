@@ -2,8 +2,10 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
-import Common from "./formType/Common"
 import CommonHeader from "./formType/CommonHeader"
+import Common from "./formType/Common"
+import Compute from "./formType/Compute"
+
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
@@ -53,6 +55,7 @@ export default function NurseHandBookFormPage(props: Props) {
             setVisible={setVisible}
             masterInfo={masterInfo}
           ></Common>
+          <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>
         </div>
         <div className="space-div"></div>
       </div>
@@ -63,7 +66,7 @@ export default function NurseHandBookFormPage(props: Props) {
 const Wrapper = styled.div`
 .page {
   margin: 20px auto;
-  padding: 50px;
+  padding: 30px;
   padding-top: 0px;
   display: flex;
   background-color: #fff;
