@@ -21,12 +21,12 @@ const tBody: any = [
 ]
 
 const computeRow: any = [
-  { key: '合计', name:'合计', value: "合计", width: 100 },
-  { key: 'one', name:'星期一', value: "", width: 100 },
-  { key: 'two', name:'星期二', value: "", width: 100 },
-  { key: 'three', name:'星期三', value: "", width: 100 },
-  { key: 'four', name:'星期四', value: "", width: 100 },
-  { key: 'five', name:'星期五', value: "", width: 100 },
+  { key: '合计', name:'合计', value: "合计", width: 100,},
+  { key: 'calculation_one', name:'星期一', value: "", width: 100 },
+  { key: 'calculation_two', name:'星期二', value: "", width: 100 },
+  { key: 'calculation_three', name:'星期三', value: "", width: 100 },
+  { key: 'calculation_four', name:'星期四', value: "", width: 100 },
+  { key: 'calculation_five', name:'星期五', value: "", width: 100 },
 ]
 
 export default {

@@ -76,19 +76,7 @@ export default function Common(props: Props) {
   }
 
   const onBlur = (e: any, row: any, col: any) => {
-    masterInfo.computeRow.map((col:any)=>{
-      let sum: any = 0
-      bodyModal.map((row:any)=>{
-        if(row.find((item: any) => item.key === col.key)){
-          sum = sum + Number(row.find((item: any) => item.key === col.key).value)
-        }
-      });
-      if(col.key != "合计"){
-        if (Object.is(sum, NaN)) { sum = '数值有误' }
-        col.value = sum
-      }
-      refresh()
-    })
+    
   }
   let lcr = {
     "left": "start",
@@ -97,12 +85,18 @@ export default function Common(props: Props) {
   }
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }
   }, [operationType])
+
+  // useEffect(() => {
+  //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
+  //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
+  //   })
+  // },[bodyModal])
 
   return (
     <Wrapper>
