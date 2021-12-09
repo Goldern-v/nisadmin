@@ -251,7 +251,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     const context = canvas.getContext('2d');
     context && context.scale(2, 2);
     context && context.translate(-offsetLeft - abs, -offsetTop);
-    const iframe: any = document.getElementById("iframe") || document.createElement("iframe")  
+    const iframe: any = document.getElementById("iframe") || document.createElement("iframe")
     setTimeout(() => {
       // 这里默认横向没有滚动条的情况，因为offset.left()，有无滚动条的时候存在差值，因此translate的时候，要把这个差值去掉
       html2canvas(element || document.createElement("div"), {
