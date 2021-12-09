@@ -53,8 +53,6 @@ export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectInd
 }
 // 粘贴事件
 export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
-  console.log(copyRow);
-
   if (JSON.stringify(copyRow) == "{}") {
     message.error('尚未复制内容！')
     return
@@ -62,9 +60,44 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
   bodyModal[selectIndex] = copyRow
   setBodyModal([...bodyModal])
 }
+export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
+  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules).map((item: any) => {
+    let [key1, operator, key2] = item.calculation_rules.split(" ")
+    let resultKey = item.key
+    return { key1, operator, key2, resultKey }
+  })
+
+  rules.map((rule: any) => {
+    let val1 = Number(bodyModal[selectIndex].find((item: any) => item.key === rule.key1).value)
+    let val2 = Number(bodyModal[selectIndex].find((item: any) => item.key === rule.key2).value)
+    let resul: Number | String = 0
+    switch (rule.operator) {
+      case '+':
+        resul = val1 + val2;
+        break;
+      case '-':
+        resul = val1 - val2;
+        break;
+      case '*':
+        resul = val1 * val2;
+        break;
+      case '/':
+        resul = val1 / val2;
+        break;
+    }
+    if (Object.is(resul, NaN)) { resul = '数值有误' }
+    let colIndex = bodyModal[selectIndex].findIndex((item: any) => item.key === rule.resultKey)
+    bodyModal[selectIndex][colIndex].value = resul
+  })
+}
+export const calculation_currentColumn = () => {
+
+}
 export default {
   copyRow,
   paste,
   addRowBefore,
   addRowAfter,
+  calculation_currentRow,
+  calculation_currentColumn,
 }
