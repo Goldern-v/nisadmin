@@ -91,12 +91,18 @@ export default function Common(props: Props) {
   }
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }
   }, [operationType])
+
+  // useEffect(() => {
+  //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
+  //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
+  //   })
+  // },[bodyModal])
 
   return (
     <Wrapper>

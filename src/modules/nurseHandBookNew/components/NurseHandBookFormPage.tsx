@@ -60,7 +60,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
         })
         setTableTitle(res.data.title)
         setFileList(res.data.files)
-        setFormContentList(res.data.formContent)
+        let [tableHead ,tableContent ,tableRemark] = res.data.formDataDtoList
+        setFormContentList(tableContent.formContent)
         setSpinning(false)
       })
     }
@@ -108,7 +109,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
       fileIds: fileIdList,
       manualType: queryObj.manualType,
       title: tableTitle,
-      formContent,
+      formDataDtoList: [
+        {
+          tableType:"tableHead",
+          formContent:[],
+        },
+        {
+          tableType:"tableContent",
+          formContent,
+        },
+        {
+          tableType:"tableRemark",
+          formContent:[],
+        }
+      ]
     })
       .then((res) => {
         message.success('保存成功')
@@ -131,7 +145,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
       manualType: queryObj.manualType,
       fileIds: fileIdList,
       title: tableTitle,
-      formContent,
+      formDataDtoList: [
+        {
+          tableType:"tableHead",
+          formContent:[],
+        },
+        {
+          tableType:"tableContent",
+          formContent,
+        },
+        {
+          tableType:"tableRemark",
+          formContent:[],
+        }
+      ]
     })
       .then((res) => {
         message.success('提交成功')
