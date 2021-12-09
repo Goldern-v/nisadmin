@@ -13,6 +13,32 @@ import { message } from 'antd'
 // 引入复制空行函数
 import { copyNullRow } from "./render"
 
+export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+  let nullRow: any = []
+  tBody.map((config: any, index: any) => {
+    nullRow.push({})
+    for (let key in config) {
+      // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
+      copyNullRow(nullRow, config, index, key)
+    }
+  })
+  bodyModal.splice(selectIndex, 1)
+  bodyModal.push(nullRow)
+  setBodyModal([...bodyModal])
+}
+
+export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+  let nullRow: any = []
+  tBody.map((config: any, index: any) => {
+    nullRow.push({})
+    for (let key in config) {
+      // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
+      copyNullRow(nullRow, config, index, key)
+    }
+  })
+  bodyModal[selectIndex] = nullRow
+  setBodyModal([...bodyModal])
+}
 // 插入空行事件
 export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
@@ -110,6 +136,8 @@ export default {
   paste,
   addRowBefore,
   addRowAfter,
+  wipeData,
+  delCurrentRow,
   calculation_currentRow,
   calculation_currentColumn,
 }

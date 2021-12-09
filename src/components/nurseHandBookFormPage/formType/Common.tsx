@@ -76,7 +76,6 @@ export default function Common(props: Props) {
   }
 
   const onBlur = (e: any, row: any, col: any) => {
-    
   }
   let lcr = {
     "left": "start",
@@ -130,17 +129,17 @@ export default function Common(props: Props) {
             >
               {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
-      </div>)}
-      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center'}}>
+        </div>)}
+      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
         {masterInfo.computeRow.map((col: any, colIdx: any) =>
           <div
             id={`${col.key}_${colIdx}`}
             className="common"
-            style={{ 
+            style={{
               width: `${col.width}px`,
               ...col.style,
-              'WebkitBoxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
-              'boxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+              'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+              'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
             }}
             key={`${colIdx}`}
           >

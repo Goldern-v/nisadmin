@@ -25,6 +25,8 @@ export default function SelectModal(props: Props) {
     { name: "粘贴内容", code: "paste" },
     { name: "上增一行", code: "addRowBefore" },
     { name: "下增一行", code: "addRowAfter" },
+    { name: "清空当前行数据", code: "wipeData" },
+    { name: "删除当前行", code: "delCurrentRow" },
     { name: "计算当前行", code: "calculation_currentRow" },
     { name: "计算当前列", code: "calculation_currentColumn" },
   ]
