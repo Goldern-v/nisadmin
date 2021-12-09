@@ -36,6 +36,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [fileIdList, setFileIdList]: any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
+  const [remark, setRemark]: any = useState("")
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
@@ -250,7 +251,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     const context = canvas.getContext('2d');
     context && context.scale(2, 2);
     context && context.translate(-offsetLeft - abs, -offsetTop);
-    const iframe: any = document.getElementById("iframe") || document.createElement("iframe")
+    const iframe: any = document.getElementById("iframe") || document.createElement("iframe")  
     setTimeout(() => {
       // 这里默认横向没有滚动条的情况，因为offset.left()，有无滚动条的时候存在差值，因此translate的时候，要把这个差值去掉
       html2canvas(element || document.createElement("div"), {
@@ -340,6 +341,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
             formContent={formContentList}
             setTableTitle={setTableTitle}
             tableTitle={tableTitle}
+            setRemark={setRemark}
+            remark={remark}
           ></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
@@ -369,7 +372,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     <iframe
       src={iframeSrc}
       id="iframe"
-    // style={{ display: "none" }}
+      style={{ display: "none" }}
     ></iframe>
   </Wrapper>
 })

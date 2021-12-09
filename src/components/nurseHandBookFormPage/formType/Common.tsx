@@ -107,8 +107,8 @@ export default function Common(props: Props) {
               style={{ 
                 width: `${col.width}px`,
                 ...col.style,
-                '-webkit-box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
-                'box-pack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+                'WebkitBoxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+                'boxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
               }}
               suppressContentEditableWarning
               contentEditable={col.key == "serialNumber" ? false : true}

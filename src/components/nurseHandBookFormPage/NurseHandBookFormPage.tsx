@@ -5,6 +5,7 @@ import TableTitle from "./formType/TableTitle"
 import CommonHeader from "./formType/CommonHeader"
 import Common from "./formType/Common"
 import Compute from "./formType/Compute"
+import Remark from "./formType/Remark"
 
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
@@ -17,12 +18,14 @@ export interface Props {
   formContent: any
   tableTitle: String
   showFixHeader: boolean
+  remark: String
+  setRemark: Function
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, showFixHeader } = props
+  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, showFixHeader, setRemark, remark } = props
   const [visible, setVisible]: any = useState(false)
 
   // 取代失焦事件,用来关闭弹窗
@@ -56,6 +59,7 @@ export default function NurseHandBookFormPage(props: Props) {
             masterInfo={masterInfo}
           ></Common>
           <Compute masterInfo={masterInfo} bodyModal={bodyModal}></Compute>
+          <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>
         </div>
         <div className="space-div"></div>
       </div>

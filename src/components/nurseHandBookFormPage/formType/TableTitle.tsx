@@ -16,13 +16,14 @@ export default function TableTitle(props: Props) {
   }
 
   useEffect(() => {
-    setTableTitle(masterInfo.tableTitle)
+    setTableTitle(masterInfo.tableTitle.value)
   }, [])
 
   return (
     <Wrapper>
       <div
         className="table-head"
+        style={{width:`${masterInfo.tableTitle.width-(masterInfo.tBody.length-1)}px`}}
         suppressContentEditableWarning
         contentEditable
         onBlur={(e) => changeValue(e, masterInfo)}

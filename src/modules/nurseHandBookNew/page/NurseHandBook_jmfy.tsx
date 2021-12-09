@@ -43,6 +43,7 @@ export default observer(function NurseHandBook_jmfy() {
       { value: "jm_launchPlan", name: "年度工作开展计划" },
       { value: "单列", name: "单列表" },
       { value: "计算行", name: "计算行表" },
+      { value: "备注", name: "备注表" },
     ],  
     conclusionJM: [
       { value: "jm_monthConclusion", name: "月度工作总结" },

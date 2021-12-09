@@ -12,7 +12,7 @@ export default function Compute(props: Props) {
   const { masterInfo, bodyModal } = props
   
   useEffect(() => {
-    console.log(bodyModal);
+    // console.log(bodyModal);
   }, [bodyModal])
 
   return (
