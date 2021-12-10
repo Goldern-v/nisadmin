@@ -177,7 +177,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       formDataDtoList: [
         {
           tableType:"tableHead",
-          formContent:[],
+          formContent:tableHeadContent,
         },
         {
           tableType: "tableContent",
