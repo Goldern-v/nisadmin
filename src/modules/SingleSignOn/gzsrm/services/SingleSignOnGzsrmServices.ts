@@ -10,8 +10,8 @@ class SingleSignOnGzsrmServices {
   public autoLogin(params: {
     token: string,
     v_url: string,
-    appcode?:string | "HLTLXT",
-    appname?:string | "护理管理系统",
+    appCode?:string | "HLTLXT",
+    appName?:string | "护理管理系统",
   }) {
     return httpLoginToken.post(`/ssoLogin`, params)
       .then(res => {
