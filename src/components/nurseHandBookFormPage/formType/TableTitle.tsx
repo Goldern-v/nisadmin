@@ -9,6 +9,7 @@ export interface Props {
 }
 export default function TableTitle(props: Props) {
   const { setTableTitle, tableTitle, masterInfo } = props
+  const { queryObj } = appStore
 
   const changeValue = (e: any, masterInfo: any) => {
     setTableTitle(e.currentTarget.innerText)
@@ -16,7 +17,9 @@ export default function TableTitle(props: Props) {
   }
 
   useEffect(() => {
-    setTableTitle(masterInfo.tableTitle.value)
+    if (queryObj.isAdd) {
+      setTableTitle(masterInfo.tableTitle.value)
+    }
   }, [])
 
   return (

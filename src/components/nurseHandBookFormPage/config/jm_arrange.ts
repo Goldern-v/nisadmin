@@ -57,10 +57,21 @@ const tBody: any = [
   },
 ]
 
+const computeRow: any = [
+  { key: '合计', name:'合计', value: "合计", width: 100 },
+  { key: 'calculation_what', name:'星期一', value: "", width: 100 },
+  { key: 'calculation_why', name:'星期二', value: "", width: 100 },
+  { key: 'calculation_where', name:'星期三', value: "", width: 100 },
+  { key: 'calculation_who', name:'星期四', value: "", width: 100 },
+  { key: 'calculation_when', name:'星期五', value: "", width: 100 },
+  { key: 'calculation_how', name:'星期五', value: "", width: 100 },
+]
+
 export default {
   defaulLength: 17,
-  tableTitle: "月工作重点及周安排",
+  tableTitle: { value: "月工作重点及周安排", width: 700 },
   tBody,
   tHead,
   remark: { value: "备注：", width: 700 },
+  computeRow,
 }

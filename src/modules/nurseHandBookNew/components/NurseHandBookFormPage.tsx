@@ -37,6 +37,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
+  const [computeRow, setComputeRow]: any = useState([])
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
@@ -63,6 +64,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let [tableContent, tableRemark, line, complexHead, tableHead] = res.data.formDataDtoList
         setFormContentList(tableContent.formContent)
         setRemark(tableRemark.formContent[0].remark)
+        setComputeRow(line.formContent)
         setSpinning(false)
       })
     }
@@ -129,6 +131,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {
           tableType: "tableRemark",
           formContent: [{remark:remark}],
+        },
+        {
+          tableType: "line",
+          formContent: computeRow,
+        },
+        {
+          tableType: "complexHead",
+          formContent: [],
         }
       ]
     })
@@ -160,6 +170,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {
           tableType: "tableRemark",
           formContent: [{remark:remark}],
+        },
+        {
+          tableType: "line",
+          formContent: computeRow,
+        },
+        {
+          tableType: "complexHead",
+          formContent: [],
         }
       ]
     })
@@ -375,6 +393,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
             tableTitle={tableTitle}
             setRemark={setRemark}
             remark={remark}
+            setComputeRow={setComputeRow}
+            computeRow={computeRow}
           ></NurseHandBookFormPage>
         </div>
         <div className="rightCon">

@@ -9,10 +9,13 @@ export interface Props {
   setBodyModal: Function
   visible: Boolean
   setVisible: Function
+  computeRow: any
+  setComputeRow: Function
   masterInfo: any
 }
 export default function Common(props: Props) {
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, } = props
+  const { queryObj } = appStore
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -91,12 +94,18 @@ export default function Common(props: Props) {
   }
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, masterInfo)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow)
       scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }
   }, [operationType])
+
+  useEffect(() => {
+    if (queryObj.isAdd) {
+      setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
+    }
+  }, [])
 
   // useEffect(() => {
   //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
@@ -139,8 +148,8 @@ export default function Common(props: Props) {
               {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
         </div>)}
-      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {masterInfo.computeRow.map((col: any, colIdx: any) =>
+      {computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {computeRow.map((col: any, colIdx: any) =>
           <div
             id={`${col.key}_${colIdx}`}
             className="common"
