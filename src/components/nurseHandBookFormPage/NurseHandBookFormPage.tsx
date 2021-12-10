@@ -20,12 +20,16 @@ export interface Props {
   remark: String
   setRemark: Function
   isPrint: any
+  beforeSetTableHeadContent:Function
+  tableHeadContent:any
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
   const masterInfo = require(`./config/${manualType}`).default
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, showFixHeader, setRemark, remark, isPrint } = props
+  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, 
+          showFixHeader, setRemark, remark, isPrint, beforeSetTableHeadContent,tableHeadContent,
+        } = props
   const [visible, setVisible]: any = useState(false)
 
   // 取代失焦事件,用来关闭弹窗
@@ -55,7 +59,13 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
-          <CommonHeader isPrint={isPrint} showFixHeader={showFixHeader} masterInfo={masterInfo}></CommonHeader>
+          <CommonHeader 
+            isPrint={isPrint} 
+            showFixHeader={showFixHeader} 
+            masterInfo={masterInfo}
+            beforeSetTableHeadContent={beforeSetTableHeadContent}
+            tableHeadContent={tableHeadContent}
+            ></CommonHeader>
           <Common
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}

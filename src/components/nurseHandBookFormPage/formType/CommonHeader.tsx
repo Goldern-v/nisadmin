@@ -9,30 +9,35 @@ export interface Props {
   masterInfo: any
   showFixHeader: boolean
   isPrint: any
+  beforeSetTableHeadContent:Function
+  tableHeadContent:any
 }
 export default function CommonHeader(props: Props) {
-  const { masterInfo, showFixHeader, isPrint } = props
+  const { masterInfo, showFixHeader, isPrint, beforeSetTableHeadContent,tableHeadContent } = props
   const { tHead } = masterInfo
   const { top, mid, bottom } = tHead
   const [renderHeader, setRenderHeader]: any = useState([])
   const deepRender = (arr: any) => {
+    let cloneTop = JSON.parse(JSON.stringify(arr))
+    let cloneMid = JSON.parse(JSON.stringify(mid))
+    let cloneBottom = JSON.parse(JSON.stringify(bottom))
     let i = 0
-    arr.map((item: any, index: any) => {
+    cloneTop.map((item: any, index: any) => {
       if (item.colspan != 1) {
         item.hasMid = true
-        item.mid = mid.slice(i, i + Number(item.colspan))
+        item.mid = cloneMid.slice(i, i + Number(item.colspan))
         let j = 0;
         item.mid.map((midItem: any, midIndex: any) => {
           if (midItem.colspan != 1) {
             item.hasBottom = true
-            midItem.bottom = bottom.slice(j, j + Number(midItem.colspan))
+            midItem.bottom = cloneBottom.slice(j, j + Number(midItem.colspan))
             j += +midItem.colspan
           }
         })
         i += +item.colspan
       }
     })
-    setRenderHeader(arr)
+    setRenderHeader(cloneTop)
   }
   const chRef: any = useRef<HTMLElement>()
   const handlerInput = (e: any, item: any) => {
@@ -50,9 +55,21 @@ export default function CommonHeader(props: Props) {
           message.error('类型不能为空')
           return
         } else {
-          setRenderHeader([...renderHeader])
+          // setRenderHeader([...renderHeader])
+          beforeSetTableHeadContent([...renderHeader])
         }
       }
+    })
+  }
+  const recursionInit = (arr:any,dictionariesObj:any)=>{
+    arr.map((item:any)=>{
+      // console.log(item);
+      // let type = Object.prototype.toString.call(item)
+      dictionariesObj[item.key] && (item.name = dictionariesObj[item.key])
+      item.mid && recursionInit(item.mid,dictionariesObj)
+      item.bottom && recursionInit(item.bottom,dictionariesObj)
+      // console.log(dictionariesObj);
+      
     })
   }
   useEffect(() => {
@@ -67,8 +84,21 @@ export default function CommonHeader(props: Props) {
     }
   }, [chRef?.current?.outerHTML])
   useEffect(() => {
+    beforeSetTableHeadContent([])
     deepRender(top)
   }, [])
+
+  useEffect(()=>{
+    // console.log(tableHeadContent);
+    
+    if(tableHeadContent.length){
+      let dictionariesObj:any = {}
+      tableHeadContent.map((item:any)=>{
+        dictionariesObj = {...dictionariesObj,...item}
+      })
+      recursionInit(renderHeader,dictionariesObj)
+    }
+  },[tableHeadContent])
   return (
     <Wrapper id="ch">
       <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader && !isPrint ? 'block' : 'none' }}></div>
@@ -105,7 +135,7 @@ export default function CommonHeader(props: Props) {
                           flex: midTh.width || (midTh.style && midTh.style.width) ? '' : '1',
                           color: midTh.canset ? 'blue' : ''
                         }}
-                        onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
+                        onDoubleClick={(e: any) => { midTh.canset && changeHeader(e, midTh) }}
                         dangerouslySetInnerHTML={{ __html: midTh.name }}></div>
                     )
                   })}
@@ -133,7 +163,7 @@ export default function CommonHeader(props: Props) {
                                   flex: bottomTh.width || (bottomTh.style && bottomTh.style.width) ? '' : '1',
                                   color: bottomTh.canset ? 'blue' : ''
                                 }}
-                                onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
+                                onDoubleClick={(e: any) => { bottomTh.canset && changeHeader(e, bottomTh) }}
                                 dangerouslySetInnerHTML={{ __html: bottomTh.name }}></div>
                             )
                           })
