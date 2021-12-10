@@ -74,11 +74,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     for (let x in query) {
       if (!query[x] && query[x] !== 0) return ''
     }
-    // let { hostname, protocol } = window.location
-    // let port = '8088'
-    // // let devFormUrl = 'http://localhost:8088'
-    // let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
-    return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
+    let { hostname, protocol } = window.location
+    let port = '8088'
+    // let devFormUrl = 'http://localhost:8088'
+    let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
+    let commonUrl = appStore.isDev ? devFormUrl : formUrl
+    return `${commonUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
   }
 
   useEffect(() => {
@@ -164,7 +165,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (!authStore.user) return ''
     if (Object.keys(stepNext).length <= 0) return ''
     if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
-    if(itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
+    if (itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
     let btnText = stepNext.nodeName
 
     if (stepNext?.canHandle) btnDisable = false
