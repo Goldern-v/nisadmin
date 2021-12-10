@@ -62,4 +62,5 @@ export default {
   tableTitle: "月工作重点及周安排",
   tBody,
   tHead,
+  remark: { value: "备注：", width: 700 },
 }
