@@ -35,6 +35,11 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)
     }
   }
+  useEffect(() => {
+    if (queryObj.isAdd) {
+      setTableTitle(masterInfo.tableTitle)
+    } 
+  }, [])
 
   useEffect(() => {
     if (!queryObj.isAdd) {

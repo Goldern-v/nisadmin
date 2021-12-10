@@ -51,7 +51,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const onload = () => {
     if (!queryObj.isAdd) {
-      setSpinning(true)
+      // setSpinning(true)
       api.getByIdAudited(queryObj.id).then((res) => {
         setData(res.data)
         setDetailData(res.data.flowList)
@@ -60,7 +60,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
         })
         setTableTitle(res.data.title)
         setFileList(res.data.files)
-        setFormContentList(res.data.formContent)
+        let [tableContent, tableRemark, line, complexHead, tableHead] = res.data.formDataDtoList
+        setFormContentList(tableContent.formContent)
+        setRemark(tableRemark.formContent[0].remark)
         setSpinning(false)
       })
     }
@@ -94,21 +96,41 @@ export default observer(function nurseHandBookFormPage(props: any) {
     console.log(e, key);
 
   }
-  const handleSave = () => {
-    let formContent: any = []
-    bodyModal.map((tr: any, trIndex: any) => {
-      formContent.push({})
+
+  const fiterList = (newList: any, oldList: any) => {
+    oldList.map((tr: any, trIndex: any) => {
+      newList.push({})
       tr.map((td: any, tdIndex: any) => {
         // formContent[trIndex][tdIndex] = JSON.parse(JSON.stringify(td))
-        formContent[trIndex][td.key] = td.value
+        newList[trIndex][td.key] = td.value
       })
     })
+    return newList
+  }
+
+  const handleSave = () => {
+    let tBodyList: any = []
+    fiterList(tBodyList, bodyModal)
+    
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
       title: tableTitle,
-      formContent,
+      formDataDtoList: [
+        {
+          tableType: "tableHead",
+          formContent: [],
+        },
+        {
+          tableType: "tableContent",
+          formContent: tBodyList,
+        },
+        {
+          tableType: "tableRemark",
+          formContent: [{remark:remark}],
+        }
+      ]
     })
       .then((res) => {
         message.success('保存成功')
@@ -118,20 +140,28 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
-    let formContent: any = []
-    bodyModal.map((tr: any, trIndex: any) => {
-      formContent.push({})
-      tr.map((td: any, tdIndex: any) => {
-        // formContent[trIndex][tdIndex] = JSON.parse(JSON.stringify(td))
-        formContent[trIndex][td.key] = td.value
-      })
-    })
+    let tBodyList: any = []
+    fiterList(tBodyList, bodyModal)
+
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
       manualType: queryObj.manualType,
       fileIds: fileIdList,
       title: tableTitle,
-      formContent,
+      formDataDtoList: [
+        {
+          tableType:"tableHead",
+          formContent:[],
+        },
+        {
+          tableType: "tableContent",
+          formContent: tBodyList,
+        },
+        {
+          tableType: "tableRemark",
+          formContent: [{remark:remark}],
+        }
+      ]
     })
       .then((res) => {
         message.success('提交成功')

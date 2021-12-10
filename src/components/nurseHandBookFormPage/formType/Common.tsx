@@ -74,21 +74,15 @@ export default function Common(props: Props) {
     }
     scheduleStore.setIsSave(true)
   }
-
+  const getCellTitle = (col: any) => {
+    switch (col.key) {
+      case "serialNumber":
+        return '序号列不允许操作！';
+      default:
+        return '';
+    }
+  }
   const onBlur = (e: any, row: any, col: any) => {
-    masterInfo.computeRow.map((col:any)=>{
-      let sum: any = 0
-      bodyModal.map((row:any)=>{
-        if(row.find((item: any) => item.key === col.key)){
-          sum = sum + Number(row.find((item: any) => item.key === col.key).value)
-        }
-      });
-      if(col.key != "合计"){
-        if (Object.is(sum, NaN)) { sum = '数值有误' }
-        col.value = sum
-      }
-      refresh()
-    })
   }
   let lcr = {
     "left": "start",
@@ -97,12 +91,18 @@ export default function Common(props: Props) {
   }
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
     }
   }, [operationType])
+
+  // useEffect(() => {
+  //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
+  //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
+  //   })
+  // },[bodyModal])
 
   return (
     <Wrapper>
@@ -124,7 +124,9 @@ export default function Common(props: Props) {
                 ...col.style,
                 'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
                 'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto'
               }}
+              title={getCellTitle(col)}
               suppressContentEditableWarning
               contentEditable
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
@@ -136,17 +138,17 @@ export default function Common(props: Props) {
             >
               {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
-      </div>)}
-      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center'}}>
+        </div>)}
+      {masterInfo.computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
         {masterInfo.computeRow.map((col: any, colIdx: any) =>
           <div
             id={`${col.key}_${colIdx}`}
             className="common"
-            style={{ 
+            style={{
               width: `${col.width}px`,
               ...col.style,
-              'WebkitBoxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
-              'boxPack':(col.style&&col.style.textAlign)?lcr[col.style.textAlign]:'center',
+              'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+              'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
             }}
             key={`${colIdx}`}
           >

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+import { Icon } from "antd"
 export interface Props {
   domReact: any
   col: any
@@ -21,14 +22,14 @@ export default function SelectModal(props: Props) {
   const selectH = Math.ceil(domReact.top) + Math.ceil(domReact.height);//下拉框弹窗高度
   const maxTop = H - 350
   const menus = [
-    { name: "复制整行", code: "copyRow" },
-    { name: "粘贴内容", code: "paste" },
-    { name: "上增一行", code: "addRowBefore" },
-    { name: "下增一行", code: "addRowAfter" },
-    { name: "清空当前行数据", code: "wipeData" },
-    { name: "删除当前行", code: "delCurrentRow" },
-    { name: "计算当前行", code: "calculation_currentRow" },
-    { name: "计算当前列", code: "calculation_currentColumn" },
+    { name: "复制整行", code: "copyRow", icon: 'copy' },
+    { name: "粘贴内容", code: "paste", icon: 'edit' },
+    { name: "上增一行", code: "addRowBefore", icon: 'plus-square' },
+    { name: "下增一行", code: "addRowAfter", icon: 'minus-square' },
+    { name: "清空当前行数据", code: "wipeData", icon: 'delete' },
+    { name: "删除当前行", code: "delCurrentRow", icon: 'delete' },
+    { name: "计算当前行", code: "calculation_currentRow", icon: 'calculator' },
+    { name: "计算当前列", code: "calculation_currentColumn", icon: 'calculator' },
   ]
   const open = () => {
 
@@ -80,7 +81,13 @@ export default function SelectModal(props: Props) {
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
           </div>)}
         {menuType == "Menus" && menus.map((menu: any, index: any) =>
-          <div className="selectOption" onClick={() => menuOperation(menu.code)} key={index}>{menu.name}
+          <div
+            className="selectOption"
+            onClick={() => menuOperation(menu.code)}
+            key={index}
+          >
+            <Icon type={menu.icon} style={{ marginRight: '5px', fontSize: '16px' }} />
+            {menu.name}
           </div>)}
       </div>}
     </Wrapper>

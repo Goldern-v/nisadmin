@@ -13,20 +13,17 @@ import { message } from 'antd'
 // 引入复制空行函数
 import { copyNullRow } from "./render"
 
-export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
-  let nullRow: any = []
-  tBody.map((config: any, index: any) => {
-    nullRow.push({})
-    for (let key in config) {
-      // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
-      copyNullRow(nullRow, config, index, key)
-    }
-  })
+// 删除当前行
+export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, masterInfo: any ) => {
+  if(bodyModal.length<=masterInfo.defaulLength){
+  message.error('当前行数少于默认行数，只可清空数据!')
+    return
+  }
   bodyModal.splice(selectIndex, 1)
-  bodyModal.push(nullRow)
   setBodyModal([...bodyModal])
 }
 
+// 清空当前行数据
 export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
   tBody.map((config: any, index: any) => {
@@ -39,6 +36,7 @@ export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIn
   bodyModal[selectIndex] = nullRow
   setBodyModal([...bodyModal])
 }
+
 // 插入空行事件
 export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
   let nullRow: any = []
@@ -86,8 +84,12 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
   bodyModal[selectIndex] = copyRow
   setBodyModal([...bodyModal])
 }
+
+// 计算当前行事件
 export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
-  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules).map((item: any) => {
+  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules)
+  if(!rules.length){message.warn("当前行无计算规则！");return}
+  rules = rules.map((item: any) => {
     let [key1, operator, key2] = item.calculation_rules.split(" ")
     let resultKey = item.key
     return { key1, operator, key2, resultKey }
@@ -116,8 +118,21 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
     bodyModal[selectIndex][colIndex].value = resul
   })
 }
-export const calculation_currentColumn = () => {
+export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, masterInfo: any ) => {
+  if(!masterInfo.computeRow){message.warn("当前列无计算规则！");return}
+  let ColumnArr:any = []
+  bodyModal.map((row:any)=>{
+    ColumnArr.push(row[colIdx].value)
+  });
+  let sum = ColumnArr.reduce((pro:any,cur:any)=>{
+    return pro += Number(cur)
+  },0)
 
+  if (Object.is(sum, NaN)) { sum = '数值有误' }
+
+  masterInfo.computeRow.find((item:any)=>{
+    return item.key.split("_")[1] === tBody[colIdx].key
+  }).value = sum
 }
 export default {
   copyRow,
