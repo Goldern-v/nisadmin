@@ -80,7 +80,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
     let commonUrl = appStore.isDev ? devFormUrl : formUrl
     console.log(appStore.isDev, commonUrl)
-    return `${commonUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
+    return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
   }
 
   useEffect(() => {
