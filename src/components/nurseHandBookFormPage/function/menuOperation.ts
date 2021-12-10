@@ -118,8 +118,8 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
     bodyModal[selectIndex][colIndex].value = resul
   })
 }
-export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, masterInfo: any ) => {
-  if(!masterInfo.computeRow){message.warn("当前列无计算规则！");return}
+export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ) => {
+  if(computeRow[colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
   let ColumnArr:any = []
   bodyModal.map((row:any)=>{
     ColumnArr.push(row[colIdx].value)
@@ -130,7 +130,7 @@ export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyMod
 
   if (Object.is(sum, NaN)) { sum = '数值有误' }
 
-  masterInfo.computeRow.find((item:any)=>{
+  computeRow.find((item:any)=>{
     return item.key.split("_")[1] === tBody[colIdx].key
   }).value = sum
 }

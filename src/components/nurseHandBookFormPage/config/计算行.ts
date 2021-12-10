@@ -31,7 +31,7 @@ const computeRow: any = [
 
 export default {
   defaulLength: 17,
-  tableTitle: { value:"计算行类型表单", width:600 },
+  tableTitle: { value: "计算行类型表单", width: 600 },
   tBody,
   tHead,
   computeRow,

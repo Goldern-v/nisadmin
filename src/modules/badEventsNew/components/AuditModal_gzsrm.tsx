@@ -73,7 +73,7 @@ export default observer(function AduitModal(props: Props) {
     const iframeWindow: any = iframeRef.current?.contentWindow
     const itemDataMap = iframeWindow.CRForm.controller.getFormData()
     switch (nodeCode) {
-      case 'nurse_handle':
+      case 'nurse_handle':  //科护士长审核
         // 片区护长审核是否通过
         if (auditInfo.noPass == '0') {
           saveParams['B0002060'] = auditInfo.handleContent
@@ -84,26 +84,33 @@ export default observer(function AduitModal(props: Props) {
         } else {
           saveParams['B0002060'] = auditInfo.handleContent
         }
+
+        params.noPass = auditInfo.noPass == '1' ? false : true;
         break
-      case 'nursing_minister_audit':
+      case 'nursing_minister_audit': //护理部审核
         // 是否不良事件
         // saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
         saveParams['B0002061'] = auditInfo.noPass
         // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
+        params.noPass = auditInfo.noPass == '1' ? false : true;
         break
-      case 'dept_handle':
+      case 'dept_handle':   //病区处理
         // 意见和日期
         saveParams['B0002062'] = auditInfo.handleContent
         saveParams['B0002057'] = auditInfo.handleContent
         saveParams['B0002056'] = auditInfo.auditDate
         params.noPass = false
         break
-      case 'nursing_minister_comfirm':
+      case 'district_nurse_audit'://片区护士长审核意见
+        params.noPass = auditInfo.noPass == '1' ? false : true;
+        break
+      case 'nursing_minister_comfirm':  //护理部审核
         // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
+        params.noPass = false
         break
       default:
     }
@@ -134,17 +141,14 @@ export default observer(function AduitModal(props: Props) {
         })
         .then(res => {
           if (res.code === '200')
-            params.noPass = params.noPass == '1' ? false : true;
-          console.log(params)
           return badEventsNewService
             .auditBadEventMaster(params)
         })
-        .then(
-          (res) => handleResponse(res),
-          () => setConfirmLoading(false)
-        )
+      .then(
+        (res) => handleResponse(res),
+        () => setConfirmLoading(false)
+      )
     } else {
-      params.noPass = params.noPass == '1' ? false : true;
       badEventsNewService
         .auditBadEventMaster(params)
         .then(
@@ -168,7 +172,7 @@ export default observer(function AduitModal(props: Props) {
 
     switch (nodeCode) {
       case 'nurse_handle':
-        opionTitle = '片区护长审核意见'
+        opionTitle = '科护士长审核意见'
         auditDateTitle = '审核日期'
         //if (auditInfo.noPass)
         if (auditInfo.noPass == '0')
@@ -185,6 +189,13 @@ export default observer(function AduitModal(props: Props) {
         opionTitle = '整改情况'
         auditDateTitle = '整改日期'
         auditTimeEditable = true
+        break
+      case 'district_nurse_audit':
+        opionTitle = '片区护士长填写意见'
+        auditDateTitle = '审核日期'
+        if (auditInfo.noPass == '0')
+          opionTitle = ' 回退原因'
+        break
         break
       case 'nursing_minister_comfirm':
         opionTitle = ' 护理部确认'
