@@ -24,6 +24,7 @@ const api = new NurseHandBookService();
 export interface Props { }
 
 export default observer(function nurseHandBookFormPage(props: any) {
+  const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
   let [detailData, setDetailData]: any = useState([])
@@ -52,7 +53,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const onload = () => {
     if (!queryObj.isAdd) {
-      // setSpinning(true)
+      setSpinning(true)
       api.getByIdAudited(queryObj.id).then((res) => {
         setData(res.data)
         setDetailData(res.data.flowList)
@@ -62,6 +63,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setTableTitle(res.data.title)
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, complexHead, tableHead] = res.data.formDataDtoList
+        setTableHeadContent(tableHead.formContent)
         setFormContentList(tableContent.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setComputeRow(line.formContent)
@@ -73,7 +75,32 @@ export default observer(function nurseHandBookFormPage(props: any) {
   useEffect(() => {
     onload()
   }, [])
-
+  const deepCcreateArr = (arr:any,submitArr:any)=>{
+    arr.map((item:any)=>{
+      if(item.key){
+        item.value = item.name
+        submitArr.push(item)
+      }
+        item.mid && deepCcreateArr(item.mid,submitArr)
+        item.bottom && deepCcreateArr(item.bottom,submitArr)
+    })
+  }
+  const beforeSetTableHeadContent = ((arr:any)=>{
+    let submitArr:any = []
+    deepCcreateArr(arr,submitArr)
+    
+    // let submitArr = JSON.parse(JSON.stringify(arr))
+    // console.log(submitArr);
+    
+    // submitArr = submitArr.filter((item:any)=>{
+    //   return item.key
+    // }).map((item:any)=>{
+    //     item.value = item.name
+    //   return item
+    // })
+    let result = fiterList([submitArr])
+    setTableHeadContent(result)
+  })
   const handleUndo = (record: any) => {
     let undoTitle = ""
     if (path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion") {
@@ -99,7 +126,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   }
 
-  const fiterList = (newList: any, oldList: any) => {
+  const fiterList = ( oldList: any) => {
+    let newList: any = []
     oldList.map((tr: any, trIndex: any) => {
       newList.push({})
       tr.map((td: any, tdIndex: any) => {
@@ -111,8 +139,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
-    let tBodyList: any = []
-    fiterList(tBodyList, bodyModal)
+    let tBodyList: any = fiterList(bodyModal)
     
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
@@ -122,7 +149,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       formDataDtoList: [
         {
           tableType: "tableHead",
-          formContent: [],
+          formContent: tableHeadContent,
         },
         {
           tableType: "tableContent",
@@ -150,8 +177,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
-    let tBodyList: any = []
-    fiterList(tBodyList, bodyModal)
+    let tBodyList: any = fiterList(bodyModal)
 
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
@@ -161,7 +187,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       formDataDtoList: [
         {
           tableType:"tableHead",
-          formContent:[],
+          formContent:tableHeadContent,
         },
         {
           tableType: "tableContent",
@@ -384,6 +410,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
       <div className="main">
         <div className="formPage" onScroll={handlerScroll}>
           <NurseHandBookFormPage
+            beforeSetTableHeadContent={beforeSetTableHeadContent}
+            tableHeadContent={tableHeadContent}
             isPrint={isPrint}
             showFixHeader={showFixHeader}
             bodyModal={bodyModal}

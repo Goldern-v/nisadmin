@@ -14,17 +14,12 @@ import { message } from 'antd'
 import { copyNullRow } from "./render"
 
 // 删除当前行
-export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
-  let nullRow: any = []
-  tBody.map((config: any, index: any) => {
-    nullRow.push({})
-    for (let key in config) {
-      // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
-      copyNullRow(nullRow, config, index, key)
-    }
-  })
+export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, masterInfo: any ) => {
+  if(bodyModal.length<=masterInfo.defaulLength){
+  message.error('当前行数少于默认行数，只可清空数据!')
+    return
+  }
   bodyModal.splice(selectIndex, 1)
-  bodyModal.push(nullRow)
   setBodyModal([...bodyModal])
 }
 
@@ -92,7 +87,9 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
 
 // 计算当前行事件
 export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
-  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules).map((item: any) => {
+  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules)
+  if(!rules.length){message.warn("当前行无计算规则！");return}
+  rules = rules.map((item: any) => {
     let [key1, operator, key2] = item.calculation_rules.split(" ")
     let resultKey = item.key
     return { key1, operator, key2, resultKey }
@@ -122,6 +119,7 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
   })
 }
 export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ) => {
+  if(computeRow[colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
   let ColumnArr:any = []
   bodyModal.map((row:any)=>{
     ColumnArr.push(row[colIdx].value)

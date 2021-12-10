@@ -74,11 +74,13 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     for (let x in query) {
       if (!query[x] && query[x] !== 0) return ''
     }
-    // let { hostname, protocol } = window.location
-    // let port = '8088'
-    // // let devFormUrl = 'http://localhost:8088'
-    // let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
-    return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
+    let { hostname, protocol } = window.location
+    let port = '8088'
+    // let devFormUrl = 'http://localhost:8088'
+    let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
+    let commonUrl = appStore.isDev ? devFormUrl : formUrl
+    console.log(appStore.isDev, commonUrl)
+    return `${commonUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
   }
 
   useEffect(() => {
@@ -163,11 +165,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let btnDisable = iframeLoading
     if (!authStore.user) return ''
     if (Object.keys(stepNext).length <= 0) return ''
-    if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
-    if(itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
+    if (['commit', 'save'].includes(stepNext ?.nodeCode)) return ''
+    if (itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
     let btnText = stepNext.nodeName
 
-    if (stepNext?.canHandle) btnDisable = false
+    if (stepNext ?.canHandle) btnDisable = false
 
     return (
       <Button
@@ -239,7 +241,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             打印
           </Button> */}
         </div>
-        <div className='status'>状态：{stepCurrent?.nodeName}</div>
+        <div className='status'>状态：{stepCurrent ?.nodeName}</div>
       </div>
       <div className='main-contain'>
         <div className='status-line'>

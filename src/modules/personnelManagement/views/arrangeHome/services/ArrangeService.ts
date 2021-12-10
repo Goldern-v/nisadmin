@@ -220,7 +220,18 @@ export default class ArrangeService extends BaseApiService {
         assignDate: selectViewModal.params.copyTime,
       };
     }
-    const url = '/schedulingSgy/copyPrevSettingRange'
+    let url = ''
+    switch (appStore.HOSPITAL_ID) {
+      case 'jmfy':
+        url = '/schedulingJm/copyPrevSettingRange'
+        break;
+      case 'gzsrm':
+        url = '/schedulingSgy/copyPrevSettingRange'
+        break;
+      default:
+        url = '/scheduling/copyPrevSettingRange'
+    }
+    // const url = appStore.HOSPITAL_ID === 'jmfy' ? '/schedulingJm/copyPrevSettingRange' : '/scheduling/copyPrevSettingRange'
     return this.post(url, obj);
   }
 
