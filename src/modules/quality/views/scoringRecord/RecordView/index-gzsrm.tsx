@@ -291,7 +291,7 @@ export default observer((props: Props) => {
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <div style={{ overflow: 'auto', height: '100%' }}>
+        <div className='table-main'>
           <div className='table-wrapper'>
             <div className='table-title'>
               护士长查房评分表
@@ -858,12 +858,42 @@ const MainWrapper = styled.div`
    .disable{
     pointer-events: none;
    }
+   .table-main {
+    // overflow: auto;
+    height: 100%
+   }
+   .table-wrapper::-webkit-scrollbar-track-piece,
+   .audit-wrapper::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
+      background-color:#f8f8f8;
+    }
+    .table-wrapper::-webkit-scrollbar,
+    .audit-wrapper::-webkit-scrollbar {//滚动条的宽度
+      width:9px;
+      height:9px;
+    }
+    .table-wrapper::-webkit-scrollbar-track,
+    .audit-wrapper::-webkit-scrollbar-track{//滚动条的设置
+      background-color:#dddddd;
+      border-radius:5px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb,
+    .audit-wrapper::-webkit-scrollbar-thumb {//滚动条的设置
+      background-color:#dddddd;
+      background-clip:padding-box;
+      min-height:18px;
+      border-radius:5px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb:hover,
+    .audit-wrapper::-webkit-scrollbar-thumb:hover {
+      background-color:#bbb;
+    }
    .table-wrapper{
       background: #fff;
-      min-height: 100%;
+      height: 100%;
       width: 65%;
-      margin: 0 auto;
+      margin: 0 15%;
       padding: 30px 50px 80px;
+      overflow: auto;
       
       
       .table-title{
