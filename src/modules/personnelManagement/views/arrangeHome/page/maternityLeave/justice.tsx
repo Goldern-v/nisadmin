@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { PageHeader, Place } from "src/components/common"
 import { DatePicker, Input, PaginationConfig, Select } from "src/vendors/antd"
-import { globalModal } from "src/global/globalModal"
+// import { globalModal } from "src/global/globalModal"
 import { Button, message } from "antd"
 import styled from "styled-components"
 import DeptSelect from "src/components/DeptSelect"
 import BaseTable from "src/components/BaseTable"
 // import EditModal from './components/editModal'
-import { SearchForm, iModalForm } from './modal'
+import { justiceSearchForm, iModalForm } from './modal'
 import config from './config'
 import api from './api'
 
 export default observer(() => {
   const [pageLoading, setPageLoading] = useState(false)
-  const [form, setForm] = useState(new SearchForm())
+  const [form, setForm] = useState(new justiceSearchForm())
   const setFormItem = (item: {}) => {
     setForm({ ...form, ...item })
   }
