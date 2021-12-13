@@ -3,12 +3,20 @@ import React, { useState, useEffect } from 'react'
 import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
-  masterInfo: any
+  setSignList: Function
 }
 export default function SignModule(props: Props) {
-  const { masterInfo } = props
+  const { setSignList } = props
   const { queryObj } = appStore
-
+  const [signName, setSignName]: any = useState("")
+  let signList= { signName: "", signTime: "" }
+  
+  const signNameChangeValue = (e: any) => {
+    setSignName(e.currentTarget.innerText)
+    signList.signName = e.currentTarget.innerText
+    setSignList(signList)
+    scheduleStore.setIsSave(true)
+  }
   return (
     <Wrapper>
       <div className="sign">
@@ -18,8 +26,9 @@ export default function SignModule(props: Props) {
             className="signNameR" 
             suppressContentEditableWarning
             contentEditable
+            onBlur={(e) => signNameChangeValue(e)}
           >
-
+            {signName}
           </div>
         </div>
         <div className="signTime">

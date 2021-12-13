@@ -25,6 +25,8 @@ export interface Props {
   isPrint: any
   beforeSetTableHeadContent:Function
   tableHeadContent:any
+  setAllList:Function
+  allList:any
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
@@ -32,8 +34,42 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, setRemark, remark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-        } = props
+          setAllList, allList } = props
+
+  
   const [visible, setVisible]: any = useState(false)
+  const [signList, setSignList]: any = useState({})
+
+  useEffect(() => {
+    let formDataDtoList=[
+      {
+        tableType:"tableHead",
+        formContent:tableHeadContent,
+      },
+      {
+        tableType: "tableContent",
+        formContent: [],
+      },
+      {
+        tableType: "tableRemark",
+        formContent: [{remark:remark}],
+      },
+      {
+        tableType: "line",
+        formContent: computeRow,
+      },
+      {
+        tableType: "complexHead",
+        formContent: [],
+      },
+      {
+        tableType: "sign",
+        formContent: [signList],
+      }
+    ]
+    setAllList(formDataDtoList)
+    console.log(allList);
+  }, [signList])
 
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -75,7 +111,7 @@ export default function NurseHandBookFormPage(props: Props) {
             computeRow={computeRow}
           ></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule masterInfo={masterInfo}></SignModule>}
+          {masterInfo.sign && <SignModule setSignList={setSignList}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>

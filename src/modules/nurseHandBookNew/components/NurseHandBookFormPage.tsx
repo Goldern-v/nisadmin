@@ -38,6 +38,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
+  const [allList, setAllList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
@@ -410,6 +411,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
             remark={remark}
             setComputeRow={setComputeRow}
             computeRow={computeRow}
+            setAllList={setAllList}
+            allList={allList}
           ></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
