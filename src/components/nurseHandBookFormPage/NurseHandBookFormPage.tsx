@@ -64,6 +64,7 @@ export default function NurseHandBookFormPage(props: Props) {
             tableHeadContent={tableHeadContent}
             ></CommonHeader>
           <Common
+            isPrint={isPrint} 
             bodyModal={bodyModal}
             setBodyModal={setBodyModal}
             visible={visible}
