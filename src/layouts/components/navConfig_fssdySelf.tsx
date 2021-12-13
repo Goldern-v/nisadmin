@@ -18,28 +18,19 @@ const baseConfig: navConfigItem[] = [
     path: "/home"
   },
   {
-    name: "审核管理",
-    path: "/auditsManagement",
-    //hidden: !authStore.isRoleManage
-  },
-  {
     name: "病区日志",
     path: "/wardLog"
     // hidden: !appStore.isDev
   },
-  {
-    name: "档案管理",
-    path: "/nurseFile",
-    //hidden: !authStore.isRoleManage
-  },
   // {
-  //   name: '不良事件',
-  //   path: '/badEventsNewList',
-  //   hidden: !appStore.isDev,
+  //   name: "档案管理",
+  //   path: "/nurseFile",
+  //   hidden: !authStore.isRoleManage
   // },
   // {
-  //   name: '不良事件分析报告',
-  //   path: '/badEvents/alanysis/1/1'
+  //   name: "档案管理",
+  //   path: "/nurseFile",
+  //   hidden: !authStore.isRoleManage
   // },
   {
     name: "质量管理",
