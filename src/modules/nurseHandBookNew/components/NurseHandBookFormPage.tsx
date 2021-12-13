@@ -17,7 +17,7 @@ import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import printing from "printing"
+// import printing from "printing"
 
 const api = new NurseHandBookService();
 

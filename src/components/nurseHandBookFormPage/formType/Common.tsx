@@ -12,10 +12,11 @@ export interface Props {
   computeRow: any
   setComputeRow: Function
   masterInfo: any
+  isPrint:any
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow,isPrint } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -118,8 +119,8 @@ export default function Common(props: Props) {
     <Wrapper>
       {bodyModal.map((row: any, rowIdx: any) =>
         <div
+          className={selectIndex == rowIdx &&!isPrint  ? 'active-row' : ''}
           style={{
-            background: selectIndex == rowIdx ? '#fef8b9' : '#fff',
             display: 'flex',
             justifyContent: 'center',
           }}
@@ -191,5 +192,8 @@ const Wrapper = styled.div`
   -webkit-box-align: center; 
   box-align: center;
   word-break: break-all;
+}
+.active-row{
+  background:#fef8b9;
 }
 `
