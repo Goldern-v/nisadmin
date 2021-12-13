@@ -110,7 +110,8 @@ export default observer(function AduitModal(props: Props) {
         // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
-        params.noPass = false
+        // params.noPass = false
+        params.noPass = auditInfo.noPass == '1' ? false : true;
         break
       default:
     }

@@ -13,8 +13,8 @@ export default withRouter(function SingleSignOnGzsrm(props: any) {
     singleSignOnGzsrmServices.autoLogin({
       token: searchObj.token || searchObj.ticket || '',
       v_url: searchObj.service || '',
-      appcode: "HLTLXT",
-      appname: "护理管理系统",
+      appCode: "HLTLXT",
+      appName: "护理管理系统",
     })
   }
 

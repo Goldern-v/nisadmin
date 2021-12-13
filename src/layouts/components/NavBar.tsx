@@ -10,6 +10,7 @@ import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_hjInterns } from "./navConfig_hjInterns";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_fssdy } from "./navConfig_fssdy";
+import { navConfig as navConfig_fssdySelf } from "./navConfig_fssdySelf";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { navConfig as navConfig_nys } from "./navConfig_nys";
@@ -152,7 +153,9 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == 'qzxyy') {
       return navConfig_qzxyy
     } else if (appStore.HOSPITAL_ID == 'fssdy') {
-      return navConfig_fssdy
+      // return navConfig_fssdy
+      if (authStore.isRoleManage) return navConfig_fssdy;
+      else return navConfig_fssdySelf;
     } else if (appStore.HOSPITAL_ID == 'gxjb') {
       // return navConfig_gxjb
       if (authStore.isRoleManage) return navConfig_gxjb;
