@@ -76,9 +76,9 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       );
     } else if (showType == "nurseManual") {//护士长手册
       if(process.env.NODE_ENV != 'development'){
-        window.open(`/crNursing/manage/#/nurseHandBookAudit?commiterNo=${row.commiterNo}`);
+        window.open(`/crNursing/manage/#/auditsManagementNurseHandBook?commiterNo=${row.commiterNo}`);
       }else{
-        window.open(`/#/nurseHandBookAudit?commiterNo=${row.commiterNo}`);
+        window.open(`/#/auditsManagementNurseHandBook?commiterNo=${row.commiterNo}`);
       }
       
     }
