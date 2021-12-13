@@ -17,6 +17,16 @@ export default function SignModule(props: Props) {
     setSignList(signList)
     scheduleStore.setIsSave(true)
   }
+  // 限制字数函数
+  const subString = (e:any,strNum:any) => {
+    if(e.currentTarget.innerText.length>=strNum && e.keyCode != '8'){ // 达到限制的字数后只允许删除
+      let str = e.currentTarget.innerText // 获取当前元素文本内容
+      e.currentTarget.innerText = str.substring(0,strNum) // 按照传入的字数进行切割
+      let selection:any = getSelection() // 获取光标对象
+      selection.extend(e.currentTarget,1) // 选中当前元素
+      selection.collapseToEnd() // 将光标聚焦到当前元素末尾
+    }
+  }
   return (
     <Wrapper>
       <div className="sign">
@@ -37,18 +47,21 @@ export default function SignModule(props: Props) {
             className="signTimeR"
             style={{width:"50px"}} 
             suppressContentEditableWarning
+            onKeyUp={(e:any)=>subString(e,4)}
             contentEditable
           ></div>年
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
+            onKeyUp={(e:any)=>subString(e,2)}
             contentEditable
           ></div>月
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
+            onKeyUp={(e:any)=>subString(e,2)}
             contentEditable
           ></div>日
         </div>
