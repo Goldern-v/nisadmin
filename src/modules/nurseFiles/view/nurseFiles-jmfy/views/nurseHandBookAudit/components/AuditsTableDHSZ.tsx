@@ -38,21 +38,11 @@ export default function AuditsTableDHSZ(props: Props) {
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
 
   const toDetails = (record: any) => {
-    // openAuditModal(
-    //   getTitle(row.othersMessage.auditedEntityName),
-    //   { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
-    //   () => emitter.emit('refreshNurseAuditTable')
-    // )
-    appStore.history.push(`/nurseHandBookDetailView/?type=${record.auditedManageDto.entityName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=1&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPage/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=1&&manualType=${record.manualType}&&isAdd=`)
   }
   
   const onEdit = (record: any) => {
-    // openAuditModal(
-    //   getTitle(row.othersMessage.auditedEntityName),
-    //   { ...row.othersMessage, id: row.othersMessage.fileId, empNo: appStore.queryObj.empNo, saveStatus: row.othersMessage.auditedEntityName },
-    //   () => emitter.emit('refreshNurseAuditTable')
-    // )
-    appStore.history.push(`/nurseHandBookDetailView/?type=${record.auditedManageDto.entityName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPage/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const columns: any = [

@@ -18,8 +18,16 @@ interface Props {
   setPathChange: Function
 }
 export default function auditProcessDetail(props: Props) {
+  const { queryObj } = appStore
   const { setEditVisible2, setFileIdList, setFileList, fileList, setIdChange, setPathChange } = props
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
+
+  useEffect(() => {
+    let idList = fileList?.map((item:any) => {
+      return item.id
+    })
+    setFileIdList(idList)
+  }, [fileList])
 
   const uploadOnChange = (info:any) => {
     let fileList = [...info.fileList];
@@ -38,6 +46,7 @@ export default function auditProcessDetail(props: Props) {
   }
 
   const removeOnChange:any = (info:any) => {
+    if(queryObj.audit) return false 
     let pro = new Promise((resolve,reject)=>{
       Modal.confirm({
         title: '确认删除该附件？',

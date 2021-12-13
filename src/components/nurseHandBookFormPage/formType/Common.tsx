@@ -62,6 +62,7 @@ export default function Common(props: Props) {
   }
 
   const ContextMenu = (e: any) => {
+    if(selectIndex==-1) return
     setVisible(false)
     e.preventDefault()
     setMenuType('Menus')
@@ -137,7 +138,7 @@ export default function Common(props: Props) {
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
-              contentEditable
+              contentEditable={queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
               onContextMenu={ContextMenu}

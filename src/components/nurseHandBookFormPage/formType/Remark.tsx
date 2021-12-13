@@ -8,6 +8,7 @@ export interface Props {
   remark: String
 }
 export default function Remark(props: Props) {
+  const { queryObj } = appStore
   const { setRemark, remark, masterInfo } = props
 
   const changeValue = (e: any, masterInfo: any) => {
@@ -25,7 +26,7 @@ export default function Remark(props: Props) {
         className="table-remark"
         style={{width:`${masterInfo.remark.width-(masterInfo.tBody.length-1)}px`}}
         suppressContentEditableWarning
-        contentEditable
+        contentEditable={queryObj.audit ? false : true}
         onBlur={(e) => changeValue(e, masterInfo)}
       >
         {remark}  

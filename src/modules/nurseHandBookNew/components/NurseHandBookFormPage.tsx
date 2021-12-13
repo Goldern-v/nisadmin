@@ -234,28 +234,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   }
 
-  const uploadOnChange = (info: any) => {
-    let fileList = [...info.fileList];
-    fileList = fileList.slice(-5);
-    fileList = fileList.map(file => {
-      if (file.response) {
-        file.id = file?.response?.data[0];
-      }
-      return file;
-    });
-    setFileList(fileList);
-    let idList = fileList?.map((item: any) => {
-      return item.id
-    })
-    setFileIdList(idList)
-  }
+  
 
   const isNone = () => {
     if (queryObj.isAdd) {
       return "新建"
-    } else if (queryObj.audit) {
+    } else if (queryObj.audit == "1") {
       return "审核"
-    } else if (data.status == "1") {
+    } else if (queryObj.audit == "2") {
       return "查看"
     } else {
       return "编辑"
@@ -394,7 +380,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
-        <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>
+        {!queryObj.fileId && <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>}
+        {queryObj.fileId && <div className="title">护士长手册&gt;{queryObj.type}&gt;{isNone()}{queryObj.type}</div>}
         {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
@@ -402,7 +389,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           {queryObj.isAdd && <Button onClick={handleSave}>保存</Button>}
           {!queryObj.isAdd && data.status == "2" && <Button onClick={handleUndo} className="red">撤销</Button>}
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
-          {queryObj.audit && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
+          {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
           <Button className="ml-20" onClick={handleBack}>返回</Button>
           <Button className="ml-20" onClick={onPrint}>打印</Button>
         </div>

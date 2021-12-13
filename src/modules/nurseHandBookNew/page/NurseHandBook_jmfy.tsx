@@ -120,7 +120,7 @@ export default observer(function NurseHandBook_jmfy() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {record.status == 1 && <span onClick={() => onEdit(record)}>查看</span>}
+            {record.status == 1 && <span onClick={() => onCheck(record)}>查看</span>}
             {(record.status == 2 || record.status == 3) && <span onClick={() => onEdit(record)}>编辑</span>}
             {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>}
             {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
@@ -208,6 +208,10 @@ export default observer(function NurseHandBook_jmfy() {
       setPathChange(pdfPath)
     }
     setIdChange(item.id)
+  }
+  
+  const onCheck = (record: any) => {
+    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const onEdit = (record: any) => {
