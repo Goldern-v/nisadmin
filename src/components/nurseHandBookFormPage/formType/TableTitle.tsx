@@ -25,7 +25,7 @@ export default function TableTitle(props: Props) {
   return (
     <Wrapper>
       <div
-        className="table-head"
+        className="table-title"
         style={{width:`${masterInfo.tableTitle.width-(masterInfo.tBody.length-1)}px`}}
         suppressContentEditableWarning
         contentEditable={queryObj.audit ? false : true}
@@ -38,7 +38,7 @@ export default function TableTitle(props: Props) {
 }
 
 const Wrapper = styled.div`
-.table-head {
+.table-title {
   font-size: 21px;
   padding: 10px 0;
   text-align: center;

@@ -74,4 +74,5 @@ export default {
   tHead,
   remark: { value: "备注：", width: 700 },
   computeRow,
+  sign: true,
 }

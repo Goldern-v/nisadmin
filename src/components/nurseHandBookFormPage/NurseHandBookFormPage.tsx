@@ -5,6 +5,7 @@ import TableTitle from "./formType/TableTitle"
 import CommonHeader from "./formType/CommonHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
+import SignModule from "./formType/SignModule"
 
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
@@ -73,6 +74,7 @@ export default function NurseHandBookFormPage(props: Props) {
             computeRow={computeRow}
           ></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>
