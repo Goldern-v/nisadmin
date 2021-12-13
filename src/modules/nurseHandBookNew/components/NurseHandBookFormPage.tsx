@@ -38,7 +38,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
-  const [allList, setAllList]: any = useState([])
+  const [signName, setSignName]: any = useState("")
+  const [signTime, setSignTime]: any = useState("")
   const [computeRow, setComputeRow]: any = useState([])
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
@@ -63,10 +64,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
         })
         setTableTitle(res.data.title)
         setFileList(res.data.files)
-        let [tableContent, tableRemark, line, complexHead, tableHead] = res.data.formDataDtoList
+        let [tableContent, tableRemark, line, complexHead, tableHead, sign] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         setFormContentList(tableContent.formContent)
         setRemark(tableRemark.formContent[0].remark)
+        setSignName(sign.formContent[0].signName)
+        setSignTime(sign.formContent[0].signTime)
         setComputeRow(line.formContent)
         setSpinning(false)
       })
@@ -167,6 +170,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {
           tableType: "complexHead",
           formContent: [],
+        },
+        {
+          tableType: "sign",
+          formContent: [{signName:signName,signTime:signTime}],
         }
       ]
     })
@@ -205,6 +212,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {
           tableType: "complexHead",
           formContent: [],
+        },
+        {
+          tableType: "sign",
+          formContent: [{signName:signName,signTime:signTime}],
         }
       ]
     })
@@ -378,6 +389,25 @@ export default observer(function nurseHandBookFormPage(props: any) {
       toPrint()
     })
   }, [iframeSrc])
+  const NurseHandBookFormPageProps = {
+    beforeSetTableHeadContent,
+    tableHeadContent,
+    isPrint,
+    showFixHeader,
+    bodyModal,
+    setBodyModal,
+    formContent:formContentList,
+    setTableTitle,
+    tableTitle,
+    setRemark,
+    remark,
+    setComputeRow,
+    computeRow,
+    signName, 
+    setSignName,
+    signTime, 
+    setSignTime,
+  }
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
@@ -397,23 +427,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
       </div>
       <div className="main">
         <div className="formPage" onScroll={handlerScroll}>
-          <NurseHandBookFormPage
-            beforeSetTableHeadContent={beforeSetTableHeadContent}
-            tableHeadContent={tableHeadContent}
-            isPrint={isPrint}
-            showFixHeader={showFixHeader}
-            bodyModal={bodyModal}
-            setBodyModal={setBodyModal}
-            formContent={formContentList}
-            setTableTitle={setTableTitle}
-            tableTitle={tableTitle}
-            setRemark={setRemark}
-            remark={remark}
-            setComputeRow={setComputeRow}
-            computeRow={computeRow}
-            setAllList={setAllList}
-            allList={allList}
-          ></NurseHandBookFormPage>
+          <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
           <div className="rightTop">

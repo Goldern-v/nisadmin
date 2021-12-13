@@ -4,8 +4,9 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
   setSignName: Function
+  setSignTime: Function
   signName: String
-  signTime:any
+  signTime: any
 }
 export default function SignModule(props: Props) {
   const { signName, setSignName, signTime } = props
