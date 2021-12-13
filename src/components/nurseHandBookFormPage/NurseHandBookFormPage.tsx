@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
+import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
@@ -70,6 +71,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
+          <ComplexHeader masterInfo={masterInfo}></ComplexHeader>
           <CommonHeader {...CommonHeaderProps}></CommonHeader>
           <Common {...CommonProps}></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
