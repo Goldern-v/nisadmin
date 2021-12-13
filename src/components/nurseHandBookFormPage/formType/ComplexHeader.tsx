@@ -6,10 +6,12 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
   masterInfo: any 
+  complexHeadList: any
+  setComplexHeadList: Function
 }
 export default function ComplexHeader(props: Props) {
   const { queryObj } = appStore
-  const {  masterInfo } = props
+  const { masterInfo, setComplexHeadList, complexHeadList } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -31,7 +33,12 @@ export default function ComplexHeader(props: Props) {
     "center": "center",
     "right": "end"
   }
- 
+  
+  useEffect(() => {
+    if (queryObj.isAdd) {
+      setComplexHeadList(masterInfo.complexHead.complexHeadList)
+    }
+  }, [])
 
   return (
     <Wrapper>
@@ -39,8 +46,27 @@ export default function ComplexHeader(props: Props) {
           {masterInfo.complexHead.complexHeadList.map((item: any, Idx: any) =>{
             return (
               <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <div className="complexHeader" style={{width:`${item.leftWidth + 1}px`}}></div>
-                <div className="complexHeader" style={{width:`${item.rightWidth + 1}px`}}></div>
+                <div 
+                  className="complexHeader" 
+                  key={`left_${Idx}`}
+                  style={{
+                    width:`${item.leftWidth + 1}px`,
+                    'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                    'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                  }}
+                >{item.name}</div>
+                <div 
+                  className="complexHeader" 
+                  key={`right_${Idx}`}
+                  style={{
+                    width:`${item.rightWidth + 1}px`,
+                    'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                    'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                  }}
+                  suppressContentEditableWarning
+                  contentEditable={queryObj.audit ? false : true}
+                  onInput={(e) => changeValue(e, item)}
+                >{item.value}</div>
               </div>
             )
           })}
