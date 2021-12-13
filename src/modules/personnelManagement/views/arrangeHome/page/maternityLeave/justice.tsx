@@ -34,7 +34,7 @@ export default observer(() => {
     }
 
     setPageLoading(true)
-    const { data } = await api.getList(form)
+    const { data } = await api.getJusticeList(form)
     setPageLoading(false)
 
     setTotal(data.totalCount)

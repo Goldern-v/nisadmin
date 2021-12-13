@@ -48,6 +48,23 @@ export default observer((props: Props) => {
     setFormItem({ lastMenstrualPeriod: date, expectedDate, deliveryDate: expectedDate })
   }
 
+  const disLastMenstrualPeriod = (startValue: any) => {
+    if (appStore.HOSPITAL_ID !== 'jmfy') return false
+    // const { endValue } = this.state;
+    if (!startValue || !form.expectedDate) {
+      return false;
+    }
+    return startValue.valueOf() > form.expectedDate.valueOf();
+  }
+
+  const disableExpectedDate = (endValue: any) => {
+    if (appStore.HOSPITAL_ID !== 'jmfy') return false
+    if (!endValue || !form.lastMenstrualPeriod) {
+      return false;
+    }
+    return endValue.valueOf() < form.lastMenstrualPeriod.valueOf();
+  }
+
   useEffect(() => {
     if (modalId) {
       setLoading(true)
@@ -119,6 +136,7 @@ export default observer((props: Props) => {
             <Col span={6}>末次月经:</Col>
             <Col span={18}>
               <DatePicker
+                disabledDate={disLastMenstrualPeriod}
                 value={form.lastMenstrualPeriod}
                 onChange={handleDateChange}
               />
@@ -128,6 +146,7 @@ export default observer((props: Props) => {
             <Col span={6}>预产期:</Col>
             <Col span={18}>
               <DatePicker
+                disabledDate={disableExpectedDate}
                 value={form.expectedDate}
                 onChange={(date) => {
                   setFormItem({ 'expectedDate': date })
@@ -139,6 +158,7 @@ export default observer((props: Props) => {
             <Col span={6}>分娩日期:</Col>
             <Col span={18}>
               <DatePicker
+                disabledDate={disableExpectedDate}
                 value={form.deliveryDate}
                 onChange={(date) => {
                   setFormItem({ 'deliveryDate': date })
