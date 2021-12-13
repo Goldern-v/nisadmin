@@ -66,7 +66,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventCode: formCode,
       badEventName: formName,
       // operation: 'view',
-      operation: stepNext && stepNext.nodeCode == "nurse_handle" ? 'edit' : 'view',
+
+      operation: stepNext && ['nurse_handle',"nursing_minister_audit"].includes(stepNext.nodeCode) ? 'edit' : 'view',
       isIndependent: 0,
       timeset: timeSet
     }
