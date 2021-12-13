@@ -48,7 +48,6 @@ export default function NurseHandBookFormPage(props: Props) {
       setVisible(false)
     }
   }
-
   useEffect(() => {
     if (!queryObj.isAdd) {
       initBodyModal(masterInfo, setBodyModal, formContent)
