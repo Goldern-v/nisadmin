@@ -3,18 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
-  setSignList: Function
+  setSignName: Function
+  signName: String
+  signTime:any
 }
 export default function SignModule(props: Props) {
-  const { setSignList } = props
+  const { signName, setSignName, signTime } = props
   const { queryObj } = appStore
-  const [signName, setSignName]: any = useState("")
-  let signList= { signName: "", signTime: "" }
-  
+  let [year,month,date] = signTime.split("-")
   const signNameChangeValue = (e: any) => {
     setSignName(e.currentTarget.innerText)
-    signList.signName = e.currentTarget.innerText
-    setSignList(signList)
     scheduleStore.setIsSave(true)
   }
   // 限制字数函数
@@ -49,21 +47,21 @@ export default function SignModule(props: Props) {
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,4)}
             contentEditable
-          ></div>年
+          >{year}</div>年
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,2)}
             contentEditable
-          ></div>月
+          >{month}</div>月
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,2)}
             contentEditable
-          ></div>日
+          >{date}</div>日
         </div>
       </div>
     </Wrapper>

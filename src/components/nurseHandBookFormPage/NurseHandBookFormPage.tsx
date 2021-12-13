@@ -10,7 +10,7 @@ import SignModule from "./formType/SignModule"
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
-
+import moment from "moment"
 export interface Props {
   bodyModal: any
   setBodyModal: Function
@@ -38,8 +38,10 @@ export default function NurseHandBookFormPage(props: Props) {
 
   
   const [visible, setVisible]: any = useState(false)
-  const [signList, setSignList]: any = useState({})
-
+  const [signName, setSignName]: any = useState("")
+  const [signTime, setSignTime]: any = useState(moment().format('YYYY-MM-DD'))
+  console.log(signTime);
+  
   useEffect(() => {
     let formDataDtoList=[
       {
@@ -64,12 +66,11 @@ export default function NurseHandBookFormPage(props: Props) {
       },
       {
         tableType: "sign",
-        formContent: [signList],
+        formContent: [{signName,signTime}],
       }
     ]
     setAllList(formDataDtoList)
-    console.log(allList);
-  }, [signList])
+  }, [signName,signTime])
 
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -111,7 +112,7 @@ export default function NurseHandBookFormPage(props: Props) {
             computeRow={computeRow}
           ></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule setSignList={setSignList}></SignModule>}
+          {masterInfo.sign && <SignModule setSignName={setSignName} signName={signName} signTime={signTime}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>
