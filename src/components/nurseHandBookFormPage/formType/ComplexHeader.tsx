@@ -44,7 +44,7 @@ export default function ComplexHeader(props: Props) {
     }
   }
   useEffect(() => {
-      setComplexHeadList(masterInfo.complexHead.complexHeadList)
+      setComplexHeadList(JSON.parse(JSON.stringify(masterInfo.complexHead.complexHeadList)))
   }, [])
   useEffect(()=>{
     if(!complexHeaderContent.length)return

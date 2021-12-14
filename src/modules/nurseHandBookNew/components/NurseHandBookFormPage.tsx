@@ -76,6 +76,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setComputeRow(line.formContent)
         setSpinning(false)
       })
+    }else{
+      setComplexHeaderContent([])
     }
   }
 
