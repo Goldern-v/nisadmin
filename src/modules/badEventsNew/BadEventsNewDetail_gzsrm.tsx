@@ -67,7 +67,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName: formName,
       // operation: 'view',
 
-      operation: stepNext && ['nurse_handle',"nursing_minister_audit"].includes(stepNext.nodeCode) ? 'edit' : 'view',
+      operation: stepNext && ['nurse_handle'].includes(stepNext.nodeCode) ? 'edit' : 'view',
       isIndependent: 0,
       timeset: timeSet
     }
@@ -79,9 +79,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let port = '8088'
     // let devFormUrl = 'http://localhost:8088'
     let devFormUrl = `${protocol}//${hostname}:${port}${formUrl}`
-    let commonUrl = appStore.isDev ? devFormUrl : formUrl
-    console.log(appStore.isDev, commonUrl)
-    return `${formUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
+    let commonUrl = appStore.isDevelopment ? devFormUrl : formUrl
+    console.log(appStore.isDevelopment, commonUrl)
+    return `${commonUrl}/不良事件病人安全通报单.html?${qs.stringify(query)}`
   }
 
   useEffect(() => {

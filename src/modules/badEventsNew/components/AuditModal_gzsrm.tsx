@@ -21,6 +21,7 @@ const initAuditInfo = () => {
     //添加是否为不良事件
     //noPass: false,
     noPass: "1",//"1"通过,0为不通过，2为不良事件
+    eventLevel:"", //事件等级
   }
 }
 
@@ -94,6 +95,8 @@ export default observer(function AduitModal(props: Props) {
         // 意见和日期
         saveParams['B0002054'] = auditInfo.handleContent
         saveParams['B0002053'] = auditInfo.auditDate
+        saveParams['B0017036'] = auditInfo.eventLevel
+        saveParams['B0002055'] = auditInfo.eventLevel
         params.noPass = auditInfo.noPass == '1' ? false : true;
         break
       case 'dept_handle':   //病区处理
@@ -106,7 +109,7 @@ export default observer(function AduitModal(props: Props) {
       case 'district_nurse_audit'://片区护士长审核意见
         params.noPass = auditInfo.noPass == '1' ? false : true;
         break
-      case 'nursing_minister_comfirm':  //护理部审核
+      case 'nursing_minister_comfirm':  //护理部确认
         // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
@@ -234,6 +237,25 @@ export default observer(function AduitModal(props: Props) {
                 </Radio.Group>
               </Col>
             </Row>
+            <Row>
+                <Col span={6}  className="row-title">事件等级:</Col>
+                <Col span={18}>
+                  <Radio.Group
+                    className='radio-group'
+                    value={auditInfo.eventLevel}
+                    onChange={(e) =>
+                      setAuditInfo({
+                        ...auditInfo,
+                        eventLevel: e.target.value,
+                      })
+                    }>
+                    <Radio value={"Ⅰ级事件"} >Ⅰ级事件</Radio>
+                    <Radio value={"Ⅱ级事件"} >Ⅱ级事件</Radio>
+                    <Radio value={"Ⅲ级事件"} >Ⅲ级事件</Radio>
+                    <Radio value={"Ⅳ级事件"} >Ⅳ级事件</Radio>
+                  </Radio.Group>
+                </Col>
+              </Row>
             <Row>
               <Col span={6} className="row-title">
                 {opionTitle}：
