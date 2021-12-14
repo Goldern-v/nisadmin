@@ -35,6 +35,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   let header: any = { 'App-Token-Nursing': '51e827c9-d80e-40a1-a95a-1edc257596e7', 'Auth-Token-Nursing': authStore.getAuthToken() }
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
+  const [complexHeadList, setComplexHeadList]: any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
@@ -67,6 +68,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let [tableContent, tableRemark, line, complexHead, tableHead, sign] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         setFormContentList(tableContent.formContent)
+        setComplexHeadList(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setSignName(sign.formContent[0].signName)
         setSignTime(sign.formContent[0].signTime)
@@ -169,7 +171,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "complexHead",
-          formContent: [],
+          formContent: complexHeadList,
         },
         {
           tableType: "sign",
@@ -211,7 +213,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "complexHead",
-          formContent: [],
+          formContent: complexHeadList,
         },
         {
           tableType: "sign",
@@ -393,6 +395,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
     beforeSetTableHeadContent,
     tableHeadContent,
     isPrint,
+    setComplexHeadList,
+    complexHeadList,
     showFixHeader,
     bodyModal,
     setBodyModal,

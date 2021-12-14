@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { initBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
+import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
@@ -29,6 +30,8 @@ export interface Props {
   setSignName: Function
   signTime: String
   setSignTime: Function
+  setComplexHeadList: Function
+  complexHeadList: any
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
@@ -36,7 +39,7 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-          signName, setSignName, signTime, setSignTime} = props
+          signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList} = props
 
   const [visible, setVisible]: any = useState(false)
   
@@ -70,6 +73,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
+          <ComplexHeader masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>
           <CommonHeader {...CommonHeaderProps}></CommonHeader>
           <Common {...CommonProps}></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}

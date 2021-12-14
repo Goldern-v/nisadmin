@@ -67,6 +67,20 @@ const computeRow: any = [
   { key: 'calculation_how', name:'星期五', value: "", width: 100 },
 ]
 
+const complexHead: any = {
+  boxWidth: 700,
+  complexHeadList:[
+    { key: 'time', name:'时间', value: "", leftWidth: 100, rightWidth: 100 },
+    { key: 'place', name:'地点', value: "", leftWidth: 100, rightWidth: 100 },
+    { key: 'one', name:'主持人', value: "", leftWidth: 100, rightWidth: 200 },
+    { key: 'two', name:'被邀请人员', value: "", leftWidth: 100, rightWidth: 600 },
+    { key: 'name', name:'患者姓名', value: "", leftWidth: 100, rightWidth: 100 },
+    { key: 'ID', name:'住院号', value: "", leftWidth: 100, rightWidth: 100 },
+    { key: 'zhenduan', name:'诊断', value: "", leftWidth: 100, rightWidth: 200 },
+    { key: 'fanwei', name:'讨论范围', value: "", leftWidth: 100, rightWidth: 600 },
+  ]
+}
+
 export default {
   defaulLength: 17,
   tableTitle: { value: "月工作重点及周安排", width: 700 },
@@ -75,4 +89,5 @@ export default {
   remark: { value: "备注：", width: 700 },
   computeRow,
   sign: true,
+  complexHead,
 }
