@@ -33,7 +33,15 @@ export default function ComplexHeader(props: Props) {
     "center": "center",
     "right": "end"
   }
-  
+  const getWidth=(item:any,idx:any)=>{
+    if(item.lastChild){
+      return item.rightWidth-1
+    }else if(item.preIndex){
+      return item.rightWidth - (item.preIndex * 2 - 1)
+    }else{
+      return item.rightWidth
+    }
+  }
   useEffect(() => {
     if (queryObj.isAdd) {
       setComplexHeadList(masterInfo.complexHead.complexHeadList)
@@ -42,7 +50,7 @@ export default function ComplexHeader(props: Props) {
 
   return (
     <Wrapper>
-        <div style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth}px`}}>
+        <div style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth-(masterInfo.tBody.length-1) -1}px`}}>
           {masterInfo.complexHead.complexHeadList.map((item: any, Idx: any) =>{
             return (
               <div style={{ display: 'flex', justifyContent: 'center'}}>
@@ -50,7 +58,7 @@ export default function ComplexHeader(props: Props) {
                   className="complexHeader" 
                   key={`left_${Idx}`}
                   style={{
-                    width:`${item.leftWidth + 1}px`,
+                    width:`${item.leftWidth}px`,
                     'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
                     'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
                   }}
@@ -59,7 +67,7 @@ export default function ComplexHeader(props: Props) {
                   className="complexHeader" 
                   key={`right_${Idx}`}
                   style={{
-                    width:`${item.rightWidth + 1}px`,
+                    width:`${getWidth(item,Idx)}px`,
                     'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
                     'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
                   }}
