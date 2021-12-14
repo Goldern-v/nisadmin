@@ -36,6 +36,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
   const [complexHeadList, setComplexHeadList]: any = useState([])
+  const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
@@ -68,7 +69,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         setFormContentList(tableContent.formContent)
-        setComplexHeadList(complexHead.formContent)
+        setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setSignName(recordName.formContent[0].signName)
         setSignTime(recordName.formContent[0].signTime)
@@ -146,7 +147,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSave = () => {
     let tBodyList: any = fiterList(bodyModal)
-    
+    let cHeaderList:any = fiterList([complexHeadList])
+
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
@@ -171,7 +173,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "complexHead",
-          formContent: complexHeadList,
+          formContent: cHeaderList,
         },
         {
           tableType: "recordName",
@@ -188,6 +190,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSubmit = () => {
     let tBodyList: any = fiterList(bodyModal)
+    let cHeaderList:any = fiterList([complexHeadList])
 
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
@@ -213,7 +216,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "complexHead",
-          formContent: complexHeadList,
+          formContent: cHeaderList,
         },
         {
           tableType: "recordName",
@@ -401,6 +404,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     bodyModal,
     setBodyModal,
     formContent:formContentList,
+    complexHeaderContent,
     setTableTitle,
     tableTitle,
     setRemark,

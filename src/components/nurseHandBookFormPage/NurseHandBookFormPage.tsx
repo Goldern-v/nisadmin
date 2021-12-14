@@ -13,6 +13,7 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
 import moment from "moment"
 export interface Props {
+  complexHeaderContent:any
   bodyModal: any
   setBodyModal: Function
   setTableTitle: Function
@@ -39,7 +40,7 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-          signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList} = props
+          signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList,complexHeaderContent} = props
 
   const [visible, setVisible]: any = useState(false)
   
@@ -73,7 +74,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
-          {masterInfo.complexHead && <ComplexHeader masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
+          {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           <CommonHeader {...CommonHeaderProps}></CommonHeader>
           <Common {...CommonProps}></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}

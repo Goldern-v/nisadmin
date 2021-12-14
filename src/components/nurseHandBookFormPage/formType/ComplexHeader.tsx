@@ -8,10 +8,11 @@ export interface Props {
   masterInfo: any 
   complexHeadList: any
   setComplexHeadList: Function
+  complexHeaderContent:any
 }
 export default function ComplexHeader(props: Props) {
   const { queryObj } = appStore
-  const { masterInfo, setComplexHeadList, complexHeadList } = props
+  const { masterInfo, setComplexHeadList, complexHeadList,complexHeaderContent } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -43,15 +44,19 @@ export default function ComplexHeader(props: Props) {
     }
   }
   useEffect(() => {
-    if (queryObj.isAdd) {
       setComplexHeadList(masterInfo.complexHead.complexHeadList)
-    }
   }, [])
-
+  useEffect(()=>{
+    if(!complexHeaderContent.length)return
+    complexHeadList.map((item:any)=>{
+      item.value = complexHeaderContent[0][item.key]
+    })
+    setComplexHeadList([...complexHeadList])
+  },[complexHeaderContent])
   return (
     <Wrapper>
         <div style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth-(masterInfo.tBody.length-1) -1}px`}}>
-          {masterInfo.complexHead.complexHeadList.map((item: any, Idx: any) =>{
+          {complexHeadList.map((item: any, Idx: any) =>{
             return (
               <div style={{ display: 'flex', justifyContent: 'center'}} key={`${Idx}`}>
                 <div 
