@@ -28,6 +28,7 @@ export default function SignModule(props: Props) {
   },[time])
   // 限制字数函数
   const subString = (e:any,strNum:any,type:any) => {
+    if([37,38,39,40].includes(e.keyCode))return
     if(e.currentTarget.innerText.length>=strNum && e.keyCode != '8'){ // 达到限制的字数后只允许删除
       let str = e.currentTarget.innerText // 获取当前元素文本内容
       e.currentTarget.innerText = str.substring(0,strNum) // 按照传入的字数进行切割
@@ -47,7 +48,7 @@ export default function SignModule(props: Props) {
           <div
             className="signNameR" 
             suppressContentEditableWarning
-            contentEditable
+            contentEditable={queryObj.audit ? false : true}
             onBlur={(e) => signNameChangeValue(e)}
           >
             {signName}
@@ -60,21 +61,21 @@ export default function SignModule(props: Props) {
             style={{width:"50px"}} 
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,4,'year')}
-            contentEditable
+            contentEditable={queryObj.audit ? false : true}
           >{time.year}</div>年
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,2,'month')}
-            contentEditable
+            contentEditable={queryObj.audit ? false : true}
           >{time.month}</div>月
           <div
             className="signTimeR" 
             style={{width:"35px"}} 
             suppressContentEditableWarning
             onKeyUp={(e:any)=>subString(e,2,'date')}
-            contentEditable
+            contentEditable={queryObj.audit ? false : true}
           >{time.date}</div>日
         </div>
       </div>
