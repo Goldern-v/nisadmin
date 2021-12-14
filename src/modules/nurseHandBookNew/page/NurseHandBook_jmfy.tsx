@@ -95,7 +95,7 @@ export default observer(function NurseHandBook_jmfy() {
         return (
           <div>
             {record.files.map((item: any, index: number) => (
-              <div><a href='javascript:;' onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+              <div key={item.name}><a href='javascript:;' onClick={() => setDetailModal(item)}>{item.name}</a></div>
             ))}
           </div>
         )
