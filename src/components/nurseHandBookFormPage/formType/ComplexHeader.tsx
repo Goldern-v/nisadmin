@@ -53,7 +53,7 @@ export default function ComplexHeader(props: Props) {
         <div style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth-(masterInfo.tBody.length-1) -1}px`}}>
           {masterInfo.complexHead.complexHeadList.map((item: any, Idx: any) =>{
             return (
-              <div style={{ display: 'flex', justifyContent: 'center'}}>
+              <div style={{ display: 'flex', justifyContent: 'center'}} key={`${Idx}`}>
                 <div 
                   className="complexHeader" 
                   key={`left_${Idx}`}

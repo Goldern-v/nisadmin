@@ -65,13 +65,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
         })
         setTableTitle(res.data.title)
         setFileList(res.data.files)
-        let [tableContent, tableRemark, line, complexHead, tableHead, sign] = res.data.formDataDtoList
+        let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         setFormContentList(tableContent.formContent)
         setComplexHeadList(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
-        setSignName(sign.formContent[0].signName)
-        setSignTime(sign.formContent[0].signTime)
+        setSignName(recordName.formContent[0].signName)
+        setSignTime(recordName.formContent[0].signTime)
         setComputeRow(line.formContent)
         setSpinning(false)
       })
@@ -174,7 +174,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           formContent: complexHeadList,
         },
         {
-          tableType: "sign",
+          tableType: "recordName",
           formContent: [{signName:signName,signTime:signTime}],
         }
       ]
@@ -216,7 +216,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           formContent: complexHeadList,
         },
         {
-          tableType: "sign",
+          tableType: "recordName",
           formContent: [{signName:signName,signTime:signTime}],
         }
       ]
