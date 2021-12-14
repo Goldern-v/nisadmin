@@ -80,7 +80,10 @@ const complexHead: any = {
     { key: 'fanwei', name:'讨论范围', value: "", leftWidth: 100, rightWidth: 600  , preIndex:3 },
   ]
 }
-
+const sign = {
+  signName:{key:'signName',value:''},
+  signTime:{key:'signTime',value:''}
+}
 export default {
   defaulLength: 17,
   tableTitle: { value: "月工作重点及周安排", width: 700 },
@@ -88,6 +91,6 @@ export default {
   tHead,
   remark: { value: "备注：", width: 700 },
   computeRow,
-  sign: true,
+  sign: sign,
   complexHead,
 }

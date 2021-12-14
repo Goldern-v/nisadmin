@@ -77,7 +77,7 @@ export default function NurseHandBookFormPage(props: Props) {
           <CommonHeader {...CommonHeaderProps}></CommonHeader>
           <Common {...CommonProps}></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>

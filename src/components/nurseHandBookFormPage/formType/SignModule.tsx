@@ -7,16 +7,17 @@ export interface Props {
   setSignTime: Function
   signName: String
   signTime: any
+  masterInfo:any
 }
 export default function SignModule(props: Props) {
-  const { signName, setSignName, signTime,setSignTime } = props
+  const { signName, setSignName, signTime,setSignTime,masterInfo } = props
+  const [time,setTime] = useState({year:'',month:'',date:''})
   const { queryObj } = appStore
   const signNameChangeValue = (e: any) => {
     setSignName(e.currentTarget.innerText)
     scheduleStore.setIsSave(true)
   }
 
-  const [time,setTime] = useState({year:'',month:'',date:''})
   useEffect(()=>{
     if(signTime){
       let {year,month,date} = signTime.split('-')
@@ -43,41 +44,49 @@ export default function SignModule(props: Props) {
   return (
     <Wrapper>
       <div className="sign">
-        <div className="signName">
-          <div>记录人:</div>
-          <div
-            className="signNameR" 
-            suppressContentEditableWarning
-            contentEditable={queryObj.audit ? false : true}
-            onBlur={(e) => signNameChangeValue(e)}
-          >
-            {signName}
+        { masterInfo.sign.signName && (
+          <div className="signName">
+            <div>记录人:</div>
+            <div
+              className="signNameR" 
+              suppressContentEditableWarning
+              contentEditable={queryObj.audit ? false : true}
+              onBlur={(e) => signNameChangeValue(e)}
+            >
+              {signName}
+            </div>
           </div>
-        </div>
-        <div className="signTime">
-          <div>记录时间:</div>
-          <div
-            className="signTimeR"
-            style={{width:"50px"}} 
-            suppressContentEditableWarning
-            onKeyUp={(e:any)=>subString(e,4,'year')}
-            contentEditable={queryObj.audit ? false : true}
-          >{time.year}</div>年
-          <div
-            className="signTimeR" 
-            style={{width:"35px"}} 
-            suppressContentEditableWarning
-            onKeyUp={(e:any)=>subString(e,2,'month')}
-            contentEditable={queryObj.audit ? false : true}
-          >{time.month}</div>月
-          <div
-            className="signTimeR" 
-            style={{width:"35px"}} 
-            suppressContentEditableWarning
-            onKeyUp={(e:any)=>subString(e,2,'date')}
-            contentEditable={queryObj.audit ? false : true}
-          >{time.date}</div>日
-        </div>
+          )
+        }
+        {
+           masterInfo.sign.signTime && (
+            <div className="signTime">
+              <div>记录时间:</div>
+              <div
+                className="signTimeR"
+                style={{width:"50px"}} 
+                suppressContentEditableWarning
+                onKeyUp={(e:any)=>subString(e,4,'year')}
+                contentEditable={queryObj.audit ? false : true}
+              >{time.year}</div>年
+              <div
+                className="signTimeR" 
+                style={{width:"35px"}} 
+                suppressContentEditableWarning
+                onKeyUp={(e:any)=>subString(e,2,'month')}
+                contentEditable={queryObj.audit ? false : true}
+              >{time.month}</div>月
+              <div
+                className="signTimeR" 
+                style={{width:"35px"}} 
+                suppressContentEditableWarning
+                onKeyUp={(e:any)=>subString(e,2,'date')}
+                contentEditable={queryObj.audit ? false : true}
+              >{time.date}</div>日
+            </div>
+           )
+        }
+        
       </div>
     </Wrapper>
   )
