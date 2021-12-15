@@ -75,7 +75,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
-          <CommonHeader {...CommonHeaderProps}></CommonHeader>
+          {masterInfo.tHead && <CommonHeader {...CommonHeaderProps}></CommonHeader>}
           <Common {...CommonProps}></Common>
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
           {masterInfo.sign && <SignModule masterInfo={masterInfo} setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}

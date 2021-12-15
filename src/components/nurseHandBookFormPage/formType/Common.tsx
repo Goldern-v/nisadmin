@@ -105,7 +105,7 @@ export default function Common(props: Props) {
 
   useEffect(() => {
     if (queryObj.isAdd) {
-      setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
+      masterInfo.computeRow && setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
     }
   }, [])
 
