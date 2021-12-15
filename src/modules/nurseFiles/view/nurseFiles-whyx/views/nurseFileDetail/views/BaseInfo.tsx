@@ -122,57 +122,67 @@ export default observer(function BaseInfo() {
         },
         {
           年龄: data.age,
+          婚姻状况: data.phone, // todo
+        },
+        {
+          生育情况: data.age, // todo
           手机号: data.phone,
         },
         {
-          参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? data.goWorkTime : data.takeWorkTime,
+          现住址: data.age, // todo
+          参加工作时间: data.takeWorkTime,
+        },
+        {
+          最近入职时间: data.takeWorkTime, // todo
           来院工作时间: data.goHospitalWorkDate,
         },
-
         {
           护士执业证书编号: data.zyzsNumber,
           取得护士执业证书时间: data.zyzsDate,
         },
         {
+          本院注册时间: data.zyzsNumber, // todo 
+          护士执业证书有效期: data.zyzsEffectiveUpDate, // todo 可能
+        },
+        {
           取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
-          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+          初始学历: data.zyzsEffectiveUpDate, // todo
         },
+        // {
+        //   初始学历: data.initialEducation,
+        //   最高学历: data.highestEducation,
+        // },
         {
-          初始学历: data.initialEducation,
           最高学历: data.highestEducation,
-        },
-        {
           取得最高学历时间: data.highestEducationDate,
-          最高学历学位: data.highestEducationDegree,
         },
         {
+          最高学位: data.highestEducationDegree,
+          最高职称: data.highestEducationDate, // todo
+        },
+        {
+          评职日期: data.job, // todo
           职务: data.job,
-          现职务任职起始时间: data.jobStartDate,
+          // 现职务任职起始时间: data.jobStartDate,
         },
         {
-          院内工作地点: data.workAddress,
+          现职务任职: data.job, // todo
+          起始时间: data.jobStartDate,
+        },
+        {
+          护理层级: data.job, // todo
+          护理层级起始时间: data.jobStartDate, // todo
+        },
+        {
+          院内工作区域: data.workAddress,
           工作护理单元: data.deptName,
         },
-        (() => {
-          switch (appStore.HOSPITAL_ID) {
-            case "gxjb":
-              return {
-                家庭住址: data.address,
-              };
-            case "gzsrm":
-              return {
-                鞋码大小: data.shoeSize,
-                职称: data.newTitle,
-              };
-            case "fsxt":
-              return {}
-            default:
-              return {
-                鞋码大小: data.shoeSize,
-              };
-          }
-        })(),
+        {
+          鞋码大小: data.workAddress, // todo
+          工作服码数: data.deptName, // todo
+        },
       ]
+
       setTableData(newTableData);
       // 处理扩展字段
       if (Object.keys(data).includes('maps'))
@@ -293,6 +303,48 @@ export default observer(function BaseInfo() {
             )}
           </div>
         </ZyzsCon>
+        {/* todo 字段没有联调 */}
+        <InfoTable style={{ marginTop: '10px' }}>
+          <colgroup>
+            <col width="200" />
+            <col />
+            <col width="200" />
+            <col />
+            <col width="200" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td>部门类型</td>
+              <td>
+                <Value>{info.empName}</Value>
+              </td>
+              <td>人员类别</td>
+              <td>
+                <Value>{info.sex}</Value>
+              </td>
+            </tr>
+            <tr>
+              <td>职工类型</td>
+              <td>
+                <Value>{info.empName}</Value>
+              </td>
+              <td>是否已转正</td>
+              <td>
+                <Value>{info.sex}</Value>
+              </td>
+            </tr>
+            <tr>
+              <td>合同类型</td>
+              <td>
+                <Value>{info.empName}</Value>
+              </td>
+              <td>合同到期时间</td>
+              <td>
+                <Value>{info.sex}</Value>
+              </td>
+            </tr>
+          </tbody>
+        </InfoTable>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>

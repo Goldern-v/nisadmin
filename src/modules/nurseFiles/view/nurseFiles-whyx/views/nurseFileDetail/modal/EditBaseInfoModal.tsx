@@ -245,29 +245,31 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`性别`} name="sex">
-              <Select>
+              <Input disabled />
+              {/* <Select>
                 {nurseFileDetailViewModal.getDict("性别").map((item) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
                   </Select.Option>
                 ))}
-              </Select>
+              </Select> */}
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`民族`} name="nation">
-              <Select>
+              <Input disabled />
+              {/* <Select>
                 {nurseFileDetailViewModal.getDict("民族").map((item) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
                   </Select.Option>
                 ))}
-              </Select>
+              </Select> */}
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`籍贯`} name="nativePlace">
-              <AutoComplete dataSource={nativePlaceList} />
+              <AutoComplete dataSource={nativePlaceList} disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -279,24 +281,38 @@ export default function EditWorkHistoryModal(props: Props) {
             <Form.Field
               label={`身份证号`}
               name="cardNumber"
-              onValueChange={computedIdCard}
+            // onValueChange={computedIdCard}
             >
-              <Input />
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`政治面貌`} name="politicsLook">
-              <SelectOrAutoInput dict="政治面貌" />
+              {/* <SelectOrAutoInput dict="政治面貌" /> */}
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`出生年月`} name="birthday">
-              <DatePicker />
+              <Input disabled />
+              {/* <DatePicker /> */}
             </Form.Field>
           </Col>{" "}
           <Col span={12}>
             <Form.Field label={`年龄`} name="age">
-              <Input />
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* // todo */}
+          <Col span={12}>
+            <Form.Field label={`婚姻状况`} name="age">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* // todo */}
+          <Col span={12}>
+            <Form.Field label={`生育情况`} name="age">
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -304,44 +320,156 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
+          {/* todo */}
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name={appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime'}>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`来院工作时间`} name="goHospitalWorkDate">
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`护士执业证书编号`} name="zyzsNumber">
+            <Form.Field label={`现住址`} name="phone">
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
+            <Form.Field label={`参加工作时间`} name={'takeWorkTime'}>
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`最近入职时间`} name="goHospitalWorkDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`来院工作时间`} name="goHospitalWorkDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护士执业证书编号`} name="zyzsNumber">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
             <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
-              <DatePicker />
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`本院注册时间`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`护士执业证书有效期`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field
-              label={`取得执业证书并从事护理岗位时间`}
-              name="zyzsNursingPostDate"
-            >
+            <Form.Field label={`取得执业证书并从事护理岗位时间`} name="zyzsNursingPostDate">
               <DatePicker />
             </Form.Field>
           </Col>
+          {/* todo */}
           <Col span={12}>
+            <Form.Field label={`初始学历`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`最高学历`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`取得最高学历时间`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`最高学位`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`最高职称`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`评职日期`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`职务`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`现职务任职起始时间`} name="zyzsDate">
+              <Input disabled />
+              {/* <DatePicker /> */}
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`护理层级`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`护理层级起始时间`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`院内工作区域`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input />
+            </Form.Field>
+          </Col>
+          {/* todo */}
+          <Col span={12}>
+            <Form.Field label={`工作护理单元`} name="zyzsDate">
+              {/* <DatePicker /> */}
+              <Input disabled />
+            </Form.Field>
+          </Col>
+
+          {/* <Col span={12}>
             <Form.Field
               label={`护士执业证书有效截止日期`}
               name="zyzsEffectiveUpDate"
             >
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col> */}
           <Col span={12}>
-            <Form.Field label={`初始学历`} name="initialEducation">
+            <Form.Field label={`鞋码大小`} name="initialEducation">
               <Select>
                 {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
                   <Select.Option value={item.code} key={item.code}>
@@ -352,7 +480,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`最高学历`} name="highestEducation">
+            <Form.Field label={`鞋码大小`} name="highestEducation">
               <Select>
                 {nurseFileDetailViewModal
                   .getDict("最高学历类型")
@@ -364,7 +492,7 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
               <DatePicker />
             </Form.Field>
@@ -421,7 +549,40 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           ) : (
             ""
-          )}
+          )} */}
+        </Row>
+        {/* todo 没有联调字段 */}
+        <Row>
+          <Col span={12}>
+            <Form.Field label={`部门类型`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`人员类别`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`职工类型`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`是否已转正`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`合同类型`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`合同到期时间`} name="empNo">
+              <Input disabled />
+            </Form.Field>
+          </Col>
         </Row>
         <Row>
           <Col span={12}>
@@ -446,7 +607,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
         </Row>
       </Form>
-    </Modal>
+    </Modal >
   );
 }
 const Wrapper = styled.div``;
