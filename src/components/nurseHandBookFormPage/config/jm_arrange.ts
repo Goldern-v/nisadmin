@@ -93,8 +93,4 @@ export default {
   computeRow,
   sign: sign,
   complexHead,
-  defaultValue:{
-    10:['','日期','护理业务查房','主查人','参加人员','应到','实到'],
-    20:['','日期','护理教学查房','主查人','参加人员','应到','实到'],
-  }
 }

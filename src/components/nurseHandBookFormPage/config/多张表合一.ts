@@ -115,7 +115,6 @@ export default {
   hiddenFixHeader:true,
   defaulLength: [9,9,9],
   tableTitle: { value: "月工作重点及周安排", width: 600 },
-  primaryKey:18,
   tBody:[tBody1,tBody2,tBody3],
   tHead:[tHead1,tHead2,tHead3],
 }

@@ -46,7 +46,7 @@ export default function SignModule(props: Props) {
       <div className="sign">
         { masterInfo.sign.signName && (
           <div className="signName">
-            <div>记录人:</div>
+            <div>{masterInfo.sign.signName.preName}：</div>
             <div
               className="signNameR" 
               suppressContentEditableWarning
@@ -61,7 +61,7 @@ export default function SignModule(props: Props) {
         {
            masterInfo.sign.signTime && (
             <div className="signTime">
-              <div>记录时间:</div>
+              <div>{masterInfo.sign.signTime.preName}：</div>
               <div
                 className="signTimeR"
                 style={{width:"50px"}} 

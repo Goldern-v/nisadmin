@@ -1,15 +1,12 @@
 import { tick } from "../function/click"
 const tHead1 = {
   top: [
-    { name: "序号", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "工资", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "姓名", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "年龄", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "总收入", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "年薪", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "加", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "减", colspan: "1", rowspan: "1", style: { width: 100 } },
-    { name: "how", colspan: "1", rowspan: "1", style: { width: 100 } },
+    { name: "www", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "when", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "how", colspan: "1", rowspan: "1", style:{ width: 100 } },
   ],
   mid: [],
   bottom: []
@@ -40,65 +37,14 @@ const tHead3 = {
   mid: [],
   bottom: []
 }
+
 const tBody1: any = [
-  {
-    key: "serialNumber",
-    name: "序号",
-    value: "",
-    width: 100,
-  },
-  {
-    key: "money",
-    name: "工资",
-    value: "",
-    width: 100,
-  },
-  {
-    key: "name",
-    name: "姓名",
-    value: "",
-    width: 100,
-  },
-  {
-    key: "age",
-    name: "年龄",
-    value: "",
-    width: 100,
-  },
-  {
-    key: "calculation_1",
-    name: "总收入",
-    calculation_rules: "age * money",
-    value: "",
-    width: 100,
-  },
-  {
-    key: "calculation_2",
-    name: "年薪",
-    calculation_rules: "calculation_1 / age",
-    width: 100,
-    value: ""
-  },
-  {
-    key: "calculation_3",
-    name: "加",
-    calculation_rules: "age + money",
-    width: 100,
-    value: ""
-  },
-  {
-    key: "calculation_4",
-    name: "减",
-    calculation_rules: "money - age",
-    width: 100,
-    value: ""
-  },
-  {
-    key: "how",
-    name: "how",
-    value: "",
-    width: 100,
-  },
+  { key: "what", name: "what", value: "", width: 100,click:tick},
+  { key: "why",name: "why", value: "", width: 100,select:["1",'2','3'],multiple:"/"},
+  { key: "where", name: "where", value: "", width: 100,},
+  { key: "who",name: "who", value: "",width: 100,},
+  { key: "when", name: "when", value: "",width: 100,},
+  { key: "how",name: "how",value: "",width: 100,},
 ]
 const tBody2: any = [
   { key: "what", name: "what", value: "", width: 100,},
@@ -153,8 +99,8 @@ const computeRow2: any = [
 
 
 const sign = {
-  signName:{key:'signName',value:''},
-  signTime:{key:'signTime',value:''}
+  signName:{key:'signName',value:'',preName:"记录人"},
+  signTime:{key:'signTime',value:'',preName:"记录时间"}
 }
 // export default {
 //   defaulLength: 17,
@@ -182,8 +128,8 @@ export default {
   hiddenFixHeader:true,
   defaulLength: [9,9,9],
   tableTitle: { value: "月工作重点及周安排", width: 600 },
-  primaryKey:18,
   tBody:[tBody1,tBody2,tBody3],
   tHead:[tHead1,tHead2,tHead3],
-  computeRow:[[],computeRow2,[]],
+  sign:sign,
+  // computeRow:[[],computeRow2,[]],
 }

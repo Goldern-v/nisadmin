@@ -111,12 +111,7 @@ export default function Common(props: Props) {
       masterInfo.computeRow && setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
     }
   }, [])
-
-  // useEffect(() => {
-  //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
-  //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
-  //   })
-  // },[bodyModal])
+  
   return (
     <Wrapper>
       {bodyModal[bodyIdx]&&bodyModal[bodyIdx].tableData.map((row: any, rowIdx: any) =>
