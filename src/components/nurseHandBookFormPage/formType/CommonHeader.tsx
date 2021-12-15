@@ -6,15 +6,14 @@ import Item from 'antd/lib/list/Item'
 
 
 export interface Props {
-  masterInfo: any
+  tHead: any
   showFixHeader: boolean
   isPrint: any
   beforeSetTableHeadContent:Function
   tableHeadContent:any
 }
 export default function CommonHeader(props: Props) {
-  const { masterInfo, showFixHeader, isPrint, beforeSetTableHeadContent,tableHeadContent } = props
-  const { tHead } = masterInfo
+  const { tHead, showFixHeader, isPrint, beforeSetTableHeadContent,tableHeadContent } = props
   const { top, mid, bottom } = tHead
   const [renderHeader, setRenderHeader]: any = useState([])
   const deepRender = (arr: any) => {

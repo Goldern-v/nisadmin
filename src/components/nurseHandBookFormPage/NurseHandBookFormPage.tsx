@@ -60,12 +60,8 @@ export default function NurseHandBookFormPage(props: Props) {
     }
   }, [props.formContent])
 
-  const CommonHeaderProps = {
-    isPrint,showFixHeader,masterInfo,beforeSetTableHeadContent,tableHeadContent
-  }
-
   const CommonProps = {
-    isPrint,bodyModal,setBodyModal,visible,setVisible,masterInfo,setComputeRow,computeRow
+    
   }
 
   return (
@@ -75,8 +71,28 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
-          <CommonHeader {...CommonHeaderProps}></CommonHeader>
-          <Common {...CommonProps}></Common>
+          {masterInfo.tBody.map((body:any,idx:any)=>{
+            return (<div>
+              {masterInfo.tHead[idx] && <CommonHeader 
+                isPrint={isPrint} 
+                showFixHeader={showFixHeader} 
+                tHead={masterInfo.tHead[idx]} 
+                beforeSetTableHeadContent={beforeSetTableHeadContent} 
+                tableHeadContent
+              ></CommonHeader>}
+              <Common 
+                isPrint={isPrint} 
+                bodyModal={bodyModal}
+                bodyIdx={idx}
+                setBodyModal={setBodyModal} 
+                visible={visible} 
+                setVisible = {setVisible}
+                masterInfo ={masterInfo}
+                setComputeRow = {setComputeRow}
+                computeRow = {computeRow}
+              ></Common>
+            </div>)
+          })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
           {masterInfo.sign && <SignModule masterInfo={masterInfo} setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}
         </div>

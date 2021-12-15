@@ -13,10 +13,11 @@ export interface Props {
   setComputeRow: Function
   masterInfo: any
   isPrint:any
+  bodyIdx:any
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow,isPrint } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow,isPrint,bodyIdx } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -105,7 +106,7 @@ export default function Common(props: Props) {
 
   useEffect(() => {
     if (queryObj.isAdd) {
-      setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
+      masterInfo.computeRow && setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
     }
   }, [])
 
@@ -114,10 +115,9 @@ export default function Common(props: Props) {
   //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
   //   })
   // },[bodyModal])
-
   return (
     <Wrapper>
-      {bodyModal.map((row: any, rowIdx: any) =>
+      {bodyModal[bodyIdx]&&bodyModal[bodyIdx].tableData.map((row: any, rowIdx: any) =>
         <div
           className={selectIndex == rowIdx &&!isPrint  ? 'active-row' : ''}
           style={{

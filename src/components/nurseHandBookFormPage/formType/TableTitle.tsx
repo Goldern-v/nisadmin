@@ -26,7 +26,7 @@ export default function TableTitle(props: Props) {
     <Wrapper>
       <div
         className="table-title"
-        style={{width:`${masterInfo.tableTitle.width-(masterInfo.tBody.length-1)}px`}}
+        style={{width:`${masterInfo.tableTitle.width-(masterInfo.primaryKey-1)}px`}}
         suppressContentEditableWarning
         contentEditable={queryObj.audit ? false : true}
         onBlur={(e) => changeValue(e, masterInfo)}
