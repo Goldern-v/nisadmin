@@ -3,30 +3,29 @@ import React, { useState, useEffect } from 'react'
 import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
-  setSignName: Function
-  setSignTime: Function
-  signName: String
-  signTime: any
-  masterInfo:any
+  setSubmitSign: Function
+  submitSign: any
+  masterInfo: any
 }
 export default function SignModule(props: Props) {
-  const { signName, setSignName, signTime,setSignTime,masterInfo } = props
+  const { submitSign, setSubmitSign, masterInfo } = props
   const [time,setTime] = useState({year:'',month:'',date:''})
   const { queryObj } = appStore
   const signNameChangeValue = (e: any) => {
-    setSignName(e.currentTarget.innerText)
+    submitSign[0].value = e.currentTarget.innerText
+    setSubmitSign([...submitSign])
     scheduleStore.setIsSave(true)
   }
 
-  useEffect(()=>{
-    if(signTime){
-      let {year,month,date} = signTime.split('-')
-      setTime({year,month,date})
-    }
-  },[])
-  useEffect(()=>{
-    setSignTime(`${time.year}-${time.month}-${time.date}`)
-  },[time])
+  // useEffect(()=>{
+  //   if(signTime){
+  //     let {year,month,date} = signTime.split('-')
+  //     setTime({year,month,date})
+  //   }
+  // },[])
+  // useEffect(()=>{
+  //   setSignTime(`${time.year}-${time.month}-${time.date}`)
+  // },[time])
   // 限制字数函数
   const subString = (e:any,strNum:any,type:any) => {
     if([37,38,39,40].includes(e.keyCode))return
@@ -44,24 +43,23 @@ export default function SignModule(props: Props) {
   return (
     <Wrapper>
       <div className="sign">
-        { masterInfo.sign.signName && (
+        { submitSign[0] && (
           <div className="signName">
-            <div>{masterInfo.sign.signName.preName}：</div>
+            <div>{submitSign[0].preName}：</div>
             <div
               className="signNameR" 
               suppressContentEditableWarning
               contentEditable={queryObj.audit ? false : true}
               onBlur={(e) => signNameChangeValue(e)}
             >
-              {signName}
+              {submitSign[0].value}
             </div>
           </div>
           )
         }
-        {
-           masterInfo.sign.signTime && (
+        { submitSign[1] && (
             <div className="signTime">
-              <div>{masterInfo.sign.signTime.preName}：</div>
+              <div>{submitSign[1].preName}：</div>
               <div
                 className="signTimeR"
                 style={{width:"50px"}} 

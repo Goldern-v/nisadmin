@@ -27,10 +27,9 @@ export interface Props {
   isPrint: any
   beforeSetTableHeadContent: Function
   tableHeadContent: any
-  signName: String
-  setSignName: Function
-  signTime: String
-  setSignTime: Function
+  signList: any
+  setSubmitSign: Function
+  submitSign: any
   setComplexHeadList: Function
   complexHeadList: any
 }
@@ -40,7 +39,7 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-          signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList,complexHeaderContent} = props
+          signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent} = props
 
   const [visible, setVisible]: any = useState([])
   let templeVisible = masterInfo.tBody.map((item:any)=>false)
@@ -57,7 +56,15 @@ export default function NurseHandBookFormPage(props: Props) {
     } else {
       initBodyModal(masterInfo, setBodyModal, [])
     }
-  }, [props.formContent])
+  }, [formContent])
+
+  useEffect(() => {
+    if (!queryObj.isAdd) {
+      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign))))
+    } else {
+      setSubmitSign(signList)
+    }
+  }, [signList])
 
   useEffect(() => {
     setVisible(templeVisible)
@@ -98,7 +105,7 @@ export default function NurseHandBookFormPage(props: Props) {
             </div>)
           })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>
