@@ -5,11 +5,10 @@ import { observer } from 'mobx-react-lite'
 import { Switch, DatePicker, Progress } from 'antd'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
-
+import { appStore } from "src/stores";
 export interface Props {
   setpChange?: (step: number) => void
 }
-
 export default observer(function PreviewPannel(props: Props) {
   const { setpChange } = props
   const { master, baseInfo, itemGroupList } = qcModel
@@ -111,7 +110,9 @@ export default observer(function PreviewPannel(props: Props) {
 
   return <Wrapper>
     <div className="master-area">
-      <div className="item">
+      {/* 贵州省医不需要追踪评价 */}
+      {appStore.HOSPITAL_ID !== "gzsrm" && 
+      (<div className="item">
         <div className="label">是否需要追踪评价:</div>
         <div className="content">
           <Switch checked={master.followEvaluate} onChange={(val) => {
@@ -120,8 +121,9 @@ export default observer(function PreviewPannel(props: Props) {
             qcModel.setMaster(newMaster)
           }} />
         </div>
-      </div>
-      <div className="item">
+      </div>)}
+      {appStore.HOSPITAL_ID !== "gzsrm" && 
+      (<div className="item">
         <div className="label">{master.followEvaluate && '追踪日期:'}</div>
         <div className="content">
           {master.followEvaluate && <DatePicker
@@ -133,7 +135,7 @@ export default observer(function PreviewPannel(props: Props) {
               qcModel.setMaster({ ...master, followEvaluateDate: date.format('YYYY-MM-DD') })
             }} />}
         </div>
-      </div>
+      </div>)}
       <div className="item item-large">
         {baseInfo.useScore ? (
           <div>本次评估结果为：得分({result.totalScore - result.deductScore}) 总分({result.totalScore})</div>

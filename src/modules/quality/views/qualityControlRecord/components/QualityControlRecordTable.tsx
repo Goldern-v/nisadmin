@@ -42,22 +42,67 @@ export default observer(function qualityControlRecordTable(props: Props) {
       width: 130,
       align: 'center'
     },
-    {
-      title: '质控病区',
-      dataIndex: 'wardName',
+    // {
+    //   title: '质控病区',
+    //   dataIndex: 'wardName',
 
-      width: 160,
-      align: 'left'
-    },
-    {
-      title: '质控表单',
-      // dataIndex: 'zkbq',
-      dataIndex: 'qcName',
+    //   width: 160,
+    //   align: 'left'
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [
+          {
+            title: '质控病区',
+            dataIndex: 'wardName',
+      
+            width: 230, // gzsrm 去掉床号跟住院号，将位置留给质控病区和质控表单
+            align: 'left'
+          },
+        ],
+        other: [
+          {
+            title: '质控病区',
+            dataIndex: 'wardName',
+      
+            width: 160,
+            align: 'left'
+          },
+        ]
+      }
+    }),
+    // {
+    //   title: '质控表单',
+    //   // dataIndex: 'zkbq',
+    //   dataIndex: 'qcName',
 
-      width: 150,
-      align: 'left'
-    },
-
+    //   width: 150,
+    //   align: 'left'
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [
+          {
+            title: '质控表单',
+            // dataIndex: 'zkbq',
+            dataIndex: 'qcName',
+      
+            width: 230, // gzsrm 去掉床号跟住院号，将位置留给质控病区和质控表单
+            align: 'left'
+          },
+        ],
+        other: [
+          {
+            title: '质控表单',
+            // dataIndex: 'zkbq',
+            dataIndex: 'qcName',
+      
+            width: 150,
+            align: 'left'
+          },
+        ]
+      }
+    }),
     {
       title: '质控人员',
       // dataIndex: 'zkry',
@@ -66,22 +111,50 @@ export default observer(function qualityControlRecordTable(props: Props) {
       width: 80,
       align: 'center'
     },
-    {
-      title: '床号',
-      // dataIndex: 'ch',
-      dataIndex: 'bedLabel',
+    // {
+    //   title: '床号',
+    //   // dataIndex: 'ch',
+    //   dataIndex: 'bedLabel',
 
-      width: 70,
-      align: 'center'
-    },
-    {
-      title: '住院号',
-      // dataIndex: 'zyh',
-      dataIndex: 'inpNo',
+    //   width: 70,
+    //   align: 'center'
+    // },
+    // {
+    //   title: '住院号',
+    //   // dataIndex: 'zyh',
+    //   dataIndex: 'inpNo',
 
-      width: 80,
-      align: 'center'
-    },
+    //   width: 80,
+    //   align: 'center'
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [],
+        other: [
+          {
+          title:'床号',
+          // dataIndex: 'ch',
+          dataIndex: 'bedLabel',
+    
+          width: 70,
+          align: 'center'
+        }]
+      }
+    }),
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [],
+        other: [
+          {
+          title:'住院号',
+          // dataIndex: 'zyh',
+          dataIndex: 'inpNo',
+    
+          width: 80,
+          align: 'center'
+        }]
+      }
+    }),
     // {
     //   title: '管床护士',
     //   dataIndex: '',
@@ -90,16 +163,45 @@ export default observer(function qualityControlRecordTable(props: Props) {
     //   width: 100,
     //   align: 'center'
     // },
-    {
-      title: '质量结果',
-      dataIndex: 'evalRate',
+    // {
+    //   title: '质量结果',
+    //   dataIndex: 'evalRate',
 
-      width: 80,
-      align: 'center',
-      render(text: any) {
-        return typeof text == 'number' && text.toFixed(2) + '%'
+    //   width: 80,
+    //   align: 'center',
+    //   render(text: any) {
+    //     return typeof text == 'number' && text.toFixed(2) + '%'
+    //   }
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [
+          {
+            title: '质量结果',
+            dataIndex: 'evalRate',
+      
+            width: 80, 
+            align: 'center',
+            render(text: any) {
+              // gzsrm 质量结果去掉 % 
+              return typeof text == 'number' && text.toFixed(2)
+            }
+          },
+        ],
+        other: [
+          {
+            title: '质量结果',
+            dataIndex: 'evalRate',
+      
+            width: 80,
+            align: 'center',
+            render(text: any) {
+              return typeof text == 'number' && text.toFixed(2) + '%'
+            }
+          },
+        ]
       }
-    },
+    }),
     {
       title: '状态',
       // dataIndex: 'zt',
