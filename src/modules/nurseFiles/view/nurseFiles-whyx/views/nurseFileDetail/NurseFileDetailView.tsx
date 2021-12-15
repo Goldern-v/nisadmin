@@ -13,6 +13,10 @@ import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
 import SpecializNurse from './views/SpecializNurse'
 import BaseInfo from './views/BaseInfo'
+import statePersonnel from './views/statePersonnel'
+import AcademicActivity from './views/academicActivity'
+import InnaiQualification from './views/InnaiQualification'
+
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
 import JoinScientific from './views/JoinScientific'
@@ -46,16 +50,11 @@ const ROUTE_LIST = [
     component: BaseInfo,
     name: '基本信息'
   },
+  // 新
   {
-    type: 'article',
-    component: Article,
-    name: '文章'
-  },
-  {
-    /** 方明处理 */
-    type: 'personWinning',
-    component: PersonWinning,
-    name: '个人获奖'
+    type: 'statePersonnel',
+    component: statePersonnel,
+    name: '人员状态'
   },
   {
     /** 吴敏处理 */
@@ -68,6 +67,41 @@ const ROUTE_LIST = [
     type: 'onEducation',
     component: OnEducation,
     name: '外出进修'
+  },
+  // 新
+  {
+    type: 'academicActivity',
+    component: AcademicActivity,
+    name: '学术活动'
+  },
+  {
+    type: 'qualification',
+    component: '',
+    name: '资质管理',
+    children: [
+      {
+        type: "innaiQualification",
+        // path: "/continuingEdu/人员管理",
+        component: InnaiQualification,
+        name: '院内工作资质'
+      },
+      {
+        type: "outQualification",
+        // path: "/continuingEdu/其他人员",
+        component: InnaiQualification,
+        name: '院外工作资质'
+      }
+    ]
+  },
+  {
+    type: 'article',
+    component: Article,
+    name: '文章'
+  },
+  {
+    type: 'monograph',
+    component: Monograph,
+    name: '专著'
   },
   {
     /** 方明处理 */
@@ -92,25 +126,42 @@ const ROUTE_LIST = [
     name: '专利'
   },
   {
+    type: 'WardInnovate',
+    component: WardInnovate,
+    name: '科室创新'
+  },
+  {
     type: 'learnJob',
     component: LearnJob,
     name: '学会任职'
   },
   {
-    type: 'monograph',
-    component: Monograph,
-    name: '专著'
+    /** 方明处理 */
+    type: 'personWinning',
+    component: PersonWinning,
+    name: '个人获奖'
   },
   {
     type: 'continuingEducation',
     component: ContinuingEducation,
     name: '举办继续教育培训班'
   },
-
   {
     type: 'workHistory',
-    component: WorkHistory,
-    name: '工作经历'
+    component: '',
+    name: '工作经历',
+    children: [
+      {
+        type: 'outWorkHistory',
+        component: WorkHistory,
+        name: '院外工作经历',
+      },
+      {
+        type: 'innaiWorkHistory',
+        component: WorkHistory,
+        name: '院内工作经历',
+      },
+    ]
   },
   {
     type: 'educationalExperience',
@@ -120,7 +171,8 @@ const ROUTE_LIST = [
   {
     type: 'workRegistrationForm',
     component: WorkRegistrationForm,
-    name: '在院工作情况'
+    // name: '在院工作情况'
+    name: '临床护理工作登记'
   },
   {
     type: 'toNewPost',
@@ -153,11 +205,6 @@ const ROUTE_LIST = [
   //   component: Leave,
   //   name: '离职'
   // }
-  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' ? [{
-    type: 'WardInnovate',
-    component: WardInnovate,
-    name: '科室创新'
-  }] : []
 ]
 
 
@@ -165,7 +212,27 @@ const ROUTE_LIST = [
 export default observer(function NurseFileDetail(props: Props, context: any) {
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
-  let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
+  // let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
+  let CurrentRoute = getTargetObj(ROUTE_LIST, 'type', currentRouteType)
+
+  // 筛选目标对象
+  function getTargetObj(listDate: any, targetKey: string, targetName: any) {
+    let chooseRoute = listDate.find((item: any) => {
+      if (item.children) {
+        return item.children.find(
+          (item1: any) => targetName?.indexOf(item1[targetKey]) >= 0
+        );
+      } else {
+        return targetName?.indexOf(item[targetKey]) >= 0;
+      }
+    });
+    if (chooseRoute && chooseRoute.children) {
+      chooseRoute = chooseRoute.children.find(
+        (item1: any) => targetName?.indexOf(item1[targetKey]) >= 0
+      );
+    }
+    return chooseRoute;
+  }
 
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {

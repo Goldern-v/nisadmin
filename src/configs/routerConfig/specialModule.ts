@@ -24,6 +24,8 @@ import NurseAuditNew from "src/modules/auditNurseFileNew/NurseAudit";
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh
   from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_whyx
+  from "src/modules/nurseFiles/view/nurseFiles-whyx/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_nys
   from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_gzhd
@@ -541,7 +543,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
     setLayout(
       "/selfNurseFile/:type",
-      NurseFileDetailView_wh,
+      NurseFileDetailView_whyx,
       layouts.MainLayout
     ),
     setLayout(
