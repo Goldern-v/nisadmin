@@ -24,7 +24,7 @@ export default function Remark(props: Props) {
     <Wrapper>
       {masterInfo.remark && <div
         className="table-remark"
-        style={{width:`${masterInfo.remark.width-(masterInfo.tBody.length-1)}px`}}
+        style={{width:`${masterInfo.remark.width-(masterInfo.tBody[0].length-1)}px`}}
         suppressContentEditableWarning
         contentEditable={queryObj.audit ? false : true}
         onBlur={(e) => changeValue(e, masterInfo)}

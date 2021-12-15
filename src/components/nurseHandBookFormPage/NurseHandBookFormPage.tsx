@@ -75,8 +75,8 @@ export default function NurseHandBookFormPage(props: Props) {
             return (<div>
               {masterInfo.tHead[idx] && <CommonHeader 
                 isPrint={isPrint} 
-                showFixHeader={showFixHeader} 
-                tHead={masterInfo.tHead[idx]} 
+                showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 
+                tHead={masterInfo.tHead[idx]}
                 beforeSetTableHeadContent={beforeSetTableHeadContent} 
                 tableHeadContent
               ></CommonHeader>}

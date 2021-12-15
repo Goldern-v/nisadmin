@@ -37,7 +37,7 @@ export default function Common(props: Props) {
     // e:事件对象;  colIdx:列数;
     // col:列数据;  rowIdx:行数;
     setSelectIndex(rowIdx) // 聚焦时改变当前选中行数
-    selectRow = bodyModal[rowIdx] // 获取聚焦行数据(不触发渲染)
+    selectRow = bodyModal[bodyIdx].tableData[rowIdx] // 获取聚焦行数据(不触发渲染)
     setColIdx(colIdx)
     e.preventDefault() // 阻止默认行为
     let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
@@ -60,10 +60,11 @@ export default function Common(props: Props) {
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
     col.click && col.click(col) && scheduleStore.setIsSave(true)
-    col.click && setBodyModal([...bodyModal])
+    col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
   }
 
   const ContextMenu = (e: any) => {
+    console.log(bodyModal[bodyIdx].tableData[selectIndex][colIdx]);
     if(selectIndex==-1) return
     setVisible(false)
     e.preventDefault()
@@ -72,9 +73,9 @@ export default function Common(props: Props) {
   }
 
   const refresh = () => {
-
-    setBodyModal([...bodyModal])
-    if (bodyModal[selectIndex][colIdx].multiple) {
+    
+    setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
       setVisible(false)//关闭下拉框
     }
@@ -97,7 +98,7 @@ export default function Common(props: Props) {
   }
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow,bodyIdx,masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
       setVisible(false)
@@ -166,11 +167,11 @@ export default function Common(props: Props) {
             {col.value}
           </div>)}
       </div>}
-      {visible && <SelectModal
+      {visible && selectIndex != -1 && <SelectModal
         menuType={menuType}
         domReact={domReact}
         refresh={refresh}
-        col={bodyModal[selectIndex][colIdx]}
+        col={bodyModal[bodyIdx].tableData[selectIndex][colIdx]}
         selectList={selectList}
         setOperationType={setOperationType}
       ></SelectModal>}

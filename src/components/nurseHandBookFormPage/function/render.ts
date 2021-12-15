@@ -26,8 +26,8 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
     let arr = []
     let rows = 0
     let needNullRows = false
-    if (formContent[bodyIdx]&&(formContent[bodyIdx].length > masterInfo.defaulLength[bodyIdx])) {
-      rows = formContent[bodyIdx].length
+    if (formContent[bodyIdx]&&(formContent[bodyIdx].tableData.length > masterInfo.defaulLength[bodyIdx])) {
+      rows = formContent[bodyIdx].tableData.length
     } else {
       rows = masterInfo.defaulLength[bodyIdx];
       needNullRows = true
@@ -40,13 +40,13 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
           copyNullRow(nullRow, config, index, key)
         }
       })
-      if (needNullRows && (!formContent[bodyIdx] || index >= formContent[bodyIdx].length)) {
+      if (needNullRows && (!formContent[bodyIdx] || index >= formContent[bodyIdx].tableData.length)) {
           nullRow.map((item: any) => {
             item.value = ""
           })
       } else {
         nullRow.map((item: any) => {
-        item.value = formContent[bodyIdx][index][item.key]
+        item.value = formContent[bodyIdx].tableData[index][item.key]
         })
       }
       arr.push(nullRow)

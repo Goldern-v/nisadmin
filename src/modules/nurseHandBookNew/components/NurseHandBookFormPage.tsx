@@ -68,7 +68,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
-        setFormContentList(tableContent.formContent)
+        let templeContent:any = []
+        if(tableContent.formContent.length){
+          tableContent.formContent.map((item:any)=>{
+            templeContent.push({tableData:JSON.parse(item.tableData)})
+          })
+        }
+        setFormContentList(templeContent)
         setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setSignName(recordName.formContent[0].signName)
@@ -148,7 +154,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
-    let tBodyList: any = fiterList(bodyModal)
+    let tBodyList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
     let cHeaderList:any = fiterList([complexHeadList])
 
     api.saveDraft(queryObj.type, {
@@ -191,7 +200,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
-    let tBodyList: any = fiterList(bodyModal)
+    let tBodyList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
     let cHeaderList:any = fiterList([complexHeadList])
 
     api.auditJM(queryObj.type, {
