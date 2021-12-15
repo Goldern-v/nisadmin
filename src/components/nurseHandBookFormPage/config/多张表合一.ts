@@ -15,7 +15,7 @@ const tHead1 = {
 const tHead2 = {
   top: [
     // { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "www", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -28,7 +28,7 @@ const tHead2 = {
 const tHead3 = {
   top: [
     // { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
-    { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "hhh", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -117,5 +117,4 @@ export default {
   primaryKey:18,
   tBody:[tBody1,tBody2,tBody3],
   tHead:[tHead1,tHead2,tHead3],
-  multiTable:true,
 }

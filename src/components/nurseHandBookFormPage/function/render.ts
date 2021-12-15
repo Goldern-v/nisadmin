@@ -14,8 +14,7 @@ export const copyNullRow = (nullRow: any, config: any, index: any, key: any) => 
 
 // 用来复制空行的函数
 export const initBodyModal = (masterInfo: any, setBodyModal: Function, formContent: any) => {
-  let tempArr = []
-  if(masterInfo.multiTable){
+  let tempArr:any = []
     /*
       [
         {tableData:[{},{},{}]}
@@ -24,6 +23,7 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
       ]
     */
    masterInfo.tBody.map((body:any,bodyIdx:any)=>{
+    let arr = []
     let rows = 0
     let needNullRows = false
     if (formContent[bodyIdx]&&(formContent[bodyIdx].length > masterInfo.defaulLength[bodyIdx])) {
@@ -49,41 +49,12 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
         item.value = formContent[bodyIdx][index][item.key]
         })
       }
-      tempArr.push(nullRow)
+      arr.push(nullRow)
     }
+    tempArr.push({tableData:arr})
    })
-  }else{
-    // [{},{},{}]
-  let rows = 0
-  let needNullRows = false
-  if (formContent.length > masterInfo.defaulLength) {
-    rows = formContent.length
-  } else {
-    rows = masterInfo.defaulLength;
-    needNullRows = true
-  }
-  for (let index = 0; index < rows; index++) {
-    let nullRow: any = []
-    masterInfo.tBody.map((config: any, index: any) => {
-      nullRow.push({})
-      for (let key in config) {
-        copyNullRow(nullRow, config, index, key)
-      }
-    })
-    if (needNullRows && index >= formContent.length) {
-        nullRow.map((item: any) => {
-          item.value = ""
-        })
-    } else {
-      nullRow.map((item: any) => {
-      item.value = formContent[index][item.key]
-      })
-    }
-    tempArr.push(nullRow)
-  }
+
   console.log(tempArr);
-  }
-  
   
   setBodyModal([...tempArr])
 }
