@@ -42,14 +42,13 @@ export default function NurseHandBookFormPage(props: Props) {
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList,complexHeaderContent} = props
 
-  const [visible, setVisible]: any = useState(false)
-  
-
+  const [visible, setVisible]: any = useState([])
+  let templeVisible = masterInfo.tBody.map((item:any)=>false)
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
     if (!targetClass.includes("common")) {
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }
   useEffect(() => {
@@ -59,6 +58,10 @@ export default function NurseHandBookFormPage(props: Props) {
       initBodyModal(masterInfo, setBodyModal, [])
     }
   }, [props.formContent])
+
+  useEffect(() => {
+    setVisible(templeVisible)
+  }, [])
 
   const CommonProps = {
     
@@ -90,6 +93,7 @@ export default function NurseHandBookFormPage(props: Props) {
                 masterInfo ={masterInfo}
                 setComputeRow = {setComputeRow}
                 computeRow = {computeRow}
+                templeVisible = {templeVisible}
               ></Common>
             </div>)
           })}

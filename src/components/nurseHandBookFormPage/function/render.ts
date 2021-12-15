@@ -53,8 +53,5 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
     }
     tempArr.push({tableData:arr})
    })
-
-  console.log(tempArr);
-  
   setBodyModal([...tempArr])
 }

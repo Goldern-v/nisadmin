@@ -7,24 +7,24 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 export interface Props {
   bodyModal: any
   setBodyModal: Function
-  visible: Boolean
+  visible: any
   setVisible: Function
   computeRow: any
   setComputeRow: Function
   masterInfo: any
-  isPrint:any
-  bodyIdx:any
+  isPrint: any
+  bodyIdx: any
+  templeVisible: any
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow,isPrint,bodyIdx } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
   const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
   const [menuType, setMenuType] = useState('select')
-  // const [visible, setVisible]: any = useState(false)
   const [operationType, setOperationType]: any = useState("")
   const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
@@ -45,15 +45,16 @@ export default function Common(props: Props) {
     if (col.select) { // 如果当前单元格有下拉选项
       setSelectList(col.select)
       setMenuType('select')
-      if (visible) {
-        setVisible(false)
+      if (visible[bodyIdx]) {
+        setVisible(templeVisible)
       }
       // 设置定时器,防止已有弹窗时不渲染
       setTimeout(() => {
-        setVisible(true)
+        visible[bodyIdx]=true
+        setVisible([...visible])
       })
     } else {
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }
 
@@ -64,12 +65,12 @@ export default function Common(props: Props) {
   }
 
   const ContextMenu = (e: any) => {
-    console.log(bodyModal[bodyIdx].tableData[selectIndex][colIdx]);
     if(selectIndex==-1) return
-    setVisible(false)
+    setVisible(templeVisible)
     e.preventDefault()
     setMenuType('Menus')
-    setVisible(true)
+    visible[bodyIdx]=true
+    setVisible([...visible])
   }
 
   const refresh = () => {
@@ -77,7 +78,7 @@ export default function Common(props: Props) {
     setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
     if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
-      setVisible(false)//关闭下拉框
+      setVisible(templeVisible)
     }
     scheduleStore.setIsSave(true)
   }
@@ -101,7 +102,7 @@ export default function Common(props: Props) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow,bodyIdx,masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }, [operationType])
 
@@ -151,8 +152,8 @@ export default function Common(props: Props) {
               {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
         </div>)}
-      {computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {computeRow.map((col: any, colIdx: any) =>
+      {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {computeRow[bodyIdx].map((col: any, colIdx: any) =>
           <div
             id={`${col.key}_${colIdx}`}
             className="common"
@@ -167,7 +168,7 @@ export default function Common(props: Props) {
             {col.value}
           </div>)}
       </div>}
-      {visible && selectIndex != -1 && <SelectModal
+      {visible[bodyIdx] && selectIndex != -1 && <SelectModal
         menuType={menuType}
         domReact={domReact}
         refresh={refresh}

@@ -119,7 +119,8 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
   })
 }
 export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
-  if(computeRow[colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
+  if(!computeRow[bodyIdx].length) {message.warn("当前列无计算规则！");return}
+  if(computeRow[bodyIdx][colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
   let ColumnArr:any = []
   bodyModal[bodyIdx].tableData.map((row:any)=>{
     ColumnArr.push(row[colIdx].value)
@@ -130,7 +131,7 @@ export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyMod
 
   if (Object.is(sum, NaN)) { sum = '数值有误' }
 
-  computeRow.find((item:any)=>{
+  computeRow[bodyIdx].find((item:any)=>{
     return item.key.split("_")[1] === tBody[bodyIdx][colIdx].key
   }).value = sum
 }
