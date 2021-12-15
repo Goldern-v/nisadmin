@@ -40,8 +40,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
-  const [signName, setSignName]: any = useState("")
-  const [signTime, setSignTime]: any = useState("")
+  const [submitSign, setSubmitSign]: any = useState([])
+  const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
@@ -68,11 +68,16 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
-        setFormContentList(tableContent.formContent)
+        let templeContent:any = []
+        if(tableContent.formContent.length){
+          tableContent.formContent.map((item:any)=>{
+            templeContent.push({tableData:JSON.parse(item.tableData)})
+          })
+        }
+        setFormContentList(templeContent)
         setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
-        setSignName(recordName.formContent[0].signName)
-        setSignTime(recordName.formContent[0].signTime)
+        setSignList(recordName.formContent)
         setComputeRow(line.formContent)
         setSpinning(false)
       })
@@ -148,7 +153,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
-    let tBodyList: any = fiterList(bodyModal)
+    let tBodyList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
     let cHeaderList:any = fiterList([complexHeadList])
 
     api.saveDraft(queryObj.type, {
@@ -179,7 +187,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "recordName",
-          formContent: [{signName:signName,signTime:signTime}],
+          formContent: submitSign,
         }
       ]
     })
@@ -191,7 +199,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSubmit = () => {
-    let tBodyList: any = fiterList(bodyModal)
+    let tBodyList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
     let cHeaderList:any = fiterList([complexHeadList])
 
     api.auditJM(queryObj.type, {
@@ -222,7 +233,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "recordName",
-          formContent: [{signName:signName,signTime:signTime}],
+          formContent: submitSign,
         }
       ]
     })
@@ -413,10 +424,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
     remark,
     setComputeRow,
     computeRow,
-    signName, 
-    setSignName,
-    signTime, 
-    setSignTime,
+    signList,
+    setSubmitSign,
+    submitSign, 
   }
   return <Wrapper>
     <Spin spinning={spinning}>

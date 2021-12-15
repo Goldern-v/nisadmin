@@ -1,7 +1,7 @@
 import { tick } from "../function/click"
 const tHead = {
   top: [
-    // { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -13,12 +13,12 @@ const tHead = {
   bottom: []
 }
 const tBody: any = [
-  // {
-  //   key: "serialNumber",
-  //   name: "序号",
-  //   value: "",
-  //   width: 100,
-  // },
+  {
+    key: "serialNumber",
+    name: "序号",
+    value: "",
+    width: 100,
+  },
   {
     key: "what",
     name: "what",
@@ -58,7 +58,7 @@ const tBody: any = [
 ]
 
 const computeRow: any = [
-  // { key: '合计', name:'合计', value: "合计", width: 100 },
+  { key: '合计', name:'合计', value: "合计", width: 100 },
   { key: 'calculation_what', name:'星期一', value: "", width: 100 },
   { key: 'calculation_why', name:'星期二', value: "", width: 100 },
   { key: 'calculation_where', name:'星期三', value: "", width: 100 },
@@ -85,16 +85,12 @@ const sign = {
   signTime:{key:'signTime',value:''}
 }
 export default {
-  defaulLength: 17,
+  defaulLength: [17],
   tableTitle: { value: "月工作重点及周安排", width: 700 },
-  tBody,
-  tHead,
+  tBody:[tBody],
+  tHead:[tHead],
   remark: { value: "备注：", width: 700 },
   computeRow,
   sign: sign,
   complexHead,
-  defaultValue:{
-    10:['','日期','护理业务查房','主查人','参加人员','应到','实到'],
-    20:['','日期','护理教学查房','主查人','参加人员','应到','实到'],
-  }
 }
