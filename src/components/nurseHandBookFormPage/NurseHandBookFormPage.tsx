@@ -27,10 +27,9 @@ export interface Props {
   isPrint: any
   beforeSetTableHeadContent: Function
   tableHeadContent: any
-  signName: String
-  setSignName: Function
-  signTime: String
-  setSignTime: Function
+  signList: any
+  setSubmitSign: Function
+  submitSign: any
   setComplexHeadList: Function
   complexHeadList: any
 }
@@ -40,16 +39,15 @@ export default function NurseHandBookFormPage(props: Props) {
   const masterInfo = require(`./config/${manualType}`).default
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-          signName, setSignName, signTime, setSignTime, setComplexHeadList, complexHeadList,complexHeaderContent} = props
+          signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent} = props
 
-  const [visible, setVisible]: any = useState(false)
-  
-
+  const [visible, setVisible]: any = useState([])
+  let templeVisible = masterInfo.tBody.map((item:any)=>false)
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
     if (!targetClass.includes("common")) {
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }
   useEffect(() => {
@@ -58,14 +56,22 @@ export default function NurseHandBookFormPage(props: Props) {
     } else {
       initBodyModal(masterInfo, setBodyModal, [])
     }
-  }, [props.formContent])
+  }, [formContent])
 
-  const CommonHeaderProps = {
-    isPrint,showFixHeader,masterInfo,beforeSetTableHeadContent,tableHeadContent
-  }
+  useEffect(() => {
+    if (!queryObj.isAdd) {
+      setSubmitSign(signList)
+    } else {
+      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign))))
+    }
+  }, [signList])
+
+  useEffect(() => {
+    setVisible(templeVisible)
+  }, [])
 
   const CommonProps = {
-    isPrint,bodyModal,setBodyModal,visible,setVisible,masterInfo,setComputeRow,computeRow
+    
   }
 
   return (
@@ -75,10 +81,31 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
-          <CommonHeader {...CommonHeaderProps}></CommonHeader>
-          <Common {...CommonProps}></Common>
+          {masterInfo.tBody.map((body:any,idx:any)=>{
+            return (<div>
+              {masterInfo.tHead[idx] && <CommonHeader 
+                isPrint={isPrint} 
+                showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 
+                tHead={masterInfo.tHead[idx]}
+                beforeSetTableHeadContent={beforeSetTableHeadContent} 
+                tableHeadContent
+              ></CommonHeader>}
+              <Common 
+                isPrint={isPrint} 
+                bodyModal={bodyModal}
+                bodyIdx={idx}
+                setBodyModal={setBodyModal} 
+                visible={visible} 
+                setVisible = {setVisible}
+                masterInfo ={masterInfo}
+                setComputeRow = {setComputeRow}
+                computeRow = {computeRow}
+                templeVisible = {templeVisible}
+              ></Common>
+            </div>)
+          })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSignName={setSignName} setSignTime={setSignTime} signName={signName} signTime={signTime}></SignModule>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>

@@ -1,7 +1,8 @@
 import { tick } from "../function/click"
 const tHead1 = {
   top: [
-    { name: "www", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    // { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -37,10 +38,9 @@ const tHead3 = {
   mid: [],
   bottom: []
 }
-
 const tBody1: any = [
-  { key: "what", name: "what", value: "", width: 100,click:tick},
-  { key: "why",name: "why", value: "", width: 100,select:["1",'2','3'],multiple:"/"},
+  { key: "what", name: "what", value: "", width: 100,},
+  { key: "why",name: "why", value: "", width: 100,},
   { key: "where", name: "where", value: "", width: 100,},
   { key: "who",name: "who", value: "",width: 100,},
   { key: "when", name: "when", value: "",width: 100,},
@@ -62,6 +62,15 @@ const tBody3: any = [
   { key: "when", name: "when", value: "",width: 100,},
   { key: "how",name: "how",value: "",width: 100,},
 ]
+const computeRow: any = [
+  // { key: '合计', name:'合计', value: "合计", width: 100 },
+  { key: 'calculation_what', name:'星期一', value: "", width: 100 },
+  { key: 'calculation_why', name:'星期二', value: "", width: 100 },
+  { key: 'calculation_where', name:'星期三', value: "", width: 100 },
+  { key: 'calculation_who', name:'星期四', value: "", width: 100 },
+  { key: 'calculation_when', name:'星期五', value: "", width: 100 },
+  { key: 'calculation_how', name:'星期五', value: "", width: 100 },
+]
 
 const complexHead: any = {
   boxWidth: 700,
@@ -76,31 +85,9 @@ const complexHead: any = {
     { key: 'fanwei', name:'讨论范围', value: "", leftWidth: 100, rightWidth: 600, preIndex:3 },
   ]
 }
-const computeRow1: any = [
-  { key: '合计', name:'合计', value: "合计", width: 100,},
-  { key: 'calculation_one', name:'星期一', value: "", width: 100 },
-  { key: 'calculation_two', name:'星期二', value: "", width: 100 },
-  { key: 'calculation_three', name:'星期三', value: "", width: 100 },
-  { key: 'calculation_four', name:'星期四', value: "", width: 100 },
-  { key: 'calculation_five', name:'星期五', value: "", width: 100 },
-  { key: 'calculation_six', name:'星期四', value: "", width: 100 },
-  { key: 'calculation_seven', name:'星期五', value: "", width: 100 },
-  { key: 'calculation_ten', name:'星期五', value: "", width: 100 },
-]
-
-const computeRow2: any = [
-  { key: "calculation_what", name: "what", value: "", width: 100,},
-  { key: "calculation_why",name: "why", value: "", width: 100,},
-  { key: "calculation_where", name: "where", value: "", width: 100,},
-  { key: "calculation_who",name: "who", value: "",width: 100,},
-  { key: "calculation_when", name: "when", value: "",width: 100,},
-  { key: "calculation_how",name: "how",value: "",width: 100,},
-]
-
-
 const sign = {
-  signName:{key:'signName',value:'',preName:"记录人"},
-  signTime:{key:'signTime',value:'',preName:"记录时间"}
+  signName:{key:'signName',value:''},
+  signTime:{key:'signTime',value:''}
 }
 // export default {
 //   defaulLength: 17,
@@ -130,6 +117,4 @@ export default {
   tableTitle: { value: "月工作重点及周安排", width: 600 },
   tBody:[tBody1,tBody2,tBody3],
   tHead:[tHead1,tHead2,tHead3],
-  sign:sign,
-  // computeRow:[[],computeRow2,[]],
 }

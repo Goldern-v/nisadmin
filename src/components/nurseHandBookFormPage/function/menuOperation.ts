@@ -14,59 +14,59 @@ import { message } from 'antd'
 import { copyNullRow } from "./render"
 
 // 删除当前行
-export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, masterInfo: any ) => {
-  if(bodyModal.length<=masterInfo.defaulLength){
+export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any,masterInfo:any) => {
+  if(bodyModal[bodyIdx].tableData.length <= masterInfo.defaulLength[bodyIdx]){
   message.error('当前行数少于默认行数，只可清空数据!')
     return
   }
-  bodyModal.splice(selectIndex, 1)
-  setBodyModal([...bodyModal])
+  bodyModal[bodyIdx].tableData.splice(selectIndex, 1)
+  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 
 // 清空当前行数据
-export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   let nullRow: any = []
-  tBody.map((config: any, index: any) => {
+  tBody[bodyIdx].map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
       copyNullRow(nullRow, config, index, key)
     }
   })
-  bodyModal[selectIndex] = nullRow
-  setBodyModal([...bodyModal])
+  bodyModal[bodyIdx].tableData[selectIndex] = nullRow
+  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 
 // 插入空行事件
-export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   let nullRow: any = []
-  tBody.map((config: any, index: any) => {
+  tBody[bodyIdx].map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
       copyNullRow(nullRow, config, index, key)
     }
   })
-  bodyModal.splice(selectIndex, 1, nullRow, bodyModal[selectIndex])
-  setBodyModal([...bodyModal])
+  bodyModal[bodyIdx].tableData.splice(selectIndex, 1, nullRow, bodyModal[bodyIdx].tableData[selectIndex])
+  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 // 追加空行事件
-export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any) => {
+export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   let nullRow: any = []
-  tBody.map((config: any, index: any) => {
+  tBody[bodyIdx].map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
       copyNullRow(nullRow, config, index, key)
     }
   })
-  bodyModal.splice(selectIndex, 1, bodyModal[selectIndex], nullRow)
-  setBodyModal([...bodyModal])
+  bodyModal[bodyIdx].tableData.splice(selectIndex, 1, bodyModal[bodyIdx].tableData[selectIndex], nullRow)
+  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 // 复制整行事件
-export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
+export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   let nullRow: any = []
-  bodyModal[selectIndex].map((config: any, index: any) => {
+  bodyModal[bodyIdx].tableData[selectIndex].map((config: any, index: any) => {
     nullRow.push({})
     for (let key in config) {
       // console.log(Object.prototype.toString.call(config[key]) == "[object Function]");
@@ -76,18 +76,18 @@ export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectInd
   setCopyRow(nullRow)
 }
 // 粘贴事件
-export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
+export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   if (JSON.stringify(copyRow) == "{}") {
     message.error('尚未复制内容！')
     return
   }
-  bodyModal[selectIndex] = copyRow
-  setBodyModal([...bodyModal])
+  bodyModal[bodyIdx].tableData[selectIndex] = copyRow
+  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 
 // 计算当前行事件
-export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any) => {
-  let rules = bodyModal[selectIndex].filter((item: any) => item.calculation_rules)
+export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
+  let rules = bodyModal[bodyIdx].tableData[selectIndex].filter((item: any) => item.calculation_rules)
   if(!rules.length){message.warn("当前行无计算规则！");return}
   rules = rules.map((item: any) => {
     let [key1, operator, key2] = item.calculation_rules.split(" ")
@@ -96,8 +96,8 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
   })
 
   rules.map((rule: any) => {
-    let val1 = Number(bodyModal[selectIndex].find((item: any) => item.key === rule.key1).value)
-    let val2 = Number(bodyModal[selectIndex].find((item: any) => item.key === rule.key2).value)
+    let val1 = Number(bodyModal[bodyIdx].tableData[selectIndex].find((item: any) => item.key === rule.key1).value)
+    let val2 = Number(bodyModal[bodyIdx].tableData[selectIndex].find((item: any) => item.key === rule.key2).value)
     let resul: Number | String = 0
     switch (rule.operator) {
       case '+':
@@ -114,14 +114,15 @@ export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal:
         break;
     }
     if (Object.is(resul, NaN)) { resul = '数值有误' }
-    let colIndex = bodyModal[selectIndex].findIndex((item: any) => item.key === rule.resultKey)
-    bodyModal[selectIndex][colIndex].value = resul
+    let colIndex = bodyModal[bodyIdx].tableData[selectIndex].findIndex((item: any) => item.key === rule.resultKey)
+    bodyModal[bodyIdx].tableData[selectIndex][colIndex].value = resul
   })
 }
-export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ) => {
-  if(computeRow[colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
+export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
+  if(!computeRow[bodyIdx].length) {message.warn("当前列无计算规则！");return}
+  if(computeRow[bodyIdx][colIdx].key.split("_")[0] != 'calculation'){message.warn("当前列无计算规则！");return}
   let ColumnArr:any = []
-  bodyModal.map((row:any)=>{
+  bodyModal[bodyIdx].tableData.map((row:any)=>{
     ColumnArr.push(row[colIdx].value)
   });
   let sum = ColumnArr.reduce((pro:any,cur:any)=>{
@@ -130,8 +131,8 @@ export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyMod
 
   if (Object.is(sum, NaN)) { sum = '数值有误' }
 
-  computeRow.find((item:any)=>{
-    return item.key.split("_")[1] === tBody[colIdx].key
+  computeRow[bodyIdx].find((item:any)=>{
+    return item.key.split("_")[1] === tBody[bodyIdx][colIdx].key
   }).value = sum
 }
 export default {

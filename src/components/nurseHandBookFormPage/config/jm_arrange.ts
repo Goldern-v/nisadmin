@@ -72,12 +72,12 @@ const complexHead: any = {
   complexHeadList:[
     { key: 'time', name:'时间', value: "", leftWidth: 100, rightWidth: 100 },
     { key: 'place', name:'地点', value: "", leftWidth: 100, rightWidth: 100 },
-    { key: 'one', name:'主持人', value: "", leftWidth: 100, rightWidth: 200 ,lastChild:true },
+    { key: 'one', name:'主持人', value: "", leftWidth: 100, rightWidth: 200 , lastChild:true },
     { key: 'two', name:'被邀请人员', value: "", leftWidth: 100, rightWidth: 600 , preIndex:3 },
     { key: 'name', name:'患者姓名', value: "", leftWidth: 100, rightWidth: 100 },
     { key: 'ID', name:'住院号', value: "", leftWidth: 100, rightWidth: 100 },
-    { key: 'zhenduan', name:'诊断', value: "", leftWidth: 100, rightWidth: 200  ,lastChild:true },
-    { key: 'fanwei', name:'讨论范围', value: "", leftWidth: 100, rightWidth: 600  , preIndex:3 },
+    { key: 'zhenduan', name:'诊断', value: "", leftWidth: 100, rightWidth: 200, lastChild:true },
+    { key: 'fanwei', name:'讨论范围', value: "", leftWidth: 100, rightWidth: 600, preIndex:3 },
   ]
 }
 const sign = {
@@ -85,12 +85,12 @@ const sign = {
   signTime:{key:'signTime',value:''}
 }
 export default {
-  defaulLength: 17,
+  defaulLength: [17],
   tableTitle: { value: "月工作重点及周安排", width: 700 },
-  tBody,
-  tHead,
+  tBody:[tBody],
+  tHead:[tHead],
   remark: { value: "备注：", width: 700 },
-  computeRow,
+  computeRow:[computeRow,[],[]],
   sign: sign,
   complexHead,
 }

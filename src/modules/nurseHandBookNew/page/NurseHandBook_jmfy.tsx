@@ -45,6 +45,7 @@ export default observer(function NurseHandBook_jmfy() {
       { value: "单列", name: "单列表" },
       { value: "计算行", name: "计算行表" },
       { value: "备注", name: "备注表" }, 
+      { value: "多张表合一", name: "多张表合一" }, 
     ],
     conclusionJM: [
       { value: "jm_monthConclusion", name: "月度工作总结" },
