@@ -39,18 +39,18 @@ export default observer(function NurseHandBook_jmfy() {
   const manualTypeArr: any = {
     planJM: [
       { value: "jm_arrange", name: "月工作重点及周安排" },
-      { value: "jm_workPlan", name: "年度工作计划" },
-      { value: "jm_launchPlan", name: "年度工作开展计划" },
-      { value: "calculation", name: "计算列测试表格" },
-      { value: "单列", name: "单列表" },
-      { value: "计算行", name: "计算行表" },
-      { value: "备注", name: "备注表" }, 
-      { value: "多张表合一", name: "多张表合一" }, 
+      // { value: "jm_workPlan", name: "年度工作计划" },
+      // { value: "jm_launchPlan", name: "年度工作开展计划" },
+      // { value: "calculation", name: "计算列测试表格" },
+      // { value: "单列", name: "单列表" },
+      // { value: "计算行", name: "计算行表" },
+      // { value: "备注", name: "备注表" }, 
+      // { value: "多张表合一", name: "多张表合一" }, 
     ],
     conclusionJM: [
-      { value: "jm_monthConclusion", name: "月度工作总结" },
-      { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
-      { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
+      // { value: "jm_monthConclusion", name: "月度工作总结" },
+      // { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
+      // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
     ],
   }
 
