@@ -16,6 +16,7 @@ import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangS
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import MaternityLeave from '../views/arrangeHome/page/maternityLeave';
+import MaternityLeaveJustice from '../views/arrangeHome/page/maternityLeave/justice';
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 
 export interface meunConfigItem {
@@ -137,6 +138,13 @@ export const meunConfig: meunConfigItem[] = [
         title: " 产假及哺乳期",
         path: "/personnelManagement/maternityLeave",
         component: MaternityLeave,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+      {
+        title: " 产假及哺乳期归档",
+        path: "/personnelManagement/maternityLeaveJustice",
+        component: MaternityLeaveJustice,
         // hide: !authStore.isRoleManage
         iSlimit: true,
       }
