@@ -60,6 +60,7 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any) => {
     setMenuType("select")
+    console.log(col);
     col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
   }

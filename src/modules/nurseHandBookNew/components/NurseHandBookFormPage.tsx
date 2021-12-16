@@ -69,16 +69,22 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         let templeContent:any = []
+        let lineList:any = []
         if(tableContent.formContent.length){
           tableContent.formContent.map((item:any)=>{
             templeContent.push({tableData:JSON.parse(item.tableData)})
+          })
+        }
+        if(line.formContent.length){
+          line.formContent.map((item:any)=>{    
+            lineList.push(JSON.parse(item.computeRow))
           })
         }
         setFormContentList(templeContent)
         setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setSignList(recordName.formContent)
-        setComputeRow(line.formContent)
+        setComputeRow(lineList)
         setSpinning(false)
       })
     }else{
@@ -154,11 +160,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSave = () => {
     let tBodyList: any = []
+    let computeList: any = []
     bodyModal.map((item:any)=>{
       tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
     })
     let cHeaderList:any = fiterList([complexHeadList])
-
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
@@ -179,7 +188,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
@@ -200,11 +209,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSubmit = () => {
     let tBodyList: any = []
+    let computeList: any = []
     bodyModal.map((item:any)=>{
       tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
     })
     let cHeaderList:any = fiterList([complexHeadList])
-
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
       manualType: queryObj.manualType,
@@ -225,7 +237,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
