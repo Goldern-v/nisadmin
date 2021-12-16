@@ -41,6 +41,21 @@ class Api extends BaseApiService {
   getNursingList(deptCode: string) {
     return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
   }
+
+  // 获取产假及哺乳期归档列表
+  getJusticeList(data: iSearchForm) {
+    const params = {
+      ...data,
+      'deliveryStartDate': data.date && data.date[0] ? moment(data.date[0]).format('YYYY-MM-DD') : '',
+      'deliveryEndDate': data.date && data.date[1] ? moment(data.date[1]).format('YYYY-MM-DD') : ''
+    }
+    params.deptCode = params.deptCode === '全院' ? '' : params.deptCode
+    delete params.date
+    return this.post(`/schBabyBreak/getArchivesPage`, params)
+  }
 }
+
+
+
 
 export default new Api()

@@ -35,29 +35,29 @@ export default observer(function ExamineTable() {
           : text == "sr"
           ? "特殊时段查房"
           : "";
-      }
+      },
     },
     {
       title: "内容",
       dataIndex: "message",
       key: "message",
       width: 45,
-      align: "left"
+      align: "left",
     },
     {
       title: "提交人",
       dataIndex: "commiterName",
       key: "commiterName",
       width: 12,
-      align: "left"
+      align: "left",
     },
     {
       title: "时间",
       dataIndex: "commitTime",
       key: "commitTime",
       width: 18,
-      align: "left"
-    }
+      align: "left",
+    },
   ];
 
   const getMealList = () => {
@@ -79,13 +79,13 @@ export default observer(function ExamineTable() {
 
     setLoadingTable(true);
     Promise.all([qualityCheck1, qualityCheck2, qualityCheck3, nurseFileCheck])
-      .then(values => {
+      .then((values) => {
         setLoadingTable(false);
         let array: any = [
           ...(values[0].data.list || []),
           ...(values[1].data.list || []),
           ...(values[2].data.list || []),
-          ...(values[3].data.list || [])
+          ...(values[3].data.list || []),
         ];
         console.log(array, "array");
         //按照提交时间先后排序
@@ -105,7 +105,7 @@ export default observer(function ExamineTable() {
           });
         setTableData(data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e, "ee");
       });
   };
@@ -119,12 +119,12 @@ export default observer(function ExamineTable() {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
           record.othersMessage.id
-        }`
+        }?qcCode=${record.othersMessage.qcCode}`
       );
     } else if (record.type == "nurseFile") {
       service.commonApiService
         .getNurseInformation(record.commiterNo)
-        .then(res => {
+        .then((res) => {
           window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`);
         });
     } else if (record.type == "sr") {
@@ -162,14 +162,14 @@ export default observer(function ExamineTable() {
         columns={columns}
         surplusHeight={(appStore.wih - 262) / 2 + 262}
         loading={loadingTable}
-        rowClassName={record => {
+        rowClassName={(record) => {
           return "cursorPointer";
         }}
-        onRow={record => {
+        onRow={(record) => {
           return {
             onClick: (event: any) => {
               selectRow(record);
-            }
+            },
           };
         }}
       />
