@@ -10,9 +10,9 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import limitUtils from '../utils/limit'
 import { getTitle } from '../config/title'
 
-export interface Props {}
+export interface Props { }
 
-export default function(type: string, modal: any, getTableData: () => void): any {
+export default function (type: string, modal: any, getTableData: () => void): any {
   return {
     title: '操作',
     dataIndex: '操作',
@@ -33,6 +33,7 @@ export default function(type: string, modal: any, getTableData: () => void): any
               </span>
               <span
                 onClick={() => {
+                  console.log(row, 888)
                   openAuditModal(getTitle(type), row, getTableData)
                 }}
               >

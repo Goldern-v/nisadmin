@@ -6,6 +6,7 @@ import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import NurseFilesListView_hj from "./view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_wh from "./view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_whyx from "./view/nurseFiles-whyx/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_nys from "./view/nurseFiles-nys/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_gzhd from "./view/nurseFiles-gzhd/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_lcey from "./view/nurseFiles-lcey/views/nurseFilesList/NurseFilesListView";
@@ -82,7 +83,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "fsxt":
         return NurseFilesListView_wh;
       case "whyx":
-        return NurseFilesListView_wh;
+        return NurseFilesListView_whyx;
       default:
         return NurseFilesListView_hj;
     }

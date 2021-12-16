@@ -126,6 +126,25 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
+    case '人员状态':
+      {
+        globalModal.auditModal.show({
+          empNo: row,
+          id: row,
+          type: 'nurseWHArticle',
+          getTableData: callBack,
+          title: '审核人员状态',
+          tableFormat: [
+            {
+              姓名: 'empName',
+              性别: 'sex'
+            },
+
+          ],
+          // allData: row
+        })
+      }
+      break
     case '文章':
       {
         globalModal.auditModal.show({
@@ -828,5 +847,6 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
+
   }
 }

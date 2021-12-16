@@ -548,7 +548,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout(
       "/nurseFileDetail/:type",
-      NurseFileDetailView,
+      NurseFileDetailView_whyx,
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),//武汉版本审核管理
