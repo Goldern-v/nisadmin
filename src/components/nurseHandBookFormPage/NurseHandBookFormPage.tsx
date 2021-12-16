@@ -60,9 +60,9 @@ export default function NurseHandBookFormPage(props: Props) {
 
   useEffect(() => {
     if (!queryObj.isAdd) {
-      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign))))
-    } else {
       setSubmitSign(signList)
+    } else {
+      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign))))
     }
   }, [signList])
 
@@ -105,7 +105,7 @@ export default function NurseHandBookFormPage(props: Props) {
             </div>)
           })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
-          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign}></SignModule>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>

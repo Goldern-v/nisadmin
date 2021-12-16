@@ -90,7 +90,7 @@ export default {
   tBody:[tBody],
   tHead:[tHead],
   remark: { value: "备注：", width: 700 },
-  computeRow,
+  computeRow:[computeRow,[],[]],
   sign: sign,
   complexHead,
 }
