@@ -18,13 +18,13 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
 import Do from '../components/Do'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function PersonWinning() {
   const editOnEducationModal = createModal(EditOnEducationModal)
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
+      // setTableData(res.data)
     })
   }
   const btnList = [
@@ -95,22 +95,22 @@ export default observer(function PersonWinning() {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
-    {
-      title: '状态',
-      dataIndex: 'auditedStatusName',
-      key: 'auditedStatusName',
-      width: 120,
-      align: 'center'
-    },
-    Do('nurseWHOutStudy', editOnEducationModal, getTableData)
-  ]
+    // {
+    //   title: '状态',
+    //   dataIndex: 'auditedStatusName',
+    //   key: 'auditedStatusName',
+    //   width: 120,
+    //   align: 'center'
+    // },
+    !isSelf() && Do('nurseWHOutStudy', editOnEducationModal, getTableData)
+  ].filter(item => item)
 
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='外出进修' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='外出进修' btnList={isSelf() ? [] : btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

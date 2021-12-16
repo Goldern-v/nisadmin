@@ -130,14 +130,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
       {
         globalModal.auditModal.show({
           empNo: row,
-          id: row,
-          type: 'nurseWHArticle',
+          id: '4031',
+          type: 'nurseWHSpecializNurse',
           getTableData: callBack,
           title: '审核人员状态',
           tableFormat: [
             {
-              姓名: 'empName',
-              性别: 'sex'
+              岗位状态: 'empName',
+              状态原因: 'sex'
             },
 
           ],

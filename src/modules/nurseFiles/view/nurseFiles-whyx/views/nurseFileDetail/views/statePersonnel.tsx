@@ -19,11 +19,10 @@ export default observer(function SpecializNurse() {
   const editSpecializNurseModal = createModal(EditStatePersonnelModal)
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    console.log(11134)
-    // nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
-    //   setTableData(res.data)
-    //   // console.log(res.data,'000000000000')
-    // })
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+      console.log(res.data, '000000000000')
+    })
   }
   const btnList = [
     {
@@ -58,10 +57,10 @@ export default observer(function SpecializNurse() {
         </Row>
         <Row style={{ marginTop: '20px' }}>
           <Col span={4}>
-            <span>岗位状态</span>
+            <span>状态原因</span>
           </Col>
           <Col span={16}>
-            <TextArea disabled rows={4} placeholder="" value='发送给' />
+            <TextArea disabled rows={6} placeholder="" value='发送给' />
           </Col>
         </Row>
       </Wrapper>

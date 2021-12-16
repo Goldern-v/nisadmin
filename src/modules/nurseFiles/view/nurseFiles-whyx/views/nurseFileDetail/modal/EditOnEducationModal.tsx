@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from '../../../services/NurseFilesService'
@@ -37,7 +37,7 @@ export default function EditPersonWinningModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -120,25 +120,36 @@ export default function EditPersonWinningModal(props: Props) {
         <Button key='save' type='primary' onClick={() => onSave(false)}>
           保存
         </Button>,
-        <Button key='submit' type='primary' onClick={() => onSave(true)}>
-          提交审核
-        </Button>
+        // <Button key='submit' type='primary' onClick={() => onSave(true)}>
+        //   提交审核
+        // </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
+          {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`进修专业`} name='studyMajor'>
+            <Form.Field label={`参与成员`} name='participant'>
+              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`开始时间`} name='startDate' onValueChange={computedStudyHour}>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`结束时间`} name='endDate' onValueChange={computedStudyHour}>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学术活动名称`} name='studyMajor'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修单位`} name='unit'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`进修单位所属地`} name='unitLocal'>
+            <Form.Field label={`举办地域 `} name='unitLocal'>
               <Select>
                 {nurseFileDetailViewModal.getDict('进修单位').map((item) => (
                   <Select.Option value={item.code} key={item.code}>
@@ -149,17 +160,17 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修开始时间`} name='startDate' onValueChange={computedStudyHour}>
-              <DatePicker />
+            <Form.Field label={`举办单位`} name='unit'>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修结束时间`} name='endDate' onValueChange={computedStudyHour}>
-              <DatePicker />
+            <Form.Field label={`举办地点`} name='unit'>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修时长(天)`} name='studyHour'>
+            <Form.Field label={`以何种资格获得邀请`} name='studyHour'>
               <Input />
             </Form.Field>
           </Col>

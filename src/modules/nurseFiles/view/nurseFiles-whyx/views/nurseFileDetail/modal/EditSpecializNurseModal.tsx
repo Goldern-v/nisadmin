@@ -37,7 +37,7 @@ export default function EditSpecializNurseModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -68,6 +68,11 @@ export default function EditSpecializNurseModal(props: Props) {
       emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
+  }
+
+  // 参数人员
+  const handleChange = (value: any) => {
+    console.log(`Selected: ${value}`);
   }
 
   useLayoutEffect(() => {
@@ -104,13 +109,30 @@ export default function EditSpecializNurseModal(props: Props) {
         <Button key='save' type='primary' onClick={() => onSave(false)}>
           保存
         </Button>,
-        <Button key='submit' type='primary' onClick={() => onSave(true)}>
-          提交审核
-        </Button>
+        // <Button key='submit' type='primary' onClick={() => onSave(true)}>
+        //   提交审核
+        // </Button>
       ]}
     >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
+          <Col span={24}>
+            <Form.Field label={`参与成员`} name='participant'>
+              {/* <Input /> */}
+              {/* <Select
+                mode="tags"
+                placeholder="请选择参与人员"
+                defaultValue={['a10', 'c12']}
+                onChange={handleChange}
+                style={{ width: '100%' }}
+              >
+                <Select.Option value='在岗'>在岗</Select.Option>
+                <Select.Option value='不在岗'>不在岗</Select.Option>
+              </Select> */}
+              {/* todo 接口联调 */}
+              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
           <Col span={24}>
             <Form.Field label={`专科护士名称`} name='nurseName'>
               <Input />
@@ -127,6 +149,7 @@ export default function EditSpecializNurseModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
+            {/* todo 接口联调 后端要去掉 院级 */}
             <Form.Field label={`级别`} name='nurseLevel'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
