@@ -12,6 +12,21 @@ const tHead = {
   mid: [],
   bottom: []
 }
+
+const tHead1 = {
+  top: [
+    { name: "序号", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "what", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "why", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "where", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "who", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "when", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "how", colspan: "1", rowspan: "1", style:{ width: 100 } },
+  ],
+  mid: [],
+  bottom: []
+}
+
 const tBody: any = [
   {
     key: "serialNumber",
@@ -24,6 +39,53 @@ const tBody: any = [
     name: "what",
     value: "",
     width: 100,
+    select: ["第一个选项","第二个选项","第三个选项","第四个选项","第五个选项"],
+  },
+  {
+    key: "why",
+    name: "why",
+    value: "",
+    width: 100,
+  },
+  {
+    key: "where",
+    name: "where",
+    value: "",
+    width: 100,
+  },
+  {
+    key: "who",
+    name: "who",
+    value: "",
+    width: 100,
+  },
+  {
+    key: "when",
+    name: "when",
+    value: "",
+    width: 100,
+  },
+  {
+    key: "how",
+    name: "how",
+    value: "",
+    width: 100,
+  },
+]
+
+const tBody1: any = [
+  {
+    key: "serialNumber",
+    name: "序号",
+    value: "",
+    width: 100,
+  },
+  {
+    key: "what",
+    name: "what",
+    value: "",
+    width: 100,
+    select: ["第一个选项","第二个选项","第三个选项","第四个选项","第五个选项"],
   },
   {
     key: "why",
@@ -67,6 +129,16 @@ const computeRow: any = [
   { key: 'calculation_how', name:'星期五', value: "", width: 100 },
 ]
 
+const computeRow1: any = [
+  { key: '合计', name:'合计', value: "合计", width: 100 },
+  { key: 'calculation_what', name:'星期一', value: "", width: 100 },
+  { key: 'calculation_why', name:'星期二', value: "", width: 100 },
+  { key: 'calculation_where', name:'星期三', value: "", width: 100 },
+  { key: '', name:'星期四', value: "", width: 100 },
+  { key: '', name:'星期五', value: "", width: 100 },
+  { key: '', name:'星期五', value: "", width: 100 },
+]
+
 const complexHead: any = {
   boxWidth: 700,
   complexHeadList:[
@@ -81,16 +153,16 @@ const complexHead: any = {
   ]
 }
 const sign = {
-  signName:{key:'signName',value:''},
-  signTime:{key:'signTime',value:''}
+  signName:{key:'signName', value:'', preName:"记录人"},
+  signTime:{key:'signTime', value:'', preName:"记录时间"}
 }
 export default {
-  defaulLength: [17],
+  defaulLength: [10,10],
   tableTitle: { value: "月工作重点及周安排", width: 700 },
-  tBody:[tBody],
-  tHead:[tHead],
+  tBody:[tBody,tBody1],
+  tHead:[tHead,tHead1],
   remark: { value: "备注：", width: 700 },
-  computeRow:[computeRow,[],[]],
+  computeRow:[computeRow,computeRow1],//计算列
   sign: sign,
   complexHead,
 }

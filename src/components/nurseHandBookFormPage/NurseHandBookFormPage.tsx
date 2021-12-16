@@ -36,7 +36,15 @@ export interface Props {
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
-  const masterInfo = require(`./config/${manualType}`).default
+  let masterInfo:any = []
+  try{
+    masterInfo = require(`./config/${manualType}`).default
+	}catch(err){				
+		masterInfo = require(`./config/jm_arrange`).default
+	}
+  
+  
+  
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent} = props
@@ -62,7 +70,7 @@ export default function NurseHandBookFormPage(props: Props) {
     if (!queryObj.isAdd) {
       setSubmitSign(signList)
     } else {
-      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign))))
+      setSubmitSign(Object.values(JSON.parse(JSON.stringify(masterInfo.sign||[]))))
     }
   }, [signList])
 
@@ -82,7 +90,7 @@ export default function NurseHandBookFormPage(props: Props) {
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
-            return (<div>
+            return (<div key={idx}>
               {masterInfo.tHead[idx] && <CommonHeader 
                 isPrint={isPrint} 
                 showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 

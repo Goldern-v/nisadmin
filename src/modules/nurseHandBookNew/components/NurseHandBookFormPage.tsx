@@ -43,6 +43,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [submitSign, setSubmitSign]: any = useState([])
   const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
+  const [buttonLoading, setButtonLoading]: any = useState(false)
   const [textValue, setTextValue] = useState('')
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
@@ -69,16 +70,22 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
         let templeContent:any = []
+        let lineList:any = []
         if(tableContent.formContent.length){
           tableContent.formContent.map((item:any)=>{
             templeContent.push({tableData:JSON.parse(item.tableData)})
+          })
+        }
+        if(line.formContent.length){
+          line.formContent.map((item:any)=>{    
+            lineList.push(JSON.parse(item.computeRow))
           })
         }
         setFormContentList(templeContent)
         setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
         setSignList(recordName.formContent)
-        setComputeRow(line.formContent)
+        setComputeRow(lineList)
         setSpinning(false)
       })
     }else{
@@ -154,11 +161,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSave = () => {
     let tBodyList: any = []
+    let computeList: any = []
     bodyModal.map((item:any)=>{
       tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
     })
     let cHeaderList:any = fiterList([complexHeadList])
-
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
@@ -179,7 +189,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
@@ -200,11 +210,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const handleSubmit = () => {
     let tBodyList: any = []
+    let computeList: any = []
     bodyModal.map((item:any)=>{
       tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
     })
     let cHeaderList:any = fiterList([complexHeadList])
-
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
       manualType: queryObj.manualType,
@@ -225,7 +238,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
@@ -324,6 +337,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   }
   const onPrint = () => {
+    setButtonLoading(true)
     let element = document.getElementById("print-content") // 这个dom元素是要导出的pdf的div容器
     const w = element?.offsetWidth || 0;  // 获得该容器的宽
     const h = element?.offsetHeight || 0;  // 获得该容器的高
@@ -391,6 +405,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let blob = new Blob([u8arr], { type: mime });
         src = window.URL.createObjectURL(blob)
         setIframeSrc(src)
+        setButtonLoading(false)
       })
     });
 
@@ -442,7 +457,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
           <Button className="ml-20" onClick={handleBack}>返回</Button>
-          <Button className="ml-20" onClick={onPrint}>打印</Button>
+          <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
         </div>
       </div>
       <div className="main">
