@@ -36,7 +36,15 @@ export interface Props {
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
-  const masterInfo = require(`./config/${manualType}`).default
+  let masterInfo:any = []
+  try{
+    masterInfo = require(`./config/${manualType}`).default
+	}catch(err){				
+		masterInfo = require(`./config/jm_arrange`).default
+	}
+  
+  
+  
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent} = props
