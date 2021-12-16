@@ -48,7 +48,7 @@ export default observer(function NurseHandBook_jmfy() {
       // { value: "多张表合一", name: "多张表合一" }, 
     ],
     conclusionJM: [
-      // { value: "jm_monthConclusion", name: "月度工作总结" },
+      { value: "jm_monthConclusion", name: "月工作总结" },
       // { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
       // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
     ],
