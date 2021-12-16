@@ -178,7 +178,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
         gzsrm: [
           {
             title: '质量结果',
-            dataIndex: 'evalRate',
+            dataIndex: 'netTotalScore',
       
             width: 80, 
             align: 'center',
