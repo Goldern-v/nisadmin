@@ -22,10 +22,10 @@ import { message } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
 export interface Props {
-  showType: string
-  keyword: string
-  needAudit: boolean
-  selectedDate: any
+  showType: string;
+  keyword: string;
+  needAudit: boolean;
+  selectedDate: any;
 }
 
 export default observer(function AuditsTableDHSZ(props: Props) {
@@ -35,7 +35,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     post,
     deptName,
     nurseHierarchy,
-    nearImageUrl
+    nearImageUrl,
   } = store.appStore.queryObj;
   const [tableData, setTableData] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -53,23 +53,31 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const toDetails = (row: any) => {
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
-        `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`
+        `/crNursing/manage/#/qualityControlRecordDetail/${
+          row.othersMessage.id
+        }?qcCode=${row.othersMessage.qcCode}`
       );
     } else if (showType == "nurseFileNys") {
-      service.commonApiService.getNurseInformation(row.commiterNo).then(res => {
-        // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-        if (needAudit) {
-          window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`);
-        } else {
-          window.open(
-            `/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo
-            }&needAudit=false`
-          );
-        }
-      });
+      service.commonApiService
+        .getNurseInformation(row.commiterNo)
+        .then((res) => {
+          // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+          if (needAudit) {
+            window.open(
+              `/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`
+            );
+          } else {
+            window.open(
+              `/crNursing/manage/#/nurseAudit?empNo=${
+                res.data.empNo
+              }&needAudit=false`
+            );
+          }
+        });
     } else if (showType == "sr") {
       window.open(
-        `/crNursing/manage/#/qualityScheduleRecordDetails/${row.othersMessage.id
+        `/crNursing/manage/#/qualityScheduleRecordDetails/${
+          row.othersMessage.id
         }`
       );
     }
@@ -83,7 +91,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       render: (text: any, record: any, index: number) =>
         (current - 1) * pageSize + index + 1,
       align: "center",
-      width: 40
+      width: 40,
     },
     {
       title: "类型",
@@ -95,34 +103,34 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         return text == "nurseFileNys"
           ? "护士档案"
           : text == "qc"
-            ? "三级质控"
-            : text == "qcTwoLevel"
-              ? "二级质控"
-              : text == "sr"
-                ? "特殊时段查房"
-                : "";
-      }
+          ? "三级质控"
+          : text == "qcTwoLevel"
+          ? "二级质控"
+          : text == "sr"
+          ? "特殊时段查房"
+          : "";
+      },
     },
     {
       title: "内容",
       dataIndex: "message",
       key: "message",
       align: "left",
-      width: 250
+      width: 250,
     },
     {
       title: "科室",
       dataIndex: "wardName",
       key: "wardName",
       align: "left",
-      width: 150
+      width: 150,
     },
     {
       title: "状态",
       dataIndex: "statusDesc",
       key: "statusDesc",
       align: "center",
-      width: 100
+      width: 100,
     },
 
     {
@@ -130,14 +138,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       dataIndex: "commiterName",
       key: "commiterName",
       width: 100,
-      align: "center"
+      align: "center",
     },
     {
       title: "提交时间",
       dataIndex: "commitTime",
       key: "commitTime",
       width: 130,
-      align: "center"
+      align: "center",
     },
     {
       title: "操作",
@@ -158,8 +166,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
             /> */}
           </DoCon>
         );
-      }
-    }
+      },
+    },
   ];
 
   const onChange = (pagination: any) => {
@@ -186,14 +194,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     let getDataFun = props.needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)
       : aMServices.solvedPage(
-        current,
-        pageSize,
-        showType,
-        keyword,
-        selectedDate
-      );
+          current,
+          pageSize,
+          showType,
+          keyword,
+          selectedDate
+        );
 
-    getDataFun.then(res => {
+    getDataFun.then((res) => {
       setLoading(false);
       setTableData(res.data.list);
       setTotal(res.data.totalCount);
@@ -207,7 +215,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     onSelect: (record: any, selected: boolean, selectedRowsNext: any) =>
       handleRowsSelectChange(selectedRowsNext),
     onSelectAll: (selected: boolean, selectedRowsNext: any, changeRows: any) =>
-      handleRowsSelectChange(selectedRowsNext, true)
+      handleRowsSelectChange(selectedRowsNext, true),
   };
 
   const handleRowsSelectChange = (
@@ -216,24 +224,24 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     /**是否全选 */
     toogleAll?: boolean
   ) => {
-    let newRows = [] as any
-    let newRowKeys = [] as any
+    let newRows = [] as any;
+    let newRowKeys = [] as any;
     let availableRows = selectedRowsNext.filter((item: any) => {
       return item.othersMessage.nextNodePendingName != "待病区处理";
-    })
+    });
 
-    if ((selectedRows.length < availableRows.length) || !toogleAll) {
-      newRows = availableRows
-      newRowKeys = newRows.map((item: any) => item.key)
+    if (selectedRows.length < availableRows.length || !toogleAll) {
+      newRows = availableRows;
+      newRowKeys = newRows.map((item: any) => item.key);
     }
 
-    setSelectedRows(newRows)
-    setSelectedRowKeys(newRowKeys)
+    setSelectedRows(newRows);
+    setSelectedRowKeys(newRowKeys);
 
     !toogleAll &&
-      (newRows.length < selectedRowsNext.length) &&
-      message.warning("待病区处理的记录不能批量审核")
-  }
+      newRows.length < selectedRowsNext.length &&
+      message.warning("待病区处理的记录不能批量审核");
+  };
 
   const openGroupModal = () => {
     if (selectedRows.length == 0) {
@@ -247,17 +255,16 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           setSelectedRows([]);
           setSelectedRowKeys([]);
           emitter.emit("refreshNurseAuditTable");
-        }
+        },
       });
-    } else if (showType == "qc" || showType == 'qcTwoLevel') {
-
+    } else if (showType == "qc" || showType == "qcTwoLevel") {
       groupsHlbModal.show({
         selectedRows,
         getTableData: () => {
           setSelectedRows([]);
           setSelectedRowKeys([]);
           emitter.emit("refreshNurseAuditTable");
-        }
+        },
       });
     } else if (showType == "sr") {
       goupsSrAduitModal.show({
@@ -266,7 +273,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           setSelectedRows([]);
           setSelectedRowKeys([]);
           emitter.emit("refreshNurseAuditTable");
-        }
+        },
       });
     }
   };
@@ -278,22 +285,21 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   //table数据变化后清除勾选
   useEffect(() => {
-    setSelectedRows([])
-    setSelectedRowKeys([])
-  }, [tableData])
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+  }, [tableData]);
 
   useEffect(() => {
     showType && onload(current, searchText, props.selectedDate, pageSize);
-  }, [
-    needAudit,
-    showType,
-    authStore.selectedDeptCode,
-    statisticsViewModal.selectedDeptCode
-  ]);
+  }, [needAudit, showType, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode]);
 
   return (
     <Wrapper>
-      <GroupPostBtn onClick={() => onload(current, searchText, props.selectedDate, pageSize)}>
+      <GroupPostBtn
+        onClick={() =>
+          onload(current, searchText, props.selectedDate, pageSize)
+        }
+      >
         刷新
       </GroupPostBtn>
       {props.needAudit && (
@@ -312,14 +318,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           current: current,
           showSizeChanger: true,
           showQuickJumper: true,
-          pageSize: pageSize
+          pageSize: pageSize,
         }}
         onChange={onChange}
         rowSelection={rowSelection}
         loading={loading}
         onRow={(record: any) => {
           return {
-            onDoubleClick: () => toDetails(record)
+            onDoubleClick: () => toDetails(record),
           };
         }}
       />

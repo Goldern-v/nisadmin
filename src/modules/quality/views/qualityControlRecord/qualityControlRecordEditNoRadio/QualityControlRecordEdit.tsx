@@ -6,15 +6,14 @@ import { appStore } from "src/stores";
 import { qualityControlRecordEditModel as qcModel } from "./model/QualityControlRecordEditModel";
 import { observer } from "mobx-react-lite";
 import qs from "qs";
-// import { qualityControlRecordApi } from './../api/QualityControlRecordApi'
 import { ScrollBox } from "src/components/common";
 import FormPannel from "./components/FormPannel";
 import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
-import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
-export interface Props {}
 
-const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
+export interface Props {}
+// 贵州的满意度表使用
+export default observer(function QualityControlRecordEdit() {
   //固定参数
   const { history, location, match } = appStore;
   const search = qs.parse(location.search.replace("?", ""));
@@ -88,9 +87,11 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
 
     for (let i = 0; i < itemGroupList.length; i++) {
       let itemList = itemGroupList[i].itemList;
+      console.log("test-master", itemList);
       if (itemList)
         for (let j = 0; j < itemList.length; j++) {
           let item = itemList[j];
+          if (!item.subItemList) break;
           if (item.qcItemValue === "") {
             if (Object.keys(itemListErrObj).indexOf(item.qcItemCode) >= 0) {
               qcModel.setItemListErrObj(item.qcItemCode, true);
@@ -150,20 +151,6 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
     qcModel.formSubmit({ empNo: "", password: "" }, () => {
       message.success("提交成功", 2, () => history.goBack());
     });
-    // globalModal
-    //   .signModal
-    //   .show({
-    //     title: '账号密码验证',
-    //     onCallBack: (empNo: string, password: string) => {
-    //       if (empNo && password) {
-    //         qcModel.formSubmit({ empNo, password }, () => {
-    //           message.success('提交成功', 2, () => history.goBack())
-    //         })
-    //       } else {
-    //         message.error('请完整填写账号和密码')
-    //       }
-    //     }
-    //   })
   };
 
   return (
@@ -197,20 +184,6 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             <div className="topHeaderButton">
               {step === 1 && !loading && (
                 <React.Fragment>
-                  <Button
-                    onClick={() => qcModel.setAllQcItemValue("是")}
-                    type="primary"
-                  >
-                    全是
-                  </Button>
-                  {appStore.HOSPITAL_ID !== "nys" && (
-                    <Button
-                      onClick={() => qcModel.setAllQcItemValue("否")}
-                      type="danger"
-                    >
-                      全否
-                    </Button>
-                  )}
                   <Button onClick={handleCache}>暂存</Button>
                   <Button onClick={handleNext}>下一步</Button>
                 </React.Fragment>
@@ -243,23 +216,6 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
     </Wrapper>
   );
 });
-export default observer(function Layout() {
-
-  const { HOSPITAL_ID, location } = appStore;
-  const search = qs.parse(location.search.replace("?", ""));
-  // 表单为满意度且医院为贵州
-  const openNotRadio = ['GSY_QCTP140'].includes(search?.qcCode) && ['gzsrm'].includes(HOSPITAL_ID)
-
-  return (
-    <React.Fragment>
-      {openNotRadio ? (
-        <QcrEditNoRadio />
-        ) : 
-        <QualityControlRecordEdit/>
-      }
-    </React.Fragment>
-    )
-})
 
 const Wrapper = styled.div`
   .main-contain {

@@ -7,10 +7,7 @@ import { qualityControlRecordApi } from 'src/modules/quality/views/qualityContro
 import { Spin } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
-import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
-import qs from "qs";
-
-function QualityControlRecordDetail() {
+export default function qualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
   let [loading, setLoading] = useState(false)
 
@@ -93,23 +90,6 @@ function QualityControlRecordDetail() {
       </MidCon>
     </Con>
   )
-}
-export default function Layout() {
-
-  const { HOSPITAL_ID, location } = appStore;
-  const search = qs.parse(location.search.replace("?", ""));
-  // 表单为满意度且医院为贵州
-  const openNotRadio = ['GSY_QCTP140'].includes(search?.qcCode) && ['gzsrm'].includes(HOSPITAL_ID)
-
-  return (
-    <React.Fragment>
-      {openNotRadio ? (
-        <QcrDetailNoRadio />
-        ) : 
-        <QualityControlRecordDetail/>
-      }
-    </React.Fragment>
-    )
 }
 
 const Con = styled.div`
