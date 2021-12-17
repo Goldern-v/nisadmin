@@ -93,11 +93,18 @@ export default function Common(props: Props) {
   }
   const onBlur = (e: any, row: any, col: any) => {
   }
-  let lcr = {
+  let textAlignWay = {
     "left": "start",
     "center": "center",
     "right": "end"
   }
+
+  let verticalAlignWay = {
+    "top": "start",
+    "middle": "center",
+    "bottom": "end"
+  }
+
   useEffect(() => {
     if (operationType) {
       menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow,bodyIdx,masterInfo)
@@ -131,8 +138,10 @@ export default function Common(props: Props) {
               style={{
                 width: `${col.width}px`,
                 ...col.style,
-                'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-                'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+                'WebkitBoxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+                'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+                'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
+                'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto',
               }}
               title={getCellTitle(col)}
@@ -156,8 +165,8 @@ export default function Common(props: Props) {
             style={{
               width: `${col.width}px`,
               ...col.style,
-              'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-              'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+              'WebkitBoxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+              'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
             }}
             key={`${colIdx}`}
           >
@@ -188,8 +197,8 @@ const Wrapper = styled.div`
   margin-bottom:-1px;
   display: -webkit-box;
   display: box;
-  -webkit-box-align: center; 
-  box-align: center;
+  /* -webkit-box-align: center; 
+  box-align: center; */
   word-break: break-all;
 }
 .active-row{
