@@ -1,95 +1,100 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import QualityControlRecordDetailHeader from './components/QualityControlRecordDetailHeader'
-import QualityControlRecordDetailMidLeft from './components/QualityControlRecordDetailMidLeft'
-import MidRightQualityControlRecordDetail from './components/MidRightQualityControlRecordDetail'
-import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-import { Spin } from 'antd'
-import { ScrollBox } from 'src/components/common'
-import { appStore } from 'src/stores'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import QualityControlRecordDetailHeader from "./components/QualityControlRecordDetailHeader";
+import QualityControlRecordDetailMidLeft from "./components/QualityControlRecordDetailMidLeft";
+import MidRightQualityControlRecordDetail from "./components/MidRightQualityControlRecordDetail";
+import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
+import { Spin } from "antd";
+import { ScrollBox } from "src/components/common";
+import { appStore } from "src/stores";
 export default function qualityControlRecordDetail() {
-  let [detailData, setDetailData]: any = useState([])
-  let [loading, setLoading] = useState(false)
+  let [detailData, setDetailData]: any = useState([]);
+  let [loading, setLoading] = useState(false);
 
   const formatItemGroupList = (itemGroupList: any) => {
-    let newItemGorupList = [...itemGroupList]
+    let newItemGorupList = [...itemGroupList];
 
     newItemGorupList.forEach((itemGorup: any, idx0: number) => {
-      let itemList = itemGorup.itemList || []
+      let itemList = itemGorup.itemList || [];
 
       itemList.forEach((item: any, idx1: number) => {
-        let qcItemName = item.qcItemName
+        let qcItemName = item.qcItemName;
 
-        let fillDataList = item.fillDataList
+        let fillDataList = item.fillDataList;
         if (fillDataList && fillDataList.length > 0) {
-          let qcNameFillList = [] as any[]
+          let qcNameFillList = [] as any[];
 
           fillDataList.forEach((fillItem: any, idx2: number) => {
-            let prevIndexAt = 0
-            if (fillDataList[idx2 - 1]) prevIndexAt = fillDataList[idx2 - 1].indexAt
+            let prevIndexAt = 0;
+            if (fillDataList[idx2 - 1])
+              prevIndexAt = fillDataList[idx2 - 1].indexAt;
 
-            qcNameFillList.push(qcItemName.substring(prevIndexAt, fillItem.indexAt) + fillItem.itemValue)
+            qcNameFillList.push(
+              qcItemName.substring(prevIndexAt, fillItem.indexAt) +
+                fillItem.itemValue
+            );
 
             if (idx2 === fillDataList.length - 1)
-              qcNameFillList.push(qcItemName.substring(fillItem.indexAt))
-          })
+              qcNameFillList.push(qcItemName.substring(fillItem.indexAt));
+          });
 
-          item.qcItemName = qcNameFillList.join('')
+          item.qcItemName = qcNameFillList.join("");
         }
-      })
+      });
+    });
 
-    })
-
-    return newItemGorupList
-  }
+    return newItemGorupList;
+  };
 
   const onload = () => {
-    let id = appStore.match.params.id
-    setLoading(true)
+    let id = appStore.match.params.id;
+    setLoading(true);
     qualityControlRecordApi.qcItemInstanceGet(id).then((res) => {
-
       let newData = {
         ...res.data,
-        itemGroupList: formatItemGroupList(res.data.itemGroupList)
-      }
+        itemGroupList: formatItemGroupList(res.data.itemGroupList),
+      };
 
-      setDetailData(newData)
+      setDetailData(newData);
 
-      setLoading(false)
-    })
-  }
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
-    onload()
-  }, [])
+    onload();
+  }, []);
 
   return (
     <Con>
       <HeaderCon>
-        <QualityControlRecordDetailHeader detailData={detailData} onload={onload} />
+        <QualityControlRecordDetailHeader
+          detailData={detailData}
+          onload={onload}
+        />
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
           <SpinCon>
             {loading ? (
-              <div className='LoadingCon'>
-                <Spin spinning={loading} className='SpinLoadingClass' />
+              <div className="LoadingCon">
+                <Spin spinning={loading} className="SpinLoadingClass" />
               </div>
             ) : (
-              ''
+              ""
             )}
           </SpinCon>
           <MidLeftCon>
             {/* <button onClick={testClick}>testClick</button> */}
             <QualityControlRecordDetailMidLeft detailData={detailData} />
           </MidLeftCon>
-          <MidRightCon>
+          {/* <MidRightCon>
             <MidRightQualityControlRecordDetail detailData={detailData} />
-          </MidRightCon>
+          </MidRightCon> */}
         </MidConScrollCon>
       </MidCon>
     </Con>
-  )
+  );
 }
 
 const Con = styled.div`
@@ -98,18 +103,18 @@ const Con = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-`
+`;
 const HeaderCon = styled.div`
   height: 95px;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
   /* border-bottom: 1px solid gray; */
-`
+`;
 const MidCon = styled.div`
   flex: 1;
   height: calc(100vh - 145px);
-`
+`;
 const MidConScrollCon = styled.div`
   height: 100%;
   width: 100%;
@@ -121,7 +126,7 @@ const MidConScrollCon = styled.div`
   /* background-color: #fff;
   /* height: 150%; */
   /* flex-basis: auto; */
-`
+`;
 
 // @ts-ignore
 const MidLeftCon = styled(ScrollBox)`
@@ -136,8 +141,7 @@ const MidLeftCon = styled(ScrollBox)`
   /* border-right: 1px solid gray; */
   background-color: #eeeeee;
   align-items: stretch;
-  
-`
+`;
 const MidRightCon = styled.div`
   width: 317px;
   height: 100%;
@@ -163,7 +167,7 @@ const MidRightCon = styled.div`
     border-radius: 5px;
     background-color: #ffffff;
   }
-`
+`;
 const SpinCon = styled.div`
   .LoadingCon {
     z-index: 99;
@@ -181,4 +185,4 @@ const SpinCon = styled.div`
       transform: translate(-50%, -50%);
     }
   }
-`
+`;

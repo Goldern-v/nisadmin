@@ -12,6 +12,8 @@ import FormPannel from "./components/FormPannel";
 import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
 import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
+import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
+
 export interface Props {}
 
 const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
@@ -244,22 +246,44 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
   );
 });
 export default observer(function Layout() {
-
   const { HOSPITAL_ID, location } = appStore;
   const search = qs.parse(location.search.replace("?", ""));
   // 表单为满意度且医院为贵州
-  const openNotRadio = ['GSY_QCTP140'].includes(search?.qcCode) && ['gzsrm'].includes(HOSPITAL_ID)
-
+  // 0 默认 1 改造 其他置空
+  const [openNotRadio, setOpenNotRadio] = useState(2);
+  // const [component, setComponent] = useState<React.Component | HTMLSpanElement>(<span></span>)
+  const map = (code: number) => {
+    if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordEdit/>
+    switch (code) {
+      case 0:
+        return <QualityControlRecordEdit/>
+      case 1:
+        return <QcrEditNoRadio />
+      default:
+        return <span></span>
+    }
+  }
+  useEffect(() => {
+    if (!["gzsrm"].includes(HOSPITAL_ID)) {
+      setOpenNotRadio(0)
+      return
+    };
+    qualityControlRecordApi
+      .getFilterQcCodeList()
+      .then((res) => {
+        setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
+      })
+      .catch((err) => {});
+  }, []);
   return (
     <React.Fragment>
-      {openNotRadio ? (
-        <QcrEditNoRadio />
-        ) : 
-        <QualityControlRecordEdit/>
+      {
+        map(openNotRadio)
       }
+      {/* {openNotRadio ? <QcrEditNoRadio /> : <QualityControlRecordEdit />} */}
     </React.Fragment>
-    )
-})
+  );
+});
 
 const Wrapper = styled.div`
   .main-contain {

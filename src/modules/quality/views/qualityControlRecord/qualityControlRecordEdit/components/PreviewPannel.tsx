@@ -56,8 +56,10 @@ export default observer(function PreviewPannel(props: Props) {
     }
 
     total = shi + fou
-
-    if (total) rate = parseInt((shi / total * 10000).toString()) / 100
+    // 使用题数计算通过率
+    if (total && !baseInfo.useScore) rate = parseInt((shi / total * 10000).toString()) / 100
+    // 使用分数计算通过率
+    else rate = totalScore == 0 ? 0 : (totalScore - deductScore) * 100 / totalScore
 
     return {
       shi,
