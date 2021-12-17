@@ -13,14 +13,16 @@ import { authStore } from 'src/stores'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditOnEducationModal from '../modal/EditOnEducationModal'
+import EditInnaiQualificationModal from '../modal/EditInnaiQualificationModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
+
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
-export default observer(function PersonWinning() {
-  const editOnEducationModal = createModal(EditOnEducationModal)
+
+export default observer(function InnaiQualification() {
+  const editOnEducationModal = createModal(EditInnaiQualificationModal)
   const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
@@ -82,7 +84,7 @@ export default observer(function PersonWinning() {
       title: '有效期',
       dataIndex: 'studyHour',
       key: 'studyHour',
-      width: 80,
+      width: 100,
       align: 'center'
     },
     {
@@ -99,7 +101,7 @@ export default observer(function PersonWinning() {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: 'auditedStatusName',
-      width: 120,
+      width: 80,
       align: 'center'
     },
     Do('nurseWHOutStudy', editOnEducationModal, getTableData)
