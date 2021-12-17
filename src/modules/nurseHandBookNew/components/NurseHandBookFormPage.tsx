@@ -43,7 +43,10 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [submitSign, setSubmitSign]: any = useState([])
   const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
+  const [buttonLoading, setButtonLoading]: any = useState(false)
+  const [onScroll, setOnScroll]: any = useState(true)
   const [textValue, setTextValue] = useState('')
+
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
     planJM: '护士长工作计划',
@@ -326,16 +329,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
     setIdChange(info.id)
   }
   const handlerScroll = (e: any) => {
-    let ch: any = document.getElementById("ch")
-    let { top } = ch.getBoundingClientRect()
-    if (top < 150) {
-      setShowFixHeader(true)
-    } else {
-      setShowFixHeader(false)
+    if(onScroll){
+      let ch: any = document.getElementById("ch")
+      let { top } = ch.getBoundingClientRect()
+      if (top < 150) {
+        setShowFixHeader(true)
+      } else {
+        setShowFixHeader(false)
+      }
     }
-
   }
   const onPrint = () => {
+    setButtonLoading(true)
     let element = document.getElementById("print-content") // 这个dom元素是要导出的pdf的div容器
     const w = element?.offsetWidth || 0;  // 获得该容器的宽
     const h = element?.offsetHeight || 0;  // 获得该容器的高
@@ -403,6 +408,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let blob = new Blob([u8arr], { type: mime });
         src = window.URL.createObjectURL(blob)
         setIframeSrc(src)
+        setButtonLoading(false)
       })
     });
 
@@ -439,6 +445,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     signList,
     setSubmitSign,
     submitSign, 
+    setOnScroll,
   }
   return <Wrapper>
     <Spin spinning={spinning}>
@@ -454,7 +461,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
           <Button className="ml-20" onClick={handleBack}>返回</Button>
-          <Button className="ml-20" onClick={onPrint}>打印</Button>
+          <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
         </div>
       </div>
       <div className="main">

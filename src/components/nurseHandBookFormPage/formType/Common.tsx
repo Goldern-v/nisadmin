@@ -133,7 +133,7 @@ export default function Common(props: Props) {
                 ...col.style,
                 'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
                 'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto'
+                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
@@ -181,6 +181,7 @@ const Wrapper = styled.div`
   border: 1px solid #000;
   font-size: 16px;
   min-height: 35px;
+  padding-left: 5px;
   text-align: center;
   outline: none;
   margin-right:-1px; 

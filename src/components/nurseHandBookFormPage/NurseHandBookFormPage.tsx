@@ -4,6 +4,7 @@ import { initBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
 import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
+import LeftHeader from "./formType/LeftHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
 import SignModule from "./formType/SignModule"
@@ -32,16 +33,30 @@ export interface Props {
   submitSign: any
   setComplexHeadList: Function
   complexHeadList: any
+  setOnScroll: Function
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   let manualType = queryObj.manualType
-  const masterInfo = require(`./config/${manualType}`).default
+  let masterInfo:any = []
+  try{
+    masterInfo = require(`./config/${manualType}`).default
+	}catch(err){				
+		masterInfo = require(`./config/jm_arrange`).default
+	}
+  
   const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
-          signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent} = props
+          signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent,setOnScroll} = props
 
   const [visible, setVisible]: any = useState([])
+  //控制滚动事件
+  if(masterInfo.hiddenFixHeader){
+    setOnScroll(false)
+  }else{
+    setOnScroll(true)
+  }
+
   let templeVisible = masterInfo.tBody.map((item:any)=>false)
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
@@ -82,15 +97,17 @@ export default function NurseHandBookFormPage(props: Props) {
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
-            return (<div key={idx}>
-              {masterInfo.tHead[idx] && <CommonHeader 
+            return (
+            <div key={idx}>
+              {/* {masterInfo.leftHead && <LeftHeader masterInfo={masterInfo}></LeftHeader>} */}
+              {masterInfo.tHead && masterInfo.tHead[idx] && <CommonHeader 
                 isPrint={isPrint} 
                 showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 
                 tHead={masterInfo.tHead[idx]}
                 beforeSetTableHeadContent={beforeSetTableHeadContent} 
                 tableHeadContent
               ></CommonHeader>}
-              <Common 
+              {<Common 
                 isPrint={isPrint} 
                 bodyModal={bodyModal}
                 bodyIdx={idx}
@@ -101,7 +118,7 @@ export default function NurseHandBookFormPage(props: Props) {
                 setComputeRow = {setComputeRow}
                 computeRow = {computeRow}
                 templeVisible = {templeVisible}
-              ></Common>
+              ></Common>}
             </div>)
           })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
