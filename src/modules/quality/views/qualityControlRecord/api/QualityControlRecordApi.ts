@@ -160,6 +160,12 @@ export default class QualityControlRecordApi extends BaseApiService {
     }
     //return this.post(`/qcItem/instance/getPageByCreatorNo`, data)
   }
+  /**
+   * 获取质控需要定制化处理的表单code数组 （贵州）
+   */
+  public async getFilterQcCodeList() {
+    return this.get(`/qcItem/getQcCodeList`)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

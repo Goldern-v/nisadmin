@@ -96,18 +96,43 @@ function QualityControlRecordDetail() {
 }
 export default function Layout() {
 
-  const { HOSPITAL_ID, location } = appStore;
+  const { HOSPITAL_ID, location, hisAdapter } = appStore;
   const search = qs.parse(location.search.replace("?", ""));
   // 表单为满意度且医院为贵州
-  const openNotRadio = ['GSY_QCTP140'].includes(search?.qcCode) && ['gzsrm'].includes(HOSPITAL_ID)
-
+  const [openNotRadio, setOpenNotRadio] = useState(2);
+  
+  const map = (code: number) => {
+    if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordDetail/>
+    switch (code) {
+      case 0:
+        return <QualityControlRecordDetail/>
+      case 1:
+        return <QcrDetailNoRadio />
+      default:
+        return <span></span>
+    }
+  }
+  useEffect(() => {
+    if (!["gzsrm"].includes(HOSPITAL_ID)) {
+      setOpenNotRadio(0)
+      return
+    };
+    qualityControlRecordApi
+      .getFilterQcCodeList()
+      .then((res) => {
+        setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
+      })
+      .catch((err) => {
+        setOpenNotRadio(0)
+      });
+  }, []);
   return (
     <React.Fragment>
-      {openNotRadio ? (
-        <QcrDetailNoRadio />
-        ) : 
-        <QualityControlRecordDetail/>
+      {
+        map(openNotRadio)
       }
+      {/* {openNotRadio ? <QcrDetailNoRadio /> : <QualityControlRecordDetail/>
+      } */}
     </React.Fragment>
     )
 }
