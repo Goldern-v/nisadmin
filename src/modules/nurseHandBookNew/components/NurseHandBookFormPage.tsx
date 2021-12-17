@@ -543,7 +543,7 @@ const Wrapper = styled.div`
       width: 320px;
       position: absolute;
       top: 50px;
-      right: 30px;
+      right: -25px;
     }
   }
   .main {
@@ -552,14 +552,15 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     .formPage {
-      min-width: 81vw;
-      max-width: 81vw;
+      flex: 1;
+      /* min-width: 77vw;
+      max-width: 77vw; */
       overflow-x: auto;
       min-height: 85vh; 
       max-height: 85vh; 
     }
     .rightCon {
-      width: 19vw;
+      min-width: 320px;
       height: 80vh; 
       background-color: #fff;
       margin: 20px 10px;
