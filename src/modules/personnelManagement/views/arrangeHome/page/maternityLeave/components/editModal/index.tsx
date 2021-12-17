@@ -50,11 +50,10 @@ export default observer((props: Props) => {
 
   const disLastMenstrualPeriod = (startValue: any) => {
     if (appStore.HOSPITAL_ID !== 'jmfy') return false
-    // const { endValue } = this.state;
-    if (!startValue || !form.expectedDate) {
+    if (!startValue || !form.expectedDate || !form.deliveryDate) {
       return false;
     }
-    return startValue.valueOf() > form.expectedDate.valueOf();
+    return startValue > moment(form.expectedDate) || startValue > moment(form.deliveryDate);
   }
 
   const disableExpectedDate = (endValue: any) => {
@@ -62,7 +61,7 @@ export default observer((props: Props) => {
     if (!endValue || !form.lastMenstrualPeriod) {
       return false;
     }
-    return endValue.valueOf() < form.lastMenstrualPeriod.valueOf();
+    return endValue < moment(form.lastMenstrualPeriod).add(1, 'days')
   }
 
   useEffect(() => {

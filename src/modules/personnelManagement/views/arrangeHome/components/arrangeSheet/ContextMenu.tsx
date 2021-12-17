@@ -192,6 +192,27 @@ const Wrapper = styled.div<{ x: number; y: number }>`
           display: block;
         }
       }
+      > .text-item{
+        > .children-con {
+          max-height: 300px;
+          overflow-y: auto;
+        }
+        .children-con::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
+          background-color:#f8f8f8;
+        }
+        .children-con::-webkit-scrollbar {//滚动条的宽度
+          width:9px;
+          height:9px;
+        }
+        .children-con::-webkit-scrollbar-thumb {//滚动条的设置
+          background-color:#dddddd;
+          background-clip:padding-box;
+          min-height:28px;
+        }
+        .children-con::-webkit-scrollbar-thumb:hover {
+          background-color:#bbb;
+        }
+      }
     }
   }
   .line-item {
