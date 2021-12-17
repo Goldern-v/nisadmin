@@ -170,6 +170,13 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   // 附件
   const itemAttachmentCheck = () => { };
 
+  const formatFLagIndex = (code: string) => {
+    let arr = code.split("-");
+    if (!(arr && arr.length == 2)) return code;
+    if (arr && Number(arr[0]) === 1) return "";
+    return Number(arr[0]) - 1 + "-" + arr[1];
+  };
+
   return (
     <Con ref={pageRef} className="print-page">
       {/* <Spin spinning={false}> */}
@@ -254,45 +261,23 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <QuestionItem key={itemGroupIndex}>
             <div className="titleCon">
               <div className="titleLeftCon">
-                {itemGroup.index}、{itemGroup.qcItemTypeName}
+              {`${itemGroupIndex > 0 ? numToChinese(itemGroupIndex) + "、" : ""}${
+                itemGroup.qcItemTypeName
+              }`}
               </div>
             </div>
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
               <div className="itemCon" key={itemIndex}>
                 <div className="itemTitleCon">
-                  {item.itemShowCode} {item.qcItemName}
+                  {formatFLagIndex(item.itemShowCode)} {item.qcItemName}
                 </div>
                 <div className="itemMidCon">
-                  {/* <Radio.Group
-                    value={item.qcItemValue}
-                    disabled
-                    buttonStyle="solid"
-                  >
-                    <Radio
-                      value={"是"}
-                      style={{ marginLeft: "20px", marginRight: "30px" }}
-                    >
-                      是
-                    </Radio>
-                    <Radio
-                      value={"否"}
-                      style={{ marginLeft: "20px", marginRight: "30px" }}
-                    >
-                      否
-                    </Radio>
-                    <Radio
-                      value={"不适用"}
-                      style={{ marginLeft: "20px", marginRight: "30px" }}
-                    >
-                      不适用
-                    </Radio>
-                  </Radio.Group> */}
-                  {detailData.master.useScore ? <div className="sub-item-list">
+                  {detailData.master.useScore && item.subItemList ? <div className="sub-item-list">
                     {/* {item.qcItemValue === "否" && <React.Fragment> */}
                       {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
                         <div key={subItem.subItemCode}>
                           <Icon
-                            type="close-square"
+                            type="check-square"
                             className={subItem.checked ? 'checked' : 'unchecked'} />
                           <span style={{ verticalAlign: 'middle' }}>
                             {subItem.subItemName}
@@ -300,7 +285,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                             </span>
                         </div>
                       ))}
-                      <div>
+                      {/* <div>
                         <span
                           style={{
                             marginRight: '5px',
@@ -346,50 +331,12 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                             },Number(item.remarkDeductScore))
                           }
                         />}
-                      </div>
-                    {/* </React.Fragment>} */}
-                    <div style={{ marginTop: 5 }}>
-                      <Input.TextArea
-                        value={item.remark}
-                        readOnly
-                        style={{ resize: 'none' }}
-                        autosize={{ minRows: 2 }}
-                        placeholder="备注" />
-                    </div>
+                      </div> */}
                   </div> : ''}
-
-                  <div className="itemAttachmentCon">
-                    {item.attachUrls && (
-                      <Zimage
-                        text={
-                          <span>
-                            <Icon type="paper-clip" />{" "}
-                            {item.attachUrls.split(",").length}
-                          </span>
-                        }
-                        list={item.attachUrls.split(",")}
-                      />
-                    )}
-                  </div>
-                  {appStore.hisMatch({
-                    map: {
-                      nys: <div className="notesCon" style={{ borderBottom: 'none' }}>
-                        <div className="notesLeftCon">备注</div>
-                        <div className="notesRightCon">
-                          <TextArea
-                            readOnly
-                            autosize={{ minRows: 1 }}
-                            value={item.remark}
-                          />
-                        </div>
-                      </div>,
-                      other: ''
-                    },
-                  })}
                 </div>
               </div>
             ))}
-            {appStore.hisMatch({
+            {/* {appStore.hisMatch({
               map: {
                 nys: '',
                 other: ((onlyReadError && itemGroup.remark) || !onlyReadError) && (
@@ -406,7 +353,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   </div>
                 )
               }
-            })}
+            })} */}
           </QuestionItem>
         ))}
         {appStore.hisMatch({
@@ -554,7 +501,7 @@ const QuestionItem = styled.div`
     }
   }
 
-  i.anticon-close-square{
+  i.anticon-check-square{
     color: #999;
     font-size: 16px;
       vertical-align: middle;

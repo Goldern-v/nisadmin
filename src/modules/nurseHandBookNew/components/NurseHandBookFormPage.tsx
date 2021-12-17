@@ -44,7 +44,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
   const [buttonLoading, setButtonLoading]: any = useState(false)
+  const [onScroll, setOnScroll]: any = useState(true)
   const [textValue, setTextValue] = useState('')
+
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
     planJM: '护士长工作计划',
@@ -327,14 +329,15 @@ export default observer(function nurseHandBookFormPage(props: any) {
     setIdChange(info.id)
   }
   const handlerScroll = (e: any) => {
-    let ch: any = document.getElementById("ch")
-    let { top } = ch.getBoundingClientRect()
-    if (top < 150) {
-      setShowFixHeader(true)
-    } else {
-      setShowFixHeader(false)
+    if(onScroll){
+      let ch: any = document.getElementById("ch")
+      let { top } = ch.getBoundingClientRect()
+      if (top < 150) {
+        setShowFixHeader(true)
+      } else {
+        setShowFixHeader(false)
+      }
     }
-
   }
   const onPrint = () => {
     setButtonLoading(true)
@@ -442,6 +445,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     signList,
     setSubmitSign,
     submitSign, 
+    setOnScroll,
   }
   return <Wrapper>
     <Spin spinning={spinning}>
