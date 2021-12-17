@@ -540,10 +540,10 @@ const Wrapper = styled.div`
       
     }
     .buttonBody {
-      width: 320px;
+      /* width: 320px; */
       position: absolute;
       top: 50px;
-      right: -25px;
+      right: 50px;
     }
   }
   .main {
