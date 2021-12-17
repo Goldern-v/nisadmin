@@ -151,8 +151,8 @@ export default function QcThreeRouter(props: Props) {
         route_检查表单统计表,
         // route_一级质控问题原因措施汇总,
         // route_二级质控问题原因措施汇总,
-        route_三级质控问题原因措施汇总,
         route_三级质控护理质量统计汇总,
+        route_三级质控问题原因措施汇总,
       ],
       nys: [route_护理质量巡查情况汇总表_nys, route_护理质量检查小结],
       yczyy: [

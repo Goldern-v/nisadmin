@@ -164,8 +164,10 @@ export default observer(function PreviewPannel(props: Props) {
             </div>
           ) : (
             <div>
-              本次评估结果为：是({result.shi}) 否({result.fou}) 不适用(
-              {result.buShiYong})
+              本次评估结果为：是({result.shi}) 否({result.fou}){" "}
+              {!["gzsrm"].includes(appStore.HOSPITAL_ID) &&
+                `不适用(
+              ${result.buShiYong})`}
             </div>
           )}
           <br />

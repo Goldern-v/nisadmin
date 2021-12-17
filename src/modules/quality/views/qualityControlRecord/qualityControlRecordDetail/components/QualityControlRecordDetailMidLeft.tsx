@@ -151,8 +151,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     }
 
     return <div>
-      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) 不适用(
-      {itemCount.inapplicableSize || 0})
+      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) 
+      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && `不适用(
+      ${itemCount.inapplicableSize || 0})`}
     </div>
   }
 
@@ -280,12 +281,12 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     >
                       否
                     </Radio>
-                    <Radio
+                    {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio
                       value={"不适用"}
                       style={{ marginLeft: "20px", marginRight: "30px" }}
                     >
                       不适用
-                    </Radio>
+                    </Radio>}
                   </Radio.Group>
                   {detailData.master.useScore ? <div className="sub-item-list">
                     {item.qcItemValue === "否" && <React.Fragment>

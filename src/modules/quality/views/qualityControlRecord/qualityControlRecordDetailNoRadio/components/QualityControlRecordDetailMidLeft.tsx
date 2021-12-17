@@ -151,8 +151,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     }
 
     return <div>
-      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) 不适用(
-      {itemCount.inapplicableSize || 0})
+      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) {!['gzsrm'].includes(appStore.HOSPITAL_ID) && `不适用(
+      ${itemCount.inapplicableSize || 0})`}
     </div>
   }
 
@@ -203,7 +203,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {messageBoxData.hasArchiveItem && (
             <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
           )}
-          {getNodeAppointList()}
+          {/* {getNodeAppointList()} */}
         </div>
 
         <div className="boxRight">
@@ -246,9 +246,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           </div>
         </div>
       </MessageBox>
-      <OnlyReadError>
+      {/* <OnlyReadError>
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
-      </OnlyReadError>
+      </OnlyReadError> */}
       <QuestionCon>
         {detailData.fillItemList && (
           <div style={{ margin: "15px 0 0", fontSize: 14, fontWeight: "bold" }}>
@@ -396,7 +396,7 @@ const Con = styled.div`
 `;
 const MessageBox = styled.div`
   margin-top: 10px;
-  min-height: 138px;
+  min-height: 114px;
   line-height: 24px;
   padding: 10px 20px;
   background-color: #f2f2f2;
