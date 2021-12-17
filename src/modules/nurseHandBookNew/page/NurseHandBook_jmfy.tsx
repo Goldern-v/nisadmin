@@ -434,7 +434,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 20px;
   overflow: hidden;
-  word-break: keep-all;
+  white-space: nowrap;
   text-overflow: ellipsis;
 
 }
