@@ -1,5 +1,33 @@
+import { any } from 'prop-types';
 import BaseApiService from 'src/services/api/BaseApiService'
 import { fileDownload } from 'src/utils/file/file'
+
+// 获取三级质控平均分统计列表params
+export interface IQcGradeParams {
+  wardCode?: string
+  beginDate?: string
+  endDate?: string
+  order?: string
+}
+export interface IQcGradeOutput extends Record<string,any> {
+  wardCode: string	
+  wardName: string	
+  nurseQuality: number	
+  nursingUnit: number	
+  criticallyPatient: number	
+  gradedNursing: number	
+  nursingDocument: number	
+  infectionManagement: number	
+  chargeNurse: number	
+  keyLink: number	
+  qualitySpecialized: number	
+  clinicalReality: number	
+  teachingInspection: number	
+  nNursingSkill: number	
+  firstAidCooperation: number	
+  satisfaction: number	
+  average: number
+}
 
 class QcFormGzsrmService extends BaseApiService {
   /**
@@ -41,6 +69,25 @@ class QcFormGzsrmService extends BaseApiService {
   }
   public rectificationResult(query: {}) {
     return this.post('/qcPdca/save/rectificationResult', query)
+  }
+  /**
+   * 获取三级质控平均分统计列表
+   * params wardCode	科室编号
+   * beginDate	2021-11-11
+   * endDate	2021-11-11
+   * order	排序 1升序 -1倒叙
+   */
+   public async getQcGradeList(params: IQcGradeParams) {
+    return this.post(`/qcGradeCount/countResult`, params)
+  }
+  /**
+   * 导出三级质控平均分统计表格
+   * @param params 
+   * @returns 
+   */
+  public async exportCountResult(params: IQcGradeParams) {
+    return this.post('/qcGradeCount/exportCountResult', params, { responseType: 'blob' })
+    .then(res => fileDownload(res))
   }
 }
 
