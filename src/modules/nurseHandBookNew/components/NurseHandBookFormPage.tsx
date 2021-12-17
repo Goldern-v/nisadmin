@@ -460,8 +460,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
           {!queryObj.isAdd && data.status == "2" && <Button onClick={handleUndo} className="red">撤销</Button>}
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
-          <Button className="ml-20" onClick={handleBack}>返回</Button>
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
+          <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
       </div>
       <div className="main">

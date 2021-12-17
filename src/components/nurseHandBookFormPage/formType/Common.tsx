@@ -202,6 +202,6 @@ const Wrapper = styled.div`
   word-break: break-all;
 }
 .active-row{
-  background:#fef8b9;
+  /* background: #fef8b9; */
 }
 `
