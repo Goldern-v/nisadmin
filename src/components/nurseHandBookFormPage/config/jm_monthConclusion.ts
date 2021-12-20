@@ -20,7 +20,7 @@ const sign = {
 export default {
   hiddenFixHeader: true,
   defaulLength: [3],
-  tableTitle: { value: "月工作总结", width: 700 },
+  tableTitle: { value: "月工作总结", width: 699 },
   tBody: [tBody],
   leftHead: [leftHead],
   sign: sign,

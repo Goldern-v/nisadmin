@@ -27,7 +27,7 @@ const tBody: any = [
 
 export default {
   defaulLength: [17],
-  tableTitle: { value: "年度工作计划表", width: 700 },
+  tableTitle: { value: "年度工作计划表", width: 694 },
   tBody: [tBody],
   tHead: [tHead],
 }

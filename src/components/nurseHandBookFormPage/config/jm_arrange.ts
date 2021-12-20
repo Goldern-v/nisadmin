@@ -29,7 +29,7 @@ const tHead3 = {
 
 const tBody1: any = [
   { key: 'focus', name: '月工作重点', value: "", width: 120, style:{ minHeight: "200px" } },
-  { key: 'focusDetail', name: '月工作重点内容', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left", verticalAlign: "top" } },
+  { key: 'focusDetail', name: '月工作重点内容', value: "", width: 576, style:{ minHeight: "200px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 const tBody2: any = [
@@ -43,13 +43,13 @@ const tBody2: any = [
 
 const tBody3: any = [
   { key: 'record', name: '记录', value: "", width: 120, style:{ minHeight: "150px" } },
-  { key: 'recordDetail', name: '记录内容', value: "", width: 580, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
+  { key: 'recordDetail', name: '记录内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 export default {
   hiddenFixHeader:true,//隐藏浮动表头
   defaulLength: [1,20,2],
-  tableTitle: { value: "月工作重点及周安排", width: 700 },
+  tableTitle: { value: "月工作重点及周安排", width: 695 },
   tBody:[tBody1,tBody2,tBody3],
   tHead:[tHead1,tHead2,tHead3],
 }
