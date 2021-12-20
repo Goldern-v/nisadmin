@@ -58,12 +58,15 @@ export default function Common(props: Props) {
     }
   }
 
-  const handlerClick = (e: any, col: any) => {
+  const handlerClick = (e: any, col: any ) => {
+    if(queryObj.audit) return
     setMenuType("select")
-    console.log(col);
     col.click && col.click(col) && scheduleStore.setIsSave(true)
-    col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    col.click && setBodyModal([...bodyModal])
+    // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
   }
+
+
 
   const ContextMenu = (e: any) => {
     if(selectIndex==-1) return
@@ -75,8 +78,8 @@ export default function Common(props: Props) {
   }
 
   const refresh = () => {
-    
     setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    // setBodyModal([...bodyModal])
     if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
       setVisible(templeVisible)
@@ -142,7 +145,7 @@ export default function Common(props: Props) {
                 'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
                 'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
-                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto',
+                'cursor': col.click ? 'pointer' : col.key == "serialNumber" ? 'no-drop' : 'auto',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning

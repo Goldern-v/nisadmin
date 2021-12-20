@@ -34,7 +34,7 @@ const tBody1: any = [
 
 const tBody2: any = [
   { key: "time", name: "时间", value: "", width: 120 },
-  { key: "what", name: "内容", value: "", width: 240 },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
   { key: "who", name: "基本完成", value: "", width: 80, click: tick },
