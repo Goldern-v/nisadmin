@@ -130,4 +130,5 @@ export default {
   computeRow: [computeRow1,[],[]],//计算列
   complexHead,//复杂表头
   sign: sign,//签名组件
+  remark: { value: "备注：", width: 600 },//备注
 }
