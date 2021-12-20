@@ -14,8 +14,6 @@ export const copyNullRow = (nullRow: any, config: any, index: any, key: any) => 
 
 // 用来复制空行的函数
 export const initBodyModal = (masterInfo: any, setBodyModal: Function, formContent: any) => {
-  console.log(11111111);
-  
   let tempArr:any = []
     /*
       [
