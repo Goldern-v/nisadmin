@@ -66,7 +66,16 @@ export default function Common(props: Props) {
     // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
   }
 
-
+  const tableValue = (col:any, rowIdx:any) => {
+    if(col.key == "serialNumber"){
+      return rowIdx + 1
+    }
+    if(col.value=="" && col.defaultValue){
+      return col.defaultValue
+    } else {
+      return col.value
+    }
+  }
 
   const ContextMenu = (e: any) => {
     if(selectIndex==-1) return
@@ -157,7 +166,7 @@ export default function Common(props: Props) {
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
             >
-              {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
+              {tableValue(col,rowIdx)}
             </div>)}
         </div>)}
       {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>

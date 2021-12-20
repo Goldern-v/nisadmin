@@ -21,19 +21,40 @@ const tHead2 = {
   bottom: []
 }
 
-const tHead3 = {
-  top: [],
-  mid: [],
-  bottom: []
-}
-
 const tBody1: any = [
-  { key: 'focus', name: '月工作重点', value: "", width: 120, style:{ minHeight: "200px" } },
+  { key: 'focus', name: '月工作重点', defaultValue: "月工作重点", value: "", width: 120, style:{ minHeight: "200px" } },
   { key: 'focusDetail', name: '月工作重点内容', value: "", width: 576, style:{ minHeight: "200px", textAlign: "left", verticalAlign: "top" } },
 ]
 
-const tBody2: any = [
-  { key: "time", name: "时间", value: "", width: 120 },
+const firstWeek: any = [
+  { key: "time", name: "时间", defaultValue: "第一周", value: "", width: 120 },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "why", name: "责任人", value: "", width: 100 },
+  { key: "where", name: "完成", value: "", width: 80, click: tick },
+  { key: "who", name: "基本完成", value: "", width: 80, click: tick },
+  { key: "when", name: "未完成", value: "", width: 80, click: tick },
+]
+
+const secondWeek: any = [
+  { key: "time", name: "时间", defaultValue: "第二周", value: "", width: 120 },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "why", name: "责任人", value: "", width: 100 },
+  { key: "where", name: "完成", value: "", width: 80, click: tick },
+  { key: "who", name: "基本完成", value: "", width: 80, click: tick },
+  { key: "when", name: "未完成", value: "", width: 80, click: tick },
+]
+
+const thirdWeek: any = [
+  { key: "time", name: "时间", defaultValue: "第三周", value: "", width: 120 },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "why", name: "责任人", value: "", width: 100 },
+  { key: "where", name: "完成", value: "", width: 80, click: tick },
+  { key: "who", name: "基本完成", value: "", width: 80, click: tick },
+  { key: "when", name: "未完成", value: "", width: 80, click: tick },
+]
+
+const fourthWeek: any = [
+  { key: "time", name: "时间", defaultValue: "第四周", value: "", width: 120 },
   { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
@@ -42,14 +63,19 @@ const tBody2: any = [
 ]
 
 const tBody3: any = [
-  { key: 'record', name: '记录', value: "", width: 120, style:{ minHeight: "150px" } },
-  { key: 'recordDetail', name: '记录内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
+  { key: 'record1', name: '存在问题', defaultValue: "存在问题", value: "", width: 120, style:{ minHeight: "150px" } },
+  { key: 'recordDetail1', name: '存在问题内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
+]
+
+const tBody4: any = [
+  { key: 'record2', name: '特殊事件记录', defaultValue: "特殊事件记录", value: "", width: 120, style:{ minHeight: "150px" } },
+  { key: 'recordDetail2', name: '特殊事件记录内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 export default {
   hiddenFixHeader:true,//隐藏浮动表头
-  defaulLength: [1,20,2],
+  defaulLength: [1,5,5,5,5,1,1],
   tableTitle: { value: "月工作重点及周安排", width: 695 },
-  tBody:[tBody1,tBody2,tBody3],
-  tHead:[tHead1,tHead2,tHead3],
+  tBody:[tBody1,firstWeek,secondWeek,thirdWeek,fourthWeek,tBody3,tBody4],
+  tHead:[tHead1,tHead2],
 }
