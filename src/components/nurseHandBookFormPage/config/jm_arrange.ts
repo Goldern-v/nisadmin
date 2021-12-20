@@ -74,7 +74,7 @@ const tBody4: any = [
 
 export default {
   hiddenFixHeader:true,//隐藏浮动表头
-  defaulLength: [1,5,5,5,5,1,1],
+  defaulLength: [1,1,1,1,1,1,1],
   tableTitle: { value: "月工作重点及周安排", width: 695 },
   tBody:[tBody1,firstWeek,secondWeek,thirdWeek,fourthWeek,tBody3,tBody4],
   tHead:[tHead1,tHead2],
