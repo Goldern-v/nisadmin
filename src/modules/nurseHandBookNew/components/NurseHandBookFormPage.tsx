@@ -78,6 +78,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
             templeContent.push({tableData:JSON.parse(item.tableData)})
           })
         }
+        // templeContent.map((item:any)=>{
+        //   item.tableData.map((col:any)=>{
+        //     for (let key in col) {
+        //       col[key]=htmlEscape(col[key])
+        //     }
+        //   })
+        // })
         if(line.formContent.length){
           line.formContent.map((item:any)=>{    
             lineList.push(JSON.parse(item.computeRow))
@@ -93,6 +100,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
     }else{
       setComplexHeaderContent([])
     }
+  }
+
+  const htmlEscape = (str:any)=> {
+    return String(str)
+      .replace(/&nbsp;/g, " ")
   }
 
   useEffect(() => {
