@@ -847,6 +847,59 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-
+    case '院外工作资质':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseOutQualification',
+          title: '审核工作情况登记',
+          tableFormat: [
+            {
+              证书名称: `year`,
+              级别: `nightShift`
+            },
+            {
+              发证单位: `checkOut`,
+              发证时间: `nursingConsultation`
+            },
+            {
+              证书编号: `caseDiscussion`,
+              证书有效期: `individualCase`
+            }
+          ],
+          // fileData: [{}],
+          allData: row
+        })
+      }
+      break
+    case '院内工作资质':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseInnaiQualification',
+          title: '审核工作情况登记',
+          tableFormat: [
+            {
+              授权类别: `year`,
+              授权名称: `nightShift`
+            },
+            {
+              认证部门: `checkOut`,
+              认证时间: `nursingConsultation`
+            },
+            {
+              证书编号: `caseDiscussion`,
+              有效期: `individualCase`
+            }
+          ],
+          // fileData: [{}],
+          allData: row
+        })
+      }
+      break
   }
 }

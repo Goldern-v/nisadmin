@@ -112,7 +112,7 @@ export default observer(function WorkHistory() {
   }, [])
 
   return (
-    <BaseLayout title='工作经历' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='工作经历' btnList={isSelf() ? [] : btnList}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

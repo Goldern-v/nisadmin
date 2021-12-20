@@ -13,7 +13,7 @@ import { authStore } from 'src/stores'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditInnaiQualificationModal from '../modal/EditInnaiQualificationModal'
+import EditOutQualificationModal from '../modal/EditOutQualificationModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
@@ -22,7 +22,7 @@ import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function InnaiQualification() {
-  const editOnEducationModal = createModal(EditInnaiQualificationModal)
+  const editOnEducationModal = createModal(EditOutQualificationModal)
   const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
@@ -46,28 +46,28 @@ export default observer(function InnaiQualification() {
       width: 55
     },
     {
-      title: '授权类别',
+      title: '证书名称',
       dataIndex: 'studyMajor',
       key: 'studyMajor',
       width: 120,
       align: 'center'
     },
     {
-      title: '授权名称',
+      title: '级别',
       dataIndex: 'unit',
       key: 'unit',
       width: 120,
       align: 'center'
     },
     {
-      title: '认证部门',
+      title: '发证单位',
       dataIndex: 'unitLocal',
       key: 'unitLocal',
       width: 110,
       align: 'center'
     },
     {
-      title: '认证时间',
+      title: '发证时间',
       dataIndex: 'startDate',
       key: 'winningYear',
       width: 100,
@@ -81,7 +81,7 @@ export default observer(function InnaiQualification() {
       align: 'center'
     },
     {
-      title: '有效期',
+      title: '证书有效期',
       dataIndex: 'studyHour',
       key: 'studyHour',
       width: 100,
@@ -104,7 +104,7 @@ export default observer(function InnaiQualification() {
       width: 80,
       align: 'center'
     },
-    Do('nurseInnaiQualification', editOnEducationModal, getTableData)
+    Do('nurseOutQualification', editOnEducationModal, getTableData)
   ]
 
   useEffect(() => {

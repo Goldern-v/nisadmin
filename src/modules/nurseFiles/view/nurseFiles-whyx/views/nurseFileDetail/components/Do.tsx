@@ -13,6 +13,8 @@ import { getTitle } from '../config/title'
 export interface Props { }
 
 export default function (type: string, modal: any, getTableData: () => void): any {
+  console.log(type, 9998)
+  const status = isSelf() || type === 'nurseOutQualification' || type === 'nurseInnaiQualification'
   return {
     title: '操作',
     dataIndex: '操作',
@@ -22,7 +24,7 @@ export default function (type: string, modal: any, getTableData: () => void): an
     render: (text: any, row: any, index: number) => {
       return (
         <DoCon>
-          {isSelf() ? (
+          {status ? (
             <React.Fragment>
               <span
                 onClick={() => {

@@ -16,6 +16,7 @@ import BaseInfo from './views/BaseInfo'
 import statePersonnel from './views/statePersonnel'
 import AcademicActivity from './views/academicActivity'
 import InnaiQualification from './views/InnaiQualification'
+import outQualification from './views/outQualification'
 
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
@@ -88,7 +89,7 @@ const ROUTE_LIST = [
       {
         type: "outQualification",
         // path: "/continuingEdu/其他人员",
-        component: InnaiQualification,
+        component: outQualification,
         name: '院外工作资质'
       }
     ]
