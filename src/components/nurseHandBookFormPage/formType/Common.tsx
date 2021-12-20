@@ -87,8 +87,8 @@ export default function Common(props: Props) {
   }
 
   const refresh = () => {
-    setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
-    // setBodyModal([...bodyModal])
+    // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    setBodyModal([...bodyModal])
     if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
       setVisible(templeVisible)
