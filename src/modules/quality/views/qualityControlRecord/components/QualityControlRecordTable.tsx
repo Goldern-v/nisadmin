@@ -256,7 +256,6 @@ export default observer(function qualityControlRecordTable(props: Props) {
   }, []);
   const onDoubleClick = (record: any) => {
     // appStore.history.push('/continuingEduEmpDetail')
-    console.log("test-record.qcCode", record.qcCode);
     appStore.history.push(
       `/qualityControlRecordDetail/${record.id}?qcCode=${record.qcCode}`
     );

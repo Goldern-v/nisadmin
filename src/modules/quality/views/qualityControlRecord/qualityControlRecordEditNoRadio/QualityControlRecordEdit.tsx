@@ -87,7 +87,6 @@ export default observer(function QualityControlRecordEdit() {
 
     for (let i = 0; i < itemGroupList.length; i++) {
       let itemList = itemGroupList[i].itemList;
-      console.log("test-master", itemList);
       if (itemList)
         for (let j = 0; j < itemList.length; j++) {
           let item = itemList[j];
