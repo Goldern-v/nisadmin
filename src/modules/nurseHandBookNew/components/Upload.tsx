@@ -70,15 +70,12 @@ export default function auditProcessDetail(props: Props) {
     setEditVisible2(true)
     let str:any = "";
     let pdfStr:any = "";
-    if(queryObj.isAdd){
-      await api.getPdfPath(info.id).then((res) => {
-        str = res.data.path;
-        pdfStr = res.data.pdfPath;
-      })
-    }else{
-      str = info.path;
-      pdfStr = info.pdfPath;
-    }
+
+    await api.getPdfPath(info.id).then((res) => {
+      str = res.data.path;
+      pdfStr = res.data.pdfPath;
+    })
+
     let index = str.lastIndexOf("\.");
     let type = str.substr(index+1,str.length);
     let start = str.indexOf("/crNursing/")
