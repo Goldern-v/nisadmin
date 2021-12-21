@@ -37,6 +37,8 @@ export interface Props {
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
+  const [copyRow, setCopyRow] = useState({})
+
   let manualType = queryObj.manualType
   let masterInfo:any = []
   try{
@@ -118,6 +120,8 @@ export default function NurseHandBookFormPage(props: Props) {
                 setComputeRow = {setComputeRow}
                 computeRow = {computeRow}
                 templeVisible = {templeVisible}
+                copyRow={copyRow}
+                setCopyRow={setCopyRow}
               ></Common>}
             </div>)
           })}
