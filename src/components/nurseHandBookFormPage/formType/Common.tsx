@@ -58,11 +58,23 @@ export default function Common(props: Props) {
     }
   }
 
-  const handlerClick = (e: any, col: any) => {
+  const handlerClick = (e: any, col: any ) => {
+    if(queryObj.audit) return
     setMenuType("select")
-    console.log(col);
     col.click && col.click(col) && scheduleStore.setIsSave(true)
-    col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    col.click && setBodyModal([...bodyModal])
+    // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  }
+
+  const tableValue = (col:any, rowIdx:any) => {
+    if(col.key == "serialNumber"){
+      return rowIdx + 1
+    }
+    if(col.value=="" && col.defaultValue){
+      return col.defaultValue
+    } else {
+      return col.value
+    }
   }
 
   const ContextMenu = (e: any) => {
@@ -75,8 +87,8 @@ export default function Common(props: Props) {
   }
 
   const refresh = () => {
-    
-    setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+    setBodyModal([...bodyModal])
     if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
       setVisible(templeVisible)
@@ -142,7 +154,7 @@ export default function Common(props: Props) {
                 'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
                 'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
-                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto',
+                'cursor': col.click ? 'pointer' : col.key == "serialNumber" ? 'no-drop' : 'auto',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
@@ -154,7 +166,7 @@ export default function Common(props: Props) {
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
             >
-              {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
+              {tableValue(col,rowIdx)}
             </div>)}
         </div>)}
       {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -202,6 +214,6 @@ const Wrapper = styled.div`
   word-break: break-all;
 }
 .active-row{
-  background:#fef8b9;
+  /* background: #fef8b9; */
 }
 `

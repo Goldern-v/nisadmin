@@ -78,6 +78,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
             templeContent.push({tableData:JSON.parse(item.tableData)})
           })
         }
+        // templeContent.map((item:any)=>{
+        //   item.tableData.map((col:any)=>{
+        //     for (let key in col) {
+        //       col[key]=htmlEscape(col[key])
+        //     }
+        //   })
+        // })
         if(line.formContent.length){
           line.formContent.map((item:any)=>{    
             lineList.push(JSON.parse(item.computeRow))
@@ -93,6 +100,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
     }else{
       setComplexHeaderContent([])
     }
+  }
+
+  const htmlEscape = (str:any)=> {
+    return String(str)
+      .replace(/&nbsp;/g, " ")
   }
 
   useEffect(() => {
@@ -457,11 +469,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">
           {queryObj.isAdd && <Button onClick={handleSave}>保存</Button>}
-          {!queryObj.isAdd && data.status == "2" && <Button onClick={handleUndo} className="red">撤销</Button>}
+          {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
-          <Button className="ml-20" onClick={handleBack}>返回</Button>
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
+          <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
       </div>
       <div className="main">
@@ -469,6 +481,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
           <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
+          {!queryObj.isAdd && <div className="rightBottom">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>}
           <div className="rightTop">
             <UploadView
               setEditVisible2={setEditVisible2}
@@ -479,9 +494,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
               setPathChange={setPathChange}
             ></UploadView>
           </div>
-          {!queryObj.isAdd && <div className="rightBottom">
-            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
-          </div>}
         </div>
       </div>
     </Spin>
@@ -540,10 +552,10 @@ const Wrapper = styled.div`
       
     }
     .buttonBody {
-      width: 320px;
+      /* width: 320px; */
       position: absolute;
       top: 50px;
-      right: -25px;
+      right: 50px;
     }
   }
   .main {
@@ -560,7 +572,7 @@ const Wrapper = styled.div`
       max-height: 85vh; 
     }
     .rightCon {
-      min-width: 320px;
+      min-width: 340px;
       height: 80vh; 
       background-color: #fff;
       margin: 20px 10px;

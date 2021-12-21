@@ -72,14 +72,14 @@ const baseConfig: navConfigItem[] = [
         path: "/checkWard",
         icon: require("../images/menu-icon/护理查房@2x.png")
       },
+      // {
+      //   name: "护士长手册",
+      //   path: "/nurseHandBook",
+      //   icon: require("../images/menu-icon/护理查房@2x.png"),
+      //   // hidden: !appStore.isDev,
+      // },
       {
         name: "护士长手册",
-        path: "/nurseHandBook",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-        // hidden: !appStore.isDev,
-      },
-      {
-        name: "护士长手册3.0",
         path: "/nurseHandBookNew",
         icon: require("../images/menu-icon/护理查房@2x.png"),
         hidden: !appStore.isDev,

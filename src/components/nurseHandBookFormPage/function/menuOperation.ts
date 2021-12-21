@@ -20,7 +20,8 @@ export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, sel
     return
   }
   bodyModal[bodyIdx].tableData.splice(selectIndex, 1)
-  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  setBodyModal([...bodyModal])
 }
 
 // 清空当前行数据
@@ -34,7 +35,8 @@ export const wipeData = (tBody: any, bodyModal: any, setBodyModal: any, selectIn
     }
   })
   bodyModal[bodyIdx].tableData[selectIndex] = nullRow
-  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  setBodyModal([...bodyModal])
+  // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 
 // 插入空行事件
@@ -48,7 +50,8 @@ export const addRowBefore = (tBody: any, bodyModal: any, setBodyModal: any, sele
     }
   })
   bodyModal[bodyIdx].tableData.splice(selectIndex, 1, nullRow, bodyModal[bodyIdx].tableData[selectIndex])
-  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  setBodyModal([...bodyModal])
+  // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 // 追加空行事件
 export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
@@ -61,7 +64,8 @@ export const addRowAfter = (tBody: any, bodyModal: any, setBodyModal: any, selec
     }
   })
   bodyModal[bodyIdx].tableData.splice(selectIndex, 1, bodyModal[bodyIdx].tableData[selectIndex], nullRow)
-  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  setBodyModal([...bodyModal])
 }
 // 复制整行事件
 export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
@@ -82,7 +86,8 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
     return
   }
   bodyModal[bodyIdx].tableData[selectIndex] = copyRow
-  setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  setBodyModal([...bodyModal])
+  // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
 }
 
 // 计算当前行事件

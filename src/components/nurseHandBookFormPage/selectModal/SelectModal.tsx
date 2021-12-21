@@ -32,10 +32,9 @@ export default function SelectModal(props: Props) {
     { name: "计算当前列", code: "calculation_currentColumn", icon: 'calculator' },
   ]
   const open = () => {
-
     setRenderList(selectList || [])
     setSelectLeft(selectw)
-    if (domReact.top >= maxTop) {
+    if (selectH >= maxTop) {
       setSelectTop(maxTop - 20)
     } else {
       setSelectTop(selectH)
