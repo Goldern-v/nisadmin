@@ -171,7 +171,6 @@ export default observer(function(props) {
               beginDate: m0.format("YYYY-MM-DD") || "",
               endDate: m1.format("YYYY-MM-DD") || "",
             });
-            console.log("test-params", params);
           }}
           style={{ width: 200 }}
         />
@@ -248,5 +247,8 @@ const ContentCon = styled.div`
       text-align: center;
       margin: 8px 0 5px 0;
     }
+  }
+  .ant-table-column-sorters {
+    width: 100%;
   }
 `;

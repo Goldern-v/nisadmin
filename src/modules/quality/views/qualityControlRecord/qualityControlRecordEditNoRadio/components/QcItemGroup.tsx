@@ -148,8 +148,10 @@ export default observer(function QcItemGroup(props: Props) {
               {formatFLagIndex(item.itemShowCode)}
             </span>
             {item.qcNameFill || item.qcItemName}
-            {item.fixedScore && (
+            {item.fixedScore ? (
               <span style={{ color: "#999" }}>（{item.fixedScore}分）</span>
+            ) : (
+              ""
             )}
             <div>{formatQcItemDesc(item.qcItemDeductDesc)}</div>
           </div>
