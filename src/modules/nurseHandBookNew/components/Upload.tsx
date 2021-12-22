@@ -31,6 +31,9 @@ export default function auditProcessDetail(props: Props) {
 
   const uploadOnChange = (info:any) => {
     let fileList = [...info.fileList];
+    if(fileList.length > 5){
+      return false
+    }
     fileList = fileList.slice(-5);
     fileList = fileList.map(file => {
       if (file.response) {
@@ -38,11 +41,19 @@ export default function auditProcessDetail(props: Props) {
       }
       return file;
     });
+    console.log(fileList);
     setFileList(fileList);
     let idList = fileList?.map((item:any) => {
       return item.id
     })
     setFileIdList(idList)
+  }
+
+  const beforeUpload:any = (info:any)=> {
+    if(fileList.length >= 5){
+      message.error('附件最大上传数：5')
+      return false
+    }
   }
 
   const removeOnChange:any = (info:any) => {
@@ -104,6 +115,7 @@ export default function auditProcessDetail(props: Props) {
           fileList={fileList} 
           onChange={uploadOnChange}
           onRemove={removeOnChange}
+          beforeUpload={beforeUpload}
           onPreview={PreviewOnChange}
           multiple={true}
           >
