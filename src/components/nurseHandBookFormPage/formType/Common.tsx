@@ -72,11 +72,7 @@ export default function Common(props: Props) {
     if(col.key == "serialNumber"){
       return rowIdx + 1
     }
-    if(col.value=="" && col.defaultValue){
-      return col.defaultValue
-    } else {
-      return col.value
-    }
+    return col.value
   }
 
   const ContextMenu = (e: any) => {
