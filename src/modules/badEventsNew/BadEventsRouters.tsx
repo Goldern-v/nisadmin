@@ -81,16 +81,33 @@ export default function BadEventsRouters(props: Props) {
       },
       vague: true,
     }),
-    {
-      title: '不良事件统计',
-      path: `${baseRouter}/不良事件统计`,
-      component: 不良事件统计,
-    },
-    {
-      title: '不良事件发生率',
-      path: `${baseRouter}/不良事件发生率`,
-      component: 不良事件发生率,
-    },
+    // {
+    //   title: '不良事件统计',
+    //   path: `${baseRouter}/不良事件统计`,
+    //   component: 不良事件统计,
+    // },
+    // {
+    //   title: '不良事件发生率',
+    //   path: `${baseRouter}/不良事件发生率`,
+    //   component: 不良事件发生率,
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [],
+        other: [
+          {
+            title: '不良事件统计',
+            path: `${baseRouter}/不良事件统计`,
+            component: 不良事件统计,
+          },
+          {
+            title: '不良事件发生率',
+            path: `${baseRouter}/不良事件发生率`,
+            component: 不良事件发生率,
+          },
+        ]
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         hj: [
