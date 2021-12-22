@@ -109,7 +109,7 @@ export default observer(function WorkHistory() {
 
   useEffect(() => {
     getTableData()
-  }, [])
+  }, []) 
 
   return (
     <BaseLayout title='工作经历' btnList={isSelf() ? [] : btnList}>

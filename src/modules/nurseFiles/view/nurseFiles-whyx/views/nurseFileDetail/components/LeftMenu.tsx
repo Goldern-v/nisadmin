@@ -9,7 +9,6 @@ import emitter from 'src/libs/ev'
 import { getTitle } from '../config/title'
 import { isSelf } from '../views/BaseInfo'
 import { Icon, Menu } from "antd";
-import { Console } from 'console'
 const SubMenu = Menu.SubMenu;
 
 interface RouteType {
@@ -34,6 +33,8 @@ export default function LeftMenu(props: Props) {
 
   let [listInfo, setListInfo] = useState([])
   const [openKeys, setOpenKeys]: any = useState("");
+  const [openSubMenukeys, setOpenSubMenukeys]: any = useState('');
+  const [defaultOpenKeys, setDefaultOpenKeys]: any = useState('')
 
   const onLoad = () => {
     let fun = isSelf() ? nurseFilesService.findByEmpNoSelf : nurseFilesService.findByEmpNo
@@ -77,9 +78,9 @@ export default function LeftMenu(props: Props) {
     history.push((isSelf() ? '/selfNurseFile/' : '/nurseFileDetail/') + item.key + `?${appStore.query}`)
   }
 
-  // const onOpenChange = (openKeys: any) => {
-  //   setOpenKeys([openKeys[openKeys.length - 1]]);
-  // };
+  const onOpenChange = (openKeys: any) => {
+    setOpenSubMenukeys([openKeys[openKeys.length - 1]]);
+  };
 
   function GetUrlRelativePath() {
     var url = document.location.toString();
@@ -93,20 +94,29 @@ export default function LeftMenu(props: Props) {
     }
     return relUrl;
   }
-
+  const filterSelectUrl = (arr: any[], typeUrl: any) => {
+    let newArr: any = []
+    arr.forEach(item => {
+      if (item.children && item.children.length > 0) {
+        // filterSelectUrl(item.children, typeUrl)
+        item.children.forEach((i: { type: any }) => {
+          // console.log(i.type === typeUrl)
+          if (i.type === typeUrl) newArr.push(i)
+        })
+      }
+    })
+    return newArr
+  }
 
   useEffect(() => {
-    console.log(GetUrlRelativePath(), 999)
     var url = GetUrlRelativePath().split(isSelf() ? '/selfNurseFile/' : '/nurseFileDetail/')[1];
-    console.log(url, 9991213)
     setOpenKeys(url)
-    console.log(openKeys, 1110)
+    setDefaultOpenKeys(filterSelectUrl(props.routeList, url)[0].parentType)
     emitter.addListener('refreshNurseFileDeatilLeftMenu', onLoad)
     onLoad()
     return () => {
       emitter.removeAllListeners('refreshNurseFileDeatilLeftMenu')
     }
-
   }, [])
   return (
     <Wrapper>
@@ -127,15 +137,14 @@ export default function LeftMenu(props: Props) {
             {item.name}
             {isBadge && <Badge />}
           </Li>
-
         )
       })} */}
       <Menu
         className='left-menu'
         onSelect={handleSelect}
         selectedKeys={[openKeys]}
-        defaultOpenKeys={['qualification']}
-        // defaultSelectedKeys={['baseInfo']}
+        openKeys={openSubMenukeys ? openSubMenukeys : [defaultOpenKeys]}
+        onOpenChange={onOpenChange}
         mode="inline"
         inlineIndent={12}
       >

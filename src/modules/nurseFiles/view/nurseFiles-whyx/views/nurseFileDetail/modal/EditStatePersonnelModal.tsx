@@ -78,7 +78,7 @@ export default function EditSpecializNurseModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`状态原因`} name='statusCause'>
-              <TextArea rows={6} />
+              <TextArea rows={6} maxLength={2500} />
             </Form.Field>
           </Col>
         </Row>

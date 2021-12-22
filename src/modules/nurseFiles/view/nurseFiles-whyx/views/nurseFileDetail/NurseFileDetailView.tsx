@@ -83,12 +83,14 @@ const ROUTE_LIST = [
       {
         type: "innaiQualification",
         // path: "/continuingEdu/人员管理",
+        parentType: 'qualification',
         component: InnaiQualification,
         name: '院内工作资质'
       },
       {
         type: "outQualification",
         // path: "/continuingEdu/其他人员",
+        parentType: 'qualification',
         component: outQualification,
         name: '院外工作资质'
       }
@@ -156,11 +158,13 @@ const ROUTE_LIST = [
         type: 'outWorkHistory',
         component: WorkHistory,
         name: '院外工作经历',
+        parentType: 'workHistory',
       },
       {
         type: 'innaiWorkHistory',
         component: WorkHistory,
         name: '院内工作经历',
+        parentType: 'workHistory',
       },
     ]
   },
