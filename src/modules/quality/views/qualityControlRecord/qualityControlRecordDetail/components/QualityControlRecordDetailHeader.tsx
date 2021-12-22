@@ -291,12 +291,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </React.Fragment>
               )
             } */}
-            {appStore.hisMatch({
+            {master && authStore.isSupervisorNurse && nextNode.nodeName && appStore.hisMatch({
               map: {
-                gzsrm: master.qcLevel === '3' && nextNode?.nodeName === '科护士长审核',
+                gzsrm: master.qcLevel === '3' && nextNode?.nodeName === '科护士长审核' && nextNode.canHandle ,
                 other: false,
               },
-            }) && master.id && (<Button onClick={handleEdit} disabled={deleteLoading}>
+            }) && (<Button onClick={handleEdit} disabled={deleteLoading}>
               编辑
             </Button>)}
             {appStore.hisMatch({
