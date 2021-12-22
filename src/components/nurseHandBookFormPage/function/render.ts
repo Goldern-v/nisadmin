@@ -43,8 +43,8 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
         }
       })
       if (needNullRows && (!formContent[bodyIdx] || index >= formContent[bodyIdx].tableData.length)) {
-          nullRow.map((item: any) => {
-            item.value = ""
+          nullRow.map((item: any,index:any) => {
+            item.value = masterInfo.tBody[bodyIdx][index].value || ""
           })
       } else {
         nullRow.map((item: any) => {
