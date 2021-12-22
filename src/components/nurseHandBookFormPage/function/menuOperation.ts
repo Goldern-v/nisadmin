@@ -77,9 +77,14 @@ export const copyRow = (tBody: any, bodyModal: any, setBodyModal: any, selectInd
   setCopyRow(nullRow)
 }
 // 粘贴事件
-export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
+export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any,masterInfo:any) => {
   if (JSON.stringify(copyRow) == "{}") {
     message.error('尚未复制内容！')
+    return
+  }
+  let isIncludes = masterInfo.tBody[bodyIdx].some((item:any)=>{return item.key==copyRow[0].key})
+  if(!isIncludes){
+    message.error('非同类型表无法粘贴！')
     return
   }
   bodyModal[bodyIdx].tableData[selectIndex] = copyRow
