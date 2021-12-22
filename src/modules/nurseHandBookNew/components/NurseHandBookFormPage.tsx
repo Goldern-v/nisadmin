@@ -44,6 +44,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
   const [buttonLoading, setButtonLoading]: any = useState(false)
+  const [saveLoading, setSaveLoading]: any = useState(false)
+  const [submitLoading, setSubmitLoading]: any = useState(false)
   const [onScroll, setOnScroll]: any = useState(true)
   const [textValue, setTextValue] = useState('')
 
@@ -174,6 +176,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
+    setSaveLoading(true)
     let tBodyList: any = []
     let computeList: any = []
     bodyModal.map((item:any)=>{
@@ -219,10 +222,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
         message.success('保存成功')
         scheduleStore.setIsSave(false)
         appStore.history.goBack()
+        setSaveLoading(false)
       })
   }
 
   const handleSubmit = () => {
+    setSubmitLoading(true)
     let tBodyList: any = []
     let computeList: any = []
     bodyModal.map((item:any)=>{
@@ -268,6 +273,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         message.success('提交成功')
         scheduleStore.setIsSave(false)
         appStore.history.goBack()
+        setSubmitLoading(false)
       })
   }
 
@@ -468,9 +474,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">
-          {queryObj.isAdd && <Button onClick={handleSave}>保存</Button>}
+          {queryObj.isAdd && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
           {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
-          {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
+          {data.status != "1" && !queryObj.audit && <Button className="ml-20" loading={submitLoading} type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>

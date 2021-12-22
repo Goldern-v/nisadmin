@@ -182,12 +182,23 @@ export default observer(function 三级问题原因措施汇总() {
       }, () => setFormListLoaindg(false))
   }
 
+  //修改回显名字
+  const getPageTitle = () =>{
+    const title = numToChinese(Number(queryObj.qclevel || '2')) + '级'+'质控问题原因措施汇总';
+    if(title=='二级质控问题原因措施汇总' && ['gzsrm'].includes(appStore.HOSPITAL_ID)){
+      return '专科护理质量评价'
+    }else {
+      return title;
+    }
+  }
+
   useEffect(() => {
     getFormList()
   }, [])
   return <Wrapper>
     <PageHeader>
-      <PageTitle>{numToChinese(Number(queryObj.qclevel || '2')) + '级'}质控问题原因措施汇总</PageTitle>
+      {/* <PageTitle>{numToChinese(Number(queryObj.qclevel || '2')) + '级'}质控问题原因措施汇总</PageTitle> */}
+      <PageTitle>{getPageTitle()}</PageTitle>
       <Place></Place>
       <span>表单：</span>
       <Select

@@ -15,10 +15,12 @@ export interface Props {
   isPrint: any
   bodyIdx: any
   templeVisible: any
+  setCopyRow: any
+  copyRow: any
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
@@ -26,7 +28,7 @@ export default function Common(props: Props) {
   const [selectList, setSelectList]: any = useState([])
   const [menuType, setMenuType] = useState('select')
   const [operationType, setOperationType]: any = useState("")
-  const [copyRow, setCopyRow] = useState({})
+  // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
@@ -165,8 +167,8 @@ export default function Common(props: Props) {
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
+              dangerouslySetInnerHTML={{__html: tableValue(col,rowIdx)}}
             >
-              {tableValue(col,rowIdx)}
             </div>)}
         </div>)}
       {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>

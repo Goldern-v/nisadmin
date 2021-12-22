@@ -72,6 +72,10 @@ export default class NurseHandBookService extends BaseApiService {
   public getByIdAudited(id: string) {
     return this.get(`/nurseManualJM/getByIdAudited?id=${id}`)
   }
+  /*通过id获取pdfPath*/
+  public getPdfPath(id: string) {
+    return this.get(`nurseManualJM/getFile?id=${id}`)
+  }
   
 }
 

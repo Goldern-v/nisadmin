@@ -66,10 +66,16 @@ export default function auditProcessDetail(props: Props) {
     return pro.then(res=>res)
   }
 
-  const PreviewOnChange = (info:any) => {
+  const PreviewOnChange = async (info:any) => {
     setEditVisible2(true)
-    let str:any = info.path;
-    let pdfStr:any = info.pdfPath;
+    let str:any = "";
+    let pdfStr:any = "";
+
+    await api.getPdfPath(info.id).then((res) => {
+      str = res.data.path;
+      pdfStr = res.data.pdfPath;
+    })
+
     let index = str.lastIndexOf("\.");
     let type = str.substr(index+1,str.length);
     let start = str.indexOf("/crNursing/")
