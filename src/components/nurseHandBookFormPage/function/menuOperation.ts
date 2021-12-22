@@ -15,8 +15,9 @@ import { copyNullRow } from "./render"
 
 // 删除当前行
 export const delCurrentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any,masterInfo:any) => {
-  if(bodyModal[bodyIdx].tableData.length <= masterInfo.defaulLength[bodyIdx]){
-  message.error('当前行数少于默认行数，只可清空数据!')
+  if(bodyModal[bodyIdx].tableData.length <= 1){
+// if(bodyModal[bodyIdx].tableData.length <= masterInfo.defaulLength[bodyIdx]){
+  message.error('当前行数少于1行，只可清空数据!')
     return
   }
   bodyModal[bodyIdx].tableData.splice(selectIndex, 1)
