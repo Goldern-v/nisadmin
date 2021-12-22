@@ -63,13 +63,13 @@ const fourthWeek: any = [
 ]
 
 const tBody3: any = [
-  { key: 'record1', name: '存在问题', value: "存在问题", width: 120, style:{ minHeight: "150px" } },
-  { key: 'recordDetail1', name: '存在问题内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
+  { key: 'focus', name: '存在问题', value: "存在问题", width: 120, style:{ minHeight: "150px" } },
+  { key: 'focusDetail', name: '存在问题内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 const tBody4: any = [
-  { key: 'record2', name: '特殊事件记录', value: "特殊事件记录", width: 120, style:{ minHeight: "150px" } },
-  { key: 'recordDetail2', name: '特殊事件记录内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
+  { key: 'focus', name: '特殊事件记录', value: "特殊事件记录", width: 120, style:{ minHeight: "150px" } },
+  { key: 'focusDetail', name: '特殊事件记录内容', value: "", width: 576, style:{ minHeight: "150px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 export default {
