@@ -1,5 +1,6 @@
 // 本文件用于存放渲染时需要用到的函数
 import { authStore, appStore, scheduleStore } from "src/stores";
+const { queryObj } = appStore
 
 // 用来复制空行的函数
 export const copyNullRow = (nullRow: any, config: any, index: any, key: any) => {
@@ -14,6 +15,7 @@ export const copyNullRow = (nullRow: any, config: any, index: any, key: any) => 
 
 // 用来复制空行的函数
 export const initBodyModal = (masterInfo: any, setBodyModal: Function, formContent: any) => {
+  
   let tempArr:any = []
     /*
       [
@@ -26,7 +28,9 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
     let arr = []
     let rows = 0
     let needNullRows = false
-    if (formContent[bodyIdx]&&(formContent[bodyIdx].tableData.length > masterInfo.defaulLength[bodyIdx])) {
+    console.log(JSON.stringify(formContent[bodyIdx]));
+    
+    if (formContent[bodyIdx]) {
       rows = formContent[bodyIdx].tableData.length
     } else {
       rows = masterInfo.defaulLength[bodyIdx];

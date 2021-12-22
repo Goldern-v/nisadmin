@@ -167,8 +167,8 @@ export default function Common(props: Props) {
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
+              dangerouslySetInnerHTML={{__html: tableValue(col,rowIdx)}}
             >
-              {tableValue(col,rowIdx)}
             </div>)}
         </div>)}
       {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>
