@@ -33,11 +33,13 @@ export default function editModal(props: Props) {
   }
 
   useEffect(() => {
-    initData()
-  }, [props.path])
+    setSpinning(true)
+    if(path){
+      initData()
+    }
+  }, [path])
 
   const initData = () => {
-    setSpinning(true)
     let str:any = path;
     let index = str.lastIndexOf("\.");
     let type = str.substr(index+1,str.length);
@@ -46,7 +48,6 @@ export default function editModal(props: Props) {
     setTimeout(()=>{
       setSpinning(false)
     },500)
-    
   }
   
   return <Modal

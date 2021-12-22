@@ -28,8 +28,6 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
     let arr = []
     let rows = 0
     let needNullRows = false
-    console.log(JSON.stringify(formContent[bodyIdx]));
-    
     if (formContent[bodyIdx]) {
       rows = formContent[bodyIdx].tableData.length
     } else {
