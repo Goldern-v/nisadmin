@@ -45,6 +45,13 @@ export default observer(function(props) {
       align: "center",
     },
     {
+      title: "危重患者",
+      key: "criticallyPatient",
+      dataIndex: "criticallyPatient",
+      width: 110,
+      align: "center",
+    },
+    {
       title: "分级护理",
       key: "gradedNursing",
       dataIndex: "gradedNursing",
@@ -76,6 +83,13 @@ export default observer(function(props) {
       title: "重点环节",
       key: "keyLink",
       dataIndex: "keyLink",
+      width: 110,
+      align: "center",
+    },
+    {
+      title: "专科护理质量",
+      key: "qualitySpecialized",
+      dataIndex: "qualitySpecialized",
       width: 110,
       align: "center",
     },
