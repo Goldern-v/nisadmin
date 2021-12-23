@@ -11,9 +11,9 @@ import HlbModal from "../modal/HlbModal";
 import EjkhszModal from "../modal/EjkhszModal";
 import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
 import qs from "qs";
-import { fileDownload } from "src/utils/file/file"
+import { fileDownload } from "src/utils/file/file";
 import { navTitle } from "src/modules/quality/data/qcTitle";
-import QcPrint from './QcPrint'
+import QcPrint from "./QcPrint";
 
 interface Props {
   detailData: any;
@@ -49,7 +49,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   const hlbModal = createModal(HlbModal);
   const ejkhszModal = createModal(EjkhszModal);
 
-  const [printing, setPrinting] = useState(false)
+  const [printing, setPrinting] = useState(false);
 
   const onAduit = (handleType: string) => {
     switch (handleType) {
@@ -58,7 +58,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
           title: nextNode.nodeName,
-          onOkCallBack: props.onload
+          onOkCallBack: props.onload,
         });
         break;
 
@@ -67,7 +67,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
           onOkCallBack: props.onload,
-          list: props.detailData.itemGroupList || []
+          list: props.detailData.itemGroupList || [],
         });
 
       case "3":
@@ -76,18 +76,17 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           qcLevel: master.qcLevel,
           nodeCode: nextNode.nodeCode,
           title: nextNode.nodeName,
-          onOkCallBack: props.onload
+          onOkCallBack: props.onload,
         });
         break;
-      default:
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: nextNode.nodeName,
-            onOkCallBack: props.onload
-          });
-        }
+      default: {
+        hlbModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          title: nextNode.nodeName,
+          onOkCallBack: props.onload,
+        });
+      }
     }
   };
 
@@ -100,7 +99,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     appStore.history.push(
       `/qualityControlRecordEdit?${qs.stringify({
         qcCode: master.qcCode,
-        id: master.id
+        id: master.id,
       })}`
     );
   };
@@ -117,7 +116,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       onOk: () => {
         setDeleteLoading(true);
         qualityControlRecordApi.formDelete(master.id).then(
-          res => {
+          (res) => {
             message.success("删除成功!", 1, () => {
               setDeleteLoading(false);
               if (history.length <= 1) {
@@ -129,7 +128,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           },
           () => setDeleteLoading(false)
         );
-      }
+      },
     });
   };
 
@@ -147,10 +146,10 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         qualityControlRecordApi
           .revokeHandleForNode({
             id: master.id,
-            nodeCode: currentNode.nodeCode
+            nodeCode: currentNode.nodeCode,
           })
           .then(
-            res => {
+            (res) => {
               message.success("撤销成功!", 1, () => {
                 setDeleteLoading(false);
 
@@ -163,7 +162,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             },
             () => setDeleteLoading(false)
           );
-      }
+      },
     });
   };
 
@@ -175,8 +174,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   const exportQcItem = () => {
     qualityControlRecordApi
       .exportQcItemDetail(master.id)
-      .then(res => fileDownload(res))
-  }
+      .then((res) => fileDownload(res));
+  };
 
   return (
     <Con>
@@ -185,20 +184,26 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           style={{
             paddingLeft: 0,
             paddingTop: 10,
-            paddingBottom: 2
+            paddingBottom: 2,
           }}
           data={[
             {
               name: navTitle(master.qcLevel),
               link:
-                master.qcLevel == "3" ? "/qcThree" :
-                  master.qcLevel == "2" ? "/qcTwo" :
-                    (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb') ? '/qcOneHj' :
-                      appStore.HOSPITAL_ID == 'nys' ? '/qcOneNys' : '/qcOne'
+                master.qcLevel == "3"
+                  ? "/qcThree"
+                  : master.qcLevel == "2"
+                  ? "/qcTwo"
+                  : appStore.HOSPITAL_ID == "hj" ||
+                    appStore.HOSPITAL_ID == "gxjb"
+                  ? "/qcOneHj"
+                  : appStore.HOSPITAL_ID == "nys"
+                  ? "/qcOneNys"
+                  : "/qcOne",
             },
             {
-              name: "记录详情"
-            }
+              name: "记录详情",
+            },
           ]}
         />
         <div className="topHeaderTitle">
@@ -217,8 +222,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               appStore.hisMatch({
                 map: {
                   wh: master.qcLevel == "2",
-                  other: true
-                }
+                  other: true,
+                },
               }) &&
               master.status == "-1" &&
               master.creatorNo == (authStore.user && authStore.user.empNo) && (
@@ -238,14 +243,16 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               )}
             {currentNode.canUpdate && (
               <React.Fragment>
-                {currentNode.nodeCode === 'commit' && <Button
-                  onClick={handleDelete}
-                  type="danger"
-                  ghost
-                  disabled={deleteLoading}
-                >
-                  删除
-                </Button>}
+                {currentNode.nodeCode === "commit" && (
+                  <Button
+                    onClick={handleDelete}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
+                    删除
+                  </Button>
+                )}
                 <Button
                   onClick={handleCancel}
                   type="danger"
@@ -255,8 +262,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   撤销
                 </Button>
               </React.Fragment>
-            )
-            }
+            )}
             {/* {master &&
               master.canUpdate &&
               appStore.hisMatch({
@@ -285,16 +291,24 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </React.Fragment>
               )
             } */}
+            {master && authStore.isSupervisorNurse && nextNode.nodeName && appStore.hisMatch({
+              map: {
+                gzsrm: master.qcLevel === '3' && nextNode?.nodeName === '科护士长审核' && nextNode.canHandle ,
+                other: false,
+              },
+            }) && (<Button onClick={handleEdit} disabled={deleteLoading}>
+              编辑
+            </Button>)}
             {appStore.hisMatch({
               map: {
                 wh: false,
                 other: true,
-              }
+              },
             }) &&
               master.id && (
                 <React.Fragment>
                   <Button onClick={exportQcItem}>导出</Button>
-                  {appStore.HOSPITAL_ID == 'nys' && (
+                  {appStore.HOSPITAL_ID == "nys" && (
                     <Button onClick={() => setPrinting(true)}>打印</Button>
                   )}
                 </React.Fragment>
@@ -313,7 +327,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       <QcPrint
         printing={printing}
         data={props.detailData}
-        afterPrinting={() => setPrinting(false)} />
+        afterPrinting={() => setPrinting(false)}
+      />
     </Con>
   );
 }
