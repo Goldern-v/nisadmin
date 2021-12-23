@@ -12,7 +12,7 @@ export default function OnDetailCheck(item: any) {
           case 1:
             let taskRole: any =
               item.taskRoleCode == 1
-                ? `/onlineLearningReview?id=${item.cetpId}`
+                ? `/onlineLearningReview?id=${item.cetpId}&onlineLearningName=考试`
                 : `/onlineLearningReview?id=${item.cetpId}&taskRoleCode=true`;
             appStore.history.push(taskRole);
             break;
