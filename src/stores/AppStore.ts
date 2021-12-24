@@ -42,6 +42,7 @@ export default class AppStore {
     window.location.hostname == "192.168.1.54" || //公司测试环境
     window.location.hostname == "info.cr-health.com" //公司测试环境
 
+  @observable public isDevelopment: boolean = process.env.NODE_ENV === "development"
   //是否是
   @observable public onlyBadEvent: boolean = !!process.env.REACT_APP_ONLY_BAD_EVENT
 

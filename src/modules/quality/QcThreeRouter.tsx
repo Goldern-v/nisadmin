@@ -19,23 +19,23 @@ import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 
-import { qcThreeTitle } from './data/qcTitle'
+import { qcThreeTitle } from "./data/qcTitle";
 
-import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
 // import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
 
 // import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
-import 护理质量检查小结Nys from './views/qcFormNys/护理质量检查小结'
-import 护理质量巡查情况汇总表Nys from './views/qcFormNys/护理质量巡查情况汇总表'
+import 护理质量检查小结Nys from "./views/qcFormNys/护理质量检查小结";
+import 护理质量巡查情况汇总表Nys from "./views/qcFormNys/护理质量巡查情况汇总表";
 
 // import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 // import 二级质控问题原因措施汇总 from './views/qcFormGzsrm/二级质控问题原因措施汇总'
-import 三级质控问题原因措施汇总 from './views/qcFormGzsrm/三级质控问题原因措施汇总'
-import 福清三级质控问题原因措施汇总 from './views/qcFormFqfybjy/三级质控问题原因措施汇总'
+import 三级质控问题原因措施汇总 from "./views/qcFormGzsrm/三级质控问题原因措施汇总";
+import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/三级质控问题原因措施汇总";
 
-import 质控表单汇总 from './views/qcDghl/质控表单汇总'
-
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
+import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
@@ -44,7 +44,7 @@ import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore } from "src/stores";
 
 export default function QcThreeRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname])
+  useEffect(() => {}, [props.history.location.pathname]);
 
   const route_护理质量巡查情况汇总表_nys = {
     title: "护理质量巡查情况汇总表",
@@ -53,8 +53,8 @@ export default function QcThreeRouter(props: Props) {
     component: 护理质量巡查情况汇总表Nys,
     keepAlive: true,
     // hide: !appStore.isDev,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
 
   const route_护理质量检查小结 = {
     title: "护理质量检查小结",
@@ -63,27 +63,27 @@ export default function QcThreeRouter(props: Props) {
     component: appStore.hisMatch({
       map: {
         nys: 护理质量检查小结Nys,
-        other: 护理质量检查小结
-      }
+        other: 护理质量检查小结,
+      },
     }),
     keepAlive: true,
     // hide: !appStore.isDev,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
 
   const route_检查表单统计表 = {
     title: "检查表单统计表",
     path: "/qcThree/queryStatistics",
     icon: <JCTJ />,
-    component: QueryStatistics
-  }
+    component: QueryStatistics,
+  };
 
   const route_三级质控问题汇总 = {
     title: "三级质控问题汇总",
     icon: <WTBG />,
     path: "/qcThree/problemSummary",
-    component: ProblemSummary
-  }
+    component: ProblemSummary,
+  };
   // const route_一级质控问题原因措施汇总 = {
   //   title: "一级质控问题原因措施汇总",
   //   path: "/qcThree/一级质控问题原因措施汇总?qcLevel=1",
@@ -100,22 +100,22 @@ export default function QcThreeRouter(props: Props) {
     title: "三级质控问题原因措施汇总",
     path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
     icon: <JCTJ />,
-    component: 三级质控问题原因措施汇总
-  }
+    component: 三级质控问题原因措施汇总,
+  };
   const route_福清三级质控问题原因措施汇总 = {
     title: "三级质控问题原因措施汇总",
     path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
     icon: <JCTJ />,
-    component: 福清三级质控问题原因措施汇总
-  }
+    component: 福清三级质控问题原因措施汇总,
+  };
   const route_三级质控月度报告 = {
     title: "三级质控月度报告",
     icon: <YDBG />,
     path: "/qcThree/analysis",
     component: Analysis,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
 
   const route_三级质控汇总报告 = {
     title: "三级质控汇总报告",
@@ -123,8 +123,8 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/summaryReport",
     component: SummaryReport,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
 
   const route_质控表单汇总 = {
     title: "单个质控表单汇总",
@@ -132,24 +132,30 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/质控表单汇总",
     component: 质控表单汇总,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
+
+  const route_三级质控护理质量统计汇总 = {
+    title: "护理质量统计汇总",
+    icon: <JCTJ />,
+    path: "/qcThree/护理质量统计汇总",
+    component: 三级质控护理质量统计汇总,
+    // keepAlive: true,
+  };
 
   let extra_menu: any = appStore.hisMatch({
     map: {
-      'gzsrm': [
+      gzsrm: [
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,
         route_检查表单统计表,
         // route_一级质控问题原因措施汇总,
         // route_二级质控问题原因措施汇总,
+        route_三级质控护理质量统计汇总,
         route_三级质控问题原因措施汇总,
       ],
-      'nys': [
-        route_护理质量巡查情况汇总表_nys,
-        route_护理质量检查小结,
-      ],
-      'yczyy': [
+      nys: [route_护理质量巡查情况汇总表_nys, route_护理质量检查小结],
+      yczyy: [
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,
         route_三级质控问题汇总,
@@ -164,7 +170,7 @@ export default function QcThreeRouter(props: Props) {
           title: "文件书写统计表",
           path: "/qcThree/writingForm",
           icon: <WJSX />,
-          component: WritingForm
+          component: WritingForm,
         },
         {
           title: "特殊时段查房记录",
@@ -172,13 +178,14 @@ export default function QcThreeRouter(props: Props) {
           icon: <CFJL />,
           component: RecordView,
           keepAlive: true,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
           title: "特殊时段计划表",
           path: "/qcThree/schedule",
           icon: <CFJHB />,
-          component: ScheduleView
+          component: ScheduleView,
         },
         {
           title: "特殊时段查房统计报告",
@@ -186,8 +193,9 @@ export default function QcThreeRouter(props: Props) {
           icon: <CFJHBG />,
           component: CheckWardReportList,
           keepAlive: true,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-        }
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
+        },
       ],
       dghl: [
         route_护理质量巡查情况汇总表_nys,
@@ -211,10 +219,10 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控汇总报告,
         route_三级质控问题汇总,
         route_检查表单统计表,
-      ]
+      ],
     },
     vague: true,
-  })
+  });
 
   const LEFT_MENU_CONFIG: any = [
     {
@@ -223,9 +231,10 @@ export default function QcThreeRouter(props: Props) {
       path: "/qcThree",
       component: { ...QualityControlRecord },
       keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
     },
-    ...extra_menu
+    ...extra_menu,
   ];
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
@@ -234,10 +243,10 @@ export default function QcThreeRouter(props: Props) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find(
-          (item1: any) => item1[targetKey].split('?')[0] === targetName
+          (item1: any) => item1[targetKey].split("?")[0] === targetName
         );
       } else {
-        return item[targetKey].split('?')[0] === targetName;
+        return item[targetKey].split("?")[0] === targetName;
       }
     });
     if (chooseRoute && chooseRoute.children) {

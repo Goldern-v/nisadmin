@@ -12,10 +12,12 @@ import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "../views/arrangeHome/page/BalanceInit/BalanceInit";
 import LeaveRecord from "../views/arrangeHome/page/leaveRecord/LeaveRecord";
 import StarRatingReportList from "../views/arrangeHome/page/nightChargingReport/StarRatingReportList";
+import nightShiftStatisticsList from "../views/arrangeHome/page/nightShiftStatistics/list";
 import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import MaternityLeave from '../views/arrangeHome/page/maternityLeave';
+import MaternityLeaveJustice from '../views/arrangeHome/page/maternityLeave/justice';
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 
 export interface meunConfigItem {
@@ -43,7 +45,7 @@ export const meunConfig: meunConfigItem[] = [
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",
         component: ExpectedRecordSelf,
-      },
+      }, 
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
@@ -104,11 +106,17 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+      {
+        title: "夜班数统计",
+        path: "/personnelManagement/nightShiftStatistics",
+        component: nightShiftStatisticsList,
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
@@ -137,6 +145,13 @@ export const meunConfig: meunConfigItem[] = [
         title: " 产假及哺乳期",
         path: "/personnelManagement/maternityLeave",
         component: MaternityLeave,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+      {
+        title: " 产假及哺乳期归档",
+        path: "/personnelManagement/maternityLeaveJustice",
+        component: MaternityLeaveJustice,
         // hide: !authStore.isRoleManage
         iSlimit: true,
       }

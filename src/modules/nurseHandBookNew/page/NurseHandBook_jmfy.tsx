@@ -41,15 +41,11 @@ export default observer(function NurseHandBook_jmfy() {
       { value: "jm_arrange", name: "月工作重点及周安排" },
       { value: "jm_workPlan", name: "年度工作计划" },
       { value: "jm_launchPlan", name: "年度工作开展计划" },
-      { value: "calculation", name: "计算列测试表格" },
-      { value: "单列", name: "单列表" },
-      { value: "计算行", name: "计算行表" },
-      { value: "备注", name: "备注表" }, 
     ],
     conclusionJM: [
-      { value: "jm_monthConclusion", name: "月度工作总结" },
-      { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
-      { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
+      { value: "jm_monthConclusion", name: "月工作总结" },
+      // { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
+      // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
     ],
   }
 
@@ -71,20 +67,27 @@ export default observer(function NurseHandBook_jmfy() {
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      width: 50,
+      width: 70,
       align: 'center'
     },
     {
       title: '创建人',
       dataIndex: 'creatorName',
-      width: 50,
+      width: 60,
       align: 'center'
     },
     {
       title: '类型',
       dataIndex: 'manualType',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(manualType: any) {
+        return (
+          <div>
+            <span>{findManualTypeName(manualType)}</span>
+          </div>
+        )
+      }
     },
     {
       title: '上传附件',
@@ -95,7 +98,7 @@ export default observer(function NurseHandBook_jmfy() {
         return (
           <div>
             {record.files.map((item: any, index: number) => (
-              <div><a href='javascript:;' onClick={() => setDetailModal(item)} key={item.name}>{item.name}</a></div>
+              <div className="showFilesList" key={item.name} onClick={() => setDetailModal(item)}>{item.name}</div>
             ))}
           </div>
         )
@@ -104,7 +107,7 @@ export default observer(function NurseHandBook_jmfy() {
     {
       title: '审核状态',
       dataIndex: 'status',
-      width: 50,
+      width: 70,
       align: 'center',
       render(status: any) {
         return (
@@ -116,11 +119,11 @@ export default observer(function NurseHandBook_jmfy() {
     },
     {
       title: '操作',
-      width: 60,
+      width: 80,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {record.status == 1 && <span onClick={() => onCheck(record)}>查看</span>}
+            {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>}
             {(record.status == 2 || record.status == 3) && <span onClick={() => onEdit(record)}>编辑</span>}
             {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>}
             {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
@@ -135,6 +138,11 @@ export default observer(function NurseHandBook_jmfy() {
     pageSize: 20
   })
   const [total, setTotal]: any = useState(0)
+
+  const findManualTypeName = (manualType:any) => {
+    let obj = manualTypeArr[path].find((item:any) => item.value == manualType)
+    return obj.name
+  }
 
   const initData = () => {
     service.commonApiService
@@ -193,6 +201,8 @@ export default observer(function NurseHandBook_jmfy() {
 
   //查看随访问卷
   const setDetailModal = (item: any) => {
+    console.log(1);
+    
     // window.open(item.path)
     setEditVisible(true)
     let str: any = item.path;
@@ -313,27 +323,7 @@ export default observer(function NurseHandBook_jmfy() {
           onChange={(value: any) => setWeekDate(value)}
           style={{ width: 220 }}
         />
-        <span className='label ml-20'>状态:</span>
-        <Select
-          value={state}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setState(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          <Select.Option value={'3'}>草稿</Select.Option>
-          <Select.Option value={'2'}>驳回</Select.Option>
-          <Select.Option value={'0'}>待审核</Select.Option>
-          <Select.Option value={'1'}>审核通过</Select.Option>
-        </Select>
-        <span className='label ml-20'>类型:</span>
-        <Select
-          value={manualType}
-          style={{ width: 220 }}
-          onChange={(val: any) => setManualType(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
-        </Select>
+       
         <span className='label'>科室:</span>
         <Select
           value={deptSelect}
@@ -360,26 +350,50 @@ export default observer(function NurseHandBook_jmfy() {
         {/* <Button onClick={handleExport}>打印</Button> */}
         <Button type='primary' onClick={handleAddNew}>新建</Button>
       </PageHeader>
+      <PageHeader>
+        <Place />
+        <span className='label ml-20'>状态:</span>
+        <Select
+          value={state}
+          style={{ width: 100 }}
+          showSearch
+          onChange={(val: any) => setState(val)}>
+          <Select.Option value={''}>全部</Select.Option>
+          <Select.Option value={'3'}>草稿</Select.Option>
+          <Select.Option value={'2'}>驳回</Select.Option>
+          <Select.Option value={'0'}>待审核</Select.Option>
+          <Select.Option value={'1'}>审核通过</Select.Option>
+        </Select>
+        <span className='label ml-20'>类型:</span>
+        <Select
+          value={manualType}
+          style={{ width: 220 , marginRight: '235px'}}
+          onChange={(val: any) => setManualType(val)}>
+          <Select.Option value={''}>全部</Select.Option>
+          {manualTypeArr[path].map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+        </Select>
+      </PageHeader>
       <BaseTable
         loading={pageLoading}
         dataSource={dataSource}
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
-        rowKey='id'
-        surplusHeight={220}
+        // rowKey='id'
+        surplusHeight={280}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
           total: total
         }}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: handleRowSelect,
-          getCheckboxProps: (record: any) => ({
-            name: record.name
-          })
-        }}
+        // rowSelection={{
+        //   selectedRowKeys,
+        //   onChange: handleRowSelect,
+        //   getCheckboxProps: (record: any) => ({
+        //     name: record.name
+        //   })
+        // }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({
             pageIndex: pagination.current,
@@ -400,13 +414,23 @@ const Wrapper = styled.div`
 .ml-20 {
   margin-left: 20px;
 }
-.active{
+.active {
   color: #09a9f0;
 }
-.active1{
+.active1 {
   color: #f6ac4b;
 }
-.active2{
+.active2 {
   color: red;
+}
+.showFilesList {
+  color: #4aa382;
+  cursor: pointer;
+  width: 100%;
+  height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
 }
 `

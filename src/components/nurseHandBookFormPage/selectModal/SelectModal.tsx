@@ -23,7 +23,7 @@ export default function SelectModal(props: Props) {
   const maxTop = H - 350
   const menus = [
     { name: "复制整行", code: "copyRow", icon: 'copy' },
-    { name: "粘贴内容", code: "paste", icon: 'edit' },
+    { name: "粘贴整行", code: "paste", icon: 'edit' },
     { name: "上增一行", code: "addRowBefore", icon: 'plus-square' },
     { name: "下增一行", code: "addRowAfter", icon: 'minus-square' },
     { name: "清空当前行数据", code: "wipeData", icon: 'delete' },
@@ -32,10 +32,9 @@ export default function SelectModal(props: Props) {
     { name: "计算当前列", code: "calculation_currentColumn", icon: 'calculator' },
   ]
   const open = () => {
-
     setRenderList(selectList || [])
     setSelectLeft(selectw)
-    if (domReact.top >= maxTop) {
+    if (selectH >= maxTop) {
       setSelectTop(maxTop - 20)
     } else {
       setSelectTop(selectH)
@@ -76,7 +75,7 @@ export default function SelectModal(props: Props) {
   }, [])
   return (
     <Wrapper>
-      {(menuType == "Menus" || (menuType == "select" && renderList.length)) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+      {(menuType == "Menus" || (!!renderList.length && menuType == "select")) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
         {menuType == "select" && renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
           </div>)}

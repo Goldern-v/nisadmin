@@ -175,7 +175,6 @@ export default function NurseHandBookModal(props: any) {
           <Select
             value={deptSelect}
             style={{ width: 250 }}
-            disabled={true}
             showSearch
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

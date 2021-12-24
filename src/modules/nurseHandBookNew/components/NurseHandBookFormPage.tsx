@@ -35,12 +35,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
   let header: any = { 'App-Token-Nursing': '51e827c9-d80e-40a1-a95a-1edc257596e7', 'Auth-Token-Nursing': authStore.getAuthToken() }
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
+  const [complexHeadList, setComplexHeadList]: any = useState([])
+  const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
-  const [allList, setAllList]: any = useState([])
+  const [submitSign, setSubmitSign]: any = useState([])
+  const [signList, setSignList]: any = useState([])
   const [computeRow, setComputeRow]: any = useState([])
+  const [buttonLoading, setButtonLoading]: any = useState(false)
+  const [saveLoading, setSaveLoading]: any = useState(false)
+  const [submitLoading, setSubmitLoading]: any = useState(false)
+  const [onScroll, setOnScroll]: any = useState(true)
   const [textValue, setTextValue] = useState('')
+
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
     planJM: '护士长工作计划',
@@ -63,14 +71,42 @@ export default observer(function nurseHandBookFormPage(props: any) {
         })
         setTableTitle(res.data.title)
         setFileList(res.data.files)
-        let [tableContent, tableRemark, line, complexHead, tableHead] = res.data.formDataDtoList
+        let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
         setTableHeadContent(tableHead.formContent)
-        setFormContentList(tableContent.formContent)
+        let templeContent:any = []
+        let lineList:any = []
+        if(tableContent.formContent.length){
+          tableContent.formContent.map((item:any)=>{
+            templeContent.push({tableData:JSON.parse(item.tableData)})
+          })
+        }
+        // templeContent.map((item:any)=>{
+        //   item.tableData.map((col:any)=>{
+        //     for (let key in col) {
+        //       col[key]=htmlEscape(col[key])
+        //     }
+        //   })
+        // })
+        if(line.formContent.length){
+          line.formContent.map((item:any)=>{    
+            lineList.push(JSON.parse(item.computeRow))
+          })
+        }
+        setFormContentList(templeContent)
+        setComplexHeaderContent(complexHead.formContent)
         setRemark(tableRemark.formContent[0].remark)
-        setComputeRow(line.formContent)
+        setSignList(recordName.formContent)
+        setComputeRow(lineList)
         setSpinning(false)
       })
+    }else{
+      setComplexHeaderContent([])
     }
+  }
+
+  const htmlEscape = (str:any)=> {
+    return String(str)
+      .replace(/&nbsp;/g, " ")
   }
 
   useEffect(() => {
@@ -140,8 +176,16 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
-    let tBodyList: any = fiterList(bodyModal)
-    
+    setSaveLoading(true)
+    let tBodyList: any = []
+    let computeList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
+    let cHeaderList:any = fiterList([complexHeadList])
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
@@ -162,11 +206,15 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
-          formContent: [],
+          formContent: cHeaderList,
+        },
+        {
+          tableType: "recordName",
+          formContent: submitSign,
         }
       ]
     })
@@ -174,12 +222,21 @@ export default observer(function nurseHandBookFormPage(props: any) {
         message.success('保存成功')
         scheduleStore.setIsSave(false)
         appStore.history.goBack()
+        setSaveLoading(false)
       })
   }
 
   const handleSubmit = () => {
-    let tBodyList: any = fiterList(bodyModal)
-
+    setSubmitLoading(true)
+    let tBodyList: any = []
+    let computeList: any = []
+    bodyModal.map((item:any)=>{
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+    })
+    let cHeaderList:any = fiterList([complexHeadList])
+    computeRow.map((item:any)=>{
+      computeList.push({computeRow:JSON.stringify(item)}) 
+    })
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
       manualType: queryObj.manualType,
@@ -200,11 +257,15 @@ export default observer(function nurseHandBookFormPage(props: any) {
         },
         {
           tableType: "line",
-          formContent: computeRow,
+          formContent: computeList,
         },
         {
           tableType: "complexHead",
-          formContent: [],
+          formContent: cHeaderList,
+        },
+        {
+          tableType: "recordName",
+          formContent: submitSign,
         }
       ]
     })
@@ -212,6 +273,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         message.success('提交成功')
         scheduleStore.setIsSave(false)
         appStore.history.goBack()
+        setSubmitLoading(false)
       })
   }
 
@@ -285,16 +347,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
     setIdChange(info.id)
   }
   const handlerScroll = (e: any) => {
-    let ch: any = document.getElementById("ch")
-    let { top } = ch.getBoundingClientRect()
-    if (top < 150) {
-      setShowFixHeader(true)
-    } else {
-      setShowFixHeader(false)
+    if(onScroll){
+      let ch: any = document.getElementById("ch")
+      let { top } = ch.getBoundingClientRect()
+      if (top < 150) {
+        setShowFixHeader(true)
+      } else {
+        setShowFixHeader(false)
+      }
     }
-
   }
   const onPrint = () => {
+    setButtonLoading(true)
     let element = document.getElementById("print-content") // 这个dom元素是要导出的pdf的div容器
     const w = element?.offsetWidth || 0;  // 获得该容器的宽
     const h = element?.offsetHeight || 0;  // 获得该容器的高
@@ -362,6 +426,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         let blob = new Blob([u8arr], { type: mime });
         src = window.URL.createObjectURL(blob)
         setIframeSrc(src)
+        setButtonLoading(false)
       })
     });
 
@@ -378,6 +443,28 @@ export default observer(function nurseHandBookFormPage(props: any) {
       toPrint()
     })
   }, [iframeSrc])
+  const NurseHandBookFormPageProps = {
+    beforeSetTableHeadContent,
+    tableHeadContent,
+    isPrint,
+    setComplexHeadList,
+    complexHeadList,
+    showFixHeader,
+    bodyModal,
+    setBodyModal,
+    formContent:formContentList,
+    complexHeaderContent,
+    setTableTitle,
+    tableTitle,
+    setRemark,
+    remark,
+    setComputeRow,
+    computeRow,
+    signList,
+    setSubmitSign,
+    submitSign, 
+    setOnScroll,
+  }
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
@@ -387,35 +474,22 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">
-          {queryObj.isAdd && <Button onClick={handleSave}>保存</Button>}
-          {!queryObj.isAdd && data.status == "2" && <Button onClick={handleUndo} className="red">撤销</Button>}
-          {data.status != "1" && !queryObj.audit && <Button className="ml-20" type="primary" onClick={handleSubmit}>提交</Button>}
+          {queryObj.isAdd && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
+          {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
+          {data.status != "1" && !queryObj.audit && <Button className="ml-20" loading={submitLoading} type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
+          <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>
-          <Button className="ml-20" onClick={onPrint}>打印</Button>
         </div>
       </div>
       <div className="main">
         <div className="formPage" onScroll={handlerScroll}>
-          <NurseHandBookFormPage
-            beforeSetTableHeadContent={beforeSetTableHeadContent}
-            tableHeadContent={tableHeadContent}
-            isPrint={isPrint}
-            showFixHeader={showFixHeader}
-            bodyModal={bodyModal}
-            setBodyModal={setBodyModal}
-            formContent={formContentList}
-            setTableTitle={setTableTitle}
-            tableTitle={tableTitle}
-            setRemark={setRemark}
-            remark={remark}
-            setComputeRow={setComputeRow}
-            computeRow={computeRow}
-            setAllList={setAllList}
-            allList={allList}
-          ></NurseHandBookFormPage>
+          <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
+          {!queryObj.isAdd && <div className="rightBottom">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>}
           <div className="rightTop">
             <UploadView
               setEditVisible2={setEditVisible2}
@@ -426,9 +500,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
               setPathChange={setPathChange}
             ></UploadView>
           </div>
-          {!queryObj.isAdd && <div className="rightBottom">
-            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
-          </div>}
         </div>
       </div>
     </Spin>
@@ -487,10 +558,10 @@ const Wrapper = styled.div`
       
     }
     .buttonBody {
-      width: 320px;
+      /* width: 320px; */
       position: absolute;
       top: 50px;
-      right: 30px;
+      right: 50px;
     }
   }
   .main {
@@ -499,14 +570,15 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     .formPage {
-      min-width: 81vw;
-      max-width: 81vw;
+      flex: 1;
+      /* min-width: 77vw;
+      max-width: 77vw; */
       overflow-x: auto;
       min-height: 85vh; 
       max-height: 85vh; 
     }
     .rightCon {
-      width: 19vw;
+      min-width: 340px;
       height: 80vh; 
       background-color: #fff;
       margin: 20px 10px;

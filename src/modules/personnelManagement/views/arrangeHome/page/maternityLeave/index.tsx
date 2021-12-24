@@ -86,7 +86,8 @@ export default observer(() => {
         />
         <span className="label">科室</span>
         <DeptSelect hasAllDept onChange={deptCode => setFormItem({ 'deptCode': deptCode })} />
-        <span className="label">分娩日期</span>
+        {/* <span className="label">分娩日期</span> */}
+        <span className="label">选择时间</span>
         <DatePicker.RangePicker
           value={form.date}
           onChange={(dates) => setFormItem({ 'date': dates })} />

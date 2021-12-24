@@ -33,8 +33,10 @@ export default observer(function QcTwoRouter(props: Props) {
     disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
   }
   const route_二级质控问题原因措施汇总 = {
-    title: "二级质控问题原因措施汇总",
-    path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
+    // title: "二级质控问题原因措施汇总",
+    // path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
+    title: "专科护理质量评价",
+    path: "/qcTwo/专科护理质量评价?qcLevel=2",
     icon: <JCTJ />,
     component: 二级质控问题原因措施汇总
   }

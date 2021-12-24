@@ -33,6 +33,28 @@ export class SearchForm implements iSearchForm {
   }
 }
 
+export class justiceSearchForm implements iSearchForm {
+  empName?: string
+  deptCode?: string
+  date?: RangePickerValue
+  status?: string
+  deliveryMode?: string
+  pageIndex?: number
+  pageSize?: number
+
+  constructor() {
+    // this.date = [
+    //   moment(moment().format('YYYY-MM-01')),
+    //   moment(moment().add(1, 'year').format('YYYY-MM-01'))
+    // ]
+    this.date = [],
+      this.status = ''
+    this.deliveryMode = ''
+    this.pageIndex = 1
+    this.pageSize = 20
+  }
+}
+
 export interface iModalForm {
   id?: string,
   empNo?: string

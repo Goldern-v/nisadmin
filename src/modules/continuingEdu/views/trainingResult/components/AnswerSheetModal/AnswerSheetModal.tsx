@@ -183,6 +183,10 @@ export default observer(function AnswerSheetModal(props: Props) {
                   <Button onClick={handlePrint} type='primary'>打印试卷</Button>
                   <Button onClick={handleExport} type='primary'>导出</Button>
                 </React.Fragment>,
+                gxjb: <React.Fragment>
+                    <Button onClick={handlePrint} type='primary'>打印试卷</Button>
+                    <Button onClick={handleExport} type='primary'>导出</Button>
+                  </React.Fragment>,
                 default: <span/>
               }
             })

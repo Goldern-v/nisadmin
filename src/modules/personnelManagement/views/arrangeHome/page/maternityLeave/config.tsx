@@ -8,7 +8,7 @@ const statusOption = [
   { label: '怀孕护士', value: '怀孕护士' },
   { label: '休产假', value: '休产假' },
   { label: '哺乳假期', value: '哺乳假期' },
-  { label: '哺乳期结束', value: '哺乳期结束' },
+  // { label: '哺乳期结束', value: '哺乳期结束' },
   { label: '孕周大于28+', value: '孕周大于28+' },
 ]
 const typeOption = [
@@ -167,8 +167,87 @@ const creatColumns = (calBack?: Function): {}[] => {
   ]
 }
 
+const creatJusticeColumns = (calBack?: Function): {}[] => {
+  return [
+    {
+      title: "序号",
+      align: "center",
+    },
+    {
+      title: "姓名",
+      dataIndex: "empName",
+      align: "center",
+    },
+    {
+      title: "现科室",
+      dataIndex: "deptName",
+      align: "center",
+    },
+    {
+      title: "原科室",
+      dataIndex: "oldDeptName",
+      align: "center",
+    },
+    // {
+    //   title: "预产期",
+    //   dataIndex: "expectedDate",
+    //   align: "center",
+    // },
+    // {
+    //   title: "当前孕周",
+    //   dataIndex: "gestationalAge",
+    //   align: "center",
+    // },
+    // {
+    //   title: "末次月经",
+    //   dataIndex: "lastMenstrualPeriod",
+    //   align: "center",
+    // },
+    {
+      title: "分娩方式",
+      dataIndex: "deliveryMode",
+      align: "center",
+    },
+    {
+      title: "分娩日期",
+      dataIndex: "deliveryDate",
+      align: "center",
+    },
+    {
+      title: "产假开始日期",
+      dataIndex: "babyBreakStartDate",
+      align: "center",
+    },
+    {
+      title: "产假结束日期",
+      dataIndex: "babyBreakEndDate",
+      align: "center",
+    },
+    {
+      title: "哺乳结束日期",
+      dataIndex: "lactationEndDate",
+      align: "center",
+    },
+    // {
+    //   title: "操作",
+    //   dataIndex: "",
+    //   align: "center",
+    //   width: 150,
+    //   render(text: '', record: iModalForm) {
+    //     return (
+    //       <DoCon>
+    //         <span onClick={() => calBack && calBack('edit', record)}>编辑</span>
+    //         <span onClick={() => calBack && calBack('delete', record)}>删除</span>
+    //       </DoCon>
+    //     )
+    //   }
+    // }
+  ]
+}
+
 export default {
   statusOption,
   typeOption,
   creatColumns,
+  creatJusticeColumns
 }

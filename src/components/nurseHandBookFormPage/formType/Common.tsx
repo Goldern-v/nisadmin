@@ -7,25 +7,28 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 export interface Props {
   bodyModal: any
   setBodyModal: Function
-  visible: Boolean
+  visible: any
   setVisible: Function
   computeRow: any
   setComputeRow: Function
   masterInfo: any
-  isPrint:any
+  isPrint: any
+  bodyIdx: any
+  templeVisible: any
+  setCopyRow: any
+  copyRow: any
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow,isPrint } = props
+  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
   const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
   const [menuType, setMenuType] = useState('select')
-  // const [visible, setVisible]: any = useState(false)
   const [operationType, setOperationType]: any = useState("")
-  const [copyRow, setCopyRow] = useState({})
+  // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
@@ -36,7 +39,7 @@ export default function Common(props: Props) {
     // e:事件对象;  colIdx:列数;
     // col:列数据;  rowIdx:行数;
     setSelectIndex(rowIdx) // 聚焦时改变当前选中行数
-    selectRow = bodyModal[rowIdx] // 获取聚焦行数据(不触发渲染)
+    selectRow = bodyModal[bodyIdx].tableData[rowIdx] // 获取聚焦行数据(不触发渲染)
     setColIdx(colIdx)
     e.preventDefault() // 阻止默认行为
     let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
@@ -44,38 +47,49 @@ export default function Common(props: Props) {
     if (col.select) { // 如果当前单元格有下拉选项
       setSelectList(col.select)
       setMenuType('select')
-      if (visible) {
-        setVisible(false)
+      if (visible[bodyIdx]) {
+        setVisible(templeVisible)
       }
       // 设置定时器,防止已有弹窗时不渲染
       setTimeout(() => {
-        setVisible(true)
+        visible[bodyIdx]=true
+        setVisible([...visible])
       })
     } else {
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }
 
-  const handlerClick = (e: any, col: any) => {
+  const handlerClick = (e: any, col: any ) => {
+    if(queryObj.audit) return
     setMenuType("select")
     col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])
+    // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
+  }
+
+  const tableValue = (col:any, rowIdx:any) => {
+    if(col.key == "serialNumber"){
+      return rowIdx + 1
+    }
+    return col.value
   }
 
   const ContextMenu = (e: any) => {
     if(selectIndex==-1) return
-    setVisible(false)
+    setVisible(templeVisible)
     e.preventDefault()
     setMenuType('Menus')
-    setVisible(true)
+    visible[bodyIdx]=true
+    setVisible([...visible])
   }
 
   const refresh = () => {
-
+    // setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
     setBodyModal([...bodyModal])
-    if (bodyModal[selectIndex][colIdx].multiple) {
+    if (bodyModal[bodyIdx].tableData[selectIndex][colIdx].multiple) {
     } else {
-      setVisible(false)//关闭下拉框
+      setVisible(templeVisible)
     }
     scheduleStore.setIsSave(true)
   }
@@ -89,35 +103,36 @@ export default function Common(props: Props) {
   }
   const onBlur = (e: any, row: any, col: any) => {
   }
-  let lcr = {
+  let textAlignWay = {
     "left": "start",
     "center": "center",
     "right": "end"
   }
+
+  let verticalAlignWay = {
+    "top": "start",
+    "middle": "center",
+    "bottom": "end"
+  }
+
   useEffect(() => {
     if (operationType) {
-      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow)
+      menuOperation[operationType](tBody, bodyModal, setBodyModal, selectIndex, selectRow, copyRow, setCopyRow, colIdx, computeRow,bodyIdx,masterInfo)
       scheduleStore.setIsSave(true)
       setOperationType('')
-      setVisible(false)
+      setVisible(templeVisible)
     }
   }, [operationType])
 
   useEffect(() => {
     if (queryObj.isAdd) {
-      setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
+      masterInfo.computeRow && setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
     }
   }, [])
-
-  // useEffect(() => {
-  //   masterInfo.computeRow&&masterInfo.computeRow.map((item:any,colIdx:any)=>{
-  //     item.key.includes('calculation') && menuOperation['calculation_currentColumn'](tBody, bodyModal, null, null, null, null, null, colIdx, masterInfo)
-  //   })
-  // },[bodyModal])
-
+  
   return (
     <Wrapper>
-      {bodyModal.map((row: any, rowIdx: any) =>
+      {bodyModal[bodyIdx]&&bodyModal[bodyIdx].tableData.map((row: any, rowIdx: any) =>
         <div
           className={selectIndex == rowIdx &&!isPrint  ? 'active-row' : ''}
           style={{
@@ -133,9 +148,11 @@ export default function Common(props: Props) {
               style={{
                 width: `${col.width}px`,
                 ...col.style,
-                'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-                'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-                'cursor': col.key == "serialNumber" ? 'no-drop' : 'auto'
+                'WebkitBoxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+                'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+                'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
+                'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
+                'cursor': col.click ? 'pointer' : col.key == "serialNumber" ? 'no-drop' : 'auto',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
@@ -146,31 +163,31 @@ export default function Common(props: Props) {
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
+              dangerouslySetInnerHTML={{__html: tableValue(col,rowIdx)}}
             >
-              {col.key == "serialNumber" ? (rowIdx + 1) : col.value}
             </div>)}
         </div>)}
-      {computeRow && <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {computeRow.map((col: any, colIdx: any) =>
+      {computeRow[bodyIdx] && <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {computeRow[bodyIdx].map((col: any, colIdx: any) =>
           <div
             id={`${col.key}_${colIdx}`}
             className="common"
             style={{
               width: `${col.width}px`,
               ...col.style,
-              'WebkitBoxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
-              'boxPack': (col.style && col.style.textAlign) ? lcr[col.style.textAlign] : 'center',
+              'WebkitBoxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+              'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
             }}
             key={`${colIdx}`}
           >
             {col.value}
           </div>)}
       </div>}
-      {visible && <SelectModal
+      {visible[bodyIdx] && selectIndex != -1 && <SelectModal
         menuType={menuType}
         domReact={domReact}
         refresh={refresh}
-        col={bodyModal[selectIndex][colIdx]}
+        col={bodyModal[bodyIdx].tableData[selectIndex][colIdx]}
         selectList={selectList}
         setOperationType={setOperationType}
       ></SelectModal>}
@@ -183,17 +200,18 @@ const Wrapper = styled.div`
   border: 1px solid #000;
   font-size: 16px;
   min-height: 35px;
+  padding-left: 5px;
   text-align: center;
   outline: none;
   margin-right:-1px; 
   margin-bottom:-1px;
   display: -webkit-box;
   display: box;
-  -webkit-box-align: center; 
-  box-align: center;
+  /* -webkit-box-align: center; 
+  box-align: center; */
   word-break: break-all;
 }
 .active-row{
-  background:#fef8b9;
+  /* background: #fef8b9; */
 }
 `
