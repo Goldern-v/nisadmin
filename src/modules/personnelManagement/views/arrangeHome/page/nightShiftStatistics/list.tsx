@@ -3,44 +3,32 @@ import React, { useState, useEffect } from "react";
 import { Button, DatePicker } from "antd";
 import { PageHeader, PageTitle, Place } from "src/components/common";
 import {
-  Select,
   ColumnProps,
   PaginationConfig,
   Input,
-  message
 } from "src/vendors/antd";
 const { RangePicker } = DatePicker;
 
 import DeptSelect from "src/components/DeptSelect";
-import { appStore, authStore } from "src/stores";
+import { authStore } from "src/stores";
 import BaseTable from "src/components/BaseTable";
-
-import { useCallback } from "src/types/react";
-import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
-import { DictItem } from "src/services/api/CommonApiService";
 import { arrangeService } from "../../services/ArrangeService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
-import service from "src/services/api";
-import User from "src/models/User";
 import moment from "moment";
-import createModal from "src/libs/createModal";
-
-import { globalModal } from "src/global/globalModal";
 export interface Props {}
 export default observer(function ExpectedRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [date, setDate]: any = useState(getCurrentMonth());
-  const [selectedNurse, setSelectedNurse]: any = useState("");
-  const [nurseList, setNurseList]: any = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("2");
   const [mode, setMode] = useState(['month', 'month'])
   const [nameORno, setNameORno] = useState('')
+  const [pageOptions, setPageOptions]: any = useState({
+    pageIndex: 1,
+    pageSize: 20
+  });
+  const [total, setTotal] = useState(0);
 
-  const updateDataSource = () => {
-    setDataSource([...dataSource]);
-  };
   const columns: ColumnProps<any>[] = [
     {
       title: "工号",
@@ -56,95 +44,81 @@ export default observer(function ExpectedRecord() {
     },
     {
       title: "职称",
-      dataIndex: "startDate",
+      dataIndex: "newTitle",
       align: "center",
       width: 100
     },
     {
       title: "层级",
-      dataIndex: "rangeName",
+      dataIndex: "nurseHierarchy",
       align: "center",
       width: 100
     },
     {
       title: "P班",
-      dataIndex: "shiftType",
+      dataIndex: "numP",
       align: "center",
       width: 100
     },
     {
       title: "N班",
-      dataIndex: "detail",
+      dataIndex: "numN",
       align: "center",
       width: 100
     },
     {
       title: "夜班总数",
-      dataIndex: "status",
+      dataIndex: "total",
       align: "center",
       width: 100,
     }
   ];
-
-  const [pageOptions, setPageOptions]: any = useState({
-    pageIndex: 1,
-    pageSize: 20
-  });
-  const [total, setTotal] = useState(0);
-
-  const initData = () => {
-    service.scheduleUserApiService
-      .getByDeptCode(authStore.selectedDeptCode)
-      .then(res => {
-        setNurseList(res.data.filter((item: any) => item.empNo));
-      });
-  };
-
-
-  const getData = () => {
+  const getData = (keyWord: string = nameORno) => {
     setPageLoading(true);
     let startDate = date[0] ? moment(date[0]).format("YYYY-MM-DD") : "";
     let endDate = date[1] ? moment(date[1]).format("YYYY-MM-DD") : "";
     arrangeService
-      .schExpectGetListPC({
-        deptCode: authStore.selectedDeptCode,
+      .getNightNum({
+        deptCode: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode,
         ...pageOptions,
         startDate,
         endDate,
-        empNo: selectedNurse,
-        value: nameORno
+        keyWord
       })
       .then(res => {
         setDataSource(res.data.list);
         setPageLoading(false);
         setTotal(res.data.totalCount);
       });
-    // qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
-    //   setDataSource(res.data.list)
-    //   setPageLoading(false)
-    // })
   };
   const handlePanelChange = (value: any, mode: any) => {
     setDate(value)
     setMode([mode[0] === 'date' ? 'month' : mode[0], mode[1] === 'date' ? 'month' : mode[1]])
   }
+  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNameORno(e.target.value)
+    if (!e.target.value) {
+      getData(e.target.value)
+    }
+  }
 
   const onDetail = (record: any) => {};
   useEffect(() => {
     getData();
-  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, date, selectedNurse, selectedStatus]);
+  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, date]);
 
-  useEffect(() => {
-    initData();
-  }, [authStore.selectedDeptCode]);
   return (
     <Wrapper>
       <PageHeader>
         <PageTitle>夜班数统计</PageTitle>
         <Place />
-        
         <span className="label">姓名/工号:</span>
-        <Input style={{ width: 200 }} value={nameORno} onChange={e => setNameORno(e.target.value)} placeholder="请输入员工姓名或者工号" />
+        <Input style={{ width: 200 }} value={nameORno} 
+          onChange={e => inputOnChange(e)} 
+          placeholder="请输入员工姓名或者工号"
+          allowClear
+          onPressEnter={() => getData()}
+        />
 
         <span className="label">日期:</span>
         <RangePicker
@@ -155,14 +129,12 @@ export default observer(function ExpectedRecord() {
           mode={mode}
           onChange={(value: any) => setDate(value)}
           onPanelChange={handlePanelChange}
-          // renderExtraFooter={() => 'extra footer'}
           ranges={{
             本月: [moment().startOf("month"), moment().endOf("month")],
-            今年至今: [moment().startOf("year"), moment()],
-            最近六个月: [moment(new Date()).subtract(6, 'months'), moment().endOf("month")],
+            今年至今: [moment().startOf("year"), moment().endOf("month")],
+            最近六个月: [moment().startOf("month").subtract(6, 'months'), moment().endOf("month")],
           }}
         />
-
         <span className="label">科室:</span>
         <DeptSelect hasAllDept onChange={() => {}} />
        

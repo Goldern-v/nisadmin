@@ -350,6 +350,11 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schExpect/getListPC`, obj);
   }
 
+  // 江门妇幼 - 夜班数统计
+  public getNightNum(obj: PageObj) {
+    return this.post(`/schedulingJm/getNightNum`, obj);
+  }
+
   // 武汉获取休假类型最近日期得天数编号
   public listRangeNameCode(list: any) {
     let obj = {
