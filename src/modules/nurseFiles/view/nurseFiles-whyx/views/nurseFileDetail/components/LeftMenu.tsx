@@ -111,7 +111,7 @@ export default function LeftMenu(props: Props) {
   useEffect(() => {
     var url = GetUrlRelativePath().split(isSelf() ? '/selfNurseFile/' : '/nurseFileDetail/')[1];
     setOpenKeys(url)
-    setDefaultOpenKeys(filterSelectUrl(props.routeList, url)[0].parentType)
+    setDefaultOpenKeys(filterSelectUrl(props.routeList, url)[0]?.parentType)
     emitter.addListener('refreshNurseFileDeatilLeftMenu', onLoad)
     onLoad()
     return () => {
