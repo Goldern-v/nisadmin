@@ -473,7 +473,7 @@ class QualityControlRecordEditModel {
             qcItemCode: item.qcItemCode,
             attachIds: item.attachIds,
             attachUrls: item.attachUrls,
-            qcItemValue: item.qcItemValue || '是'
+            qcItemValue: item.subItemList == null ? '是' : item.qcItemValue || '是'
           } as any
 
           /**南医三加入remark字段 */
