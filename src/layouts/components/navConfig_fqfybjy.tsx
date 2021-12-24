@@ -106,6 +106,15 @@ const baseConfig: navConfigItem[] = [
   {
     name: "护理人员管理",
     path: "/personnelManagement"
+  },
+  {
+    name: "交班志",
+    onClick: () => {
+      // location.href = "http://localhost:4892/crNursing/autologin?token=3cecc567-c51a-4a8e-96c8-20977a377be1"
+      // location.href = `http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`
+      // window.open(`http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`)
+      window.open(`http://192.168.118.126:9091/crNursing/shiftWork`)
+    }
   }
 ];
 
