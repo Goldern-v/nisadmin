@@ -87,7 +87,7 @@ export default function auditProcessDetail(props: Props) {
         let type = str.substr(index+1,str.length);
         let start = str.indexOf("/crNursing/")
         if(type=='jpg'||type=='png'||type=='pdf'){
-          let path = str.substring(start,start+info.path.length)
+          let path = str.substring(start,start+str.length)
           setPathChange(path)
         }else{
           let pdfPath = pdfStr.substring(start,start+pdfStr.length)

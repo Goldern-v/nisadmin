@@ -73,16 +73,13 @@ export default observer(function AduitModal(props: Props) {
      */
     switch (nodeCode) {
       case 'nurse_handle':  //科护士长审核
-        console.log('1111111')
-        // 片区护长审核是否通过
+        saveParams['B0028024'] = auditInfo.handleContent  //科护士长审核意见
         if (auditInfo.noPass) {
           // saveParams['B0002060'] = auditInfo.handleContent
           if (auditInfo.handleContent.trim().length <= 0) {
             message.warning('审核意见不能为空')
             return
           }
-        } else {
-          saveParams['B0002060'] = ''
         }
         break
       case 'nursing_minister_audit': //护理部审核
@@ -95,8 +92,8 @@ export default observer(function AduitModal(props: Props) {
         }
         saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
         // 意见和日期
-        saveParams['B0002054'] = auditInfo.handleContent
-        saveParams['B0002053'] = auditInfo.auditDate
+        saveParams['B0002054'] = auditInfo.handleContent  //护理部审核意见
+        saveParams['B0002053'] = auditInfo.auditDate   // 护理部审核日期
         saveParams['B0009020'] = userInfo.empName   //B0009020未跟后端做统一（待修改）
         saveParams["B0010018"] = userInfo.empName   //护理优良事件报告表（待修改）
         break

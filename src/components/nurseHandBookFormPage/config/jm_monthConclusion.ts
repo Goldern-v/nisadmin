@@ -3,18 +3,18 @@
  */
 
 const tBody1: any = [
-  { key: 'one', name: '月工作总结', value: "月工作总结", width: 120, style: { minHeight: "200px" } },
-  { key: 'summary1', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
+  { key: 'monthWork', name: '月工作总结', value: "月工作总结", width: 120, style: { minHeight: "200px" } },
+  { key: 'summary', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
 ]
 
 const tBody2: any = [
-  { key: 'two', name: '本月工作亮点', value: "本月工作亮点", width: 120, style: { minHeight: "200px" } },
-  { key: 'summary2', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
+  { key: 'monthWork', name: '本月工作亮点', value: "本月工作亮点", width: 120, style: { minHeight: "200px" } },
+  { key: 'summary', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
 ]
 
 const tBody3: any = [
-  { key: 'three', name: '下月改进重点', value: "下月改进重点", width: 120, style: { minHeight: "200px" } },
-  { key: 'summary3', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
+  { key: 'monthWork', name: '下月改进重点', value: "下月改进重点", width: 120, style: { minHeight: "200px" } },
+  { key: 'summary', name: '月工作总结', value: "", width: 580, style:{ minHeight: "200px", textAlign: "left" } },
 ]
 
 const sign = {
