@@ -94,6 +94,7 @@ export default function BadEventsRouters(props: Props) {
     ...appStore.hisMatch({
       map: {
         gzsrm: [],
+        lcey: [],
         other: [
           {
             title: '不良事件统计',
