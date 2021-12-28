@@ -5,135 +5,124 @@ import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
-let list: any= ['全部']
-for (let i = 0; i < 100; i++) {
-  list.push(i)
-}
-
 export const pageObj: PageObj = {
-  title: '基本信息',
+  title: '人员状态',
   type: 'nurseWHArticle',
   detailPath: '',
   filterList: [
     {
-      label: '姓名或工号',
-      type: 'input',
-      name: 'keyWord'
-    },
-    {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode',
-      multiple: true
+      name: 'deptCode'
     },
     {
-      label: '年龄',
-      type: 'numberUntilSelect',
-      numberUntilSelect: true,
-      dataSource: list,
-      unit: '岁',
-      name: 'ageStart',
-      name1: 'ageEnd',
+      label: '工号或姓名',
+      type: 'input',
+      name: 'articleName'
     },
     {
-      label: '政治面貌',
+      label: '岗位状态',
       type: 'select',
-      name: 'politics',
+      name: 'articleType',
       dataSource: statisticsViewModal.getDict('文章类别')
     },
     {
-      label: '最高学历',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      label: '状态原因',
+      type: 'input',
+      name: 'articleName'
     },
-    {
-      label: '职务',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
-    },
-    {
-      label: '年龄',
-      type: 'numberUntilSelect',
-      numberUntilSelect: true,
-      dataSource: list,
-      unit: '年',
-      name: 'ageStart',
-      name1: 'ageEnd',
-    },
-    {
-      label: '院内工作区域',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
-    },
-    {
-      label: '最高职称',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
-    },
-    {
-      label: '层级护理',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
-    },
-    {
-      label: '执业证书有效期',
-      type: 'numberUntilSelect',
-      dataSource: list,
-      unit: '月',
-      name: 'ageStart',
-      name1: 'ageEnd',
-      numberUntilSelect: true,
-    },
-    {
-      label: '参加工作时间',
-      type: 'numberUntilSelect',
-      dataSource: list,
-      unit: '年',
-      numberUntilSelect: true,
-      name: 'ageStart',
-      name1: 'ageEnd',
-    }
   ],
   tableList: [
     {
-      title: '发表年份',
+      title: '科室',
       dataIndex: 'publicYear',
       key: 'publicYear',
       width: 120,
       align: 'center'
     },
     {
-      title: '杂志名称',
+      title: '员工号',
       dataIndex: 'magazineName',
       key: 'magazineName',
       width: 200,
       align: 'center'
     },
     {
-      title: '文章名称',
+      title: '姓名',
       dataIndex: 'articleName',
       key: 'articleName',
       width: 200,
       align: 'center'
     },
     {
-      title: '作者',
+      title: '性别',
       dataIndex: 'articleAuthor',
       key: 'articleAuthor',
       width: 120,
       align: 'center'
     },
     {
-      title: '期刊号',
+      title: '年龄',
       dataIndex: 'periodicalNumber',
       key: 'periodicalNumber',
       width: 210,
+      align: 'center'
+    },
+    {
+      title: '职称',
+      dataIndex: 'volumeNumber',
+      key: 'volumeNumber',
+      width: 200,
+      align: 'center'
+    },
+    {
+      title: '层级',
+      dataIndex: 'pageNumber',
+      key: 'pageNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '职务',
+      dataIndex: 'articleType',
+      key: 'articleType',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '发表年份',
+      dataIndex: 'influencingFactors',
+      key: 'influencingFactors',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '杂志名称',
+      dataIndex: 'volumeNumber',
+      key: 'volumeNumber',
+      width: 200,
+      align: 'center'
+    },
+    {
+      title: '文章名称',
+      dataIndex: 'pageNumber',
+      key: 'pageNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '作者',
+      dataIndex: 'articleType',
+      key: 'articleType',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '期刊号',
+      dataIndex: 'influencingFactors',
+      key: 'influencingFactors',
+      width: 120,
       align: 'center'
     },
     {

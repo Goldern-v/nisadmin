@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, AutoComplete } from 'antd'
 import Form from 'src/components/Form'
 import { Row, Col, DatePicker, Input, Select } from 'src/vendors/antd'
 import { PageObj, filterItem } from '../config/getPageObj'
@@ -11,7 +11,8 @@ import YearPicker from 'src/components/YearPicker'
 import YearMonthRangePicker from 'src/components/YearMonthRangePicker'
 import { statisticsViewModal } from '../StatisticsViewModal'
 import { useLayoutEffect } from 'src/types/react'
-import SelectOrAutoInput from '../../nurseFiles-wh/views/nurseFileDetail/components/SelectOrAutoInput'
+import SelectOrAutoInput from '../../nurseFiles-whyx/views/nurseFileDetail/components/SelectOrAutoInput'
+import NumberUntilSelect from './numberUntilSelect'
 const { RangePicker } = DatePicker
 export interface Props {
   pageObj: PageObj
@@ -22,22 +23,27 @@ export interface Props {
 export default function FilterCon(props: Props) {
   let { pageObj, filterRef, onload } = props
   let refForm = React.createRef<Form>()
-  useLayoutEffect(() => {
+  useLayoutEffect(() => { 
     if (refForm.current) {
       refForm.current.clean()
       let form = refForm.current
       form.setFields({
-        deptCode: statisticsViewModal.selectedDeptCode
+        deptCode: statisticsViewModal.selectedDeptCode,
+        ageStart: '全部',
+        ageEnd: '全部'
       })
     }
   }, [pageObj.title])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
+    console.log(value, 9981)
+
 
     if (err) return
 
     let result: any = {}
     if (value.deptCode.length > 1) {
+      console.log(value.deptCode, 876)
       if (value.deptCode[value.deptCode.length - 1] == '全院') {
         value.deptCode = ['全院']
         form.setField('deptCode', value.deptCode)
@@ -58,8 +64,9 @@ export default function FilterCon(props: Props) {
     }
 
     for (let item of pageObj.filterList) {
-      if (item.name && (item.type == 'input' || item.type == 'select' || item.type == 'multiplesSelect')) {
+      if (item.name && (item.type == 'input' || item.type == 'select' || item.type == 'multiplesSelect' || item.type == 'numberUntilSelect')) {
         result[item.name] = value[item.name] || ''
+        item.name1 && (result[item.name1] = value[item.name1] || '')
       } else if (item.name && item.type == 'yearRangePicker' && item.nameList) {
         if (value[item.name]) {
           for (let i = 0; i < item.nameList.length; i++) {
@@ -98,6 +105,7 @@ export default function FilterCon(props: Props) {
   }
 
   const getComponent = (item: filterItem) => {
+    console.log(item.dataSource, 789)
     switch (item.type) {
       case 'select': {
         return (
@@ -112,10 +120,15 @@ export default function FilterCon(props: Props) {
           // </Select>
         )
       }
+      // case 'autoCompletSelect': {
+      //   return (
+          
+      //   )
+      // }
       case 'multiplesSelect': {
         return (
           <Select
-            mode='multiple'
+            mode={item.multiple ? 'multiple' : ''}
             showSearch
             allowClear
             filterOption={(input: any, option: any) =>
@@ -146,6 +159,9 @@ export default function FilterCon(props: Props) {
       case 'yearMonthRangePicker': {
         return <YearMonthRangePicker />
       }
+      // case 'numberUntilSelect': {
+      //   return ''
+      // }
     }
   }
   // useEffect(() => {
@@ -157,17 +173,20 @@ export default function FilterCon(props: Props) {
         <Row>
           {pageObj.filterList.map((item, index) => (
             <Col span={6} key={index} style={item.name == 'deptCode' ? { marginBottom: -6 } : {}}>
+              {item?.numberUntilSelect ? 
+              <NumberUntilSelect dictList={item.dataSource || []} value='全部' label={item.label} unit={item.unit} name={{name: item.name, name1: item.name1}} /> :
               <Form.Field label={item.label} name={item.name}>
                 {getComponent(item)}
               </Form.Field>
+              }
             </Col>
           ))}
-          <Col span={6}>
+          {/* <Col span={6}>
             <Form.Field label={'工号或姓名'} name={'empNo'}>
               <Input />
             </Form.Field>
-          </Col>
-          <Col span={6}>
+          </Col> */}
+          <Col span={24} style={{ textAlign: 'right' }}>
             <Button type='primary' style={{ marginLeft: 40, marginBottom: 20 }} onClick={() => onload()}>
               查询
             </Button>

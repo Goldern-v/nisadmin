@@ -29,6 +29,7 @@ export default function Statistics() {
   })
 
   const onload = (type: string = pageObj.type) => {
+    console.log(type)
     setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
     setTableLoading(true)
     statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
@@ -73,7 +74,6 @@ export default function Statistics() {
           pageSize: 20,
           total: 1
         }
-        console.log(getPageObj(path), 998)
         setPageObj(getPageObj(path))
         // onload(pageObj.type)
       })

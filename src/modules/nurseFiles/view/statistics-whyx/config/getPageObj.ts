@@ -8,13 +8,17 @@ export type filterType =
   | 'dateRangePicker'
   | 'yearPicker'
   | 'yearMonthRangePicker'
+  | 'numberUntilSelect'
 export interface filterItem {
   label: string
   type: filterType
   dataSource?: { name: string; code: string }[]
   name: string
-
   nameList?: string[]
+  multiple?: boolean,
+  unit?: string | undefined,
+  name1?: string | undefined,
+  numberUntilSelect?: boolean,
 }
 
 export interface PageObj {
@@ -22,7 +26,7 @@ export interface PageObj {
   filterList: filterItem[]
   tableList: ColumnProps<any>[]
   detailPath?: string
-  [p: string]: any
+  [p: string]: any,
 }
 
 export const getPageObj = (path: string) => {
