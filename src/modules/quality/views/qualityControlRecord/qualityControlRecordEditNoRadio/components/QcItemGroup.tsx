@@ -213,7 +213,9 @@ export default observer(function QcItemGroup(props: Props) {
                               ...item,
                               qcItemValue: currentChecked
                                 ? ""
-                                : !currentChecked && subItem.fixedScore > 0
+                                : !currentChecked &&
+                                  subItem.fixedScore &&
+                                  subItem.fixedScore > 0
                                 ? "否"
                                 : "是",
                               subItemList: newSubItemList,

@@ -81,16 +81,34 @@ export default function BadEventsRouters(props: Props) {
       },
       vague: true,
     }),
-    {
-      title: '不良事件统计',
-      path: `${baseRouter}/不良事件统计`,
-      component: 不良事件统计,
-    },
-    {
-      title: '不良事件发生率',
-      path: `${baseRouter}/不良事件发生率`,
-      component: 不良事件发生率,
-    },
+    // {
+    //   title: '不良事件统计',
+    //   path: `${baseRouter}/不良事件统计`,
+    //   component: 不良事件统计,
+    // },
+    // {
+    //   title: '不良事件发生率',
+    //   path: `${baseRouter}/不良事件发生率`,
+    //   component: 不良事件发生率,
+    // },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [],
+        lcey: [],
+        other: [
+          {
+            title: '不良事件统计',
+            path: `${baseRouter}/不良事件统计`,
+            component: 不良事件统计,
+          },
+          {
+            title: '不良事件发生率',
+            path: `${baseRouter}/不良事件发生率`,
+            component: 不良事件发生率,
+          },
+        ]
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         hj: [
@@ -133,13 +151,13 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) { //福清特殊跳转单独的上报系统
-    autoLoginInfo = {
-      blank: true,
-      redictUri: '/crNursing/badevents/index',
-      loginUri: '/crNursing/badevents/login'
-    }
-  }
+  // if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) { //福清特殊跳转单独的上报系统
+  //   autoLoginInfo = {
+  //     blank: true,
+  //     redictUri: '/crNursing/badevents/index',
+  //     loginUri: '/crNursing/badevents/login'
+  //   }
+  // }
   return (
     <Wrapper>
       <LeftMenuCon>

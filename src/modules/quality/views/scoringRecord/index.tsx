@@ -18,7 +18,7 @@ export default observer((props: Props) => {
   const [tableLoading, setTableLoading] = useState(false)
   const [tableData, setTableData] = useState([])
   const defaultForm = {
-    wardCode: undefined,
+    wardCode: authStore.deptList[0]?.code,
     status: undefined,
     beginDate: undefined,
     endDate: undefined,
@@ -196,6 +196,9 @@ export default observer((props: Props) => {
   ]
 
   const getList = async () => {
+    if (defaultForm.wardCode === form.wardCode) {
+
+    }
     setTableLoading(true)
     const { data } = await api.getList(form)
     setTableLoading(false)
@@ -222,7 +225,6 @@ export default observer((props: Props) => {
     }
   }
   const onCheckboxChange = (e: { target: { checked: any; }; }) => {
-    console.log(form, e.target.checked)
     setTableLoading(true)
     if (e.target.checked) {
       const data = {

@@ -581,10 +581,23 @@ const routes: RouteItem[] = [
   setLayout("/notice", NoticeView, layouts.MainLayout),
   setLayout("/sentNotice", SentNoticeView, layouts.MainLayout),
   setLayout("/lmsDetails", LmsDetails, layouts.MainLayout),
-  {
-    path: "/statistic",
-    redirect: "/statistic/护士排班表"
-  },
+  // 统计查询重定向
+  ...appStore.hisMatch({
+    map: {
+      gzsrm: [
+        {
+          path: "/statistic",
+          redirect: "/statistic/发热患者统计"
+        }
+      ],
+      other: [
+        {
+          path: "/statistic",
+          redirect: "/statistic/护士排班表"
+        },
+      ]
+    }
+  }),
   setLayout("/setting/:name", SettingView, layouts.MainLayout),
   // setLayout('/nursingRules', NursingRules, layouts.MainLayout),
   // setLayout('/nursingRulesTypeSetting', NursingRulesTypeSetting, layouts.BreadcrumbLayout, [

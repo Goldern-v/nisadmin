@@ -12,6 +12,7 @@ import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "../views/arrangeHome/page/BalanceInit/BalanceInit";
 import LeaveRecord from "../views/arrangeHome/page/leaveRecord/LeaveRecord";
 import StarRatingReportList from "../views/arrangeHome/page/nightChargingReport/StarRatingReportList";
+import nightShiftStatisticsList from "../views/arrangeHome/page/nightShiftStatistics/list";
 import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
@@ -44,7 +45,7 @@ export const meunConfig: meunConfigItem[] = [
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",
         component: ExpectedRecordSelf,
-      },
+      }, 
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
@@ -105,11 +106,17 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+      {
+        title: "夜班数统计",
+        path: "/personnelManagement/nightShiftStatistics",
+        component: nightShiftStatisticsList,
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
