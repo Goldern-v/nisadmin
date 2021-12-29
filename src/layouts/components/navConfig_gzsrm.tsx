@@ -108,6 +108,10 @@ const baseConfig: navConfigItem[] = [
     // hidden: !appStore.isDev,
     path: "/badEventsNew"
   },
+  {
+    name: "统计查询",
+    path: "/statistic",
+  },
 ];
 
 const beConfig: navConfigItem[] = [

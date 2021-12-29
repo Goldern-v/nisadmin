@@ -48,6 +48,8 @@ import 护士工作年限分布 from './views/护士工作年限分布/护士工
 import 护士在职状态分析 from './views/护士在职状态分析/护士在职状态分析'
 //护士离职原因分析
 import 护士离职原因分析 from './views/护士离职原因分析/护士离职原因分析'
+// 发热患者统计
+import FeverPatient from './views/feverPatients/FeverPatient'
 
 // 全院护理人员一览表
 import NurseList from './views/nursingStatistics/nurseList/NurseList'
@@ -138,7 +140,9 @@ export default function StatisticView() {
         lcey: [{ name: '护士职称分布', path: '/statistic/护士职称分布', component: 护士职称统计 }],
         default: []
       }
-    })
+    }),
+    // 发热患者统计
+    { name: '发热患者统计', path: '/statistic/发热患者统计', component: FeverPatient },
   ]
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 
