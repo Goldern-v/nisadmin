@@ -192,7 +192,14 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             },
             currentHospitalId: qcMatchCode
           })}
-          <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
+          {appStore.hisMatch({
+            map: {
+              gzsrm: <span></span>,
+              other: <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
+            },
+            currentHospitalId: qcMatchCode
+          })}
+          {/* <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div> */}
           {qcResult()}
           {messageBoxData.hasArchiveItem && (
             <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
@@ -232,7 +239,16 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             },
             currentHospitalId: qcMatchCode
           })}
-          <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
+          {appStore.hisMatch({
+            map: {
+              nys: <span></span>,
+              QCTP209: <span></span>,
+              gzsrm: <span></span>,
+              other: <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
+            },
+            currentHospitalId: qcMatchCode
+          })}
+          {/* <div>跟踪日期：{messageBoxData.followEvaluateDate}</div> */}
           <div>
             通过率：
             {messageBoxData.evalRate &&

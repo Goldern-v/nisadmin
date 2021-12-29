@@ -263,6 +263,24 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </Button>
               </React.Fragment>
             )}
+            {appStore.hisMatch({
+              map: {
+                gzsrm:
+                  master &&
+                  master.status == "1" &&
+                  master.creatorNo == (authStore.user && authStore.user.empNo),
+                other: false,
+              },
+            }) && (
+              <Button
+                onClick={handleDelete}
+                type="danger"
+                ghost
+                disabled={deleteLoading}
+              >
+                删除
+              </Button>
+            )}
             {/* {master &&
               master.canUpdate &&
               appStore.hisMatch({
