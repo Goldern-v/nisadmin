@@ -318,6 +318,11 @@ class StatisticsApi extends BaseApiService {
   public countTitle(query: any) {
     return this.post('/countInformation/countTitle', query)
   }
+
+  /** 发热患者统计 */
+  public countFeverPatient(query: any) {
+    return this.post('', query)
+  }
 }
 
 let statisticsApi = new StatisticsApi()

@@ -5,148 +5,165 @@ import { appStore } from "src/stores";
 import { ReactComponent as PBTJ } from "../img/PBTJ.svg";
 import { ReactComponent as HLRYTJ } from "../img/HLRYTJ.svg";
 import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
+import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg";
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
-  {
-    title: "排班统计",
-    icon: <PBTJ />,
-    children: [
-      { title: "护士排班表", path: "/statistic/护士排班表" },
-      {
-        title: "护士排班统计（按班次）",
-        path: "/statistic/护士排班统计（按班次）"
-      },
-      {
-        title: "护士白班统计（按月份)",
-        path: "/statistic/护士白班统计（按月份）"
-      },
-      {
-        title: "护士夜班统计（按月份）",
-        path: "/statistic/护士夜班统计（按月份）"
-      },
-      {
-        title: "护士休假统计（按月份）",
-        path: "/statistic/护士休假统计（按月份）"
-      },
-      {
-        title: "护士节假日排班表",
-        path: "/statistic/护士节假日排班表",
-        hide: appStore.HOSPITAL_ID == "nys"
-      },
-      {
-        title: "科室排班统计（按班次）",
-        path: "/statistic/科室排班统计（按班次）",
-        hide: appStore.HOSPITAL_ID == "nys"
-      },
-      {
-        title: "科室白班统计（按月份）",
-        path: "/statistic/科室白班统计（按月份）",
-        hide: appStore.HOSPITAL_ID == "nys"
-      },
-      {
-        title: "科室夜班统计（按月份）",
-        path: "/statistic/科室夜班统计（按月份）",
-        hide: appStore.HOSPITAL_ID == "nys"
-      },
-      {
-        title: "科室休假统计（按月份）",
-        path: "/statistic/科室休假统计（按月份）",
-        hide: appStore.HOSPITAL_ID == "nys"
-      },
-      ...appStore.hisMatch({
-        map: {
-          dgxg: [{ title: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
-          { title: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
-          { title: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" }],
-          default: []
+  ...appStore.hisMatch({
+    map: {
+      // 贵州省医
+      gzsrm: [
+        {
+          title: "发热患者统计",
+          icon: <ZZHSDA />,
+          path: "/statistic/发热患者统计",
         }
-      }),
-      {
-        title: "科室节假日排班表",
-        path: "/statistic/科室节假日排班表",
-        hide: appStore.HOSPITAL_ID == "nys"
-      }
-    ]
-  },
-  {
-    title: "护理人员统计",
-    icon: <HLRYTJ />,
-    children: appStore.hisMatch({
-      map: {
-        jmfy: [
-          {
-            title: "护士学历分布",
-            path: "/statistic/护士学历分布",
-          },
-          {
-            title: "护士初始学历分布",
-            path: "/statistic/护士初始学历分布",
-          },
-          {
-            title: "护士男女分布", path: "/statistic/护士男女分布",
-          },
-          {
-            title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
-          },
-          {
-            title: "护士职称分布",
-            path: "/statistic/护士职称分布",
-          },
-          {
-            title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
-          },
-          {
-            title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
-          },
-          { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
-        ],
-        default: [
-          {
-            title: "护士学历分布",
-            path: "/statistic/护士学历分布",
-          },
-          {
-            title: "护士男女分布", path: "/statistic/护士男女分布",
-          },
-          {
-            title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
-          },
-          {
-            title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
-          },
-          {
-            title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
-          },
-          {
-            title: "护理人员统计",
-            path: "/statistic/护理人员统计",
-            hide: appStore.HOSPITAL_ID == "jmfy"
-          },
-          { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
-          {
-            title: "科室护士明细表",
-            path: "/statistic/科室护士明细表",
-          },
-          ...appStore.hisMatch({
+      ],
+      // 其他医院
+      other: [
+        {
+          title: "排班统计",
+          icon: <PBTJ />,
+          children: [
+            { title: "护士排班表", path: "/statistic/护士排班表" },
+            {
+              title: "护士排班统计（按班次）",
+              path: "/statistic/护士排班统计（按班次）"
+            },
+            {
+              title: "护士白班统计（按月份)",
+              path: "/statistic/护士白班统计（按月份）"
+            },
+            {
+              title: "护士夜班统计（按月份）",
+              path: "/statistic/护士夜班统计（按月份）"
+            },
+            {
+              title: "护士休假统计（按月份）",
+              path: "/statistic/护士休假统计（按月份）"
+            },
+            {
+              title: "护士节假日排班表",
+              path: "/statistic/护士节假日排班表",
+              hide: appStore.HOSPITAL_ID == "nys"
+            },
+            {
+              title: "科室排班统计（按班次）",
+              path: "/statistic/科室排班统计（按班次）",
+              hide: appStore.HOSPITAL_ID == "nys"
+            },
+            {
+              title: "科室白班统计（按月份）",
+              path: "/statistic/科室白班统计（按月份）",
+              hide: appStore.HOSPITAL_ID == "nys"
+            },
+            {
+              title: "科室夜班统计（按月份）",
+              path: "/statistic/科室夜班统计（按月份）",
+              hide: appStore.HOSPITAL_ID == "nys"
+            },
+            {
+              title: "科室休假统计（按月份）",
+              path: "/statistic/科室休假统计（按月份）",
+              hide: appStore.HOSPITAL_ID == "nys"
+            },
+            ...appStore.hisMatch({
+              map: {
+                dgxg: [{ title: '科室白班统计（按季度）', path: '/statistic/科室白班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
+                { title: '科室夜班统计（按季度）', path: '/statistic/科室夜班统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" },
+                { title: '科室休假统计（按季度）', path: '/statistic/科室休假统计（按季度）', hide: appStore.HOSPITAL_ID == "nys" }],
+                default: []
+              }
+            }),
+            {
+              title: "科室节假日排班表",
+              path: "/statistic/科室节假日排班表",
+              hide: appStore.HOSPITAL_ID == "nys"
+            }
+          ]
+        },
+        {
+          title: "护理人员统计",
+          icon: <HLRYTJ />,
+          children: appStore.hisMatch({
             map: {
-              lcey: [
+              jmfy: [
+                {
+                  title: "护士学历分布",
+                  path: "/statistic/护士学历分布",
+                },
+                {
+                  title: "护士初始学历分布",
+                  path: "/statistic/护士初始学历分布",
+                },
+                {
+                  title: "护士男女分布", path: "/statistic/护士男女分布",
+                },
+                {
+                  title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
+                },
                 {
                   title: "护士职称分布",
                   path: "/statistic/护士职称分布",
                 },
+                {
+                  title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
+                },
+                {
+                  title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
+                },
+                { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
               ],
-              other: []
+              default: [
+                {
+                  title: "护士学历分布",
+                  path: "/statistic/护士学历分布",
+                },
+                {
+                  title: "护士男女分布", path: "/statistic/护士男女分布",
+                },
+                {
+                  title: "护士工作年限分布", path: "/statistic/护士工作年限分布",
+                },
+                {
+                  title: "护士在职状态分析", path: "/statistic/护士在职状态分析",
+                },
+                {
+                  title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
+                },
+                {
+                  title: "护理人员统计",
+                  path: "/statistic/护理人员统计",
+                  hide: appStore.HOSPITAL_ID == "jmfy"
+                },
+                { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
+                {
+                  title: "科室护士明细表",
+                  path: "/statistic/科室护士明细表",
+                },
+                ...appStore.hisMatch({
+                  map: {
+                    lcey: [
+                      {
+                        title: "护士职称分布",
+                        path: "/statistic/护士职称分布",
+                      },
+                    ],
+                    other: []
+                  }
+                })
+                // {
+                //   title: "科室护士结构信息汇总表",
+                //   path: "/statistic/科室护士结构信息汇总表"
+                // },
+                // { title: "护士离职率", path: "/statistic/护士离职率" }
+              ]
             }
           })
-          // {
-          //   title: "科室护士结构信息汇总表",
-          //   path: "/statistic/科室护士结构信息汇总表"
-          // },
-          // { title: "护士离职率", path: "/statistic/护士离职率" }
-        ]
-      }
-    })
-  },
+        },
+      ]
+    }
+  }),
+  
   // {
   //   title: "患者查询统计",
   //   icon: <HZCXTJ />,
