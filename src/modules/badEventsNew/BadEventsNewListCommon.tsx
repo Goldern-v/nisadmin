@@ -39,6 +39,7 @@ export default observer(function BadEventNewList() {
     patientName: "",
     formCodes: [] as string[],
     // eventStatus: "",
+    status:"",
     type: '1'
   });
 
@@ -98,13 +99,34 @@ export default observer(function BadEventNewList() {
       align: "center",
       width: 150,
     },
-    {
-      title: "事件状态",
-      dataIndex: "currentNodePendingName",
-      key: "currentNodePendingName",
-      align: "center",
-      width: 140,
-    },
+    ...appStore.hisMatch({
+      map: {
+        lcey: [
+          {
+            title: "事件状态",
+            key: "status",
+            align: "center",
+            width: 140,
+            render: (text: string, item: any) => {
+              return (
+                <DoCon>
+                  <span>{ getStatus(item)}</span>
+                </DoCon>
+              );
+            }
+          }
+        ],
+        other: [
+          {
+            title: "事件状态",
+            dataIndex: "currentNodePendingName",
+            key: "currentNodePendingName",
+            align: "center",
+            width: 140,
+          }
+        ]
+      }
+    }),
     {
       title: "操作",
       key: "operation",
@@ -127,7 +149,9 @@ export default observer(function BadEventNewList() {
 
   useEffect(() => {
     getEventList()
-    getTitleCount()
+    if (!['lcey'].includes(appStore.HOSPITAL_ID)) {
+      getTitleCount()
+    }
   }, [query, page])
 
   useKeepAliveEffect(() => {
@@ -195,6 +219,7 @@ export default observer(function BadEventNewList() {
 
     let reqMethod = api.getPageCanHandle.bind(api)
     if (reqQuery.type == '2') reqMethod = api.getPageByMyHandled.bind(api)
+    if (['lcey'].includes(appStore.HOSPITAL_ID)) reqMethod = api.getPage.bind(api)
 
     reqMethod(reqQuery)
       .then(
@@ -250,6 +275,23 @@ export default observer(function BadEventNewList() {
     setPage({ ...page, current: 1 })
   }
 
+  let eventStatusOptions = [
+    {code:"",name:"全部"},
+    {code:"0",name:"待上报"},
+    {code:"1",name:"待质控科分派"},
+    {code:"2",name:"待职能部门审核"},
+    {code:"3",name:"待职能部门结案"},
+    // {code:"4",name:"质控科审核"},
+    {code:"4",name:"待质控科结案"},
+    {code:"5",name:"完成"},
+  ]
+  const getStatus = (data:any) => {
+    for (let i = 0; i < eventStatusOptions.length; i++) {
+      if (eventStatusOptions[i].code == data.status) {
+        return eventStatusOptions[i].name;
+      }
+    }
+  }
   return (
     <Wrapper>
       <div className="topbar">
@@ -307,6 +349,26 @@ export default observer(function BadEventNewList() {
                 </Select>
               </div>
             </div>
+            { appStore.HOSPITAL_ID=='lcey' && <div className="float-item">
+              <div className="item-title">事件状态:</div>
+              <div className="item-content">
+                <Select
+                  defaultValue=""
+                  value={query.status || ''}
+                  onChange={(status: any) => {
+                    setQuery({ ...query, status: status|| '' });
+                  }}
+                >
+                  {eventStatusOptions.map((item: any, idx: number) => {
+                    return (
+                      <Select.Option value={item.code} key={idx}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </div>
+            </div>}
             <div className="float-item">
               <div className="item-title" />
               <div className="item-content">
@@ -320,7 +382,7 @@ export default observer(function BadEventNewList() {
       </div>
       <div className="main-contain">
         <div className="table-content">
-          <BaseTabs
+        {appStore.HOSPITAL_ID != 'lcey' ? <BaseTabs
             defaultActiveKey={query.type.toString()}
             config={[
               `待我处理(${titleCount.toAudit})`,
@@ -348,7 +410,20 @@ export default observer(function BadEventNewList() {
               }
             })}
             onChange={(type: any) => setQuery({ ...query, type })}
-          />
+          />  : <BaseTable
+                  loading={dataLoading}
+                  columns={columns}
+                  dataSource={data}
+                  surplusHeight={265}
+                  pagination={{
+                    showQuickJumper: true,
+                    total,
+                    current: page.current,
+                    pageSize: page.size,
+                    onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
+                    onChange: (current: number) => setPage({ ...page, current })
+                  }}
+                /> }
         </div>
       </div>
     </Wrapper>

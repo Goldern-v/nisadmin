@@ -143,6 +143,20 @@ export default class BadEventsNewService extends BaseApiService {
   }) {
     return this.post('/form/badEventMaster/master/save', params)
   }
+  /**
+   * 获取不良事件列表（聊城使用）
+   */
+  public getPage(params:{
+    wardCode: string,
+    beginDate: string,
+    endDate: string,
+    formCodes: string[],
+    [p: string]:any,
+    pageIndex: number,
+    pageNumber: number,
+  }) {
+    return this.post('/form/badEventMaster/master/getPage',params)
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()
