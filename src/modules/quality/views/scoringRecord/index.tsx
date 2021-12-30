@@ -18,7 +18,7 @@ export default observer((props: Props) => {
   const [tableLoading, setTableLoading] = useState(false)
   const [tableData, setTableData] = useState([])
   const defaultForm = {
-    wardCode: authStore.deptList[0]?.code,
+    wardCode: authStore.selectedDeptCode,
     status: undefined,
     beginDate: undefined,
     endDate: undefined,
