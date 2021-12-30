@@ -198,9 +198,9 @@ export default function Common(props: Props) {
 const Wrapper = styled.div`
 .common {
   border: 1px solid #000;
-  font-size: 16px;
+  font-size: 13px;
   min-height: 35px;
-  padding-left: 5px;
+  padding-left: 2px;
   text-align: center;
   outline: none;
   margin-right:-1px; 
