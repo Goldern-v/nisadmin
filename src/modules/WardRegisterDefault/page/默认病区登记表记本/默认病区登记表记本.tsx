@@ -463,8 +463,8 @@ export default observer(function 敏感指标登记本(props: Props) {
             className: "input-cell",
             width: 100,
             render(text: string, record: any, index: number) {
-              // return <>{(authStore.deptList?.find(item=> item?.code==authStore.selectedDeptCode))?.name}</>
-              return <>{(authStore.deptList?.find(item=> item?.code==authStore.defaultDeptCode))?.name}</>
+              return <>{(authStore.deptList?.find(item=> item?.code==authStore.selectedDeptCode))?.name}</>
+              //return <>{(authStore.deptList?.find(item=> item?.code==authStore.defaultDeptCode))?.name}</>
             }
           },
         ],
