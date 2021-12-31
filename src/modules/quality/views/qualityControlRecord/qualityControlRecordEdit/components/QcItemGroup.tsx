@@ -305,6 +305,16 @@ export default observer(function QcItemGroup(props: Props) {
                     onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
                 </div>
               </div>,
+              lcey: <div className='notesCon' style={{ borderBottom: 'none' }}>
+                <div className='notesLeftCon'>备注</div>
+                <div className='notesRightCon'>
+                  <TextArea
+                    rows={4}
+                    value={item.remark}
+                    autosize
+                    onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
+                </div>
+              </div>,
               other: '',
             }
           })}
@@ -326,6 +336,7 @@ export default observer(function QcItemGroup(props: Props) {
     {appStore.hisMatch({
       map: {
         nys: '',
+        lcey: '',
         other: <div className='notesCon'>
           <div className='notesLeftCon'>备注</div>
           <div className='notesRightCon'>
