@@ -54,14 +54,14 @@ export default function AddShiftModal(props: Props) {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
-
     emitter.emit("获取选中班次列表", (shiftList: any) => {
       // message.success('保存排班班次设置')
       console.log("获取选中班次", shiftList);
       let data = {
         ...(props.editData || {}),
         ...value,
-        shiftTypeNo: shiftList[0].shiftTypeNo - 1
+        //shiftTypeNo: shiftList[0].shiftTypeNo - 1,
+        shiftTypeNo: shiftList && shiftList.length>0 ?shiftList[0].shiftTypeNo - 1 : 0,
       };
       data.settingMorningHour
         ? data.settingMorningHour
