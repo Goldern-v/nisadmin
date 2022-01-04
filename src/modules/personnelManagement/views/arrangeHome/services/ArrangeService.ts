@@ -66,7 +66,7 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/${urlName}/saveOrUpdate`, obj);
   }
 
-  /** 获取排班班次 */
+  /** 获取排班班次 */ 
   public getArrangeMenu(obj?: any) {
     obj = {
       deptCode: selectViewModal.params.deptCode,
