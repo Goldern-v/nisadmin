@@ -32,7 +32,7 @@ let dictList = {
   专业技术工作: 'professional_work',
   专利排名: 'patent_level',
   作者: 'article_author',
-  工作服码数: '' // todo
+  工作服码数: '', // todo
 }
 
 type DictList = typeof dictList

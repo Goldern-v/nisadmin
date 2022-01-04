@@ -27,6 +27,7 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(
     nurseFileDetailViewModal.nurserInfo
   );
+  console.log(info, 666);
   const [idData, setIdData] = useState(0);
   const [id, setId] = useState(0);
   let clothingInfo = [
@@ -101,9 +102,11 @@ export default observer(function BaseInfo() {
       ? nurseFilesService.nurseInformationSelf
       : nurseFilesService.nurseInformation;
     setInfo({});
+    console.log(isSelf(), 999)
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info;
       let maps = res.data.maps || {}
+      console.log(data, 888)
       setInfo(data);
       setIdData(data.empNo);
       setId(data.id);
@@ -166,19 +169,18 @@ export default observer(function BaseInfo() {
           // 现职务任职起始时间: data.jobStartDate,
         },
         {
-          现职务任职: data.job, // todo
-          起始时间: data.jobStartDate,
-        },
-        {
+          现职务任职起始时间: data.job, // todo
           护理层级: data.job, // todo
+        },
+        {
           护理层级起始时间: data.jobStartDate, // todo
-        },
-        {
           院内工作区域: data.workAddress,
-          工作护理单元: data.deptName,
         },
         {
+          工作护理单元: data.deptName,
           鞋码大小: data.workAddress, // todo
+        },
+        {
           工作服码数: data.deptName, // todo
         },
       ]
@@ -219,7 +221,7 @@ export default observer(function BaseInfo() {
           }
           let fieldCode = mapCfgItem.fieldCode
           // let name = clothingInfo.find((item, index) => item.type == fieldCode).name
-          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0].name
+          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0]?.name
           // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]
 
@@ -237,6 +239,7 @@ export default observer(function BaseInfo() {
   };
   useEffect(() => {
     getTableData();
+    console.log(info, 777)
   }, [appStore.queryObj]);
   return (
     <BaseLayout title="基本信息" btnList={limitsComponent()}>
@@ -312,38 +315,38 @@ export default observer(function BaseInfo() {
             <col />
             <col width="200" />
           </colgroup>
-          <tbody>
+          {/* <tbody>
             <tr>
               <td>部门类型</td>
               <td>
-                <Value>{info.empName}</Value>
+                <Value>{info.maps.depttype}</Value>
               </td>
               <td>人员类别</td>
               <td>
-                <Value>{info.sex}</Value>
+                <Value>{info.maps.emptype}</Value>
               </td>
             </tr>
             <tr>
               <td>职工类型</td>
               <td>
-                <Value>{info.empName}</Value>
+                <Value>{info.maps.worktype}</Value>
               </td>
               <td>是否已转正</td>
               <td>
-                <Value>{info.sex}</Value>
+                <Value>{info.maps.formalemp}</Value>
               </td>
             </tr>
             <tr>
               <td>合同类型</td>
               <td>
-                <Value>{info.empName}</Value>
+                <Value>{info.maps.contracttype}</Value>
               </td>
               <td>合同到期时间</td>
               <td>
-                <Value>{info.sex}</Value>
+                <Value>{info.maps.contractexdate}</Value>
               </td>
             </tr>
-          </tbody>
+          </tbody> */}
         </InfoTable>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
