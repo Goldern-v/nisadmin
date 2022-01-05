@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import LeftMenuPage from 'src/components/LeftMenuPage'
 import NurseHandBook from './page/NurseHandBook'
 import NurseHandBook_jmfy from './page/NurseHandBook_jmfy'
+import NurseHandBook_lcey from './page/NurseHandBook_lcey'
 import { ReactComponent as WCJD } from './images/WCJD.svg'
 import { ReactComponent as CSWD } from './images/CSWD.svg'
 import { ReactComponent as BKES } from './images/BKSD.svg'
@@ -26,6 +27,36 @@ export default function NurseHandBookRouter() {
           path: '/nurseHandBookNew/conclusionJM',
           icon: <WCJD />,
           component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+      ],
+      lcey: [
+        {
+          title: '护理工作计划',
+          path: '/nurseHandBookNew/planJM',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护理工作总结',
+          path: '/nurseHandBookNew/conclusionJM',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '继续教育及科研',
+          path: '/nurseHandBookNew/planJM1',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '病区工作',
+          path: '/nurseHandBookNew/conclusionJM2',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
