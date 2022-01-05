@@ -9,11 +9,11 @@ export interface Props {
   tHead: any
   showFixHeader: boolean
   isPrint: any
-  beforeSetTableHeadContent:Function
-  tableHeadContent:any
+  beforeSetTableHeadContent: Function
+  tableHeadContent: any
 }
 export default function CommonHeader(props: Props) {
-  const { tHead, showFixHeader, isPrint, beforeSetTableHeadContent,tableHeadContent } = props
+  const { tHead, showFixHeader, isPrint, beforeSetTableHeadContent, tableHeadContent } = props
   const { top, mid, bottom } = tHead
   const [renderHeader, setRenderHeader]: any = useState([])
   const deepRender = (arr: any) => {
@@ -60,15 +60,15 @@ export default function CommonHeader(props: Props) {
       }
     })
   }
-  const recursionInit = (arr:any,dictionariesObj:any)=>{
-    arr.map((item:any)=>{
+  const recursionInit = (arr: any, dictionariesObj: any) => {
+    arr.map((item: any) => {
       // console.log(item);
       // let type = Object.prototype.toString.call(item)
       dictionariesObj[item.key] && (item.name = dictionariesObj[item.key])
-      item.mid && recursionInit(item.mid,dictionariesObj)
-      item.bottom && recursionInit(item.bottom,dictionariesObj)
+      item.mid && recursionInit(item.mid, dictionariesObj)
+      item.bottom && recursionInit(item.bottom, dictionariesObj)
       // console.log(dictionariesObj);
-      
+
     })
   }
   useEffect(() => {
@@ -87,17 +87,17 @@ export default function CommonHeader(props: Props) {
     deepRender(top)
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(tableHeadContent);
-    
-    if(tableHeadContent.length){
-      let dictionariesObj:any = {}
-      tableHeadContent.map((item:any)=>{
-        dictionariesObj = {...dictionariesObj,...item}
+
+    if (tableHeadContent.length) {
+      let dictionariesObj: any = {}
+      tableHeadContent.map((item: any) => {
+        dictionariesObj = { ...dictionariesObj, ...item }
       })
-      recursionInit(renderHeader,dictionariesObj)
+      recursionInit(renderHeader, dictionariesObj)
     }
-  },[tableHeadContent])
+  }, [tableHeadContent])
   return (
     <Wrapper id="ch">
       <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader && !isPrint ? 'block' : 'none' }}></div>
@@ -111,7 +111,7 @@ export default function CommonHeader(props: Props) {
                   height: `${topTh.rowspan * 20}px`,
                   flex: topTh.colspan == 1 ? '1' : '',
                   ...topTh.style,
-                  width: topTh.style && topTh.style.width ? `${topTh.style.width - 2}px` : '',
+                  width: topTh.style && topTh.style.width ? `${topTh.style.width - (topTh.colspan > 1 ? Number(topTh.colspan) + 1 : 2)}px` : '',
                   color: topTh.canset ? 'blue' : ''
                 }}
                 onDoubleClick={(e: any) => { topTh.canset && changeHeader(e, topTh) }}
