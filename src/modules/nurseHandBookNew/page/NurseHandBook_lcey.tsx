@@ -42,6 +42,8 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护理部月工作计划", name: "护理部月工作计划" },
       { value: "病区年度工作计划", name: "病区年度工作计划" },
       { value: "病区月工作计划", name: "病区月工作计划" },
+      { value: "护理部培训考核月计划登记", name: "护理部培训考核月计划登记" },
+      { value: "护理部培训考核月计划记录", name: "护理部培训考核月计划记录" },
     ],
     conclusionJM: [
       { value: "jm_monthConclusion", name: "月工作总结" },
