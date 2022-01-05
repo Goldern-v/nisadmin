@@ -44,8 +44,8 @@ export default observer(function FeverPatient() {
     title: string;
     width: number;
     align: string;
-    render: (val: any, record: any, idx: number) => number;
-    dataIndex?: undefined;
+    render?: (val: any, record: any, idx: number) => number;
+    dataIndex: string;
   }
   const columns: ColumnProps<IHeaderType>[] = [
     {
@@ -213,7 +213,7 @@ export default observer(function FeverPatient() {
       </Radio.Group>}
     </div>}
     body={<Spin spinning={loading}>
-      <div className="main-title">多种类型发热患者人数统计'</div>
+      <div className="main-title">多种类型发热患者人数统计</div>
       <div className="right-group">
         <Radio.Group
           size="small"
