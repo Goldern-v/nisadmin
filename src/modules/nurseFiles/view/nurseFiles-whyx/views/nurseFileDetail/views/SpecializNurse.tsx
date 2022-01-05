@@ -34,7 +34,7 @@ export default observer(function SpecializNurse() {
       onClick: () => editSpecializNurseModal.show({ signShow: '添加' })
     }
   ]
-
+  
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -97,16 +97,15 @@ export default observer(function SpecializNurse() {
     //   align: 'center'
     // }, 
     // todo nurseWHSpecializNurse 接口出来要联调
-    !isSelf() && Do('nurseWHSpecializNurse', editSpecializNurseModal, getTableData)
+    !isSelf() && Do('nurseWHYXSpecializNurse', editSpecializNurseModal, getTableData)
   ].filter(item => item)
-
 
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='专科护士' btnList={isSelf() ? [] : btnList}>
+    <BaseLayout title='专科护士' btnList={isSelf() ? [] : (authStore.isDepartment ? btnList : [])}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editSpecializNurseModal.Component getTableData={getTableData} />
     </BaseLayout>

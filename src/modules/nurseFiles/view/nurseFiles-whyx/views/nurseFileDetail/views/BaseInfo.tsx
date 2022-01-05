@@ -80,6 +80,7 @@ export default observer(function BaseInfo() {
         {
           label: "查看",
           onClick: () => {
+            console.log(info, 9991)
             openAuditModal("基本信息", info, getTableData);
           },
         },
@@ -106,6 +107,7 @@ export default observer(function BaseInfo() {
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info;
       let maps = res.data.maps || {}
+      data.maps.contracttype = 'jjjh'
       console.log(data, 888)
       setInfo(data);
       setIdData(data.empNo);
@@ -128,15 +130,15 @@ export default observer(function BaseInfo() {
           婚姻状况: data.phone, // todo
         },
         {
-          生育情况: data.age, // todo
+          生育情况: data.maps.fertility,
           手机号: data.phone,
         },
         {
-          现住址: data.age, // todo
+          现住址: data.address,
           参加工作时间: data.takeWorkTime,
         },
         {
-          最近入职时间: data.takeWorkTime, // todo
+          最近入职时间: data.maps.hiredate,
           来院工作时间: data.goHospitalWorkDate,
         },
         {
@@ -144,12 +146,12 @@ export default observer(function BaseInfo() {
           取得护士执业证书时间: data.zyzsDate,
         },
         {
-          本院注册时间: data.zyzsNumber, // todo 
-          护士执业证书有效期: data.zyzsEffectiveUpDate, // todo 可能
+          本院注册时间: data.maps.registerdate,
+          护士执业证书有效期: data.zyzsEffectiveUpDate,
         },
         {
           取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
-          初始学历: data.zyzsEffectiveUpDate, // todo
+          初始学历: data.initialEducation,
         },
         // {
         //   初始学历: data.initialEducation,
@@ -161,16 +163,16 @@ export default observer(function BaseInfo() {
         },
         {
           最高学位: data.highestEducationDegree,
-          最高职称: data.highestEducationDate, // todo
+          最高职称: data.highestProfessionalTitle,
         },
         {
-          评职日期: data.job, // todo
+          评职日期: data.evaluationDate,
           职务: data.job,
           // 现职务任职起始时间: data.jobStartDate,
         },
         {
-          现职务任职起始时间: data.job, // todo
-          护理层级: data.job, // todo
+          现职务任职起始时间: data.jobStartDate,
+          护理层级: data.nursingLevel,
         },
         {
           护理层级起始时间: data.jobStartDate, // todo
@@ -178,7 +180,7 @@ export default observer(function BaseInfo() {
         },
         {
           工作护理单元: data.deptName,
-          鞋码大小: data.workAddress, // todo
+          鞋码大小: data.shoeSize,
         },
         {
           工作服码数: data.deptName, // todo
@@ -315,38 +317,38 @@ export default observer(function BaseInfo() {
             <col />
             <col width="200" />
           </colgroup>
-          {/* <tbody>
+          <tbody>
             <tr>
               <td>部门类型</td>
               <td>
-                <Value>{info.maps.depttype}</Value>
+                <Value>{info?.maps?.depttype}</Value>
               </td>
               <td>人员类别</td>
               <td>
-                <Value>{info.maps.emptype}</Value>
+                <Value>{info?.maps?.emptype}</Value>
               </td>
             </tr>
             <tr>
               <td>职工类型</td>
               <td>
-                <Value>{info.maps.worktype}</Value>
+                <Value>{info?.maps?.worktype}</Value>
               </td>
               <td>是否已转正</td>
               <td>
-                <Value>{info.maps.formalemp}</Value>
+                <Value>{info?.maps?.formalemp}</Value>
               </td>
             </tr>
             <tr>
               <td>合同类型</td>
               <td>
-                <Value>{info.maps.contracttype}</Value>
+                <Value>{info?.maps?.contracttype}</Value>
               </td>
               <td>合同到期时间</td>
               <td>
-                <Value>{info.maps.contractexdate}</Value>
+                <Value>{info?.maps?.contractexdate}</Value>
               </td>
             </tr>
-          </tbody> */}
+          </tbody>
         </InfoTable>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
