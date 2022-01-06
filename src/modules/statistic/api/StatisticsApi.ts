@@ -321,7 +321,7 @@ class StatisticsApi extends BaseApiService {
 
   /** 发热患者统计 */
   public countFeverPatient(query: any) {
-    return this.post('', query)
+    return this.post('/vitalSign/getHospitalized')
   }
 }
 

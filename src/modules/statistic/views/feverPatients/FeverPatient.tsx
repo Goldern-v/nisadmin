@@ -142,7 +142,10 @@ export default observer(function FeverPatient() {
 
   const getData = () => {
     setLoading(true)
-
+    // statisticsApi.countFeverPatient(query)
+    // .then((res: any) => {
+    //   console.log('data', res.data)
+    // })
     statisticsApi.countSex(query)
       .then((res: any) => {
         setLoading(false)
