@@ -1,6 +1,8 @@
 /**
  * 聊城二院-护理部月工作计划
  */
+import moment from "moment";
+
 const tHead = {
   top: [
     { name: "序号", colspan: "1", rowspan: "1", style:{ width: 50 } },
@@ -24,7 +26,7 @@ const tBody: any = [
 
 export default {
   defaulLength: [20],
-  tableTitle: { value: "xxxx年XX月护理部月工作计划", width: 746 },
+  tableTitle: { value: `${moment().format('YYYY')}年${moment().format('MM')}月护理部月工作计划`, width: 746 },
   tBody: [tBody],
   tHead: [tHead],
 }

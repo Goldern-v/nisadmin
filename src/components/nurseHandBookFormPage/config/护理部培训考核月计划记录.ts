@@ -1,11 +1,13 @@
 /**
  * 聊城二院-护理部培训考核月计划记录
  */
+import moment from "moment";
+
 const tHead = {
   top: [
     { name: "时间", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "课时", colspan: "1", rowspan: "1", style:{ width: 50 } },
-    { name: "项目", colspan: "2", rowspan: "1", style:{ width: 100 } },
+    { name: "项目", colspan: "2", rowspan: "1", style:{ width: 98 } },
     { name: "具体内容", colspan: "1", rowspan: "1", style:{ width: 200 } },
     { name: "培训/考核对象", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "主讲人/组织者", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -34,7 +36,7 @@ const tBody: any = [
 
 export default {
   defaulLength: [20],
-  tableTitle: { value: "xxxx年XX月护理部培训考核计划", width: 842 },
+  tableTitle: { value: `${moment().format('YYYY')}年${moment().format('MM')}月护理部培训考核计划`, width: 842 },
   tBody: [tBody],
   tHead: [tHead],
 }

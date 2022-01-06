@@ -97,8 +97,8 @@ export default function SelectModal(props: Props) {
 const Wrapper = styled.div`
   .selectBody{
     position: fixed;
-    width: 250px;
-    height: 300px;
+    width: 200px;
+    height: 260px;
     background-color: #fff;
     /* border: 1px solid #000; */
     box-shadow:5px 5px 5px rgba(233, 233, 234);
