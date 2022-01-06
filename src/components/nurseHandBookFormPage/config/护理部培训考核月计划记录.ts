@@ -23,7 +23,7 @@ const tHead = {
 }
 
 const tBody: any = [
-  { key: "time", name: "时间", value: "", width: 100 },
+  { key: "time", name: "时间", value: "", width: 100, timePicker:true },
   { key: "classTime", name: "课时", value: "", width: 50 },
   { key: "train", name: "培训", value: "", width: 50, select:["学习","培训","考试","练习","实操","演练","实践"]},
   { key: "assess", name: "考核", value: "", width: 50 },

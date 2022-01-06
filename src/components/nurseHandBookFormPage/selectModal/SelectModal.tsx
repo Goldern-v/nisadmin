@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Icon } from "antd"
+import { DatePicker, Icon } from 'antd';
+import moment from 'moment'
+
 export interface Props {
   domReact: any
   col: any
@@ -10,7 +12,7 @@ export interface Props {
   setOperationType: Function
 }
 export default function SelectModal(props: Props) {
-  const { domReact, col, refresh, selectList, menuType, setOperationType } = props
+  const { domReact, col, refresh, selectList, menuType, setOperationType, } = props
   const [selectTop, setSelectTop]: any = useState()
   const [selectLeft, setSelectLeft]: any = useState()
   const [renderList, setRenderList]: any = useState([])
@@ -67,6 +69,12 @@ export default function SelectModal(props: Props) {
   const menuOperation = (code: any) => {
     setOperationType(code)
   }
+
+  const datePickerOnChange = (value:any) => {
+    col.value = moment(value).format('YYYY-MM-DD')
+    refresh()
+  }
+
   useEffect(() => {
     open()
     return () => {
@@ -78,7 +86,7 @@ export default function SelectModal(props: Props) {
       {(menuType == "Menus" || (!!renderList.length && menuType == "select")) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
         {menuType == "select" && renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
-          </div>)}
+        </div>)}
         {menuType == "Menus" && menus.map((menu: any, index: any) =>
           <div
             className="selectOption"
@@ -89,12 +97,29 @@ export default function SelectModal(props: Props) {
             {menu.name}
           </div>)}
       </div>}
+      {menuType == "timePicker" && <div className="timePickerBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+        <DatePicker
+          open={true}
+          onChange={(value: any) => datePickerOnChange(value)}
+        />
+        </div>}
     </Wrapper>
   )
 
 }
 
 const Wrapper = styled.div`
+  .timePickerBody{
+    position: fixed;
+    width: 280px;
+    height: 340px;
+    background-color: #fff;
+    /* border: 1px solid #000; */
+    box-shadow:5px 5px 5px rgba(233, 233, 234);
+    z-index: 10;
+    overflow-y: auto;
+    border-radius: 10px;
+  }
   .selectBody{
     position: fixed;
     width: 200px;

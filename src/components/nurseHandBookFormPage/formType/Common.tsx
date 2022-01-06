@@ -7,6 +7,8 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 export interface Props {
   bodyModal: any
   setBodyModal: Function
+  menuType: any
+  setMenuType: Function
   visible: any
   setVisible: Function
   computeRow: any
@@ -20,13 +22,12 @@ export interface Props {
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
+  const { bodyModal, setBodyModal, menuType, setMenuType, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
   const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
-  const [menuType, setMenuType] = useState('select')
   const [operationType, setOperationType]: any = useState("")
   // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
@@ -55,6 +56,16 @@ export default function Common(props: Props) {
         visible[bodyIdx]=true
         setVisible([...visible])
       })
+    } else if(col.timePicker){ 
+      setMenuType('timePicker')
+      if (visible[bodyIdx]) {
+        setVisible(templeVisible)
+      }
+      // 设置定时器,防止已有弹窗时不渲染
+      setTimeout(() => {
+        visible[bodyIdx]=true
+        setVisible([...visible])
+      })
     } else {
       setVisible(templeVisible)
     }
@@ -62,7 +73,11 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any ) => {
     if(queryObj.audit) return
-    setMenuType("select")
+    if (col.select){
+      setMenuType("select")
+    }else if(col.timePicker){
+      setMenuType("timePicker")
+    }
     col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])
     // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))

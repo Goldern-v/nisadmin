@@ -38,6 +38,7 @@ export interface Props {
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   const [copyRow, setCopyRow] = useState({})
+  const [menuType, setMenuType] = useState('select')
 
   let manualType = queryObj.manualType
   let masterInfo:any = []
@@ -63,7 +64,10 @@ export default function NurseHandBookFormPage(props: Props) {
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
-    if (!targetClass.includes("common")) {
+    if (menuType=="timePicker" && (targetClass.includes("NurseHandBookFormPage__Wrapper-sc-1ghmsca-0")||targetClass.includes("jYNgxB")||targetClass.includes("page"))) {
+      setVisible(templeVisible)
+    }
+    if (menuType!="timePicker" && !targetClass.includes("common")) {
       setVisible(templeVisible)
     }
   }
@@ -113,6 +117,8 @@ export default function NurseHandBookFormPage(props: Props) {
                 isPrint={isPrint} 
                 bodyModal={bodyModal}
                 bodyIdx={idx}
+                menuType={menuType}
+                setMenuType={setMenuType}
                 setBodyModal={setBodyModal} 
                 visible={visible} 
                 setVisible = {setVisible}

@@ -19,7 +19,7 @@ const tHead = {
 const tBody: any = [
   { key: "serialNumber", name: "序号", value: "", width: 50 },
   { key: "plan", name: "工作计划", value: "", width: 400 },
-  { key: "time", name: "完成时限", value: "", width: 100 },
+  { key: "time", name: "完成时限", value: "", width: 100, timePicker:true },
   { key: "nurseList", name: "责任人", value: "", width: 100 },
   { key: "remark", name: "备注", value: "", width: 100 },
 ]

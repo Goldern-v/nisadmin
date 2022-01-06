@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import menuOperation from '../function/menuOperation';
-import SelectModal from '../selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {
@@ -13,17 +11,6 @@ export interface Props {
 export default function ComplexHeader(props: Props) {
   const { queryObj } = appStore
   const { masterInfo, setComplexHeadList, complexHeadList,complexHeaderContent } = props
-  const { tBody } = masterInfo
-  const [selectIndex, setSelectIndex] = useState(-1)
-  const [domReact, setDomReact]: any = useState({})
-  const [colIdx, setColIdx]: any = useState(-1)
-  const [selectList, setSelectList]: any = useState([])
-  const [menuType, setMenuType] = useState('select')
-  // const [visible, setVisible]: any = useState(false)
-  const [operationType, setOperationType]: any = useState("")
-  const [copyRow, setCopyRow] = useState({})
-  let selectRow: any = {}
-
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
     scheduleStore.setIsSave(true)
