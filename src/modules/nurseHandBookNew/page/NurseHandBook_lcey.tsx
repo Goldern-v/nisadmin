@@ -46,9 +46,21 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护理部培训考核月计划记录", name: "护理部培训考核月计划记录" },
     ],
     conclusionJM: [
-      { value: "jm_monthConclusion", name: "月工作总结" },
-      // { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" }, 
-      // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
+      { value: "病区年度工作总结", name: "病区年度工作总结" },
+      { value: "病区半年工作总结", name: "病区半年工作总结" }, 
+      { value: "病区月工作总结", name: "病区月工作总结" },
+    ],
+    planJM1: [
+      { value: "继续教育培训情况", name: "继续教育培训情况" },
+      { value: "护理科研", name: "护理科研" },
+    ],
+    conclusionJM2: [
+      { value: "护理病历讨论登记", name: "护理病历讨论登记" },
+      { value: "护理病历讨论记录", name: "护理病历讨论记录" },
+      { value: "护理查房", name: "护理查房" }, 
+      { value: "护理会诊", name: "护理会诊" },
+      { value: "护患沟通记录", name: "护患沟通记录" },
+      { value: "晨会提问记录", name: "晨会提问记录" },
     ],
   }
 

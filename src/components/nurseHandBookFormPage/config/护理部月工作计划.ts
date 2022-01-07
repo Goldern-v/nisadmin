@@ -1,6 +1,8 @@
 /**
  * 聊城二院-护理部月工作计划
  */
+import moment from "moment";
+
 const tHead = {
   top: [
     { name: "序号", colspan: "1", rowspan: "1", style:{ width: 50 } },
@@ -17,14 +19,14 @@ const tHead = {
 const tBody: any = [
   { key: "serialNumber", name: "序号", value: "", width: 50 },
   { key: "plan", name: "工作计划", value: "", width: 400 },
-  { key: "time", name: "完成时限", value: "", width: 100 },
+  { key: "time", name: "完成时限", value: "", width: 100, timePicker:true },
   { key: "nurseList", name: "责任人", value: "", width: 100 },
   { key: "remark", name: "备注", value: "", width: 100 },
 ]
 
 export default {
   defaulLength: [20],
-  tableTitle: { value: "xxxx年XX月护理部月工作计划", width: 746 },
+  tableTitle: { value: `${moment().format('YYYY')}年${moment().format('MM')}月护理部月工作计划`, width: 746 },
   tBody: [tBody],
   tHead: [tHead],
 }

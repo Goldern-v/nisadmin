@@ -38,6 +38,7 @@ export interface Props {
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   const [copyRow, setCopyRow] = useState({})
+  const [menuType, setMenuType] = useState('select')
 
   let manualType = queryObj.manualType
   let masterInfo:any = []
@@ -52,6 +53,8 @@ export default function NurseHandBookFormPage(props: Props) {
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent,setOnScroll} = props
 
   const [visible, setVisible]: any = useState([])
+  const [complexSelectVisible, setComplexSelectVisible]: any = useState(false)
+  
   //控制滚动事件
   if(masterInfo.hiddenFixHeader){
     setOnScroll(false)
@@ -63,8 +66,19 @@ export default function NurseHandBookFormPage(props: Props) {
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
-    if (!targetClass.includes("common")) {
+    console.log(targetClass);
+    
+    if (menuType=="timePicker" && (targetClass.includes("NurseHandBookFormPage__Wrapper-sc-1ghmsca-0")||targetClass.includes("jYNgxB")||targetClass.includes("page"))) {
       setVisible(templeVisible)
+    }
+    if (menuType=="complex-select" && (!targetClass.includes("selectOption")||!targetClass.includes("selectBody"))){
+      setComplexSelectVisible(false)
+    }
+    if(menuType!="timePicker" && !targetClass.includes("common")) {
+      setVisible(templeVisible)
+    }
+    if(!targetClass.includes("complexHeader")){
+      setComplexSelectVisible(false)
     }
   }
   useEffect(() => {
@@ -97,7 +111,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
-          {masterInfo.complexHead && <ComplexHeader complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
+          {masterInfo.complexHead && <ComplexHeader setMenuType={setMenuType} setComplexSelectVisible={setComplexSelectVisible} complexSelectVisible={complexSelectVisible} complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
             return (
             <div key={idx}>
@@ -113,6 +127,8 @@ export default function NurseHandBookFormPage(props: Props) {
                 isPrint={isPrint} 
                 bodyModal={bodyModal}
                 bodyIdx={idx}
+                menuType={menuType}
+                setMenuType={setMenuType}
                 setBodyModal={setBodyModal} 
                 visible={visible} 
                 setVisible = {setVisible}
