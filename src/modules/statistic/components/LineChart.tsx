@@ -19,15 +19,16 @@ interface Scale {
   formatter?: (val: any) => string;
 }
 export default function LineChart(props: Props) {
-  // const { chartHeight, sourceData, isRing } = props
-  const sourceData: Data[] = [
-    { year: '2018', Tokyo: 7.0, London: 3.9 },
-    { year: '2019', Tokyo: 6.9, London: 4.2 },
+  const { chartHeight, sourceData, isRing } = props
+  // console.log('sourceData', sourceData)
+  const Ldata: Data[] = [
+    { year: '2018', Tokyo: 7.0, London: 0 },
+    { year: '2019', Tokyo: 6.9, London: 0 },
     { year: '2020', Tokyo: 9.5, London: 5.7 },
     { year: '2021', Tokyo: 14.5, London: 8.5 },
   ];
   
-  const dv = new DataSet.View().source(sourceData);
+  const dv = new DataSet.View().source(Ldata);
   dv.transform({
     type: 'fold',
     fields: ['Tokyo', 'London'],
@@ -43,7 +44,7 @@ export default function LineChart(props: Props) {
   }];
 
   return (
-    <Chart forceFit height={400} data={data} scale={scale}>
+    <Chart forceFit height={chartHeight} data={data} scale={scale}>
       <Tooltip/>
       <Axis/>
       <Legend/>
