@@ -30,7 +30,7 @@ export default observer((props: Props) => {
   const [process, setProcess]: any[] = useState([])
   const [form, setForm]: any = useState({})
   function setFormItem(item: object) {
-    const keys = ['SR0004021', 'SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011'];
+    const keys = ['SR0004021', 'SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011', 'SR0004029'];
     const sum = keys.reduce((acc: number, cur: string) => {
       const val = form[cur];
       const valNum = isNaN(+val) ? 0 : +val;
@@ -257,7 +257,7 @@ export default observer((props: Props) => {
     getDeptAll()
     setForm({
       'SR0004001': userName, 'SR0004003': moment(new Date).format("YYYY-MM-DD HH:mm"),
-      'SR0004011': 15, 'SR0004013': 9, 'SR0004015': 24, 'SR0004017': 24, 'SR0004019': 8, 'SR0004021': 20
+      'SR0004011': 15, 'SR0004013': 10, 'SR0004015': 25, 'SR0004017': 20, 'SR0004019': 5, 'SR0004021': 10, 'SR0004029': 15, 'SR0004022': 100
     })
   }, [])
 
@@ -448,12 +448,12 @@ export default observer((props: Props) => {
                 <tr>
                   <td>护理单元(15分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、护士坚守岗位，无自行换班情况。</p>
-                    <p>2、护士着装整洁、佩戴胸牌、头花、服务热情。</p>
-                    <p>3、病房地面、盥洗间及卫生间清洁，无垃圾。</p>
-                    <p>4、治疗室、办公室、处置室整洁，物品放置规范。</p>
-                    <p>5、饮水机、微波炉等清洁、无污垢。 </p>
-                    <p>6、规范使用氧气瓶，标识完整</p>
+                    <p>1、护士坚守岗位，无自行换班情况（3）。</p>
+                    <p>2、护士着装整洁、佩戴胸牌、头花、服务热情（3）。</p>
+                    <p>3、病房地面、盥洗间及卫生间清洁，无垃圾（3）。</p>
+                    <p>4、治疗室、办公室、处置室整洁，物品放置规范（3）。</p>
+                    <p>5、饮水机、微波炉等清洁、无污垢（1）。 </p>
+                    <p>6、规范使用氧气瓶，标识完整（2）。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -482,12 +482,12 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>危重、一及术后患者护理(9分)</td>
+                  <td>危重、一及术后患者护理(10分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、床单位整洁。</p>
-                    <p>2、患者三短六洁	。</p>
-                    <p>3、导管护理符合规范	。</p>
-                    <p>4、跌倒、压疮、VTE预防及护理符合规范，翻身卡按要求填写。</p>
+                    <p>1、床单位整洁（2）。</p>
+                    <p>2、患者三短六洁（2）。</p>
+                    <p>3、导管护理符合规范（3）。</p>
+                    <p>4、跌倒、压疮、VTE预防及护理符合规范，翻身卡按要求填写（3）。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -506,7 +506,7 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004013': e.target.value })
                       }
                     /> */}
-                    <InputNumber value={form.SR0004013} min={0} max={9} step={0.1}
+                    <InputNumber value={form.SR0004013} min={0} max={10} step={0.1}
                       onChange={(value) => {
                         form.SR0004013 = value
                         setFormItem({ 'SR0004013': value })
@@ -516,14 +516,14 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>护士操作(24分)</td>
+                  <td>护士操作(25分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、随机查看护士是否按规范操作。</p>
-                    <p>2、操作过程中严格执行手卫生。</p>
-                    <p>3、有无实习护生单独操作	。</p>
-                    <p>4、按要求使用PDA。</p>
-                    <p>5、查看病人输液有无渗漏。 </p>
-                    <p>6、询问病人护士有无及时巡视。</p>
+                    <p>1、随机查看护士是否按规范操作（4）。</p>
+                    <p>2、操作过程中严格执行手卫生（4）。</p>
+                    <p>3、有无实习护生单独操作（4）。</p>
+                    <p>4、按要求使用PDA（4）。</p>
+                    <p>5、查看病人输液有无渗漏（4）。 </p>
+                    <p>6、询问病人护士有无及时巡视（5）。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -542,7 +542,7 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004015': e.target.value })
                       }
                     /> */}
-                    <InputNumber value={form.SR0004015} min={0} max={24} step={0.1}
+                    <InputNumber value={form.SR0004015} min={0} max={25} step={0.1}
                       onChange={(value) => {
                         form.SR0004015 = value
                         setFormItem({ 'SR0004015': value })
@@ -551,14 +551,14 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>医院感染(24分)</td>
+                  <td>医院感染(20分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、医疗垃圾、生活垃圾分类放置，记录正确有签名，大垃圾桶上锁。</p>
-                    <p>2、液体标明开启日期、时间及用途	。</p>
-                    <p>3、一次性物品开启后注明日期、时间及开启人姓名。</p>
-                    <p>4、治疗车清洁，清洁物品和污染物品分开放置。</p>
-                    <p>5、多重耐药菌管理规范。 </p>
-                    <p>6、消毒隔离工作落实到位（如：瓶装碘伏开启后密闭保存，有效期≤30天；溶媒有效期≤24h，静脉用药有效期≤2h；湿化瓶定期更换）。</p>
+                    <p>1、医疗垃圾、生活垃圾分类放置，记录正确有签名，大垃圾桶上锁（3）。</p>
+                    <p>2、液体标明开启日期、时间及用途（3）。</p>
+                    <p>3、一次性物品开启后注明日期、时间及开启人姓名（3）。</p>
+                    <p>4、治疗车清洁，清洁物品和污染物品分开放置（4）。</p>
+                    <p>5、多重耐药菌管理规范（3）。 </p>
+                    <p>6、消毒隔离工作落实到位（如：瓶装碘伏开启后密闭保存，有效期≤30天；溶媒有效期≤24h，静脉用药有效期≤2h；湿化瓶定期更换）（4）。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -577,7 +577,7 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004017': e.target.value })
                       }
                     /> */}
-                    <InputNumber value={form.SR0004017} min={0} max={24} step={0.1}
+                    <InputNumber value={form.SR0004017} min={0} max={20} step={0.1}
                       onChange={(value) => {
                         form.SR0004017 = value
                         setFormItem({ 'SR0004017': value })
@@ -587,10 +587,10 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>急救药品、物品(8分)</td>
+                  <td>急救药品、物品(5分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、抢救车、抢救仪器完好，处于备用状态。</p>
-                    <p>2、抢救药品、物品登记本填写规范。</p>
+                    <p>1、抢救车、抢救仪器完好，处于备用状态（3）。</p>
+                    <p>2、抢救药品、物品登记本填写规范（2）。</p>
                   </td>
                   <td>
                     <Input.TextArea
@@ -609,7 +609,7 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004019': e.target.value })
                       }
                     /> */}
-                    <InputNumber value={form.SR0004019} min={0} max={8} step={0.1}
+                    <InputNumber value={form.SR0004019} min={0} max={5} step={0.1}
                       onChange={(value) => {
                         form.SR0004019 = value
                         setFormItem({ 'SR0004019': value })
@@ -619,14 +619,14 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>药品管理(20分)</td>
+                  <td>药品管理(10分)</td>
                   <td colSpan={3} className='text-left'>
-                    <p>1、高危药品单独放置。</p>
-                    <p>2、药品标签清楚、无过期、变质、裸放、混放等。</p>
-                    <p>3、内服、外用药分开放置。</p>
-                    <p>4、冰箱内无药物混放。</p>
-                    <p>5、药物使用符合规范（避光、冷藏等）。</p>
-                    <p>6、规范使用氧气瓶，标识完整</p>
+                    <p>1、高危药品单独放置（2）。</p>
+                    <p>2、药品标签清楚、无过期、变质、裸放、混放等（4）。</p>
+                    <p>3、内服、外用药分开放置（2）。</p>
+                    <p>4、冰箱内无药物混放（1）。</p>
+                    <p>5、药物使用符合规范（避光、冷藏等）（1）。</p>
+                    {/* <p>6、规范使用氧气瓶，标识完整</p> */}
                   </td>
                   <td>
                     <Input.TextArea
@@ -645,10 +645,47 @@ export default observer((props: Props) => {
                         setFormItem({ 'SR0004021': e.target.value })
                       }
                     /> */}
-                    <InputNumber value={form.SR0004021} min={0} max={20} step={0.1}
+                    <InputNumber value={form.SR0004021} min={0} max={10} step={0.1}
                       onChange={(value) => {
                         form.SR0004021 = value
                         setFormItem({ 'SR0004021': value })
+                      }
+                      }
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>新冠疫情防控(15分)</td>
+                  <td colSpan={3} className='text-left'>
+                    <p>1、所有住院患者落实核酸检测结果阴性方可办理入院手续（1分）。</p>
+                    <p>2、各病区规范填写患者及陪护核酸检测信息登记本（2分）。</p>
+                    <p>3、所有患者入院时必须签署《贵州省人民医院新冠疫情防控期间住院患者陪护人员责任书》（1分）、《责州省人民医院新冠疫情防控期间住院患者陪护人员情况登记表》（1分）。</p>
+                    <p>4、告知患者及家属疫情防控的重要性，患者（病区允许）及陪护人员带好口罩（2分）。</p>
+                    <p>5、疫情防控标识清晰（2分）。</p>
+                    <p>6、各病房安排人员守门，确保无外来人员随意出入（2分），规范填写来访人员登记本（2分）。</p>
+                    <p>7、各病区设置有专门的过渡病房（2分）。</p>
+                  </td>
+                  <td>
+                    <Input.TextArea
+                      value={form.SR0004028}
+                      rows={6}
+                      onChange={(e) =>
+                        setFormItem({ 'SR0004028': e.target.value })
+                      }
+                    />
+                  </td>
+                  <td>
+                    {/* <Input.TextArea
+                      value={form.SR0004021}
+                      rows={6}
+                      onChange={(e) =>
+                        setFormItem({ 'SR0004021': e.target.value })
+                      }
+                    /> */}
+                    <InputNumber value={form.SR0004029} min={0} max={15} step={0.1}
+                      onChange={(value) => {
+                        form.SR0004029 = value
+                        setFormItem({ 'SR0004029': value })
                       }
                       }
                     />

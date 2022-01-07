@@ -6,6 +6,7 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import { empManageService } from "./../views/empDetail/api/EmpManageService"
 import moment from 'moment'
 import { message } from 'antd/es'
+import { authStore } from "src/stores";
 
 export interface Props extends ModalComponentProps {
   okCallback?: Function
@@ -31,17 +32,22 @@ export default function RuleInstsEditModal(props: Props) {
   }
 
   const handleSave = () => {
-    setLoading(true)
-    empManageService
-      .saveOrUpdateRuleInsts({
-        year,
-        instDtoList: tableData
-      })
-      .then(res => {
-        message.success('修改成功')
-        setLoading(false)
-        okCallback && okCallback()
-      }, () => setLoading(false))
+    if (authStore.isDepartment) {
+      setLoading(true)
+      empManageService
+        .saveOrUpdateRuleInsts({
+          year,
+          instDtoList: tableData
+        })
+        .then(res => {
+          message.success('修改成功')
+          setLoading(false)
+          okCallback && okCallback()
+        }, () => setLoading(false))
+    } else {
+      message.warning('您没有权限编辑')
+    }
+    
   }
 
   useEffect(() => {
