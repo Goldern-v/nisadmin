@@ -83,8 +83,8 @@ export default function SelectModal(props: Props) {
   }, [])
   return (
     <Wrapper>
-      {(menuType == "Menus" || (!!renderList.length && menuType == "select")) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
-        {menuType == "select" && renderList.map((item: String, index: any) =>
+      {(menuType == "Menus" || (!!renderList.length && menuType.includes("select"))) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+        {menuType.includes("select") && renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
         </div>)}
         {menuType == "Menus" && menus.map((menu: any, index: any) =>
