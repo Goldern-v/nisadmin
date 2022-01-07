@@ -55,9 +55,12 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护理科研", name: "护理科研" },
     ],
     conclusionJM2: [
-      { value: "病区年度工作总结", name: "病区年度工作总结" },
-      { value: "病区半年工作总结", name: "病区半年工作总结" }, 
-      { value: "病区月工作总结", name: "病区月工作总结" },
+      { value: "护理病历讨论登记", name: "护理病历讨论登记" },
+      { value: "护理病历讨论记录", name: "护理病历讨论记录" },
+      { value: "护理查房", name: "护理查房" }, 
+      { value: "护理会诊", name: "护理会诊" },
+      { value: "护患沟通记录", name: "护患沟通记录" },
+      { value: "晨会提问记录", name: "晨会提问记录" },
     ],
   }
 
