@@ -5,6 +5,7 @@ import { tick } from "../function/click" //自定义点击事件
  * leftWidth 左侧格子宽度 rightWidth 右侧格子宽度 
  * astChild: true 行内最后一个元素配置
  * preIndex :当前行独占一行时,此字段为上一行的配置项个数
+ * leftStyle\rightStyle 左右两侧样式
  */
 const complexHead: any = {
   boxWidth: 700,
