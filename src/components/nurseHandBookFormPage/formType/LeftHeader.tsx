@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import menuOperation from '../function/menuOperation';
-import SelectModal from '../selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
 
 export interface Props {

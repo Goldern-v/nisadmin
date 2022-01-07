@@ -106,16 +106,16 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: "工作情况登记"
   },
-  {
-    type: "nurseJuniorSpecialFile",
-    component: NurseJuniorSpecialFile,
-    name: "专科护士"
-  },
-  {
-    type: "onEducation",
-    component: OnEducation,
-    name: "外出进修"
-  },
+  // {
+  //   type: "nurseJuniorSpecialFile",
+  //   component: NurseJuniorSpecialFile,
+  //   name: "专科护士"
+  // },
+  // {
+  //   type: "onEducation",
+  //   component: OnEducation,
+  //   name: "外出进修"
+  // },
   // 学习培训的个人详情模块
   ...studyAndTrainingTypeList.map((name: string) => ({
     type: name,

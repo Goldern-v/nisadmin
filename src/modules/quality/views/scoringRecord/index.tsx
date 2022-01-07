@@ -18,7 +18,7 @@ export default observer((props: Props) => {
   const [tableLoading, setTableLoading] = useState(false)
   const [tableData, setTableData] = useState([])
   const defaultForm = {
-    wardCode: undefined,
+    wardCode: authStore.selectedDeptCode,
     status: undefined,
     beginDate: undefined,
     endDate: undefined,
@@ -222,7 +222,6 @@ export default observer((props: Props) => {
     }
   }
   const onCheckboxChange = (e: { target: { checked: any; }; }) => {
-    console.log(form, e.target.checked)
     setTableLoading(true)
     if (e.target.checked) {
       const data = {

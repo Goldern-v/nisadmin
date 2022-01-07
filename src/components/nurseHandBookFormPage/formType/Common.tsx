@@ -7,6 +7,8 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 export interface Props {
   bodyModal: any
   setBodyModal: Function
+  menuType: any
+  setMenuType: Function
   visible: any
   setVisible: Function
   computeRow: any
@@ -20,13 +22,12 @@ export interface Props {
 }
 export default function Common(props: Props) {
   const { queryObj } = appStore
-  const { bodyModal, setBodyModal, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
+  const { bodyModal, setBodyModal, menuType, setMenuType, visible, setVisible, masterInfo, computeRow, setComputeRow, isPrint, bodyIdx, templeVisible, copyRow, setCopyRow } = props
   const { tBody } = masterInfo
   const [selectIndex, setSelectIndex] = useState(-1)
   const [domReact, setDomReact]: any = useState({})
   const [colIdx, setColIdx]: any = useState(-1)
   const [selectList, setSelectList]: any = useState([])
-  const [menuType, setMenuType] = useState('select')
   const [operationType, setOperationType]: any = useState("")
   // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
@@ -62,7 +63,9 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any ) => {
     if(queryObj.audit) return
-    setMenuType("select")
+    if (col.select){
+      setMenuType("select")
+    }
     col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])
     // col.click && setBodyModal(JSON.parse(JSON.stringify(bodyModal)))
@@ -198,9 +201,9 @@ export default function Common(props: Props) {
 const Wrapper = styled.div`
 .common {
   border: 1px solid #000;
-  font-size: 16px;
+  font-size: 13px;
   min-height: 35px;
-  padding-left: 5px;
+  padding-left: 2px;
   text-align: center;
   outline: none;
   margin-right:-1px; 

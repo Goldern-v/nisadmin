@@ -11,6 +11,7 @@ import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
 import { delWithResData } from '../../utils/dealWithData'
+import { setResData } from './dealWithData'
 import moment from 'src/vendors/moment'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 const RangePicker = DatePicker.RangePicker
@@ -24,28 +25,32 @@ export default observer(function FeverPatient() {
 
   let _currentYear = currentYear()
   // const { deptList } = authStore
-  const [query, setQuery] = useState({
-    deptCode: '',
+  interface IQuery {
+    startDate: string;
+    endDate: string;
+  }
+  const [query, setQuery] = useState<IQuery>({
+    // deptCode: '',
     startDate: _currentMonth[0].format('YYYY-MM-DD'),
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
   const [data, setData] = useState([] as any[])
-  const [chartData, setChartData] = useState([] as { type: string, value: number }[])
+  const [chartData, setChartData] = useState([] as any[])
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
   const [chartVisible, setChartVisible] = useState(false)
   const [chartWithDate, setDateBtnVisible] = useState('year')
 
   const [loading, setLoading] = useState(false)
 
-  const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
+  // const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
   
   // 表头数据类型
   interface IHeaderType {
     title: string;
     width: number;
     align: string;
-    render: (val: any, record: any, idx: number) => number;
-    dataIndex?: undefined;
+    render?: (val: any, record: any, idx: number) => number;
+    dataIndex: string;
   }
   const columns: ColumnProps<IHeaderType>[] = [
     {
@@ -53,62 +58,34 @@ export default observer(function FeverPatient() {
       width: 140,
       dataIndex: 'wardName',
       align: 'center',
-      // render: (val: any, record: any, idx: number) => idx + 1
     },
     {
       title: '手术三天',
       width: 90,
-      dataIndex: 'operation',
+      dataIndex: 'shoushu',
       align: 'center',
     },
     {
       title: '入院三天',
       width: 90,
-      dataIndex: 'hospitalized',
+      dataIndex: 'ruyuan',
       align: 'center',
     },
     {
       title: '入院三天内术后',
       width: 90,
-      dataIndex: 'postoperative',
+      dataIndex: 'ruyuanshoushu',
       align: 'center',
     },
     {
       title: '其他',
       width: 90,
-      dataIndex: 'other',
+      dataIndex: 'qita',
       align: 'center',
     },
   ]
-  interface ITableData {
-    key: number;
-    wardName: string;
-    operation: number;
-    hospitalized: number;
-    postoperative: number;
-    other: number;
-  }
-  const tableData: ITableData[] = [
-    {
-      key: 1,
-      wardName: '妇科护理单元',
-      operation: 2,
-      hospitalized: 2,
-      postoperative: 2,
-      other: 3,
-      
-    },
-    {
-      key: 2,
-      wardName: '产科护理单元',
-      operation: 2,
-      hospitalized: 2,
-      postoperative: 2,
-      other: 3,
-    },
-  ];
 
-  const expandedRowRender = () => {
+  const expandedRowRender = (record: any): JSX.Element => {
     const columnsTwo: ColumnProps<IHeaderType>[] = [
       { title: '', dataIndex: '', key: 'empty', width: 140, align: 'center' },
       { title: '姓名-床号', dataIndex: 'patientNameOne', key: 'patientNameOne', width: 90, align: 'center'},
@@ -116,17 +93,7 @@ export default observer(function FeverPatient() {
       { title: 'Name', dataIndex: 'patientNameThree', key: 'patientNameThree', width: 90, align: 'center' },
       { title: 'Name', dataIndex: 'patientNameFour', key: 'patientNameFour', width: 90, align: 'center' },
     ];
-
-    const data = [];
-    for (let i = 0; i < 3; ++i) {
-      data.push({
-        key: i + 'name',
-        patientNameOne: '哈哈哈 13床',
-        patientNameTwo: '嘻嘻嘻 12床',
-        patientNameThree: '呵呵呵 9床',
-        patientNameFour: '喵喵喵 1床',
-      });
-    }
+    
     return <BaseTable 
             className='subTable'
             scroll={{y: false}}
@@ -134,34 +101,21 @@ export default observer(function FeverPatient() {
             bordered={false} 
             showHeader={false} 
             columns={columnsTwo} 
-            dataSource={data} 
+            dataSource={record.option} 
             pagination={false} 
           />
   };
   const handleSearch = () => getData()
 
-  const getData = () => {
+  const getData = async () => {
     setLoading(true)
-
-    statisticsApi.countSex(query)
-      .then((res: any) => {
-        setLoading(false)
-
-        let dataList = res.data
-        if (dataList) {
-          const {
-            newExtraColumns,
-            newChartData,
-            newData,
-          } = delWithResData({
-            dataList
-          })
-
-          setExtraColumns(newExtraColumns)
-          setChartData(newChartData)
-          setData(newData)
-        }
-      }, () => setLoading(false))
+    const result = await statisticsApi.countFeverPatient(query)
+    let resultData = result.data
+    const rData = setResData(resultData)
+    setData(rData.tableData)
+    setChartData(rData.chartData)
+    // console.log('rData', rData)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -177,7 +131,6 @@ export default observer(function FeverPatient() {
       window.removeEventListener('resize', resizeCallBack)
     }
   }, [])
-
   return <Con> 
     <CommonLayout
     header={<div>
@@ -212,8 +165,9 @@ export default observer(function FeverPatient() {
         <Radio.Button value={'day'}>日</Radio.Button>
       </Radio.Group>}
     </div>}
-    body={<Spin spinning={loading}>
-      <div className="main-title">多种类型发热患者人数统计'</div>
+    body={
+    <Spin spinning={loading}>
+      <div className="main-title">多种类型发热患者人数统计</div>
       <div className="right-group">
         <Radio.Group
           size="small"
@@ -237,21 +191,32 @@ export default observer(function FeverPatient() {
         surplusHeight={300}
         columns={columns}
         expandedRowRender={expandedRowRender}
-        dataSource={tableData} />}
+        dataSource={data} />}
       {chartVisible && 
         <ChartCon style={{ height: `${chartHeight || 0}px` }}>
-          {chartData.length > 0 && <CircleChart
-            chartHeight={chartHeight}
-            sourceData={chartData} />}
-          {chartData.length <= 0 && <div className="no-data">
-            <img
-              style={{ width: '100px' }}
-              src={require('src/modules/statistic/img/noData.png')} />
-            <br />
-            <span>暂无数据</span>
-          </div>}
-          <LineChart ></LineChart>
-        </ChartCon>}
+          {chartData.length > 0 && 
+            <div>
+              <CircleChart
+                chartHeight={chartHeight}
+                sourceData={chartData} 
+              />
+              <LineChart 
+                chartHeight={chartHeight}
+                sourceData={chartData} 
+              ></LineChart>
+            </div>
+          }
+          {chartData.length <= 0 && 
+            <div className="no-data">
+              <img
+                style={{ width: '100px' }}
+                src={require('src/modules/statistic/img/noData.png')} />
+              <br />
+              <span>暂无数据</span>
+            </div>
+          }
+        </ChartCon>
+      }
     </Spin>} />
   </Con> 
 })

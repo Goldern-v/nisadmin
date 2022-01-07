@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Icon } from "antd"
+import { DatePicker, Icon } from 'antd';
+import moment from 'moment'
+
 export interface Props {
   domReact: any
   col: any
@@ -10,7 +12,7 @@ export interface Props {
   setOperationType: Function
 }
 export default function SelectModal(props: Props) {
-  const { domReact, col, refresh, selectList, menuType, setOperationType } = props
+  const { domReact, col, refresh, selectList, menuType, setOperationType, } = props
   const [selectTop, setSelectTop]: any = useState()
   const [selectLeft, setSelectLeft]: any = useState()
   const [renderList, setRenderList]: any = useState([])
@@ -67,6 +69,7 @@ export default function SelectModal(props: Props) {
   const menuOperation = (code: any) => {
     setOperationType(code)
   }
+
   useEffect(() => {
     open()
     return () => {
@@ -75,10 +78,10 @@ export default function SelectModal(props: Props) {
   }, [])
   return (
     <Wrapper>
-      {(menuType == "Menus" || (!!renderList.length && menuType == "select")) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
-        {menuType == "select" && renderList.map((item: String, index: any) =>
+      {(menuType == "Menus" || (!!renderList.length && menuType.includes("select"))) && <div className="selectBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+        {menuType.includes("select") && renderList.map((item: String, index: any) =>
           <div className="selectOption" onClick={() => selectOptionClick(item)} key={index}>{item}
-          </div>)}
+        </div>)}
         {menuType == "Menus" && menus.map((menu: any, index: any) =>
           <div
             className="selectOption"
@@ -97,8 +100,8 @@ export default function SelectModal(props: Props) {
 const Wrapper = styled.div`
   .selectBody{
     position: fixed;
-    width: 250px;
-    height: 300px;
+    width: 200px;
+    height: 260px;
     background-color: #fff;
     /* border: 1px solid #000; */
     box-shadow:5px 5px 5px rgba(233, 233, 234);

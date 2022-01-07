@@ -22,7 +22,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const iframeRef = React.useRef<any>()
 
   const [auditModalVisible, setAuditModalVisible] = useState(false)
-
+  const [statusName,setStatusName] = useState<string>('')
   const [detailData, setDetailData] = useState({
     master: {},
     itemDataMap: {},
@@ -40,7 +40,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     [p: string]: any
   })
 
-  const { master, handlenodeDto } = detailData
+  const { master, handlenodeDto,auditDetails } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
 
@@ -132,13 +132,19 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       api.getBadEventMaster(eventId)
         .then((res) => {
           if (res.data) {
-            let { master, itemDataMap, handlenodeDto, commit } = res.data
+            let { master, itemDataMap, handlenodeDto, commit, auditDetails } = res.data;
             setDetailData({
               master,
               itemDataMap,
               handlenodeDto,
-              commit
+              commit,
+              auditDetails
             })
+            if (['lcey'].includes(appStore.HOSPITAL_ID)) {
+              let steps = streamNode(auditDetails)
+              let item :any = [...steps].reverse().find((data)=>data.status=='success') || {title:""}
+              setStatusName(item.title)
+            }
           }
 
           setTimeset(new Date().getTime())
@@ -163,7 +169,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (!authStore.user) return ''
     if (Object.keys(stepNext).length <= 0) return ''
     if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
-
+    if(['lcey'].includes(appStore.HOSPITAL_ID)) return ''
     let btnText = stepNext.nodeName
 
     if (stepNext?.canHandle) btnDisable = false
@@ -178,7 +184,83 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       </Button>
     )
   }
+  const streamNode = (auditDetails: any) => {
+    auditDetails = auditDetails || {}
+    let steps = [
+      {
+        title: "保存",
+        status: "success",
+        date: "",
+        name:""
+      },
+      {
+        title: "上报",
+        name:auditDetails.sbr,
+        date:"",
+        status: auditDetails.sbstatus == "已上报" ? "success" : "wait"
+      },
+      {
+        title: "质控科分派",
+        name: auditDetails.fpr,
+        date:"",
+        status: auditDetails.fpstatus == "已分派" ? "success" : "wait"
+      },
+      {
+        title: "职能部门审核",
+        name:auditDetails.znbmshr,
+        date:auditDetails.znbmshsj,
+        status: auditDetails.znbmshstatus == "审核通过" ? "success" : "wait"
+      },
+      {
+        title: "职能部门结案",
+        name: auditDetails.jar,
+        date:auditDetails.jasj,
+        status: auditDetails.jastatus == "已结案" ? "success" : "wait"
+      },
+      {
+        title: "质控科结案",
+        name: auditDetails.zkzxshr,
+        date:auditDetails.zkzxshsj,
+        status: auditDetails.zkzxshstatus == "审核通过" ? "success" : "wait"
+      },
+      {
+        title: "完成",
+        name:"",
+        date:auditDetails.zkzxshsj,
+        status: auditDetails.zkzxshstatus == "审核通过" ? "success" : "wait"
+      }
+    ]
+    return steps
+  }
+  const stepRender = () => {
+    let auditDetails = detailData.auditDetails || {}
+    let steps = streamNode(auditDetails)
+    return  <Steps direction='vertical' size='small' current={0} className='status-line-content'>
+    {steps.map((item:any, idx: number) => {
+      let icon: any
 
+      if (item.status == 'success')  {
+        icon = <Icon type='check-circle' className='icon-step success' />
+      } else {
+        icon = <Icon type='minus-circle' className='icon-step default' />
+      }
+      return (
+        <Step
+          title={''}
+          icon={icon}
+          description={<div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 'bold' }}>{item.title}</div>
+              <span>{item.name}</span>
+              <br />
+              <span>{item.date}</span>
+            </div>
+          </div>}
+          key={idx} />
+      )
+    })}
+  </Steps>
+  }
   // const handleSave = () => {
   //   let iframeEl = iframeRef.current
   //   if (iframeEl) {
@@ -238,12 +320,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             打印
           </Button> */}
         </div>
-        <div className='status'>状态：{stepCurrent?.nodeName}</div>
+        <div className='status'>状态：{appStore.HOSPITAL_ID != 'lcey' ? stepCurrent?.nodeName : statusName}</div>
       </div>
       <div className='main-contain'>
         <div className='status-line'>
           <div className='right-pannel-title'>事件轨迹:</div>
-          <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
+          {appStore.HOSPITAL_ID != 'lcey' ? <Steps direction='vertical' size='small' current={handlenodeDto.indexOf(stepCurrent)} className='status-line-content'>
             {handlenodeDto.map((item, idx: number) => {
               let icon: any
 
@@ -272,13 +354,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                           <span>{item.handleContent}</span>
                         </div>
                       )}
-                      {/* {item.expand} */}
                     </div>
                   </div>}
                   key={idx} />
               )
             })}
-          </Steps>
+          </Steps> : stepRender()}
         </div>
         <div className='event-detail'>
           <iframe

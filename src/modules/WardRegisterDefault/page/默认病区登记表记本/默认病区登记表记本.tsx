@@ -442,7 +442,35 @@ export default observer(function 敏感指标登记本(props: Props) {
   //   return ''
   // }
 
+  //是否显示护理单元
+  const isShowWardCode = ():boolean =>{
+    // && ["gzsrm"].includes(appStore.HOSPITAL_ID)
+    // console.log(authStore.deptList)
+    // console.log(authStore.selectedDeptCode)
+    if (registerName==="新生儿科空气消毒登记本") return  true;
+    return false;
+  }
+  //registerName
+
   const columns: ColumnProps<any>[] | any = [
+    ...appStore.hisMatch({
+      map: { 
+        gzsrm:[
+          isShowWardCode() && {
+            title: "护理单元",
+            dataIndex: "wardCode",
+            align: "center",
+            className: "input-cell",
+            width: 100,
+            render(text: string, record: any, index: number) {
+              return <>{(authStore.deptList?.find(item=> item?.code==authStore.selectedDeptCode))?.name}</>
+              //return <>{(authStore.deptList?.find(item=> item?.code==authStore.defaultDeptCode))?.name}</>
+            }
+          },
+        ],
+        other: []
+      }
+    }),
     ...!config.hiddenDate ? [{
       title: "日期",
       dataIndex: "recordDate",

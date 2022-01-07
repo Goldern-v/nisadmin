@@ -1,29 +1,23 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import menuOperation from '../function/menuOperation';
-import SelectModal from '../selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
+import SelectModal from '../selectModal/SelectModal'
 
 export interface Props {
   masterInfo: any 
   complexHeadList: any
   setComplexHeadList: Function
-  complexHeaderContent:any
+  complexHeaderContent: any
+  complexSelectVisible: Boolean
+  setComplexSelectVisible: Function
+  setMenuType: Function
+  menuType: String
 }
 export default function ComplexHeader(props: Props) {
   const { queryObj } = appStore
-  const { masterInfo, setComplexHeadList, complexHeadList,complexHeaderContent } = props
-  const { tBody } = masterInfo
-  const [selectIndex, setSelectIndex] = useState(-1)
+  const { masterInfo, setComplexHeadList, complexHeadList, complexHeaderContent, complexSelectVisible, setComplexSelectVisible, setMenuType, menuType } = props
   const [domReact, setDomReact]: any = useState({})
-  const [colIdx, setColIdx]: any = useState(-1)
-  const [selectList, setSelectList]: any = useState([])
-  const [menuType, setMenuType] = useState('select')
-  // const [visible, setVisible]: any = useState(false)
-  const [operationType, setOperationType]: any = useState("")
-  const [copyRow, setCopyRow] = useState({})
-  let selectRow: any = {}
-
+  const [selectCell, setSelectCell]: any = useState({})
   const changeValue = (e: any, item: any) => {
     item.value = e.currentTarget.innerText
     scheduleStore.setIsSave(true)
@@ -36,11 +30,26 @@ export default function ComplexHeader(props: Props) {
   }
   const getWidth=(item:any,idx:any)=>{
     if(item.lastChild){
-      return item.rightWidth-1
+      return item.rightWidth + 1
     }else if(item.preIndex){
-      return item.rightWidth - (item.preIndex * 2 - 1)
+      return item.rightWidth + 1
     }else{
-      return item.rightWidth
+      return item.rightWidth + 2
+    }
+  }
+
+  const refresh = () => {
+    setComplexHeadList([...complexHeadList])
+  }
+
+  const handelerClick = (e:any,item:any,index:any)=>{
+    if(queryObj.audit) return
+    if(item.select){
+      setMenuType('complex-select')
+      let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
+      setDomReact(domReact)//给下拉弹框传定位
+      setSelectCell(item)
+      setComplexSelectVisible(true)
     }
   }
   useEffect(() => {
@@ -55,27 +64,30 @@ export default function ComplexHeader(props: Props) {
   },[complexHeaderContent])
   return (
     <Wrapper>
-        <div style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth-(masterInfo.tBody[0].length-1) -1}px`}}>
+        <div className='complex' style={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', width: `${masterInfo.complexHead.boxWidth-(masterInfo.tBody[0].length-1) -1}px`}}>
           {complexHeadList.map((item: any, Idx: any) =>{
             return (
               <div style={{ display: 'flex', justifyContent: 'center'}} key={`${Idx}`}>
                 <div 
-                  className="complexHeader" 
+                  className="complexHeaderLeft" 
                   key={`left_${Idx}`}
                   style={{
                     width:`${item.leftWidth}px`,
-                    'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
-                    'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                    ...item.leftStyle,
+                    'WebkitBoxPack': (item.leftStyle && item.leftStyle.textAlign) ? lcr[item.leftStyle.textAlign] : 'center',
+                    'boxPack': (item.leftStyle && item.leftStyle.textAlign) ? lcr[item.leftStyle.textAlign] : 'center',
                   }}
                 >{item.name}</div>
                 <div 
-                  className="complexHeader" 
+                  className="complexHeaderRight" 
                   key={`right_${Idx}`}
                   style={{
                     width:`${getWidth(item,Idx)}px`,
-                    'WebkitBoxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
-                    'boxPack': (item.style && item.style.textAlign) ? lcr[item.style.textAlign] : 'center',
+                    ...item.rightStyle,
+                    'WebkitBoxPack': (item.rightStyle && item.rightStyle.textAlign) ? lcr[item.rightStyle.textAlign] : 'center',
+                    'boxPack': (item.rightStyle && item.rightStyle.textAlign) ? lcr[item.rightStyle.textAlign] : 'center',
                   }}
+                  onClick={(e)=>handelerClick(e,item,Idx)}
                   suppressContentEditableWarning
                   contentEditable={queryObj.audit ? false : true}
                   onInput={(e) => changeValue(e, item)}
@@ -83,15 +95,39 @@ export default function ComplexHeader(props: Props) {
               </div>
             )
           })}
+          {complexSelectVisible && <SelectModal
+            menuType={menuType}
+            domReact={domReact}
+            refresh={refresh}
+            col={selectCell}
+            selectList={selectCell.select}
+            setOperationType={()=>{}}
+          ></SelectModal>}
         </div>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-.complexHeader {
+.complexHeaderLeft {
   border: 1px solid #000;
   font-size: 16px;
+  padding-left: 0px;
+  min-height: 35px;
+  text-align: center;
+  outline: none;
+  margin-right:-1px; 
+  margin-bottom:-1px;
+  display: -webkit-box;
+  display: box;
+  -webkit-box-align: center; 
+  box-align: center;
+  word-break: break-all;
+}
+.complexHeaderRight {
+  border: 1px solid #000;
+  font-size: 16px;
+  padding-left: 5px;
   min-height: 35px;
   text-align: center;
   outline: none;
