@@ -68,17 +68,8 @@ export default function NurseHandBookFormPage(props: Props) {
     let targetClass = [...e.target.classList]
     console.log(targetClass);
     
-    if (menuType=="timePicker" && (targetClass.includes("NurseHandBookFormPage__Wrapper-sc-1ghmsca-0")||targetClass.includes("jYNgxB")||targetClass.includes("page"))) {
+    if (!targetClass.includes("common")) {
       setVisible(templeVisible)
-    }
-    if (menuType=="complex-select" && (!targetClass.includes("selectOption")||!targetClass.includes("selectBody"))){
-      setComplexSelectVisible(false)
-    }
-    if(menuType!="timePicker" && !targetClass.includes("common")) {
-      setVisible(templeVisible)
-    }
-    if(!targetClass.includes("complexHeader")){
-      setComplexSelectVisible(false)
     }
   }
   useEffect(() => {
