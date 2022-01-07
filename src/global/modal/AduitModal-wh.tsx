@@ -188,6 +188,7 @@ export default function AduitModal(props: Props) {
       onCancel()
     })
   }
+  console.log(tableData, 112)
   return (
     <Modal
       title={title}

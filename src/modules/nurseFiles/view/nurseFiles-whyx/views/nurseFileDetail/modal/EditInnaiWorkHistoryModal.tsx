@@ -53,13 +53,16 @@ export default function EditWorkHistoryModal(props: Props) {
     }
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-
+    // todo
     nurseFilesService.commonSaveOrUpdate('nurseWHWorkExperience', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
+  }
+  const onChange = (val: any) => {
+    console.log(val)
   }
 
   useLayoutEffect(() => {
@@ -77,11 +80,13 @@ export default function EditWorkHistoryModal(props: Props) {
       // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
-      setTitle('修改工作经历')
+      setTitle('修改院内工作经历')
     } else if (signShow === '添加') {
-      setTitle('添加工作经历')
+      setTitle('添加院内工作经历')
     }
   }, [visible])
+
+  console.log(nurseFileDetailViewModal.getDict('全部科室'), 98)
 
   return (
     <Modal
@@ -107,16 +112,16 @@ export default function EditWorkHistoryModal(props: Props) {
           <Row gutter={12}>
             <Col span={15}>
               <Form.Field label={`时间`} name='startTime' required suffix='到'>
-                <DatePicker disabled />
+                <DatePicker />
               </Form.Field>
             </Col>
             <Col span={9}>
               <Form.Field name='endTime'>
-                <DatePicker disabled />
+                <DatePicker />
               </Form.Field>
             </Col>
           </Row>
-          {/* <div
+          <div
             style={{
               margin: '-10px 0px 10px 64px',
               color: 'rgba(0,0,0,0.45)',
@@ -127,16 +132,28 @@ export default function EditWorkHistoryModal(props: Props) {
             }}
           >
             *空则为至今
-          </div> */}
+          </div>
           <Col span={24}>
             <Form.Field label={`单位`} name='unit'>
-              <Input disabled />
+              <Input />
             </Form.Field>
           </Col>
           {/* todo */}
           <Col span={24}>
             <Form.Field label={`科室`} name='unit'>
-              <Input maxLength={25}/>
+              {/* <Input maxLength={25}/> */}
+              <Select
+                showSearch
+                optionFilterProp="children"
+                onChange={onChange}
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {nurseFileDetailViewModal.getDict('全部科室').map(item=> 
+                  <Option value={item.code}>{item.name}</Option>
+                )}
+            </Select>
             </Form.Field>
           </Col>
 

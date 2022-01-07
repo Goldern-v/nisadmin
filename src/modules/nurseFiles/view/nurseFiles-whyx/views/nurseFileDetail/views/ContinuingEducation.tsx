@@ -42,14 +42,13 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    {
-      title: '年份',
-      dataIndex: 'year',
-      key: 'year',
-      width: 90,
-      align: 'center'
-    },
-
+    // {
+    //   title: '年份',
+    //   dataIndex: 'year',
+    //   key: 'year',
+    //   width: 90,
+    //   align: 'center'
+    // },
     {
       title: '项目名称',
       dataIndex: 'projectName',
@@ -57,7 +56,22 @@ export default observer(function PersonWinning() {
       width: 210,
       align: 'center'
     },
-
+    // todo
+    {
+      title: '项目负责人',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 210,
+      align: 'center'
+    },
+    // todo
+    {
+      title: '举办起止时间',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 210,
+      align: 'center'
+    },
     {
       title: '课时数',
       dataIndex: 'courseHour',
@@ -111,7 +125,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='举办继续教育培训班' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='举办继续教育培训班' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

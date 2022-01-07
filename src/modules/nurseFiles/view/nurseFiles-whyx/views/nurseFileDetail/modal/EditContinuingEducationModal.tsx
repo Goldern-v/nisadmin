@@ -19,6 +19,8 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
 import { AutoComplete } from 'src/vendors/antd'
+const { RangePicker } = DatePicker;
+
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -61,8 +63,14 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.year && (value.year = value.year.format('YYYY'))
+    // value.year && (value.year = value.year.format('YYYY'))
     // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
+
+    // todo 处理时间
+    console.log(value.date, 88765)
+    value.date && (value.beginTime = value.date[0].format("YYYY-MM-DD"))
+    value.date && (value.endTime = value.date[1].format("YYYY-MM-DD"))
+
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHContinueStudy', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
@@ -78,7 +86,8 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        year: data.year ? moment(data.year) : null,
+        // year: data.year ? moment(data.year) : null,
+        date: data.date ? moment(data.date) : null,
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
@@ -118,11 +127,11 @@ export default function EditPersonWinningModal(props: Props) {
     >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`年份`} name='year'>
               <YearPicker />
             </Form.Field>
-          </Col>
+          </Col> */}
           {/* <Col span={24}>
             <Form.Field label={`继续教育项目负责人`} name='projectPerson'>
               <Input />
@@ -130,44 +139,56 @@ export default function EditPersonWinningModal(props: Props) {
           </Col> */}
           <Col span={24}>
             <Form.Field label={`项目名称`} name='projectName'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
+          {/* todo 新 */}
           <Col span={24}>
+            <Form.Field label={`项目负责人`} name='projectName'>
+              <Input maxLength={12} />
+            </Form.Field>
+          </Col>
+          {/* <Col span={24}>
             <Form.Field label={`项目号`} name='projectNumber'>
-              <Input />
+              <Input maxLength={12} />
+            </Form.Field>
+          </Col> */}
+          {/* todo 新 */}
+          <Col span={24}>
+            <Form.Field label={`举办起止时间`} name='date'>
+              <RangePicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`项目级别`} name='projectLevel'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
-          </Col>
+          </Col> */}
           <Col span={24}>
             <Form.Field label={`课时数`} name='courseHour'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`学员总数`} name='personTotal'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`学员分布区域`} name='schoolArea'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`学员职称分布`} name='personTitleArea'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`授予学分`} name='creditGranted'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('授予学分').map((item) => item.name)} />
             </Form.Field>
-          </Col>
+          </Col> */}
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />

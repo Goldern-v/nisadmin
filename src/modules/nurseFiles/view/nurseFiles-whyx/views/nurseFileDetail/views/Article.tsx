@@ -46,13 +46,6 @@ export default observer(function Awards() {
       width: 55
     },
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
-      width: 120,
-      align: 'center'
-    },
-    {
       title: '杂志名称',
       dataIndex: 'magazineName',
       key: 'magazineName',
@@ -67,21 +60,29 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
+      title: '期刊年月', // 原-发表年份
+      dataIndex: 'publicYear',
+      key: 'publicYear',
+      width: 120,
+      align: 'center'
+    },
+    {
       title: '作者',
       dataIndex: 'articleAuthor',
       key: 'articleAuthor',
       width: 80,
       align: 'center',
     },
+    // {
+    //   title: '期刊号',
+    //   dataIndex: 'periodicalNumber',
+    //   key: 'periodicalNumber',
+    //   width: 210,
+    //   align: 'center'
+    // },
+    // todo
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
-      width: 210,
-      align: 'center'
-    },
-    {
-      title: '卷号',
+      title: '卷期号',
       dataIndex: 'volumeNumber',
       key: 'volumeNumber',
       width: 200,
@@ -108,8 +109,49 @@ export default observer(function Awards() {
       width: 120,
       align: 'center'
     },
+    // {
+    //   title: '文章扫描件',
+    //   dataIndex: '文章扫描件',
+    //   key: '文章扫描件',
+    //   width: 80,
+    //   align: 'center',
+    //   render: (text: any, row: any, index: any) => {
+    //     return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+    //   }
+    // },
     {
-      title: '文章扫描件',
+      title: '封面扫描件',
+      dataIndex: '文章扫描件',
+      key: '文章扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        console.log(row.urlImageOne, 887)
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '目录扫描件',
+      dataIndex: '文章扫描件',
+      key: '文章扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '正文扫描件',
+      dataIndex: '文章扫描件',
+      key: '文章扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '封底扫描件',
       dataIndex: '文章扫描件',
       key: '文章扫描件',
       width: 80,

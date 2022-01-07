@@ -17,9 +17,11 @@ import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
-import YearPicker from 'src/components/YearPicker'
+// import YearPicker from 'src/components/YearPicker'
+
 import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
+const { MonthPicker } = DatePicker;
 export interface Props extends ModalComponentProps {
   data?: any
   signShow?: string
@@ -39,6 +41,12 @@ const rules: Rules = {
     } else {
       return true
     }
+  },
+  pageNumber(val) {
+    if(val) {
+      if (/^[0-9]\-[0-9]$/.test(val)) return true
+      return '请输入正确的起始页码，起始页码和结束页码的数字，中间用减号相隔）'
+    } else return true
   }
   // time: (val) => !!val || '请填写时间',
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
@@ -70,7 +78,7 @@ export default function EditArticleModal(props: Props) {
       return message.warning('数据不能为空')
     }
 
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.publicYear && (value.publicYear = value.publicYear.format('YYYY年MM月'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {
@@ -108,6 +116,7 @@ export default function EditArticleModal(props: Props) {
       onCancel={onCancel}
       forceRender
       centered
+      width={560}
       footer={[
         <Button key='back' onClick={onCancel}>
           关闭
@@ -124,18 +133,13 @@ export default function EditArticleModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`发表年份`} name='publicYear'>
-                <YearPicker />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
               <Form.Field label={`杂志名称`} name='magazineName'>
-                <Input />
+                <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`文章名称`} name='articleName'>
-                <Input />
+                <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -147,19 +151,27 @@ export default function EditArticleModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
+            {/* todo */}
             <Col span={24}>
+              <Form.Field label={`期刊年月`} name='publicYear'>
+                {/* <YearPicker /> */}
+                <MonthPicker format="YYYY年MM月" />
+              </Form.Field>
+            </Col>
+            {/* <Col span={24}>
               <Form.Field label={`期刊号`} name='periodicalNumber'>
                 <Input />
               </Form.Field>
-            </Col>
+            </Col> */}
+            {/* todo */}
             <Col span={24}>
-              <Form.Field label={`卷号`} name='volumeNumber'>
-                <Input />
+              <Form.Field label={`卷期号`} name='volumeNumber'>
+                <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`起止页码`} name='pageNumber'>
-                <Input />
+                <Input  maxLength={25} placeholder='请输入起止页码，例如：1-56' />
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -172,8 +184,29 @@ export default function EditArticleModal(props: Props) {
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('论文收录网站').map((item) => item.name)} />
               </Form.Field>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Field label={`文章扫描件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
+              </Form.Field>
+            </Col> */}
+            {/* todo */}
+            <Col span={24}>
+              <Form.Field label={`封面扫描件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`目录扫描件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`正文扫描件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`封底扫描件`} name='urlImageOne'>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>

@@ -27,7 +27,6 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(
     nurseFileDetailViewModal.nurserInfo
   );
-  console.log(info, 666);
   const [idData, setIdData] = useState(0);
   const [id, setId] = useState(0);
   let clothingInfo = [
@@ -80,7 +79,6 @@ export default observer(function BaseInfo() {
         {
           label: "查看",
           onClick: () => {
-            console.log(info, 9991)
             openAuditModal("基本信息", info, getTableData);
           },
         },
@@ -103,12 +101,9 @@ export default observer(function BaseInfo() {
       ? nurseFilesService.nurseInformationSelf
       : nurseFilesService.nurseInformation;
     setInfo({});
-    console.log(isSelf(), 999)
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info;
-      let maps = res.data.maps || {}
-      data.maps.contracttype = 'jjjh'
-      console.log(data, 888)
+      let maps = res.data?.maps || {}
       setInfo(data);
       setIdData(data.empNo);
       setId(data.id);
@@ -127,7 +122,7 @@ export default observer(function BaseInfo() {
         },
         {
           年龄: data.age,
-          婚姻状况: data.phone, // todo
+          婚姻状况: data.maps.maritalstatus,
         },
         {
           生育情况: data.maps.fertility,
@@ -153,20 +148,16 @@ export default observer(function BaseInfo() {
           取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
           初始学历: data.initialEducation,
         },
-        // {
-        //   初始学历: data.initialEducation,
-        //   最高学历: data.highestEducation,
-        // },
         {
           最高学历: data.highestEducation,
           取得最高学历时间: data.highestEducationDate,
         },
         {
           最高学位: data.highestEducationDegree,
-          最高职称: data.highestProfessionalTitle,
+          最高职称: data.newTitle,
         },
         {
-          评职日期: data.evaluationDate,
+          评职日期: data.employNewTiTleDate,
           职务: data.job,
           // 现职务任职起始时间: data.jobStartDate,
         },
@@ -175,7 +166,7 @@ export default observer(function BaseInfo() {
           护理层级: data.nursingLevel,
         },
         {
-          护理层级起始时间: data.jobStartDate, // todo
+          护理层级起始时间: data.nursingLevelStartDate,
           院内工作区域: data.workAddress,
         },
         {
@@ -183,7 +174,7 @@ export default observer(function BaseInfo() {
           鞋码大小: data.shoeSize,
         },
         {
-          工作服码数: data.deptName, // todo
+          工作服码数: data.maps.workclothessize,
         },
       ]
 
@@ -241,7 +232,6 @@ export default observer(function BaseInfo() {
   };
   useEffect(() => {
     getTableData();
-    console.log(info, 777)
   }, [appStore.queryObj]);
   return (
     <BaseLayout title="基本信息" btnList={limitsComponent()}>

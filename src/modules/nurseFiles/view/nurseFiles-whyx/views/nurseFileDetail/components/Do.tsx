@@ -14,11 +14,12 @@ import { authStore } from 'src/stores'
 export interface Props { }
 
 export default function (type: string, modal: any, getTableData: () => void): any {
-  console.log(type, 9998)
-  const status = isSelf() || type === 'nurseOutQualification' || type === 'nurseInnaiQualification'
+  const types = ['nurseOutQualification', 'nurseInnaiQualification', 'nurseWHInnaiWorkExperience', 'nurseWHWorkExperience']
   // 特殊模块-专科护士： 从档案管理模块进来区分是否是护理部在操作
   const specialModule = type === 'nurseWHYXSpecializNurse'
-
+  // 工作经历模块
+  const workHistory = type === 'nurseWHWorkExperience'
+  
   return {
     title: '操作',
     dataIndex: '操作',
@@ -30,7 +31,7 @@ export default function (type: string, modal: any, getTableData: () => void): an
       if (authStore.isDepartment) {}
       return (
         <DoCon>
-          {status ? (
+          {(isSelf() || types.includes(type)) ? (
             <React.Fragment>
               <span
                 onClick={() => {
@@ -41,13 +42,13 @@ export default function (type: string, modal: any, getTableData: () => void): an
               </span>
               <span
                 onClick={() => {
-                  console.log(row, 888)
+                  console.log(getTitle(type), row, 888)
                   openAuditModal(getTitle(type), row, getTableData)
                 }}
               >
                 查看
               </span>
-              <span
+              {!workHistory && <span
                 onClick={() => {
                   globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
                     nurseFilesService.commonDelById(type, row.id).then((res) => {
@@ -57,7 +58,7 @@ export default function (type: string, modal: any, getTableData: () => void): an
                 }}
               >
                 删除
-              </span>
+              </span>}
             </React.Fragment>
           ) : (
             // <span

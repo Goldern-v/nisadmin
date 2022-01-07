@@ -51,7 +51,7 @@ export default observer(function Patent() {
       align: 'center'
     },
     {
-      title: '专利排名',
+      title: '专利个人排名',
       dataIndex: 'patentLevel',
       key: 'patentLevel',
       width: 90,
@@ -90,6 +90,14 @@ export default observer(function Patent() {
       dataIndex: 'isResultTransfor',
       key: 'isResultTransfor',
       width: 110,
+      align: 'center'
+    },
+    // todo 新
+    {
+      title: '授权公告日',
+      dataIndex: 'cardDate',
+      key: 'cardDate',
+      width: 120,
       align: 'center'
     },
     {

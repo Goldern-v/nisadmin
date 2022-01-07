@@ -64,6 +64,14 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
+    // todo
+    {
+      title: '课题类别',
+      dataIndex: 'courseLevel',
+      key: 'courseLevel',
+      width: 90,
+      align: 'center'
+    },
     {
       title: '承担单位',
       dataIndex: 'unit',

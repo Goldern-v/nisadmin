@@ -7,7 +7,7 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import EditInnaiWorkHistoryModal from '../modal/EditInnaiWorkHistoryModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
@@ -19,14 +19,14 @@ import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function WorkHistory() {
-  const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+  const editWorkHistoryModal = createModal(EditInnaiWorkHistoryModal)
   const [tableData, setTableData]: any= useState([])
   const getTableData = () => {
+    // // todo
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
       // setGetId(res.data)
-      // todo
-      // setTableData([{startTime: '2022-1-8'}])
+      setTableData([{startTime: '2022-1-8'}])
     })
   }
   const btnList = [
@@ -75,6 +75,7 @@ export default observer(function WorkHistory() {
       width: 100,
       align: 'center'
     },
+    // todo
     {
       title: '科室',
       dataIndex: 'professionalWork',
@@ -113,7 +114,8 @@ export default observer(function WorkHistory() {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
       // }
     },
-    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData)
+    // todo
+    Do('nurseWHInnaiWorkExperience', editWorkHistoryModal, getTableData)
   ]
 
   useEffect(() => {
@@ -121,7 +123,7 @@ export default observer(function WorkHistory() {
   }, []) 
 
   return (
-    <BaseLayout title='院外工作经历'>
+    <BaseLayout title='院内工作经历' btnList={btnList}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

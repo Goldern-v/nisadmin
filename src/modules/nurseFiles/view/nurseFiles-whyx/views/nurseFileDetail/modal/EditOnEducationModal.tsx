@@ -161,17 +161,17 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`举办单位`} name='unit'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`举办地点`} name='unit'>
-              <Input />
+              <Input maxLength={25}/>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`以何种资格获得邀请`} name='studyHour'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>

@@ -48,6 +48,10 @@ const rules: Rules = {
       return true;
     }
   },
+  phone: (val: any) =>{
+    if (val && val.length != 11) return "手机号格式不正确"
+    else return true
+  }
 };
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
@@ -267,6 +271,7 @@ export default function EditWorkHistoryModal(props: Props) {
             <Form.Field
               label={`身份证号`}
               name="cardNumber"
+              onValueChange={computedIdCard}
             >
               <Input disabled />
             </Form.Field>
@@ -279,7 +284,6 @@ export default function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`出生年月`} name="birthday">
               <Input disabled />
-              {/* <DatePicker /> */}
             </Form.Field>
           </Col>{" "}
           <Col span={12}>
@@ -287,9 +291,8 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input disabled />
             </Form.Field>
           </Col>
-          {/* // todo */}
           <Col span={12}>
-            <Form.Field label={`婚姻状况`} name="age">
+            <Form.Field label={`婚姻状况`} name="maps.maritalstatus">
               <Input disabled />
             </Form.Field>
           </Col>
@@ -313,7 +316,6 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input disabled />
             </Form.Field>
           </Col>
-          {/* todo */}
           <Col span={12}>
             <Form.Field label={`最近入职时间`} name="maps.hiredate">
               <Input disabled />
@@ -370,13 +372,12 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`最高职称`} name="highestProfessionalTitle">
+            <Form.Field label={`最高职称`} name="newTitle">
               <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`评职日期`} name="evaluationDate">
-              {/* <DatePicker /> */}
+            <Form.Field label={`评职日期`} name="employNewTiTleDate">
               <Input disabled />
             </Form.Field>
           </Col>
@@ -385,24 +386,18 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input disabled />
             </Form.Field>
           </Col>
-          {/* todo */}
           <Col span={12}>
-            <Form.Field label={`现职务任职起始时间`} name="zyzsDate">
-              <Input disabled />
-              {/* <DatePicker /> */}
-            </Form.Field>
-          </Col>
-          {/* todo */}
-          <Col span={12}>
-            <Form.Field label={`护理层级`} name="zyzsDate">
-              {/* <DatePicker /> */}
+            <Form.Field label={`现职务任职起始时间`} name="jobStartDate">
               <Input disabled />
             </Form.Field>
           </Col>
-          {/* todo */}
           <Col span={12}>
-            <Form.Field label={`护理层级起始时间`} name="zyzsDate">
-              {/* <DatePicker /> */}
+            <Form.Field label={`护理层级`} name="nursingLevel">
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护理层级起始时间`} name="nursingLevelStartDate">
               <Input disabled />
             </Form.Field>
           </Col>
@@ -411,10 +406,24 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          {/* todo */}
-          <Col span={12}>
-            <Form.Field label={`工作护理单元`} name="zyzsDate">
+          {/* <Col span={12}>
+            <Form.Field label={`工作护理单元`} name="deptName">
               <Input disabled />
+            </Form.Field>
+          </Col> */}
+          <Col span={12}>
+            <Form.Field
+              label={`工作护理单元`}
+              name="deptName"
+              onValueChange={changeDept}
+            >
+              <Select disabled>
+                {authStore.deptList.map((item) => (
+                  <Select.Option value={item.name} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -430,15 +439,13 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             {/* todo */}
-            <Form.Field label={`工作服码数`} name="highestEducation">
+            <Form.Field label={`工作服码数`} name="maps.workclothessize">
               <Select>
-                {nurseFileDetailViewModal
-                  .getDict("工作服码数")
-                  .map((item) => (
-                    <Select.Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
+                {nurseFileDetailViewModal.getDict("工作服码数").map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>

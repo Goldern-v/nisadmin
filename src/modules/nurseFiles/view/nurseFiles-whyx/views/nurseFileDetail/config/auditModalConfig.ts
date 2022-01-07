@@ -13,101 +13,86 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核基础信息',
           tableFormat: [
             {
-              姓名: 'empName',
-              性别: 'sex'
-            },
-            {
               民族: 'nation',
-              籍贯: 'nativePlace'
+              籍贯: 'nativePlace',
             },
             {
               工号: 'empNo',
-              身份证号: 'cardNumber'
+              身份证号: 'cardNumber',
             },
             {
               政治面貌: 'politicsLook',
-              出生年月: 'birthday'
+              出生年月: 'birthday',
             },
             {
               年龄: 'age',
-              手机号: 'phone'
+              婚姻状况: 'maritalstatus',
             },
             {
-              参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime',
-              护士执业证书编号: 'zyzsNumber'
+              生育情况: 'fertility',
+              手机号: 'phone',
             },
-
             {
+              现住址: 'address',
+              参加工作时间: 'takeWorkTime',
+            },
+            {
+              最近入职时间: 'hiredate',
+              来院工作时间: 'goHospitalWorkDate',
+            },
+            {
+              护士执业证书编号: 'zyzsNumber',
               取得护士执业证书时间: 'zyzsDate',
-              取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'
             },
             {
-              护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
-              初始学历: 'initialEducation'
+              本院注册时间: 'registerdate',
+              护士执业证书有效期: 'zyzsEffectiveUpDate',
+            },
+            {
+              取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
+              初始学历: 'initialEducation',
             },
             {
               最高学历: 'highestEducation',
-              取得最高学历时间: 'highestEducationDate'
+              取得最高学历时间: 'highestEducationDate',
             },
             {
-              最高学历学位: 'highestEducationDegree',
-              职务: 'job'
+              最高学位: 'highestEducationDegree',
+              最高职称: 'newTitle',
+            },
+            {
+              评职日期: 'employNewTiTleDate',
+              职务: 'job',
+              // 现职务任职起始时间: jobStartDate,
             },
             {
               现职务任职起始时间: 'jobStartDate',
-              院内工作地点: 'workAddress'
+              护理层级: 'nursingLevel',
             },
-            appStore.HOSPITAL_ID === 'gxjb' ?
-              {
-                工作护理单元: 'deptName',
-                家庭住址: 'address'
-              }
-              // 工作护理单元: 'deptName',
-              : (() => {
-                switch (appStore.HOSPITAL_ID) {
-                  case "fsxt":
-                    // return  `'鞋码大小': 'shoeSize'`
-                    return {
-                      工作护理单元: 'deptName',
-                      "夏装-上衣": "summer_jacket_size",
-                    }
-                  default:
-                    return {
-                      工作护理单元: 'deptName',
-                      鞋码大小: 'shoeSize'
-                    };
-                }
-              })(),
-            ...appStore.hisMatch({
-              map: {
-                'fsxt': [
-                  {
-                    "夏装-裤子": "summer_trousers_size",
-                    "冬装-上衣": "winter_jacket_size",
-                  },
-                  {
-                    "冬装-裤子": "winter_trousers_size",
-                    "夏装-医生款": "summer_isolation_suit_size",
-                  },
-                  {
-                    "冬装-医生款": "winter_isolation_suit_size",
-                    "鞋款式": "nurse_shoes_style",
-                  },
-                  {
-                    "鞋码": "nurse_shoes_size",
-                  }
-                ],
-                other: []
-              },
-            }),
-            ...appStore.hisMatch({
-              map: {
-                'gzsrm': [{
-                  职称: 'newTitle'
-                }],
-                other: []
-              },
-            })
+            {
+              护理层级起始时间: 'nursingLevelStartDate',
+              院内工作区域: 'workAddress',
+            },
+            {
+              工作护理单元: 'deptName',
+              鞋码大小: 'shoeSize',
+            },
+            {
+              工作服码数: 'workClothesSize',
+            },
+            {
+              部门类型: 'depttype',
+              人员类别: 'emptype'
+            },
+            {
+              职工类型: 'worktype',
+              是否已转正: 'formalemp'
+            },
+            {
+              合同类型: 'contracttype',
+              合同到期时间: 'contractexdate'
+            }
+
           ],
           // table:,
           fileData: [
@@ -786,22 +771,49 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '工作经历':
+    case '院外工作经历':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
           type: 'nurseWHWorkExperience',
-          title: '审核工作经历',
+          title: '审核院外工作经历',
           tableFormat: [
             {
               开始时间: `startTime`,
               '结束时间(空则为至今)': `endTime`
             },
             {
-              单位: `unit`
-              // 专业技术工作: 'professionalWork'
+              单位: `unit`,
+              科室: 'professionalWork' // todo
+            }
+            // {
+            //   技术职称: 'professional',
+            //   职务: 'post'
+            // }
+          ],
+
+          allData: row
+        })
+      }
+      break
+    case '院内工作经历':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHInnaiWorkExperience', // todo
+          title: '审核院内工作经历',
+          tableFormat: [
+            {
+              开始时间: `startTime`,
+              '结束时间(空则为至今)': `endTime`
+            },
+            {
+              单位: `unit`,
+              科室: 'professionalWork' // todo
             }
             // {
             //   技术职称: 'professional',
@@ -853,7 +865,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseOutQualification',
+          type: 'nurseOutQualification', // todo
           title: '审核工作情况登记',
           tableFormat: [
             {
@@ -869,6 +881,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               证书有效期: `individualCase`
             }
           ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
           // fileData: [{}],
           allData: row
         })
@@ -880,7 +899,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseInnaiQualification',
+          type: 'nurseInnaiQualification', // todo
           title: '审核工作情况登记',
           tableFormat: [
             {
@@ -896,10 +915,58 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               有效期: `individualCase`
             }
           ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
           // fileData: [{}],
           allData: row
         })
       }
       break
+    case '科室创新':
+      {
+        globalModal.auditModal.show({
+          empNo: row.empNo || row.commiterNo,
+          id: row.id,
+          type: 'nurseWardInnovate', // todo
+          getTableData: callBack,
+          title: '审核基础信息',
+          tableFormat: [
+            {
+              申报人: 'nation',
+              申报科室: 'nativePlace',
+            },
+            {
+              申报时间: 'empNo',
+              登记单位: 'cardNumber',
+            },
+            {
+              登记号: 'politicsLook',
+              参与成员: 'birthday',
+            },
+            {
+              创新类别: 'age',
+              创新级别: 'maritalstatus',
+            },
+            {
+              推广区域: 'fertility',
+            },
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
+      break
+    
   }
 }

@@ -25,6 +25,7 @@ export default observer(function InnaiQualification() {
   const editOnEducationModal = createModal(EditInnaiQualificationModal)
   const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
   const getTableData = () => {
+    // todo
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
       // setTableData(res.data)
     })
@@ -104,6 +105,7 @@ export default observer(function InnaiQualification() {
       width: 80,
       align: 'center'
     },
+    // todo
     Do('nurseInnaiQualification', editOnEducationModal, getTableData)
   ]
 

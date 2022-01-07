@@ -101,9 +101,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改院内工作资质')
+      setTitle('修改院外工作资质')
     } else if (signShow === '添加') {
-      setTitle('添加院内工作资质')
+      setTitle('添加院外工作资质')
     }
   }, [visible])
 
@@ -130,32 +130,33 @@ export default function EditPersonWinningModal(props: Props) {
         <Row>
           {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`授权类别`} name='participant'>
-              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            <Form.Field label={`证书名称`} name='participant'>
+              <AutoComplete value={nurseFileDetailViewModal.getDict('级别')[0]?.name} filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
+        {nurseFileDetailViewModal.getDict('级别')[0]?.name}
+          <Col span={24}>
+            <Form.Field label={`级别`} name='participant'>
+              <AutoComplete value={nurseFileDetailViewModal.getDict('级别')[0]?.name} filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授权名称`} name='participant'>
-              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            <Form.Field label={`发证单位`} name='unit'>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`认证部门`} name='unit'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`认证时间`} name='startDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`发证时间`} name='startDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`证书编号`} name='studyMajor'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`有效期至`} name='endDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`证书有效期`} name='endDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>

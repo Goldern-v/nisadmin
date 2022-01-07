@@ -135,7 +135,8 @@ export default function EditPatentModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`专利排名`} name='patentLevel'>
+              {/* todo 专利排名改为 专利个人排名*/}
+              <Form.Field label={`专利个人排名`} name='patentLevel'>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} />
               </Form.Field>
             </Col>
@@ -172,6 +173,12 @@ export default function EditPatentModal(props: Props) {
                   <Select.Option value='是'>是</Select.Option>
                   <Select.Option value='否'>否</Select.Option>
                 </Select>
+              </Form.Field>
+            </Col>
+            {/* todo 新增 */}
+            <Col span={24}>
+              <Form.Field label={`授权公告日`} name='cardDate'>
+                <DatePicker />
               </Form.Field>
             </Col>
 

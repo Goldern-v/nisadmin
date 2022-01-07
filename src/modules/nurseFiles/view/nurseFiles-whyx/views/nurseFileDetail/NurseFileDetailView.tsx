@@ -23,6 +23,7 @@ import HostingScientific from './views/HostingScientific'
 import JoinScientific from './views/JoinScientific'
 import ToNewPost from './views/ToNewPost'
 import WorkHistory from './views/WorkHistory'
+import InnaiWorkHistory from './views/InnaiWorkHistory'
 import EducationalExperience from './views/EducationalExperience'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
 import Patent from './views/Patent'
@@ -162,7 +163,7 @@ const ROUTE_LIST = [
       },
       {
         type: 'innaiWorkHistory',
-        component: WorkHistory,
+        component: InnaiWorkHistory,
         name: '院内工作经历',
         parentType: 'workHistory',
       },
