@@ -310,135 +310,136 @@ export default observer(function NurseFilesView(props: Props) {
       component: RetiredRetirees,
       icon: <TXHSCX />
     },
-    {
-      title: "查询统计",
-      icon: <CXTJ />,
-      children: [
-        // 新
-        {
-          title: "基本信息",
-          path: "/nurseFile/baseInfo",
-          component: StatisticsViewWHYX
-        },
-        // 新
-        {
-          title: "人员状态",
-          path: "/nurseFile/statePersonnel",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "专科护士",
-          path: "/nurseFile/specializNurse",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "外出进修",
-          path: "/nurseFile/outStudy",
-          component: StatisticsViewWHYX
-        },
-        // 新
-        {
-          title: "学术活动",
-          path: "/nurseFile/academicActivity",
-          component: StatisticsViewWHYX
-        },
-        // 新 
-        {
-          title: "资质管理（院内）",
-          path: "/nurseFile/innaiQualification",
-          component: StatisticsViewWHYX
-        },
-        // 新 
-        {
-          title: "资质管理（院外）",
-          path: "/nurseFile/outQualification",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "文章",
-          path: "/nurseFile/article",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "专著",
-          path: "/nurseFile/monograph",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "主持科研课题",
-          path: "/nurseFile/hostScienceCourse",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "参与科研课题",
-          path: "/nurseFile/goScienceCourse",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "科研课题获奖",
-          path: "/nurseFile/scienceResult",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "专利",
-          path: "/nurseFile/patent",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "科室创新",
-          path: "/nurseFile/科室创新",
-          hide: !appStore.isDev,
-          component: 科室创新
-        },
-        {
-          title: "学会任职",
-          path: "/nurseFile/learnJob",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "个人获奖",
-          path: "/nurseFile/personWinning",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "举办继续教育培训班",
-          path: "/nurseFile/continueStudy",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "工作经历",
-          path: "/nurseFile/workExperience",
-          component: StatisticsViewWHYX
-        },
-        {
-          // title: "医学学历教育",
-          title: '临床护理工作登记',
-          path: "/nurseFile/medicalEducation",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "岗位变动",
-          path: "/nurseFile/transferPost",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "职称变动",
-          path: "/nurseFile/title",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "层级变动",
-          path: "/nurseFile/hierarchy",
-          component: StatisticsViewWHYX
-        },
-        {
-          title: "编制变动",
-          path: "/nurseFile/workConversion",
-          component: StatisticsViewWHYX
-        },
+    // 推迟先不上
+    // {
+    //   title: "查询统计",
+    //   icon: <CXTJ />,
+    //   children: [
+    //     // 新
+    //     {
+    //       title: "基本信息",
+    //       path: "/nurseFile/baseInfo",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新
+    //     {
+    //       title: "人员状态",
+    //       path: "/nurseFile/statePersonnel",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专科护士",
+    //       path: "/nurseFile/specializNurse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "外出进修",
+    //       path: "/nurseFile/outStudy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新
+    //     {
+    //       title: "学术活动",
+    //       path: "/nurseFile/academicActivity",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新 
+    //     {
+    //       title: "资质管理（院内）",
+    //       path: "/nurseFile/innaiQualification",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新 
+    //     {
+    //       title: "资质管理（院外）",
+    //       path: "/nurseFile/outQualification",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "文章",
+    //       path: "/nurseFile/article",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专著",
+    //       path: "/nurseFile/monograph",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "主持科研课题",
+    //       path: "/nurseFile/hostScienceCourse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "参与科研课题",
+    //       path: "/nurseFile/goScienceCourse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "科研课题获奖",
+    //       path: "/nurseFile/scienceResult",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专利",
+    //       path: "/nurseFile/patent",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "科室创新",
+    //       path: "/nurseFile/科室创新",
+    //       hide: !appStore.isDev,
+    //       component: 科室创新
+    //     },
+    //     {
+    //       title: "学会任职",
+    //       path: "/nurseFile/learnJob",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "个人获奖",
+    //       path: "/nurseFile/personWinning",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "举办继续教育培训班",
+    //       path: "/nurseFile/continueStudy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "工作经历",
+    //       path: "/nurseFile/workExperience",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       // title: "医学学历教育",
+    //       title: '临床护理工作登记',
+    //       path: "/nurseFile/medicalEducation",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "岗位变动",
+    //       path: "/nurseFile/transferPost",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "职称变动",
+    //       path: "/nurseFile/title",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "层级变动",
+    //       path: "/nurseFile/hierarchy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "编制变动",
+    //       path: "/nurseFile/workConversion",
+    //       component: StatisticsViewWHYX
+    //     },
         
-      ]
-    },
+    //   ]
+    // },
     {
       title: "护理实习生花名册",
       path: "/nurseFile/traineeFiles",

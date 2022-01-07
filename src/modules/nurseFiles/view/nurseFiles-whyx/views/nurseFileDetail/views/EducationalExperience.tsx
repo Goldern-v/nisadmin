@@ -24,15 +24,15 @@ export default observer(function EducationalExperience() {
       setTableData(res.data)
     })
   }
-  const btnList = [
-    {
-      label: '添加',
-      onClick: () =>
-        editEducationalExperienceModal.show({
-          signShow: '添加'
-        })
-    }
-  ]
+  // const btnList = [
+  //   {
+  //     label: '添加',
+  //     onClick: () =>
+  //       editEducationalExperienceModal.show({
+  //         signShow: '添加'
+  //       })
+  //   }
+  // ]
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -94,21 +94,21 @@ export default observer(function EducationalExperience() {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
-    {
-      title: '状态',
-      dataIndex: 'auditedStatusName',
-      key: '8',
-      width: 120,
-      align: 'center'
-    },
-    Do('nurseWHMedicalEducation', editEducationalExperienceModal, getTableData)
+    // {
+    //   title: '状态',
+    //   dataIndex: 'auditedStatusName',
+    //   key: '8',
+    //   width: 120,
+    //   align: 'center'
+    // },
+    // Do('nurseWHMedicalEducation', editEducationalExperienceModal, getTableData)
   ]
 
   useEffect(() => {
     getTableData()
   }, [])
   return (
-    <BaseLayout title='医学学历教育' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='医学学历教育'>
       <BaseTable
         dataSource={tableData}
         columns={columns}

@@ -27,12 +27,12 @@ export default observer(function PersonWinning() {
       setTableData(res.data)
     })
   }
-  const btnList = [
-    {
-      label: '添加',
-      onClick: () => editPositionChangeModal.show({ signShow: '添加' })
-    }
-  ]
+  // const btnList = [
+  //   {
+  //     label: '添加',
+  //     onClick: () => editPositionChangeModal.show({ signShow: '添加' })
+  //   }
+  // ]
 
   const columns: ColumnProps<any>[] = [
     {
@@ -95,14 +95,14 @@ export default observer(function PersonWinning() {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
-    {
-      title: '状态',
-      dataIndex: 'auditedStatusName',
-      key: 'auditedStatusName',
-      width: 120,
-      align: 'center'
-    },
-    Do('nurseWHTitle', editPositionChangeModal, getTableData)
+    // {
+    //   title: '状态',
+    //   dataIndex: 'auditedStatusName',
+    //   key: 'auditedStatusName',
+    //   width: 120,
+    //   align: 'center'
+    // },
+    // Do('nurseWHTitle', editPositionChangeModal, getTableData)
   ]
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='职称变动' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='职称变动'>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editPositionChangeModal.Component getTableData={getTableData} />
     </BaseLayout>

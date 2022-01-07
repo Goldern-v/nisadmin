@@ -29,7 +29,7 @@ export default function Statistics() {
   })
 
   const onload = (type: string = pageObj.type) => {
-    console.log(type)
+    // console.log(type, 111)
     setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
     setTableLoading(true)
     statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
@@ -47,7 +47,7 @@ export default function Statistics() {
     })
     statisticsService
       .exportExcel(type, { ...filterRef.current, ...paginationRef.current }, (progressEvent: any) => {
-        console.log(progressEvent, 'progressEvent')
+        // console.log(progressEvent, 'progressEvent')
         appStore.openFullLoadingBar({
           aside: '正在下载数据，请稍候',
           progress: `${Number(Math.min(progressEvent.loaded / (progressEvent.total * 10000 || 1), 1) * 100).toFixed(
@@ -74,6 +74,7 @@ export default function Statistics() {
           pageSize: 20,
           total: 1
         }
+        // console.log(getPageObj(path),path, 9998)
         setPageObj(getPageObj(path))
         // onload(pageObj.type)
       })

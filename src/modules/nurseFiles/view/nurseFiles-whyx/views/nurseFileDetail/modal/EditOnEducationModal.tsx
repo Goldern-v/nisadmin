@@ -127,10 +127,23 @@ export default function EditPersonWinningModal(props: Props) {
     >
       <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
-          {/*  参与成员字段没有配置 */}
+          {/*  参与成员字段没有配置  新字段 */}
           <Col span={24}>
             <Form.Field label={`参与成员`} name='participant'>
-              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
+              <Select
+                mode='multiple'
+                showSearch
+                optionFilterProp="children"
+                // onSelect={onSelect}
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              > 
+                {nurseFileDetailViewModal.getDict('级别').map((item) =>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
+                )}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>

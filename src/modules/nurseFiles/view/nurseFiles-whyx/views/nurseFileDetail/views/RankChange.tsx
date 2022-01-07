@@ -27,12 +27,12 @@ export default observer(function PersonWinning() {
       setTableData(res.data)
     })
   }
-  const btnList = [
-    {
-      label: '添加',
-      onClick: () => editRankChangeModal.show({ signShow: '添加' })
-    }
-  ]
+  // const btnList = [
+  //   {
+  //     label: '添加',
+  //     onClick: () => editRankChangeModal.show({ signShow: '添加' })
+  //   }
+  // ]
 
   const columns: ColumnProps<any>[] = [
     {
@@ -82,14 +82,14 @@ export default observer(function PersonWinning() {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
-    {
-      title: '状态',
-      dataIndex: 'auditedStatusName',
-      key: 'auditedStatusName',
-      width: 120,
-      align: 'center'
-    },
-    Do('nurseWHHierarchy', editRankChangeModal, getTableData)
+    // {
+    //   title: '状态',
+    //   dataIndex: 'auditedStatusName',
+    //   key: 'auditedStatusName',
+    //   width: 120,
+    //   align: 'center'
+    // },
+    // Do('nurseWHHierarchy', editRankChangeModal, getTableData)
   ]
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='层级变动' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='层级变动'>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editRankChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
