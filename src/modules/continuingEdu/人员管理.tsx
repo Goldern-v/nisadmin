@@ -195,7 +195,7 @@ export default observer(function 人员管理(props: Props) {
             width: 50,
             align: "center",
             render: (text: any) =>
-              <span style={{ color: text === '未达标' ? "red" : "" }}>{text}</span>,
+              <span style={{ color: text === '未达标' ? "red" : "green" }}>{text}</span>,
           },
         ],
         other: []
@@ -245,7 +245,7 @@ export default observer(function 人员管理(props: Props) {
             width: 50,
             align: "center",
             render: (text: any) =>
-              <span style={{ color: text === '未达标' ? "red" : "" }}>{text}</span>,
+              <span style={{ color: text === '未达标' ? "red" : "green" }}>{text}</span>,
           },
         ],
         other: []

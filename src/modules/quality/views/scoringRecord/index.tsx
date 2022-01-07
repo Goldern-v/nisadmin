@@ -196,9 +196,6 @@ export default observer((props: Props) => {
   ]
 
   const getList = async () => {
-    if (defaultForm.wardCode === form.wardCode) {
-
-    }
     setTableLoading(true)
     const { data } = await api.getList(form)
     setTableLoading(false)
