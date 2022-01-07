@@ -73,6 +73,8 @@ export default observer((props: Props) => {
     setProcess(data.handlenodeDto)
     setFormItem(data.itemDataMap)
     setForm(data.itemDataMap)
+    const checkStatus = data?.master?.nextNodeCode;//下一步审核状态
+    setAllowRectification(['district_nurse_audit'].includes(checkStatus))
   }
   // 当前审核节点
   const currentNode = () => {
@@ -199,6 +201,9 @@ export default observer((props: Props) => {
       formCode: 'SR0004',
     }
     try {
+      if (allowRectification) {
+        const res = await saveOpinion()
+      }
       await api.auditItem(params)
       await getData(tableId || appStore.queryObj.id)
       // todo
@@ -230,7 +235,7 @@ export default observer((props: Props) => {
     })
   }
   const cancelCommit = () => {
-    api.cancelCommit({ id: tableId || appStore.queryObj.id }).then(async res => {
+    api.cancelCommitForGZ({ id: tableId || appStore.queryObj.id }).then(async res => {
       if (res.code === '200') {
         message.success('撤销提交成功')
         // appStore.history.push(`/checkWard/scoringRecord`)
@@ -240,7 +245,8 @@ export default observer((props: Props) => {
       }
     })
   }
-
+  // 是否点击病区整改
+  const [allowRectification,setAllowRectification] = useState(false)
 
   //状态str
   const getCheckStr = () => {
@@ -248,7 +254,17 @@ export default observer((props: Props) => {
     return ['ward_nurse_audit'].includes(checkStatus) ? '病区整改' : '审核';
   }
 
-
+  const saveOpinion = async() => {
+    try {
+      const res = await api.saveOpinion({
+        formId: appStore.queryObj.id || '',
+        itemValue: form.SR0004024,
+        itemCode: 'SR0004024'
+      })
+    } catch (err) {
+      console.log('test-err', err)
+    }
+  }
 
   useEffect(() => {
     if (appStore.queryObj.id) {
@@ -673,7 +689,7 @@ export default observer((props: Props) => {
                 </tr>
               </tbody>
               {appStore.queryObj.id && <tbody >
-                <tr className='disable'>
+                <tr className={allowRectification ? '' : 'disable'}>
                   <td>病区整改</td>
                   <td colSpan={5}>
                     <Input.TextArea
@@ -711,13 +727,28 @@ export default observer((props: Props) => {
                         <div className='timeline-item'>{item.nodeName}</div>
                         <div className='timeline-item'>{item.status === '1' ? item.handlerName : ''}</div>
                         <div className='timeline-item'>{item.status === '1' ? item.handleTime : ''}</div>
-                        <div className='timeline-item'
-                          style={{
-                            background: 'rgb(238,238,238)',
-                            borderRadius: '5px',
-                            padding: '0 5px'
-                          }}> <span>{item.status === '1' ? item.handleContent : ''}</span>
-                        </div>
+                        {
+                          allowRectification && item.nodeCode === 'ward_nurse_audit' && item.status === '1' && !item.noPass
+                          ? <Input.TextArea
+                              value={form.SR0004024}
+                              rows={3}
+                              onChange={(e) =>
+                                setFormItem({ 'SR0004024': e.target.value })
+                              }
+                              style={{
+                                background: 'rgb(238,238,238)',
+                                borderRadius: '5px',
+                                padding: '0 5px'
+                              }}
+                            />
+                          : <div className='timeline-item'
+                              style={{
+                                background: 'rgb(238,238,238)',
+                                borderRadius: '5px',
+                                padding: '0 5px'
+                              }}> <span>{item.status === '1' ? item.handleContent : ''}</span>
+                            </div>
+                        }
                       </Timeline.Item>}
                       {item.status === '0' && <Timeline.Item key={index} color={item.status === '1' ? (item.noPass ? 'red' : 'green') : 'rgba(0,0,0,.25)'}>
                         <div className='timeline-item'>{item.nodeName}</div>

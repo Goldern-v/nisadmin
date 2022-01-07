@@ -56,7 +56,22 @@ class Api extends BaseApiService {
     }
     return this.post(`/form/searchRoom/master/getPageByCreatorNo`, params)
   }
-
+  // 撤销提交贵州
+  cancelCommitForGZ(params: Record<string, any>) {
+    return this.post(`/form/searchRoom/master/cancelCommitForGZ`, params)
+  }
+  /**
+   * 片区护长修改整改意见
+   * @param params {
+   * formId,
+   * itemCode,
+   * itemValue
+   * }
+   * @returns 
+   */
+  saveOpinion(params: Record<string, any>) {
+    return this.post(`/form/searchRoom/master/saveOpinion`, params)
+  }
 }
 
 export default new Api()

@@ -296,4 +296,11 @@ export default class CommonApiService extends BaseApiService {
   public listNurseExpand(moduleCode: string) {
     return this.post('/nurseExpand/listNurseExpand', { "moduleCode": moduleCode })
   }
+  /**
+   * 获取片区列表
+   * @returns 
+   */
+  public getBigDeptList() {
+    return  this.get('/dept/bigDeptList')
+  }
 }
