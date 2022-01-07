@@ -23,11 +23,11 @@ export default function ComplexHeader(props: Props) {
   }
   const getWidth=(item:any,idx:any)=>{
     if(item.lastChild){
-      return item.rightWidth-1
+      return item.rightWidth + 1
     }else if(item.preIndex){
-      return item.rightWidth - (item.preIndex * 2 - 1)
+      return item.rightWidth + 1
     }else{
-      return item.rightWidth
+      return item.rightWidth + 2
     }
   }
   useEffect(() => {
