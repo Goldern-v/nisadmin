@@ -63,6 +63,12 @@ export default observer(function EducationalExperience() {
       align: 'center'
     },
     {
+      title: '学习方式',
+      dataIndex: 'studyWay',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '学分',
       dataIndex: 'credit',
       width: 80,
