@@ -95,6 +95,7 @@ export default function BadEventsRouters(props: Props) {
       map: {
         gzsrm: [],
         lcey: [],
+        gxjb: [],
         other: [
           {
             title: '不良事件统计',
