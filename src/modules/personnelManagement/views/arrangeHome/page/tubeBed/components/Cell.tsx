@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect, useRef } from "react";
 import { message, Popover, Select } from "src/vendors/antd";
 import { tobeBedModal } from '../viewModal/index'
+import { appStore, authStore } from "../../../../../../../stores/index";
 export interface Props {
   dataSource: any; //数据
   col: any; //列数
@@ -16,11 +17,11 @@ export default function Cell(props: Props) {
   let defaultVal: any = cellObj.bedLabels ? cellObj.bedLabels.split(',') : [];
   const handleChange = (value: any) => {
     let cell: any = {};
-    cell.deptCode = dataSource.deptCode
-    cell.deptName = dataSource.deptName
+    cell.deptCode = authStore.selectedDeptCode
+    cell.deptName = authStore.selectedDeptName
     cell.empName = dataSource.empName
     cell.empNo = dataSource.empNo
-    cell.bedLabels = value.join(',').length ? value.join(',') : defaultVal
+    cell.bedLabels = value.join(',').length ? value.join(',') : ''
     cell.workDate = dataSource.bedList[col].workDate
     tobeBedModal.setAllCellData(row, col, cell)
   }

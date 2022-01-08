@@ -46,6 +46,7 @@ class TobeBed {
   }
 
   setAllCellData(row: any, col: any, selectedCell: any,) {
+    console.log(row, col, selectedCell)
     for (let i = 0; i < this.AllCell.length; i++) {
       for (let j = 0; j < this.AllCell[i]!.bedList.length; j++) {
         if (row == i && col == j) {
@@ -64,7 +65,6 @@ class TobeBed {
     }
     tubeBedService.getBedRec(authStore.selectedDeptCode).then(res => {
       if (res.code == 200) {
-        // setBedNoList(res.data)
         this.bedNoList = res.data
       }
     })
@@ -83,10 +83,20 @@ class TobeBed {
     let deptCode = authStore.selectedDeptCode;
     let saveAll = []
     saveAll = this.AllCell.map((item: any) => {
+      let bedList = item.bedList.map((obj: any) => {
+        return {
+          deptCode: authStore.selectedDeptCode,
+          deptName: authStore.selectedDeptName,
+          empName: item.empName,
+          empNo: item.empNo,
+          bedLabels: obj.bedLabels,
+          workDate: obj.workDate
+        }
+      })
       return {
         empNo: item.empNo,
         sortValue: item.sortValue,
-        bedList: item.bedList
+        bedList: bedList
       }
     })
     let data = {
@@ -95,6 +105,7 @@ class TobeBed {
       endTime,
       startTime,
     }
+    console.log(data)
     return tubeBedService.saveOrUpdate(data)
   }
 
