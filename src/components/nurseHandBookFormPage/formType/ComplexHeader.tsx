@@ -45,11 +45,14 @@ export default function ComplexHeader(props: Props) {
   const handelerClick = (e:any,item:any,index:any)=>{
     if(queryObj.audit) return
     if(item.select){
+      setComplexSelectVisible(false)
       setMenuType('complex-select')
       let domReact = e.currentTarget.getBoundingClientRect() // 获取当前元素相对于屏幕的样式属性
       setDomReact(domReact)//给下拉弹框传定位
       setSelectCell(item)
-      setComplexSelectVisible(true)
+      setTimeout(()=>{
+        setComplexSelectVisible(true)
+      })
     }
   }
   useEffect(() => {
