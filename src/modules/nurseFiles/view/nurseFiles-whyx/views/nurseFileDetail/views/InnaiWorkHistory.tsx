@@ -24,9 +24,12 @@ export default observer(function WorkHistory() {
   const getTableData = () => {
     // // todo
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
+      // setTableData(res.data)
+      if (res.data.length > 0) {
+        setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '1'))
+      }
       // setGetId(res.data)
-      setTableData([{startTime: '2022-1-8'}])
+      // setTableData([{startTime: '2022-1-8'}])
     })
   }
   const btnList = [
@@ -115,7 +118,7 @@ export default observer(function WorkHistory() {
       // }
     },
     // todo
-    Do('nurseWHInnaiWorkExperience', editWorkHistoryModal, getTableData)
+    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData)
   ]
 
   useEffect(() => {

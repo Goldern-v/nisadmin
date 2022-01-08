@@ -786,12 +786,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               单位: `unit`,
-              科室: 'professionalWork' // todo
+              科室: 'department'
             }
-            // {
-            //   技术职称: 'professional',
-            //   职务: 'post'
-            // }
           ],
 
           allData: row
@@ -804,7 +800,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseWHInnaiWorkExperience', // todo
+          type: 'nurseWHWorkExperience',
           title: '审核院内工作经历',
           tableFormat: [
             {
@@ -813,12 +809,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               单位: `unit`,
-              科室: 'professionalWork' // todo
+              科室: 'department'
             }
-            // {
-            //   技术职称: 'professional',
-            //   职务: 'post'
-            // }
           ],
 
           allData: row

@@ -37,7 +37,8 @@ export default function EditWorkHistoryModal(props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      urlImageOne: ''
+      urlImageOne: '',
+      insideOutsideState: '2'
     }
 
     if (signShow === '修改') {
@@ -72,7 +73,8 @@ export default function EditWorkHistoryModal(props: Props) {
         unit: data.unit,
         professionalWork: data.professionalWork,
         professional: data.professional,
-        post: data.post
+        post: data.post,
+        department: data.department
       })
       // refForm.current.setField('unit', 123)
     }
@@ -135,7 +137,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           {/* todo */}
           <Col span={24}>
-            <Form.Field label={`科室`} name='unit'>
+            <Form.Field label={`科室`} name='department'>
               <Input maxLength={25}/>
             </Form.Field>
           </Col>

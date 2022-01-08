@@ -23,10 +23,12 @@ export default observer(function WorkHistory() {
   const [tableData, setTableData]: any= useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
+      if (res.data.length > 0) {
+        setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '2'))
+      }
+      // setTableData(res.data)
+      
       // setGetId(res.data)
-      // todo
-      // setTableData([{startTime: '2022-1-8'}])
     })
   }
   const btnList = [
@@ -77,7 +79,7 @@ export default observer(function WorkHistory() {
     },
     {
       title: '科室',
-      dataIndex: 'professionalWork',
+      dataIndex: 'department',
       key: '5',
       width: 150,
       align: 'center'
