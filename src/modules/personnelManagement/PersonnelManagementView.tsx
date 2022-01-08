@@ -46,6 +46,8 @@ export default function PersonnelManagementView() {
         return menuConfig_dgxg;
       case 'whyx'://武汉亚心
         return menuConfig_wh;
+      case 'sdlj'://顺德龙江
+        return menuConfig_wh;
       default:
         return menuConfig_hj;
     }
