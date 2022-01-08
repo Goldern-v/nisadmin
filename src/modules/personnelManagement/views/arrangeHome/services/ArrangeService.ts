@@ -121,6 +121,7 @@ export default class ArrangeService extends BaseApiService {
       map: {
         lcey: '/schedulingLc/export',
         jmfy: '/schedulingJm/export',
+        whyx: '/schedulingYaXin/export',
         default: '/scheduling/export',
       }
     })
@@ -430,6 +431,12 @@ export default class ArrangeService extends BaseApiService {
     formData.append('upfile', file)
     return this.post(`/schedulingLc/importExcel`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
   }
+
+  //导出管床信息
+  public async excelTubeBed(data: any) {
+    return this.post('/schedulingYaXin/excelTubeBed', data, { responseType: "blob" });
+  }
+
 }
 
 export const arrangeService = new ArrangeService();

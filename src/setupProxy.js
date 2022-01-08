@@ -86,6 +86,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "fssdy": //佛山市一
       //return 'http://192.168.20.57:9091'//
       return "http://192.168.1.54:9866"; //
+      //武汉亚心
+    case "whyx":
+      return "http://192.168.20.35:8080"
     default:
       return "http://192.168.1.54:9866";
   }

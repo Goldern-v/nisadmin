@@ -9,12 +9,12 @@ export interface Props {
   id: any;
 }
 
-export default observer(function NightHourCell(props: Props) {
-  let total = nightHourCellContent(props.id)
+export default observer(function PostScoreCell(props: Props) {
+  let total = postScoreCell(props.id)
   return <Wrapper>{total}</Wrapper>;
 });
 
-export const nightHourCellContent = (id: any) => {
+export const postScoreCell = (id: any) => {
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == id;
@@ -22,17 +22,8 @@ export const nightHourCellContent = (id: any) => {
   if (user) {
     list = user.settingDtos;
   }
-  // todo -- 计算班次岗位分值汇总
   let total = list.reduce((total: any, current: ArrangeItem) => {
-    total += Number(current.settingNightHour);
-    // if (current.schAddOrSubs && current.schAddOrSubs.length) {
-    //   if (current.schAddOrSubs[0].statusType == "1") {
-    //     total += Number(current.schAddOrSubs[0].settingNightHour);
-    //   }
-    //   if (current.schAddOrSubs[0].statusType == "2") {
-    //     total -= Number(current.schAddOrSubs[0].settingNightHour);
-    //   }
-    // }
+    total += Number(current.rangeScore);
     return total;
   }, 0);
 

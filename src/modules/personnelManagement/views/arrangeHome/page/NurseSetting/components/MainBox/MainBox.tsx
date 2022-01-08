@@ -14,14 +14,15 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import update from "immutability-helper";
-
+import { globalModal } from "src/global/globalModal";
 import createModal from "src/libs/createModal";
 import AddScheduleNursingModal from "../../modal/AddScheduleNursingModal";
+import addTutorModal from "../../modal/AddTutorModal";
 import AppStore from "src/stores/AppStore";
 import { observer } from "mobx-react-lite";
 
 // const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function MainBox() {
   const [userList, setUserList] = useState(new Array());
@@ -29,6 +30,7 @@ export default observer(function MainBox() {
   const [userTypeList, setUserTypeList] = useState([] as any[]);
 
   const addScheduleNursingModal = createModal(AddScheduleNursingModal);
+  const AddTutorModal = createModal(addTutorModal);
 
   const columns = [
     {
@@ -78,6 +80,9 @@ export default observer(function MainBox() {
             (item: any) => item.code === record.userType
           );
           if (target && target.name) usetTypeName = target.name;
+        }
+        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+          return <span style={{ color: record.userType == 1 ? '#ff3030' : record.userType == 2 ? "#007aff" : "" }}>{empNo || usetTypeName}</span>
         }
         return empNo || usetTypeName;
       },
@@ -203,6 +208,48 @@ export default observer(function MainBox() {
       render(text: any, row: any) {
         return (
           <DoCon>
+            {appStore.HOSPITAL_ID == 'whyx' && <>
+              <span
+                onClick={() => {
+                  let usetTypeName = "";
+                  if (userTypeList.length > 0) {
+                    let target = userTypeList.find(
+                      (item: any) => item.code === row.userType
+                    );
+                    if (target && target.name) usetTypeName = target.name;
+                  }
+                  globalModal
+                    .confirm("设置", <div><p>姓名：{row.empName}</p><p>工号(类型)：{row.empNo || usetTypeName}</p><p>确认{row.resignationFlag == 1 ? '取消' : ''}设为未脱教护士吗？</p></div>)
+                    .then(res => {
+                      let data = {
+                        id: row.id,
+                        resignationFlag: row.resignationFlag == 1 ? '0' : '1'
+                      }
+                      service.scheduleUserApiService.setResignation(data).then(res => {
+                        message.success(`设置成功`);
+                        getUserList();
+                      })
+                    });
+                }}
+              >
+                {row.resignationFlag == 1 ? '取消未脱教' : '设为未脱教'}
+              </span>
+              {['1', '2'].includes(row.userType) &&
+                <span onClick={() => {
+                  AddTutorModal.show({
+                    editData: row,
+                    onOkCallBack: () => {
+                      message.success(`设置成功`);
+                      getUserList();
+                    }
+
+                  })
+                }}>
+                  导师设置
+                </span>
+              }
+            </>
+            }
             <span
               onClick={() => {
                 Modal.confirm({
@@ -339,6 +386,7 @@ export default observer(function MainBox() {
         )}
       />
       <addScheduleNursingModal.Component />
+      <AddTutorModal.Component />
     </Wrapper>
   );
 });
