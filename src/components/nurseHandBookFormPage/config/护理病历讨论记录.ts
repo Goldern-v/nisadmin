@@ -1,5 +1,5 @@
 /**
- * 聊城二院-护理病例讨论
+ * 聊城二院-护理病例讨论记录
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
@@ -12,11 +12,11 @@ const complexHead: any = {
     { key: 'time', name:'日期/时间', value: "", leftWidth: 100, rightWidth: 100 },
     { key: 'place', name:'地点', value: "", leftWidth: 100, rightWidth: 100 },
     { key: 'host', name:'主持人', value: "", leftWidth: 100, rightWidth: 200 , lastChild: true },
-    { key: 'join', name:'参加人员', value: "", leftWidth: 100, rightWidth: 600 , preIndex: 3 },
+    { key: 'join', name:'参加人员', value: "", leftWidth: 100, rightWidth: 600 , preIndex: 3, rightStyle:{ textAlign: "left" } },
     { key: 'patientName', name:'患者姓名', value: "", leftWidth: 100, rightWidth: 100 },
-    { key: 'recordId', name:'病案号号', value: "", leftWidth: 100, rightWidth: 100 },
+    { key: 'recordId', name:'病案号', value: "", leftWidth: 100, rightWidth: 100 },
     { key: 'diagnosis', name:'诊断', value: "", leftWidth: 100, rightWidth: 200, lastChild: true },
-    { key: 'type', name:'讨论类型', value: "", leftWidth: 100, rightWidth: 600, preIndex: 3 },
+    { key: 'type', name:'讨论类型', value: "", leftWidth: 100, rightWidth: 600, preIndex: 3, multiple:"、", select:['危重病例','疑难病例','重大手术病例','新开展手术或技术病例','死亡病例','特殊病例','其他'], rightStyle:{ textAlign: "left" }},
   ]
 }
 

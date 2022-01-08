@@ -155,6 +155,8 @@ const SafetyHazardsDetail = lazy(() =>
     "src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail"
   )
 );
+const QualityControlKeyDetail = lazy(() => import("src/modules/quality/views/qualityControlKey/qualityControlKeyDetail/QualityControlKeyDetail"));
+
 // 病区登记本
 /** 病区登记本 - 武汉市独立 */
 const WardRegisterRouter = lazy(() =>
@@ -668,6 +670,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/qualityControlRecordEdit",
     qualityControlRecordEdit,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/QualityControlKeyDetail",
+    QualityControlKeyDetail,
     layouts.MainLayout
   ),
   setLayout(

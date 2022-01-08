@@ -1,62 +1,74 @@
-import LeftMenu from 'src/components/LeftMenu'
-import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'src/components/RouterView'
-import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
-import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
-import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-import 防疫专项检查片区汇总 from './views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表'
-import 防疫专项检查汇总 from './views/防疫专项检查汇总列表/防疫专项检查汇总列表'
+import LeftMenu from "src/components/LeftMenu";
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "src/components/RouterView";
+import QualityControlRecord from "./views/qualityControlRecord/QualityControlRecord";
+import WorkSummaryReportList from "./views/workSummaryReportList/WorkSummaryReportList";
+import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡查情况汇总表";
+import 防疫专项检查片区汇总 from "./views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表";
+import 防疫专项检查汇总 from "./views/防疫专项检查汇总列表/防疫专项检查汇总列表";
 
-import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+import { Provider, KeepAlive } from "react-keep-alive";
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
-import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
-import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
-import { appStore } from 'src/stores'
-import { observer } from 'src/vendors/mobx-react-lite'
-import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
-import 质控表单汇总 from './views/qcDghl/质控表单汇总'
-import 二级质控问题原因措施汇总 from './views/qcFormGzsrm/二级质控问题原因措施汇总'
-import 福清二级质控问题原因措施汇总 from './views/qcFormFqfybjy/二级质控问题原因措施汇总'
+import { ReactComponent as EJZK } from "./images/icon/EJZK.svg";
+import { ReactComponent as YDBG } from "./images/icon/YDBG2.svg";
+import { appStore, authStore } from "src/stores";
+import { observer } from "src/vendors/mobx-react-lite";
+import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
+import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
+import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
+import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
+import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
 
 export default observer(function QcTwoRouter(props: Props) {
-
   const route_质控表单汇总 = {
     title: "单个质控表单汇总",
     icon: <HZBG />,
     path: "/qcTwo/质控表单汇总?qcLevel=2",
     component: 质控表单汇总,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
   const route_二级质控问题原因措施汇总 = {
     // title: "二级质控问题原因措施汇总",
     // path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
     title: "专科护理质量评价",
     path: "/qcTwo/专科护理质量评价?qcLevel=2",
     icon: <JCTJ />,
-    component: 二级质控问题原因措施汇总
-  }
+    component: 二级质控问题原因措施汇总,
+  };
   const route_福清二级质控问题原因措施汇总 = {
     title: "二级质控问题原因措施汇总",
     path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
     icon: <JCTJ />,
-    component: 福清二级质控问题原因措施汇总
-  }
+    component: 福清二级质控问题原因措施汇总,
+  };
+  const route_QualityControlKey = {
+    title: "片区质控重点",
+    path: "/qcTwo/qualityControlKey?qcLevel=2",
+    icon: <JCTJ />,
+    hide: !(
+      authStore.isDepartment ||
+      authStore.isSupervisorNurse ||
+      authStore.isRoleManage
+    ),
+    component: QualityControlKey,
+  };
   const extra_menu = appStore.hisMatch({
     map: {
-      'hj,gxjb': [
+      "hj,gxjb": [
         {
-          title: '护理质量巡查情况汇总表',
+          title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
-          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
           title: "护理质量检查小结",
@@ -65,29 +77,32 @@ export default observer(function QcTwoRouter(props: Props) {
           component: 护理质量检查小结,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
       ],
-      "yczyy": [
+      yczyy: [
         {
-          title: '护理质量巡查情况汇总表',
+          title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
-          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
       ],
-      'gzsrm': [
+      gzsrm: [
         {
-          title: '护理质量巡查情况汇总表',
+          title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
-          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
           title: "护理质量检查小结",
@@ -96,111 +111,125 @@ export default observer(function QcTwoRouter(props: Props) {
           component: 护理质量检查小结,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         route_二级质控问题原因措施汇总,
+        route_QualityControlKey,
       ],
-      "dghl": [
+      dghl: [
         {
-          title: '护理质量巡查情况汇总表',
+          title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
-          path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+          path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
-        route_质控表单汇总
+        route_质控表单汇总,
       ],
-      "fqfybjy": [
+      fqfybjy: [
         {
-          title: '二级质控月度报告',
+          title: "二级质控月度报告",
           icon: <YDBG />,
-          path: '/qcTwo/workSummaryReportList',
+          path: "/qcTwo/workSummaryReportList",
           component: WorkSummaryReportList,
           keepAlive: true,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
-          title: '防疫专项检查分析报告',
+          title: "防疫专项检查分析报告",
           icon: <YDBG />,
-          path: '/qcTwo/防疫专项检查分析报告',
+          path: "/qcTwo/防疫专项检查分析报告",
           component: 防疫专项检查片区汇总,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
-          title: '防疫专项检查汇总报告',
+          title: "防疫专项检查汇总报告",
           icon: <YDBG />,
-          path: '/qcTwo/防疫专项检查汇总',
+          path: "/qcTwo/防疫专项检查汇总",
           component: 防疫专项检查汇总,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         route_福清二级质控问题原因措施汇总,
       ],
       default: [
         {
-          title: '二级质控月度报告',
+          title: "二级质控月度报告",
           icon: <YDBG />,
-          path: '/qcTwo/workSummaryReportList',
+          path: "/qcTwo/workSummaryReportList",
           component: WorkSummaryReportList,
           keepAlive: true,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
-          title: '防疫专项检查分析报告',
+          title: "防疫专项检查分析报告",
           icon: <YDBG />,
-          path: '/qcTwo/防疫专项检查分析报告',
+          path: "/qcTwo/防疫专项检查分析报告",
           component: 防疫专项检查片区汇总,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
         {
-          title: '防疫专项检查汇总报告',
+          title: "防疫专项检查汇总报告",
           icon: <YDBG />,
-          path: '/qcTwo/防疫专项检查汇总',
+          path: "/qcTwo/防疫专项检查汇总",
           component: 防疫专项检查汇总,
           keepAlive: true,
           // hide: !appStore.isDev,
-          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
-      ]
+      ],
     },
     vague: true,
-  })
+  });
 
   const LEFT_MENU_CONFIG: any = [
     {
-      title: '二级质控记录',
-      path: '/qcTwo',
+      title: "二级质控记录",
+      path: "/qcTwo",
       icon: <EJZK />,
       component: { ...QualityControlRecord },
       keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
     },
-    ...extra_menu
-  ]
+    ...extra_menu,
+  ];
 
-  useEffect(() => { }, [props.history.location.pathname])
-  let currentRoutePath = props.history.location.pathname || ''
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
+  useEffect(() => {}, [props.history.location.pathname]);
+  let currentRoutePath = props.history.location.pathname || "";
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
-        return item.children.find((item1: any) => item1[targetKey].split('?')[0] === targetName)
+        return item.children.find(
+          (item1: any) => item1[targetKey].split("?")[0] === targetName
+        );
       } else {
-        return item[targetKey].split('?')[0] === targetName
+        return item[targetKey].split("?")[0] === targetName;
       }
-    })
+    });
     if (chooseRoute && chooseRoute.children) {
-      chooseRoute = chooseRoute.children.find((item1: any) => item1[targetKey] === targetName)
+      chooseRoute = chooseRoute.children.find(
+        (item1: any) => item1[targetKey] === targetName
+      );
     }
-    return chooseRoute
+    return chooseRoute;
   }
 
   return (
@@ -212,31 +241,38 @@ export default observer(function QcTwoRouter(props: Props) {
         {currentRoute &&
           currentRoute.component &&
           (currentRoute.keepAlive ? (
-            <KeepAlive name={currentRoute.path} disabled={currentRoute.disabledKeepAlive}>
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            <KeepAlive
+              name={currentRoute.path}
+              disabled={currentRoute.disabledKeepAlive}
+            >
+              <currentRoute.component
+                getTitle={currentRoute && currentRoute.title}
+              />
             </KeepAlive>
           ) : (
-            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title}
+            />
           ))}
       </MainCon>
     </Wrapper>
-  )
-})
+  );
+});
 
 const Wrapper = styled.div`
   overflow: hidden;
   height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
-`
+`;
 
 const LeftMenuCon = styled.div`
   width: 200px;
-`
+`;
 const MainCon = styled.div`
   flex: 1;
   width: 0;
   align-items: stretch;
   display: flex;
   flex-direction: column;
-`
+`;

@@ -56,16 +56,6 @@ export default function Common(props: Props) {
         visible[bodyIdx]=true
         setVisible([...visible])
       })
-    } else if(col.timePicker){ 
-      setMenuType('timePicker')
-      if (visible[bodyIdx]) {
-        setVisible(templeVisible)
-      }
-      // 设置定时器,防止已有弹窗时不渲染
-      setTimeout(() => {
-        visible[bodyIdx]=true
-        setVisible([...visible])
-      })
     } else {
       setVisible(templeVisible)
     }
@@ -75,8 +65,6 @@ export default function Common(props: Props) {
     if(queryObj.audit) return
     if (col.select){
       setMenuType("select")
-    }else if(col.timePicker){
-      setMenuType("timePicker")
     }
     col.click && col.click(col) && scheduleStore.setIsSave(true)
     col.click && setBodyModal([...bodyModal])

@@ -68,17 +68,8 @@ export default function NurseHandBookFormPage(props: Props) {
     let targetClass = [...e.target.classList]
     console.log(targetClass);
     
-    if (menuType=="timePicker" && (targetClass.includes("NurseHandBookFormPage__Wrapper-sc-1ghmsca-0")||targetClass.includes("jYNgxB")||targetClass.includes("page"))) {
+    if (!targetClass.includes("common")) {
       setVisible(templeVisible)
-    }
-    if (menuType=="complex-select" && (!targetClass.includes("selectOption")||!targetClass.includes("selectBody"))){
-      setComplexSelectVisible(false)
-    }
-    if(menuType!="timePicker" && !targetClass.includes("common")) {
-      setVisible(templeVisible)
-    }
-    if(!targetClass.includes("complexHeader")){
-      setComplexSelectVisible(false)
     }
   }
   useEffect(() => {
@@ -111,7 +102,7 @@ export default function NurseHandBookFormPage(props: Props) {
         <div className="space-div"></div>
         <div className="pageBox">
           <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
-          {masterInfo.complexHead && <ComplexHeader setMenuType={setMenuType} setComplexSelectVisible={setComplexSelectVisible} complexSelectVisible={complexSelectVisible} complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
+          {masterInfo.complexHead && <ComplexHeader setMenuType={setMenuType} menuType={menuType} setComplexSelectVisible={setComplexSelectVisible} complexSelectVisible={complexSelectVisible} complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
             return (
             <div key={idx}>

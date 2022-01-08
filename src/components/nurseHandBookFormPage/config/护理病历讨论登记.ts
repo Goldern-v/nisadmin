@@ -1,5 +1,5 @@
 /**
- * 聊城二院-病例讨论登记表
+ * 聊城二院-护理病例讨论登记
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
