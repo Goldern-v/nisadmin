@@ -26,27 +26,23 @@ export default function CircleChart(props: Props) {
         orient: 'vertical',
         x: 'right',
         y: 'center',
-        data: ['手术三天', '入院三天', '入院三天内术后', '其他']
+        // data: ['手术三天发热患者人数', '入院三天发热患者人数', '入院三天内术后发热患者人数', '其他发热患者人数']
       },
       series: [
         {
-          name: '',
+          // name: '',
           type: 'pie',
           radius: '80%',
           center: ['50%', '50%'],
           data: sourceData,
-          itemStyle:{ 
-            normal:{ 
-              label:{ 
-                show: true, 
-                formatter: '{b} : {c} ({d}%)' 
-              }, 
-              labelLine :{show:true} 
-            } 
-          }
+          label: {
+            show: true,
+            formatter: '{b} : {c} ({d}%)'
+          },
+          labelLine: { show: true }
         }
       ]
     }
   }
-  return (<ReactEcharts style={{height: chartHeight}} option={getOption()}/>)
+  return (<ReactEcharts style={{ height: chartHeight }} option={getOption()} />)
 }

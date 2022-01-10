@@ -39,25 +39,25 @@ const getChartData = (data?: ITableData[]) => {
     switch(key) {
       case 'shoushu':
         dataItem = { 
-          name: '手术三天', 
+          name: '手术三天发热患者人数', 
           value: data?.reduce((pre, cur) => { return pre + cur[key] }, 0) 
         }
         break;
       case 'ruyuan':
         dataItem = { 
-          name: '入院三天', 
+          name: '入院三天发热患者人数', 
           value: data?.reduce((pre, cur) => { return pre + cur[key] }, 0) 
         }
         break;
       case 'ruyuanshoushu':
         dataItem = { 
-          name: '入院三天内术后', 
+          name: '入院三天内术后发热患者人数', 
           value: data?.reduce((pre, cur) => { return pre + cur[key] }, 0) 
         }
         break;
       case 'qita':
         dataItem = { 
-          name: '其他', 
+          name: '其他发热患者人数', 
           value: data?.reduce((pre, cur) => { return pre + cur[key] }, 0) 
         }
         break;
@@ -155,6 +155,8 @@ interface ILineData {
   ruyuan: number[];
   ruyuanshoushu: number[];
   qita: number[];
+  nofever: number[];
+  searchMode: string;
 }
 // 查询参数类型
 interface IQuery {
@@ -212,7 +214,6 @@ const getXAxisByMonth = <T>(startM: T, endM: T, startY: T, endY: T): string[] =>
     let curYear = +startM + index <= 12 ? startY : endY
     xAxis.push(`${curYear}-${curMonth < 10 ? '0' + curMonth : curMonth}`)
   }
-  console.log('xAxis', xAxis)
   return xAxis
 }
 /**
@@ -224,9 +225,12 @@ const getXAxisByMonth = <T>(startM: T, endM: T, startY: T, endY: T): string[] =>
  */
 const getLineDataByYear = <K, T>(data: K[], start: T, end: T): ILineData => {
   let resultData: ILineData|any = {}
+  // 获取坐标轴
+  resultData.xAxis = getXAxisWithSequence(start, end, '年')
+  resultData.searchMode = 'year'
   for (const key in data) {
     const currentData: any = data[key];
-    let lineArr = []
+    let lineArr: number[] = []
     // 遍历查询几年
     for (let index = 0; index <= (+end - +start); index++) {
       // 过滤指定年份的数据并汇总每年的住院次数visitId
@@ -237,7 +241,6 @@ const getLineDataByYear = <K, T>(data: K[], start: T, end: T): ILineData => {
     }
     resultData = {
       ...resultData,
-      xAxis: getXAxisWithSequence(start, end, '年'),
       [key]: lineArr,
     }
   }
@@ -252,10 +255,13 @@ const getLineDataByYear = <K, T>(data: K[], start: T, end: T): ILineData => {
  */
 const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
   let resultData: ILineData|any = {}
+  // 获取坐标轴
+  resultData.xAxis = getXAxisByQuarter<number>(+start, +end)
+  resultData.searchMode = 'quarter'
   // 总季度数
-  let totalQuarter = getQuarter<number>(+end) - getQuarter<number>(+start) + 1
+  let totalQuarter: number = getQuarter<number>(+end) - getQuarter<number>(+start) + 1
   // 开始季度
-  let startQuarter = getQuarter<number>(+start)
+  let startQuarter: number = getQuarter<number>(+start)
   for (const key in data) {
     const currentData: any = data[key]
     let lineArr: number[] = []
@@ -270,7 +276,6 @@ const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
     }
     resultData = {
       ...resultData,
-      xAxis: getXAxisByQuarter<number>(+start, +end),
       [key]: lineArr
     }
   }
@@ -287,6 +292,8 @@ const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
  */
 const getLineDataByMonth = <K, T>(data: K[], startM: T, endM: T, startY: T, endY: T): ILineData => {
   let resultData: ILineData|any = {}
+  resultData.xAxis = getXAxisByMonth<number>(+startM, +endM, +startY, +endY)
+  resultData.searchMode = 'month'
   for (const key in data) {
     const currentData: any = data[key];
     let totalMonth: number = (+endY - +startY) * 12 + (+endM - +startM) + 1
@@ -314,7 +321,6 @@ const getLineDataByMonth = <K, T>(data: K[], startM: T, endM: T, startY: T, endY
     }
     resultData = {
       ...resultData,
-      xAxis: getXAxisByMonth<number>(+startM, +endM, +startY, +endY),
       [key]: lineArr
     }
   }
@@ -326,8 +332,10 @@ const getLineDataByMonth = <K, T>(data: K[], startM: T, endM: T, startY: T, endY
  * @param startDay 开始天 
  * @param endDay 结束天
  */
-const getLineDataByDay = <K, T>(data: K[], startDay: T, endDay: T) => {
+const getLineDataByDay = <K, T>(data: K[], startDay: T, endDay: T): ILineData => {
   let resultData: ILineData = {} as ILineData
+  resultData.xAxis = getXAxisWithSequence(startDay, endDay, '日')
+  resultData.searchMode = 'day'
   for (const key in data) {
     const currentData: any = data[key];
     let lineArr: number[] = []
@@ -341,7 +349,6 @@ const getLineDataByDay = <K, T>(data: K[], startDay: T, endDay: T) => {
     }
     resultData = {
       ...resultData,
-      xAxis: getXAxisWithSequence(startDay, endDay, '日'),
       [key]: lineArr
     }
   }
@@ -356,9 +363,9 @@ const getYearMonthDay = (dateStr: string): IDate => {
   }
 }
 // 返回折线图数据
-export const getLineData = (options: any, query: IQuery, mode: string) => {
+export const getLineData = (options: any, query: IQuery, mode: string): ILineData => {
+  console.log('折线图数据', query, mode)
   let lineData: ILineData|any = {}
-  console.log('mode', query, mode)
   // 年份查询
   if (mode === 'year') {
     let startYear: number = moment(query.startDate).year()
@@ -371,10 +378,10 @@ export const getLineData = (options: any, query: IQuery, mode: string) => {
       lineData = getLineDataByYear<any, number>(options, startYear, endYear)
     } else {
       if (startMonth == endMonth) {
-        return getLineDataByDay<any, number>(options, startDay, endDay)
+        lineData = getLineDataByDay<any, number>(options, startDay, endDay)
       } else {
       // message.warning('年份查询不可小于一年!')
-        return getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
+        lineData = getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
       }
     }
   }
@@ -389,12 +396,12 @@ export const getLineData = (options: any, query: IQuery, mode: string) => {
     // 如果开始年份不相等
     if (startYear !== endYear) {
       // message.warning('季度查询不可跨年!')
-      return getLineDataByYear<any, number>(options, startYear, endYear)
+      lineData = getLineDataByYear<any, number>(options, startYear, endYear)
     } else {
       // 查询月份小于等于三个月
       if ((+endMonth - +startMonth + 1) <= 3) {
         // message.warning('季度查询不可小于3个月!')
-        return getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
+        lineData = getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
       }
       lineData = getLineDataByQuarter<any, number>(options, startMonth, endMonth)
     }
@@ -411,11 +418,11 @@ export const getLineData = (options: any, query: IQuery, mode: string) => {
     // 总月数大于12/按年查询
     if (totalMonth > 12) {
       // message.warning('月份查询不能大于12个月!')
-      return getLineDataByYear<any, number>(options, startYear, endYear)
+      lineData = getLineDataByYear<any, number>(options, startYear, endYear)
     } else if (totalMonth == 1) {
       // 总月数为1，按日查询
       // message.warning('月份查询不能小于1个月!')
-      return getLineDataByDay<any, number>(options, moment(query.startDate).date(), moment(query.endDate).date())
+      lineData = getLineDataByDay<any, number>(options, moment(query.startDate).date(), moment(query.endDate).date())
     } else {
       lineData = getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
     }
@@ -431,10 +438,10 @@ export const getLineData = (options: any, query: IQuery, mode: string) => {
     // console.log('date', startYear, startMonth, startDay)
     if (startYear != endYear) {
       // message.warning('按日查询不可跨年查询!')
-      return getLineDataByYear<any, number>(options, startYear, endYear)
+      lineData = getLineDataByYear<any, number>(options, startYear, endYear)
     } else if (startMonth != endMonth) {
       // message.warning('按日查询不可跨月查询!')
-      return getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
+      lineData = getLineDataByMonth<any, number>(options, startMonth, endMonth, startYear, endYear)
     } else {
       lineData = getLineDataByDay<any, number>(options, startDay, endDay)
     }

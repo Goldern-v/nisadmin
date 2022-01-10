@@ -113,15 +113,21 @@ export default observer(function FeverPatient() {
 
   const getData = async () => {
     setLoading(true)
+    // 获取发热患者
     const result = await statisticsApi.countFeverPatient(query)
+    // 获取未发热患者
+    const noFever = await statisticsApi.countNoFeverPatient(query)
+    // console.log('noFever', noFever)
     let resultData = result.data
     const rData = setResData(resultData)
     setData(rData.tableData)
     setChartData(rData.chartData)
     // 获取折线图数据
+    resultData.nofever = noFever.data
     const lineData = getLineData(resultData, query, searchMode)
     console.log('lineData', lineData)
     setLineData(lineData)
+    setSearchMode(lineData.searchMode || 'year')
     setLoading(false)
   }
 
@@ -231,7 +237,7 @@ export default observer(function FeverPatient() {
             setChartVisible(e.target.value)
             if (e.target.value) {
               setFormat('YYYY')
-              setSearchMode('year')
+              setSearchMode(searchMode)
             } else {
               setFormat('YYYY-MM-DD')
               setSearchMode('')

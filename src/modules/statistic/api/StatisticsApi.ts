@@ -323,6 +323,10 @@ class StatisticsApi extends BaseApiService {
   public countFeverPatient(query: any) {
     return this.post('/vitalSign/getOutside', query)
   }
+  // 未发热患者
+  public countNoFeverPatient(query: any) {
+    return this.post('/vitalSign/getFeverNo', query)
+  }
 }
 
 let statisticsApi = new StatisticsApi()

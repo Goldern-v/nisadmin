@@ -11,7 +11,7 @@ export default function LineChart(props: any) {
       trigger: 'axis'
     },
     legend: {
-      data: ['手术三天', '入院三天', '入院三天内术后', '其他'],
+      data: ['手术三天发热患者人数', '入院三天发热患者人数', '入院三天内术后发热患者人数', '其他发热患者人数', '未发热患者人数'],
       x: 'center',
       y: 'bottom'
     },
@@ -31,31 +31,37 @@ export default function LineChart(props: any) {
     },
     series: [
       {
-        name: '手术三天',
+        name: '手术三天发热患者人数',
         type: 'line',
         data: sourceData.shoushu || [],
-        itemStyle : { normal: {label : {show: true}}}
+        label: { show: true }
       },
       {
-        name: '入院三天',
+        name: '入院三天发热患者人数',
         type: 'line',
         data: sourceData.ruyuan || [],
-        itemStyle : { normal: {label : {show: true}}}
+        label: { show: true } 
       },
       {
-        name: '入院三天内术后',
+        name: '入院三天内术后发热患者人数',
         type: 'line',
         data: sourceData.ruyuanshoushu || [],
-        itemStyle : { normal: {label : {show: true}}}
+        label: { show: true }
       },
       {
-        name: '其他',
+        name: '其他发热患者人数',
         type: 'line',
         data: sourceData.qita || [],
-        itemStyle : { normal: {label : {show: true}}}
+        label: { show: true }
+      },
+      {
+        name: '未发热患者人数',
+        type: 'line',
+        data: sourceData.nofever || [],
+        label: { show: true }
       },
     ]
   };
 
-  return <ReactECharts style={{height: chartHeight}} option={options} />;
+  return <ReactECharts style={{ height: chartHeight }} option={options} />;
 };
