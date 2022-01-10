@@ -12,6 +12,7 @@ import { meunConfig as menuConfig_lcey } from "./config/menuConfig_lcey";
 import { meunConfig as menuConfig_gzsrm } from "./config/menuConfig_gzsrm";
 import { meunConfig as menuConfig_gxjb } from "./config/menuConfig_gxjb";
 import { meunConfig as menuConfig_dgxg } from "./config/menuConfig_dgxg";
+import { meunConfig as menuConfig_whyx } from "./config/menuConfig_whyx";
 
 export interface Props {
 }
@@ -45,6 +46,8 @@ export default function PersonnelManagementView() {
       case 'dgxg':
         return menuConfig_dgxg;
       case 'whyx'://武汉亚心
+        return menuConfig_whyx;
+      case 'sdlj'://顺德龙江
         return menuConfig_wh;
       default:
         return menuConfig_hj;

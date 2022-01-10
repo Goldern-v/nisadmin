@@ -7,7 +7,8 @@ import { Button, Input, Select } from "src/vendors/antd";
 import { getPageI, getPageO, qualityControlKeyApi, saveI } from "../api";
 import service from "src/services/api";
 import moment from "moment";
-import { message } from "antd";
+import { DatePicker, message } from "antd";
+import { format } from "date-fns";
 
 export interface DeptType {
   code: string;
@@ -24,6 +25,7 @@ export default observer(function(props) {
     reason: "",
     measure: "",
     effects: "",
+    reportDate: "",
   });
   const [form, setForm] = useState<getPageO>(defaultForm);
 
@@ -41,10 +43,13 @@ export default observer(function(props) {
   };
   const getCurBigDept = async () => {
     const res = await qualityControlKeyApi.getCurBigDept();
-    console.log("test-res", res);
     if (res.code == "200" && res.data) {
-      let cur = deptList.filter((v: any) => v.code === res.data);
-      setFormItem(cur || {});
+      console.log("test-res", res);
+      let cur: any = deptList.filter((v: any) => v.code === res.data);
+      if (cur && cur[0]) {
+        console.log("test-cur", cur);
+        setFormItem({ deptCode: cur[0].code, deptName: cur[0].name });
+      }
     }
   };
   const [deptList, setDeptList] = useState([]);
@@ -58,6 +63,7 @@ export default observer(function(props) {
 
   const handleSave = async () => {
     let {
+      reportDate,
       deptCode,
       deptName,
       keyPoint,
@@ -75,6 +81,7 @@ export default observer(function(props) {
       reason,
       measure,
       effects,
+      reportDate,
     };
     id && (params.id = id);
     let res = await qualityControlKeyApi.saveOrUpdate(params);
@@ -141,10 +148,18 @@ export default observer(function(props) {
         <div className="content">
           <p className="content__title">贵州省人民医院</p>
           <p className="content__title">护理质控重点督查工作报告</p>
-          <div className="content__header">
-            {appStore.queryObj.id && (
+          <div className={`content__header ${isWatch ? "disable" : ""}`}>
+            <DatePicker.MonthPicker
+              value={form.reportDate ? moment(form.reportDate) : undefined}
+              format="YYYY年MM月"
+              onChange={(e) => {
+                let v = e ? e.format("YYYY-MM-DD HH:mm") : "";
+                setFormItem({ reportDate: v });
+              }}
+            />
+            {/* {appStore.queryObj.id && (
               <span>{moment(form.createTime).format("YYYY年MM月")}</span>
-            )}
+            )} */}
             {/* <Input />
             <span>年</span>
             <Input />
@@ -275,7 +290,7 @@ const ContentWrapper = styled.div`
       flex: 1;
     }
     .ant-input {
-      width: 60px;
+      /* width: 60px; */
       border-radius: 0px;
       border-width: 0px 0px 1px 0px;
       padding-top: 0px;

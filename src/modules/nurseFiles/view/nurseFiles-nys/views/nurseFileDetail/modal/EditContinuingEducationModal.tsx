@@ -76,7 +76,10 @@ export default function EditWorkHistoryModal(props: Props) {
         trainingUnit: data.trainingUnit,
         trainingContent: data.trainingContent,
         hours: data.hours,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : [],
+        studyWay: data.studyWay,
+        credit: data.credit,
+        studyType: data.studyType
       })
       // refForm.current.setField('unit', 123)
     }
@@ -119,6 +122,15 @@ export default function EditWorkHistoryModal(props: Props) {
                 <Option value="专科护士">专科护士</Option>
                 <Option value="进修">进修</Option>
                 <Option value="短期学习">短期学习</Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学习方式`} name='studyWay'>
+              <Select>
+                {['学习班', '学习会议', '院内业务学习', '科内业务学习'].map((item, index) => 
+                  <Option key={index} value={item}>{item}</Option>
+                )}
               </Select>
             </Form.Field>
           </Col>

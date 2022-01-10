@@ -33,4 +33,16 @@ export default class ScheduleUserApiService extends BaseApiService {
   public async delete(id: any) {
     return this.get(`/schShiftUser/delete/${id}`)
   }
+  // 脱教设置
+  public async setResignation(data: any) {
+    return this.post(`schShiftUser/setResignation`,data)
+  }
+  //获取导师列表
+  public async getTotur(code: string) {
+    return this.get(`/dept/users/${code}`)
+  }
+  //设置导师
+  public async setTotur(data: any) {
+    return this.post('/schShiftUser/setTutor',data)
+  }
 }
