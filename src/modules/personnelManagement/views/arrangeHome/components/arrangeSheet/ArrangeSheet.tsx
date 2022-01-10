@@ -393,7 +393,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -637,7 +637,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lcey: () => 2,
                 dgxg: () => 2,
                 fsxt: () => 6,
-                whyx: () => 3
+                whyx: () => 7
               })) *
             70 +
             widthNys +

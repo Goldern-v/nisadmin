@@ -95,7 +95,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
       //武汉亚心whyx_排班
     case "whyx":
-      return "http://192.168.20.35:8080"
+      // return "http://192.168.20.35:8080"
+      return "http://192.168.1.54:9885"
     default:
       return "http://192.168.1.54:9866";
   }
