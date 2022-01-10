@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ColumnProps } from "antd/lib/table";
 import { getPageI, getPageO, qualityControlKeyApi } from "./api";
-import { DatePicker, Button, Select } from "antd";
+import { DatePicker, Button, Select, message, Modal } from "antd";
 import { PageTitle, Place, PageHeader } from "src/components/common";
 import BaseTable from "src/components/BaseTable";
 import { appStore, authStore } from "src/stores";
@@ -49,6 +49,23 @@ export default observer(function QualityControlKey(props) {
 
     history.push("/QualityControlKeyDetail" + text);
   };
+  const deleteItem = async (id: number) => {
+    const res = await qualityControlKeyApi.deleteItem(id);
+    if (res.code === "200") {
+      message.success("删除成功");
+      await getData();
+    }
+  };
+  const handleDelete = (id: number) => {
+    Modal.confirm({
+      title: "提示",
+      content: "是否删除?",
+      onOk: () => {
+        deleteItem(id);
+      },
+    });
+  };
+
   const columns: ColumnProps<getPageO>[] = [
     {
       title: "序号",
@@ -88,6 +105,7 @@ export default observer(function QualityControlKey(props) {
       render: (text: any, record: any, index: number) => {
         let watch = <div onClick={() => open(record, true)}>查看</div>;
         let change = <div onClick={() => open(record, false)}>修改</div>;
+        let deleteBtn = <div onClick={() => handleDelete(record.id)}>删除</div>;
         return (
           <ButtonBox>
             {(authStore.isDepartment ||
@@ -95,6 +113,8 @@ export default observer(function QualityControlKey(props) {
               authStore.isRoleManage) &&
               watch}
             {(authStore.isSupervisorNurse || authStore.isRoleManage) && change}
+            {(authStore.isSupervisorNurse || authStore.isRoleManage) &&
+              deleteBtn}
           </ButtonBox>
         );
       },

@@ -17,7 +17,7 @@ import createModal from "src/libs/createModal";
 import AddShiftModal from "../../modal/AddShiftModal";
 import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
 import { Icon } from "src/vendors/antd";
-
+import PostScoreCell from "../../../../components/arrangeSheet/postScoreCell";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
@@ -41,7 +41,14 @@ export interface Props extends RouteComponentProps {
 //   黑色: 'black',
 //   灰色: 'gray'
 // }
-
+let colorLumpMap: any = {
+  red: '红色', //#F23D35
+  green: '绿色', //#007AFF
+  blue: '蓝色', //#32B378
+  yellow: '黄色', //#f7ff02
+  gray: '灰色', //#999999
+  white: '白色' //#ffffff
+}
 export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
@@ -139,9 +146,14 @@ export default function MainBox() {
       render: (text: string, record: any) =>
         text && text.length > 0 ? (
           <span>
-            <Tag color={record.nameColor} key={text}>
-              {colorMapCN[text]}
-            </Tag>
+            {appStore.HOSPITAL_ID == 'whyx' ?
+              <Tag color={record.backgroundColor} key={text}>
+                <span style={{ color: record.nameColor }}>{colorMapCN[text]}</span>
+              </Tag> :
+              <Tag color={record.nameColor} key={text}>
+                {colorMapCN[text]}
+              </Tag>}
+
           </span>
         ) : (
           ""
@@ -171,6 +183,37 @@ export default function MainBox() {
       key: "settingNightHour",
       width: 90
     },
+    ...appStore.hisMatch({
+      map: {
+        whyx: [
+          {
+            title: "班次岗位系数",
+            width: 70,
+            align: "center",
+            dataIndex: "coefficient",
+            key: "coefficient",
+            render(text: string, record: any) {
+              return record.id ? <DoCon>
+                {text ? text : "-"}
+              </DoCon> : ""
+            }
+          },
+          {
+            title: "列入患护比",
+            dataIndex: "npProportion",
+            key: "npProportion",
+            width: 70,
+            align: "center",
+            render(text: string, record: any) {
+              return record.id ? <DoCon>
+                {record.npProportion == '1' ? "是" : "否"}
+              </DoCon> : ""
+            }
+          },
+        ],
+        other: []
+      },
+    }),
     ...appStore.hisMatch({
       map: {
         nys: [

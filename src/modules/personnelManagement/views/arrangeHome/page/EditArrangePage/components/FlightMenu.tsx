@@ -13,11 +13,12 @@ import service from 'src/services/api'
 export interface Props {
 }
 
-const BoxInner = styled.div<{ color?: string }>`
+const BoxInner = styled.div<{ color?: string, backgroundColor?: string }>`
   height: 30px;
   padding: 5px;
   border: 1px solid #d9d9d9;
   color: ${p => p.color || "#666"};
+  background: ${p => p.backgroundColor || ""};
   text-align: center;
   display: flex;
   align-items: center;
@@ -139,6 +140,8 @@ function MenuCon(props: { dataSource: any[] }) {
       cell!.settings = null;
       cell!.statusType = "";
       cell!.schAddOrSubs = [];
+      cell!.backgroundColor = item.backgroundColor;
+      cell!.rangeScore = item.rangeScore;
       // cell!.rangeNameCode = item.rangeNameCode
 
       /** 判断是否生成编号 */
@@ -163,7 +166,7 @@ function MenuCon(props: { dataSource: any[] }) {
   const onClick = async (item: any) => {
     if (appStore.HOSPITAL_ID == 'wh') {
       console.log(appStore.HOSPITAL_ID);
-      
+
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
@@ -178,16 +181,22 @@ function MenuCon(props: { dataSource: any[] }) {
     }
     const nextCell = sheetViewModal.getNextCell();
     sheetViewModal.selectedCell = nextCell
-    sheetViewModal.selectedCellList = [nextCell]
+    sheetViewModal.selectedCellList = [nextCell];
   };
 
   return (
     <Contain>
       {props.dataSource.map((item, index) => (
         <div className="menu-box" key={index}>
-          <BoxInner color={item.nameColor} onClick={() => onClick(item)}>
-            {item.name}
-          </BoxInner>
+          {appStore.HOSPITAL_ID == 'whyx' ?
+            <BoxInner color={item.nameColor} backgroundColor={item.backgroundColor} onClick={() => onClick(item)}>
+              {item.name}
+            </BoxInner> :
+            <BoxInner color={item.nameColor} onClick={() => onClick(item)}>
+              {item.name}
+            </BoxInner>
+          }
+
         </div>
       ))}
     </Contain>
@@ -223,6 +232,8 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.shiftType = mealObj.shiftType;
         list[i]!.statusType = "";
         list[i]!.schAddOrSubs = [];
+        list[i]!.backgroundColor = mealObj.backgroundColor;
+        list[i]!.rangeScore = mealObj.rangeScore;
       }
     }
   };

@@ -91,7 +91,7 @@ export default class QualityControlKeyApi extends BaseApiService {
    * @param id 
    * @returns 
    */
-  public async deleteItem(id: string) {
+  public async deleteItem(id: number) {
     
     return this.get(`/qcKeyPoint/delete/${id}`)
   }
