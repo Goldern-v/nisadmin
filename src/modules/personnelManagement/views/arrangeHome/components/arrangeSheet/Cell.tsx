@@ -657,7 +657,6 @@ export default observer(function Cell(props: Props) {
       );
     }
   });
-
   return (
     <Popover
       content={content}
@@ -671,6 +670,7 @@ export default observer(function Cell(props: Props) {
         onContextMenu={onContextMenu}
         onClick={onClick}
         className={classNames(cellConfig)}
+        backgroundColor={cellObj.backgroundColor}
       >
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
@@ -704,7 +704,7 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
         color: ${p => p.color};
         font-weight: ${p => ['#333333', '#999999'].includes(p.color || '') ? 'unset' : 'bold'}; 
       `,
-      default: styled.span<{ color: string | undefined }>`
+      default: styled.span<{ color?: string | undefined }>`
         color: ${p => p.color}; 
       `
     }
@@ -738,7 +738,6 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
             <Con
               color={cellObj.settings.length && cellObj.settings[0].nameColor}
             >
-              {/* {cellObj.settings[0].addSymbols} */}
               {cellObj.settings.length && cellObj.settings[0].rangeName}
             </Con>
           </React.Fragment>
@@ -754,7 +753,7 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
   return "";
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ backgroundColor?: string }>`
   height: calc(100% + 2px);
   width: calc(100% + 6px);
   display: flex;
@@ -763,6 +762,7 @@ const Wrapper = styled.div`
   margin: -1px -3px;
   position: relative;
   word-break: break-all;
+  background: ${p => p.backgroundColor || ""};
   &.isSelected {
     background: #ffe36c;
     cursor: pointer;

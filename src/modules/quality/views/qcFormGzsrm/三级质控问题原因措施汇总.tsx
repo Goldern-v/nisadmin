@@ -83,6 +83,12 @@ export default observer(function 三级问题原因措施汇总() {
           text={text}
           label="cause"
           qcMasterId={record.qcMasterId}
+          dateLabel="causeDate"
+          date={record.causeDate}
+          changeDate={(val: any) => {
+            record.causeDate = val;
+            setTableData([...tableData]);
+          }}
           input={(val: any) => {
             record.cause = val;
             setTableData([...tableData]);
@@ -100,6 +106,12 @@ export default observer(function 三级问题原因措施汇总() {
           text={text}
           label="measure"
           qcMasterId={record.qcMasterId}
+          dateLabel="measureDate"
+          date={record.measureDate}
+          changeDate={(val: any) => {
+            record.measureDate = val;
+            setTableData([...tableData]);
+          }}
           input={(val: any) => {
             record.measure = val;
             setTableData([...tableData]);
@@ -117,6 +129,12 @@ export default observer(function 三级问题原因措施汇总() {
           text={text}
           label="opinions"
           qcMasterId={record.qcMasterId}
+          dateLabel="opinionsDate"
+          date={record.opinionsDate}
+          changeDate={(val: any) => {
+            record.opinionsDate = val;
+            setTableData([...tableData]);
+          }}
           input={(val: any) => {
             record.opinions = val;
             setTableData([...tableData]);

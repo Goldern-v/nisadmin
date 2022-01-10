@@ -179,7 +179,9 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (process.env.REACT_APP_HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || appStore.HOSPITAL_ID == 'fssdy' || appStore.HOSPITAL_ID == 'fsxt') {
+} else if (process.env.REACT_APP_HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || 
+  appStore.HOSPITAL_ID == 'fssdy' || appStore.HOSPITAL_ID == 'fsxt'
+  || appStore.HOSPITAL_ID == 'sdlj') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),

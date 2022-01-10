@@ -67,9 +67,13 @@ export default function NurseHandBookFormPage(props: Props) {
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
     console.log(targetClass);
+    console.log(menuType);
     
     if (!targetClass.includes("common")) {
       setVisible(templeVisible)
+    }
+    if (!targetClass.includes("complexHeaderRight")) {
+      setComplexSelectVisible(false)
     }
   }
   useEffect(() => {

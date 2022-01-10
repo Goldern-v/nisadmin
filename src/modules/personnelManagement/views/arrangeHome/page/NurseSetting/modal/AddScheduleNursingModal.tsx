@@ -64,7 +64,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
   const [modalLoading, setModalLoading]: any = useState(false);
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => {};
+  const onFieldChange = () => { };
 
   const onSave = async () => {
     if (!refForm.current) return;
@@ -177,6 +177,11 @@ export default observer(function AddScheduleNursingModal(props: Props) {
               });
           },
           default: () => {
+            service.commonApiService
+              .dictInfo("sch_wh_user_type")
+              .then((res) => {
+                setUserTypeList(res.data);
+              });
             /** 层级 */
             service.commonApiService
               .dictInfo("user_new_hierarchy")
@@ -218,6 +223,18 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           rules={rules}
         >
           <Row>
+            {appStore.HOSPITAL_ID == 'whyx' && <Col span={24}>
+              <Form.Field label={`类型`} name="userType" required>
+                <Select>
+                  {userTypeList.map((item: DictItem) => (
+                    <Select.Option value={item.code} key={item.name}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            }
             <Col span={24}>
               {appStore.HOSPITAL_ID !== "hj" ? (
                 <Form.Field label={`姓名`} name="empName" required>
