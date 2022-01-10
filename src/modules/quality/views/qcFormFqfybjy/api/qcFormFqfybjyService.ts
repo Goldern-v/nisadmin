@@ -27,7 +27,7 @@ class QcFormFqfybjyService extends BaseApiService {
     beginDate: string,
     endDate: string,
   }) {
-    return this.post('/qcPdca/getList/export', query, { responseType: 'blob' })
+    return this.post('/qcPdca/getList/exportForFQ', query, { responseType: 'blob' })
       .then(res => fileDownload(res))
   }
   public cause(query: {}) {
