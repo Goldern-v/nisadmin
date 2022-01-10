@@ -37,7 +37,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
       return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.20.61:9091"; // 宏群本地
-
+      // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
+      return "http://192.168.1.106:9091"; // 宏群本地
     /** 东莞横沥 */
     case "dghl":
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
@@ -91,6 +92,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "sdlj": //顺德龙江
       //return 'http://192.168.20.57:9091'//
       return "http://192.168.1.54:9874"; //
+
+      //武汉亚心whyx_排班
+    case "whyx":
+      return "http://192.168.20.35:8080"
     default:
       return "http://192.168.1.54:9866";
   }

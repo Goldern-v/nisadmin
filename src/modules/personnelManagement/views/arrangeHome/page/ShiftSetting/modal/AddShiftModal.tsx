@@ -10,7 +10,8 @@ import {
   Row,
   Col,
   TimePicker,
-  message
+  message,
+  InputNumber,
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -37,51 +38,57 @@ export interface Props extends ModalComponentProps {
 const rules: Rules =
   appStore.HOSPITAL_ID == "hj"
     ? {
-      name: val => !!val || "请填写班次名称",
-      shiftType: val => !!val || "请填写班次类别",
+      name: (val) => !!val || "请填写班次名称",
+      shiftType: (val) => !!val || "请填写班次类别",
       // workTime: val => !!val || "请填写上班时间",
-      workTime1: val => !!val || "请填写上班开始时间",
-      workTime2: val => !!val || "请填写上班结束时间",
-      effectiveTime: val => !!val || "请填写标准工时",
-      nameColor: val => !!val || "请填写颜色标记"
+      workTime1: (val) => !!val || "请填写上班开始时间",
+      workTime2: (val) => !!val || "请填写上班结束时间",
+      effectiveTime: (val) => !!val || "请填写标准工时",
+      nameColor: (val) => !!val || "请填写颜色标记",
     }
     : {
-      name: val => !!val || "请填写班次名称",
-      shiftType: val => !!val || "请填写班次类别",
+      name: (val) => !!val || "请填写班次名称",
+      shiftType: (val) => !!val || "请填写班次类别",
       // workTime: val => !!val || "请填写上班时间",
-      workTime1: val => !!val || "请填写上班开始时间",
-      workTime2: val => !!val || "请填写上班结束时间",
-      effectiveTime: val => (!!val || val == "0" ? "" : "请填写标准工时")
+      workTime1: (val) => !!val || "请填写上班开始时间",
+      workTime2: (val) => !!val || "请填写上班结束时间",
+      effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
     };
 
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
   const [shiftList, setShiftList] = useState([]);
   const [colorList, setColorList] = useState([]);
+  const [backgroundColorList, setBackgroundColorList] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
 
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
 
   const parsingTime = (time: string) => {
-    const [timeRange, timeRange2] = time.split(';')
-    const [workTime1, workTime2] = (timeRange || '').split('-')
-    const [workTime3, workTime4] = (timeRange2 || '').split('-')
+    const [timeRange, timeRange2] = time.split(";");
+    const [workTime1, workTime2] = (timeRange || "").split("-");
+    const [workTime3, workTime4] = (timeRange2 || "").split("-");
     return {
-      workTime1: moment(workTime1, 'HH:mm'),
-      workTime2: moment(workTime2, 'HH:mm'),
-      workTime3: workTime3 ? moment(workTime3, 'HH:mm') : undefined,
-      workTime4: workTime4 ? moment(workTime4, 'HH:mm') : undefined,
-    }
-  }
+      workTime1: moment(workTime1, "HH:mm"),
+      workTime2: moment(workTime2, "HH:mm"),
+      workTime3: workTime3 ? moment(workTime3, "HH:mm") : undefined,
+      workTime4: workTime4 ? moment(workTime4, "HH:mm") : undefined,
+    };
+  };
 
-  const getTimeStr = (time1: moment.Moment, time2: moment.Moment, time3?: moment.Moment, time4?: moment.Moment) => {
-    let str = time1.format('HH:mm') + '-' + time2.format('HH:mm')
+  const getTimeStr = (
+    time1: moment.Moment,
+    time2: moment.Moment,
+    time3?: moment.Moment,
+    time4?: moment.Moment
+  ) => {
+    let str = time1.format("HH:mm") + "-" + time2.format("HH:mm");
     if (time3 && time4) {
-      str += ';' + time3.format('HH:mm') + '-' + time4.format('HH:mm')
+      str += ";" + time3.format("HH:mm") + "-" + time4.format("HH:mm");
     }
-    return str
-  }
+    return str;
+  };
 
   const onSave = async () => {
     if (!refForm.current) return;
@@ -94,11 +101,16 @@ export default function AddShiftModal(props: Props) {
       : (data.settingMorningHour = 0);
     data.settingNightHour ? data.settingNightHour : (data.settingNightHour = 0);
     data.deptCode = authStore.selectedDeptCode;
-    data.workTime = getTimeStr(data.workTime1, data.workTime2, data.workTime3, data.workTime4)
-    delete data.workTime1
-    delete data.workTime2
-    delete data.workTime3
-    delete data.workTime4
+    data.workTime = getTimeStr(
+      data.workTime1,
+      data.workTime2,
+      data.workTime3,
+      data.workTime4
+    );
+    delete data.workTime1;
+    delete data.workTime2;
+    delete data.workTime3;
+    delete data.workTime4;
     /** 保存接口 */
     arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
       message.success("保存成功");
@@ -114,10 +126,11 @@ export default function AddShiftModal(props: Props) {
       setModalLoading(true);
       let from = refForm.current;
       service.commonApiService
-        .multiDictInfo(["sch_range_shift_type", "sch_range_color"])
-        .then(res => {
+        .multiDictInfo(["sch_range_shift_type", "sch_range_color", "sch_background_color"])
+        .then((res) => {
           setShiftList(res.data.sch_range_shift_type);
           setColorList(res.data.sch_range_color);
+          setBackgroundColorList(res.data.sch_background_color);
           setModalLoading(false);
           if (props.editData) {
             from!.setFields({
@@ -131,35 +144,42 @@ export default function AddShiftModal(props: Props) {
               rangeLimit: props.editData.rangeLimit,
               settingNightHour: props.editData.settingNightHour,
               settingMorningHour: props.editData.settingMorningHour,
+              coefficient: props.editData.coefficient,
+              backgroundColor: props.editData.backgroundColor,
+              npProportion: props.editData.npProportion == 1 ? '1' : '0'
             });
           } else {
             /** 表单数据初始化 */
             from!.setFields({
               name: "",
               shiftType: "",
-              workTime1: moment('8:00', 'HH:mm'),
-              workTime2: moment('12:00', 'HH:mm'),
-              workTime3: moment('14:00', 'HH:mm'),
-              workTime4: moment('18:00', 'HH:mm'),
+              workTime1: moment("8:00", "HH:mm"),
+              workTime2: moment("12:00", "HH:mm"),
+              workTime3: moment("14:00", "HH:mm"),
+              workTime4: moment("18:00", "HH:mm"),
               effectiveTime: "8",
-              nameColor: "",
+              nameColor: appStore.HOSPITAL_ID == 'whyx' ? '#333333' : "",
               status: true,
               rangeLimit: "",
               settingNightHour: "0",
               settingMorningHour: "0",
+              coefficient: "",
+              backgroundColor: "#ffffff",
+              npProportion: "0"
             });
           }
         });
     }
   }, [visible]);
 
-
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    if (appStore.HOSPITAL_ID === 'lcey') {
-      if (['workTime1', 'workTime2', 'workTime3', 'workTime4'].includes(name)) {
-        const { workTime1, workTime2, workTime3, workTime4 } = form.getFields()
-        const time1 = (workTime1 && workTime2) ? workTime2.diff(workTime1, "h") : 0
-        const time2 = (workTime3 && workTime4) ? workTime4.diff(workTime3, "h") : 0
+    if (appStore.HOSPITAL_ID === "lcey") {
+      if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
+        const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
+        const time1 =
+          workTime1 && workTime2 ? workTime2.diff(workTime1, "h") : 0;
+        const time2 =
+          workTime3 && workTime4 ? workTime4.diff(workTime3, "h") : 0;
         form.setField("effectiveTime", time1 + time2);
       }
     }
@@ -201,116 +221,192 @@ export default function AddShiftModal(props: Props) {
       okText="保存"
       forceRender
     >
-      <Spin spinning={modalLoading}>
-        <Form
-          ref={refForm}
-          rules={rules}
-          labelWidth={80}
-          onChange={onFormChange}
-        >
-          <Row>
-            <Col span={24}>
-              <Form.Field label={`班次名称`} name="name" required>
-                <Input
-                  disabled={props.type && props.type == "nys" && props.identity}
-                />
-              </Form.Field>
-            </Col>
+      <Wrapper>
+        <Spin spinning={modalLoading}>
+          <Form
+            ref={refForm}
+            rules={rules}
+            labelWidth={100}
+            onChange={onFormChange}
+          >
+            <Row>
+              <Col span={24}>
+                <Form.Field label={`班次名称`} name="name" required>
+                  <Input
+                    disabled={
+                      props.type && props.type == "nys" && props.identity
+                    }
+                  />
+                </Form.Field>
+              </Col>
 
-            <Col span={24}>
-              <Form.Field label={`班次类别`} name="shiftType" required>
-                <Select
-                  disabled={props.type && props.type == "nys" && props.identity}
-                >
-                  {shiftList.map((item: any, index: number) => (
-                    <Select.Option key={index} value={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            {/*<div style={tips}>例如：多个上班时间段可用;隔开，如08:00-12:00;02:00-18:00</div>*/}
-            {/* 时间段1 */}
-            <Col span={12}>
-              <Form.Field label={`上班时间`} name="workTime1" required>
-                <TimePicker format={'HH:mm'}/>
-              </Form.Field>
-            </Col>
-            <Col span={1}>
-              <div style={{ lineHeight: '32px', textAlign: 'center' }}>-</div>
-            </Col>
-            <Col span={8}>
-              <Form.Field name="workTime2" required>
-                <TimePicker format={'HH:mm'}/>
-              </Form.Field>
-            </Col>
-            {/* 时间段2 */}
-            <Col span={12} style={{ paddingLeft: '100px' }}>
-              <Form.Field name="workTime3" required>
-                <TimePicker format={'HH:mm'}/>
-              </Form.Field>
-            </Col>
-            <Col span={1}>
-              <div style={{ lineHeight: '32px', textAlign: 'center' }}>-</div>
-            </Col>
-            <Col span={8}>
-              <Form.Field name="workTime4" required>
-                <TimePicker format={'HH:mm'}/>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`标准工时`} name="effectiveTime" required>
-                <Input/>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`白工时`} name="settingMorningHour">
-                <Input/>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`夜工时`} name="settingNightHour">
-                <Input/>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field
-                label={`颜色标记`}
-                name="nameColor"
-                required={appStore.HOSPITAL_ID == "hj"}
-              >
-                <Select>
-                  {colorList.map((item: any, index: number) => (
-                    <Select.Option key={index} value={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            {appStore.HOSPITAL_ID == "nys" &&
-            <Col span={24}>
-              <Form.Field label={`周班次数`} name="rangeLimit">
-                <Input/>
-              </Form.Field>
-            </Col>
-            }
-            <Col span={24}>
-              <Form.Field label={`启用状态`} name="status">
-                <SwitchField/>
-              </Form.Field>
-            </Col>
-          </Row>
-        </Form>
-      </Spin>
+              <Col span={24}>
+                <Form.Field label={`班次类别`} name="shiftType" required>
+                  <Select
+                    disabled={
+                      props.type && props.type == "nys" && props.identity
+                    }
+                  >
+                    {shiftList.map((item: any, index: number) => (
+                      <Select.Option key={index} value={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              {appStore.HOSPITAL_ID == "whyx" && (
+                <Col span={24}>
+                  <Form.Field label={`班次岗位系数`} name="coefficient">
+                    {/* <Input/> */}
+                    <InputNumber min={0} max={9.99} step={0.01} precision={2} />
+                  </Form.Field>
+                </Col>
+              )}
+              {/*<div style={tips}>例如：多个上班时间段可用;隔开，如08:00-12:00;02:00-18:00</div>*/}
+              {/* 时间段1 */}
+              <Col span={12}>
+                <Form.Field label={`上班时间`} name="workTime1" required>
+                  <TimePicker format={"HH:mm"} />
+                </Form.Field>
+              </Col>
+              <Col span={1}>
+                <div style={{ lineHeight: "32px", textAlign: "center" }}>-</div>
+              </Col>
+              <Col span={8}>
+                <Form.Field name="workTime2" required>
+                  <TimePicker format={"HH:mm"} />
+                </Form.Field>
+              </Col>
+              {/* 时间段2 */}
+              <Col span={12} style={{ paddingLeft: "100px" }}>
+                <Form.Field name="workTime3" required>
+                  <TimePicker format={"HH:mm"} />
+                </Form.Field>
+              </Col>
+              <Col span={1}>
+                <div style={{ lineHeight: "32px", textAlign: "center" }}>-</div>
+              </Col>
+              <Col span={8}>
+                <Form.Field name="workTime4" required>
+                  <TimePicker format={"HH:mm"} />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`标准工时`} name="effectiveTime" required>
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`白工时`} name="settingMorningHour">
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`夜工时`} name="settingNightHour">
+                  <Input />
+                </Form.Field>
+              </Col>
+              {appStore.hisAdapter({
+                whyx: () => (
+                  <React.Fragment>
+                    <Col span={24}>
+                      <Form.Field label={`列入患者比`} name="npProportion">
+                        <Select>
+                          <Select.Option value={"1"}>是</Select.Option>
+                          <Select.Option value={"0"}>否</Select.Option>
+                        </Select>
+                      </Form.Field>
+                    </Col>
+                    <Col span={12} className="color-lump">
+                      <Form.Field label={`色块标记`} name="backgroundColor">
+                        <Select>
+                          {backgroundColorList.map((item: any, index: number) => (
+                            <Select.Option key={index} value={item.code}>
+                              <div
+                                className="block-color"
+                                style={{ ...blockColor, background: item.code }}
+                              >
+                                <span style={{ opacity: 0 }}>{item.name}</span>
+                              </div>
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Field>
+                    </Col>
+                    <Col span={12} className="color-lump">
+                      <Form.Field label={`文字颜色`} name="nameColor">
+                        <Select>
+                          {colorList.map((item: any, index: number) => (
+                            <Select.Option key={index} value={item.code}>
+                              <div
+                                className="block-color"
+                                style={{ ...blockColor, background: item.code }}
+                              >
+                                <span style={{ opacity: 0 }}>{item.name}</span>
+                              </div>
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Field>
+                    </Col>
+                  </React.Fragment>
+                )
+              })}
+              {appStore.HOSPITAL_ID != "whyx" &&
+                <Col span={24}>
+                  <Form.Field
+                    label={`颜色标记`}
+                    name="nameColor"
+                    required={appStore.HOSPITAL_ID == "hj"}
+                  >
+                    <Select>
+                      {colorList.map((item: any, index: number) => (
+                        <Select.Option key={index} value={item.code}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              }
+              {appStore.HOSPITAL_ID == "nys" && (
+                <Col span={24}>
+                  <Form.Field label={`周班次数`} name="rangeLimit">
+                    <Input />
+                  </Form.Field>
+                </Col>
+              )}
+              <Col span={24}>
+                <Form.Field label={`启用状态`} name="status">
+                  <SwitchField />
+                </Form.Field>
+              </Col>
+            </Row>
+          </Form>
+        </Spin>
+      </Wrapper>
     </Modal>
   );
 }
 const tips = {
   "padding-left": "100px",
   "font-size": "10px",
-  "color": "red"
-}
-
-const Wrapper = styled.div``;
+  color: "red",
+};
+const blockColor = {
+  margin: "-5px -12px",
+  padding: "5px 17px",
+  color: "#fff",
+};
+const Wrapper = styled.div`
+  .color-lump{
+    .ant-select-selection__rendered {
+      margin-left: 0;
+    }
+    .ant-select-selection-selected-value {
+      width: 100%;
+      padding-right: 28px;
+    }
+  }
+`;

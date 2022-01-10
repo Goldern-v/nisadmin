@@ -20,6 +20,7 @@ import AddRemakeModal from "../../modal/AddRemakeModal";
 import { ArrangeItem } from "../../types/Sheet";
 import TotalCell from "./TotalCell";
 import NightHourCell from "./NightHourCell";
+import PostScoreCell from "./postScoreCell";
 import TotalHoliday from "./TotalHoliday";
 import { appStore } from "src/stores";
 import update from "immutability-helper";
@@ -124,6 +125,27 @@ export default observer(function ArrangeSheet(props: Props) {
       align: "center",
     },
     ...nysGroupName,
+    ...appStore.hisMatch({
+      map: {
+        'whyx': [
+          {
+            title: "组别",
+            dataIndex: "groupNameAndNum",
+            width: 70,
+            fixed: "left",
+            align: "center",
+            // render(text: any, record: any) {
+            //   return (
+            //     <div style={{ color: record.groupColor }}>
+            //       {record.groupName}
+            //     </div>
+            //   );
+            // },
+          },
+        ],
+        default: [],
+      },
+    }),
     {
       title: "工号",
       dataIndex: "empNo",
@@ -160,16 +182,18 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 50,
       fixed: "left",
       align: "center",
-      // render(text: any, record: any) { // 产品提的新需求  等待产品整理好再做
-      //   // console.log(record, 99965)
-      //   return (
-      //     <CellLeft
-      //       contextMenu={contextMenu}
-      //       dataSource={record}
-      //       isEdit={isEdit}
-      //     />
-      //   );
-      // },
+      render(text: any, record: any) {
+        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+          return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
+            <span>{record.empName}</span>
+            {record.extraUser && <React.Fragment>
+              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : "#007aff" }}>{record.extraUser.empName}</span>
+            </React.Fragment>
+            }
+          </div >
+        }
+        return <span>{record.empName}</span>
+      },
     },
     ...appStore.hisMatch({
       map: {
@@ -536,6 +560,25 @@ export default observer(function ArrangeSheet(props: Props) {
     );
   }
 
+  // 武汉亚心特殊字段
+  if (["whyx"].includes(appStore.HOSPITAL_ID)) {
+    columns.push(
+      {
+        title: (
+          <div>
+            <div>班次岗位分值汇总</div>
+            {/* <div>（小时）</div> */}
+          </div>
+        ),
+        width: 70,
+        align: "center",
+        render(text: string, record: any) {
+          return <PostScoreCell id={record.id} />;
+        },
+      },
+    );
+  }
+
   useLayoutEffect(() => {
     try {
       (document as any)
@@ -573,6 +616,9 @@ export default observer(function ArrangeSheet(props: Props) {
               : appStore.HOSPITAL_ID == "dgxg"
                 ? 350
                 : 250;
+          if (appStore.HOSPITAL_ID == 'whyx') {
+            widthNys += 70
+          }
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -591,6 +637,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lcey: () => 2,
                 dgxg: () => 2,
                 fsxt: () => 6,
+                whyx: () => 3
               })) *
             70 +
             widthNys +
