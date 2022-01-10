@@ -4,18 +4,20 @@ import { Table, Button, DatePicker, Radio, Spin } from 'antd'
 import CommonLayout, { ChartCon } from './../../common/CommonLayout'
 import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
-import CircleChart from './../../components/CircleChart'
-import LineChart from './../../components/LineChart'
+// import CircleChart from './../../components/CircleChart'
+// import LineChart from './../../components/LineChart'
+import CircleChart from './components/CircleChart'
+import LineChart from './components/LineChart'
 import BaseTable from 'src/components/BaseTable'
 import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
-import { delWithResData } from '../../utils/dealWithData'
-import { setResData } from './dealWithData'
+// import { delWithResData } from '../../utils/dealWithData'
+import { setResData, getLineData } from './dealWithData'
 import moment from 'src/vendors/moment'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 const RangePicker = DatePicker.RangePicker
-
+const MonthPicker = DatePicker.MonthPicker
 export interface Props { }
 
 export default observer(function FeverPatient() {
@@ -26,8 +28,8 @@ export default observer(function FeverPatient() {
   let _currentYear = currentYear()
   // const { deptList } = authStore
   interface IQuery {
-    startDate: string;
-    endDate: string;
+    startDate: string|any;
+    endDate: string|any;
   }
   const [query, setQuery] = useState<IQuery>({
     // deptCode: '',
@@ -38,10 +40,12 @@ export default observer(function FeverPatient() {
   const [chartData, setChartData] = useState([] as any[])
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
   const [chartVisible, setChartVisible] = useState(false)
-  const [chartWithDate, setDateBtnVisible] = useState('year')
-
+  const [searchMode, setSearchMode] = useState('year')
+  const [mode, setMode] = useState('year')
+  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-
+  const [format, setFormat] = useState('YYYY-MM-DD')
+  const [lineData, setLineData] = useState({})
   // const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
   
   // 表头数据类型
@@ -114,7 +118,10 @@ export default observer(function FeverPatient() {
     const rData = setResData(resultData)
     setData(rData.tableData)
     setChartData(rData.chartData)
-    // console.log('rData', rData)
+    // 获取折线图数据
+    const lineData = getLineData(resultData, query, searchMode)
+    console.log('lineData', lineData)
+    setLineData(lineData)
     setLoading(false)
   }
 
@@ -135,7 +142,7 @@ export default observer(function FeverPatient() {
     <CommonLayout
     header={<div>
       <span>日期：</span>
-      <RangePicker
+      {(!chartVisible || searchMode == 'day') && <RangePicker
         className="content-item"
         style={{ width: 220 }}
         value={[moment(query.startDate), moment(query.endDate)]}
@@ -151,14 +158,61 @@ export default observer(function FeverPatient() {
             endDate: payload[1].format('YYYY-MM-DD'),
           })
         }}
-        allowClear={false} />
+        allowClear={false} />}
+      {(chartVisible && searchMode != 'day') && 
+        <RangePicker
+          className="content-item"
+          style={{ width: 220 }}
+          value={[moment(query.startDate), moment(query.endDate)]}
+          format={format}
+          mode={[mode, mode]}
+          open={open}
+          ranges={{
+            '本月': _currentMonth,
+            '本季度': _currentQuater,
+            '本年度': _currentYear,
+          }}
+          onOpenChange={(status) => {
+            // console.log('status', status)
+            if(status){
+              setOpen(true)
+            } else {
+              setOpen(false)
+            }
+          }} 
+          onPanelChange={(payload: any) => {
+            console.log('payload', payload)
+            setOpen(false)
+            setQuery({
+              ...query,
+              startDate: payload[0].format('YYYY-MM-DD'),
+              endDate: payload[1].format('YYYY-MM-DD'),
+            })
+          }}
+          allowClear={false} 
+        />
+      }
       <Button type="primary" onClick={handleSearch}>查询</Button>
       {chartVisible && <Radio.Group
         className='chartBtnGroup'
         size="default"
         buttonStyle="solid"
-        value={chartWithDate}
-        onChange={(e) => setDateBtnVisible(e.target.value)}>
+        value={searchMode}
+        onChange={(e) => {
+          setSearchMode(e.target.value)
+          if (e.target.value === 'year')  {
+            setFormat('YYYY')
+            setMode('year')
+          }
+          if (e.target.value === 'month' || e.target.value === 'quarter') {
+            setFormat('YYYY-MM')
+            setMode('month')
+          }
+          if (e.target.value === 'day') {
+            setFormat('YYYY-MM-DD')
+            setMode('date')
+          }
+        }}>
         <Radio.Button value={'year'}>年</Radio.Button>
         <Radio.Button value={'quarter'}>季度</Radio.Button>
         <Radio.Button value={'month'}>月份</Radio.Button>
@@ -173,7 +227,16 @@ export default observer(function FeverPatient() {
           size="small"
           buttonStyle="solid"
           value={chartVisible}
-          onChange={(e) => setChartVisible(e.target.value)}>
+          onChange={(e) => {
+            setChartVisible(e.target.value)
+            if (e.target.value) {
+              setFormat('YYYY')
+              setSearchMode('year')
+            } else {
+              setFormat('YYYY-MM-DD')
+              setSearchMode('')
+            }
+          }}>
           <Radio.Button value={false} >表格</Radio.Button>
           <Radio.Button value={true}>图表</Radio.Button>
         </Radio.Group>
@@ -202,7 +265,7 @@ export default observer(function FeverPatient() {
               />
               <LineChart 
                 chartHeight={chartHeight}
-                sourceData={chartData} 
+                sourceData={lineData} 
               ></LineChart>
             </div>
           }
