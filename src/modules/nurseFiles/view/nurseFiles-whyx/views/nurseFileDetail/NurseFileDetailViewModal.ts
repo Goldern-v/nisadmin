@@ -33,6 +33,8 @@ let dictList = {
   专利排名: 'patent_level',
   作者: 'article_author',
   工作服码数: 'work_clothes_size',
+  参与成员: 'emp_name', // TODO
+  授权类别: 'grant_type' // todo
 }
 
 type DictList = typeof dictList
@@ -48,11 +50,9 @@ class NurseFileDetailViewModal {
 
   initDict() {
     service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
-      console.log(res.data, 888721);
       this.dict = res.data
     })
     service.commonApiService.getNursingUnitAll().then((res) => {
-      console.log(res.data.deptList, 7765)
       this.allDeptAll = res.data.deptList
     })
   }

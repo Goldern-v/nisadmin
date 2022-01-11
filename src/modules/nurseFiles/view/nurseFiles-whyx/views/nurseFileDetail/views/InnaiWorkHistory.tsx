@@ -81,7 +81,7 @@ export default observer(function WorkHistory() {
     // todo
     {
       title: '科室',
-      dataIndex: 'professionalWork',
+      dataIndex: 'department',
       key: '5',
       width: 150,
       align: 'center'
@@ -126,7 +126,7 @@ export default observer(function WorkHistory() {
   }, []) 
 
   return (
-    <BaseLayout title='院内工作经历' btnList={btnList}>
+    <BaseLayout title='院内工作经历' btnList={isSelf() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

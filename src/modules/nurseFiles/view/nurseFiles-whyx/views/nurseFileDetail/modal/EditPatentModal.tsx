@@ -26,16 +26,16 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  patentLevel: (val) => {
-    if (val) {
-      if (/^第[零一二三四五六七八九十百千万亿兆]*$/.test(val))
-        return true
+  // patentLevel: (val) => {
+  //   if (val) {
+  //     if (/^第[零一二三四五六七八九十百千万亿兆]*$/.test(val))
+  //       return true
 
-      return '填写为“第三”，不能为3或者第3'
-    } else {
-      return true
-    }
-  },
+  //     return '填写为“第三”，不能为3或者第3'
+  //   } else {
+  //     return true
+  //   }
+  // },
   patentNumber: (val) => {
     if (val) {
       if (/^ZL [0-9]{4} [0-9] [0-9]{7}\.[0-9]$/.test(val))
@@ -77,6 +77,7 @@ export default function EditPatentModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.cardDate && (value.cardDate = value.cardDate.format('YYYY-MM-DD'))
+    value.grantNoticeDate && (value.grantNoticeDate = value.grantNoticeDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
 
     nurseFilesService.commonSaveOrUpdate('nurseWHPatent', { ...obj, ...value, sign }).then((res: any) => {
@@ -95,7 +96,8 @@ export default function EditPatentModal(props: Props) {
         ...data,
         ...{
           cardDate: data.cardDate ? moment(data.cardDate) : null,
-          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : [],
+          grantNoticeDate: data.grantNoticeDate ? moment(data.grantNoticeDate) : null,
         }
       })
     }
@@ -137,7 +139,9 @@ export default function EditPatentModal(props: Props) {
             <Col span={24}>
               {/* todo 专利排名改为 专利个人排名*/}
               <Form.Field label={`专利个人排名`} name='patentLevel'>
-                <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} />
+                {/* 原本的 */}
+                {/* <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} /> */}
+                <AutoComplete dataSource={['第一人', '第二人', '第三人', '其他'].map((item) => item)} />
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -177,7 +181,7 @@ export default function EditPatentModal(props: Props) {
             </Col>
             {/* todo 新增 */}
             <Col span={24}>
-              <Form.Field label={`授权公告日`} name='cardDate'>
+              <Form.Field label={`授权公告日`} name='grantNoticeDate'>
                 <DatePicker />
               </Form.Field>
             </Col>

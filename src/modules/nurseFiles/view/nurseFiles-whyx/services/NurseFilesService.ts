@@ -108,7 +108,7 @@ export default class NurseFilesService extends BaseApiService {
   /** 统一列表 */
   public commonfindByEmpNoSubmit(type: string, empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    if (isSelf()) {
+    if (isSelf() || type === 'nurseWHWorkExperience'  || type === 'nurseWHAcademic') {
       return this.get(`/${type}/findByEmpNo/${empNo}`).then((res) => {
         nurseFileDetailViewModal.pageSpinning = false
         return res
@@ -122,7 +122,8 @@ export default class NurseFilesService extends BaseApiService {
   }
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
-    return this.post(`/${type}/saveOrUpdate`, obj)
+    if (type === 'nurseWHOutStudy') return this.post(`/${type}/saveOrUpdateYaXin`, obj)
+    else return this.post(`/${type}/saveOrUpdate`, obj)
   }
   /** 统一删除 */
   public async commonDelById(type: string, id: any) {
@@ -144,6 +145,12 @@ export default class NurseFilesService extends BaseApiService {
   public nurseNativePlaceFindByName(nativePlaceName: any) {
     return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
   }
+
+  /** 根据科室获取科室人员 */
+  public async getUsers(code: any) {
+    return this.get(`/dept/users/${code}`)
+  }
+
 }
 
 export const nurseFilesService = new NurseFilesService()

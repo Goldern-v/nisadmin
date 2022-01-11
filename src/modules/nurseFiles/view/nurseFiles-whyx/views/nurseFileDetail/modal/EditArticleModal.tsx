@@ -44,8 +44,8 @@ const rules: Rules = {
   },
   pageNumber(val) {
     if(val) {
-      if (/^[0-9]\-[0-9]$/.test(val)) return true
-      return '请输入正确的起始页码，起始页码和结束页码的数字，中间用减号相隔）'
+      if (/^\d+\-\d+$/.test(val)) return true
+      return '请输入正确的起始页码，起始页码和结束页码的数字，中间用减号相隔。例如：1-56）'
     } else return true
   }
   // time: (val) => !!val || '请填写时间',
@@ -77,10 +77,13 @@ export default function EditArticleModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY年MM月'))
+    console.log(value.journal, 8888)
+    value.journal && (value.journal = value.journal.format('YYYY年MM月'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
+    value.urlImageThree && (value.urlImageThree = value.urlImageThree.join(','))
+    value.urlImageFour && (value.urlImageFour = value.urlImageFour.join(','))
+    value.urlImageFive && (value.urlImageFive = value.urlImageFive.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -93,12 +96,16 @@ export default function EditArticleModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
+      console.log(data.journal ? moment(data.journal) : null, 999)
       refForm!.current!.setFields({
         ...data,
         ...{
-          publicYear: data.publicYear ? moment(data.publicYear) : null,
+          journal: data.journal ? moment(data.journal.replace(/([^\u0000-\u00FF])/g, '-')) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : [],
-          urlImageTwo: data.urlImageTwo ? data.urlImageTwo.split(',') : []
+          urlImageTwo: data.urlImageTwo ? data.urlImageTwo.split(',') : [],
+          urlImageThree: data.urlImageThree ? data.urlImageThree.split(',') : [],
+          urlImageFour: data.urlImageFour ? data.urlImageFour.split(',') : [],
+          urlImageFive: data.urlImageFive ? data.urlImageFive.split(',') : []
         }
       })
     }
@@ -151,10 +158,8 @@ export default function EditArticleModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
-            {/* todo */}
             <Col span={24}>
-              <Form.Field label={`期刊年月`} name='publicYear'>
-                {/* <YearPicker /> */}
+              <Form.Field label={`期刊年月`} name='journal'>
                 <MonthPicker format="YYYY年MM月" />
               </Form.Field>
             </Col>
@@ -196,17 +201,17 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`目录扫描件`} name='urlImageOne'>
+              <Form.Field label={`目录扫描件`} name='urlImageThree'>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`正文扫描件`} name='urlImageOne'>
+              <Form.Field label={`正文扫描件`} name='urlImageFour'>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`封底扫描件`} name='urlImageOne'>
+              <Form.Field label={`封底扫描件`} name='urlImageFive'>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>

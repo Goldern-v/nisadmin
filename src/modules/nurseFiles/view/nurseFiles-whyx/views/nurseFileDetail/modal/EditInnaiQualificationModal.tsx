@@ -38,6 +38,19 @@ export default function EditPersonWinningModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
+  const grantType = ['岗位准入', '院区专长护士', '专科技术', 'POCT', '高风险操作授权', '教学指导权', '院内会诊指导权', '院外会诊指导权']
+  const grantName = {
+    岗位准入: ['CSSD岗位资助证', '病区护士夜班资质准入（内、外科病区）', '特殊科室（OR、急诊、重症、介入）准入资格证', '新生儿护理准入资质', '护理文件书写准入资质', '外勤护士准入资质'],
+    院区专长护士: ['气道护理', '糖尿病护理', '皮肤伤口护理', '居家护理上门资质认证', '心衰专长护士', '超滤专长护士'],
+    专科技术: ['CPR资质证', 'CVC维护资质证', 'PVC置管/维护/拔管资质认证', 'PICC/MC维护资质证', '肠外营养液配置资质认证'],
+    POCT: ['床旁血糖监测', '床旁血气分析'],
+    高风险操作授权: ['PICC穿刺', '除颤仪操作', '鼻肠管置管', 'CRRT', 'IABP护理'],
+    教学指导权: ['床边教学老师证', '健康教育讲师'],
+    院内会诊指导权: ['危重症护理', '心衰护理', '皮肤伤口', '营养会诊', '急诊护理', '糖尿病护理', '老年护理', '静脉治疗', '血液净化', '康复会诊'],
+    院外会诊指导权: ['心外科重症', '心内科重症', '儿科重症', '手术护理', '介入护理'],
+  }
+  const [selectGrantType, setSelectGrantType] = useState(grantType[0])
+
   const onFieldChange = (val: any) => {
   }
 
@@ -63,11 +76,11 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    value.certificateDate && (value.certificateDate = value.certificateDate.format('YYYY-MM-DD'))
+    value.validityDate && (value.validityDate = value.validityDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    // todo
-    nurseFilesService.commonSaveOrUpdate('nurseWHOutStudy', { ...obj, ...value, sign }).then((res: any) => {
+    !value.grantType && (value.grantType = grantType[0])
+    nurseFilesService.commonSaveOrUpdate('nurseWHQualificationIn', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -90,7 +103,14 @@ export default function EditPersonWinningModal(props: Props) {
   }
 
   const onSelect = (val: any) => {
-    console.log(val, 777)
+    setSelectGrantType(val)
+    if (refForm.current) {
+      console.log('111')
+      refForm!.current!.setFields({
+        grantName: '',
+      })
+    }
+    
   }
 
   useLayoutEffect(() => {
@@ -98,12 +118,12 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        studyMajor: data.studyMajor,
-        unit: data.unit,
-        unitLocal: data.unitLocal,
-        startDate: data.startDate ? moment(data.startDate) : null,
-        endDate: data.endDate ? moment(data.endDate) : null,
-        studyHour: data.studyHour,
+        grantType: data.grantType,
+        grantName: data.grantName,
+        certificateUnit: data.certificateUnit,
+        certificateNo: data.certificateNo,
+        certificateDate: data.certificateDate ? moment(data.certificateDate) : null,
+        validityDate: data.validityDate ? moment(data.validityDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -128,54 +148,54 @@ export default function EditPersonWinningModal(props: Props) {
         <Button key='save' type='primary' onClick={() => onSave(false)}>
           保存
         </Button>,
-        // <Button key='submit' type='primary' onClick={() => onSave(true)}>
-        //   提交审核
-        // </Button>
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
       ]}
     >
       <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
           {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`授权类别`} name='participant'>
+            <Form.Field label={`授权类别`} name='grantType'>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 showSearch
-                placeholder={<span style={{color: '#333'}}>{nurseFileDetailViewModal.getDict('级别')[0]?.name}</span>}
+                placeholder={<span style={{color: '#333'}}>{grantType[0]}</span>}
                 optionFilterProp="children"
                 onSelect={onSelect}
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               > 
-                {nurseFileDetailViewModal.getDict('级别').map((item) =>
-                  <Option key={item.code} value={item.code}>{item.name}</Option>
+                {grantType.map((item) =>
+                  <Option key={item} value={item}>{item}</Option>
                 )}
               </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授权名称`} name='participant'>
-              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            <Form.Field label={`授权名称`} name='grantName'>
+              <AutoComplete filterOption dataSource={grantName[selectGrantType].map((item: any) => item)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`认证部门`} name='unit'>
+            <Form.Field label={`认证部门`} name='certificateUnit'>
               <Input maxLength={25}/>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`认证时间`} name='startDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`认证时间`} name='certificateDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书编号`} name='studyMajor'>
+            <Form.Field label={`证书编号`} name='certificateNo'>
               <Input maxLength={25}/>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`有效期至`} name='endDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`有效期至`} name='validityDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>

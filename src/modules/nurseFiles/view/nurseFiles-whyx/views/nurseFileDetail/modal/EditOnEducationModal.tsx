@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from '../../../services/NurseFilesService'
@@ -36,8 +36,20 @@ export default function EditPersonWinningModal(props: Props) {
 
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
+  const [storage, setStorage]: any= useState([])
+  const [participantsList, setParticipantsList]: any= useState([])
 
-  const onFieldChange = () => { }
+  const onFieldChange = (val: any) => {
+    if (signShow === '添加') {
+      if (refForm.current && refForm.current.state.values?.allDeptAll === undefined && refForm.current.state.values?.participants.length > 0) {
+        refForm!.current!.setFields({
+          participants: [],
+        })
+        setParticipantsList([])
+        setStorage([])
+      }
+    }
+  }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -63,7 +75,22 @@ export default function EditPersonWinningModal(props: Props) {
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.commonSaveOrUpdate('nurseWHOutStudy', { ...obj, ...value, sign }).then((res: any) => {
+    let userList = []
+    if (value.participants?.length > 0) {
+      let obj = value.participants?.map((item: any) =>{
+        return participantsList.find((items: { code: any }) => items.code === item)
+      })
+      userList = obj.map((item: { [x: string]: any; code: any; name: any }) => {{
+        item['empNo'] = item?.code
+        item['empName'] = item?.name
+        delete item?.code
+        delete item?.name
+        return item
+      }})
+      let {empNo, empName} = JSON.parse(sessionStorage.getItem('user') || '')
+      userList.push({empNo, empName})
+    }
+    nurseFilesService.commonSaveOrUpdate('nurseWHOutStudy', { ...obj, userList, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -83,6 +110,26 @@ export default function EditPersonWinningModal(props: Props) {
         }
       }
     }
+  }
+
+  const onSelect = (val: any) => {
+    nurseFilesService.getUsers(val).then(res => {
+      let newArr = participantsList.concat(res.data)
+      setParticipantsList(removeSame(newArr))
+      setStorage(res.data)
+    })
+  }
+  // 数组去重
+  const removeSame = (arr: any[]) => {
+    let arr1 = []
+    let newArr = []
+    for(let i in arr) {
+      if (arr1.indexOf(arr[i].code) == -1) {
+        arr1.push(arr[i].code)
+        newArr.push(arr[i])
+      }
+    }
+    return newArr
   }
 
   useLayoutEffect(() => {
@@ -125,44 +172,57 @@ export default function EditPersonWinningModal(props: Props) {
         // </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          {/*  参与成员字段没有配置  新字段 */}
-          <Col span={24}>
-            <Form.Field label={`参与成员`} name='participant'>
+          {signShow !== '修改' && <Col span={24}>
+            <Form.Field label={`参与人员所属科室`} name='allDeptAll'>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
-                mode='multiple'
+                allowClear
                 showSearch
                 optionFilterProp="children"
-                // onSelect={onSelect}
+                onSelect={onSelect}
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               > 
-                {nurseFileDetailViewModal.getDict('级别').map((item) =>
+                {nurseFileDetailViewModal.getDict('全部科室').map((item) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
               </Select>
             </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate' onValueChange={computedStudyHour}>
-              <DatePicker />
+          </Col>}
+          {signShow !== '修改' && <Col span={24}>
+            <Form.Field label={`参与成员`} name='participants'>
+              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
+              <Select
+                mode='multiple'
+                allowClear
+                showSearch
+                optionFilterProp="children"
+                disabled={signShow === '修改'}
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              > 
+                {storage.map((item: any) =>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
+                )}
+              </Select>
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate' onValueChange={computedStudyHour}>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`学术活动名称`} name='studyMajor'>
+            <Form.Field label={`进修专业`} name='studyMajor'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办地域 `} name='unitLocal'>
+            <Form.Field label={`进修单位`} name='unit'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`进修单位所属地`} name='unitLocal'>
               <Select>
                 {nurseFileDetailViewModal.getDict('进修单位').map((item) => (
                   <Select.Option value={item.code} key={item.code}>
@@ -173,18 +233,18 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办单位`} name='unit'>
-              <Input maxLength={25} />
+            <Form.Field label={`进修开始时间`} name='startDate' onValueChange={computedStudyHour}>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办地点`} name='unit'>
-              <Input maxLength={25}/>
+            <Form.Field label={`进修结束时间`} name='endDate' onValueChange={computedStudyHour}>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`以何种资格获得邀请`} name='studyHour'>
-              <Input maxLength={25} />
+            <Form.Field label={`进修时长(天)`} name='studyHour'>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>

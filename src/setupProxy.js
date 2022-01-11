@@ -84,7 +84,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       //return 'http://192.168.20.57:9091'//
       return "http://192.168.1.54:9866"; //
     case "whyx": // 武汉亚心 
-      return "http://192.168.1.106:9091"; // 信铭本地
+      // return "http://192.168.1.106:9091"; // 信铭本地
+      return "http://192.168.20.35:9091"
     default:
       return "http://192.168.1.54:9866";
     

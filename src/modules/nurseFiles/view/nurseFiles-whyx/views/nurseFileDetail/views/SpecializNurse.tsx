@@ -21,10 +21,10 @@ import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
 export default observer(function SpecializNurse() {
   const editSpecializNurseModal = createModal(EditSpecializNurseModal)
-  const [tableData, setTableData] = useState([{ nurseName: 'ddd' }])
+  const [tableData, setTableData] = useState([{nurseName: '999'}])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
-      // setTableData(res.data) todo
+      // setTableData(res.data)
       // console.log(res.data, '000000000000')
     })
   }
@@ -97,7 +97,7 @@ export default observer(function SpecializNurse() {
     //   align: 'center'
     // }, 
     // todo nurseWHSpecializNurse 接口出来要联调
-    !isSelf() && Do('nurseWHYXSpecializNurse', editSpecializNurseModal, getTableData)
+    (authStore.isDepartment) && Do('nurseWHSpecializNurse', editSpecializNurseModal, getTableData)
   ].filter(item => item)
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default observer(function SpecializNurse() {
   }, [])
 
   return (
-    <BaseLayout title='专科护士' btnList={isSelf() ? [] : (authStore.isDepartment ? btnList : [])}>
+    <BaseLayout title='专科护士' btnList={authStore.isDepartment ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editSpecializNurseModal.Component getTableData={getTableData} />
     </BaseLayout>

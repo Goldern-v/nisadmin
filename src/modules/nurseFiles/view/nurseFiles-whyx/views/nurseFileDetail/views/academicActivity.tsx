@@ -8,17 +8,18 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import Zimage from 'src/components/Zimage'
-import EditOnEducationModal from '../modal/EditOnEducationModal'
+import EditAcademicActivityModal from '../modal/EditAcademicActivityModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf } from './BaseInfo'
 import Do from '../components/Do'
+import { authStore } from 'src/stores'
 export interface Props extends RouteComponentProps { }
 export default observer(function PersonWinning() {
-  const editOnEducationModal = createModal(EditOnEducationModal)
-  const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
+  const editOnEducationModal = createModal(EditAcademicActivityModal)
+  const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
-      // setTableData(res.data)
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHAcademic', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
     })
   }
   const btnList = [
@@ -53,36 +54,36 @@ export default observer(function PersonWinning() {
     },
     {
       title: '学术活动名称',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      dataIndex: 'academicName',
+      key: 'academicName',
       width: 110,
       align: 'center'
     },
     {
       title: '举办地域',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      dataIndex: 'hostArea',
+      key: 'hostArea',
       width: 120,
       align: 'center'
     },
     {
       title: '举办单位',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      dataIndex: 'hostUnit',
+      key: 'hostUnit',
       width: 120,
       align: 'center'
     },
     {
       title: '举办地点',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      dataIndex: 'hostAddress',
+      key: 'hostAddress',
       width: 120,
       align: 'center'
     },
     {
       title: '以何种资格获得邀请',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      dataIndex: 'qualification',
+      key: 'qualification',
       width: 120,
       align: 'center'
     },
@@ -103,7 +104,7 @@ export default observer(function PersonWinning() {
     //   width: 120,
     //   align: 'center'
     // },
-    !isSelf() && Do('nurseWHOutStudy', editOnEducationModal, getTableData)
+    (authStore.isDepartment) && Do('nurseWHAcademic', editOnEducationModal, getTableData)
   ].filter(item => item)
 
   useEffect(() => {
@@ -111,7 +112,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='学术活动' btnList={isSelf() ? [] : btnList}>
+    <BaseLayout title='学术活动' btnList={authStore.isDepartment ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

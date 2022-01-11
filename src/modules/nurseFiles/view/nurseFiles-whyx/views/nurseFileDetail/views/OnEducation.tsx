@@ -21,10 +21,10 @@ import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
 export default observer(function PersonWinning() {
   const editOnEducationModal = createModal(EditOnEducationModal)
-  const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
+  const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
-      // setTableData(res.data)
+      setTableData(res.data)
     })
   }
   const btnList = [
@@ -102,7 +102,7 @@ export default observer(function PersonWinning() {
     //   width: 120,
     //   align: 'center'
     // },
-    !isSelf() && Do('nurseWHOutStudy', editOnEducationModal, getTableData)
+    (authStore.isDepartment) && Do('nurseWHOutStudy', editOnEducationModal, getTableData)
   ].filter(item => item)
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='外出进修' btnList={isSelf() ? [] : btnList}>
+    <BaseLayout title='外出进修' btnList={authStore.isDepartment ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

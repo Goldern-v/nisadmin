@@ -17,6 +17,7 @@ import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAud
 import NurseAudit_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseAudit/NurseAudit";
 import NurseAudit_gzhd from "src/modules/nurseFiles/view/nurseFiles-gzhd/views/nurseAudit/NurseAudit";
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
+import NurseAudit_whyx from "src/modules/nurseFiles/view/nurseFiles-whyx/views/nurseAudit/NurseAudit";
 import NurseAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseAudit/NurseAudit";
 import NurseHandBookAudit_jmfy from "src/modules/nurseFiles/view/nurseFiles-jmfy/views/nurseHandBookAudit/NurseHandBookAudit";
 import NurseAuditNew from "src/modules/auditNurseFileNew/NurseAudit";
@@ -540,7 +541,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_whyx, layouts.MainLayout),
     setLayout(
       "/selfNurseFile/:type",
       NurseFileDetailView_whyx,

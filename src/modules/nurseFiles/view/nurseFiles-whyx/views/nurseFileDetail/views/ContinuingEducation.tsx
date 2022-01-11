@@ -59,18 +59,22 @@ export default observer(function PersonWinning() {
     // todo
     {
       title: '项目负责人',
-      dataIndex: 'projectName',
-      key: 'projectName',
+      dataIndex: 'projectPerson',
+      key: 'projectPerson',
       width: 210,
       align: 'center'
     },
-    // todo
     {
       title: '举办起止时间',
-      dataIndex: 'projectName',
-      key: 'projectName',
+      dataIndex: 'hostDate',
+      key: 'hostDate',
       width: 210,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <div>
+          <span>{row.hostStartDate}</span> <span>{row.hostEndDate}</span>
+        </div>
+      }
     },
     {
       title: '课时数',

@@ -30,6 +30,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const [loading, setLoading] = useState(false)
 
   const toDetails = (row: any) => {
+    console.log(row, 1000)
     openAuditModal(getTitle(row.othersMessage.entityName), { ...row.othersMessage, id: row.othersMessage.fileId }, () =>
       emitter.emit('refreshNurseAuditTable')
     )

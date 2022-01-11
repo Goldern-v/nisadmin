@@ -115,7 +115,7 @@ export default observer(function WorkHistory() {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
       // }
     },
-    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData)
+    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData, false)
   ]
 
   useEffect(() => {

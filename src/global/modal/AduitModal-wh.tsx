@@ -101,6 +101,7 @@ export default function AduitModal(props: Props) {
       } else {
         /** 获取详情 */
         modalService.getByIdAudite(props.type, props.id, props.empNo).then((res) => {
+          console.log(props.type, 88865)
           setSpinning(false)
           let data = res.data
           setResData(data)
@@ -170,11 +171,12 @@ export default function AduitModal(props: Props) {
     } else if (agree === 'disagree') {
       agreeStatus = false
     }
+    console.log(props.allData, 113445)
     let postData = {
       id: props.id,
-      empNo: props.allData.empNo || props.allData.commiterNo,
-      empName: props.allData.empName || props.allData.commiterName,
-      saveStatus: props.allData.saveStatus || props.allData.auditedEntityName,
+      empNo: props.allData?.empNo || props.allData?.commiterNo,
+      empName: props.allData?.empName || props.allData?.commiterName,
+      saveStatus: props.allData?.saveStatus || props.allData?.auditedEntityName,
       flag: agreeStatus,
       detail: opinion
     }
@@ -188,7 +190,6 @@ export default function AduitModal(props: Props) {
       onCancel()
     })
   }
-  console.log(tableData, 112)
   return (
     <Modal
       title={title}

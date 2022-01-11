@@ -23,10 +23,10 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function InnaiQualification() {
   const editOnEducationModal = createModal(EditOutQualificationModal)
-  const [tableData, setTableData] = useState([{ studyMajor: 'jjj' }])
+  const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHOutStudy', appStore.queryObj.empNo).then((res) => {
-      // setTableData(res.data)
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHQualificationOut', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
     })
   }
   const btnList = [
@@ -47,43 +47,43 @@ export default observer(function InnaiQualification() {
     },
     {
       title: '证书名称',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
+      dataIndex: 'certificateName',
+      key: 'certificateName',
       width: 120,
       align: 'center'
     },
     {
       title: '级别',
-      dataIndex: 'unit',
-      key: 'unit',
+      dataIndex: 'grade',
+      key: 'grade',
       width: 120,
       align: 'center'
     },
     {
       title: '发证单位',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      dataIndex: 'issueUnit',
+      key: 'issueUnit',
       width: 110,
       align: 'center'
     },
     {
       title: '发证时间',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      dataIndex: 'issueDate',
+      key: 'issueDate',
       width: 100,
       align: 'center'
     },
     {
       title: '证书编号',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      dataIndex: 'certificateNo',
+      key: 'certificateNo',
       width: 100,
       align: 'center'
     },
     {
       title: '证书有效期',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      dataIndex: 'validityDate',
+      key: 'validityDate',
       width: 100,
       align: 'center'
     },
@@ -104,7 +104,7 @@ export default observer(function InnaiQualification() {
       width: 80,
       align: 'center'
     },
-    Do('nurseOutQualification', editOnEducationModal, getTableData)
+    Do('nurseWHQualificationOut', editOnEducationModal, getTableData)
   ]
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export default observer(function InnaiQualification() {
   }, [])
 
   return (
-    <BaseLayout title='外出进修' btnList={btnList}>
+    <BaseLayout title='外出进修' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

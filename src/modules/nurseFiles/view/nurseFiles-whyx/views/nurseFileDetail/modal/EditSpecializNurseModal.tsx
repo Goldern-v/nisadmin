@@ -117,23 +117,6 @@ export default function EditSpecializNurseModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`参与成员`} name='participant'>
-              {/* <Input /> */}
-              {/* <Select
-                mode="tags"
-                placeholder="请选择参与人员"
-                defaultValue={['a10', 'c12']}
-                onChange={handleChange}
-                style={{ width: '100%' }}
-              >
-                <Select.Option value='在岗'>在岗</Select.Option>
-                <Select.Option value='不在岗'>不在岗</Select.Option>
-              </Select> */}
-              {/* todo 接口联调 */}
-              <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
             <Form.Field label={`专科护士名称`} name='nurseName'>
               <Input />
             </Form.Field>

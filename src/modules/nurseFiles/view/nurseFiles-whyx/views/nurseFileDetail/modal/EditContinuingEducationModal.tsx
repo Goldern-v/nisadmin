@@ -65,11 +65,8 @@ export default function EditPersonWinningModal(props: Props) {
     }
     // value.year && (value.year = value.year.format('YYYY'))
     // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
-
-    // todo 处理时间
-    console.log(value.date, 88765)
-    value.date && (value.beginTime = value.date[0].format("YYYY-MM-DD"))
-    value.date && (value.endTime = value.date[1].format("YYYY-MM-DD"))
+    value.data && (value.hostStartDate = value.data[0].format("YYYY-MM-DD"))
+    value.data && (value.hostEndDate = value.data[1].format("YYYY-MM-DD"))
 
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHContinueStudy', { ...obj, ...value, sign }).then((res: any) => {
@@ -86,8 +83,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        // year: data.year ? moment(data.year) : null,
-        date: data.date ? moment(data.date) : null,
+        data: [moment(data.hostStartDate), moment(data.hostEndDate)],
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
@@ -144,7 +140,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           {/* todo 新 */}
           <Col span={24}>
-            <Form.Field label={`项目负责人`} name='projectName'>
+            <Form.Field label={`项目负责人`} name='projectPerson'>
               <Input maxLength={12} />
             </Form.Field>
           </Col>
@@ -155,7 +151,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col> */}
           {/* todo 新 */}
           <Col span={24}>
-            <Form.Field label={`举办起止时间`} name='date'>
+            <Form.Field label={`举办起止时间`} name='data'>
               <RangePicker />
             </Form.Field>
           </Col>

@@ -114,19 +114,19 @@ export function openAuditModal(title: string, row: any, callBack: any) {
     case '人员状态':
       {
         globalModal.auditModal.show({
-          empNo: row,
-          id: '4031',
-          type: 'nurseWHSpecializNurse',
+          empNo: row?.empNo || row?.commiterNo,
+          id: row.id,
+          type: 'nurseWHPersonStatus',
           getTableData: callBack,
           title: '审核人员状态',
           tableFormat: [
             {
-              岗位状态: 'empName',
-              状态原因: 'sex'
+              岗位状态: 'status',
+              状态原因: 'reason'
             },
 
           ],
-          // allData: row
+          allData: row
         })
       }
       break
@@ -140,28 +140,29 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核文章',
           tableFormat: [
             {
-              发表年份: `publicYear`,
-              杂志名称: `magazineName`
-            },
-            {
+              杂志名称: `magazineName`,
               文章名称: `articleName`,
-              期刊号: `periodicalNumber`
             },
             {
-              卷号: `volumeNumber`,
-              起止页码: `pageNumber`
-            },
-            {
-              文章类别: `articleType`,
+              期刊年月: 'journal',
               作者: `articleAuthor`,
             },
             {
-              论文收录网站: `influencingFactors`
-            }
+              卷期号: `volumeNumber`,
+              起止页码: `pageNumber`,
+            },
+            {
+              
+              文章类别: `articleType`,
+              论文收录网站: `influencingFactors`,
+            },
           ],
           fileFormat: {
-            文章扫描件: `urlImageOne`,
-            网络下载件: `urlImageTwo`
+            封面扫描件: `urlImageOne`,
+            目录扫描件: `urlImageThree`,
+            正文扫描件: `urlImageFour`,
+            封底扫描件: `urlImageFive`,
+            网络下载件: `urlImageTwo`,
           },
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -216,21 +217,22 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核举办继续教育培训班',
           tableFormat: [
             {
-              年份: `year`,
-              学员职称分布: `personTitleArea`
-            },
-            {
               项目名称: `projectName`,
-              项目号: `projectNumber`
+              项目负责人: `projectPerson`
             },
             {
-              项目级别: `projectLevel`,
+              举办开始时间: `hostStartDate`,
+              举办结束时间: `hostEndDate`,
+            },
+            {
+              // 项目级别: `projectLevel`,
+              学员职称分布: `personTitleArea`,
               课时数: `courseHour`
             },
             {
               学员总数: `personTotal`,
               学员分布区域: `schoolArea`
-            }
+            },
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -291,19 +293,22 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               课题级别: `courseLevel`,
-              承担单位: `unit`
+              课题类别: `subjectType`
             },
             {
+              承担单位: `unit`,
               课题批文号: `approvalNumber`,
-              登记号: `registerNumber`
             },
             {
-              授予单位: `grantUnit`,
-              开始时间: `startDate`
+              登记号: `registerNumber`,
+              开始时间: `startDate`,
+              // 授予单位: `grantUnit`,
             },
             {
               截止时间: `endDate`,
               完成情况: `courseCompletion`,
+            },
+            {
               时间: `completionDate`
             }
           ],
@@ -549,6 +554,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             {
               专利类型: `patentType`,
               是否成果转化: `isResultTransfor`
+            },
+            {
+              专利个人排名: `patentLevel`,
+              授权公告日: `grantNoticeDate`
             }
           ],
           fileData: row.urlImageOne
@@ -857,20 +866,20 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseOutQualification', // todo
+          type: 'nurseWHQualificationOut', // todo
           title: '审核工作情况登记',
           tableFormat: [
             {
-              证书名称: `year`,
-              级别: `nightShift`
+              证书名称: `certificateName`,
+              级别: `grade`
             },
             {
-              发证单位: `checkOut`,
-              发证时间: `nursingConsultation`
+              发证单位: `issueUnit`,
+              发证时间: `issueDate`
             },
             {
-              证书编号: `caseDiscussion`,
-              证书有效期: `individualCase`
+              证书编号: `certificateNo`,
+              证书有效期: `validityDate`
             }
           ],
           fileData: row.urlImageOne
@@ -891,20 +900,20 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseInnaiQualification', // todo
+          type: 'nurseWHQualificationIn',
           title: '审核工作情况登记',
           tableFormat: [
             {
-              授权类别: `year`,
-              授权名称: `nightShift`
+              授权类别: `grantType`,
+              授权名称: `grantName`
             },
             {
-              认证部门: `checkOut`,
-              认证时间: `nursingConsultation`
+              认证部门: `certificateUnit`,
+              认证时间: `certificateDate`
             },
             {
-              证书编号: `caseDiscussion`,
-              有效期: `individualCase`
+              证书编号: `certificateNo`,
+              有效期: `validityDate`
             }
           ],
           fileData: row.urlImageOne
@@ -924,28 +933,28 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           empNo: row.empNo || row.commiterNo,
           id: row.id,
-          type: 'nurseWardInnovate', // todo
+          type: 'nurseWHInnovationDept', // todo
           getTableData: callBack,
           title: '审核基础信息',
           tableFormat: [
             {
-              申报人: 'nation',
-              申报科室: 'nativePlace',
+              申报人: 'declarant',
+              申报科室: 'declarantDeptName',
             },
             {
-              申报时间: 'empNo',
-              登记单位: 'cardNumber',
+              申报时间: 'declarantDate',
+              登记单位: 'registerUnit',
             },
             {
-              登记号: 'politicsLook',
-              参与成员: 'birthday',
+              登记号: 'registerNo',
+              参与成员: 'participants',
             },
             {
-              创新类别: 'age',
-              创新级别: 'maritalstatus',
+              创新类别: 'innovationType',
+              创新级别: 'innovationGrade',
             },
             {
-              推广区域: 'fertility',
+              推广区域: 'promotionArea',
             },
           ],
           fileData: row.urlImageOne

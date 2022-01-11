@@ -92,11 +92,10 @@ export default observer(function Patent() {
       width: 110,
       align: 'center'
     },
-    // todo 新
     {
       title: '授权公告日',
-      dataIndex: 'cardDate',
-      key: 'cardDate',
+      dataIndex: 'grantNoticeDate',
+      key: 'grantNoticeDate',
       width: 120,
       align: 'center'
     },

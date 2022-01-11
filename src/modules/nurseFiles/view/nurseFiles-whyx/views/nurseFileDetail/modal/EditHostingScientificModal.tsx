@@ -99,7 +99,7 @@ export default function EditPersonWinningModal(props: Props) {
         endDate: data.endDate ? moment(data.endDate) : null,
         courseCompletion: data.courseCompletion,
         completionDate: data.completionDate ? moment(data.completionDate) : null,
-        // completionDate: data.completionDate,
+        subjectType: data.subjectType,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -147,8 +147,9 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题类别`} name='courseLevel'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+            <Form.Field label={`课题类别`} name='subjectType'>
+              {/* 后端没有添加字典  前端自己写*/}
+              <AutoComplete dataSource={['重大项目', '重点项目', '一般项目', '指导项目', '青年项目', '支持修改'].map((item) => item)} />
             </Form.Field>
           </Col>
           <Col span={24}>

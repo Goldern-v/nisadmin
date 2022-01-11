@@ -12,13 +12,13 @@ import { getTitle } from '../config/title'
 import { authStore } from 'src/stores'
 
 export interface Props { }
-
-export default function (type: string, modal: any, getTableData: () => void): any {
-  const types = ['nurseOutQualification', 'nurseInnaiQualification', 'nurseWHInnaiWorkExperience', 'nurseWHWorkExperience']
-  // 特殊模块-专科护士： 从档案管理模块进来区分是否是护理部在操作
-  const specialModule = type === 'nurseWHYXSpecializNurse'
-  // 工作经历模块
-  const workHistory = type === 'nurseWHWorkExperience'
+// state 为了院内工作经历模块
+export default function (type: string, modal: any, getTableData: () => void, state:boolean = true): any {
+  const types = ['']
+  // 特殊模块-专科护士\外出进修\学术活动： 从我的档案模块进来区分是否是护理部人员
+  const specialModule = ['nurseWHSpecializNurse', 'nurseWHOutStudy', 'nurseWHAcademic'] 
+  // 工作经历、工作资质和文章模块 从档案管理进去只能有操作-查看功能（涉及到有提交审核）
+  const workHistory = ['nurseWHWorkExperience', 'nurseWHArticle', 'nurseWHQualificationOut', 'nurseWHQualificationIn']
   
   return {
     title: '操作',
@@ -27,8 +27,6 @@ export default function (type: string, modal: any, getTableData: () => void): an
     width: 120,
     align: 'center',
     render: (text: any, row: any, index: number) => {
-      // 判断是否是护理部 
-      if (authStore.isDepartment) {}
       return (
         <DoCon>
           {(isSelf() || types.includes(type)) ? (
@@ -40,15 +38,14 @@ export default function (type: string, modal: any, getTableData: () => void): an
               >
                 修改
               </span>
-              <span
+              {!specialModule.includes(type) && <span
                 onClick={() => {
-                  console.log(getTitle(type), row, 888)
                   openAuditModal(getTitle(type), row, getTableData)
                 }}
               >
                 查看
-              </span>
-              {!workHistory && <span
+              </span>}
+              {state && <span
                 onClick={() => {
                   globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
                     nurseFilesService.commonDelById(type, row.id).then((res) => {
@@ -69,41 +66,41 @@ export default function (type: string, modal: any, getTableData: () => void): an
             //   {limitUtils(row) ? '审核' : '查看'}
             // </span>
             <React.Fragment>
-              {specialModule ? 
-              <React.Fragment>
-                {authStore.isDepartment ? 
-                <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
-                  <span
-                    onClick={() => {
-                      modal.show({ data: row, signShow: '修改' })
-                    }}
-                  >
-                    修改
-                  </span>
-                  <span
-                    onClick={() => {
-                      globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
-                        nurseFilesService.commonDelById(type, row.id).then((res) => {
-                          getTableData()
-                        })
-                      })
-                    }}
-                  >
-                    删除
-                  </span>
-                </div> : 
-                <span
-                  onClick={() => {
-                    globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
-                      nurseFilesService.commonDelById(type, row.id).then((res) => {
-                        getTableData()
-                      })
-                    })
-                  }}
-                >
-                  删除
-                </span>}
-              </React.Fragment> : 
+              {authStore.isDepartment && specialModule.includes(type) ? 
+              // <React.Fragment>
+              //   {authStore.isDepartment ? 
+              //   <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+              //     <span
+              //       onClick={() => {
+              //         modal.show({ data: row, signShow: '修改' })
+              //       }}
+              //     >
+              //       修改
+              //     </span>
+              //     <span
+              //       onClick={() => {
+              //         globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+              //           nurseFilesService.commonDelById(type, row.id).then((res) => {
+              //             getTableData()
+              //           })
+              //         })
+              //       }}
+              //     >
+              //       删除
+              //     </span>
+              //   </div> 
+              //   : <span
+              //     onClick={() => {
+              //       globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+              //         nurseFilesService.commonDelById(type, row.id).then((res) => {
+              //           getTableData()
+              //         })
+              //       })
+              //     }}
+              //   >
+              //     删除
+              //   </span>}
+              // </React.Fragment> : 
               <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
                 <span
                   onClick={() => {
@@ -123,6 +120,40 @@ export default function (type: string, modal: any, getTableData: () => void): an
                 >
                   删除
                 </span>
+              </div> :
+              <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+                {!workHistory.includes(type) ? 
+                  <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+                    <span
+                      onClick={() => {
+                        modal.show({ data: row, signShow: '修改' })
+                      }}
+                    >
+                      修改
+                    </span>
+                    <span
+                      onClick={() => {
+                        globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+                          nurseFilesService.commonDelById(type, row.id).then((res) => {
+                            getTableData()
+                          })
+                        })
+                      }}
+                    >
+                      删除
+                    </span>
+                  </div> : 
+                  <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+                    <span
+                      onClick={() => {
+                        console.log(getTitle(type), row, 888)
+                        openAuditModal(getTitle(type), row, getTableData)
+                      }}
+                    >
+                      查看
+                    </span>
+                  </div>
+                }
               </div>}
             </React.Fragment>
           )}

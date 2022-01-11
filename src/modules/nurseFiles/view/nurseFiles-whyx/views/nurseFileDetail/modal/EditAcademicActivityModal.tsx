@@ -18,7 +18,6 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
-import form from 'antd/lib/form'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -27,16 +26,18 @@ export interface Props extends ModalComponentProps {
 }
 const rules: Rules = {
   // time: (val) => !!val || '请填写时间',
+  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
+  // rank: (val) => !!val || '请填写本人排名',
+  // awardlevel: (val) => !!val || '请填写授奖级别',
+  // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-
   const [participantsList, setParticipantsList]: any= useState([])
   const [storage, setStorage]: any= useState([])
-
 
   const onFieldChange = (val: any) => {
     if (signShow === '添加') {
@@ -56,7 +57,6 @@ export default function EditPersonWinningModal(props: Props) {
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       // auditedStatus: '',
       urlImageOne: '',
-      declarantDeptName: ''
     }
     // if ((authStore.user && authStore.user.post) == '护长') {
     //   obj.auditedStatus = 'waitAuditedNurse'
@@ -67,22 +67,31 @@ export default function EditPersonWinningModal(props: Props) {
       Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
-    // 获取表单值
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.declarantDate && (value.declarantDate = value.declarantDate.format('YYYY-MM-DD'))
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    value.participants && (value.participants = value.participants.join(','))
-    // 传后端的申报科室名称
-    nurseFileDetailViewModal.getDict('全部科室').forEach(item => {{
-      if (item.code === value.declarantDeptCode) {
-        obj.declarantDeptName = item.name
-      }
-    }})
-    nurseFilesService.commonSaveOrUpdate('nurseWHInnovationDept', { ...obj, ...value, sign }).then((res: any) => {
+    let userList = []
+    if (value.participants?.length > 0) {
+      let obj = value.participants?.map((item: any) =>{
+        return participantsList.find((items: { code: any }) => items.code === item)
+      })
+      userList = obj.map((item: { [x: string]: any; code: any; name: any }) => {{
+        item['empNo'] = item?.code
+        item['empName'] = item?.name
+        delete item?.code
+        delete item?.name
+        return item
+      }})
+      let {empNo, empName} = JSON.parse(sessionStorage.getItem('user') || '')
+      userList.push({empNo, empName})
+    }
+
+    nurseFilesService.commonSaveOrUpdate('nurseWHAcademic', { ...obj, userList, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -124,30 +133,28 @@ export default function EditPersonWinningModal(props: Props) {
     return newArr
   }
 
-
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    // todo
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        declarant: data.declarant,
-        declarantDeptCode: data.declarantDeptCode,
-        registerUnit: data.registerUnit,
-        declarantDate: data.declarantDate ? moment(data.declarantDate) : null,
-        endDate: data.endDate ? moment(data.endDate) : null,
-        registerNo: data.registerNo,
-        participants: data.participants && data.participants.split(','), // todo
-        innovationType: data.innovationType,
-        innovationGrade: data.innovationGrade,
-        promotionArea: data.promotionArea,
+        studyMajor: data.studyMajor,
+        unit: data.unit,
+        unitLocal: data.unitLocal,
+        startTime: data.startTime ? moment(data.startTime) : null,
+        endTime: data.endTime ? moment(data.endTime) : null,
+        academicName: data.academicName,
+        hostArea: data.hostArea,
+        hostUnit: data.hostUnit,
+        hostAddress: data.hostAddress,
+        qualification: data.qualification,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改科室创新')
+      setTitle('修改外出进修')
     } else if (signShow === '添加') {
-      setTitle('添加科室创新')
+      setTitle('添加外出进修')
     }
   }, [visible])
 
@@ -165,51 +172,13 @@ export default function EditPersonWinningModal(props: Props) {
         <Button key='save' type='primary' onClick={() => onSave(false)}>
           保存
         </Button>,
-        <Button key='submit' type='primary' onClick={() => onSave(true)}>
-          提交审核
-        </Button>
+        // <Button key='submit' type='primary' onClick={() => onSave(true)}>
+        //   提交审核
+        // </Button>
       ]}
     >
-      {/* todo 整一个都要调- 新模块 -原本没有新增修改 */}
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          <Col span={24}>
-            <Form.Field label={`申报人`} name='declarant'>
-              <Input  maxLength={25}/>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`申报科室`} name='declarantDeptCode'>
-              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
-              <Select
-                allowClear
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option: any) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-              > 
-                {nurseFileDetailViewModal.getDict('全部科室').map((item) =>
-                  <Option key={item.code} value={item.code}>{item.name}</Option>
-                )}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`申报时间`} name='declarantDate' onValueChange={computedStudyHour}>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`登记单位`} name='registerUnit'>
-              <Input maxLength={25}/>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`登记号`} name='registerNo'>
-              <Input maxLength={25}/>
-            </Form.Field>
-          </Col>
           {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与人员所属科室`} name='allDeptAll'>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
@@ -228,7 +197,7 @@ export default function EditPersonWinningModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>}
-          <Col span={24}>
+          {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与成员`} name='participants'>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
@@ -236,46 +205,56 @@ export default function EditPersonWinningModal(props: Props) {
                 allowClear
                 showSearch
                 optionFilterProp="children"
-                // onSelect={onSelect}
                 disabled={signShow === '修改'}
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               > 
                 {storage.map((item: any) =>
-                  <Option key={item.code} value={item.name}>{item.name}</Option>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
+              </Select>
+            </Form.Field>
+          </Col>}
+          <Col span={24}>
+            <Form.Field label={`开始时间`} name='startTime' onValueChange={computedStudyHour}>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`结束时间`} name='endTime' onValueChange={computedStudyHour}>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学术活动名称`} name='academicName'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`举办地域`} name='hostArea'>
+              <Select>
+                {['国内','国外', '省内', '省外', '其他'].map((item) => (
+                  <Select.Option value={item} key={item}>
+                    {item}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`创新类别`} name='innovationType'>
-              {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
-              <Select>
-                {['服务创新', '技术创新', '管理创新'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
-                )}
-              </Select>
+            <Form.Field label={`举办单位`} name='hostUnit'>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`创新级别`} name='innovationGrade'>
-              {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
-              <Select>
-                {['一级', '二级', '三级', '改良'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
-                )}
-              </Select>
+            <Form.Field label={`举办地点`} name='hostAddress'>
+              <Input maxLength={25}/>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`推广区域`} name='promotionArea'>
-              {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
-              <Select>
-                {['科室推广', '区域推广', '全院推广'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
-                )}
-              </Select>
+            <Form.Field label={`以何种资格获得邀请`} name='qualification'>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>

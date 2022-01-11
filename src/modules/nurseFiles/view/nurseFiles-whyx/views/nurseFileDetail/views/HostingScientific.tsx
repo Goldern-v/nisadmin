@@ -64,11 +64,10 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    // todo
     {
       title: '课题类别',
-      dataIndex: 'courseLevel',
-      key: 'courseLevel',
+      dataIndex: 'subjectType',
+      key: 'subjectType',
       width: 90,
       align: 'center'
     },

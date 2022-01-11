@@ -103,7 +103,7 @@ export default observer(function BaseInfo() {
     setInfo({});
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info;
-      let maps = res.data?.maps || {}
+      // let maps = res.data?.maps || {}
       setInfo(data);
       setIdData(data.empNo);
       setId(data.id);
@@ -122,10 +122,10 @@ export default observer(function BaseInfo() {
         },
         {
           年龄: data.age,
-          婚姻状况: data.maps.maritalstatus,
+          婚姻状况: data.maps?.maritalstatus,
         },
         {
-          生育情况: data.maps.fertility,
+          生育情况: data.maps?.fertility,
           手机号: data.phone,
         },
         {
@@ -133,7 +133,7 @@ export default observer(function BaseInfo() {
           参加工作时间: data.takeWorkTime,
         },
         {
-          最近入职时间: data.maps.hiredate,
+          最近入职时间: data.maps?.hiredate,
           来院工作时间: data.goHospitalWorkDate,
         },
         {
@@ -141,7 +141,7 @@ export default observer(function BaseInfo() {
           取得护士执业证书时间: data.zyzsDate,
         },
         {
-          本院注册时间: data.maps.registerdate,
+          本院注册时间: data.maps?.registerdate,
           护士执业证书有效期: data.zyzsEffectiveUpDate,
         },
         {
@@ -174,23 +174,23 @@ export default observer(function BaseInfo() {
           鞋码大小: data.shoeSize,
         },
         {
-          工作服码数: data.maps.workclothessize,
+          工作服码数: data.maps?.workclothessize,
         },
       ]
 
       setTableData(newTableData);
       // 处理扩展字段
-      if (Object.keys(data).includes('maps'))
-        return new Promise((resolve, reject) => {
-          service.commonApiService.listNurseExpand('User')
-            .then(res => {
-              resolve({
-                maps,
-                mapsConfig: res.data,
-                orgin: newTableData
-              })
-            }, (e) => reject(e))
-        })
+      // if (Object.keys(data).includes('maps'))
+      //   return new Promise((resolve, reject) => {
+      //     service.commonApiService.listNurseExpand('User')
+      //       .then(res => {
+      //         resolve({
+      //           maps,
+      //           mapsConfig: res.data,
+      //           orgin: newTableData
+      //         })
+      //       }, (e) => reject(e))
+      //   })
     }).then((payload: any) => {
       if (payload) {
         const { maps, mapsConfig, orgin } = payload

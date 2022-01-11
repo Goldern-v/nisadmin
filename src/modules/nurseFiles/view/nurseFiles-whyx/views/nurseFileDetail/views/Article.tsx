@@ -60,9 +60,9 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
-      title: '期刊年月', // 原-发表年份
-      dataIndex: 'publicYear',
-      key: 'publicYear',
+      title: '期刊年月',
+      dataIndex: 'journal',
+      key: 'journal',
       width: 120,
       align: 'center'
     },
@@ -70,7 +70,7 @@ export default observer(function Awards() {
       title: '作者',
       dataIndex: 'articleAuthor',
       key: 'articleAuthor',
-      width: 80,
+      width: 100,
       align: 'center',
     },
     // {
@@ -85,7 +85,7 @@ export default observer(function Awards() {
       title: '卷期号',
       dataIndex: 'volumeNumber',
       key: 'volumeNumber',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
@@ -137,7 +137,7 @@ export default observer(function Awards() {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -147,7 +147,7 @@ export default observer(function Awards() {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -157,7 +157,7 @@ export default observer(function Awards() {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
