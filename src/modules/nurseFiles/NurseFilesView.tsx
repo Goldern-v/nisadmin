@@ -6,6 +6,7 @@ import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import NurseFilesListView_hj from "./view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_wh from "./view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView";
+import NurseFilesListView_whyx from "./view/nurseFiles-whyx/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_nys from "./view/nurseFiles-nys/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_gzhd from "./view/nurseFiles-gzhd/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_lcey from "./view/nurseFiles-lcey/views/nurseFilesList/NurseFilesListView";
@@ -21,6 +22,8 @@ import NurseFilesListView_wjgdszd from "./view/nurseFiles-wjgdszd/views/nurseFil
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
 import StatisticsView from "./view/statistics/StatisticsView";
+import StatisticsViewWHYX from "./view/statistics-whyx/StatisticsView";
+
 // import StatisticsViews from "./view/statistics-hj/StatisticsView";
 // import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 //护士调动
@@ -82,7 +85,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "fsxt":
         return NurseFilesListView_wh;
       case "whyx":
-        return NurseFilesListView_wh;
+        return NurseFilesListView_whyx;
       default:
         return NurseFilesListView_hj;
     }
@@ -293,12 +296,175 @@ export default observer(function NurseFilesView(props: Props) {
     }
   ];
 
+  const LEFT_MENU_CONFIG_WHYX = [
+
+    {
+      title: "在职护士档案",
+      path: "/nurseFile/onTheJob",
+      component: OnTheJobComponent,
+      icon: <ZZHSDA />
+    },
+    {
+      title: "离职/退休人员查询",
+      path: "/nurseFile/retiredRetirees",
+      component: RetiredRetirees,
+      icon: <TXHSCX />
+    },
+    // 推迟先不上
+    // {
+    //   title: "查询统计",
+    //   icon: <CXTJ />,
+    //   children: [
+    //     // 新
+    //     {
+    //       title: "基本信息",
+    //       path: "/nurseFile/baseInfo",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新
+    //     {
+    //       title: "人员状态",
+    //       path: "/nurseFile/statePersonnel",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专科护士",
+    //       path: "/nurseFile/specializNurse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "外出进修",
+    //       path: "/nurseFile/outStudy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新
+    //     {
+    //       title: "学术活动",
+    //       path: "/nurseFile/academicActivity",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新 
+    //     {
+    //       title: "资质管理（院内）",
+    //       path: "/nurseFile/innaiQualification",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     // 新 
+    //     {
+    //       title: "资质管理（院外）",
+    //       path: "/nurseFile/outQualification",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "文章",
+    //       path: "/nurseFile/article",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专著",
+    //       path: "/nurseFile/monograph",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "主持科研课题",
+    //       path: "/nurseFile/hostScienceCourse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "参与科研课题",
+    //       path: "/nurseFile/goScienceCourse",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "科研课题获奖",
+    //       path: "/nurseFile/scienceResult",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "专利",
+    //       path: "/nurseFile/patent",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "科室创新",
+    //       path: "/nurseFile/科室创新",
+    //       hide: !appStore.isDev,
+    //       component: 科室创新
+    //     },
+    //     {
+    //       title: "学会任职",
+    //       path: "/nurseFile/learnJob",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "个人获奖",
+    //       path: "/nurseFile/personWinning",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "举办继续教育培训班",
+    //       path: "/nurseFile/continueStudy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "工作经历",
+    //       path: "/nurseFile/workExperience",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       // title: "医学学历教育",
+    //       title: '临床护理工作登记',
+    //       path: "/nurseFile/medicalEducation",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "岗位变动",
+    //       path: "/nurseFile/transferPost",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "职称变动",
+    //       path: "/nurseFile/title",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "层级变动",
+    //       path: "/nurseFile/hierarchy",
+    //       component: StatisticsViewWHYX
+    //     },
+    //     {
+    //       title: "编制变动",
+    //       path: "/nurseFile/workConversion",
+    //       component: StatisticsViewWHYX
+    //     },
+        
+    //   ]
+    // },
+    {
+      title: "护理实习生花名册",
+      path: "/nurseFile/traineeFiles",
+      hide: !appStore.isDev,
+      component: TraineeFiles,
+      icon: <TXHSCX />
+    },
+    {
+      title: "护理实习生轮科",
+      icon: <TXHSCX />,
+      hide: !appStore.isDev,
+      addIcon: true,
+      children: dataList
+    }
+  ];
+
+
   const menuConfig = () => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
+      case "whyx":
+        return LEFT_MENU_CONFIG_WHYX;
       default:
         return LEFT_MENU_CONFIG_HJ;
     }

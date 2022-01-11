@@ -160,6 +160,8 @@ const ROUTE_LIST = [
   }] : []
 ]
 
+
+
 export default observer(function NurseFileDetail(props: Props, context: any) {
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
