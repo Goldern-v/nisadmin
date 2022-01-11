@@ -267,10 +267,8 @@ const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
     let lineArr: number[] = []
     for (let index = 0; index < totalQuarter; index++) {
       let count: number = currentData
-      .filter(
-        (item: any) => moment(item.recordDate).month() >= +start && moment(item.recordDate).month() <= +end
-      )
-      .filter((item: any) => getQuarter<number>(moment(item.recordDate).month()) == startQuarter + index)
+      .filter((item: any) => moment(item.recordDate).month() + 1 >= +start && moment(item.recordDate).month() + 1 <= +end)
+      .filter((item: any) => getQuarter<number>(moment(item.recordDate).month()+1) == startQuarter + index)
       .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
       lineArr.push(count)
     }
