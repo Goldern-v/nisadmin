@@ -70,6 +70,11 @@ export default function SelectModal(props: Props) {
     setOperationType(code)
   }
 
+  const datePickerOnChange = (value:any) => {
+    col.value = moment(value).format('YYYY-MM-DD')
+    refresh()
+  }
+  
   useEffect(() => {
     open()
     return () => {
@@ -92,12 +97,29 @@ export default function SelectModal(props: Props) {
             {menu.name}
           </div>)}
       </div>}
+      {menuType == "timePicker" && <div className="timePickerBody" style={{ top: `${selectTop}px`, left: `${selectLeft}px` }}>
+        <DatePicker
+          open={true}
+          onChange={(value: any) => datePickerOnChange(value)}
+        />
+        </div>}
     </Wrapper>
   )
 
 }
 
 const Wrapper = styled.div`
+.timePickerBody{
+    position: fixed;
+    width: 280px;
+    height: 340px;
+    background-color: #fff;
+    /* border: 1px solid #000; */
+    box-shadow:5px 5px 5px rgba(233, 233, 234);
+    z-index: 10;
+    overflow-y: auto;
+    border-radius: 10px;
+  }
   .selectBody{
     position: fixed;
     width: 200px;

@@ -272,7 +272,7 @@ export default observer(function 三级问题原因措施汇总() {
             endDate: moment1.format('YYYY-MM-DD')
           })} />
       <Button onClick={() => getTableData()} type="primary">查询</Button>
-      {/* <Button onClick={() => handleExport()}>导出</Button> */}
+      <Button onClick={() => handleExport()}>导出</Button>
     </PageHeader>
     <TableCon>
       <BaseTable
