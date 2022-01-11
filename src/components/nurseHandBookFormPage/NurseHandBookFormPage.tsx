@@ -137,6 +137,7 @@ export default function NurseHandBookFormPage(props: Props) {
             </div>)
           })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
+          {masterInfo.borderMessage &&<div className='borderMessage' style={{width:masterInfo.tableTitle.width}}>{masterInfo.borderMessage}</div>}
           {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModule>}
         </div>
         <div className="space-div"></div>
@@ -155,6 +156,10 @@ const Wrapper = styled.div`
   width: fit-content;
   .space-div{
     width:1px;
+  }
+  .borderMessage{
+    min-height: 20px;
+    font-size: 16px;
   }
 }
 `

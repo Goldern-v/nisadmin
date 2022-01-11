@@ -45,7 +45,8 @@ export function getAddArrangeMenuList(
                 nameColor: item.dataSource.nameColor,
                 effectiveTime: item.dataSource.effectiveTime,
                 effectiveTimeOld: item.dataSource.effectiveTime,
-                shiftType: item.dataSource.shiftType
+                shiftType: item.dataSource.shiftType,
+                backgroundColor: item.dataSource.backgroundColor
               }
             ];
             selectedCellObj!.effectiveTime =
@@ -59,6 +60,7 @@ export function getAddArrangeMenuList(
             selectedCellObj!.effectiveTime = item.dataSource.effectiveTime;
             selectedCellObj!.effectiveTimeOld = item.dataSource.effectiveTime;
             selectedCellObj!.shiftType = item.dataSource.shiftType;
+            selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
           }
         }
       });
@@ -80,6 +82,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].addSymbols = copyRow[i].addSymbols;
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
+      list[i].backgroundColor = copyRow[i].backgroundColor
       if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
@@ -95,6 +98,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].shiftType = "";
         copyRow[i].settings = [];
         copyRow[i].addSymbols = [];
+        copyRow[i].backgroundColor = "";
 
         if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
           copyRow[i].schAddOrSubs = [];
@@ -133,7 +137,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.settings = cloneJson(copyCell.settings);
     cell.schJiJias = cloneJson(copyCell.schJiJias);
     cell.schRemarks = cloneJson(copyCell.schRemarks);
-
+    cell.backgroundColor = copyCell.backgroundColor
     if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
@@ -172,7 +176,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.statusType = "0";
   cellObj.schRemarks = [];
   cellObj.schJiJias = [];
-
+  cellObj.backgroundColor = ""
   if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
