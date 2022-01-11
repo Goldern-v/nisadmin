@@ -291,7 +291,7 @@ export default observer(function FeverPatient() {
 })
 
 const Con = styled.div`
-  .bHdIpD#baseTable {
+  #baseTable {
     padding: 0px;
     .ant-table-wrapper {
       td {
@@ -299,7 +299,7 @@ const Con = styled.div`
       }
     }
   }
-  .bHdIpD#baseTable .ant-table-body .bHdIpD#baseTable .ant-table-body {
+  #baseTable .ant-table-body #baseTable .ant-table-body {
     overflow: hidden!important;
   }
   .subTable {
