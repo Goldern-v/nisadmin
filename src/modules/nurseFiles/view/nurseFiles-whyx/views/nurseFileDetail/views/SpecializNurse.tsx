@@ -21,10 +21,10 @@ import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
 export default observer(function SpecializNurse() {
   const editSpecializNurseModal = createModal(EditSpecializNurseModal)
-  const [tableData, setTableData] = useState([{nurseName: '999'}])
+  const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
-      // setTableData(res.data)
+      setTableData(res.data)
       // console.log(res.data, '000000000000')
     })
   }
