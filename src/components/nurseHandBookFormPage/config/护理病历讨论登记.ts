@@ -3,11 +3,12 @@
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
+import { timePicker } from "../function/click";
 let user: any = authStore.user || {};
 
 const tHead = {
   top: [
-    { name: "日期时间", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "日期时间", colspan: "1", rowspan: "1", style:{ width: 150 } },
     { name: "地点", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "主持人", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "参加人数", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -24,7 +25,7 @@ const tHead = {
 }
 
 const tBody: any = [
-  { key: "time", name: "日期", value: "", width: 100, timePicker:true },
+  { key: "time", name: "日期", value: "", width: 150, click: timePicker },
   { key: "place", name: "地点", value: "", width: 100 },
   { key: "host", name: "主持人", value: "", width: 100 },
   { key: "number", name: "参加人数", value: "", width: 100 },
@@ -38,7 +39,7 @@ const tBody: any = [
 
 export default {
   defaulLength: [20],
-  tableTitle: { value: `${user.deptName}病例讨论登记表`, width: 1091 },
+  tableTitle: { value: `${user.deptName}病例讨论登记表`, width: 1141 },
   tBody: [tBody],
   tHead: [tHead],
 }

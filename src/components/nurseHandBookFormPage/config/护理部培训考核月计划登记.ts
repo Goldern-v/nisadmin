@@ -2,6 +2,7 @@
  * 聊城二院-护理部培训考核月计划登记
  */
 import moment from "moment";
+import { datePicker } from "../function/click";
 
 const tHead = {
   top: [
@@ -19,7 +20,7 @@ const tHead = {
 const tBody: any = [
   { key: "serialNumber", name: "序号", value: "", width: 50 },
   { key: "plan", name: "培训考核内容", value: "", width: 400 },
-  { key: "time", name: "完成时限", value: "", width: 100, timePicker:true },
+  { key: "time", name: "完成时限", value: "", width: 100, click: datePicker },
   { key: "nurseList", name: "责任人", value: "", width: 100 },
   { key: "remark", name: "备注", value: "", width: 100 },
 ]

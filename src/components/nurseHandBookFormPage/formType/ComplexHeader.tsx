@@ -54,9 +54,13 @@ export default function ComplexHeader(props: Props) {
         setComplexSelectVisible(true)
       })
     }
+    console.log(item);
+    
+    item.click && item.click(item) && scheduleStore.setIsSave(true)
+    item.click && setComplexHeadList([...complexHeadList])
   }
   useEffect(() => {
-      setComplexHeadList(JSON.parse(JSON.stringify(masterInfo.complexHead.complexHeadList)))
+    setComplexHeadList([...masterInfo.complexHead.complexHeadList])
   }, [])
   useEffect(()=>{
     if(!complexHeaderContent.length)return
