@@ -41,7 +41,7 @@ export default function EditPersonWinningModal(props: Props) {
 
   const onFieldChange = (val: any) => {
     if (signShow === '添加') {
-      if (refForm.current && refForm.current.state.values?.allDeptAll === undefined && refForm.current.state.values?.participants.length > 0) {
+      if (refForm.current && refForm.current.state.values?.allDeptAll === undefined && refForm.current.state.values?.participants?.length > 0) {
         refForm!.current!.setFields({
           participants: [],
         })

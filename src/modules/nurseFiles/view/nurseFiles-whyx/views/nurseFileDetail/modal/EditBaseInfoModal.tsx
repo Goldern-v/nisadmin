@@ -303,7 +303,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`手机号`} name="phone">
-              <Input />
+              <Input maxLength={11} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -403,7 +403,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`院内工作区域`} name="workAddress">
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           {/* <Col span={12}>
