@@ -49,8 +49,10 @@ const tBody7: any = [
 ]
 
 const sign = {
-  signTime:{ key: 'signTime', value:'', preName:"记录时间" },
-  signName:{ key: 'signName', value:'', preName:"记录人" },
+  department:{ key: 'department', value:'', width: "50%", preName:"申请科室", /*hidden: true*/ },
+  proposer:{ key: 'proposer', value:'', width: "50%", preName:"申请人" },
+  applyTime:{ key: 'applyTime', value:'', width: "50%", preName:"申请时间", /*hidden: true*/ },
+  consultationTime:{ key: 'consultationTime', value:'', width: "50%", preName:"会诊时间" },
 }
 
 export default {
