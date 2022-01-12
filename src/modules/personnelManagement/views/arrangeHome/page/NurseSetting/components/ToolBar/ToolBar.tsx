@@ -67,6 +67,7 @@ export default function ToolBar() {
                 'wh,gzsrm': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
+                whyx: "添加实习/进修生护士",
                 default: '添加实习护士',
               },
               vague: true
