@@ -31,7 +31,7 @@ export default observer(function StatisticMIdHeader() {
   return (
     <Con>
       {/* {authStore.selectedDeptName} */}
-      <div className='firstTitle'>{authStore.selectedDeptNameAdd}</div>
+      <div className='firstTitle'>{authStore.selectedDeptNameAdd || '全院'}</div>
       <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>

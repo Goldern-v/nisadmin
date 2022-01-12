@@ -51,7 +51,7 @@ class StatisticsApi extends BaseApiService {
     }
     let postData = {
       type: showType,
-      deptCode: authStore.selectedDeptCode,
+      deptCode: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
       ls: data,
