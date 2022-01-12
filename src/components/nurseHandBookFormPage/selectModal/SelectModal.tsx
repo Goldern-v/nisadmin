@@ -12,7 +12,7 @@ export interface Props {
   setOperationType: Function
 }
 export default function SelectModal(props: Props) {
-  const { domReact, col, refresh, selectList, menuType, setOperationType, } = props
+  const { domReact, col, refresh, selectList, menuType, setOperationType } = props
   const [selectTop, setSelectTop]: any = useState()
   const [selectLeft, setSelectLeft]: any = useState()
   const [renderList, setRenderList]: any = useState([])
@@ -41,6 +41,7 @@ export default function SelectModal(props: Props) {
     } else {
       setSelectTop(selectH)
     }
+    if(col.multiple) return //多选时不需要智能搜索
     timer && clearInterval(timer)
     timer = setInterval(() => {
       filterArr(props.col.value)
