@@ -12,6 +12,8 @@ export default class NursingDataApi extends BaseApiService {
   }
 
   //导出
-  public exportData() {}
+  public exportData(exportParams: any) {
+    return this.post(`/nursingQuality/export`, exportParams, { responseType: 'blob' })
+  }
 }
 export const nursingDataApi = new NursingDataApi();

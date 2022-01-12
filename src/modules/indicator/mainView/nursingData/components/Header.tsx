@@ -6,7 +6,8 @@ import { appStore } from "src/stores";
 import { PageTitle } from "src/components/common";
 import { DatePicker, Select, Button, message } from "src/vendors/antd";
 import { nursingDataModal } from "../NursingDataModal";
-
+import { fileDownload } from "src/utils/file/file";
+import { nursingDataApi } from "../api/NursingDataApi";
 interface Props {
   getTitle: any;
 }
@@ -17,6 +18,23 @@ export default observer(function Header(props: Props) {
     nursingDataModal.isBigScreenOk = appStore.queryObj.isBigScreenOk || "";
     nursingDataModal.init();
   }, []);
+
+  /**
+   * 导出
+   */
+  const exportExcel = () =>{
+    if(["nys"].includes(appStore.HOSPITAL_ID)){
+      nursingDataApi.exportData(nursingDataModal.dataList).then(
+        (res) => {
+          console.log(res)
+          fileDownload(res);
+        },
+        (error) => {
+          console.log(error)
+        }
+      );
+    }
+  }
 
   return (
     <Wrapper>
@@ -61,7 +79,7 @@ export default observer(function Header(props: Props) {
         <Button type="primary" className="checkButton" onClick={() => {}}>
           查询
         </Button>
-        <Button onClick={() => {}}>导出</Button>
+        <Button onClick={() => { exportExcel() }}>导出</Button>
       </RightIcon>
     </Wrapper>
   );

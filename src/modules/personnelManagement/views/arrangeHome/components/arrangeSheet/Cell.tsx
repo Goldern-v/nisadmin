@@ -670,7 +670,7 @@ export default observer(function Cell(props: Props) {
         onContextMenu={onContextMenu}
         onClick={onClick}
         className={classNames(cellConfig)}
-        backgroundColor={cellObj.backgroundColor}
+        backgroundColor={appStore.HOSPITAL_ID == 'whyx' ? cellObj.backgroundColor : ""}
       >
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
