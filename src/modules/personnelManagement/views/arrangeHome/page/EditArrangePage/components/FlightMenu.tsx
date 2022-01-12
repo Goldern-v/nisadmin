@@ -220,9 +220,11 @@ function MealCon(props: { dataSource: any[] }) {
     }
     if (sheetViewModal.selectedCell) {
       let list = sheetViewModal.getSelectCellList(true);
+      // return false
       for (let i = 0; i < list.length; i++) {
         let weekNum = moment(list[i].workDate).isoWeekday();
         let mealObj = getMealData(weekNum, item);
+        console.log(mealObj, weekNum, item)
         list[i]!.rangeName = mealObj.name;
         list[i]!.settingNightHour = mealObj.NightHour;
         list[i]!.settingMorningHour = mealObj.MorningHour;
@@ -249,8 +251,8 @@ function MealCon(props: { dataSource: any[] }) {
       "saturday",
       "sunday"
     ];
-    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType"];
-    let _keys = ["name", "nameColor", "effectiveTime", "shiftType"];
+    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", "BackgroundColor", "RangeScore"];
+    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", "backgroundColor", "rangeScore"];
     let obj: any = {};
 
     for (let i = 0; i < keys.length; i++) {

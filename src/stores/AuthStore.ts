@@ -31,13 +31,13 @@ export default class AuthStore {
   @computed
   public get selectedDeptNameAdd() {
     try {
-      if (this.selectedDeptName === "全院") {
-        return "全院" + appStore.match.params.name;
+      if (this.selectedDeptName === "全院" || !this.selectedDeptCode) {
+        return "全院" + (appStore.match.params.name || '');
       }
       return (
         this!.deptList.find(
           (item: DeptType) => item.code === this.selectedDeptCode
-        )!.name + appStore.match.params.name
+        )!.name + (appStore.match.params.name || '')
       );
     } catch (error) {
       return "";
@@ -79,7 +79,7 @@ export default class AuthStore {
     } catch (error) {
       return "";
     }
-  }
+  } 
 
   @computed
   public get defaultDeptName() {

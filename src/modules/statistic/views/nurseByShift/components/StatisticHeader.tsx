@@ -58,7 +58,7 @@ export default function BedSituation() {
 
   return (
     <Con>
-      <DeptSelect onChange={onChange} />
+      <DeptSelect onChange={onChange} hasAllDept />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
