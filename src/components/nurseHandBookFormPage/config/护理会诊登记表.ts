@@ -3,11 +3,12 @@
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
+import { timePicker } from "../function/click";
 let user: any = authStore.user || {};
 
 const tHead = {
   top: [
-    { name: "日期/时间", colspan: "1", rowspan: "1", style:{ width: 100 } },
+    { name: "日期/时间", colspan: "1", rowspan: "1", style:{ width: 150 } },
     { name: "患者姓名", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "病案号", colspan: "1", rowspan: "1", style:{ width: 100 } },
     { name: "主要诊断", colspan: "1", rowspan: "1", style:{ width: 100 } },
@@ -22,7 +23,7 @@ const tHead = {
 }
 
 const tBody: any = [
-  { key: "time", name: "日期/时间", value: "", width: 100, timePicker:true },
+  { key: "time", name: "日期/时间", value: "", width: 150, click: timePicker },
   { key: "patientName", name: "患者姓名", value: "", width: 100 },
   { key: "recordId", name: "病案号", value: "", width: 100 },
   { key: "diagnosis", name: "主要诊断", value: "", width: 100 },
@@ -35,7 +36,7 @@ const tBody: any = [
 
 export default {
   defaulLength: [20],
-  tableTitle: { value: `${user.deptName}护理会诊登记表`, width: 992 },
+  tableTitle: { value: `${user.deptName}护理会诊登记表`, width: 1042 },
   tBody: [tBody],
   tHead: [tHead],
 }
