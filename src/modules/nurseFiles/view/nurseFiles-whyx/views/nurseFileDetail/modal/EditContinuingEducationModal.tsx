@@ -162,7 +162,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col> */}
           <Col span={24}>
             <Form.Field label={`课时数`} name='courseHour'>
-              <Input maxLength={25} />
+              <Input maxLength={20} />
             </Form.Field>
           </Col>
           <Col span={24}>

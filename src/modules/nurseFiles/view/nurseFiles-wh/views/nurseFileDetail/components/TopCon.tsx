@@ -90,16 +90,24 @@ export default observer(function TopCon() {
         )}
       </Name>
       {authStore.isRoleManage && !isSelf() && (
-        <React.Fragment>
-          {/* <ExportBtn onClick={() => setExportVisible(true)}>导出档案</ExportBtn> */}
-          <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
-          {
-            !["gzsrm"].includes(appStore.HOSPITAL_ID) ?
-              <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> : ""
-          }
-          {/* <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> */}
-          <DeptChangeBtn onClick={() => openDeptChangeModal()}>{appStore.HOSPITAL_ID === 'gxjb' ? '院内调动' : '片区内调动'}</DeptChangeBtn>
-        </React.Fragment>
+        <div>
+          <React.Fragment>
+            {/* <ExportBtn onClick={() => setExportVisible(true)}>导出档案</ExportBtn> */}
+            <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
+            {
+              !["gzsrm"].includes(appStore.HOSPITAL_ID) ?
+                <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> : ""
+            }
+            {/* <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> */}
+            {appStore.HOSPITAL_ID === 'gxjb' ? 
+              <div>
+                {/* 广西江滨只有护理部才有院内调动权限 */}
+                {authStore.isDepartment && <DeptChangeBtn onClick={() => openDeptChangeModal()}>院内调动</DeptChangeBtn>}
+              </div> :
+              <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
+            }
+          </React.Fragment>
+        </div>
       )}
 
       <deptChangeModal.Component title={appStore.HOSPITAL_ID === 'gxjb' ? '院内调动' : '片区内调动'} />

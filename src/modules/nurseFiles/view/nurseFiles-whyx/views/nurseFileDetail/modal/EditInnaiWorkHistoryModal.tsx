@@ -137,7 +137,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </div>
           <Col span={24}>
             <Form.Field label={`单位`} name='unit'>
-              <Input />
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           {/* todo */}

@@ -133,7 +133,7 @@ export default function EditPatentModal(props: Props) {
           <Row>
             <Col span={24}>
               <Form.Field label={`专利名称`} name='patentName'>
-                <Input />
+                <Input maxLength={20} />
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -151,7 +151,7 @@ export default function EditPatentModal(props: Props) {
             </Col>
             <Col span={24}>
               <Form.Field label={`发证单位`} name='cardUnit'>
-                <Input />
+                <Input maxLength={20} />
               </Form.Field>
             </Col>
             <Col span={24}>
