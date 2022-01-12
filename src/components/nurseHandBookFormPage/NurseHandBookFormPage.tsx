@@ -159,7 +159,9 @@ const Wrapper = styled.div`
   }
   .borderMessage{
     min-height: 20px;
-    font-size: 16px;
+    font-size: 15px;
+    margin-right:-1px; 
+    margin-bottom:-1px;
   }
 }
 `

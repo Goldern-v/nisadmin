@@ -17,7 +17,7 @@ const tHead = {
   ],
   mid: [
     { name: "优", colspan: "1", rowspan: "1", style:{ width: 50 } },
-    { name: "良", colspan: "1", rowspan: "1", style:{ width: 50 } },
+    { name: "良", colspan: "1", rowspan: "1", style:{ width: 51 } },
     { name: "一般", colspan: "1", rowspan: "1", style:{ width: 50 } },
   ],
   bottom: []
