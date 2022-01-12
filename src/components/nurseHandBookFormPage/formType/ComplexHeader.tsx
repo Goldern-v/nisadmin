@@ -60,6 +60,11 @@ export default function ComplexHeader(props: Props) {
     item.click && setComplexHeadList([...complexHeadList])
   }
   useEffect(() => {
+    if (queryObj.isAdd) {
+      masterInfo.complexHead.complexHeadList.map((item:any)=>{
+        item.value = ""
+      })
+    }
     setComplexHeadList([...masterInfo.complexHead.complexHeadList])
   }, [])
   useEffect(()=>{
