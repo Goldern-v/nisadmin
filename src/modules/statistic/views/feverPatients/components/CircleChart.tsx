@@ -26,11 +26,11 @@ export default function CircleChart(props: Props) {
         orient: 'vertical',
         x: 'right',
         y: 'center',
-        // data: ['手术三天发热患者人数', '入院三天发热患者人数', '入院三天内术后发热患者人数', '其他发热患者人数']
+        data: ['手术三天发热患者人数', '入院三天发热患者人数', '入院三天内术后发热患者人数', '其他发热患者人数']
       },
       series: [
         {
-          // name: '',
+          name: '',
           type: 'pie',
           radius: '80%',
           center: ['50%', '50%'],

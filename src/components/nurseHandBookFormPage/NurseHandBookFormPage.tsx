@@ -8,7 +8,6 @@ import LeftHeader from "./formType/LeftHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
 import SignModule from "./formType/SignModule"
-import SignModuleNew from "./formType/SignModuleNew"
 
 import { Input } from 'src/vendors/antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
@@ -67,8 +66,6 @@ export default function NurseHandBookFormPage(props: Props) {
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
-    console.log(targetClass);
-    console.log(menuType);
     
     if (!targetClass.includes("common")) {
       setVisible(templeVisible)
@@ -139,10 +136,7 @@ export default function NurseHandBookFormPage(props: Props) {
           })}
           {masterInfo.remark && <Remark masterInfo={masterInfo} setRemark={setRemark} remark={remark}></Remark>}
           {masterInfo.borderMessage &&<div className='borderMessage' style={{width:masterInfo.tableTitle.width}}>{masterInfo.borderMessage}</div>}
-          {/* 废弃签名组件，仅江门妇幼在使用 */}
-          {masterInfo.sign && appStore.HOSPITAL_ID == "jmfy" && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModule>}
-          {/* 新签名组件,配置更灵活 */}
-          {masterInfo.sign && <SignModuleNew masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModuleNew>}
+          {masterInfo.sign && <SignModule masterInfo={masterInfo} setSubmitSign={setSubmitSign} submitSign={submitSign} signList={signList}></SignModule>}
         </div>
         <div className="space-div"></div>
       </div>
