@@ -223,7 +223,7 @@ const getXAxisByMonth = <T>(startM: T, endM: T, startY: T, endY: T): string[] =>
  * @param end 结束年
  * @returns 折线图数据
  */
-const getLineDataByYear = <K, T>(data: K[], start: T, end: T): ILineData => {
+const getLineDataByYear = <K, T>(data: K, start: T, end: T): ILineData => {
   let resultData: ILineData|any = {}
   // 获取坐标轴
   resultData.xAxis = getXAxisWithSequence(start, end, '年')
@@ -253,7 +253,7 @@ const getLineDataByYear = <K, T>(data: K[], start: T, end: T): ILineData => {
  * @param end 结束月
  * @returns 折线图数据
  */
-const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
+const getLineDataByQuarter = <K, T>(data: K, start: T, end: T): ILineData => {
   let resultData: ILineData|any = {}
   // 获取坐标轴
   resultData.xAxis = getXAxisByQuarter<number>(+start, +end)
@@ -288,7 +288,7 @@ const getLineDataByQuarter = <K, T>(data: K[], start: T, end: T): ILineData => {
  * @param endY 结束年份
  * @returns 折线图数据
  */
-const getLineDataByMonth = <K, T>(data: K[], startM: T, endM: T, startY: T, endY: T): ILineData => {
+const getLineDataByMonth = <K, T>(data: K, startM: T, endM: T, startY: T, endY: T): ILineData => {
   let resultData: ILineData|any = {}
   resultData.xAxis = getXAxisByMonth<number>(+startM, +endM, +startY, +endY)
   resultData.searchMode = 'month'
@@ -330,7 +330,7 @@ const getLineDataByMonth = <K, T>(data: K[], startM: T, endM: T, startY: T, endY
  * @param startDay 开始天 
  * @param endDay 结束天
  */
-const getLineDataByDay = <K, T>(data: K[], startDay: T, endDay: T): ILineData => {
+const getLineDataByDay = <K, T>(data: K, startDay: T, endDay: T): ILineData => {
   let resultData: ILineData = {} as ILineData
   resultData.xAxis = getXAxisWithSequence(startDay, endDay, '日')
   resultData.searchMode = 'day'

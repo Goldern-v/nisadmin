@@ -17,6 +17,7 @@ import service from "src/services/api"; //获取科室公共接口
 import { nursingEduFilesApi } from "../api/NursingEduFilesApi"; //接口
 import { nursingEduFilesModal } from "../NursingEduFilesModal"; //仓库数据
 import { observer } from "mobx-react-lite";
+import { appStore } from "src/stores";
 
 export interface Props {
   visible: boolean;
@@ -339,6 +340,7 @@ export default observer(function HdNursingEditModal(props: Props) {
                   <Select.Option value="主管护师">主管护师</Select.Option>
                   <Select.Option value="副主任护师">副主任护师</Select.Option>
                   <Select.Option value="主任护师">主任护师</Select.Option>
+                  { ["gxjb"].includes(appStore.HOSPITAL_ID) && <Select.Option value="护师">护师</Select.Option> }
                 </Select>
               </Form.Field>
             </Col>
