@@ -66,6 +66,12 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护患沟通记录", name: "护患沟通记录" },
       { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
+    planJM3: [
+      { value: "护士基本情况登记", name: "护士基本情况登记" },
+    ],
+    planJM4: [
+      { value: "护士考勤记录", name: "护士考勤记录" },
+    ],
   }
 
   const path = window.location.hash.split('/').reverse()[0]

@@ -32,6 +32,20 @@ export default function NurseHandBookRouter() {
       ],
       lcey: [
         {
+          title: '护士基本情况',
+          path: '/nurseHandBookNew/planJM3',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护士考勤记录',
+          path: '/nurseHandBookNew/planJM4',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_lcey },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
           title: '护理工作计划',
           path: '/nurseHandBookNew/planJM',
           icon: <WCJD />,
