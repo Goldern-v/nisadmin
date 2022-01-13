@@ -66,8 +66,6 @@ export default function NurseHandBookFormPage(props: Props) {
   // 取代失焦事件,用来关闭弹窗
   const closeSelect = (e: any) => {
     let targetClass = [...e.target.classList]
-    console.log(targetClass);
-    console.log(menuType);
     
     if (!targetClass.includes("common")) {
       setVisible(templeVisible)
