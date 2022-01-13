@@ -3,10 +3,18 @@
  */
 
 import moment from "moment";
+import React, { useState, useEffect } from 'react'
 import { authStore } from 'src/stores'
 import { datePicker } from "../function/click";
-
+import { formPageService } from '../api/FormPageService'
 let user: any = authStore.user || {};
+let dutyList: any = []
+
+formPageService.getUsers(user.deptCode).then(res => {
+  res.data.map((item:any)=>{
+    dutyList.push(item.name)
+  })
+})
 
 const tHead = {
   top: [
@@ -25,7 +33,7 @@ const tHead = {
 const tBody: any = [
   { key: "serialNumber", name: "序号", value: "", width: 50 },
   { key: "jobContent", name: "科室工作内容", value: "", width: 300 },
-  { key: "nurseList", name: "责任人", value: "", width: 100, select:["陶星宇","郑煜标"], multiple:"/", },
+  { key: "nurseList", name: "责任人", value: "", width: 100, select: dutyList, multiple:"/"},
   { key: "plan", name: "实施方案", value: "", width: 300 },
   { key: "time", name: "完成时间", value: "", width: 100, click: datePicker },
   { key: "completion", name: "完成情况", value: "", width: 100, select:["已完成","未完成"], },
