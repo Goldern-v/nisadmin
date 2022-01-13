@@ -638,6 +638,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lcey: () => 2,
                 dgxg: () => 2,
                 fsxt: () => 6,
+                fssdy: () => 6,
                 whyx: () => 7
               })) *
             70 +
