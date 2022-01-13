@@ -29,7 +29,7 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = appStore.hisMatch({
     map: {
-      'wh,gzsrm,gxjb,fsxt,fssdy': createModal(AduitModalWh),
+      'wh,gzsrm,gxjb,fsxt,fssdy,whyx': createModal(AduitModalWh),
       other: createModal(AduitModal)
     },
     vague: true
@@ -38,7 +38,7 @@ export default observer(function MainLayout(props: Props) {
   let groupsAduitModal = appStore.hisMatch({
     map: {
       'hj,ys,dzlc,gyd': createModal(GroupsAduitModal),
-      'wh,gzsrm,gxjb,fsxt': createModal(GroupsAduitModalWh),
+      'wh,gzsrm,gxjb,fsxt, whyx': createModal(GroupsAduitModalWh),
       other: createModal(GroupsAduitModalNew)
     },
     vague: true

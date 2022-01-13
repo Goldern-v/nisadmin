@@ -73,6 +73,7 @@ export default function Statistics() {
           pageSize: 20,
           total: 1
         }
+        console.log(getPageObj(path), 998)
         setPageObj(getPageObj(path))
         // onload(pageObj.type)
       })

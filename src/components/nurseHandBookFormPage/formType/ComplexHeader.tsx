@@ -54,9 +54,18 @@ export default function ComplexHeader(props: Props) {
         setComplexSelectVisible(true)
       })
     }
+    console.log(item);
+    
+    item.click && item.click(item) && scheduleStore.setIsSave(true)
+    item.click && setComplexHeadList([...complexHeadList])
   }
   useEffect(() => {
-      setComplexHeadList(JSON.parse(JSON.stringify(masterInfo.complexHead.complexHeadList)))
+    if (queryObj.isAdd) {
+      masterInfo.complexHead.complexHeadList.map((item:any)=>{
+        item.value = ""
+      })
+    }
+    setComplexHeadList([...masterInfo.complexHead.complexHeadList])
   }, [])
   useEffect(()=>{
     if(!complexHeaderContent.length)return
@@ -114,7 +123,7 @@ export default function ComplexHeader(props: Props) {
 const Wrapper = styled.div`
 .complexHeaderLeft {
   border: 1px solid #000;
-  font-size: 16px;
+  font-size: 13px;
   padding-left: 0px;
   min-height: 35px;
   text-align: center;
@@ -129,7 +138,7 @@ const Wrapper = styled.div`
 }
 .complexHeaderRight {
   border: 1px solid #000;
-  font-size: 16px;
+  font-size: 13px;
   padding-left: 5px;
   min-height: 35px;
   text-align: center;

@@ -52,18 +52,19 @@ export default observer(function NurseHandBook_lcey() {
     ],
     planJM1: [
       { value: "继续教育培训情况", name: "继续教育培训情况" },
-      { value: "护理科研", name: "护理科研" },
+      { value: "护理科研登记表", name: "护理科研登记表" },
     ],
     conclusionJM2: [
       { value: "护理病历讨论登记", name: "护理病历讨论登记" },
       { value: "护理病历讨论记录", name: "护理病历讨论记录" },
       { value: "护理查房登记表", name: "护理查房登记表" }, 
-      { value: "临床护理查房记录格式", name: "临床护理查房记录格式" }, 
-      { value: "个案护理查房记录格式", name: "个案护理查房记录格式" }, 
-      { value: "教学护理查房记录格式", name: "教学护理查房记录格式" }, 
-      { value: "护理会诊", name: "护理会诊" },
+      { value: "临床护理查房记录", name: "临床护理查房记录" }, 
+      { value: "个案护理查房记录", name: "个案护理查房记录" }, 
+      { value: "教学护理查房记录", name: "教学护理查房记录" }, 
+      { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
+      { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
       { value: "护患沟通记录", name: "护患沟通记录" },
-      { value: "晨会提问记录", name: "晨会提问记录" },
+      { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
   }
 

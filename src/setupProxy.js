@@ -38,7 +38,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.20.61:9091"; // 宏群本地
       // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
-      return "http://192.168.1.106:9091"; // 宏群本地
+      // return "http://192.168.1.106:9091"; // 宏群本地
+
     /** 东莞横沥 */
     case "dghl":
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
@@ -76,8 +77,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "wjgdszd":
       return "http://120.24.240.231:15091 "; // 武警广东省总队医院正式
     case "gxjb":
-      // return 'http://58.59.133.37:9091'  // 正式
-      return "http://192.168.20.57:9091"; // 伟贤本地
+      return 'http://58.59.133.37:9091'  // 正式
+      // return "http://192.168.20.57:9091"; // 伟贤本地
     case "yczyy": //阳春
       return "http://192.168.1.54:9866"; // 聊城二院测试
     /** 佛山杏坛 */
@@ -99,6 +100,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9885"
     default:
       return "http://192.168.1.54:9866";
+    
   }
 };
 
