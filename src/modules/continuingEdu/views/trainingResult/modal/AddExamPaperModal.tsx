@@ -93,7 +93,10 @@ export default function AddExamPaperModal(props: Props) {
           if (current) {
             let newParams = current.getFields();
             newParams.cetpId = appStore.queryObj.id
-            newParams.participantList = checkedUserList
+            newParams.participantList = checkedUserList;
+            if (['nys'].includes(appStore.HOSPITAL_ID)) {
+              newParams.endTime = endTime()
+            }
             setEditLoading(true);
             trainingResultService.addResitExam(newParams).then((res: any) => {
               setEditLoading(false);
