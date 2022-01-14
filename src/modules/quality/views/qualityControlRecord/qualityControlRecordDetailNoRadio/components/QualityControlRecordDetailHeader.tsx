@@ -131,8 +131,20 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       },
     });
   };
-
-  const handleCancel = () => {
+  const cancelNoRadio = (id: string) => {
+    qualityControlRecordApi.revokeHandleForNodeForSat({ id }).then((res) => {
+      message.success("撤销成功!", 1, () => {
+        setDeleteLoading(false);
+        if (history.length <= 1) {
+          window.close();
+        } else {
+          appStore.history.goBack();
+        }
+      }),
+        () => setDeleteLoading(false);
+    });
+  };
+  const handleCancel = (flag: any = "") => {
     if (!master.id) {
       message.error("缺少质控ID");
       return;
@@ -143,6 +155,10 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       content: "是否撤销该评价表?",
       onOk: () => {
         setDeleteLoading(true);
+        if (flag === "noRadio") {
+          cancelNoRadio(master.id);
+          return;
+        }
         qualityControlRecordApi
           .revokeHandleForNode({
             id: master.id,
@@ -272,14 +288,24 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 other: false,
               },
             }) && (
-              <Button
-                onClick={handleDelete}
-                type="danger"
-                ghost
-                disabled={deleteLoading}
-              >
-                删除
-              </Button>
+              <React.Fragment>
+                <Button
+                  onClick={() => handleCancel("noRadio")}
+                  type="danger"
+                  ghost
+                  disabled={deleteLoading}
+                >
+                  撤销
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  type="danger"
+                  ghost
+                  disabled={deleteLoading}
+                >
+                  删除
+                </Button>
+              </React.Fragment>
             )}
             {/* {master &&
               master.canUpdate &&

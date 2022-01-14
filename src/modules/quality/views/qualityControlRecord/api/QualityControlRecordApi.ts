@@ -166,6 +166,11 @@ export default class QualityControlRecordApi extends BaseApiService {
   public async getFilterQcCodeList() {
     return this.get(`/qcItem/getQcCodeList`)
   }
+
+  /**撤销评价单 */
+  public revokeHandleForNodeForSat(params: any) {
+    return this.post(`/qcItem/instance/revokeHandleForNodeForSat`, params)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

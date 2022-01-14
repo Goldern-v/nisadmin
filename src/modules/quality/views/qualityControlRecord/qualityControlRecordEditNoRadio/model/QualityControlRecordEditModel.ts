@@ -519,6 +519,7 @@ class QualityControlRecordEditModel {
   @action public formCache(success?: Function) {
     this.loading = true
     let params = this.formatData({ sign: false })
+    params.isStorage = 1
     qualityControlRecordApi
       .formSave(params)
       .then(res => {
