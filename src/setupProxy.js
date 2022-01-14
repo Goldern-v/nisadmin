@@ -6,7 +6,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
   // return 'https://info.cr-health.com:20202' //外网
   // return 'http://192.168.1.54:9864' //内网
   // return 'http://192.168.20.68:8062' //广豪本地
-
+  console.log(HOSPITAL_ID, 9999999)
   switch (HOSPITAL_ID) {
     /** 厚街 */
     case "hj":
@@ -88,8 +88,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://218.13.87.27:9094'//正式
       return "http://192.168.20.57:9091"; // 伟贤本地
     case "fssdy": //佛山市一
-      //return 'http://192.168.20.57:9091'//
-      return "http://192.168.1.54:9866"; //
+      // return 'http://192.168.20.57:9091'//
+      // return "http://192.168.1.54:9866"; //
+      return "http://192.168.1.54:9885"
     case "sdlj": //顺德龙江
       //return 'http://192.168.20.57:9091'//
       return "http://192.168.1.54:9874"; //
