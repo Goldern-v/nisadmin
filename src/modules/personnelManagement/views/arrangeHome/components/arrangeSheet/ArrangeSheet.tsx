@@ -286,7 +286,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl", "fsxt"].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt", 'fssdy'].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -393,7 +393,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -424,6 +424,7 @@ export default observer(function ArrangeSheet(props: Props) {
       ...appStore.hisMatch({
         map: {
           fsxt: [],//佛山杏坛去除累计结余添加本周结余
+          fssdy: [], 
           other: [
             {
               title: (
@@ -637,6 +638,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lcey: () => 2,
                 dgxg: () => 2,
                 fsxt: () => 6,
+                fssdy: () => 6,
                 whyx: () => 7
               })) *
             70 +

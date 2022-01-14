@@ -6,7 +6,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
   // return 'https://info.cr-health.com:20202' //外网
   // return 'http://192.168.1.54:9864' //内网
   // return 'http://192.168.20.68:8062' //广豪本地
-
+  console.log(HOSPITAL_ID, 9999999)
   switch (HOSPITAL_ID) {
     /** 厚街 */
     case "hj":
@@ -37,8 +37,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
       return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.20.61:9091"; // 宏群本地
-      // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
-      // return "http://192.168.1.106:9091"; // 宏群本地
+    // return 'http://192.168.1.54:9872' // 公司-江门妇幼测试-内网
+    // return "http://192.168.1.106:9091"; // 宏群本地
 
     /** 东莞横沥 */
     case "dghl":
@@ -62,7 +62,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://192.168.20.61:9091' // 本地
       // return 'http://192.168.1.54:9866' // 测试环境
-      // return "http://192.168.20.57:9091";
+      return "http://192.168.20.10:9091";
       return "http://192.168.1.54:9875"; // 公司-贵州省人民医院-内网
     // return "http://192.168.20.62:8080" // 飞豪本地
 
@@ -77,8 +77,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "wjgdszd":
       return "http://120.24.240.231:15091 "; // 武警广东省总队医院正式
     case "gxjb":
-      return 'http://58.59.133.37:9091'  // 正式
-      // return "http://192.168.20.57:9091"; // 伟贤本地
+      return "http://58.59.133.37:9091"; // 正式
+    // return "http://192.168.20.57:9091"; // 伟贤本地
     case "yczyy": //阳春
       return "http://192.168.1.54:9866"; // 聊城二院测试
     /** 佛山杏坛 */
@@ -88,19 +88,19 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://218.13.87.27:9094'//正式
       return "http://192.168.20.57:9091"; // 伟贤本地
     case "fssdy": //佛山市一
-      //return 'http://192.168.20.57:9091'//
-      return "http://192.168.1.54:9866"; //
+      // return 'http://192.168.20.57:9091'//
+      // return "http://192.168.1.54:9866"; //
+      return "http://192.168.1.54:9885"
     case "sdlj": //顺德龙江
       //return 'http://192.168.20.57:9091'//
       return "http://192.168.1.54:9874"; //
 
-      //武汉亚心whyx_排班
+    //武汉亚心whyx_排班
     case "whyx":
       // return "http://192.168.20.35:8080"
-      return "http://192.168.1.54:9885"
+      return "http://192.168.1.54:9885";
     default:
       return "http://192.168.1.54:9866";
-    
   }
 };
 
