@@ -142,6 +142,7 @@ export default observer(function ExpectSettingModal(props: Props) {
       cellObj!.effectiveTimeOld = record.effectiveTime;
       cellObj!.shiftType = record.shiftType;
       cellObj!.statusType = "1";
+      cellObj!.backgroundColor = record.backgroundColor;
     }
     setLoadingTable(true);
     setTimeout(() => setLoadingTable(false), 100);
