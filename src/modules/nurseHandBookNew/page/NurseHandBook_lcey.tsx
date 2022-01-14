@@ -29,6 +29,7 @@ export default observer(function NurseHandBook_lcey() {
   const [idChange, setIdChange] = useState("")
   const [state, setState] = useState<String>('')
   const [manualType, setManualType] = useState<String>('')
+  const [typeList, setTypeList] = useState([])
 
 
   const titleArr: any = {
@@ -37,7 +38,7 @@ export default observer(function NurseHandBook_lcey() {
   }
 
   const manualTypeArr: any = {
-    planJM: [
+    lcPlan: [
       { value: "护理部年度工作计划", name: "护理部年度工作计划" },
       { value: "护理部月工作计划", name: "护理部月工作计划" },
       { value: "病区年度工作计划", name: "病区年度工作计划" },
@@ -45,16 +46,16 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护理部培训考核月计划登记", name: "护理部培训考核月计划登记" },
       { value: "护理部培训考核月计划记录", name: "护理部培训考核月计划记录" },
     ],
-    conclusionJM: [
+    lcConclusion: [
       { value: "病区年度工作总结", name: "病区年度工作总结" },
       { value: "病区半年工作总结", name: "病区半年工作总结" }, 
       { value: "病区月工作总结", name: "病区月工作总结" },
     ],
-    planJM1: [
+    lcEducation: [
       { value: "继续教育培训情况", name: "继续教育培训情况" },
       { value: "护理科研登记表", name: "护理科研登记表" },
     ],
-    conclusionJM2: [
+    lcWard: [
       { value: "护理病历讨论登记", name: "护理病历讨论登记" },
       { value: "护理病历讨论记录", name: "护理病历讨论记录" },
       { value: "护理查房登记表", name: "护理查房登记表" }, 
@@ -66,12 +67,12 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护患沟通记录", name: "护患沟通记录" },
       { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
-    planJM3: [
-      { value: "护士基本情况登记", name: "护士基本情况登记" },
-    ],
-    planJM4: [
-      { value: "护士考勤记录", name: "护士考勤记录" },
-    ],
+    // planJM3: [
+    //   { value: "护士基本情况登记", name: "护士基本情况登记" },
+    // ],
+    // planJM4: [
+    //   { value: "护士考勤记录", name: "护士考勤记录" },
+    // ],
   }
 
   const path = window.location.hash.split('/').reverse()[0]
@@ -148,9 +149,9 @@ export default observer(function NurseHandBook_lcey() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>}
-            {(record.status == 2 || record.status == 3) && <span onClick={() => onEdit(record)}>编辑</span>}
-            {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>}
+            {/* {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>} */}
+            <span onClick={() => onEdit(record)}>编辑</span>
+            {/* {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>} */}
             {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
@@ -165,8 +166,8 @@ export default observer(function NurseHandBook_lcey() {
   const [total, setTotal]: any = useState(0)
 
   const findManualTypeName = (manualType:any) => {
-    let obj = manualTypeArr[path].find((item:any) => item.value == manualType)
-    return obj.name
+    let obj:any = typeList.find((item:any) => item.code == manualType)
+    return obj.name 
   }
 
   const initData = () => {
@@ -176,6 +177,15 @@ export default observer(function NurseHandBook_lcey() {
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
+
+
+  const getTypeList = () => {
+    nurseHandBookService
+      .getChildCodeList(path)
+      .then((res) => {
+        setTypeList(res.data)
+      }, err => setPageLoading(false))
+  }
 
   const getData = () => {
     setPageLoading(true)
@@ -209,8 +219,8 @@ export default observer(function NurseHandBook_lcey() {
           defaultValue={manualTypeAddNew}
           style={{ width: 280 }}
           onChange={(val: any) => manualTypeAddNew = val}>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </div>,
       onOk: () => {
@@ -333,6 +343,7 @@ export default observer(function NurseHandBook_lcey() {
   ])
 
   useEffect(() => {
+    getTypeList()
     initData()
   }, [])
 
@@ -395,8 +406,8 @@ export default observer(function NurseHandBook_lcey() {
           style={{ width: 220 , marginRight: '235px'}}
           onChange={(val: any) => setManualType(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </PageHeader>
       <BaseTable

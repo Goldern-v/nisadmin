@@ -110,7 +110,7 @@ export default function NurseHandBookModal(props: any) {
         centered: true,
         onOk: () => {
           api
-          .deleteAttachment(info.id).then((res) => {
+          .deleteAttachmentJM(info.id).then((res) => {
             resolve(true)
             message.success('删除成功')
           })
