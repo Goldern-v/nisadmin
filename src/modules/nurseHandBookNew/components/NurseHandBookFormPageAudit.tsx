@@ -13,7 +13,6 @@ import AuditProcessDetail from './AuditProcessDetail'
 import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
-import CKEditorFn from "./CKEditor"
 import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';

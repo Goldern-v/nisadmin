@@ -6,7 +6,6 @@ import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Inpu
 import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
-import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'

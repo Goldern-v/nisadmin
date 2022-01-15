@@ -9,11 +9,9 @@ import BaseTable from 'src/components/BaseTable'
 import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHandBookFormPage'
 import { fileDownload } from 'src/utils/file/file'
 import { DoCon } from 'src/components/BaseTable'
-import AuditProcessDetail from './AuditProcessDetail'
 import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
-import CKEditorFn from "./CKEditor"
 import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';
@@ -181,8 +179,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
-    console.log(bodyModal);
-    
     setSaveLoading(true)
     let tBodyList: any = []
     let computeList: any = []

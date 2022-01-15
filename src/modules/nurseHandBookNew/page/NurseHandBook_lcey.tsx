@@ -6,7 +6,6 @@ import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Inpu
 import { appStore,authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
-import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
@@ -34,7 +33,6 @@ export default observer(function NurseHandBook_lcey() {
   let user: any = authStore.user || {};
   //只有护士长或者护理部的人才可以编辑
   let canEditor: Boolean =  user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") 
-  
 
   const titleArr: any = {
     lcBaseInfo: '护士基本情况',
@@ -75,12 +73,7 @@ export default observer(function NurseHandBook_lcey() {
       { value: "护患沟通记录", name: "护患沟通记录" },
       { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
-    // planJM3: [
-    //   { value: "护士基本情况登记", name: "护士基本情况登记" },
-    // ],
-    // planJM4: [
-    //   { value: "护士考勤记录", name: "护士考勤记录" },
-    // ],
+   
   }
 
   const path = window.location.hash.split('/').reverse()[0]
@@ -224,6 +217,8 @@ export default observer(function NurseHandBook_lcey() {
         if (manualTypeAddNew == "") {
           message.error('类型不能为空')
           return
+        } else if(manualTypeAddNew == "lc_developPlan"){
+          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //只上传附件
         } else {
           appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
@@ -315,11 +310,10 @@ export default observer(function NurseHandBook_lcey() {
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
 
     nurseHandBookService.export(path, {
-      ...pageOptions,
-      deptCode: deptSelect,
       keyWord: searchText,
       startTime,
       endTime,
+      hostName: appStore.HOSPITAL_Name
     })
       .then(res => {
         setPageLoading(false)
@@ -422,6 +416,7 @@ export default observer(function NurseHandBook_lcey() {
           })
         }}
       />
+      
       <FormPageBody
         visible={editVisible}
         path={pathChange}
