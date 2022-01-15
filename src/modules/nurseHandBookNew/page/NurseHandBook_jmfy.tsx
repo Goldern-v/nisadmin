@@ -193,7 +193,7 @@ export default observer(function NurseHandBook_jmfy() {
           message.error('类型不能为空')
           return
         } else {
-          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
+          appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
       }
     })
@@ -221,11 +221,11 @@ export default observer(function NurseHandBook_jmfy() {
   }
   
   const onCheck = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const onEdit = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const onUndo = (record: any) => {

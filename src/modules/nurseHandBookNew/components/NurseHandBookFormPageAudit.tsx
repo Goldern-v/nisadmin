@@ -1,4 +1,4 @@
-//无审核流程（聊城二院）
+//有审核流程（江门妇幼）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Upload, Icon, Modal, message, Input, Spin } from 'antd'
@@ -24,7 +24,7 @@ const api = new NurseHandBookService();
 
 export interface Props { }
 
-export default observer(function nurseHandBookFormPage(props: any) {
+export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
@@ -52,12 +52,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
 
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
-    lcBaseInfo: '护士基本情况',
-    lcAttendance: '护士考勤记录',
-    lcPlan: '护理工作计划',
-    lcConclusion: '护理工作总结',
-    lcEducation: '继续教育及科研',
-    lcWard: '病区工作',
+    planJM: '护士长工作计划',
+    conclusionJM: '护士长工作总结',
   }
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
@@ -68,7 +64,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const onload = () => {
     if (!queryObj.isAdd) {
       setSpinning(true)
-      api.getById(queryObj.id).then((res) => {
+      api.getByIdAudited(queryObj.id).then((res) => {
         setData(res.data)
         setDetailData(res.data.flowList)
         res.data.files?.forEach((item: any) => {
@@ -191,7 +187,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     computeRow.map((item:any)=>{
       computeList.push({computeRow:JSON.stringify(item)}) 
     })
-    api.saveOrUpdate(queryObj.type, {
+    api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
@@ -477,8 +473,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
         {queryObj.fileId && <div className="title">护士长手册&gt;{queryObj.type}&gt;{isNone()}{queryObj.type}</div>}
         {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
+        {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">
-          {queryObj.audit != "2" && <Button onClick={handleSave} type="primary" loading={saveLoading}>保存</Button>}
+          {queryObj.isAdd && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
+          {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
+          {data.status != "1" && !queryObj.audit && <Button className="ml-20" loading={submitLoading} type="primary" onClick={handleSubmit}>提交</Button>}
+          {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
@@ -488,6 +488,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
           <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
         <div className="rightCon">
+          {!queryObj.isAdd && <div className="rightBottom">
+            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
+          </div>}
           <div className="rightTop">
             <UploadView
               setEditVisible2={setEditVisible2}

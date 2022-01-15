@@ -33,8 +33,12 @@ export default observer(function NurseHandBook_lcey() {
 
 
   const titleArr: any = {
-    planJM: '护士长工作计划',
-    conclusionJM: '护士长工作总结',
+    lcBaseInfo: '护士基本情况',
+    lcAttendance: '护士考勤记录',
+    lcPlan: '护理工作计划',
+    lcConclusion: '护理工作总结',
+    lcEducation: '继续教育及科研',
+    lcWard: '病区工作',
   }
 
   const manualTypeArr: any = {
@@ -62,8 +66,8 @@ export default observer(function NurseHandBook_lcey() {
       { value: "临床护理查房记录", name: "临床护理查房记录" }, 
       { value: "个案护理查房记录", name: "个案护理查房记录" }, 
       { value: "教学护理查房记录", name: "教学护理查房记录" }, 
-      { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
-      { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
+      // { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
+      // { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
       { value: "护患沟通记录", name: "护患沟通记录" },
       { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
@@ -131,27 +135,13 @@ export default observer(function NurseHandBook_lcey() {
       }
     },
     {
-      title: '审核状态',
-      dataIndex: 'status',
-      width: 70,
-      align: 'center',
-      render(status: any) {
-        return (
-          <div>
-            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿"}</span>
-          </div>
-        )
-      }
-    },
-    {
       title: '操作',
       width: 80,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {/* {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>} */}
+            <span onClick={() => onCheck(record)}>查看</span>
             <span onClick={() => onEdit(record)}>编辑</span>
-            {/* {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>} */}
             {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
@@ -166,8 +156,12 @@ export default observer(function NurseHandBook_lcey() {
   const [total, setTotal]: any = useState(0)
 
   const findManualTypeName = (manualType:any) => {
-    let obj:any = typeList.find((item:any) => item.code == manualType)
-    return obj.name 
+    let obj:any = typeList.find((item:any) => {
+      return item.code == manualType
+    })
+    if(obj){
+      return obj.name 
+    }
   }
 
   const initData = () => {
@@ -177,7 +171,6 @@ export default observer(function NurseHandBook_lcey() {
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
-
 
   const getTypeList = () => {
     nurseHandBookService
@@ -388,18 +381,6 @@ export default observer(function NurseHandBook_lcey() {
       </PageHeader>
       <PageHeader>
         <Place />
-        <span className='label ml-20'>状态:</span>
-        <Select
-          value={state}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setState(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          <Select.Option value={'3'}>草稿</Select.Option>
-          <Select.Option value={'2'}>驳回</Select.Option>
-          <Select.Option value={'0'}>待审核</Select.Option>
-          <Select.Option value={'1'}>审核通过</Select.Option>
-        </Select>
         <span className='label ml-20'>类型:</span>
         <Select
           value={manualType}
