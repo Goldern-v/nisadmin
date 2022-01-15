@@ -217,8 +217,6 @@ export default observer(function NurseHandBook_lcey() {
         if (manualTypeAddNew == "") {
           message.error('类型不能为空')
           return
-        } else if(manualTypeAddNew == "lc_developPlan"){
-          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //只上传附件
         } else {
           appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
