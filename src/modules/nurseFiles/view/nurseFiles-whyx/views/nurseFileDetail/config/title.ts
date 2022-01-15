@@ -20,6 +20,7 @@ let titleEC: any = {
   nurseWHInformation: '基本信息',
   nurseWorkExperience: '院外工作经历',
   nurseWHInnaiWorkExperience: '院内工作经历', // todo
+  nurseWHWorkExperience: '工作经历',
   nurseWHMedicalEducation: '医学学历教育',
   nurseWHRegistrationWork: '在院工作情况',
   NurseWHQualificationIn: '院内工作资质', // 审核的是开头大写

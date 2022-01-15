@@ -53,7 +53,8 @@ export default class HomeApiServices extends BaseApiService {
       patientEvent: data.patientEvent, // string 必须参数
       createDateTime: data.createDateTime, // string 非必须参数
       operator: data.operator, // string 必须参数
-      messageType: data.messageType // string 必须参数
+      messageType: data.messageType, // string 必须参数
+      sex: data.sex, // string 必须参数
     }
     return this.post(`/educationSettingEvent/saveOrUpdate`, postData)
   }
@@ -87,7 +88,8 @@ export default class HomeApiServices extends BaseApiService {
       createDateTime: data.createDateTime, // string 非必须参数
       operator: data.operator, // string 非必须参数
       operation: data.operation, // string 非必须参数
-      messageType: data.messageType // string 非必须参数
+      messageType: data.messageType, // string 非必须参数
+      sex: data.sex, // string
     }
     return this.post(`/educationSettingOperation/saveOrUpdate`, postData)
   }
@@ -112,6 +114,7 @@ export default class HomeApiServices extends BaseApiService {
 
   // 12.保存自动推送医嘱类型
   public async preservationPushType2 (data: any) {
+    console.log(data.sex, 112223)
     const postData = {
       serialNo: data.serialNo, // string 非必须参数
       wardCode: data.wardCode, // string 必须参数
@@ -120,7 +123,8 @@ export default class HomeApiServices extends BaseApiService {
       orderText: data.orderText, // string 必须参数
       createDateTime: data.createDateTime, // string 非必须参数
       operator: data.operator, // string 必须参数
-      messageType: data.messageType // string 必须参数
+      messageType: data.messageType, // string 必须参数
+      sex: data.sex, // string 必须参数
     }
     return this.post(`/educationSettingOrder/saveOrUpdate`, postData)
   }

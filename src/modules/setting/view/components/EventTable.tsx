@@ -34,6 +34,7 @@ class EditableTable extends React.Component<any, any> {
       educationName: '',
       patientEvent: '',
       patientId: '',
+      sex: '',
       messageType: '',
       timeout: null,
       loading: false,
@@ -147,11 +148,13 @@ class EditableTable extends React.Component<any, any> {
       this.setState({ missionId: undefined })
       this.setState({ patientId: '' })
       this.setState({ messageType: '' })
+      this.setState({sex: ''})
     }
     // 如果是修改则回显数据
     if (value === 0) {
       this.setState({ searchValue: record.educationName })
       this.setState({ missionId: record.educationName })
+      this.setState({sex: record.sex === '*' ? '不限' : record.sex})
     }
     this.setState({ rowData: record })
     service.healthyApiService.getPushType().then((res) => {
@@ -275,7 +278,8 @@ class EditableTable extends React.Component<any, any> {
         createDateTime: this.state.rowData.createDateTime, // string 非必须参数
         operator: this.state.rowData.operator, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
-        patientEvent: eventName // string 非必须参数
+        patientEvent: eventName, // string 非必须参数
+        sex: this.state.sex === '不限' ? '*' : this.state.sex
       }
     }
     // 新增入参
@@ -289,7 +293,8 @@ class EditableTable extends React.Component<any, any> {
         educationName: this.state.searchValue, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
         patientEvent: eventName, // string 非必须参数
-        operator: empNo
+        operator: empNo,
+        sex: this.state.sex === '不限' ? '*' : this.state.sex
       }
     }
     service.healthyApiService.preservationAutomatic(postData).then((res) => {
@@ -418,6 +423,21 @@ class EditableTable extends React.Component<any, any> {
                 ))}
               </Select>
             </div>
+            {appStore.HOSPITAL_ID === 'nys' && <div className='category' style={{ marginTop: '40px' }}>
+              <SpanOne>性别:</SpanOne>
+              <Select
+                value={this.state.sex}
+                onChange={(value: any) => this.setState({ sex: value })}
+                style={{ width: '72%' }}
+                placeholder='选择类别'
+              >
+                {['不限', '男', '女' ].map((item: any) => (
+                  <Select.Option value={item} key={item}>
+                    {item}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>}
             <div className='category' style={{ marginTop: '40px', marginBottom: '30px' }}>
               <SpanOne>推送类型：</SpanOne>
               <Select
