@@ -27,18 +27,18 @@ const tHead = {
 }
 
 const tBody: any = [
-  { key: "time", name: "姓名", value: "", width: 100 },
-  { key: "place", name: "出生年月", value: "", width: 100 },
-  { key: "host", name: "参加工作时间", value: "", width: 150 },
-  { key: "number", name: "政治面貌", value: "", width: 100 },
-  { key: "patientName", name: "最高学历", value: "", width: 100 },
-  { key: "recordId", name: "毕业学校", value: "", width: 200 },
-  { key: "diagnosis", name: "毕业时间", value: "", width: 100 },
-  { key: "type", name: "技术职称", value: "", width: 100 },
-  { key: "purpose", name: "职务", value: "", width: 100 },
-  { key: "solveProblem", name: "调入时间", value: "", width: 100 },
-  { key: "solveProblem", name: "调出时间", value: "", width: 100 },
-  { key: "solveProblem", name: "备注", value: "", width: 100 },
+  { key: "name", name: "姓名", value: "", width: 100 },
+  { key: "birth", name: "出生年月", value: "", width: 100 },
+  { key: "joinTime", name: "参加工作时间", value: "", width: 150 },
+  { key: "politicalLandscape", name: "政治面貌", value: "", width: 100 },
+  { key: "education", name: "最高学历", value: "", width: 100 },
+  { key: "school", name: "毕业学校", value: "", width: 200 },
+  { key: "endTIme", name: "毕业时间", value: "", width: 100 },
+  { key: "title", name: "技术职称", value: "", width: 100 },
+  { key: "post", name: "职务", value: "", width: 100 },
+  { key: "callInTime", name: "调入时间", value: "", width: 100 },
+  { key: "callOutTime", name: "调出时间", value: "", width: 100 },
+  { key: "note", name: "备注", value: "", width: 100 },
 ]
 
 export default {
