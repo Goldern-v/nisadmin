@@ -780,37 +780,37 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '院外工作经历':
-      {
-        globalModal.auditModal.show({
-          getTableData: callBack,
-          id: row.id,
-          empNo: row.empNo || row.commiterNo,
-          type: 'nurseWHWorkExperience',
-          title: '审核院外工作经历',
-          tableFormat: [
-            {
-              开始时间: `startTime`,
-              '结束时间(空则为至今)': `endTime`
-            },
-            {
-              单位: `unit`,
-              科室: 'department'
-            }
-          ],
+    // case '院外工作经历':
+    //   {
+    //     globalModal.auditModal.show({
+    //       getTableData: callBack,
+    //       id: row.id,
+    //       empNo: row.empNo || row.commiterNo,
+    //       type: 'nurseWHWorkExperience',
+    //       title: '审核院外工作经历',
+    //       tableFormat: [
+    //         {
+    //           开始时间: `startTime`,
+    //           '结束时间(空则为至今)': `endTime`
+    //         },
+    //         {
+    //           单位: `unit`,
+    //           科室: 'department'
+    //         }
+    //       ],
 
-          allData: row
-        })
-      }
-      break
-    case '院内工作经历':
+    //       allData: row
+    //     })
+    //   }
+    //   break
+    case '工作经历':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
           type: 'nurseWHWorkExperience',
-          title: '审核院内工作经历',
+          title: '审核工作经历',
           tableFormat: [
             {
               开始时间: `startTime`,

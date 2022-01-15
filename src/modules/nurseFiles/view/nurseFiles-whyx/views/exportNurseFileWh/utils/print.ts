@@ -13,7 +13,7 @@ export const printAll = (id: string) => {
 
 const renderPrintingEl = (el: HTMLElement) => {
   let pageList = el.querySelectorAll('.print-page-item')
-  console.log(pageList)
+  // console.log(pageList)
 
   for (let i = 0; i < pageList.length; i++) {
     if (i > 0) el.removeChild(pageList[i])

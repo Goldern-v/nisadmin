@@ -118,7 +118,7 @@ export default observer(function WorkHistory() {
       // }
     },
     // todo
-    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData)
+    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData, true)
   ]
 
   useEffect(() => {

@@ -105,7 +105,6 @@ export default function EditPersonWinningModal(props: Props) {
   const onSelect = (val: any) => {
     setSelectGrantType(val)
     if (refForm.current) {
-      console.log('111')
       refForm!.current!.setFields({
         grantName: '',
       })

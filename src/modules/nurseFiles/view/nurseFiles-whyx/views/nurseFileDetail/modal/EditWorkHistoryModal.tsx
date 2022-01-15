@@ -79,9 +79,9 @@ export default function EditWorkHistoryModal(props: Props) {
       // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
-      setTitle('修改工作经历')
+      setTitle('修改院外工作经历')
     } else if (signShow === '添加') {
-      setTitle('添加工作经历')
+      setTitle('添加院外工作经历')
     }
   }, [visible])
 
