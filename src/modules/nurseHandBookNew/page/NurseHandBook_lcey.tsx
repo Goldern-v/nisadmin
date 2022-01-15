@@ -146,7 +146,7 @@ export default observer(function NurseHandBook_lcey() {
           <DoCon>
             {!canEditor && <span onClick={() => onCheck(record)}>查看</span>}
             {canEditor && <span onClick={() => onEdit(record)}>编辑</span>}
-            {!canEditor && <span onClick={() => onDelete(record)}>删除</span>}
+            {canEditor && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }
