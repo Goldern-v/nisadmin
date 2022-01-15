@@ -181,6 +181,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const handleSave = () => {
+    console.log(bodyModal);
+    
     setSaveLoading(true)
     let tBodyList: any = []
     let computeList: any = []

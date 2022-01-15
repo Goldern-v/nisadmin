@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore } from 'src/stores'
+import { appStore,authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
 import NurseHandBookModal from '../components/NurseHandBookModal'
@@ -13,10 +13,10 @@ import moment from 'moment'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
-
+import { use } from 'echarts'
 export interface Props { }
-
 export default observer(function NurseHandBook_lcey() {
+
   const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
@@ -31,6 +31,10 @@ export default observer(function NurseHandBook_lcey() {
   const [manualType, setManualType] = useState<String>('')
   const [typeList, setTypeList] = useState([])
 
+  let user: any = authStore.user || {};
+  //只有护士长或者护理部的人才可以编辑
+  let canEditor: Boolean =  user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") 
+  
 
   const titleArr: any = {
     lcBaseInfo: '护士基本情况',
@@ -140,9 +144,9 @@ export default observer(function NurseHandBook_lcey() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onCheck(record)}>查看</span>
-            <span onClick={() => onEdit(record)}>编辑</span>
-            {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
+            {!canEditor && <span onClick={() => onCheck(record)}>查看</span>}
+            {canEditor && <span onClick={() => onEdit(record)}>编辑</span>}
+            {!canEditor && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }

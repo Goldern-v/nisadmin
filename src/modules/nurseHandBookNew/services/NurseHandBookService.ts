@@ -31,7 +31,7 @@ export default class NurseHandBookService extends BaseApiService {
   }
   /*导出文件(通用)*/
   public export(type: string, obj: PageOptions | any) {
-    return this.post(`/nurseManualJM/${hospitalPath}/${type}`, obj ,{ responseType: 'blob' })
+    return this.post(`/${hospital}/export/${type}`, obj ,{ responseType: 'blob' })
   }
   /*附件下载(通用)*/
   public download(id: string) {
@@ -76,7 +76,6 @@ export default class NurseHandBookService extends BaseApiService {
   public getById(id: string) {
     return this.get(`/nurseManualLC/getById?id=${id}`)
   }
-  
 }
 
 export const nurseHandBookService = new NurseHandBookService()
