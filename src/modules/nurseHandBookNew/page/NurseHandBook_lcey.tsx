@@ -3,20 +3,19 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore } from 'src/stores'
+import { appStore,authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
-import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
-
+import { use } from 'echarts'
 export interface Props { }
-
 export default observer(function NurseHandBook_lcey() {
+
   const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
@@ -31,10 +30,17 @@ export default observer(function NurseHandBook_lcey() {
   const [manualType, setManualType] = useState<String>('')
   const [typeList, setTypeList] = useState([])
 
+  let user: any = authStore.user || {};
+  //只有护士长或者护理部的人才可以编辑
+  let canEditor: Boolean =  user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") 
 
   const titleArr: any = {
-    planJM: '护士长工作计划',
-    conclusionJM: '护士长工作总结',
+    lcBaseInfo: '护士基本情况',
+    lcAttendance: '护士考勤记录',
+    lcPlan: '护理工作计划',
+    lcConclusion: '护理工作总结',
+    lcEducation: '继续教育及科研',
+    lcWard: '病区工作',
   }
 
   const manualTypeArr: any = {
@@ -62,17 +68,12 @@ export default observer(function NurseHandBook_lcey() {
       { value: "临床护理查房记录", name: "临床护理查房记录" }, 
       { value: "个案护理查房记录", name: "个案护理查房记录" }, 
       { value: "教学护理查房记录", name: "教学护理查房记录" }, 
-      { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
-      { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
+      // { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
+      // { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
       { value: "护患沟通记录", name: "护患沟通记录" },
       { value: "护理晨会提问记录", name: "护理晨会提问记录" },
     ],
-    // planJM3: [
-    //   { value: "护士基本情况登记", name: "护士基本情况登记" },
-    // ],
-    // planJM4: [
-    //   { value: "护士考勤记录", name: "护士考勤记录" },
-    // ],
+   
   }
 
   const path = window.location.hash.split('/').reverse()[0]
@@ -131,28 +132,14 @@ export default observer(function NurseHandBook_lcey() {
       }
     },
     {
-      title: '审核状态',
-      dataIndex: 'status',
-      width: 70,
-      align: 'center',
-      render(status: any) {
-        return (
-          <div>
-            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿"}</span>
-          </div>
-        )
-      }
-    },
-    {
       title: '操作',
       width: 80,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {/* {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>} */}
-            <span onClick={() => onEdit(record)}>编辑</span>
-            {/* {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>} */}
-            {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
+            {!canEditor && <span onClick={() => onCheck(record)}>查看</span>}
+            {canEditor && <span onClick={() => onEdit(record)}>编辑</span>}
+            {canEditor && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }
@@ -166,8 +153,12 @@ export default observer(function NurseHandBook_lcey() {
   const [total, setTotal]: any = useState(0)
 
   const findManualTypeName = (manualType:any) => {
-    let obj:any = typeList.find((item:any) => item.code == manualType)
-    return obj.name 
+    let obj:any = typeList.find((item:any) => {
+      return item.code == manualType
+    })
+    if(obj){
+      return obj.name 
+    }
   }
 
   const initData = () => {
@@ -177,7 +168,6 @@ export default observer(function NurseHandBook_lcey() {
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
-
 
   const getTypeList = () => {
     nurseHandBookService
@@ -318,11 +308,10 @@ export default observer(function NurseHandBook_lcey() {
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
 
     nurseHandBookService.export(path, {
-      ...pageOptions,
-      deptCode: deptSelect,
       keyWord: searchText,
       startTime,
       endTime,
+      hostName: appStore.HOSPITAL_Name
     })
       .then(res => {
         setPageLoading(false)
@@ -388,18 +377,6 @@ export default observer(function NurseHandBook_lcey() {
       </PageHeader>
       <PageHeader>
         <Place />
-        <span className='label ml-20'>状态:</span>
-        <Select
-          value={state}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setState(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          <Select.Option value={'3'}>草稿</Select.Option>
-          <Select.Option value={'2'}>驳回</Select.Option>
-          <Select.Option value={'0'}>待审核</Select.Option>
-          <Select.Option value={'1'}>审核通过</Select.Option>
-        </Select>
         <span className='label ml-20'>类型:</span>
         <Select
           value={manualType}
@@ -437,6 +414,7 @@ export default observer(function NurseHandBook_lcey() {
           })
         }}
       />
+      
       <FormPageBody
         visible={editVisible}
         path={pathChange}

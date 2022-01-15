@@ -9,7 +9,7 @@ import { appStore, authStore } from 'src/stores'
 interface Props {
   detailData?: any
 }
-export default function auditProcessDetail(props: Props) {
+export default function UploadView(props: Props) {
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
   const [fileList, setFileList]:any = useState([])
   const [fileIdList, setFileIdList]:any = useState([])

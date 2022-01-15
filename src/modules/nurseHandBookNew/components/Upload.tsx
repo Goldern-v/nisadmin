@@ -17,7 +17,7 @@ interface Props {
   setIdChange: Function
   setPathChange: Function
 }
-export default function auditProcessDetail(props: Props) {
+export default function UploadView(props: Props) {
   const { queryObj } = appStore
   const { setEditVisible2, setFileIdList, setFileList, fileList, setIdChange, setPathChange } = props
   let header:any = {'App-Token-Nursing':'51e827c9-d80e-40a1-a95a-1edc257596e7','Auth-Token-Nursing':authStore.getAuthToken()}
