@@ -41,11 +41,11 @@ export default function SelectModal(props: Props) {
     } else {
       setSelectTop(selectH)
     }
-    if(col.multiple) return //多选时不需要智能搜索
-    timer && clearInterval(timer)
-    timer = setInterval(() => {
-      filterArr(props.col.value)
-    }, 1000)
+    // if(col.multiple) return //多选时不需要智能搜索
+    // timer && clearInterval(timer)
+    // timer = setInterval(() => {
+    //   filterArr(props.col.value)
+    // }, 1000)
   }
 
   const filterArr = (key: any) => {
