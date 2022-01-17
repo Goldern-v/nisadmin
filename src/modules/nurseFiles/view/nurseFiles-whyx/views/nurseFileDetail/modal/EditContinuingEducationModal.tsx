@@ -83,7 +83,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        data: [moment(data.hostStartDate), moment(data.hostEndDate)],
+        data: data.hostStartDate && data.hostEndDate ? [moment(data.hostStartDate), moment(data.hostEndDate)] : [],
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
