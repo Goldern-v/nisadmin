@@ -340,7 +340,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
             <Form.Field label={`初始学历`} name="initialEducation">
               <Select>
                 {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
@@ -350,7 +350,7 @@ export default function EditWorkHistoryModal(props: Props) {
                 ))}
               </Select>
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={12}>
             <Form.Field label={`最高学历`} name="highestEducation">
               <Select>
@@ -364,12 +364,12 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
             <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
               <DatePicker />
             </Form.Field>
-          </Col>
-          <Col span={12}>
+          </Col>}
+          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
             <Form.Field label={`最高学历学位`} name="highestEducationDegree">
               <AutoComplete
                 dataSource={nurseFileDetailViewModal
@@ -377,7 +377,7 @@ export default function EditWorkHistoryModal(props: Props) {
                   .map((item) => item.name)}
               />
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={12}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
@@ -388,11 +388,11 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
             <Form.Field label={`院内工作地点`} name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={12}>
             <Form.Field
               label={`工作护理单元`}
