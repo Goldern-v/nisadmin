@@ -533,7 +533,7 @@ const Wrapper = styled.div`
   }
   .topCon{
     width: 100%;
-    height: 100px;
+    height: 11vh;
     background-color: #fff;
     padding-left: 30px;
     position: fixed;
@@ -556,13 +556,13 @@ const Wrapper = styled.div`
     .buttonBody {
       /* width: 320px; */
       position: absolute;
-      top: 50px;
+      bottom: 2vh;
       right: 50px;
     }
   }
   .main {
     flex: 1;
-    padding-top: 100px;
+    padding-top: 11vh;
     display: flex;
     justify-content: space-between;
     .formPage {
@@ -570,8 +570,7 @@ const Wrapper = styled.div`
       /* min-width: 77vw;
       max-width: 77vw; */
       overflow-x: auto;
-      min-height: 85vh; 
-      max-height: 85vh; 
+      height: 82vh; 
     }
     .rightCon {
       min-width: 340px;
