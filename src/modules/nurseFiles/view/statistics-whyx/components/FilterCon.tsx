@@ -89,7 +89,7 @@ export default function FilterCon(props: Props) {
     }
 
     statisticsViewModal.selectedDeptCode = value.deptCode
-    if (result.deptCode.length == 1 && result.deptCode[0] == '全部') {
+    if (result.deptCode?.length == 1 && result.deptCode[0] == '全部') {
       result.deptCodes = statisticsViewModal
         .getDict('全部科室')
         .map((item: any) => item.code)

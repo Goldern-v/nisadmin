@@ -14,7 +14,7 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCodes'
     },
     {
       label: '工号或姓名',
@@ -23,13 +23,14 @@ export const pageObj: PageObj = {
     },
     {
       label: '工作地点', 
-      type: 'input',
-      name: 'unit'
+      type: 'multiplesSelect',
+      name: 'insideOutsideState',
+      dataSource: [{name: '全部', code: ''}, {name: '院内', code: '1'}, {name: '院外', code: '2'}]
     },
     {
       label: '工作科室', 
       type: 'input',
-      name: 'unit'
+      name: 'department'
     },
     // {
     //   label: '专业技术工作',
@@ -63,7 +64,7 @@ export const pageObj: PageObj = {
       nameList: ['endDateStart', 'endDateEnd']
     },
     {
-      label: '单位',
+      label: '工作单位',
       type: 'input',
       name: 'unit'
     },
