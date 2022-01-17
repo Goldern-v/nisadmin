@@ -32,7 +32,7 @@ export default observer(function NurseHandBook_lcey() {
 
   let user: any = authStore.user || {};
   //只有护士长或者护理部的人才可以编辑
-  let canEditor: Boolean =  user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") 
+  let canEditor: Boolean = user.roleManageCodeList ? user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") : false
 
   const titleArr: any = {
     lcBaseInfo: '护士基本情况',
