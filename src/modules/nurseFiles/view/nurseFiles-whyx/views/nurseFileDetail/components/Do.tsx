@@ -40,6 +40,7 @@ export default function (type: string, modal: any, getTableData: () => void, sta
               </span>
               {!specialModule.includes(type) && <span
                 onClick={() => {
+                  
                   openAuditModal(getTitle(type), row, getTableData)
                 }}
               >
@@ -146,7 +147,6 @@ export default function (type: string, modal: any, getTableData: () => void, sta
                   <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
                     <span
                       onClick={() => {
-                        console.log(getTitle(type), row, 888)
                         openAuditModal(getTitle(type), row, getTableData)
                       }}
                     >

@@ -88,7 +88,6 @@ export default function EditWorkHistoryModal(props: Props) {
     }
   }, [visible])
 
-  console.log(nurseFileDetailViewModal.getDict('全部科室'), 98)
 
   return (
     <Modal
