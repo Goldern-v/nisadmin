@@ -107,7 +107,7 @@ export default observer(function BaseInfo() {
       setInfo(data);
       setIdData(data.empNo);
       setId(data.id);
-      let newTableData = [
+      let newTableDataDefault = [
         {
           民族: data.nation,
           籍贯: data.nativePlace,
@@ -139,7 +139,7 @@ export default observer(function BaseInfo() {
         },
         {
           初始学历: data.initialEducation,
-          最高学历: data.highestEducation,
+          最高学历: data.highestEducation
         },
         {
           取得最高学历时间: data.highestEducationDate,
@@ -164,8 +164,6 @@ export default observer(function BaseInfo() {
                 鞋码大小: data.shoeSize,
                 职称: data.newTitle,
               };
-            case "fsxt":
-              return {}
             default:
               return {
                 鞋码大小: data.shoeSize,
@@ -173,6 +171,54 @@ export default observer(function BaseInfo() {
           }
         })(),
       ]
+      let newTableDataFxst = [
+        {
+          民族: data.nation,
+          籍贯: data.nativePlace,
+        },
+        {
+          工号: data.empNo,
+          身份证号: data.cardNumber,
+        },
+        {
+          政治面貌: data.politicsLook,
+          出生年月: data.birthday,
+        },
+        {
+          年龄: data.age,
+          手机号: data.phone,
+        },
+        {
+          参加工作时间: data.goWorkTime,
+          来院工作时间: data.goHospitalWorkDate,
+        },
+        {
+          护士执业证书编号: data.zyzsNumber,
+          取得护士执业证书时间: data.zyzsDate,
+        },
+        {
+          取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
+          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+        },
+        { 
+          最高学历: data.highestEducation,
+          职务: data.job,
+        },
+        {
+          现职务任职起始时间: data.jobStartDate,
+          工作护理单元: data.deptName,
+        },
+        {
+          鞋码大小: data.shoeSize,
+        }
+      ]
+      let newTableData = (() => {
+        switch(appStore.HOSPITAL_ID) {
+          case "fsxt" : return newTableDataFxst
+          default : return newTableDataDefault
+        }
+      })()
+
       setTableData(newTableData);
       // 处理扩展字段
       if (Object.keys(data).includes('maps'))
@@ -209,18 +255,20 @@ export default observer(function BaseInfo() {
           }
           let fieldCode = mapCfgItem.fieldCode
           // let name = clothingInfo.find((item, index) => item.type == fieldCode).name
-          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0].name
+          let name = clothingInfo.filter((item, index) => item.type === fieldCode)[0]?.name
           // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]
 
           if (Object.keys(lastItem).length > 1) {
-            newTableData.push({ [name]: val })
+            if (name) newTableData.push({ [name]: val })
           } else {
-            lastItem[name] = val
+            if (name) lastItem[name] = val
           }
         }
         if (['fsxt'].includes(appStore.HOSPITAL_ID)) {
+          console.log(newTableData, 9998)
           setTableData(newTableData)
+
         }
       }
     }, e => { })
