@@ -38,6 +38,7 @@ const tBody: any = [
 ]
 
 export default {
+  hiddenFixHeader:true,//隐藏浮动表头
   defaulLength: [20],
   tableTitle: { value: `${moment().format('YYYY')}年${moment().format('MM')}月护理部月工作计划`, width: 846 },
   tBody: [tBody],

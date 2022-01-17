@@ -28,6 +28,7 @@ const tBody: any = [
 ]
 
 export default {
+  hiddenFixHeader:true,//隐藏浮动表头
   defaulLength: [20],
   tableTitle: { value: `继续教育护士培训情况`, width: 1045 },
   tBody: [tBody],

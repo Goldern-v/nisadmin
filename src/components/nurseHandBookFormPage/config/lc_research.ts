@@ -25,6 +25,7 @@ const tBody: any = [
 ]
 
 export default {
+  hiddenFixHeader:true,//隐藏浮动表头
   defaulLength: [20],
   tableTitle: { value: `护理科研登记表`, width: 896 },
   tBody: [tBody],
