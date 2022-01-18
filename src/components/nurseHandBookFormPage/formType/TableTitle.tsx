@@ -6,15 +6,24 @@ export interface Props {
   masterInfo: any
   setTableTitle: Function
   tableTitle: String
+  date: any
 }
 export default function TableTitle(props: Props) {
-  const { setTableTitle, tableTitle, masterInfo } = props
+  const { setTableTitle, tableTitle, masterInfo, date } = props
   const { queryObj } = appStore
-
+  //不需要保存的表单
+  const noSaveList: any = ['lc_consultationDj']
   const changeValue = (e: any, masterInfo: any) => {
     setTableTitle(e.currentTarget.innerText)
     scheduleStore.setIsSave(true)
   }
+
+  useEffect(() => {
+    if(!noSaveList.includes(queryObj.manualType)) return
+    if (queryObj.isAdd) {
+      setTableTitle(date.format("YYYY年MM月")+masterInfo.tableTitle.value)
+    }
+  }, [date])
 
   useEffect(() => {
     if (queryObj.isAdd) {

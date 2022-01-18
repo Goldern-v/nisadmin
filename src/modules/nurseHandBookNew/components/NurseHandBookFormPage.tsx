@@ -1,14 +1,10 @@
 //无审核流程（聊城二院）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Upload, Icon, Modal, message, Input, Spin, Select } from 'antd'
-import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { Button, Modal, message, Spin } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import NurseHandBookService from '../services/NurseHandBookService'
-import BaseTable from 'src/components/BaseTable'
 import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHandBookFormPage'
-import { fileDownload } from 'src/utils/file/file'
-import { DoCon } from 'src/components/BaseTable'
 import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
@@ -18,23 +14,18 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment'
 import { DatePicker } from 'antd';
-// import printing from "printing"
-
 const api = new NurseHandBookService();
-
 export interface Props { }
-
 export default observer(function nurseHandBookFormPage(props: any) {
   const { MonthPicker } = DatePicker;
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
-  let [detailData, setDetailData]: any = useState([])
-  let [showFixHeader, setShowFixHeader]: any = useState(false)
+  const [detailData, setDetailData]: any = useState([])
+  const [showFixHeader, setShowFixHeader]: any = useState(false)
   const [isPrint, setIsPrint]: any = useState(false)
   const { queryObj } = appStore
   const [data, setData]: any = useState({})
-  let header: any = { 'App-Token-Nursing': '51e827c9-d80e-40a1-a95a-1edc257596e7', 'Auth-Token-Nursing': authStore.getAuthToken() }
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
   const [complexHeadList, setComplexHeadList]: any = useState([])
@@ -48,13 +39,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [computeRow, setComputeRow]: any = useState([])
   const [buttonLoading, setButtonLoading]: any = useState(false)
   const [saveLoading, setSaveLoading]: any = useState(false)
-  const [submitLoading, setSubmitLoading]: any = useState(false)
   const [onScroll, setOnScroll]: any = useState(true)
-  const [textValue, setTextValue] = useState('')
   const [typeList, setTypeList] = useState([])
   const [date, setDate]: any = useState(moment(new Date))
-
-  const path = window.location.hash.split('/').reverse()[0]
 
   const titleArr: any = {
     lcBaseInfo: '护士基本情况',
@@ -66,22 +53,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
   //不需要保存的表单
   const noSaveList: any = ['lc_consultationDj']
-
-  const monthList: any = [
-    { key: "01", value: "1月" },
-    { key: "02", value: "2月" },
-    { key: "03", value: "3月" },
-    { key: "04", value: "4月" },
-    { key: "05", value: "5月" },
-    { key: "06", value: "6月" },
-    { key: "07", value: "7月" },
-    { key: "08", value: "8月" },
-    { key: "09", value: "9月" },
-    { key: "10", value: "10月" },
-    { key: "11", value: "11月" },
-    { key: "12", value: "12月" },
-  ]
-
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
@@ -108,13 +79,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
             templeContent.push({tableData:JSON.parse(item.tableData)})
           })
         }
-        // templeContent.map((item:any)=>{
-        //   item.tableData.map((col:any)=>{
-        //     for (let key in col) {
-        //       col[key]=htmlEscape(col[key])
-        //     }
-        //   })
-        // })
         if(line.formContent.length){
           line.formContent.map((item:any)=>{    
             lineList.push(JSON.parse(item.computeRow))
@@ -141,6 +105,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   useEffect(() => {
     onload()
     getTypeList()
+    setDate(moment())
   }, [])
   const deepCcreateArr = (arr:any,submitArr:any)=>{
     arr.map((item:any)=>{
@@ -156,39 +121,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const beforeSetTableHeadContent = ((arr:any)=>{
     let submitArr:any = []
     deepCcreateArr(arr,submitArr)
-    
-    // let submitArr = JSON.parse(JSON.stringify(arr))
-    // console.log(submitArr);
-    
-    // submitArr = submitArr.filter((item:any)=>{
-    //   return item.key
-    // }).map((item:any)=>{
-    //     item.value = item.name
-    //   return item
-    // })
     let result = fiterList([submitArr])
     setTableHeadContent(result)
   })
-  const handleUndo = (record: any) => {
-    let undoTitle = ""
-    if (path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion") {
-      undoTitle = '确认撤销该总结吗？'
-    } else {
-      undoTitle = '确认撤销该计划吗？'
-    }
-    Modal.confirm({
-      title: undoTitle,
-      centered: true,
-      onOk: () => {
-        api
-          .undo({ id: queryObj.id, status: data.status })
-          .then(res => {
-            message.success('撤销成功')
-            appStore.history.goBack()
-          })
-      }
-    })
-  }
 
   const fiterList = ( oldList: any) => {
     let newList: any = []
@@ -253,61 +188,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
       })
   }
 
-  const handleSubmit = () => {
-    setSubmitLoading(true)
-    let tBodyList: any = []
-    let computeList: any = []
-    bodyModal.map((item:any)=>{
-      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
-    })
-    let cHeaderList:any = fiterList([complexHeadList])
-    computeRow.map((item:any)=>{
-      computeList.push({computeRow:JSON.stringify(item)}) 
-    })
-    api.auditJM(queryObj.type, {
-      id: queryObj.id || "",
-      manualType: queryObj.manualType,
-      fileIds: fileIdList,
-      title: tableTitle,
-      formDataDtoList: [
-        {
-          tableType:"tableHead",
-          formContent:tableHeadContent,
-        },
-        {
-          tableType: "tableContent",
-          formContent: tBodyList,
-        },
-        {
-          tableType: "tableRemark",
-          formContent: [{remark:remark}],
-        },
-        {
-          tableType: "line",
-          formContent: computeList,
-        },
-        {
-          tableType: "complexHead",
-          formContent: cHeaderList,
-        },
-        {
-          tableType: "recordName",
-          formContent: submitSign,
-        }
-      ]
-    })
-      .then((res) => {
-        message.success('提交成功')
-        scheduleStore.setIsSave(false)
-        appStore.history.goBack()
-        setSubmitLoading(false)
-      })
-  }
-
-  const handleAudit = () => {
-    groupsAduitModalJM.show({})
-  }
-
   const handleBack = () => {
     if (scheduleStore.getIsSave()) {
       Modal.confirm({
@@ -321,10 +201,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     } else {
       appStore.history.goBack()
     }
-
   }
-
-  
 
   const isNone = () => {
     if(noSaveList.includes(queryObj.manualType)){
@@ -342,54 +219,14 @@ export default observer(function nurseHandBookFormPage(props: any) {
   }
 
   const manualType = () => {
-    console.log(typeList);
-  
     let obj:any = typeList.find((item:any) => {
-      console.log(item);
-      
       return item.code == queryObj.manualType
     })
     if(obj){ 
-      console.log(obj);
       return obj.name 
     }
   }
 
-  const removeOnChange = (info: any) => {
-    let pro = new Promise((resolve, reject) => {
-      Modal.confirm({
-        title: '确认删除该附件？',
-        centered: true,
-        onOk: () => {
-          api
-            .deleteAttachmentJM(info.id).then((res) => {
-              resolve(true)
-              message.success('删除成功')
-            })
-        },
-        onCancel: () => {
-          resolve(false)
-        }
-      })
-    })
-    return pro.then(res => res)
-  }
-  const PreviewOnChange = (info: any) => {
-    setEditVisible2(true)
-    let str: any = info.path;
-    let pdfStr: any = info.pdfPath;
-    let index = str.lastIndexOf("\.");
-    let type = str.substr(index + 1, str.length);
-    let start = str.indexOf("/crNursing/")
-    if (type == 'jpg' || type == 'png' || type == 'pdf') {
-      let path = str.substring(start, start + info.path.length)
-      setPathChange(path)
-    } else {
-      let pdfPath = pdfStr.substring(start, start + pdfStr.length)
-      setPathChange(pdfPath)
-    }
-    setIdChange(info.id)
-  }
   const handlerScroll = (e: any) => {
     if(onScroll){
       let ch: any = document.getElementById("ch")
@@ -511,6 +348,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     formContent:formContentList,
     complexHeaderContent,
     setTableTitle,
+    date,
     tableTitle,
     setRemark,
     remark,

@@ -18,6 +18,7 @@ export interface Props {
   bodyModal: any
   setBodyModal: Function
   setTableTitle: Function
+  date: any
   formContent: any
   tableTitle: String
   setRemark: Function
@@ -49,7 +50,7 @@ export default function NurseHandBookFormPage(props: Props) {
 		masterInfo = require(`./config/jm_arrange`).default
 	}
   
-  const { bodyModal, setBodyModal, formContent, synchronousData, setTableTitle, tableTitle, remark, setRemark,
+  const { bodyModal, setBodyModal, formContent, synchronousData, setTableTitle, tableTitle, remark, setRemark, date,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent,setOnScroll} = props
 
@@ -108,7 +109,7 @@ export default function NurseHandBookFormPage(props: Props) {
       <div className="page" id="print-content">
         <div className="space-div"></div>
         <div className="pageBox">
-          <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
+          <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle} date={date}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader setMenuType={setMenuType} menuType={menuType} setComplexSelectVisible={setComplexSelectVisible} complexSelectVisible={complexSelectVisible} complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
             return (

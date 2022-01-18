@@ -11,6 +11,7 @@ import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
 import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
+import moment from 'moment'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 const api = new NurseHandBookService();
@@ -28,6 +29,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [fileIdList, setFileIdList]: any = useState([])
   const [complexHeadList, setComplexHeadList]: any = useState([])
   const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
+  const [date, setDate]: any = useState(moment(new Date))
   const [synchronousData, setSynchronousData]: any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
@@ -389,6 +391,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     formContent:formContentList,
     complexHeaderContent,
     setTableTitle,
+    date,
     tableTitle,
     setRemark,
     remark,
