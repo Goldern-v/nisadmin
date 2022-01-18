@@ -26,7 +26,7 @@ export default function Remark(props: Props) {
         className="table-remark"
         style={{width:`${masterInfo.remark.width-(masterInfo.tBody[0].length-1)}px`}}
         suppressContentEditableWarning
-        contentEditable={queryObj.audit ? false : true}
+        contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
         onBlur={(e) => changeValue(e, masterInfo)}
       >
         {remark}  

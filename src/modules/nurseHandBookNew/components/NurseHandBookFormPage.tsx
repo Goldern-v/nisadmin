@@ -1,7 +1,7 @@
 //无审核流程（聊城二院）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Upload, Icon, Modal, message, Input, Spin } from 'antd'
+import { Button, Upload, Icon, Modal, message, Input, Spin, Select } from 'antd'
 import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import NurseHandBookService from '../services/NurseHandBookService'
@@ -16,6 +16,8 @@ import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import moment from 'moment'
+import { DatePicker } from 'antd';
 // import printing from "printing"
 
 const api = new NurseHandBookService();
@@ -23,6 +25,7 @@ const api = new NurseHandBookService();
 export interface Props { }
 
 export default observer(function nurseHandBookFormPage(props: any) {
+  const { MonthPicker } = DatePicker;
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
@@ -37,6 +40,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [complexHeadList, setComplexHeadList]: any = useState([])
   const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
+  const [synchronousData, setSynchronousData]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
   const [submitSign, setSubmitSign]: any = useState([])
@@ -47,8 +51,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [submitLoading, setSubmitLoading]: any = useState(false)
   const [onScroll, setOnScroll]: any = useState(true)
   const [textValue, setTextValue] = useState('')
+  const [typeList, setTypeList] = useState([])
+  const [date, setDate]: any = useState(moment(new Date))
 
   const path = window.location.hash.split('/').reverse()[0]
+
   const titleArr: any = {
     lcBaseInfo: '护士基本情况',
     lcAttendance: '护士考勤记录',
@@ -57,6 +64,24 @@ export default observer(function nurseHandBookFormPage(props: any) {
     lcEducation: '继续教育及科研',
     lcWard: '病区工作',
   }
+  //不需要保存的表单
+  const noSaveList: any = ['lc_consultationDj']
+
+  const monthList: any = [
+    { key: "01", value: "1月" },
+    { key: "02", value: "2月" },
+    { key: "03", value: "3月" },
+    { key: "04", value: "4月" },
+    { key: "05", value: "5月" },
+    { key: "06", value: "6月" },
+    { key: "07", value: "7月" },
+    { key: "08", value: "8月" },
+    { key: "09", value: "9月" },
+    { key: "10", value: "10月" },
+    { key: "11", value: "11月" },
+    { key: "12", value: "12月" },
+  ]
+
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
@@ -106,14 +131,16 @@ export default observer(function nurseHandBookFormPage(props: any) {
       setComplexHeaderContent([])
     }
   }
-
-  const htmlEscape = (str:any)=> {
-    return String(str)
-      .replace(/&nbsp;/g, " ")
+  const getTypeList = () => {
+    api
+      .getChildCodeList(queryObj.type)
+      .then((res) => {
+        setTypeList(res.data)
+      })
   }
-
   useEffect(() => {
     onload()
+    getTypeList()
   }, [])
   const deepCcreateArr = (arr:any,submitArr:any)=>{
     arr.map((item:any)=>{
@@ -125,6 +152,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         item.bottom && deepCcreateArr(item.bottom,submitArr)
     })
   }
+
   const beforeSetTableHeadContent = ((arr:any)=>{
     let submitArr:any = []
     deepCcreateArr(arr,submitArr)
@@ -160,10 +188,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
           })
       }
     })
-  }
-  const changeValue = (e: any, key: any) => {
-    console.log(e, key);
-
   }
 
   const fiterList = ( oldList: any) => {
@@ -303,6 +327,9 @@ export default observer(function nurseHandBookFormPage(props: any) {
   
 
   const isNone = () => {
+    if(noSaveList.includes(queryObj.manualType)){
+      return "查询"
+    }
     if (queryObj.isAdd) {
       return "新建"
     } else if (queryObj.audit == "1") {
@@ -311,6 +338,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
       return "查看"
     } else {
       return "编辑"
+    }
+  }
+
+  const manualType = () => {
+    console.log(typeList);
+  
+    let obj:any = typeList.find((item:any) => {
+      console.log(item);
+      
+      return item.code == queryObj.manualType
+    })
+    if(obj){ 
+      console.log(obj);
+      return obj.name 
     }
   }
 
@@ -446,6 +487,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
       toPrint()
     })
   }, [iframeSrc])
+
+  useEffect(() => {
+    if (!noSaveList.includes(queryObj.manualType)) return
+    let year = date.format('YYYY')
+    let month = date.format('MM')
+    api.getListToManual({month:month,year:year}).then((res) => {
+      let templeContent:any = []
+      templeContent.push({tableData:res.data})
+      setSynchronousData(templeContent)
+    })
+  }, [date])
+
   const NurseHandBookFormPageProps = {
     beforeSetTableHeadContent,
     tableHeadContent,
@@ -467,16 +520,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
     setSubmitSign,
     submitSign, 
     setOnScroll,
+    synchronousData,
   }
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
-        {!queryObj.fileId && <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>}
-        {queryObj.fileId && <div className="title">护士长手册&gt;{queryObj.type}&gt;{isNone()}{queryObj.type}</div>}
-        {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
-        {!queryObj.isAdd && <div className="name">{data.title}</div>}
+         <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{manualType()}</div>
+          {queryObj.isAdd && <div className="name">{isNone()}{manualType()}</div>}
+          {!queryObj.isAdd && <div className="name">{data.title}</div>}
         <div className="buttonBody">
-          {queryObj.audit != "2" && <Button onClick={handleSave} type="primary" loading={saveLoading}>保存</Button>}
+          {queryObj.manualType == 'lc_consultationDj' && <span className='label ml-20'>月份:</span>}
+          {queryObj.manualType == 'lc_consultationDj' && <MonthPicker value={date} onChange={(val: any) => setDate(val)} />}
+          {queryObj.audit != "2" && !noSaveList.includes(queryObj.manualType) && <Button onClick={handleSave} type="primary" loading={saveLoading}>保存</Button>}
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
@@ -485,7 +540,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         <div className="formPage" onScroll={handlerScroll}>
           <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
-        <div className="rightCon">
+        {!noSaveList.includes(queryObj.manualType) && <div className="rightCon">
           <div className="rightTop">
             <UploadView
               setEditVisible2={setEditVisible2}
@@ -496,7 +551,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
               setPathChange={setPathChange}
             ></UploadView>
           </div>
-        </div>
+        </div>}
       </div>
     </Spin>
     <groupsAduitModalJM.Component />

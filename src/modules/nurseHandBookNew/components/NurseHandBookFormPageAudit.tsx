@@ -1,14 +1,10 @@
 //有审核流程（江门妇幼）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Upload, Icon, Modal, message, Input, Spin } from 'antd'
-import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { Button, Modal, message, Spin } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import NurseHandBookService from '../services/NurseHandBookService'
-import BaseTable from 'src/components/BaseTable'
 import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHandBookFormPage'
-import { fileDownload } from 'src/utils/file/file'
-import { DoCon } from 'src/components/BaseTable'
 import AuditProcessDetail from './AuditProcessDetail'
 import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
@@ -17,12 +13,8 @@ import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-// import printing from "printing"
-
 const api = new NurseHandBookService();
-
 export interface Props { }
-
 export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
@@ -32,11 +24,11 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [isPrint, setIsPrint]: any = useState(false)
   const { queryObj } = appStore
   const [data, setData]: any = useState({})
-  let header: any = { 'App-Token-Nursing': '51e827c9-d80e-40a1-a95a-1edc257596e7', 'Auth-Token-Nursing': authStore.getAuthToken() }
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
   const [complexHeadList, setComplexHeadList]: any = useState([])
   const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
+  const [synchronousData, setSynchronousData]: any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
@@ -47,8 +39,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [saveLoading, setSaveLoading]: any = useState(false)
   const [submitLoading, setSubmitLoading]: any = useState(false)
   const [onScroll, setOnScroll]: any = useState(true)
-  const [textValue, setTextValue] = useState('')
-
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
     planJM: '护士长工作计划',
@@ -59,7 +49,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [idChange, setIdChange] = useState("")
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
   const [spinning, setSpinning] = useState(false)
-
   const onload = () => {
     if (!queryObj.isAdd) {
       setSpinning(true)
@@ -80,13 +69,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
             templeContent.push({tableData:JSON.parse(item.tableData)})
           })
         }
-        // templeContent.map((item:any)=>{
-        //   item.tableData.map((col:any)=>{
-        //     for (let key in col) {
-        //       col[key]=htmlEscape(col[key])
-        //     }
-        //   })
-        // })
         if(line.formContent.length){
           line.formContent.map((item:any)=>{    
             lineList.push(JSON.parse(item.computeRow))
@@ -103,12 +85,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       setComplexHeaderContent([])
     }
   }
-
-  const htmlEscape = (str:any)=> {
-    return String(str)
-      .replace(/&nbsp;/g, " ")
-  }
-
   useEffect(() => {
     onload()
   }, [])
@@ -125,16 +101,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const beforeSetTableHeadContent = ((arr:any)=>{
     let submitArr:any = []
     deepCcreateArr(arr,submitArr)
-    
-    // let submitArr = JSON.parse(JSON.stringify(arr))
-    // console.log(submitArr);
-    
-    // submitArr = submitArr.filter((item:any)=>{
-    //   return item.key
-    // }).map((item:any)=>{
-    //     item.value = item.name
-    //   return item
-    // })
     let result = fiterList([submitArr])
     setTableHeadContent(result)
   })
@@ -158,11 +124,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       }
     })
   }
-  const changeValue = (e: any, key: any) => {
-    console.log(e, key);
-
-  }
-
   const fiterList = ( oldList: any) => {
     let newList: any = []
     oldList.map((tr: any, trIndex: any) => {
@@ -174,7 +135,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     })
     return newList
   }
-
   const handleSave = () => {
     setSaveLoading(true)
     let tBodyList: any = []
@@ -225,7 +185,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         setSaveLoading(false)
       })
   }
-
   const handleSubmit = () => {
     setSubmitLoading(true)
     let tBodyList: any = []
@@ -276,11 +235,9 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         setSubmitLoading(false)
       })
   }
-
   const handleAudit = () => {
     groupsAduitModalJM.show({})
   }
-
   const handleBack = () => {
     if (scheduleStore.getIsSave()) {
       Modal.confirm({
@@ -294,11 +251,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     } else {
       appStore.history.goBack()
     }
-
   }
-
-  
-
   const isNone = () => {
     if (queryObj.isAdd) {
       return "新建"
@@ -310,7 +263,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       return "编辑"
     }
   }
-
   const removeOnChange = (info: any) => {
     let pro = new Promise((resolve, reject) => {
       Modal.confirm({
@@ -329,22 +281,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       })
     })
     return pro.then(res => res)
-  }
-  const PreviewOnChange = (info: any) => {
-    setEditVisible2(true)
-    let str: any = info.path;
-    let pdfStr: any = info.pdfPath;
-    let index = str.lastIndexOf("\.");
-    let type = str.substr(index + 1, str.length);
-    let start = str.indexOf("/crNursing/")
-    if (type == 'jpg' || type == 'png' || type == 'pdf') {
-      let path = str.substring(start, start + info.path.length)
-      setPathChange(path)
-    } else {
-      let pdfPath = pdfStr.substring(start, start + pdfStr.length)
-      setPathChange(pdfPath)
-    }
-    setIdChange(info.id)
   }
   const handlerScroll = (e: any) => {
     if(onScroll){
@@ -395,9 +331,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         // a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
         const imgWidth = 595.28;
         const imgHeight = 592.28 / contentWidth * contentHeight;
-
         const pageDate = canvas.toDataURL('image/png');
-
         const pdf = new jsPDF('p', 'pt', 'a4', true);
         // 有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面的高度（841.89）
         // 当内容未超过pdf一页显示的范围，无需分页
@@ -464,6 +398,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     setSubmitSign,
     submitSign, 
     setOnScroll,
+    synchronousData,
   }
   return <Wrapper>
     <Spin spinning={spinning}>
@@ -558,7 +493,6 @@ const Wrapper = styled.div`
       
     }
     .buttonBody {
-      /* width: 320px; */
       position: absolute;
       top: 50px;
       right: 50px;
@@ -571,8 +505,6 @@ const Wrapper = styled.div`
     justify-content: space-between;
     .formPage {
       flex: 1;
-      /* min-width: 77vw;
-      max-width: 77vw; */
       overflow-x: auto;
       min-height: 85vh; 
       max-height: 85vh; 
@@ -591,16 +523,13 @@ const Wrapper = styled.div`
         min-height: 60%;
       }
     }
-    
   }
-  
   .noEditor {
     width: 56%;
     height: 100%;
     position: fixed;
     z-index: 999;
   }
-  
   .ant-upload-list{
     width: 50%;
     margin-top: 30px;

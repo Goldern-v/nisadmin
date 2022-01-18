@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { initBodyModal } from "./function/render"
+import { initBodyModal, noSaveBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
 import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
@@ -34,6 +34,7 @@ export interface Props {
   setComplexHeadList: Function
   complexHeadList: any
   setOnScroll: Function
+  synchronousData: Array<any>
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
@@ -48,7 +49,7 @@ export default function NurseHandBookFormPage(props: Props) {
 		masterInfo = require(`./config/jm_arrange`).default
 	}
   
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
+  const { bodyModal, setBodyModal, formContent, synchronousData, setTableTitle, tableTitle, remark, setRemark,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent,setOnScroll} = props
 
@@ -81,7 +82,11 @@ export default function NurseHandBookFormPage(props: Props) {
       initBodyModal(masterInfo, setBodyModal, [])
     }
   }, [formContent])
-
+  
+  useEffect(() => {
+    noSaveBodyModal(masterInfo, setBodyModal, synchronousData)
+  }, [synchronousData])
+  
   useEffect(() => {
     if (!queryObj.isAdd) {
       setSubmitSign(signList)

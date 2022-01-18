@@ -63,6 +63,7 @@ export default function Common(props: Props) {
 
   const handlerClick = (e: any, col: any ) => {
     if(queryObj.audit) return
+    if(masterInfo.noEditor) return
     if (col.select){
       setMenuType("select")
     }
@@ -132,7 +133,7 @@ export default function Common(props: Props) {
       masterInfo.computeRow && setComputeRow(JSON.parse(JSON.stringify(masterInfo.computeRow)))
     }
   }, [])
-  
+
   return (
     <Wrapper>
       {bodyModal[bodyIdx]&&bodyModal[bodyIdx].tableData.map((row: any, rowIdx: any) =>
@@ -159,7 +160,7 @@ export default function Common(props: Props) {
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
-              contentEditable={queryObj.audit ? false : true}
+              contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
               onContextMenu={ContextMenu}

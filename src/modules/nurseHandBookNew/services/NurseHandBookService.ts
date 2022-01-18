@@ -2,24 +2,15 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
 import { appStore } from "src/stores";
 
-const hospitalPath: string =
-  appStore.hisMatch({
-    map: {
-      gzsrm: 'exportSgy',
-      default: 'export',
-    },
-    vague: true,
-  })
-
-  const hospital: string =
-  appStore.hisMatch({
-    map: {
-      jmfy: 'nurseManualJM',
-      lcey: 'nurseManualLC',
-      default: 'nurseManualJM',
-    },
-    vague: true,
-  })
+const hospital: string =
+appStore.hisMatch({
+  map: {
+    jmfy: 'nurseManualJM',
+    lcey: 'nurseManualLC',
+    default: 'nurseManualJM',
+  },
+  vague: true,
+})
 export default class NurseHandBookService extends BaseApiService {
   /*查询分页(通用)*/
   public getPage(type: string, obj: PageOptions | any) {
@@ -75,6 +66,10 @@ export default class NurseHandBookService extends BaseApiService {
   /*查看（无审核流程）*/
   public getById(id: string) {
     return this.get(`/nurseManualLC/getById?id=${id}`)
+  }
+  /*同步会诊的数据（护理会诊登记独有）*/
+  public getListToManual(obj: PageOptions | any) {
+    return this.post(`/nurseManualLC/getListToManual`, obj)
   }
 }
 

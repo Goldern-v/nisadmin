@@ -28,7 +28,7 @@ export default function TableTitle(props: Props) {
         className="table-title"
         style={{width:`${masterInfo.tableTitle.width}px`}}
         suppressContentEditableWarning
-        contentEditable={queryObj.audit ? false : true}
+        contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
         onBlur={(e) => changeValue(e, masterInfo)}
       >
         {tableTitle}  
