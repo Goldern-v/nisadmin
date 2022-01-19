@@ -83,7 +83,8 @@ export default observer(function 敏感指标登记本(props: Props) {
       });
     }
   };
-
+  const [isDate, setIsDate]: any = useState(false);
+  const [year, setYear]: any = useState(moment(new Date(moment().format('YYYY'))));
   // const flFilterItem = createFilterItem(
   //   "分类",
   //   itemConfigList,
@@ -449,6 +450,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
+        if (registerCode == 'QCRG_22_3') return text.split('-')[0] + '年'
         return (
           <Input
             disabled={cellDisabled(record)}
@@ -571,8 +573,8 @@ export default observer(function 敏感指标登记本(props: Props) {
 
           if (item.itemType == 'date' || item.itemType == 'date_time') {
             let format = 'YYYY-MM-DD'
-            if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
-
+            if (item.itemType == 'date_time') format = 'HH:mm'
+            // if ()
             children = <DatePickerColumnRender
               {...{
                 className: childrenClassName,
@@ -620,7 +622,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
-                onBlur: (newVal: string, oldVal: any) => { },
+                onBlur: (newVal: string, oldVal: any) => { watchRecord(newVal, record) },
                 selectAll: multiple,
               }}
             />
@@ -685,27 +687,143 @@ export default observer(function 敏感指标登记本(props: Props) {
       registerCode,
       true
     ),
-    {
-      title: "操作",
-      width: 50,
-      className: "",
-      render(text: string, record: any, index: number) {
-        return (
-          <DoCon>
-            {cellDisabled(record) ? (
-              <aside style={{ color: "#aaa" }}>删除</aside>
-            ) : (
-              <span
-                onClick={() => handleDeleteRow(record, index)}>
-                删除
-              </span>
-            )}
-          </DoCon>
-        );
-      }
-    }
+    ...codeAdapter({
+      "QCRG_22_3": [],
+      other: [{
+        title: "操作",
+        width: 50,
+        className: "",
+        render(text: string, record: any, index: number) {
+          return (
+            <DoCon>
+              {cellDisabled(record) ? (
+                <aside style={{ color: "#aaa" }}>删除</aside>
+              ) : (
+                <span
+                  onClick={() => handleDeleteRow(record, index)}>
+                  删除
+                </span>
+              )}
+            </DoCon>
+          );
+        }
+      }]
+    },
+      registerCode,
+      true
+    ),
+    // {
+    //   title: "操作",
+    //   width: 50,
+    //   className: "",
+    //   render(text: string, record: any, index: number) {
+    //     return (
+    //       <DoCon>
+    //         {cellDisabled(record) ? (
+    //           <aside style={{ color: "#aaa" }}>删除</aside>
+    //         ) : (
+    //           <span
+    //             onClick={() => handleDeleteRow(record, index)}>
+    //             删除
+    //           </span>
+    //         )}
+    //       </DoCon>
+    //     );
+    //   }
+    // }
   ];
-
+  const watchRecord = (value: any, data: any) => {
+    // 疼痛评分：疼痛评估正确例数: ""
+    // 疼痛评分：疼痛评估符合率: ""
+    // 疼痛评分：被抽查的患者总数: ""
+    if (data['疼痛评分：疼痛评估正确例数'] && data['疼痛评分：被抽查的患者总数']) {
+      let scale: any = (Number(data['疼痛评分：疼痛评估正确例数']) / Number(data['疼痛评分：被抽查的患者总数']))
+      scale = Number(scale).toFixed(4) || 0;
+      data['疼痛评分：疼痛评估符合率'] = String(scale)
+    } else {
+      data['疼痛评分：疼痛评估符合率'] = ''
+    }
+    // 分级护理：分级护理合格率: ""
+    // 分级护理：分级护理执行合格人数: ""
+    // 分级护理：被抽查的患者总人数: ""
+    if (data['分级护理：被抽查的患者总人数'] && data['分级护理：分级护理执行合格人数']) {
+      let scale: any = (Number(data['分级护理：分级护理执行合格人数']) / Number(data['分级护理：被抽查的患者总人数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['分级护理：分级护理合格率'] = String(scale)
+    } else {
+      data['分级护理：分级护理合格率'] = ''
+    }
+    // 给药技术：给药技术正确率: ""
+    // 给药技术：考核护士技术操作合格人数: ""
+    // 给药技术：考核护士技术操作总人数: ""
+    if (data['给药技术：考核护士技术操作合格人数'] && data['给药技术：考核护士技术操作总人数']) {
+      let scale: any = (Number(data['给药技术：考核护士技术操作合格人数']) / Number(data['给药技术：考核护士技术操作总人数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['给药技术：给药技术正确率'] = String(scale)
+    } else {
+      data['给药技术：给药技术正确率'] = ''
+    }
+    // 护理文件：护理文件书写合格份数: ""
+    // 护理文件：护理文件正确率: ""
+    // 护理文件：被抽查的护理病历总份数: ""
+    if (data['护理文件：护理文件书写合格份数'] && data['护理文件：被抽查的护理病历总份数']) {
+      let scale: any = (Number(data['护理文件：护理文件书写合格份数']) / Number(data['护理文件：被抽查的护理病历总份数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['护理文件：护理文件正确率'] = String(scale)
+    } else {
+      data['护理文件：护理文件正确率'] = ''
+    }
+    // 急救药械：急救药械完好件数: ""
+    // 急救药械：急救药械完好率: ""
+    // 急救药械：急救药械总件数: ""
+    if (data['急救药械：急救药械完好件数'] && data['急救药械：急救药械总件数']) {
+      let scale: any = (Number(data['急救药械：急救药械完好件数']) / Number(data['急救药械：急救药械总件数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['急救药械：急救药械完好率'] = String(scale)
+    } else {
+      data['急救药械：急救药械完好率'] = ''
+    }
+    // 健康教育：健康教育知晓80%条目的患者人数: ""
+    // 健康教育：健康教育知晓率: ""
+    // 健康教育：被抽查的患者总人数: ""
+    if (data['健康教育：健康教育知晓80%条目的患者人数'] && data['健康教育：被抽查的患者总人数']) {
+      let scale: any = (Number(data['健康教育：健康教育知晓80%条目的患者人数']) / Number(data['健康教育：被抽查的患者总人数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['健康教育：健康教育知晓率'] = String(scale)
+    } else {
+      data['健康教育：健康教育知晓率'] = ''
+    }
+    // 洗手：洗手正确率: ""
+    // 洗手：洗手正确的护理人员数: ""
+    // 洗手：被抽查的护理人员数: ""
+    if (data['洗手：洗手正确的护理人员数'] && data['洗手：被抽查的护理人员数']) {
+      let scale: any = (Number(data['洗手：洗手正确的护理人员数']) / Number(data['洗手：被抽查的护理人员数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['洗手：洗手正确率'] = String(scale)
+    } else {
+      data['洗手：洗手正确率'] = ''
+    }
+    // 手卫生：手卫生执行率: ""
+    // 手卫生：被抽查人员实际洗手次数: ""
+    // 手卫生：被抽查人员应洗手次数: ""
+    if (data['手卫生：被抽查人员实际洗手次数'] && data['手卫生：被抽查人员应洗手次数']) {
+      let scale: any = (Number(data['手卫生：被抽查人员实际洗手次数']) / Number(data['手卫生：被抽查人员应洗手次数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['手卫生：手卫生执行率'] = String(scale)
+    } else {
+      data['手卫生：手卫生执行率'] = ''
+    }
+    // 身份识别：患者身份识别执行正确护理人员数: ""
+    // 身份识别：被抽查的护理人员数: ""
+    // 身份识别：身份识别执行正确率: ""
+    if (data['身份识别：患者身份识别执行正确护理人员数'] && data['身份识别：被抽查的护理人员数']) {
+      let scale: any = (Number(data['身份识别：患者身份识别执行正确护理人员数']) / Number(data['身份识别：被抽查的护理人员数']))
+      scale = Number(scale).toFixed(4) || 0
+      data['身份识别：身份识别执行正确率'] = String(scale)
+    } else {
+      data['身份识别：身份识别执行正确率'] = ''
+    }
+  }
   const handlePreview = (file: any) => {
     if (getFileType(file.name) == 'img') {
       reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
@@ -756,9 +874,14 @@ export default observer(function 敏感指标登记本(props: Props) {
     dataSource,
     selectedRowKeys,
     setSelectedRowKeys,
-    paramMap
+    paramMap,
+    itemConfigList
   });
-
+  useEffect(() => {
+    if (registerCode == 'QCRG_22_3') {
+      setDate([moment(new Date(moment().format('YYYY'))), null])
+    }
+  }, [])
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -799,7 +922,45 @@ export default observer(function 敏感指标登记本(props: Props) {
             </Select.Option>
           ))}
         </Select>
-        <span className="label">日期</span>
+        {
+          codeAdapter({
+            "QCRG_22_3": <React.Fragment>
+              <span className="label">年份</span>
+              <DatePicker
+                value={year}
+                open={isDate}
+                mode="year"
+                placeholder="请选择年份"
+                format="YYYY"
+                onOpenChange={(status) => {
+                  setIsDate(status)
+                }}
+                onPanelChange={(v) => {
+                  let date = new Date(moment(v).format('YYYY'))
+                  setIsDate(false)
+                  setYear(v)
+                  setDate([moment(date), null])
+                }}
+              />
+            </React.Fragment>,
+            other: <React.Fragment>
+              <span className="label">日期</span>
+              <DatePicker.RangePicker
+                value={date}
+                onChange={value => {
+                  setDate(value)
+                  setPageOptions({ ...pageOptions, pageIndex: 1 })
+                }}
+                allowClear={true}
+                style={{ width: 220 }}
+              />
+            </React.Fragment>
+          },
+            registerCode,
+            true
+          )
+        }
+        {/* <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
           onChange={value => {
@@ -808,7 +969,24 @@ export default observer(function 敏感指标登记本(props: Props) {
           }}
           allowClear={true}
           style={{ width: 220 }}
-        />
+        /> */}
+        {/* <span className="label">年份</span>
+        <DatePicker
+          value={year}
+          open={isDate}
+          mode="year"
+          placeholder="请选择年份"
+          format="YYYY"
+          onOpenChange={(status) => {
+            setIsDate(status)
+          }}
+          onPanelChange={(v) => {
+            let date = new Date(moment(v).format('YYYY'))
+            setIsDate(false)
+            setYear(v)
+            setDate([moment(date), null])
+          }}
+        /> */}
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
         {/* {popoverContent && (
@@ -934,6 +1112,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 //     </Button>
                 //   </React.Fragment>
                 // ),
+                QCRG_22_3: [],
                 other: (<React.Fragment>
                   <Button
                     disabled={

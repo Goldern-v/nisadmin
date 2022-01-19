@@ -56,7 +56,8 @@ export function getFun(context: any) {
     setSelectedRowKeys,
     setMsgMap,
     setDataMap,
-    dataMap
+    dataMap,
+    itemConfigList
   } = context;
 
   /** 初始化 */
@@ -177,7 +178,9 @@ export function getFun(context: any) {
           if (options && options.stopCreateRow) stopCreateRow = true
 
           //默认返回空数组时新建一行记录
+          // registerCode=='QCRG_22_3' ? return true ''
           if (newList.length == 0 && !stopCreateRow) {
+            if (registerCode == 'QCRG_22_3')  return true
             setDataSource([
               { recordDate: moment().format("YYYY-MM-DD") }
             ])
@@ -284,22 +287,44 @@ export function getFun(context: any) {
     }
     setDataSource([])
     setSelectedRowKeys && setSelectedRowKeys([])
-
-    setTimeout(() => {
-      setDataSource([
-        {
+    let lastMonth: number = 1;
+    for (let i = 0; i < dataSource.length; i++) { 
+      if (parseInt(dataSource[i]['基础数据：时间'])) {
+        lastMonth = parseInt(dataSource[i]['基础数据：时间'])+1
+      }
+    }
+    let newRow: any = [];
+    let row: any = []
+    for (let i = 0; i < 3; i++) {
+      if ((lastMonth + i) <= 12) { 
+        row.push({
           blockId: selectedBlockId,
           description: "",
           range,
           rangeIndexNo,
-          recordDate: moment().format('YYYY-MM-DD'),
+          recordDate: moment().format('YYYY')+'-01'+'-01',
           registerCode,
           editType: 'new',
           modified: true,
-        },
-        ...dataSource
-      ])
-
+          "基础数据：时间":lastMonth +i + "月"
+        })
+      }
+    }
+    newRow = registerCode == 'QCRG_22_3' ? [].concat(...dataSource, row)
+      : [{
+        blockId: selectedBlockId,
+        description: "",
+        range,
+        rangeIndexNo,
+        recordDate: moment().format('YYYY-MM-DD'),
+        registerCode,
+        editType: 'new',
+        modified: true,
+      },
+      ...dataSource
+    ]
+    setTimeout(() => {
+      setDataSource([...newRow])
       setTimeout(() => {
         let target = document.querySelector('.record-page-table .ant-table-row')
         target && target.scrollIntoView()
@@ -315,7 +340,6 @@ export function getFun(context: any) {
     // if (registerCode == 'QCRG_16_2') return false
     //出院患者登记本放开编辑
     // if (registerCode == 'QCRG_08') return false
-
     if (record.auditorNo) return true
     if (!record.signerNo) return false
     if (authStore.isNotANormalNurse) return false
