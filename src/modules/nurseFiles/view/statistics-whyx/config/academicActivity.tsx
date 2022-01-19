@@ -13,13 +13,15 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'studyMajor'
+      name: 'studyMajor',
+      limit: 25,
     },
     {
       label: '开始时间',
@@ -62,45 +64,52 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '进修专业',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '进修单位',
-      dataIndex: 'unit',
-      key: 'unit',
-      width: 210,
-      align: 'center'
-    },
-    {
-      title: '进修单位所属地',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
-      width: 110,
-      align: 'center'
-    },
-    {
-      title: '进修开始时间',
-      dataIndex: 'startDate',
-      key: 'winningYear',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '进修结束时间',
+      title: '开始时间',
       dataIndex: 'endDate',
       key: 'endDate',
       width: 100,
       align: 'center'
     },
     {
-      title: '进修时长(天)',
+      title: '结束时间',
+      dataIndex: 'endDate',
+      key: 'endDate',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '学术活动名称',
       dataIndex: 'studyHour',
       key: 'studyHour',
       width: 80,
+      align: 'center'
+    },
+    {
+      title: '举办地域',
+      dataIndex: 'studyMajor',
+      key: 'studyMajor',
+      width: 200,
+      align: 'center'
+    },
+    {
+      title: '举办单位',
+      dataIndex: 'unit',
+      key: 'unit',
+      width: 210,
+      align: 'center'
+    },
+    {
+      title: '举办地点',
+      dataIndex: 'unitLocal',
+      key: 'unitLocal',
+      width: 110,
+      align: 'center'
+    },
+    {
+      title: '以何种资格获得邀请',
+      dataIndex: 'startDate',
+      key: 'winningYear',
+      width: 100,
       align: 'center'
     },
     {

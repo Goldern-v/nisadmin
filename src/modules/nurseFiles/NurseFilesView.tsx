@@ -387,9 +387,9 @@ export default observer(function NurseFilesView(props: Props) {
         },
         {
           title: "科室创新",
-          path: "/nurseFile/科室创新",
-          hide: !appStore.isDev,
-          component: 科室创新
+          path: "/nurseFile/innovationDepartment",
+          // hide: !appStore.isDev,
+          component: StatisticsViewWHYX
         },
         {
           title: "学会任职",

@@ -13,8 +13,14 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
+    },
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo'
     },
     {
       label: '专利名称',
@@ -22,9 +28,21 @@ export const pageObj: PageObj = {
       name: 'patentName'
     },
     {
+      label: '专利个人排名',
+      type: 'multiplesSelect',
+      name: 'patentLevel',
+      dataSource: [{name: '全部', code: ''}, {name: '第一人', code: '第一人'}, {name: '第二人', code: '第二人'},{name: '第三人', code: '第三人'}, {name: '其他', code: '其他'}]
+    },
+    {
       label: '专利号',
       type: 'input',
       name: 'patentNumber'
+    },
+    {
+      label: '发证时间',
+      type: 'dateRangePicker',
+      name: 'dateRangePicker',
+      nameList: ['cardStartDate', 'cardEndDate']
     },
     {
       label: '发证单位',
@@ -32,17 +50,22 @@ export const pageObj: PageObj = {
       name: 'cardUnit'
     },
     {
-      label: '发证时间',
+      label: '专利类型',
+      type: 'multiplesSelect',
+      name: 'patentType',
+      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('专利类型')]
+    },
+    {
+      label: '是否成果转化',
+      type: 'multiplesSelect',
+      name: 'isResultTransfor',
+      dataSource: [{name: '全部', code: ''}, {name: '是', code: '是'}, {name: '否', code: '否'}]
+    },
+    {
+      label: '授权公告日',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['cardStartDate', 'cardEndDate']
-    },
-
-    {
-      label: '专利类型',
-      type: 'select',
-      name: 'patentType',
-      dataSource: statisticsViewModal.getDict('专利类型')
+      nameList: ['grantNoticeDateBeginIndex', 'grantNoticeDateEndIndex']
     }
   ],
   tableList: [
@@ -92,6 +115,13 @@ export const pageObj: PageObj = {
       title: '是否成果转化',
       dataIndex: 'isResultTransfor',
       key: 'isResultTransfor',
+      width: 110,
+      align: 'center'
+    },
+    {
+      title: '授权公告日',
+      dataIndex: 'grantNoticeDate',
+      key: 'grantNoticeDate',
       width: 110,
       align: 'center'
     },

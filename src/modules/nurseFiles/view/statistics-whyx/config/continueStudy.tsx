@@ -16,40 +16,68 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
+      multiple: true,
       name: 'deptCode'
     },
     {
-      label: '年份',
-      type: 'yearRangePicker',
-      name: 'yearRangePicker',
-      nameList: ['yearStartDate', 'yearEndDate']
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
     },
     {
-      label: '名称',
+      label: '项目名称',
       type: 'input',
       name: 'projectName'
     },
-    ...appStore.isDev ? [{
-      label: '级别',
+    {
+      label: '项目负责人',
       type: 'input',
-      name: 'projectLevel'
-    }] as filterItem[] : []
+      name: 'projectPerson'
+    },
+    {
+      label: '开始时间',
+      type: 'dateRangePicker',
+      name: 'dateRangePicker',
+      nameList: ['hostStartDateBeginIndex', 'hostStartDateEndIndex']
+    },
+    {
+      label: '结束时间',
+      type: 'dateRangePicker',
+      name: 'dateRangePicker',
+      nameList: ['hostEndDateBeginIndex', 'hostEndDateEndIndex']
+    },
+    {
+      label: '学员分布区域',
+      type: 'input',
+      name: 'schoolArea'
+    },
+    {
+      label: '学员职称分布',
+      type: 'input',
+      name: 'personTitleArea'
+    },
+    {
+      label: '课时数',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'courseHourBeginIndex',
+      name1: 'courseHourEndIndex',
+    },
+    {
+      label: '学员总数',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '人',
+      step: 1,
+      name: 'personTotalBeginIndex',
+      name1: 'personTotalEndIndex',
+    },
   ],
   tableList: [
-    {
-      title: '年份',
-      dataIndex: 'year',
-      key: 'year',
-      width: 90,
-      align: 'center'
-    },
-    ...appStore.isDev ? [{
-      title: '级别',
-      dataIndex: 'projectLevel',
-      key: 'projectLevel',
-      width: 80,
-      align: 'center'
-    }] as ColumnProps<any>[] : [],
     {
       title: '项目名称',
       dataIndex: 'projectName',
@@ -57,7 +85,23 @@ export const pageObj: PageObj = {
       width: 210,
       align: 'center'
     },
-
+    {
+      title: '项目负责人',
+      dataIndex: 'projectPerson',
+      key: 'projectPerson',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '举办起止时间',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 100,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <div><span>{row.hostStartDate}</span> <span>{row.hostEndDate}</span></div>
+      }
+    },
     {
       title: '课时数',
       dataIndex: 'courseHour',

@@ -25,11 +25,11 @@ export default function Statistics() {
   const paginationRef = useRef({
     pageIndex: 1,
     pageSize: 20,
-    total: 1
+    // total: 1
+    // insideOutsideState: '全部'
   })
 
   const onload = (type: string = pageObj.type) => {
-    // console.log(type, 111)
     setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
     setTableLoading(true)
     statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
@@ -72,7 +72,8 @@ export default function Statistics() {
         paginationRef.current = {
           pageIndex: 1,
           pageSize: 20,
-          total: 1
+          // total: 1
+          // insideOutsideState: '全部'
         }
         // console.log(getPageObj(path),path, 9998)
         setPageObj(getPageObj(path))

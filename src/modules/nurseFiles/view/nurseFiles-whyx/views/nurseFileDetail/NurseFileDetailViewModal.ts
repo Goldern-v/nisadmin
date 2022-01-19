@@ -34,7 +34,10 @@ let dictList = {
   作者: 'article_author',
   工作服码数: 'work_clothes_size',
   参与成员: 'emp_name', // TODO
-  授权类别: 'grant_type' // todo
+  授权类别: 'grant_type', // todo
+  创新类别: 'innovation_type',
+  创新级别: 'innovation_level',
+  推广区域: 'promotion_area',
 }
 
 type DictList = typeof dictList

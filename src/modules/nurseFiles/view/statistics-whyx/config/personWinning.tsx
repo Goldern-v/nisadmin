@@ -5,6 +5,7 @@ import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
+
 export const pageObj: PageObj = {
   title: '个人获奖',
   type: 'nurseWHPersonWinning',
@@ -13,14 +14,14 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '获奖时间',
-      type: 'yearMonthRangePicker',
-      name: 'YearMonthRangePicker',
-      nameList: ['winningYearStartDate', 'winningYearEndDate']
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo'
     },
     {
       label: '奖项名称',
@@ -29,16 +30,22 @@ export const pageObj: PageObj = {
     },
     {
       label: '获奖类别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'winningType',
-      dataSource: statisticsViewModal.getDict('获奖类别')
+      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('获奖类别')]
     },
     {
       label: '获奖级别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'winningLevel',
-      dataSource: statisticsViewModal.getDict('获奖级别')
-    }
+      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('获奖级别')]
+    },
+    {
+      label: '获奖时间',
+      type: 'yearMonthRangePicker',
+      name: 'YearMonthRangePicker',
+      nameList: ['winningYearStartDate', 'winningYearEndDate']
+    },
   ],
   tableList: [
     {

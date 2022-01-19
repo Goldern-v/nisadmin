@@ -13,24 +13,26 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'studyMajor'
+      name: 'studyMajor',
+      limit: 25
     },
     {
       label: '授权类别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      dataSource: statisticsViewModal.sortList,
     },
     {
       label: '授权名称',
-      type: 'select',
-      name: 'unitLocal',
+      type: 'multiplesSelecteSpecially',
+      name: 'unitLocal1',
       dataSource: statisticsViewModal.getDict('进修单位')
     },
     {

@@ -16,9 +16,14 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
-
     {
-      label: '护士名称',
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
+    {
+      label: '专科护士名称',
       type: 'input',
       name: 'nurseName'
     },

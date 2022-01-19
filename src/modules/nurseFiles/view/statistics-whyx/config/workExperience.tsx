@@ -14,12 +14,13 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCodes'
+      multiple: true,
+      name: 'deptCode'
     },
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'unit'
+      name: 'empNo'
     },
     {
       label: '工作地点', 
@@ -69,7 +70,16 @@ export const pageObj: PageObj = {
       name: 'unit'
     },
   ],
-  tableList: [
+  tableList: [ 
+    {
+      title: "工作地点",
+      dataIndex: "insideOutsideState",
+      width: 100,
+      align: "center",
+      render(text: any, record: any) {
+        return text == 1 ? "院内" : text == 2 ? "院外" : text;
+      }
+    },
     {
       title: '开始年月',
       dataIndex: 'startTime',
@@ -88,6 +98,13 @@ export const pageObj: PageObj = {
       title: '单位',
       dataIndex: 'unit',
       key: '4',
+      width: 250,
+      align: 'center'
+    },
+    {
+      title: '工作科室',
+      dataIndex: 'department',
+      key: '5',
       width: 250,
       align: 'center'
     }

@@ -29,7 +29,12 @@ let dictList = {
   政治面貌: 'politics_look',
   鞋码大小: 'shoe_size',
   专业技术工作: 'professional_work',
-  家庭住址: 'address'
+  家庭住址: 'address',
+  授权类别: 'grant_type',
+  创新类别: 'innovation_type',
+  创新级别: 'innovation_level',
+  推广区域: 'promotion_area',
+  课题类别: 'subject_type'
 }
 
 type DictList = typeof dictList
@@ -45,6 +50,10 @@ class StatisticsViewModal {
   @observable public fullDeptAll: { name: string; code: string }[] = []
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
+  // 授权类别
+  @observable public sortList: any = []
+  // 授权名称
+  @observable public nameList: [] = []
 
   async initDict() {
     if (this.hadData) return
@@ -80,6 +89,22 @@ class StatisticsViewModal {
   }
   async init() {
     await this.initDict()
+    await this.getCodeList()
+  }
+
+  async getCodeList() {
+    await service.commonApiService.getCodeList().then((res) => {
+      this.sortList = [{name: '全部', code: ''}, ...res.data]
+    })
+  }
+
+  async getChildCodeList(code: any = '') {
+    let nameList: any= []
+    await service.commonApiService.getChildCodeList(code).then((res) => {
+      nameList = res.data
+    })
+    console.log(nameList, 8888)
+    return nameList
   }
 
   reSetDept() {

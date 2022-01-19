@@ -17,16 +17,19 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '年份',
-      type: 'yearRangePicker',
-      name: 'yearRangePicker',
-      nameList: ['yearStartDate', 'yearEndDate']
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo'
     },
-
     {
       label: '专著名称',
       type: 'input',
       name: 'monographName'
+    },
+    {
+      label: '出版社名称',
+      type: 'input',
+      name: 'pressName'
     },
     {
       label: '出版号',
@@ -34,12 +37,17 @@ export const pageObj: PageObj = {
       name: 'pressNumber'
     },
     {
+      label: '年份',
+      type: 'yearRangePicker',
+      name: 'yearRangePicker',
+      nameList: ['yearStartDate', 'yearEndDate']
+    },
+    {
       label: '出版日期',
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['pressStartDate', 'pressEndDate']
     },
-
     {
       label: '著者',
       type: 'select',

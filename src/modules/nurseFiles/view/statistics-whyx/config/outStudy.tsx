@@ -16,7 +16,12 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
-
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
     {
       label: '进修专业',
       type: 'input',
@@ -45,12 +50,12 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
       nameList: ['endDateStart', 'endDateEnd']
+    },
+    {
+      label: '进修时长(天)',
+      type: 'input',
+      name: 'cardUnit'
     }
-    // {
-    //   label: '进修时长(天)',
-    //   type: 'input',
-    //   name: 'cardUnit'
-    // }
   ],
   tableList: [
     {
