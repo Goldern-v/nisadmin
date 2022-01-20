@@ -77,8 +77,8 @@ export default observer(function BadEventNewList() {
     },
     {
       title: "科室",
-      dataIndex: "deptName",
-      key: "deptName",
+      dataIndex: "happenedDeptName",
+      key: "happenedDeptName",
       className: "align-left",
       align: "left",
       width: 150
@@ -250,7 +250,11 @@ export default observer(function BadEventNewList() {
   const handleSearch = (): void => {
     setPage({ ...page, current: 1 })
   }
-
+  const changeTabs = (type: any) => {
+    setPage({ current: 1, size: page.size })
+    console.log(query, type)
+    setQuery({ ...query, type })
+  }
   return (
     <Wrapper>
       <div className="topbar">
@@ -348,7 +352,7 @@ export default observer(function BadEventNewList() {
                 index: (idx + 1).toString()
               }
             })}
-            onChange={(type: any) => setQuery({ ...query, type })}
+            onChange={(type: any) => changeTabs(type)}
           />
         </div>
       </div>

@@ -141,9 +141,10 @@ export function getFun(context: any) {
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
 
+    let startEndDate = date[0] ? date[0].format("YYYY-MM-DD") :""
     let params = {
       startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-      endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+      endDate: date[1] ? date[1].format("YYYY-MM-DD") : startEndDate,
       range: paramMap["班次"] || '',
       blockId: selectedBlockId || blockId,
       paramMap: _paramsMap,
