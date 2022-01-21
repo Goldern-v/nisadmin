@@ -149,6 +149,7 @@ export default observer(function SetTittle(props: Props) {
                 <Option value="attachment">附件上传</Option>
                 <Option value="date">日期选择</Option>
                 <Option value="date_time">日期时间选择</Option>
+                <Option value="time">时间选择</Option>
               </Select>
             }
           },
