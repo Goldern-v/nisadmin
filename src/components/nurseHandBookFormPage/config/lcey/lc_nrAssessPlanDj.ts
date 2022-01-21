@@ -2,7 +2,7 @@
  * 聊城二院-护理部培训考核月计划登记
  */
 import moment from "moment";
-import { datePicker } from "../function/click";
+import { datePicker } from "../../function/click";
 
 const tHead = {
   top: [

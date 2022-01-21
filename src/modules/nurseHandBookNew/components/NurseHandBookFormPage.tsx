@@ -71,6 +71,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setTableTitle(res.data.title)
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
+        
         setTableHeadContent(tableHead.formContent)
         let templeContent:any = []
         let lineList:any = []

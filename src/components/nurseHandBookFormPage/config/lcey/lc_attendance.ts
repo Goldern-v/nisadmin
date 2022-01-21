@@ -3,7 +3,7 @@
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
-import { timePicker } from "../function/click";
+import { timePicker } from "../../function/click";
 let user: any = authStore.user || {};
 
 let attendanceType = ['全勤','正常休假','病假','事假','产假','超假旷工']

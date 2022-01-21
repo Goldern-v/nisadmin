@@ -1,7 +1,7 @@
 /**
  * 江门妇幼-月工作重点及周安排
  */
-import { tick } from "../function/click"
+import { tick } from "../../function/click"
 const tHead1 = {
   top: [],
   mid: [],

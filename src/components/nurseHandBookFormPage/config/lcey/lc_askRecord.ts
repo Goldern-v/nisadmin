@@ -3,7 +3,7 @@
  */
 import moment from "moment";
 import { authStore } from 'src/stores'
-import { tick, timePicker } from "../function/click" 
+import { tick, timePicker } from "../../function/click" 
 
 let user: any = authStore.user || {};
 
