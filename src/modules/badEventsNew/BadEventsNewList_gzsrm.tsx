@@ -84,7 +84,7 @@ export default observer(function BadEventNewList() {
     //   width: 150
     // },
     {
-      title: "部门",
+      title: "科室",
       dataIndex: "happenedDeptName",
       key: "happenedDeptName",
       className: "align-left",
