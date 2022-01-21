@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Steps, Icon, Spin, Modal, Divider } from 'antd'
+import { Button, Steps, Icon, Spin, Modal, Divider, Input, message } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import AuditModal_gzsrm from './components/AuditModal_gzsrm'
 import badEventsNewService from './api/badEventsNewService'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
-import { message } from 'antd/es'
 
 const api = new badEventsNewService()
 
@@ -15,11 +14,10 @@ const formUrl = baseFormUrl
 
 const { Step } = Steps
 export default withRouter(function BadEventsNewDetail(props: any) {
-
   const iframeRef = React.useRef<any>()
 
   const [auditModalVisible, setAuditModalVisible] = useState(false)
-
+  const [opinionContent, setOpinionContent] = useState({ nodeName: "", handleContent: "", nodeCode: "" });
   const [detailData, setDetailData] = useState({
     master: {},
     itemDataMap: {},
@@ -45,9 +43,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   //下一步的审核状态
 
   let stepNext = (() => {
-
     let nextIdx = handlenodeDto.indexOf(stepCurrent) + 1
-
+    // [...handlenodeDto].reverse().find((step: any) => step.nodeCode === master.nextNodeCode) || {} as any
     return handlenodeDto[nextIdx] || {} as any
   })()
   //用于刷新iframe的时间戳
@@ -166,11 +163,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let btnDisable = iframeLoading
     if (!authStore.user) return ''
     if (Object.keys(stepNext).length <= 0) return ''
-    if (['commit', 'save'].includes(stepNext ?.nodeCode)) return ''
+    if (['commit', 'save'].includes(stepNext?.nodeCode)) return ''
     if (itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
     let btnText = stepNext.nodeName
-
-    if (stepNext ?.canHandle) btnDisable = false
+    if (stepNext?.canHandle) btnDisable = false
 
     return (
       <Button
@@ -182,7 +178,48 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       </Button>
     )
   }
-
+  const opinion = () => {
+    if (!authStore.isDepartment) return ''
+    return (
+      <Button
+        className='audit'
+        type='primary'
+        onClick={() => setOpinion()}
+      >
+        提交修改
+      </Button>
+    )
+  }
+  const setOpinion = () => {
+    // console.log(opinionContent)
+    if (Object.keys(opinionContent).length == 3) return message.error('暂无修改内容');
+    let code = {
+      nurse_handle: "B0002060",
+      nursing_minister_audit: "B0002054",
+      dept_handle: "B0002057",
+      nursing_minister_comfirm: "B0002059"
+    };
+    let data: any = {
+      formId: master.id,
+      nodeCode: opinionContent.nodeCode,
+      handleContent: opinionContent.handleContent,
+      itemCode: code[opinionContent.nodeCode]
+    };
+    Modal.confirm({
+      title: `确定修改‘${opinionContent?.nodeName}’的意见吗?`,
+      content: `修改为：${opinionContent?.handleContent}`,
+      onOk() {
+        api.updateOpinion(data).then(res => {
+          if (res.code == 200) {
+            message.success('修改成功')
+            getDetail()
+          }
+        })
+      },
+      onCancel() {
+      }
+    })
+  }
   // const handleSave = () => {
   //   let iframeEl = iframeRef.current
   //   if (iframeEl) {
@@ -217,6 +254,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             返回
           </Button>
           {AuditBtn()}
+          {opinion()}
           {/* {stepNext && stepNext.operatorStatus == 'nurse_auditor' && (
             <Button
               disabled={iframeLoading}
@@ -242,7 +280,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             打印
           </Button> */}
         </div>
-        <div className='status'>状态：{stepCurrent ?.nodeName}</div>
+        <div className='status'>状态：{stepCurrent?.nodeName}</div>
       </div>
       <div className='main-contain'>
         <div className='status-line'>
@@ -272,11 +310,31 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                       <br />
                       <span>{item.handleTime}</span>
                       <br />
-                      {item.handleContent && (
+                      {handlenodeDto[idx + 1] && handlenodeDto[idx + 1].status == '0' && item.status == '1' && item.nodeCode != 'commit' && item.nodeCode != 'save'
+                        ? <Input.TextArea
+                          defaultValue={item.handleContent}
+                          rows={2}
+                          disabled={!authStore.isDepartment}
+                          onChange={(e) =>
+                            // setFormItem({ 'SR0004024': e.target.value })
+                            // console.log(e.target.value)
+                            setOpinionContent({ ...item, handleContent: e.target.value })
+                          }
+                          style={{
+                            background: 'rgb(238,238,238)',
+                            borderRadius: '5px',
+                            padding: '0 5px'
+                          }}
+                        /> : item.handleContent ? <div className="handle-content">
+                          <span>{item.handleContent}</span>
+                        </div> : ""
+                      }
+                      {/* {item.handleContent && (
                         <div className="handle-content">
                           <span>{item.handleContent}</span>
+
                         </div>
-                      )}
+                      )} */}
                       {/* {item.expand} */}
                     </div>
                   </div>}

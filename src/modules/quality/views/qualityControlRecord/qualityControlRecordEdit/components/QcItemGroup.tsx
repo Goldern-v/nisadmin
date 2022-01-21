@@ -19,7 +19,7 @@ export default observer(function QcItemGroup(props: Props) {
   const { itemGroup, baseInfo, index } = props
   const { itemListErrObj } = qcModel
   let deductMarksType = baseInfo.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
-  
+
   const handleAttachUrlsChange = (urls: any, ids: any, idx: number) => {
     let newItemGroup = { ...itemGroup }
     let newItem = newItemGroup.itemList[idx]
@@ -143,6 +143,7 @@ export default observer(function QcItemGroup(props: Props) {
                   size="small"
                   style={{ flex: 1, fontSize: '12px' }}
                   value={fillItem.itemValue}
+                  type={appStore.HOSPITAL_ID == 'gzsrm' ? 'number' : 'text'}
                   onChange={(e) => {
                     let newFillDataList = [...item.fillDataList]
                     newFillDataList[fillItemIdx].itemValue = e.target.value
@@ -203,7 +204,7 @@ export default observer(function QcItemGroup(props: Props) {
                     qcItemValue: !currentChecked ? '否' : item.qcItemValue,
                     subItemList: newSubItemList,
                   }, itemIndex)
-                  
+
                 }}>
                 <Icon
                   type="close-square"
@@ -258,13 +259,13 @@ export default observer(function QcItemGroup(props: Props) {
                 size="small"
                 readOnly={true}
                 value={
-                  (item.subItemList || []).reduce((pre:any,itemScore:any)=>{
-                    if(itemScore.checked){
+                  (item.subItemList || []).reduce((pre: any, itemScore: any) => {
+                    if (itemScore.checked) {
                       return Number(pre + itemScore.fixedScore)
-                    }else{
+                    } else {
                       return Number(pre)
                     }
-                  },Number(item.remarkDeductScore))
+                  }, Number(item.remarkDeductScore))
                 }
               />}
             </div>
@@ -305,17 +306,17 @@ export default observer(function QcItemGroup(props: Props) {
                     onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
                 </div>
               </div>,
-              lcey: !qcModel.baseInfo.useScore && 
-              <div className='notesCon' style={{ borderBottom: 'none' }}>
-                <div className='notesLeftCon'>备注</div>
-                <div className='notesRightCon'>
-                  <TextArea
-                    rows={4}
-                    value={item.remark}
-                    autosize
-                    onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
-                </div>
-              </div>,
+              lcey: !qcModel.baseInfo.useScore &&
+                <div className='notesCon' style={{ borderBottom: 'none' }}>
+                  <div className='notesLeftCon'>备注</div>
+                  <div className='notesRightCon'>
+                    <TextArea
+                      rows={4}
+                      value={item.remark}
+                      autosize
+                      onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
+                  </div>
+                </div>,
               other: '',
             }
           })}
