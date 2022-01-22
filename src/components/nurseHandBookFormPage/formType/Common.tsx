@@ -160,7 +160,7 @@ export default function Common(props: Props) {
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
-              contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
+              contentEditable={masterInfo.noEditor ? false : col.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
               onContextMenu={ContextMenu}
