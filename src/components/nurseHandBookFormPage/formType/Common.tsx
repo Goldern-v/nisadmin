@@ -160,7 +160,7 @@ export default function Common(props: Props) {
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
-              contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
+              contentEditable={masterInfo.noEditor ? false : col.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
               onContextMenu={ContextMenu}
@@ -181,6 +181,9 @@ export default function Common(props: Props) {
               ...col.style,
               'WebkitBoxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
               'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
+              'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
+              'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
+              display: col.hidden ? 'none':'',
             }}
             key={`${colIdx}`}
           >

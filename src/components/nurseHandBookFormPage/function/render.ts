@@ -35,8 +35,12 @@ export const initBodyModal = (masterInfo: any, setBodyModal: Function, formConte
         }
       })
       if (needNullRows && (!formContent[bodyIdx] || index >= formContent[bodyIdx].tableData.length)) {
-          nullRow.map((item: any,index:any) => {
-            item.value = masterInfo.tBody[bodyIdx][index].value || ""
+          nullRow.map((item: any,rowIndex:any) => {  
+            if(masterInfo.tBody[bodyIdx][rowIndex].defaultValue){
+              item.value = masterInfo.tBody[bodyIdx][rowIndex].defaultValue[index]
+            }else{
+              item.value = masterInfo.tBody[bodyIdx][rowIndex].value || ""
+            }
           })
       } else {
         nullRow.map((item: any) => {

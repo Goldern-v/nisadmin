@@ -4,8 +4,8 @@
 import moment from "moment";
 import React, { useState, useEffect } from 'react'
 import { authStore } from 'src/stores'
-import { datePicker } from "../function/click";
-import { formPageService } from '../api/FormPageService'
+import { datePicker } from "../../function/click";
+import { formPageService } from '../../api/FormPageService'
 let user: any = authStore.user || {};
 let dutyList: any = []
 

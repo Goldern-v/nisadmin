@@ -2,7 +2,7 @@
  * 聊城二院-继续教育培训情况
  */
 import moment from "moment";
-import { timePicker } from "../function/click";
+import { timePicker } from "../../function/click";
 
 const tHead = {
   top: [

@@ -43,11 +43,12 @@ export default function NurseHandBookFormPage(props: Props) {
   const [menuType, setMenuType] = useState('select')
 
   let manualType = queryObj.manualType
+  let HOSPITAL_ID = appStore.HOSPITAL_ID
   let masterInfo:any = []
   try{
-    masterInfo = require(`./config/${manualType}`).default
+    masterInfo = require(`./config/${HOSPITAL_ID}/${manualType}`).default
 	}catch(err){				
-		masterInfo = require(`./config/jm_arrange`).default
+		masterInfo = require(`./config/jmfy/jm_launchPlan`).default
 	}
   
   const { bodyModal, setBodyModal, formContent, synchronousData, setTableTitle, tableTitle, remark, setRemark, date,

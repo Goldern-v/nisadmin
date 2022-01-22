@@ -594,10 +594,10 @@ export default observer(function 敏感指标登记本(props: Props) {
               other: isEndTime(record)
             }, registerCode)}`
 
-          if (item.itemType == 'date' || item.itemType == 'date_time') {
+          if (item.itemType == 'date' || item.itemType == 'date_time' || item.itemType == 'time') {
             let format = 'YYYY-MM-DD'
             if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
-
+            if (item.itemType == 'time') format = 'HH:mm';
             children = <DatePickerColumnRender
               {...{
                 className: childrenClassName,
@@ -605,7 +605,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 record,
                 itemCfg: item,
                 index,
-                showTime: item.itemType == 'date_time',
+                showTime: item.itemType == 'date_time' || item.itemType == 'time',
                 format,
                 handleNextIptFocus,
                 updateDataSource,

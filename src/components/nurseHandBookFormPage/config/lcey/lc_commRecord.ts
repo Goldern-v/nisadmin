@@ -2,7 +2,7 @@
  * 聊城二院-护患沟通记录
  */
 import moment from "moment";
-import { timePicker } from "../function/click";
+import { timePicker } from "../../function/click";
 import { authStore } from 'src/stores'
 let user: any = authStore.user || {};
 

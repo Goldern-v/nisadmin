@@ -9,12 +9,12 @@ let user: any = authStore.user || {};
 const complexHead: any = {
   boxWidth: 750,
   complexHeadList:[
-    { key: 'time', name:'科别', value: "", leftWidth: 100, rightWidth: 150 },
-    { key: 'time', name:'床号', value: "", leftWidth: 100, rightWidth: 150 },
-    { key: 'place', name:'姓名', value: "", leftWidth: 100, rightWidth: 150, lastChild: true },
-    { key: 'time', name:'性别', value: "", leftWidth: 100, rightWidth: 150 },
-    { key: 'time', name:'年龄', value: "", leftWidth: 100, rightWidth: 150 },
-    { key: 'place', name:'病案号', value: "", leftWidth: 100, rightWidth: 150, lastChild: true },
+    { key: 'division', name:'科别', value: "", leftWidth: 100, rightWidth: 150 },
+    { key: 'bedNumber', name:'床号', value: "", leftWidth: 100, rightWidth: 150 },
+    { key: 'name', name:'姓名', value: "", leftWidth: 100, rightWidth: 150, lastChild: true },
+    { key: 'sex', name:'性别', value: "", leftWidth: 100, rightWidth: 150 },
+    { key: 'age', name:'年龄', value: "", leftWidth: 100, rightWidth: 150 },
+    { key: 'recordId', name:'病案号', value: "", leftWidth: 100, rightWidth: 150, lastChild: true },
     { key: 'type', name:'会诊类型', value: "", leftWidth: 100, rightWidth: 650, preIndex: 3, select:['普通会诊','急会诊','多学科会诊'], rightStyle:{ textAlign: "left" }},
 
   ]
@@ -36,16 +36,16 @@ const tBody3: any = [
   { key: "content3", name: "内容", value: "需会诊的问题：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
 ]
 const tBody4: any = [
-  { key: "content3", name: "内容", value: "目前的护理措施：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
+  { key: "content4", name: "内容", value: "目前的护理措施：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
 ]
 const tBody5: any = [
-  { key: "content3", name: "内容", value: "受邀请科室：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
+  { key: "content5", name: "内容", value: "受邀请科室：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
 ]
 const tBody6: any = [
-  { key: "content3", name: "内容", value: "会诊人员签名：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
+  { key: "content6", name: "内容", value: "会诊人员签名：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
 ]
 const tBody7: any = [
-  { key: "content3", name: "内容", value: "会诊意见：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
+  { key: "content7", name: "内容", value: "会诊意见：", width: 750, style:{ minHeight: "100px", textAlign: "left", verticalAlign: "top" } },
 ]
 
 const sign = {

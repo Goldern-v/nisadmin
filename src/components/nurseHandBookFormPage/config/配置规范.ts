@@ -71,6 +71,7 @@ const tHead3 = {
  * 配置计算行：key必须包含calculation_   |   calculation_rules为计算规则
  * verticalAlign: top, middle, bottom 控制内容垂直方向
  * textAlign: left, center, right 控制内容水平方向
+ * serialNumber 序号
  */
 
 const tBody1: any = [

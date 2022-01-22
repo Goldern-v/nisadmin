@@ -61,6 +61,9 @@ export const TableCon = styled.div`
     box-shadow: none !important;
     padding: 4px;
   }
+  .ant-time-picker-input {
+    border:0;
+  }
   .input-cell {
     padding: 0 !important;
     overflow: hidden;
