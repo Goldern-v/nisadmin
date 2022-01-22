@@ -11,7 +11,7 @@ export interface Props {
 }
 export default observer(function PreviewPannel(props: Props) {
   const { setpChange } = props;
-  const { master, baseInfo, itemGroupList } = qcModel;
+  const { master, baseInfo, itemGroupList, yxGradeObj } = qcModel;
 
   const result = (() => {
     let shi = 0;
@@ -162,18 +162,39 @@ export default observer(function PreviewPannel(props: Props) {
         <div className="item item-large">
           {baseInfo.useScore ? (
             <div>
-              本次评估结果为：得分({result.totalScore - result.deductScore})
-              总分({result.totalScore})
+              本次评估结果为：得分(
+              {["whyx"].includes(appStore.HOSPITAL_ID)
+                ? yxGradeObj.rate
+                : result.totalScore - result.deductScore}
+              ) 总分(
+              {["whyx"].includes(appStore.HOSPITAL_ID)
+                ? 100
+                : result.totalScore}
+              )
             </div>
           ) : (
             <div>
-              本次评估结果为：是({result.shi}) 否({result.fou}){" "}
+              本次评估结果为：是(
+              {["whyx"].includes(appStore.HOSPITAL_ID)
+                ? yxGradeObj.right
+                : result.shi}
+              ) 否(
+              {["whyx"].includes(appStore.HOSPITAL_ID)
+                ? yxGradeObj.fou
+                : result.fou}
+              ){" "}
               {!["gzsrm"].includes(appStore.HOSPITAL_ID) &&
                 `不适用(${result.buShiYong})`}
             </div>
           )}
           <br />
-          <div>通过率为：{result.rate}%</div>
+          <div>
+            通过率为：
+            {["whyx"].includes(appStore.HOSPITAL_ID)
+              ? yxGradeObj.rate
+              : result.rate}
+            %
+          </div>
         </div>
       </div>
       <div className="item-gorup-info">

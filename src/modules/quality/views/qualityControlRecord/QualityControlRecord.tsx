@@ -28,6 +28,7 @@ export default observer(function QualityControlRecord() {
 
       if (pathname.indexOf("qcOne") >= 0) return 1;
 
+      if (pathname.indexOf("qcFun") >= 0) return 4;
       return 3;
     })(appStore.history.location.pathname);
 
@@ -94,6 +95,7 @@ export default observer(function QualityControlRecord() {
         level: qualityControlRecordVM.level,
         beginDate: qualityControlRecordVM.filterDate[0].format("YYYY-MM-DD"),
         endDate: qualityControlRecordVM.filterDate[1].format("YYYY-MM-DD"),
+        qcCode: qualityControlRecordVM.qcCode || "",
       };
       qualityControlRecordApi
         .instanceGetPageByCondition(sendData)

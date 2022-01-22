@@ -192,51 +192,64 @@ class QualityControlRecordEditModel {
   @action private getDetailOrTemplate = () => {
     this.loading = true
     if (!this.query.id) {
-      qualityControlRecordApi
-        .formTemplateDetail(this.query.qcCode)
-        .then(res => {
-          // console.log(res);//质控数据
-          // console.log("res质控数据");//质控数据
-          if (res.data) {
-            this.loading = false
+      let fn = appStore.hisMatch({
+        map: {
+          whyx: qualityControlRecordApi.formTemplateDetailYX,
+          default: qualityControlRecordApi.formTemplateDetail
+        },
+        vague: true
+      })
 
-            if (res.data.template) {
-              let template = res.data.template
-              this.baseInfo = {
-                qcLevel: template.qcLevel,
-                qcName: template.qcName,
-                intro: template.intro,
-                qcGroupRoles: template.qcGroupRoles,
-                useScore: template.useScore || false,
-                qcCode: template.qcCode || '',
-                useSubItemFixedScore: template.useSubItemFixedScore
-              }
-            }
+      fn.call(qualityControlRecordApi, this.query.qcCode).then((res: any) => {
+        // console.log(res);//质控数据
+        // console.log("res质控数据");//质控数据
+        if (res.data) {
+          this.loading = false
 
-            if (res.data.itemGroupList)
-              this.initItemGroupList(res.data.itemGroupList)
-
-            if (res.data.causeList)
-              this.causeList = [...res.data.causeList]
-
-            if (this.baseInfo.qcGroupRoles) this.getUserList();
-
-            //赋值人员指定列表
-            (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList);
-            //
-            if (res?.data?.nodeAppointList && res?.data?.nodeAppointList.length > 0) {
-              this.nodeAppointList = res?.data?.nodeAppointList.map((item: IAudit) => {
-                let newItem = JSON.parse(JSON.stringify(item))
-                newItem.userList = []
-                return newItem
-              })
+          if (res.data.template) {
+            let template = res.data.template
+            this.baseInfo = {
+              qcLevel: template.qcLevel,
+              qcName: template.qcName,
+              intro: template.intro,
+              qcGroupRoles: template.qcGroupRoles,
+              useScore: template.useScore || false,
+              qcCode: template.qcCode || '',
+              useSubItemFixedScore: template.useSubItemFixedScore
             }
           }
-        })
+
+          if (res.data.itemGroupList)
+            this.initItemGroupList(res.data.itemGroupList)
+
+          if (res.data.causeList)
+            this.causeList = [...res.data.causeList]
+
+          if (this.baseInfo.qcGroupRoles) this.getUserList();
+
+          //赋值人员指定列表
+          (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList);
+          //
+          if (res?.data?.nodeAppointList && res?.data?.nodeAppointList.length > 0) {
+            this.nodeAppointList = res?.data?.nodeAppointList.map((item: IAudit) => {
+              let newItem = JSON.parse(JSON.stringify(item))
+              newItem.userList = []
+              return newItem
+            })
+          }
+        }
+      })
     } else {
-      qualityControlRecordApi
-        .qcItemInstanceGet(this.query.id)
-        .then(res => {
+      let fn = appStore.hisMatch({
+        map: {
+          whyx: qualityControlRecordApi.qcItemInstanceGetYX,
+          default: qualityControlRecordApi.qcItemInstanceGet
+        },
+        vague: true
+      })
+
+      fn.call(qualityControlRecordApi, this.query.id)
+        .then((res: any) => {
           if (res.data) {
             this.loading = false
             let master = res.data.master
@@ -519,9 +532,15 @@ class QualityControlRecordEditModel {
   @action public formCache(success?: Function) {
     this.loading = true
     let params = this.formatData({ sign: false })
-    qualityControlRecordApi
-      .formSave(params)
-      .then(res => {
+    let fn = appStore.hisMatch({
+      map: {
+        whyx: qualityControlRecordApi.formSaveYX,
+        default: qualityControlRecordApi.formSave
+      },
+      vague: true
+    })
+    fn.call(qualityControlRecordApi, params)
+      .then((res: any) => {
         this.loading = false
         if (res.data && res.data.master) {
           success && success()
@@ -548,9 +567,15 @@ class QualityControlRecordEditModel {
       password
     })
 
-    qualityControlRecordApi
-      .formSave(params)
-      .then(res => {
+    let fn = appStore.hisMatch({
+      map: {
+        whyx: qualityControlRecordApi.formSaveYX,
+        default: qualityControlRecordApi.formSave
+      },
+      vague: true
+    })
+    fn.call(qualityControlRecordApi, params)
+      .then((res: any) => {
         this.loading = false
 
         if (res.data && res.data.master) {
@@ -566,6 +591,52 @@ class QualityControlRecordEditModel {
   //更新auditList值
   @action public setAuditList = (auditList: Array<IAudit>) => {
     this.auditList = [...auditList]
+  }
+  @computed get yxGradeObj(): Record<string, any> {
+    if (appStore.HOSPITAL_ID !== 'whyx') return {}
+
+    let right = 0;
+    let fault = 0;
+    let total = 0;
+    let rate = 0;
+    let totalScore = 0;
+    let deductScore = 0;
+
+    for (let i = 0; i < this.itemGroupList.length; i++) {
+      let itemList = this.itemGroupList[i].itemList;
+
+      if (itemList)
+        for (let j = 0; j < itemList.length; j++) {
+          let item = itemList[j];
+          switch (item.qcItemValue) {
+            case "是":
+              right++;
+              break;
+            case "否":
+              fault++;
+              break;
+          }
+          total++
+          // 分数类型累计分数
+          if (this.baseInfo.useScore) {
+            if (item.fixedScore) totalScore += item.fixedScore;
+
+            if (!(item.qcItemValue === '是')) deductScore += Number(item.fixedScore);
+          }
+        }
+    }
+
+    rate = (100 - deductScore);
+    // rate = totalScore == 0 ? 0 : parseFloat((((totalScore - deductScore) * 100) / totalScore).toFixed(2));
+
+    return {
+      right,
+      fault,
+      total,
+      rate,
+      totalScore,
+      deductScore,
+    };
   }
 }
 

@@ -14,6 +14,7 @@ import qs from "qs";
 import { fileDownload } from "src/utils/file/file";
 import { navTitle } from "src/modules/quality/data/qcTitle";
 import QcPrint from "./QcPrint";
+import { qualityControlRecordVM } from "../../QualityControlRecordVM";
 
 interface Props {
   detailData: any;
@@ -51,7 +52,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
 
   const [printing, setPrinting] = useState(false);
 
-  const onAduit = (handleType: string) => {
+  const onAudit = (handleType: string) => {
     switch (handleType) {
       case "2":
         bqclModal.show({
@@ -176,7 +177,21 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       .exportQcItemDetail(master.id)
       .then((res) => fileDownload(res));
   };
-
+  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+  const [btnRoleYX, setBtnRoleYX] = useState(false)
+  useEffect(() => {
+    if (isWhyx) {
+      let { nodeCode = '', chainCode = '' } = nextNode
+      qualityControlRecordVM.judgePower({
+        nodeCode,
+        chainCode,
+        empNo: authStore?.user?.empNo || ''
+      }).then(res => {
+        setBtnRoleYX(!!res)
+      })
+      
+    }
+  }, [nextNode])
   return (
     <Con>
       <TopHeader>
@@ -210,13 +225,25 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           <div className="title">{master.qcName}</div>
           <div className="topHeaderButton">
             {nextNode.nodeName && (
-              <Button
-                onClick={() => onAduit(nextNode.handleType)}
+              appStore.hisMatch({
+                map: {
+                  whyx: <Button
+                  onClick={() => onAudit(nextNode.handleType)}
+                  type="primary"
+                  disabled={btnRoleYX}
+                >
+                  {nextNode.nodeName}
+                </Button>,
+                other: <Button
+                onClick={() => onAudit(nextNode.handleType)}
                 type="primary"
                 disabled={!nextNode.canHandle}
               >
                 {nextNode.nodeName}
               </Button>
+                }
+              })
+              
             )}
             {master &&
               appStore.hisMatch({
