@@ -187,7 +187,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         chainCode,
         empNo: authStore?.user?.empNo || ''
       }).then(res => {
-        setBtnRoleYX(!!res)
+        setBtnRoleYX(!res)
       })
       
     }

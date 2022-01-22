@@ -164,7 +164,7 @@ export default observer(function PreviewPannel(props: Props) {
             <div>
               本次评估结果为：得分(
               {["whyx"].includes(appStore.HOSPITAL_ID)
-                ? yxGradeObj.rate
+                ? yxGradeObj.totalScore - yxGradeObj.deductScore
                 : result.totalScore - result.deductScore}
               ) 总分(
               {["whyx"].includes(appStore.HOSPITAL_ID)
@@ -180,7 +180,7 @@ export default observer(function PreviewPannel(props: Props) {
                 : result.shi}
               ) 否(
               {["whyx"].includes(appStore.HOSPITAL_ID)
-                ? yxGradeObj.fou
+                ? yxGradeObj.fault
                 : result.fou}
               ){" "}
               {!["gzsrm"].includes(appStore.HOSPITAL_ID) &&

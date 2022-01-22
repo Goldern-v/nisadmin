@@ -153,6 +153,16 @@ export default observer(function qualityControlRecordTable(props: Props) {
     ...appStore.hisMatch({
       map: {
         gzsrm: [],
+        whyx: [
+          {
+            title: "病案号",
+            // dataIndex: 'zyh',
+            dataIndex: "inpNo",
+
+            width: 80,
+            align: "center",
+          },
+        ],
         other: [
           {
             title: "住院号",

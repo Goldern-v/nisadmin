@@ -172,7 +172,7 @@ export default observer(function TopCon(props: any) {
           empNo: (authStore.user && authStore.user.empNo) || "",
         })
         .then((res) => {
-          setCreateBtn(!res);
+          setCreateBtn(!!res);
         });
     }
   }, []);

@@ -206,7 +206,7 @@ export default observer(function FormPannel() {
 
       <div className="item">
         <div className="label">得分:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.rate }/>
+        <Input className="content" disabled value={ qcModel.yxGradeObj.totalScore - qcModel.yxGradeObj.deductScore }/>
       </div>
       <div className="item">
         <div className="label">检查人:</div>

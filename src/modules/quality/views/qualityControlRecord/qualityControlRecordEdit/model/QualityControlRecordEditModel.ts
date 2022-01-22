@@ -599,7 +599,7 @@ class QualityControlRecordEditModel {
     let fault = 0;
     let total = 0;
     let rate = 0;
-    let totalScore = 0;
+    let totalScore = 100;
     let deductScore = 0;
 
     for (let i = 0; i < this.itemGroupList.length; i++) {
@@ -619,15 +619,15 @@ class QualityControlRecordEditModel {
           total++
           // 分数类型累计分数
           if (this.baseInfo.useScore) {
-            if (item.fixedScore) totalScore += item.fixedScore;
+            // if (item.fixedScore) totalScore += item.fixedScore;
 
             if (!(item.qcItemValue === '是')) deductScore += Number(item.fixedScore);
           }
         }
     }
 
-    rate = (100 - deductScore);
     // rate = totalScore == 0 ? 0 : parseFloat((((totalScore - deductScore) * 100) / totalScore).toFixed(2));
+    rate = parseFloat(((right * 100) / total).toFixed(2));
 
     return {
       right,
