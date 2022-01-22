@@ -4,12 +4,10 @@ import { initBodyModal, noSaveBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
 import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
-import LeftHeader from "./formType/LeftHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
 import SignModule from "./formType/SignModule"
-
-import { Input } from 'src/vendors/antd'
+import { Button, Modal, message, Spin } from 'antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
 import moment from "moment"
@@ -41,7 +39,6 @@ export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   const [copyRow, setCopyRow] = useState({})
   const [menuType, setMenuType] = useState('select')
-
   let manualType = queryObj.manualType
   let HOSPITAL_ID = appStore.HOSPITAL_ID
   let masterInfo:any = []
@@ -57,7 +54,7 @@ export default function NurseHandBookFormPage(props: Props) {
 
   const [visible, setVisible]: any = useState([])
   const [complexSelectVisible, setComplexSelectVisible]: any = useState(false)
-  
+
   //控制滚动事件
   if(masterInfo.hiddenFixHeader){
     setOnScroll(false)
@@ -86,7 +83,9 @@ export default function NurseHandBookFormPage(props: Props) {
   }, [formContent])
   
   useEffect(() => {
-    noSaveBodyModal(masterInfo, setBodyModal, synchronousData)
+    if(synchronousData.length != 0){
+      noSaveBodyModal(masterInfo, setBodyModal, synchronousData)
+    }
   }, [synchronousData])
   
   useEffect(() => {
@@ -100,6 +99,7 @@ export default function NurseHandBookFormPage(props: Props) {
   useEffect(() => {
     setVisible(templeVisible)
   }, [])
+
 
   const CommonProps = {
     
@@ -115,13 +115,12 @@ export default function NurseHandBookFormPage(props: Props) {
           {masterInfo.tBody.map((body:any,idx:any)=>{
             return (
             <div key={idx}>
-              {/* {masterInfo.leftHead && <LeftHeader masterInfo={masterInfo}></LeftHeader>} */}
               {masterInfo.tHead && masterInfo.tHead[idx] && <CommonHeader 
                 isPrint={isPrint} 
                 showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 
                 tHead={masterInfo.tHead[idx]}
                 beforeSetTableHeadContent={beforeSetTableHeadContent} 
-                tableHeadContent
+                tableHeadContent={tableHeadContent}
               ></CommonHeader>}
               {<Common 
                 isPrint={isPrint} 
