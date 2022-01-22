@@ -64,7 +64,7 @@ const baseConfig: navConfigItem[] = [
       {
         name: "护理部职能督导",
         path: "/qcFun",
-        // icon: require("../images/menu-icon/一级质控@2x.png")
+        icon: require("../images/menu-icon/functional.png"),
       },
       //     {
       //       name: '病区登记本',
