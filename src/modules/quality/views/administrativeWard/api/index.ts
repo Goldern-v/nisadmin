@@ -14,12 +14,12 @@ class Api extends BaseApiService {
 
   // 获取详情
   getItem(id: string) {
-    return this.get(`/form/searchRoom/master/get/${id}`)
+    return this.get(`/administrativeSearchRoom/get/${id}`)
   }
 
-  // 保存
+  // 新增
   saveItem(params: Object) {
-    return this.post(`/form/searchRoom/master/save`, params)
+    return this.post(`/administrativeSearchRoom/save0rUpdate`, params)
   }
 
   // 审核
@@ -28,8 +28,8 @@ class Api extends BaseApiService {
   }
 
   // 删除
-  deleteitem(params: Object) {
-    return this.post(`/form/searchRoom/master/delete`, params)
+  deleteitem(id: string) {
+    return this.get(`/administrativeSearchRoom/delete/${id}`)
   }
 
   // 撤销

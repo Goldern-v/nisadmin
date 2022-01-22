@@ -22,7 +22,6 @@ import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质�
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
-
 import AdministrativeWard from './views/administrativeWard'
 
 export default observer(function QcTwoRouter(props: Props) {
