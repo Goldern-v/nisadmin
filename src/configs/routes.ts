@@ -265,13 +265,15 @@ const QcOneRouter = lazy(() => import("src/modules/quality/QcOneRouter"));
 const QcOneRouterHj = lazy(() => import("src/modules/quality/QcOneRouter_hj"));
 const QcOneRouterDghl = lazy(() => import("src/modules/quality/QcOneRouter_dghl"));
 const QcOneRouterNys = lazy(() =>
-  import("src/modules/quality/QcOneRouter_nys")
+import("src/modules/quality/QcOneRouter_nys")
 );
+const QcOneRouterWhyx = lazy(() => import("src/modules/quality/QcOneRouter_whyx"));
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const CommunityRoundsRouter = lazy(() =>
   import("src/modules/communityRounds/CommunityRoundsRouter")
 );
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
+const QcFunRouter = lazy(() => import("src/modules/quality/QcFunRouter"));
 // 社区查房
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
@@ -812,6 +814,7 @@ const routes: RouteItem[] = [
   setLayout("/qcOneHj", QcOneRouterHj, layouts.MainLayout),
   setLayout("/qcOneDghl", QcOneRouterDghl, layouts.MainLayout),
   setLayout("/qcOneNys", QcOneRouterNys, layouts.MainLayout),
+  setLayout("/qcOneWhyx", QcOneRouterWhyx, layouts.MainLayout),
   setLayout("/qcTwo", QcTwoRouter, layouts.MainLayout),
   setLayout(
     "/communityRoundsRouter/:pannelName",
@@ -819,6 +822,7 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
+  setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),

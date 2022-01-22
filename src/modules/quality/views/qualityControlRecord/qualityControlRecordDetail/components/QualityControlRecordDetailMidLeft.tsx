@@ -11,6 +11,7 @@ const { TextArea } = Input;
 import printing from "printing";
 import { appStore } from "src/stores";
 import { INodeAppoint } from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
+import { qualityControlRecordApi } from "../../api/QualityControlRecordApi";
 export interface Props {
   detailData: any;
 }
@@ -171,6 +172,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   // 附件
   const itemAttachmentCheck = () => { };
 
+  // 当前医院是否为亚心
+  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+
   return (
     <Con ref={pageRef} className="print-page">
       {/* <Spin spinning={false}> */}
@@ -195,66 +199,89 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {appStore.hisMatch({
             map: {
               gzsrm: <span></span>,
+              whyx: <div>病案号：{messageBoxData.inpNo}</div>,
               other: <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
             },
             currentHospitalId: qcMatchCode
           })}
           {/* <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div> */}
-          {qcResult()}
+          {isWhyx
+            ? <div>
+                检查人：
+                {bedNurseList
+                  .map((item: any, index: number, arr: any) => (
+                    <span key={index}>
+                      {item.empName}
+                      {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
+                      {index != arr.length - 1 ? "、" : ""}
+                    </span>
+                  ))}
+              </div>
+            : qcResult()
+          }
           {messageBoxData.hasArchiveItem && (
             <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
           )}
           {getNodeAppointList()}
         </div>
-
-        <div className="boxRight">
-          <div>
-            质控人：
-            {userList.map((item: any, index: number, arr: any) => (
-              <span key={index}>
-                {item.empName}
-                {index != arr.length - 1 ? "、" : ""}
-              </span>
-            ))}
-          </div>
-          {appStore.hisMatch({
-            map: {
-              nys: <span></span>,
-              QCTP209: <span></span>,
-              gzsrm: <span></span>,
-              other: <React.Fragment>
+        {
+          isWhyx
+            ? <div className="boxRight">
+                <div>总项数：{itemCount.allSize}</div>
+                <div>合格项数：{itemCount.yesSize}</div>
+                <div>合格率：{itemCount.evalRate + '%'}</div>
+                <div>得分：{itemCount.netTotalScore}</div>
+              </div>
+            : <div className="boxRight">
                 <div>
-                  {hushi}：
-                  {bedNurseList
-                    .map((item: any, index: number, arr: any) => (
-                      <span key={index}>
-                        {item.empName}
-                        {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
-                        {index != arr.length - 1 ? "、" : ""}
-                      </span>
-                    ))}
+                  质控人：
+                  {userList.map((item: any, index: number, arr: any) => (
+                    <span key={index}>
+                      {item.empName}
+                      {index != arr.length - 1 ? "、" : ""}
+                    </span>
+                  ))}
                 </div>
-                <div>{zhuyuanhao}：{messageBoxData.inpNo}</div>
-              </React.Fragment>
-            },
-            currentHospitalId: qcMatchCode
-          })}
-          {appStore.hisMatch({
-            map: {
-              nys: <span></span>,
-              QCTP209: <span></span>,
-              gzsrm: <span></span>,
-              other: <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
-            },
-            currentHospitalId: qcMatchCode
-          })}
-          {/* <div>跟踪日期：{messageBoxData.followEvaluateDate}</div> */}
-          <div>
-            通过率：
-            {messageBoxData.evalRate &&
-              messageBoxData.evalRate.toFixed(2) + "%"}
-          </div>
-        </div>
+                {appStore.hisMatch({
+                  map: {
+                    nys: <span></span>,
+                    QCTP209: <span></span>,
+                    gzsrm: <span></span>,
+                    other: <React.Fragment>
+                      <div>
+                        {hushi}：
+                        {bedNurseList
+                          .map((item: any, index: number, arr: any) => (
+                            <span key={index}>
+                              {item.empName}
+                              {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
+                              {index != arr.length - 1 ? "、" : ""}
+                            </span>
+                          ))}
+                      </div>
+                      <div>{zhuyuanhao}：{messageBoxData.inpNo}</div>
+                    </React.Fragment>
+                  },
+                  currentHospitalId: qcMatchCode
+                })}
+                {appStore.hisMatch({
+                  map: {
+                    nys: <span></span>,
+                    QCTP209: <span></span>,
+                    gzsrm: <span></span>,
+                    other: <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
+                  },
+                  currentHospitalId: qcMatchCode
+                })}
+                {/* <div>跟踪日期：{messageBoxData.followEvaluateDate}</div> */}
+                <div>
+                  通过率：
+                  {messageBoxData.evalRate &&
+                    messageBoxData.evalRate.toFixed(2) + "%"}
+                </div>
+              </div>
+        }
+        
       </MessageBox>
       <OnlyReadError>
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
@@ -297,7 +324,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     >
                       否
                     </Radio>
-                    {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio
+                    {!['gzsrm', 'whyx'].includes(appStore.HOSPITAL_ID) && <Radio
                       value={"不适用"}
                       style={{ marginLeft: "20px", marginRight: "30px" }}
                     >
@@ -305,7 +332,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     </Radio>}
                   </Radio.Group>
                   {detailData.master.useScore ? <div className="sub-item-list">
-                    {item.qcItemValue === "否" && <React.Fragment>
+                    {!isWhyx && item.qcItemValue === "否" && <React.Fragment>
                       {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
                         <div key={subItem.subItemCode}>
                           <Icon
@@ -336,7 +363,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                           }}
                           readOnly
                           value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0} />
-                        {detailData.master?.useSubItemFixedScore && <span
+                        { !isWhyx && detailData.master?.useSubItemFixedScore && <span
                           style={{
                             marginRight: '5px',
                             marginLeft: '26px',
@@ -408,7 +435,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             ))}
             {appStore.hisMatch({
               map: {
-                nys: '',
+                'nys,whyx': '',
                 other: ((onlyReadError && itemGroup.remark) || !onlyReadError) && (
                   <div className="notesCon">
                     <div className="notesLeftCon">备注</div>
@@ -422,13 +449,14 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     </div>
                   </div>
                 )
-              }
+              },
+              vague: true
             })}
           </QuestionItem>
         ))}
         {appStore.hisMatch({
           map: {
-            gzsrm: <span></span>,
+            'gzsrm,whyx': <span></span>,
             other: <React.Fragment>
               {!onlyReadError && (
                 <QuestionBottomCon>
@@ -444,7 +472,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
               )}
             </React.Fragment>
           },
-          currentHospitalId: qcMatchCode
+          currentHospitalId: qcMatchCode,
+          vague: true
         })}
       </QuestionCon>
       {/* </Spin> */}

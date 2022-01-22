@@ -49,7 +49,15 @@ function QualityControlRecordDetail() {
   const onload = () => {
     let id = appStore.match.params.id
     setLoading(true)
-    qualityControlRecordApi.qcItemInstanceGet(id).then((res) => {
+    let fn = appStore.hisMatch({
+      map: {
+        whyx: qualityControlRecordApi.qcItemInstanceGetYX,
+        default: qualityControlRecordApi.qcItemInstanceGet
+      },
+      vague: true
+    })
+
+    fn.call(qualityControlRecordApi, id).then((res: any) => {
 
       let newData = {
         ...res.data,
