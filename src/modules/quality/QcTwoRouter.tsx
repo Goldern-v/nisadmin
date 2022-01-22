@@ -162,6 +162,7 @@ export default observer(function QcTwoRouter(props: Props) {
         },
         route_福清二级质控问题原因措施汇总,
       ],
+      whyx: [],
       default: [
         {
           title: "二级质控月度报告",

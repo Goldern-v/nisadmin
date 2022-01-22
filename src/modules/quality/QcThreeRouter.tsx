@@ -212,6 +212,7 @@ export default function QcThreeRouter(props: Props) {
         route_检查表单统计表,
         route_福清三级质控问题原因措施汇总,
       ],
+      whyx: [],
       other: [
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,
