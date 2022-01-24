@@ -104,6 +104,9 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   };
 
+  // 科室加全部选项 location.href.includes('QCRG_GSY_09')
+  let isAllDepartments = location.href.includes('QCRG_GSY_09') || location.href.includes('QCRG_GSY_10') || location.href.includes('QCRG_GSY_11')
+ 
   // const flFilterItem = createFilterItem(
   //   "分类",
   //   itemConfigList,
@@ -820,7 +823,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+        <DeptSelect hasAllDept={isAllDepartments} onChange={() => { }} style={{ width: 150 }} />
         {/* {popoverContent && (
           <Popover
             placement="bottom"
