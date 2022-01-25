@@ -906,7 +906,7 @@ export default observer(function 敏感指标登记本(props: Props) {
               columns={columns.filter((item: any) => item)}
               surplusHeight={surplusHeight}
               surplusWidth={300}
-              useOuterPagination={false}
+              useOuterPagination
               pagination={{
                 onChange: (pageIndex: number) => {
                   setPageOptions({ ...pageOptions, pageIndex })
