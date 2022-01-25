@@ -26,7 +26,6 @@ export interface meunConfigItem {
   iSlimit?: boolean | Function;
   special?: boolean | Function;
 }
-
 export const meunConfig: meunConfigItem[] = [
   {
     title: "排班管理",
@@ -83,12 +82,14 @@ export const meunConfig: meunConfigItem[] = [
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
+        hide: !authStore.isNotANormalNurse,
         iSlimit: false,
       },
       {
         title: "结余设置",
         path: "/personnelManagement/balanceInit",
         component: BalanceInit,
+        hide: !authStore.isNotANormalNurse,
         iSlimit: false,
       },
       {
