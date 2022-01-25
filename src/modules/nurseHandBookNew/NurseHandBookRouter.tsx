@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import LeftMenuPage from 'src/components/LeftMenuPage'
-import NurseHandBook from './page/NurseHandBook'
 import NurseHandBook_jmfy from './page/NurseHandBook_jmfy'
 import NurseHandBook_lcey from './page/NurseHandBook_lcey'
 import { ReactComponent as WCJD } from './images/WCJD.svg'
@@ -33,42 +32,42 @@ export default function NurseHandBookRouter() {
       lcey: [
         {
           title: '护士基本情况',
-          path: '/nurseHandBookNew/planJM3',
+          path: '/nurseHandBookNew/lcBaseInfo',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '护士考勤记录',
-          path: '/nurseHandBookNew/planJM4',
+          path: '/nurseHandBookNew/lcAttendance',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '护理工作计划',
-          path: '/nurseHandBookNew/planJM',
+          path: '/nurseHandBookNew/lcPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '护理工作总结',
-          path: '/nurseHandBookNew/conclusionJM',
+          path: '/nurseHandBookNew/lcConclusion',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '继续教育及科研',
-          path: '/nurseHandBookNew/planJM1',
+          path: '/nurseHandBookNew/lcEducation',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '病区工作',
-          path: '/nurseHandBookNew/conclusionJM2',
+          path: '/nurseHandBookNew/lcWard',
           icon: <WCJD />,
           component: { ...NurseHandBook_lcey },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'

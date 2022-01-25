@@ -1,43 +1,37 @@
+//无审核流程（聊城二院）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Upload, Icon, Modal, message, Input, Spin } from 'antd'
-import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { Button, Modal, message, Spin } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import NurseHandBookService from '../services/NurseHandBookService'
-import BaseTable from 'src/components/BaseTable'
 import NurseHandBookFormPage from 'src/components/nurseHandBookFormPage/NurseHandBookFormPage'
-import { fileDownload } from 'src/utils/file/file'
-import { DoCon } from 'src/components/BaseTable'
-import AuditProcessDetail from './AuditProcessDetail'
 import UploadView from './Upload'
 import GroupsAduitModalJM from 'src/global/modal/GroupsAduitModal-jm'
 import createModal from 'src/libs/createModal'
-import CKEditorFn from "./CKEditor"
 import FormPageBody from './FormPageBody'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-// import printing from "printing"
-
+import moment from 'moment'
+import { DatePicker } from 'antd';
 const api = new NurseHandBookService();
-
 export interface Props { }
-
 export default observer(function nurseHandBookFormPage(props: any) {
+  const { MonthPicker } = DatePicker;
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
-  let [detailData, setDetailData]: any = useState([])
-  let [showFixHeader, setShowFixHeader]: any = useState(false)
+  const [detailData, setDetailData]: any = useState([])
+  const [showFixHeader, setShowFixHeader]: any = useState(false)
   const [isPrint, setIsPrint]: any = useState(false)
   const { queryObj } = appStore
   const [data, setData]: any = useState({})
-  let header: any = { 'App-Token-Nursing': '51e827c9-d80e-40a1-a95a-1edc257596e7', 'Auth-Token-Nursing': authStore.getAuthToken() }
   const [fileList, setFileList]: any = useState([])
   const [fileIdList, setFileIdList]: any = useState([])
   const [complexHeadList, setComplexHeadList]: any = useState([])
   const [complexHeaderContent,setComplexHeaderContent] :any = useState([])
   const [formContentList, setFormContentList]: any = useState([])
+  const [synchronousData, setSynchronousData]: any = useState([])
   const [tableTitle, setTableTitle]: any = useState("")
   const [remark, setRemark]: any = useState("")
   const [submitSign, setSubmitSign]: any = useState([])
@@ -45,15 +39,20 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const [computeRow, setComputeRow]: any = useState([])
   const [buttonLoading, setButtonLoading]: any = useState(false)
   const [saveLoading, setSaveLoading]: any = useState(false)
-  const [submitLoading, setSubmitLoading]: any = useState(false)
   const [onScroll, setOnScroll]: any = useState(true)
-  const [textValue, setTextValue] = useState('')
+  const [typeList, setTypeList] = useState([])
+  const [date, setDate]: any = useState(moment(new Date))
 
-  const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
-    planJM: '护士长工作计划',
-    conclusionJM: '护士长工作总结',
+    lcBaseInfo: '护士基本情况',
+    lcAttendance: '护士考勤记录',
+    lcPlan: '护理工作计划',
+    lcConclusion: '护理工作总结',
+    lcEducation: '继续教育及科研',
+    lcWard: '病区工作',
   }
+  //不需要保存的表单
+  const noSaveList: any = ['lc_consultationDj']
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
@@ -63,7 +62,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
   const onload = () => {
     if (!queryObj.isAdd) {
       setSpinning(true)
-      api.getByIdAudited(queryObj.id).then((res) => {
+      api.getById(queryObj.id).then((res) => {
         setData(res.data)
         setDetailData(res.data.flowList)
         res.data.files?.forEach((item: any) => {
@@ -72,6 +71,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setTableTitle(res.data.title)
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
+        
         setTableHeadContent(tableHead.formContent)
         let templeContent:any = []
         let lineList:any = []
@@ -80,13 +80,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
             templeContent.push({tableData:JSON.parse(item.tableData)})
           })
         }
-        // templeContent.map((item:any)=>{
-        //   item.tableData.map((col:any)=>{
-        //     for (let key in col) {
-        //       col[key]=htmlEscape(col[key])
-        //     }
-        //   })
-        // })
         if(line.formContent.length){
           line.formContent.map((item:any)=>{    
             lineList.push(JSON.parse(item.computeRow))
@@ -103,14 +96,17 @@ export default observer(function nurseHandBookFormPage(props: any) {
       setComplexHeaderContent([])
     }
   }
-
-  const htmlEscape = (str:any)=> {
-    return String(str)
-      .replace(/&nbsp;/g, " ")
+  const getTypeList = () => {
+    api
+      .getChildCodeList(queryObj.type)
+      .then((res) => {
+        setTypeList(res.data)
+      })
   }
-
   useEffect(() => {
     onload()
+    getTypeList()
+    setDate(moment())
   }, [])
   const deepCcreateArr = (arr:any,submitArr:any)=>{
     arr.map((item:any)=>{
@@ -122,46 +118,13 @@ export default observer(function nurseHandBookFormPage(props: any) {
         item.bottom && deepCcreateArr(item.bottom,submitArr)
     })
   }
+
   const beforeSetTableHeadContent = ((arr:any)=>{
     let submitArr:any = []
     deepCcreateArr(arr,submitArr)
-    
-    // let submitArr = JSON.parse(JSON.stringify(arr))
-    // console.log(submitArr);
-    
-    // submitArr = submitArr.filter((item:any)=>{
-    //   return item.key
-    // }).map((item:any)=>{
-    //     item.value = item.name
-    //   return item
-    // })
     let result = fiterList([submitArr])
     setTableHeadContent(result)
   })
-  const handleUndo = (record: any) => {
-    let undoTitle = ""
-    if (path == "weekConclusion" || path == "monthConclusion" || path == "quarterConclusion" || path == "yearConclusion") {
-      undoTitle = '确认撤销该总结吗？'
-    } else {
-      undoTitle = '确认撤销该计划吗？'
-    }
-    Modal.confirm({
-      title: undoTitle,
-      centered: true,
-      onOk: () => {
-        api
-          .undo({ id: queryObj.id, status: data.status })
-          .then(res => {
-            message.success('撤销成功')
-            appStore.history.goBack()
-          })
-      }
-    })
-  }
-  const changeValue = (e: any, key: any) => {
-    console.log(e, key);
-
-  }
 
   const fiterList = ( oldList: any) => {
     let newList: any = []
@@ -186,7 +149,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     computeRow.map((item:any)=>{
       computeList.push({computeRow:JSON.stringify(item)}) 
     })
-    api.saveDraft(queryObj.type, {
+    api.saveOrUpdate(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
@@ -226,61 +189,6 @@ export default observer(function nurseHandBookFormPage(props: any) {
       })
   }
 
-  const handleSubmit = () => {
-    setSubmitLoading(true)
-    let tBodyList: any = []
-    let computeList: any = []
-    bodyModal.map((item:any)=>{
-      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
-    })
-    let cHeaderList:any = fiterList([complexHeadList])
-    computeRow.map((item:any)=>{
-      computeList.push({computeRow:JSON.stringify(item)}) 
-    })
-    api.auditJM(queryObj.type, {
-      id: queryObj.id || "",
-      manualType: queryObj.manualType,
-      fileIds: fileIdList,
-      title: tableTitle,
-      formDataDtoList: [
-        {
-          tableType:"tableHead",
-          formContent:tableHeadContent,
-        },
-        {
-          tableType: "tableContent",
-          formContent: tBodyList,
-        },
-        {
-          tableType: "tableRemark",
-          formContent: [{remark:remark}],
-        },
-        {
-          tableType: "line",
-          formContent: computeList,
-        },
-        {
-          tableType: "complexHead",
-          formContent: cHeaderList,
-        },
-        {
-          tableType: "recordName",
-          formContent: submitSign,
-        }
-      ]
-    })
-      .then((res) => {
-        message.success('提交成功')
-        scheduleStore.setIsSave(false)
-        appStore.history.goBack()
-        setSubmitLoading(false)
-      })
-  }
-
-  const handleAudit = () => {
-    groupsAduitModalJM.show({})
-  }
-
   const handleBack = () => {
     if (scheduleStore.getIsSave()) {
       Modal.confirm({
@@ -294,12 +202,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
     } else {
       appStore.history.goBack()
     }
-
   }
 
-  
-
   const isNone = () => {
+    if(noSaveList.includes(queryObj.manualType)){
+      return "查询"
+    }
     if (queryObj.isAdd) {
       return "新建"
     } else if (queryObj.audit == "1") {
@@ -311,41 +219,15 @@ export default observer(function nurseHandBookFormPage(props: any) {
     }
   }
 
-  const removeOnChange = (info: any) => {
-    let pro = new Promise((resolve, reject) => {
-      Modal.confirm({
-        title: '确认删除该附件？',
-        centered: true,
-        onOk: () => {
-          api
-            .deleteAttachmentJM(info.id).then((res) => {
-              resolve(true)
-              message.success('删除成功')
-            })
-        },
-        onCancel: () => {
-          resolve(false)
-        }
-      })
+  const manualType = () => {
+    let obj:any = typeList.find((item:any) => {
+      return item.code == queryObj.manualType
     })
-    return pro.then(res => res)
-  }
-  const PreviewOnChange = (info: any) => {
-    setEditVisible2(true)
-    let str: any = info.path;
-    let pdfStr: any = info.pdfPath;
-    let index = str.lastIndexOf("\.");
-    let type = str.substr(index + 1, str.length);
-    let start = str.indexOf("/crNursing/")
-    if (type == 'jpg' || type == 'png' || type == 'pdf') {
-      let path = str.substring(start, start + info.path.length)
-      setPathChange(path)
-    } else {
-      let pdfPath = pdfStr.substring(start, start + pdfStr.length)
-      setPathChange(pdfPath)
+    if(obj){ 
+      return obj.name 
     }
-    setIdChange(info.id)
   }
+
   const handlerScroll = (e: any) => {
     if(onScroll){
       let ch: any = document.getElementById("ch")
@@ -443,6 +325,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
       toPrint()
     })
   }, [iframeSrc])
+
+  useEffect(() => {
+    if (!noSaveList.includes(queryObj.manualType)) return
+    let year = date.format('YYYY')
+    let month = date.format('MM')
+    api.getListToManual({month:month,year:year}).then((res) => {
+      let templeContent:any = []
+      templeContent.push({tableData:res.data})
+      setSynchronousData(templeContent)
+    })
+  }, [date])
+
   const NurseHandBookFormPageProps = {
     beforeSetTableHeadContent,
     tableHeadContent,
@@ -455,6 +349,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     formContent:formContentList,
     complexHeaderContent,
     setTableTitle,
+    date,
     tableTitle,
     setRemark,
     remark,
@@ -464,20 +359,18 @@ export default observer(function nurseHandBookFormPage(props: any) {
     setSubmitSign,
     submitSign, 
     setOnScroll,
+    synchronousData,
   }
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
-        {!queryObj.fileId && <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>}
-        {queryObj.fileId && <div className="title">护士长手册&gt;{queryObj.type}&gt;{isNone()}{queryObj.type}</div>}
-        {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
-        {!queryObj.isAdd && <div className="name">{data.title}</div>}
-        {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
+         <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{manualType()}</div>
+          {queryObj.isAdd && <div className="name">{isNone()}{manualType()}</div>}
+          {!queryObj.isAdd && <div className="name">{data.title}</div>}
         <div className="buttonBody">
-          {queryObj.isAdd && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
-          {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
-          {data.status != "1" && !queryObj.audit && <Button className="ml-20" loading={submitLoading} type="primary" onClick={handleSubmit}>提交</Button>}
-          {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}
+          {queryObj.manualType == 'lc_consultationDj' && <span className='label ml-20'>月份:</span>}
+          {queryObj.manualType == 'lc_consultationDj' && <MonthPicker value={date} onChange={(val: any) => setDate(val)} />}
+          {queryObj.audit != "2" && !noSaveList.includes(queryObj.manualType) && <Button onClick={handleSave} type="primary" loading={saveLoading}>保存</Button>}
           <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
@@ -486,10 +379,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         <div className="formPage" onScroll={handlerScroll}>
           <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
-        <div className="rightCon">
-          {!queryObj.isAdd && <div className="rightBottom">
-            <AuditProcessDetail detailData={detailData}></AuditProcessDetail>
-          </div>}
+        {!noSaveList.includes(queryObj.manualType) && <div className="rightCon">
           <div className="rightTop">
             <UploadView
               setEditVisible2={setEditVisible2}
@@ -500,7 +390,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
               setPathChange={setPathChange}
             ></UploadView>
           </div>
-        </div>
+        </div>}
       </div>
     </Spin>
     <groupsAduitModalJM.Component />
@@ -537,7 +427,7 @@ const Wrapper = styled.div`
   }
   .topCon{
     width: 100%;
-    height: 100px;
+    height: 11vh;
     background-color: #fff;
     padding-left: 30px;
     position: fixed;
@@ -560,13 +450,13 @@ const Wrapper = styled.div`
     .buttonBody {
       /* width: 320px; */
       position: absolute;
-      top: 50px;
+      bottom: 2vh;
       right: 50px;
     }
   }
   .main {
     flex: 1;
-    padding-top: 100px;
+    padding-top: 11vh;
     display: flex;
     justify-content: space-between;
     .formPage {
@@ -574,8 +464,7 @@ const Wrapper = styled.div`
       /* min-width: 77vw;
       max-width: 77vw; */
       overflow-x: auto;
-      min-height: 85vh; 
-      max-height: 85vh; 
+      height: 82vh; 
     }
     .rightCon {
       min-width: 340px;

@@ -2,12 +2,10 @@ import styled from 'styled-components'
 import React from 'react'
 import { BaseStepCon, BaseStepBoxImg } from 'src/components/BaseStep'
 import { getWeekString } from 'src/utils/date/week'
-
 interface Props {
   detailData?: any
 }
 export default function auditProcessDetail(props: Props) {
-  
   return (
     <Con>
       <TopTitleCon>

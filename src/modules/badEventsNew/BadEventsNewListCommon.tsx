@@ -274,18 +274,22 @@ export default observer(function BadEventNewList() {
   const handleSearch = (): void => {
     setPage({ ...page, current: 1 })
   }
-
+  const changeTabs = (type: any) => {
+    setPage({ current: 1, size: page.size })
+    console.log(query, type)
+    setQuery({ ...query, type })
+  }
   let eventStatusOptions = [
-    {code:"",name:"全部"},
-    {code:"0",name:"待上报"},
-    {code:"1",name:"待质控科分派"},
-    {code:"2",name:"待职能部门审核"},
-    {code:"3",name:"待职能部门结案"},
+    { code: "", name: "全部" },
+    { code: "0", name: "待上报" },
+    { code: "1", name: "待质控科分派" },
+    { code: "2", name: "待职能部门审核" },
+    { code: "3", name: "待职能部门结案" },
     // {code:"4",name:"质控科审核"},
-    {code:"4",name:"待质控科结案"},
-    {code:"5",name:"完成"},
+    { code: "4", name: "待质控科结案" },
+    { code: "5", name: "完成" },
   ]
-  const getStatus = (data:any) => {
+  const getStatus = (data: any) => {
     for (let i = 0; i < eventStatusOptions.length; i++) {
       if (eventStatusOptions[i].code == data.status) {
         return eventStatusOptions[i].name;
@@ -409,21 +413,21 @@ export default observer(function BadEventNewList() {
                 index: (idx + 1).toString()
               }
             })}
-            onChange={(type: any) => setQuery({ ...query, type })}
-          />  : <BaseTable
-                  loading={dataLoading}
-                  columns={columns}
-                  dataSource={data}
-                  surplusHeight={265}
-                  pagination={{
-                    showQuickJumper: true,
-                    total,
-                    current: page.current,
-                    pageSize: page.size,
-                    onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
-                    onChange: (current: number) => setPage({ ...page, current })
-                  }}
-                /> }
+            onChange={(type: any) => changeTabs(type)}
+          /> : <BaseTable
+            loading={dataLoading}
+            columns={columns}
+            dataSource={data}
+            surplusHeight={265}
+            pagination={{
+              showQuickJumper: true,
+              total,
+              current: page.current,
+              pageSize: page.size,
+              onShowSizeChange: (current: number, size: number) => setPage({ ...page, size }),
+              onChange: (current: number) => setPage({ ...page, current })
+            }}
+          />}
         </div>
       </div>
     </Wrapper>

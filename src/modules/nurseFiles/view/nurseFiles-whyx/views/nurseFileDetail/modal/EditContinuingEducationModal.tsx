@@ -65,8 +65,8 @@ export default function EditPersonWinningModal(props: Props) {
     }
     // value.year && (value.year = value.year.format('YYYY'))
     // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
-    value.data && (value.hostStartDate = value.data[0].format("YYYY-MM-DD"))
-    value.data && (value.hostEndDate = value.data[1].format("YYYY-MM-DD"))
+    value.data && (value.hostStartDate = value.data[0]?.format("YYYY-MM-DD"))
+    value.data && (value.hostEndDate = value.data[1]?.format("YYYY-MM-DD"))
 
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHContinueStudy', { ...obj, ...value, sign }).then((res: any) => {
@@ -83,7 +83,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        data: [moment(data.hostStartDate), moment(data.hostEndDate)],
+        data: data.hostStartDate && data.hostEndDate ? [moment(data.hostStartDate), moment(data.hostEndDate)] : [],
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,

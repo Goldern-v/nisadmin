@@ -30,6 +30,11 @@ export interface IAppointUserCode{
   appointUserCode?: string,//指定人类型编码
 }
 
+export interface judgePowerYXIn extends Record<string, any> {
+  nodeCode?: string,
+  chainCode?: string,
+  empNo?: string
+}
 
 export default class QualityControlRecordApi extends BaseApiService {
   // 获取护士列表
@@ -59,6 +64,9 @@ export default class QualityControlRecordApi extends BaseApiService {
   }
   //质控记录单处理
   public handleNode(obj: any) {
+    if (appStore.HOSPITAL_ID == 'whyx') {
+      return this.handleNodeYX(obj)
+    }
     return this.post(`/qcItem/instance/handleNode`, obj)
   }
   //本人可查看质控科室
@@ -109,11 +117,17 @@ export default class QualityControlRecordApi extends BaseApiService {
 
   /**质控详情导出 */
   public exportQcItemDetail(id: string) {
+    if (appStore.HOSPITAL_ID == 'whyx') {
+      return this.exportQcItemDetailYX(id)
+    }
     return this.get(`/qcItem/instance/export/${id}`, { responseType: 'blob' })
   }
 
   /**质控详情批量导出 */
   public exportList(list: any[]) {
+    if (appStore.HOSPITAL_ID == 'whyx') {
+      return this.exportListYX(list)
+    }
     return this.post(`/qcItem/instance/exportList`, { list }, { responseType: 'blob' })
   }
 
@@ -170,6 +184,49 @@ export default class QualityControlRecordApi extends BaseApiService {
   /**撤销评价单 */
   public revokeHandleForNodeForSat(params: any) {
     return this.post(`/qcItem/instance/revokeHandleForNodeForSat`, params)
+  }
+
+  /**
+   * 获取质控表单模板详情 by亚心
+   */
+  public formTemplateDetailYX(qcCode: string | number) {
+    return this.get(`/yxQcItem/template/detail/${qcCode}`)
+  }
+  /**
+   * 保存评价单实例 by亚心
+   */
+  public formSaveYX(params: any) {
+    return this.post('/yxQcItem/instance/save', params)
+  }
+  /**
+   * 质控记录单列表实例详情 by亚心
+   */
+  public async qcItemInstanceGetYX(id: string) {
+    return this.get(`/yxQcItem/instance/get/${id}`)
+  }
+  /**
+   * 质控记录单处理 by亚心
+   */
+  public handleNodeYX(obj: any) {
+    return this.post(`/yxQcItem/instance/handleNode`, obj)
+  }
+  /**
+   * 查看是否有审核权限 by亚心
+   * @param obj 
+   * @returns 
+   */
+  public judgePowerYX(obj: judgePowerYXIn) {
+    return this.post(`/yxQcItem/instance/judgePower`, obj)
+  }
+  /**
+   * 质控详情导出 by亚心
+   */
+  public exportQcItemDetailYX(id: string) {
+    return this.get(`/yxQcItem/instance/export/${id}`, { responseType: 'blob' })
+  }
+  /**质控详情批量导出 by亚心 */
+  public exportListYX(list: any[]) {
+    return this.post(`/yxQcItem/instance/exportList`, { list }, { responseType: 'blob' })
   }
 }
 

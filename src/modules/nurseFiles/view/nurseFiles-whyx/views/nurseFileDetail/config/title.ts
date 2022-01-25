@@ -18,8 +18,9 @@ let titleEC: any = {
   nurseWHHierarchy: '层级变动',
   nurseWHWorkConversion: '编制变动',
   nurseWHInformation: '基本信息',
-  nurseWorkExperience: '院外工作经历',
-  nurseWHInnaiWorkExperience: '院内工作经历', // todo
+  nurseWHWorkExperienceOut: '院外工作经历',
+  nurseWHWorkExperienceIn: '院内工作经历',
+  // nurseWHWorkExperience: '院外工作经历',
   nurseWHMedicalEducation: '医学学历教育',
   nurseWHRegistrationWork: '在院工作情况',
   NurseWHQualificationIn: '院内工作资质', // 审核的是开头大写
@@ -29,16 +30,15 @@ let titleEC: any = {
   nurseWHInnovationDept: '科室创新',
   NurseWHInnovationDept: '科室创新', // 同院内资质一样的问题
   NurseWHPersonStatus: '人员状态',
+  nurseWHPersonStatus: '人员状态'
 }
 
 let titleCE: any = reverseKeyValue(titleEC)
 
 export const getTitle = (title: string) => {
-  console.log(titleEC[title], 9901)
   if (titleCE[title] || titleEC[title]) {
     return titleCE[title] || titleEC[title]
   } else {
-    console.log(titleCE[title] , titleEC[title], 88881)
     console.error('错误标题:', title)
   }
 }

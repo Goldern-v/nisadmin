@@ -47,7 +47,7 @@ export default function ExportNurseFileWh(props: Props) {
   const [continueStudy, setContinueStudy] = useState([] as any[])
   /** 专著 */
   const [monograph, setMonograph] = useState([] as any[])
-  /** 工作经历 */
+  /** 院外工作经历 */
   const [workExperience, setWorkExperience] = useState([] as any[])
   /** 院内工作经历 */
   const [innaiWorkHistory, setInnaiWorkHistory] = useState([] as any[])
@@ -825,11 +825,11 @@ export default function ExportNurseFileWh(props: Props) {
         .commonfindByEmpNoSubmit('nurseWHMonograph', empNo)
         .then(res => setMonograph(res.data)),
       nurseFilesService
-        .commonfindByEmpNoSubmit('nurseWHWorkExperience', empNo)
-        .then(res => setWorkExperience(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '2'))),
+        .commonfindByEmpNoSubmit('nurseWHWorkExperienceOut', empNo)
+        .then(res => setWorkExperience(res.data)),
       nurseFilesService
-        .commonfindByEmpNoSubmit('nurseWHWorkExperience', empNo)
-        .then(res => setInnaiWorkHistory(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '1'))),
+        .commonfindByEmpNoSubmit('nurseWHWorkExperienceIn', empNo)
+        .then(res => setInnaiWorkHistory(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHMedicalEducation', empNo)
         .then(res => setMedicalEducation(res.data)),

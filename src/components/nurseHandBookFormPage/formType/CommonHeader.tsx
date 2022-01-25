@@ -1,8 +1,8 @@
 import styled, { AnyStyledComponent } from 'styled-components'
 import { Modal, message, Input } from 'src/vendors/antd'
+import { authStore, appStore, scheduleStore } from "src/stores";
 import React, { useState, useEffect, useRef } from 'react'
-import InfoItem from 'src/modules/notice/components/InfoList/InfoItem'
-import Item from 'antd/lib/list/Item'
+
 
 
 export interface Props {
@@ -88,8 +88,6 @@ export default function CommonHeader(props: Props) {
   }, [])
 
   useEffect(() => {
-    // console.log(tableHeadContent);
-
     if (tableHeadContent.length) {
       let dictionariesObj: any = {}
       tableHeadContent.map((item: any) => {
@@ -98,6 +96,7 @@ export default function CommonHeader(props: Props) {
       recursionInit(renderHeader, dictionariesObj)
     }
   }, [tableHeadContent])
+
   return (
     <Wrapper id="ch">
       <div id="fixHeader" style={{ position: "fixed", top: '150px', display: showFixHeader && !isPrint ? 'block' : 'none' }}></div>

@@ -2,20 +2,17 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
+import { DatePicker, Select, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
-import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
-
 export interface Props { }
-
 export default observer(function NurseHandBook_jmfy() {
   const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
   const [dataSource, setDataSource] = useState([])
@@ -23,19 +20,15 @@ export default observer(function NurseHandBook_jmfy() {
   const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [editVisible, setEditVisible] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
   const [state, setState] = useState<String>('')
   const [manualType, setManualType] = useState<String>('')
-
-
   const titleArr: any = {
     planJM: '护士长工作计划',
     conclusionJM: '护士长工作总结',
   }
-
   const manualTypeArr: any = {
     planJM: [
       { value: "jm_arrange", name: "月工作重点及周安排" },
@@ -48,9 +41,7 @@ export default observer(function NurseHandBook_jmfy() {
       // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
     ],
   }
-
   const path = window.location.hash.split('/').reverse()[0]
-
   let columns: any = [
     {
       title: '标题',
@@ -132,18 +123,15 @@ export default observer(function NurseHandBook_jmfy() {
       }
     }
   ]
-
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20
   })
   const [total, setTotal]: any = useState(0)
-
   const findManualTypeName = (manualType:any) => {
     let obj = manualTypeArr[path].find((item:any) => item.value == manualType)
     return obj.name
   }
-
   const initData = () => {
     service.commonApiService
       .getUintList().then(res => {
@@ -151,7 +139,6 @@ export default observer(function NurseHandBook_jmfy() {
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
-
   const getData = () => {
     setPageLoading(true)
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
@@ -168,12 +155,10 @@ export default observer(function NurseHandBook_jmfy() {
       })
       .then((res) => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
-
   const handleAddNew = (record: any) => {
     let manualTypeAddNew = ""
     Modal.confirm({
@@ -193,17 +178,13 @@ export default observer(function NurseHandBook_jmfy() {
           message.error('类型不能为空')
           return
         } else {
-          appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
+          appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
         }
       }
     })
   }
-
   //查看随访问卷
   const setDetailModal = (item: any) => {
-    console.log(1);
-    
-    // window.open(item.path)
     setEditVisible(true)
     let str: any = item.path;
     let pdfStr: any = item.pdfPath;
@@ -219,15 +200,12 @@ export default observer(function NurseHandBook_jmfy() {
     }
     setIdChange(item.id)
   }
-  
   const onCheck = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
-
   const onEdit = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
   }
-
   const onUndo = (record: any) => {
     let undoTitle = ""
     if (path == "planJM") {
@@ -250,7 +228,6 @@ export default observer(function NurseHandBook_jmfy() {
       }
     })
   }
-
   const onDelete = (record: any) => {
     let deleteTitle = ""
     if (path == "planJM") {
@@ -260,7 +237,6 @@ export default observer(function NurseHandBook_jmfy() {
     } else {
       deleteTitle = '确认删除该记录吗？'
     }
-
     Modal.confirm({
       title: deleteTitle,
       centered: true,
@@ -274,14 +250,10 @@ export default observer(function NurseHandBook_jmfy() {
       }
     })
   }
-
-  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
-
   const handleExport = () => {
     setPageLoading(true)
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
-
     nurseHandBookService.export(path, {
       ...pageOptions,
       deptCode: deptSelect,
@@ -291,11 +263,9 @@ export default observer(function NurseHandBook_jmfy() {
     })
       .then(res => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         fileDownload(res)
       }, err => setPageLoading(false))
   }
-
   useEffect(() => {
     getData()
   }, [
@@ -306,11 +276,9 @@ export default observer(function NurseHandBook_jmfy() {
     deptSelect,
     manualType,
   ])
-
   useEffect(() => {
     initData()
   }, [])
-
   return (
     <Wrapper>
       <PageHeader>
@@ -323,7 +291,6 @@ export default observer(function NurseHandBook_jmfy() {
           onChange={(value: any) => setWeekDate(value)}
           style={{ width: 220 }}
         />
-       
         <span className='label'>科室:</span>
         <Select
           value={deptSelect}
@@ -380,20 +347,12 @@ export default observer(function NurseHandBook_jmfy() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
-        // rowKey='id'
         surplusHeight={280}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
           total: total
         }}
-        // rowSelection={{
-        //   selectedRowKeys,
-        //   onChange: handleRowSelect,
-        //   getCheckboxProps: (record: any) => ({
-        //     name: record.name
-        //   })
-        // }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({
             pageIndex: pagination.current,

@@ -55,7 +55,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
     // todo
-    nurseFilesService.commonSaveOrUpdate('nurseWHWorkExperience', { ...obj, ...value, sign }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHWorkExperienceIn', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -88,7 +88,6 @@ export default function EditWorkHistoryModal(props: Props) {
     }
   }, [visible])
 
-  console.log(nurseFileDetailViewModal.getDict('全部科室'), 98)
 
   return (
     <Modal

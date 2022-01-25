@@ -23,13 +23,12 @@ export default observer(function WorkHistory() {
   const [tableData, setTableData]: any= useState([])
   const getTableData = () => {
     // // todo
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperienceIn', appStore.queryObj.empNo).then((res) => {
       // setTableData(res.data)
-      if (res.data.length > 0) {
-        setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '1'))
-      }
-      // setGetId(res.data)
-      // setTableData([{startTime: '2022-1-8'}])
+      // if (res.data.length > 0) {
+      //   setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '1'))
+      // }
+      setTableData(res.data)
     })
   }
   const btnList = [
@@ -118,7 +117,7 @@ export default observer(function WorkHistory() {
       // }
     },
     // todo
-    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData)
+    Do('nurseWHWorkExperienceIn', editWorkHistoryModal, getTableData, true)
   ]
 
   useEffect(() => {

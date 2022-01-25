@@ -86,6 +86,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_wh;
       case "whyx":
         return NurseFilesListView_whyx;
+      case "sdlj":
+        return NurseFilesListView_wh;
       default:
         return NurseFilesListView_hj;
     }
@@ -465,6 +467,8 @@ export default observer(function NurseFilesView(props: Props) {
         return LEFT_MENU_CONFIG_NYS;
       case "whyx":
         return LEFT_MENU_CONFIG_WHYX;
+      case "whyx":
+        return LEFT_MENU_CONFIG_WH;
       default:
         return LEFT_MENU_CONFIG_HJ;
     }

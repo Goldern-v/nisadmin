@@ -265,13 +265,15 @@ const QcOneRouter = lazy(() => import("src/modules/quality/QcOneRouter"));
 const QcOneRouterHj = lazy(() => import("src/modules/quality/QcOneRouter_hj"));
 const QcOneRouterDghl = lazy(() => import("src/modules/quality/QcOneRouter_dghl"));
 const QcOneRouterNys = lazy(() =>
-  import("src/modules/quality/QcOneRouter_nys")
+import("src/modules/quality/QcOneRouter_nys")
 );
+const QcOneRouterWhyx = lazy(() => import("src/modules/quality/QcOneRouter_whyx"));
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const CommunityRoundsRouter = lazy(() =>
   import("src/modules/communityRounds/CommunityRoundsRouter")
 );
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
+const QcFunRouter = lazy(() => import("src/modules/quality/QcFunRouter"));
 // 社区查房
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
@@ -284,8 +286,10 @@ const NurseHandBookRouter = lazy(() =>
 const NurseHandBookRouterNew = lazy(() =>
   import("src/modules/nurseHandBookNew/NurseHandBookRouter")
 );
-// 护士长手册表单详情
+// 护士长手册表单详情（无审核）
 const NurseHandBookFormPage = lazy(() => import("src/modules/nurseHandBookNew/components/NurseHandBookFormPage"))
+// 护士长手册表单详情（有审核）
+const NurseHandBookFormPageAudit = lazy(() => import("src/modules/nurseHandBookNew/components/NurseHandBookFormPageAudit"))
 // 护士长手册详情
 const NurseHandBookDetailView = lazy(() => import("src/modules/nurseHandBook/components/NurseHandBookDetailView"))
 //护士长满意度调查
@@ -294,6 +298,15 @@ const NurseSatisfactionSurveyRouter = lazy(() =>
 );
 const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
+)
+
+// 贵州-行政查房
+const administrativeWardView = lazy(() =>
+  import("src/modules/quality/views/administrativeWard/RecordView")
+)
+
+const administrativeqcThree = lazy(() =>
+  import("src/modules/quality/views/administrativeWard/RecordView")
 )
 const checkWardRecordView = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index")
@@ -810,6 +823,7 @@ const routes: RouteItem[] = [
   setLayout("/qcOneHj", QcOneRouterHj, layouts.MainLayout),
   setLayout("/qcOneDghl", QcOneRouterDghl, layouts.MainLayout),
   setLayout("/qcOneNys", QcOneRouterNys, layouts.MainLayout),
+  setLayout("/qcOneWhyx", QcOneRouterWhyx, layouts.MainLayout),
   setLayout("/qcTwo", QcTwoRouter, layouts.MainLayout),
   setLayout(
     "/communityRoundsRouter/:pannelName",
@@ -817,9 +831,13 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
+  setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
+  setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout), 
+  setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
+
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
@@ -829,6 +847,7 @@ const routes: RouteItem[] = [
   setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
   setLayout("/nurseHandBookDetailView", NurseHandBookDetailView, layouts.MainLayout),
   setLayout("/NurseHandBookFormPage", NurseHandBookFormPage, layouts.MainLayout),
+  setLayout("/NurseHandBookFormPageAudit", NurseHandBookFormPageAudit, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {

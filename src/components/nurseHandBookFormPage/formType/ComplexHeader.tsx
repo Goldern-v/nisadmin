@@ -44,6 +44,7 @@ export default function ComplexHeader(props: Props) {
 
   const handelerClick = (e:any,item:any,index:any)=>{
     if(queryObj.audit) return
+    if(masterInfo.noEditor) return
     if(item.select){
       setComplexSelectVisible(false)
       setMenuType('complex-select')
@@ -101,7 +102,7 @@ export default function ComplexHeader(props: Props) {
                   }}
                   onClick={(e)=>handelerClick(e,item,Idx)}
                   suppressContentEditableWarning
-                  contentEditable={queryObj.audit ? false : true}
+                  contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
                   onInput={(e) => changeValue(e, item)}
                 >{item.value}</div>
               </div>

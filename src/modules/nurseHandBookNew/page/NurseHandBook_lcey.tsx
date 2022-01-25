@@ -2,20 +2,17 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore } from 'src/stores'
+import { DatePicker, Select, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
+import { appStore,authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
-import NurseHandBookModal from '../components/NurseHandBookModal'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
-
 export interface Props { }
-
 export default observer(function NurseHandBook_lcey() {
   const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
   const [dataSource, setDataSource] = useState([])
@@ -23,59 +20,24 @@ export default observer(function NurseHandBook_lcey() {
   const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const [editVisible, setEditVisible] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
-  const [state, setState] = useState<String>('')
   const [manualType, setManualType] = useState<String>('')
-
-
+  const [typeList, setTypeList] = useState([])
+  const [addNewLoading, setAddNewLoading]: any = useState(false)
+  let user: any = authStore.user || {};
+  //只有护士长或者护理部的人才可以编辑
+  let canEditor: Boolean = user.roleManageCodeList ? user.roleManageCodeList.includes("QCR0001") || user.roleManageCodeList.includes("QCR0004") : false
   const titleArr: any = {
-    planJM: '护士长工作计划',
-    conclusionJM: '护士长工作总结',
+    lcBaseInfo: '护士基本情况',
+    lcAttendance: '护士考勤记录',
+    lcPlan: '护理工作计划',
+    lcConclusion: '护理工作总结',
+    lcEducation: '继续教育及科研',
+    lcWard: '病区工作',
   }
-
-  const manualTypeArr: any = {
-    planJM: [
-      { value: "护理部年度工作计划", name: "护理部年度工作计划" },
-      { value: "护理部月工作计划", name: "护理部月工作计划" },
-      { value: "病区年度工作计划", name: "病区年度工作计划" },
-      { value: "病区月工作计划", name: "病区月工作计划" },
-      { value: "护理部培训考核月计划登记", name: "护理部培训考核月计划登记" },
-      { value: "护理部培训考核月计划记录", name: "护理部培训考核月计划记录" },
-    ],
-    conclusionJM: [
-      { value: "病区年度工作总结", name: "病区年度工作总结" },
-      { value: "病区半年工作总结", name: "病区半年工作总结" }, 
-      { value: "病区月工作总结", name: "病区月工作总结" },
-    ],
-    planJM1: [
-      { value: "继续教育培训情况", name: "继续教育培训情况" },
-      { value: "护理科研登记表", name: "护理科研登记表" },
-    ],
-    conclusionJM2: [
-      { value: "护理病历讨论登记", name: "护理病历讨论登记" },
-      { value: "护理病历讨论记录", name: "护理病历讨论记录" },
-      { value: "护理查房登记表", name: "护理查房登记表" }, 
-      { value: "临床护理查房记录", name: "临床护理查房记录" }, 
-      { value: "个案护理查房记录", name: "个案护理查房记录" }, 
-      { value: "教学护理查房记录", name: "教学护理查房记录" }, 
-      { value: "护理会诊登记表", name: "护理会诊登记表" },//暂时不上线，等PDA
-      { value: "护理会诊单", name: "护理会诊单" },//暂时不上线，等PDA
-      { value: "护患沟通记录", name: "护患沟通记录" },
-      { value: "护理晨会提问记录", name: "护理晨会提问记录" },
-    ],
-    planJM3: [
-      { value: "护士基本情况登记", name: "护士基本情况登记" },
-    ],
-    planJM4: [
-      { value: "护士考勤记录", name: "护士考勤记录" },
-    ],
-  }
-
   const path = window.location.hash.split('/').reverse()[0]
-
   let columns: any = [
     {
       title: '标题',
@@ -130,45 +92,32 @@ export default observer(function NurseHandBook_lcey() {
       }
     },
     {
-      title: '审核状态',
-      dataIndex: 'status',
-      width: 70,
-      align: 'center',
-      render(status: any) {
-        return (
-          <div>
-            <span className={status == "0" ? "active1" : status == "1" ? "active" : status == "2" ? "active2" : ""}>{status == "0" ? "待审核" : status == "1" ? "审核通过" : status == "2" ? "驳回" : "草稿"}</span>
-          </div>
-        )
-      }
-    },
-    {
       title: '操作',
       width: 80,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            {(record.status == 0 || record.status == 1) && <span onClick={() => onCheck(record)}>查看</span>}
-            {(record.status == 2 || record.status == 3) && <span onClick={() => onEdit(record)}>编辑</span>}
-            {(record.status == 0 || record.status == 2) && <span onClick={() => onUndo(record)}>撤销</span>}
-            {record.status != 1 && <span onClick={() => onDelete(record)}>删除</span>}
+            {!canEditor && <span onClick={() => onCheck(record)}>查看</span>}
+            {canEditor && <span onClick={() => onEdit(record)}>编辑</span>}
+            {canEditor && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }
     }
   ]
-
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20
   })
   const [total, setTotal]: any = useState(0)
-
   const findManualTypeName = (manualType:any) => {
-    let obj = manualTypeArr[path].find((item:any) => item.value == manualType)
-    return obj.name
+    let obj:any = typeList.find((item:any) => {
+      return item.code == manualType
+    })
+    if(obj){
+      return obj.name 
+    }
   }
-
   const initData = () => {
     service.commonApiService
       .getUintList().then(res => {
@@ -176,7 +125,15 @@ export default observer(function NurseHandBook_lcey() {
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
-
+  const getTypeList = () => {
+    setAddNewLoading(true)
+    nurseHandBookService
+      .getChildCodeList(path)
+      .then((res) => {
+        setTypeList(res.data)
+        setAddNewLoading(false)
+      })
+  }
   const getData = () => {
     setPageLoading(true)
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
@@ -186,19 +143,16 @@ export default observer(function NurseHandBook_lcey() {
         ...pageOptions,
         deptCode: deptSelect,
         keyWord: searchText,
-        status: state,
         manualType: manualType,
         startTime,
         endTime,
       })
       .then((res) => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
       }, err => setPageLoading(false))
   }
-
   const handleAddNew = (record: any) => {
     let manualTypeAddNew = ""
     Modal.confirm({
@@ -209,8 +163,8 @@ export default observer(function NurseHandBook_lcey() {
           defaultValue={manualTypeAddNew}
           style={{ width: 280 }}
           onChange={(val: any) => manualTypeAddNew = val}>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </div>,
       onOk: () => {
@@ -223,12 +177,8 @@ export default observer(function NurseHandBook_lcey() {
       }
     })
   }
-
   //查看随访问卷
   const setDetailModal = (item: any) => {
-    console.log(1);
-    
-    // window.open(item.path)
     setEditVisible(true)
     let str: any = item.path;
     let pdfStr: any = item.pdfPath;
@@ -244,38 +194,12 @@ export default observer(function NurseHandBook_lcey() {
     }
     setIdChange(item.id)
   }
-  
   const onCheck = (record: any) => {
     appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
-
   const onEdit = (record: any) => {
     appStore.history.push(`/NurseHandBookFormPage/?type=${path}&&id=${record.id}&&manualType=${record.manualType}&&isAdd=`)
   }
-
-  const onUndo = (record: any) => {
-    let undoTitle = ""
-    if (path == "planJM") {
-      undoTitle = '确认撤销该总结吗？'
-    } else if (path == "conclusionJM") {
-      undoTitle = '确认撤销该计划吗？'
-    } else {
-      undoTitle = '确认删除该记录吗？'
-    }
-    Modal.confirm({
-      title: undoTitle,
-      centered: true,
-      onOk: () => {
-        setPageLoading(true)
-        nurseHandBookService
-          .undo({ id: record.id, status: record.status })
-          .then(res => {
-            message.success('撤销成功', 1, () => getData())
-          }, err => setPageLoading(false))
-      }
-    })
-  }
-
   const onDelete = (record: any) => {
     let deleteTitle = ""
     if (path == "planJM") {
@@ -285,7 +209,6 @@ export default observer(function NurseHandBook_lcey() {
     } else {
       deleteTitle = '确认删除该记录吗？'
     }
-
     Modal.confirm({
       title: deleteTitle,
       centered: true,
@@ -299,43 +222,34 @@ export default observer(function NurseHandBook_lcey() {
       }
     })
   }
-
-  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
-
   const handleExport = () => {
     setPageLoading(true)
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
-
     nurseHandBookService.export(path, {
-      ...pageOptions,
-      deptCode: deptSelect,
       keyWord: searchText,
       startTime,
       endTime,
+      hostName: appStore.HOSPITAL_Name
     })
       .then(res => {
         setPageLoading(false)
-        setSelectedRowKeys([])
         fileDownload(res)
       }, err => setPageLoading(false))
   }
-
   useEffect(() => {
     getData()
   }, [
     pageOptions.pageIndex,
     pageOptions.pageSize,
-    state,
     weekDate,
     deptSelect,
     manualType,
   ])
-
   useEffect(() => {
+    getTypeList()
     initData()
   }, [])
-
   return (
     <Wrapper>
       <PageHeader>
@@ -348,7 +262,6 @@ export default observer(function NurseHandBook_lcey() {
           onChange={(value: any) => setWeekDate(value)}
           style={{ width: 220 }}
         />
-       
         <span className='label'>科室:</span>
         <Select
           value={deptSelect}
@@ -368,35 +281,20 @@ export default observer(function NurseHandBook_lcey() {
           onChange={onChangeSearchText}
           className='ml-20'
         />
-        <Button type='primary' onClick={() => getData()}>
-          查询
-        </Button>
+        <Button type='primary' onClick={() => getData()}>查询</Button>
         <Button onClick={handleExport}>导出</Button>
-        {/* <Button onClick={handleExport}>打印</Button> */}
-        <Button type='primary' onClick={handleAddNew}>新建</Button>
+        <Button type='primary' onClick={handleAddNew} loading={addNewLoading}>新建</Button>
       </PageHeader>
       <PageHeader>
         <Place />
-        <span className='label ml-20'>状态:</span>
-        <Select
-          value={state}
-          style={{ width: 100 }}
-          showSearch
-          onChange={(val: any) => setState(val)}>
-          <Select.Option value={''}>全部</Select.Option>
-          <Select.Option value={'3'}>草稿</Select.Option>
-          <Select.Option value={'2'}>驳回</Select.Option>
-          <Select.Option value={'0'}>待审核</Select.Option>
-          <Select.Option value={'1'}>审核通过</Select.Option>
-        </Select>
         <span className='label ml-20'>类型:</span>
         <Select
           value={manualType}
           style={{ width: 220 , marginRight: '235px'}}
           onChange={(val: any) => setManualType(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </PageHeader>
       <BaseTable
@@ -405,20 +303,12 @@ export default observer(function NurseHandBook_lcey() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
-        // rowKey='id'
         surplusHeight={280}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
           total: total
         }}
-        // rowSelection={{
-        //   selectedRowKeys,
-        //   onChange: handleRowSelect,
-        //   getCheckboxProps: (record: any) => ({
-        //     name: record.name
-        //   })
-        // }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({
             pageIndex: pagination.current,
@@ -456,6 +346,5 @@ const Wrapper = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-
 }
 `

@@ -1,15 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { initBodyModal } from "./function/render"
+import { initBodyModal, noSaveBodyModal } from "./function/render"
 import TableTitle from "./formType/TableTitle"
 import ComplexHeader from "./formType/ComplexHeader"
 import CommonHeader from "./formType/CommonHeader"
-import LeftHeader from "./formType/LeftHeader"
 import Common from "./formType/Common"
 import Remark from "./formType/Remark"
 import SignModule from "./formType/SignModule"
-
-import { Input } from 'src/vendors/antd'
+import { Button, Modal, message, Spin } from 'antd'
 import { authStore, appStore, scheduleStore } from "src/stores";
 import { Prompt } from 'react-router-dom'
 import moment from "moment"
@@ -18,6 +16,7 @@ export interface Props {
   bodyModal: any
   setBodyModal: Function
   setTableTitle: Function
+  date: any
   formContent: any
   tableTitle: String
   setRemark: Function
@@ -34,27 +33,28 @@ export interface Props {
   setComplexHeadList: Function
   complexHeadList: any
   setOnScroll: Function
+  synchronousData: Array<any>
 }
 export default function NurseHandBookFormPage(props: Props) {
   const { queryObj } = appStore
   const [copyRow, setCopyRow] = useState({})
   const [menuType, setMenuType] = useState('select')
-
   let manualType = queryObj.manualType
+  let HOSPITAL_ID = appStore.HOSPITAL_ID
   let masterInfo:any = []
   try{
-    masterInfo = require(`./config/${manualType}`).default
+    masterInfo = require(`./config/${HOSPITAL_ID}/${manualType}`).default
 	}catch(err){				
-		masterInfo = require(`./config/jm_arrange`).default
+		masterInfo = require(`./config/jmfy/jm_launchPlan`).default
 	}
   
-  const { bodyModal, setBodyModal, formContent, setTableTitle, tableTitle, remark, setRemark,
+  const { bodyModal, setBodyModal, formContent, synchronousData, setTableTitle, tableTitle, remark, setRemark, date,
           showFixHeader, beforeSetTableHeadContent,tableHeadContent, computeRow, setComputeRow, isPrint,
           signList, setSubmitSign, submitSign, setComplexHeadList, complexHeadList,complexHeaderContent,setOnScroll} = props
 
   const [visible, setVisible]: any = useState([])
   const [complexSelectVisible, setComplexSelectVisible]: any = useState(false)
-  
+
   //控制滚动事件
   if(masterInfo.hiddenFixHeader){
     setOnScroll(false)
@@ -81,7 +81,13 @@ export default function NurseHandBookFormPage(props: Props) {
       initBodyModal(masterInfo, setBodyModal, [])
     }
   }, [formContent])
-
+  
+  useEffect(() => {
+    if(synchronousData.length != 0){
+      noSaveBodyModal(masterInfo, setBodyModal, synchronousData)
+    }
+  }, [synchronousData])
+  
   useEffect(() => {
     if (!queryObj.isAdd) {
       setSubmitSign(signList)
@@ -94,6 +100,7 @@ export default function NurseHandBookFormPage(props: Props) {
     setVisible(templeVisible)
   }, [])
 
+
   const CommonProps = {
     
   }
@@ -103,18 +110,17 @@ export default function NurseHandBookFormPage(props: Props) {
       <div className="page" id="print-content">
         <div className="space-div"></div>
         <div className="pageBox">
-          <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle}></TableTitle>
+          <TableTitle masterInfo={masterInfo} setTableTitle={setTableTitle} tableTitle={tableTitle} date={date}></TableTitle>
           {masterInfo.complexHead && <ComplexHeader setMenuType={setMenuType} menuType={menuType} setComplexSelectVisible={setComplexSelectVisible} complexSelectVisible={complexSelectVisible} complexHeaderContent={complexHeaderContent} masterInfo={masterInfo} setComplexHeadList={setComplexHeadList} complexHeadList={complexHeadList}></ComplexHeader>}
           {masterInfo.tBody.map((body:any,idx:any)=>{
             return (
             <div key={idx}>
-              {/* {masterInfo.leftHead && <LeftHeader masterInfo={masterInfo}></LeftHeader>} */}
               {masterInfo.tHead && masterInfo.tHead[idx] && <CommonHeader 
                 isPrint={isPrint} 
                 showFixHeader={masterInfo.hiddenFixHeader?false:showFixHeader} 
                 tHead={masterInfo.tHead[idx]}
                 beforeSetTableHeadContent={beforeSetTableHeadContent} 
-                tableHeadContent
+                tableHeadContent={tableHeadContent}
               ></CommonHeader>}
               {<Common 
                 isPrint={isPrint} 

@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Col, Input, InputNumber, Modal, Row, Select, Icon, Spin } from 'antd'
+import { Button, Modal, Spin } from 'antd'
 import NurseHandBookService from '../services/NurseHandBookService'
 import { fileDownload } from 'src/utils/file/file'
-
 const api = new NurseHandBookService();
 export interface Props {
   visible: boolean,
@@ -14,7 +13,6 @@ export interface Props {
   isAdd?: boolean,
   path?: string,
   id?: any,
-
 }
 export default function editModal(props: Props) {
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp, path, id } = props
@@ -22,23 +20,18 @@ export default function editModal(props: Props) {
   const handleOk = () => {}
   const bdstyle: React.CSSProperties = {maxHeight: "90vh"}
   const [spinning, setSpinning] = useState(false)
-  const afterClose = () => {
-
-  }
   const handleDownload = () => {
     api.
     download(id).then((res) => {
       fileDownload(res)
     })
   }
-
   useEffect(() => {
     setSpinning(true)
     if(path){
       initData()
     }
   }, [path])
-
   const initData = () => {
     let str:any = path;
     let index = str.lastIndexOf("\.");
@@ -49,12 +42,10 @@ export default function editModal(props: Props) {
       setSpinning(false)
     },500)
   }
-  
   return <Modal
     title={"文档预览"}
     width={1000}
     bodyStyle={bdstyle}
-    afterClose={afterClose}
     footer={[
       <Button key="download"  type="primary" onClick={() => handleDownload()}>
       下载

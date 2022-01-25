@@ -33,7 +33,7 @@ export default observer(function BadEventNewList() {
   //列表请求参数
   const [query, setQuery] = useState({
     // wardCode: defaultWardCode,
-    wardCode: "",
+    happenedDeptCode: "",
     // dateBegin: dateRange[0].format("YYYY-MM-DD"),
     // dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
@@ -75,10 +75,18 @@ export default observer(function BadEventNewList() {
       align: "center",
       render: (text: string, record: any, idx: number) => (page.current - 1) * page.size + idx + 1
     },
+    // {
+    //   title: "科室",
+    //   dataIndex: "deptName",
+    //   key: "deptName",
+    //   className: "align-left",
+    //   align: "center",
+    //   width: 150
+    // },
     {
       title: "科室",
-      dataIndex: "deptName",
-      key: "deptName",
+      dataIndex: "happenedDeptName",
+      key: "happenedDeptName",
       className: "align-left",
       align: "left",
       width: 150
@@ -133,8 +141,8 @@ export default observer(function BadEventNewList() {
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {
-      if (!authStore.isDepartment && !query.wardCode) {
-        setQuery({ ...query, wardCode: defaultWardCode })
+      if (!authStore.isDepartment && !query.happenedDeptCode) {
+        setQuery({ ...query, happenedDeptCode: defaultWardCode })
       } else {
         getEventList()
       }
@@ -250,7 +258,11 @@ export default observer(function BadEventNewList() {
   const handleSearch = (): void => {
     setPage({ ...page, current: 1 })
   }
-
+  const changeTabs = (type: any) => {
+    setPage({ current: 1, size: page.size })
+    console.log(query, type)
+    setQuery({ ...query, type })
+  }
   return (
     <Wrapper>
       <div className="topbar">
@@ -264,10 +276,10 @@ export default observer(function BadEventNewList() {
               <div className="item-content">
                 <Select
                   defaultValue=""
-                  value={query.wardCode}
-                  onChange={(wardCode: any) => setQuery({
+                  value={query.happenedDeptCode}
+                  onChange={(happenedDeptCode: any) => setQuery({
                     ...query,
-                    wardCode: wardCode || ''
+                    happenedDeptCode: happenedDeptCode || ''
                   })}
                   showSearch
                   allowClear={authStore.isDepartment ? true : false}
@@ -348,7 +360,7 @@ export default observer(function BadEventNewList() {
                 index: (idx + 1).toString()
               }
             })}
-            onChange={(type: any) => setQuery({ ...query, type })}
+            onChange={(type: any) => changeTabs(type)}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { DatePicker } from 'antd'
+import { DatePicker, TimePicker } from 'antd'
 import moment from 'moment'
 
 export interface Props {
@@ -38,7 +38,26 @@ export default function DatePickerColumnRender(props: Props) {
   //处理时间选择类型
   let dateStr = record[itemCode] || ''
   let queryClassName = `${itemCode}-${index}`
+  if (format == 'HH:mm') {
+    return <TimePicker
+      disabled={cellDisabled(record)}
+      style={{ width: '100%', minWidth: '0px!important', borderColor: "transparent !important" }}
+      defaultValue={dateStr ? moment(dateStr, _format) : undefined}
+      placeholder=" "
+      format={_format}
+      allowClear
+      popupClassName="disable-date-ipt"
+      onOpenChange={(status) => { }}
+      className={[className, queryClassName,].join(' ')}
+      onChange={(val: any) => {
+        let newVal = val ? val.format(_format) : ''
 
+        record[itemCode] = newVal
+        record.modified = true
+        updateDataSource()
+      }}
+    />
+  }
   return <DatePicker
     disabled={cellDisabled(record)}
     style={{ width: '100%', minWidth: '0px!important' }}

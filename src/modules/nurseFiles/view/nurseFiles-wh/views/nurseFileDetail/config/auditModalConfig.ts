@@ -11,104 +11,174 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHInformation',
           getTableData: callBack,
           title: '审核基础信息',
-          tableFormat: [
-            {
-              姓名: 'empName',
-              性别: 'sex'
-            },
-            {
-              民族: 'nation',
-              籍贯: 'nativePlace'
-            },
-            {
-              工号: 'empNo',
-              身份证号: 'cardNumber'
-            },
-            {
-              政治面貌: 'politicsLook',
-              出生年月: 'birthday'
-            },
-            {
-              年龄: 'age',
-              手机号: 'phone'
-            },
-            {
-              参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime',
-              护士执业证书编号: 'zyzsNumber'
-            },
-
-            {
-              取得护士执业证书时间: 'zyzsDate',
-              取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'
-            },
-            {
-              护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
-              初始学历: 'initialEducation'
-            },
-            {
-              最高学历: 'highestEducation',
-              取得最高学历时间: 'highestEducationDate'
-            },
-            {
-              最高学历学位: 'highestEducationDegree',
-              职务: 'job'
-            },
-            {
-              现职务任职起始时间: 'jobStartDate',
-              院内工作地点: 'workAddress'
-            },
-            appStore.HOSPITAL_ID === 'gxjb' ?
-              {
-                工作护理单元: 'deptName',
-                家庭住址: 'address'
-              }
-              // 工作护理单元: 'deptName',
-              : (() => {
-                switch (appStore.HOSPITAL_ID) {
-                  case "fsxt":
-                    // return  `'鞋码大小': 'shoeSize'`
-                    return {
-                      工作护理单元: 'deptName',
-                      "夏装-上衣": "summer_jacket_size",
+          tableFormat: (() => { 
+            switch(appStore.HOSPITAL_ID) {
+              case 'fsxt': 
+                return [
+                  {
+                    民族: 'nation',
+                    籍贯: 'nativePlace',
+                  },
+                  {
+                    工号: 'empNo',
+                    身份证号: 'cardNumber',
+                  },
+                  {
+                    政治面貌: 'politicsLook',
+                    出生年月: 'birthday',
+                  },
+                  {
+                    年龄: 'age',
+                    手机号: 'phone',
+                  },
+                  {
+                    参加工作时间: 'goWorkTime',
+                    来院工作时间: 'goHospitalWorkDate',
+                  },
+                  {
+                    护士执业证书编号: 'zyzsNumber',
+                    取得护士执业证书时间: 'zyzsDate',
+                  },
+                  {
+                    取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
+                    护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
+                  },
+                  { 
+                    最高学历: 'highestEducation',
+                    职务: 'job',
+                  },
+                  {
+                    现职务任职起始时间: 'jobStartDate',
+                    工作护理单元: 'deptName',
+                  },
+                  {
+                    鞋码大小: 'shoeSize',
+                  },
+                  ...appStore.hisMatch({
+                    map: {
+                      'fsxt': [
+                        {
+                          "夏装-裤子": "summer_trousers_size",
+                          "冬装-上衣": "winter_jacket_size",
+                        },
+                        {
+                          "冬装-裤子": "winter_trousers_size",
+                          "夏装-医生款": "summer_isolation_suit_size",
+                        },
+                        {
+                          "冬装-医生款": "winter_isolation_suit_size",
+                          "鞋款式": "nurse_shoes_style",
+                        },
+                        {
+                          "鞋码": "nurse_shoes_size",
+                        }
+                      ],
+                      other: []
+                    },
+                  }),
+                  ...appStore.hisMatch({
+                    map: {
+                      'gzsrm': [{
+                        职称: 'newTitle'
+                      }],
+                      other: []
+                    },
+                  })
+                ]
+              default:
+                return [
+                  {
+                    姓名: 'empName',
+                    性别: 'sex'
+                  },
+                  {
+                    民族: 'nation',
+                    籍贯: 'nativePlace'
+                  },
+                  {
+                    工号: 'empNo',
+                    身份证号: 'cardNumber'
+                  },
+                  {
+                    政治面貌: 'politicsLook',
+                    出生年月: 'birthday'
+                  },
+                  {
+                    年龄: 'age',
+                    手机号: 'phone'
+                  },
+                  {
+                    参加工作时间:  'goWorkTime',
+                    护士执业证书编号: 'zyzsNumber'
+                  },
+      
+                  {
+                    取得护士执业证书时间: 'zyzsDate',
+                    取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'
+                  },
+                  {
+                    护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
+                    初始学历: 'initialEducation'
+                  },
+                  {
+                    最高学历: 'highestEducation',
+                    取得最高学历时间: 'highestEducationDate'
+                  },
+                  {
+                    最高学历学位: 'highestEducationDegree',
+                    职务: 'job'
+                  },
+                  {
+                    现职务任职起始时间: 'jobStartDate',
+                    院内工作地点: 'workAddress'
+                  },
+                  (() => {
+                    switch (appStore.HOSPITAL_ID) {
+                      case 'gxjb': 
+                      return {
+                        工作护理单元: 'deptName',
+                        家庭住址: 'address'
+                      }
+                      default:
+                        return {
+                          工作护理单元: 'deptName',
+                          鞋码大小: 'shoeSize'
+                        };
                     }
-                  default:
-                    return {
-                      工作护理单元: 'deptName',
-                      鞋码大小: 'shoeSize'
-                    };
-                }
-              })(),
-            ...appStore.hisMatch({
-              map: {
-                'fsxt': [
-                  {
-                    "夏装-裤子": "summer_trousers_size",
-                    "冬装-上衣": "winter_jacket_size",
-                  },
-                  {
-                    "冬装-裤子": "winter_trousers_size",
-                    "夏装-医生款": "summer_isolation_suit_size",
-                  },
-                  {
-                    "冬装-医生款": "winter_isolation_suit_size",
-                    "鞋款式": "nurse_shoes_style",
-                  },
-                  {
-                    "鞋码": "nurse_shoes_size",
-                  }
-                ],
-                other: []
-              },
-            }),
-            ...appStore.hisMatch({
-              map: {
-                'gzsrm': [{
-                  职称: 'newTitle'
-                }],
-                other: []
-              },
-            })
-          ],
+                  })(),
+                  ...appStore.hisMatch({
+                    map: {
+                      'fsxt': [
+                        {
+                          "夏装-裤子": "summer_trousers_size",
+                          "冬装-上衣": "winter_jacket_size",
+                        },
+                        {
+                          "冬装-裤子": "winter_trousers_size",
+                          "夏装-医生款": "summer_isolation_suit_size",
+                        },
+                        {
+                          "冬装-医生款": "winter_isolation_suit_size",
+                          "鞋款式": "nurse_shoes_style",
+                        },
+                        {
+                          "鞋码": "nurse_shoes_size",
+                        }
+                      ],
+                      other: []
+                    },
+                  }),
+                  ...appStore.hisMatch({
+                    map: {
+                      'gzsrm': [{
+                        职称: 'newTitle'
+                      }],
+                      other: []
+                    },
+                  })
+                ]
+            }
+          })(),
           // table:,
           fileData: [
             {

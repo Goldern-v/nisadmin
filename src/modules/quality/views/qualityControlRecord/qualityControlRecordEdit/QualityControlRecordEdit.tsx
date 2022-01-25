@@ -9,6 +9,7 @@ import qs from "qs";
 // import { qualityControlRecordApi } from './../api/QualityControlRecordApi'
 import { ScrollBox } from "src/components/common";
 import FormPannel from "./components/FormPannel";
+import FormPanelYx from "./components/FormPanelYx";
 import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
 import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
@@ -234,7 +235,13 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         <div className="main-contain">
           <Spin spinning={loading}>
             <div className="main-content">
-              {step === 1 && <FormPannel />}
+              {step === 1 && 
+              appStore.hisMatch({
+                map: {
+                  whyx: <FormPanelYx />,
+                  other: <FormPannel />
+                }
+              })}
               {step === 2 && (
                 <PreviewPannel setpChange={(step) => setStep(step)} />
               )}

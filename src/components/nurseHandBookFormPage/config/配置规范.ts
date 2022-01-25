@@ -71,6 +71,7 @@ const tHead3 = {
  * 配置计算行：key必须包含calculation_   |   calculation_rules为计算规则
  * verticalAlign: top, middle, bottom 控制内容垂直方向
  * textAlign: left, center, right 控制内容水平方向
+ * serialNumber 序号
  */
 
 const tBody1: any = [
@@ -126,6 +127,7 @@ const sign = {
 //签名组件部分----------------------------------------------------------------------------------------------------------------------------------------
 
 export default {
+  noEditor:true,//不可编辑
   hiddenFixHeader: true,//隐藏浮动表头，多表合一会用得到
   defaulLength: [9,9,9],//多个表单分别的行数
   tableTitle: { value: "月工作重点及周安排", width: 600 },//标题

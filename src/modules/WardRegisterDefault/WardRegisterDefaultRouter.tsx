@@ -86,7 +86,6 @@ function WardRegisterDefaultRouter() {
         }))
       }, () => setLoading(false))
   }
-
   useEffect(() => {
     initNavList()
   }, [])

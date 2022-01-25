@@ -27,7 +27,6 @@ export default observer(function SpecializNurse() {
     {
       label: tableData.reason && tableData.status ? '修改' : '添加',
       onClick: () =>{
-        console.log(tableData.reason && tableData.status ? '修改' : '添加')
         editSpecializNurseModal.show({ signShow: tableData.reason && tableData.status ? '修改' : '添加', data: tableData })
       },
     },

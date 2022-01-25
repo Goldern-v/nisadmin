@@ -19,7 +19,7 @@ export default observer(function QcItemGroup(props: Props) {
   const { itemGroup, baseInfo, index } = props
   const { itemListErrObj } = qcModel
   let deductMarksType = baseInfo.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
-  
+
   const handleAttachUrlsChange = (urls: any, ids: any, idx: number) => {
     let newItemGroup = { ...itemGroup }
     let newItem = newItemGroup.itemList[idx]
@@ -125,9 +125,22 @@ export default observer(function QcItemGroup(props: Props) {
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
           <span style={{ marginRight: 5 }}>{item.itemShowCode}</span>
+          {item.problemLevel &&(
+            <span style={{ color: '#469b30' }}>（{item.problemLevel}）</span>
+          )}
           {item.qcNameFill || item.qcItemName}
-          {item.fixedScore && (
-            <span style={{ color: '#999' }}>（{item.fixedScore}分）</span>
+          {item.fixedScore && 
+            appStore.hisMatch({
+              map: {
+                whyx: '',
+                other: (
+                  <span style={{ color: '#999' }}>（{item.fixedScore}分）</span>
+                )
+              }
+            })
+          }
+          {item.inspectionMethod && (
+            <span style={{ color: '#999' }}>（{item.inspectionMethod}）</span>
           )}
           <div>{formatQcItemDesc(item.qcItemDeductDesc)}</div>
         </div>
@@ -143,6 +156,7 @@ export default observer(function QcItemGroup(props: Props) {
                   size="small"
                   style={{ flex: 1, fontSize: '12px' }}
                   value={fillItem.itemValue}
+                  type={appStore.HOSPITAL_ID == 'gzsrm' ? 'number' : 'text'}
                   onChange={(e) => {
                     let newFillDataList = [...item.fillDataList]
                     newFillDataList[fillItemIdx].itemValue = e.target.value
@@ -182,7 +196,7 @@ export default observer(function QcItemGroup(props: Props) {
             <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               否
             </Radio>
-            {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            {!['gzsrm', 'whyx'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               不适用
             </Radio>}
           </Radio.Group>
@@ -203,7 +217,7 @@ export default observer(function QcItemGroup(props: Props) {
                     qcItemValue: !currentChecked ? '否' : item.qcItemValue,
                     subItemList: newSubItemList,
                   }, itemIndex)
-                  
+
                 }}>
                 <Icon
                   type="close-square"
@@ -214,60 +228,68 @@ export default observer(function QcItemGroup(props: Props) {
                 </span>
               </div>
             ))}
-            <div>
-              <span
-                style={{
-                  marginRight: '5px',
-                  marginLeft: '26px',
-                  verticalAlign: 'middle',
-                  color: 'rgba(0, 0, 0, 0.65)',
-                }}>
-                {deductMarksType}
-              </span>
-              <InputNumber
-                style={{
-                  display: 'inline-block',
-                  verticalAlign: 'middle'
-                }}
-                size="small"
-                max={item.fixedScore || undefined}
-                min={0}
-                value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
-                onChange={(val) => {
-                  qcModel.setItemListErrObj(item.qcItemCode, false)
-                  handleItemChange({
-                    ...item,
-                    qcItemValue: '否',
-                    remarkDeductScore: val?.toString() || '',
-                  }, itemIndex)
-                }} />
-              {baseInfo.useSubItemFixedScore && <span
-                style={{
-                  marginRight: '5px',
-                  marginLeft: '26px',
-                  verticalAlign: 'middle',
-                  color: 'rgba(0, 0, 0, 0.65)',
-                }}>
-                问题总扣分
-              </span>}
-              {baseInfo.useSubItemFixedScore && <InputNumber
-                style={{
-                  display: 'inline-block',
-                  verticalAlign: 'middle'
-                }}
-                size="small"
-                readOnly={true}
-                value={
-                  (item.subItemList || []).reduce((pre:any,itemScore:any)=>{
-                    if(itemScore.checked){
-                      return Number(pre + itemScore.fixedScore)
-                    }else{
-                      return Number(pre)
-                    }
-                  },Number(item.remarkDeductScore))
+            {
+              appStore.hisMatch({
+                map: {
+                  whyx: '',
+                  other: (<div>
+                    <span
+                      style={{
+                        marginRight: '5px',
+                        marginLeft: '26px',
+                        verticalAlign: 'middle',
+                        color: 'rgba(0, 0, 0, 0.65)',
+                      }}>
+                      {deductMarksType}
+                    </span>
+                    <InputNumber
+                      style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle'
+                      }}
+                      size="small"
+                      max={item.fixedScore || undefined}
+                      min={0}
+                      value={!isNaN(item.remarkDeductScore) ? Number(item.remarkDeductScore) : 0}
+                      onChange={(val) => {
+                        qcModel.setItemListErrObj(item.qcItemCode, false)
+                        handleItemChange({
+                          ...item,
+                          qcItemValue: '否',
+                          remarkDeductScore: val?.toString() || '',
+                        }, itemIndex)
+                      }} />
+                    {baseInfo.useSubItemFixedScore && <span
+                      style={{
+                        marginRight: '5px',
+                        marginLeft: '26px',
+                        verticalAlign: 'middle',
+                        color: 'rgba(0, 0, 0, 0.65)',
+                      }}>
+                      问题总扣分
+                    </span>}
+                    {baseInfo.useSubItemFixedScore && <InputNumber
+                      style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle'
+                      }}
+                      size="small"
+                      readOnly={true}
+                      value={
+                        (item.subItemList || []).reduce((pre: any, itemScore: any) => {
+                          if (itemScore.checked) {
+                            return Number(pre + itemScore.fixedScore)
+                          } else {
+                            return Number(pre)
+                          }
+                        }, Number(item.remarkDeductScore))
+                      }
+                    />}
+                  </div>)
                 }
-              />}
-            </div>
+              })
+            }
+            
             <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
@@ -279,20 +301,27 @@ export default observer(function QcItemGroup(props: Props) {
                 }, itemIndex)} />
             </div>
           </div>}
-          <div className="img-upload">
-            <MultipleImageUploader
-              tip={"(最多上传三张图片)"}
-              text=" "
-              sizeLimited={3}
-              preview
-              value={
-                (item.attachUrls && item.attachUrls.split(',')) || []
+          {appStore.hisMatch({
+            map: {
+              whyx: '',
+              other: <div className="img-upload">
+                <MultipleImageUploader
+                  tip={"(最多上传三张图片)"}
+                  text=" "
+                  sizeLimited={3}
+                  preview
+                  value={
+                    (item.attachUrls && item.attachUrls.split(',')) || []
+                  }
+                  ids={
+                    (item.attachIds && item.attachIds.split(',')) || []
+                  }
+                  onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
+                </div>
               }
-              ids={
-                (item.attachIds && item.attachIds.split(',')) || []
-              }
-              onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
-          </div>
+            })
+          }
+          
           {appStore.hisMatch({
             map: {
               nys: <div className='notesCon' style={{ borderBottom: 'none' }}>
@@ -305,17 +334,17 @@ export default observer(function QcItemGroup(props: Props) {
                     onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
                 </div>
               </div>,
-              lcey: !qcModel.baseInfo.useScore && 
-              <div className='notesCon' style={{ borderBottom: 'none' }}>
-                <div className='notesLeftCon'>备注</div>
-                <div className='notesRightCon'>
-                  <TextArea
-                    rows={4}
-                    value={item.remark}
-                    autosize
-                    onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
-                </div>
-              </div>,
+              lcey: !qcModel.baseInfo.useScore &&
+                <div className='notesCon' style={{ borderBottom: 'none' }}>
+                  <div className='notesLeftCon'>备注</div>
+                  <div className='notesRightCon'>
+                    <TextArea
+                      rows={4}
+                      value={item.remark}
+                      autosize
+                      onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
+                  </div>
+                </div>,
               other: '',
             }
           })}
@@ -336,7 +365,7 @@ export default observer(function QcItemGroup(props: Props) {
     ))}
     {appStore.hisMatch({
       map: {
-        nys: '',
+        'nys,whyx': '',
         // lcey: '',
         other: <div className='notesCon'>
           <div className='notesLeftCon'>备注</div>
@@ -348,7 +377,8 @@ export default observer(function QcItemGroup(props: Props) {
               onChange={(e) => handleRemarkChange(e.target.value)} />
           </div>
         </div>
-      }
+      },
+      vague: true
     })}
   </QuestionItem>
 })

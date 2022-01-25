@@ -44,7 +44,7 @@ export default function SignModule(props: Props) {
                         <div
                           className="signNameR"
                           suppressContentEditableWarning
-                          contentEditable={queryObj.audit ? false : true}
+                          contentEditable={masterInfo.noEditor ? false : queryObj.audit ? false : true}
                           onBlur={(e) => signNameChangeValue(e,item)}
                           onClick={(e) => handlerClick(e, item)}
                         >

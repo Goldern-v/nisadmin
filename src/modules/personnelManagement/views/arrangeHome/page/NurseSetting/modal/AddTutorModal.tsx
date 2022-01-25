@@ -30,7 +30,7 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => any;
 }
 const rules: Rules = {
-  tutor: (val) => !!val || "请选择导师",
+  // tutor: (val) => !!val || "请选择导师",
 };
 export default observer(function AddTutorModal(props: Props) {
   let { visible, onCancel, editData } = props;
@@ -68,7 +68,7 @@ export default observer(function AddTutorModal(props: Props) {
           if (editData.tutor) {
             let tutorData = res.data.find((item: any) => item.code == editData.tutor)
             from!.setFields({ tutor: editData.tutor })
-            setSelTutorList([tutorData])
+            if (tutorData) setSelTutorList([tutorData])
           } else {
             from!.setFields({ tutor: '' })
             setSelTutorList([])

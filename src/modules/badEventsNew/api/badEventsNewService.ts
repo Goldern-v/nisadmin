@@ -157,6 +157,13 @@ export default class BadEventsNewService extends BaseApiService {
   }) {
     return this.post('/form/badEventMaster/master/getPage',params)
   }
+
+  /**
+   * 修改审核意见
+   */
+  public updateOpinion(data:any) {
+    return this.post('/form/badEventMaster/master/updateOpinion',data)
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()

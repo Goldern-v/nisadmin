@@ -38,11 +38,11 @@ export default function AuditsTableDHSZ(props: Props) {
   const groupsAduitModalJM = createModal(GroupsAduitModalJM)
 
   const toDetails = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=1&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=1&&manualType=${record.manualType}&&isAdd=`)
   }
   
   const onEdit = (record: any) => {
-    appStore.history.push(`/NurseHandBookFormPage/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
+    appStore.history.push(`/NurseHandBookFormPageAudit/?type=${record.typeName}&&id=${record.auditedManageDto.fileId}&&fileId=${record.auditedManageDto.id}&&audit=2&&manualType=${record.manualType}&&isAdd=`)
   }
 
   const columns: any = [

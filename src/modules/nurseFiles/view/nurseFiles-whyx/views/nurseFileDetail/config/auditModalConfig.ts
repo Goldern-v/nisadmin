@@ -786,7 +786,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseWHWorkExperience',
+          type: 'nurseWHWorkExperienceOut',
           title: '审核院外工作经历',
           tableFormat: [
             {
@@ -809,7 +809,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           getTableData: callBack,
           id: row.id,
           empNo: row.empNo || row.commiterNo,
-          type: 'nurseWHWorkExperience',
+          type: 'nurseWHWorkExperienceIn',
           title: '审核院内工作经历',
           tableFormat: [
             {

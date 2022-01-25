@@ -1,5 +1,5 @@
 import { observable, computed, action, reaction } from 'mobx'
-import { qualityControlRecordApi, NurseQuery } from './api/QualityControlRecordApi'
+import { qualityControlRecordApi, NurseQuery, judgePowerYXIn } from './api/QualityControlRecordApi'
 import { authStore } from 'src/stores'
 import moment from 'moment'
 
@@ -26,6 +26,7 @@ class QualityControlRecordVM {
   @observable public level: any = 3
   @observable public readWay: any = 1
   @observable public allData: any = {}
+  @observable public qcCode: any = ''
 
   async init(level: number) {
     this.filterForm = ''
@@ -35,6 +36,7 @@ class QualityControlRecordVM {
     this.level = Number(level)
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.allData = {}
+    this.qcCode = ''
     await Promise.all([
       qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
         this.formSelectList = res.data
@@ -51,6 +53,17 @@ class QualityControlRecordVM {
         this.filterDeptList = res.data.deptList
       })
     ])
+  }
+  @observable public btnRoleYX: boolean = false
+  public judgePower = async (obj:judgePowerYXIn = {}) => {
+    try {
+      if (!obj.nodeCode) return
+      const res = await qualityControlRecordApi.judgePowerYX(obj)
+      this.btnRoleYX = res.data && res.data.isVis
+      return this.btnRoleYX
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

@@ -33,11 +33,10 @@ export default function EditSpecializNurseModal(props: Props) {
   let refForm = React.createRef<Form>()
 
   const onFieldChange = (val: any) => {
-    console.log(val)
+    // console.log(val)
   }
 
   const onSave = async (sign: boolean) => {
-    console.log(refForm.current?.state.values, 999)
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
