@@ -18,7 +18,7 @@ export default function (type: string, modal: any, getTableData: () => void, sta
   // 特殊模块-专科护士\外出进修\学术活动： 从我的档案模块进来区分是否是护理部人员
   const specialModule = ['nurseWHSpecializNurse', 'nurseWHOutStudy', 'nurseWHAcademic'] 
   // 工作经历、工作资质和文章模块 从档案管理进去只能有操作-查看功能（涉及到有提交审核）
-  const workHistory = ['nurseWHWorkExperience', 'nurseWHArticle', 'nurseWHQualificationOut', 'nurseWHQualificationIn']
+  const workHistory = ['nurseWHWorkExperienceIn','nurseWHWorkExperienceOut', 'nurseWHArticle', 'nurseWHQualificationOut', 'nurseWHQualificationIn']
   
   return {
     title: '操作',

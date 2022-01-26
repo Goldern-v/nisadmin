@@ -22,6 +22,7 @@ import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质�
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
+import AdministrativeWard from './views/administrativeWard'
 
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
@@ -57,6 +58,17 @@ export default observer(function QcTwoRouter(props: Props) {
     ),
     component: QualityControlKey,
   };
+  // 行政查房
+  const route_administrativeWard = {
+    title: "行政查房",
+    path: "/qcTwo/administrativeWard",
+    icon: <EJZK />,
+    component: AdministrativeWard,
+    // keepAlive: true,
+    // disabledKeepAlive:
+    //   (appStore.history && appStore.history.action) !== "POP",
+  } 
+
   const extra_menu = appStore.hisMatch({
     map: {
       "hj,gxjb": [
@@ -116,6 +128,7 @@ export default observer(function QcTwoRouter(props: Props) {
         },
         route_二级质控问题原因措施汇总,
         route_QualityControlKey,
+        route_administrativeWard
       ],
       dghl: [
         {

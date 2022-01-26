@@ -108,7 +108,7 @@ export default class NurseFilesService extends BaseApiService {
   /** 统一列表 */
   public commonfindByEmpNoSubmit(type: string, empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    if (isSelf() || type === 'nurseWHWorkExperience'  || type === 'nurseWHAcademic') {
+    if (isSelf() || type === 'nurseWHAcademic' || type === 'nurseWHSpecializNurse' || type === 'nurseWHOutStudy') {
       return this.get(`/${type}/findByEmpNo/${empNo}`).then((res) => {
         nurseFileDetailViewModal.pageSpinning = false
         return res
@@ -122,7 +122,7 @@ export default class NurseFilesService extends BaseApiService {
   }
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
-    if (type === 'nurseWHOutStudy') return this.post(`/${type}/saveOrUpdateYaXin`, obj)
+    if (type === 'nurseWHOutStudy' || type === 'nurseWHAcademic') return this.post(`/${type}/saveOrUpdateYaXin`, obj)
     else return this.post(`/${type}/saveOrUpdate`, obj)
   }
   /** 统一删除 */

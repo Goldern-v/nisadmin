@@ -329,12 +329,12 @@ export default observer(function BaseTable(props: Props) {
     <Wrapper style={option.wrapperStyle || {}} ref={tableRef} id="baseTable">
       {props.useOuterPagination && <React.Fragment>
         <TableComponent {...tableOptions} />
-        {/* {pageOptions && <Pagination
+        {pageOptions && <Pagination
           {...pageOptions}
           style={{
             float: 'right',
             marginTop: '15px'
-          }} />} */}
+          }} />}
       </React.Fragment>}
       {!props.useOuterPagination && <TableComponent {...option} />}
     </Wrapper>

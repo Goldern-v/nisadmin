@@ -22,13 +22,11 @@ export default observer(function WorkHistory() {
   const editWorkHistoryModal = createModal(EditWorkHistoryModal)
   const [tableData, setTableData]: any= useState([])
   const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
-      if (res.data.length > 0) {
-        setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '2'))
-      }
-      // setTableData(res.data)
-      
-      // setGetId(res.data)
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperienceOut', appStore.queryObj.empNo).then((res) => {
+      // if (res.data.length > 0) {
+      //   setTableData(res.data.filter((item: { insideOutsideState: string }) => item.insideOutsideState === '2'))
+      // }
+      setTableData(res.data || [])
     })
   }
   const btnList = [
@@ -115,7 +113,7 @@ export default observer(function WorkHistory() {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
       // }
     },
-    Do('nurseWHWorkExperience', editWorkHistoryModal, getTableData, false)
+    Do('nurseWHWorkExperienceOut', editWorkHistoryModal, getTableData, false)
   ]
 
   useEffect(() => {

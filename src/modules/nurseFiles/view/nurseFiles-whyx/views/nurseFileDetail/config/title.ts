@@ -18,11 +18,9 @@ let titleEC: any = {
   nurseWHHierarchy: '层级变动',
   nurseWHWorkConversion: '编制变动',
   nurseWHInformation: '基本信息',
-  // nurseWorkExperience: '院外工作经历',
-  // nurseWHInnaiWorkExperience: '院内工作经历', // todo
-  // innaiWorkHistory: '院内工作经历',
-  nurseWHWorkExperience: '工作经历',
-  nurseWorkExperience: '工作经历', // 后端没有区分院内院外工作经历
+  nurseWHWorkExperienceOut: '院外工作经历',
+  nurseWHWorkExperienceIn: '院内工作经历',
+  // nurseWHWorkExperience: '院外工作经历',
   nurseWHMedicalEducation: '医学学历教育',
   nurseWHRegistrationWork: '在院工作情况',
   NurseWHQualificationIn: '院内工作资质', // 审核的是开头大写

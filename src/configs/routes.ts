@@ -299,6 +299,15 @@ const NurseSatisfactionSurveyRouter = lazy(() =>
 const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
 )
+
+// 贵州-行政查房
+const administrativeWardView = lazy(() =>
+  import("src/modules/quality/views/administrativeWard/RecordView")
+)
+
+const administrativeqcThree = lazy(() =>
+  import("src/modules/quality/views/administrativeWard/RecordView")
+)
 const checkWardRecordView = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index")
 )
@@ -826,6 +835,9 @@ const routes: RouteItem[] = [
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
+  setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout), 
+  setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
+
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
