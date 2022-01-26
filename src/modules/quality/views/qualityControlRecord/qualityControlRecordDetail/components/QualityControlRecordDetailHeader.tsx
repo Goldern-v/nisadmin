@@ -258,19 +258,27 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   <Button onClick={handleEdit} disabled={deleteLoading}>
                     编辑
                   </Button>
-                  <Button
+                  {/* <Button
                     onClick={handleDelete}
                     type="danger"
                     ghost
                     disabled={deleteLoading}
                   >
                     删除
-                  </Button>
+                  </Button> */}
                 </React.Fragment>
               )}
-            {currentNode.canUpdate && (
-              <React.Fragment>
-                {currentNode.nodeCode === "commit" && (
+            {(master &&
+              appStore.hisMatch({
+                map: {
+                  wh: master.qcLevel == "2",
+                  other: true,
+                },
+              }) &&
+              master.status == "-1" &&
+              master.creatorNo == (authStore.user && authStore.user.empNo)
+                || (currentNode.canUpdate && currentNode.nodeCode === "commit"))
+                  && 
                   <Button
                     onClick={handleDelete}
                     type="danger"
@@ -279,7 +287,19 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   >
                     删除
                   </Button>
-                )}
+            }
+            {currentNode.canUpdate && (
+              <React.Fragment>
+                {/* {currentNode.nodeCode === "commit" && (
+                  <Button
+                    onClick={handleDelete}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
+                    删除
+                  </Button>
+                )} */}
                 <Button
                   onClick={handleCancel}
                   type="danger"
