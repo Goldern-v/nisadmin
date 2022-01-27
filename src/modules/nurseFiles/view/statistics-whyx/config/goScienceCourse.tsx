@@ -49,7 +49,7 @@ export const pageObj: PageObj = {
     },
     {
       label: '课题级别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseLevel',
       dataSource: statisticsViewModal.getDict('级别')
     },

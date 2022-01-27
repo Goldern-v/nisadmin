@@ -31,7 +31,7 @@ export const pageObj: PageObj = {
       label: '专利个人排名',
       type: 'multiplesSelect',
       name: 'patentLevel',
-      dataSource: [{name: '全部', code: ''}, {name: '第一人', code: '第一人'}, {name: '第二人', code: '第二人'},{name: '第三人', code: '第三人'}, {name: '其他', code: '其他'}]
+      dataSource: [{name: '第一人', code: '第一人'}, {name: '第二人', code: '第二人'},{name: '第三人', code: '第三人'}, {name: '其他', code: '其他'}]
     },
     {
       label: '专利号',
@@ -59,7 +59,7 @@ export const pageObj: PageObj = {
       label: '是否成果转化',
       type: 'multiplesSelect',
       name: 'isResultTransfor',
-      dataSource: [{name: '全部', code: ''}, {name: '是', code: '是'}, {name: '否', code: '否'}]
+      dataSource: [{name: '是', code: '是'}, {name: '否', code: '否'}]
     },
     {
       label: '授权公告日',

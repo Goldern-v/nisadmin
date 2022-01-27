@@ -58,74 +58,74 @@ export const pageObj: PageObj = {
       label: '创新类别', 
       type: 'multiplesSelect',
       name: 'innovationType',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('创新类别')]
+      dataSource: statisticsViewModal.getDict('创新类别')
     },
     {
       label: '创新级别', 
       type: 'multiplesSelect',
       name: 'innovationGrade',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('创新级别')]
+      dataSource: statisticsViewModal.getDict('创新级别')
     },
     {
       label: '推广区域', 
       type: 'multiplesSelect',
       name: 'promotionArea',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('推广区域')]
+      dataSource: statisticsViewModal.getDict('推广区域')
     },
 
   ],
   tableList: [ 
     {
       title: '申报人',
-      dataIndex: 'startTime',
+      dataIndex: 'declarant',
       width: 150,
       align: 'center'
     },
     {
       title: '申报科室',
-      dataIndex: 'endTime',
+      dataIndex: 'declarantDeptName',
       width: 100,
       align: 'center'
     },
     {
       title: '申报时间',
-      dataIndex: 'startTime',
+      dataIndex: 'declarantDate',
       width: 150,
       align: 'center'
     },
     {
       title: '登记单位',
-      dataIndex: 'endTime',
+      dataIndex: 'registerUnit',
       width: 100,
       align: 'center'
     },
     {
       title: '登记号',
-      dataIndex: 'endTime',
+      dataIndex: 'registerNo',
       width: 100,
       align: 'center'
     },
     {
       title: '参与成员',
-      dataIndex: 'startTime',
+      dataIndex: 'participants',
       width: 150,
       align: 'center'
     },
     {
       title: '创新类别',
-      dataIndex: 'endTime',
+      dataIndex: 'innovationType',
       width: 100,
       align: 'center'
     },
     {
       title: '创新级别',
-      dataIndex: 'unit',
+      dataIndex: 'innovationGrade',
       width: 100,
       align: 'center'
     },
     {
       title: '推广区域',
-      dataIndex: 'department',
+      dataIndex: 'promotionArea',
       width: 100,
       align: 'center'
     }

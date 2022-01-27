@@ -14,7 +14,8 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
       label: '工号或姓名',
@@ -50,7 +51,7 @@ export const pageObj: PageObj = {
     },
     {
       label: '著者',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'participation',
       dataSource: statisticsViewModal.getDict('参编')
     }

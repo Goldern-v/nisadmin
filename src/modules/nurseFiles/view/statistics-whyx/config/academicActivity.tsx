@@ -7,7 +7,7 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '学术活动',
-  type: 'nurseWHOutStudy',
+  type: 'nurseWHAcademic',
   detailPath: 'onEducation',
   filterList: [
     {
@@ -20,95 +20,95 @@ export const pageObj: PageObj = {
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'studyMajor',
+      name: 'empNo',
       limit: 25,
     },
     {
       label: '开始时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
-      nameList: ['startDateStart', 'startDateEnd']
+      nameList: ['startTimeBeginIndex', 'startTimeEndIndex']
     },
     {
       label: '举办地点',
       type: 'input',
-      name: 'studyMajor'
+      name: 'hostAddress'
     },
     {
       label: '结束时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['endDateStart', 'endDateEnd']
+      nameList: ['endTimeBeginIndex', 'endTimeEndIndex']
     },
     {
       label: '学术活动名称',
       type: 'input',
-      name: 'unit'
+      name: 'academicName'
     },
     {
       label: '举办地域',
-      type: 'select',
-      name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      type: 'multiplesSelect',
+      name: 'hostArea',
+      dataSource: statisticsViewModal.getDict('举办地域')
     },
     {
       label: '举办单位',
       type: 'input',
-      name: 'unit'
+      name: 'hostUnit'
     },
     {
       label: '以何种资格获得邀请',
       type: 'input',
-      name: 'unit'
+      name: 'qualification'
     },
   ],
   tableList: [
     {
       title: '开始时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      dataIndex: 'startTime',
+      key: 'startTime',
       width: 100,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      dataIndex: 'endTime',
+      key: 'endTime',
       width: 100,
       align: 'center'
     },
     {
       title: '学术活动名称',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      dataIndex: 'academicName',
+      key: 'academicName',
       width: 80,
       align: 'center'
     },
     {
       title: '举办地域',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
+      dataIndex: 'hostArea',
+      key: 'hostArea',
       width: 200,
       align: 'center'
     },
     {
       title: '举办单位',
-      dataIndex: 'unit',
-      key: 'unit',
+      dataIndex: 'hostUnit',
+      key: 'hostUnit',
       width: 210,
       align: 'center'
     },
     {
       title: '举办地点',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      dataIndex: 'hostAddress',
+      key: 'hostAddress',
       width: 110,
       align: 'center'
     },
     {
       title: '以何种资格获得邀请',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      dataIndex: 'qualification',
+      key: 'qualification',
       width: 100,
       align: 'center'
     },

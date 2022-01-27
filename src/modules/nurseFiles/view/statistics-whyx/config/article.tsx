@@ -14,7 +14,8 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
       label: '工号或姓名',
@@ -46,17 +47,17 @@ export const pageObj: PageObj = {
     {
       label: '卷期号',
       type: 'input',
-      name: 'periodicalNumber'
+      name: 'volumeNumber'
     },
     {
       label: '文章类别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'articleType',
       dataSource: statisticsViewModal.getDict('文章类别')
     },
     {
       label: '论文收录网站',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'influencingFactors',
       dataSource: statisticsViewModal.getDict('论文收录网站')
     },
@@ -85,8 +86,8 @@ export const pageObj: PageObj = {
     },
     {
       title: '期刊年月',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
+      dataIndex: 'journal',
+      key: 'journal',
       width: 120,
       align: 'center'
     },
@@ -135,7 +136,7 @@ export const pageObj: PageObj = {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageThree.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -145,7 +146,7 @@ export const pageObj: PageObj = {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageFour.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -155,7 +156,7 @@ export const pageObj: PageObj = {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageFive.split(',')} /> : ''}</DoCon>
       }
     },
     {

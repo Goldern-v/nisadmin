@@ -409,8 +409,13 @@ export default observer(function NurseFilesView(props: Props) {
           component: StatisticsViewWHYX
         },
         {
-          title: "工作经历",
-          path: "/nurseFile/workExperience",
+          title: "院外工作经历",
+          path: "/nurseFile/workExperienceOut",
+          component: StatisticsViewWHYX
+        },
+        {
+          title: "院内工作经历",
+          path: "/nurseFile/workExperienceIn",
           component: StatisticsViewWHYX
         },
         {

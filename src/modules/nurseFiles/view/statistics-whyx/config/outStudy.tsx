@@ -14,7 +14,8 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
       label: '工号或姓名',
@@ -35,7 +36,7 @@ export const pageObj: PageObj = {
 
     {
       label: '单位所属地',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'unitLocal',
       dataSource: statisticsViewModal.getDict('进修单位')
     },
@@ -54,7 +55,7 @@ export const pageObj: PageObj = {
     {
       label: '进修时长(天)',
       type: 'input',
-      name: 'cardUnit'
+      name: 'studyHour'
     }
   ],
   tableList: [

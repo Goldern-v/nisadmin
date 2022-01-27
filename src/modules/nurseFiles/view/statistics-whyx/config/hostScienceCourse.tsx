@@ -34,13 +34,13 @@ export const pageObj: PageObj = {
     },
     {
       label: '课题级别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseLevel',
       dataSource: statisticsViewModal.getDict('级别')
     },
     {
       label: '课题类别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'subjectType',
       dataSource: statisticsViewModal.getDict('课题类别')
     },
@@ -73,7 +73,7 @@ export const pageObj: PageObj = {
     },
     {
       label: '完成情况',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseCompletion',
       dataSource: statisticsViewModal.getDict('完成情况')
     },

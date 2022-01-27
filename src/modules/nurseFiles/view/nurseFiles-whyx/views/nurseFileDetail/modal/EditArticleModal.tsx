@@ -78,7 +78,7 @@ export default function EditArticleModal(props: Props) {
       return message.warning('数据不能为空')
     }
     console.log(value.journal, 8888)
-    value.journal && (value.journal = value.journal.format('YYYY年MM月'))
+    value.journal && (value.journal = value.journal.format('YYYY-MM'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
     value.urlImageThree && (value.urlImageThree = value.urlImageThree.join(','))
@@ -96,7 +96,6 @@ export default function EditArticleModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      console.log(data.journal ? moment(data.journal) : null, 999)
       refForm!.current!.setFields({
         ...data,
         ...{
@@ -160,7 +159,7 @@ export default function EditArticleModal(props: Props) {
             </Col>
             <Col span={24}>
               <Form.Field label={`期刊年月`} name='journal'>
-                <MonthPicker format="YYYY年MM月" />
+                <MonthPicker format="YYYY-MM" />
               </Form.Field>
             </Col>
             {/* <Col span={24}>

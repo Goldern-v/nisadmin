@@ -28,8 +28,8 @@ export const pageObj: PageObj = {
       numberUntilSelect: true,
       numberUntilInput: true,
       unit: '小时',
-      name: 'nightShiftScopeBegin',
-      name1: 'nightShiftEndScopeEnd',
+      name: 'checkOutScopeBegin',
+      name1: 'checkOutScopeEnd',
     },
     {
       label: '夜班数',
@@ -37,8 +37,8 @@ export const pageObj: PageObj = {
       numberUntilSelect: true,
       numberUntilInput: true,
       unit: '小时',
-      name: 'checkOutScopeBegin',
-      name1: 'checkOutScopeEnd',
+      name: 'nightShiftScopeBegin',
+      name1: 'nightShiftEndScopeEnd',
     },
     {
       label: '护理会诊',

@@ -34,7 +34,10 @@ let dictList = {
   创新类别: 'innovation_type',
   创新级别: 'innovation_level',
   推广区域: 'promotion_area',
-  课题类别: 'subject_type'
+  课题类别: 'subject_type',
+  举办地域: 'host_area',
+  证书名称: 'certificate_name',
+  最高职称: 'user_title'
 }
 
 type DictList = typeof dictList
@@ -94,7 +97,7 @@ class StatisticsViewModal {
 
   async getCodeList() {
     await service.commonApiService.getCodeList().then((res) => {
-      this.sortList = [{name: '全部', code: ''}, ...res.data]
+      this.sortList = [...res.data]
     })
   }
 
@@ -103,7 +106,6 @@ class StatisticsViewModal {
     await service.commonApiService.getChildCodeList(code).then((res) => {
       nameList = res.data
     })
-    console.log(nameList, 8888)
     return nameList
   }
 

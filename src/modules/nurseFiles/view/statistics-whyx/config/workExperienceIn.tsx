@@ -6,8 +6,8 @@ import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
-  title: '工作经历',
-  type: 'nurseWHWorkExperience',
+  title: '院内工作经历',
+  type: 'nurseWHWorkExperienceIn',
   detailPath: 'workHistory',
   filterList: [
     {
@@ -23,36 +23,6 @@ export const pageObj: PageObj = {
       name: 'empNo'
     },
     {
-      label: '工作地点', 
-      type: 'multiplesSelect',
-      name: 'insideOutsideState',
-      dataSource: [{name: '全部', code: ''}, {name: '院内', code: '1'}, {name: '院外', code: '2'}]
-    },
-    {
-      label: '工作科室', 
-      type: 'input',
-      name: 'department'
-    },
-    // {
-    //   label: '专业技术工作',
-    //   type: 'select',
-    //   name: 'professionalWork',
-    //   dataSource: statisticsViewModal.getDict('专业技术工作')
-    // },
-
-    // {
-    //   label: '技术职称',
-    //   type: 'select',
-    //   name: 'professional',
-    //   dataSource: statisticsViewModal.getDict('技术职称')
-    // },
-    // {
-    //   label: '职务',
-    //   type: 'select',
-    //   name: 'post',
-    //   dataSource: statisticsViewModal.getDict('职务')
-    // },
-    {
       label: '开始时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
@@ -65,7 +35,7 @@ export const pageObj: PageObj = {
       nameList: ['endDateStart', 'endDateEnd']
     },
     {
-      label: '工作单位',
+      label: '单位',
       type: 'input',
       name: 'unit'
     },
@@ -102,32 +72,11 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '工作科室',
+      title: '院外工作科室',
       dataIndex: 'department',
       key: '5',
       width: 250,
       align: 'center'
     }
-    // {
-    //   title: '专业技术工作',
-    //   dataIndex: 'professionalWork',
-    //   key: '5',
-    //   width: 100,
-    //   align: 'center'
-    // },
-    // {
-    //   title: '技术职称',
-    //   dataIndex: 'professional',
-    //   key: 'professional',
-    //   width: 100,
-    //   align: 'center'
-    // },
-    // {
-    //   title: '职务',
-    //   dataIndex: 'post',
-    //   key: 'post',
-    //   width: 100,
-    //   align: 'center'
-    // }
   ]
 }

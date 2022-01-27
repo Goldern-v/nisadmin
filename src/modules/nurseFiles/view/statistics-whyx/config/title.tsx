@@ -13,6 +13,7 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
@@ -39,7 +40,13 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'employNewTiTleDate',
       nameList: ['employNewTiTleStartDate', 'employNewTiTleEndDate']
-    }
+    },
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
   ],
   tableList: [
     {

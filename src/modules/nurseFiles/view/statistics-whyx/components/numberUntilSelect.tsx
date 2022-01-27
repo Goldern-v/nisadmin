@@ -15,15 +15,11 @@ export interface Props {
 
 export default function numberUntilSelect(props: Props) {
   let {onChange, step, numberUntilInput, dictList, unit, name, label} = props
-  // let list: any= []
-  // for (let i = 0; i < 100; i++) {
-  //   list.push(i)
-  // }
 
   return (
     <Wrapper className="item">
       <Form.Field label={label} name={name.name}>
-        {!numberUntilInput ? <Select className="select"
+        {!numberUntilInput ? <Select className="select" placeholder='请选择'
         onChange={(value: any) => onChange && onChange(value)} 
         allowClear
         >
@@ -33,11 +29,11 @@ export default function numberUntilSelect(props: Props) {
             </Select.Option>
           ))}
         </Select> :
-        <InputNumber className="InputNumber" step={step} min={0} />}
+        <InputNumber placeholder='请输入' className="InputNumber" step={step} min={0} />}
       </Form.Field>
       <div className={!numberUntilInput ? 'unit' : 'unitInputNumber'}>-</div>
       <Form.Field name={name.name1}>
-        {!numberUntilInput ? <Select className="select" onChange={(value: any) => onChange && onChange(value)} 
+        {!numberUntilInput ? <Select placeholder='请选择' className="select" onChange={(value: any) => onChange && onChange(value)} 
           allowClear={true}>
           {dictList?.map((item: any) => (
             <Select.Option value={item} key={item}>
@@ -45,7 +41,7 @@ export default function numberUntilSelect(props: Props) {
             </Select.Option>
           ))}
         </Select> : 
-        <InputNumber className="InputNumber" step={step} min={0} />}
+        <InputNumber placeholder='请输入' className="InputNumber" step={step} min={0} />}
       </Form.Field>
       <div className={!numberUntilInput ? 'unit' : 'unitInputNumber'}>{unit}</div>
     </Wrapper>

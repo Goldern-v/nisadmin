@@ -48,7 +48,7 @@ export const pageObj: PageObj = {
       label: '学会级别',
       type: 'multiplesSelect',
       name: 'learnLevel',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('级别')]
+      dataSource: statisticsViewModal.getDict('级别')
     },
   ],
   tableList: [

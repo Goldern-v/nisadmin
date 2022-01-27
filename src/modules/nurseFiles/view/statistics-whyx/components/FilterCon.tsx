@@ -24,7 +24,7 @@ export default function FilterCon(props: Props) {
   let { pageObj, filterRef, onload } = props
   let refForm = React.createRef<Form>()
   // 授权类别
-  let [unitLocal, setUnitLocal] = useState('')
+  let [grantType, setGrantType] = useState('')
   // 授权名称 -- 授权名称下拉框受授权类别控制
   let [authorizationName, setAuthorizationName]: any[] = useState([])
 
@@ -35,20 +35,19 @@ export default function FilterCon(props: Props) {
       let form = refForm.current
       form.setFields({
         deptCode: statisticsViewModal.selectedDeptCode,
-        ageStart: '全部',
-        ageEnd: '全部',
-        insideOutsideState: '',
-        postState: '',
-        winningType: '',
-        winningLevel: '',
-        learnLevel: '',
-        declarantDeptName: '全部',
-        innovationType: '',
-        innovationGrade: '',
-        promotionArea: '',
-        unitLocal: '',
-        unitLocal1: '全部',
-
+        // ageStart: '全部',
+        // ageEnd: '全部',
+        // insideOutsideState: '',
+        // postState: '',
+        // winningType: '',
+        // winningLevel: '',
+        // learnLevel: '',
+        // declarantDeptName: '全部',
+        // innovationType: '',
+        // innovationGrade: '',
+        // promotionArea: '',
+        // unitLocal: '',
+        // unitLocal1: '全部',
       })
     }
   }, [pageObj.title])
@@ -56,15 +55,15 @@ export default function FilterCon(props: Props) {
   useLayoutEffect(() => { 
     if (refForm.current) {
       let form = refForm.current
-      statisticsViewModal.getChildCodeList(form.state.values.unitLocal).then(res => {
-        setAuthorizationName([{name: '全部', code: ''}, ...res])
+      statisticsViewModal.getChildCodeList(form.state.values.grantType).then(res => {
+        setAuthorizationName([...res])
       })
     }
-  }, [unitLocal])
+  }, [grantType])
   
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
-    if (value?.unitLocal) setUnitLocal(value?.unitLocal)
+    if (value?.grantType) setGrantType(value?.grantType)
 
     if (err) return
 
@@ -127,11 +126,12 @@ export default function FilterCon(props: Props) {
     delete result.deptCode
     // 科室创新-申报科室
     result.declarantDeptName = result.declarantDeptName === '全部' ? '' : result.declarantDeptName
+    // 资质院内
+    let newGrantType = statisticsViewModal.sortList.filter((item: any) =>item.code === result.grantType)
+    result.grantType = newGrantType[0]?.name
+    
     if (value.empNo) result.empNo = value.empNo
     filterRef.current = result
-
-    console.log(result)
-
     onload()
   }
 

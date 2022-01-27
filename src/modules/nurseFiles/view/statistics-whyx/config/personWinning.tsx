@@ -32,13 +32,13 @@ export const pageObj: PageObj = {
       label: '获奖类别',
       type: 'multiplesSelect',
       name: 'winningType',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('获奖类别')]
+      dataSource: statisticsViewModal.getDict('获奖类别')
     },
     {
       label: '获奖级别',
       type: 'multiplesSelect',
       name: 'winningLevel',
-      dataSource: [{name: '全部', code: ''}, ...statisticsViewModal.getDict('获奖级别')]
+      dataSource: statisticsViewModal.getDict('获奖级别')
     },
     {
       label: '获奖时间',

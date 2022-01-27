@@ -44,7 +44,7 @@ export const pageObj: PageObj = {
     {
       label: '结束时间',
       type: 'dateRangePicker',
-      name: 'dateRangePicker',
+      name: 'dateRangePicker1',
       nameList: ['hostEndDateBeginIndex', 'hostEndDateEndIndex']
     },
     {
