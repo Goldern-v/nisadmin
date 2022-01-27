@@ -14,9 +14,15 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
-
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
     {
       label: '进修专业',
       type: 'input',
@@ -30,7 +36,7 @@ export const pageObj: PageObj = {
 
     {
       label: '单位所属地',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'unitLocal',
       dataSource: statisticsViewModal.getDict('进修单位')
     },
@@ -45,12 +51,12 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
       nameList: ['endDateStart', 'endDateEnd']
+    },
+    {
+      label: '进修时长(天)',
+      type: 'input',
+      name: 'studyHour'
     }
-    // {
-    //   label: '进修时长(天)',
-    //   type: 'input',
-    //   name: 'cardUnit'
-    // }
   ],
   tableList: [
     {

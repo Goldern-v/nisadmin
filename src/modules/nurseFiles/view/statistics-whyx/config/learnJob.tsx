@@ -13,26 +13,15 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '学会级别',
-      type: 'select',
-      name: 'learnLevel',
-      dataSource: statisticsViewModal.getDict('级别')
-    },
-    {
-      label: '学会名称',
+      label: '工号或姓名',
       type: 'input',
-      name: 'learnJobName'
+      name: 'empNo'
     },
-    {
-      label: '学会职位',
-      type: 'input',
-      name: 'learnPosition'
-    },
-
     {
       label: '起始时间',
       type: 'dateRangePicker',
@@ -44,7 +33,23 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
-    }
+    },
+    {
+      label: '任职学会名称',
+      type: 'input',
+      name: 'learnJobName'
+    },
+    {
+      label: '学会职位',
+      type: 'input',
+      name: 'learnPosition'
+    },
+    {
+      label: '学会级别',
+      type: 'multiplesSelect',
+      name: 'learnLevel',
+      dataSource: statisticsViewModal.getDict('级别')
+    },
   ],
   tableList: [
     {

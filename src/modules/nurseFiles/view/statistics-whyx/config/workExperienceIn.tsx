@@ -6,41 +6,22 @@ import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
-  title: '工作经历',
-  type: 'nurseWHWorkExperience',
+  title: '院内工作经历',
+  type: 'nurseWHWorkExperienceIn',
   detailPath: 'workHistory',
   filterList: [
     {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
+      multiple: true,
       name: 'deptCode'
     },
-
     {
-      label: '单位',
+      label: '工号或姓名',
       type: 'input',
-      name: 'unit'
+      name: 'empNo'
     },
-    // {
-    //   label: '专业技术工作',
-    //   type: 'select',
-    //   name: 'professionalWork',
-    //   dataSource: statisticsViewModal.getDict('专业技术工作')
-    // },
-
-    // {
-    //   label: '技术职称',
-    //   type: 'select',
-    //   name: 'professional',
-    //   dataSource: statisticsViewModal.getDict('技术职称')
-    // },
-    // {
-    //   label: '职务',
-    //   type: 'select',
-    //   name: 'post',
-    //   dataSource: statisticsViewModal.getDict('职务')
-    // },
     {
       label: '开始时间',
       type: 'dateRangePicker',
@@ -52,9 +33,23 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
-    }
+    },
+    {
+      label: '单位',
+      type: 'input',
+      name: 'unit'
+    },
   ],
-  tableList: [
+  tableList: [ 
+    {
+      title: "工作地点",
+      dataIndex: "insideOutsideState",
+      width: 100,
+      align: "center",
+      render(text: any, record: any) {
+        return text == 1 ? "院内" : text == 2 ? "院外" : text;
+      }
+    },
     {
       title: '开始年月',
       dataIndex: 'startTime',
@@ -75,27 +70,13 @@ export const pageObj: PageObj = {
       key: '4',
       width: 250,
       align: 'center'
+    },
+    {
+      title: '院外工作科室',
+      dataIndex: 'department',
+      key: '5',
+      width: 250,
+      align: 'center'
     }
-    // {
-    //   title: '专业技术工作',
-    //   dataIndex: 'professionalWork',
-    //   key: '5',
-    //   width: 100,
-    //   align: 'center'
-    // },
-    // {
-    //   title: '技术职称',
-    //   dataIndex: 'professional',
-    //   key: 'professional',
-    //   width: 100,
-    //   align: 'center'
-    // },
-    // {
-    //   title: '职务',
-    //   dataIndex: 'post',
-    //   key: 'post',
-    //   width: 100,
-    //   align: 'center'
-    // }
   ]
 }

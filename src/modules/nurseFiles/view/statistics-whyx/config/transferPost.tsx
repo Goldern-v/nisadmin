@@ -13,24 +13,25 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
       label: '原工作科室',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'oldDeptName',
       dataSource: statisticsViewModal.getDict('全部科室').filter((item) => item.name != '全院')
     },
     {
       label: '新工作科室',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'newDeptName',
       dataSource: statisticsViewModal.getDict('完整科室')
     },
     {
       label: '现科室隶属部门',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'deptBeDepartment',
       dataSource: statisticsViewModal.getDict('现科室隶属部门')
     },
@@ -39,7 +40,13 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'transferDate',
       nameList: ['transferStartDate', 'transferEndDate']
-    }
+    },
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
   ],
   tableList: [
     {

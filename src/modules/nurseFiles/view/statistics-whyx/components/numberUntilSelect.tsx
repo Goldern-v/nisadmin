@@ -1,61 +1,64 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import Form from 'src/components/Form'
 import { AutoComplete, Select } from 'src/vendors/antd'
 export interface Props {
   dictList?: any[]
   onChange?: any
-  value?: any
   unit?: string
   name?: any
-  label?: string
+  label?: string, 
+  numberUntilInput?: boolean
+  step?: number | string
 }
 
 export default function numberUntilSelect(props: Props) {
-  let {onChange, value, dictList, unit, name, label} = props
-  // let list: any= []
-  // for (let i = 0; i < 100; i++) {
-  //   list.push(i)
-  // }
+  let {onChange, step, numberUntilInput, dictList, unit, name, label} = props
+
   return (
     <Wrapper className="item">
       <Form.Field label={label} name={name.name}>
-        <Select className="select"
+        {!numberUntilInput ? <Select className="select" placeholder='请选择'
         onChange={(value: any) => onChange && onChange(value)} 
         allowClear
-        value={value}
         >
           {dictList?.map((item: any) => (
             <Select.Option value={item} key={item}>
               {item}
             </Select.Option>
           ))}
-        </Select>
+        </Select> :
+        <InputNumber placeholder='请输入' className="InputNumber" step={step} min={0} />}
       </Form.Field>
-      <div className='unit'>-</div>
+      <div className={!numberUntilInput ? 'unit' : 'unitInputNumber'}>-</div>
       <Form.Field name={name.name1}>
-        <Select className="select" onChange={(value: any) => onChange && onChange(value)} 
-        allowClear={true} value={value}>
+        {!numberUntilInput ? <Select placeholder='请选择' className="select" onChange={(value: any) => onChange && onChange(value)} 
+          allowClear={true}>
           {dictList?.map((item: any) => (
             <Select.Option value={item} key={item}>
               {item}
             </Select.Option>
           ))}
-        </Select>
+        </Select> : 
+        <InputNumber placeholder='请输入' className="InputNumber" step={step} min={0} />}
       </Form.Field>
-      <div className='unit'>{unit}</div>
+      <div className={!numberUntilInput ? 'unit' : 'unitInputNumber'}>{unit}</div>
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 25% !important;
   .unit{
-    margin: 5px 3px 0 92px;
+    margin: 5px 3px 0 90px;
+  }
+  .unitInputNumber{
+    margin: 5px 3px 0 82px;
   }
   .select{
-    width: 89px !important;
+    width: 86px !important;
+  }
+  .InputNumber{
+    width: 80px !important;
   }
 `

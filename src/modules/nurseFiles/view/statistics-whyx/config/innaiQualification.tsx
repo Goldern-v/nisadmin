@@ -7,95 +7,99 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '资质管理（院外）',
-  type: 'nurseWHOutStudy',
+  type: 'nurseWHQualificationIn',
   detailPath: 'onEducation',
   filterList: [
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'studyMajor'
+      name: 'empNo',
+      limit: 25
     },
     {
       label: '授权类别',
-      type: 'select',
-      name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      type: 'multiplesSelect',
+      // name: 'unitLocal',
+      name: 'grantType',
+      dataSource: statisticsViewModal.sortList,
     },
     {
       label: '授权名称',
-      type: 'select',
-      name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      type: 'multiplesSelecteSpecially',
+      // name: 'unitLocal1',
+      name: 'grantName',
+      // dataSource: statisticsViewModal.getDict('进修单位')
     },
     {
       label: '证书编号',
       type: 'input',
-      name: 'unit'
+      name: 'certificateNo'
     },
     {
       label: '认证部门',
       type: 'input',
-      name: 'unit'
+      name: 'certificateUnit'
     },
     {
       label: '有效期至',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
-      nameList: ['startDateStart', 'startDateEnd']
+      nameList: ['certificateDateBeginIndex', 'certificateDateEndIndex']
     },
     {
       label: '认证时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['endDateStart', 'endDateEnd']
+      nameList: ['validityDateBeginIndex', 'validityDateEndIndex']
     }
   ],
   tableList: [
     {
-      title: '进修专业',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
-      width: 200,
+      title: '授权类别',
+      dataIndex: 'grantType',
+      key: 'grantType',
+      width: 150,
       align: 'center'
     },
     {
-      title: '进修单位',
-      dataIndex: 'unit',
-      key: 'unit',
+      title: '授权名称',
+      dataIndex: 'grantName',
+      key: 'grantName',
       width: 210,
       align: 'center'
     },
     {
-      title: '进修单位所属地',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      title: '认证部门',
+      dataIndex: 'certificateUnit',
+      key: 'certificateUnit',
       width: 110,
       align: 'center'
     },
     {
-      title: '进修开始时间',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      title: '认证时间',
+      dataIndex: 'certificateDate',
+      key: 'certificateDate',
       width: 100,
       align: 'center'
     },
     {
-      title: '进修结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      title: '证书编号',
+      dataIndex: 'certificateNo',
+      key: 'certificateNo',
       width: 100,
       align: 'center'
     },
     {
-      title: '进修时长(天)',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      title: '有效期至',
+      dataIndex: 'validityDate',
+      key: 'validityDate',
       width: 80,
       align: 'center'
     },
