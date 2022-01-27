@@ -299,7 +299,6 @@ export default observer(function NurseFilesView(props: Props) {
   ];
 
   const LEFT_MENU_CONFIG_WHYX = [
-
     {
       title: "在职护士档案",
       path: "/nurseFile/onTheJob",
@@ -312,7 +311,6 @@ export default observer(function NurseFilesView(props: Props) {
       component: RetiredRetirees,
       icon: <TXHSCX />
     },
-    // 推迟先不上
     {
       title: "查询统计",
       icon: <CXTJ />,
@@ -472,8 +470,6 @@ export default observer(function NurseFilesView(props: Props) {
         return LEFT_MENU_CONFIG_NYS;
       case "whyx":
         return LEFT_MENU_CONFIG_WHYX;
-      case "whyx":
-        return LEFT_MENU_CONFIG_WH;
       default:
         return LEFT_MENU_CONFIG_HJ;
     }
