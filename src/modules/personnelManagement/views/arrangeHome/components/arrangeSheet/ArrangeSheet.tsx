@@ -61,6 +61,7 @@ export default observer(function ArrangeSheet(props: Props) {
       fssdy: () => EditVacationCountModal_wh,
       fsxt: () => EditVacationCountModal_wh,
       sdlj: () => EditVacationCountModal_wh,
+      whyx: () => EditVacationCountModal_wh,
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
