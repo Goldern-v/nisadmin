@@ -42,7 +42,7 @@ export const pageObj: PageObj = {
       label: '期刊年月',
       type: 'yearMonthRangePicker',
       name: 'yearMonthRangePicker',
-      nameList: ['publicYearStartDate', 'publicYearEndDate']
+      nameList: ['journalStartIndex', 'journalEndIndex']
     },
     {
       label: '卷期号',
