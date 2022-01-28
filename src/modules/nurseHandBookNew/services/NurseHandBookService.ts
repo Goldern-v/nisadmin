@@ -67,9 +67,14 @@ export default class NurseHandBookService extends BaseApiService {
   public getById(id: string) {
     return this.get(`/nurseManualLC/getById?id=${id}`)
   }
+
   /*同步会诊的数据（护理会诊登记独有）*/
   public getListToManual(obj: PageOptions | any) {
     return this.post(`/nurseManualLC/getListToManual`, obj)
+  }
+  /**江门妇幼 同比环比接口 */
+  public getCalculate(id: string) {
+    return this.get(`/nurseManualJM/getCalculate?id=${id}`)
   }
 }
 

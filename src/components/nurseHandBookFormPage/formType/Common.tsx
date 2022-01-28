@@ -138,11 +138,7 @@ export default function Common(props: Props) {
     <Wrapper>
       {bodyModal[bodyIdx]&&bodyModal[bodyIdx].tableData.map((row: any, rowIdx: any) =>
         <div
-          className={selectIndex == rowIdx &&!isPrint  ? 'active-row' : ''}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
+          className={selectIndex == rowIdx &&!isPrint  ? 'active-row common-row' : 'common-row'}
           key={rowIdx}
         >
           {row.map((col: any, colIdx: any) =>
@@ -203,6 +199,10 @@ export default function Common(props: Props) {
 }
 
 const Wrapper = styled.div`
+.common-row {
+  display: flex;
+  justify-content: center;
+}
 .common {
   border: 1px solid #000;
   font-size: 13px;

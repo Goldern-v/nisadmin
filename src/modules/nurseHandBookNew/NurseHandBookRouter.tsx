@@ -16,14 +16,63 @@ export default function NurseHandBookRouter() {
       jmfy: [
         {
           title: '护士长工作计划',
-          path: '/nurseHandBookNew/planJM',
+          path: '/nurseHandBookNew/jmPlan',
           icon: <WCJD />,
           component: { ...NurseHandBook_jmfy },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
         {
           title: '护士长工作总结',
-          path: '/nurseHandBookNew/conclusionJM',
+          path: '/nurseHandBookNew/jmconclusion',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '月度人力、基础质量、专科质量指标分析',
+          path: '/nurseHandBookNew/jmAnalyse',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        // {
+        //   title: '月度质控分析与改进',
+        //   path: '/nurseHandBookNew/jmQc',
+        //   icon: <WCJD />,
+        //   component: { ...NurseHandBook_jmfy },
+        //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        // },
+        {
+          title: '护理人员季度考核成绩表',
+          path: '/nurseHandBookNew/jmQuarterlyAudit',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '护理人员月度培训实施记录表',
+          path: '/nurseHandBookNew/jmMonthTrain',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '科室护理人员月度动态出勤表',
+          path: '/nurseHandBookNew/jmDeptDuty',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '论文、科研、创新登记表',
+          path: '/nurseHandBookNew/jmRegisterForm1',
+          icon: <WCJD />,
+          component: { ...NurseHandBook_jmfy },
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        },
+        {
+          title: '教学、培训登记表',
+          path: '/nurseHandBookNew/jmRegisterForm2',
           icon: <WCJD />,
           component: { ...NurseHandBook_jmfy },
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'

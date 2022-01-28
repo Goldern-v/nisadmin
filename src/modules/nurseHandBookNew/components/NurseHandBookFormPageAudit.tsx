@@ -40,12 +40,22 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   const [buttonLoading, setButtonLoading]: any = useState(false)
   const [saveLoading, setSaveLoading]: any = useState(false)
   const [submitLoading, setSubmitLoading]: any = useState(false)
+  const [typeList, setTypeList] = useState([])
   const [onScroll, setOnScroll]: any = useState(true)
   const path = window.location.hash.split('/').reverse()[0]
   const titleArr: any = {
-    planJM: '护士长工作计划',
-    conclusionJM: '护士长工作总结',
+    jmPlan: '护士长工作计划',
+    jmconclusion: '护士长工作总结',
+    jmAnalyse: '月度人力、基础质量、专科质量指标分析',
+    jmQc: '月度质控分析与改进',
+    jmQuarterlyAudit: '护理人员季度考核成绩表',
+    jmMonthTrain: '护理人员月度培训实施记录表',
+    jmDeptDuty: '科室护理人员月度动态出勤表',
+    jmRegisterForm1: '论文、科研、创新登记表',
+    jmRegisterForm2: '教学、培训登记表',
   }
+  //需要同比、环比的表单
+  const calculateList: any = ['jm_humanIndicators','jm_basicIndicators','jm_specialIndicators']
   const [editVisible2, setEditVisible2] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
@@ -87,22 +97,24 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       setComplexHeaderContent([])
     }
   }
-  useEffect(() => {
+  useEffect(() => { 
     onload()
+    getTypeList()
   }, [])
-  const deepCcreateArr = (arr:any,submitArr:any)=>{
+
+  const deepCreateArr = (arr:any,submitArr:any)=>{
     arr.map((item:any)=>{
       if(item.key){
         item.value = item.name
         submitArr.push(item)
       }
-        item.mid && deepCcreateArr(item.mid,submitArr)
-        item.bottom && deepCcreateArr(item.bottom,submitArr)
+        item.mid && deepCreateArr(item.mid,submitArr)
+        item.bottom && deepCreateArr(item.bottom,submitArr)
     })
   }
   const beforeSetTableHeadContent = ((arr:any)=>{
     let submitArr:any = []
-    deepCcreateArr(arr,submitArr)
+    deepCreateArr(arr,submitArr)
     let result = fiterList([submitArr])
     setTableHeadContent(result)
   })
@@ -139,6 +151,33 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   }
   const handleSave = () => {
     setSaveLoading(true)
+    let tableTitleList = tableTitle.split("")
+    let indexList:any = []
+    let year = ""
+    tableTitleList.map((item:any,index:any)=>{
+      if(item == "年"){
+        indexList.push(index)
+      }
+    })
+    indexList.map((item:any)=>{
+      let reg = /(199|200|201|202|203|204)\d{1}/
+      let num = /\d{5}/
+      if(item>4){
+        if(num.test(tableTitle.substring(item-5,item))) {
+          message.error('标题年份格式错误！')
+          setSaveLoading(false)
+          return
+        }
+      }
+      if (reg.test(tableTitle.substring(item-4,item))){
+        year = tableTitle.substring(item-4,item)
+      }
+    })
+    if(!year) {
+      message.error('标题年份格式错误！')
+      setSaveLoading(false)
+      return
+    }
     let tBodyList: any = []
     let computeList: any = []
     bodyModal.map((item:any)=>{
@@ -148,11 +187,13 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     computeRow.map((item:any)=>{
       computeList.push({computeRow:JSON.stringify(item)}) 
     })
+
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
       title: tableTitle,
+      year:year,
       formDataDtoList: [
         {
           tableType: "tableHead",
@@ -185,6 +226,13 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         scheduleStore.setIsSave(false)
         appStore.history.goBack()
         setSaveLoading(false)
+      })
+  }
+  const getTypeList = () => {
+    api
+      .getChildCodeList(queryObj.type)
+      .then((res) => {
+        setTypeList(res.data)
       })
   }
   const handleSubmit = () => {
@@ -265,24 +313,14 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       return "编辑"
     }
   }
-  const removeOnChange = (info: any) => {
-    let pro = new Promise((resolve, reject) => {
-      Modal.confirm({
-        title: '确认删除该附件？',
-        centered: true,
-        onOk: () => {
-          api
-            .deleteAttachmentJM(info.id).then((res) => {
-              resolve(true)
-              message.success('删除成功')
-            })
-        },
-        onCancel: () => {
-          resolve(false)
-        }
-      })
+
+  const manualType = () => {
+    let obj:any = typeList.find((item:any) => {
+      return item.code == queryObj.manualType
     })
-    return pro.then(res => res)
+    if(obj){ 
+      return obj.name 
+    }
   }
   const handlerScroll = (e: any) => {
     if(onScroll){
@@ -365,7 +403,6 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         setButtonLoading(false)
       })
     });
-
   }
   const toPrint = () => {
     let iframeEl = document.getElementById("iframe") as any
@@ -379,6 +416,19 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
       toPrint()
     })
   }, [iframeSrc])
+
+  useEffect(() => {
+    if (!calculateList.includes(queryObj.manualType)) return
+    if (queryObj.isAdd) return
+    api.getCalculate(queryObj.id).then((res) => {
+      let calculateTempleContent:any = []
+      for (let num in res.data){
+        calculateTempleContent.push({tableData:res.data[num]})
+      }
+      setSynchronousData(calculateTempleContent)
+    })
+  }, [])
+
   const NurseHandBookFormPageProps = {
     beforeSetTableHeadContent,
     tableHeadContent,
@@ -406,9 +456,9 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
   return <Wrapper>
     <Spin spinning={spinning}>
       <div className="topCon">
-        {!queryObj.fileId && <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{titleArr[queryObj.type]}</div>}
+        {!queryObj.fileId && <div className="title">护士长手册&gt;{titleArr[queryObj.type]}&gt;{isNone()}{manualType()}</div>}
         {queryObj.fileId && <div className="title">护士长手册&gt;{queryObj.type}&gt;{isNone()}{queryObj.type}</div>}
-        {queryObj.isAdd && <div className="name">新建{titleArr[queryObj.type]}</div>}
+        {queryObj.isAdd && <div className="name">新建{manualType()}</div>}
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">

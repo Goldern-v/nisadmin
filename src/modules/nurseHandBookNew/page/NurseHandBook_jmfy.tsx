@@ -24,23 +24,14 @@ export default observer(function NurseHandBook_jmfy() {
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
   const [state, setState] = useState<String>('')
+  const [typeList, setTypeList] = useState([])
+  const [addNewLoading, setAddNewLoading]: any = useState(false)
   const [manualType, setManualType] = useState<String>('')
   const titleArr: any = {
     planJM: '护士长工作计划',
     conclusionJM: '护士长工作总结',
   }
-  const manualTypeArr: any = {
-    planJM: [
-      { value: "jm_arrange", name: "月工作重点及周安排" },
-      { value: "jm_workPlan", name: "年度工作计划" },
-      { value: "jm_launchPlan", name: "年度工作开展计划" },
-    ],
-    conclusionJM: [
-      { value: "jm_monthConclusion", name: "月工作总结" },
-      // { value: "jm_halfConclusion", name: "上半年的工作总结及下半年的工作计划" },
-      // { value: "jm_yearConclusion", name: "年度工作总结及下年度工作计划" },
-    ],
-  }
+
   const path = window.location.hash.split('/').reverse()[0]
   let columns: any = [
     {
@@ -129,8 +120,21 @@ export default observer(function NurseHandBook_jmfy() {
   })
   const [total, setTotal]: any = useState(0)
   const findManualTypeName = (manualType:any) => {
-    let obj = manualTypeArr[path].find((item:any) => item.value == manualType)
-    return obj.name
+    let obj:any = typeList.find((item:any) => {
+      return item.code == manualType
+    })
+    if(obj){
+      return obj.name 
+    }
+  }
+  const getTypeList = () => {
+    setAddNewLoading(true)
+    nurseHandBookService
+      .getChildCodeList(path)
+      .then((res) => {
+        setTypeList(res.data)
+        setAddNewLoading(false)
+      })
   }
   const initData = () => {
     service.commonApiService
@@ -169,8 +173,8 @@ export default observer(function NurseHandBook_jmfy() {
           defaultValue={manualTypeAddNew}
           style={{ width: 280 }}
           onChange={(val: any) => manualTypeAddNew = val}>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </div>,
       onOk: () => {
@@ -255,11 +259,10 @@ export default observer(function NurseHandBook_jmfy() {
     let startTime = weekDate[0] ? moment(weekDate[0]).format('YYYY-MM-DD') : ''
     let endTime = weekDate[1] ? moment(weekDate[1]).format('YYYY-MM-DD') : ''
     nurseHandBookService.export(path, {
-      ...pageOptions,
-      deptCode: deptSelect,
       keyWord: searchText,
       startTime,
       endTime,
+      hostName: appStore.HOSPITAL_Name
     })
       .then(res => {
         setPageLoading(false)
@@ -278,6 +281,7 @@ export default observer(function NurseHandBook_jmfy() {
   ])
   useEffect(() => {
     initData()
+    getTypeList()
   }, [])
   return (
     <Wrapper>
@@ -315,7 +319,7 @@ export default observer(function NurseHandBook_jmfy() {
         </Button>
         <Button onClick={handleExport}>导出</Button>
         {/* <Button onClick={handleExport}>打印</Button> */}
-        <Button type='primary' onClick={handleAddNew}>新建</Button>
+        <Button type='primary' onClick={handleAddNew} loading={addNewLoading}>新建</Button>
       </PageHeader>
       <PageHeader>
         <Place />
@@ -337,8 +341,8 @@ export default observer(function NurseHandBook_jmfy() {
           style={{ width: 220 , marginRight: '235px'}}
           onChange={(val: any) => setManualType(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {manualTypeArr[path].map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.value}>{item.name}</Select.Option>)}
+          {typeList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
       </PageHeader>
       <BaseTable
