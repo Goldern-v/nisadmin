@@ -7,90 +7,85 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '资质管理（院内）',
-  type: 'nurseWHOutStudy',
+  type: 'nurseWHQualificationOut',
   detailPath: 'onEducation',
   filterList: [
     {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
       label: '工号或姓名',
       type: 'input',
-      name: 'studyMajor'
+      name: 'empNo',
+      limit: 25
     },
     {
       label: '证书名称',
-      type: 'select',
-      name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      type: 'multiplesSelect',
+      name: 'certificateName',
+      dataSource: statisticsViewModal.getDict('证书名称')
     },
     {
       label: '级别',
-      type: 'select',
-      name: 'unitLocal',
-      dataSource: statisticsViewModal.getDict('进修单位')
+      type: 'multiplesSelect',
+      name: 'grade',
+      dataSource: statisticsViewModal.getDict('级别')
     },
     {
       label: '发证单位',
       type: 'input',
-      name: 'unit'
+      name: 'issueUnit'
     },
     {
       label: '发证时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
-      nameList: ['startDateStart', 'startDateEnd']
+      nameList: ['issueDateBeginIndex', 'issueDateEndIndex']
     },
     {
       label: '证书编号',
       type: 'input',
-      name: 'unit'
+      name: 'certificateNo'
     }
   ],
   tableList: [
     {
-      title: '进修专业',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
+      title: '证书名称',
+      dataIndex: 'certificateName',
+      key: 'certificateName',
       width: 200,
       align: 'center'
     },
     {
-      title: '进修单位',
-      dataIndex: 'unit',
-      key: 'unit',
+      title: '级别',
+      dataIndex: 'grade',
+      key: 'grade',
       width: 210,
       align: 'center'
     },
     {
-      title: '进修单位所属地',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      title: '发证单位',
+      dataIndex: 'issueUnit',
+      key: 'issueUnit',
       width: 110,
       align: 'center'
     },
     {
-      title: '进修开始时间',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      title: '发证时间',
+      dataIndex: 'issueDate',
+      key: 'issueDate',
       width: 100,
       align: 'center'
     },
     {
-      title: '进修结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      title: '证书编号',
+      dataIndex: 'certificateNo',
+      key: 'certificateNo',
       width: 100,
-      align: 'center'
-    },
-    {
-      title: '进修时长(天)',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
-      width: 80,
       align: 'center'
     },
     {

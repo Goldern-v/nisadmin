@@ -27,7 +27,7 @@ export const postScoreCell = (id: any) => {
     return total;
   }, 0);
 
-  return Number(total).toFixed(1)
+  return Number(total).toFixed(2)
 }
 
 const Wrapper = styled.div``;

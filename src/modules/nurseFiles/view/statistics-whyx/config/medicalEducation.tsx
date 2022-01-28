@@ -7,102 +7,161 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '医学学历教育',
-  type: 'nurseWHMedicalEducation',
+  type: 'nurseWHRegistrationWork',
   detailPath: 'educationalExperience',
   filterList: [
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '毕业学校',
+      label: '工号或姓名',
       type: 'input',
-      name: 'graduationSchool'
+      name: 'empNo'
     },
     {
-      label: '就读专业',
+      label: '查房',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'checkOutScopeBegin',
+      name1: 'checkOutScopeEnd',
+    },
+    {
+      label: '夜班数',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'nightShiftScopeBegin',
+      name1: 'nightShiftEndScopeEnd',
+    },
+    {
+      label: '护理会诊',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'nursingConsultationScopeBegin',
+      name1: 'nursingConsultationScopeEnd',
+    },
+    {
+      label: '病例讨论',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'caseDiscussionScopeBegin',
+      name1: 'caseDiscussionScopeEnd',
+    },
+    {
+      label: '个案',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'individualCaseScopeBegin',
+      name1: 'individualCaseScopeEnd',
+    },
+    {
+      label: '小讲课',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'lectureScopeBegin',
+      name1: 'lectureScopeEnd',
+    },
+    {
+      label: '带教',
+      type: 'numberUntilSelect',
+      numberUntilSelect: true,
+      numberUntilInput: true,
+      unit: '小时',
+      name: 'teachingScopeBegin',
+      name1: 'teachingScopeEnd',
+    },
+    {
+      label: '证明人',
       type: 'input',
-      name: 'readProfessional'
+      name: 'witness'
     },
     {
-      label: '学历',
-      type: 'select',
-      name: 'education',
-      dataSource: statisticsViewModal.getDict('学历')
+      label: '年度',
+      type: 'yearRangePicker',
+      name: 'yearRangePicker1',
+      nameList: ['yearStartDate', 'yearEndDate']
     },
-    {
-      label: '学位',
-      type: 'select',
-      name: 'degree',
-      dataSource: statisticsViewModal.getDict('学位')
-    },
-    {
-      label: '开始时间',
-      type: 'dateRangePicker',
-      name: 'dateRangePicker1',
-      nameList: ['startDateStart', 'startDateEnd']
-    },
-    {
-      label: '结束时间',
-      type: 'dateRangePicker',
-      name: 'dateRangePicker2',
-      nameList: ['endDateStart', 'endDateEnd']
-    }
   ],
   tableList: [
     {
-      title: '就读时间',
-      dataIndex: 'readTime',
-      key: '2',
-      width: 120,
+      title: "年度",
+      dataIndex: "year",
+      width: 100,
+      align: "center"
+    },
+    {
+      title: "夜班",
+      dataIndex: "nightShift",
+      width: 100,
+      align: "center"
+    },
+    {
+      title: "查房",
+      dataIndex: "checkOut",
+      width: 150,
+      align: "center"
+    },
+    {
+      title: "护理会诊",
+      dataIndex: "nursingConsultation",
+      width: 150,
+      align: "center"
+    },
+
+    {
+      title: '病例讨论',
+      dataIndex: 'caseDiscussion',
+      width: 150,
       align: 'center'
     },
     {
-      title: '毕业时间',
-      dataIndex: 'graduationTime',
-      key: '3',
-      width: 120,
+      title: '个案',
+      dataIndex: 'individualCase',
+      width: 150,
       align: 'center'
     },
     {
-      title: '毕业学校',
-      dataIndex: 'graduationSchool',
-      key: '4',
-      width: 140,
+      title: '小讲课',
+      dataIndex: 'lecture',
+      width: 150,
       align: 'center'
     },
     {
-      title: '专业',
-      dataIndex: 'readProfessional',
-      key: '5',
-      width: 120,
+      title: '带教',
+      dataIndex: 'teaching',
+      width: 150,
       align: 'center'
     },
     {
-      title: '学历',
-      dataIndex: 'education',
-      key: '6',
+      title: '证明人',
+      dataIndex: 'witness',
       width: 100,
       align: 'center'
     },
-    {
-      title: '学位',
-      dataIndex: 'degree',
-      key: 'degree',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '附件',
-      dataIndex: 'fj',
-      key: '7',
-      width: 100,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-      }
-    }
+    // {
+    //   title: '附件',
+    //   dataIndex: 'fj',
+    //   key: '7',
+    //   width: 100,
+    //   align: 'center',
+    //   render: (text: any, row: any, index: any) => {
+    //     return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+    //   }
+    // }
   ]
 }

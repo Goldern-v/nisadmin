@@ -13,7 +13,9 @@ export default class StatisticsService extends BaseApiService {
 
   /** 统计查询 */
   public getTableData(type: string, obj: any) {
-    return this.post(`/${type}/count`, obj)
+    if (type === 'nurseWHOutStudy' || type === 'nurseWHSpecializNurse') return this.post(`/${type}/yaXincount`, obj)
+    else if (type === 'auditeNurseListWH') return this.post(`/${type}/yaXinGetByFormCodePC`, obj)
+    else return this.post(`/${type}/count`, obj)
   }
   /** 导出 */
   public exportExcel(type: string, obj: any, onDownloadProgress: (ProgressEvent: any) => void) {

@@ -26,7 +26,7 @@ export default function YearRangePicker(props: Props) {
       placeholder={['开始年份', '结束年份']}
       format='YYYY'
       onOpenChange={(status: boolean) => {
-        console.log(status, 'statusstatus')
+        // console.log(status, 'statusstatus')
         if (status) {
           setIsOpen(true)
         } else {
@@ -34,8 +34,8 @@ export default function YearRangePicker(props: Props) {
         }
       }}
       onPanelChange={(v: any, mode: any) => {
-        console.log(v, 'vvv')
-        console.log(mode, 'mode')
+        // console.log(v, 'vvv')
+        // console.log(mode, 'mode')
         setTime(v)
         // if (mode[0] && mode[1]) {
         setIsOpen(false)

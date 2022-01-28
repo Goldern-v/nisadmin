@@ -14,26 +14,33 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
       label: '原编制名称',
-      type: 'select',
+      type: 'input',
       name: 'workConversionOld',
-      dataSource: statisticsViewModal.getDict('工作编制')
+      // dataSource: statisticsViewModal.getDict('工作编制')
     },
     {
       label: '现编制名称',
-      type: 'select',
+      type: 'input',
       name: 'workConversionNew',
-      dataSource: statisticsViewModal.getDict('工作编制')
+      // dataSource: statisticsViewModal.getDict('工作编制')
     },
     {
       label: '现编制开始时间',
       type: 'dateRangePicker',
       name: 'startDate',
       nameList: ['startDateStart', 'startDateEnd']
-    }
+    },
+    {
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
+    },
   ],
   tableList: [
     {

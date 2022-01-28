@@ -7,11 +7,13 @@ import EditButton from '../common/EditButton'
 import Table from './Table'
 import { Report } from '../../types'
 import moment from 'moment'
+import { addNum } from "src/utils/number/algorithm"
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
   modalTitle?: string | undefined
 }
+
 
 export default observer(function 本月总扣分模块(props: Props) {
   let { sectionId, sectionTitle } = props
@@ -20,8 +22,11 @@ export default observer(function 本月总扣分模块(props: Props) {
   let list = data ? data.list || [] : []
   let totalSorce = 0
   for (let i = 0; i < list.length; i++) {
-    totalSorce += list[i].deductScore || 0
+    //totalSorce += list[i].deductScore || 0
+    totalSorce = addNum(list[i].deductScore || 0,totalSorce)
   }
+
+
 
   useEffect(() => {})
 

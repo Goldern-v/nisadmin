@@ -9,16 +9,20 @@ let list: any= ['全部']
 for (let i = 0; i < 100; i++) {
   list.push(i)
 }
-
+// 执业证书有效期
+let dateList: any= ['全部']
+for (let i = 0; i < 12; i++) {
+  dateList.push(i)
+}
 export const pageObj: PageObj = {
   title: '基本信息',
-  type: 'nurseWHArticle',
+  type: 'auditeNurseListWH',
   detailPath: '',
   filterList: [
     {
       label: '姓名或工号',
       type: 'input',
-      name: 'keyWord'
+      name: 'empNo'
     },
     {
       label: '科室',
@@ -38,56 +42,56 @@ export const pageObj: PageObj = {
     },
     {
       label: '政治面貌',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'politicsLook',
+      dataSource: statisticsViewModal.getDict('政治面貌')
     },
     {
       label: '最高学历',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'highestEducation',
+      dataSource: statisticsViewModal.getDict('最高学历类型')
     },
     {
       label: '职务',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'job',
+      dataSource: statisticsViewModal.getDict('职务')
     },
     {
-      label: '年龄',
+      label: '来院工作时间',
       type: 'numberUntilSelect',
       numberUntilSelect: true,
       dataSource: list,
       unit: '年',
-      name: 'ageStart',
-      name1: 'ageEnd',
+      name: 'goHospitalWorkStartYear',
+      name1: 'goHospitalWorkEndYear',
     },
     {
       label: '院内工作区域',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'workAddress',
+      dataSource: [{name: '病例', code: '病例'}, {name: '门诊', code: '门诊'}, {name: '其他', code: '其他'}]
     },
     {
       label: '最高职称',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'newTitle',
+      dataSource: statisticsViewModal.getDict('最高职称')
     },
     {
       label: '层级护理',
-      type: 'select',
-      name: 'politics',
-      dataSource: statisticsViewModal.getDict('文章类别')
+      type: 'multiplesSelect',
+      name: 'nurseHierarchy',
+      dataSource: statisticsViewModal.getDict('层级')
     },
     {
       label: '执业证书有效期',
       type: 'numberUntilSelect',
-      dataSource: list,
+      dataSource: dateList,
       unit: '月',
-      name: 'ageStart',
-      name1: 'ageEnd',
+      name: 'zyzsEffectiveUpStartDate',
+      name1: 'zyzsEffectiveUpEndDate',
       numberUntilSelect: true,
     },
     {
@@ -96,93 +100,266 @@ export const pageObj: PageObj = {
       dataSource: list,
       unit: '年',
       numberUntilSelect: true,
-      name: 'ageStart',
-      name1: 'ageEnd',
+      name: 'goWorkTimeStartIndex',
+      name1: 'goWorkTimeEndIndex',
     }
   ],
   tableList: [
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
-      width: 120,
+      title: '民族',
+      dataIndex: 'nation',
+      key: 'nation',
+      width: 100,
       align: 'center'
     },
     {
-      title: '杂志名称',
-      dataIndex: 'magazineName',
-      key: 'magazineName',
+      title: '籍贯',
+      dataIndex: 'nativePlace',
+      key: 'nativePlace',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '身份证号',
+      dataIndex: 'cardNumber',
+      key: 'cardNumber',
       width: 200,
       align: 'center'
     },
     {
-      title: '文章名称',
-      dataIndex: 'articleName',
-      key: 'articleName',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '作者',
-      dataIndex: 'articleAuthor',
-      key: 'articleAuthor',
+      title: '政治面貌',
+      dataIndex: 'politicsLook',
+      key: 'politicsLook',
       width: 120,
       align: 'center'
     },
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
+      title: '出生年月',
+      dataIndex: 'birthday',
+      key: 'birthday',
       width: 210,
       align: 'center'
     },
     {
-      title: '卷号',
-      dataIndex: 'volumeNumber',
-      key: 'volumeNumber',
+      title: '婚姻情况',
+      dataIndex: 'maritalStatus',
+      key: 'maritalStatus',
       width: 200,
       align: 'center'
     },
     {
-      title: '起止页码',
-      dataIndex: 'pageNumber',
-      key: 'pageNumber',
+      title: '生育情况',
+      dataIndex: 'fertility',
+      key: 'fertility',
       width: 90,
       align: 'center'
     },
     {
-      title: '文章类别',
-      dataIndex: 'articleType',
-      key: 'articleType',
+      title: '手机号',
+      dataIndex: 'phone',
+      key: 'phone',
       width: 90,
       align: 'center'
     },
     {
-      title: '论文收录网站',
-      dataIndex: 'influencingFactors',
-      key: 'influencingFactors',
+      title: '现住址',
+      dataIndex: 'address',
+      key: 'address',
       width: 120,
       align: 'center'
     },
     {
-      title: '文章扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
-      width: 80,
+      title: '参加工作时间',
+      dataIndex: 'goWorkTime',
+      key: 'goWorkTime',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '最近入职时间',
+      dataIndex: 'hireDate',
+      key: 'hireDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '来院工作时间',
+      dataIndex: 'goHospitalWorkDate',
+      key: 'goHospitalWorkDate',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '护士执业证书编号',
+      dataIndex: 'zyzsNumber',
+      key: 'zyzsNumber',
+      width: 120,
+      align: 'center'
+    },
+
+    {
+      title: '取得护士执业证书时间',
+      dataIndex: 'zyzsDate',
+      key: 'zyzsDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '本院注册时间',
+      dataIndex: 'registerDate',
+      key: 'registerDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '护士执业证书有效期',
+      dataIndex: 'zyzsEffectiveUpDate',
+      key: 'zyzsEffectiveUpDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '取得执业证书并从事护理岗位时间',
+      dataIndex: 'zyzsNursingPostDate',
+      key: 'zyzsNursingPostDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '初始学历',
+      dataIndex: 'initialEducation',
+      key: 'initialEducation',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '最高学历',
+      dataIndex: 'highestEducation',
+      key: 'highestEducation',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '取得最高学历时间',
+      dataIndex: 'highestEducationDate',
+      key: 'highestEducationDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '最高学位',
+      dataIndex: 'highestEducationDegree',
+      key: 'highestEducationDegree',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '最高职称',
+      dataIndex: 'newTitle',
+      key: 'newTitle', 
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '评职日期',
+      dataIndex: 'employNewTiTleDate',
+      key: 'employNewTiTleDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '现职务任职起始时间',
+      dataIndex: 'jobStartDate',
+      key: 'jobStartDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '护理层级起始时间',
+      dataIndex: 'nurseHierarchyDate',
+      key: 'nurseHierarchyDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '院内工作区域',
+      dataIndex: 'workAddress',
+      key: 'workAddress',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '工作护理单元',
+      dataIndex: 'workDeptName',
+      key: 'workDeptName',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '鞋码大小',
+      dataIndex: 'shoeSize',
+      key: 'shoeSize',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '工作服码数',
+      dataIndex: 'workclothessize',
+      key: 'workclothessize',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '护士执业证书',
+      dataIndex: '护士执业证书',
+      key: '护士执业证书',
+      width: 120,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.zyzsUrl ? <Zimage text='查看' list={row.zyzsUrl.split(',')} /> : ''}</DoCon>
       }
     },
     {
-      title: '网络下载件',
-      dataIndex: '网络下载件',
-      key: '网络下载件',
-      width: 80,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageTwo.split(',')} /> : ''}</DoCon>
-      }
+      title: '部门类型',
+      dataIndex: 'deptType',
+      key: 'deptType',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '人员类型',
+      dataIndex: 'empType',
+      key: 'empType',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '职工类型',
+      dataIndex: 'workType',
+      key: 'workType',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '是否已转正',
+      dataIndex: 'formalEmp',
+      key: 'formalEmp',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '合同类型',
+      dataIndex: 'contractType',
+      key: 'contractType',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '合同到期时间',
+      dataIndex: 'contractExDate',
+      key: 'contractExDate',
+      width: 120,
+      align: 'center'
     }
   ]
 }

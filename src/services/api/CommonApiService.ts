@@ -303,4 +303,15 @@ export default class CommonApiService extends BaseApiService {
   public getBigDeptList() {
     return  this.get('/dept/bigDeptList')
   }
+  // 武汉亚心 获取授权类别
+  public getCodeList() {
+    return  this.get('/nurseWHQualificationIn/getCodeList', {
+      params: { moduleCode: 'grant_type'}
+    })
+  }
+
+   // 武汉亚心 获取授权名称
+   public getChildCodeList(code: any) {
+    return  this.get('/nurseWHQualificationIn/getChildCodeList', {params: { itemCode: code }})
+  }
 }

@@ -252,8 +252,8 @@ export default function EditPersonWinningModal(props: Props) {
             <Form.Field label={`创新类别`} name='innovationType'>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
-                {['服务创新', '技术创新', '管理创新'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
+                {nurseFileDetailViewModal.getDict('创新类别').map((item) =>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
               </Select>
             </Form.Field>
@@ -262,8 +262,8 @@ export default function EditPersonWinningModal(props: Props) {
             <Form.Field label={`创新级别`} name='innovationGrade'>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
-                {['一级', '二级', '三级', '改良'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
+                {nurseFileDetailViewModal.getDict('创新级别').map((item) =>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
               </Select>
             </Form.Field>
@@ -272,8 +272,8 @@ export default function EditPersonWinningModal(props: Props) {
             <Form.Field label={`推广区域`} name='promotionArea'>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
-                {['科室推广', '区域推广', '全院推广'].map((item) =>
-                  <Option key={item} value={item}>{item}</Option>
+                {nurseFileDetailViewModal.getDict('推广区域').map((item) =>
+                  <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
               </Select>
             </Form.Field>

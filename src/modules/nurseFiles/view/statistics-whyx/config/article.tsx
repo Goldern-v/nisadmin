@@ -14,13 +14,14 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
-      label: '发表年份',
-      type: 'yearRangePicker',
-      name: 'yearRangePicker',
-      nameList: ['publicYearStartDate', 'publicYearEndDate']
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+      limit: 25
     },
     {
       label: '杂志名称',
@@ -33,25 +34,35 @@ export const pageObj: PageObj = {
       name: 'articleName'
     },
     {
-      label: '期刊号',
+      label: '作者',
       type: 'input',
-      name: 'periodicalNumber'
+      name: 'articleAuthor'
+    },
+    {
+      label: '期刊年月',
+      type: 'yearMonthRangePicker',
+      name: 'yearMonthRangePicker',
+      nameList: ['journalStartIndex', 'journalEndIndex']
+    },
+    {
+      label: '卷期号',
+      type: 'input',
+      name: 'volumeNumber'
     },
     {
       label: '文章类别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'articleType',
       dataSource: statisticsViewModal.getDict('文章类别')
-    }
+    },
+    {
+      label: '论文收录网站',
+      type: 'multiplesSelect',
+      name: 'influencingFactors',
+      dataSource: statisticsViewModal.getDict('论文收录网站')
+    },
   ],
   tableList: [
-    {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
-      width: 120,
-      align: 'center'
-    },
     {
       title: '杂志名称',
       dataIndex: 'magazineName',
@@ -74,14 +85,14 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
-      width: 210,
+      title: '期刊年月',
+      dataIndex: 'journal',
+      key: 'journal',
+      width: 120,
       align: 'center'
     },
     {
-      title: '卷号',
+      title: '卷期号',
       dataIndex: 'volumeNumber',
       key: 'volumeNumber',
       width: 200,
@@ -109,13 +120,43 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '文章扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
+      title: '封面扫描件',
+      dataIndex: '封面扫描件',
+      key: '封面扫描件',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '目录扫描件',
+      dataIndex: '目录扫描件',
+      key: '目录扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageThree.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '正文扫描件',
+      dataIndex: '正文扫描件',
+      key: '正文扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageFour.split(',')} /> : ''}</DoCon>
+      }
+    },
+    {
+      title: '封底扫描件',
+      dataIndex: '封底扫描件',
+      key: '封底扫描件',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageFive.split(',')} /> : ''}</DoCon>
       }
     },
     {

@@ -9,6 +9,7 @@ export type filterType =
   | 'yearPicker'
   | 'yearMonthRangePicker'
   | 'numberUntilSelect'
+  | 'multiplesSelecteSpecially'
 export interface filterItem {
   label: string
   type: filterType
@@ -19,6 +20,10 @@ export interface filterItem {
   unit?: string | undefined,
   name1?: string | undefined,
   numberUntilSelect?: boolean,
+  numberUntilInput? : boolean,
+  placeholder?: string, 
+  limit?: number,
+  step?: number | string
 }
 
 export interface PageObj {

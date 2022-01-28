@@ -13,23 +13,34 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '课题名称',
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo'
+    },
+    {
+      label: '参与课题名称',
       type: 'input',
       name: 'goName'
     },
     {
-      label: '主持人姓名',
+      label: '课题主持人姓名',
       type: 'input',
       name: 'hostName'
     },
     {
-      label: '主持人工号',
+      label: '课题主持人工号',
       type: 'input',
       name: 'hostNo'
+    },
+    {
+      label: '参与排名',
+      type: 'input',
+      name: 'goRank'
     },
     {
       label: '课题来源',
@@ -38,11 +49,31 @@ export const pageObj: PageObj = {
     },
     {
       label: '课题级别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseLevel',
       dataSource: statisticsViewModal.getDict('级别')
     },
-
+    {
+      label: '承担单位',
+      type: 'input',
+      name: 'unit'
+    },
+    {
+      label: '课题批文号',
+      type: 'input',
+      name: 'approvalNumber'
+    },
+    {
+      label: '项目编号',
+      type: 'input',
+      name: 'registerNumber'
+    },
+    {
+      label: '时间',
+      type: 'dateRangePicker',
+      name: 'dateRangePicker',
+      nameList: ['completionDateBeginIndex', 'completionDateEndIndex']
+    },
     {
       label: '开始时间',
       type: 'dateRangePicker',
@@ -54,12 +85,6 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
-    },
-
-    {
-      label: '参与排名',
-      type: 'input',
-      name: 'goRank'
     },
     {
       label: '完成情况',

@@ -13,15 +13,20 @@ export const pageObj: PageObj = {
     {
       label: '科室',
       type: 'multiplesSelect',
+      multiple: true,
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '科研课题',
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo'
+    },
+    {
+      label: '主持科研课题',
       type: 'input',
       name: 'goName'
     },
-
     {
       label: '课题来源',
       type: 'input',
@@ -29,9 +34,30 @@ export const pageObj: PageObj = {
     },
     {
       label: '课题级别',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseLevel',
       dataSource: statisticsViewModal.getDict('级别')
+    },
+    {
+      label: '课题类别',
+      type: 'multiplesSelect',
+      name: 'subjectType',
+      dataSource: statisticsViewModal.getDict('课题类别')
+    },
+    {
+      label: '承担单位',
+      type: 'input',
+      name: 'unit'
+    },
+    {
+      label: '课题批文号',
+      type: 'input',
+      name: 'approvalNumber'
+    },
+    {
+      label: '项目编号',
+      type: 'input',
+      name: 'registerNumber'
     },
     {
       label: '开始时间',
@@ -45,13 +71,18 @@ export const pageObj: PageObj = {
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
     },
-
     {
       label: '完成情况',
-      type: 'select',
+      type: 'multiplesSelect',
       name: 'courseCompletion',
       dataSource: statisticsViewModal.getDict('完成情况')
-    }
+    },
+    {
+      label: '时间',
+      type: 'dateRangePicker',
+      name: 'dateRangePicker',
+      nameList: ['completionDateBeginIndex', 'completionDateEndIndex']
+    },
   ],
   tableList: [
     {
@@ -72,6 +103,13 @@ export const pageObj: PageObj = {
       title: '课题级别',
       dataIndex: 'courseLevel',
       key: 'courseLevel',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '课题类别',
+      dataIndex: 'subjectType',
+      key: 'subjectType',
       width: 90,
       align: 'center'
     },

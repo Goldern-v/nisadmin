@@ -14,15 +14,21 @@ export const pageObj: PageObj = {
       label: '科室',
       type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
-      name: 'deptCode'
+      name: 'deptCode',
+      multiple: true
     },
     {
-      label: '排名',
+      label: '工号或姓名',
+      type: 'input',
+      name: 'empNo',
+    },
+    {
+      label: '主持/参与排名',
       type: 'input',
       name: 'resultType'
     },
     {
-      label: '成果名称',
+      label: '项目名称',
       type: 'input',
       name: 'resultName'
     },
@@ -38,18 +44,17 @@ export const pageObj: PageObj = {
       name: 'dateRangePicker1',
       nameList: ['grantStartDate', 'grantEndDate']
     },
-
+    {
+      label: '奖励名称/等级',
+      type: 'input',
+      name: 'winningName'
+    },
     {
       label: '奖励级别',
       type: 'select',
       name: 'winningLevel',
       dataSource: statisticsViewModal.getDict('级别')
     },
-    {
-      label: '奖励名/等级',
-      type: 'input',
-      name: 'winningName'
-    }
   ],
   tableList: [
     {
