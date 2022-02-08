@@ -6,7 +6,7 @@ import { authStore } from 'src/stores'
 import { timePicker } from "../../function/click";
 let user: any = authStore.user || {};
 
-let attendanceType = ['全勤','正常休假','病假','事假','产假','超假旷工']
+let attendanceType = ['全勤','正常休假','病假','事假','产假','超假旷工','公休假','探亲假','放射假']
 const tHead = {
   top: [
     { name: "姓名", colspan: "1", rowspan: "1", style:{ width: 80 } },

@@ -64,7 +64,12 @@ export default observer(function QcItemGroup(props: Props) {
           item.remarkDeductScore = ''
           if (item.subItemList)
             item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+        } else if (val === '不适用') {
+          item.remarkDeductScore = ''
+          if (item.subItemList)
+            item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
         }
+
       }
 
       qcModel.setItemListErrObj(newItemGroup.itemList[i].qcItemCode, false)
@@ -116,6 +121,15 @@ export default observer(function QcItemGroup(props: Props) {
               size="small"
               onClick={() => setAllQcItemValue('否')}>
               全否
+            </Button>
+          )}
+          {['lcey'].includes(appStore.HOSPITAL_ID) && (
+            <Button
+              style={{ marginLeft: '10px', backgroundColor:'#FFA500', color: '#FFFFFF' }}
+              type="default"
+              size="small"
+              onClick={() => setAllQcItemValue('不适用')}>
+              不适用
             </Button>
           )}
         </div>
