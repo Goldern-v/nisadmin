@@ -254,12 +254,12 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`民族`} name="nation">
-              <Input disabled />
+              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`籍贯`} name="nativePlace">
-              <AutoComplete dataSource={nativePlaceList} disabled />
+              <AutoComplete dataSource={nativePlaceList} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -388,7 +388,8 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`现职务任职起始时间`} name="jobStartDate">
-              <Input disabled />
+              {/* <Input disabled /> */}
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>

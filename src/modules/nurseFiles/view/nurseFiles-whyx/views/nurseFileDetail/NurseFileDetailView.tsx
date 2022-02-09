@@ -53,11 +53,11 @@ const ROUTE_LIST = [
     name: '基本信息'
   },
   // 新
-  {
-    type: 'statePersonnel',
-    component: statePersonnel,
-    name: '人员状态'
-  },
+  // {
+  //   type: 'statePersonnel',
+  //   component: statePersonnel,
+  //   name: '人员状态'
+  // },
   {
     /** 吴敏处理 */
     type: 'specializNurse',
