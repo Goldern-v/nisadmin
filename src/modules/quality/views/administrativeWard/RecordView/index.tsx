@@ -23,6 +23,7 @@ export default observer((props: Props) => {
   const [form, setForm]: any = useState({})
   const _user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [createTime, setCreateTime]: any= useState({})
+  const [viewOnly, setViewOnly] = useState<boolean>(false);
   
   function setFormItem(item: object) {
     setForm({ ...form, ...item });
@@ -78,6 +79,11 @@ export default observer((props: Props) => {
     })
   }, [])
 
+  useEffect(()=>{
+   const location = appStore?.history?.location;
+   (location.pathname.indexOf("/viewOnly")!==-1) && (setViewOnly(true))
+  },[appStore?.history?.location])
+
 
   return (
     <Wrapper>
@@ -96,12 +102,12 @@ export default observer((props: Props) => {
           <div style={{ fontWeight: "bold" }}>{master.deptName}护理行政查房记录表</div>
         </div>
         <div className='right-bottom'>
-          <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>
+          <Button disabled={viewOnly} type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <div className='table-main'>
+        <div className={viewOnly ? 'table-main viewOnly' : 'table-main' }>
           <div className='table-wrapper'>
             <div className='table-title'>
               护理行政查房记录表
@@ -314,6 +320,9 @@ const MainWrapper = styled.div`
    }
    .table-main {
     height: 100%
+   }
+   .viewOnly{
+    pointer-events:none;
    }
    .table-wrapper::-webkit-scrollbar-track-piece,
    .audit-wrapper::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
