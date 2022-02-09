@@ -29,8 +29,8 @@ let titleEC: any = {
   NurseWHQualificationOut: '院外工作资质', // 同院内资质一样的问题
   nurseWHInnovationDept: '科室创新',
   NurseWHInnovationDept: '科室创新', // 同院内资质一样的问题
-  NurseWHPersonStatus: '人员状态',
-  nurseWHPersonStatus: '人员状态'
+  // NurseWHPersonStatus: '人员状态',
+  // nurseWHPersonStatus: '人员状态'
 }
 
 let titleCE: any = reverseKeyValue(titleEC)

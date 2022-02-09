@@ -321,12 +321,12 @@ export default observer(function NurseFilesView(props: Props) {
           path: "/nurseFile/baseInfo",
           component: StatisticsViewWHYX
         },
-        // 新
-        {
-          title: "人员状态",
-          path: "/nurseFile/statePersonnel",
-          component: StatisticsViewWHYX
-        },
+        // // 新
+        // {
+        //   title: "人员状态",
+        //   path: "/nurseFile/statePersonnel",
+        //   component: StatisticsViewWHYX
+        // },
         {
           title: "专科护士",
           path: "/nurseFile/specializNurse",
