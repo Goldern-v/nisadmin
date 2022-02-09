@@ -5,12 +5,12 @@ import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
-let list: any= ['全部']
+let list: any= []
 for (let i = 0; i < 100; i++) {
   list.push(i)
 }
 // 执业证书有效期
-let dateList: any= ['全部']
+let dateList: any= []
 for (let i = 0; i < 12; i++) {
   dateList.push(i)
 }
