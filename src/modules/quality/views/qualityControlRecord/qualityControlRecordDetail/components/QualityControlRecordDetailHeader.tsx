@@ -205,7 +205,10 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             {
               name: navTitle(master.qcLevel),
               link:
-                master.qcLevel == "3"
+
+                master.qcLevel == "护理部职能督导"
+                  ? "/qcFun"
+                  :master.qcLevel == "3"
                   ? "/qcThree"
                   : master.qcLevel == "2"
                   ? "/qcTwo"

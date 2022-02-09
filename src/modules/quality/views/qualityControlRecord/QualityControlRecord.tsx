@@ -81,6 +81,14 @@ export default observer(function QualityControlRecord() {
           setLoading(false);
         });
     } else {
+      let level = qualityControlRecordVM.level;
+      if (["whyx"].includes(appStore.HOSPITAL_ID)) {
+        const obj = {
+          4: "护理部职能督导",
+        };
+        obj[level] && (level = obj[level]);
+      }
+
       let sendData = {
         pageIndex: obj
           ? obj.current
@@ -92,7 +100,7 @@ export default observer(function QualityControlRecord() {
         qcGroupRole: qualityControlRecordVM.filterForm,
         type: qualityControlRecordVM.readWay,
         nodeCode: qualityControlRecordVM.filterState,
-        level: qualityControlRecordVM.level,
+        level,
         beginDate: qualityControlRecordVM.filterDate[0].format("YYYY-MM-DD"),
         endDate: qualityControlRecordVM.filterDate[1].format("YYYY-MM-DD"),
         qcCode: qualityControlRecordVM.qcCode || "",
