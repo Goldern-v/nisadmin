@@ -1,3 +1,4 @@
+import { message } from 'src/vendors/antd';
 import { action, observable, computed } from 'mobx'
 import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
 import service from 'src/services/api'
@@ -528,10 +529,31 @@ class QualityControlRecordEditModel {
 
     return params
   }
+  // 
+  private checkSaveGZSRM(params: any) {
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+      if (params.nodeAppointList && params.nodeAppointList.length > 0) {
+        let index = params.nodeAppointList.findIndex((v: any) => {
+
+          if (v.appointUserCode == 'QCR0003_FILTER_AUTH_DEPT' && v.userList.length === 0) {
+            return true
+          }
+          return false
+        })
+        if (index > -1) {
+          message.error('请填写指定质控组长')
+          this.loading = false
+          return false
+        }
+      }
+    }
+    return true
+  }
 
   @action public formCache(success?: Function) {
     this.loading = true
     let params = this.formatData({ sign: false })
+    if (!this.checkSaveGZSRM(params)) return
     let fn = appStore.hisMatch({
       map: {
         whyx: qualityControlRecordApi.formSaveYX,
@@ -566,7 +588,7 @@ class QualityControlRecordEditModel {
       empNo,
       password
     })
-
+    if (!this.checkSaveGZSRM(params)) return
     let fn = appStore.hisMatch({
       map: {
         whyx: qualityControlRecordApi.formSaveYX,

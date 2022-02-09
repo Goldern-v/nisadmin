@@ -89,7 +89,6 @@ export default class QualityControlRecordApi extends BaseApiService {
      if (obj[query.level]) {
        other.level = obj[query.level]
      }
-     console.log('test-other', other)
      return this.post(`/qcItem/template/findList`, { ...query, ...other })
   }
   /**获取质控表单模板详情 */
