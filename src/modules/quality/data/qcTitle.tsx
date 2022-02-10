@@ -35,12 +35,12 @@ export const qcFunTitle = appStore.hisMatch({
     whyx: {
       leftNavTitle: "护理部职能督导",
       listViewTitle: "护理部职能督导",
-      detailViewTitle: "护理部职能督导",
+      detailViewTitle: "质控记录",
     },
     other: {
       leftNavTitle: "护理部职能督导",
       listViewTitle: "护理部职能督导",
-      detailViewTitle: "护理部职能督导",
+      detailViewTitle: "质控记录",
     },
   },
 });
@@ -53,6 +53,8 @@ export const navTitle = (qcLevel: string) => {
       return "质控记录";
     case "3":
       return qcThreeTitle.detailViewTitle;
+    case "护理部职能督导":
+      return qcFunTitle.detailViewTitle;
     default:
       return "...";
   }

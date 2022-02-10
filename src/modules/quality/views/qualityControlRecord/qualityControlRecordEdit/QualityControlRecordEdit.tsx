@@ -275,6 +275,11 @@ export default observer(function Layout() {
       setOpenNotRadio(0)
       return
     };
+    // 测试
+    // if (search.qcCode == 'GSY_QCTP140') {
+    //   setOpenNotRadio(1)
+    //   return
+    // }
     qualityControlRecordApi
       .getFilterQcCodeList()
       .then((res) => {

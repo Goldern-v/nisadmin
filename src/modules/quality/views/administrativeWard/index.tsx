@@ -76,9 +76,9 @@ export default observer((props: Props) => {
       render: (text: any, row: any, c: any) => {
         return (
           <DoCon>
-            {/* <span onClick={() => handleView(row)}>
+            <span onClick={() => handleViewOnly(row)}>
               查看
-            </span> */}
+            </span>
             <span onClick={() => handleView(row)}>
               编辑
             </span>
@@ -160,6 +160,20 @@ export default observer((props: Props) => {
         message.warning('没有权限编辑')
       }
     }
+  }
+
+  //仅查看
+  const handleViewOnly = (row:any) =>{
+    const pathname = `/administrative/qcThree/recordView/viewOnly?id=${row.id}`;
+    appStore.history.push(pathname)
+    // const path = {
+    //   pathname:"/administrative/qcThree/recordView",
+    //   state:{
+    //     id:row.id,
+    //     viewOnly:1
+    //   }
+    // }
+    // appStore.history.push(path);
   }
 
   useEffect(() => {

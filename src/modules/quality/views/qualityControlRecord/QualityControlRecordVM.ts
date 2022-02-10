@@ -50,7 +50,6 @@ class QualityControlRecordVM {
       }
     })
     fn()
-    console.log('test-dict', dictChainNodeFn)
     await Promise.all([
       qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
         this.formSelectList = res.data
