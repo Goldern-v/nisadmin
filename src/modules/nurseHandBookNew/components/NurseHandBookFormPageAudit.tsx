@@ -314,8 +314,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         appStore.history.goBack()
         setSubmitLoading(false)
       })
-      .catch((err)=>setSaveLoading(false))
-
+      .catch((err)=>setSubmitLoading(false))
   }
   const handleAudit = () => {
     groupsAduitModalJM.show({})
