@@ -149,17 +149,18 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     })
     return newList
   }
+  
   const handleSave = () => {
     setSaveLoading(true)
     let tableTitleList = tableTitle.split("")
     let indexList:any = []
     let year = ""
-    tableTitleList.map((item:any,index:any)=>{
+    calculateList.includes(queryObj.manualType) && tableTitleList.map((item:any,index:any)=>{
       if(item == "年"){
         indexList.push(index)
       }
     })
-    indexList.map((item:any)=>{
+    calculateList.includes(queryObj.manualType) && indexList.map((item:any)=>{
       let reg = /(199|200|201|202|203|204)\d{1}/
       let num = /\d{5}/
       if(item>4){
@@ -173,7 +174,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         year = tableTitle.substring(item-4,item)
       }
     })
-    if(!year) {
+    if(calculateList.includes(queryObj.manualType) && !year) {
       message.error('标题年份格式错误！')
       setSaveLoading(false)
       return
@@ -227,6 +228,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         appStore.history.goBack()
         setSaveLoading(false)
       })
+      .catch((err)=>setSaveLoading(false))
   }
   const getTypeList = () => {
     api
@@ -240,12 +242,12 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     let tableTitleList = tableTitle.split("")
     let indexList:any = []
     let year = ""
-    tableTitleList.map((item:any,index:any)=>{
+    calculateList.includes(queryObj.manualType) && tableTitleList.map((item:any,index:any)=>{
       if(item == "年"){
         indexList.push(index)
       }
     })
-    indexList.map((item:any)=>{
+    calculateList.includes(queryObj.manualType) && indexList.map((item:any)=>{
       let reg = /(199|200|201|202|203|204)\d{1}/
       let num = /\d{5}/
       if(item>4){
@@ -259,7 +261,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         year = tableTitle.substring(item-4,item)
       }
     })
-    if(!year) {
+    if(calculateList.includes(queryObj.manualType) && !year) {
       message.error('标题年份格式错误！')
       setSaveLoading(false)
       return
@@ -312,6 +314,8 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         appStore.history.goBack()
         setSubmitLoading(false)
       })
+      .catch((err)=>setSaveLoading(false))
+
   }
   const handleAudit = () => {
     groupsAduitModalJM.show({})
