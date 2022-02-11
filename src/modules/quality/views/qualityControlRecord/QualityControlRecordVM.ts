@@ -1,3 +1,4 @@
+import { appStore } from 'src/stores';
 import { observable, computed, action, reaction } from 'mobx'
 import { qualityControlRecordApi, NurseQuery, judgePowerYXIn } from './api/QualityControlRecordApi'
 import { authStore } from 'src/stores'
@@ -37,11 +38,23 @@ class QualityControlRecordVM {
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.allData = {}
     this.qcCode = ''
+    let dictChainNodeFn: any = null
+    let fn = appStore.hisMatch({
+      map: {
+        whyx: () => {
+          dictChainNodeFn = qualityControlRecordApi.dictChainNodeYX.bind(qualityControlRecordApi)
+        },
+        other: () => {
+          dictChainNodeFn = qualityControlRecordApi.dictChainNode.bind(qualityControlRecordApi)
+        }
+      }
+    })
+    fn()
     await Promise.all([
       qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
         this.formSelectList = res.data
       }),
-      qualityControlRecordApi.dictChainNode().then((res: any) => {
+      dictChainNodeFn(this.level).then((res: any) => {
         this.stateSelectList = res.data
       }),
       qualityControlRecordApi.qcWardCodeList().then((res) => {

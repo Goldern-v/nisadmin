@@ -111,25 +111,25 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '人员状态':
-      {
-        globalModal.auditModal.show({
-          empNo: row?.empNo || row?.commiterNo,
-          id: row.id,
-          type: 'nurseWHPersonStatus',
-          getTableData: callBack,
-          title: '审核人员状态',
-          tableFormat: [
-            {
-              岗位状态: 'status',
-              状态原因: 'reason'
-            },
+    // case '人员状态':
+    //   {
+    //     globalModal.auditModal.show({
+    //       empNo: row?.empNo || row?.commiterNo,
+    //       id: row.id,
+    //       type: 'nurseWHPersonStatus',
+    //       getTableData: callBack,
+    //       title: '审核人员状态',
+    //       tableFormat: [
+    //         {
+    //           岗位状态: 'status',
+    //           状态原因: 'reason'
+    //         },
 
-          ],
-          allData: row
-        })
-      }
-      break
+    //       ],
+    //       allData: row
+    //     })
+    //   }
+    //   break
     case '文章':
       {
         globalModal.auditModal.show({

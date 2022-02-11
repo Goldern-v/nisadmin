@@ -37,6 +37,11 @@ export default function StatisticView() {
 
   const [tableData, setTableData] = useState([] as any[])
   const [hourMap, setHourMap] = useState({})
+  // 白班
+  const [morningMap, setMorningMap] = useState({})
+  // 夜班
+  const [nightMap, setNightMap] = useState({})
+
 
   const handleFilterObjChange = (newFilterObj: any) => {
     setFilterObj(newFilterObj)
@@ -79,7 +84,6 @@ export default function StatisticView() {
       let filterList = currentFilterObj[reqQuery.type].list
         .filter((item: any) => item.checked)
         .map((item: any) => item.name)
-      console.log(11)
 
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
@@ -88,9 +92,13 @@ export default function StatisticView() {
         .then(res => {
           setTableData(res.data.list || [])
           setHourMap(res.data.hourMap || {})
+          setMorningMap(res.data.morningMap || {})
+          setNightMap(res.data.nightMap || {})
         }).catch(() => { // 防止没有选的情况下 接口拦截 前端合计没有清零的问题
           setTableData([])
           setHourMap({})
+          setMorningMap({})
+          setNightMap({})
         })
     } else {
       Promise.all(filterTypes.map((type: string) => {
@@ -178,7 +186,7 @@ export default function StatisticView() {
           <StatisticMIdHeaderDepartment />
           {/* 对应表 */}
           <TableCon>
-            <TableFirst tableData={tableData} hourMap={hourMap} filterObj={filterObj} />
+            <TableFirst tableData={tableData} hourMap={hourMap} morningMap={morningMap} nightMap={nightMap}  filterObj={filterObj} />
           </TableCon>
         </LeftCon>
         <RigthCon>

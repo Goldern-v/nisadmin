@@ -24,8 +24,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 武汉 */
     case "wh":
       // return 'http://nurse.cr-health.com:34021' // 武汉正式
-      // return 'http://nurse.cr-health.com:34022' // 武汉测试
-      return "http://192.168.20.61:9091"; // 宏群本地
+      return 'http://nurse.cr-health.com:34022' // 武汉测试
+      // return "http://192.168.20.61:9091"; // 宏群本地
 
     /** 花都 */
     case "gzhd":

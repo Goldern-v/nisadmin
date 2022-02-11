@@ -83,7 +83,13 @@ export default class QualityControlRecordApi extends BaseApiService {
   }
   /**获取质控表单类型列表 */
   public formTemplateList(query: { level: number, templateName: string }) {
-    return this.post(`/qcItem/template/findList`, query)
+     // by 亚心
+     const obj = { 4: '护理部职能督导' }
+     let other: any = {}
+     if (obj[query.level]) {
+       other.level = obj[query.level]
+     }
+     return this.post(`/qcItem/template/findList`, { ...query, ...other })
   }
   /**获取质控表单模板详情 */
   public formTemplateDetail(qcCode: string | number) {
@@ -227,6 +233,10 @@ export default class QualityControlRecordApi extends BaseApiService {
   /**质控详情批量导出 by亚心 */
   public exportListYX(list: any[]) {
     return this.post(`/yxQcItem/instance/exportList`, { list }, { responseType: 'blob' })
+  }
+  /**质控获取状态 by亚心 */
+  public dictChainNodeYX(num: number) {
+    return this.get(`/qcItem/dict/chainNodeForYX/${num}`)
   }
 }
 
