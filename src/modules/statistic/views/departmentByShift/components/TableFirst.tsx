@@ -4,16 +4,20 @@ import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-
+import { appStore } from 'src/stores'
 export interface Props {
   tableData: any[],
   filterObj: any,
-  hourMap: {}
+  hourMap?: {},
+  morningMap?: {},
+  nightMap?: {}
 }
 
 export default function BedSituation(props: Props) {
-  const { tableData, filterObj, hourMap } = props
+  const { tableData, filterObj, hourMap,morningMap,nightMap } = props
   Object.assign(hourMap, {科室: '工时合计'})
+  Object.assign(morningMap, {科室: '白班合计'})
+  Object.assign(nightMap, {科室: '夜班合计'})
   const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
 
@@ -48,8 +52,8 @@ export default function BedSituation(props: Props) {
         }
       })
     })
-
-    visibleData.push(sumupRow, hourMap)
+    if(appStore.HOSPITAL_ID === 'lcey') visibleData.push(sumupRow, nightMap, morningMap, hourMap)
+    else visibleData.push(sumupRow, hourMap)
     return visibleData
   }
   // useEffect(() => {
