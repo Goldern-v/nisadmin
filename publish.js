@@ -63,6 +63,10 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9887') >= 0) {
     folderSrc = '/crdata/webProject/manage-shundelongjiang'
   }
+  //广西江滨
+  if (process.env.npm_lifecycle_event.indexOf('9889') >= 0) {
+    folderSrc = '/crdata/webProject/manage-guangxijiangbin'
+  }
   
 
   //护理管理文档
