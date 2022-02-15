@@ -47,6 +47,8 @@ import { ReactComponent as ZZHSDA } from "./images/ZZHSDA.svg";
 import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
 import { ReactComponent as CXTJ } from "./images/CXTJ.svg";
 import qs from "qs";
+// 广西江滨人员调动
+import StaffMovementEnquiry from "./view/StaffMovementEnquiry"
 
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps { }
@@ -288,6 +290,12 @@ export default observer(function NurseFilesView(props: Props) {
       title: "护理实习生花名册",
       path: "/nurseFile/traineeFiles",
       component: TraineeFiles,
+      icon: <TXHSCX />
+    },
+    appStore.HOSPITAL_ID === 'gxjb' && {
+      title: "人员调动查询",
+      path: "/nurseFile/staffMovementEnquiry",
+      component: StaffMovementEnquiry,
       icon: <TXHSCX />
     },
     {
