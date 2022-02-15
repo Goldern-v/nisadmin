@@ -79,6 +79,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "gxjb":
       return "http://58.59.133.37:9091"; // 正式
     // return "http://192.168.20.57:9091"; // 伟贤本地
+    // return "http://192.168.1.54:9889";  内网测试端口9889
     case "yczyy": //阳春
       return "http://192.168.1.54:9866"; // 聊城二院测试
     /** 佛山杏坛 */
