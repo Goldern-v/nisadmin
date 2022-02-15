@@ -25,13 +25,18 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
-const rules: Rules = {}
+const rules: Rules = {
+  startTime: (val) => !!val || '请填写时间',
+  endTime: (val) => !!val || '请填写时间',
+  unit: (val) => !!val || '请填写单位',
+  department: (val) => !!val || '请填写科室',
+}
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -117,7 +122,7 @@ export default function EditWorkHistoryModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={9}>
-              <Form.Field name='endTime'>
+              <Form.Field name='endTime' required>
                 <DatePicker />
               </Form.Field>
             </Col>
@@ -135,13 +140,13 @@ export default function EditWorkHistoryModal(props: Props) {
             *空则为至今
           </div>
           <Col span={24}>
-            <Form.Field label={`单位`} name='unit'>
+            <Form.Field label={`单位`} name='unit' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           {/* todo */}
           <Col span={24}>
-            <Form.Field label={`科室`} name='department'>
+            <Form.Field label={`科室`} name='department' required>
               {/* <Input maxLength={25}/> */}
               <Select
                 showSearch
@@ -151,10 +156,10 @@ export default function EditWorkHistoryModal(props: Props) {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {nurseFileDetailViewModal.getDict('全部科室').map(item=> 
+                {nurseFileDetailViewModal.getDict('全部科室').map(item =>
                   <Option value={item.name}>{item.name}</Option>
                 )}
-            </Select>
+              </Select>
             </Form.Field>
           </Col>
 

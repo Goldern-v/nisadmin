@@ -24,20 +24,31 @@ export interface Props extends ModalComponentProps {
   signShow?: string
   getTableData?: () => {}
 }
-const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
-}
+
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
+  let rules: Rules =
+  {
+    startTime: (val) => !!val || '请选择开始时间',
+    endTime: (val) => !!val || '请选择结束时间',
+    academicName: (val) => !!val || '请填写学术活动名称',
+    hostArea: (val) => !!val || '请选择举办地域',
+    hostUnit: (val) => !!val || '请填写举办单位',
+    hostAddress: (val) => !!val || '请填写举办地点',
+    qualification: (val) => !!val || '请填写以何种资格获得邀请',
+    urlImageOne: (val) => !!val || '请上传附件',
+  }
+  if (signShow !== '修改') {
+    rules = Object.assign(rules, {
+      allDeptAll: (val: any) => !!val || '请选择参与人员所属科室',
+      participants: (val: any) => !!val || '请填写参与成员',
+    })
+  }
   let refForm = React.createRef<Form>()
-  const [participantsList, setParticipantsList]: any= useState([])
-  const [storage, setStorage]: any= useState([])
+  const [participantsList, setParticipantsList]: any = useState([])
+  const [storage, setStorage]: any = useState([])
 
   const onFieldChange = (val: any) => {
     if (signShow === '添加') {
@@ -77,18 +88,20 @@ export default function EditPersonWinningModal(props: Props) {
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     let userList = []
     if (value.participants?.length > 0) {
-      let obj = value.participants?.map((item: any) =>{
+      let obj = value.participants?.map((item: any) => {
         return participantsList.find((items: { code: any }) => items.code === item)
       })
-      userList = obj.map((item: { [x: string]: any; code: any; name: any }) => {{
-        item['empNo'] = item?.code
-        item['empName'] = item?.name
-        delete item?.code
-        delete item?.name
-        return item
-      }})
-      let {empNo, empName} = JSON.parse(sessionStorage.getItem('user') || '')
-      userList.push({empNo, empName})
+      userList = obj.map((item: { [x: string]: any; code: any; name: any }) => {
+        {
+          item['empNo'] = item?.code
+          item['empName'] = item?.name
+          delete item?.code
+          delete item?.name
+          return item
+        }
+      })
+      let { empNo, empName } = JSON.parse(sessionStorage.getItem('user') || '')
+      userList.push({ empNo, empName })
     }
 
     nurseFilesService.commonSaveOrUpdate('nurseWHAcademic', { ...obj, userList, ...value, sign }).then((res: any) => {
@@ -124,7 +137,7 @@ export default function EditPersonWinningModal(props: Props) {
   const removeSame = (arr: any[]) => {
     let arr1 = []
     let newArr = []
-    for(let i in arr) {
+    for (let i in arr) {
       if (arr1.indexOf(arr[i].code) == -1) {
         arr1.push(arr[i].code)
         newArr.push(arr[i])
@@ -180,7 +193,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           {signShow !== '修改' && <Col span={24}>
-            <Form.Field label={`参与人员所属科室`} name='allDeptAll'>
+            <Form.Field label={`参与人员所属科室`} name='allDeptAll' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
@@ -190,7 +203,7 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {nurseFileDetailViewModal.getDict('全部科室').map((item) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
@@ -198,7 +211,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>}
           {signShow !== '修改' && <Col span={24}>
-            <Form.Field label={`参与成员`} name='participants'>
+            <Form.Field label={`参与成员`} name='participants' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 mode='multiple'
@@ -209,7 +222,7 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {storage.map((item: any) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
@@ -217,24 +230,24 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>}
           <Col span={24}>
-            <Form.Field label={`开始时间`} name='startTime' onValueChange={computedStudyHour}>
+            <Form.Field label={`开始时间`} name='startTime' onValueChange={computedStudyHour} required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`结束时间`} name='endTime' onValueChange={computedStudyHour}>
+            <Form.Field label={`结束时间`} name='endTime' onValueChange={computedStudyHour} required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学术活动名称`} name='academicName'>
+            <Form.Field label={`学术活动名称`} name='academicName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办地域`} name='hostArea'>
+            <Form.Field label={`举办地域`} name='hostArea' required>
               <Select>
-                {['国内','国外', '省内', '省外', '其他'].map((item) => (
+                {['国内', '国外', '省内', '省外', '其他'].map((item) => (
                   <Select.Option value={item} key={item}>
                     {item}
                   </Select.Option>
@@ -243,22 +256,22 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办单位`} name='hostUnit'>
+            <Form.Field label={`举办单位`} name='hostUnit' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`举办地点`} name='hostAddress'>
-              <Input maxLength={25}/>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`以何种资格获得邀请`} name='qualification'>
+            <Form.Field label={`举办地点`} name='hostAddress' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`以何种资格获得邀请`} name='qualification' required>
+              <Input maxLength={25} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

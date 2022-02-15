@@ -25,17 +25,27 @@ export interface Props extends ModalComponentProps {
   signShow?: string
   getTableData?: () => {}
 }
-const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-}
+
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-
-  const [participantsList, setParticipantsList]: any= useState([])
-  const [storage, setStorage]: any= useState([])
+  let rules: Rules = {
+    declarant: (val) => !!val || '请填写申报人',
+    declarantDeptCode: (val) => !!val || '请填写申报科室',
+    declarantDate: (val) => !!val || '请填写申报时间',
+    participants: (val) => !!val || '请填写参与成员',
+    innovationType: (val) => !!val || '请填写创新类别',
+    innovationGrade: (val) => !!val || '请填写创新级别',
+    promotionArea: (val) => !!val || '请填写推广区域',
+    urlImageOne: (val) => !!val || '请上传附件',
+  }
+  if (signShow !== '修改') {
+    rules = Object.assign(rules, { allDeptAll: (val: any) => !!val || '请填写参与人员所属科室' })
+  }
+  const [participantsList, setParticipantsList]: any = useState([])
+  const [storage, setStorage]: any = useState([])
 
 
   const onFieldChange = (val: any) => {
@@ -77,11 +87,13 @@ export default function EditPersonWinningModal(props: Props) {
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.participants && (value.participants = value.participants.join(','))
     // 传后端的申报科室名称
-    nurseFileDetailViewModal.getDict('全部科室').forEach(item => {{
-      if (item.code === value.declarantDeptCode) {
-        obj.declarantDeptName = item.name
+    nurseFileDetailViewModal.getDict('全部科室').forEach(item => {
+      {
+        if (item.code === value.declarantDeptCode) {
+          obj.declarantDeptName = item.name
+        }
       }
-    }})
+    })
     nurseFilesService.commonSaveOrUpdate('nurseWHInnovationDept', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -115,7 +127,7 @@ export default function EditPersonWinningModal(props: Props) {
   const removeSame = (arr: any[]) => {
     let arr1 = []
     let newArr = []
-    for(let i in arr) {
+    for (let i in arr) {
       if (arr1.indexOf(arr[i].code) == -1) {
         arr1.push(arr[i].code)
         newArr.push(arr[i])
@@ -174,12 +186,12 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`申报人`} name='declarant'>
-              <Input  maxLength={25}/>
+            <Form.Field label={`申报人`} name='declarant' required>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`申报科室`} name='declarantDeptCode'>
+            <Form.Field label={`申报科室`} name='declarantDeptCode' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
@@ -188,7 +200,7 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {nurseFileDetailViewModal.getDict('全部科室').map((item) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
@@ -196,11 +208,11 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`申报时间`} name='declarantDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`申报时间`} name='declarantDate' onValueChange={computedStudyHour} required>
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`登记单位`} name='registerUnit'>
               <Input maxLength={25}/>
             </Form.Field>
@@ -209,9 +221,9 @@ export default function EditPersonWinningModal(props: Props) {
             <Form.Field label={`登记号`} name='registerNo'>
               <Input maxLength={25}/>
             </Form.Field>
-          </Col>
+          </Col> */}
           {signShow !== '修改' && <Col span={24}>
-            <Form.Field label={`参与人员所属科室`} name='allDeptAll'>
+            <Form.Field label={`参与人员所属科室`} name='allDeptAll' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
@@ -221,7 +233,7 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {nurseFileDetailViewModal.getDict('全部科室').map((item) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
@@ -229,7 +241,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>}
           <Col span={24}>
-            <Form.Field label={`参与成员`} name='participants'>
+            <Form.Field label={`参与成员`} name='participants' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 mode='multiple'
@@ -241,7 +253,7 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {storage.map((item: any) =>
                   <Option key={item.code} value={item.name}>{item.name}</Option>
                 )}
@@ -249,7 +261,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`创新类别`} name='innovationType'>
+            <Form.Field label={`创新类别`} name='innovationType' required>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
                 {nurseFileDetailViewModal.getDict('创新类别').map((item) =>
@@ -259,7 +271,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`创新级别`} name='innovationGrade'>
+            <Form.Field label={`创新级别`} name='innovationGrade' required>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
                 {nurseFileDetailViewModal.getDict('创新级别').map((item) =>
@@ -269,7 +281,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`推广区域`} name='promotionArea'>
+            <Form.Field label={`推广区域`} name='promotionArea' required>
               {/* <AutoComplete filterOption   dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select>
                 {nurseFileDetailViewModal.getDict('推广区域').map((item) =>
@@ -279,7 +291,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

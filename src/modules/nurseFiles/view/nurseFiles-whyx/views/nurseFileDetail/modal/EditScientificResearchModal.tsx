@@ -35,11 +35,12 @@ const rules: Rules = {
       return true
     }
   },
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  resultName: (val) => !!val || '请填写项目名称',
+  grantUnit: (val) => !!val || '请填写授予单位',
+  grantDate: (val) => !!val || '请填写授予时间',
+  winningLevel: (val) => !!val || '请填写奖励级别',
+  winningName: (val) => !!val || '请填写奖励名称、等级',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -123,32 +124,32 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目名称`} name='resultName'>
+            <Form.Field label={`项目名称`} name='resultName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授予单位`} name='grantUnit'>
+            <Form.Field label={`授予单位`} name='grantUnit' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授予时间`} name='grantDate'>
+            <Form.Field label={`授予时间`} name='grantDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励级别`} name='winningLevel'>
+            <Form.Field label={`奖励级别`} name='winningLevel' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励名称、等级`} name='winningName'>
+            <Form.Field label={`奖励名称、等级`} name='winningName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'上传获奖证书扫描件'} />
             </Form.Field>
           </Col>

@@ -28,11 +28,14 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  projectName: (val) => !!val || '请填写项目名称',
+  projectPerson: (val) => !!val || '请填写项目负责人',
+  data: (val) => !!val || '请填写举办起止时间',
+  courseHour: (val) => !!val || '请填写课时数',
+  personTotal: (val) => !!val || '请填写学员总数',
+  schoolArea: (val) => !!val || '请填写学员分布区域',
+  personTitleArea: (val) => !!val || '请填写学员职称分布',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -40,7 +43,7 @@ export default function EditPersonWinningModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -134,13 +137,13 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col> */}
           <Col span={24}>
-            <Form.Field label={`项目名称`} name='projectName'>
+            <Form.Field label={`项目名称`} name='projectName' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           {/* todo 新 */}
           <Col span={24}>
-            <Form.Field label={`项目负责人`} name='projectPerson'>
+            <Form.Field label={`项目负责人`} name='projectPerson' required>
               <Input maxLength={12} />
             </Form.Field>
           </Col>
@@ -151,7 +154,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col> */}
           {/* todo 新 */}
           <Col span={24}>
-            <Form.Field label={`举办起止时间`} name='data'>
+            <Form.Field label={`举办起止时间`} name='data' required>
               <RangePicker />
             </Form.Field>
           </Col>
@@ -161,22 +164,22 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col> */}
           <Col span={24}>
-            <Form.Field label={`课时数`} name='courseHour'>
+            <Form.Field label={`课时数`} name='courseHour' required>
               <Input maxLength={20} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员总数`} name='personTotal'>
+            <Form.Field label={`学员总数`} name='personTotal' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员分布区域`} name='schoolArea'>
+            <Form.Field label={`学员分布区域`} name='schoolArea' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员职称分布`} name='personTitleArea'>
+            <Form.Field label={`学员职称分布`} name='personTitleArea' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
@@ -186,7 +189,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col> */}
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />
             </Form.Field>
           </Col>

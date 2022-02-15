@@ -25,11 +25,13 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  certificateName: (val) => !!val || '请选择证书名称',
+  grade: (val) => !!val || '请填写级别',
+  issueUnit: (val) => !!val || '请填写发证单位',
+  issueDate: (val) => !!val || '请选择发证时间',
+  certificateNo: (val) => !!val || '请填写证书编号',
+  validityDate: (val) => !!val || '请选择证书有效期',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -109,7 +111,20 @@ export default function EditPersonWinningModal(props: Props) {
       setTitle('添加院外工作资质')
     }
   }, [visible])
+  const onChangeSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ grade: value })
+    }
+  };
 
+  const onSearchSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ grade: value })
+    }
+  };
+
+  const onBlurSelect = () => {
+  };
   return (
     <Modal
       title={title}
@@ -133,16 +148,16 @@ export default function EditPersonWinningModal(props: Props) {
         <Row>
           {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`证书名称`} name='certificateName'>
+            <Form.Field label={`证书名称`} name='certificateName' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 showSearch
-                placeholder={<span style={{color: '#333'}}>{certificateName[0]}</span>}
+                placeholder={<span style={{ color: '#333' }}>{certificateName[0]}</span>}
                 optionFilterProp="children"
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {certificateName.map((item) =>
                   <Option key={item} value={item}>{item}</Option>
                 )}
@@ -150,16 +165,19 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`级别`} name='grade'>
+            <Form.Field label={`级别`} name='grade' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 showSearch
-                placeholder={<span style={{color: '#333'}}>{nurseFileDetailViewModal.getDict('级别')[0]?.name}</span>}
+                placeholder={<span style={{ color: '#333' }}>{nurseFileDetailViewModal.getDict('级别')[0]?.name}</span>}
                 optionFilterProp="children"
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+                onChange={(e) => onChangeSelect(e)}
+                onSearch={(value) => onSearchSelect(value)}
+                onBlur={() => onBlurSelect()}
+              >
                 {nurseFileDetailViewModal.getDict('级别').map((item) =>
                   <Option key={item.code} value={item.code}>{item.name}</Option>
                 )}
@@ -167,27 +185,27 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='issueUnit'>
+            <Form.Field label={`发证单位`} name='issueUnit' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证时间`} name='issueDate'>
+            <Form.Field label={`发证时间`} name='issueDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书编号`} name='certificateNo'>
+            <Form.Field label={`证书编号`} name='certificateNo' required>
               <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书有效期`} name='validityDate'>
+            <Form.Field label={`证书有效期`} name='validityDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

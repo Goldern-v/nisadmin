@@ -100,6 +100,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "whyx":
       // return "http://192.168.1.106:9091" // 信铭本地
       return "http://192.168.1.54:9885"; // 测试环境
+      // return "http://192.168.1.106:8080"信铭本地
       // return 'http://192.168.1.106:9091'
     default:
       return "http://192.168.1.54:9866";
