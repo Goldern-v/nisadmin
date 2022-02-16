@@ -18,7 +18,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 export interface Props { }
 
 export default observer(function WardInnovate() {
-  const [tableData, setTableData]: any= useState([])
+  const [tableData, setTableData]: any = useState([])
   const [loading, setLoading] = useState(false)
   const editOnEducationModal = createModal(EditWardInnovateModal)
   const [detailModalVisible, setDetailModalVisible] = useState(false)
@@ -77,18 +77,18 @@ export default observer(function WardInnovate() {
       width: 150,
       align: 'center',
     },
-    {
-      title: '登记单位',
-      dataIndex: 'registerUnit',
-      width: 150,
-      align: 'center',
-    },
-    {
-      title: '登记号',
-      dataIndex: 'registerNo',
-      width: 150,
-      align: 'center',
-    },
+    // {
+    //   title: '登记单位',
+    //   dataIndex: 'registerUnit',
+    //   width: 150,
+    //   align: 'center',
+    // },
+    // {
+    //   title: '登记号',
+    //   dataIndex: 'registerNo',
+    //   width: 150,
+    //   align: 'center',
+    // },
     {
       title: '参与成员',
       dataIndex: 'participants', // 

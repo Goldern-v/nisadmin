@@ -26,11 +26,13 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  grantType: (val) => !!val || '请选择授权类别',
+  grantName: (val) => !!val || '请填写授权名称',
+  certificateUnit: (val) => !!val || '请填写认证部门',
+  certificateDate: (val) => !!val || '请选择认证时间',
+  certificateNo: (val) => !!val || '请填写证书编号',
+  validityDate: (val) => !!val || '请选择有效期',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -109,7 +111,7 @@ export default function EditPersonWinningModal(props: Props) {
         grantName: '',
       })
     }
-    
+
   }
 
   useLayoutEffect(() => {
@@ -156,17 +158,17 @@ export default function EditPersonWinningModal(props: Props) {
         <Row>
           {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`授权类别`} name='grantType'>
+            <Form.Field label={`授权类别`} name='grantType' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 showSearch
-                placeholder={<span style={{color: '#333'}}>{grantType[0]}</span>}
+                placeholder={<span style={{ color: '#333' }}>{grantType[0]}</span>}
                 optionFilterProp="children"
                 onSelect={onSelect}
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
+              >
                 {grantType.map((item) =>
                   <Option key={item} value={item}>{item}</Option>
                 )}
@@ -174,32 +176,32 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授权名称`} name='grantName'>
+            <Form.Field label={`授权名称`} name='grantName' required>
               <AutoComplete filterOption dataSource={grantName[selectGrantType].map((item: any) => item)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`认证部门`} name='certificateUnit'>
-              <Input maxLength={25}/>
+            <Form.Field label={`认证部门`} name='certificateUnit' required>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`认证时间`} name='certificateDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`认证时间`} name='certificateDate' onValueChange={computedStudyHour} required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书编号`} name='certificateNo'>
-              <Input maxLength={25}/>
+            <Form.Field label={`证书编号`} name='certificateNo' required>
+              <Input maxLength={25} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`有效期至`} name='validityDate' onValueChange={computedStudyHour}>
+            <Form.Field label={`有效期至`} name='validityDate' onValueChange={computedStudyHour} required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

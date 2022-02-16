@@ -46,11 +46,18 @@ const rules: Rules = {
       return true
     }
   },
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  goName: (val) => !!val || '请填写参于课题名称',
+  hostName: (val) => !!val || '请填写课题主持人姓名',
+  hostNo: (val) => !!val || '请填写课题主持人工号',
+  courseSource: (val) => !!val || '请填写课题来源',
+  courseLevel: (val) => !!val || '请填写课题级别',
+  unit: (val) => !!val || '请填写承担单位',
+  registerNumber: (val) => !!val || '请填写项目编号',
+  startDate: (val) => !!val || '请选择开始时间',
+  endDate: (val) => !!val || '请选择截止时间',
+  courseCompletion: (val) => !!val || '请填写完成情况',
+  completionDate: (val) => !!val || '请选择时间',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditJoinScientificModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -144,72 +151,72 @@ export default function EditJoinScientificModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`参于课题名称`} name='goName'>
+            <Form.Field label={`参于课题名称`} name='goName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题主持人姓名`} name='hostName'>
+            <Form.Field label={`课题主持人姓名`} name='hostName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题主持人工号`} name='hostNo'>
+            <Form.Field label={`课题主持人工号`} name='hostNo' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`参与排名`} name='goRank'>
+            <Form.Field label={`参与排名`} name='goRank' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题来源`} name='courseSource'>
+            <Form.Field label={`课题来源`} name='courseSource' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题级别`} name='courseLevel'>
+            <Form.Field label={`课题级别`} name='courseLevel' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`承担单位`} name='unit'>
+            <Form.Field label={`承担单位`} name='unit' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题批文号`} name='approvalNumber'>
+            <Form.Field label={`课题批文号`} name='approvalNumber' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目编号`} name='registerNumber'>
+            <Form.Field label={`项目编号`} name='registerNumber' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate'>
+            <Form.Field label={`开始时间`} name='startDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`截止时间`} name='endDate'>
+            <Form.Field label={`截止时间`} name='endDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`完成情况`} name='courseCompletion'>
+            <Form.Field label={`完成情况`} name='courseCompletion' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`时间`} name='completionDate'>
+            <Form.Field label={`时间`} name='completionDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'上传课题批文扫描件'} />
             </Form.Field>
           </Col>

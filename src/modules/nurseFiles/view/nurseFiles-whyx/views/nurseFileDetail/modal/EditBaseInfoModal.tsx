@@ -48,7 +48,7 @@ const rules: Rules = {
       return true;
     }
   },
-  phone: (val: any) =>{
+  phone: (val: any) => {
     if (val && val.length != 11) return "手机号格式不正确"
     else return true
   }
@@ -353,7 +353,14 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`初始学历`} name="initialEducation">
-              <Input disabled />
+              {/* <Input /> */}
+              <Select>
+                {nurseFileDetailViewModal.getDict("最高学历类型").map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>

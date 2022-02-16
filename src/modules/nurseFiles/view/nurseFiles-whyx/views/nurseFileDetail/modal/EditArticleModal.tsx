@@ -43,16 +43,23 @@ const rules: Rules = {
     }
   },
   pageNumber(val) {
-    if(val) {
+    if (val) {
       if (/^\d+\-\d+$/.test(val)) return true
       return '请输入正确的起始页码，起始页码和结束页码的数字，中间用减号相隔。例如：1-56）'
     } else return true
-  }
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  },
+  magazineName: (val) => !!val || '请填写杂志名称',
+  articleName: (val) => !!val || '请填写文章名称',
+  articleAuthor: (val) => !!val || '请填写作者',
+  journal: (val) => !!val || '请选择期刊年月',
+  volumeNumber: (val) => !!val || '请填写卷期号',
+  // pageNumber: (val) => !!val || '请填写起止页码',
+  articleType: (val) => !!val || '请填写文章类别',
+  influencingFactors: (val) => !!val || '请填写论文收录网站',
+  urlImageOne: (val) => !!val || '请上传封面扫描件',
+  urlImageThree: (val) => !!val || '请上传目录扫描件',
+  urlImageFour: (val) => !!val || '请上传正文扫描件',
+  urlImageFive: (val) => !!val || '请上传封底扫描件',
 }
 export default function EditArticleModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -139,17 +146,17 @@ export default function EditArticleModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`杂志名称`} name='magazineName'>
+              <Form.Field label={`杂志名称`} name='magazineName' required>
                 <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`文章名称`} name='articleName'>
+              <Form.Field label={`文章名称`} name='articleName' required>
                 <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`作者`} name='articleAuthor'>
+              <Form.Field label={`作者`} name='articleAuthor' required>
                 <Select>
                   {nurseFileDetailViewModal.getDict('作者').map((item) => (
                     <Option value={item.name} key={'zuozhe-' + item.name}>{item.name}</Option>
@@ -158,7 +165,7 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`期刊年月`} name='journal'>
+              <Form.Field label={`期刊年月`} name='journal' required>
                 <MonthPicker format="YYYY-MM" />
               </Form.Field>
             </Col>
@@ -169,22 +176,22 @@ export default function EditArticleModal(props: Props) {
             </Col> */}
             {/* todo */}
             <Col span={24}>
-              <Form.Field label={`卷期号`} name='volumeNumber'>
+              <Form.Field label={`卷期号`} name='volumeNumber' required>
                 <Input maxLength={25} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`起止页码`} name='pageNumber'>
-                <Input  maxLength={25} placeholder='请输入起止页码，例如：1-56' />
+              <Form.Field label={`起止页码`} name='pageNumber' required>
+                <Input maxLength={25} placeholder='请输入起止页码，例如：1-56' />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`文章类别`} name='articleType'>
+              <Form.Field label={`文章类别`} name='articleType' required>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('文章类别').map((item) => item.name)} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`论文收录网站`} name='influencingFactors'>
+              <Form.Field label={`论文收录网站`} name='influencingFactors' required>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('论文收录网站').map((item) => item.name)} />
               </Form.Field>
             </Col>
@@ -195,22 +202,22 @@ export default function EditArticleModal(props: Props) {
             </Col> */}
             {/* todo */}
             <Col span={24}>
-              <Form.Field label={`封面扫描件`} name='urlImageOne'>
+              <Form.Field label={`封面扫描件`} name='urlImageOne' required>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`目录扫描件`} name='urlImageThree'>
+              <Form.Field label={`目录扫描件`} name='urlImageThree' required>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`正文扫描件`} name='urlImageFour'>
+              <Form.Field label={`正文扫描件`} name='urlImageFour' required>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`封底扫描件`} name='urlImageFive'>
+              <Form.Field label={`封底扫描件`} name='urlImageFive' required>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
