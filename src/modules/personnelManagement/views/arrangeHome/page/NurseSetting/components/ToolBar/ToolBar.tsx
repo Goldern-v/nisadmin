@@ -44,6 +44,16 @@ export default function ToolBar() {
 
         <DeptSelect onChange={() => {
         }} />
+        {
+          appStore.hisMatch({
+            map: {
+              'whyx': <Button onClick={(e: any) => {
+                emitter.emit("全部列入排班");
+              }} style={{ marginLeft: 3, marginRight: 3 }}> 全部列入排班</Button>,
+              default: ""
+            },
+          })
+        }
 
         <Button
           onClick={(e: any) => {
