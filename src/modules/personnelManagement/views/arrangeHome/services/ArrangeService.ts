@@ -298,7 +298,8 @@ export default class ArrangeService extends BaseApiService {
 
   //新增保存班次
   public schShiftSettingSaveOrUpdate(obj: any) {
-    return this.post(`/schShiftSetting/saveOrUpdate`, obj);
+    if (appStore.HOSPITAL_ID === 'lcey')  return this.post(`schShiftRangeLc/saveOrUpdate`, obj);
+    else return this.post(`/schShiftSetting/saveOrUpdate`, obj);
   }
 
   //结余数据列表
