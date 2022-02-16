@@ -11,7 +11,7 @@ import ExpectSettingModal from "../../../modal/ExpectSettingModal";
 import createModal from "src/libs/createModal";
 import { appStore, authStore } from "src/stores";
 import emitter from "src/libs/ev";
-
+import { getCurrentMonth } from "src/utils/date/currentMonth";
 import moment from "moment";
 import { Select } from "src/vendors/antd";
 import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
@@ -27,6 +27,7 @@ export interface Props {
 export default observer(function TopPart() {
   const [date, setDate] = useState([] as any[]);
   const [isInit, setIsInit] = useState(true);
+  const [showLock, setShowLock] = useState(true)
   let expectSettingModal = createModal(ExpectSettingModal);
   let asClassModal = createModal(AsClassModal);
   let arrangAnalysisModal = createModal(ArrangAnalysisModal);
@@ -153,6 +154,14 @@ export default observer(function TopPart() {
       handleStatusChange();
     }
   });
+  useEffect(() => {
+    //当前月份的时间戳1号
+    let today = new Date(getCurrentMonth()[0].format("YYYY-MM-DD")).getTime()
+    // 选择开始的时间戳
+    let startTime = new Date(selectViewModal.params.startTime).getTime()
+    let flag = startTime < today && ['whyx'].includes(appStore.HOSPITAL_ID)
+    setShowLock(!flag)
+  }, [selectViewModal.params.startTime])
 
   return (
     <Wrapper>
@@ -336,12 +345,13 @@ export default observer(function TopPart() {
           <Button
             type="primary"
             onClick={() => sheetViewModal.saveSheetTableData(undefined)}
+            disabled={!showLock}
           >
             暂存
           </Button>
         </div>
         <div className="item">
-          <Button onClick={cancelPush} disabled={!sheetViewModal.isPush}>
+          <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
             撤回
           </Button>
         </div>
@@ -349,7 +359,7 @@ export default observer(function TopPart() {
           <Button
             type="primary"
             onClick={handlePush}
-            disabled={sheetViewModal.isPush}
+            disabled={!showLock || sheetViewModal.isPush}
           >
             {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
