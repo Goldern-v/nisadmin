@@ -186,7 +186,7 @@ export default observer(function ArrangeSheet(props: Props) {
       render(text: any, record: any) {
         if (['whyx'].includes(appStore.HOSPITAL_ID)) {
           return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
-            <span>{record.empName}</span>
+            <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
             {record.extraUser && <React.Fragment>
               /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : "#007aff" }}>{record.extraUser.empName}</span>
             </React.Fragment>
