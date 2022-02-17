@@ -38,12 +38,12 @@ export default function EditPersonWinningModal(props: Props) {
     studyHour: (val) => !!val || '请选择进修时长(天)',
     urlImageOne: (val) => !!val || '请上传附件',
   }
-  if (signShow !== '修改') {
-    rules = Object.assign(rules, {
-      allDeptAll: (val: any) => !!val || '请选择参与人员所属科室',
-      participants: (val: any) => !!val || '请填写参与成员',
-    })
-  }
+  // if (signShow !== '修改') {
+  //   rules = Object.assign(rules, {
+  //     allDeptAll: (val: any) => !!val || '请选择参与人员所属科室',
+  //     participants: (val: any) => !!val || '请填写参与成员',
+  //   })
+  // }
   let refForm = React.createRef<Form>()
   const [storage, setStorage]: any = useState([])
   const [participantsList, setParticipantsList]: any = useState([])
@@ -185,9 +185,8 @@ export default function EditPersonWinningModal(props: Props) {
     >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          {signShow !== '修改' && <Col span={24}>
+          {/* {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与人员所属科室`} name='allDeptAll' required>
-              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
                 showSearch
@@ -205,7 +204,6 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>}
           {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与成员`} name='participants' required>
-              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 mode='multiple'
                 allowClear
@@ -221,7 +219,7 @@ export default function EditPersonWinningModal(props: Props) {
                 )}
               </Select>
             </Form.Field>
-          </Col>}
+          </Col>} */}
           <Col span={24}>
             <Form.Field label={`进修专业`} name='studyMajor' required>
               <Input />

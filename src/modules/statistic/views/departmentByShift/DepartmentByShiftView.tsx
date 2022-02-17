@@ -29,11 +29,11 @@ export default function StatisticView() {
     },
   } as any)
 
-  const [query, setQuery] = useState({
+  const [query, setQuery] = useState(Object.assign({
     type: 'shift_type',
     startTime: moment(new Date().setDate(1)).format('YYYY-MM-DD'),
     endTime: moment(new Date().setDate(7)).format('YYYY-MM-DD'),
-  })
+  }, appStore.HOSPITAL_ID === 'lcey' ? {season: 'summer'} : {}))
 
   const [tableData, setTableData] = useState([] as any[])
   const [hourMap, setHourMap] = useState({})
@@ -41,7 +41,6 @@ export default function StatisticView() {
   const [morningMap, setMorningMap] = useState({})
   // 夜班
   const [nightMap, setNightMap] = useState({})
-
 
   const handleFilterObjChange = (newFilterObj: any) => {
     setFilterObj(newFilterObj)
@@ -186,7 +185,7 @@ export default function StatisticView() {
           <StatisticMIdHeaderDepartment />
           {/* 对应表 */}
           <TableCon>
-            <TableFirst tableData={tableData} hourMap={hourMap} morningMap={morningMap} nightMap={nightMap}  filterObj={filterObj} />
+            <TableFirst tableData={tableData} hourMap={hourMap} morningMap={morningMap} nightMap={nightMap} filterObj={filterObj} />
           </TableCon>
         </LeftCon>
         <RigthCon>
