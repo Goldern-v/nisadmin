@@ -143,6 +143,11 @@ function MenuCon(props: { dataSource: any[] }) {
       cell!.backgroundColor = item.backgroundColor;
       cell!.rangeScore = item.rangeScore;
       // cell!.rangeNameCode = item.rangeNameCode
+      // 聊城二院-冬令时-白夜小时
+      if (appStore.HOSPITAL_ID == 'lcey') {
+        cell!.settingWinNightHour = item.settingWinNightHour;
+        cell!.settingWinMorningHour = item.settingWinMorningHour;
+      }
 
       /** 判断是否生成编号 */
       if (
@@ -165,8 +170,6 @@ function MenuCon(props: { dataSource: any[] }) {
 
   const onClick = async (item: any) => {
     if (appStore.HOSPITAL_ID == 'wh') {
-      console.log(appStore.HOSPITAL_ID);
-
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
