@@ -3,8 +3,8 @@ export default class RetiredRetireesService extends BaseApiService {
   public nurseTransferQuery(obj: any) {
     return this.post(`/nurseTransfer/query`, obj)
   }
-  public excelNurseLeave(obj: any) {
-    return this.post(`/nurseInformation/excelNurseLeave`, obj, { responseType: 'blob' })
+  public nurseTransferExcel(obj: any) {
+    return this.post(`/nurseTransfer/countExcel`, obj, { responseType: 'blob' })
   }
 }
 

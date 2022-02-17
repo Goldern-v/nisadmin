@@ -24,7 +24,7 @@ class RetiredRetireesViewModal {
   @observable public total: any = 0
 
   export() {
-    retiredRetireesService.excelNurseLeave(this.postObj).then((res) => {
+    retiredRetireesService.nurseTransferExcel(this.postObj).then((res) => {
       fileDownload(res)
     })
   }
@@ -41,7 +41,7 @@ class RetiredRetireesViewModal {
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
-      currentDepartmentName: this.deptCode,
+      currentDepartmentCode: this.deptCode,
       startDateBeginIndex: this.selectedDate[0] ? this.selectedDate[0].format('YYYY-MM-DD') : '',
       startDateEndIndex: this.selectedDate[1] ? this.selectedDate[1].format('YYYY-MM-DD'): '',
       empNo: this.keyWord
