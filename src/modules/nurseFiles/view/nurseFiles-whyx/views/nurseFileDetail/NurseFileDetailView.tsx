@@ -172,7 +172,7 @@ const ROUTE_LIST = [
         component: WorkHistory,
         name: '院外工作经历',
         parentType: 'workHistory',
-        showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
+        // showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
       },
       {
         type: 'innaiWorkHistory',

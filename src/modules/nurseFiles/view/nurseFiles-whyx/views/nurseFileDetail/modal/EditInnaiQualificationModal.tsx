@@ -31,7 +31,7 @@ const rules: Rules = {
   certificateUnit: (val) => !!val || '请填写认证部门',
   certificateDate: (val) => !!val || '请选择认证时间',
   certificateNo: (val) => !!val || '请填写证书编号',
-  validityDate: (val) => !!val || '请选择有效期',
+  // validityDate: (val) => !!val || '请选择有效期',
   urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
@@ -196,7 +196,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`有效期至`} name='validityDate' onValueChange={computedStudyHour} required>
+            <Form.Field label={`有效期至`} name='validityDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>

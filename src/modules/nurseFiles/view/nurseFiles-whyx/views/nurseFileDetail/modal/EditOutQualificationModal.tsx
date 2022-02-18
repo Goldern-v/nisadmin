@@ -30,7 +30,7 @@ const rules: Rules = {
   issueUnit: (val) => !!val || '请填写发证单位',
   issueDate: (val) => !!val || '请选择发证时间',
   certificateNo: (val) => !!val || '请填写证书编号',
-  validityDate: (val) => !!val || '请选择证书有效期',
+  // validityDate: (val) => !!val || '请选择证书有效期',
   urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
@@ -207,7 +207,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书有效期`} name='validityDate' required>
+            <Form.Field label={`证书有效期`} name='validityDate' >
               <DatePicker />
             </Form.Field>
           </Col>

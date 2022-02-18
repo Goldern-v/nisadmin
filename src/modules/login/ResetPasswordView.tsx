@@ -72,21 +72,26 @@ export default withRouter(function ResetPasswordView(props: Props) {
     setIsErrorNew(!isNewPswd)
     setIsErrorRe(!isRePswd)
     if (!(isNewPswd && isRePswd) || !value.empNo || !value.oldPswd) return
+    setLoginLoading(true)
     service.authApiService.updatePassword(value).then((res: any) => {
       if (res.code == 200) {
         message.success(res.desc)
-        history.replace('/login')
+        setTimeout(() => {
+          history.replace('/login')
+        }, 1000)
       }
+      setLoginLoading(false)
     }).catch((err: any) => {
       console.log(err)
+      setLoginLoading(false)
     })
   }
   const changePassword = (type: any) => {
     if (!refForm.current) return
     refForm.current.cleanErrors()
     let psd = refForm.current.getField(type)
-    let rePswd = refForm.current.getField('rePswd')
-    let newPswd = refForm.current.getField('newPswd')
+    let rePswd = refForm.current.getField('rePswd') || ''
+    let newPswd = refForm.current.getField('newPswd') || ''
     let empNo = refForm.current.getField('empNo')
     let oldPswd = refForm.current.getField('oldPswd')
     // if (!reg?.flag) return true
@@ -95,13 +100,13 @@ export default withRouter(function ResetPasswordView(props: Props) {
     if (type == "newPswd") {
       setIsNewPswd(flag)
       setIsErrorNew(false)
+      setIsrePswd(rePswd.trim() == newPswd.trim() && flag)
     }
     if (type == "rePswd") {
-      setIsrePswd(rePswd.trim() == newPswd.trim())
+      setIsrePswd(rePswd.trim() == newPswd.trim() && flag)
       setRepassword(psd)
       setIsErrorRe(false)
     }
-    // conso
     if (type == 'empNo') {
       setIsEmpNo(!empNo)
     }
@@ -164,7 +169,7 @@ export default withRouter(function ResetPasswordView(props: Props) {
             </div>
             <div style={{ 'position': 'relative' }}>
               <Form.Field
-                label="重置新密码:"
+                label="重复新密码:"
                 name="rePswd"
               >
                 <Input type="password" placeholder="请输入确认密码" className={isErrorRe ? 'error' : ''} />

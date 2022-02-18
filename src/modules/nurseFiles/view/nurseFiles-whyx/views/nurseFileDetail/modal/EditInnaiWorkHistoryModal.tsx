@@ -26,7 +26,7 @@ export interface Props extends ModalComponentProps {
 }
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
-  startTime: (val) => !!val || '请填写时间',
+  // startTime: (val) => !!val || '请填写时间',
   // endTime: (val) => !!val || '请填写时间',
   unit: (val) => !!val || '请填写单位',
   department: (val) => !!val || '请填写科室',
@@ -117,12 +117,12 @@ export default function EditWorkHistoryModal(props: Props) {
         <Row>
           <Row gutter={12}>
             <Col span={15}>
-              <Form.Field label={`时间`} name='startTime' required suffix='到'>
+              <Form.Field label={`时间`} name='startTime' suffix='到'>
                 <DatePicker />
               </Form.Field>
             </Col>
             <Col span={9}>
-              <Form.Field name='endTime' required>
+              <Form.Field name='endTime' >
                 <DatePicker />
               </Form.Field>
             </Col>
