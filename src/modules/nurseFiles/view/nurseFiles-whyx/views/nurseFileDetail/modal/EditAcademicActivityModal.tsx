@@ -40,12 +40,12 @@ export default function EditPersonWinningModal(props: Props) {
     qualification: (val) => !!val || '请填写以何种资格获得邀请',
     urlImageOne: (val) => !!val || '请上传附件',
   }
-  if (signShow !== '修改') {
-    rules = Object.assign(rules, {
-      allDeptAll: (val: any) => !!val || '请选择参与人员所属科室',
-      participants: (val: any) => !!val || '请填写参与成员',
-    })
-  }
+  // if (signShow !== '修改') {
+  //   rules = Object.assign(rules, {
+  //     allDeptAll: (val: any) => !!val || '请选择参与人员所属科室',
+  //     participants: (val: any) => !!val || '请填写参与成员',
+  //   })
+  // }
   let refForm = React.createRef<Form>()
   const [participantsList, setParticipantsList]: any = useState([])
   const [storage, setStorage]: any = useState([])
@@ -193,7 +193,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           {signShow !== '修改' && <Col span={24}>
-            <Form.Field label={`参与人员所属科室`} name='allDeptAll' required>
+            <Form.Field label={`参与人员所属科室`} name='allDeptAll' >
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
@@ -211,7 +211,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>}
           {signShow !== '修改' && <Col span={24}>
-            <Form.Field label={`参与成员`} name='participants' required>
+            <Form.Field label={`参与成员`} name='participants' >
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 mode='multiple'

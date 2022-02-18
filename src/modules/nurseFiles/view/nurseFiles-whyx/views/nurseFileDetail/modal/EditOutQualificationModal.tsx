@@ -30,7 +30,7 @@ const rules: Rules = {
   issueUnit: (val) => !!val || '请填写发证单位',
   issueDate: (val) => !!val || '请选择发证时间',
   certificateNo: (val) => !!val || '请填写证书编号',
-  validityDate: (val) => !!val || '请选择证书有效期',
+  // validityDate: (val) => !!val || '请选择证书有效期',
   urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditPersonWinningModal(props: Props) {
@@ -111,15 +111,19 @@ export default function EditPersonWinningModal(props: Props) {
       setTitle('添加院外工作资质')
     }
   }, [visible])
-  const onChangeSelect = (value: any) => {
+  const onChangeSelect = (value: any, type: string) => {
+    let data = {};
+    data[type] = value
     if (!!value) {
-      refForm!.current!.setFields({ grade: value })
+      refForm!.current!.setFields(data)
     }
   };
 
-  const onSearchSelect = (value: any) => {
+  const onSearchSelect = (value: any, type: string) => {
+    let data = {};
+    data[type] = value
     if (!!value) {
-      refForm!.current!.setFields({ grade: value })
+      refForm!.current!.setFields(data)
     }
   };
 
@@ -157,6 +161,9 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                onChange={(e) => onChangeSelect(e, 'certificateName')}
+                onSearch={(value) => onSearchSelect(value, 'certificateName')}
+                onBlur={() => onBlurSelect()}
               >
                 {certificateName.map((item) =>
                   <Option key={item} value={item}>{item}</Option>
@@ -174,8 +181,8 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                onChange={(e) => onChangeSelect(e)}
-                onSearch={(value) => onSearchSelect(value)}
+                onChange={(e) => onChangeSelect(e, 'grade')}
+                onSearch={(value) => onSearchSelect(value, 'grade')}
                 onBlur={() => onBlurSelect()}
               >
                 {nurseFileDetailViewModal.getDict('级别').map((item) =>
@@ -200,7 +207,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书有效期`} name='validityDate' required>
+            <Form.Field label={`证书有效期`} name='validityDate' >
               <DatePicker />
             </Form.Field>
           </Col>

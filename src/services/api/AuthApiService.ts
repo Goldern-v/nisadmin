@@ -85,6 +85,26 @@ export default class AuthApiService extends BaseApiService {
 
   }
 
+  /**
+   * 重置密码
+   * @param empNo 工号
+   * @param oldPswd 旧密码
+   * @param newPswd 新密码
+   * @param rePswd 确认密码
+   * @returns 
+   */
+  //  empNo: string, oldPswd: string, newPswd: string, rePswd: string
+  public updatePassword(data:any) {
+    return httpLoginToken.post('/updatePassword',data)
+  }
+
+  /**
+   * 获取正则
+   */
+  public passwordRule() {
+    return httpLoginToken.get('/getPasswordRule')
+  }
+
   clearUser() {
     // sessionStorage.removeItem('adminNurse')
     // sessionStorage.removeItem('authToken')
