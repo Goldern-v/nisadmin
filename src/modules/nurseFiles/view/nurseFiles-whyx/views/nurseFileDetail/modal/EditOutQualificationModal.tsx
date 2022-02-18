@@ -111,15 +111,19 @@ export default function EditPersonWinningModal(props: Props) {
       setTitle('添加院外工作资质')
     }
   }, [visible])
-  const onChangeSelect = (value: any) => {
+  const onChangeSelect = (value: any, type: string) => {
+    let data = {};
+    data[type] = value
     if (!!value) {
-      refForm!.current!.setFields({ grade: value })
+      refForm!.current!.setFields(data)
     }
   };
 
-  const onSearchSelect = (value: any) => {
+  const onSearchSelect = (value: any, type: string) => {
+    let data = {};
+    data[type] = value
     if (!!value) {
-      refForm!.current!.setFields({ grade: value })
+      refForm!.current!.setFields(data)
     }
   };
 
@@ -157,6 +161,9 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                onChange={(e) => onChangeSelect(e, 'certificateName')}
+                onSearch={(value) => onSearchSelect(value, 'certificateName')}
+                onBlur={() => onBlurSelect()}
               >
                 {certificateName.map((item) =>
                   <Option key={item} value={item}>{item}</Option>
@@ -174,8 +181,8 @@ export default function EditPersonWinningModal(props: Props) {
                 filterOption={(input, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                onChange={(e) => onChangeSelect(e)}
-                onSearch={(value) => onSearchSelect(value)}
+                onChange={(e) => onChangeSelect(e, 'grade')}
+                onSearch={(value) => onSearchSelect(value, 'grade')}
                 onBlur={() => onBlurSelect()}
               >
                 {nurseFileDetailViewModal.getDict('级别').map((item) =>

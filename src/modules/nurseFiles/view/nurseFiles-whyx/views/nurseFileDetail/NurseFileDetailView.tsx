@@ -7,7 +7,7 @@ import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore, authStore } from 'src/stores'
-import { Spin } from 'antd'
+import { Spin, Icon } from 'antd'
 import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
@@ -86,69 +86,81 @@ const ROUTE_LIST = [
         // path: "/continuingEdu/人员管理",
         parentType: 'qualification',
         component: InnaiQualification,
-        name: '院内工作资质'
+        name: '院内工作资质',
+        showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
       },
       {
         type: "outQualification",
         // path: "/continuingEdu/其他人员",
         parentType: 'qualification',
         component: outQualification,
-        name: '院外工作资质'
+        name: '院外工作资质',
+        showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
       }
     ]
   },
   {
     type: 'article',
     component: Article,
-    name: '文章'
+    name: '文章',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'monograph',
     component: Monograph,
-    name: '专著'
+    name: '专著',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     /** 方明处理 */
     type: 'hostingScientific',
     component: HostingScientific,
-    name: '主持科研课题'
+    name: '主持科研课题',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'joinScientific',
     component: JoinScientific,
-    name: '参与科研课题'
+    name: '参与科研课题',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     /** 方明处理 */
     type: 'scientificResearch',
     component: ScientificResearch,
-    name: '科研课题获奖'
+    name: '科研课题获奖',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'patent',
     component: Patent,
-    name: '专利'
+    name: '专利',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'WardInnovate',
     component: WardInnovate,
-    name: '科室创新'
+    name: '科室创新',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'learnJob',
     component: LearnJob,
-    name: '学会任职'
+    name: '学会任职',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     /** 方明处理 */
     type: 'personWinning',
     component: PersonWinning,
-    name: '个人获奖'
+    name: '个人获奖',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'continuingEducation',
     component: ContinuingEducation,
-    name: '举办继续教育培训班'
+    name: '举办继续教育培训班',
+    showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
   },
   {
     type: 'workHistory',
@@ -160,12 +172,14 @@ const ROUTE_LIST = [
         component: WorkHistory,
         name: '院外工作经历',
         parentType: 'workHistory',
+        showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
       },
       {
         type: 'innaiWorkHistory',
         component: InnaiWorkHistory,
         name: '院内工作经历',
         parentType: 'workHistory',
+        showStar: ["whyx"].includes(appStore.HOSPITAL_ID)
       },
     ]
   },

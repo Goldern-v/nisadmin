@@ -27,7 +27,7 @@ export interface Props extends ModalComponentProps {
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   startTime: (val) => !!val || '请填写时间',
-  endTime: (val) => !!val || '请填写时间',
+  // endTime: (val) => !!val || '请填写时间',
   unit: (val) => !!val || '请填写单位',
   department: (val) => !!val || '请填写科室',
 }
@@ -137,7 +137,7 @@ export default function EditWorkHistoryModal(props: Props) {
               textAlign: 'right'
             }}
           >
-            *空则为至今
+            <span style={{ color: "red" }}>*</span>空则为至今
           </div>
           <Col span={24}>
             <Form.Field label={`单位`} name='unit' required>

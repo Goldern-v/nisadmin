@@ -64,6 +64,8 @@ export default function LeftMenu(props: Props) {
             <Menu.Item key={item.type}>
               <span>
                 {item.name}
+                {/* <Icon type="star" theme="filled" style={{ color: "#fdd233" }} /> */}
+                {item.showStar && <img src={require("../../../images/star.png")} alt="" className='star' />}
                 <span className="selected-arrow">
                   {/* <img src={require("../../../images/菜单选中右箭头.png")} alt="" /> */}
                 </span>
@@ -173,6 +175,10 @@ const Wrapper = styled.div`
   }
   .left-menu.ant-menu-inline .ant-menu-item:not(:last-child) {
     margin-bottom: 0px !important;
+  }
+  .star {
+    margin-left: 10px;
+    width: 18px;
   }
 `
 const Li = styled.div`
