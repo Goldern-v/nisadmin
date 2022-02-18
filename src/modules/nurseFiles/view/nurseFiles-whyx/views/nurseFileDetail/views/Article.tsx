@@ -121,8 +121,8 @@ export default observer(function Awards() {
     // },
     {
       title: '封面扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
+      dataIndex: '封面扫描件',
+      key: '封面扫描件',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -131,32 +131,32 @@ export default observer(function Awards() {
     },
     {
       title: '目录扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
+      dataIndex: '目录扫描件',
+      key: '目录扫描件',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageThree.split(',')} /> : ''}</DoCon>
       }
     },
     {
       title: '正文扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
+      dataIndex: '正文扫描件',
+      key: '正文扫描件',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageFour.split(',')} /> : ''}</DoCon>
       }
     },
     {
       title: '封底扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
+      dataIndex: '封底扫描件',
+      key: '封底扫描件',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageFive.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -180,7 +180,6 @@ export default observer(function Awards() {
   ]
 
   useEffect(() => {
-    console.log('good work')
     getTableData()
   }, [])
 
