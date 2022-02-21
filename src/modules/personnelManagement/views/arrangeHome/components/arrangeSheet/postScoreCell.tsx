@@ -23,7 +23,7 @@ export const postScoreCell = (id: any) => {
     list = user.settingDtos;
   }
   let total = list.reduce((total: any, current: ArrangeItem) => {
-    total += Number(current.rangeScore);
+    total += Number(current.coefficient || 0);
     return total;
   }, 0);
 

@@ -142,6 +142,7 @@ function MenuCon(props: { dataSource: any[] }) {
       cell!.schAddOrSubs = [];
       cell!.backgroundColor = item.backgroundColor;
       cell!.rangeScore = item.rangeScore;
+      cell!.coefficient = item.coefficient;
       // cell!.rangeNameCode = item.rangeNameCode
       // 聊城二院-冬令时-白夜小时
       if (appStore.HOSPITAL_ID == 'lcey') {
@@ -239,6 +240,7 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.schAddOrSubs = [];
         list[i]!.backgroundColor = mealObj.backgroundColor;
         list[i]!.rangeScore = mealObj.rangeScore;
+        list[i]!.coefficient = mealObj.coefficient;
       }
     }
   };
@@ -254,8 +256,8 @@ function MealCon(props: { dataSource: any[] }) {
       "saturday",
       "sunday"
     ];
-    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", "BackgroundColor", "RangeScore"];
-    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", "backgroundColor", "rangeScore"];
+    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", "BackgroundColor", "RangeScore", "Coefficient"];
+    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", "backgroundColor", "rangeScore", "coefficient"];
     let obj: any = {};
 
     for (let i = 0; i < keys.length; i++) {

@@ -62,7 +62,7 @@ export default function LeftMenu(props: Props) {
         } else {
           return (
             <Menu.Item key={item.type}>
-              <span>
+              <span style={{ position: "relative" }}>
                 {item.name}
                 {/* <Icon type="star" theme="filled" style={{ color: "#fdd233" }} /> */}
                 {item.showStar && <img src={require("../../../images/star.png")} alt="" className='star' />}
@@ -177,7 +177,11 @@ const Wrapper = styled.div`
     margin-bottom: 0px !important;
   }
   .star {
-    margin-left: 10px;
+    /* margin-left: 10px; */
+    position: absolute;
+    right: -22px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 18px;
   }
 `
