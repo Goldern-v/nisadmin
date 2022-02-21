@@ -29,11 +29,11 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  winningName: (val) => !!val || '请填写奖项名称',
+  winningType: (val) => !!val || '请填写获奖类别',
+  winningLevel: (val) => !!val || '请填写获奖级别',
+  winningYear: (val) => !!val || '请填写获奖时间',
+  urlImageOne: (val) => !!val || '请上传附件'
 }
 export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -41,7 +41,7 @@ export default function EditPersonWinningModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -117,28 +117,28 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`奖项名称`} name='winningName'>
+            <Form.Field label={`奖项名称`} name='winningName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='winningType'>
+            <Form.Field label={`获奖类别`} name='winningType' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖级别`} name='winningLevel'>
+            <Form.Field label={`获奖级别`} name='winningLevel' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖时间`} name='winningYear'>
+            <Form.Field label={`获奖时间`} name='winningYear' required>
               <MonthPicker />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'获奖证书扫描件'} />
             </Form.Field>
           </Col>

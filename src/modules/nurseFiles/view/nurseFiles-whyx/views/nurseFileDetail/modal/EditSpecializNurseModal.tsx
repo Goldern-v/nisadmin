@@ -25,11 +25,12 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  nurseName: (val) => !!val || '请填写专科护士名称',
+  cardUnit: (val) => !!val || '请填写发证单位',
+  cardNumber: (val) => !!val || '请填写证书编号',
+  nurseLevel: (val) => !!val || '请填写级别',
+  cardNumberDate: (val) => !!val || '请填写发证时间',
+  urlImageOne: (val) => !!val || '请上传附件'
 }
 export default function EditSpecializNurseModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -94,7 +95,20 @@ export default function EditSpecializNurseModal(props: Props) {
       setTitle('添加专科护士信息')
     }
   }, [visible])
+  const onChangeSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ nurseName: value })
+    }
+  };
 
+  const onSearchSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ nurseName: value })
+    }
+  };
+
+  const onBlurSelect = () => {
+  };
   return (
     <Modal
       title={title}
@@ -117,33 +131,48 @@ export default function EditSpecializNurseModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`专科护士名称`} name='nurseName'>
+            <Form.Field label={`专科护士名称`} name='nurseName' required>
+              <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={(e) => onChangeSelect(e)}
+                onSearch={(value) => onSearchSelect(value)}
+                onBlur={() => onBlurSelect()}
+              >
+                {nurseFileDetailViewModal.getDict('专科护士名称').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`发证单位`} name='cardUnit' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`证书编号`} name='cardNumber'>
+            <Form.Field label={`证书编号`} name='cardNumber' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
             {/* todo 接口联调 后端要去掉 院级 */}
-            <Form.Field label={`级别`} name='nurseLevel'>
+            <Form.Field label={`级别`} name='nurseLevel' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardNumberDate'>
+            <Form.Field label={`发证时间`} name='cardNumberDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'上传专科护士证书扫描件'} />
             </Form.Field>
           </Col>

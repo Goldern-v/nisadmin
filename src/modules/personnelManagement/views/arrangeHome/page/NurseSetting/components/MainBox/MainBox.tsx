@@ -334,6 +334,17 @@ export default observer(function MainBox() {
     });
   });
 
+  emitter.removeAllListeners("全部列入排班");
+  emitter.addListener("全部列入排班", () => {
+    let list = userList.map((item: any) => {
+      return {
+        ...item,
+        rangeShow: true
+      }
+    })
+    setUserList(list);
+  });
+
   const getUserList = () => {
     let deptCode = scheduleStore.getDeptCode(); // '2508' ||
     setLoading(true);

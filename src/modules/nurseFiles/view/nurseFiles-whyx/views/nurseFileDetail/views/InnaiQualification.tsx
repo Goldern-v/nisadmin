@@ -112,7 +112,7 @@ export default observer(function InnaiQualification() {
   }, [])
 
   return (
-    <BaseLayout title='外出进修' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='资质管理' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

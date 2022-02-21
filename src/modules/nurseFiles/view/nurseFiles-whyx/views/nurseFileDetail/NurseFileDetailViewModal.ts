@@ -38,6 +38,7 @@ let dictList = {
   创新类别: 'innovation_type',
   创新级别: 'innovation_level',
   推广区域: 'promotion_area',
+  专科护士名称: 'nurse_name'
 }
 
 type DictList = typeof dictList

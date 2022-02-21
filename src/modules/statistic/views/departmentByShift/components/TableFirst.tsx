@@ -18,6 +18,7 @@ export default function BedSituation(props: Props) {
   Object.assign(hourMap, {科室: '工时合计'})
   Object.assign(morningMap, {科室: '白班合计'})
   Object.assign(nightMap, {科室: '夜班合计'})
+  
   const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
 
