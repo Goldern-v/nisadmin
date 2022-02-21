@@ -1,36 +1,42 @@
-import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import Header from "./components/Header"
+import { observer } from "mobx-react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Header from "./components/Header";
 
-import {trainingChartAnalysisModal } from './trainingChartAnalysisModal'
-import AnalysisChart from './components/AnalysisChart'
+import { trainingChartAnalysisModal } from "./trainingChartAnalysisModal";
+import AnalysisChart from "./components/AnalysisChart";
 
-export interface Props {
-}
+export interface Props {}
 
 export default observer(function TrainingChartAnalysis(props: Props) {
-  
-  const contentRef = React.createRef<HTMLDivElement>()
+  const contentRef = React.createRef<HTMLDivElement>();
   useEffect(() => {
-    trainingChartAnalysisModal.init()
-    trainingChartAnalysisModal.chartRef = contentRef
-  }, [])
+    trainingChartAnalysisModal.init();
+    trainingChartAnalysisModal.chartRef = contentRef;
+  }, []);
 
   return (
     <Wrapper>
-      <Header></Header>
+      <Header />
       <Content ref={contentRef}>
-      <AnalysisChart title={trainingChartAnalysisModal.chartTitle.t1}/>
-      {
-        ['all','department'].includes(trainingChartAnalysisModal.selectedTab)
-          ? <AnalysisChart title={trainingChartAnalysisModal.chartTitle.t2}/>
-          : ''
-      }
+        <AnalysisChart
+          title={trainingChartAnalysisModal.chartTitle.t1}
+          data={trainingChartAnalysisModal.chartData1}
+        />
+        {["all", "department"].includes(
+          trainingChartAnalysisModal.selectedTab
+        ) ? (
+          <AnalysisChart
+            title={trainingChartAnalysisModal.chartTitle.t2}
+            data={trainingChartAnalysisModal.chartData2}
+          />
+        ) : (
+          ""
+        )}
       </Content>
     </Wrapper>
-  )
-})
+  );
+});
 
 const Wrapper = styled.div`
   height: 100%;
@@ -39,9 +45,9 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-`
+`;
 const Content = styled.div`
-flex: 1;
-overflow-y: auto;
-background: #fff;
-`
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+`;
