@@ -182,11 +182,11 @@ export default function EditPersonWinningModal(props: Props) {
         </Button>
       ]}
     >
-      <Form ref={refForm} rules={rules} labelWidth={100} >
+      <Form ref={refForm} rules={rules} labelWidth={110} >
         <Row>
           {/*  参与成员字段没有配置 */}
           <Col span={24}>
-            <Form.Field label={`授权类别`} name='grantType' required>
+            <Form.Field label={`准入及授权`} name='grantType' required>
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 showSearch
@@ -204,7 +204,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授权名称`} name='grantName' required>
+            <Form.Field label={`准入及授权名称`} name='grantName' required>
               {/* <AutoComplete filterOption dataSource={authorizationName.map((item: any) => item.name)} /> */}
               <Select
                 showSearch
@@ -247,7 +247,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
         </Row>
       </Form>
-    </Modal>
+    </Modal >
   )
 }
 const Wrapper = styled.div``

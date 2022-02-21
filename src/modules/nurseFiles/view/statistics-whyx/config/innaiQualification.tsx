@@ -24,14 +24,14 @@ export const pageObj: PageObj = {
       limit: 25
     },
     {
-      label: '授权类别',
+      label: '准入及授权',
       type: 'multiplesSelect',
       // name: 'unitLocal',
       name: 'grantType',
       dataSource: statisticsViewModal.sortList,
     },
     {
-      label: '授权名称',
+      label: '准入及授权名称',
       type: 'multiplesSelecteSpecially',
       // name: 'unitLocal1',
       name: 'grantName',
@@ -62,14 +62,14 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '授权类别',
+      title: '准入及授权',
       dataIndex: 'grantType',
       key: 'grantType',
       width: 150,
       align: 'center'
     },
     {
-      title: '授权名称',
+      title: '准入及授权名称',
       dataIndex: 'grantName',
       key: 'grantName',
       width: 210,
