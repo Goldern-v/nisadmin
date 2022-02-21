@@ -82,11 +82,13 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].addSymbols = copyRow[i].addSymbols;
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
-      list[i].backgroundColor = copyRow[i].backgroundColor
+      list[i].backgroundColor = copyRow[i].backgroundColor;
       if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
-
+      if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        list[i].coefficient = copyRow[i].coefficient;
+      }
       if (isClean) {
         /** 清空复制行 */
         copyRow[i].rangeName = "";
@@ -100,8 +102,12 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].addSymbols = [];
         copyRow[i].backgroundColor = "";
 
+
         if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
           copyRow[i].schAddOrSubs = [];
+        }
+        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+          copyRow[i].coefficient = 0;
         }
       } /** 序号同步 */
       /** 判断是否生成编号 */
@@ -137,9 +143,14 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.settings = cloneJson(copyCell.settings);
     cell.schJiJias = cloneJson(copyCell.schJiJias);
     cell.schRemarks = cloneJson(copyCell.schRemarks);
-    cell.backgroundColor = copyCell.backgroundColor
+    cell.backgroundColor = copyCell.backgroundColor;
+
+
     if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
       cell.schAddOrSubs = cell.schAddOrSubs;
+    }
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      cell.coefficient = copyCell.coefficient;
     }
 
     /** 序号同步 */
@@ -182,6 +193,9 @@ export function cleanCell(cellObj: ArrangeItem) {
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;
     cellObj.rangeNameCodeList = null;
+  }
+  if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    cellObj.coefficient = 0;
   }
 
 }
