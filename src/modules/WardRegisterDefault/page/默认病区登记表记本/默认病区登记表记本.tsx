@@ -6,7 +6,7 @@ import {
   ColumnProps,
   // PaginationConfig,
   // AutoComplete,
-  // message,
+  message,
   Input,
   Select,
   DatePicker,
@@ -104,7 +104,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   };
 
-  // 科室加全部选项 location.href.includes('QCRG_GSY_09')
+  // 贵州-科室加全部选项 location.href.includes('QCRG_GSY_09')
   let isAllDepartments = location.href.includes('QCRG_GSY_09') || location.href.includes('QCRG_GSY_10') || location.href.includes('QCRG_GSY_11')
  
   // const flFilterItem = createFilterItem(
@@ -823,7 +823,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect hasAllDept={isAllDepartments} onChange={() => { }} style={{ width: 150 }} />
+        <DeptSelect hasAllDept={ appStore.HOSPITAL_ID === 'gzsrm' ? isAllDepartments: false} onChange={() => { }} style={{ width: 150 }} />
         {/* {popoverContent && (
           <Popover
             placement="bottom"
@@ -873,7 +873,11 @@ export default observer(function 敏感指标登记本(props: Props) {
             <Button onClick={exportExcel}>导出</Button>
             {authStore.isAdmin && (
               <Button
-                onClick={() =>
+                onClick={() =>{
+                  if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院') {
+                    message.warning('科室全院情况下不可以设置，请选择科室！')
+                    return
+                  };
                   settingModal.show({
                     blockId: selectedBlockId,
                     selectedBlockObj,
@@ -882,7 +886,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                       getPage();
                     }
                   })
-                }>
+                }}>
                 设置
               </Button>
             )}
