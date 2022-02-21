@@ -787,9 +787,9 @@ const Wrapper = styled.div<{ backgroundColor?: string }>`
   margin: -1px -3px;
   position: relative;
   word-break: break-all;
-  background: ${p => p.backgroundColor || ""};
+  background: ${p => p.backgroundColor || ""}  !important;
   &.isSelected {
-    background: #ffe36c;
+    background: #ffe36c !important;
     cursor: pointer;
   }
   &.isReduceWordTime {
