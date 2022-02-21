@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 export interface navConfigItem {
   onClick?: any;
@@ -23,6 +23,7 @@ const baseConfig: navConfigItem[] = [
   {
     name: "档案管理",
     path: "/nurseFile",
+    hidden: !authStore.isNotANormalNurse,
   },
   {
     name: "学习培训",

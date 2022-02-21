@@ -326,7 +326,7 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
           </div>

@@ -46,14 +46,14 @@ export default observer(function InnaiQualification() {
       width: 55
     },
     {
-      title: '授权类别',
+      title: '准入及授权',
       dataIndex: 'grantType',
       key: 'grantType',
       width: 120,
       align: 'center'
     },
     {
-      title: '授权名称',
+      title: '准入及授权名称',
       dataIndex: 'grantName',
       key: 'grantName',
       width: 120,
