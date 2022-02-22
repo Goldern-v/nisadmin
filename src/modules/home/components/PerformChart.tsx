@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { authStore } from "src/stores/index";
+import { authStore, appStore } from "src/stores/index";
 import moment from "moment";
 moment.locale("zh-cn");
 const dateFormat = "YYYY-MM-DD";
@@ -17,7 +17,7 @@ export default observer(function PerformChart() {
       endDate: moment().format(dateFormat)
     };
     // 获取执行单情况数据
-    if (authStore.selectedDeptCode) {
+    if (authStore.selectedDeptCode && appStore.HOSPITAL_ID !== 'whyx') {
       setTableLoading(true);
       HomeApi.getWardExecuteHomeStatus(postData)
         .then(res => {

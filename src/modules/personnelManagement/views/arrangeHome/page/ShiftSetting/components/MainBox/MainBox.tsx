@@ -238,82 +238,161 @@ export default function MainBox() {
       authStore.isRoleManage;
 
   if (promise) {
-    columns.push({
-      title: "操作",
-      dataIndex: "title",
-      width: 100,
-      key: "title",
-      render: (text: string, record: any) => {
-        if (disableArrangeList.includes(record.name)) {
-          return "";
-        } else {
-          return (
-            <DoCon>
-              <span
-                onClick={(e: any) => {
-                  addShiftModal.show({
-                    editData: record,
-                    // 添加字段type：区分医院和登陆者身份
-                    type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
-                    identity:
-                      authStore.isRoleManage &&
-                      (authStore.user && authStore.user.empName) !== "管理员",
-                    onOkCallBack: () => {
-                      getShiftList();
-                    }
-                  });
-                }}
-              >
-                编辑
-              </span>
-              <span
-                onClick={() => {
-                  globalModal
-                    .confirm("确认删除", "确认删除该套餐？")
-                    .then(res => {
-                      service.scheduleShiftApiService
-                        .delete(record.id)
-                        .then(res => {
-                          emitter.emit("更新班次列表");
-                        });
-                      message.success(`删除${record.name}成功`);
+    if (appStore.HOSPITAL_ID == 'whyx' && authStore.isSuperAdmin) {
+      columns.push({
+        title: "操作",
+        dataIndex: "title",
+        width: 100,
+        key: "title",
+        render: (text: string, record: any) => {
+          if (disableArrangeList.includes(record.name)) {
+            return "";
+          } else {
+            return (
+              <DoCon>
+                <span
+                  onClick={(e: any) => {
+                    addShiftModal.show({
+                      editData: record,
+                      // 添加字段type：区分医院和登陆者身份
+                      type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
+                      identity:
+                        authStore.isRoleManage &&
+                        (authStore.user && authStore.user.empName) !== "管理员",
+                      onOkCallBack: () => {
+                        getShiftList();
+                      }
                     });
-                }}
-              >
-                删除
-              </span>
-            </DoCon>
-          );
-        }
-        <DoCon>
-          <span
-            onClick={(e: any) => {
-              addShiftModal.show({
-                editData: record,
-                onOkCallBack: () => {
-                  getShiftList();
-                }
-              });
-              // emitter.emit('弹窗编辑排班', record)
-            }}
-          >
-            编辑
-          </span>
-          <span
-            onClick={() => {
-              globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
-                service.scheduleShiftApiService.delete(record.id).then(res => {
-                  emitter.emit("更新班次列表");
+                  }}
+                >
+                  编辑
+                </span>
+                <span
+                  onClick={() => {
+                    globalModal
+                      .confirm("确认删除", "确认删除该套餐？")
+                      .then(res => {
+                        service.scheduleShiftApiService
+                          .delete(record.id)
+                          .then(res => {
+                            emitter.emit("更新班次列表");
+                          });
+                        message.success(`删除${record.name}成功`);
+                      });
+                  }}
+                >
+                  删除
+                </span>
+              </DoCon>
+            );
+          }
+          <DoCon>
+            <span
+              onClick={(e: any) => {
+                addShiftModal.show({
+                  editData: record,
+                  onOkCallBack: () => {
+                    getShiftList();
+                  }
                 });
-                message.success(`删除${record.name}成功`);
-              });
-            }}
-          >
-            删除
-          </span>
-        </DoCon>;
-      }
-    });
+                // emitter.emit('弹窗编辑排班', record)
+              }}
+            >
+              编辑
+            </span>
+            <span
+              onClick={() => {
+                globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
+                  service.scheduleShiftApiService.delete(record.id).then(res => {
+                    emitter.emit("更新班次列表");
+                  });
+                  message.success(`删除${record.name}成功`);
+                });
+              }}
+            >
+              删除
+            </span>
+          </DoCon>;
+        }
+      });
+    } else if (appStore.HOSPITAL_ID != 'whyx') {
+      columns.push({
+        title: "操作",
+        dataIndex: "title",
+        width: 100,
+        key: "title",
+        render: (text: string, record: any) => {
+          if (disableArrangeList.includes(record.name)) {
+            return "";
+          } else {
+            return (
+              <DoCon>
+                <span
+                  onClick={(e: any) => {
+                    addShiftModal.show({
+                      editData: record,
+                      // 添加字段type：区分医院和登陆者身份
+                      type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
+                      identity:
+                        authStore.isRoleManage &&
+                        (authStore.user && authStore.user.empName) !== "管理员",
+                      onOkCallBack: () => {
+                        getShiftList();
+                      }
+                    });
+                  }}
+                >
+                  编辑
+                </span>
+                <span
+                  onClick={() => {
+                    globalModal
+                      .confirm("确认删除", "确认删除该套餐？")
+                      .then(res => {
+                        service.scheduleShiftApiService
+                          .delete(record.id)
+                          .then(res => {
+                            emitter.emit("更新班次列表");
+                          });
+                        message.success(`删除${record.name}成功`);
+                      });
+                  }}
+                >
+                  删除
+                </span>
+              </DoCon>
+            );
+          }
+          <DoCon>
+            <span
+              onClick={(e: any) => {
+                addShiftModal.show({
+                  editData: record,
+                  onOkCallBack: () => {
+                    getShiftList();
+                  }
+                });
+                // emitter.emit('弹窗编辑排班', record)
+              }}
+            >
+              编辑
+            </span>
+            <span
+              onClick={() => {
+                globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
+                  service.scheduleShiftApiService.delete(record.id).then(res => {
+                    emitter.emit("更新班次列表");
+                  });
+                  message.success(`删除${record.name}成功`);
+                });
+              }}
+            >
+              删除
+            </span>
+          </DoCon>;
+        }
+      });
+    }
   }
   // new: 武汉市一增加是否为责护
   let isWh = appStore.HOSPITAL_ID === 'wh'
