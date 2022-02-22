@@ -88,7 +88,7 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey={appStore.HOSPITAL_ID === 'gxjb' ? '全部科室' : appStore.HOSPITAL_ID === 'whyx' && authStore.isDepartment ? '全部科室' : '完整科室'} />
+        <MultipleDeptSelect deptKey={appStore.HOSPITAL_ID === 'gxjb' ? '全部科室' : appStore.HOSPITAL_ID === 'whyx' && !authStore.isDepartment ? '全部科室' : '完整科室'} />
 
         <Input
           style={{ marginLeft: 20, width: 360 }}
