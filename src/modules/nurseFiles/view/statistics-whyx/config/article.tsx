@@ -168,6 +168,13 @@ export const pageObj: PageObj = {
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageTwo.split(',')} /> : ''}</DoCon>
       }
-    }
+    },
+    {
+      title: '状态',
+      dataIndex: 'auditedStatusName',
+      key: 'auditedStatusName',
+      width: 120,
+      align: 'center'
+    },
   ]
 }

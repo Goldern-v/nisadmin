@@ -55,26 +55,26 @@ export const pageObj: PageObj = {
       name: 'participants'
     },
     {
-      label: '创新类别', 
+      label: '创新类别',
       type: 'multiplesSelect',
       name: 'innovationType',
       dataSource: statisticsViewModal.getDict('创新类别')
     },
     {
-      label: '创新级别', 
+      label: '创新级别',
       type: 'multiplesSelect',
       name: 'innovationGrade',
       dataSource: statisticsViewModal.getDict('创新级别')
     },
     {
-      label: '推广区域', 
+      label: '推广区域',
       type: 'multiplesSelect',
       name: 'promotionArea',
       dataSource: statisticsViewModal.getDict('推广区域')
     },
 
   ],
-  tableList: [ 
+  tableList: [
     {
       title: '申报人',
       dataIndex: 'declarant',
@@ -128,6 +128,13 @@ export const pageObj: PageObj = {
       dataIndex: 'promotionArea',
       width: 100,
       align: 'center'
-    }
+    },
+    {
+      title: '状态',
+      dataIndex: 'auditedStatusName',
+      key: 'auditedStatusName',
+      width: 120,
+      align: 'center'
+    },
   ]
 }

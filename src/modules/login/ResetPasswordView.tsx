@@ -183,6 +183,11 @@ export default withRouter(function ResetPasswordView(props: Props) {
               </Tooltip>
             </div>
           </Form>
+          <div className="login" onClick={() => {
+            history.push('/login')
+          }}>
+            <span>返回登陆</span>
+          </div>
           <Button
             type="primary"
             onClick={() => resetPassword()}
@@ -287,6 +292,11 @@ const BoxInput = styled.div`
     right:-25px;
     font-size: 16px;
     width: 18px;
+  }
+  .login {
+    margin-top: -10px;
+    text-align: right;
+    cursor: pointer;
   }
   input[type="text"] {
     position: relative;

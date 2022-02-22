@@ -750,12 +750,16 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
     return (
       <React.Fragment>
         <Con color={cellObj.nameColor}>
-          <span style={{ color: symbol.symbolColor || "#333" }}>
+          {appStore.HOSPITAL_ID != 'whyx' && <span style={{ color: symbol.symbolColor || "#333" }}>
             {symbol.symbol || ""}
-          </span>
+          </span>}
           {sheetViewModal.countArrangeNameList.includes(cellObj.rangeName)
             ? (cellObj.rangeName || "") + (cellObj.rangeNameCode || "")
             : cellObj.rangeName}
+          {appStore.HOSPITAL_ID == 'whyx' && <span style={{ color: symbol.symbolColor || "#333" }}>
+            {symbol.symbol || ""}
+          </span>
+          }
         </Con>
         {(cellObj.settings && cellObj.settings.length && (
           <React.Fragment>
@@ -787,9 +791,9 @@ const Wrapper = styled.div<{ backgroundColor?: string }>`
   margin: -1px -3px;
   position: relative;
   word-break: break-all;
-  background: ${p => p.backgroundColor || ""};
+  background: ${p => p.backgroundColor || ""}  !important;
   &.isSelected {
-    background: #ffe36c;
+    background: #ffe36c !important;
     cursor: pointer;
   }
   &.isReduceWordTime {

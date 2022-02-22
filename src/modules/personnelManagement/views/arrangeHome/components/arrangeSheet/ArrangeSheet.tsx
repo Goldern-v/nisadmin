@@ -188,7 +188,7 @@ export default observer(function ArrangeSheet(props: Props) {
           return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
             <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
             {record.extraUser && <React.Fragment>
-              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : "#007aff" }}>{record.extraUser.empName}</span>
+              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : record.extraUser.userType == 2 ? "#007aff" : "" }}>{record.extraUser.empName}</span>
             </React.Fragment>
             }
           </div >
@@ -675,6 +675,13 @@ export default observer(function ArrangeSheet(props: Props) {
           $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
         });
         break;
+      case "whyx":
+        const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
+        if (!dragRowWhyx) return;
+        sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragRowWhyx]],
+        });
+        break;
       default:
         try {
           let pc = (document as any).querySelector(
@@ -696,7 +703,7 @@ export default observer(function ArrangeSheet(props: Props) {
               $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]],
             });
             // 东莞横沥移动单独处理：右边移动 护士信息一起移动
-            if (["dghl", "fqfybjy", 'whyx'].includes(appStore.HOSPITAL_ID)) {
+            if (["dghl", "fqfybjy"].includes(appStore.HOSPITAL_ID)) {
               leftList = update(leftList, {
                 $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
               });

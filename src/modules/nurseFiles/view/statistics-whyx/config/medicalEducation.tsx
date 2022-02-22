@@ -163,5 +163,12 @@ export const pageObj: PageObj = {
     //     return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
     //   }
     // }
+    {
+      title: '状态',
+      dataIndex: 'auditedStatusName',
+      key: 'auditedStatusName',
+      width: 120,
+      align: 'center'
+    },
   ]
 }

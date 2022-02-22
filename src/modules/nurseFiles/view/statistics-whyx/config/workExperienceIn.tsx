@@ -40,7 +40,7 @@ export const pageObj: PageObj = {
       name: 'unit'
     },
   ],
-  tableList: [ 
+  tableList: [
     {
       title: "工作地点",
       dataIndex: "insideOutsideState",
@@ -77,6 +77,13 @@ export const pageObj: PageObj = {
       key: '5',
       width: 250,
       align: 'center'
-    }
+    },
+    {
+      title: '状态',
+      dataIndex: 'auditedStatusName',
+      key: 'auditedStatusName',
+      width: 120,
+      align: 'center'
+    },
   ]
 }

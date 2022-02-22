@@ -301,7 +301,7 @@ const Wrapper = styled.div`
 
 // @ts-ignore
 const LeftMenuCon = styled(ScrollBox)`
-  width: 160px;
+  width: 170px;
   position: relative;
   z-index: 1;
   background: rgba(248, 248, 248, 1);

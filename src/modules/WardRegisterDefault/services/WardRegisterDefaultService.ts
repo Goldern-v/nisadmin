@@ -12,6 +12,7 @@ export default class WardRegisterDefaultService extends BaseApiService {
   public qcRegisterBlockGetList(registerCode: string, wardCode: string) {
     return this.get(`/qcRegisterBlock/${registerCode}/getList/${wardCode}`);
   }
+
   /** 创建 */
   public qcRegisterBlockCreate(registerCode: string, wardCode: string) {
     return this.get(`/qcRegisterBlock/${registerCode}/create/${wardCode}`);
@@ -20,6 +21,12 @@ export default class WardRegisterDefaultService extends BaseApiService {
   public getPage(registerCode: string, obj: any) {
     return this.post(`/qcRegisterData/${registerCode}/getPage`, obj);
   }
+
+  // 贵州-特殊处理 QCRG_GSY_09  QCRG_GSY_10  QCRG_GSY_11 全院情况
+  public getPageGZSRM(registerCode: string, obj: any) {
+    return this.post(`/qcRegisterData/${registerCode}/getAll`, obj);
+  }
+
   /** 保存 block 数据 */
   public saveAndSignAll(
     registerCode: string,
@@ -127,7 +134,6 @@ export default class WardRegisterDefaultService extends BaseApiService {
       responseType: "blob"
     });
   }
-
   /** 导出全部科室登记本 */
   public exportAllWard(
     registerCode: string,
