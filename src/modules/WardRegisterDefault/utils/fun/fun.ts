@@ -1,5 +1,5 @@
 import { wardRegisterDefaultService } from "../../services/WardRegisterDefaultService";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
 import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
@@ -151,11 +151,14 @@ export function getFun(context: any) {
       paramMap: _paramsMap,
       ...pageOptions
     } as any
-
-
-    wardRegisterDefaultService
-      .getPage(registerCode, params)
-      .then(res => {
+    
+    let url: Promise<any>
+    // 贵州 全院的情况下需要调后端另外一个接口
+    if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院')
+      url = wardRegisterDefaultService.getPageGZSRM(registerCode, params)
+    else url = wardRegisterDefaultService.getPage(registerCode, params)
+    
+    url.then(res => {
         setPageLoading(false)
         if (!res.data) return
 
@@ -254,6 +257,10 @@ export function getFun(context: any) {
 
   /** 保存 */
   const onSave = () => {
+    if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院') {
+      message.warning('科室全院情况下不可以保存，请选择科室！')
+      return
+    };
     setPageLoading && setPageLoading(true)
     let reqDataSorce = dataSource.filter((item: any) => !item.id || item.modified)
 
@@ -280,6 +287,10 @@ export function getFun(context: any) {
 
   /** 新建行 */
   const createRow = () => {
+    if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院') {
+      message.warning('科室全院情况下不可以新建行，请选择科室！')
+      return
+    };
     let range = ""
     let rangeIndexNo = 0
     if (rangeConfigList && rangeConfigList.length > 0) {
@@ -336,6 +347,16 @@ export function getFun(context: any) {
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
 
+    if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院') {
+      wardRegisterDefaultService.exportAllWard(
+        registerCode,
+        date[0] ? date[0].format("YYYY-MM-DD") : "",
+        date[1] ? date[1].format("YYYY-MM-DD") : "",
+      ).then(res => {
+        fileDownload(res);
+      });
+      return
+    }
     wardRegisterDefaultService
       .exportExcel(registerCode, {
         startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",

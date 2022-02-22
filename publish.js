@@ -59,9 +59,17 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9883') >= 0) {
     folderSrc = '/crdata/webProject/manage-foshanshiyi'
   }
+  //佛山市一（密码不做md5加密测试存放代码）
+  if (process.env.npm_lifecycle_event.indexOf('9903') >= 0) {
+    folderSrc = '/crdata/webProject/manage-foshanshiyiytest'
+  }
   //顺德龙江
   if (process.env.npm_lifecycle_event.indexOf('9887') >= 0) {
     folderSrc = '/crdata/webProject/manage-shundelongjiang'
+  }
+  //广西江滨
+  if (process.env.npm_lifecycle_event.indexOf('9889') >= 0) {
+    folderSrc = '/crdata/webProject/manage-guangxijiangbin'
   }
   
 

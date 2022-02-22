@@ -35,12 +35,13 @@ const rules: Rules = {
     } else {
       return true
     }
-  }
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  },
+  year: (val) => !!val || '请选择年份',
+  monographName: (val) => !!val || '请填写专著名称',
+  pressName: (val) => !!val || '请填写出版社名称',
+  pressDate: (val) => !!val || '请选择出版日期',
+  participation: (val) => !!val || '请填写著者',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditMonographModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -120,37 +121,37 @@ export default function EditMonographModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`年份`} name='year'>
+              <Form.Field label={`年份`} name='year' required>
                 <YearPicker />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`专著名称`} name='monographName'>
+              <Form.Field label={`专著名称`} name='monographName' required>
                 <Input />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`出版社名称`} name='pressName'>
+              <Form.Field label={`出版社名称`} name='pressName' required>
                 <Input />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`出版号`} name='pressNumber'>
+              <Form.Field label={`出版号`} name='pressNumber' required>
                 <Input />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`出版日期`} name='pressDate'>
+              <Form.Field label={`出版日期`} name='pressDate' required>
                 <DatePicker />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`著者`} name='participation'>
+              <Form.Field label={`著者`} name='participation' required>
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`附件`} name='urlImageOne'>
+              <Form.Field label={`附件`} name='urlImageOne' required>
                 <MultipleImageUploader
                   text='添加图片'
                   tip={'上传专著封面页、有自己参编名称一页，有出版号一页、目录页共四页的扫描件'}

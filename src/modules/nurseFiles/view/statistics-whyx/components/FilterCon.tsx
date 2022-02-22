@@ -29,7 +29,7 @@ export default function FilterCon(props: Props) {
   let [authorizationName, setAuthorizationName]: any[] = useState([])
 
 
-  useLayoutEffect(() => { 
+  useLayoutEffect(() => {
     if (refForm.current) {
       refForm.current.clean()
       let form = refForm.current
@@ -52,7 +52,7 @@ export default function FilterCon(props: Props) {
     }
   }, [pageObj.title])
 
-  useLayoutEffect(() => { 
+  useLayoutEffect(() => {
     if (refForm.current) {
       let form = refForm.current
       statisticsViewModal.getChildCodeList(form.state.values.grantType).then(res => {
@@ -60,7 +60,7 @@ export default function FilterCon(props: Props) {
       })
     }
   }, [grantType])
-  
+
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
     if (value?.grantType) setGrantType(value?.grantType)
@@ -90,9 +90,9 @@ export default function FilterCon(props: Props) {
 
     for (let item of pageObj.filterList) {
       if (item.name && (item.type == 'input' || item.type == 'select' || item.type == 'multiplesSelect' || item.type == 'numberUntilSelect' || item.type == 'multiplesSelecteSpecially')) {
-        result[item.name] = value[item.name] === 0 ?  (isNumber(value[item.name]) ? value[item.name] + '' : value[item.name]) : ((isNumber(value[item.name]) ? value[item.name] + '' : value[item.name]) || '')
+        result[item.name] = value[item.name] === 0 ? (isNumber(value[item.name]) ? value[item.name] + '' : value[item.name]) : ((isNumber(value[item.name]) ? value[item.name] + '' : value[item.name]) || '')
         // (item.name === 'declarantDeptName' && (result['declarantDeptName'] = value['declarantDeptName'] === '全部'? '': value['declarantDeptName']))
-        item.name1 && (result[item.name1] = value[item.name1] === 0 ?  (isNumber(value[item.name1]) ? value[item.name1] + '' : value[item.name1]) : ((isNumber(value[item.name1]) ? value[item.name1] + '' : value[item.name1]) || ''))
+        item.name1 && (result[item.name1] = value[item.name1] === 0 ? (isNumber(value[item.name1]) ? value[item.name1] + '' : value[item.name1]) : ((isNumber(value[item.name1]) ? value[item.name1] + '' : value[item.name1]) || ''))
       } else if (item.name && item.type == 'yearRangePicker' && item.nameList) {
         if (value[item.name]) {
           for (let i = 0; i < item.nameList.length; i++) {
@@ -127,9 +127,9 @@ export default function FilterCon(props: Props) {
     // 科室创新-申报科室
     result.declarantDeptName = result.declarantDeptName === '全部' ? '' : result.declarantDeptName
     // 资质院内
-    let newGrantType = statisticsViewModal.sortList.filter((item: any) =>item.code === result.grantType)
+    let newGrantType = statisticsViewModal.sortList.filter((item: any) => item.code === result.grantType)
     result.grantType = newGrantType[0]?.name
-    
+
     if (value.empNo) result.empNo = value.empNo
     filterRef.current = result
     onload()
@@ -156,7 +156,7 @@ export default function FilterCon(props: Props) {
       }
       // case 'autoCompletSelect': {
       //   return (
-          
+
       //   )
       // }
       case 'multiplesSelect': {
@@ -173,7 +173,7 @@ export default function FilterCon(props: Props) {
           >
             {item.dataSource &&
               item.dataSource.map((items, index) => (
-                <Select.Option value={ item.label === '申报科室' ? items.name : items.code} key={index}>
+                <Select.Option value={item.label === '申报科室' ? items.name : items.code} key={index}>
                   {items.name}
                 </Select.Option>
               ))}
@@ -191,7 +191,7 @@ export default function FilterCon(props: Props) {
             }
           >
             {authorizationName &&
-              authorizationName.map((item: any, index:any) => (
+              authorizationName.map((item: any, index: any) => (
                 <Select.Option value={item.name} key={index}>
                   {item.name}
                 </Select.Option>
@@ -228,11 +228,11 @@ export default function FilterCon(props: Props) {
         <Row>
           {pageObj.filterList.map((item, index) => (
             <Col span={6} key={index} style={item.name == 'deptCode' ? { marginBottom: -6 } : {}}>
-              {item?.numberUntilSelect ? 
-              <NumberUntilSelect step={item.step || 0.1} dictList={item.dataSource || []} numberUntilInput={item.numberUntilInput} label={item.label} unit={item.unit} name={{name: item.name, name1: item.name1}} /> :
-              <Form.Field label={item.label} name={item.name}>
-                {getComponent(item)}
-              </Form.Field>
+              {item?.numberUntilSelect ?
+                <NumberUntilSelect step={item.step || 0.1} dictList={item.dataSource || []} numberUntilInput={item.numberUntilInput} label={item.label} unit={item.unit} name={{ name: item.name, name1: item.name1 }} /> :
+                <Form.Field label={item.label} name={item.name}>
+                  {getComponent(item)}
+                </Form.Field>
               }
             </Col>
           ))}

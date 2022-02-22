@@ -196,6 +196,8 @@
     "publish:9885": "npm run build:whyx && node publish.js",
     "publish:9883": "npm run build:fssdy && node publish.js",
     "publish:9887": "npm run build:sdlj && node publish.js",
+    "publish:9889": "npm run build:gxjb && node publish.js",
+    "publish:9903": "npm run build:fssdy && node publish.js",
     "test": "react-app-rewired test --env=jsdom",
     "lint:ts": "tslint --fix",
     "lint:style": "stylelint ./src/**/*.{ts,tsx}"

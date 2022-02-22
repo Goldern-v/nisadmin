@@ -5,11 +5,13 @@ import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-import { Button, message } from 'antd'
+import { Button, message, Select } from 'antd'
 import emitter from 'src/libs/ev'
 import { appStore } from "src/stores";
 import { fileDownload } from 'src/utils/file/file'
 // import { observer } from 'mobx-react-lite'
+
+const { Option } = Select;
 
 export interface Props {
   onChange?: Function
@@ -37,6 +39,16 @@ export default function BedSituation(props: Props) {
           endTime: payload[1],
         })
       }} />
+      <span style={{marginLeft: '20px'}}>时令状态：</span>
+      {appStore.HOSPITAL_ID==='lcey' && 
+        <Select defaultValue="summer" style={{ width: 120 }} onChange={(value: string) => onChange && onChange({
+          ...query, 
+          season: value
+        })
+        }>
+          <Option value="summer">夏令时</Option>
+          <Option value="winter">冬令时</Option>
+        </Select>}
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>

@@ -80,11 +80,11 @@ export default withRouter(function LoginView(props: Props) {
       message.warning("请填写账号和密码！")
       return;
     }
-    if (showVerification&&!verificationCode) {
+    if (showVerification && !verificationCode) {
       message.warning("请填写验证码！")
       return;
     }
-    // (["fssdy"].includes(appStore.HOSPITAL_ID)) && (_password=md5(_password));
+    (process.env.NODE_ENV !== 'development') && (["fssdy"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
     service.authApiService
       .login(_username, _password, verificationCode, "")
       .then(() => {
@@ -160,12 +160,12 @@ export default withRouter(function LoginView(props: Props) {
     setShowVerification(true)
     service.authApiService
       .login(username, password, "", true)
-        .then((res:any) => {
-          setVerificationImg(res.data)
-        })
-        .catch(() => {
-          
-        });
+      .then((res: any) => {
+        setVerificationImg(res.data)
+      })
+      .catch(() => {
+
+      });
   }
   const userLoginInfoMap = JSON.parse(localStorage.userLoginInfoMap || "{}");
   const keys = Object.keys(userLoginInfoMap);
@@ -214,7 +214,7 @@ export default withRouter(function LoginView(props: Props) {
             })}
             <h1 className="Title">{Title()}</h1>
           </div>
-          
+
           <div className="TextItem">
             <div className="iconfont NameIcon">&#xe648;</div>
             {/* {JSON.stringify(userNameDataSource)} */}
@@ -239,7 +239,7 @@ export default withRouter(function LoginView(props: Props) {
               onKeyDown={passwordEnter}
             />
           </div>
-          {showVerification&&<div className="TextItem">
+          {showVerification && <div className="TextItem">
             <div className="iconfont NameIcon"><Icon type="safety-certificate" /></div>
             <input
               onChange={e => setVerificationCode(e.target.value)}
@@ -250,10 +250,10 @@ export default withRouter(function LoginView(props: Props) {
               onKeyDown={passwordEnter}
             />
             <div className="verificationImg">
-              <img src={verificationImg} alt="" onClick={() => {refreshImg()}}/>
+              <img src={verificationImg} alt="" onClick={() => { refreshImg() }} />
             </div>
           </div>}
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", 'alignItems': 'center', 'justifyContent': 'space-between' }}>
             <div
               className="CheckItem"
               onClick={() => {
@@ -267,6 +267,17 @@ export default withRouter(function LoginView(props: Props) {
               />
               <label>记住账号密码</label>
             </div>
+            {appStore.hisMatch({
+              map: {
+                'whyx': <div className="resetpassword CheckItem" onClick={() => {
+                  history.push('/resetpassword')
+                }}>
+                  <span>重置密码</span>
+                </div>,
+                default: null
+              }
+            })}
+
           </div>
 
           <Button
@@ -418,6 +429,9 @@ const BoxInput = styled.div`
   input[type="password"]:focus {
     z-index: 1;
     box-shadow: 0 0 0 1px #4fb390;
+  }
+  .resetpassword {
+    cursor:pointer;
   }
   .CheckItem {
     position: relative;

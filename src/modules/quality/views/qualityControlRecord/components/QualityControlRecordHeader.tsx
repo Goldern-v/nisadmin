@@ -175,7 +175,7 @@ export default observer(function TopCon(props: any) {
           setCreateBtn(!!res);
         });
     }
-  }, []);
+  }, [qualityControlRecordVM.level]);
 
   return (
     <Wrapper>

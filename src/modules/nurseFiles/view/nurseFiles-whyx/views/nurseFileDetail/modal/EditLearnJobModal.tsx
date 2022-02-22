@@ -26,11 +26,12 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  // time: (val) => !!val || '请填写时间',
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
+  startDate: (val) => !!val || '请填写任期时间',
+  endDate: (val) => !!val || '请填写任期时间',
+  learnJobName: (val) => !!val || '请填写任职学会名称',
+  learnPosition: (val) => !!val || '请填写学会职位',
+  learnLevel: (val) => !!val || '请填写学会级别',
+  urlImageOne: (val) => !!val || '请上传附件',
 }
 export default function EditLearnJobModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -38,7 +39,7 @@ export default function EditLearnJobModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -120,29 +121,29 @@ export default function EditLearnJobModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={9}>
-              <Form.Field name='endDate'>
+              <Form.Field name='endDate' required>
                 <DatePicker />
               </Form.Field>
             </Col>
           </Row>
           <Col span={24}>
-            <Form.Field label={`任职学会名称`} name='learnJobName'>
+            <Form.Field label={`任职学会名称`} name='learnJobName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学会职位`} name='learnPosition'>
+            <Form.Field label={`学会职位`} name='learnPosition' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学会级别`} name='learnLevel'>
+            <Form.Field label={`学会级别`} name='learnLevel' required>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
+            <Form.Field label={`附件`} name='urlImageOne' required>
               <MultipleImageUploader text='添加图片' tip={'上传学会任职聘书扫描件'} />
             </Form.Field>
           </Col>

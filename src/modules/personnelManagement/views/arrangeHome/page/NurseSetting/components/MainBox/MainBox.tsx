@@ -234,20 +234,20 @@ export default observer(function MainBox() {
               >
                 {row.resignationFlag == 1 ? '取消未脱教' : '设为未脱教'}
               </span>
-              {['1', '2'].includes(row.userType) &&
-                <span onClick={() => {
-                  AddTutorModal.show({
-                    editData: row,
-                    onOkCallBack: () => {
-                      message.success(`设置成功`);
-                      getUserList();
-                    }
+              {/* {['1', '2'].includes(row.userType) && */}
+              <span onClick={() => {
+                AddTutorModal.show({
+                  editData: row,
+                  onOkCallBack: () => {
+                    message.success(`设置成功`);
+                    getUserList();
+                  }
 
-                  })
-                }}>
-                  导师设置
-                </span>
-              }
+                })
+              }}>
+                导师设置
+              </span>
+              {/* } */}
             </>
             }
             <span
@@ -332,6 +332,17 @@ export default observer(function MainBox() {
     addScheduleNursingModal.show({
       getTableData: getUserList,
     });
+  });
+
+  emitter.removeAllListeners("全部列入排班");
+  emitter.addListener("全部列入排班", () => {
+    let list = userList.map((item: any) => {
+      return {
+        ...item,
+        rangeShow: true
+      }
+    })
+    setUserList(list);
   });
 
   const getUserList = () => {

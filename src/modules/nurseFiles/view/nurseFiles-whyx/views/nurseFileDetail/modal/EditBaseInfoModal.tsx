@@ -48,7 +48,7 @@ const rules: Rules = {
       return true;
     }
   },
-  phone: (val: any) =>{
+  phone: (val: any) => {
     if (val && val.length != 11) return "手机号格式不正确"
     else return true
   }
@@ -110,28 +110,12 @@ export default function EditWorkHistoryModal(props: Props) {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
-    value.birthday && (value.birthday = value.birthday.format("YYYY-MM-DD"));
-    value.zyzsDate && (value.zyzsDate = value.zyzsDate.format("YYYY-MM-DD"));
     value.zyzsNursingPostDate &&
       (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format(
         "YYYY-MM-DD"
       ));
-    value.takeWorkTime &&
-      (value.takeWorkTime = value.takeWorkTime.format("YYYY-MM-DD"));
-    value.goHospitalWorkDate &&
-      (value.goHospitalWorkDate = value.goHospitalWorkDate.format(
-        "YYYY-MM-DD"
-      ));
     value.jobStartDate &&
       (value.jobStartDate = value.jobStartDate.format("YYYY-MM-DD"));
-    value.highestEducationDate &&
-      (value.highestEducationDate = value.highestEducationDate.format(
-        "YYYY-MM-DD"
-      ));
-    value.zyzsEffectiveUpDate &&
-      (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format(
-        "YYYY-MM-DD"
-      ));
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
@@ -193,22 +177,16 @@ export default function EditWorkHistoryModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          birthday: data.birthday ? moment(data.birthday) : null,
-          zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
+          birthday: data.birthday || null,
+          zyzsDate: data.zyzsDate || null,
           zyzsNursingPostDate: data.zyzsNursingPostDate
             ? moment(data.zyzsNursingPostDate)
             : null,
-          takeWorkTime: data.takeWorkTime ? moment(data.takeWorkTime) : null,
-          goHospitalWorkDate: data.goHospitalWorkDate
-            ? moment(data.goHospitalWorkDate)
-            : null,
+          takeWorkTime: data.takeWorkTime || null,
+          goHospitalWorkDate: data.goHospitalWorkDate || null,
           jobStartDate: data.jobStartDate ? moment(data.jobStartDate) : null,
-          highestEducationDate: data.highestEducationDate
-            ? moment(data.highestEducationDate)
-            : null,
-          zyzsEffectiveUpDate: data.zyzsEffectiveUpDate
-            ? moment(data.zyzsEffectiveUpDate)
-            : null,
+          highestEducationDate: data.highestEducationDate || null,
+          zyzsEffectiveUpDate: data.zyzsEffectiveUpDate || null,
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
         },
       });
@@ -353,7 +331,14 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`初始学历`} name="initialEducation">
-              <Input disabled />
+              {/* <Input /> */}
+              <Select>
+                {nurseFileDetailViewModal.getDict("最高学历类型").map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>

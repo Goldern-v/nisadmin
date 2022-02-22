@@ -4,6 +4,7 @@ import React, { lazy } from "react";
 // import ViewUsers from '../views/ViewUsers'
 import { RouteItem } from "../components/RouterView";
 import LoginView from "src/modules/login/LoginView";
+import ResetPasswordView from "src/modules/login/ResetPasswordView";
 import { setLayout } from "src/utils/route/route-utils";
 import layouts from "src/layouts";
 import demo from "src/demo";
@@ -505,6 +506,7 @@ const routes: RouteItem[] = [
   setLayout("/Sheetpage", Sheetpage),
 
   setLayout("/login", LoginView),
+  setLayout("/resetpassword", ResetPasswordView),
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),

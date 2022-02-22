@@ -22,7 +22,7 @@ export const pageObj: PageObj = {
     {
       label: '姓名或工号',
       type: 'input',
-      name: 'empNo'
+      name: 'name'
     },
     {
       label: '科室',
