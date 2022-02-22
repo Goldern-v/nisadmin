@@ -41,49 +41,32 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   {
                     取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
-                    护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
+                    最高学历: 'highestEducation',
                   },
                   { 
-                    最高学历: 'highestEducation',
                     职务: 'job',
-                  },
-                  {
                     现职务任职起始时间: 'jobStartDate',
-                    工作护理单元: 'deptName',
                   },
                   {
-                    鞋码大小: 'shoeSize',
+                    工作护理单元: 'deptName',
+                    // 鞋码大小: 'shoeSize',
+                    '夏装-上衣': 'summer_jacket_size'
                   },
-                  ...appStore.hisMatch({
-                    map: {
-                      'fsxt': [
-                        {
-                          "夏装-裤子": "summer_trousers_size",
-                          "冬装-上衣": "winter_jacket_size",
-                        },
-                        {
-                          "冬装-裤子": "winter_trousers_size",
-                          "夏装-医生款": "summer_isolation_suit_size",
-                        },
-                        {
-                          "冬装-医生款": "winter_isolation_suit_size",
-                          "鞋款式": "nurse_shoes_style",
-                        },
-                        {
-                          "鞋码": "nurse_shoes_size",
-                        }
-                      ],
-                      other: []
-                    },
-                  }),
-                  ...appStore.hisMatch({
-                    map: {
-                      'gzsrm': [{
-                        职称: 'newTitle'
-                      }],
-                      other: []
-                    },
-                  })
+                  {
+                    "夏装-裤子": "summer_trousers_size",
+                    "冬装-上衣": "winter_jacket_size",
+                  },
+                  {
+                    "冬装-裤子": "winter_trousers_size",
+                    "夏装-医生款": "summer_isolation_suit_size",
+                  },
+                  {
+                    "冬装-医生款": "winter_isolation_suit_size",
+                    "鞋款式": "nurse_shoes_style",
+                  },
+                  {
+                    "鞋码": "nurse_shoes_size",
+                  },
                 ]
               default:
                 return [
