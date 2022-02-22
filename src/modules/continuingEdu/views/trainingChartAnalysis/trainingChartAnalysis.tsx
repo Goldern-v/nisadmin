@@ -22,6 +22,7 @@ export default observer(function TrainingChartAnalysis(props: Props) {
         <AnalysisChart
           title={trainingChartAnalysisModal.chartTitle.t1}
           data={trainingChartAnalysisModal.chartData1}
+          img={trainingChartAnalysisModal.chartImg1}
         />
         {["all", "department"].includes(
           trainingChartAnalysisModal.selectedTab
@@ -29,6 +30,7 @@ export default observer(function TrainingChartAnalysis(props: Props) {
           <AnalysisChart
             title={trainingChartAnalysisModal.chartTitle.t2}
             data={trainingChartAnalysisModal.chartData2}
+            img={trainingChartAnalysisModal.chartImg2}
           />
         ) : (
           ""

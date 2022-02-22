@@ -262,7 +262,7 @@ export default observer((props: Props) => {
         itemCode: 'SR0004024'
       })
     } catch (err) {
-      console.log('test-err', err)
+      console.log(err)
     }
   }
 
