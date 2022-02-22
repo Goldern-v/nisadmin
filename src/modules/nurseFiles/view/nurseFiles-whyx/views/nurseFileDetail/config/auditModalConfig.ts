@@ -904,8 +904,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核工作情况登记',
           tableFormat: [
             {
-              授权类别: `grantType`,
-              授权名称: `grantName`
+              准入及授权: `grantType`,
+              准入及授权名称: `grantName`
             },
             {
               认证部门: `certificateUnit`,
