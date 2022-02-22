@@ -188,7 +188,7 @@ export default observer(function ArrangeSheet(props: Props) {
           return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
             <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
             {record.extraUser && <React.Fragment>
-              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : "#007aff" }}>{record.extraUser.empName}</span>
+              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : record.extraUser.userType == 2 ? "#007aff" : "" }}>{record.extraUser.empName}</span>
             </React.Fragment>
             }
           </div >
