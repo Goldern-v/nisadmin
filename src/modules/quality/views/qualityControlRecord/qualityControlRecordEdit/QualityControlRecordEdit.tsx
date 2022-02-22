@@ -71,6 +71,10 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             masterErr = true;
             errMsg = `住院号必须为数字`;
           }
+        }else if(["gzhd"].includes(appStore.HOSPITAL_ID) && (!master[x] || master[x].length===0)){
+            qcModel.setMasterErrObj(x, true);
+            masterErr = true;
+            errMsg = `住院号不能为空`;
         }
       } else if (master[x] instanceof Array) {
         if (master[x].length <= 0) {
