@@ -146,7 +146,7 @@ export default function MainBox() {
       render: (text: string, record: any) =>
         text && text.length > 0 ? (
           <span>
-            {appStore.HOSPITAL_ID == 'whyx' ?
+            {['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ?
               <Tag color={record.backgroundColor} key={text}>
                 <span style={{ color: record.nameColor }}>{colorMapCN[text]}</span>
               </Tag> :

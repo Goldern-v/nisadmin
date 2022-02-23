@@ -943,12 +943,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               申报时间: 'declarantDate',
-              登记单位: 'registerUnit',
-            },
-            {
-              登记号: 'registerNo',
               参与成员: 'participants',
             },
+            // {
+              // 登记单位: 'registerUnit',
+              // 登记号: 'registerNo',
+            // },
             {
               创新类别: 'innovationType',
               创新级别: 'innovationGrade',
