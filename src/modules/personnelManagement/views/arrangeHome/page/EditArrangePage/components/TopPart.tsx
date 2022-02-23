@@ -325,10 +325,18 @@ export default observer(function TopPart() {
 
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
+          {appStore.HOSPITAL_ID == 'whyx' && <div className="number">
+            <img src={require('./images/yuan.png')} alt='' className='yuan' />
+            <span>{sheetViewModal.experNumber} </span>
+          </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx','fssdy'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
+            {appStore.HOSPITAL_ID == 'whyx' && <div className="number">
+              <img src={require('./images/yuan.png')} alt='' className='yuan' />
+              <span>{sheetViewModal.ExpectAsNumber}</span>
+            </div>}
           </div>
         )}
 
@@ -427,12 +435,35 @@ const Wrapper = styled.div`
       margin-left: 10px;
     }
     .item {
+      position: relative;
       display: inline-block;
       margin-right: 10px;
       vertical-align: middle;
       & > div {
         display: inline-block;
         vertical-align: middle;
+      }
+    }
+    .number {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: -10px;
+      right: -5px;
+      .yuan {
+        width:100%;
+        height: 100%;
+      }
+      span {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
       }
     }
   }

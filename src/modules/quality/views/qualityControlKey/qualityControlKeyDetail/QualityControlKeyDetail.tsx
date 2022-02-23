@@ -34,20 +34,17 @@ export default observer(function(props) {
     try {
       if (id) {
         const res = await qualityControlKeyApi.getDetail(id);
-        console.log("test-res", res);
         setForm(res.data);
       }
     } catch (err) {
-      console.log("test-err", err);
+      console.log(err);
     }
   };
   const getCurBigDept = async () => {
     const res = await qualityControlKeyApi.getCurBigDept();
     if (res.code == "200" && res.data) {
-      console.log("test-res", res);
       let cur: any = deptList.filter((v: any) => v.code === res.data);
       if (cur && cur[0]) {
-        console.log("test-cur", cur);
         setFormItem({ deptCode: cur[0].code, deptName: cur[0].name });
       }
     }
