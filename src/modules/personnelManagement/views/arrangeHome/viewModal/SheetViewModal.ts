@@ -431,7 +431,6 @@ class SheetViewModal {
   /** 申请加减班 */
   getExpectAsList() {
     return arrangeService.schExpectAddOrSubGetByDeptCodeAndDate().then(res => {
-      this.ExpectAsNumber = res.data.length
       this.expectAsClassList = res.data.reduce((total: any, current: any) => {
         total.push(
           ...current.schExpects.map((item: any) => ({
@@ -441,6 +440,7 @@ class SheetViewModal {
         );
         return total;
       }, []);
+      this.ExpectAsNumber = this.expectAsClassList.length
     });
   }
 
