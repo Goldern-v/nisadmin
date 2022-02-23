@@ -185,6 +185,21 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
+            'fssdy': [
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加备注",
+                type: "text",
+                onClick: () => {
+                  addRemakeModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(value: any) {
+                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+                    }
+                  });
+                }
+              }
+            ],
             other: []
           }
         }),
@@ -695,8 +710,9 @@ export default observer(function Cell(props: Props) {
         onContextMenu={onContextMenu}
         onClick={onClick}
         className={classNames(cellConfig)}
-        backgroundColor={appStore.HOSPITAL_ID == 'whyx' ? cellObj.backgroundColor : ""}
+        backgroundColor={cellObj.backgroundColor}
       >
+        {/* backgroundColor={['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ""} */}
         {appStore.isDev && (
           <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
         )}

@@ -10,6 +10,7 @@ import { DatePicker, Modal } from 'antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore, authStore } from "src/stores";
 import JmfyFlightMenu from './components/JmfyFlightMenu'
+import FssdyFlightMenu from './components/fssdyFlightMenu'
 export interface Props { }
 
 export default observer(function EditArrangePage() {
@@ -28,6 +29,7 @@ export default observer(function EditArrangePage() {
             map: {
               gzhd: <HDFlightMenu />,
               jmfy: <JmfyFlightMenu />,
+              fssdy: <FssdyFlightMenu />,
               other: <FlightMenu />
             }
           })}
