@@ -20,12 +20,13 @@ let titleEC: any = {
   nurseWHInformation: '基本信息',
   nurseWHWorkExperience: '工作经历',
   nurseWHMedicalEducation: '医学学历教育',
-  nurseWHRegistrationWork: '在院工作情况'
+  nurseWHRegistrationWork: '在院工作情况',
 }
 
 let titleCE: any = reverseKeyValue(titleEC)
 
 export const getTitle = (title: string) => {
+  console.log(title, 889)
   if (titleCE[title] || titleEC[title]) {
     return titleCE[title] || titleEC[title]
   } else {

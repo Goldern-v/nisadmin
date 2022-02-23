@@ -23,6 +23,7 @@ import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
 import AdministrativeWard from './views/administrativeWard'
+import SafetyChecklist from './views/safetyChecklist'
 
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
@@ -64,6 +65,16 @@ export default observer(function QcTwoRouter(props: Props) {
     path: "/qcTwo/administrativeWard",
     icon: <EJZK />,
     component: AdministrativeWard,
+    // keepAlive: true,
+    // disabledKeepAlive:
+    //   (appStore.history && appStore.history.action) !== "POP",
+  }
+  // 行政查房
+  const route_safetyChecklist = {
+    title: "安全检查表",
+    path: "/qcTwo/safetyChecklist",
+    icon: <EJZK />,
+    component: SafetyChecklist,
     // keepAlive: true,
     // disabledKeepAlive:
     //   (appStore.history && appStore.history.action) !== "POP",
@@ -128,7 +139,8 @@ export default observer(function QcTwoRouter(props: Props) {
         },
         route_二级质控问题原因措施汇总,
         route_QualityControlKey,
-        route_administrativeWard
+        route_administrativeWard,
+        route_safetyChecklist
       ],
       dghl: [
         {

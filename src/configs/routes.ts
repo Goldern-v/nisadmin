@@ -306,6 +306,11 @@ const administrativeWardView = lazy(() =>
   import("src/modules/quality/views/administrativeWard/RecordView")
 )
 
+// 贵州-安全检查表
+const safetyChecklistView = lazy(() =>
+  import("src/modules/quality/views/safetyChecklist/table")
+)
+
 const administrativeqcThree = lazy(() =>
   import("src/modules/quality/views/administrativeWard/RecordView")
 )
@@ -837,9 +842,9 @@ const routes: RouteItem[] = [
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
-  setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout), 
+  setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout),
+  setLayout("/safetyChecklist/qcTwo/checkView", safetyChecklistView, layouts.MainLayout),
   setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
-
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),

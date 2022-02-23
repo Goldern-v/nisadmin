@@ -107,13 +107,13 @@ export default observer((props: Props) => {
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <div className={viewOnly ? 'table-main viewOnly' : 'table-main' }>
+        <div className='table-main'>
           <div className='table-wrapper'>
             <div className='table-title'>
               护理行政查房记录表
             </div>
             {/* className={'disable'} */}
-            <table >
+            <table className={viewOnly ? 'viewOnly' : '' }>
               <tbody>
                 <tr>
                   <td style={{width:'80px'}}>科室</td>

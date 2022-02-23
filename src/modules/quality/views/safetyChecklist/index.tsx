@@ -21,11 +21,10 @@ export default observer((props: Props) => {
 
   const defaultForm = {
     deptCode: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode,
-    beginTime: undefined,
-    endTime: undefined,
+    startDate: undefined,
+    endDate: undefined,
     pageIndex: 1,
     pageSize: 20,
-    qcLevel: path.includes('qcTwo') ? '2' : '3'
   }
   // 登录者
   const _user = JSON.parse(sessionStorage.getItem('user') || '[]')
@@ -54,20 +53,21 @@ export default observer((props: Props) => {
       align: "center",
     },
     {
-      title: "时间",
-      dataIndex: `searchRoomDate`,
+      title: "片区",
+      dataIndex: `areaName`,
+      // minWidth: 180,
+      align: "center",
+    },
+    {
+      title: "检查时间",
+      dataIndex: `checkDate`,
       // width: 120,
       align: "center",
       render: (text: string) => {
         return (
-          moment(text).format('YYYY-MM-DD HH:mm')
+          moment(text).format('YYYY-MM-DD')
         )
       }
-    },
-    {
-      title: "主持人",
-      dataIndex: "compere",
-      align: "center"
     },
     {
       title: "操作",
@@ -92,27 +92,16 @@ export default observer((props: Props) => {
   ]
 
   const deleteView = (row: any) => {{
-    if (path.includes('qcTwo')) {
-      // 二级质控-只有本人创建和和护士长或者以上有操作权限
-      if (authStore.isRoleManage || row.creator === _user.empNo) {
-        setDeleteVisible(true)
-        setRowId(row.id)
-      } else {
-        message.warning('没有权限删除')
-      }
+    // 二级质控-只有本人创建和和护士长或者以上有操作权限
+    if (authStore.isRoleManage || row.creator === _user.empNo) {
+      setDeleteVisible(true)
+      setRowId(row.id)
     } else {
-      // 三级质控-只有本人创建和和护理部以上有操作权限
-      if (authStore.isDepartment || row.creator === _user.empNo) {
-        setDeleteVisible(true)
-        setRowId(row.id)
-      } else {
-        message.warning('没有权限删除')
-      }
+      message.warning('没有权限删除')
     }
-    
   }}
   const okModal = () => {
-    api.deleteitem(rowId).then(res => {
+    api.deleteitem({id: rowId}).then(res => {
       if (res.code === '200') {
         getList()
         setDeleteVisible(false)
@@ -128,52 +117,25 @@ export default observer((props: Props) => {
     const { data } = await api.getList(form)
     setTableLoading(false)
     setTotal(data.totalCount)
-    // setTableData(data.list.map((item: any) => {
-    //   return {
-    //     ...item,
-    //     ...item.itemDataMap
-    //   }
-    // }))
     setTableData(data.list || [])
   }
   const addTable = () => {
-    if (path.includes('qcTwo')) {
-      appStore.history.push(`/administrative/qcTwo/recordView`)
-    } else {
-      appStore.history.push(`/administrative/qcThree/recordView`)
-    }
+    appStore.history.push(`/safetyChecklist/qcTwo/checkView`)
   }
 
   const handleView = (row: any) => {
-    if (path.includes('qcTwo')) {
-      // 二级质控-只有本人创建和和护士长或者以上有操作权限
-      if (authStore.isRoleManage || row.creator === _user.empNo) {
-        appStore.history.push(`/administrative/qcTwo/recordView?id=${row.id}`)
-      } else {
-        message.warning('没有权限编辑')
-      }
+    // 二级质控-只有本人创建和和护士长或者以上有操作权限
+    if (authStore.isRoleManage || row.creator === _user.empNo) {
+      appStore.history.push(`/safetyChecklist/qcTwo/checkView?id=${row.id}`)
     } else {
-      // 三级质控-只有本人创建和和护理部以上有操作权限
-      if (authStore.isDepartment || row.creator === _user.empNo) {
-        appStore.history.push(`/administrative/qcThree/recordView?id=${row.id}`)
-      } else {
-        message.warning('没有权限编辑')
-      }
+      message.warning('没有权限编辑')
     }
   }
 
   //仅查看
   const handleViewOnly = (row:any) =>{
-    const pathname = `/administrative/qcThree/recordView/viewOnly?id=${row.id}`;
+    const pathname = `/safetyChecklist/qcTwo/checkView/viewOnly?id=${row.id}`;
     appStore.history.push(pathname)
-    // const path = {
-    //   pathname:"/administrative/qcThree/recordView",
-    //   state:{
-    //     id:row.id,
-    //     viewOnly:1
-    //   }
-    // }
-    // appStore.history.push(path);
   }
 
   useEffect(() => {
@@ -194,9 +156,8 @@ export default observer((props: Props) => {
           <span className='label'>日期：</span>
           <DatePicker.RangePicker
             style={{ width: 220 }}
-            value={[form.beginTime, form.endTime]}
-            onChange={(val) => setFormItem({ beginTime: val[0], endTime: val[1] })} />
-            
+            value={[form.startDate, form.endDate]}
+            onChange={(val) => setFormItem({ startDate: val[0], endDate: val[1] })} />
           <Button onClick={() => getList()}> 查询</Button>
           <Button onClick={() => addTable()}> 新增</Button>
         </div>
