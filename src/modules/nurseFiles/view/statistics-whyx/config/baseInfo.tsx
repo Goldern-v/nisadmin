@@ -276,8 +276,8 @@ export const pageObj: PageObj = {
     },
     {
       title: '护理层级起始时间',
-      dataIndex: 'nurseHierarchyDate',
-      key: 'nurseHierarchyDate',
+      dataIndex: 'nursingLevelStartDate',
+      key: 'nursingLevelStartDate',
       width: 120,
       align: 'center'
     },

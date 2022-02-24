@@ -378,13 +378,13 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护理层级`} name="nursingLevel">
-              <Input disabled />
+            <Form.Field label={`护理层级`} name="nurseHierarchy">
+              <Input disabled/>
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护理层级起始时间`} name="nursingLevelStartDate">
-              <Input disabled />
+            <Form.Field label={`护理层级起始时间`} name="maps.nursinglevelstartdate">
+              <Input disabled/>
             </Form.Field>
           </Col>
           <Col span={12}>

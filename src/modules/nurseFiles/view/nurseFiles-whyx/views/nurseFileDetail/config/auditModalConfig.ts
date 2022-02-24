@@ -67,10 +67,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               现职务任职起始时间: 'jobStartDate',
-              护理层级: 'nursingLevel',
+              护理层级: 'nurseHierarchy',
             },
             {
-              护理层级起始时间: 'nursingLevelStartDate',
+              护理层级起始时间: 'nursinglevelstartdate',
               院内工作区域: 'workAddress',
             },
             {
