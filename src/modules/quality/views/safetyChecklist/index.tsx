@@ -92,8 +92,8 @@ export default observer((props: Props) => {
   ]
 
   const deleteView = (row: any) => {{
-    // 二级质控-只有本人创建和和护士长或者以上有操作权限
-    if (authStore.isRoleManage || row.creator === _user.empNo) {
+    // 二级质控-只有护士长或者以上有操作权限
+    if (authStore.isRoleManage) {
       setDeleteVisible(true)
       setRowId(row.id)
     } else {
@@ -120,12 +120,18 @@ export default observer((props: Props) => {
     setTableData(data.list || [])
   }
   const addTable = () => {
-    appStore.history.push(`/safetyChecklist/qcTwo/checkView`)
+    // 二级质控-只有护士长或者以上有操作权限
+    if (authStore.isRoleManage) {
+      appStore.history.push(`/safetyChecklist/qcTwo/checkView`)
+    } else {
+      message.warning('没有权限新增')
+    }
+    
   }
 
   const handleView = (row: any) => {
-    // 二级质控-只有本人创建和和护士长或者以上有操作权限
-    if (authStore.isRoleManage || row.creator === _user.empNo) {
+    // 二级质控-只有护士长或者以上有操作权限
+    if (authStore.isRoleManage) {
       appStore.history.push(`/safetyChecklist/qcTwo/checkView?id=${row.id}`)
     } else {
       message.warning('没有权限编辑')
