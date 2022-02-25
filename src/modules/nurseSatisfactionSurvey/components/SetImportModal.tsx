@@ -24,7 +24,9 @@ export default function editModal(props: Props) {
     let fileList = [...info.fileList];
     fileList = fileList.slice(0);
     fileList = fileList.map(file => {
-      if (file.response) {
+      if (file.response && file.response.code == "300") {
+        message.error('导入失败,请检查导入模板是否正确！')
+      }else if(file.response && file.response.code == "200"){
         message.success('导入成功')
         onOk && onOk()
       }
