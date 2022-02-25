@@ -91,7 +91,6 @@ class TrainingChartAnalysisModal {
   }
   // 重置
   resetState(key: string) {
-    console.log('test-1', 1)
     this[key + 'Code'] = ''
     this[key + 'Name'] = ''
     if(key === 'selectPer') {
@@ -129,7 +128,6 @@ class TrainingChartAnalysisModal {
   }
   // 切换科室
   async onChangeDept(value: string, option: any) {
-    console.log('test-option', option)
     this.selectedDeptCode = value
     this.selectedDeptName = option.props.children
     if (this.tabs[2].key == this.selectedTab) {
@@ -198,7 +196,6 @@ class TrainingChartAnalysisModal {
     }
     try {
       let res = await Promise.all(arr)
-      console.log('test-', res)
       res[0] && (this.chartData1 = (res[0].data || []).map((item: any) => {
         return [item.name, ...item.numberList]
       }))
@@ -211,15 +208,30 @@ class TrainingChartAnalysisModal {
     }
   }
   
-
+  @observable public chartImg1: string = ''
+  @observable public chartImg2: string = ''
   //打印图表
   print() {
+    let canvasEls: any = document.querySelectorAll(
+      ".echarts-body canvas"
+    );
+    if (canvasEls) {
+     for (let i = 0; i < canvasEls.length; i++) {
+      this[`chartImg${i + 1}`] = canvasEls[i].toDataURL();
+     }
+    }
     printing(this.chartRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
       css: `
       @page {
-        margin: 0;
+        margin: 0mm;
+      }
+      .echarts-body {
+        display: none;
+      }
+      .chart-img-page {
+        display: block !important
       }
       `,
     });

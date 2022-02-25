@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 // import { Link } from 'react-router-dom'
-
 // import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
 import emitter from "src/libs/ev";
@@ -460,6 +459,7 @@ export default function ToolBar() {
                 }
               });
             }}
+            disabled={appStore.HOSPITAL_ID == 'whyx' && !authStore.isSuperAdmin}
             style={{ marginLeft: 6, marginRight: 3 }}
           >
             添加新班次

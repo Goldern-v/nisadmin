@@ -6,20 +6,20 @@ class Api extends BaseApiService {
   getList(data: any) {
     const params = {
       ...data,
-      beginTime: data.beginTime ? moment(data.beginTime).format('YYYY-MM-DD HH:mm') : '',
-      endTime: data.endTime ? moment(data.endTime).format('YYYY-MM-DD HH:mm') : '',
+      startDate: data.startDate ? moment(data.startDate).format('YYYY-MM-DD') : '',
+      endDate: data.endDate ? moment(data.endDate).format('YYYY-MM-DD') : '',
     }
-    return this.post(`/administrativeSearchRoom/getPage`, params)
+    return this.post(`/safetyCheck/getPageList`, params)
   }
 
   // 获取详情
   getItem(id: string) {
-    return this.get(`/administrativeSearchRoom/get/${id}`)
+    return this.post(`/safetyCheck/getById`, {id})
   }
 
   // 新增
   saveItem(params: Object) {
-    return this.post(`/administrativeSearchRoom/save0rUpdate`, params)
+    return this.post(`/safetyCheck/saveOrUpdate`, params)
   }
 
   // 审核
@@ -28,8 +28,17 @@ class Api extends BaseApiService {
   }
 
   // 删除
-  deleteitem(id: string) {
-    return this.get(`/administrativeSearchRoom/delete/${id}`)
+  deleteitem(id: Object) {
+    return this.post(`/safetyCheck/deleteById`, id)
+  }
+  // 获取片区
+  getAreaList() {
+    return this.get(`/safetyCheck/getAreaList`)
+  }
+
+  // 根据片区获取科室
+  getDeptListByArea(params: Object) {
+    return this.post(`/safetyCheck/getDeptListByArea`, params)
   }
 
   // 撤销

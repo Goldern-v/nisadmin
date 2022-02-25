@@ -65,7 +65,11 @@ class SheetViewModal {
   /**科室列表 */
   @observable public deptList: any[] = [];
   @observable public deptCodeList: any[] = [];
-
+  // 期望排班数量
+  @observable public experNumber: number = 0;
+  // 加减班
+  @observable public ExpectAsNumber: number = 0;
+  
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
       this.deptList = res.data.deptList || []
@@ -301,6 +305,8 @@ class SheetViewModal {
     return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
+      this.getExpectList();
+      this.getExpectAsList()
       if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy" || appStore.HOSPITAL_ID == "gxjb") {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
@@ -322,7 +328,6 @@ class SheetViewModal {
       } else {
         this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
       }
-
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });
@@ -370,8 +375,15 @@ class SheetViewModal {
       let { data: countObj } = await arrangeService.listRangeNameCode(
         res.data.setting
       );
+      let newList = res.data.setting.map((item: any,index:any) => {
+        return {
+          ...this.sheetTableData[index],
+          settingDtos:item.settingDtos
+        }
+      })
       this.sheetTableData = this.handleSheetTableData(
-        res.data.setting,
+        // res.data.setting,
+        newList,
         countObj
       );
       this.remark = res.data.remark;
@@ -412,6 +424,7 @@ class SheetViewModal {
   getExpectList() {
     return arrangeService.getByDeptCodeAndDate().then(res => {
       this.expectList = res.data;
+      this.experNumber = res.data.length
     });
   }
 
@@ -427,6 +440,7 @@ class SheetViewModal {
         );
         return total;
       }, []);
+      this.ExpectAsNumber = this.expectAsClassList.length
     });
   }
 

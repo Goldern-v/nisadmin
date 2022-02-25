@@ -67,10 +67,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               现职务任职起始时间: 'jobStartDate',
-              护理层级: 'nursingLevel',
+              护理层级: 'nurseHierarchy',
             },
             {
-              护理层级起始时间: 'nursingLevelStartDate',
+              护理层级起始时间: 'nursinglevelstartdate',
               院内工作区域: 'workAddress',
             },
             {
@@ -904,8 +904,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核工作情况登记',
           tableFormat: [
             {
-              授权类别: `grantType`,
-              授权名称: `grantName`
+              准入及授权: `grantType`,
+              准入及授权名称: `grantName`
             },
             {
               认证部门: `certificateUnit`,
@@ -943,12 +943,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               申报时间: 'declarantDate',
-              登记单位: 'registerUnit',
-            },
-            {
-              登记号: 'registerNo',
               参与成员: 'participants',
             },
+            // {
+              // 登记单位: 'registerUnit',
+              // 登记号: 'registerNo',
+            // },
             {
               创新类别: 'innovationType',
               创新级别: 'innovationGrade',
