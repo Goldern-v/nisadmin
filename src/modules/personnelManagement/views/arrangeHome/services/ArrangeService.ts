@@ -438,6 +438,9 @@ export default class ArrangeService extends BaseApiService {
     return this.post('/schedulingYaXin/excelTubeBed', data, { responseType: "blob" });
   }
 
+  public async getHourStart() {
+    return this.get(`/scheduling/getHourStart`)
+  }
 }
 
 export const arrangeService = new ArrangeService();

@@ -69,6 +69,9 @@ class SheetViewModal {
   @observable public experNumber: number = 0;
   // 加减班
   @observable public ExpectAsNumber: number = 0;
+
+  // 标准工时
+  @observable public standardTime: number = 0;
   
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
@@ -307,6 +310,9 @@ class SheetViewModal {
       this.dateList = this.getDateList();
       this.getExpectList();
       this.getExpectAsList()
+      if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
+        this.getHourStart()
+      }
       if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy" || appStore.HOSPITAL_ID == "gxjb") {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
@@ -615,6 +621,13 @@ class SheetViewModal {
       }
     }
     return initialHour;
+  }
+
+  // 标准工时
+  getHourStart() {
+    arrangeService.getHourStart().then(res => {
+      this.standardTime = Number(res.data)
+    })
   }
 
   async init() {

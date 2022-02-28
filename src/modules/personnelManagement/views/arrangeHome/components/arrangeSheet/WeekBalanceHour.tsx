@@ -34,19 +34,23 @@ export const weekBalanceHour = (id: any) => {
 
   /**每周应上天数 */
   let weekDate = 38.5;
-  switch (appStore.HOSPITAL_ID){
+  switch (appStore.HOSPITAL_ID) {
     case "dghl":
-      weekDate=38.5;
+      weekDate = 38.5;
       break;
     case "fsxt":
-      weekDate=40;
+      weekDate = 40;
+      break;
+    case "fssdy":
+      // 配置字典标准工时
+      weekDate = sheetViewModal.standardTime
       break;
     default:
-      weekDate=38.5;
+      weekDate = 38.5;
       break;
   }
   /**实际应上时间 每天应上*实际上班天数*/
-  let weekShouldDate=(weekDate/7)*(user?.settingDtos && user.settingDtos.length>0?user.settingDtos.length:0);
+  let weekShouldDate = (weekDate / 7) * (user?.settingDtos && user.settingDtos.length > 0 ? user.settingDtos.length : 0);
 
 
   /** 如果存在一周7天都是 */
