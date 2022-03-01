@@ -21,7 +21,29 @@ export default class StatisticsService extends BaseApiService {
   }
   /** 导出 */
   public exportExcel(type: string, obj: any, onDownloadProgress: (ProgressEvent: any) => void) {
-    return this.post(`/${type}/excel`, obj, { responseType: 'blob', onDownloadProgress })
+    const data = {
+      'nurseWHInnovationDept':'countExcel',//科室创新
+      'nurseWHQualificationOut':'countExcel',//资质管理（外）
+      'nurseWHQualificationIn':'countExcel',//资质管理（内）
+      'nurseWHAcademic':'countExcel',//学术活动
+      'auditeNurseListWH':'countExcelyaXinGetByFormCodePC',//基本信息
+      'nurseWHRegistrationWork':'yaXinCountExcel',//临床护理工作登记
+      "nurseWHLearnJob":"yaXinCountExcel",//学会任职
+      'nurseWHContinueStudy':'yaXinCountExcel',//举办继续教育培训班
+      'nurseWHPersonWinning':'yaXinCountExcel',//个人获奖
+      'nurseWHPatent':'yaXinCountExcel',//专利
+      'nurseWHScienceResult':'yaXinCountExcel',//科研课题获奖
+      'nurseWHGoScienceCourse':'yaXinCountExcel',//参与科研
+      'nurseWHHostScienceCourse':'yaXinCountExcel',//主持科研课题
+      'nurseWHMonograph':'yaXinCountExcel',//专著
+      'nurseWHArticle':'yaXinCountExcel',//文章
+      'nurseWHWorkExperienceOut':'yaXinCountExcel',//院外工作经历
+      'nurseWHWorkExperienceIn':'yaXinCountExcel',//院内工作经历
+      'nurseWHOutStudy':'yaXinCountExcel',//外出进修查询统计
+      'nurseWHSpecializNurse':'yaXinCountExcel',//专科护士查询统计
+    }
+    // return this.post(`/${type}/excel`, obj, { responseType: 'blob', onDownloadProgress })
+    return this.post(`/${type}/${data[type]}`, obj, { responseType: 'blob', onDownloadProgress })
   }
 }
 

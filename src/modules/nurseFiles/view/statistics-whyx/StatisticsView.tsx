@@ -87,7 +87,9 @@ export default function Statistics() {
         <React.Fragment>
           <HeadCon>
             <div className='title'>{pageObj.title}</div>
-            <Button onClick={() => exportExcel()}>导出</Button>
+            {!['岗位变动', '职称变动', '层级变动', '编制变动'].includes(pageObj.title) &&
+              <Button onClick={() => exportExcel()}>导出</Button>
+            }
           </HeadCon>
           <FilterCon pageObj={pageObj} onload={onload} filterRef={filterRef} />
           <TableCon
