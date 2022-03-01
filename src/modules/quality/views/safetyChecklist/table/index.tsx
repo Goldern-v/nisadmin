@@ -163,7 +163,7 @@ export default observer((props: Props) => {
                 </td>
               </tr>
               <tr>
-                <td style={{width:'80px'}}>片区{form.areaCode}</td>
+                <td style={{width:'80px'}}>片区</td>
                 <td colSpan={5}>
                   <Select className='select inpatientAreaSel'
                     showSearch
