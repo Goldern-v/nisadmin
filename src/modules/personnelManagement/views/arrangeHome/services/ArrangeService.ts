@@ -268,6 +268,9 @@ export default class ArrangeService extends BaseApiService {
 
   //加减班查询
   public findBylist(obj: PageObj) {
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      return this.post(`/schExpectAddOrSub/getByDeptCodeAndDatePC`, obj);
+    }
     return this.post(`/schAddOrSub/findBylist`, obj);
   }
 
@@ -441,6 +444,15 @@ export default class ArrangeService extends BaseApiService {
   public async getHourStart() {
     return this.get(`/scheduling/getHourStart`)
   }
+
+  //添加编辑加减班
+  public async expectAddOrSub(data:any) {
+    return this.post('/schExpectAddOrSub/saveOrUpdate',data)
+  }
+  public async deleteOrSub(id: any) {
+    return this.get(`/schExpectAddOrSub/delete/${id}`)
+  }
+  //
 }
 
 export const arrangeService = new ArrangeService();
