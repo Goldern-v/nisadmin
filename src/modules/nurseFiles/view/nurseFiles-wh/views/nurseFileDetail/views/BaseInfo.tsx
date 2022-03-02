@@ -198,19 +198,19 @@ export default observer(function BaseInfo() {
         },
         {
           取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
-          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+          // 护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+          最高学历: data.highestEducation,
         },
         { 
-          最高学历: data.highestEducation,
+          // 最高学历: data.highestEducation,
           职务: data.job,
-        },
-        {
           现职务任职起始时间: data.jobStartDate,
-          工作护理单元: data.deptName,
         },
         {
-          鞋码大小: data.shoeSize,
-        }
+          // 现职务任职起始时间: data.jobStartDate,
+          工作护理单元: data.deptName,
+          // 鞋码大小: data.shoeSize,
+        },
       ]
       let newTableData = (() => {
         switch(appStore.HOSPITAL_ID) {
@@ -268,6 +268,7 @@ export default observer(function BaseInfo() {
         if (['fsxt'].includes(appStore.HOSPITAL_ID)) {
           console.log(newTableData, 9998)
           setTableData(newTableData)
+
 
         }
       }

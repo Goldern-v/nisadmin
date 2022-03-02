@@ -121,7 +121,14 @@ export default class AuthStore {
       return "";
     }
   }
-
+  /** 是否是超级管理员 */ 
+  public get isSuperAdmin() {
+    try {
+      return this.user && this.user.roleManageCodeList.includes('SUPER_ADMIN')
+    } catch (error) {
+      return false
+    }
+  }
   /** 是否是护理部 */
   public get isDepartment() {
     try {

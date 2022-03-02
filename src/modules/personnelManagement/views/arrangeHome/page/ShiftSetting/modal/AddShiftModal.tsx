@@ -36,57 +36,57 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 let rules: Rules
-  // appStore.HOSPITAL_ID == "hj"
-  //   ? {
-  //     name: (val) => !!val || "请填写班次名称",
-  //     shiftType: (val) => !!val || "请填写班次类别",
-  //     // workTime: val => !!val || "请填写上班时间",
-  //     workTime1: (val) => !!val || "请填写上班开始时间",
-  //     workTime2: (val) => !!val || "请填写上班结束时间",
-  //     effectiveTime: (val) => !!val || "请填写标准工时",
-  //     nameColor: (val) => !!val || "请填写颜色标记",
-  //   }
-  //   : {
-  //     name: (val) => !!val || "请填写班次名称",
-  //     shiftType: (val) => !!val || "请填写班次类别",
-  //     // workTime: val => !!val || "请填写上班时间",
-  //     workTime1: (val) => !!val || "请填写上班开始时间",
-  //     workTime2: (val) => !!val || "请填写上班结束时间",
-  //     effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
-  //   };
-  switch (appStore.HOSPITAL_ID) {
-    case 'hj':
-      rules = {
-        name: (val) => !!val || "请填写班次名称",
-        shiftType: (val) => !!val || "请填写班次类别",
-        // workTime: val => !!val || "请填写上班时间",
-        workTime1: (val) => !!val || "请填写上班开始时间",
-        workTime2: (val) => !!val || "请填写上班结束时间",
-        effectiveTime: (val) => !!val || "请填写标准工时",
-        nameColor: (val) => !!val || "请填写颜色标记",
-      }
-    case 'lcey':
-      rules = {
-        name: (val) => !!val || "请填写班次名称",
-        shiftType: (val) => !!val || "请填写班次类别",
-        // workTime: val => !!val || "请填写上班时间",
-        workTime1: (val) => !!val || "请填写上班开始时间",
-        workTime2: (val) => !!val || "请填写上班结束时间",
-        workTime5: (val) => !!val || "请填写上班开始时间",
-        workTime6: (val) => !!val || "请填写上班结束时间",
-        effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
-      };
-    default:
-      rules = {
-        name: (val) => !!val || "请填写班次名称",
-        shiftType: (val) => !!val || "请填写班次类别",
-        // workTime: val => !!val || "请填写上班时间",
-        workTime1: (val) => !!val || "请填写上班开始时间",
-        workTime2: (val) => !!val || "请填写上班结束时间",
-        effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
-      }
-  }
-  
+// appStore.HOSPITAL_ID == "hj"
+//   ? {
+//     name: (val) => !!val || "请填写班次名称",
+//     shiftType: (val) => !!val || "请填写班次类别",
+//     // workTime: val => !!val || "请填写上班时间",
+//     workTime1: (val) => !!val || "请填写上班开始时间",
+//     workTime2: (val) => !!val || "请填写上班结束时间",
+//     effectiveTime: (val) => !!val || "请填写标准工时",
+//     nameColor: (val) => !!val || "请填写颜色标记",
+//   }
+//   : {
+//     name: (val) => !!val || "请填写班次名称",
+//     shiftType: (val) => !!val || "请填写班次类别",
+//     // workTime: val => !!val || "请填写上班时间",
+//     workTime1: (val) => !!val || "请填写上班开始时间",
+//     workTime2: (val) => !!val || "请填写上班结束时间",
+//     effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
+//   };
+switch (appStore.HOSPITAL_ID) {
+  case 'hj':
+    rules = {
+      name: (val) => !!val || "请填写班次名称",
+      shiftType: (val) => !!val || "请填写班次类别",
+      // workTime: val => !!val || "请填写上班时间",
+      workTime1: (val) => !!val || "请填写上班开始时间",
+      workTime2: (val) => !!val || "请填写上班结束时间",
+      effectiveTime: (val) => !!val || "请填写标准工时",
+      nameColor: (val) => !!val || "请填写颜色标记",
+    }
+  case 'lcey':
+    rules = {
+      name: (val) => !!val || "请填写班次名称",
+      shiftType: (val) => !!val || "请填写班次类别",
+      // workTime: val => !!val || "请填写上班时间",
+      workTime1: (val) => !!val || "请填写上班开始时间",
+      workTime2: (val) => !!val || "请填写上班结束时间",
+      workTime5: (val) => !!val || "请填写上班开始时间",
+      workTime6: (val) => !!val || "请填写上班结束时间",
+      effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
+    };
+  default:
+    rules = {
+      name: (val) => !!val || "请填写班次名称",
+      shiftType: (val) => !!val || "请填写班次类别",
+      // workTime: val => !!val || "请填写上班时间",
+      workTime1: (val) => !!val || "请填写上班开始时间",
+      workTime2: (val) => !!val || "请填写上班结束时间",
+      effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
+    }
+}
+
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
   const [shiftList, setShiftList] = useState([]);
@@ -252,7 +252,7 @@ export default function AddShiftModal(props: Props) {
 
   if (appStore.HOSPITAL_ID === 'lcey') {
     useLayoutEffect(() => {
-      if ((time1!==0 && time2!==0 && time3!==0 && time4!==0 && (time1 + time2 === time3 + time4))) {
+      if ((time1 !== 0 && time2 !== 0 && time3 !== 0 && time4 !== 0 && (time1 + time2 === time3 + time4))) {
         setTip(false);
         refForm.current && refForm.current.setField("effectiveTime", time1 + time2);
       }
@@ -392,51 +392,51 @@ export default function AddShiftModal(props: Props) {
                   <TimePicker format={"HH:mm"} />
                 </Form.Field>
               </Col>
-              {appStore.HOSPITAL_ID == "lcey" && 
-              <div>
-                <Col span={13}>
-                  <Form.Field label={`冬令上班时间`} name="workTime5" required>
-                    <TimePicker format={"HH:mm"} />
-                  </Form.Field>
-                </Col>
-                <Col span={1}>
-                  <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
-                </Col>
-                <Col span={8}>
-                  <Form.Field name="workTime6" required>
-                    <TimePicker format={"HH:mm"} />
-                  </Form.Field>
-                </Col>
-                {/* 时间段2 */}
-                <Col span={13} style={{ paddingLeft: "120px" }}>
-                  <Form.Field name="workTime7" required>
-                    <TimePicker format={"HH:mm"} />
-                  </Form.Field>
-                </Col>
-                <Col span={1}>
-                  <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
-                </Col>
-                <Col span={8}>
-                  <Form.Field name="workTime8" required>
-                    <TimePicker format={"HH:mm"} />
-                  </Form.Field>
-                </Col>
-                {tip && <Col span={24}>
-                  <div style={{fontSize: "12px", margin: '-18px 0 0 120px',color: "red"}}>*注意：夏令时和冬令时上班时长不同，需求手动填写标准工时！</div>
-                </Col>}
-              </div>}
+              {appStore.HOSPITAL_ID == "lcey" &&
+                <div>
+                  <Col span={13}>
+                    <Form.Field label={`冬令上班时间`} name="workTime5" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  <Col span={1}>
+                    <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Field name="workTime6" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  {/* 时间段2 */}
+                  <Col span={13} style={{ paddingLeft: "120px" }}>
+                    <Form.Field name="workTime7" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  <Col span={1}>
+                    <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Field name="workTime8" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  {tip && <Col span={24}>
+                    <div style={{ fontSize: "12px", margin: '-18px 0 0 120px', color: "red" }}>*注意：夏令时和冬令时上班时长不同，需求手动填写标准工时！</div>
+                  </Col>}
+                </div>}
               <Col span={24}>
                 <Form.Field label={`标准工时`} name="effectiveTime" required>
                   <Input />
                 </Form.Field>
               </Col>
               <Col span={24}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令白工时':`白工时`} name="settingMorningHour">
+                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令白工时' : `白工时`} name="settingMorningHour">
                   <Input />
                 </Form.Field>
               </Col>
               <Col span={24}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令夜工时':`夜工时`} name="settingNightHour">
+                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令夜工时' : `夜工时`} name="settingNightHour">
                   <Input />
                 </Form.Field>
               </Col>
@@ -452,53 +452,53 @@ export default function AddShiftModal(props: Props) {
                   </Form.Field>
                 </Col>
               </div>}
-              {appStore.hisAdapter({
-                whyx: () => (
-                  <React.Fragment>
-                    <Col span={24}>
-                      <Form.Field label={`列入患者比`} name="npProportion">
-                        <Select>
-                          <Select.Option value={"1"}>是</Select.Option>
-                          <Select.Option value={"0"}>否</Select.Option>
-                        </Select>
-                      </Form.Field>
-                    </Col>
-                    <Col span={12} className="color-lump">
-                      <Form.Field label={`色块标记`} name="backgroundColor">
-                        <Select>
-                          {backgroundColorList.map((item: any, index: number) => (
-                            <Select.Option key={index} value={item.code}>
-                              <div
-                                className="block-color"
-                                style={{ ...blockColor, background: item.code }}
-                              >
-                                <span style={{ opacity: 0 }}>{item.name}</span>
-                              </div>
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Field>
-                    </Col>
-                    <Col span={12} className="color-lump">
-                      <Form.Field label={`文字颜色`} name="nameColor">
-                        <Select>
-                          {colorList.map((item: any, index: number) => (
-                            <Select.Option key={index} value={item.code}>
-                              <div
-                                className="block-color"
-                                style={{ ...blockColor, background: item.code }}
-                              >
-                                <span style={{ opacity: 0 }}>{item.name}</span>
-                              </div>
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Field>
-                    </Col>
-                  </React.Fragment>
-                )
-              })}
-              {appStore.HOSPITAL_ID != "whyx" &&
+              {['whyx'].includes(appStore.HOSPITAL_ID) &&
+                <Col span={24}>
+                  <Form.Field label={`列入患者比`} name="npProportion">
+                    <Select>
+                      <Select.Option value={"1"}>是</Select.Option>
+                      <Select.Option value={"0"}>否</Select.Option>
+                    </Select>
+                  </Form.Field>
+                </Col>
+              }
+              {['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) &&
+                <React.Fragment>
+                  <Col span={12} className="color-lump">
+                    <Form.Field label={`色块标记`} name="backgroundColor">
+                      <Select>
+                        {backgroundColorList.map((item: any, index: number) => (
+                          <Select.Option key={index} value={item.code}>
+                            <div
+                              className="block-color"
+                              style={{ ...blockColor, background: item.code }}
+                            >
+                              <span style={{ opacity: 0 }}>{item.name}</span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={12} className="color-lump">
+                    <Form.Field label={`文字颜色`} name="nameColor">
+                      <Select>
+                        {colorList.map((item: any, index: number) => (
+                          <Select.Option key={index} value={item.code}>
+                            <div
+                              className="block-color"
+                              style={{ ...blockColor, background: item.code }}
+                            >
+                              <span style={{ opacity: 0 }}>{item.name}</span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              }
+              {!['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) &&
                 <Col span={24}>
                   <Form.Field
                     label={`颜色标记`}

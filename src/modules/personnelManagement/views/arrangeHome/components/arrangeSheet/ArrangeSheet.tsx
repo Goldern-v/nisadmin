@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Button } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { ColumnProps, Input, Modal, message } from "src/vendors/antd";
+import { ColumnProps, Input, Modal, message, Tooltip } from "src/vendors/antd";
 import { createContextMenu } from "./ContextMenu";
 import Cell from "./Cell";
 // import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
@@ -270,6 +270,34 @@ export default observer(function ArrangeSheet(props: Props) {
           );
         },
       };
+    }),
+    ...appStore.hisMatch({
+      map: {
+        whyx: [
+          {
+            title: "备注",
+            dataIndex: "empRemark",
+            width: 100,
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.empRemark = e.target.value;
+                  }}
+                />
+              ) : (
+                <Tooltip placement="top" title={text}>
+                  <span>{text}</span>
+                </Tooltip>
+              );
+            },
+          },
+        ],
+        other: [],
+      },
     }),
     {
       title: (
@@ -619,7 +647,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 ? 350
                 : 250;
           if (appStore.HOSPITAL_ID == 'whyx') {
-            widthNys += 70
+            widthNys += 170
           }
           /** noscorll */
           (document as any).querySelector(

@@ -41,49 +41,32 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   {
                     取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
-                    护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
+                    最高学历: 'highestEducation',
                   },
                   { 
-                    最高学历: 'highestEducation',
                     职务: 'job',
-                  },
-                  {
                     现职务任职起始时间: 'jobStartDate',
-                    工作护理单元: 'deptName',
                   },
                   {
-                    鞋码大小: 'shoeSize',
+                    工作护理单元: 'deptName',
+                    // 鞋码大小: 'shoeSize',
+                    '夏装-上衣': 'summer_jacket_size'
                   },
-                  ...appStore.hisMatch({
-                    map: {
-                      'fsxt': [
-                        {
-                          "夏装-裤子": "summer_trousers_size",
-                          "冬装-上衣": "winter_jacket_size",
-                        },
-                        {
-                          "冬装-裤子": "winter_trousers_size",
-                          "夏装-医生款": "summer_isolation_suit_size",
-                        },
-                        {
-                          "冬装-医生款": "winter_isolation_suit_size",
-                          "鞋款式": "nurse_shoes_style",
-                        },
-                        {
-                          "鞋码": "nurse_shoes_size",
-                        }
-                      ],
-                      other: []
-                    },
-                  }),
-                  ...appStore.hisMatch({
-                    map: {
-                      'gzsrm': [{
-                        职称: 'newTitle'
-                      }],
-                      other: []
-                    },
-                  })
+                  {
+                    "夏装-裤子": "summer_trousers_size",
+                    "冬装-上衣": "winter_jacket_size",
+                  },
+                  {
+                    "冬装-裤子": "winter_trousers_size",
+                    "夏装-医生款": "summer_isolation_suit_size",
+                  },
+                  {
+                    "冬装-医生款": "winter_isolation_suit_size",
+                    "鞋款式": "nurse_shoes_style",
+                  },
+                  {
+                    "鞋码": "nurse_shoes_size",
+                  },
                 ]
               default:
                 return [
@@ -280,23 +263,36 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           empNo: row.empNo || row.commiterNo,
           type: 'nurseWHContinueStudy',
           title: '审核举办继续教育培训班',
+
           tableFormat: [
             {
               年份: `year`,
-              学员职称分布: `personTitleArea`
-            },
-            {
               项目名称: `projectName`,
-              项目号: `projectNumber`
+              
             },
             {
+              项目号: `projectNumber`,
               项目级别: `projectLevel`,
-              课时数: `courseHour`
             },
-            {
-              学员总数: `personTotal`,
-              学员分布区域: `schoolArea`
-            }
+            ...appStore.hisMatch({
+              map: {
+                'sdlj': [
+                  {
+                    授予学分: `creditGranted`
+                  }
+                ],
+                other: [
+                  {
+                    课时数: `courseHour`,
+                    学员总数: `personTotal`,
+                  },
+                  {
+                    学员分布区域: `schoolArea`,
+                    学员职称分布: `personTitleArea`
+                  },
+                ]
+              },
+            }),
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {

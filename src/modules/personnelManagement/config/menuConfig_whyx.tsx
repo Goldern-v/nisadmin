@@ -15,6 +15,7 @@ import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangS
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
+import ExpectAddOrSub from "../views/arrangeHome/page/ExpectAddOrSub/ExpectAddOrSub";
 import TubeBed from "../views/arrangeHome/page/tubeBed/tubeBed";
 export interface meunConfigItem {
   title?: string;
@@ -48,6 +49,12 @@ export const meunConfig: meunConfigItem[] = [
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",
         component: ExpectedRecordSelf,
+        iSlimit: false,
+      },
+      {
+        title: "我的加减班",
+        path: "/personnelManagement/expectAddOrSub",
+        component: ExpectAddOrSub,
         iSlimit: false,
       },
       {

@@ -19,6 +19,9 @@ export default class TubeBedService extends BaseApiService {
   public async schTubeBedExport(data: any) {
     return this.post('/schTubeBed/export', data, { responseType: "blob" });
   }
+  public async schTubeSyncEmp(data:any) {
+    return this.post('/schTubeBed/syncEmp',data)
+  }
 }
 
 export const tubeBedService = new TubeBedService();

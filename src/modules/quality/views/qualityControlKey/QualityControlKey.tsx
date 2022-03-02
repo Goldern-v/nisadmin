@@ -29,7 +29,6 @@ export default observer(function QualityControlKey(props) {
     try {
       setLoading(true);
       const res = await qualityControlKeyApi.getPage(params);
-      console.log("test-res", res);
       setData((res.data && (res.data.list as getPageO[])) || []);
       setLoading(false);
     } catch (err) {

@@ -93,7 +93,7 @@ export default observer((props: Props) => {
 
   const deleteView = (row: any) => {{
     if (path.includes('qcTwo')) {
-      // 二级质控-只有本人创建和和护理部以上有操作权限
+      // 二级质控-只有本人创建和和护士长或者以上有操作权限
       if (authStore.isRoleManage || row.creator === _user.empNo) {
         setDeleteVisible(true)
         setRowId(row.id)
@@ -146,7 +146,7 @@ export default observer((props: Props) => {
 
   const handleView = (row: any) => {
     if (path.includes('qcTwo')) {
-      // 二级质控-只有本人创建和和护理部以上有操作权限
+      // 二级质控-只有本人创建和和护士长或者以上有操作权限
       if (authStore.isRoleManage || row.creator === _user.empNo) {
         appStore.history.push(`/administrative/qcTwo/recordView?id=${row.id}`)
       } else {

@@ -9,6 +9,7 @@ import EChartsReact from "echarts-for-react";
 export interface Props {
   title: string;
   data: any;
+  img: string;
 }
 const monthList = [
   "1月",
@@ -25,8 +26,8 @@ const monthList = [
   "12月",
 ];
 export default observer(function AnalysisChart(props: Props) {
-  const { title, data } = props;
-
+  const { title, data, img } = props;
+  const [sumList, setSumList] = useState([]);
   const getOption = () => {
     const { teachingMethodList, selectedDate } = trainingChartAnalysisModal;
     let [m1, m2] = selectedDate;
@@ -39,7 +40,6 @@ export default observer(function AnalysisChart(props: Props) {
       M1 + v > 12 && (y = Y1 + 1 + "");
       return `${y ? y + "年" : ""}${m}月`;
     });
-    console.log("test-mList", mList);
     const seriesList = teachingMethodList.map(() => ({
       type: "line",
       smooth: true,
@@ -68,14 +68,15 @@ export default observer(function AnalysisChart(props: Props) {
           emphasis: {
             focus: "self",
           },
+          data: sumList,
           label: {
-            formatter: "{b}: {@1月} ({d}%)",
+            formatter: "{b}: {@月份} ({d}%)",
           },
-          encode: {
-            itemName: "月份",
-            value: M1 + "月",
-            tooltip: M1 + "月",
-          },
+          // encode: {
+          //   itemName: "月份",
+          //   value: M1 + "月",
+          //   tooltip: M1 + "月",
+          // },
         },
       ],
     };
@@ -85,22 +86,37 @@ export default observer(function AnalysisChart(props: Props) {
   let chartRef: any = React.createRef();
 
   useEffect(() => {
+    let list = props.data.map((v: any) => {
+      let [name, ...arr] = v;
+      return {
+        name,
+        value: arr.reduce((total: any, cur: any) => total + cur, 0),
+      };
+    });
+    setSumList(list);
     chartRef.getEchartsInstance().setOption(getOption());
   }, [props.data]);
 
-  const updateOption = (dimension: string) => {
+  const updateOption = (dimension: number) => {
+    let list = props.data.map((v: any, i: number) => {
+      return {
+        name: v[0],
+        value: v[dimension],
+      };
+    });
     chartRef.getEchartsInstance().setOption({
       series: {
         type: "pie",
         id: "pie",
         label: {
-          formatter: "{b}: {@[" + dimension + "]} ({d}%)",
+          formatter: "{b}: {@月份} ({d}%)",
         },
-        encode: {
-          itemName: "月份",
-          value: dimension,
-          tooltip: dimension,
-        },
+        data: list,
+        // encode: {
+        //   itemName: "月份",
+        //   value: dimension,
+        //   tooltip: dimension,
+        // },
       },
     });
   };
@@ -125,6 +141,9 @@ export default observer(function AnalysisChart(props: Props) {
           onEvents={onEvents}
           ref={(node: EChartsReact) => (chartRef = node)}
         />
+      </div>
+      <div className="chart-img-page">
+        <img src={img} />
       </div>
     </Content>
   );

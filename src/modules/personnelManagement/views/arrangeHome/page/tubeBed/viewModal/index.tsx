@@ -120,6 +120,18 @@ class TobeBed {
     }
     return tubeBedService.schTubeBedExport(data)
   }
+
+  schTubeSyncEmp() {
+    let startTime = (tobeBedModal.date && tobeBedModal.date[0] && tobeBedModal.date[0].format("YYYY-MM-DD"));
+    let endTime = (tobeBedModal.date && tobeBedModal.date[1] && tobeBedModal.date[1].format("YYYY-MM-DD"))
+    let deptCode = authStore.selectedDeptCode;
+    let data = {
+      startTime,
+      endTime,
+      deptCode
+    }
+    return tubeBedService.schTubeSyncEmp(data)
+  }
 }
 
 export const tobeBedModal = new TobeBed();

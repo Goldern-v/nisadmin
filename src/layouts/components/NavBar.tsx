@@ -167,10 +167,10 @@ export default observer(function NavBar(props: any) {
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;
     } else if (appStore.HOSPITAL_ID == 'whyx') {
-      return navConfig_whyx
+      return navConfig_whyx(appStore, authStore)
     }
-    else if(appStore.HOSPITAL_ID == 'sdlj'){
-      return navConfig_sdlj(appStore,authStore)
+    else if (appStore.HOSPITAL_ID == 'sdlj') {
+      return navConfig_sdlj(appStore, authStore)
       //return navConfig_sdljSelf
     }
     return navConfig;

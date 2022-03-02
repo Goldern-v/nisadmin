@@ -33,7 +33,7 @@ export default observer(function PersonWinning() {
     }
   ]
 
-  const columns: ColumnProps<any>[] = [
+  const columnsDefault: ColumnProps<any>[] = [
     {
       title: '序号',
       dataIndex: '',
@@ -49,15 +49,13 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-
     {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
       width: 210,
       align: 'center'
-    },
-
+    }, 
     {
       title: '课时数',
       dataIndex: 'courseHour',
@@ -86,6 +84,37 @@ export default observer(function PersonWinning() {
       width: 210,
       align: 'center'
     },
+  ]
+  const columnsSDLJ: ColumnProps<any>[] = [
+    {
+      title: '序号',
+      dataIndex: '',
+      key: '序号',
+      render: (text: any, record: any, index: number) => index + 1,
+      align: 'center',
+      width: 55
+    },
+    {
+      title: '年份',
+      dataIndex: 'year',
+      key: 'year',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '项目名称',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 210,
+      align: 'center'
+    }, 
+    {
+      title: '授予学分',
+      dataIndex: 'creditGranted',
+      key: 'creditGranted',
+      width: 120,
+      align: 'center'
+    },
     {
       title: '附件',
       dataIndex: 'fj',
@@ -105,6 +134,12 @@ export default observer(function PersonWinning() {
     },
     Do('nurseWHContinueStudy', editContinuingEducationModal, getTableData)
   ]
+  let columns: ColumnProps<any>[]
+  switch(appStore.HOSPITAL_ID) {
+    case 'sdlj': columns = columnsSDLJ 
+    break;
+    default: columns = columnsDefault
+  }
 
   useEffect(() => {
     getTableData()

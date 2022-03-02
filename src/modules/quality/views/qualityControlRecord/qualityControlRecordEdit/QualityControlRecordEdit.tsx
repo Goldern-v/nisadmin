@@ -59,7 +59,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           ////非贵州
           if (
-            !["gzsrm"].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm","gzhd", "whyx"].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {

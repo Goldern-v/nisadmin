@@ -224,6 +224,7 @@ const columns: ColumnProps<any>[] = [
 ]
 
 const onDoubleClick = (record: any) => {
+  localStorage.setItem('empName', record.empName)
   store.appStore.history.push(`/nurseFileDetail/baseInfo?empNo=${record.empNo}`)
 }
 

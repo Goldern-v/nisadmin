@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore,authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
 import { DoCon } from 'src/components/BaseTable'
@@ -110,18 +110,19 @@ export default observer(function NurseHandBook_lcey() {
     pageSize: 20
   })
   const [total, setTotal]: any = useState(0)
-  const findManualTypeName = (manualType:any) => {
-    let obj:any = typeList.find((item:any) => {
+  const findManualTypeName = (manualType: any) => {
+    let obj: any = typeList.find((item: any) => {
       return item.code == manualType
     })
-    if(obj){
-      return obj.name 
+    if (obj) {
+      return obj.name
     }
   }
   const initData = () => {
     service.commonApiService
       .getUintList().then(res => {
         setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
+        setDeptSelect(res.data?.defaultDept)
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
@@ -272,7 +273,7 @@ export default observer(function NurseHandBook_lcey() {
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
           {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+            <Select.Option key={idx + '34'} value={item.code}>{item.name}</Select.Option>)}
         </Select>
         <Input
           placeholder='请输入姓名/标题等关键字'
@@ -290,7 +291,7 @@ export default observer(function NurseHandBook_lcey() {
         <span className='label ml-20'>类型:</span>
         <Select
           value={manualType}
-          style={{ width: 220 , marginRight: '235px'}}
+          style={{ width: 220, marginRight: '235px' }}
           onChange={(val: any) => setManualType(val)}>
           <Select.Option value={''}>全部</Select.Option>
           {typeList.map((item: any, idx: any) =>

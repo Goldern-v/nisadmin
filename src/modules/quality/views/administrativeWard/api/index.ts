@@ -6,8 +6,8 @@ class Api extends BaseApiService {
   getList(data: any) {
     const params = {
       ...data,
-      beginDate: data.beginDate ? moment(data.beginDate).format('YYYY-MM-DD HH:mm') : '',
-      endDate: data.endDate ? moment(data.endDate).format('YYYY-MM-DD HH:mm') : '',
+      beginTime: data.beginTime ? moment(data.beginTime).format('YYYY-MM-DD HH:mm') : '',
+      endTime: data.endTime ? moment(data.endTime).format('YYYY-MM-DD HH:mm') : '',
     }
     return this.post(`/administrativeSearchRoom/getPage`, params)
   }
