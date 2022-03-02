@@ -330,7 +330,7 @@ export default observer(function TopPart() {
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx','fssdy'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
             {appStore.HOSPITAL_ID == 'whyx' && <div className="number">
@@ -372,7 +372,7 @@ export default observer(function TopPart() {
             {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'fssdy'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               className="statistics"

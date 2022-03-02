@@ -49,6 +49,30 @@ export default function ArrangAnalysisModal(props: Props) {
           align: "center",
           dataIndex: "name"
         },
+        ...appStore.hisMatch({
+          map: {
+            fssdy: [
+              {
+                title: "合计",
+                width: 70,
+                dataIndex: "name",
+                align: "center",
+                render(text: string, record: any, index: number) {
+                  let total: any = 0;
+                  let keys = Object.keys(record);
+                  for (let key of keys) {
+                    console.log(key, record[key], "aaa");
+                    if (!(key == "name" || key === "key")) {
+                      total += record[key].length;
+                    }
+                  }
+                  return total;
+                }
+              }
+            ],
+            other: []
+          }
+        }),
         ...sheetViewModal.dateList.map((date, index) => {
           return {
             title: <Th date={date} />,
@@ -60,10 +84,10 @@ export default function ArrangAnalysisModal(props: Props) {
                 <div>
                   {text.length
                     ? text.map((item: any) => {
-                        let userId = item.userId;
-                        let [user, list] = sheetViewModal.getUser(userId);
-                        return <Tag>{user && user.empName}</Tag>;
-                      })
+                      let userId = item.userId;
+                      let [user, list] = sheetViewModal.getUser(userId);
+                      return <Tag>{user && user.empName}</Tag>;
+                    })
                     : "无"}
                 </div>
               );
@@ -81,23 +105,30 @@ export default function ArrangAnalysisModal(props: Props) {
             }
           };
         }),
-        {
-          title: "合计",
-          width: 70,
-          dataIndex: "name",
-          align: "center",
-          render(text: string, record: any, index: number) {
-            let total: any = 0;
-            let keys = Object.keys(record);
-            for (let key of keys) {
-              console.log(key, record[key], "aaa");
-              if (!(key == "name" || key === "key")) {
-                total += record[key].length;
+        ...appStore.hisMatch({
+          map: {
+            fssdy: [],
+            other: [
+              {
+                title: "合计",
+                width: 70,
+                dataIndex: "name",
+                align: "center",
+                render(text: string, record: any, index: number) {
+                  let total: any = 0;
+                  let keys = Object.keys(record);
+                  for (let key of keys) {
+                    console.log(key, record[key], "aaa");
+                    if (!(key == "name" || key === "key")) {
+                      total += record[key].length;
+                    }
+                  }
+                  return total;
+                }
               }
-            }
-            return total;
+            ]
           }
-        }
+        }),
       ]);
 
       let list = [];
@@ -111,8 +142,21 @@ export default function ArrangAnalysisModal(props: Props) {
             (item: any) => item.workDate == d && item.rangeName == obj.name
           );
         }
-        list.push(obj);
+        if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
+          // 没有被选择的班次不统计
+          let flag = false
+          Object.keys(obj).forEach((item, index) => {
+            if ((item !== 'key' && item !== 'name') && obj[item].length) {
+              flag = true
+            }
+          })
+          flag && list.push(obj);
+        } else {
+          list.push(obj);
+        }
+
       }
+      console.log(list)
       setDataSource(list);
     }
   }, [visible]);
@@ -154,7 +198,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-        getWeekString(date).indexOf("日") > -1
+          getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }
