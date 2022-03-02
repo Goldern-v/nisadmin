@@ -106,7 +106,8 @@ export default function AddSubClassModalModal(props: Props) {
   const onFormChange = (name: string, value: any, form: Form<any>) => {
     if (["startDate", "endDate"].includes(name)) {
       const { startDate, endDate } = form.getFields();
-      const h = startDate && endDate ? endDate.diff(startDate, "h") : 0
+      const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
+      const h = Math.floor(m / 30) * 0.5;
       form.setFields({
         hour: h
       });
