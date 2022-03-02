@@ -527,9 +527,8 @@ export default function ExportNurseFileWh(props: Props) {
 
   const handlePrint = () => {
     let printEl = document.getElementById(exportId)
-
     let documentTitle = window.document.title
-    window.document.title = '护理人员信息档案'
+    window.document.title = `${appStore.HOSPITAL_ID === 'sdlj' ? localStorage.getItem('empName') + '-': ''}护理人员信息档案`
 
     if (printEl) printing(printEl, {
       injectGlobalCss: true,

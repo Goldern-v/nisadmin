@@ -94,7 +94,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return "http://192.168.1.54:9866"; //
       return "http://192.168.1.54:9885"
     case "sdlj": //顺德龙江
-      //return 'http://192.168.20.57:9091'//
+      // return 'http://192.168.20.83:8080'//
       return "http://192.168.1.54:9874"; //
 
     //武汉亚心whyx_排班

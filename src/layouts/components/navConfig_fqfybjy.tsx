@@ -17,27 +17,15 @@ const baseConfig: navConfigItem[] = [
     path: "/home"
   },
   {
-    name: "审核管理",
-    path: "/auditsManagement"
-  },
-  {
     name: "病区日志",
     path: "/wardLog"
     // hidden: !appStore.isDev
-  },
-  {
-    name: "档案管理",
-    path: "/nurseFile"
   },
   {
     name: '不良事件',
     path: '/badEventsNew',
     // hidden: !appStore.isDev,
   },
-  // {
-  //   name: '不良事件分析报告',
-  //   path: '/badEvents/alanysis/1/1'
-  // },
   {
     name: "质量管理",
     children: [
@@ -84,10 +72,20 @@ const baseConfig: navConfigItem[] = [
     ]
   },
   {
-    name: "学习培训",
-    path: "/continuingEdu"
-    // hidden: !appStore.isDev
+    name: "排班管理",
+    path: "/personnelManagement"
   },
+  {
+    name: "交班志",
+    onClick: () => {
+    // location.href = "http://localhost:4892/crNursing/autologin?token=3cecc567-c51a-4a8e-96c8-20977a377be1"
+    // location.href = `http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`
+    // window.open(`http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`)
+    let [http,host,port] = location.origin.split(':');
+    let url = `${http}:${host}:9091/crNursing/shiftWork`
+    window.open(url)
+    }
+  }, 
   {
     name: "敏感指标",
     path: "/indicator"
@@ -98,6 +96,23 @@ const baseConfig: navConfigItem[] = [
     // hidden: !appStore.isDev
   },
   {
+    name: "档案管理",
+    path: "/nurseFile"
+  },
+  {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
+    name: "护理制度",
+    path: "/nursingRulesNew"
+  },
+  {
+    name: "审核管理",
+    path: "/auditsManagement"
+  },
+  {
     name: "统计查询",
     path: "/statistic"
   },
@@ -106,26 +121,17 @@ const baseConfig: navConfigItem[] = [
     path: "/notice"
   },
   {
-    name: "护理制度",
-    path: "/nursingRulesNew"
-  },
-  {
     name: "系统设置",
     path: "/setting"
   },
-  {
-    name: "护理人员管理",
-    path: "/personnelManagement"
-  },
-  {
-    name: "交班志",
-    onClick: () => {
-      // location.href = "http://localhost:4892/crNursing/autologin?token=3cecc567-c51a-4a8e-96c8-20977a377be1"
-      // location.href = `http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`
-      // window.open(`http://localhost:4892/crNursing/autologin?token=${sessionStorage.getItem('authToken')}`)
-      window.open(`http://192.168.118.126:9091/crNursing/shiftWork`)
-    }
-  }
+  
+  // {
+  //   name: '不良事件分析报告',
+  //   path: '/badEvents/alanysis/1/1'
+  // },
+  
+  
+  
 ];
 
 const beConfig: navConfigItem[] = []
