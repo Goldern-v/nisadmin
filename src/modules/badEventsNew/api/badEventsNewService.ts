@@ -164,6 +164,30 @@ export default class BadEventsNewService extends BaseApiService {
   public updateOpinion(data:any) {
     return this.post('/form/badEventMaster/master/updateOpinion',data)
   }
+
+  /**
+   * 获取护士长意见模板（杏坛）
+   */
+   public getCommentList() {
+    return this.get('/badEventAuditTemplate/getList')
+    
+  }
+
+  /**
+   * 新增或修改护士长意见模板（杏坛）
+   */
+   public saveOrUpdateApi(body:any) {
+    return this.post('/badEventAuditTemplate/saveOrUpdate',body)
+    
+  }
+
+  /**
+   * 新增或修改护士长意见模板（杏坛）
+   */
+     public deleteById(id:any) {
+      return this.get(`/badEventAuditTemplate/deleteById/${id}`)
+      
+    }
 }
 
 export const badEventsNewService = new BadEventsNewService()
