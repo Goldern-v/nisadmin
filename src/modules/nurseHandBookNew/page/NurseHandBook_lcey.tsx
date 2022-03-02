@@ -18,7 +18,6 @@ export default observer(function NurseHandBook_lcey() {
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
-  const [deptNameAll, setDeptNameAll] = useState("")
   const [pageLoading, setPageLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [editVisible, setEditVisible] = useState(false)
@@ -123,7 +122,7 @@ export default observer(function NurseHandBook_lcey() {
     service.commonApiService
       .getUintList().then(res => {
         setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
-        setDeptNameAll(res.data?.deptName)
+        setDeptSelect(res.data?.defaultDept)
       })
   }
   const onChangeSearchText = (e: any) => { setSearchText(e.target.value) }
@@ -272,9 +271,9 @@ export default observer(function NurseHandBook_lcey() {
           filterOption={(input: any, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => setDeptSelect(val)}>
-          <Select.Option value={''}>{deptNameAll}</Select.Option>
+          <Select.Option value={''}>全部</Select.Option>
           {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+            <Select.Option key={idx + '34'} value={item.code}>{item.name}</Select.Option>)}
         </Select>
         <Input
           placeholder='请输入姓名/标题等关键字'

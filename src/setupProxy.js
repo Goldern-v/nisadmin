@@ -50,10 +50,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 聊城二院 */
     case "lcey":
       // return "http://192.168.1.54:9871"; // 聊城二院测试
-      // return "http://120.224.211.7:9094" // 聊城正式
-      // return 'http://192.168.20.18:9091' // 后端本机ip
-      // return 'http://192.168.20.57:9091' // 伟贤本地
-      return 'http://192.168.20.35:9091' // 宏群本地
+      return "http://120.224.211.7:9094" // 聊城正式
+    // return 'http://192.168.20.18:9091' // 后端本机ip
+    // return 'http://192.168.20.57:9091' // 伟贤本地
+    // return 'http://192.168.20.35:9091' // 宏群本地
 
     /** 默认公司本地内网厚街测试环境 */
     case "gzsrm":
@@ -61,9 +61,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
       return 'http://192.168.20.10:9091' // 本地
-      // return 'http://192.168.1.54:9866' // 测试环境
-      // return "http://192.168.20.10:9091";
-      // return "http://192.168.1.54:9875"; // 公司-贵州省人民医院-内网
+    // return 'http://192.168.1.54:9866' // 测试环境
+    // return "http://192.168.20.10:9091";
+    // return "http://192.168.1.54:9875"; // 公司-贵州省人民医院-内网
     // return "http://192.168.20.62:8080" // 飞豪本地
 
     /** 福清妇幼保健院 */
