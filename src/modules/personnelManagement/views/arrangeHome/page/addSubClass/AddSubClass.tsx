@@ -105,33 +105,33 @@ export default observer(function AddSubClass() {
         return text === "1" ? "已填入" : "未填入";
       }
     },
-    ...appStore.hisMatch({
-      map: {
-        whyx: [
-          {
-            title: "状态",
-            dataIndex: "publishType",
-            align: "center",
-            render(text: string, record: any) {
-              return <DoCon>
-                <span onClick={(e: any) => {
-                  addSubClassModal.show({
-                    editData: record,
-                    onOkCallBack: () => {
-                      getData();
-                    }
-                  });
-                }}>编辑</span>
-                <span onClick={() => {
-                  deleteOrSub(record.id)
-                }}>删除</span>
-              </DoCon>
-            }
-          }
-        ],
-        other: []
-      }
-    }),
+    // ...appStore.hisMatch({
+    //   map: {
+    //     whyx: [
+    //       {
+    //         title: "状态",
+    //         dataIndex: "publishType",
+    //         align: "center",
+    //         render(text: string, record: any) {
+    //           return <DoCon>
+    //             <span onClick={(e: any) => {
+    //               addSubClassModal.show({
+    //                 editData: record,
+    //                 onOkCallBack: () => {
+    //                   getData();
+    //                 }
+    //               });
+    //             }}>编辑</span>
+    //             <span onClick={() => {
+    //               deleteOrSub(record.id)
+    //             }}>删除</span>
+    //           </DoCon>
+    //         }
+    //       }
+    //     ],
+    //     other: []
+    //   }
+    // }),
   ];
   const statusTypeList = [
     {
@@ -156,22 +156,28 @@ export default observer(function AddSubClass() {
 
   const getData = () => {
     setPageLoading(true);
+    let data = {
+      ...pageOptions,
+      statusType: selectedStatusType,
+      empNo: searchWord,
+      publishType,
+      startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
+      endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
+    }
+
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      data.deptCode = authStore.selectedDeptCode
+    } else {
+      data.wardCode = authStore.selectedDeptCode
+    }
     arrangeService
-      .findBylist({
-        ...pageOptions,
-        wardCode: authStore.selectedDeptCode,
-        statusType: selectedStatusType,
-        empNo: searchWord,
-        publishType,
-        startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
-        endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
-      })
+      .findBylist(data)
       .then(res => {
-        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
-          setDataSource(res.data);
-        } else {
-          setDataSource(res.data.list);
-        }
+        // if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        //   setDataSource(res.data);
+        // } else {
+        // }
+        setDataSource(res.data.list);
         setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 });
         setPageLoading(false);
       });
@@ -251,14 +257,14 @@ export default observer(function AddSubClass() {
           <Select.Option value={0}>全部</Select.Option>
           <Select.Option value={1}>暂存发布</Select.Option>
         </Select> */}
-        {
+        {/* {
           ['whyx'].includes(appStore.HOSPITAL_ID) &&
           <Button onClick={() => {
             addSubClassModal.show();
           }}>
             添加
           </Button>
-        }
+        } */}
         <Button type="primary" onClick={() => getData()}>
           查询
         </Button>

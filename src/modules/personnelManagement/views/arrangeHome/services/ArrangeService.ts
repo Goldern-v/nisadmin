@@ -449,6 +449,7 @@ export default class ArrangeService extends BaseApiService {
   public async expectAddOrSub(data:any) {
     return this.post('/schExpectAddOrSub/saveOrUpdate',data)
   }
+  // 删除加减班
   public async deleteOrSub(id: any) {
     return this.get(`/schExpectAddOrSub/delete/${id}`)
   }
