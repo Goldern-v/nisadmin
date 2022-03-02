@@ -263,23 +263,36 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           empNo: row.empNo || row.commiterNo,
           type: 'nurseWHContinueStudy',
           title: '审核举办继续教育培训班',
+
           tableFormat: [
             {
               年份: `year`,
-              学员职称分布: `personTitleArea`
-            },
-            {
               项目名称: `projectName`,
-              项目号: `projectNumber`
+              
             },
             {
+              项目号: `projectNumber`,
               项目级别: `projectLevel`,
-              课时数: `courseHour`
             },
-            {
-              学员总数: `personTotal`,
-              学员分布区域: `schoolArea`
-            }
+            ...appStore.hisMatch({
+              map: {
+                'sdlj': [
+                  {
+                    授予学分: `creditGranted`
+                  }
+                ],
+                other: [
+                  {
+                    课时数: `courseHour`,
+                    学员总数: `personTotal`,
+                  },
+                  {
+                    学员分布区域: `schoolArea`,
+                    学员职称分布: `personTitleArea`
+                  },
+                ]
+              },
+            }),
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {

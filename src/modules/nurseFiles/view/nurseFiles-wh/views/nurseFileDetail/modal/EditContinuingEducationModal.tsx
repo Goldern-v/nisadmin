@@ -87,6 +87,7 @@ export default function EditPersonWinningModal(props: Props) {
         courseHour: data.courseHour,
         schoolArea: data.schoolArea,
         personTitleArea: data.personTitleArea,
+        creditGranted: data.creditGranted,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -143,26 +144,29 @@ export default function EditPersonWinningModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`课时数`} name='courseHour'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`学员总数`} name='personTotal'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`学员分布区域`} name='schoolArea'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`学员职称分布`} name='personTitleArea'>
-              <Input />
-            </Form.Field>
-          </Col>
+          {appStore.HOSPITAL_ID !== 'sdlj' &&
+            <div>
+              <Col span={24}>
+                <Form.Field label={`课时数`} name='courseHour'>
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`学员总数`} name='personTotal'>
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`学员分布区域`} name='schoolArea'>
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`学员职称分布`} name='personTitleArea'>
+                  <Input />
+                </Form.Field>
+              </Col>
+            </div>}
           <Col span={24}>
             <Form.Field label={`授予学分`} name='creditGranted'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('授予学分').map((item) => item.name)} />

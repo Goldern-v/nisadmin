@@ -75,6 +75,12 @@ export default observer(function TubeBed() {
       fileDownload(res)
     })
   }
+  const schTubeSyncEmp = () => {
+    tobeBedModal.schTubeSyncEmp().then(() => {
+      message.success("同步人员成功");
+      onLoad()
+    })
+  }
   useLayoutEffect(() => {
     try {
       (document as any)
@@ -144,6 +150,9 @@ export default observer(function TubeBed() {
         </Button>
         <Button onClick={schTubeBedExport}>
           导出
+        </Button>
+        <Button onClick={schTubeSyncEmp}>
+          同步人员
         </Button>
       </PageHeader>
       <div style={{ margin: "0 15px" }}>

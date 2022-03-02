@@ -7,17 +7,21 @@ import {
   Select,
   ColumnProps,
   PaginationConfig,
-  Input
+  Input,
+  message
 } from "src/vendors/antd";
 import DeptSelect from "src/components/DeptSelect";
 import { appStore, authStore } from "src/stores";
-import BaseTable from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
 import { getCurrentMonthNow } from "src/utils/date/currentMonth";
 import moment from "moment";
-export interface Props {}
+import AddSubClassModal from './modal/AddSubClassModal'
+import createModal from "src/libs/createModal";
+import { globalModal } from "src/global/globalModal";
+export interface Props { }
 export default observer(function AddSubClass() {
   const [searchWord, setSearchWord] = useState("");
   const [dataSource, setDataSource] = useState([]);
@@ -28,6 +32,7 @@ export default observer(function AddSubClass() {
   const [selectedStatusType, setSelectedStatusType] = useState("");
   const [publishType, setPublishType]: any = useState(1); // 状态
   const [date, setDate]: any = useState(getCurrentMonthNow());
+  const addSubClassModal = createModal(AddSubClassModal)
   const columns: ColumnProps<any>[] = [
     {
       title: "科室",
@@ -99,7 +104,34 @@ export default observer(function AddSubClass() {
       render(text: string) {
         return text === "1" ? "已填入" : "未填入";
       }
-    }
+    },
+    // ...appStore.hisMatch({
+    //   map: {
+    //     whyx: [
+    //       {
+    //         title: "状态",
+    //         dataIndex: "publishType",
+    //         align: "center",
+    //         render(text: string, record: any) {
+    //           return <DoCon>
+    //             <span onClick={(e: any) => {
+    //               addSubClassModal.show({
+    //                 editData: record,
+    //                 onOkCallBack: () => {
+    //                   getData();
+    //                 }
+    //               });
+    //             }}>编辑</span>
+    //             <span onClick={() => {
+    //               deleteOrSub(record.id)
+    //             }}>删除</span>
+    //           </DoCon>
+    //         }
+    //       }
+    //     ],
+    //     other: []
+    //   }
+    // }),
   ];
   const statusTypeList = [
     {
@@ -124,8 +156,33 @@ export default observer(function AddSubClass() {
 
   const getData = () => {
     setPageLoading(true);
+    let data = {
+      ...pageOptions,
+      statusType: selectedStatusType,
+      empNo: searchWord,
+      publishType,
+      startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
+      endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
+    }
+
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      data.deptCode = authStore.selectedDeptCode
+    } else {
+      data.wardCode = authStore.selectedDeptCode
+    }
     arrangeService
-      .findBylist({
+      .findBylist(data)
+      .then(res => {
+        // if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        //   setDataSource(res.data);
+        // } else {
+        // }
+        setDataSource(res.data.list);
+        setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 });
+        setPageLoading(false);
+      });
+    arrangeService
+      .getCount({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
         statusType: selectedStatusType,
@@ -135,29 +192,22 @@ export default observer(function AddSubClass() {
         endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
       })
       .then(res => {
-        setDataSource(res.data.list);
-        setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 });
-        setPageLoading(false);
+        setAddCount(res.data.addCount)
+        setSubCount(res.data.subCount)
+        setTotalCount(res.data.totalCount)
       });
-    arrangeService
-    .getCount({
-      ...pageOptions,
-      wardCode: authStore.selectedDeptCode,
-      statusType: selectedStatusType,
-      empNo: searchWord,
-      publishType,
-      startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
-      endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
-    })
-    .then(res => {
-      setAddCount(res.data.addCount)
-      setSubCount(res.data.subCount)
-      setTotalCount(res.data.totalCount)
-    });
   };
 
-  const onDetail = (record: any) => {};
+  const onDetail = (record: any) => { };
 
+  const deleteOrSub = (id: any) => {
+    globalModal.confirm("确认删除", "是否删除此记录吗").then(res => {
+      arrangeService.deleteOrSub(id).then(res => {
+        message.success("删除成功");
+        getData();
+      })
+    });
+  }
   useEffect(() => {
     getData();
   }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, selectedStatusType, date, searchWord, publishType]);
@@ -180,7 +230,7 @@ export default observer(function AddSubClass() {
           onChange={value => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className="label">工号姓名:</span>
         <Input
           value={searchWord}
@@ -207,6 +257,14 @@ export default observer(function AddSubClass() {
           <Select.Option value={0}>全部</Select.Option>
           <Select.Option value={1}>暂存发布</Select.Option>
         </Select> */}
+        {/* {
+          ['whyx'].includes(appStore.HOSPITAL_ID) &&
+          <Button onClick={() => {
+            addSubClassModal.show();
+          }}>
+            添加
+          </Button>
+        } */}
         <Button type="primary" onClick={() => getData()}>
           查询
         </Button>
@@ -238,6 +296,7 @@ export default observer(function AddSubClass() {
           return { onDoubleClick: () => onDetail(record) };
         }}
       />
+      <addSubClassModal.Component />
     </Wrapper>
   );
 });
