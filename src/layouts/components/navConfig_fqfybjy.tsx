@@ -72,6 +72,10 @@ const baseConfig: navConfigItem[] = [
     ]
   },
   {
+    name: "排班管理",
+    path: "/personnelManagement"
+  },
+  {
     name: "交班志",
     onClick: () => {
     // location.href = "http://localhost:4892/crNursing/autologin?token=3cecc567-c51a-4a8e-96c8-20977a377be1"
@@ -109,6 +113,10 @@ const baseConfig: navConfigItem[] = [
     path: "/auditsManagement"
   },
   {
+    name: "统计查询",
+    path: "/statistic"
+  },
+  {
     name: "通知公告",
     path: "/notice"
   },
@@ -121,14 +129,8 @@ const baseConfig: navConfigItem[] = [
   //   name: '不良事件分析报告',
   //   path: '/badEvents/alanysis/1/1'
   // },
-  {
-    name: "统计查询",
-    path: "/statistic"
-  },
-  {
-    name: "护理人员管理",
-    path: "/personnelManagement"
-  },
+  
+  
   
 ];
 
