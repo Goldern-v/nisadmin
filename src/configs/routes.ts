@@ -96,6 +96,9 @@ const BadEventsNewDetailNys = lazy(() =>
 const BadEventsNewDetailGzsrm = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail_gzsrm")
 );
+const BadEventsNewDetailFsxt = lazy(() =>
+  import("src/modules/badEventsNew/BadEventsNewDetail_fsxt")
+);
 const BadEventsNewDetailCommon = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetailCommon")
 );
@@ -641,6 +644,7 @@ const routes: RouteItem[] = [
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
+        fsxt:BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
@@ -657,6 +661,7 @@ const routes: RouteItem[] = [
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
+        fsxt:BadEventsNewDetailFsxt,
         nys: BadEventsNewDetail,
         hj: BadEventsNewDetail,
         other: BadEventsNewDetailCommon
