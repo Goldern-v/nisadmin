@@ -113,7 +113,20 @@ export default function EditBalanceModal(props: Props) {
       }
     }
   }, [visible]);
+  const onChangeSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ empName: value })
+    }
+  };
 
+  const onSearchSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ empName: value })
+    }
+  };
+
+  const onBlurSelect = () => {
+  };
   return (
     <Modal
       title={title}
@@ -128,7 +141,17 @@ export default function EditBalanceModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`护士姓名`} name="empName" required>
-              <Select disabled={props.oldData}>
+              <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={(e) => onChangeSelect(e)}
+                onSearch={(value) => onSearchSelect(value)}
+                onBlur={() => onBlurSelect()}
+                disabled={props.oldData}
+              >
                 {(nurseList || []).map((item: any, index: number) => (
                   <Select.Option value={item.empName} key={index}>
                     {item.empName}

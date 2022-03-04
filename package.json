@@ -180,6 +180,7 @@
     "zip": "env-cmd -e wh node buildZip",
     "deploy": "yarn build && node publish.js",
     "publish:45": "npm run build:hj && node publish.js",
+    "publish:8054": "npm run build:fqfybjy && node publish.js",
     "publish:8062": "npm run build:nys && node publish.js",
     "publish:9868": "npm run build:gzhd && node publish.js",
     "publish:9872": "npm run build:jmfy && node publish.js",
