@@ -71,8 +71,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9889') >= 0) {
     folderSrc = '/crdata/webProject/manage-guangxijiangbin'
   }
+  // 福清妇幼
+  if (process.env.npm_lifecycle_event.indexOf('8054') >= 0) {
+    folderSrc = '/crdata/webProject/manage-fuqingfuyou'
+  }
   
-
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'
