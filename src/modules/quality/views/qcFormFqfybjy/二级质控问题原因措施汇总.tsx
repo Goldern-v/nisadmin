@@ -63,7 +63,7 @@ export default observer(function 三级问题原因措施汇总() {
     },
     {
       title: '存在问题',
-      dataIndex: 'problem',
+      dataIndex: 'problemListFQFY',
       align: 'left',
       width: 175,
       render: (text: string) => <PreCon>{getProblemText(text)}</PreCon>,
@@ -145,17 +145,17 @@ export default observer(function 三级问题原因措施汇总() {
       render: (text: string) => <PreCon>{text}</PreCon>,
     },
   ]
-  const getProblemText = (arr:any)=>{
-    if(!arr.length)return ''
+  const getProblemText = (arr: any) => {
+    if (!arr?.length) return ''
     let str = ''
-    arr.map((item:any)=>{
-      if(item.subItemList.length){
-        item.subItemList.map((strItem:any,index:any)=>{
+    arr.map((item: any) => {
+      if (item.subItemList.length) {
+        item.subItemList.map((strItem: any, index: any) => {
           str += `${strItem}\n`
         })
       }
-      if(item.remark){
-        str +=`${item.remark}\n`
+      if (item.remark) {
+        str += `${item.remark}\n`
       }
     })
     return str
