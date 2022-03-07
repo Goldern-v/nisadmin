@@ -146,7 +146,7 @@ export default observer(function 三级问题原因措施汇总() {
     },
   ]
   const getProblemText = (arr: any) => {
-    if (!arr?.length) return ''
+    if (!(arr && arr?.length)) return ''
     let str = ''
     arr.map((item: any) => {
       if (item.subItemList.length) {

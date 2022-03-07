@@ -26,7 +26,8 @@ export default class AMServices extends BaseApiService {
       type: showType,
       keyword,
       // wardCode: authStore.selectedDeptCode,
-      deptCodes: deptCodes
+      wardCode:deptCodes,
+      deptCodes: deptCodes,
     };
     return this.post(`/flow/task/pendingPage`, obj);
   }

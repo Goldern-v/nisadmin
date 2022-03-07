@@ -53,8 +53,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const toDetails = (row: any) => {
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
-        `/crNursing/manage/#/qualityControlRecordDetail/${
-          row.othersMessage.id
+        `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id
         }?qcCode=${row.othersMessage.qcCode}`
       );
     } else if (showType == "nurseFileNys") {
@@ -68,16 +67,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
             );
           } else {
             window.open(
-              `/crNursing/manage/#/nurseAudit?empNo=${
-                res.data.empNo
+              `/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo
               }&needAudit=false`
             );
           }
         });
     } else if (showType == "sr") {
       window.open(
-        `/crNursing/manage/#/qualityScheduleRecordDetails/${
-          row.othersMessage.id
+        `/crNursing/manage/#/qualityScheduleRecordDetails/${row.othersMessage.id
         }`
       );
     }
@@ -103,12 +100,12 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         return text == "nurseFileNys"
           ? "护士档案"
           : text == "qc"
-          ? "三级质控"
-          : text == "qcTwoLevel"
-          ? "二级质控"
-          : text == "sr"
-          ? "特殊时段查房"
-          : "";
+            ? "三级质控"
+            : text == "qcTwoLevel"
+              ? "二级质控"
+              : text == "sr"
+                ? "特殊时段查房"
+                : "";
       },
     },
     {
@@ -194,12 +191,12 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     let getDataFun = props.needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)
       : aMServices.solvedPage(
-          current,
-          pageSize,
-          showType,
-          keyword,
-          selectedDate
-        );
+        current,
+        pageSize,
+        showType,
+        keyword,
+        selectedDate
+      );
 
     getDataFun.then((res) => {
       setLoading(false);
@@ -290,8 +287,10 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   }, [tableData]);
 
   useEffect(() => {
-    showType && onload(current, searchText, props.selectedDate, pageSize);
-  }, [needAudit, showType, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode]);
+    showType && needAudit && onload(current, searchText, props.selectedDate, pageSize);
+    // console.log(111, needAudit, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode)
+    // needAudit, showType, statisticsViewModal.selectedDeptCode
+  }, []);
 
   return (
     <Wrapper>

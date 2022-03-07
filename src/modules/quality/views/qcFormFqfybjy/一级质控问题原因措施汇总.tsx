@@ -146,17 +146,17 @@ export default observer(function 三级问题原因措施汇总() {
     },
   ]
 
-  const getProblemText = (arr:any)=>{
-    if(!arr.length)return ''
+  const getProblemText = (arr: any) => {
+    if (!(arr && arr?.length)) return ''
     let str = ''
-    arr.map((item:any)=>{
-      if(item.subItemList.length){
-        item.subItemList.map((strItem:any,index:any)=>{
+    arr.map((item: any) => {
+      if (item.subItemList.length) {
+        item.subItemList.map((strItem: any, index: any) => {
           str += `${strItem}\n`
         })
       }
-      if(item.remark){
-        str +=`${item.remark}\n`
+      if (item.remark) {
+        str += `${item.remark}\n`
       }
     })
     return str
