@@ -343,6 +343,17 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={appStore.HOSPITAL_ID! == 'gzsrm' ? gzsrmhandleCopy : handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
+
+        {['whyx'].includes(appStore.HOSPITAL_ID) && <div className="item">
+          <Button
+            className="statistics"
+            onClick={() => {
+              arrangAnalysisModal.show({});
+            }}
+          >
+            统计
+          </Button>
+        </div>}
         {['hj', 'dgxg'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={findSysnNurse}>同步排班人员</Button>

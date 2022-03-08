@@ -365,6 +365,24 @@ export default observer(function Cell(props: Props) {
             copyRowClick(list, copyRow, true);
           }
         },
+        // 亚心同步
+        ...appStore.hisMatch({
+          map: {
+            'whyx': [
+              {
+                icon: require("../../images/粘贴行.png"),
+                label: "同步同组排班",
+                type: "text",
+                onClick() {
+                  // sheetViewModal.copyRow = sheetViewModal.getSelectCellList(true);
+                  sheetViewModal.holdTeam()
+                  message.success("同步成功");
+                }
+              },
+            ],
+            other: []
+          }
+        }),
         // {
         //   icon: require("../../images/复制行.png"),
         //   label: "复制整周",
