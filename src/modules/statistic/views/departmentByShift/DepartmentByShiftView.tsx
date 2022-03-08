@@ -86,6 +86,7 @@ export default function StatisticView() {
 
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
+        season: 'summer',
         ls: filterList.join(',')
       })
         .then(res => {
