@@ -192,7 +192,20 @@ export default function EditWorkHistoryModal(props: Props) {
       });
     }
   }, [visible]);
+  const onChangeSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ workAddress: value })
+    }
+  };
 
+  const onSearchSelect = (value: any) => {
+    if (!!value) {
+      refForm!.current!.setFields({ workAddress: value })
+    }
+  };
+
+  const onBlurSelect = () => {
+  };
   return (
     <Modal
       title="修改基本信息"
@@ -379,17 +392,33 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`护理层级`} name="nurseHierarchy">
-              <Input disabled/>
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`护理层级起始时间`} name="maps.nursinglevelstartdate">
-              <Input disabled/>
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`院内工作区域`} name="workAddress">
-              <Input maxLength={25} />
+              {/* <Input maxLength={25} /> */}
+              <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={(e) => onChangeSelect(e)}
+                onSearch={(value) => onSearchSelect(value)}
+                onBlur={() => onBlurSelect()}
+              >
+                {nurseFileDetailViewModal.getDict('院内工作地点').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           {/* <Col span={12}>
