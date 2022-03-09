@@ -297,6 +297,11 @@ export default function MainBox() {
             onSelectChange={handleSelectChange}
             render={renderItem}
             lazy={false}
+            showSearch
+            filterOption={(inputValue, item) => {
+              return item.empName.indexOf(inputValue) !== -1
+            }
+            }
           />
         </Spin>
         <Modal

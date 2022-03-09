@@ -39,7 +39,7 @@ export default function BedSituation(props: Props) {
           endTime: payload[1],
         })
       }} />
-      <span style={{marginLeft: '20px'}}>时令状态：</span>
+      {appStore.HOSPITAL_ID==='lcey' && <span style={{marginLeft: '20px'}}>时令状态：</span>}
       {appStore.HOSPITAL_ID==='lcey' && 
         <Select defaultValue="summer" style={{ width: 120 }} onChange={(value: string) => onChange && onChange({
           ...query, 
@@ -48,7 +48,8 @@ export default function BedSituation(props: Props) {
         }>
           <Option value="summer">夏令时</Option>
           <Option value="winter">冬令时</Option>
-        </Select>}
+        </Select>
+      }
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>
