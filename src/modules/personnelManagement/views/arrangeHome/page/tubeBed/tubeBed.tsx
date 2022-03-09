@@ -42,7 +42,7 @@ export default observer(function TubeBed() {
       fixed: 'left',
     },
     {
-      title: "班次",
+      title: "姓名",
       dataIndex: "empName",
       width: 80,
       align: "center",

@@ -292,12 +292,23 @@ export default observer(function NurseFilesView(props: Props) {
       component: TraineeFiles,
       icon: <TXHSCX />
     },
-    appStore.HOSPITAL_ID === 'gxjb' && {
-      title: "人员调动查询",
-      path: "/nurseFile/staffMovementEnquiry",
-      component: StaffMovementEnquiry,
-      icon: <TXHSCX />
-    },
+    ...appStore.hisMatch({
+      map: {
+        gxjb: [{
+          title: "人员调动查询",
+          path: "/nurseFile/staffMovementEnquiry",
+          component: StaffMovementEnquiry,
+          icon: <TXHSCX />
+        }],
+        other: [],
+      }
+    }),
+    // appStore.HOSPITAL_ID === 'gxjb' && {
+    //   title: "人员调动查询",
+    //   path: "/nurseFile/staffMovementEnquiry",
+    //   component: StaffMovementEnquiry,
+    //   icon: <TXHSCX />
+    // },
     {
       title: "护理实习生轮科",
       icon: <TXHSCX />,
@@ -509,7 +520,7 @@ export default observer(function NurseFilesView(props: Props) {
   useLayoutEffect(() => {
 
     if (
-      ["hj", "wjgdszd", "gzhd", "lcey", "gxjb", 'fssdy', 'fsxt', "gzsrm", "jmfy", "gzsrm", appStore.isDev ? "wh" : "wh_production"]
+      ["hj", "wjgdszd", "gzhd", "lcey", "gxjb", 'fssdy', 'fsxt', "gzsrm", "jmfy", "gzsrm", "fqfybjy", appStore.isDev ? "wh" : "wh_production"]
         .indexOf(appStore.HOSPITAL_ID) >= 0
     )
       getList();

@@ -37,7 +37,7 @@ export default function Cell(props: Props) {
         style={{ width: '100%' }}
       >
         {bedNoList && bedNoList.map((item: any, index: any) => {
-          return <Select.Option value={item.bedLabel} key={index}>{item.bedNo}</Select.Option>
+          return <Select.Option value={item.bedLabel} key={index}>{item.bedLabel}</Select.Option>
         })}
       </Select>
     </Wrapper>

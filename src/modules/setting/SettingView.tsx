@@ -76,7 +76,13 @@ const LEFT_MENU_CONFIG = [
         path: "/setting/healthEducationReportList",
         component: HealthEducationReportList
       }
-    ]
+    ],
+    hide: appStore.hisMatch({
+      map: {
+        fqfybjy: true,
+        other: false,
+      }
+    })
   },
   // {
   //   title: '护理评估设置',
