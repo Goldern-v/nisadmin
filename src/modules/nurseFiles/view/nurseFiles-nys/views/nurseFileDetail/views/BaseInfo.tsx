@@ -77,7 +77,7 @@ export default observer(function BaseInfo() {
                   最高学历: `highestEducation`
                 },
                 {
-                  护士执业证书编号: `zyzsNumber`,
+                  // 护士执业证书编号: `zyzsNumber`,
                   护士执业证书有效截止日期: `zyzsEffectiveUpDate`,
                 },
                 {
@@ -153,7 +153,7 @@ export default observer(function BaseInfo() {
           最高学历: data.highestEducation
         },
         {
-          护士执业证书编号: data.zyzsNumber,
+          // 护士执业证书编号: data.zyzsNumber,
           护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         },
         {
@@ -240,7 +240,7 @@ export default observer(function BaseInfo() {
             ))}
           </tbody>
         </InfoTable>
-        <ZyzsCon>
+        {/* <ZyzsCon>
           <span>附件：</span>
           <div className="img-con">
             {info.zyzsUrl ? (
@@ -253,7 +253,7 @@ export default observer(function BaseInfo() {
               <img src={require("../../../images/证件空态度.png")} alt="" />
             )}
           </div>
-        </ZyzsCon>
+        </ZyzsCon> */}
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
