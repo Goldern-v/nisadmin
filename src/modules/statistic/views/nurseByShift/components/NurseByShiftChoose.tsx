@@ -54,7 +54,6 @@ export default function BedSituation(props: any) {
     setCheckboxItem(getShiftType);
   };
   useEffect(() => {
-    console.log("testOnly-12");
     getCheckboxItemByDeptCode();
   }, [authStore.selectedDeptCode]);
 
