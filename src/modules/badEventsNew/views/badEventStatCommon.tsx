@@ -144,7 +144,7 @@ export default observer(function 不良事件统计() {
         if (res.data) {
           // console.log(res.data)
 
-          setTableData(res.data.slice(10) || [])
+          setTableData(res.data || [])
 
           setChartData(res.data || [])
         }
