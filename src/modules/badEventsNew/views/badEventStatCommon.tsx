@@ -169,7 +169,7 @@ export default observer(function 不良事件统计() {
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
     badEventsNewService
-      .getBadEventTypeList(deptCode)
+      .getBadEventTypeList()
       .then(res => {
         let data = res.data;
 
