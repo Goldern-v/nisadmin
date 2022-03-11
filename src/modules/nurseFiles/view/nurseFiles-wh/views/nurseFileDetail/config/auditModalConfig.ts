@@ -65,7 +65,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     "鞋款式": "nurse_shoes_style",
                   },
                   {
-                    "鞋码": "nurse_shoes_size",
+                    "鞋码": "shoeSize",
                   },
                 ]
               default:
@@ -145,7 +145,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                           "鞋款式": "nurse_shoes_style",
                         },
                         {
-                          "鞋码": "nurse_shoes_size",
+                          "鞋码": "shoeSize",
                         }
                       ],
                       other: []
