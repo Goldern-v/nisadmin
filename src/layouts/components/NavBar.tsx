@@ -36,13 +36,14 @@ import { navConfig as navConfig_fsxt } from "./navConfig_fsxt";
 import { navConfig as navConfig_fsxtSelf } from "./navConfig_fsxtSelf";
 import { navConfig as navConfig_sdlj } from "./navConfig_sdlj";
 import { navConfig as navConfig_sdljSelf } from "./navConfig_sdljSelf";
+import { navConfig as navConfig_lyrm } from "./navConfig_lyrm";
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
   // return path ? () => appStore.history.push(path) : () => { };
 };
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const itemHidden = (hidden?: any) => {
   if (!hidden) return false;
@@ -53,7 +54,7 @@ const itemHidden = (hidden?: any) => {
   }
 };
 
-const MenuCon = observer(function (props: {
+const MenuCon = observer(function(props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -130,47 +131,49 @@ export default observer(function NavBar(props: any) {
       return navConfig_nys;
     } else if (appStore.HOSPITAL_ID == "dzlc") {
       return navConfig_dzlc;
-    } else if (appStore.HOSPITAL_ID == 'gzhd') {
-      return navConfig_gzhd
-    } else if (appStore.HOSPITAL_ID == 'lcey') {
-      return navConfig_lcey
-    } else if (appStore.HOSPITAL_ID == 'gzsrm') {
-      return navConfig_gzsrm
-    } else if (appStore.HOSPITAL_ID == 'jmfy') {
-      return navConfig_jmfy
-    } else if (appStore.HOSPITAL_ID == 'dghl') {
-      return navConfig_dghl
-    } else if (appStore.HOSPITAL_ID == 'dgxg') {
-      return navConfig_dgxg
-    } else if (appStore.HOSPITAL_ID == 'yczyy') {
-      return navConfig_yczyy
-    } else if (appStore.HOSPITAL_ID == 'nfzxy') {
-      return navConfig_nfzxy
-    } else if (appStore.HOSPITAL_ID == 'fqfybjy') {
-      return navConfig_fqfybjy
-    } else if (appStore.HOSPITAL_ID == 'wjgdszd') {
-      return navConfig_wjgdszd
-    } else if (appStore.HOSPITAL_ID == 'bhsrm') {
-      return navConfig_bhsrm
-    } else if (appStore.HOSPITAL_ID == 'qzxyy') {
-      return navConfig_qzxyy
-    } else if (appStore.HOSPITAL_ID == 'fssdy') {
+    } else if (appStore.HOSPITAL_ID == "gzhd") {
+      return navConfig_gzhd;
+    } else if (appStore.HOSPITAL_ID == "lcey") {
+      return navConfig_lcey;
+    } else if (appStore.HOSPITAL_ID == "gzsrm") {
+      return navConfig_gzsrm;
+    } else if (appStore.HOSPITAL_ID == "jmfy") {
+      return navConfig_jmfy;
+    } else if (appStore.HOSPITAL_ID == "dghl") {
+      return navConfig_dghl;
+    } else if (appStore.HOSPITAL_ID == "dgxg") {
+      return navConfig_dgxg;
+    } else if (appStore.HOSPITAL_ID == "yczyy") {
+      return navConfig_yczyy;
+    } else if (appStore.HOSPITAL_ID == "nfzxy") {
+      return navConfig_nfzxy;
+    } else if (appStore.HOSPITAL_ID == "fqfybjy") {
+      return navConfig_fqfybjy;
+    } else if (appStore.HOSPITAL_ID == "wjgdszd") {
+      return navConfig_wjgdszd;
+    } else if (appStore.HOSPITAL_ID == "bhsrm") {
+      return navConfig_bhsrm;
+    } else if (appStore.HOSPITAL_ID == "qzxyy") {
+      return navConfig_qzxyy;
+    } else if (appStore.HOSPITAL_ID == "fssdy") {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fssdy;
       else return navConfig_fssdySelf;
-    } else if (appStore.HOSPITAL_ID == 'gxjb') {
+    } else if (appStore.HOSPITAL_ID == "gxjb") {
       // return navConfig_gxjb
       if (authStore.isRoleManage) return navConfig_gxjb;
       else return navConfig_gxjbSelf;
-    } else if (appStore.HOSPITAL_ID == 'fsxt') {
+    } else if (appStore.HOSPITAL_ID == "fsxt") {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;
-    } else if (appStore.HOSPITAL_ID == 'whyx') {
-      return navConfig_whyx(appStore, authStore)
-    }
-    else if (appStore.HOSPITAL_ID == 'sdlj') {
-      return navConfig_sdlj(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == "whyx") {
+      return navConfig_whyx(appStore, authStore);
+    } else if (appStore.HOSPITAL_ID == "sdlj") {
+      return navConfig_sdlj(appStore, authStore);
+      //return navConfig_sdljSelf
+    } else if (appStore.HOSPITAL_ID == "lyrm") {
+      return navConfig_lyrm;
       //return navConfig_sdljSelf
     }
     return navConfig;
@@ -232,7 +235,7 @@ export default observer(function NavBar(props: any) {
             </React.Fragment>
           );
           break;
-        case 'nfzxy':
+        case "nfzxy":
           view = (
             <React.Fragment>
               <img
@@ -247,11 +250,13 @@ export default observer(function NavBar(props: any) {
                 className="name"
                 style={{ paddingRight: 30 }}
               /> */}
-              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
+              <div className="nameTitle">
+                {appStore.hospitalOtherName}护理管理系统
+              </div>
             </React.Fragment>
           );
           break;
-        case 'gzsrm':
+        case "gzsrm":
           view = (
             <React.Fragment>
               <img
@@ -269,7 +274,7 @@ export default observer(function NavBar(props: any) {
             </React.Fragment>
           );
           break;
-        case 'gzhd':
+        case "gzhd":
           view = (
             <React.Fragment>
               <img
@@ -284,7 +289,9 @@ export default observer(function NavBar(props: any) {
                 className="name"
                 style={{ paddingRight: 30 }}
               /> */}
-              <div className="nameTitle">{appStore.hospitalOtherName}护理管理系统</div>
+              <div className="nameTitle">
+                {appStore.hospitalOtherName}护理管理系统
+              </div>
             </React.Fragment>
           );
           break;
@@ -388,7 +395,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
   height: 50px;
-  background: ${p => p.theme.$mtc};
+  background: ${(p) => p.theme.$mtc};
   position: relative;
   padding-bottom: 2px;
   z-index: 2;
@@ -438,7 +445,7 @@ const NavItem = styled.div<{ active?: boolean }>`
   cursor: pointer;
   font-size: 13px;
   position: relative;
-  background: ${p => p.active && p.theme.$mcc};
+  background: ${(p) => p.active && p.theme.$mcc};
   color: #fff;
   @media (max-width: 1440px) {
     padding: 0 5px 0 5px;
@@ -453,7 +460,7 @@ const NavItem = styled.div<{ active?: boolean }>`
     /* margin-top: 6px; */
     margin-right: 2px;
     path {
-      /* fill: ${p => (p.active ? "#fff" : "#747474")}; */
+      /* fill: ${(p) => (p.active ? "#fff" : "#747474")}; */
     }
     title {
       display: none;

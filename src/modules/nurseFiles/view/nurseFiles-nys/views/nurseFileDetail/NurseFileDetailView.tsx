@@ -36,19 +36,25 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 }
 
 const studyAndTrainingTypeList = [
-  '学分记录', '学时记录', '学习记录', '练习记录', '实操记录', '演练记录', '实践记录'
-]
+  "学分记录",
+  "学时记录",
+  "学习记录",
+  "练习记录",
+  "实操记录",
+  "演练记录",
+  "实践记录",
+];
 
 const ROUTE_LIST = [
   {
     type: "baseInfo",
     component: BaseInfo,
-    name: "基本信息"
+    name: "基本信息",
   },
   {
     type: "workHistory",
     component: WorkHistory,
-    name: "工作经历"
+    name: "工作经历",
   },
   // {
   //   type: "specialCard",
@@ -58,28 +64,28 @@ const ROUTE_LIST = [
   {
     type: "educationalExperience",
     component: EducationalExperience,
-    name: "教育经历"
+    name: "教育经历",
   },
   {
     type: "levelChange",
     component: LevelChange,
-    name: "职称及层级"
+    name: "职称及层级",
   },
-  {
-    type: "ctnEdu",
-    component: ContinuingEducation,
-    name: "继续教育"
-  },
+  // {
+  //   type: "ctnEdu",
+  //   component: ContinuingEducation,
+  //   name: "继续教育"
+  // },
   {
     type: "writings",
     component: Writings,
     indexList: ["著作", "论文"],
-    name: "著作与论文"
+    name: "著作与论文",
   },
   {
     type: "awards",
     component: Awards,
-    name: "所获奖励"
+    name: "所获奖励",
   },
   // {
   //   type: 'badAction',
@@ -99,12 +105,12 @@ const ROUTE_LIST = [
   {
     type: "checkFile",
     component: CheckFile,
-    name: "培训与考核"
+    name: "培训与考核",
   },
   {
     type: "workRegistrationForm",
     component: WorkRegistrationForm,
-    name: "工作情况登记"
+    name: "工作情况登记",
   },
   // {
   //   type: "nurseJuniorSpecialFile",
@@ -120,25 +126,25 @@ const ROUTE_LIST = [
   ...studyAndTrainingTypeList.map((name: string) => ({
     type: name,
     component: StudyAndTariningEmpDetailTable,
-    name
+    name,
   })),
   {
     type: "考试记录",
     component: TestView,
-    name: "考试记录"
+    name: "考试记录",
   },
 ];
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
   // appStore.match.params.type
   let currentRouteType = props.match.params.type;
-  let CurrentRoute = ROUTE_LIST.find(item => item.type === currentRouteType);
-  const pannelName = empDetailModel.pannelName
+  let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType);
+  const pannelName = empDetailModel.pannelName;
 
-  const [sorceAppendVisible, setSorceAppendVisible] = useState(false)
+  const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
 
   useEffect(() => {
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then(res => {
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       nurseFileDetailViewModal.nurserInfo = res.data;
     });
     nurseFileDetailViewModal.init();
@@ -176,8 +182,9 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
               <CurrentRoute.component
                 {...{
                   shouldSorceAppendOpen: () => setSorceAppendVisible(true),
-                  addBtnHide: false
-                }} />
+                  addBtnHide: false,
+                }}
+              />
             )}
           </Spin>
         </DetailCon>
