@@ -41,7 +41,7 @@ export default class BaseRegisterModel {
   @observable rangeConfigList = [] as any[]
   /**勾选的行key值 */
   @observable selectedRowKeys = [] as string[]
-
+  @observable isAll: number = 0 //是否全院
   /**初始化 */
   @action init(registerCode?: string, registerName?: string) {
     if (this.loading) return
