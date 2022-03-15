@@ -56,7 +56,7 @@ export default function AduitModal(props: Props) {
       setSpinning(true)
       if (props.type === 'nurseInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
-          let data = res.data
+          let data = { ...res.data, ...res.data.maps }
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
             if (!keys[1]) keys[1] = ''

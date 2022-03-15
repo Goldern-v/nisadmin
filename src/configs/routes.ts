@@ -488,6 +488,11 @@ const BadEventReportView = lazy(() =>
   import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView")
 );
 
+//不良事件统计报告-贵州
+const BadEventReportViewGzsrm = lazy(() =>
+  import("src/modules/badEventsNew/views/BadEventReport_gzsrm/BadEventReportView")
+);
+
 // 护理随访整体模块
 const NursingFollowUp = lazy(() => import("src/modules/nursingFollowUp/NursingFollowUpRouter"))
 
@@ -992,7 +997,8 @@ const routes: RouteItem[] = [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"
-        }
+        },
+        setLayout("/BadEventReportViewGzsrm", BadEventReportViewGzsrm, layouts.MainLayout),
       ],
       other: [
         {
