@@ -11,7 +11,10 @@ export interface navConfigItem {
   menuStyle?: React.CSSProperties;
 }
 // 武汉亚心
-export const navConfig: (appStore: any, authStore: any) => navConfigItem[] = (appStore, authStore) => {
+export const navConfig: (appStore: any, authStore: any) => navConfigItem[] = (
+  appStore,
+  authStore
+) => {
   let navList: navConfigItem[] = [
     {
       name: "首页",
@@ -39,7 +42,7 @@ export const navConfig: (appStore: any, authStore: any) => navConfigItem[] = (ap
     {
       name: "病区登记本",
       path: "/wardRegister",
-      hidden: !appStore.isDev,
+      // hidden: !appStore.isDev,
     },
     // {
     //   name: '不良事件分析报告',
@@ -89,11 +92,11 @@ export const navConfig: (appStore: any, authStore: any) => navConfigItem[] = (ap
       name: "敏感指标",
       path: "/indicator",
     },
-    {
-      name: "敏感指标登记本",
-      path: "/sensitiveRegister",
-      // hidden: !appStore.isDev
-    },
+    // {
+    //   name: "敏感指标登记本",
+    //   path: "/sensitiveRegister",
+    //   // hidden: !appStore.isDev
+    // },
     {
       name: "统计查询",
       path: "/statistic",
@@ -136,6 +139,6 @@ export const navConfig: (appStore: any, authStore: any) => navConfigItem[] = (ap
         },
       ],
     },
-  ]
-  return navList
-}
+  ];
+  return navList;
+};
