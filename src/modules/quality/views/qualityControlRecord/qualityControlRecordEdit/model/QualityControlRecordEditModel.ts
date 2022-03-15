@@ -117,7 +117,7 @@ class QualityControlRecordEditModel {
     userList: false,
     wardCode: false,
     // bedNurseList: false,
-    // bedLabel: false,
+    bedLabel: false,
     inpNo: false
   } as any
 
