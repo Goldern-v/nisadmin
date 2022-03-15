@@ -16,6 +16,7 @@ import BadEventsNewListCommon from './BadEventsNewListCommon'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
+import BadEventReportListNew_gzsrm from './views/BadEventReportListNew_gzsrm/BadEventReportList'
 import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
 
 export default function BadEventsRouters(props: Props) {
@@ -117,6 +118,16 @@ export default function BadEventsRouters(props: Props) {
             title: '不良事件分析报告',
             path: `${baseRouter}/不良事件分析报告`,
             component: BadEventReportList,
+            // hide: appStore.isDev ? false : true,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          }
+        ],
+        gzsrm:[
+          {
+            title: '不良事件分析报告',
+            path: `${baseRouter}/不良事件分析报告`,
+            component: BadEventReportListNew_gzsrm,
             // hide: appStore.isDev ? false : true,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
