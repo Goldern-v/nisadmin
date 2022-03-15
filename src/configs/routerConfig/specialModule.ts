@@ -184,7 +184,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || 
   appStore.HOSPITAL_ID == 'fssdy' || appStore.HOSPITAL_ID == 'fsxt'
-  || appStore.HOSPITAL_ID == 'sdlj') {
+  || appStore.HOSPITAL_ID == 'sdlj' || appStore.HOSPITAL_ID == 'lyrm') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
@@ -201,7 +201,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
     setLayout("/wh_single_point_login", SingleSignOnWh),
     // ...homeRouter(HomeView_wh),
-    ...homeRouter(['fssdy'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
+    ...homeRouter(['fssdy','fsxt'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
   ];
 
   //武汉护理制度

@@ -992,7 +992,7 @@ const routes: RouteItem[] = [
   },
   ...appStore.hisMatch({
     map: {
-      gzsrm: [
+      "gzsrm,lyrm": [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"
@@ -1005,7 +1005,8 @@ const routes: RouteItem[] = [
           redirect: "/setting/扁平管理设置"
         }
       ],
-    }
+    },
+    vague: true,
   }),
   {
     path: "/wardManagement",

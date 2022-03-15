@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../types/Sheet";
 import { Input, message } from "src/vendors/antd";
+import { appStore } from "src/stores";
 export interface Props {
   id: any;
 }
@@ -23,9 +24,17 @@ export const publicHour = (id: any) => {
   /** 计算总公修 */
   let real_publicHour = 0;
   for (let j = 0; j < (user.settingDtos || []).length; j++) {
-    real_publicHour += user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      real_publicHour += user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+    } else {
+      real_publicHour += user.settingDtos[j].shiftType == "公休" ? 1 : 0;
+    }
     if (user.settingDtos[j]!.workDate.includes("-01-01")) {
-      real_publicHour = user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+      if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        real_publicHour = user.settingDtos[j].shiftType == "公休" ? 1 : 0;
+      } else {
+        real_publicHour = user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+      }
     }
   }
   let total =

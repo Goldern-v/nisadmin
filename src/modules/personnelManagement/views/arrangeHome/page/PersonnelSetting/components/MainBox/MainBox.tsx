@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
-import { Transfer, Modal, Input, message, Spin, Select } from 'antd'
+import { Transfer, Modal, Input, message, Spin, Select, Tooltip } from 'antd'
 import service from 'src/services/api'
 import { appStore, scheduleStore } from 'src/stores'
 import { PageHeader } from "src/components/common";
@@ -234,7 +234,7 @@ export default function MainBox() {
   }
 
   const renderItem = (item: any) => {
-    const customLabel = <span className='custom-item'>{item.empName}</span>
+    const customLabel = <Tooltip placement="topLeft" title={'工号：' + item.empNo}><span className='custom-item'>{item.empName}</span></Tooltip>
     return {
       label: customLabel,
       value: item.empName
@@ -297,6 +297,11 @@ export default function MainBox() {
             onSelectChange={handleSelectChange}
             render={renderItem}
             lazy={false}
+            showSearch
+            filterOption={(inputValue, item) => {
+              return item.empName.indexOf(inputValue) !== -1
+            }
+            }
           />
         </Spin>
         <Modal

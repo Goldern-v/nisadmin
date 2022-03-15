@@ -59,7 +59,7 @@ export default observer(function BaseInfo() {
       name: "鞋款式"
     },
     {
-      type: "nurse_shoes_size",
+      type: "shoeSize",
       name: "鞋码"
     },
   ]

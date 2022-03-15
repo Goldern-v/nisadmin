@@ -187,7 +187,22 @@ export default class BadEventsNewService extends BaseApiService {
      public deleteById(id:any) {
       return this.get(`/badEventAuditTemplate/deleteById/${id}`)
       
-    }
+  }
+  
+  //不良事件统计数据(新版)
+  public async badEventStat(params: any) {
+    return this.post(`/badEventReport/badEventStat`, params);
+  }
+  
+  //不良事件统计导出（新版）
+  public async exportBadEventStat(params: any) {
+    return this.post(`/badEventReport/exportBadEventStat`, params, { responseType: 'blob' });
+  }
+
+ //不良事件类型列表
+ public async getBadEventTypeList() {
+   return this.get(`/badEventReport/getBadEventType`);
+}
 }
 
 export const badEventsNewService = new BadEventsNewService()

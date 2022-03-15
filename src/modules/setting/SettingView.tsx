@@ -25,7 +25,7 @@ import ManagementSummary from "src/modules/deptReferSetting/views/ManagementSumm
 import HealthEducationReportList from "../healthEducationReport/healthEducationReportList/HealthEducationReportList";
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
   // {
@@ -41,24 +41,24 @@ const LEFT_MENU_CONFIG = [
       {
         title: "类别字典设置",
         path: "/setting/typeDict",
-        component: CategoryDictionary
+        component: CategoryDictionary,
       },
       {
         title: "健康宣教字典详情",
         path: "/setting/健康宣教字典详情",
         component: HealthPropagandaView,
-        hide: true
+        hide: true,
       },
       {
         title: "健康宣教字典",
         path: "/setting/健康宣教字典",
-        component: 健康宣教字典
+        component: 健康宣教字典,
       },
       {
         title: "健康宣教字典详情",
         path: "/setting/自动推送字典详情",
         component: Preview,
-        hide: true
+        hide: true,
       },
       {
         title: "自动推送设置",
@@ -68,15 +68,21 @@ const LEFT_MENU_CONFIG = [
           map: {
             gzsrm: true,
             other: false,
-          }
-        })
+          },
+        }),
       },
       {
         title: "健康宣教月度报告",
         path: "/setting/healthEducationReportList",
-        component: HealthEducationReportList
-      }
-    ]
+        component: HealthEducationReportList,
+      },
+    ],
+    hide: appStore.hisMatch({
+      map: {
+        fqfybjy: true,
+        other: false,
+      },
+    }),
   },
   // {
   //   title: '护理评估设置',
@@ -90,12 +96,11 @@ const LEFT_MENU_CONFIG = [
     component: 节假日设置,
     hide: appStore.hisMatch({
       map: {
-        gzsrm: true,
-        bhsrm: true,
-        qzxyy: true,
+        "gzsrm,bhsrm,qzxyy,lyrm": true,
         other: false,
-      }
-    })
+      },
+      vague: true,
+    }),
   },
   {
     title: "科室偏好设置",
@@ -103,45 +108,43 @@ const LEFT_MENU_CONFIG = [
     path: "/setting/科室文件共享",
     hide: appStore.hisMatch({
       map: {
-        gzsrm: true,
-        bhsrm: true,
-        qzxyy: true,
+        "gzsrm,bhsrm,qzxyy,lyrm": true,
         other: false,
-      }
+      },
+      vague: true,
     }),
     children: [
       {
         title: "扁平管理设置",
         path: "/setting/扁平管理设置",
-        component: FlatManage
+        component: FlatManage,
       },
       ...appStore.hisMatch({
         map: {
           jmfy: [
             {
-              title: '扁平管理问题查看',
-              path: '/setting/扁平管理问题查看',
-              component: FlatManageProblemList
+              title: "扁平管理问题查看",
+              path: "/setting/扁平管理问题查看",
+              component: FlatManageProblemList,
               // hide: true
             },
             {
-              title: '扁平管理汇总',
-              path: '/setting/扁平管理汇总',
-              component: ManagementSummary
-            }
+              title: "扁平管理汇总",
+              path: "/setting/扁平管理汇总",
+              component: ManagementSummary,
+            },
           ],
-          other: []
-        }
+          other: [],
+        },
       }),
 
       {
         title: "病区文件",
         path: "/setting/病区文件",
-        component: DeptFileShare
-      }
-    ]
-  }
-
+        component: DeptFileShare,
+      },
+    ],
+  },
 
   // {
   //   title: '物流平台设置',
@@ -179,19 +182,19 @@ const LEFT_MENU_CONFIG_WH = [
       {
         title: "扁平管理设置",
         path: "/setting/扁平管理设置",
-        component: FlatManage
+        component: FlatManage,
       },
       {
         title: "病区文件",
         path: "/setting/病区文件",
-        component: DeptFileShare
-      }
-    ]
-  }
+        component: DeptFileShare,
+      },
+    ],
+  },
 ];
 
 export default function SettingView(props: Props) {
-  useEffect(() => { }, [props.match.params.name]);
+  useEffect(() => {}, [props.match.params.name]);
   let currentRoutePath = props.match.url || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象

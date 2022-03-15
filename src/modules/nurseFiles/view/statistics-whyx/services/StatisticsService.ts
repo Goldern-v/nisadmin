@@ -40,7 +40,11 @@ export default class StatisticsService extends BaseApiService {
       'nurseWHWorkExperienceOut':'yaXinCountExcel',//院外工作经历
       'nurseWHWorkExperienceIn':'yaXinCountExcel',//院内工作经历
       'nurseWHOutStudy':'yaXinCountExcel',//外出进修查询统计
-      'nurseWHSpecializNurse':'yaXinCountExcel',//专科护士查询统计
+      'nurseWHSpecializNurse': 'yaXinCountExcel',//专科护士查询统计
+      'nurseWHTransferPost': 'excel',//岗位变动
+      'nurseWHTitle': 'excel',//职称变动
+      'nurseWHHierarchy': 'excel',//层级变动
+      'nurseWHWorkConversion': 'excel',//编制变动
     }
     // return this.post(`/${type}/excel`, obj, { responseType: 'blob', onDownloadProgress })
     return this.post(`/${type}/${data[type]}`, obj, { responseType: 'blob', onDownloadProgress })

@@ -14,20 +14,20 @@ export interface navConfigItem {
 const baseConfig: navConfigItem[] = [
   {
     name: "首页",
-    path: "/home"
+    path: "/home",
   },
   {
     name: "审核管理",
-    path: "/auditsManagement"
+    path: "/auditsManagement",
   },
   {
     name: "病区日志",
-    path: "/wardLog"
+    path: "/wardLog",
     // hidden: !appStore.isDev
   },
   {
     name: "档案管理",
-    path: "/nurseFile"
+    path: "/nurseFile",
   },
   // {
   //   name: '不良事件',
@@ -40,17 +40,17 @@ const baseConfig: navConfigItem[] = [
       {
         name: "三级质量",
         path: "/qcThree",
-        icon: require("../images/menu-icon/三级质控@2x.png")
+        icon: require("../images/menu-icon/三级质控@2x.png"),
       },
       {
         name: "二级质量",
         path: "/qcTwo",
-        icon: require("../images/menu-icon/二级质控@2x.png")
+        icon: require("../images/menu-icon/二级质控@2x.png"),
       },
       {
         name: "一级质量",
         path: "/qcOneHj",
-        icon: require("../images/menu-icon/一级质控@2x.png")
+        icon: require("../images/menu-icon/一级质控@2x.png"),
       },
       // {
       //   name: '病区登记本',
@@ -60,19 +60,19 @@ const baseConfig: navConfigItem[] = [
       {
         name: "查询统计",
         path: "/queryStatistics",
-        icon: require("../images/menu-icon/护理查房@2x.png")
+        icon: require("../images/menu-icon/护理查房@2x.png"),
       },
       {
         name: "护理查房",
         path: "/checkWard",
-        icon: require("../images/menu-icon/护理查房@2x.png")
-      }
-    ]
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+    ],
   },
   {
     name: "学习培训",
     path: "/continuingEdu",
-    hidden: true
+    // hidden: true
   },
   // {
   //   name: "敏感指标",
@@ -86,26 +86,28 @@ const baseConfig: navConfigItem[] = [
   // },
   {
     name: "统计查询",
-    path: "/statistic"
+    path: "/statistic",
   },
   {
     name: "通知公告",
-    path: "/notice"
+    path: "/notice",
   },
   {
     name: "护理制度",
-    path: "/nursingRulesNew"
+    path: "/nursingRulesNew",
   },
   {
     name: "系统设置",
-    path: "/setting"
+    path: "/setting",
   },
   {
     name: "护理人员管理",
-    path: "/personnelManagement"
-  }
+    path: "/personnelManagement",
+  },
 ];
 
-const beConfig: navConfigItem[] = []
+const beConfig: navConfigItem[] = [];
 
-export const navConfig: navConfigItem[] = appStore.onlyBadEvent ? beConfig : baseConfig
+export const navConfig: navConfigItem[] = appStore.onlyBadEvent
+  ? beConfig
+  : baseConfig;

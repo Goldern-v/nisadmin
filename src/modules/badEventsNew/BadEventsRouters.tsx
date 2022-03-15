@@ -15,6 +15,7 @@ import BadEventsNewList_gzsrm from './BadEventsNewList_gzsrm'
 import BadEventsNewListCommon from './BadEventsNewListCommon'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
+import badEventStatCommon from './views/badEventStatCommon'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 import BadEventReportListNew_gzsrm from './views/BadEventReportListNew_gzsrm/BadEventReportList'
 import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
@@ -97,6 +98,13 @@ export default function BadEventsRouters(props: Props) {
         gzsrm: [],
         lcey: [],
         gxjb: [],
+        fqfybjy: [
+          {
+            title: '不良事件统计',
+            path: `${baseRouter}/不良事件统计`,
+            component: badEventStatCommon,
+          },
+        ],
         other: [
           {
             title: '不良事件统计',

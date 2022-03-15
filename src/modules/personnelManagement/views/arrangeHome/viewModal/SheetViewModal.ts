@@ -72,7 +72,7 @@ class SheetViewModal {
 
   // 标准工时
   @observable public standardTime: number = 0;
-  
+  @observable public groupName: any;
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
       this.deptList = res.data.deptList || []
@@ -159,7 +159,8 @@ class SheetViewModal {
     let list: any[] = [];
     if (this.selectedCell) {
       let userId = this.selectedCell.userId;
-      list = this.allCell.filter(item => {
+      list = this.allCell.filter((item) => {
+        item.userId == userId && this.getGroupName(item.empName);
         return (
           item.userId == userId &&
           (canEdit ? this.analyseCell(item).isTwoDaysAgo == false : true)
@@ -397,6 +398,29 @@ class SheetViewModal {
     });
   }
 
+  // 同步同组人员排班信息
+  holdTeam() {
+    let list = this.getSelectCellList(true);
+    this.sheetTableData.reduce((pre: any, item: any, index: any) => {
+      if (item.groupName === this.groupName) {
+        item.settingDtos = list;
+      } else {
+        return item.groupName;
+      }
+    }, null);
+  }
+
+  // 获取当前组别
+  getGroupName(name: string) {
+    let groupName = "";
+    this.sheetTableData.forEach((item: any) => {
+      if (item.empName == name) {
+        groupName = item.groupName;
+      }
+    });
+    this.groupName = groupName;
+    return groupName;
+  }
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then(res => {
       this.arrangeMenu = res.data;

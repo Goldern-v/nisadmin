@@ -20,7 +20,7 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  deptCodeTransferTo: (val) => !!val || '请选择借出科室',
+  deptCodeTransferTo: (val) => !!val || '请选择接收科室',
   empNoTransferTo: (val) => !!val || '请选择借出护士',
   startDate: (val) => !!val || '请选择借出时间'
   // detailTransferTo: (val) => !!val || '请输入借出说明'
@@ -85,7 +85,7 @@ export default function PersonelSecondModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={80}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`借出科室`} name='deptCodeTransferTo' required>
+              <Form.Field label={`接收科室`} name='deptCodeTransferTo' required>
                 <Select
                   showSearch
                   filterOption={(input: any, option: any) =>

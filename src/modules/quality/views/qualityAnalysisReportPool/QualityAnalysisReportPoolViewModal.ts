@@ -136,7 +136,7 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName}`
+        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName||'无'}`
       }
     }
     for (let i = 0; i < 11; i++) {
@@ -148,7 +148,7 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName}`
+        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName||'无'}`
       }
     }
     this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []

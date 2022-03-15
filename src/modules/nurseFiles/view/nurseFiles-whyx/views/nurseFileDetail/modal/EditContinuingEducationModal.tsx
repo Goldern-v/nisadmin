@@ -30,6 +30,7 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   projectName: (val) => !!val || '请填写项目名称',
   projectPerson: (val) => !!val || '请填写项目负责人',
+  projectNumber: (val) => !!val || '请填写项目编号',
   data: (val) => !!val || '请填写举办起止时间',
   courseHour: (val) => !!val || '请填写课时数',
   personTotal: (val) => !!val || '请填写学员总数',
@@ -141,17 +142,17 @@ export default function EditPersonWinningModal(props: Props) {
               <Input maxLength={25} />
             </Form.Field>
           </Col>
+          <Col span={24}>
+            <Form.Field label={`项目编号`} name='projectNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
           {/* todo 新 */}
           <Col span={24}>
             <Form.Field label={`项目负责人`} name='projectPerson' required>
               <Input maxLength={12} />
             </Form.Field>
           </Col>
-          {/* <Col span={24}>
-            <Form.Field label={`项目号`} name='projectNumber'>
-              <Input maxLength={12} />
-            </Form.Field>
-          </Col> */}
           {/* todo 新 */}
           <Col span={24}>
             <Form.Field label={`举办起止时间`} name='data' required>
@@ -175,12 +176,12 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`学员分布区域`} name='schoolArea' required>
-              <Input maxLength={25} />
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`学员职称分布`} name='personTitleArea' required>
-              <Input maxLength={25} />
+              <Input />
             </Form.Field>
           </Col>
           {/* <Col span={24}>

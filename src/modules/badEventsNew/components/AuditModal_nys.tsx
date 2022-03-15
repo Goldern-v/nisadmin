@@ -89,6 +89,8 @@ export default observer(function AduitModal(props: Props) {
         case 'pressure_auditor':
           newMap[`${eventCode}_skzkxzyj_explain`] = ''
           break
+        case 'wound_group':
+          newMap[`${eventCode}_skzkxzyj_explain`] = ''
       }
 
       setFormMap({ ...paramMap, ...newMap })
@@ -189,6 +191,8 @@ export default observer(function AduitModal(props: Props) {
         case "nusring_department_auditor":
           return formMap[`${eventCode}_hlzlglwyh_explain`];
         case "pressure_auditor":
+          return formMap[`${eventCode}_skzkxzyj_explain`];
+        case "wound_group":
           return formMap[`${eventCode}_skzkxzyj_explain`];
       }
     }
@@ -373,6 +377,26 @@ export default observer(function AduitModal(props: Props) {
                   labelInValue>
                   {returnDeptNurseList.map((item: any) => <Option value={item.empNo} key={item.empNo}>{item.empName}</Option>)}
                 </Select>
+              </Col>
+            </Row>
+          </div>
+        )
+      case 'wound_group':
+        return (
+          <div className='form1'>
+            {commonCon}
+            <Row>
+              <Col span={4}>
+                <span style={{ color: 'red', marginLeft: '-7px' }}>*</span>
+                审核意见：
+              </Col>
+              <Col span={20}>
+                <TextArea
+                  autosize={{ minRows: 2 }}
+                  value={formMap[`${eventCode}_skzkxzyj_explain`]}
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_skzkxzyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>

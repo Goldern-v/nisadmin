@@ -453,7 +453,6 @@ export default observer(function ArrangeSheet(props: Props) {
       ...appStore.hisMatch({
         map: {
           fsxt: [],//佛山杏坛去除累计结余添加本周结余
-          fssdy: [],
           other: [
             {
               title: (
@@ -667,7 +666,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lcey: () => 2,
                 dgxg: () => 2,
                 fsxt: () => 6,
-                fssdy: () => 6,
+                fssdy: () => 7,
                 whyx: () => 7,
                 sdlj: () => 6,
               })) *
