@@ -55,20 +55,22 @@ export default function EditPersonWinningModal(props: Props) {
   // }
   // 授权类别
   let [grantTypeList, setGrantTypeList]: any[] = useState([])
-  const [selectGrantType, setSelectGrantType] = useState(grantTypeList[0]?.code)
+  const [selectGrantType, setSelectGrantType] = useState(grantTypeList[0]?.name)
   // 授权名称 -- 授权名称下拉框受授权类别控制
   let [authorizationName, setAuthorizationName]: any[] = useState([])
 
   // 授权类别
   const getCodeList = () => {
     service.commonApiService.getCodeList().then((res) => {
-      setSelectGrantType(selectGrantType || res.data[0]?.code)
+      let type = res.data.find((item: any) => item.name === selectGrantType)?.code
+      setSelectGrantType(res.data[0]?.name)
       setGrantTypeList(res.data || [])
     })
   }
   // 授权名称
   const getNameList = () => {
-    service.commonApiService.getChildCodeList(selectGrantType).then(res => {
+    let type = grantTypeList.find((item: any) => item.name === selectGrantType)?.code
+    service.commonApiService.getChildCodeList(type).then(res => {
       setAuthorizationName(res.data || [])
     })
   }
@@ -99,7 +101,7 @@ export default function EditPersonWinningModal(props: Props) {
     value.validityDate && (value.validityDate = value.validityDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     !value.grantType && (value.grantType = grantTypeList[0]?.name)
-    value.grantType && (value.grantType = grantTypeList.filter((item: any) => item.code === value.grantType)[0]?.name)
+    value.grantType && (value.grantType = grantTypeList.filter((item: any) => item.name === value.grantType)[0]?.name)
     nurseFilesService.commonSaveOrUpdate('nurseWHQualificationIn', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -197,8 +199,8 @@ export default function EditPersonWinningModal(props: Props) {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {grantTypeList.map((item: { code: React.Key | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined }) =>
-                  <Option key={item.code} value={item.code}>{item.name}</Option>
+                {grantTypeList.map((item: { code: React.Key | undefined; name: string }) =>
+                  <Option key={item.code} value={item.name}>{item.name}</Option>
                 )}
               </Select>
             </Form.Field>

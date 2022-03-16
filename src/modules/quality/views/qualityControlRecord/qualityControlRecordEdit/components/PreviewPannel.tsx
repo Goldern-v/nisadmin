@@ -191,7 +191,9 @@ export default observer(function PreviewPannel(props: Props) {
           <div>
             通过率为：
             {["whyx"].includes(appStore.HOSPITAL_ID)
-              ? yxGradeObj.rate
+              ? `${yxGradeObj.right} / ${yxGradeObj.total} × 100% = ${
+                  yxGradeObj.rate
+                }`
               : result.rate}
             %
           </div>
