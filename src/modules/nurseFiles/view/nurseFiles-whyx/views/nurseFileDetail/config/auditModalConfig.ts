@@ -78,7 +78,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               鞋码大小: 'shoeSize',
             },
             {
-              工作服码数: 'workClothesSize',
+              工作服码数: 'workclothessize',
             },
             {
               部门类型: 'depttype',

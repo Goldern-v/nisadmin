@@ -868,13 +868,14 @@ const routes: RouteItem[] = [
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {
-      wh: [
+      'wh,whyx': [
         setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
       ],
       default: [
         setLayout("/wardRegister", WardRegisterDefaultRouter, layouts.MainLayout),
       ]
-    }
+    },
+    vague: true
   }),
   setLayout("/sensitiveRegister", SensitiveRegisterRouter, layouts.MainLayout),
   /**一级质控 */

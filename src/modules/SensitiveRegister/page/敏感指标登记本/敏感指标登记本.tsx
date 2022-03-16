@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Button } from "antd";
+import { Button, Divider } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -38,7 +38,7 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
-
+import { baseRegisterMode } from "../../data/BaseRegisterModel"
 export interface Props {
   payload: any;
 }
@@ -733,9 +733,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     // }
   ];
   const watchRecord = (value: any, data: any) => {
-    // 疼痛评分：疼痛评估正确例数: ""
-    // 疼痛评分：疼痛评估符合率: ""
-    // 疼痛评分：被抽查的患者总数: ""
     if (data['疼痛评分：疼痛评估正确例数'] && data['疼痛评分：被抽查的患者总数']) {
       let scale: any = (Number(data['疼痛评分：疼痛评估正确例数']) / Number(data['疼痛评分：被抽查的患者总数']))
       scale = Number(scale).toFixed(4) || 0;
@@ -743,9 +740,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['疼痛评分：疼痛评估符合率'] = ''
     }
-    // 分级护理：分级护理合格率: ""
-    // 分级护理：分级护理执行合格人数: ""
-    // 分级护理：被抽查的患者总人数: ""
     if (data['分级护理：被抽查的患者总人数'] && data['分级护理：分级护理执行合格人数']) {
       let scale: any = (Number(data['分级护理：分级护理执行合格人数']) / Number(data['分级护理：被抽查的患者总人数']))
       scale = Number(scale).toFixed(4) || 0
@@ -753,9 +747,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['分级护理：分级护理合格率'] = ''
     }
-    // 给药技术：给药技术正确率: ""
-    // 给药技术：考核护士技术操作合格人数: ""
-    // 给药技术：考核护士技术操作总人数: ""
     if (data['给药技术：考核护士技术操作合格人数'] && data['给药技术：考核护士技术操作总人数']) {
       let scale: any = (Number(data['给药技术：考核护士技术操作合格人数']) / Number(data['给药技术：考核护士技术操作总人数']))
       scale = Number(scale).toFixed(4) || 0
@@ -763,9 +754,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['给药技术：给药技术正确率'] = ''
     }
-    // 护理文件：护理文件书写合格份数: ""
-    // 护理文件：护理文件正确率: ""
-    // 护理文件：被抽查的护理病历总份数: ""
     if (data['护理文件：护理文件书写合格份数'] && data['护理文件：被抽查的护理病历总份数']) {
       let scale: any = (Number(data['护理文件：护理文件书写合格份数']) / Number(data['护理文件：被抽查的护理病历总份数']))
       scale = Number(scale).toFixed(4) || 0
@@ -773,9 +761,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['护理文件：护理文件正确率'] = ''
     }
-    // 急救药械：急救药械完好件数: ""
-    // 急救药械：急救药械完好率: ""
-    // 急救药械：急救药械总件数: ""
     if (data['急救药械：急救药械完好件数'] && data['急救药械：急救药械总件数']) {
       let scale: any = (Number(data['急救药械：急救药械完好件数']) / Number(data['急救药械：急救药械总件数']))
       scale = Number(scale).toFixed(4) || 0
@@ -783,9 +768,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['急救药械：急救药械完好率'] = ''
     }
-    // 健康教育：健康教育知晓80%条目的患者人数: ""
-    // 健康教育：健康教育知晓率: ""
-    // 健康教育：被抽查的患者总人数: ""
     if (data['健康教育：健康教育知晓80%条目的患者人数'] && data['健康教育：被抽查的患者总人数']) {
       let scale: any = (Number(data['健康教育：健康教育知晓80%条目的患者人数']) / Number(data['健康教育：被抽查的患者总人数']))
       scale = Number(scale).toFixed(4) || 0
@@ -793,9 +775,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['健康教育：健康教育知晓率'] = ''
     }
-    // 洗手：洗手正确率: ""
-    // 洗手：洗手正确的护理人员数: ""
-    // 洗手：被抽查的护理人员数: ""
     if (data['洗手：洗手正确的护理人员数'] && data['洗手：被抽查的护理人员数']) {
       let scale: any = (Number(data['洗手：洗手正确的护理人员数']) / Number(data['洗手：被抽查的护理人员数']))
       scale = Number(scale).toFixed(4) || 0
@@ -803,9 +782,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['洗手：洗手正确率'] = ''
     }
-    // 手卫生：手卫生执行率: ""
-    // 手卫生：被抽查人员实际洗手次数: ""
-    // 手卫生：被抽查人员应洗手次数: ""
     if (data['手卫生：被抽查人员实际洗手次数'] && data['手卫生：被抽查人员应洗手次数']) {
       let scale: any = (Number(data['手卫生：被抽查人员实际洗手次数']) / Number(data['手卫生：被抽查人员应洗手次数']))
       scale = Number(scale).toFixed(4) || 0
@@ -813,9 +789,6 @@ export default observer(function 敏感指标登记本(props: Props) {
     } else {
       data['手卫生：手卫生执行率'] = ''
     }
-    // 身份识别：患者身份识别执行正确护理人员数: ""
-    // 身份识别：被抽查的护理人员数: ""
-    // 身份识别：身份识别执行正确率: ""
     if (data['身份识别：患者身份识别执行正确护理人员数'] && data['身份识别：被抽查的护理人员数']) {
       let scale: any = (Number(data['身份识别：患者身份识别执行正确护理人员数']) / Number(data['身份识别：被抽查的护理人员数']))
       scale = Number(scale).toFixed(4) || 0
@@ -881,9 +854,11 @@ export default observer(function 敏感指标登记本(props: Props) {
     if (registerCode == 'QCRG_22_3') {
       setDate([moment(new Date(moment().format('YYYY'))), null])
     }
+    baseRegisterMode.registerCode = registerCode
   }, [])
   useEffect(() => {
     onInitData();
+    baseRegisterMode.isAll = (authStore.selectedDeptCode == '0000' ? 1 : 0)
   }, [authStore.selectedDeptCode]);
 
   useEffect(() => {
@@ -988,7 +963,30 @@ export default observer(function 敏感指标登记本(props: Props) {
           }}
         /> */}
         <span className="label">科室</span>
-        <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+        {/* <DeptSelect onChange={() => { }} style={{ width: 150 }} /> */}
+        {codeAdapter({
+          "QCRG_22_3": <React.Fragment>
+            <Select
+              style={{ width: 150 }}
+              value={authStore.selectedDeptCode}
+              onChange={(val: string) => {
+                baseRegisterMode.isAll = (val == '0000' ? 1 : 0)
+                authStore.selectedDeptCode = val;
+              }}
+            >
+              <Select.Option value="0000">全院</Select.Option>
+              {authStore.deptList.map((item: any, index: number) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </React.Fragment>,
+          other: <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+        },
+          registerCode,
+          true,
+        )}
         {/* {popoverContent && (
           <Popover
             placement="bottom"
@@ -1005,34 +1003,39 @@ export default observer(function 敏感指标登记本(props: Props) {
         <Place />
 
         {selectedBlockId && (
-          <React.Fragment>
-            <Button onClick={getPage}>查询</Button>
-            <Button type="primary" onClick={createRow} disabled={pageLoading}>
-              新建行
-            </Button>
-            <Button type="primary" onClick={onSave} disabled={pageLoading}>
-              保存
-            </Button>
-            <Button onClick={exportExcel}>导出</Button>
-            {authStore.isAdmin && (
-              <Button
-                onClick={() =>
-                  settingModal.show({
-                    blockId: selectedBlockId,
-                    selectedBlockObj,
-                    registerCode,
-                    onOkCallBack: () => {
-                      getPage();
-                    }
-                  })
-                }>
-                设置
+          baseRegisterMode.isAll == 0 ?
+            <React.Fragment>
+              <Button onClick={getPage}>查询</Button>
+              <Button type="primary" onClick={createRow} disabled={pageLoading}>
+                新建行
               </Button>
-            )}
-            {authStore.isNotANormalNurse && (
-              <Button onClick={onDelete}>删除</Button>
-            )}
-          </React.Fragment>
+              <Button type="primary" onClick={onSave} disabled={pageLoading}>
+                保存
+              </Button>
+              <Button onClick={exportExcel}>导出</Button>
+              {authStore.isAdmin && (
+                <Button
+                  onClick={() =>
+                    settingModal.show({
+                      blockId: selectedBlockId,
+                      selectedBlockObj,
+                      registerCode,
+                      onOkCallBack: () => {
+                        getPage();
+                      }
+                    })
+                  }>
+                  设置
+                </Button>
+              )}
+              {authStore.isNotANormalNurse && (
+                <Button onClick={onDelete}>删除</Button>
+              )}
+            </React.Fragment> :
+            <React.Fragment>
+              <Button onClick={getPage}>查询</Button>
+              <Button onClick={exportExcel}>导出</Button>
+            </React.Fragment>
         )}
       </PageHeader>
       <TableCon>
