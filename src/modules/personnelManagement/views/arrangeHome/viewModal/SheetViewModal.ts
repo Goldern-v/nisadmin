@@ -384,7 +384,8 @@ class SheetViewModal {
       );
       let newList = res.data.setting.map((item: any,index:any) => {
         return {
-          ...this.sheetTableData[index],
+          // ...this.sheetTableData[index],
+          ...item,
           settingDtos:item.settingDtos
         }
       })

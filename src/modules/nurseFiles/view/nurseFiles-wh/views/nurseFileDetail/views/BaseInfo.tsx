@@ -31,6 +31,10 @@ export default observer(function BaseInfo() {
   const [id, setId] = useState(0);
   let clothingInfo = [
     {
+      type: "nurse_shoes_style",
+      name: "鞋款式"
+    },
+    {
       type: "summer_jacket_size",
       name: "夏装-上衣"
     },
@@ -54,14 +58,10 @@ export default observer(function BaseInfo() {
       type: "winter_isolation_suit_size",
       name: "冬装-医生款"
     },
-    {
-      type: "nurse_shoes_style",
-      name: "鞋款式"
-    },
-    {
-      type: "shoeSize",
-      name: "鞋码"
-    },
+    // {
+    //   type: "nurse_shoes_size",
+    //   name: "鞋码"
+    // },
   ]
   const limitsComponent = () => {
     let btnList = [];
@@ -209,7 +209,7 @@ export default observer(function BaseInfo() {
         {
           // 现职务任职起始时间: data.jobStartDate,
           工作护理单元: data.deptName,
-          // 鞋码大小: data.shoeSize,
+          鞋码: data.shoeSize,
         },
       ]
       let newTableData = (() => {

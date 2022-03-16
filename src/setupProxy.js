@@ -33,19 +33,19 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     //return 'http://192.168.1.54:9868' // 公司-花都测试-内网
     /** 江门妇幼 */
     case "jmfy":
-      // return 'http://218.14.180.38:9094' // 江门妇幼正式
+      return 'http://218.14.180.38:9094' // 江门妇幼正式
       // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
       // return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
       // return "http://192.168.20.35:9091"; // 宏群本地
-      return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
+      // return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.1.106:9091"; // 宏群本地
 
     /** 东莞横沥 */
     case "dghl":
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
-      // return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
+      return 'http://192.168.1.54:9874' // 公司-东莞横沥测试-内网
       // return 'http://192.168.20.61:9091' // 宏群本地
-      return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
+      // return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
 
     /** 聊城二院 */
     case "lcey":
