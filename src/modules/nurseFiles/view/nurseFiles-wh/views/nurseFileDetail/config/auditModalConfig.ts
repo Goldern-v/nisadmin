@@ -49,7 +49,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   {
                     工作护理单元: 'deptName',
-                    // 鞋码大小: 'shoeSize',
+                    鞋码: 'shoeSize',
+                    
+                  },
+                  {
+                    "鞋款式": "nurse_shoes_style",
                     '夏装-上衣': 'summer_jacket_size'
                   },
                   {
@@ -62,10 +66,6 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   {
                     "冬装-医生款": "winter_isolation_suit_size",
-                    "鞋款式": "nurse_shoes_style",
-                  },
-                  {
-                    "鞋码": "shoeSize",
                   },
                 ]
               default:
