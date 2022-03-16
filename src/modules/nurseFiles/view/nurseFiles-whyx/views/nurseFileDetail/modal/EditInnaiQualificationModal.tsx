@@ -55,21 +55,22 @@ export default function EditPersonWinningModal(props: Props) {
   // }
   // 授权类别
   let [grantTypeList, setGrantTypeList]: any[] = useState([])
-  const [selectGrantType, setSelectGrantType] = useState(grantTypeList[0]?.name)
+  const [selectGrantType, setSelectGrantType] = useState<string>('')
   // 授权名称 -- 授权名称下拉框受授权类别控制
   let [authorizationName, setAuthorizationName]: any[] = useState([])
 
   // 授权类别
   const getCodeList = () => {
     service.commonApiService.getCodeList().then((res) => {
-      let type = res.data.find((item: any) => item.name === selectGrantType)?.code
-      setSelectGrantType(res.data[0]?.name)
+      let type = res.data.find((item: any) => item.name === selectGrantType)?.code || res.data[0].code
+      // setSelectGrantType(res.data[0]?.name)
       setGrantTypeList(res.data || [])
+      getNameList(type)
     })
   }
   // 授权名称
-  const getNameList = () => {
-    let type = grantTypeList.find((item: any) => item.name === selectGrantType)?.code
+  const getNameList = (type: string) => {
+    // let type = grantTypeList.find((item: any) => item.name === selectGrantType)?.code
     service.commonApiService.getChildCodeList(type).then(res => {
       setAuthorizationName(res.data || [])
     })
@@ -162,7 +163,7 @@ export default function EditPersonWinningModal(props: Props) {
 
   useLayoutEffect(() => {
     getCodeList()
-    getNameList()
+    // getNameList()
   }, [selectGrantType])
 
   return (
