@@ -868,7 +868,7 @@ const routes: RouteItem[] = [
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {
-      'wh,whyx': [
+      'wh': [
         setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
       ],
       default: [
