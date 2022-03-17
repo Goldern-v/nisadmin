@@ -22,7 +22,7 @@ import { appStore } from "src/stores";
 import DutyRecord from './views/dutyRecord'
 import nightRoundsDutyRecord from './views/nightRoundsDutyRecord'
 import ScoringRecord from './views/scoringRecord'
-import QuarterScoringRecord from './views/quarterScoringRecord'
+import QuarterScoringRecord from './views/quarterScoringRecord/Analysis'
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
