@@ -7,7 +7,7 @@ import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
 import Item from "antd/lib/list/Item";
 // import Item from "antd/lib/list/Item";
-
+import {baseRegisterMode} from "../../data/BaseRegisterModel"
 export interface ItemConfigItem {
   blockId: number;
   checkSize: number | null;
@@ -150,7 +150,9 @@ export function getFun(context: any) {
       paramMap: _paramsMap,
       ...pageOptions
     } as any
-
+    if (baseRegisterMode.registerCode == 'QCRG_22_3') {
+      params.isAll = baseRegisterMode.isAll
+    }
 
     sensitiveRegisterService
       .getPage(registerCode, params)
@@ -356,16 +358,19 @@ export function getFun(context: any) {
   const exportExcel = () => {
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
-
+    let params = {
+      startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+      endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+      blockId: selectedBlockId,
+      range: paramMap['班次'] || '',
+      paramMap: _paramsMap,
+      ...pageOptions
+    }as any
+    if (baseRegisterMode.registerCode == 'QCRG_22_3') {
+      params.isAll = baseRegisterMode.isAll
+    }
     sensitiveRegisterService
-      .exportExcel(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        blockId: selectedBlockId,
-        range: paramMap['班次'] || '',
-        paramMap: _paramsMap,
-        ...pageOptions
-      })
+      .exportExcel(registerCode,params)
       .then(res => {
         fileDownload(res);
       });

@@ -94,6 +94,7 @@ export default observer(function 护士工作年限分布() {
   return <CommonLayout
     header={<div>
       <Select
+        showSearch
         style={{ minWidth: 180 }}
         className="content-item"
         value={query.deptCode}

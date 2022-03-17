@@ -72,7 +72,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-guangxijiangbin'
   }
   // 福清妇幼
-  if (process.env.npm_lifecycle_event.indexOf('8054') >= 0) {
+  if (process.env.npm_lifecycle_event.indexOf('9905') >= 0) {
     folderSrc = '/crdata/webProject/manage-fuqingfuyou'
   }
   

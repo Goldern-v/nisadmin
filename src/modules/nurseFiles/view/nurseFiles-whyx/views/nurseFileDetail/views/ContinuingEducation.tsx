@@ -17,7 +17,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
 import Do from '../components/Do'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 export default observer(function PersonWinning() {
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
   const [tableData, setTableData] = useState([])
@@ -49,6 +49,13 @@ export default observer(function PersonWinning() {
     //   width: 90,
     //   align: 'center'
     // },
+    {
+      title: '项目编号',
+      dataIndex: 'projectNumber',
+      key: 'projectNumber',
+      width: 210,
+      align: 'center'
+    },
     {
       title: '项目名称',
       dataIndex: 'projectName',

@@ -11,7 +11,7 @@ import {
   Row,
   Col,
   message,
-  AutoComplete
+  AutoComplete,
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -20,7 +20,7 @@ import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import {
   TITLE_LIST,
   POST_LIST,
-  EDUCATION_LIST
+  EDUCATION_LIST,
 } from "../../nurseFilesList/modal/AddNursingModal";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
@@ -30,7 +30,7 @@ import ImageUploader from "src/components/ImageUploader";
 import { appStore, authStore } from "src/stores";
 import service from "src/services/api";
 import emitter from "src/libs/ev";
-import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
+// import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { observer } from "mobx-react-lite";
 const Option = Select.Option;
@@ -43,52 +43,50 @@ export interface Props extends ModalComponentProps {
 // const uploadCard = () => Promise.resolve("123");
 
 const rules: Rules = {
-  empName: (val) => !!val || '请填写姓名',
-  empNo: (val) => !!val || '请填写工号',
-  sex: (val) => !!val || '请选择性别',
-  nation: (val) => !!val || '请填写民族',
-  birthday: (val) => !!val || '请选择出生日期',
-  age: (val) => !!val || '请填写年龄',
-  nativePlace: (val) => !!val || '请填写籍贯',
-  job: (val) => !!val || '请填写职务',
-  goWorkTime: (val) => !!val || '请填写参加工作时间',
-  highestEducation: (val) => !!val || '请填写最高学历',
-  newTitle: (val) => !!val || '请填写技术职称',
-  zyzsNumber: (val) => !!val || '请填写护士执业证书编号',
+  empName: (val) => !!val || "请填写姓名",
+  empNo: (val) => !!val || "请填写工号",
+  sex: (val) => !!val || "请选择性别",
+  nation: (val) => !!val || "请填写民族",
+  birthday: (val) => !!val || "请选择出生日期",
+  age: (val) => !!val || "请填写年龄",
+  nativePlace: (val) => !!val || "请填写籍贯",
+  job: (val) => !!val || "请填写职务",
+  goWorkTime: (val) => !!val || "请填写参加工作时间",
+  highestEducation: (val) => !!val || "请填写最高学历",
+  newTitle: (val) => !!val || "请填写技术职称",
+  // zyzsNumber: (val) => !!val || '请填写护士执业证书编号',
   cardNumber: (val) => {
-    if (!!!val) return '请填写身份证号'
+    if (!!!val) return "请填写身份证号";
 
     //身份证验证
-    let idCardNumberReg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+    let idCardNumberReg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
 
-    if (idCardNumberReg.test(val))
-      return true
-    else
-      return '请输入正确的身份证号码'
+    if (idCardNumberReg.test(val)) return true;
+    else return "请输入正确的身份证号码";
   },
-  socialGroup: (val) => !!val || '请填写学术任职',
-  phone: (val) => !!val || '请填写手机号',
-  address: (val) => !!val || '请填写家庭住址',
-  goHospitalWorkDate: (val) => !!val || '请填写来院工作时间',
-  workConversion: (val) => !!val || '请填写工作编制',
-  enrolDate: (val) => !!val || '请填写纳编时间',
-  firstDegree: (val) => !!val || '请填写第一学历',
-  nearImageUrl: (val) => !!val || '请添加个人头像',
-  zyzsNursingPostDate: (val) => !!val || '请填写开始从事护理时间',
-  zyzsDate: (val) => !!val || '请填写获取执业证书开始时间',
-}
+  // socialGroup: (val) => !!val || "请填写学术任职",
+  phone: (val) => !!val || "请填写手机号",
+  address: (val) => !!val || "请填写家庭住址",
+  goHospitalWorkDate: (val) => !!val || "请填写来院工作时间",
+  workConversion: (val) => !!val || "请填写工作编制",
+  enrolDate: (val) => !!val || "请填写纳编时间",
+  firstDegree: (val) => !!val || "请填写第一学历",
+  nearImageUrl: (val) => !!val || "请添加个人头像",
+  zyzsNursingPostDate: (val) => !!val || "请填写开始从事护理时间",
+  zyzsDate: (val) => !!val || "请填写获取执业证书开始时间",
+};
 
 export default observer(function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => { };
+  const onFieldChange = () => {};
 
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
       empNo: appStore.queryObj.empNo,
-      type: "0"
+      type: "0",
     };
 
     const [err, res] = await to(service.commonApiService.uploadFile(obj));
@@ -105,7 +103,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
   const onSave = async () => {
     let obj = {
       id: id,
-      auditedStatus: ""
+      auditedStatus: "",
     };
 
     if ((authStore.user && authStore.user.post) == "护长") {
@@ -129,15 +127,20 @@ export default observer(function EditWorkHistoryModal(props: Props) {
     value.enrolDate && (value.enrolDate = value.enrolDate.format("YYYY-MM-DD"));
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
 
-    value.zyzsNursingPostDate && (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format("YYYY-MM-DD"));
+    value.zyzsNursingPostDate &&
+      (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format(
+        "YYYY-MM-DD"
+      ));
     value.zyzsDate && (value.zyzsDate = value.zyzsDate.format("YYYY-MM-DD"));
 
-    nurseFilesService.saveOrUpdateBaseInfo({ ...value, ...obj }).then((res: any) => {
-      message.success("保存成功");
-      props.getTableData && props.getTableData();
-      emitter.emit("refreshNurseFileDeatilLeftMenu");
-      onCancel();
-    });
+    nurseFilesService
+      .saveOrUpdateBaseInfo({ ...value, ...obj })
+      .then((res: any) => {
+        message.success("保存成功");
+        props.getTableData && props.getTableData();
+        emitter.emit("refreshNurseFileDeatilLeftMenu");
+        onCancel();
+      });
   };
 
   useLayoutEffect(() => {
@@ -167,9 +170,11 @@ export default observer(function EditWorkHistoryModal(props: Props) {
         zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
         newTitle: data.newTitle,
         workConversion: data.workConversion,
-        zyzsNursingPostDate: data.zyzsNursingPostDate ? moment(data.zyzsNursingPostDate) : null,
+        zyzsNursingPostDate: data.zyzsNursingPostDate
+          ? moment(data.zyzsNursingPostDate)
+          : null,
         zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
-        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
+        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null,
       });
       // refForm.current.setField('unit', 123)
     }
@@ -185,7 +190,12 @@ export default observer(function EditWorkHistoryModal(props: Props) {
       okText="保存"
       forceRender
     >
-      <Form ref={refForm} labelWidth={140} onChange={onFieldChange} rules={rules}>
+      <Form
+        ref={refForm}
+        labelWidth={140}
+        onChange={onFieldChange}
+        rules={rules}
+      >
         <Row>
           <Col span={12}>
             <Form.Field label={`姓名`} name="empName" required>
@@ -238,29 +248,37 @@ export default observer(function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`最高学历`} name="highestEducation" required>
               <Select>
-                {EDUCATION_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
+                {EDUCATION_LIST.map((name: string) => (
+                  <Option value={name} key={name}>
+                    {name}
+                  </Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`技术职称`} name="newTitle" required>
               <Select>
-                {TITLE_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
+                {TITLE_LIST.map((name: string) => (
+                  <Option value={name} key={name}>
+                    {name}
+                  </Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Field label={`护士执业证书编号`} name="zyzsNumber" required>
               <Input />
             </Form.Field>
-          </Col>
+          </Col> */}
           <Col span={12}>
             <Form.Field label={`身份证号`} name="cardNumber" required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`学术任职`} name="socialGroup" required>
+            <Form.Field label={`学术任职`} name="socialGroup">
               <Input />
             </Form.Field>
           </Col>
@@ -275,14 +293,18 @@ export default observer(function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`来院工作时间`} name="goHospitalWorkDate" required>
+            <Form.Field
+              label={`来院工作时间`}
+              name="goHospitalWorkDate"
+              required
+            >
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`工作编制`} name="workConversion" required>
               <Select>
-                {nurseFileDetailViewModal.getDict("工作编制").map(item => (
+                {nurseFileDetailViewModal.getDict("工作编制").map((item) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
                   </Select.Option>
@@ -298,12 +320,20 @@ export default observer(function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`第一学历`} name="firstDegree" required>
               <Select>
-                {EDUCATION_LIST.map((name: string) => <Option value={name} key={name}>{name}</Option>)}
+                {EDUCATION_LIST.map((name: string) => (
+                  <Option value={name} key={name}>
+                    {name}
+                  </Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`开始从事护理时间`} name="zyzsNursingPostDate" required>
+            <Form.Field
+              label={`开始从事护理时间`}
+              name="zyzsNursingPostDate"
+              required
+            >
               <DatePicker />
             </Form.Field>
           </Col>
@@ -324,12 +354,11 @@ export default observer(function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Field label={`添加附件`} name="zyzsUrl">
-              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader text="添加图片" />
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </Modal>

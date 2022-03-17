@@ -200,8 +200,8 @@ export default class BadEventsNewService extends BaseApiService {
   }
 
  //不良事件类型列表
- public async getBadEventTypeList(str?: any) {
-  return this.post(`/badEventReport/getBadEventType`,{ code: 'badEvent_eventType' });
+ public async getBadEventTypeList() {
+   return this.get(`/badEventReport/getBadEventType`);
 }
 }
 

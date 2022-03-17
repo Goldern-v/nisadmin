@@ -5,7 +5,8 @@ import service from "src/services/api";
 let dictList = {
   文件类型: "nurse_junior_special_type",
   工作编制: "user_work_conversion",
-  进修单位: "study_unit"
+  进修单位: "study_unit",
+  professional: "nurse_file_attending_professional"
 };
 
 type DictList = typeof dictList;

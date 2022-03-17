@@ -52,7 +52,7 @@ export const totalCellContent = (id: any) => {
   // 武汉
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
-    return isOk && (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == 'gxjb')
+    return isOk && (appStore.HOSPITAL_ID === "wh")
       ? total
       : total + Number(current.effectiveTime);
   }, 0);

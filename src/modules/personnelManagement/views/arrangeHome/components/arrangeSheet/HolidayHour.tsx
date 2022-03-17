@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { observer } from 'src/vendors/mobx-react-lite.ts'
+import { observer } from 'src/vendors/mobx-react-lite'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { ArrangeItem } from '../../types/Sheet'
 import { Input } from 'src/vendors/antd'
+import { appStore } from "src/stores";
 export interface Props {
   id: any
 }
@@ -17,7 +18,11 @@ export default observer(function HolidayHour(props: Props) {
   /** 计算总节修 */
   let real_holidayHour = 0
   for (let j = 0; j < (user.settingDtos || []).length; j++) {
-    real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      real_holidayHour += user.settingDtos[j].shiftType == '节休' ? 1 : 0
+    } else {
+      real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0
+    }
   }
   return <Wrapper>{user.holidayHour - real_holidayHour + user.current_holidayHour}</Wrapper>
 })
