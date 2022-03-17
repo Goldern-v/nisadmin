@@ -199,7 +199,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {appStore.hisMatch({
             map: {
               gzsrm: <span></span>,
-              whyx: <div>病案号：{messageBoxData.inpNo}</div>,
+              whyx: detailData.isPatientNumber === '是' ? <div>病案号：{messageBoxData.inpNo}</div> : <span></span>,
               other: <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
             },
             currentHospitalId: qcMatchCode
@@ -304,6 +304,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
               <div className="itemCon" key={itemIndex}>
                 <div className="itemTitleCon">
+                  {item.isSensitiveIndex === '是' && <Icon type="star" theme='filled'/>}
                   {item.itemShowCode} {item.qcItemName}
                 </div>
                 <div className="itemMidCon">

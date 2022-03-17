@@ -81,7 +81,8 @@ class QualityControlRecordEditModel {
     useScore: false,
     qcCode: '',
     useSubItemFixedScore: false,
-  }
+    isPatientNumber: '', // 判断是否隐藏病案号 by亚心
+  } as any
   //加载状态
   @observable loading = false
 
@@ -216,7 +217,8 @@ class QualityControlRecordEditModel {
               qcGroupRoles: template.qcGroupRoles,
               useScore: template.useScore || false,
               qcCode: template.qcCode || '',
-              useSubItemFixedScore: template.useSubItemFixedScore
+              useSubItemFixedScore: template.useSubItemFixedScore,
+              isPatientNumber: template.isPatientNumber || '是'
             }
           }
 
@@ -258,7 +260,6 @@ class QualityControlRecordEditModel {
             let itemGroupList = res.data.itemGroupList
             let bedNurseList = res.data.bedNurseList
             let causeList = res.data.causeList
-
             if (master) {
               let masterKeys = Object.keys(master)
               for (let x in this.master) {
@@ -273,8 +274,9 @@ class QualityControlRecordEditModel {
                 qcGroupRoles: master.qcGroupRoles,
                 useScore: master.useScore || false,
                 qcCode: master?.qcCode || '',
-                useSubItemFixedScore: master.useSubItemFixedScore
-              }
+                useSubItemFixedScore: master.useSubItemFixedScore,
+                isPatientNumber: master.isPatientNumber || '是'
+            }
             }
 
             if (itemGroupList) this.initItemGroupList(itemGroupList)
