@@ -256,8 +256,8 @@ export default observer(function 不良事件统计() {
               onBlur={(payload: any) => setEventTypeSelected(payload)}>
               {eventTypeList.map((item: any, idx: number) => {
                 return (
-                  <Select.Option value={item} key={idx}>
-                    {item}
+                  <Select.Option value={item.badEventType} key={idx}>
+                    {item.badEventType}
                   </Select.Option>
                 )
               })}

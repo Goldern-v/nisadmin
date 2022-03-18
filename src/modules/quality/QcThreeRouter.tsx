@@ -36,7 +36,7 @@ import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-import AdministrativeWard from './views/administrativeWard'
+import AdministrativeWard from "./views/administrativeWard";
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
@@ -149,7 +149,7 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/administrativeWard",
     icon: <JCTJ />,
     component: AdministrativeWard,
-  } 
+  };
 
   let extra_menu: any = appStore.hisMatch({
     map: {
@@ -161,7 +161,7 @@ export default function QcThreeRouter(props: Props) {
         // route_二级质控问题原因措施汇总,
         route_三级质控护理质量统计汇总,
         route_三级质控问题原因措施汇总,
-        route_administrativeWard
+        route_administrativeWard,
       ],
       nys: [route_护理质量巡查情况汇总表_nys, route_护理质量检查小结],
       yczyy: [
@@ -221,7 +221,11 @@ export default function QcThreeRouter(props: Props) {
         route_检查表单统计表,
         route_福清三级质控问题原因措施汇总,
       ],
-      whyx: [],
+      whyx: [
+        route_三级质控月度报告,
+        route_三级质控汇总报告,
+        route_三级质控问题汇总,
+      ],
       other: [
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,

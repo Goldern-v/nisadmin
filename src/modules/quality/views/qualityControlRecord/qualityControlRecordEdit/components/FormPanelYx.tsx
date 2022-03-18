@@ -31,7 +31,7 @@ export default observer(function FormPannel() {
     causeList,
     auditList,
     baseInfo,
-    nodeAppointList
+    nodeAppointList,
   } = qcModel
 
 
@@ -177,25 +177,9 @@ export default observer(function FormPannel() {
       </div>
       <div className="item">
         <div className="label">床号:</div>
-        <div className={checkClass('inpNo')}>
-          <Input
-            placeholder="请输入床号"
-            value={master.inpNo}
-            onChange={(e: any) => {
-              qcModel.setMasterErrObj('inpNo', false)
-              qcModel.setMaster({ ...master, inpNo: e.target.value })
-            }} />
-        </div>
-      </div>
-      <div className="item">
-        <div className="label">合格率:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.rate + '%' }/>
-      </div>
-      <div className="item">
-        <div className="label">病案号:</div>
         <div className={checkClass('bedLabel')}>
           <Input
-            placeholder="请输入病案号"
+            placeholder="请输入床号"
             value={master.bedLabel}
             onChange={(e: any) => {
               qcModel.setMasterErrObj('bedLabel', false)
@@ -203,6 +187,25 @@ export default observer(function FormPannel() {
             }} />
         </div>
       </div>
+      <div className="item">
+        <div className="label">合格率:</div>
+        <Input className="content" disabled value={ qcModel.yxGradeObj.rate + '%' }/>
+      </div>
+      {
+        baseInfo.isPatientNumber !== '否' &&
+        <div className="item">
+          <div className="label">病案号:</div>
+          <div className={checkClass('inpNo')}>
+            <Input
+              placeholder="请输入病案号"
+              value={master.inpNo}
+              onChange={(e: any) => {
+                qcModel.setMasterErrObj('inpNo', false)
+                qcModel.setMaster({ ...master, inpNo: e.target.value })
+              }} />
+          </div>
+        </div>
+      }
 
       <div className="item">
         <div className="label">得分:</div>

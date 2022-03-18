@@ -102,7 +102,6 @@ export default function BedSituation() {
   }, []);
   emitter.removeAllListeners("护士排班按班次");
   emitter.addListener("护士排班按班次", () => {
-    console.log("test-1", 1);
     postNurseByShiftViewMethod();
   });
 

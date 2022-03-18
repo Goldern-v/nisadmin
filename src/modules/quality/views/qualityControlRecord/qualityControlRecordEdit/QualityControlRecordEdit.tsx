@@ -45,6 +45,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
     let itemListErr = false;
     let errMsg = "";
     for (let x in master) {
+      // 当isPatientNumber为否 不需要判断病案号 by亚心
       if (x == "inpNo") {
         //床号必须为整数
         //默认为7位
@@ -72,9 +73,12 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             errMsg = `住院号必须为数字`;
           }
         }else if(["gzhd"].includes(appStore.HOSPITAL_ID) && (!master[x] || master[x].length===0)){
-            qcModel.setMasterErrObj(x, true);
-            masterErr = true;
-            errMsg = `住院号不能为空`;
+          qcModel.setMasterErrObj(x, true);
+          masterErr = true;
+          errMsg = `住院号不能为空`;
+        }else if (['whyx'].includes(appStore.HOSPITAL_ID) && baseInfo.isPatientNumber !== '否' && (!master[x] || master[x].length===0) ) {
+          qcModel.setMasterErrObj(x, true);
+          masterErr = true;
         }
       } else if (master[x] instanceof Array) {
         if (master[x].length <= 0) {

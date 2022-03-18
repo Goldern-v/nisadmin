@@ -138,6 +138,7 @@ export default observer(function QcItemGroup(props: Props) {
     {itemGroup.itemList.map((item: any, itemIndex: number) => (
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
+          {item.isSensitiveIndex === '是' && <Icon type="star" theme='filled'/>}
           <span style={{ marginRight: 5 }}>{item.itemShowCode}</span>
           {item.problemLevel &&(
             <span style={{ color: '#469b30' }}>（{item.problemLevel}）</span>

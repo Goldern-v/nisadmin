@@ -1,80 +1,94 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Radio, DatePicker, Button } from 'antd'
-import BaseTable from 'src/components/BaseTable'
-import { observer } from 'mobx-react-lite'
-import { qualityControlRecordVM } from '../qualityControlRecord/QualityControlRecordVM'
+import styled from "styled-components";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { Radio, DatePicker, Button } from "antd";
+import BaseTable from "src/components/BaseTable";
+import { observer } from "mobx-react-lite";
+import { qualityControlRecordVM } from "../qualityControlRecord/QualityControlRecordVM";
 
-import { Select } from 'src/vendors/antd'
-import YearPicker from 'src/components/YearPicker'
-import { numberToArray } from 'src/utils/array/array'
-import moment from 'moment'
-import { problemSummaryServices } from './services/ProblemSummaryServices'
-import { ScrollBox, PageTitle } from 'src/components/common'
-export interface Props extends RouteComponentProps { }
+import { Select } from "src/vendors/antd";
+import YearPicker from "src/components/YearPicker";
+import { numberToArray } from "src/utils/array/array";
+import moment from "moment";
+import { problemSummaryServices } from "./services/ProblemSummaryServices";
+import { ScrollBox, PageTitle } from "src/components/common";
+import { appStore } from "src/stores";
+import qs from "qs";
+
+export interface Props extends RouteComponentProps {}
 
 export default observer(function ProblemSummary(props: any) {
   // const [tableData, setTableData] = useState([])
-  const [loadingTable, setLoadingTable] = useState(false)
+  const [loadingTable, setLoadingTable] = useState(false);
   // const [showType, setShowType] = useState(false)
-  const [effect, setEffect] = useState(true)
+  const [effect, setEffect] = useState(true);
 
   const [filterObj, setFilterObj] = useState({
     year: moment(),
-    month: Number(moment().format('MM')),
-    type: '住院',
-    sheet: '汇总表'
-  })
+    month: Number(moment().format("MM")),
+    type: "住院",
+    sheet: "汇总表",
+  });
   const [pageObj, setPageObj] = useState({
-    title: '',
+    title: "",
     component: null,
-    dataSource: []
-  })
+    dataSource: [],
+  });
+  const { location } = appStore;
+  const [level, setLevel] = useState(3);
+  const rankTextList = ["", "一", "二", "三"];
 
   useEffect(() => {
-    setEffect(true)
-    getTableData()
-  }, [])
+    if (location.search) {
+      let obj = qs.parse(location.search.substring(1));
+      obj.level && setLevel(obj.level);
+    }
+    setEffect(true);
+    getTableData();
+  }, []);
 
   useLayoutEffect(() => {
-    setEffect(false)
-  }, [])
+    setEffect(false);
+  }, []);
 
   const getTableData = (obj?: any) => {
     if (effect) {
     }
-  }
+  };
 
   useEffect(() => {
-    problemSummaryServices.getTableData(filterObj, setPageObj)
-  }, [filterObj])
+    problemSummaryServices.getTableData(filterObj, setPageObj);
+  }, [filterObj]);
 
   return (
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle>三级质控问题汇总</PageTitle>
+          <PageTitle>{rankTextList[level]}级质控问题汇总</PageTitle>
         </LeftIcon>
         <RightIcon>
-          <div className='item'>
-            <div className='label'>年度：</div>
-            <div className='content'>
+          <div className="item">
+            <div className="label">年度：</div>
+            <div className="content">
               <YearPicker
                 allowClear={false}
                 style={{ width: 100 }}
                 value={filterObj.year || undefined}
-                onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
+                onChange={(value: any) =>
+                  setFilterObj({ ...filterObj, year: value })
+                }
               />
             </div>
           </div>
-          <div className='item'>
-            <div className='label'>月份：</div>
-            <div className='content'>
+          <div className="item">
+            <div className="label">月份：</div>
+            <div className="content">
               <Select
                 style={{ width: 80 }}
                 value={filterObj.month}
-                onChange={(value: any) => setFilterObj({ ...filterObj, month: value })}
+                onChange={(value: any) =>
+                  setFilterObj({ ...filterObj, month: value })
+                }
               >
                 {numberToArray(12).map((item) => (
                   <Select.Option value={item + 1} key={item}>
@@ -85,55 +99,57 @@ export default observer(function ProblemSummary(props: any) {
             </div>
           </div>
 
-          <div className='item'>
-            <div className='label'>类别：</div>
-            <div className='content'>
+          <div className="item">
+            <div className="label">类别：</div>
+            <div className="content">
               <Select
                 style={{ width: 100 }}
                 value={filterObj.type}
-                onChange={(value: any) => setFilterObj({ ...filterObj, type: value })}
+                onChange={(value: any) =>
+                  setFilterObj({ ...filterObj, type: value })
+                }
               >
-                <Select.Option value='门诊'>门诊</Select.Option>
-                <Select.Option value='住院'>住院</Select.Option>
+                <Select.Option value="门诊">门诊</Select.Option>
+                <Select.Option value="住院">住院</Select.Option>
               </Select>
             </div>
           </div>
-          <div className='item'>
+          <div className="item">
             <Button
-              type='primary'
-              className='statistics'
+              type="primary"
+              className="statistics"
               onClick={() => {
-                problemSummaryServices.getTableData(filterObj, setPageObj)
+                problemSummaryServices.getTableData(filterObj, setPageObj);
               }}
             >
               查询
             </Button>
           </div>
-          <div className='item'>
+          <div className="item">
             <Button
-              className='excel'
+              className="excel"
               onClick={() => {
-                problemSummaryServices.groupDeptScoreExcel(filterObj)
+                problemSummaryServices.groupDeptScoreExcel(filterObj);
               }}
             >
               导出质量考核明细表
             </Button>
           </div>
-          <div className='item'>
+          <div className="item">
             <Button
-              className='excel'
+              className="excel"
               onClick={() => {
-                problemSummaryServices.deptScoreExcel(filterObj)
+                problemSummaryServices.deptScoreExcel(filterObj);
               }}
             >
               导出质量考核汇总表
             </Button>
           </div>
-          <div className='item'>
+          <div className="item">
             <Button
-              className='excel'
+              className="excel"
               onClick={() => {
-                problemSummaryServices.turnOverExcel(filterObj)
+                problemSummaryServices.turnOverExcel(filterObj);
               }}
             >
               导出全部Excel
@@ -144,25 +160,34 @@ export default observer(function ProblemSummary(props: any) {
       <MidCon>
         <RadioCon>
           <Radio.Group
-            buttonStyle='solid'
+            buttonStyle="solid"
             value={filterObj.sheet}
-            onChange={(e) => setFilterObj({ ...filterObj, sheet: e.target.value })}
+            onChange={(e) =>
+              setFilterObj({ ...filterObj, sheet: e.target.value })
+            }
           >
-            <Radio.Button value='汇总表'>汇总表</Radio.Button>
-            <Radio.Button value='明细表'>明细表</Radio.Button>
+            <Radio.Button value="汇总表">汇总表</Radio.Button>
+            <Radio.Button value="明细表">明细表</Radio.Button>
           </Radio.Group>
         </RadioCon>
         <Title>{pageObj.title}</Title>
         <TableCon>
           {(() => {
-            let Component: any = pageObj.component
-            return Component && <Component dataSource={pageObj.dataSource} loadingTable={loadingTable} />
+            let Component: any = pageObj.component;
+            return (
+              Component && (
+                <Component
+                  dataSource={pageObj.dataSource}
+                  loadingTable={loadingTable}
+                />
+              )
+            );
           })()}
         </TableCon>
       </MidCon>
     </Wrapper>
-  )
-})
+  );
+});
 
 const Wrapper = styled.div`
   height: 100%;
@@ -195,7 +220,7 @@ const Wrapper = styled.div`
       border-color: #fff;
     }
   }
-`
+`;
 const LeftIcon = styled.div`
   float: left;
   font-size: 13px;
@@ -204,7 +229,7 @@ const LeftIcon = styled.div`
   color: #333333;
   display: flex;
   align-items: center;
-`
+`;
 
 const RightIcon = styled.div`
   float: right;
@@ -215,14 +240,14 @@ const RightIcon = styled.div`
   display: flex;
   align-items: center;
   margin-right: -15px;
-`
+`;
 
 const HeaderCon = styled.div`
   height: 55px;
   padding: 10px 15px;
   box-sizing: border-box;
   overflow: hidden;
-`
+`;
 
 // @ts-ignore
 const MidCon = styled(ScrollBox)`
@@ -236,25 +261,25 @@ const MidCon = styled(ScrollBox)`
   display: flex;
   flex-direction: column;
   position: relative;
-`
+`;
 const RadioCon = styled.div`
   position: absolute;
   top: 20px;
   right: 16px;
-`
+`;
 const Title = styled.div`
   font-size: 20px;
   color: #333;
   font-weight: bold;
   text-align: center;
-`
+`;
 const Date = styled.div`
   font-size: 13px;
   color: #333;
   text-align: center;
   margin: 8px 0 5px 0;
-`
+`;
 const TableCon = styled.div`
   flex: 1;
   height: 0;
-`
+`;

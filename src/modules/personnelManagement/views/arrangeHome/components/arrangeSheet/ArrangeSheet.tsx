@@ -210,20 +210,35 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
       },
     }),
-    {
-      title: "职称",
-      dataIndex: "newTitle",
-      width: 70,
-      fixed: "left",
-      align: "center",
-    },
-    {
-      title: "年限",
-      dataIndex: "year",
-      width: 70,
-      fixed: "left",
-      align: "center",
-    },
+    ...appStore.hisMatch({
+      map: {
+        whyx: [
+          {
+            title: "职务",
+            dataIndex: "job",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+        ],
+        other: [
+          {
+            title: "职称",
+            dataIndex: "newTitle",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+          {
+            title: "年限",
+            dataIndex: "year",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+        ]
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         dgxg: [
@@ -667,7 +682,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 dgxg: () => 2,
                 fsxt: () => 6,
                 fssdy: () => 7,
-                whyx: () => 7,
+                whyx: () => 6,
                 sdlj: () => 6,
               })) *
             70 +
