@@ -79,7 +79,7 @@ export default class AuthStore {
     } catch (error) {
       return "";
     }
-  } 
+  }
 
   @computed
   public get defaultDeptName() {
@@ -121,7 +121,7 @@ export default class AuthStore {
       return "";
     }
   }
-  /** 是否是超级管理员 */ 
+  /** 是否是超级管理员 */
   public get isSuperAdmin() {
     try {
       return this.user && this.user.roleManageCodeList.includes('SUPER_ADMIN')
@@ -129,6 +129,16 @@ export default class AuthStore {
       return false
     }
   }
+
+  /**是否是伤口小组成员 */
+  public get isWound() {
+    try {
+      return this.user && this.user.roleManageCodeList.includes('Nsk1001')
+    } catch (error) {
+      return false
+    }
+  }
+
   /** 是否是护理部 */
   public get isDepartment() {
     try {
@@ -180,11 +190,11 @@ export default class AuthStore {
 
   /** 护长、教学组长以上*/
   public get isHeadNurse() {
-//     SYS0001  管理员
-// QCR0004  护士长
-// QCR0100  教学组长
-// QCR0001  护理部
-    let adminCode = ['SYS0001','QCR0004','QCR0100','QCR0001']
+    //     SYS0001  管理员
+    // QCR0004  护士长
+    // QCR0100  教学组长
+    // QCR0001  护理部
+    let adminCode = ['SYS0001', 'QCR0004', 'QCR0100', 'QCR0001']
     try {
       if (!this.user) return false
       return adminCode.includes(this.user.roleManageCode)

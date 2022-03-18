@@ -371,7 +371,7 @@ export default observer(function BadEventNewList() {
                   filterOption={(input: any, option: any) =>
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                  {authStore.isDepartment && <Select.Option value="">全部</Select.Option>}
+                  {(authStore.isDepartment || authStore.isWound) && <Select.Option value="">全部</Select.Option>}
                   {(authStore.isDepartment ? deptList : authStore.deptList).map((item: any, idx: number) => {
                     return (
                       <Select.Option value={item.code} key={idx}>
