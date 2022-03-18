@@ -9,7 +9,6 @@ import moment, { duration } from 'moment'
 import QualityAnalysisService from './api/QualityAnalysisService'
 
 import CreateAnalysisModal from './components/CreateAnalysisModal'
-import AnalysisCreateProgress from './components/AnalysisCreateProgress'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
 // import { useKeepAliveEffect } from 'src/vendors/keep-alive'
@@ -174,6 +173,8 @@ export default observer(function Analysis() {
   }
 
   const handleReview = (record: any) => {
+    console.log(record);
+
     const obj = {
       year: record.year,
       quarter: record.quarter,
@@ -182,11 +183,14 @@ export default observer(function Analysis() {
       startDate: record.startDate,
       endDate: record.endDate,
       groupRoleCode: record.groupRoleCode,
-      title: record.title
+      title: record.title,
+      id: record.id,
+      creatorName: record.creatorName,
+      creatorNo: record.creatorNo
     }
 
     // console.log(record)
-    history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`)
+    history.push(`/checkWard/QuarterViewGZ?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
@@ -224,7 +228,7 @@ export default observer(function Analysis() {
     }
 
     api
-      .createReport({ ...params, type: 'month' })
+      .createReport({ ...params })
       .then((res) => {
         if (res.code == 200) {
           handleCreateCancel()
@@ -283,7 +287,7 @@ export default observer(function Analysis() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>护长季度查房评分记录</PageTitle>
+          <PageTitle>护长季度查房报告分析</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

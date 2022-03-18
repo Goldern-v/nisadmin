@@ -46,17 +46,22 @@ export default function CreateAnalysisModal(props: Props) {
           let nowMoment = Moment();
           let months: string = nowMoment.format('M');
           let dateList: any = null;
+          let reportName: any = null;
           if ([1, 2, 3].includes(+months)) {
             months = "Q1"
+            reportName = `${nowMoment.format('YYYY')}年第一季度护士长实际查房率`
             dateList = setDateList(1)
           } else if ([4, 5, 6].includes(+months)) {
             months = "Q2"
+            reportName = `${nowMoment.format('YYYY')}年第二季度护士长实际查房率`
             dateList = setDateList(4)
           } else if ([7, 8, 9].includes(+months)) {
             months = "Q3"
+            reportName = `${nowMoment.format('YYYY')}年第三季度护士长实际查房率`
             dateList = setDateList(7)
           } else if ([10, 11, 12].includes(+months)) {
             months = "Q4"
+            reportName = `${nowMoment.format('YYYY')}年第四季度护士长实际查房率`
             dateList = setDateList(10)
           }
 
@@ -64,7 +69,7 @@ export default function CreateAnalysisModal(props: Props) {
             year: nowMoment,
             beginDate: dateList.beginDates,
             endDate: dateList.endDates,
-            reportName: '',
+            reportName: reportName,
             groupRoleCode: '',
             quarter: months
           })
@@ -125,11 +130,15 @@ export default function CreateAnalysisModal(props: Props) {
     if (refForm.current) {
       if (refForm.current.getField('quarter') == 'Q1') {
         setBeginDateAndEndDate(value, Number(1) - 1)
+        setFormItem('reportName', `${value.format('YYYY')}年第一季度护士长实际查房率`)
       } else if (refForm.current.getField('quarter') == 'Q2') {
         setBeginDateAndEndDate(value, Number(4) - 1)
+        setFormItem('reportName', `${value.format('YYYY')}年第二季度护士长实际查房率`)
       } else if (refForm.current.getField('quarter') == 'Q3') {
+        setFormItem('reportName', `${value.format('YYYY')}年第三季度护士长实际查房率`)
         setBeginDateAndEndDate(value, Number(7) - 1)
       } else if (refForm.current.getField('quarter') == 'Q4') {
+        setFormItem('reportName', `${value.format('YYYY')}年第四季度护士长实际查房率`)
         setBeginDateAndEndDate(value, Number(10) - 1)
       }
     }
@@ -168,12 +177,16 @@ export default function CreateAnalysisModal(props: Props) {
         let year = refForm.current.getField('year');
         if (val == 'Q1') {
           setBeginDateAndEndDate(year, Number(1) - 1)
+          setFormItem('reportName', `${year.format('YYYY')}年第一季度护士长实际查房率`)
         } else if (val == 'Q2') {
           setBeginDateAndEndDate(year, Number(4) - 1)
+          setFormItem('reportName', `${year.format('YYYY')}年第二季度护士长实际查房率`)
         } else if (val == 'Q3') {
           setBeginDateAndEndDate(year, Number(7) - 1)
+          setFormItem('reportName', `${year.format('YYYY')}年第三季度护士长实际查房率`)
         } else if (val == 'Q4') {
           setBeginDateAndEndDate(year, Number(10) - 1)
+          setFormItem('reportName', `${year.format('YYYY')}年第四季度护士长实际查房率`)
         }
       }
     }
@@ -214,22 +227,10 @@ export default function CreateAnalysisModal(props: Props) {
     if (current) {
       let { year, quarter, groupRoleCode } = current.getFields()
       if (!year || !quarter || !groupRoleCode) return
-
       let yearStr = year.format('YYYY')
-      let monthStr = quarter
-      let groupRoleName: any = ''
+      console.log('dddddddddddddddddddd')
 
-      for (let i = 0; i < groupRoleList.length; i++) {
-        if (groupRoleList[i].code == groupRoleCode) groupRoleName = groupRoleList[i].name
-      }
-
-      if (groupRoleName.split('、').length > 1) {
-        groupRoleName = groupRoleName.split('、')
-        groupRoleName.shift()
-        groupRoleName = groupRoleName.join('、')
-      }
-
-      let reportName = `${yearStr}年${monthStr}月${groupRoleName}反馈与分析`
+      let reportName = `${yearStr}年护长第一季度查房报告分析`
 
       setFormItem('reportName', reportName)
     }

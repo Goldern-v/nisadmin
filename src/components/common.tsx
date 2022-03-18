@@ -19,7 +19,7 @@ export const ScrollBox = styled.div`
     border-radius: 50px;
     background-color: #c2c2c2;
   }
-`
+` as any
 export const ScrollUl = styled.ul`
   overflow: auto;
   &::-webkit-scrollbar {

@@ -100,7 +100,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
         component: ScoringRecord
       },
       {
-        title: "护长季度查房评分记录",
+        title: "护长季度查房报告分析",
         path: "/checkWard/quarterScoringRecord",
         icon: <CFJL />,
         component: QuarterScoringRecord

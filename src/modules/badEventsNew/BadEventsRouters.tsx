@@ -131,7 +131,7 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           }
         ],
-        gzsrm:[
+        gzsrm: [
           // {
           //   title: '不良事件分析报告',
           //   path: `${baseRouter}/不良事件分析报告`,

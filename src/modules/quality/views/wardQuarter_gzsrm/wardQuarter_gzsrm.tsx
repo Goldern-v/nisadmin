@@ -20,6 +20,8 @@ export default observer(function NursingReportDetailView() {
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
   const [spinning, setSpinning] = useState(false)
+  const [quarterRate, setQuarterRate] = useState("")
+  const [quarterquery, setQuarterquery] = useState("")
 
   useEffect(() => {
     let search = appStore.location.search
@@ -27,16 +29,20 @@ export default observer(function NursingReportDetailView() {
     query.name = query.name || query.themeName
     setCurrentPage(query)
     setSpinning(true)
-    badEventReportService.getReport(query).then((res: any) => {
-      let list = res.data.map((item: any) => {
-        let keys = Object.keys(item.dataMap)
-        let dataArr = keys.filter((dataMapItem: any) => item.dataMap[dataMapItem]['例数'] != 0).map((dataMapItem: any) => {
-          return { name: dataMapItem, ...item.dataMap[dataMapItem], value: item.dataMap[dataMapItem]['例数'] }
-        })
-        return { keys, dataArr, ...JSON.parse(JSON.stringify(item)) }
-      })
+    badEventReportService.getDetailList(query).then((res: any) => {
+      // let list = res.data.list.map((item: any) => {
+      //   console.log(item)
+      //   // let keys = Object.keys(item.dataMap)
+      //   // let dataArr = keys.filter((dataMapItem: any) => item.dataMap[dataMapItem]['例数'] != 0).map((dataMapItem: any) => {
+      //   //   return { name: dataMapItem, ...item.dataMap[dataMapItem], value: item.dataMap[dataMapItem]['例数'] }
+      //   // })
+      //   return { ...item }
+      // })
+      let list = res.data.list
       setPageData(list)
+      setQuarterRate(res.data.quarterRate)
       setSpinning(false)
+      setQuarterquery(query.id)
     })
   }, [])
 
@@ -45,7 +51,7 @@ export default observer(function NursingReportDetailView() {
     setIsPrint(isPrint)
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
-    document.title = '不良事件分析报告'
+    document.title = '护长季度查房分析报告'
     setTimeout(() => {
       printFun(pageRef.current, {
         injectGlobalCss: true,
@@ -102,31 +108,32 @@ export default observer(function NursingReportDetailView() {
       document.title = title
     }, 800)
   }
-  const onDelete = () => {
-    if (!currentPage.id) return message.warning('此报表尚未保存！')
-    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      badEventReportService.deleteReport(currentPage).then((res) => {
-        message.success('删除成功')
-        setTimeout(() => {
-          appStore.history.push('/badEventsNew/不良事件分析报告')
-        }, 500)
-      })
-    })
-  }
+  // const onDelete = () => {
+  //   if (!currentPage.id) return message.warning('此报表尚未保存！')
+  //   globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
+  //     badEventReportService.deleteReport(currentPage).then((res) => {
+  //       message.success('删除成功')
+  //       setTimeout(() => {
+  //         appStore.history.push('/checkWard/quarterScoringRecord')
+  //       }, 500)
+  //     })
+  //   })
+  // }
   const onSave = () => {
     let params = currentPage
     badEventReportService.saveReport(params).then((res) => {
       message.success('保存成功')
       setTimeout(() => {
-        appStore.history.push('/badEventsNew/不良事件分析报告')
+        appStore.history.push('/checkWard/quarterScoringRecord')
       }, 500)
     })
   }
+
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '不良事件分析报告', link: '/home/不良事件分析报告' }, { name: '报告详情', link: '' }]} />
-        <div className='title'>{currentPage.name}</div>
+        <BaseBreadcrumb data={[{ name: '护长季度查房分析报告', link: '/checkWard/quarterScoringRecord' }, { name: '报告详情', link: '' }]} />
+        <div className='title'>{currentPage.title}</div>
         <div className='aside'>
           <span>
             由{currentPage.creatorName}创建于{currentPage.createDate}<span></span>
@@ -134,7 +141,6 @@ export default observer(function NursingReportDetailView() {
         </div>
         <div className='tool-con'>
           <Button onClick={() => onSave()} loading={spinning}>保存</Button>
-          <Button onClick={() => onDelete()} loading={spinning}>删除</Button>
           <Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
@@ -142,8 +148,8 @@ export default observer(function NursingReportDetailView() {
       <ScrollCon>
         <Spin spinning={spinning}>
           <Page ref={pageRef} className='print-page'>
-            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.name}</div>
-            <PageContent isPrint={isPrint} pageData={pageData} currentPage={currentPage}></PageContent>
+            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.title}</div>
+            <PageContent quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} quarterquery={quarterquery} ></PageContent>
           </Page>
         </Spin>
       </ScrollCon>

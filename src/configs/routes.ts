@@ -269,7 +269,7 @@ const QcOneRouter = lazy(() => import("src/modules/quality/QcOneRouter"));
 const QcOneRouterHj = lazy(() => import("src/modules/quality/QcOneRouter_hj"));
 const QcOneRouterDghl = lazy(() => import("src/modules/quality/QcOneRouter_dghl"));
 const QcOneRouterNys = lazy(() =>
-import("src/modules/quality/QcOneRouter_nys")
+  import("src/modules/quality/QcOneRouter_nys")
 );
 const QcOneRouterWhyx = lazy(() => import("src/modules/quality/QcOneRouter_whyx"));
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
@@ -302,6 +302,11 @@ const NurseSatisfactionSurveyRouter = lazy(() =>
 );
 const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
+)
+
+// 贵州护长季度查房分析报告表
+const checkWardQuarterViewGzsrm = lazy(() =>
+  import("src/modules/quality/views/wardQuarter_gzsrm/wardQuarter_gzsrm")
 )
 
 // 贵州-行政查房
@@ -654,7 +659,7 @@ const routes: RouteItem[] = [
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
-        fsxt:BadEventsNewDetailFsxt,
+        fsxt: BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
@@ -671,7 +676,7 @@ const routes: RouteItem[] = [
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
-        fsxt:BadEventsNewDetailFsxt,
+        fsxt: BadEventsNewDetailFsxt,
         nys: BadEventsNewDetail,
         hj: BadEventsNewDetail,
         other: BadEventsNewDetailCommon
@@ -851,6 +856,7 @@ const routes: RouteItem[] = [
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
+  setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
   setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout),
   setLayout("/safetyChecklist/qcTwo/checkView", safetyChecklistView, layouts.MainLayout),
