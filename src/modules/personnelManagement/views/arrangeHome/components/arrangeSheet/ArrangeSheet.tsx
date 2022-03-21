@@ -266,6 +266,53 @@ export default observer(function ArrangeSheet(props: Props) {
         other: [],
       },
     }),
+    ...appStore.hisMatch({
+      map: {
+        fssdy: [
+          {
+            title: "岗位级别",
+            dataIndex: "postLevel",
+            width: 100,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.postLevel = e.target.value;
+                  }}
+                />
+              ) : (
+                <span>{text}</span>
+              );
+            },
+          },
+          {
+            title: "管床",
+            dataIndex: "chargeBed",
+            width: 100,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.chargeBed = e.target.value;
+                  }}
+                />
+              ) : (
+                <span>{text}</span>
+              );
+            },
+          },
+        ],
+        other: []
+      }
+    }),
     ...sheetViewModal.dateList.map((date, index) => {
       return {
         title: <Th date={date} />,
@@ -662,6 +709,9 @@ export default observer(function ArrangeSheet(props: Props) {
                 : 250;
           if (appStore.HOSPITAL_ID == 'whyx') {
             widthNys += 170
+          }
+          if (appStore.HOSPITAL_ID == 'fssdy') {
+            widthNys += 200
           }
           /** noscorll */
           (document as any).querySelector(
