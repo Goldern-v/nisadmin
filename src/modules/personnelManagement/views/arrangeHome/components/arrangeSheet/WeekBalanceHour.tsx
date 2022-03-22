@@ -7,6 +7,7 @@ import { sheetViewModal } from "../../viewModal/SheetViewModal";
 // import { Input } from "src/vendors/antd";
 // import moment from "moment";
 import { appStore } from "src/stores";
+import { number } from "echarts";
 
 export interface Props {
   id: any;
@@ -30,6 +31,18 @@ export const weekBalanceHour = (id: any) => {
   let real_balanceHour = 0;
   for (let j = 0; j < (list || []).length; j++) {
     real_balanceHour += Number(user.settingDtos[j].effectiveTime);
+    // 计算加减班工时
+    if (['dghl'].includes(appStore.HOSPITAL_ID) && user.settingDtos[j].schAddOrSubs) {
+      let schAddOrSubs = user.settingDtos[j].schAddOrSubs.reduce((schAddOrSubs: any, current: any) => {
+        if (current.statusType == 2) {
+          return schAddOrSubs - Number(current.hour)
+        } else if (current.statusType == 1) {
+          return schAddOrSubs + Number(current.hour)
+        }
+        return schAddOrSubs
+      }, 0)
+      real_balanceHour += Number(schAddOrSubs)
+    }
   }
 
   /**每周应上天数 */
