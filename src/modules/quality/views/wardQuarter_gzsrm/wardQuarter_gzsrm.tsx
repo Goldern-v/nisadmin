@@ -16,42 +16,42 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
   const [pageData, setPageData] = useState([])
+  const [deductionData, setdeductionData] = useState([])
   const [currentPage, setCurrentPage]: any = useState({})
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
   const [spinning, setSpinning] = useState(false)
   const [quarterRate, setQuarterRate] = useState("")
-  const [quarterquery, setQuarterquery] = useState("")
+  const [defaultDept, setDefaultDept] = useState("")
 
   useEffect(() => {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
     query.name = query.name || query.themeName
+    let detNo = ''
     setCurrentPage(query)
     setSpinning(true)
     badEventReportService.getDetailList(query).then((res: any) => {
-      // let list = res.data.list.map((item: any) => {
-      //   console.log(item)
-      //   // let keys = Object.keys(item.dataMap)
-      //   // let dataArr = keys.filter((dataMapItem: any) => item.dataMap[dataMapItem]['例数'] != 0).map((dataMapItem: any) => {
-      //   //   return { name: dataMapItem, ...item.dataMap[dataMapItem], value: item.dataMap[dataMapItem]['例数'] }
-      //   // })
-      //   return { ...item }
-      // })
       let list = res.data.list
       setPageData(list)
       setQuarterRate(res.data.quarterRate)
       setSpinning(false)
-      setQuarterquery(query.id)
     })
+    let params: any = { beginDate: query.startDate, endDate: query.endDate }
+    badEventReportService.getPointCount(params).then((res: any) => {
+      // console.log(res);
+      if (res.code == 200) {
+        setdeductionData(res.data)
+        setSpinning(false)
+      }
+    })
+      .catch(err => { })
   }, [])
 
 
   const onPrint = (isPrint: boolean) => {
     setIsPrint(isPrint)
     let printFun = isPrint ? printing : printing.preview
-    let title = document.title
-    document.title = '护长季度查房分析报告'
     setTimeout(() => {
       printFun(pageRef.current, {
         injectGlobalCss: true,
@@ -103,10 +103,6 @@ export default observer(function NursingReportDetailView() {
         setIsPrint(false)
       })
     }, 500)
-
-    setTimeout(() => {
-      document.title = title
-    }, 800)
   }
   // const onDelete = () => {
   //   if (!currentPage.id) return message.warning('此报表尚未保存！')
@@ -120,7 +116,7 @@ export default observer(function NursingReportDetailView() {
   //   })
   // }
   const onSave = () => {
-    let params = currentPage
+    let params = { list: pageData, rateId: currentPage.id }
     badEventReportService.saveReport(params).then((res) => {
       message.success('保存成功')
       setTimeout(() => {
@@ -146,10 +142,10 @@ export default observer(function NursingReportDetailView() {
         </div>
       </HeadCon>
       <ScrollCon>
-        <Spin spinning={spinning}>
+        <Spin spinning={spinning} >
           <Page ref={pageRef} className='print-page'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.title}</div>
-            <PageContent quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} quarterquery={quarterquery} ></PageContent>
+            <PageContent deductionData={deductionData} quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} ></PageContent>
           </Page>
         </Spin>
       </ScrollCon>
@@ -187,7 +183,7 @@ const HeadCon = styled.div`
   }
 `
 const Page = styled.div`
-  width: 720px;
+  width: 780px;
   margin: 20px auto 20px;
   padding-bottom: 10px;
   background: #fff;

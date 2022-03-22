@@ -15,7 +15,6 @@ export interface Props {
   visible: boolean
   onOk: any
   onCancel: any
-  groupRoleList: any
   allowClear?: boolean
   loading?: boolean
 }
@@ -32,7 +31,7 @@ export default function CreateAnalysisModal(props: Props) {
     endDate: (val) => !!val || '请选择结束时间'
   }
 
-  const { visible, onCancel, onOk, groupRoleList, allowClear, loading } = props
+  const { visible, onCancel, onOk, allowClear, loading } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
   const [beginDate, setBeginDate] = useState(null as any | null)
