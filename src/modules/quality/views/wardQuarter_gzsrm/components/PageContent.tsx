@@ -14,32 +14,42 @@ interface Props {
 }
 export default function PageContent(props: Props) {
   const { pageData, isPrint, quarterRate, deductionData } = props
-  const [chartsImg, setChartsImg]: any = useState([])
+  const [chartsImg, setChartsImg]: any = useState('')
   const [deduction, getdeduction]: any = useState("")
   const [isInput, getinput]: any = useState(false)
   const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
   useEffect(() => {
+    console.log(JSON.stringify(deductionData));
     //数据改变时将canvas的画面用img保存用于打印
-    let timer = setTimeout(() => {
-      let canvasEl = document.querySelectorAll('canvas') as any
-      if (canvasEl.length) {
-        let arr = []
-        for (let i = 0; i < canvasEl.length; i++) {
-          arr.push(canvasEl[i].toDataURL())
-        }
-        setChartsImg(arr)
-
+    setTimeout(() => {
+      let canvasEl = document.querySelector('canvas') as any
+      if (canvasEl) {
+        let srcStr = canvasEl.toDataURL()
+        setChartsImg(srcStr)
       }
-    }, 500)
-    return () => clearTimeout(timer)
+    },1000)
+    
 
   }, [deductionData])
 
   const getBolatuOption = (data: any) => {
-    let value3 = deductionData.map((item: any) => item['pointFrequency'])
-    let value1 = deductionData.map((item: any) => item['pointItem'])
-    let value2 = deductionData.map((item: any) => item['percentage'].split('%')[0])
-    // console.log(value1, value2, value3);
+
+    // let value1 = deductionData.map((item: any) => item['pointItem'])
+    let value1:any = []
+    let value2 = deductionData.map((item: any) => item['percentage'].split('%')[0]).sort((a,b)=>{
+      return b-a
+    })
+    let value3 = deductionData.map((item: any) => item['pointFrequency']).sort((a,b)=>{
+      return b-a
+    })
+    value3.map((item:any) =>{
+      deductionData.map((items: any) => {
+        if(item == items['pointFrequency']){
+          value1.push(items['pointItem'])
+        }
+      })
+    })
+    value1 =Array.from(new Set(value1)) 
 
     return !value1.length ? {} : {
       title: {
@@ -265,7 +275,8 @@ export default function PageContent(props: Props) {
       <div className='second-content-table-title'>{`2.2夜查房主要扣分项(图表-柏拉图)`}</div>
       <div className='second-content-bolatu-bolatu'>
         {!isPrint && deductionData && <ReactEcharts style={{ height: 450, width: 680, margin: '0 auto' }} option={getBolatuOption(deductionData)} />}
-        {isPrint && deductionData && chartsImg.length && <img src={chartsImg[0]} alt="" />}
+        {/* <img src={chartsImg} alt="" /> */}
+        {isPrint && deductionData && chartsImg && <img src={chartsImg} alt="" />}
       </div>
     </div>}
 
