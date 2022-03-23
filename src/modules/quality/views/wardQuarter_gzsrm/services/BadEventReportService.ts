@@ -18,16 +18,11 @@ export default class BadEventReportService extends BaseApiService {
     return this.post(`/room/pointCount/getPointCount`, obj)
   }
 
-  /**获取不良事件类型 */
-  public getEventTypeList() {
-    return this.post('/dept/dictInfo', qs.stringify({ code: 'badEvent_eventType' }))
-  }
-
   // 获取所有科室
   public getAllDeptList() {
     return this.get(`/dept/nursingUnit/all`);
   }
-
+  // 保存查房记录
   public saveReport(params: any) {
     return this.post(`/wardRoundRate/saveData`, params);
   }

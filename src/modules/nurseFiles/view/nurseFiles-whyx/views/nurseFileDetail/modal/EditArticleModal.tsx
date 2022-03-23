@@ -147,12 +147,12 @@ export default function EditArticleModal(props: Props) {
           <Row>
             <Col span={24}>
               <Form.Field label={`杂志名称`} name='magazineName' required>
-                <Input maxLength={25} />
+                <Input />
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`文章名称`} name='articleName' required>
-                <Input maxLength={25} />
+                <Input />
               </Form.Field>
             </Col>
             <Col span={24}>

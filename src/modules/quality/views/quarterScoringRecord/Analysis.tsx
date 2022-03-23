@@ -22,8 +22,6 @@ export default observer(function Analysis() {
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const [createClear, setCreateClear] = useState(true)
   const { history } = appStore
-  const [groupRoleList, setGroupRolelist] = useState([])
-  const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
   //进度条相关
   const [createProgressVisible, setCreateProgressVisible] = useState(false)
@@ -37,14 +35,6 @@ export default observer(function Analysis() {
     keyWord: '',
   } as any)
 
-  useEffect(() => {
-    api.qcRoleCode().then((res) => {
-      if (res.data instanceof Array) setGroupRolelist(res.data)
-    })
-    api.qcRoleCodeSelf().then((res) => {
-      if (res.data instanceof Array) setGroupRolelistSelf(res.data)
-    })
-  }, [])
 
   useEffect(() => {
     getTableData()
@@ -106,7 +96,7 @@ export default observer(function Analysis() {
             return '第三季度';
             break;
           case 'Q4':
-            return '第季度';
+            return '第四季度';
             break;
         }
 
@@ -173,8 +163,7 @@ export default observer(function Analysis() {
   }
 
   const handleReview = (record: any) => {
-    console.log(record);
-
+    console.log(record)
     const obj = {
       year: record.year,
       quarter: record.quarter,
@@ -186,7 +175,7 @@ export default observer(function Analysis() {
       title: record.title,
       id: record.id,
       creatorName: record.creatorName,
-      creatorNo: record.creatorNo
+      creatorNo: record.creatorNo,
     }
 
     // console.log(record)
@@ -231,12 +220,17 @@ export default observer(function Analysis() {
       .createReport({ ...params })
       .then((res) => {
         if (res.code == 200) {
+          console.log(res.data)
           handleCreateCancel()
           setCreateProgressVisible(false)
           setCreateClear(true)
           setCreateLoading('')
-          appStore.history.push(`/qualityAnalysisReport?${qs.stringify(res.data.report)}`)
-          // successCallback()
+          let createList = {
+            ...params,
+            id: res.data.rateId,
+          }
+          successCallback()
+          history.push(`/checkWard/QuarterViewGZ?${qs.stringify(createList)}`)
         } else {
           failedCallback(res.desc || '')
         }
@@ -372,7 +366,6 @@ export default observer(function Analysis() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        groupRoleList={groupRoleListSelf}
         loading={!!(createLoading == 'start')}
       />
     </Wrapper>
