@@ -495,7 +495,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
         {!queryObj.isAdd && <div className="name">{data.title}</div>}
         {!queryObj.isAdd && <div className="message">任务状态:<span className={data.status == "0" ? "active1" : data.status == "1" ? "active" : data.status == "2" ? "active2" : ""}>{data.status == "0" ? "待审核" : data.status == "1" ? "审核通过" : data.status == "2" ? "驳回" : "草稿"}</span></div>}
         <div className="buttonBody">
-          {queryObj.isAdd && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
+          {!queryObj.audit && <Button onClick={handleSave} loading={saveLoading}>保存</Button>}
           {data.status == "0" && <Button onClick={handleUndo} className="red">撤销</Button>}
           {data.status != "1" && !queryObj.audit && <Button className="ml-20" loading={submitLoading} type="primary" onClick={handleSubmit}>提交</Button>}
           {queryObj.audit == "1" && <Button className="ml-20" type="primary" onClick={handleAudit}>审核</Button>}

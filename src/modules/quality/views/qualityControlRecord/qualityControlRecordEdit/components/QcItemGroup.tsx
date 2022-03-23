@@ -123,9 +123,9 @@ export default observer(function QcItemGroup(props: Props) {
               全否
             </Button>
           )}
-          {['lcey'].includes(appStore.HOSPITAL_ID) && (
+          {['lcey', 'whyx'].includes(appStore.HOSPITAL_ID) && (
             <Button
-              style={{ marginLeft: '10px', backgroundColor:'#FFA500', color: '#FFFFFF' }}
+              style={{ marginLeft: '10px', backgroundColor: '#FFA500', color: '#FFFFFF' }}
               type="default"
               size="small"
               onClick={() => setAllQcItemValue('不适用')}>
@@ -138,12 +138,13 @@ export default observer(function QcItemGroup(props: Props) {
     {itemGroup.itemList.map((item: any, itemIndex: number) => (
       <div className={itemConClass(item.qcItemCode)} key={itemIndex} id={`itemGroupItem${index}-${itemIndex}`}>
         <div className='itemTitleCon'>
+          {item.isSensitiveIndex === '是' && <Icon type="star" theme='filled' />}
           <span style={{ marginRight: 5 }}>{item.itemShowCode}</span>
-          {item.problemLevel &&(
+          {item.problemLevel && (
             <span style={{ color: '#469b30' }}>（{item.problemLevel}）</span>
           )}
           {item.qcNameFill || item.qcItemName}
-          {item.fixedScore && 
+          {item.fixedScore &&
             appStore.hisMatch({
               map: {
                 whyx: '',
@@ -201,7 +202,8 @@ export default observer(function QcItemGroup(props: Props) {
                     newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
                 }
               }
-
+              console.log('newItem', newItem)
+              console.log('itemIndex', itemIndex)
               handleItemChange({ ...newItem }, itemIndex)
             }}>
             <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
@@ -210,7 +212,7 @@ export default observer(function QcItemGroup(props: Props) {
             <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               否
             </Radio>
-            {!['gzsrm', 'whyx'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               不适用
             </Radio>}
           </Radio.Group>
@@ -303,12 +305,13 @@ export default observer(function QcItemGroup(props: Props) {
                 }
               })
             }
-            
+
             <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
                 autosize={{ minRows: 2 }}
                 placeholder="备注"
+                disabled={['whyx'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
                 onChange={(e) => handleItemChange({
                   ...item,
                   remark: e.target.value,
@@ -331,11 +334,11 @@ export default observer(function QcItemGroup(props: Props) {
                     (item.attachIds && item.attachIds.split(',')) || []
                   }
                   onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
-                </div>
-              }
-            })
+              </div>
+            }
+          })
           }
-          
+
           {appStore.hisMatch({
             map: {
               nys: <div className='notesCon' style={{ borderBottom: 'none' }}>

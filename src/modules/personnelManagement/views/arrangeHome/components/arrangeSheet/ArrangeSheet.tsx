@@ -210,20 +210,35 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
       },
     }),
-    {
-      title: "职称",
-      dataIndex: "newTitle",
-      width: 70,
-      fixed: "left",
-      align: "center",
-    },
-    {
-      title: "年限",
-      dataIndex: "year",
-      width: 70,
-      fixed: "left",
-      align: "center",
-    },
+    ...appStore.hisMatch({
+      map: {
+        whyx: [
+          {
+            title: "职务",
+            dataIndex: "job",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+        ],
+        other: [
+          {
+            title: "职称",
+            dataIndex: "newTitle",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+          {
+            title: "年限",
+            dataIndex: "year",
+            width: 70,
+            fixed: "left",
+            align: "center",
+          },
+        ]
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         dgxg: [
@@ -250,6 +265,53 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
         other: [],
       },
+    }),
+    ...appStore.hisMatch({
+      map: {
+        fssdy: [
+          {
+            title: "岗位级别",
+            dataIndex: "postLevel",
+            width: 100,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.postLevel = e.target.value;
+                  }}
+                />
+              ) : (
+                <span>{text}</span>
+              );
+            },
+          },
+          {
+            title: "管床",
+            dataIndex: "chargeBed",
+            width: 100,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.chargeBed = e.target.value;
+                  }}
+                />
+              ) : (
+                <span>{text}</span>
+              );
+            },
+          },
+        ],
+        other: []
+      }
     }),
     ...sheetViewModal.dateList.map((date, index) => {
       return {
@@ -648,6 +710,9 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'whyx') {
             widthNys += 170
           }
+          if (appStore.HOSPITAL_ID == 'fssdy') {
+            widthNys += 200
+          }
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -667,7 +732,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 dgxg: () => 2,
                 fsxt: () => 6,
                 fssdy: () => 7,
-                whyx: () => 7,
+                whyx: () => 6,
                 sdlj: () => 6,
               })) *
             70 +

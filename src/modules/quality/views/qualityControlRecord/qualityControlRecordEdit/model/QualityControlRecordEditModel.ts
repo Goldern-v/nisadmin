@@ -36,7 +36,7 @@ export interface IAudit extends Record<string, any> {
   indexNo: number;//序号
   required: boolean;//是否必填
   multiSelect: boolean;//是否多选
-  codeList:Array<ICode> | [];//员工列表
+  codeList: Array<ICode> | [];//员工列表
 }
 
 export interface ICode {
@@ -81,7 +81,8 @@ class QualityControlRecordEditModel {
     useScore: false,
     qcCode: '',
     useSubItemFixedScore: false,
-  }
+    isPatientNumber: '', // 判断是否隐藏病案号 by亚心
+  } as any
   //加载状态
   @observable loading = false
 
@@ -216,7 +217,8 @@ class QualityControlRecordEditModel {
               qcGroupRoles: template.qcGroupRoles,
               useScore: template.useScore || false,
               qcCode: template.qcCode || '',
-              useSubItemFixedScore: template.useSubItemFixedScore
+              useSubItemFixedScore: template.useSubItemFixedScore,
+              isPatientNumber: template.isPatientNumber || '是'
             }
           }
 
@@ -258,7 +260,6 @@ class QualityControlRecordEditModel {
             let itemGroupList = res.data.itemGroupList
             let bedNurseList = res.data.bedNurseList
             let causeList = res.data.causeList
-
             if (master) {
               let masterKeys = Object.keys(master)
               for (let x in this.master) {
@@ -273,7 +274,8 @@ class QualityControlRecordEditModel {
                 qcGroupRoles: master.qcGroupRoles,
                 useScore: master.useScore || false,
                 qcCode: master?.qcCode || '',
-                useSubItemFixedScore: master.useSubItemFixedScore
+                useSubItemFixedScore: master.useSubItemFixedScore,
+                isPatientNumber: master.isPatientNumber || '是'
               }
             }
 
@@ -287,13 +289,13 @@ class QualityControlRecordEditModel {
             if (this.master.wardCode) this.getBedNurseList();
             //赋值人员指定列表
             //(res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList) && (this.nodeAppointList=res.data.nodeAppointList)
-            if((res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0)){
+            if ((res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0)) {
               //this.auditList = res.data.nodeAppointList;
-              this.nodeAppointList=res.data.nodeAppointList
-              this.auditList=res?.data?.nodeAppointList.map((item: INodeAppoint) => {
-                let newItem:INodeAppoint = JSON.parse(JSON.stringify(item))
+              this.nodeAppointList = res.data.nodeAppointList
+              this.auditList = res?.data?.nodeAppointList.map((item: INodeAppoint) => {
+                let newItem: INodeAppoint = JSON.parse(JSON.stringify(item))
                 //设置codeList值
-                newItem.codeList = item?.userList?(item.userList as Array<IuserEmpNo>).map((newItem:IuserEmpNo)=>({code:newItem.empNo,name:newItem.empName})):[]
+                newItem.codeList = item?.userList ? (item.userList as Array<IuserEmpNo>).map((newItem: IuserEmpNo) => ({ code: newItem.empNo, name: newItem.empName })) : []
                 return newItem
               })
             }
@@ -623,7 +625,7 @@ class QualityControlRecordEditModel {
     let rate = 0;
     let totalScore = 100;
     let deductScore = 0;
-
+    let noPlan = 0;
     for (let i = 0; i < this.itemGroupList.length; i++) {
       let itemList = this.itemGroupList[i].itemList;
 
@@ -637,6 +639,9 @@ class QualityControlRecordEditModel {
             case "否":
               fault++;
               break;
+            case "不适用":
+              noPlan++
+              break
           }
           total++
           // 分数类型累计分数
@@ -647,7 +652,7 @@ class QualityControlRecordEditModel {
           }
         }
     }
-
+    total = total - noPlan
     // rate = totalScore == 0 ? 0 : parseFloat((((totalScore - deductScore) * 100) / totalScore).toFixed(2));
     rate = parseFloat(((right * 100) / total).toFixed(2));
 
@@ -658,6 +663,7 @@ class QualityControlRecordEditModel {
       rate,
       totalScore,
       deductScore,
+      noPlan
     };
   }
 }

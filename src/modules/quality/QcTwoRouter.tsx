@@ -14,6 +14,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
 import { ReactComponent as EJZK } from "./images/icon/EJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG2.svg";
+import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore, authStore } from "src/stores";
 import { observer } from "src/vendors/mobx-react-lite";
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
@@ -22,8 +23,11 @@ import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质�
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
-import AdministrativeWard from './views/administrativeWard'
-import SafetyChecklist from './views/safetyChecklist'
+import AdministrativeWard from "./views/administrativeWard";
+import SafetyChecklist from "./views/safetyChecklist";
+import Analysis from "./views/analysis/Analysis";
+import SummaryReport from "./views/summaryReport/SummaryReport";
+import ProblemSummary from "./views/problemSummary/ProblemSummary";
 
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
@@ -68,7 +72,7 @@ export default observer(function QcTwoRouter(props: Props) {
     // keepAlive: true,
     // disabledKeepAlive:
     //   (appStore.history && appStore.history.action) !== "POP",
-  }
+  };
   // 行政查房
   const route_safetyChecklist = {
     title: "安全检查表",
@@ -78,7 +82,30 @@ export default observer(function QcTwoRouter(props: Props) {
     // keepAlive: true,
     // disabledKeepAlive:
     //   (appStore.history && appStore.history.action) !== "POP",
-  } 
+  };
+  const route_analysis = {
+    title: "二级质控月度报告",
+    icon: <YDBG />,
+    path: "/qcTwo/analysis?level=2",
+    component: Analysis,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
+
+  const route_summaryReport = {
+    title: "二级质控汇总报告",
+    icon: <HZBG />,
+    path: "/qcTwo/summaryReport?level=2",
+    component: SummaryReport,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
+  const route_problemSummary = {
+    title: "二级质控问题汇总",
+    icon: <WTBG />,
+    path: "/qcTwo/problemSummary?level=2",
+    component: ProblemSummary,
+  };
 
   const extra_menu = appStore.hisMatch({
     map: {
@@ -140,7 +167,7 @@ export default observer(function QcTwoRouter(props: Props) {
         route_二级质控问题原因措施汇总,
         route_QualityControlKey,
         route_administrativeWard,
-        route_safetyChecklist
+        route_safetyChecklist,
       ],
       dghl: [
         {
@@ -187,7 +214,7 @@ export default observer(function QcTwoRouter(props: Props) {
         },
         route_福清二级质控问题原因措施汇总,
       ],
-      whyx: [],
+      whyx: [route_analysis, route_summaryReport, route_problemSummary],
       default: [
         {
           title: "二级质控月度报告",

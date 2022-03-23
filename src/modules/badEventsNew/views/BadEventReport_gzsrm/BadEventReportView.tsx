@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button, message,Spin } from 'src/vendors/antd'
+import { Button, message, Spin } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { ScrollBox } from 'src/components/common'
 import printing from 'printing'
@@ -15,11 +15,11 @@ import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
-  const [pageData,setPageData] = useState([])
-  const [currentPage,setCurrentPage]:any = useState({})
+  const [pageData, setPageData] = useState([])
+  const [currentPage, setCurrentPage]: any = useState({})
   const pageRef: any = useRef<HTMLElement>()
-  const [isPrint,setIsPrint] = useState(false)
-  const [spinning,setSpinning] = useState(false)
+  const [isPrint, setIsPrint] = useState(false)
+  const [spinning, setSpinning] = useState(false)
 
   useEffect(() => {
     let search = appStore.location.search
@@ -27,17 +27,17 @@ export default observer(function NursingReportDetailView() {
     query.name = query.name || query.themeName
     setCurrentPage(query)
     setSpinning(true)
-    badEventReportService.getReport(query).then((res:any)=>{
-      let list = res.data.map((item:any)=>{
+    badEventReportService.getReport(query).then((res: any) => {
+      let list = res.data.map((item: any) => {
         let keys = Object.keys(item.dataMap)
-        let dataArr = keys.filter((dataMapItem:any)=>item.dataMap[dataMapItem]['例数']!=0).map((dataMapItem:any)=>{
-          return {name:dataMapItem,...item.dataMap[dataMapItem],value:item.dataMap[dataMapItem]['例数']}
+        let dataArr = keys.filter((dataMapItem: any) => item.dataMap[dataMapItem]['例数'] != 0).map((dataMapItem: any) => {
+          return { name: dataMapItem, ...item.dataMap[dataMapItem], value: item.dataMap[dataMapItem]['例数'] }
         })
-        return {keys,dataArr,...JSON.parse(JSON.stringify(item))}
+        return { keys, dataArr, ...JSON.parse(JSON.stringify(item)) }
       })
       setPageData(list)
       setSpinning(false)
-  })
+    })
   }, [])
 
 
@@ -93,7 +93,7 @@ export default observer(function NursingReportDetailView() {
             display: inline!important;
           }
         `
-      }).then(()=>{
+      }).then(() => {
         setIsPrint(false)
       })
     }, 500)
@@ -117,12 +117,12 @@ export default observer(function NursingReportDetailView() {
   const onSave = () => {
     setSpinning(true)
     let params = currentPage
-      badEventReportService.saveReport(params).then((res) => {
-        message.success('保存成功')
-        setTimeout(() => {
-          appStore.history.push('/badEventsNew/不良事件分析报告')
-        }, 500)
-      })
+    badEventReportService.saveReport(params).then((res) => {
+      message.success('保存成功')
+      setTimeout(() => {
+        appStore.history.push('/badEventsNew/不良事件分析报告')
+      }, 500)
+    })
   }
   return (
     <Wrapper>
@@ -144,7 +144,7 @@ export default observer(function NursingReportDetailView() {
       <ScrollCon>
         <Spin spinning={spinning}>
           <Page ref={pageRef} className='print-page'>
-            <div style={{fontSize:'30px',fontWeight:700,textAlign:'center',lineHeight:'60px'}}>{currentPage.name}</div>
+            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.name}</div>
             <PageContent isPrint={isPrint} pageData={pageData} currentPage={currentPage}></PageContent>
           </Page>
         </Spin>

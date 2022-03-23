@@ -76,7 +76,7 @@ export default withRouter(function LoginView(props: Props) {
       _password = options.password
     }
 
-    if (!(username && password)) {
+    if (!(_username && _password)) {
       message.warning("请填写账号和密码！")
       return;
     }

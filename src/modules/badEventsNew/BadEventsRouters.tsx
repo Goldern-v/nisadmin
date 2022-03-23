@@ -171,13 +171,13 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  // if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) { //福清特殊跳转单独的上报系统
-  //   autoLoginInfo = {
-  //     blank: true,
-  //     redictUri: '/crNursing/badevents/index',
-  //     loginUri: '/crNursing/badevents/login'
-  //   }
-  // }
+  if (['gxjb'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
+    autoLoginInfo = {
+      blank: true,
+      redictUri: '/crNursing/badevents/index',
+      loginUri: '/crNursing/badevents/login'
+    }
+  }
   return (
     <Wrapper>
       <LeftMenuCon>

@@ -158,7 +158,12 @@ export default observer(function qualityControlRecordTable(props: Props) {
             title: "病案号",
             // dataIndex: 'zyh',
             dataIndex: "inpNo",
-
+            width: 80,
+            align: "center",
+          },
+          {
+            title: "得分",
+            dataIndex: "netTotalScore",
             width: 80,
             align: "center",
           },

@@ -8,7 +8,7 @@ import service from 'src/services/api'
 import { ColumnProps } from "antd/lib/table";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import BadEventsNewService from "./api/badEventsNewService";
 // import CustomPagination from './components/CustomPagination'
 import moment from "moment";
@@ -20,7 +20,7 @@ const api = new BadEventsNewService();
 const { RangePicker } = DatePicker;
 
 export default observer(function BadEventNewList() {
-
+  const [date, setDate]: any = useState(getCurrentMonth());
   const defaultDateRange = () => {
     let startDate = moment(moment().format("YYYY-MM-") + "01");
     let ednDate = moment(moment().format("YYYY-MM-DD"));
@@ -34,12 +34,12 @@ export default observer(function BadEventNewList() {
   const [query, setQuery] = useState({
     // wardCode: defaultWardCode,
     wardCode: "",
-    // dateBegin: dateRange[0].format("YYYY-MM-DD"),
-    // dateEnd: dateRange[1].format("YYYY-MM-DD"),
+    beginDate: date[0].format("YYYY-MM-DD"),
+    endDate: date[1].format("YYYY-MM-DD"),
     patientName: "",
     formCodes: [] as string[],
     // eventStatus: "",
-    status:"",
+    status: "",
     type: '1'
   });
 
@@ -110,7 +110,7 @@ export default observer(function BadEventNewList() {
             render: (text: string, item: any) => {
               return (
                 <DoCon>
-                  <span>{ getStatus(item)}</span>
+                  <span>{getStatus(item)}</span>
                 </DoCon>
               );
             }
@@ -152,7 +152,7 @@ export default observer(function BadEventNewList() {
     if (!['lcey'].includes(appStore.HOSPITAL_ID)) {
       getTitleCount()
     }
-  }, [query, page])
+  }, [query, page, date])
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {
@@ -197,12 +197,24 @@ export default observer(function BadEventNewList() {
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
 
-    api.getEvetTypetList(deptCode).then(res => {
-      let data = res.data;
-
-      if (data instanceof Array)
+    if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+      api.getBadEventTypeList().then(res => {
+        let data = res.data.map((item: any) => {
+          return {
+            code: item.badEventCode,
+            name: item.badEventType,
+          }
+        })
         setEventTypeList(data);
-    });
+      })
+    } else {
+      api.getEvetTypetList(deptCode).then(res => {
+        let data = res.data;
+        if (data instanceof Array)
+          setEventTypeList(data);
+      });
+    }
+
   }
 
   const getEventList = (newQuery?: any) => {
@@ -305,6 +317,20 @@ export default observer(function BadEventNewList() {
           </div>
           <div className="float-right">
             <div className="float-item">
+              <div className="item-title">日期:</div>
+              <DatePicker.RangePicker
+                value={date}
+                onChange={(value: any) => {
+                  let beginDate = value[0].format("YYYY-MM-DD")
+                  let endDate = value[1].format("YYYY-MM-DD")
+                  setDate(value)
+                  setQuery({ ...query, beginDate, endDate })
+                }}
+                allowClear={true}
+                style={{ width: 220 }}
+              />
+            </div>
+            <div className="float-item">
               <div className="item-title">科室:</div>
               <div className="item-content">
                 <Select
@@ -353,14 +379,14 @@ export default observer(function BadEventNewList() {
                 </Select>
               </div>
             </div>
-            { appStore.HOSPITAL_ID=='lcey' && <div className="float-item">
+            {appStore.HOSPITAL_ID == 'lcey' && <div className="float-item">
               <div className="item-title">事件状态:</div>
               <div className="item-content">
                 <Select
                   defaultValue=""
                   value={query.status || ''}
                   onChange={(status: any) => {
-                    setQuery({ ...query, status: status|| '' });
+                    setQuery({ ...query, status: status || '' });
                   }}
                 >
                   {eventStatusOptions.map((item: any, idx: number) => {
@@ -386,7 +412,7 @@ export default observer(function BadEventNewList() {
       </div>
       <div className="main-contain">
         <div className="table-content">
-        {appStore.HOSPITAL_ID != 'lcey' ? <BaseTabs
+          {appStore.HOSPITAL_ID != 'lcey' ? <BaseTabs
             defaultActiveKey={query.type.toString()}
             config={[
               `待我处理(${titleCount.toAudit})`,

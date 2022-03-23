@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import menuOperation from '../function/menuOperation';
 import SelectModal from '../selectModal/SelectModal'
 import { authStore, appStore, scheduleStore } from "src/stores";
+import $ from "jquery";
 
 export interface Props {
   bodyModal: any
@@ -105,6 +106,69 @@ export default function Common(props: Props) {
         return '';
     }
   }
+  //回车换行
+  const enter = async (e: any, row: any, col: any) => {
+    // let boxId = e.target.id
+    // let ec = e.keyCode || e.which;
+    // if (13 == ec) {
+    //   console.log('换行');
+    //   // if (browserType() == "IE" || browserType() == "Edge") {
+    //   //     $(`#${boxId}`).append("<div></div>");
+    //   // }
+    //   // else if (browserType() == "FF") {
+    //   //     $(`#${boxId}`).append("<br/><br/>");
+    //   // } else {
+    //   //     $(`#${boxId}`).append("<br/>");
+    //   // }
+    //   col.value += '<br/>'
+
+    //   scheduleStore.setIsSave(true)
+    //   await setBodyModal([...bodyModal])
+    //   console.log(bodyModal);
+      // console.log(bodyModal);
+      
+      // setTimeout(()=>{
+      //   //设置输入焦点
+      //   // let o:any = document.getElementById(`${boxId}`).lastChild           
+      //   let textbox:any = document.getElementById(`${boxId}`);
+      //   let sel:any = window.getSelection();
+      //   let range = document.createRange();
+      //   range.selectNodeContents(textbox);
+      //   range.collapse(false);
+      //   // range.setEndAfter(o);//
+      //   // range.setStartAfter(o);//
+      //   sel.removeAllRanges();
+      //   sel.addRange(range);
+      // })
+    // }
+  }
+
+  const browserType = () => {
+    let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      let isOpera = false;
+      if (userAgent.indexOf('Edge') > -1) {
+          return "Edge";
+      }
+      if (userAgent.indexOf('.NET') > -1) {
+          return "IE";
+      }
+      if (userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1) {
+          isOpera = true;
+          return "Opera"
+      }; //判断是否Opera浏览器
+      if (userAgent.indexOf("Firefox") > -1) {
+          return "FF";
+      } //判断是否Firefox浏览器
+      if (userAgent.indexOf("Chrome") > -1) {
+          return "Chrome";
+      }
+      if (userAgent.indexOf("Safari") > -1) {
+          return "Safari";
+      } //判断是否Safari浏览器
+      if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+          return "IE";
+      }; //判断是否IE浏览器
+  }
   const onBlur = (e: any, row: any, col: any) => {
   }
   let textAlignWay = {
@@ -159,6 +223,7 @@ export default function Common(props: Props) {
               contentEditable={masterInfo.noEditor ? false : col.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
+              onKeyDown={(e: any) => enter(e, row, col)}
               onContextMenu={ContextMenu}
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
