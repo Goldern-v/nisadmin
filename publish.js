@@ -75,6 +75,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9905') >= 0) {
     folderSrc = '/crdata/webProject/manage-fuqingfuyou'
   }
+  // 佛山杏坛
+  if (process.env.npm_lifecycle_event.indexOf('9886') >= 0) {
+    folderSrc = '/crdata/webProject/manage-foshanxingtan'
+  }
+
   
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
