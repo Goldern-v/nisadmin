@@ -405,5 +405,28 @@ export function openAuditModal(title: string, row: any, getTableData: any) {
           allData: row
         })
       }
+    case '轮科经历':
+      console.log('testOnly-1')
+      return globalModal.auditModal.show({
+        empNo: row.empNo,
+        getTableData: getTableData,
+        id: row.id,
+        type: 'NurseJMFYRotatingDepartment',
+        title: '审核轮科经历',
+        tableFormat: [
+          {
+            起始时间: `startTime`,
+            结束时间: `endTime`,
+          },
+          {
+            科室: `department`,
+            职称: "title",
+          },
+          {
+            职务: "post",
+          },
+        ],
+        allData: row
+      })
   }
 }

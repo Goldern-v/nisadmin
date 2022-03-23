@@ -15,6 +15,7 @@ let titleEC: any = {
   NurseJuniorSpecialFile: '专科护士',
   NurseAttachment: '附件',
   NurseOutStudy: '外出进修',
+  NurseJMFYRotatingDepartment: '轮科经历'
 }
 
 let titleCE: any = reverseKeyValue(titleEC)

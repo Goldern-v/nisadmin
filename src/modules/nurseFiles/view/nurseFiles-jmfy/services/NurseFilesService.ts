@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
+import qs from "qs";
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -312,6 +313,13 @@ export default class NurseFilesService extends BaseApiService {
       `/auditeNurseFileIndexNys/findNurseFileProcessedFlow`,
       this.stringify({ empNo, pageIndex, pageSize })
     )
+  }
+
+  public rotatingDepartmentFind(empNo: string) {
+    return this.get(`/NurseJMFYRotatingDepartment/findByEmpNo/${empNo}`)
+  }
+  public rotatingDepartmentSave(params: any) {
+    return this.post(`/NurseJMFYRotatingDepartment/saveOrUpdatePC`, params)
   }
 }
 
