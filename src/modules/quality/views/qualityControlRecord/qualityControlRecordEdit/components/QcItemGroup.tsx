@@ -202,7 +202,8 @@ export default observer(function QcItemGroup(props: Props) {
                     newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
                 }
               }
-
+              console.log('newItem', newItem)
+              console.log('itemIndex', itemIndex)
               handleItemChange({ ...newItem }, itemIndex)
             }}>
             <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>

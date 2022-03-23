@@ -6,7 +6,7 @@ import { qualityControlRecordEditModel as qcModel, BedNurse, IAudit, ICode, INod
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import QcItemGroup from './QcItemGroup'
-import { qualityControlRecordApi,IAppointUserCode } from './../../api/QualityControlRecordApi'
+import { qualityControlRecordApi, IAppointUserCode } from './../../api/QualityControlRecordApi'
 
 const Option = Select.Option
 
@@ -80,37 +80,37 @@ export default observer(function FormPannel() {
   //获取下拉数据
   const getAuditList = (item: IAudit) => {
     // qualityControlRecordApi.getListByAppointUserCode(baseInfo.qcCode, master.wardCode, item.appointUserCode).then(res => {
-      let params:IAppointUserCode={
-        qcCode:baseInfo.qcCode,
-        appointUserCode:item.appointUserCode,
-      };
-      appStore.hisMatch({
-        map: {
-          gzsrm: params={},
-          other: params={
-            qcCode:baseInfo.qcCode, 
-            wardCode:master.wardCode, 
-            appointUserCode:item.appointUserCode
-          },
-        }
-      }),
-      qualityControlRecordApi.getListByAppointUserCode(params).then(res => {
-      console.log(res);
-      if(res?.data && res?.data.length>0){
-        //设置auditList
-        qcModel.setAuditList(auditList.map((itemModel:IAudit)=>{
-          if(itemModel.appointUserCode===item.appointUserCode){
-            itemModel.codeList=res.data;
-          }
-          return itemModel;
-        }))
+    let params: IAppointUserCode = {
+      qcCode: baseInfo.qcCode,
+      appointUserCode: item.appointUserCode,
+    };
+    appStore.hisMatch({
+      map: {
+        gzsrm: params = {},
+        other: params = {
+          qcCode: baseInfo.qcCode,
+          wardCode: master.wardCode,
+          appointUserCode: item.appointUserCode
+        },
       }
-      
-      //(res?.data) && (setCodeList(res?.data));
-    }).catch(error => {
-      console.log(error)
-      message.error(error)
-    })
+    }),
+      qualityControlRecordApi.getListByAppointUserCode(params).then(res => {
+        console.log(res);
+        if (res?.data && res?.data.length > 0) {
+          //设置auditList
+          qcModel.setAuditList(auditList.map((itemModel: IAudit) => {
+            if (itemModel.appointUserCode === item.appointUserCode) {
+              itemModel.codeList = res.data;
+            }
+            return itemModel;
+          }))
+        }
+
+        //(res?.data) && (setCodeList(res?.data));
+      }).catch(error => {
+        console.log(error)
+        message.error(error)
+      })
   }
 
   /**
@@ -151,7 +151,7 @@ export default observer(function FormPannel() {
       </div>
       <div className="item">
         <div className="label">总项数:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.total }/>
+        <Input className="content" disabled value={qcModel.yxGradeObj.total} />
       </div>
       <div className="item">
         <div className="label">质控病区:</div>
@@ -173,7 +173,7 @@ export default observer(function FormPannel() {
       </div>
       <div className="item">
         <div className="label">合格项数:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.right }/>
+        <Input className="content" disabled value={qcModel.yxGradeObj.right} />
       </div>
       <div className="item">
         <div className="label">床号:</div>
@@ -189,7 +189,7 @@ export default observer(function FormPannel() {
       </div>
       <div className="item">
         <div className="label">合格率:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.rate + '%' }/>
+        <Input className="content" disabled value={qcModel.yxGradeObj.rate + '%'} />
       </div>
       {
         baseInfo.isPatientNumber !== '否' &&
@@ -209,7 +209,7 @@ export default observer(function FormPannel() {
 
       <div className="item">
         <div className="label">得分:</div>
-        <Input className="content" disabled value={ qcModel.yxGradeObj.totalScore - qcModel.yxGradeObj.deductScore }/>
+        <Input className="content" disabled value={qcModel.yxGradeObj.totalScore - qcModel.yxGradeObj.deductScore} />
       </div>
       <div className="item">
         <div className="label">检查人:</div>
@@ -229,7 +229,7 @@ export default observer(function FormPannel() {
           </Select>
         </div>
       </div>
-      
+
     </div>
     <QuestionCon>
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
@@ -240,7 +240,7 @@ export default observer(function FormPannel() {
           key={groupIdx} />
       )}
     </QuestionCon>
-    
+
   </Wrapper >
 })
 const ReasonCon = styled.div`
