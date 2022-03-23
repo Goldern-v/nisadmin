@@ -19,7 +19,7 @@ import { nurseFilesListViewModel } from "./NurseFilesListViewModel";
 
 export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
-let rowNum: number = 5;
+let rowNum: number = 50;
 const ThemeContext = React.createContext({
   theme: "dark"
 });
@@ -217,6 +217,7 @@ export default observer(function NurseFilesListView() {
             onDoubleClick: () => onDoubleClick(record)
           };
         }}
+
         loading={nurseFilesListViewModel.listSpinning}
       />
       <PaginationCon rowNum={rowNum} />

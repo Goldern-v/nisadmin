@@ -16,7 +16,7 @@ export default observer(function PaginationCon(props: Props) {
     nurseFilesListViewModel.pageSize = pageSize || rowNum * 2
     nurseFilesListViewModel.loadNursingList()
   }
-  let pageSizeOptions = ['10', '20', '30']
+  let pageSizeOptions = ['10', '20', '30','100']
   return (
     <Wrapper>
       <Pagination
