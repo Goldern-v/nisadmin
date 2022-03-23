@@ -214,12 +214,12 @@ const Wrapper = styled.div`
     margin:0!important;
   }
   .ant-table-thead{
-    background:#258ff1;
+    background:rgba(37, 143, 241,.7);
     .ant-table-column-title{
       color:#fff;
     }
   }
   .ant-table-row{
-    background:#6cb7fc;
+    background:rgba(108, 183, 252,.3);
   }
 `

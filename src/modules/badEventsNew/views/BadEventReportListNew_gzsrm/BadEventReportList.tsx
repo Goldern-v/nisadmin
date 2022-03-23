@@ -206,9 +206,9 @@ export default observer(function BadEventReportList() {
     query.year
       ? (year = `${query.year.format("YYYY")}`)
       : Moment().format("YYYY");
-    let month = query.timeSection ? monthFormat(query.timeSection) : "1月";
+    let month = query.timeSection ? monthFormat(query.timeSection) : "01";
     let reqQuery = {
-      beginDate: `${year}-${month}`,
+      dateBegin: `${year}-${month}-01`,
     };
     api
       .getPage(reqQuery)
