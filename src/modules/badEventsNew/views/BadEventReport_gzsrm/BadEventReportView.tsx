@@ -104,6 +104,7 @@ export default observer(function NursingReportDetailView() {
   }
   const onDelete = () => {
     if(!currentPage.id)return message.warning('此报表尚未保存！')
+    setSpinning(true)
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
       badEventReportService.deleteReport(currentPage).then((res) => {
         message.success('删除成功')
@@ -114,6 +115,7 @@ export default observer(function NursingReportDetailView() {
     })
   }
   const onSave = () => {
+    setSpinning(true)
     let params = currentPage
       badEventReportService.saveReport(params).then((res) => {
         message.success('保存成功')

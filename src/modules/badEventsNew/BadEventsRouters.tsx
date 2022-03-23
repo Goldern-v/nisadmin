@@ -132,14 +132,14 @@ export default function BadEventsRouters(props: Props) {
           }
         ],
         gzsrm:[
-          // {
-          //   title: '不良事件分析报告',
-          //   path: `${baseRouter}/不良事件分析报告`,
-          //   component: BadEventReportListNew_gzsrm,
-          //   // hide: appStore.isDev ? false : true,
-          //   keepAlive: true,
-          //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-          // }
+          {
+            title: '不良事件分析报告',
+            path: `${baseRouter}/不良事件分析报告`,
+            component: BadEventReportListNew_gzsrm,
+            // hide: appStore.isDev ? false : true,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          }
         ],
         other: []
       }
