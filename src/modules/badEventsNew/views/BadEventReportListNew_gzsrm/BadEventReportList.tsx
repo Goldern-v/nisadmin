@@ -223,11 +223,11 @@ export default observer(function BadEventReportList() {
           setTableData(
             res.data.map((item: any, key: number) => {
               let reportYear = Moment(item.createDate).format("YYYY");
-              let reportBeginMonth = item.beginDate
-                ? Moment(item.beginDate).format("MM")
+              let reportBeginMonth = item.dateBegin
+                ? Moment(item.dateBegin).format("MM")
                 : "";
-              let reportEndMonth = item.endDate
-                ? Moment(item.endDate).format("MM")
+              let reportEndMonth = item.dateEnd
+                ? Moment(item.dateEnd).format("MM")
                 : "";
               let reportMonth =
                 reportBeginMonth &&
