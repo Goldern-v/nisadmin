@@ -8,7 +8,7 @@ import { Modal } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
 
 message.config({
-  maxCount: 1
+  maxCount: 1,
 });
 
 /**
@@ -55,38 +55,41 @@ enum StatusCode {
 export function onResponseFulfilled(response: AxiosResponse) {
   let { code, desc, data } = response.data;
   let status = code;
-
+  let { url } = response.config;
   switch (status) {
     case StatusCode.error:
-    case StatusCode.error1:
-      {
-        if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
-        // alert(12)
-        if (desc.indexOf("\n") > -1) {
-          const modal = Modal.error({
-            title: "警告",
-            content: <pre style={{ whiteSpace: "pre-wrap" }}>{desc}</pre>,
-            width: 600,
-            mask: false
-          });
-          // setTimeout(() => {
-          //   modal.destroy()
-          // }, 10 * 1000)
-        } else {
-          message.error(desc || "未知异常");
-        }
-        // console.log(desc, desc.indexOf('\n'), 'desc')
-        scheduleStore.setErrorData(response.data)
-        return Promise.reject(response.data.desc || desc);
+    case StatusCode.error1: {
+      if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
+      // alert(12)
+      // 满意度调查分析 by贵州
+      if ((url as string).indexOf("/satisfactionAnalysis/") > -1) {
+        return response.data;
       }
+      if (desc.indexOf("\n") > -1) {
+        const modal = Modal.error({
+          title: "警告",
+          content: <pre style={{ whiteSpace: "pre-wrap" }}>{desc}</pre>,
+          width: 600,
+          mask: false,
+        });
+        // setTimeout(() => {
+        //   modal.destroy()
+        // }, 10 * 1000)
+      } else {
+        message.error(desc || "未知异常");
+      }
+      // console.log(desc, desc.indexOf('\n'), 'desc')
+      scheduleStore.setErrorData(response.data);
+      return Promise.reject(response.data.desc || desc);
+    }
     case StatusCode.logout: {
       // message.destroy()
       // message.warning('登录超时，请重新登录')
       // sessionStorage.setItem("adminNurse", "");
       // sessionStorage.setItem("authToken", "");
       // sessionStorage.setItem("user", "");
-      sessionStorage.clear()
-      localStorage.clear()
+      sessionStorage.clear();
+      localStorage.clear();
       window.location.href = loginURL;
       return Promise.reject(desc);
     }

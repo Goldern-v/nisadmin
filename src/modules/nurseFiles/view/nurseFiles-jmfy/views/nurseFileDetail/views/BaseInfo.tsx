@@ -1,219 +1,234 @@
-import Zimage from 'src/components/Zimage'
-import createModal from 'src/libs/createModal'
-import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { nurseFilesService } from '../../../services/NurseFilesService';
-import { appStore, authStore } from 'src/stores'
-import { sexEnum } from 'src/libs/enum/common'
-import { observer } from 'mobx-react-lite'
-import { globalModal } from 'src/global/globalModal'
-import service from 'src/services/api'
+import Zimage from "src/components/Zimage";
+import createModal from "src/libs/createModal";
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
+import { nurseFilesService } from "../../../services/NurseFilesService";
+import { appStore, authStore } from "src/stores";
+import { sexEnum } from "src/libs/enum/common";
+import { observer } from "mobx-react-lite";
+import { globalModal } from "src/global/globalModal";
+import service from "src/services/api";
 
-import BaseLayout from '../components/BaseLayout'
-import EditBaseInfoModal from '../modal/EditBaseInfoModal'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { message } from 'antd'
+import BaseLayout from "../components/BaseLayout";
+import EditBaseInfoModal from "../modal/EditBaseInfoModal";
+import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
+import { message } from "antd";
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 export default observer(function BaseInfo() {
-  const editBaseInfoModal = createModal(EditBaseInfoModal)
-  let [tableData, setTableData]: [any, any] = useState([])
-  let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
-  const [idData, setIdData] = useState(0)
-  const [id, setId] = useState(0)
+  const editBaseInfoModal = createModal(EditBaseInfoModal);
+  let [tableData, setTableData]: [any, any] = useState([]);
+  let [info, setInfo]: [any, any] = useState(
+    nurseFileDetailViewModal.nurserInfo
+  );
+  const [idData, setIdData] = useState(0);
+  const [id, setId] = useState(0);
 
   const limitsComponent = () => {
-    if (info.statusColor === '1') {
+    if (info.statusColor === "1") {
       return [
         {
-          label: '修改',
+          label: "修改",
           onClick: () => {
             editBaseInfoModal.show({
               id: id,
-              data: info
-            })
-          }
+              data: info,
+            });
+          },
         },
         {
-          label: '审核',
+          label: "审核",
           onClick: () => {
             globalModal.auditModal.show({
               empNo: idData,
               id: id,
-              type: 'nurseInformation',
+              type: "nurseInformation",
               getTableData: getTableData,
               // empNo: appStore.queryObj.empNo,
-              title: '审核基础信息',
+              title: "审核基础信息",
               tableFormat: [
                 {
                   姓名: `empName`,
-                  工号: `empNo`
+                  工号: `empNo`,
                 },
                 {
                   性别: `sex`,
-                  民族: `nation`
+                  民族: `nation`,
                 },
                 {
                   出生年月: `birthday`,
-                  年龄: `age`
+                  年龄: `age`,
                 },
                 {
                   籍贯: `nativePlace`,
-                  职务: `job`
+                  职务: `job`,
                 },
                 {
                   参加工作时间: `goWorkTime`,
-                  最高学历: `highestEducation`
+                  最高学历: `highestEducation`,
                 },
                 {
                   技术职称: `newTitle`,
-                  护士执业证书编号: `zyzsNumber`
+                  护士执业证书编号: `zyzsNumber`,
                 },
                 {
                   身份证号: `cardNumber`,
-                  社会团体职务: `socialGroup`
+                  社会团体职务: `socialGroup`,
                 },
                 {
                   手机号: `phone`,
-                  家庭住址: `address`
+                  家庭住址: `address`,
                 },
                 {
                   鞋码: `shoeSize`,
-                  入职时间: 'entryDate'
-                }
+                  入职时间: "entryDate",
+                },
+                {
+                  工作编制: "workConversion",
+                },
               ],
               fileData: [
                 {
-                  个人头像: info.nearImageUrl
+                  个人头像: info.nearImageUrl,
                 },
                 ...(info.zyzsUrl
-                  ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-                    return {
-                      ['执业证书' + (index + 1)]: item
-                    }
-                  })
-                  : [])
+                  ? info.zyzsUrl.split(",").map((item: any, index: number) => {
+                      return {
+                        ["执业证书" + (index + 1)]: item,
+                      };
+                    })
+                  : []),
               ],
-              allData: info
-            })
-          }
-        }
-      ]
+              allData: info,
+            });
+          },
+        },
+      ];
     } else {
-      return []
+      return [];
     }
-  }
+  };
 
   const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo)
+    nurseFilesService
+      .nurseInformation(appStore.queryObj.empNo)
       .then((res) => {
-        let data = res.data || info
-        let maps = res.data.maps || {}
-        setInfo(data)
-        setIdData(data.empNo)
-        setId(data.id)
+        let data = res.data || info;
+        let maps = res.data.maps || {};
+        setInfo(data);
+        setIdData(data.empNo);
+        setId(data.id);
 
         let newTableData = [
           {
             性别: sexEnum[data.sex],
-            民族: data.nation
+            民族: data.nation,
           },
           {
             出生年月: data.birthday,
-            年龄: data.age
+            年龄: data.age,
           },
           {
             籍贯: data.nativePlace,
-            职务: data.job
+            职务: data.job,
           },
           {
             参加工作时间: data.goWorkTime,
-            最高学历: data.highestEducation
+            最高学历: data.highestEducation,
           },
           {
             技术职称: data.newTitle,
-            护士执业证书编号: data.zyzsNumber
+            护士执业证书编号: data.zyzsNumber,
           },
           {
             身份证号: data.cardNumber,
-            社会团体职务: data.socialGroup
+            社会团体职务: data.socialGroup,
           },
           {
             手机号: data.phone,
-            家庭住址: data.address
+            家庭住址: data.address,
           },
           {
             鞋码: data.shoeSize,
-            入职时间: data.entryDate
-          }
-        ]
+            入职时间: data.entryDate,
+          },
+          {
+            工作编制: data.workConversion,
+          },
+        ];
 
-        setTableData(newTableData)
+        setTableData(newTableData);
 
         // 处理扩展字段
-        if (Object.keys(data).includes('maps'))
+        if (Object.keys(data).includes("maps"))
           return new Promise((resolve, reject) => {
-            service.commonApiService.listNurseExpand('User')
-              .then(res => {
+            service.commonApiService.listNurseExpand("User").then(
+              (res) => {
                 resolve({
                   maps,
                   mapsConfig: res.data,
-                  orgin: newTableData
-                })
-              }, (e) => reject(e))
-          })
+                  orgin: newTableData,
+                });
+              },
+              (e) => reject(e)
+            );
+          });
       })
-      .then((payload: any) => {
-        if (payload) {
-          const { maps, mapsConfig, orgin } = payload
-          const newTableData = [...orgin]
+      .then(
+        (payload: any) => {
+          if (payload) {
+            const { maps, mapsConfig, orgin } = payload;
+            const newTableData = [...orgin];
 
-          for (let i = 0; i < mapsConfig.length; i++) {
-            let mapCfgItem = mapsConfig[i]
-            let key = mapCfgItem.fieldCode
-            let val = maps[key] || ''
+            for (let i = 0; i < mapsConfig.length; i++) {
+              let mapCfgItem = mapsConfig[i];
+              let key = mapCfgItem.fieldCode;
+              let val = maps[key] || "";
 
-            if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
-              let options = []
-              try {
-                options = JSON.parse(mapCfgItem.fieldSelectContent)
-              } catch (e) {
+              if (
+                mapCfgItem.fieldType === "select_edit" ||
+                mapCfgItem.fieldType === "select"
+              ) {
+                let options = [];
+                try {
+                  options = JSON.parse(mapCfgItem.fieldSelectContent);
+                } catch (e) {}
+                let target = options.find((opt: any) => opt.code === val);
 
+                if (target) val = target.name;
               }
-              let target = options.find((opt: any) => opt.code === val)
 
-              if (target) val = target.name
+              let name = mapCfgItem.fieldName;
+              let lastItem = newTableData[newTableData.length - 1];
+
+              if (Object.keys(lastItem).length > 1) {
+                newTableData.push({ [name]: val });
+              } else {
+                lastItem[name] = val;
+              }
             }
 
-            let name = mapCfgItem.fieldName
-            let lastItem = newTableData[newTableData.length - 1]
-
-            if (Object.keys(lastItem).length > 1) {
-              newTableData.push({ [name]: val })
-            } else {
-              lastItem[name] = val
-            }
+            setTableData(newTableData);
           }
-
-          setTableData(newTableData)
-        }
-      }, e => { })
+        },
+        (e) => {}
+      );
 
   useEffect(() => {
-    getTableData()
-  }, [appStore.queryObj.empNo])
+    getTableData();
+  }, [appStore.queryObj.empNo]);
 
   return (
-    <BaseLayout title='基本信息' btnList={limitsComponent()}>
+    <BaseLayout title="基本信息" btnList={limitsComponent()}>
       <ScrollCon>
         <InfoTable>
           <colgroup>
-            <col width='120' />
+            <col width="120" />
             <col />
-            <col width='139' />
+            <col width="139" />
             <col />
-            <col width='200' />
+            <col width="200" />
           </colgroup>
           <tbody>
             <tr>
@@ -227,9 +242,17 @@ export default observer(function BaseInfo() {
               </td>
               <td rowSpan={5}>
                 {info && info.nearImageUrl ? (
-                  <Zimage className='head-img' src={info && info.nearImageUrl} alt='' />
+                  <Zimage
+                    className="head-img"
+                    src={info && info.nearImageUrl}
+                    alt=""
+                  />
                 ) : (
-                  <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
+                  <img
+                    className="head-img"
+                    src={require("../../../images/护士默认头像.png")}
+                    alt=""
+                  />
                 )}
               </td>
             </tr>
@@ -249,19 +272,23 @@ export default observer(function BaseInfo() {
         </InfoTable>
         <ZyzsCon>
           <span>护士执业证书：</span>
-          <div className='img-con'>
+          <div className="img-con">
             {info.zyzsUrl ? (
-              info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+              info.zyzsUrl
+                .split(",")
+                .map((item: any, index: number) => (
+                  <Zimage src={item} alt="" key={index} />
+                ))
             ) : (
-              <img src={require('../../../images/证件空态度.png')} alt='' />
+              <img src={require("../../../images/证件空态度.png")} alt="" />
             )}
           </div>
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
-  )
-})
+  );
+});
 const InfoTable = styled.table`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
@@ -286,14 +313,14 @@ const InfoTable = styled.table`
   & tr td:nth-of-type(1),
   & tr td:nth-of-type(3) {
   }
-`
+`;
 const Value = styled.div`
   background: rgba(238, 239, 240, 1);
   border-radius: 2px;
   border: 1px solid rgba(227, 228, 230, 1);
   padding: 3px 13px;
   min-height: 27px;
-`
+`;
 
 const ZyzsCon = styled.div`
   height: 220px;
@@ -320,9 +347,9 @@ const ZyzsCon = styled.div`
     border: 1px solid rgba(219, 224, 228, 1);
     object-fit: contain;
   }
-`
+`;
 
 const ScrollCon = styled.div`
   overflow: auto;
   height: calc(100vh - 240px);
-`
+`;
