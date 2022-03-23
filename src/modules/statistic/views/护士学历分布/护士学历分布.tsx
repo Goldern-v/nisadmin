@@ -97,6 +97,8 @@ export default observer(function 护士学历分布() {
         style={{ minWidth: 180 }}
         className="content-item"
         value={query.deptCode}
+        showSearch
+        optionFilterProp="children"
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(deptCode: string) => setQuery({ ...query, deptCode })}>

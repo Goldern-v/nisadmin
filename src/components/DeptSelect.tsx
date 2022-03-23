@@ -12,6 +12,7 @@ export interface Props {
   style?: any;
   deptCode?: string;
   hasAllDept?: boolean;
+  showSearch?: boolean;
 }
 
 export interface DeptType {
@@ -21,7 +22,9 @@ export interface DeptType {
 
 export default observer(function DeptSelect(props: Props) {
   const [hasAllDept, setHasAllDept] = useState(false);
-  const [defaultValue, setDefaultValue] = useState(props.deptCode || authStore.selectedDeptCode);
+  const [defaultValue, setDefaultValue] = useState(
+    props.deptCode || authStore.selectedDeptCode
+  );
   let deptList = authStore.deptList;
   const onChange = (value: string) => {
     authStore.selectedDeptCode = value;
@@ -40,9 +43,9 @@ export default observer(function DeptSelect(props: Props) {
 
   useEffect(() => {
     if (props.deptCode) {
-      setDefaultValue(props.deptCode)
+      setDefaultValue(props.deptCode);
     }
-  }, [props.deptCode])
+  }, [props.deptCode]);
 
   useEffect(() => {
     const hasAllDeptRouteList = [
@@ -52,8 +55,15 @@ export default observer(function DeptSelect(props: Props) {
       "/auditsManagement",
       "/quality/:name",
     ];
-    if (authStore.post === "护理部" || authStore.isAdmin || authStore.isDepartment) {
-      if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1 || props.hasAllDept) {
+    if (
+      authStore.post === "护理部" ||
+      authStore.isAdmin ||
+      authStore.isDepartment
+    ) {
+      if (
+        hasAllDeptRouteList.indexOf(appStore.match.path) > -1 ||
+        props.hasAllDept
+      ) {
         // alert(123)
         setHasAllDept(true);
         // if (!authStore.selectedDeptCode) {
@@ -82,7 +92,7 @@ export default observer(function DeptSelect(props: Props) {
         value={defaultValue}
         style={Object.assign({ width: 200 }, props.style)}
         onChange={onChange}
-        showSearch
+        showSearch={props.showSearch !== undefined ? props.showSearch : true}
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
@@ -94,11 +104,11 @@ export default observer(function DeptSelect(props: Props) {
         )}
 
         {props.extraDept &&
-        props.extraDept.map((item: DeptType) => (
-          <Select.Option key={item.name} value={item.code}>
-            {item.name}
-          </Select.Option>
-        ))}
+          props.extraDept.map((item: DeptType) => (
+            <Select.Option key={item.name} value={item.code}>
+              {item.name}
+            </Select.Option>
+          ))}
 
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>

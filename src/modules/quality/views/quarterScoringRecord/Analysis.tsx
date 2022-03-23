@@ -96,7 +96,7 @@ export default observer(function Analysis() {
             return '第三季度';
             break;
           case 'Q4':
-            return '第季度';
+            return '第四季度';
             break;
         }
 
@@ -220,12 +220,17 @@ export default observer(function Analysis() {
       .createReport({ ...params })
       .then((res) => {
         if (res.code == 200) {
+          console.log(res.data)
           handleCreateCancel()
           setCreateProgressVisible(false)
           setCreateClear(true)
           setCreateLoading('')
-          appStore.history.push(`/qualityAnalysisReport?${qs.stringify(res.data.report)}`)
-          // successCallback()
+          let createList = {
+            ...params,
+            id: res.data.rateId,
+          }
+          successCallback()
+          history.push(`/checkWard/QuarterViewGZ?${qs.stringify(createList)}`)
         } else {
           failedCallback(res.desc || '')
         }

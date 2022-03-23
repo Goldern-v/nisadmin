@@ -46,7 +46,7 @@ export default observer(function BaseTable(props: Props) {
     {
       bordered: true,
       pagination: false,
-      size: "small"
+      size: "small",
     },
     props
   );
@@ -58,7 +58,7 @@ export default observer(function BaseTable(props: Props) {
     option.columns.map((item: any, index: number) => {
       return Object.assign(item, {
         key: index,
-        dataIndex: item.dataIndex || "dataIndex" + index
+        dataIndex: item.dataIndex || "dataIndex" + index,
       });
     });
   option.dataSource =
@@ -76,14 +76,13 @@ export default observer(function BaseTable(props: Props) {
       if ((props.dataSource as any).length) {
         _total = (props.pagination as any).total;
       }
-    } catch (error) {
-    }
-    const showTotal = props.pagination.showTotal || (() => `共 ${_total} 条`)
+    } catch (error) {}
+    const showTotal = props.pagination.showTotal || (() => `共 ${_total} 条`);
     let pagination = {
       showTotal: showTotal,
       showSizeChanger: true,
       showSizeshowQuickJumperChanger: true,
-      pageSizeOptions: ["10", "20", "30", "40", "50"]
+      pageSizeOptions: ["10", "20", "30", "40", "50"],
     };
     Object.assign(pagination, props.pagination);
     Object.assign(props.pagination, pagination);
@@ -91,6 +90,7 @@ export default observer(function BaseTable(props: Props) {
       props.pagination.total = 1;
     }
   }
+  // 出现表头与内容滑动不一致，可以设置下面两个属性
   if (props.surplusWidth && !props.nohorizontalScroll) {
     option.scroll = option.scroll
       ? { ...option.scroll, ...{ x: wiw - props.surplusWidth } }
@@ -109,7 +109,7 @@ export default observer(function BaseTable(props: Props) {
       if (option.dataSource.length < spaceRowNumber) {
         while (option.dataSource.length < spaceRowNumber) {
           option.dataSource.push({
-            [option.rowKey || "key"]: option.dataSource.length
+            [option.rowKey || "key"]: option.dataSource.length,
           });
         }
       }
@@ -119,7 +119,7 @@ export default observer(function BaseTable(props: Props) {
       option.components = components;
       option.onRow = (record: any, index: any) => ({
         index,
-        moveRow: option.moveRow
+        moveRow: option.moveRow,
       });
     }
     if (option.type && option.type.includes("index")) {
@@ -144,7 +144,7 @@ export default observer(function BaseTable(props: Props) {
             key: "0",
             render: render,
             align: "center",
-            width: 50
+            width: 50,
           };
         } else if (option.columns[0].title != "序号") {
           option.columns.unshift({
@@ -153,7 +153,7 @@ export default observer(function BaseTable(props: Props) {
             key: "0",
             render: render,
             align: "center",
-            width: 50
+            width: 50,
           });
         }
         option.type.includes("fixedIndex") &&
@@ -201,8 +201,7 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) {
-            }
+            } catch (error) {}
           }
         }
       }, 0);
@@ -219,13 +218,11 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) {
-            }
+            } catch (error) {}
           }
         }
       }, 100);
-    } catch (error) {
-    }
+    } catch (error) {}
     try {
       setTimeout(() => {
         if (tableRef.current && !option.fixedFooter) {
@@ -247,8 +244,7 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) {
-    }
+    } catch (error) {}
     try {
       setTimeout(() => {
         if (tableRef.current && option.surplusHeight) {
@@ -288,8 +284,7 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) {
-    }
+    } catch (error) {}
     setTimeout(() => {
       try {
         tableRef!.current!.querySelector(".ant-table-body").onscroll = (
@@ -298,27 +293,25 @@ export default observer(function BaseTable(props: Props) {
           scrollTop = e.target.scrollTop;
         };
         // scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
-      } catch (error) {
-      }
+      } catch (error) {}
     }, 0);
     try {
       tableRef!.current!.querySelector(
         ".ant-table-body"
       )!.scrollTop = scrollTop;
-    } catch (error) {
-    }
+    } catch (error) {}
   });
 
   useEffect(() => {
     scrollTop = 0;
   }, [option.pagination && option.pagination.current]);
 
-
   //分离分页组件 去除table条目限制
-  let pageOptions = option.pagination ?
-    { ...option.pagination, size: 'small' } : null
-  let tableOptions = { ...option }
-  tableOptions.pagination = false
+  let pageOptions = option.pagination
+    ? { ...option.pagination, size: "small" }
+    : null;
+  let tableOptions = { ...option };
+  tableOptions.pagination = false;
 
   let TableComponent =
     option.type && option.type.includes("diagRow")
@@ -327,15 +320,20 @@ export default observer(function BaseTable(props: Props) {
 
   return (
     <Wrapper style={option.wrapperStyle || {}} ref={tableRef} id="baseTable">
-      {props.useOuterPagination && <React.Fragment>
-        <TableComponent {...tableOptions} />
-        {pageOptions && <Pagination
-          {...pageOptions}
-          style={{
-            float: 'right',
-            marginTop: '15px'
-          }} />}
-      </React.Fragment>}
+      {props.useOuterPagination && (
+        <React.Fragment>
+          <TableComponent {...tableOptions} />
+          {pageOptions && (
+            <Pagination
+              {...pageOptions}
+              style={{
+                float: "right",
+                marginTop: "15px",
+              }}
+            />
+          )}
+        </React.Fragment>
+      )}
       {!props.useOuterPagination && <TableComponent {...option} />}
     </Wrapper>
   );
@@ -347,12 +345,12 @@ const Wrapper = styled.div`
     /* padding: 20px 30px; */
     padding: 15px 15px;
     box-sizing: content-box;
-    &::after{
-      content:".";
-      display:block;
-      height:0;
-      clear:both;
-      visibility:hidden;
+    &::after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
     }
     table {
       table-layout: fixed;
@@ -376,8 +374,8 @@ const Wrapper = styled.div`
         font-size: 13px !important;
         /* padding: 0 !important; */
         /* font-weight: 600; */
-        height: ${p => p.theme.$tableRowHeight} !important;
-        word-break: break-all;//解决数字不换行
+        height: ${(p) => p.theme.$tableRowHeight} !important;
+        word-break: break-all; //解决数字不换行
       }
       /* 补充th下降的高度 */
       .ant-table-align-center {
@@ -537,7 +535,7 @@ export const DoCon = styled.div`
   display: flex;
   justify-content: space-around;
   font-size: 12px;
-  color: ${p => p.theme.$mtc};
+  color: ${(p) => p.theme.$mtc};
   span {
     cursor: pointer;
     font-size: 12px;

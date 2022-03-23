@@ -22,8 +22,8 @@ export default observer(function Header(props: Props) {
   /**
    * 导出
    */
-  const exportExcel = () =>{
-    if(["nys"].includes(appStore.HOSPITAL_ID)){
+  const exportExcel = () => {
+    if (["nys"].includes(appStore.HOSPITAL_ID)) {
       nursingDataApi.exportData(nursingDataModal.dataList).then(
         (res) => {
           console.log(res)
@@ -61,6 +61,11 @@ export default observer(function Header(props: Props) {
         <span>科室：</span>
         <Select
           style={{ width: 200 }}
+          showSearch
+          optionFilterProp="children"
+          filterOption={(input, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
           value={nursingDataModal.selectedDeptType}
           onChange={(val: string) => {
             nursingDataModal.selectedDeptType = val;
@@ -76,7 +81,7 @@ export default observer(function Header(props: Props) {
           <Select.Option value="-1">其他</Select.Option>
         </Select>
 
-        <Button type="primary" className="checkButton" onClick={() => {}}>
+        <Button type="primary" className="checkButton" onClick={() => { }}>
           查询
         </Button>
         <Button onClick={() => { exportExcel() }}>导出</Button>
