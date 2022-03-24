@@ -291,7 +291,7 @@ export default class NurseFilesService extends BaseApiService {
         obj[key] = "";
       }
     });
-    return this.post(`/auditeNurseList/excel`, this.stringify(obj), {
+    return this.post(`/nurseListJMFY/excel`, this.stringify(obj), {
       responseType: "blob"
     });
   }
@@ -314,9 +314,13 @@ export default class NurseFilesService extends BaseApiService {
       this.stringify({ empNo, pageIndex, pageSize })
     )
   }
-
+  /**
+   * 查找护士轮科
+   * @param empNo 
+   * @returns 
+   */
   public rotatingDepartmentFind(empNo: string) {
-    return this.get(`/NurseJMFYRotatingDepartment/findByEmpNo/${empNo}`)
+    return this.get(`/NurseJMFYRotatingDepartment/findByEmpNoSubmit/${empNo}`)
   }
   public rotatingDepartmentSave(params: any) {
     return this.post(`/NurseJMFYRotatingDepartment/saveOrUpdatePC`, params)
