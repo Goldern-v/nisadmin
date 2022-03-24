@@ -24,6 +24,7 @@ export default observer(function Pie(props: Props) {
       },
       tooltip: {
         trigger: "item",
+        formatter: '{b} : {c} ({d}%)'
       },
       series: [
         {
@@ -40,6 +41,7 @@ export default observer(function Pie(props: Props) {
           })),
           label: {
             show: true,
+            formatter: '{b} : {c} ({d}%)',
           },
         },
       ],
@@ -59,6 +61,7 @@ export default observer(function Pie(props: Props) {
 });
 
 const Wrapper = styled.div`
+  margin-bottom: 15px;
   .echarts-for-react {
     height: 300px !important;
   }

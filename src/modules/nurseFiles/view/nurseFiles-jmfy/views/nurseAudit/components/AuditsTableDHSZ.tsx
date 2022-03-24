@@ -181,6 +181,6 @@ export default function AuditsTableDHSZ(props: Props) {
 const Wrapper = styled.div``
 const GroupPostBtn = styled(Button)`
   position: fixed !important;
-  top: 189px;
+  top: 195px;
   right: 30px;
 `
