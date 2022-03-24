@@ -227,6 +227,7 @@ export default observer(function Analysis() {
           setCreateLoading('')
           let createList = {
             ...params,
+            list:res.data.shouldChecks,
             id: res.data.rateId,
           }
           successCallback()

@@ -19,7 +19,6 @@ export default function PageContent(props: Props) {
   const [isInput, getinput]: any = useState(false)
   const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
   useEffect(() => {
-    console.log(JSON.stringify(deductionData));
     //数据改变时将canvas的画面用img保存用于打印
     setTimeout(() => {
       let canvasEl = document.querySelector('canvas') as any
@@ -207,8 +206,8 @@ export default function PageContent(props: Props) {
   }
   const getTableColumns = (data: any) => {
     let columns: any = [
-      { title: ' 月份 ', key: 'month', dataIndex: 'month', align: 'center' },
-      { title: '应查护士长数', key: 'shouldCheckNum', dataIndex: 'shouldCheckNum', align: 'center' },
+      { title: ' 月份 ', key: 'month'?'month':'yearAndMonth', dataIndex:  'month'?'month':'yearAndMonth', align: 'center' },
+      { title: '应查护士长数', key: 'shouldCheckNum'?'shouldCheckNum':'shouldNum', dataIndex: 'shouldCheckNum'?'shouldCheckNum':'shouldNum', align: 'center' },
       {
         title: '实查护士长数', key: 'actualCheckNum', dataIndex: 'actualCheckNum', align: 'center',
         render: (datas: any, record: any) => {
@@ -223,8 +222,11 @@ export default function PageContent(props: Props) {
     return columns
   }
   const handleNumQuarter = (data: any) => {
-    if (!data[0]) return
-    let month = pageData[0].month
+    console.log(pageData);
+    if (pageData.length == 0) return
+    let month = pageData[0].month ||pageData[0].yearAndMonth
+    console.log(month);
+    
     let num: any = null;
     switch (month) {
       case month.split('-')[1] = '01':
@@ -239,8 +241,9 @@ export default function PageContent(props: Props) {
       case month.split('-')[1] = '10':
         num = '四';
         break;
-      default: num = '一';
+      default: num;
     }
+    console.log(num);
     return num;
   }
   return <Wrapper>
@@ -248,7 +251,7 @@ export default function PageContent(props: Props) {
       <div className='first-title'>{`一、护士长实际查房率(表格)`}</div>
       <div className='second-content-box'>
         <div className='second-content-table'>
-          <div className='second-content-table-title'>{`第${handleNumQuarter(pageData) ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div>
+          <div className='second-content-table-title'>{`第${pageData ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div>
           <div className='second-content-table-table' style={{ width: '600px', margin: '0 auto' }}>
             <Table rowClassName={() => 'editable-row'} bordered dataSource={getTableData(pageData)} columns={getTableColumns(pageData)} pagination={false} footer={() => {
               return (<div>
@@ -332,7 +335,7 @@ const Wrapper = styled.div`
   }
   .divlist{
     width:100%;
-    height:100%;
+    height:16px;
   }
   .second-content-bolatu-bolatu{
     border:1px solid #ddd;

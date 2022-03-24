@@ -31,10 +31,13 @@ export default observer(function NursingReportDetailView() {
     let detNo = ''
     setCurrentPage(query)
     setSpinning(true)
+    setPageData(query.list)
     badEventReportService.getDetailList(query).then((res: any) => {
       let list = res.data.list
-      setPageData(list)
-      setQuarterRate(res.data.quarterRate)
+      if(list.lenght){
+        setPageData(list)
+        setQuarterRate(res.data.quarterRate)
+      }
       setSpinning(false)
     })
     let params: any = { beginDate: query.startDate, endDate: query.endDate }
