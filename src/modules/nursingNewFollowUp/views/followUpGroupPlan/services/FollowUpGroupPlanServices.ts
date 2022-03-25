@@ -7,9 +7,9 @@ export default class  FollowUpGroupPlanServices extends BaseApiService {
   public getNursingUnitAll() {
     return this.get(`/user/nursingUnit/all`);
   }
-  //获取随访小组分页信息
+  //获取随访计划分页信息
   public queryNursePageList(obj: PageOptions | any) {
-    return this.post(`/visit/visitTeam/queryNursePageList`, obj)
+    return this.post(`/visit/visitPlan/getList`, obj)
   }
   //获取全部随访小组列表
   public visitTeam(obj: PageOptions | any) {
