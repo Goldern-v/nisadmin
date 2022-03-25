@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import { badEventReportService } from './services/BadEventReportService'
 import PageContent from "./components/PageContent"
 import qs from 'qs'
+import { List } from 'antd'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
@@ -28,13 +29,25 @@ export default observer(function NursingReportDetailView() {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
     query.name = query.name || query.themeName
-    let detNo = ''
+    let createData = []
+    let currData:any = []
     setCurrentPage(query)
     setSpinning(true)
-    setPageData(query.list)
+    createData = query.list;
+    if(createData){
+      createData.map((item:any,index:any)=>{
+        let everylist ={month:'',shouldCheckNum:'',actualCheckNum:''};
+        everylist.month = item.month
+        everylist.shouldCheckNum = item.shouldNum
+        everylist.actualCheckNum = '0'
+        currData.push(everylist)
+      })
+      setPageData(currData)
+    }
     badEventReportService.getDetailList(query).then((res: any) => {
       let list = res.data.list
-      if(list.lenght){
+      if(list.length){
+        console.log(list);
         setPageData(list)
         setQuarterRate(res.data.quarterRate)
       }

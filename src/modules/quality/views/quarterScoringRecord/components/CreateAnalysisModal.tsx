@@ -85,7 +85,6 @@ export default function CreateAnalysisModal(props: Props) {
 
     if (current) {
       let formData = current.getFields()
-      console.log('formData：', formData);
       let { reportName, groupRoleCode, year, beginDate, endDate, quarter } = formData
 
       let params: any = {
@@ -96,7 +95,6 @@ export default function CreateAnalysisModal(props: Props) {
         endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
         quarter,
       }
-      console.log('params:', params)
       onOk && onOk(params)
       // current
       //   .validateFields()

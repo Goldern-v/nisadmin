@@ -5,6 +5,7 @@ import { message, } from 'src/vendors/antd'
 import ReactEcharts from 'echarts-for-react';
 import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 import { badEventReportService } from '../services/BadEventReportService'
+import { isElementAccessExpression } from 'typescript';
 interface Props {
   pageData: Array<any>,
   currentPage: Object,
@@ -30,6 +31,16 @@ export default function PageContent(props: Props) {
     
 
   }, [deductionData])
+  
+  useEffect(() => {
+    let data:any = pageData;
+    data.map((item:any)=>{
+      if(item.actualCheckNum=='0'){
+        item.checkRate ="0%"
+        getdeduction('0%')
+      }
+    })
+  }, [pageData])
 
   const getBolatuOption = (data: any) => {
 
@@ -172,7 +183,7 @@ export default function PageContent(props: Props) {
       sumPercen += parseFloat(item.percentage.split('%')[0])
     })
 
-    point = [...data, { pointItem: '总计', pointFrequency: sumList, percentage: sumPercen + '%', percentages: '' }]
+    point = [...data, { pointItem: '总计', pointFrequency: sumList, percentage: sumPercen.toFixed(2) + '%', percentages: '' }]
     return point
   }
   const getDeductionColumns = (data: any) => {
@@ -188,26 +199,36 @@ export default function PageContent(props: Props) {
   const onhandleBlur = (e: any, data: any) => {
     getinput(false)
     data.actualCheckNum = parseInt(e.value);
-    data.checkRate = ((data.actualCheckNum / data.shouldCheckNum) * 100) == 100 ? (data.actualCheckNum / data.shouldCheckNum) * 100 + '%' : (((data.actualCheckNum / data.shouldCheckNum) * 100).toFixed(2)) + '%'
-
-    let newdata: any = [];
-    pageData.map(item => {
-      newdata.push(item.checkRate)
-    })
-    let strCheckRate: number = 0
-    strCheckRate = newdata.reduce((pre: any, cur: any) => {
-      cur = cur.replace('%', '')
-      return pre + +cur
-    }, 0)
-    getdeduction((strCheckRate / 3).toFixed(2) + '%')
+     if(parseFloat(data.actualCheckNum) > parseFloat(data.shouldCheckNum)){
+      data.actualCheckNum = 0;
+      message.warning('实查护士长数比应查护士长数多')
+    }else if(data.actualCheckNum&&data.shouldCheckNum){
+      data.checkRate = ((data.actualCheckNum / data.shouldCheckNum) * 100) == 100 ? (data.actualCheckNum / data.shouldCheckNum) * 100 + '%' : (((data.actualCheckNum / data.shouldCheckNum) * 100).toFixed(2)) + '%'
+      console.log((data.actualCheckNum / data.shouldCheckNum) * 100);
+      
+      
+      let newdata: any = [];
+      pageData.map(item => {
+        newdata.push(item.checkRate)
+      })
+      let strCheckRate: number = 0
+      strCheckRate = newdata.reduce((pre: any, cur: any) => {
+        cur = cur.replace('%', '')
+        return pre + +cur
+      }, 0)
+      getdeduction((strCheckRate / 3).toFixed(2) + '%')
+    }else{
+      data.checkRate = '0%'
+      getdeduction(0+'%')
+    }
   }
   const toggleEdit = () => {
     getinput(true)
   }
   const getTableColumns = (data: any) => {
     let columns: any = [
-      { title: ' 月份 ', key: 'month'?'month':'yearAndMonth', dataIndex:  'month'?'month':'yearAndMonth', align: 'center' },
-      { title: '应查护士长数', key: 'shouldCheckNum'?'shouldCheckNum':'shouldNum', dataIndex: 'shouldCheckNum'?'shouldCheckNum':'shouldNum', align: 'center' },
+      { title: ' 月份 ', key: 'month',  dataIndex: 'month',align: 'center' },
+      { title: '应查护士长数', key: 'shouldCheckNum', dataIndex: 'shouldCheckNum', align: 'center' },
       {
         title: '实查护士长数', key: 'actualCheckNum', dataIndex: 'actualCheckNum', align: 'center',
         render: (datas: any, record: any) => {
@@ -222,28 +243,24 @@ export default function PageContent(props: Props) {
     return columns
   }
   const handleNumQuarter = (data: any) => {
-    console.log(pageData);
     if (pageData.length == 0) return
-    let month = pageData[0].month ||pageData[0].yearAndMonth
-    console.log(month);
-    
+    let month = pageData[0].month
     let num: any = null;
-    switch (month) {
-      case month.split('-')[1] = '01':
+    switch (month.split('-')[1]) {
+      case '01':
         num = '一';
         break;
-      case month.split('-')[1] = '04':
+      case '04':
         num = '二';
         break;
-      case month.split('-')[1] = '07':
+      case '07':
         num = '三';
         break;
-      case month.split('-')[1] = '10':
+      case '10':
         num = '四';
         break;
       default: num;
     }
-    console.log(num);
     return num;
   }
   return <Wrapper>
