@@ -126,6 +126,7 @@ export default observer(function 护士离职原因分析() {
         style={{ minWidth: 180 }}
         className="content-item"
         value={query.deptCode}
+        showSearch
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(deptCode: string) => setQuery({ ...query, deptCode })}>

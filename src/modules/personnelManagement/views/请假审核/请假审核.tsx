@@ -255,7 +255,7 @@ export default observer(function 请假审核() {
       disabled={loading}
       onClick={() => getTableData()}>
       刷新
-        </GroupPostBtn>
+    </GroupPostBtn>
     {activeTab == '0' && (
       <GroupPostBtn
         btntop={btntop}
@@ -334,6 +334,7 @@ export default observer(function 请假审核() {
                 style={{ minWidth: 180 }}
                 className="content-item"
                 value={query.deptCode}
+                showSearch
                 filterOption={(input: any, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 onChange={(deptCode: string) => setQuery({ ...query, deptCode, pageIndex: 1 })}>

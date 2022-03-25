@@ -42,7 +42,7 @@ class NurseFilesListViewModel {
   @observable public goHospitalWorkEndYear: string = "";
 
   @observable public pageIndex: number = 1;
-  @observable public pageSize: number = 10;
+  @observable public pageSize: number = 100;
   @observable public totalCount: number = 0;
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];

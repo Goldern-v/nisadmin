@@ -37,8 +37,6 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
       return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.20.35:9091"; // 宏群本地
-    // return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
-    // return "http://192.168.1.106:9091"; // 宏群本地
 
     /** 东莞横沥 */
     case "dghl":
@@ -62,7 +60,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://192.168.20.10:9091' // 本地
       // return 'http://192.168.1.54:9866' // 测试环境
-      // return "http://192.168.20.10:9091";
+      return "http://192.168.20.10:9091";
       return "http://192.168.1.54:9875"; // 公司-贵州省人民医院-内网
     // return "http://192.168.20.62:8080" // 飞豪本地
 

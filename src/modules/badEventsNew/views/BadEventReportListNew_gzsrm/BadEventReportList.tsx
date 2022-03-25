@@ -206,9 +206,9 @@ export default observer(function BadEventReportList() {
     query.year
       ? (year = `${query.year.format("YYYY")}`)
       : Moment().format("YYYY");
-    let month = query.timeSection ? monthFormat(query.timeSection) : "1月";
+    let month = query.timeSection ? monthFormat(query.timeSection) : "01";
     let reqQuery = {
-      beginDate: `${year}-${month}`,
+      dateBegin: `${year}-${month}-01`,
     };
     api
       .getPage(reqQuery)
@@ -223,11 +223,11 @@ export default observer(function BadEventReportList() {
           setTableData(
             res.data.map((item: any, key: number) => {
               let reportYear = Moment(item.createDate).format("YYYY");
-              let reportBeginMonth = item.beginDate
-                ? Moment(item.beginDate).format("MM")
+              let reportBeginMonth = item.dateBegin
+                ? Moment(item.dateBegin).format("MM")
                 : "";
-              let reportEndMonth = item.endDate
-                ? Moment(item.endDate).format("MM")
+              let reportEndMonth = item.dateEnd
+                ? Moment(item.dateEnd).format("MM")
                 : "";
               let reportMonth =
                 reportBeginMonth &&

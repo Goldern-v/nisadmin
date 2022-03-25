@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
+import qs from "qs";
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -290,7 +291,7 @@ export default class NurseFilesService extends BaseApiService {
         obj[key] = "";
       }
     });
-    return this.post(`/auditeNurseList/excel`, this.stringify(obj), {
+    return this.post(`/nurseListJMFY/excel`, this.stringify(obj), {
       responseType: "blob"
     });
   }
@@ -312,6 +313,17 @@ export default class NurseFilesService extends BaseApiService {
       `/auditeNurseFileIndexNys/findNurseFileProcessedFlow`,
       this.stringify({ empNo, pageIndex, pageSize })
     )
+  }
+  /**
+   * 查找护士轮科
+   * @param empNo 
+   * @returns 
+   */
+  public rotatingDepartmentFind(empNo: string) {
+    return this.get(`/NurseJMFYRotatingDepartment/findByEmpNoSubmit/${empNo}`)
+  }
+  public rotatingDepartmentSave(params: any) {
+    return this.post(`/NurseJMFYRotatingDepartment/saveOrUpdatePC`, params)
   }
 }
 

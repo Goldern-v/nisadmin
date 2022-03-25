@@ -17,6 +17,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { WORK_CONVERSION } from '../utils/index.enums'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -267,6 +268,15 @@ export default function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`入职时间`} name='entryDate'>
               <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`工作编制`} name='workConversion'>
+              <Select>
+                {WORK_CONVERSION.map((v:string) => {
+                  return <Option value={v}>{v}</Option>
+                })}
+              </Select>
             </Form.Field>
           </Col>
           {mapsConfig.map((item: any, idx: number) => (

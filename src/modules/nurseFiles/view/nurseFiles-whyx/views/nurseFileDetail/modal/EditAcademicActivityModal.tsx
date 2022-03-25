@@ -165,9 +165,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改外出进修')
+      setTitle('修改学术活动')
     } else if (signShow === '添加') {
-      setTitle('添加外出进修')
+      setTitle('添加学术活动')
     }
   }, [visible])
 

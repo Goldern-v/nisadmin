@@ -83,10 +83,10 @@ const baseConfig: navConfigItem[] = [
     name: "通知公告",
     path: "/notice"
   },
-  // {
-  //   name: "护理制度",
-  //   path: "/nursingRulesNew"
-  // },
+  {
+    name: "护理制度",
+    path: "/nursingRulesNew"
+  },
   {
     name: "档案管理",
     path: "/nurseFile"
