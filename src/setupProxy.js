@@ -12,9 +12,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "hj":
       // return 'http://120.197.141.41:9091' // 厚街正式
       // return 'http://120.197.141.41:9094' // 厚街测试
-      return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
-    // return "http://192.168.1.54:9866" // 公司-厚街测试-内网
-    // return 'http://192.168.20.57:9091' // 伟贤本地
+      // return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
+      // return "http://192.168.1.54:9866" // 公司-厚街测试-内网
+      return 'http://192.168.20.10:9091' // 伟贤本地
     /** 南医三 */
     case "nys":
       // return 'http://119.145.71.86:9801' // 南医三正式
@@ -34,11 +34,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 江门妇幼 */
     case "jmfy":
       // return 'http://218.14.180.38:9094' // 江门妇幼正式
-    // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
-    // return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
+      // return 'http://info.cr-health.com:20103' // 公司-江门妇幼测试-外网
+      return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
     // return "http://192.168.20.35:9091"; // 宏群本地
-    return "http://192.168.1.54:9872"; // 公司-江门妇幼测试-内网
-    // return "http://192.168.1.106:9091"; // 宏群本地
 
     /** 东莞横沥 */
     case "dghl":

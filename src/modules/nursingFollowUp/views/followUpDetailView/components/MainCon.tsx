@@ -7,6 +7,7 @@ import FormPage from 'src/modules/nursingFollowUp/components/formPage/FormPage'
 import printing from 'printing'
 import { followUpDetailService } from '../services/FollowUpDetailService'
 import moment from 'src/vendors/moment'
+import SpeedDialModal from '../../components/SpeedDialModal'
 
 export interface Props {
   formCode?: string,
@@ -25,6 +26,7 @@ export default function MainCon(props: Props) {
   const [master, setMaster] = useState({} as any)
 
   const [formDataLoading, setFormDataLoading] = useState(false)
+  const [editVisible, setEditVisible] = useState(false)
 
   const operateLoading = loading || formDataLoading
   const btnDisabled = operateLoading || !masterId
@@ -151,6 +153,12 @@ export default function MainCon(props: Props) {
       }, () => setFormDataLoading(false))
   }
 
+  const speedDial = () => {
+    console.log("打开快速拨号");
+    setEditVisible(true)
+    
+  }
+
   useEffect(() => {
     if (appStore.isDev && Object.keys(itemDataMap).length > 0) console.log(itemDataMap)
   }, [itemDataMap])
@@ -254,6 +262,14 @@ export default function MainCon(props: Props) {
         onClick={() => handlePush()}>
         推送给患者
       </Button>
+      <Button
+        className="mr-10"
+        style={{backgroundColor: '#5ea5f8', color: '#ffffff'}}
+        disabled={btnDisabled}
+        onClick={() => speedDial()}>
+        <img className="img_phone" src={require('../assets/phone.png')} alt="" />
+        快速拨号
+      </Button>
       <div className="status-con">
         {statusContent()}
       </div>
@@ -267,6 +283,13 @@ export default function MainCon(props: Props) {
     <FormPageContainer>
       {formContent()}
     </FormPageContainer>
+    <SpeedDialModal
+      params={""}
+      visible={editVisible}
+      onOk={() => {
+        setEditVisible(false)
+      }}
+      onCancel={() => setEditVisible(false)} />
   </Wrapper>
 }
 
@@ -274,6 +297,10 @@ const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  .img_phone{
+    width: 16px;
+    height: 16px;
+  }
   .tool-bar{
     display: flex;
     background: #fff;

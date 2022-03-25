@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { find } from 'tslint/lib/utils'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -49,17 +50,16 @@ export default function EditPersonWinningModal(props: Props) {
   let refForm = React.createRef<Form>()
   const [participantsList, setParticipantsList]: any = useState([])
   const [storage, setStorage]: any = useState([])
-
   const onFieldChange = (val: any) => {
-    if (signShow === '添加') {
-      if (refForm.current && refForm.current.state.values?.allDeptAll === undefined && refForm.current.state.values?.participants?.length > 0) {
-        refForm!.current!.setFields({
-          participants: [],
-        })
-        setParticipantsList([])
-        setStorage([])
-      }
-    }
+    // if (signShow === '添加') {
+    //   if (refForm.current && refForm.current.state.values?.allDeptAll === undefined && refForm.current.state.values?.participants?.length > 0) {
+    //     refForm!.current!.setFields({
+    //       participants: [],
+    //     })
+    //     setParticipantsList([])
+    //     setStorage([])
+    //   }
+    // }
   }
 
   const onSave = async (sign: boolean) => {
@@ -145,6 +145,14 @@ export default function EditPersonWinningModal(props: Props) {
     }
     return newArr
   }
+  useEffect(() => {
+    if (visible) {
+      nurseFilesService.getAllUsers().then(res => {
+        setStorage(res.data)
+        setParticipantsList(removeSame(res.data))
+      })
+    }
+  },[signShow,visible])
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
@@ -192,9 +200,8 @@ export default function EditPersonWinningModal(props: Props) {
     >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          {signShow !== '修改' && <Col span={24}>
+          {/* {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与人员所属科室`} name='allDeptAll' >
-              {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
               <Select
                 allowClear
                 showSearch
@@ -209,7 +216,7 @@ export default function EditPersonWinningModal(props: Props) {
                 )}
               </Select>
             </Form.Field>
-          </Col>}
+          </Col>} */}
           {signShow !== '修改' && <Col span={24}>
             <Form.Field label={`参与成员`} name='participants' >
               {/* <AutoComplete filterOption dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} /> */}
