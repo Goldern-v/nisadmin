@@ -250,13 +250,37 @@ export default function PageContent(props: Props) {
       case '01':
         num = '一';
         break;
+      case '02':
+        num = '一';
+        break;
+      case '03':
+        num = '一';
+        break;
       case '04':
+        num = '二';
+        break;
+      case '05':
+        num = '二';
+        break;
+      case '06':
         num = '二';
         break;
       case '07':
         num = '三';
         break;
+      case '08':
+        num = '三';
+        break;
+      case '09':
+        num = '三';
+        break;
       case '10':
+        num = '四';
+        break;
+      case '11':
+        num = '四';
+        break;
+      case '12':
         num = '四';
         break;
       default: num;
