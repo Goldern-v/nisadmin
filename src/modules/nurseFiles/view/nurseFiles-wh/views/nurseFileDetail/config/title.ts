@@ -21,6 +21,7 @@ let titleEC: any = {
   nurseWHWorkExperience: '工作经历',
   nurseWHMedicalEducation: '医学学历教育',
   nurseWHRegistrationWork: '在院工作情况',
+  nurseWHChanges: '职务变动'
 }
 
 let titleCE: any = reverseKeyValue(titleEC)

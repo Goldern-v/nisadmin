@@ -43,13 +43,19 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    {
+    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
       title: '原工作科室',
       dataIndex: 'oldDeptName',
       key: 'oldDeptName',
       width: 130,
       align: 'center'
-    },
+    }] : [{
+      title: '原工作科室',
+      dataIndex: 'oldDeptCode',
+      key: 'oldDeptCode',
+      width: 130,
+      align: 'center'
+    }],
     {
       title: '现工作科室',
       dataIndex: 'newDeptName',
@@ -57,13 +63,13 @@ export default observer(function PersonWinning() {
       width: 130,
       align: 'center'
     },
-    {
+    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
       title: '现科室隶属部门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
       width: 130,
       align: 'center'
-    },
+    }] : [],
     {
       title: '转岗时间',
       dataIndex: 'transferDate',
