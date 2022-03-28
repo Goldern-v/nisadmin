@@ -205,14 +205,14 @@ export default observer(function SatisfactionAnalysis(props) {
           <h2>三、住院患者满意度情况分析</h2>
           <h3>3.1各指标总体满意度</h3>
           <VerticalTable
-            list={variousIndicators.slice(1)}
+            list={variousIndicators}
             keyObj={{
-              name: variousIndicators[0]?.name || '',
-              value: variousIndicators[0]?.value || ''
+              name: '科室',
+              value: '平均分'
             }}
           />
           <h4>3.1.1各指标总体满意度(图表-条形)</h4>
-          <HorizonBar list={variousIndicators.slice(1)} yKey="name" xKey="value"/>
+          <HorizonBar list={variousIndicators} yKey="name" xKey="value"/>
           <h3>3.2各指标分数段分布</h3>
           {eachVariousIndicators.map((item: any, index: number) => (
             <Fragment>

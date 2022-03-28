@@ -212,7 +212,7 @@ export default observer(function QuestionBankManagement() {
   return (
     <Wrapper>
       <HeadCon>
-        <div className='title'>院级共享考试资源库</div>
+        <div className='title'>{appStore.HOSPITAL_ID != 'nys' ? '院级共享考试资源库' : '全院题库'}</div>
         <Place/>
         {/* <SelectBox>
           <span className='label'>选择类型：</span>
