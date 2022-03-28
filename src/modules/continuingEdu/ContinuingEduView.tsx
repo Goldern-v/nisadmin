@@ -594,6 +594,27 @@ export default function ContinuingEdu(props: Props) {
                   !authStore.isDepartment,
               },
             ],
+            nys: [
+              {
+                title: "题库管理",
+                icon: <TKGL />,
+                hide: () =>
+                  queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+                  authStore.isOnlyInternsManage,
+                children: [
+                  {
+                    title: "全院题库",
+                    path: "/continuingEdu/allQuestionBank",
+                    component: 院级共享考试资源库,
+                  },
+                  {
+                    title: "科室题库",
+                    path: "/continuingEdu/deptQuestionBank",
+                    component: 科室考试资源库,
+                  },
+                ],
+              },
+            ],
             other: [
               {
                 title: "题库管理",

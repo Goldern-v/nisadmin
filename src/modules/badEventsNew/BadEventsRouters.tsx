@@ -19,6 +19,8 @@ import badEventStatCommon from './views/badEventStatCommon'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 import BadEventReportListNew_gzsrm from './views/BadEventReportListNew_gzsrm/BadEventReportList'
 import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
+import BadEventSummary from "./views/BadEventSummary";
+import BadEventReportSummary from "./views/BadEventReportSummary";
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -140,6 +142,23 @@ export default function BadEventsRouters(props: Props) {
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           }
+        ],
+        other: []
+      }
+    }),
+    ...appStore.hisMatch({
+      map: {
+        yczyy: [
+          {
+            title: '不良事件汇总',
+            path: `${baseRouter}/BadEventSummary`,
+            component: BadEventSummary
+          },
+          {
+            title: '不良事件报告登记汇总',
+            path: `${baseRouter}/BadEventReportSummary`,
+            component: BadEventReportSummary
+          },
         ],
         other: []
       }
