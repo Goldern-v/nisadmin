@@ -232,6 +232,7 @@ export default observer(function FormPannel() {
 
     </div>
     <QuestionCon>
+    {['whyx'].includes(appStore.HOSPITAL_ID) && <div className='titleRemind'>扣分标准：A级问题扣5分，B->A问题扣4分，B级问题扣3分，C级问题扣2分</div>}
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
         <QcItemGroup
           itemGroup={itemGroup}
@@ -294,6 +295,10 @@ const Wrapper = styled.div`
 `
 
 const QuestionCon = styled.div`
+  .titleRemind {
+    font-size: 16px;
+    font-weight: 600;
+  }
   margin-top: 10px;
   /* flex: 1;
   height: 0; */

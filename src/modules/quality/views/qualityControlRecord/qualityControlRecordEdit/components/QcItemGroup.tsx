@@ -110,7 +110,6 @@ export default observer(function QcItemGroup(props: Props) {
   }
 
   return <QuestionItem>
-    {['whyx'].includes(appStore.HOSPITAL_ID) && <div className='titleRemind'>扣分标准：A级问题扣5分，B->A问题扣4分，B级问题扣3分，C级问题扣2分</div>}
     <div className='titleCon' id={`itemGroupItem${index}`}>
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
@@ -402,10 +401,6 @@ export default observer(function QcItemGroup(props: Props) {
 })
 
 const QuestionItem = styled.div`
-  .titleRemind {
-    font-size: 16px;
-    font-weight: 600;
-  }
   .titleCon {
     margin: 5px 0 0;
     height: 30px;
