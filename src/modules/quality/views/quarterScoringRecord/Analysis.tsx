@@ -192,7 +192,6 @@ export default observer(function Analysis() {
 
   const handleCreateOk = (params: any) => {
     if (!params.title) return
-    console.log(params, "params");
 
     setCreateClear(false)
     setCreateProgressVisible(true)
@@ -220,7 +219,6 @@ export default observer(function Analysis() {
       .createReport({ ...params })
       .then((res) => {
         if (res.code == 200) {
-          console.log(res.data)
           handleCreateCancel()
           setCreateProgressVisible(false)
           setCreateClear(true)

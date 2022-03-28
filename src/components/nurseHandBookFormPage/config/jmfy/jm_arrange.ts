@@ -28,7 +28,7 @@ const tBody1: any = [
 
 const firstWeek: any = [
   { key: "time", name: "时间", value: "第一周", width: 120 },
-  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left", verticalAlign: "top" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
   { key: "who", name: "基本完成", value: "", width: 80, click: tick },
@@ -37,7 +37,7 @@ const firstWeek: any = [
 
 const secondWeek: any = [
   { key: "time", name: "时间", value: "第二周", width: 120 },
-  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left", verticalAlign: "top" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
   { key: "who", name: "基本完成", value: "", width: 80, click: tick },
@@ -46,7 +46,7 @@ const secondWeek: any = [
 
 const thirdWeek: any = [
   { key: "time", name: "时间", value: "第三周", width: 120 },
-  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left", verticalAlign: "top" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
   { key: "who", name: "基本完成", value: "", width: 80, click: tick },
@@ -55,7 +55,7 @@ const thirdWeek: any = [
 
 const fourthWeek: any = [
   { key: "time", name: "时间", value: "第四周", width: 120 },
-  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left" } },
+  { key: "what", name: "内容", value: "", width: 240,  style:{ textAlign: "left", verticalAlign: "top" } },
   { key: "why", name: "责任人", value: "", width: 100 },
   { key: "where", name: "完成", value: "", width: 80, click: tick },
   { key: "who", name: "基本完成", value: "", width: 80, click: tick },

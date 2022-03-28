@@ -33,7 +33,7 @@ export default function Common(props: Props) {
   // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
-    item.value = e.currentTarget.innerText
+    item.value = e.currentTarget.innerHTML
     scheduleStore.setIsSave(true)
   }
   // 聚焦弹窗事件
@@ -217,13 +217,14 @@ export default function Common(props: Props) {
                 'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'cursor': col.click ? 'pointer' : col.key == "serialNumber" ? 'no-drop' : 'auto',
+                'display': (col.style && col.style.textAlign=='left' &&  col.style.verticalAlign=='top') ? '' : '-webkit-box',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
               contentEditable={masterInfo.noEditor ? false : col.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
-              onKeyDown={(e: any) => enter(e, row, col)}
+              // onKeyDown={(e: any) => enter(e, row, col)}
               onContextMenu={ContextMenu}
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
@@ -244,7 +245,7 @@ export default function Common(props: Props) {
               'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
               'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
               'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
-              display: col.hidden ? 'none':'',
+              'display': col.hidden ? 'none':(col.style && col.style.textAlign=='left')?'':'-webkit-box',
             }}
             key={`${colIdx}`}
           >
@@ -277,7 +278,7 @@ const Wrapper = styled.div`
   outline: none;
   margin-right:-1px; 
   margin-bottom:-1px;
-  display: -webkit-box;
+  /* display: -webkit-box; */
   display: box;
   /* -webkit-box-align: center; 
   box-align: center; */

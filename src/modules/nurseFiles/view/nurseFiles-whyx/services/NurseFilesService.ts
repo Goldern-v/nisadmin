@@ -151,6 +151,11 @@ export default class NurseFilesService extends BaseApiService {
     return this.get(`/dept/users/${code}`)
   }
 
+  public async getAllUsers() {
+    return this.get(`/dept/allUsers/getAll`)
+  }
+  
+
 }
 
 export const nurseFilesService = new NurseFilesService()

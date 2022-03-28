@@ -1,6 +1,10 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs';
 
+export interface dateIn {
+  dateBegin: string,
+  dateEnd: string
+}
 export default class BadEventsNewService extends BaseApiService {
   //不良事件列表
   public async getList(query: any) {
@@ -199,10 +203,27 @@ export default class BadEventsNewService extends BaseApiService {
     return this.post(`/badEventReport/exportBadEventStat`, params, { responseType: 'blob' });
   }
 
- //不良事件类型列表
- public async getBadEventTypeList() {
+  //不良事件类型列表
+  public async getBadEventTypeList() {
    return this.get(`/badEventReport/getBadEventType`);
-}
+  }
+
+  // 获取不良事件统计
+  public async getBeSummaryYc(params: dateIn) {
+   return this.post(`/badEventReport/getBeSummaryYc`,params);
+  }
+  // 不良事件统计导出
+  public async exportBeSummaryYc(params: dateIn) {
+   return this.post(`/badEventReport/exportBeSummaryYc`,params, { responseType: 'blob' });
+  }
+  // 不良事件登记汇总
+  public async getBeRegistrationSummaryYc(params: dateIn) {
+   return this.post(`/badEventReport/getBeRegistrationSummaryYc`,params);
+  }
+  // 不良事件汇总表导出
+  public async exportBeRegistrationSummaryYc(params: dateIn) {
+   return this.post(`/badEventReport/exportBeRegistrationSummaryYc`,params, { responseType: 'blob' });
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()
