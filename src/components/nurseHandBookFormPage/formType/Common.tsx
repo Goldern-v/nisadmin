@@ -33,7 +33,7 @@ export default function Common(props: Props) {
   // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
-    item.value = e.currentTarget.innerText
+    item.value = e.currentTarget.innerHTML
     scheduleStore.setIsSave(true)
   }
   // 聚焦弹窗事件
@@ -224,7 +224,7 @@ export default function Common(props: Props) {
               contentEditable={masterInfo.noEditor ? false : col.noEditor ? false : queryObj.audit ? false : true}
               onFocus={(e: any) => onFocus(e, colIdx, col, rowIdx)}
               onBlur={(e: any) => onBlur(e, row, col)}
-              onKeyDown={(e: any) => enter(e, row, col)}
+              // onKeyDown={(e: any) => enter(e, row, col)}
               onContextMenu={ContextMenu}
               onInput={(e) => changeValue(e, col)}
               onClick={(e) => handlerClick(e, col)}
