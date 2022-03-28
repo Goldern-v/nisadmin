@@ -61,7 +61,7 @@ export default function EditRankChangeModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    value.endDate && appStore.HOSPITAL_ID === 'sdlj' && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHHierarchy', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
@@ -77,7 +77,7 @@ export default function EditRankChangeModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         startDate: moment(data.startDate),
-        // endDate: moment(data.endDate),
+        endDate: moment(data.endDate),
         nursehierarchyOld: data.nursehierarchyOld,
         nursehierarchyNew: data.nursehierarchyNew,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
@@ -139,10 +139,15 @@ export default function EditRankChangeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现层级开始时间`} name='startDate'>
+            <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? '开始时间' : `现层级开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
           </Col>
+         {appStore.HOSPITAL_ID === 'sdlj' && <Col span={24}>
+            <Form.Field label={`结束时间`} name='endDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />

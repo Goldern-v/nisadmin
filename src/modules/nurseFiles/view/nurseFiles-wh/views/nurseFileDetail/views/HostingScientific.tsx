@@ -107,7 +107,7 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    {
+    appStore.HOSPITAL_ID !== 'sdlj' && {
       title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',

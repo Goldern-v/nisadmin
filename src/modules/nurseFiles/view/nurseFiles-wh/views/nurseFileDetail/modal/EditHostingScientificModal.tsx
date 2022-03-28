@@ -177,11 +177,11 @@ export default function EditPersonWinningModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
             <Form.Field label={`时间`} name='completionDate'>
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' tip={'上传课题批文扫描件'} />

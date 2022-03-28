@@ -97,7 +97,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
       
                   {
                     取得护士执业证书时间: 'zyzsDate',
-                    取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'
+                    ...appStore.HOSPITAL_ID === 'sdlj' ? {参加护理工作时间: 'zyzsNursingPostDate'} : {取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'},
                   },
                   {
                     护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
@@ -115,13 +115,21 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     现职务任职起始时间: 'jobStartDate',
                     院内工作地点: 'workAddress'
                   },
+                  appStore.HOSPITAL_ID === 'sdlj' && {
+                    工作护理单元: 'deptName',
+                    夏季鞋码大小: 'shoeSize',
+                  },
                   (() => {
                     switch (appStore.HOSPITAL_ID) {
                       case 'gxjb': 
-                      return {
-                        工作护理单元: 'deptName',
-                        家庭住址: 'address'
-                      }
+                        return {
+                          工作护理单元: 'deptName',
+                          家庭住址: 'address'
+                        }
+                      case 'sdlj': 
+                        return {
+                          冬季鞋码大小: 'winter_shoe_size',
+                        }
                       default:
                         return {
                           工作护理单元: 'deptName',
@@ -388,36 +396,66 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           empNo: row.empNo || row.commiterNo,
           type: 'nurseWHGoScienceCourse',
           title: '审核参与信息',
-          tableFormat: [
-            {
-              参于课题名称: `goName`,
-              课题主持人姓名: `hostName`
-            },
-            {
-              课题主持人工号: `hostNo`,
-              参与排名: `goRank`
-            },
-            {
-              课题来源: `courseSource`,
-              课题级别: `courseLevel`
-            },
-            {
-              承担单位: `unit`,
-              课题批文号: `approvalNumber`
-            },
-            {
-              登记号: `registerNumber`,
-              授予单位: `grantUnit`
-            },
-            {
-              完成情况: `courseCompletion`,
-              开始时间: `startDate`
-            },
-            {
-              截止时间: `endDate`,
-              时间: `completionDate`
+          tableFormat: (() => {
+            switch (appStore.HOSPITAL_ID) {
+              case 'sdlj': 
+                return [{
+                  参于课题名称: `goName`,
+                  课题主持人姓名: `hostName`
+                },
+                {
+                  参与排名: `goRank`,
+                  课题来源: `courseSource`,
+                },
+                {
+                  课题级别: `courseLevel`,
+                  承担单位: `unit`,
+                },
+                {
+                  课题批文号: `approvalNumber`,
+                  登记号: `registerNumber`,
+                },
+                {
+                  授予单位: `grantUnit`,
+                  完成情况: `courseCompletion`,
+                },
+                {
+                  开始时间: `startDate`,
+                  截止时间: `endDate`,
+                }]
+              default: 
+                return [
+                  {
+                    参于课题名称: `goName`,
+                    课题主持人姓名: `hostName`
+                  },
+                  {
+                    课题主持人工号: `hostNo`,
+                    参与排名: `goRank`
+                  },
+                  {
+                    课题来源: `courseSource`,
+                    课题级别: `courseLevel`
+                  },
+                  {
+                    承担单位: `unit`,
+                    课题批文号: `approvalNumber`
+                  },
+                  {
+                    登记号: `registerNumber`,
+                    授予单位: `grantUnit`
+                  },
+                  {
+                    完成情况: `courseCompletion`,
+                    开始时间: `startDate`
+                  },
+                  {
+                    截止时间: `endDate`,
+                    时间: `completionDate`
+                  }
+                ]
             }
-          ],
+          })(),
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
               return {
@@ -662,9 +700,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTitle',
           title: '审核职称变动信息',
           tableFormat: [
-            {
+            appStore.HOSPITAL_ID !== 'sdlj' ? {
               原职称名称: `titleOld`,
               现职称名称: `titleNew`
+            } : {
+              职称名称: `titleNew`
             },
             {
               考取专业资格证书时间: `winNewTiTleDate`,
@@ -682,7 +722,35 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-
+    case '职务变动':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHChanges',
+          title: '审核职务变动信息',
+          tableFormat: [
+            {
+              科室: `deptName`,
+              职务: `position`
+            },
+            {
+              开始时间: `startDate`,
+              结束时间: `endDate`
+            }
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
+      break  
     case '岗位变动':
       {
         globalModal.auditModal.show({
@@ -693,11 +761,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核岗位变动信息',
           tableFormat: [
             {
-              原工作科室: `oldDeptName`,
+              原工作科室: `${appStore.HOSPITAL_ID === 'sdlj' ? 'oldDeptCode' : 'oldDeptName'}`,
               现工作科室: `newDeptName`
             },
             {
-              现科室隶属部门: `deptBeDepartment`,
+              ...appStore.HOSPITAL_ID === 'sdlj' ? {} : {现科室隶属部门: `deptBeDepartment`},
               转岗时间: `transferDate`
             }
           ],
@@ -725,8 +793,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               原层级名称: `nursehierarchyOld`,
               现层级名称: `nursehierarchyNew`
             },
-            {
+            appStore.HOSPITAL_ID !== 'sdlj' ? {
               现层级开始时间: `startDate`
+            }: {
+              开始时间: `startDate`,
+              结束时间: `endDate`
             }
           ],
           fileData: row.urlImageOne
