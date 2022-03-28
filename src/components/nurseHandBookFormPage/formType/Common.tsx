@@ -217,6 +217,7 @@ export default function Common(props: Props) {
                 'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
                 'cursor': col.click ? 'pointer' : col.key == "serialNumber" ? 'no-drop' : 'auto',
+                'display': (col.style && col.style.textAlign=='left' &&  col.style.verticalAlign=='top') ? '' : '-webkit-box',
               }}
               title={getCellTitle(col)}
               suppressContentEditableWarning
@@ -244,7 +245,7 @@ export default function Common(props: Props) {
               'boxPack': (col.style && col.style.textAlign) ? textAlignWay[col.style.textAlign] : 'center',
               'WebkitBoxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
               'boxAlign': (col.style && col.style.verticalAlign) ? verticalAlignWay[col.style.verticalAlign] : 'center',
-              display: col.hidden ? 'none':'',
+              'display': col.hidden ? 'none':(col.style && col.style.textAlign=='left')?'':'-webkit-box',
             }}
             key={`${colIdx}`}
           >
@@ -277,7 +278,7 @@ const Wrapper = styled.div`
   outline: none;
   margin-right:-1px; 
   margin-bottom:-1px;
-  display: -webkit-box;
+  /* display: -webkit-box; */
   display: box;
   /* -webkit-box-align: center; 
   box-align: center; */
