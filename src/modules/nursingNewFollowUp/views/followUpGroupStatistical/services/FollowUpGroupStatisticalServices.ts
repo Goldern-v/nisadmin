@@ -8,16 +8,12 @@ export default class  FollowUpGroupStatisticalServices extends BaseApiService {
     return this.get(`/user/nursingUnit/all`);
   }
   //获取随访小组分页信息
-  public queryNursePageList(obj: PageOptions | any) {
-    return this.post(`/visit/visitTeam/queryNursePageList`, obj)
+  public queryPageList(obj: PageOptions | any) {
+    return this.post(`/visit/visitPlan/queryPageList`, obj)
   }
   //获取全部随访小组列表
-  public visitTeam(obj: PageOptions | any) {
-    return this.post(`/visit/visitTeam/getAllList`, obj)
-  }
-  //获取全部随访小组分页
-  public queryPageList(obj: PageOptions | any) {
-    return this.post(`/visit/visitTeam/queryPageList`, obj)
+  public getUserListByWardCode(obj: PageOptions | any) {
+    return this.post(`/visit/visitPlan/getUserListByWardCode`, obj)
   }
   //分配随访小组
   public setVisitTeam(obj: PageOptions | any) {
@@ -27,9 +23,17 @@ export default class  FollowUpGroupStatisticalServices extends BaseApiService {
   public delete(obj: PageOptions | any) {
     return this.post(`/visit/visitTeam/delete`, obj)
   }
-  //添加小组
-  public saveOrUpdate(obj: PageOptions | any) {
-    return this.post(`/visit/visitTeam/saveOrUpdate`, obj)
+  //随访数统计(折线图)
+  public getNumberStatistics(obj: PageOptions | any) {
+    return this.post(`/visit/visitPlan/getNumberStatistics`, obj)
+  }
+  //随访数统计(柱形图)
+  public getSituationStatistics(obj: PageOptions | any) {
+    return this.post(`/visit/visitPlan/getSituationStatistics`, obj)
+  }
+  //随访数统计(柱形图)
+  public getSituationStatisticsList(obj: PageOptions | any) {
+    return this.post(`/visit/visitPlan/getSituationStatisticsList`, obj)
   }
 }
 
