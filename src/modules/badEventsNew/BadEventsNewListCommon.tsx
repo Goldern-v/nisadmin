@@ -197,7 +197,13 @@ export default observer(function BadEventNewList() {
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
 
-    if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+    if (['lcey'].includes(appStore.HOSPITAL_ID)) {
+      api.getEvetTypetList(deptCode).then(res => {
+        let data = res.data;
+        if (data instanceof Array)
+          setEventTypeList(data);
+      });
+    } else {
       api.getBadEventTypeList().then(res => {
         let data = res.data.map((item: any) => {
           return {
@@ -207,14 +213,7 @@ export default observer(function BadEventNewList() {
         })
         setEventTypeList(data);
       })
-    } else {
-      api.getEvetTypetList(deptCode).then(res => {
-        let data = res.data;
-        if (data instanceof Array)
-          setEventTypeList(data);
-      });
     }
-
   }
 
   const getEventList = (newQuery?: any) => {

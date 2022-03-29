@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, Place } from 'src/components/common'
-import { Select, Spin } from 'src/vendors/antd'
+import { Select, Spin, message } from 'src/vendors/antd'
 import FollowUpGroupPlanServices from './services/FollowUpGroupPlanServices'
 import moment from 'moment'
 import { appStore, authStore } from 'src/stores'
@@ -91,7 +91,6 @@ export default function FollowUpGroupPlan(props: any) {
         }
       }
     }
-    console.log(arr);
     setRowList(arr)
   }
   
@@ -100,7 +99,7 @@ export default function FollowUpGroupPlan(props: any) {
   const [deptList, setDeptList] = useState([] as any)
   //导出
   const onExport = (record: any) => {
-    console.log(rowList);
+    message.error("未开发！请联系开发人员");
   }
  
   const getData = () => {
