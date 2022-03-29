@@ -137,6 +137,10 @@ export default function AddShiftModal(props: Props) {
   };
 
   const onSave = async () => {
+    if (appStore.HOSPITAL_ID == 'jmfy' && !authStore.isDepartment) {
+      message.warning("没有权限修改");
+      return
+    }
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
