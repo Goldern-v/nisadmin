@@ -27,6 +27,7 @@ import Monograph from './views/Monograph'
 import ContinuingEducation from './views/ContinuingEducation'
 import Leave from './views/Leave'
 import PositionChange from './views/PositionChange'
+import jobChange from './views/jobChange'
 import RankChange from './views/RankChange'
 // import PostChange from './views/PostChange'
 import WardInnovate from './views/WardInnovate'
@@ -132,6 +133,11 @@ const ROUTE_LIST = [
     component: PositionChange,
     name: '职称变动'
   },
+  ...appStore.HOSPITAL_ID === 'sdlj' ? [{
+    type: 'jobChange',
+    component: jobChange,
+    name: '职务变动'
+  }] : [],
   {
     type: 'RankChange',
     component: RankChange,
@@ -142,12 +148,11 @@ const ROUTE_LIST = [
   //   component: PostChange,
   //   name: '岗位变动'
   // },
-  {
+  ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
     type: 'OrganizationChange',
     component: OrganizationChange,
     name: '编制变动'
-  },
-
+  }] : [],
   // {
   //   type: 'Leave',
   //   component: Leave,

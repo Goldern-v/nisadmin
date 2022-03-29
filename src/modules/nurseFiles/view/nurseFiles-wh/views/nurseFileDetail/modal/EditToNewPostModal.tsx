@@ -10,7 +10,8 @@ import {
   Select,
   Row,
   Col,
-  message
+  message,
+  AutoComplete
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -40,7 +41,7 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   oldDeptCode: val => !!val || "原工作科室",
   newDeptCode: val => !!val || "现工作科室",
-  deptBeDepartment: val => !!val || "现科室隶属部门",
+  ...appStore.HOSPITAL_ID !== 'sdlj' ? {deptBeDepartment: val => !!val || "现科室隶属部门"} : {},
   transferDate: val => !!val || "请填写转岗时间"
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -148,7 +149,7 @@ export default function EditToNewPostModal(props: Props) {
         onChange={onFieldChange}
       >
         <Row>
-          <Col span={24}>
+          {appStore.HOSPITAL_ID !== 'sdlj' ? <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
                 {list.map((item: any) => (
@@ -158,7 +159,19 @@ export default function EditToNewPostModal(props: Props) {
                 ))}
               </Select>
             </Form.Field>
-          </Col>
+          </Col> : 
+          <Col span={24}>
+            <Form.Field label={`原工作科室`} name="oldDeptCode" required>
+              {/* <Input placeholder='请填写原工作科室' /> */}
+              <AutoComplete
+                dataSource={list.map((item: any) => item.name)}
+                placeholder="选择原工作科室"
+                filterOption={(inputValue: any, option: any) =>
+                  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                }
+              />
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`现工作科室`} name="newDeptCode" required>
               <Select placeholder="选择现工作科室">
@@ -172,7 +185,7 @@ export default function EditToNewPostModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
             <Form.Field
               label={`现科室隶属部门`}
               name="deptBeDepartment"
@@ -188,7 +201,7 @@ export default function EditToNewPostModal(props: Props) {
                   ))}
               </Select>
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`转岗时间`} name="transferDate" required>
               <DatePicker />

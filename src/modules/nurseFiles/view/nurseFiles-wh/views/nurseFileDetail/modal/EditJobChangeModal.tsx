@@ -32,6 +32,8 @@ import service from "src/services/api";
 import emitter from "src/libs/ev";
 import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
 import YearPicker from "src/components/YearPicker";
+import SelectOrAutoInput from "../components/SelectOrAutoInput";
+
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   data?: any;
@@ -44,10 +46,10 @@ export interface Props extends ModalComponentProps {
 // titleOld: data.titleOld,
 // titleNew: data.titleNew,
 const rules: Rules = {
-  ...appStore.HOSPITAL_ID !== 'sdlj' ? {titleOld: val => !!val || "请填写原职称名称",
-  titleNew: val => !!val || "请填写现职称名称"} : {titleNew: val => !!val || "请填写职称名称"},
-  winNewTiTleDate: val => !!val || "请选择考取专业技术资格证书时间",
-  employNewTiTleDate: val => !!val || "请选择聘用专业技术资格时间"
+  startDate: val => !!val || "请选择开始时间",
+  endDate: val => !!val || "请选择结束时间",
+  deptName: val => !!val || "请选择科室",
+  position: val => !!val || "请选择职务"
 };
 export default function EditPositionChangeModal(props: Props) {
   const [title, setTitle] = useState("");
@@ -56,19 +58,20 @@ export default function EditPositionChangeModal(props: Props) {
   let refForm = React.createRef<Form>();
 
   const onFieldChange = () => {};
+  const [list, setList]: any = useState([]);
 
   const onSave = async (sign: boolean) => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: "",
-      urlImageOne: ""
+      // auditedStatus: "",
+      // urlImageOne: ""
     };
-    if ((authStore.user && authStore.user.post) == "护长") {
-      obj.auditedStatus = "waitAuditedNurse";
-    } else if ((authStore.user && authStore.user.post) == "护理部") {
-      obj.auditedStatus = "waitAuditedDepartment";
-    }
+    // if ((authStore.user && authStore.user.post) == "护长") {
+    //   obj.auditedStatus = "waitAuditedNurse";
+    // } else if ((authStore.user && authStore.user.post) == "护理部") {
+    //   obj.auditedStatus = "waitAuditedDepartment";
+    // }
     if (signShow === "修改") {
       Object.assign(obj, { id: data.id });
     }
@@ -78,17 +81,11 @@ export default function EditPositionChangeModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning("数据不能为空");
     }
-    // value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    value.winNewTiTleDate &&
-      (value.winNewTiTleDate = value.winNewTiTleDate.format("YYYY-MM-DD"));
-    value.employNewTiTleDate &&
-      (value.employNewTiTleDate = value.employNewTiTleDate.format(
-        "YYYY-MM-DD"
-      ));
-    // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
-    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(","));
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    // value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(","));
     nurseFilesService
-      .commonSaveOrUpdate("nurseWHTitle", { ...obj, ...value, sign })
+      .commonSaveOrUpdate("nurseWHChanges", { ...obj, ...value, sign })
       .then((res: any) => {
         message.success("保存成功");
         props.getTableData && props.getTableData();
@@ -102,22 +99,19 @@ export default function EditPositionChangeModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        // startDate: data.startDate ? moment(data.startDate) : null,
-        winNewTiTleDate: data.winNewTiTleDate
-          ? moment(data.winNewTiTleDate)
-          : null,
-        employNewTiTleDate: data.employNewTiTleDate
-          ? moment(data.employNewTiTleDate)
-          : null,
-        titleOld: data.titleOld,
-        titleNew: data.titleNew,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : []
+        startDate: data.startDate ? moment(data.startDate) : null,
+        endDate: data.endDate ? moment(data.endDate) : null,
+        deptName: data.deptName,
+        position: data.position,
+        // urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : []
       });
     }
     if (signShow === "修改") {
-      setTitle("修改职称变动奖励");
+      setTitle("修改职务变动信息");
+      setList(authStore.deptList);
     } else if (signShow === "添加") {
-      setTitle("添加职称变动信息");
+      setTitle("添加职务变动信息");
+      setList(authStore.deptList);
     }
   }, [visible]);
 
@@ -147,65 +141,39 @@ export default function EditPositionChangeModal(props: Props) {
         onChange={onFieldChange}
       >
         <Row>
+          <Col span={24}>
+            <Form.Field label={`科室`} name="deptName" required>
+              {/* <Input placeholder='请填写原工作科室' /> */}
+              <AutoComplete
+                dataSource={list.map((item: any) => item.name)}
+                placeholder="选择科室"
+                filterOption={(inputValue: any, option: any) =>
+                  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                }
+              />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`职务`} name="position" required>
+              <SelectOrAutoInput dict="职务" />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`开始时间`} name='startDate' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`结束时间`} name='endDate' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          
           {/* <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col> */}
-          {/* <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col> */}
-          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
-            <Form.Field label={`原职称名称`} name="titleOld" required>
-              <Select>
-                {nurseFileDetailViewModal
-                  .getDict("技术职称")
-                  .map((item: any, index: number) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Field>
-          </Col>}
-          <Col span={24}>
-            <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? '职称名称' : `现职称名称`} name="titleNew" required>
-              <Select>
-                {nurseFileDetailViewModal
-                  .getDict("技术职称")
-                  .map((item: any, index: number) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field
-              label={`考取专业技术资格证书时间`}
-              name="winNewTiTleDate"
-              required
-            >
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field
-              label={`聘用专业技术资格时间`}
-              name="employNewTiTleDate"
-              required
-            >
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
             <Form.Field label={`附件`} name="urlImageOne">
               <MultipleImageUploader text="添加图片" />
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </Modal>

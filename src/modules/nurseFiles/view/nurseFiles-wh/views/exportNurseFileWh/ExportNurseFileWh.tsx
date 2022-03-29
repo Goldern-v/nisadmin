@@ -235,7 +235,7 @@ export default function ExportNurseFileWh(props: Props) {
           title: '课题主持人姓名',
           dataKey: 'hostName',
         },
-        {
+        appStore.HOSPITAL_ID !== 'sdlj' && {
           title: '课题主持人工号',
           dataKey: 'hostNo',
         },
@@ -630,17 +630,17 @@ export default function ExportNurseFileWh(props: Props) {
             key={tableIdx}
           >
             <colgroup>
-              {cfg.columns.map((column: any, columnIdx: number) => (
+              {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
                 <col width={column.col || ''} key={`${tableIdx}-${columnIdx}-col`} />
               ))}
             </colgroup>
             <thead></thead>
             <tbody>
               <tr className="main-title-row">
-                <td colSpan={cfg.columns.length}>{cfg.mainTitle}</td>
+                <td colSpan={cfg.columns.filter((it:any) => it != false).length}>{cfg.mainTitle}</td>
               </tr>
               <tr className="title-row">
-                {cfg.columns.map((column: any, columnIdx: number) => (
+                {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
                   <td key={`${tableIdx}-${columnIdx}-title`}>{column.title}</td>
                 ))}
               </tr>
@@ -648,7 +648,7 @@ export default function ExportNurseFileWh(props: Props) {
                 <tr
                   className="content-row"
                   key={`${tableIdx}-${itemIdx}-row`}>
-                  {cfg.columns.map((column: any, columnIdx: number) => (
+                  {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
                     <td
                       key={`${tableIdx}-${columnIdx}-${itemIdx}-content`}>
                       {item[column.dataKey]}

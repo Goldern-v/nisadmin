@@ -57,7 +57,7 @@ export default observer(function PersonWinning() {
     //   width: 120,
     //   align: 'center'
     // },
-    {
+    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
       title: '原职称名称',
       dataIndex: 'titleOld',
       key: 'titleOld',
@@ -70,7 +70,15 @@ export default observer(function PersonWinning() {
       key: 'titleNew',
       width: 100,
       align: 'center'
-    },
+    }] : [
+      {
+        title: '职称名称',
+        dataIndex: 'titleNew',
+        key: 'titleNew',
+        width: 100,
+        align: 'center'
+      }
+    ],
     {
       title: '考取专业技术资格证书时间',
       dataIndex: 'winNewTiTleDate',

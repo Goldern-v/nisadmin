@@ -67,10 +67,16 @@ export default function PageContent(props: Props) {
     return option
   }
   const getBolatuOption = (data: any) => {
-    let value1 = Object.values(data.dataMap).map((item: any) => item['例数'])
-    let value2 = Object.values(data.dataMap).map((item: any) => item['累计百分比'].split('%')[0])
-    console.log(data);
-
+    let title:any = []
+    let value2:any = []
+    let value1 = Object.values(data.dataMap).filter((item: any,index:any) => {
+      if(item['例数']!=0) {
+        value2.push(Object.values(data.dataMap).map((item: any) => item['累计百分比'].split('%')[0])[index])
+        title.push(data.keys[index])
+      }
+      return item['例数']!=0
+    }).map((item:any)=>item['例数'])
+    
     return {
       title: {
         text: ''
@@ -98,7 +104,7 @@ export default function PageContent(props: Props) {
       xAxis: [
         {
           type: 'category',
-          data: data.keys,
+          data: title,
           axisLabel: {
             interval: 0,
             rotate: 40
@@ -106,7 +112,7 @@ export default function PageContent(props: Props) {
         }, {
           type: 'category',
           show: false,
-          data: data.keys
+          data: title
         }],
       yAxis: [{
         type: 'value',

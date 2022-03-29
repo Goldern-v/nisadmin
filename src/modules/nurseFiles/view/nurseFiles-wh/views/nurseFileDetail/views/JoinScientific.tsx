@@ -57,7 +57,7 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
-    {
+    appStore.HOSPITAL_ID !== 'sdlj' && {
       title: '课题主持人工号',
       dataIndex: 'hostNo',
       key: 'hostNo',
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    {
+    appStore.HOSPITAL_ID !== 'sdlj' && {
       title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',
