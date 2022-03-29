@@ -20,6 +20,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'http://119.145.71.86:9801' // 南医三正式
       // return 'http://119.145.71.86:9098' // 南医三测试
       // return 'https://info.cr-health.com:20205' //公司-南医三测试-外网
+      return "http://192.168.20.10:9091"; //伟贤本地
       return "http://192.168.1.54:8062"; //公司-南医三测试-内网
     /** 武汉 */
     case "wh":

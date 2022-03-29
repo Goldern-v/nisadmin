@@ -175,18 +175,20 @@ export default observer(function FormPannel() {
         <div className="label">合格项数:</div>
         <Input className="content" disabled value={qcModel.yxGradeObj.right} />
       </div>
-      <div className="item">
-        <div className="label">床号:</div>
-        <div className={checkClass('bedLabel')}>
-          <Input
-            placeholder="请输入床号"
-            value={master.bedLabel}
-            onChange={(e: any) => {
-              qcModel.setMasterErrObj('bedLabel', false)
-              qcModel.setMaster({ ...master, bedLabel: e.target.value })
-            }} />
+      {baseInfo.isBedNumber !== '否' &&
+        <div className="item">
+          <div className="label">床号:</div>
+          <div className={checkClass('bedLabel')}>
+            <Input
+              placeholder="请输入床号"
+              value={master.bedLabel}
+              onChange={(e: any) => {
+                qcModel.setMasterErrObj('bedLabel', false)
+                qcModel.setMaster({ ...master, bedLabel: e.target.value })
+              }} />
+          </div>
         </div>
-      </div>
+      }
       <div className="item">
         <div className="label">合格率:</div>
         <Input className="content" disabled value={qcModel.yxGradeObj.rate + '%'} />
@@ -232,7 +234,7 @@ export default observer(function FormPannel() {
 
     </div>
     <QuestionCon>
-    {['whyx'].includes(appStore.HOSPITAL_ID) && <div className='titleRemind'>扣分标准：A级问题扣5分，B->A问题扣4分，B级问题扣3分，C级问题扣2分</div>}
+    {['whyx'].includes(appStore.HOSPITAL_ID) && <div className='titleRemind'>扣分标准：A级问题扣5分，B-{'>'}A问题扣4分，B级问题扣3分，C级问题扣2分</div>}
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
         <QcItemGroup
           itemGroup={itemGroup}
