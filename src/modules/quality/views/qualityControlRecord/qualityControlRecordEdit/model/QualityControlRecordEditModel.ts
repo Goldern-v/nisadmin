@@ -82,6 +82,7 @@ class QualityControlRecordEditModel {
     qcCode: '',
     useSubItemFixedScore: false,
     isPatientNumber: '', // 判断是否隐藏病案号 by亚心
+    isBedNumber: '',
   } as any
   //加载状态
   @observable loading = false
@@ -218,7 +219,8 @@ class QualityControlRecordEditModel {
               useScore: template.useScore || false,
               qcCode: template.qcCode || '',
               useSubItemFixedScore: template.useSubItemFixedScore,
-              isPatientNumber: template.isPatientNumber || '是'
+              isPatientNumber: template.isPatientNumber || '是',
+              isBedNumber: template.isBedNumber || '是',
             }
           }
 
@@ -275,7 +277,8 @@ class QualityControlRecordEditModel {
                 useScore: master.useScore || false,
                 qcCode: master?.qcCode || '',
                 useSubItemFixedScore: master.useSubItemFixedScore,
-                isPatientNumber: master.isPatientNumber || '是'
+                isPatientNumber: master.isPatientNumber || '是',
+                isBedNumber: master.isBedNumber || '是',
               }
             }
 
@@ -648,7 +651,7 @@ class QualityControlRecordEditModel {
           if (this.baseInfo.useScore) {
             // if (item.fixedScore) totalScore += item.fixedScore;
 
-            if (!(item.qcItemValue === '是')) deductScore += Number(item.fixedScore);
+            if (['否', '', undefined].findIndex(v => v == item.qcItemValue)> -1) deductScore += Number(item.fixedScore);
           }
         }
     }
