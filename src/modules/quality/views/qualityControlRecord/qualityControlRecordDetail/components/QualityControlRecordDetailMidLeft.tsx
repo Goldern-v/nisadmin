@@ -190,6 +190,11 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
               nys: <span></span>,
               QCTP209: <span></span>,
               gzsrm: <span></span>,
+              whyx: detailData?.master?.isBedNumber === '是' 
+                ? <div>
+                    床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
+                  </div> 
+                : <span></span>,
               other: <div>
                 床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
               </div>
@@ -199,7 +204,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           {appStore.hisMatch({
             map: {
               gzsrm: <span></span>,
-              whyx: detailData.isPatientNumber === '是' ? <div>病案号：{messageBoxData.inpNo}</div> : <span></span>,
+              whyx: detailData?.master?.isPatientNumber === '是' ? <div>病案号：{messageBoxData.inpNo}</div> : <span></span>,
               other: <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
             },
             currentHospitalId: qcMatchCode
@@ -325,7 +330,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     >
                       否
                     </Radio>
-                    {!['gzsrm', 'whyx'].includes(appStore.HOSPITAL_ID) && <Radio
+                    {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio
                       value={"不适用"}
                       style={{ marginLeft: "20px", marginRight: "30px" }}
                     >
