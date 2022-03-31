@@ -500,7 +500,6 @@ const BadEventReportViewGzsrm = lazy(() =>
 
 // 护理随访整体模块
 const NursingFollowUp = lazy(() => import("src/modules/nursingFollowUp/NursingFollowUpRouter"))
-const NursingNewFollowUp = lazy(() => import("src/modules/nursingNewFollowUp/NursingFollowUpRouter"))//开发模式
 // 护理随访详情
 const FollowUpDetailView = lazy(() => import("src/modules/nursingFollowUp/views/followUpDetailView/FollowUpDetailView"))
 // 护士长满意度调查详情
@@ -955,7 +954,6 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/nursingFollowUp", NursingFollowUp, layouts.MainLayout),
-  setLayout("/nursingNewFollowUp", NursingNewFollowUp, layouts.MainLayout),//开发模式
   setLayout("/nursingFollowUpDetail", FollowUpDetailView, layouts.MainLayout),
   {
     path: "/nurseFile",
