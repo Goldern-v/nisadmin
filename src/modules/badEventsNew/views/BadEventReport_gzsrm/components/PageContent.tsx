@@ -15,7 +15,6 @@ export default function PageContent(props: Props) {
     //数据改变时将canvas的画面用img保存用于打印
     let timer = setTimeout(() => {
       let canvasEl = document.querySelectorAll('canvas') as any
-      console.log(canvasEl)
       if (canvasEl.length) {
         let arr = []
         for (let i = 0; i < canvasEl.length; i++) {
@@ -75,7 +74,10 @@ export default function PageContent(props: Props) {
         title.push(data.keys[index])
       }
       return item['例数']!=0
-    }).map((item:any)=>item['例数'])
+    })
+    .map((item:any)=>item['例数'])
+    .sort((item1:any,item2:any)=>Number(item1) - Number(item2))
+    
     value2[0] = 0 // 贵州需求：第一个从0%开始
     return {
       title: {
@@ -227,5 +229,8 @@ const Wrapper = styled.div`
   }
   .ant-table-row{
     background:rgba(108, 183, 252,.3);
+  }
+  .second-content-bolatu-bolatu{
+    text-indent:0;
   }
 `

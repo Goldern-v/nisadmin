@@ -33,8 +33,7 @@ export default function Common(props: Props) {
   // const [copyRow, setCopyRow] = useState({})
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
-    item.value = e.currentTarget.innerHTML
-    scheduleStore.setIsSave(true)
+
   }
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -169,7 +168,10 @@ export default function Common(props: Props) {
           return "IE";
       }; //判断是否IE浏览器
   }
+  // input事件会有光标位置错乱问题，改为失焦事件
   const onBlur = (e: any, row: any, col: any) => {
+    col.value = e.currentTarget.innerHTML
+    scheduleStore.setIsSave(true)
   }
   let textAlignWay = {
     "left": "start",
