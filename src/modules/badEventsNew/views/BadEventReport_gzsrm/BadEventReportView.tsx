@@ -32,7 +32,8 @@ export default observer(function NursingReportDetailView() {
         let keys = Object.keys(item.dataMap)
         let dataArr = keys.filter((dataMapItem: any) => item.dataMap[dataMapItem]['例数'] != 0).map((dataMapItem: any) => {
           return { name: dataMapItem, ...item.dataMap[dataMapItem], value: item.dataMap[dataMapItem]['例数'] }
-        })
+        }).sort((item1:any,item2:any)=>Number(item1['例数']) - Number(item2['例数']))
+        keys = dataArr.map(item=>item.name)
         return { keys, dataArr, ...JSON.parse(JSON.stringify(item)) }
       })
       setPageData(list)

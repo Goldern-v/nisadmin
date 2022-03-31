@@ -80,7 +80,15 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
         }
-      } else if (master[x] instanceof Array) {
+      } else if(x == 'bedLabel') {
+        if (appStore.HOSPITAL_ID == 'whyx'  && baseInfo.isBedNumber == '否' ) {
+
+        } else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
+          qcModel.setMasterErrObj(x, true);
+          masterErr = true;
+        }
+      }
+       else if (master[x] instanceof Array) {
         if (master[x].length <= 0) {
           if (Object.keys(masterErrObj).indexOf(x) >= 0) {
             qcModel.setMasterErrObj(x, true);

@@ -943,6 +943,16 @@ export default observer(function 敏感指标登记本(props: Props) {
                   {signItem.title}签名
                 </Button>
               ))}
+               {appStore.HOSPITAL_ID==='whyx'? (
+                  <Button
+                      disabled={
+                        (pageLoading ||
+                        selectedRowKeys.length <= 0)
+                      }
+                      type="primary"
+                      onClick={() => handleCopyCreateRow()}>
+                      复制新增
+                    </Button>):''}
               <Button
                 disabled={
                   pageLoading ||
