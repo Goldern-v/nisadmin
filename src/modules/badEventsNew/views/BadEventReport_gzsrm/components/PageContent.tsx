@@ -76,7 +76,6 @@ export default function PageContent(props: Props) {
       return item['例数']!=0
     })
     .map((item:any)=>item['例数'])
-    .sort((item1:any,item2:any)=>Number(item1) - Number(item2))
     
     value2[0] = 0 // 贵州需求：第一个从0%开始
     return {
