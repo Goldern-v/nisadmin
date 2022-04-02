@@ -16,17 +16,30 @@ export interface Props {
 }
 export default function EidtModal(props: any) {
   let [query, setQuery] = useState({
-    pageSize: 20,
+    pageSize: 10,
+    pageIndex: 1
+  })
+  let [query1, setQuery1] = useState({
+    pageSize: 10,
     pageIndex: 1
   })
   const { visible, onOk, onCancel, isAdd, params, isOtherEmp } = props
+  const [selectedRowKeys, setSelectedRowKeys]:any = useState([])
   const [loading, setLoading] = useState(false)
   let user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const [deptSelect, setDeptSelect] = useState(user.deptCode)
   const [deptList, setDeptList] = useState([] as any)
   const [pageLoading, setPageLoading] = useState(false)
+  const [pageLoading1, setPageLoading1] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
+  const [dataTotal1, setDataTotal1] = useState(0)
   const [tableData, setTableData] = useState([])
+  const [memberTableData, setMemberTableData] = useState([])
+  const [isShowInput, setIsShowInput] = useState(false)
+  const [focusTeamName, setfocusTeamName] = useState('')
+  const [rowId, setRowId] = useState('')
+  const [teamId, setTeamId] = useState('')
+
   let [c, setC] = useState(0);
   
   useEffect(() => {
@@ -50,28 +63,103 @@ export default function EidtModal(props: any) {
     query.pageSize,
     deptSelect,
   ])
+
+  useEffect(() => {
+    if(c == 0){
+      getMemberData(teamId);
+      setC(c++)
+    }
+  }, [
+    query1.pageIndex,
+    query1.pageSize,
+    deptSelect,
+  ])
+
+  useEffect(() => {
+    getMemberData(teamId)
+  }, [teamId])
+
+  useEffect(() => {
+    setMemberTableData([])
+    setRowId("")
+    setTeamId("")
+  }, [visible])
+
   
   const getData = () => { 
     setPageLoading(true)
     api.queryPageList({
-        ...query,
-        wardCode: deptSelect,
-      })
+      ...query,
+      wardCode: deptSelect,
+    })
       .then((res) => {
         setPageLoading(false)
         setDataTotal(res.data.totalCount)
         setTableData(res.data.list)
       }, err => setPageLoading(false))
   }
+  //获取小组人员表格数据
+  const getMemberData = (teamId:any) => { 
+    setPageLoading1(true)
+    api.queryPageListByTeamId({
+      ...query1,
+      teamId: teamId,
+      wardCode: deptSelect,
+    })
+      .then((res) => {
+        setPageLoading1(false)
+        setDataTotal1(res.data.totalCount)
+        setMemberTableData(res.data.list)
+        let selectedArr:any = []
+        res.data.list.map((item:any,index:any)=>{
+          if(item.isChoose == 1){
+            selectedArr.push(item.key)
+          }
+        })
+        setSelectedRowKeys(selectedArr)
+      }, err => setPageLoading1(false))
+  }
+
   const addFollowUpGroup = () => {
-    let tableArr: any = [...tableData,{teamId :"", teamName:"",wardCode:deptSelect}]
+    setDataTotal(dataTotal+1)
+    let tableArr: any = [{teamId :"", teamName:"",wardCode:deptSelect},...tableData]
     setTableData(tableArr)
+  }
+
+  //添加小组成员
+  const addFollowUpMember = () => {
+    let empNoList:any = []
+    selectedRowKeys.map((item:any,index:any)=>{
+      memberTableData.map((col:any,colIdx:any)=>{
+        if(col.key == item){
+          empNoList.push(col.empNo)
+        }
+      })
+    })
+    api.setUserVisitTeam({
+      teamId: teamId,
+      empNoList: empNoList
+    })
+      .then((res) => {
+        setPageLoading1(false)
+        message.success('添加成功')
+      }, err => setPageLoading1(false))
   }
   const handlePageSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
+  }
+
+  const handlePageSizeChange1 = (current: number, size: number) => {
+    setQuery1({ ...query1, pageSize: size, pageIndex: 1 })
+  }
+  const handlePageChange1 = (current: number) => {
+    setQuery1({ ...query1, pageIndex: current })
+  }
+  const handleRowSelect = (rowKeys: string[] | number[], row: any ) => {
+    setSelectedRowKeys(rowKeys)
   }
   //删除
   const onDelete = (record: any, index: any) => {
@@ -94,7 +182,37 @@ export default function EidtModal(props: any) {
       }
     })
   }
+  const onClickRow = (record:any) => {
+    return {
+      onClick: () => {
+        //选中行效果
+        setRowId(record.teamId)
+        if(!record.teamName){
+          setMemberTableData([])
+          return message.error('小组名称不能为空！')
+        }
+        setTeamId(record.teamId)
+      },
+    }
+  }
+  const setRowClassName = (record:any) => {
+    return record.teamId === rowId ? 'clickRowStyl' : ''
+  }
+  // 取代失焦事件,用来关闭弹窗
+  const closeSelect = (e: any) => {
+    let targetClass = [...e.target.classList]
+    
+    if (!targetClass.includes("show_input")) {
+      setIsShowInput(false)
+    }
+  }
+  const dbClick = (record:any) => {
+    setfocusTeamName(record.teamName)
+    setIsShowInput(true)
+  }
   const handleOk = () => {
+    console.log(selectedRowKeys);
+    console.log(tableData);
     if (deptSelect == "") {
       message.error('请先选择护理单元！')
       return
@@ -106,8 +224,8 @@ export default function EidtModal(props: any) {
         visitTeamList:tableData
       })
       .then((res) => {
-        message.success('操作成功')
-        onOk && onOk()
+        message.success('操作成功！')
+        getData()
     }, )
     }else {
       message.error('小组名称不能为空！')
@@ -131,15 +249,22 @@ export default function EidtModal(props: any) {
       width: 100,
       render: (text: string, record: any) => {
         return (
-          <div>
-            <Input
-              style={{ width: 170 }}
+          <div onDoubleClick={() => dbClick(record)} onBlur={() => setIsShowInput(false)} style={{ height: "30px", cursor: 'pointer'}}>
+            {!isShowInput&&<div style={{ height: "30px", textAlign: "center", lineHeight: "30px"}}>{record.teamName}</div>}
+            {isShowInput&&<Input
+              style={{ height: 29, textAlign:'center', fontSize:'13px' }}
               value={record.teamName}
+              className={record.teamName === focusTeamName ? 'show_input' : ''}
+              onBlur={() => {
+                setIsShowInput(false)
+                handleOk()
+              }}
               onChange={(e: any) => {
                 record.teamName = e.currentTarget.value
                 setTableData([...tableData])
               }}
-            />
+            />}
+
           </div>
         )
       }
@@ -150,23 +275,48 @@ export default function EidtModal(props: any) {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onDelete(record,index)}>删除</span>
+            <span style={{color:"#ed7d51"}} onClick={() => onDelete(record,index)}>删除</span>
           </DoCon>
         )
       }
     }
   ]
+  const columns2: any = [
+    {
+      title: '工号',
+      dataIndex: 'empNo',
+      key: 'empNo',
+      align: 'center',
+      width: 50,
+    },
+    {
+      title: '姓名',
+      dataIndex: 'empName',
+      key: 'empName',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '职务',
+      dataIndex: 'job',
+      key: 'job',
+      align: 'center',
+      width: 80,
+    }
+  ]
   return <Modal
     title={'设置随访小组'}
-    width={500}
+    width={800}
     centered
     okText={'保存'}
     confirmLoading={loading}
-    afterClose={() => getData()}
     visible={visible}
-    onOk={handleOk}
+    onOk={() => {
+      addFollowUpMember()
+      onOk && onOk()
+    }}
     onCancel={() => onCancel()}>
-    <Wrapper>
+    <Wrapper onClickCapture={closeSelect}>
       <span className='ml-20'>护理单元:</span>
       <Select
         value={deptSelect}
@@ -179,29 +329,84 @@ export default function EidtModal(props: any) {
         {deptList.map((item: any, idx: any) =>
           <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
       </Select>
-      <Button onClick={addFollowUpGroup} className='ml-20'>
-      添加小组
-      </Button>
-      <BaseTable 
-        columns={columns}
-        dataSource={tableData}
-        pagination={{
-          pageSizeOptions: ['10', '20', '30', '40', '50'],
-          onShowSizeChange: handlePageSizeChange,
-          onChange: handlePageChange,
-          total: dataTotal,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          pageSize: query.pageSize,
-          current: query.pageIndex
-        }}
-        loading={pageLoading}/>
+      <div className='table_box'>
+        <div className='table_box_border' style={{marginRight: '10px'}}>
+          <div className='table_box_title'>
+            <div style={{ fontSize: '16px', fontWeight: 700 }}>随访小组</div>
+            <Button onClick={addFollowUpGroup} type="primary" size='small'> +添加随访小组</Button>
+          </div>
+          <BaseTable 
+            columns={columns}
+            dataSource={tableData}
+            pagination={{
+              pageSizeOptions: ['10','20'],
+              onShowSizeChange: handlePageSizeChange,
+              onChange: handlePageChange,
+              total: dataTotal,
+              showSizeChanger: true,
+              pageSize: query.pageSize,
+              current: query.pageIndex
+            }}
+            onRow={onClickRow}
+            rowClassName={setRowClassName}
+            loading={pageLoading}/>
+        </div>
+        <div className='table_box_border'>
+          <div className='table_box_title'>
+            <div style={{ fontSize: '16px', fontWeight: 700 }}>小组成员</div>
+            <Button onClick={addFollowUpMember} type="primary" size='small'> +添加</Button>
+          </div>
+          <BaseTable 
+            columns={columns2}
+            dataSource={memberTableData}
+            pagination={{
+              pageSizeOptions: ['10','20'],
+              onShowSizeChange: handlePageSizeChange1,
+              onChange: handlePageChange1,
+              total: dataTotal1,
+              showSizeChanger: true,
+              pageSize: query1.pageSize,
+              current: query1.pageIndex
+            }}
+            rowSelection={{
+              selectedRowKeys,
+              onChange: handleRowSelect,
+              getCheckboxProps: (record: any) => ({
+                name: record.name
+              })
+            }}
+            loading={pageLoading1}/>
+        </div>
+      </div>
     </Wrapper>
   </Modal>
 }
 const Wrapper = styled.div`
 .ml-20 {
   margin-left: 20px;
+}
+.clickRowStyl{
+  background-color #d3e5dd
+}
+.table_box{
+  margin-top: 20px;
+  min-height: 476px;
+  display: flex;
+  justify-content: center;
+  .table_box_border{
+    border: 1px solid #ededed;
+    border-radius: 10px;
+    padding-bottom: 10px;
+    .table_box_title{
+      height: 45px;
+      width: 88%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ededed;
+    }
+  }
 }
 .ipt-cell{
     padding:0!important;

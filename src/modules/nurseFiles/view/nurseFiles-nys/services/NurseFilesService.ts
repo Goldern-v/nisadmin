@@ -468,6 +468,14 @@ export default class NurseFilesService extends BaseApiService {
       this.stringify({ empNo, pageIndex, pageSize })
     )
   }
+  /**
+   * 删除护士
+   * @param empNo 
+   * @returns 
+   */
+  public deleteNysNurse(params: any) {
+    return this.post(`/auditeNurseFileIndexNys/deleteNysNurse`, params)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

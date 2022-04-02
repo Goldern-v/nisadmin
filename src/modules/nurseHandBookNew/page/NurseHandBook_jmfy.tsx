@@ -14,7 +14,7 @@ import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
 export interface Props { }
 export default observer(function NurseHandBook_jmfy() {
-  const [weekDate, setWeekDate]: any = useState([moment().startOf("week"), moment().endOf("week")])
+  const [weekDate, setWeekDate]: any = useState([moment().startOf("month"), moment().endOf("month")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
   const [deptListAll, setDeptListAll] = useState([] as any[])
@@ -23,7 +23,7 @@ export default observer(function NurseHandBook_jmfy() {
   const [editVisible, setEditVisible] = useState(false)
   const [pathChange, setPathChange] = useState("")
   const [idChange, setIdChange] = useState("")
-  const [state, setState] = useState<String>('')
+  const [state, setState] = useState<String>('0')
   const [typeList, setTypeList] = useState([])
   const [addNewLoading, setAddNewLoading]: any = useState(false)
   const [manualType, setManualType] = useState<String>('')

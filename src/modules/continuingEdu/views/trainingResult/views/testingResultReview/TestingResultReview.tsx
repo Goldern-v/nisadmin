@@ -296,9 +296,10 @@ export default observer(function TestingResultReview() {
   // 针对不同医院打开不同界面
   const getPage = () => {
     // 南医三 厚街有统计查询功能
+    console.log(appStore)
     return appStore.hisMatch({
       map: {
-        'hj,nys,gxjb': (
+        'hj,nys,gxjb,whyx': (
           <BaseTabs
             config={
               [

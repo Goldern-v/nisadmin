@@ -139,34 +139,42 @@ export default function FollowUpGroupManage(props: any) {
     },
     {
       title: '随访小组',
-      dataIndex: 'visitTeam.teamId',
-      key: 'visitTeam.teamId',
+      dataIndex: 'visitTeam.teamName',
+      key: 'visitTeam.teamName',
       width: 70,
       align: 'center',
-      className: 'ipt-cell',
-      render: (text: string, record: any) => {
-        return (
-          <div>
-            <Select 
-              style={{ width: '100%' }}
-              id={"box_select"}
-              showArrow={false}
-              value={record.visitTeam == null ? '' : record.visitTeam.teamId}
-              onChange={(value: any) => {
-                record.visitTeam.teamId = value
-                setTableData([...tableData])
-              }}>
-              {templateList.map((item: any, index: number) => (
-                <Select.Option key={index} value={item.teamId}>
-                {item.teamName}
-              </Select.Option>
-              ))}
-            </Select>
-          </div>
-        )
-      }
-    }
+    },
+    // {
+    //   title: '随访小组',
+    //   dataIndex: 'visitTeam.teamId',
+    //   key: 'visitTeam.teamId',
+    //   width: 70,
+    //   align: 'center',
+    //   // className: 'ipt-cell',
+    //   render: (text: string, record: any) => {
+    //     return (
+    //       <div>
+    //         <Select 
+    //           style={{ width: '100%' }}
+    //           id={"box_select"}
+    //           showArrow={false}
+    //           value={record.visitTeam == null ? '' : record.visitTeam.teamId}
+    //           onChange={(value: any) => {
+    //             record.visitTeam.teamId = value
+    //             setTableData([...tableData])
+    //           }}>
+    //           {templateList.map((item: any, index: number) => (
+    //             <Select.Option key={index} value={item.teamId}>
+    //             {item.teamName}
+    //           </Select.Option>
+    //           ))}
+    //         </Select>
+    //       </div>
+    //     )
+    //   }
+    // }
   ]
+
   useEffect(() => {
     getData()
   }, [
@@ -242,12 +250,12 @@ export default function FollowUpGroupManage(props: any) {
           onChange={onChangeSearchText}
           className='ml-20'
         />
-        <Button onClick={() => getData()}>
+        <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
-        <Button type='primary' onClick={() => onSave()}>
+        {/* <Button type='primary' onClick={() => onSave()}>
           保存
-        </Button>
+        </Button> */}
         <Button onClick={setFollowUpGroup}>
           设置随访小组
         </Button>
