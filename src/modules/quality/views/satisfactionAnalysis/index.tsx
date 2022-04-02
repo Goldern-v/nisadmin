@@ -5,11 +5,11 @@ import { api } from "./api/index";
 import { Input, message, Spin, Table } from 'antd'
 
 import Table2_1 from "./components/Table2_1";
-import HorizonBar from "./components/HorizonBar";
+import HorizonBar from "../components/HorizonBar";
 import Table2_3 from "./components/Table2_3";
-import VerticalTable from "./components/VerticalTable";
-import Pie from "./components/Pie";
-import BolaChart from "./components/BolaChart";
+import VerticalTable from "../components/VerticalTable";
+import Pie from "../components/Pie";
+import BolaChart from "../components/BolaChart";
 
 // 满意度调查分析
 export default observer(function SatisfactionAnalysis(props) {
@@ -95,7 +95,6 @@ export default observer(function SatisfactionAnalysis(props) {
           setDataList[i](item.data);
         }
       });
-      console.log("test-res", res);
       setLoading(false)
     } catch (e) {
       setLoading(false)      

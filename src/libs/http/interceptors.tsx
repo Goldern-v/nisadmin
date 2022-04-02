@@ -61,8 +61,8 @@ export function onResponseFulfilled(response: AxiosResponse) {
     case StatusCode.error1: {
       if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
       // alert(12)
-      // 满意度调查分析 by贵州
-      if ((url as string).indexOf("/satisfactionAnalysis/") > -1) {
+      // 满意度调查分析,三级护理分析 by贵州
+      if (['/satisfactionAnalysis/','/qcNursingAnalysis/'].findIndex((v:string) =>(url as string).indexOf(v) > -1)>-1) {
         return response.data;
       }
       if (desc.indexOf("\n") > -1) {
