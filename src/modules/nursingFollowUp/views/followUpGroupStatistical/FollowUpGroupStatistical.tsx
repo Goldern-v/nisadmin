@@ -47,7 +47,7 @@ export default function FollowUpGroupStatistical(props: any) {
   const rowHeight2 = $('.row2').height() || 0
   const rowWidth = $('.number_statistical').width() || 0
   const rowWidth2 = $('.row2').width() || 0
-  let tableHeight = !(queryObj.wardCode&&queryObj.empNo)? H-(H-110)/5 : H-(H-110)/2.2
+  let tableHeight = !(queryObj.wardCode&&queryObj.empNo)? H-(H-110)/2.5 : H-(H-110)/2.2
   
   let yearList:number[] = []
   if(yearList.length == 0){

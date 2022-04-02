@@ -323,12 +323,13 @@ const MainCon = styled.div`
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   border-radius: 6px;
   background: rgb(255, 255, 255);
-  padding: 0 30px 20px 30px;
+  padding: 0 5px 20px 5px;
   box-sizing: border-box;
   height: calc(100vh - 120px);
   overflow-y: auto;
   .text-title{
-    min-width: 1370px;
+    width: 98%;
+    margin: 0 auto;
     font-size: 24px;
     padding: 10px 0;
     border-bottom: 1px solid #c9c9ca;
@@ -342,7 +343,7 @@ const MainCon = styled.div`
     overflow-x: auto;
     .calendar-title{
       height: 30px;
-      margin: 0 30px;
+      margin: 0 5px;
       background-color: #bce3d8;
       border: 1px solid #c9c9ca;
       border-bottom: none;
@@ -361,7 +362,7 @@ const MainCon = styled.div`
     .calendar-body{
       border-left: 1px solid #c9c9ca;
       border-bottom: 1px solid #c9c9ca;
-      margin: 0 30px 30px 30px;
+      margin: 0 5px 30px 5px;
       .calendar-body-row{
         display: flex;
         justify-content: space-evenly;
