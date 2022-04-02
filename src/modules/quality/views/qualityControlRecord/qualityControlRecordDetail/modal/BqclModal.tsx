@@ -6,6 +6,7 @@ import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { qualityControlRecordApi } from '../../api/QualityControlRecordApi'
+import { appStore } from 'src/stores'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -75,7 +76,7 @@ export default function BqclModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`整改措施`} name='handleContent' required>
+            <Form.Field label={['whyx'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果' : `整改措施`} name='handleContent' required>
               <Input.TextArea />
             </Form.Field>
           </Col>
