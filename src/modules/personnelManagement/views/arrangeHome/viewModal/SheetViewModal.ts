@@ -314,7 +314,8 @@ class SheetViewModal {
       if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
         this.getHourStart()
       }
-      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "fqfybjy" || appStore.HOSPITAL_ID == "gxjb") {
+      // 休假天数是否按已休天数来显示 
+      if (['wh', 'fqfybjy', 'gxjb', 'nys'].includes(appStore.HOSPITAL_ID)) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );

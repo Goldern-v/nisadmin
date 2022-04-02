@@ -83,7 +83,11 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
       } else if(x == 'bedLabel') {
         if (appStore.HOSPITAL_ID == 'whyx'  && baseInfo.isBedNumber == '否' ) {
 
-        } else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
+        } 
+        else if (['gzsrm','nys'].includes(appStore.HOSPITAL_ID)) {
+
+        }
+        else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
         }

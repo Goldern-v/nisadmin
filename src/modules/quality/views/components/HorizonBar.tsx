@@ -10,6 +10,7 @@ interface Props {
   isHorizon?: boolean;
   isDataZoom?: boolean;
   contentH?: number;
+  name?: string;
 }
 export default observer(function HorizonBar(props: Props) {
   let chartRef: any = React.createRef();
@@ -21,7 +22,9 @@ export default observer(function HorizonBar(props: Props) {
 
   const getOption = () => {
     let option: any = {
-      legend: {},
+      legend: {
+        top: 'bottom'
+      },
       tooltip: {
         trigger: "axis",
         showContent: false,
@@ -47,28 +50,30 @@ export default observer(function HorizonBar(props: Props) {
         {
           type: "bar",
           id: "bar",
+          name: props.name || '',
           barWidth: 20,
           data: props.list.map((v: any) => v[isHorizon ? xKey : yKey]).reverse(),
           label: {
             show: true,
             distance: 5,
-            position: "right",
+            position: isHorizon ? 'right' : 'top',
           },
         },
       ],
     };
-    if (isDataZoom) {
+    let len = props.list.length
+    if (isDataZoom && ((len > 10 && isHorizon) || (len > 15 && !isHorizon))) {
       option.dataZoom = [
         {
           // 这是滚动条插件  可以是Y轴 也可以是X轴
-          type: "slider",
-          orient: isHorizon ? "vertical" : 'horizontal',
+          type: 'slider',
+          orient: isHorizon ? 'vertical' : 'horizontal',
         },
       ]
     }
     if (isHorizon) {
       option.yAxis = {
-        type: "category",
+        type: 'category',
         data: props.list.map((v: any) => v[yKey]).reverse(),
         axisLabel: {
           rotate: 45,

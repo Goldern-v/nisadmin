@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { numberToArray } from "src/utils/array/array";
 import { observer } from "mobx-react-lite";
-import { Spin } from "antd";
+import { message, Modal, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import { theme } from "src/styles/theme";
 
@@ -177,6 +177,7 @@ const columns: ColumnProps<any>[] = [
       return (
         <DoCon>
           <span onClick={() => onDoubleClick(row)}>查看</span>
+          {store.authStore.isDepartment && store.authStore.isRoleManage &&<span onClick={() => handleDelete(row)}>删除</span>}
         </DoCon>
       );
     }
@@ -188,6 +189,25 @@ const onDoubleClick = (record: any) => {
     `/nurseFileDetail/baseInfo?empNo=${record.empNo}`
   );
 };
+const handleDelete = (record: Record<string, any>) => {
+  Modal.confirm({
+    title: '删除护士',
+    content: '是否删除该护士?',
+    onOk: async() => {
+      try {
+        let form: any = new FormData()
+        form.append('empNo', record.empNo)
+        const res = await nurseFilesListViewModel.deleteNysNurse(form)
+        if (res.code == '200') {
+          message.success('删除成功')
+          nurseFilesListViewModel.loadNursingList()
+        }
+      } catch (e) {
+        message.error('删除失败')
+      }
+    }
+  })
+}
 
 export default observer(function NurseFilesListView() {
 
