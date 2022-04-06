@@ -66,6 +66,14 @@ import myFavorites from "src/modules/myFavorites/index";
 //厚街审核管理
 import 审核集中管理 from "./views/审核集中管理/审核集中管理";
 
+// 亚心实习生管理基本信息
+import BacisManagement from "./views/InternManagement/bacisInformation/BacisManagement"
+import TeachingProgramme from "./views/InternManagement/bacisTeachingProgramme/TeachingProgramme"
+
+// 亚心进修生管理
+import BaciPostgraduate from './views/InternPostgraduate/bacisPostgraduate/PostgraduateManagement'
+import TeachingPostgraduate from './views/InternPostgraduate/PostgraduateTeachingProgramme/TeachingPostgraduate'
+
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -884,6 +892,52 @@ export default function ContinuingEdu(props: Props) {
           path: "/continuingEdu/菜单设置",
           component: 菜单设置,
         },
+      ],
+    },
+    {
+      title: "实习生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        ...appStore.hisMatch({
+          map: {
+            other: [
+              {
+                title: "实习人员基本信息汇总表",
+                path: "/continuingEdu/实习人员基本信息汇总表",
+                component: BacisManagement,
+              },
+              {
+                title: "实习生教学计划",
+                path: "/continuingEdu/实习生教学计划",
+                component: TeachingProgramme,
+              },
+            ],
+          },
+        })
+      ],
+    },
+    {
+      title: "进修生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        ...appStore.hisMatch({
+          map: {
+            other: [
+              {
+                title: "进修生基本信息汇总表",
+                path: "/continuingEdu/进修生基本信息汇总表",
+                component: BaciPostgraduate,
+              },
+              {
+                title: "进修生教学计划",
+                path: "/continuingEdu/进修生教学计划",
+                component: TeachingPostgraduate,
+              },
+            ],
+          },
+        })
       ],
     },
 
