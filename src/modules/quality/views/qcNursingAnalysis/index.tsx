@@ -1,13 +1,15 @@
 import { observer } from "mobx-react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { api } from "./api/index";
-import { message, Spin, Table } from 'antd'
+import { Button, message, Spin, Table } from 'antd'
 
 import HorizonBar from "../components/HorizonBar";
 import Pie from "../components/Pie";
 import BolaChart from "../components/BolaChart"
 import { ColumnProps } from "antd/lib/table";
+import printing from 'printing'
+import { PageTitle, Place } from "src/components/common";
 
 // 满意度调查分析
 export default observer(function QcNursingAnalysis(props) {
@@ -180,54 +182,164 @@ export default observer(function QcNursingAnalysis(props) {
   const numArr = [
     '二', '三', '四','五', '六', '七'
   ]
+  const pageRef: any = useRef<HTMLElement>()
+  const [isPrint, setIsPrint] = useState(false)
+  const setImg = () => {
+    let imgEl = document.querySelectorAll('.chart-img') as any
+    console.log('test-imgEl', imgEl)
+    console.log('test-, chartsImg', chartsImg)
+    if (imgEl.length) {
+      for (let i = 0; i < imgEl.length; i++) {
+        console.log('test-chartsImg[i], i', chartsImg[i], i)
+        chartsImg[i] && (imgEl[i].src = chartsImg[i])
+      }
+    }
+  }
+  // useLayoutEffect(() => {
+  //   if (isPrint) {
+  //     setImg()
+  //   }
+  // }, [isPrint])
+  const handlePrint = async() => {
+    await setIsPrint(true)
+    setImg()
+    setTimeout(() => {
+      printing(pageRef.current, {
+        injectGlobalCss: true,
+        scanStyles: false,
+        css: `
+          .qcNursing-analysis {
+            margin: 0;
+            padding: 20px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            color-adjust: exact;
+          }
+          .ant-table-content th, .ant-table-content td {
+            padding: 8px;
+            line-height: 21px;
+          }
+          th {
+            background:rgba(37, 143, 241,.7) !important;
+          }
+          .ant-table-thead .ant-table-column-title{
+            color:#fff;
+          }
+          .ant-table-row{
+            background:rgba(108, 183, 252,.3);
+          }
+        `
+      }).then(() => {
+        setIsPrint(false)
+      })
+    }, 500)
+  }
+  const [chartsImg, setChartsImg] = useState<any[]>([])
+  useEffect(() => {
+    let timer: any = null
+    // if (!loading) {
+      timer =  setTimeout(() => {
+        let canvasEl = document.querySelectorAll('canvas') as any
+        if (canvasEl.length) {
+          let arr = []
+          for (let i = 0; i < canvasEl.length; i++) {
+            arr.push(canvasEl[i].toDataURL())
+          }
+          setChartsImg(arr)
+        }
+      }, 1000)
+    // }
+    return () => clearTimeout(timer)
+  }, [loading])
 
   return (
     <Wrapper>
       <Spin spinning={loading}>
-        <div className="satisfaction-analysis">
-          <h2>一、全院护理质量检查分析报告</h2>
-          <h3>1.1全院护理质量检查总体得分(表格)</h3>
-          <Table columns={columns1_1} dataSource={allQualityScore} pagination={false}/>
-          <h3>1.2满分科室分布（表格）</h3>
-          <Table dataSource={fullScoreDeptList} pagination={false} columns={columns1_2} />
-          {deptAverageScoreList.map((item: any, index: number) => {
-            return (
-              <Fragment key={index}>
-                <h2>{`${numArr[index]}、${item.name}检查分析报告`}</h2>
-                <h3>{`${index + 2}.1${item.name}得分`}</h3>
-                {
-                  index > 0
-                    ? <>
-                        <HorizonBar list={item.dataList} xKey="averageScore" yKey="wardName" isDataZoom={true} isHorizon={true}/>
-                        <h3>{`${index + 2}.2${item.name}-片区得分比较（图表-柱状）)`}</h3>
+        <div className="qcNursing-analysis-title">
+          <PageTitle>满意度调查分析</PageTitle>
+          <Place/>
+          <Button onClick={handlePrint}>打印</Button>
+        </div>
+        <div className="qcNursing-analysis-layer">
+          <div ref={pageRef} className="qcNursing-analysis">
+            <h2>一、全院护理质量检查分析报告</h2>
+            <h3>1.1全院护理质量检查总体得分(表格)</h3>
+            <Table columns={columns1_1} dataSource={allQualityScore} pagination={false}/>
+            <h3>1.2满分科室分布（表格）</h3>
+            <Table dataSource={fullScoreDeptList} pagination={false} columns={columns1_2} />
+            {deptAverageScoreList.map((item: any, index: number) => {
+              return (
+                <Fragment key={index}>
+                  <h2>{`${numArr[index]}、${item.name}检查分析报告`}</h2>
+                  <h3>{`${index + 2}.1${item.name}得分`}</h3>
+                  {
+                    index > 0
+                      ? <>
+                          {
+                            isPrint && chartsImg.length && <img className="chart-img" src={''}/>
+                          }
+                          {
+                            !isPrint &&
+                            <HorizonBar list={item.dataList} xKey="averageScore" yKey="wardName" isDataZoom={true} isHorizon={true}/>
+                          }
+                          <h3>{`${index + 2}.2${item.name}-片区得分比较（图表-柱状）)`}</h3>
+                          {
+                            (areaDeptAverageScoreList[index]?.areaDataList || []).map((val: any, i:number) =>(
+                              <Fragment key={i}>
+                                {
+                                  isPrint && chartsImg.length && <img className="chart-img" src={''}/>
+                                }
+                                {
+                                  !isPrint &&
+                                  <HorizonBar key={i} name={val.areaName} list={val.dataList} xKey="wardName" yKey="averageScore" isDataZoom={true} isHorizon={false}/>
+                                }
+                              </Fragment>
+                            ))
+                          }
+                        </>
+                      : <Fragment>
                         {
-                          (areaDeptAverageScoreList[index]?.areaDataList || []).map((val: any, i:number) =>(
-                            <HorizonBar key={i} name={val.areaName} list={val.dataList} xKey="wardName" yKey="averageScore" isDataZoom={true} isHorizon={false}/>
-                          ))
+                          isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[0]}/>
                         }
-                      </>
-                    : <HorizonBar list={item.dataList} xKey="wardName" yKey="averageScore" isDataZoom={true} isHorizon={false}/>
-                }
-                {
-                  index < 5 && <>
-                    <h3>{`${index + 2}.${index > 0 ? 3 : 2}主要扣分项目(表格)`}</h3>
-                    <Table dataSource={specificDeductionList[index]?.dataList || []} pagination={false} columns={columns2To7} />
-                    <h3>{`${index + 2}.${index > 0 ? 4 : 3}主要扣分项目(图表-柏拉图)`}</h3>
-                    <BolaChart list={specificDeductionList[index]?.dataList || []} xKey="deductionItem" barKey="deductionTimes" lineKey="cumulativePercentage"/>
-                  </>
-                }
-              </Fragment>)
-          })}
-          <h3>7.3重点环节各评估率及执行率全院得分分析</h3>
-          {
-            evaluationRate.map((item: Record<string, any>, index: number) => (
-              <Fragment key={index}>
-                <h4>{`7.3.${index + 1}${item.name}`}</h4>
-                <Pie list={[{name: '合格率',value: item.qualifiedRate},{name: '不合格率',value: item.unQualifiedRate}]} nameKey="name" valKey="value" />
-              </Fragment>
-            ))
-          }
+                        {
+                          !isPrint &&
+                          <HorizonBar list={item.dataList} xKey="wardName" yKey="averageScore" isDataZoom={true} isHorizon={false}/>
+                        }
+                      </Fragment>
+                  }
+                  {
+                    index < 5 && <>
+                      <h3>{`${index + 2}.${index > 0 ? 3 : 2}主要扣分项目(表格)`}</h3>
+                      <Table dataSource={specificDeductionList[index]?.dataList || []} pagination={false} columns={columns2To7} />
+                      <h3>{`${index + 2}.${index > 0 ? 4 : 3}主要扣分项目(图表-柏拉图)`}</h3>
+                      {
+                        isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[0]}/>
+                      }
+                      {
+                        !isPrint &&
+                        <BolaChart list={specificDeductionList[index]?.dataList || []} xKey="deductionItem" barKey="deductionTimes" lineKey="cumulativePercentage"/>
+                      }
+                    </>
+                  }
+                </Fragment>)
+            })}
+            <h3>7.3重点环节各评估率及执行率全院得分分析</h3>
+            {
+              evaluationRate.map((item: Record<string, any>, index: number) => (
+                <Fragment key={index}>
+                  <h3>{`7.3.${index + 1}${item.name}`}</h3>
+                  {
+                    isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[0]}/>
+                  }
+                  {
+                    !isPrint &&
+                    <Pie list={[{name: '合格率',value: item.qualifiedRate},{name: '不合格率',value: item.unQualifiedRate}]} nameKey="name" valKey="value" />
+                  }
+                </Fragment>
+              ))
+            }
 
+          </div>
         </div>
       </Spin>
     </Wrapper>
@@ -237,53 +349,39 @@ export default observer(function QcNursingAnalysis(props) {
 const Wrapper = styled.div`
   overflow: auto;
   position: relative;
-  .ant-input {
-    height: 24px;
-    text-align: center;
-  }
   h2,
   h3,
-  h4,
-  h5,
-  table,
   .ant-table-wrapper {
     margin-bottom: 15px;
   }
-  .satisfaction-analysis {
+  .qcNursing-analysis-title {
+    display: flex;
+    padding: 20px;
     background: #fff;
-    padding: 10px;
-    margin: 20px;
   }
-  table {
-    width: 100%;
-    text-align: center;
-    &.table-horizon {
-      tr:first-child {
-        font-weight: bold;
-      }
-    }
-    &.table-vertical {
-      td:first-child {
-        font-weight: bold;
-      }
-    }
-    td,
-    tr {
-      border: 1px solid #000;
-    }
-    td {
-      line-height: 24px;
-    }
+  .qcNursing-analysis-layer {
+    height: calc(100vh - 122px);
+    overflow: auto;
+  }
+  .qcNursing-analysis {
+    background: #fff;
+    padding: 20px;
+    width: 720px;
+    margin: 20px auto;
   }
   .ant-table-content {
     th, td {
-      border: 1px solid #000;
-      padding: 0px;
-      line-height: 24px;
-      background-color: transparent;
+      padding: 8px;
+      line-height: 21px;
     }
-    tr:hover {
-      background: transparent;
+  }
+  th{
+    background:rgba(37, 143, 241,.7) !important;
+    .ant-table-column-title{
+      color:#fff;
     }
+  }
+  .ant-table-row{
+    background:rgba(108, 183, 252,.3);
   }
 `;

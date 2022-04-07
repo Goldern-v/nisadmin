@@ -6,6 +6,7 @@ import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { aMServices } from '../services/AMServices'
+import { appStore } from 'src/stores'
 // import { qualityControlRecordApi } from '../../api/QualityControlRecordApi'
 
 const Option = Select.Option
@@ -25,12 +26,25 @@ export default function GroupsHlbModal(props: Props) {
 
   let { visible, onCancel, selectedRows } = props
   let refForm = React.createRef<Form>()
+  // 是否进行通过率判断
+  const [passRateCheck, setPassRateCheck] = useState(false)
+  const [filterArr, setFilterArr] = useState<number[]>([])
 
   const onSave = async () => {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
 
+    if (passRateCheck) {
+      Modal.confirm({
+        content: `选中的第${filterArr.join('、')}张表单通过率不为100%，是否继续审核？`,
+        onOk: () => {
+          setPassRateCheck(false)
+        }
+      })
+      return
+    }
+      
     let list = selectedRows.map((item: any, index: number) => {
       return {
         id: item.othersMessage.id,
@@ -77,6 +91,19 @@ export default function GroupsHlbModal(props: Props) {
       refForm!.current!.setFields({
         noPass: false
       })
+
+    // 通过率不为100
+    let arr: number[] = [];
+    (selectedRows || []).map((item: any, index: number) => {
+      if (item?.othersMessage?.evalRate != '100') {
+        arr.push(index + 1)
+      }
+      return
+    })
+    setFilterArr(arr)
+    if(['wh'].includes(appStore.HOSPITAL_ID) && arr.length > 0) {
+      setPassRateCheck(true)
+    }
   }, [visible])
 
   return (

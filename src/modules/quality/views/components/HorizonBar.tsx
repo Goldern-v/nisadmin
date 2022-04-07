@@ -7,7 +7,9 @@ interface Props {
   list: Array<any>;
   yKey: string;
   xKey: string;
+  /**是否是横向柱状图 */
   isHorizon?: boolean;
+  /**s是否需要dataZoom */
   isDataZoom?: boolean;
   contentH?: number;
   name?: string;
@@ -86,10 +88,14 @@ export default observer(function HorizonBar(props: Props) {
         data: props.list.map((v: any) => v[xKey]).reverse(),
         axisLabel: {
           rotate: 45,
+          /**间隔5个字符换行 */
+          formatter: (value: string) => {
+            return value.replace(/([\w\W]{1,5})/, `$1\n`)
+          }
         },
       }
       option.yAxis = { gridIndex: 0 }
-      option.grid = { bottom: 130, top: 30 }
+      option.grid = { bottom: 90, top: 30 }
     }
     return option;
   };

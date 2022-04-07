@@ -249,7 +249,6 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     if (selectedRows.length == 0) {
       return message.warning("请至少勾选一条记录");
     }
-
     if (showType == "nurseFile") {
       groupsEmpNoAduitModal.show({
         selectedRows,

@@ -39,6 +39,12 @@ export default observer(function Pie(props: Props) {
             name: v[nameKey],
             value: v[valKey],
           })),
+          itemStyle: {
+            shadowBlur: 4,
+            shadowColor: '#ccc',
+            shadowOffsetX: 5,
+            shadowOffsetY: 5
+          },
           label: {
             show: true,
             formatter: '{b} : {c} ({d}%)',
