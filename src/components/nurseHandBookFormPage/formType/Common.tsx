@@ -34,6 +34,10 @@ export default function Common(props: Props) {
   let selectRow: any = {}
   const changeValue = (e: any, item: any) => {
   }
+  const onPaste = (e: any, item: any) => {
+    e.preventDefault();
+    e.currentTarget.innerHTML += e.clipboardData.getData('text/plain')
+  }
 
   // 聚焦弹窗事件
   const onFocus = (e: any, colIdx: any, col: any, rowIdx: any) => {
@@ -169,6 +173,7 @@ export default function Common(props: Props) {
               onClick={(e) => handlerClick(e, col)}
               key={`${rowIdx}_${colIdx}`}
               dangerouslySetInnerHTML={{__html: tableValue(col,rowIdx)}}
+              onPaste={(e) => onPaste(e, col)}
             >
             </div>)}
         </div>)}
