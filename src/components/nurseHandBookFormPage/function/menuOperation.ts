@@ -91,6 +91,18 @@ export const paste = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex
   setBodyModal([...bodyModal])
 }
 
+// 粘贴为纯文本事件
+export const pasteText = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any,masterInfo:any) => {
+  navigator.clipboard.readText()
+  .then(text => {
+    bodyModal[bodyIdx].tableData[selectIndex][colIdx].value = bodyModal[bodyIdx].tableData[selectIndex][colIdx].value + text
+    setBodyModal([...bodyModal])
+  })
+  .catch(err => {
+    console.error('Failed to read clipboard contents: ', err);
+  });
+}
+
 // 计算当前行事件
 export const calculation_currentRow = (tBody: any, bodyModal: any, setBodyModal: any, selectIndex: any, selectRow: any, copyRow: any, setCopyRow: any, colIdx: any, computeRow: any ,bodyIdx:any) => {
   let rules = bodyModal[bodyIdx].tableData[selectIndex].filter((item: any) => item.calculation_rules)
@@ -145,6 +157,7 @@ export const calculation_currentColumn = (tBody: any, bodyModal: any, setBodyMod
 export default {
   copyRow,
   paste,
+  pasteText,
   addRowBefore,
   addRowAfter,
   wipeData,

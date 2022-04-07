@@ -26,6 +26,7 @@ export default function SelectModal(props: Props) {
   const menus = [
     { name: "复制整行", code: "copyRow", icon: 'copy' },
     { name: "粘贴整行", code: "paste", icon: 'edit' },
+    { name: "粘贴为纯文本", code: "pasteText", icon: 'edit' },
     { name: "上增一行", code: "addRowBefore", icon: 'plus-square' },
     { name: "下增一行", code: "addRowAfter", icon: 'minus-square' },
     { name: "清空当前行数据", code: "wipeData", icon: 'delete' },
@@ -124,7 +125,7 @@ const Wrapper = styled.div`
   .selectBody{
     position: fixed;
     width: 200px;
-    height: 260px;
+    height: 270px;
     background-color: #fff;
     /* border: 1px solid #000; */
     box-shadow:5px 5px 5px rgba(233, 233, 234);
