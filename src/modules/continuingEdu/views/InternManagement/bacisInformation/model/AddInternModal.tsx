@@ -11,11 +11,12 @@ export interface Props {
   visible: boolean
   onOk: any
   onCancel: any
+  params?:any
   allowClear?: boolean
   loading?: boolean
 }
 export default observer(function AddInternModal(props: Props){
-  const { visible, onCancel, onOk, allowClear, loading } = props
+  const { visible, onCancel, onOk, params, allowClear, loading } = props
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
   const [yearPickerIsOpen,setyearPickerIsOpen] =useState(false)
@@ -55,7 +56,68 @@ export default observer(function AddInternModal(props: Props){
   ]
 
   useEffect(() => {
-    
+    setTimeout(() => {
+      let current: any = formRef.current;
+      if (!current) return;
+      if(params){
+        current.clear()
+        let data = {...params}
+        let {
+          year,
+          name,
+          sex, 
+          age, 
+          education,
+          graduatedUniversity ,
+          phone,
+          address,
+          currentAddress,
+          emergencyContactPhone,
+          specialty,
+          schoolPosition,
+          healthStatus,
+          height,
+          weight,
+          teachTeacher,
+          operationScore,
+          theoryScore,
+          remark,
+        } = data
+        nurseHierarchyArr.map((item:any)=>{
+          if(item.name == education){
+            education = item.code
+          }
+        })
+        current.setFields({
+          year:year?moment(year.toString()):null,
+          name,
+          sex:sex=='男'? '0' : '1', 
+          age, 
+          education,
+          graduatedUniversity ,
+          phone,
+          address,
+          currentAddress,
+          emergencyContactPhone,
+          specialty,
+          schoolPosition,
+          healthStatus,
+          height,
+          weight,
+          teachTeacher,
+          operationScore,
+          theoryScore,
+          remark,
+        })
+      }else{
+        current.clear()
+        current.setFields({
+          sex:'0',
+          year:moment(),
+          education:'9'
+        })
+      }
+    }, 100);
   }, [visible]);
 
 
@@ -68,11 +130,14 @@ export default observer(function AddInternModal(props: Props){
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            let addParams = {...newParams,year:moment(newParams.year).format("YYYY")}
+            console.log(params);
+            
+            let id = params ? params.id : null
+            let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id}
             console.log(addParams);
+            
             trainingSettingApi.AddFormSave(addParams).then((res)=>{
               if(res.code == '200'){
-                console.log(res);
                 onOk && onOk()
               }
             }).catch((err)=>{
@@ -108,12 +173,11 @@ export default observer(function AddInternModal(props: Props){
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
     setFormItem("year" , value)
-    
   }
 
 
   return(
-    <Modal title="添加实习生" visible={visible} onOk={handleOk} onCancel={handleCancel}  confirmLoading={editLoading}>
+    <Modal title={params ? "修改实习生":"添加实习生"} visible={visible} onOk={handleOk} onCancel={handleCancel}  confirmLoading={editLoading}>
         <Form ref={formRef} rules={rules} onChange={onFormChange}>
           <Row>
             <Col span={24}>

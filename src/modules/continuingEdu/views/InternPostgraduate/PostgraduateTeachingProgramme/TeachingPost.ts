@@ -1,5 +1,5 @@
 import { observable, computed } from "mobx";
-import {trainingSettingApi} from "../api/TrainingSettingApi";
+import {internPostgraduateApi} from "../api/InternPostgraduate";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
@@ -7,9 +7,9 @@ import { T } from "antd/lib/upload/utils";
 import { message } from "antd";
 import moment from 'moment'
 
-class BacisManagModel {
+class TeachingPost {
   @observable public id = ""; //菜单id
-  @observable public keyWord = ""; //关键字
+  @observable public courseName = ""; //关键字
   @observable public selectedType = ""; //类型
   @observable public education =""; //学历
   @observable public year = moment() as undefined | moment.Moment; //年份
@@ -24,48 +24,32 @@ class BacisManagModel {
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
-  @observable public hjSelectedType = ""; //状态
-  /** 三级联参数 */
-  @observable public trainingKeyPointTreeId: any = ""; // 类型名称
-  @observable public knowledgePointDivisionTreeId: any = ""; // 知识点划分
-  @observable public learningFormTreeId: any = ""; // 教学方式
-  @observable public trainingKeyPointTree: any = []; // 类型名称
-  @observable public knowledgePointDivisionTree: any = []; // 知识点划分
-  @observable public learningFormTree: any = []; // 教学方式
+  @observable public uploadingStatus = false; //上传状态
+  @observable public uploadingPath = ""; //上传路径
+  @observable public uploadingName = ""; //上传名称
+  @observable public uploadingId = ""; //上传id
 
   @computed
   get postObj() {
     return {
       year:moment(this.year).format("YYYY"), //年份
-      education: this.education, //学历
-      sex:this.sex,//性别
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
       total: this.total, //每页大小
-      keyWord:this.keyWord, //关键字
-    };
-  }
-  get getObj() {
-    return {
-      year:moment(this.year).format("YYYY"), //年份
-      pageIndex: this.pageIndex, //页码
-      pageSize: this.pageSize, //每页大小
-      total: this.total, //每页大小
-      keyWord:this.keyWord, //关键字
+      courseName:this.courseName, //关键字
     };
   }
 
-   //导出Excel
-   export() {
-    trainingSettingApi.exportPageList({
-      ...this.postObj,
-      fileName: appStore.queryObj.fileName || undefined
-    }).then(res => {
-      fileDownload(res);
-    });
-  }
-  
-  /** 获取导入模板 */
+  // //导出Excel
+  // export() {
+  //   trainingSettingApi.exportPageList({
+  //     ...this.postObj,
+  //     fileName: appStore.queryObj.fileName || undefined
+  //   }).then(res => {
+  //     fileDownload(res);
+  //   });
+  // }
+  // /** 获取导入模板 */
   // getImportTemplate(obj:any) {
   //   trainingSettingApi.exportSheetTemplate(obj)
   //     .then(res => fileDownload(res))
@@ -83,8 +67,8 @@ class BacisManagModel {
     importEl.onchange = (e: any) => {
       let file = e.target.files[0]
       this.tableLoading = true;
-      let impObj:any =moment(this.yearImport).format("YYYY")
-      trainingSettingApi.exportSheetTemplate(file,impObj)
+      let impObj = {year:moment(this.yearImport).format("YYYY"),file}
+      internPostgraduateApi.exportSheetTemplate(impObj)
         .then(res => {
           message.success('导入成功')
           this.onload()
@@ -100,25 +84,21 @@ class BacisManagModel {
   /** 获取表格数据 */
   onload() {
     this.tableLoading = true;
-    trainingSettingApi.getFormList(this.postObj).then(res => {
+    internPostgraduateApi.getQueryPageList(this.postObj).then(res => {
       this.tableLoading = false;
       this.tableList = res.data.list;
+      this.tableList.map((item:any)=>{
+        item.uploadDate = moment(item.uploadDate).format("YYYY-MM-DD HH:mm:ss")
+        item.modifyDate = moment(item.modifyDate).format("YYYY-MM-DD HH:mm:ss")
+      })
       this.total = res.data.totalCount;
       this.pageIndex = res.data.pageIndex;
       this.pageSize = res.data.pageSize;
     });
   }
 
-   /** 获取导入模板 */
-   getImportTemplate() {
-    trainingSettingApi.downloadTemplate()
-      .then(res => fileDownload(res))
-  }
- 
-
-
   init() {
     this.onload();
   }
 }
-export const bacisManagData = new BacisManagModel();
+export const teachingPost = new TeachingPost();

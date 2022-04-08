@@ -4,22 +4,26 @@ import { Modal, Input, Row, Col,message as Message, Select, DatePicker} from 'an
 import React, { useState, useEffect } from "react";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
+import {internPostgraduateApi} from "../../api/InternPostgraduate"
 import moment from 'moment'
 
 export interface Props {
   visible: boolean
   onOk: any
   onCancel: any
+  params?: any
   allowClear?: boolean
   loading?: boolean
+  onOkCallBack?: boolean
 }
 export default observer(function AddInternModal(props: Props){
-  const { visible, onCancel, onOk, allowClear, loading } = props
+  const { visible, onCancel, onOk,params, allowClear, loading } = props
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
   const [yearPickerIsOpen,setyearPickerIsOpen] =useState(false)
   const [startPickerIsOpen,setstartPickerIsOpen] =useState(false)
   const [endPickerIsOpen,setendPickerIsOpen] =useState(false)
+  const [deucOption, setdeucOption] = useState([]); // 科室信息
 
   const setFormItem = (key: any, value: any) => {
     if (formRef.current) formRef.current.setField(key, value)
@@ -36,7 +40,8 @@ export default observer(function AddInternModal(props: Props){
     title: val => !!val || "职称不能为空",
     education: val => !!val || "学历不能为空",
     originalWorkUnit: val => !!val || "选送单位不能为空",
-    studyDeptName01: val => !!val || "开始时间不能为空",
+    studyDeptName01: val => !!val || "进修科室不能为空",
+    studyTimeBegin: val => !!val || "开始时间不能为空",
     studyTimeEnd: val => !!val || "结束时间不能为空",
     duration: val => !!val || "时长不能为空",
     mattersForStudy: val => !!val || "特殊事宜不能为空",
@@ -64,15 +69,91 @@ export default observer(function AddInternModal(props: Props){
   ]
   // 学历
   const nurseHierarchyArr = [
-    { name: "博士", code: "博士" },
-    { name: "研究生", code: "研究生" },
-    { name: "本科", code: "本科" },
-    { name: "大专", code: "大专" },
-    { name: "中专", code: "中专" },
+    { name: "博士", code: "9" },
+    { name: "研究生", code: "8" },
+    { name: "本科", code: "7" },
+    { name: "大专", code: "6" },
+    { name: "中专", code: "5" },
   ]
 
+  // 初始化科室
+  const getDeptList = () => {
+   internPostgraduateApi.getnursingAll().then((res)=>{
+          let deptListall = [];
+          deptListall = res.data.deptList
+          deptListall.unshift({code:'',name:'全部'})
+          setdeucOption(deptListall)
+        }).catch((err)=>{
+          console.log(err);
+        })
+  };
   useEffect(() => {
-   
+    if(visible){
+      setTimeout(() => {
+        getDeptList();
+        let current: any = formRef.current;
+        if (!current) return;
+        if(params){
+          current.clear()
+          let data = {...params}
+          let {
+            year,
+            natureOfLearning,
+            name,
+            sex,
+            age,
+            post,
+            title,
+            education,
+            originalWorkUnit,
+            studyDeptName01,
+            studyTimeEnd,
+            studyTimeBegin,
+            duration,
+            mattersForStudy,
+            phone,
+            teachingTeacher, 
+            operationScore,
+            theoryScore,
+            remark,
+          } = data;
+          nurseHierarchyArr.map((item:any)=>{
+            if(item.name == education){
+              education = item.code
+            }
+          })
+          current.setFields({
+            year: year ? moment(year.toString()) :null,
+            natureOfLearning,
+            name,
+            sex:sex=="男"?'0':'1',
+            age,
+            post,
+            title,
+            education,
+            originalWorkUnit,
+            studyDeptName01,
+            studyTimeEnd:studyTimeEnd?moment(studyTimeEnd):null,
+            studyTimeBegin:studyTimeBegin?moment(studyTimeBegin):null,
+            duration,
+            mattersForStudy,
+            phone,
+            teachingTeacher, 
+            operationScore,
+            theoryScore,
+            remark,
+          })
+         
+        }else{
+          current.clear()
+          current.setFields({
+            year:moment(),
+            sex:'0',
+            education:'9'
+          })
+        }
+      }, 100);
+    }
   }, [visible]);
 
 
@@ -85,8 +166,15 @@ export default observer(function AddInternModal(props: Props){
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            console.log(newParams);
-            onOk && onOk()
+            let id = params ? params.id : null;
+            let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id}
+            internPostgraduateApi.getSaveFormData(addParams).then((res)=>{
+              console.log(res);
+              onOk && onOk()
+            })
+            .catch((err)=>{
+              console.log(err);
+            })
           }
         }).catch(e => {
           console.log(e);
@@ -105,8 +193,8 @@ export default observer(function AddInternModal(props: Props){
     // getTree(data.trainingKeyPointId, data.knowledgePointDivisionId)
   };
   const handlePanelChange = (value: any) => {
-    setyearPickerIsOpen(false)
     setFormItem("year" , value)
+    setyearPickerIsOpen(false)
   }
   const handlePanelStartChange = (value: any) => {
     setstartPickerIsOpen(false)
@@ -119,7 +207,7 @@ export default observer(function AddInternModal(props: Props){
 
 
   return(
-    <Modal title="添加进修生" visible={visible} onOk={handleOk} onCancel={handleCancel}  confirmLoading={editLoading}>
+    <Modal title={params ? "修改进修生":"添加进修生"}  visible={visible} onOk={handleOk} onCancel={handleCancel}  confirmLoading={editLoading}>
         <Form ref={formRef} rules={rules} onChange={onFormChange}>
           <Row>
             <Col span={24}>
@@ -191,7 +279,11 @@ export default observer(function AddInternModal(props: Props){
             </Col>
             <Col span={24}>
               <Form.Field label={`进修科室：`} name="studyDeptName01" required>
-                <Input placeholder="请输入" />
+              <Select>
+                {deucOption.map((item:any) => {
+                  return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+                })}
+               </Select>
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -208,8 +300,8 @@ export default observer(function AddInternModal(props: Props){
               <Form.Field label={`结束时间：`} name="studyTimeEnd" required>
               <DatePicker
                   open={endPickerIsOpen}
-                  onChange={()=>{setstartPickerIsOpen(false)}}
-                  onOpenChange={(status)=>{setstartPickerIsOpen(status)}}
+                  onChange={()=>{setendPickerIsOpen(false)}}
+                  onOpenChange={(status)=>{setendPickerIsOpen(status)}}
                   onPanelChange={handlePanelEndChange}
                 />
               </Form.Field>

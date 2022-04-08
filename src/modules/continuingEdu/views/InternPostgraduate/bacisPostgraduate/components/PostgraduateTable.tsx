@@ -3,15 +3,19 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
-// import { formApplyModal } from "../FormApplyModal";
-import { trainingSettingApi } from "../../api/TrainingSettingApi";
+import { bacisPostgraduateData } from "../bacisPostgraduate";
 // import FormEditModal from "../modal/FormEditModal"; // 修改弹窗
 import { appStore } from "src/stores";
+import AddPostgraduateModal from "../model/AddPostgraduateModal";
+import createModal from "src/libs/createModal";
+import {internPostgraduateApi} from "../../api/InternPostgraduate"
 import qs from "qs";
 
 interface Props {}
 
 export default observer(function ApplyTable(props: Props) {
+  const addPostgraduateModal = createModal(AddPostgraduateModal); // 添加弹窗
+  const [createClear, setCreateClear] = useState(true)
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [tableLoading, settableLoading] = useState(false); //tabel的loading的控制
@@ -33,109 +37,109 @@ export default observer(function ApplyTable(props: Props) {
     },
     {
       title: "学习性质",
-      dataIndex: "perantName",
+      dataIndex: "natureOfLearning",
       align: "center",
       width: 100
     },
     {
       title: "姓名",
-      dataIndex: "perantName",
+      dataIndex: "name",
       align: "center",
       width: 100
     },
     {
       title: "性别",
-      dataIndex: "perantName",
+      dataIndex: "sex",
       align: "center",
       width: 80
     },
     {
       title: "年龄",
-      dataIndex: "perantName",
+      dataIndex: "age",
       align: "center",
       width: 80
     },
     {
       title: "职务",
-      dataIndex: "perantName",
+      dataIndex: "post",
       align: "center",
       width: 80
     },
     {
       title: "职称",
-      dataIndex: "perantName",
+      dataIndex: "title",
       align: "center",
       width: 80
     },
     {
       title: "学历",
-      dataIndex: "perantName",
+      dataIndex: "education",
       align: "center",
       width: 80
     },
     {
       title: "选送单位",
-      dataIndex: "perantName",
+      dataIndex: "originalWorkUnit",
       align: "center",
       width: 80
     },
     {
       title: "进修科室",
-      dataIndex: "perantName",
+      dataIndex: "studyDeptName01",
       align: "center",
-      width: 100
+      width: 180
     },
     {
       title: "开始时间",
-      dataIndex: "perantName",
+      dataIndex: "studyTimeBegin",
       align: "center",
       width: 150
     },
     {
       title: "结束时间",
-      dataIndex: "perantName",
+      dataIndex: "studyTimeEnd",
       align: "center",
       width: 150
     },
     {
       title: "时长",
-      dataIndex: "perantName",
+      dataIndex: "duration",
       align: "center",
       width: 80
     },
     {
       title: "进修特殊事宜",
-      dataIndex: "perantName",
+      dataIndex: "mattersForStudy",
       align: "center",
       width: 150
     },
     {
       title: "联系电话",
-      dataIndex: "perantName",
+      dataIndex: "phone",
       align: "center",
       width: 120
     },
     {
       title: "带教老师",
-      dataIndex: "perantName",
+      dataIndex: "teachingTeacher",
       align: "center",
       width: 120
     },
     {
       title: "操作成绩",
-      dataIndex: "perantName",
+      dataIndex: "operationScore",
       align: "center",
       width: 100
     },
     {
       title: "理论成绩",
-      dataIndex: "perantName",
+      dataIndex: "theoryScore",
       align: "center",
       width: 100
     },
     {
       title: "备注",
-      dataIndex: "auditRemark",
+      dataIndex: "remark",
       align: "left",
       width: 220
     },
@@ -145,64 +149,23 @@ export default observer(function ApplyTable(props: Props) {
       width: 150,
       align: "center",
       render(text: any, record: any) {
-        let data: any = [{ text: "暂无操作" }];
-        switch (record.status) {
-          case 1:
-            data = [
-              {
-                text: "修改",
-                function: handReWrite
-              },
-              {
-                text: "删除",
-                function: handleDelete
-              }
-            ];
-            break;
-          case 2:
-            data = [
-              {
-                text: "撤回",
-                function: handleRevoke
-              },
-              {
-                text: "查看",
-                function: checkResult
-              }
-            ];
-            break;
-          case 3:
-            data = [
-              {
-                text: "查看",
-                function: checkResult
-              },
-              {
-                text: "修改",
-                function: handReWrite
-              },
-              {
-                text: "删除",
-                function: handleDelete
-              }
-            ];
-            break;
-          case 4:
-            data = [
-              {
-                text: "查看",
-                function: checkResult
-              }
-            ];
-            break;
-          default:
-        }
+        let data: any = [  
+          {
+            text: "修改",
+            function: handReWrite
+          },
+          {
+            text: "删除",
+            function: handleDelete,
+            color:'#f33'
+          }];
         return (
           <DoCon>
             {data.map((item: any, index: any) => (
               <span
                 key={index}
                 onClick={() => (item.function ? item.function(record) : {})}
+                style={{color:item.color?item.color:''}}
               >
                 {item.text}
               </span>
@@ -224,15 +187,14 @@ export default observer(function ApplyTable(props: Props) {
       title: "提示",
       content,
       okText: "确定",
-      okType: "danger",
       cancelText: "取消",
       onOk: () => {
-        trainingSettingApi
-          .deleteForm(record.formId)
+        internPostgraduateApi
+          .deleteFormData(record.id)
           .then(res => {
             if (res.code == 200) {
               Message.success("文件删除成功");
-              // formApplyModal.onload();
+              bacisPostgraduateData.onload();
             } else {
               Message.error(`${res.dec}`);
             }
@@ -242,34 +204,6 @@ export default observer(function ApplyTable(props: Props) {
     });
   };
 
-  //撤销
-  const handleRevoke = (record: any) => {
-    let content = (
-      <div>
-        <div>您确定要撤销选中的记录吗？</div>
-      </div>
-    );
-    Modal.confirm({
-      title: "提示",
-      content,
-      okText: "确定",
-      okType: "danger",
-      cancelText: "取消",
-      onOk: () => {
-        trainingSettingApi
-          .revokeForm(record.formId)
-          .then(res => {
-            if (res.code == 200) {
-              Message.success("文件撤销成功");
-              // formApplyModal.onload();
-            } else {
-              Message.error(`${res.dec}`);
-            }
-          })
-          .catch(err => {});
-      }
-    });
-  };
 
   // 查看
   const checkResult = (record: any) => {
@@ -285,38 +219,51 @@ export default observer(function ApplyTable(props: Props) {
 
   // 修改
   const handReWrite = (record: any) => {
-    setEditParams({
-      formId: record.formId
-    });
+    setEditParams(record),
     setEditVisible(true);
+    // addPostgraduateModal.show({
+    //   id: record.id,
+    //   onOkCallBack: () => {
+    //     Message.success("修改成功");
+    //     bacisPostgraduateData.onload();
+    //   }
+    // });
   };
-  const handleEditCancel = () => {
-    setEditVisible(false);
-    setEditParams({});
-  };
+
   const handleEditOk = () => {
-    // formApplyModal.onload();
-    handleEditCancel();
+    setEditVisible(false);
+    Message.success("修改成功");
+    bacisPostgraduateData.onload();/*  */
+    
   };
 
   return (
     <Wrapper>
       <BaseTable
-        loading={tableLoading}
-        dataSource={tableData}
+        loading={bacisPostgraduateData.tableLoading}
+        dataSource={bacisPostgraduateData.tableList}
         columns={columns}
         surplusHeight={230}
         surplusWidth={100}
-        onChange={pagination => {
-         
+        pagination={{
+          current: bacisPostgraduateData.pageIndex,
+          total: bacisPostgraduateData.total,
+          pageSize: bacisPostgraduateData.pageSize,
+        }}
+        onChange={(pagination) => {
+          bacisPostgraduateData.pageIndex = pagination.current;
+          bacisPostgraduateData.total = pagination.total;
+          bacisPostgraduateData.pageSize = pagination.pageSize;
+          bacisPostgraduateData.onload();
         }}
       />
-      {/* <FormEditModal
+     <AddPostgraduateModal
         visible={editVisible}
+        allowClear={createClear}
         params={editParams}
-        onCancel={handleEditCancel}
+        onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
-      /> */}
+      />
     </Wrapper>
   );
 });

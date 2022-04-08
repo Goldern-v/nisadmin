@@ -3,13 +3,6 @@ import BaseApiService from "src/services/api/BaseApiService";
 import qs from "qs";
 
 export default class TrainingSettingApi extends BaseApiService {
-  // 获取表单对应字段（用于前期查看字段）
-  public async field(formCode: any) {
-    return this.post(
-      `/studyAndTrain/qualiAccessManage/queryFormItemsByFormCode`,
-      qs.stringify({ formCode })
-    );
-  }
 
   // 获取表单列表
   public async getFormList(obj: any) {
@@ -17,86 +10,67 @@ export default class TrainingSettingApi extends BaseApiService {
   }
   // 添加实习生
   public async AddFormSave(obj: any) {
-    return this.post(`nursefile/otherPersonInfo/graduateIntern/saveOrUpdateInfo`, obj);
+    return this.post(`/nursefile/otherPersonInfo/graduateIntern/saveOrUpdateYaXinInfo`, obj);
   }
 
-  //获取表单基本信息
-  public async getAutoGenerateItems(obj: any) {
-    return this.post(
-      `/studyAndTrain/qualiAccessManage/getAutoGenerateItems`,
-      obj
-    );
-  }
 
-  // 保存
-  public async saveForm(actionType: 1 | 2 | undefined, data: any) {
-    //actionType(1保存为草稿；2提交审核)
-    let obj = {
-      // formCode: formApplyModal.getFormCode,
-      actionType,
-      ...data
-    };
-    return this.post(
-      `/studyAndTrain/qualiAccessManage/saveOrUpdateFormContent`,
-      obj
-    );
-  }
-
-  // 获取修改回显数据
-  public async formData(id: any) {
-    return this.post(
-      `/studyAndTrain/qualiAccessManage/queryFormContent`,
-      qs.stringify({ id })
-    );
-  }
-
+ 
   // 表单删除
   public async deleteForm(id: any) {
     return this.post(
-      `/studyAndTrain/qualiAccessManage/deleteForm`,
-      qs.stringify({ id })
+      `/nursefile/otherPersonInfo/graduateIntern/deleteInfoById`,
+      { id }
     );
   }
-
-  // 表单撤回
-  public async revokeForm(id: any) {
+  // 表单导出
+  public async exportPageList(obj: any) {
     return this.post(
-      `/studyAndTrain/qualiAccessManage/recallForm`,
-      qs.stringify({ id })
+      `/nursefile/otherPersonInfo/graduateIntern/exportPageYaXinList`,
+      obj,
+      {
+        responseType: "blob"
+      }
     );
   }
-
-  // 获取所有科室
-  public getAllDeptList() {
-    return this.get(`/dept/nursingUnit/all`);
+  // 下载摸板
+  public async downloadTemplate() {
+    return this.get(
+      `/nursefile/otherPersonInfo/graduateIntern/downLoadGraduateInternInfoYaXinTemplate`,
+      {
+        responseType: "blob"
+      }
+    );
   }
-
-  // 获取导师
-  public getAllEmpName(empName?: any) {
-    let obj: any = {
-      empName,
-      pageIndex: 1,
-      pageSize: 100
-    };
-    return this.post(`studyAndTrain/basicInformation/user/getPage`, obj);
-  }
-
-  // 获取审核列表
-  public getReviewList(type: any, obj: any) {
-    return this.post(`/studyAndTrain/qualiAccessManage/${type}`, obj);
-  }
-
-  // 获取审核流程
-  public getFlowTaskHisByCetpId(formId: any) {
+  // 表单导入
+  public async exportSheetTemplate(filename:any,year:any) {
+    let newFormData = new FormData()
+    newFormData.set('file', filename)
+    newFormData.set('year', year)
     return this.post(
-      `/studyAndTrain/qualiAccessManage/getFlowTaskHisByCetpId`,
-      qs.stringify({ formId })
+      `/nursefile/otherPersonInfo/graduateIntern/importGraduateInternInfoYaXinTemplate`
+      ,newFormData
     );
   }
 
-  //审核保存
-  public auditForm(obj: any) {
-    return this.post(`/studyAndTrain/qualiAccessManage/auditForm`, obj);
+  // 实习生教学计划-获取表单列表
+  public async getQueryPageList(obj: any) {
+    return this.post(`/studyAndTrain/courseLibrary/queryPageYaXinList`, obj);
   }
+  // 实习生教学计划-删除表单列表
+  public async deleteQueryPageList(id: any) {
+    return this.post(`/studyAndTrain/courseLibrary/delete`, { id });
+  }
+  // 导入教学计划课件-提交按钮
+  public async saveOrUpdate(obj: any) {
+    return this.post(`/studyAndTrain/courseLibrary/saveOrUpdateYaXin`, obj);
+  }
+  // 实习生教学计划-上传附件接口
+  public async uploadPictures(filename:any) {
+    let newFormData = new FormData()
+    newFormData.set('file', filename)
+    return this.post(`/studyAndTrain/courseLibrary/uploadPictures`, newFormData);
+  }
+
+ 
 }
 export const trainingSettingApi = new TrainingSettingApi();

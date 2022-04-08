@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import React, { useState, useLayoutEffect } from "react";
-import { Select, Input, Button, DatePicker,message } from "antd";
+import { Select, Input, Button, DatePicker,message,Modal } from "antd";
 import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
 import { bacisManagData } from "../bacisPostgraduate";
@@ -24,7 +24,9 @@ export default observer(function ApplyHeader(props: Props) {
   } as any) //初始化默认值
   const [createClear, setCreateClear] = useState(true)
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+  const [exportVisible, setExportVisible] = useState(false); // 控制导入弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
+  const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
 
   // 学历选项
   const deucOption: IDeucOption[] =[
@@ -45,6 +47,10 @@ export default observer(function ApplyHeader(props: Props) {
       bacisManagData.onload()
     })
   };
+  const handleOk = () => {
+    setExportVisible(false);
+    bacisManagData.import()
+  };
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
     bacisManagData.year = value
@@ -61,6 +67,10 @@ export default observer(function ApplyHeader(props: Props) {
   // 查询
   const handelInquire = ()=>{
     bacisManagData.onload()
+  }
+  // 导入
+  const handelImprot = ()=>{
+    setExportVisible(true)
   }
 
   return (
@@ -123,13 +133,20 @@ export default observer(function ApplyHeader(props: Props) {
         </Button>
         <Button
           className="span"
-          onClick={handelInquire}
+          onClick={() => {
+            bacisManagData.getImportTemplate();
+          }}>
+          下载模板
+          </Button>
+        <Button
+          className="span"
+          onClick={handelImprot}
         >
           导入
         </Button>
         <Button
           className="span"
-          onClick={handelInquire}
+          onClick={()=>{bacisManagData.export()}}
         >
           导出
         </Button>
@@ -143,11 +160,29 @@ export default observer(function ApplyHeader(props: Props) {
         </Button>
       </RightIcon>
       <AddInternModal
-       allowClear={createClear}
+        allowClear={createClear}
         visible={editVisible}
         onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
       />
+       <Modal title="导入实习生" visible={exportVisible} onOk={handleOk} onCancel={() => setExportVisible(false)}>
+         <span>请先选择导入年份：</span>
+          <DatePicker
+            style={{ width: 300 }}
+            value={bacisManagData.yearImport}
+            open={yearImportIsOpen}
+            mode='year'
+            className='year-picker'
+            placeholder='全部'
+            format='YYYY'
+            onChange={()=>{bacisManagData.yearImport = undefined}}
+            onOpenChange={(status)=>{ setyearImportIsOpen(status)}}
+            onPanelChange={(val)=>{
+              bacisManagData.yearImport = val
+              setyearImportIsOpen(false)
+            }}
+          />
+       </Modal>
     </Wrapper>
   );
 });

@@ -1,19 +1,18 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Select, Input, Button, DatePicker,message } from "antd";
 import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
-// import { formApplyModal } from "../FormApplyModal"; // 仓库数据
+import { bacisPostgraduateData } from "../bacisPostgraduate"; // 仓库数据
+import {internPostgraduateApi} from "../../api/InternPostgraduate"
+
 import AddPostgraduateModal from "../model/AddPostgraduateModal"; // 新建弹窗
 
 const Option = Select.Option;
 
 interface Props {}
-interface IDeucOption {
-  value: string;
-  item: string;
-}
+
 export default observer(function ApplyHeader(props: Props) {
   const [query, setQuery] = useState({
     year: moment() as null | moment.Moment,
@@ -22,18 +21,23 @@ export default observer(function ApplyHeader(props: Props) {
     keyWord:'',
   } as any) //初始化默认值
   const [createClear, setCreateClear] = useState(true)
+  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
+  const [deucOption, setdeucOption] = useState([]); // 科室信息
 
-  // 学历选项
-  const deucOption: IDeucOption[] =[
-    {value:'',item:'全部'},
-    {value:'1',item:'博士'},
-    {value:'2',item:'研究生'},
-    {value:'3',item:'本科'},
-    {value:'4',item:'大专'},
-    {value:'5',item:'中专'}
-  ]
+
+
+  useEffect(()=>{
+    internPostgraduateApi.getnursingAll().then((res)=>{
+      let deptListall = [];
+      deptListall = res.data.deptList
+      deptListall.unshift({code:'',name:'全部'})
+      setdeucOption(deptListall)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  },[])
 
   const handleEditOk = () => {
     // formApplyModal.onload();
@@ -41,11 +45,13 @@ export default observer(function ApplyHeader(props: Props) {
     setCreateClear(false);
     message.success('添加成功', 2, () => {
       setCreateClear(true)
+      bacisPostgraduateData.onload()
     })
   };
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
-    setQuery({ ...query, year: value })
+    bacisPostgraduateData.year = value
+    bacisPostgraduateData.onload()
   }
 
   const handleOpenChange = (status: boolean) => {
@@ -53,11 +59,11 @@ export default observer(function ApplyHeader(props: Props) {
   }
 
   const handleYearClear = () => {
-    setQuery({ ...query, year: null, indexInType: '' })
+    bacisPostgraduateData.year = undefined
   }
   // 查询
   const handelInquire = ()=>{
-
+    bacisPostgraduateData.onload()
   }
 
   return (
@@ -66,7 +72,7 @@ export default observer(function ApplyHeader(props: Props) {
         <span>年份</span>
         <DatePicker
           style={{ width: 100 }}
-          value={query.year}
+          value={bacisPostgraduateData.year}
           open={yearPickerIsOpen}
           mode='year'
           className='year-picker'
@@ -78,23 +84,25 @@ export default observer(function ApplyHeader(props: Props) {
         />
         <span className="span">进修科室：</span>
         <Select
-          style={{ width: 100 }}
-          value={query.deucValue}
+          style={{ width: 180 }}
+          value={bacisPostgraduateData.deucValue}
           onChange={(val: string) => {
-            setQuery({ ...query, deucValue: val })
+            bacisPostgraduateData.deucValue = val
+            bacisPostgraduateData.onload()
           }}
         >
-          {deucOption.map((item:IDeucOption)=>{
-            return <Option value={item.value} key={item.item}>{item.item}</Option>
+          {deucOption.map((item:any)=>{
+            return <Option value={item.name} key={item.code}>{item.name}</Option>
           })}
         </Select>
         
         <Input
           style={{ width: 200, marginLeft: 15, marginRight: 5 }}
           placeholder="请输入要搜索的关键字"
-          value={query.keyWord}
+          value={bacisPostgraduateData.keyWord}
           onChange={e => {
-            setQuery({ ...query, keyWord: e.target.value })
+            bacisPostgraduateData.keyWord = e.target.value
+            bacisPostgraduateData.onload()
           }}
         />
         <Button
@@ -106,7 +114,7 @@ export default observer(function ApplyHeader(props: Props) {
         </Button>
         <Button
           className="span"
-          onClick={handelInquire}
+          onClick={()=>{bacisPostgraduateData.export()}}
         >
           导出
         </Button>

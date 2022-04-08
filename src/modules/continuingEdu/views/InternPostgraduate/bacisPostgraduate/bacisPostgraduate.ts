@@ -1,20 +1,19 @@
 import { observable, computed } from "mobx";
-import {trainingSettingApi} from "../api/TrainingSettingApi";
+import {internPostgraduateApi} from "../api/InternPostgraduate";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
 import { T } from "antd/lib/upload/utils";
-import { message } from "antd";
 import moment from 'moment'
 
-class BacisManagModel {
+class BacisPostgraduateModel {
   @observable public id = ""; //菜单id
   @observable public keyWord = ""; //关键字
   @observable public selectedType = ""; //类型
   @observable public education =""; //学历
   @observable public year = moment() as undefined | moment.Moment; //年份
-  @observable public yearImport = moment() as undefined | moment.Moment; //年份
   @observable public sex =""; //性别
+  @observable public deucValue ="全部"; //进修科室
   @observable public selectTypeList: any = []; //类型
   @observable public selectedState = ""; //状态
   @observable public key: string = "0"; //状态
@@ -37,70 +36,18 @@ class BacisManagModel {
   get postObj() {
     return {
       year:moment(this.year).format("YYYY"), //年份
-      education: this.education, //学历
-      sex:this.sex,//性别
+      studyDeptName01: this.deucValue == '全部'? '' :this.deucValue, //进修科室
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
       total: this.total, //每页大小
       keyWord:this.keyWord, //关键字
     };
   }
-  get getObj() {
-    return {
-      year:moment(this.year).format("YYYY"), //年份
-      pageIndex: this.pageIndex, //页码
-      pageSize: this.pageSize, //每页大小
-      total: this.total, //每页大小
-      keyWord:this.keyWord, //关键字
-    };
-  }
-
-   //导出Excel
-   export() {
-    trainingSettingApi.exportPageList({
-      ...this.postObj,
-      fileName: appStore.queryObj.fileName || undefined
-    }).then(res => {
-      fileDownload(res);
-    });
-  }
-  
-  /** 获取导入模板 */
-  // getImportTemplate(obj:any) {
-  //   trainingSettingApi.exportSheetTemplate(obj)
-  //     .then(res => fileDownload(res))
-  // }
-
-  import() {
-    let importElId = 'sxslrb_import_file_el'
-    let lastEl = document.getElementById('importElId')
-    if (lastEl) document.body.removeChild(lastEl)
-
-    let importEl = document.createElement('input')
-    importEl.id = importElId
-    importEl.style.display = 'none'
-    importEl.type = 'file'
-    importEl.onchange = (e: any) => {
-      let file = e.target.files[0]
-      this.tableLoading = true;
-      let impObj:any =moment(this.yearImport).format("YYYY")
-      trainingSettingApi.exportSheetTemplate(file,impObj)
-        .then(res => {
-          message.success('导入成功')
-          this.onload()
-        }, err => this.tableLoading = false)
-
-      document.body.removeChild(importEl)
-    }
-    document.body.appendChild(importEl)
-    importEl.click()
-  }
-
 
   /** 获取表格数据 */
   onload() {
     this.tableLoading = true;
-    trainingSettingApi.getFormList(this.postObj).then(res => {
+    internPostgraduateApi.getFormList(this.postObj).then(res => {
       this.tableLoading = false;
       this.tableList = res.data.list;
       this.total = res.data.totalCount;
@@ -109,16 +56,20 @@ class BacisManagModel {
     });
   }
 
-   /** 获取导入模板 */
-   getImportTemplate() {
-    trainingSettingApi.downloadTemplate()
-      .then(res => fileDownload(res))
+  /** 导出Excel */
+  export() {
+    internPostgraduateApi.exportMainData(this.postObj).then(res => {
+      fileDownload(res);
+    });
   }
- 
 
+  //tabs变化函数
+  tabsChanged(key: any) {
+    this.hjSelectedType = this.selectTypeList[Number(key)].id;
+  }
 
   init() {
     this.onload();
   }
 }
-export const bacisManagData = new BacisManagModel();
+export const bacisPostgraduateData = new BacisPostgraduateModel();

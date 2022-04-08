@@ -5,7 +5,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { bacisManagData } from "../bacisPostgraduate";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
-// import FormEditModal from "../modal/FormEditModal"; // 修改弹窗
+import AddInternModal from "../model/AddInternModal"; // 修改弹窗
 import { appStore } from "src/stores";
 import qs from "qs";
 
@@ -14,6 +14,7 @@ interface Props {}
 export default observer(function ApplyTable(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
+  const [createClear, setCreateClear] = useState(true)
 
 
   const columns: any = [
@@ -139,7 +140,8 @@ export default observer(function ApplyTable(props: Props) {
           },
           {
             text: "删除",
-            function: handleDelete
+            function: handleDelete,
+            color:'#f33'
           }
         ];
         return (
@@ -148,6 +150,7 @@ export default observer(function ApplyTable(props: Props) {
               <span
                 key={index}
                 onClick={() => (item.function ? item.function(record) : {})}
+                style={{color:item.color?item.color:''}}
               >
                 {item.text}
               </span>
@@ -169,15 +172,14 @@ export default observer(function ApplyTable(props: Props) {
       title: "提示",
       content,
       okText: "确定",
-      okType: "danger",
       cancelText: "取消",
       onOk: () => {
         trainingSettingApi
-          .deleteForm(record.formId)
+          .deleteForm(record.id)
           .then(res => {
             if (res.code == 200) {
               Message.success("文件删除成功");
-              // formApplyModal.onload();
+              bacisManagData.onload();
             } else {
               Message.error(`${res.dec}`);
             }
@@ -186,51 +188,16 @@ export default observer(function ApplyTable(props: Props) {
       }
     });
   };
-
-  //撤销
-  const handleRevoke = (record: any) => {
-    let content = (
-      <div>
-        <div>您确定要撤销选中的记录吗？</div>
-      </div>
-    );
-    Modal.confirm({
-      title: "提示",
-      content,
-      okText: "确定",
-      okType: "danger",
-      cancelText: "取消",
-      onOk: () => {
-        trainingSettingApi
-          .revokeForm(record.formId)
-          .then(res => {
-            if (res.code == 200) {
-              Message.success("文件撤销成功");
-              // formApplyModal.onload();
-            } else {
-              Message.error(`${res.dec}`);
-            }
-          })
-          .catch(err => {});
-      }
-    });
-  };
-
-
+  
   // 修改
   const handReWrite = (record: any) => {
-    setEditParams({
-      formId: record.formId
-    });
+    setEditParams(record);
     setEditVisible(true);
   };
-  const handleEditCancel = () => {
-    setEditVisible(false);
-    setEditParams({});
-  };
   const handleEditOk = () => {
-    // formApplyModal.onload();
-    handleEditCancel();
+    setEditVisible(false);
+    Message.success('修改成功！')
+    bacisManagData.onload();
   };
 
   return (
@@ -253,6 +220,14 @@ export default observer(function ApplyTable(props: Props) {
           bacisManagData.onload();
         }}
       />
+       <AddInternModal
+        allowClear={createClear}
+        visible={editVisible}
+        params={editParams}
+        onCancel={() => setEditVisible(false)}
+        onOk={handleEditOk}
+      />
+      
     </Wrapper>
   );
 });

@@ -3,12 +3,15 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import TeachingHeader from "./components/TeachingHeader"
 import TeachingTable from "./components/TeachingTable";
-
+import {teachingPost} from "./TeachingPost"
 
 // interface Props{
 //   formName: any;
 // }
 export default observer(function BacisManagement() {
+  useEffect(()=>{
+    teachingPost.onload()
+  },[])
   return (
     <Wrapper>
       <TeachingHeader /> 
