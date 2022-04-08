@@ -124,7 +124,7 @@ const Wrapper = styled.div`
   .selectBody{
     position: fixed;
     width: 200px;
-    height: 260px;
+    height: 270px;
     background-color: #fff;
     /* border: 1px solid #000; */
     box-shadow:5px 5px 5px rgba(233, 233, 234);

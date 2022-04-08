@@ -47,7 +47,7 @@ export default function FollowUpGroupStatistical(props: any) {
   const rowHeight2 = $('.row2').height() || 0
   const rowWidth = $('.number_statistical').width() || 0
   const rowWidth2 = $('.row2').width() || 0
-  let tableHeight = !(queryObj.wardCode&&queryObj.empNo)? H-(H-110)/5 : H-(H-110)/2.2
+  let tableHeight = !(queryObj.wardCode&&queryObj.empNo)? H-(H-110)/2.5 : H-(H-110)/2.2
   
   let yearList:number[] = []
   if(yearList.length == 0){
@@ -93,12 +93,14 @@ export default function FollowUpGroupStatistical(props: any) {
             padding-top:1cm;
           }
           #canvasImg1{
-            width:25cm;
-            margin-left: 2.35cm
+            width:26cm;
+            height: 8cm;
+            margin-left: 2cm
           }
           #canvasImg2{
-            width:25cm;
-            margin-left: 2.35cm
+            width:26cm;
+            height: 8cm;
+            margin-left: 2cm
           }
           .ant-table-wrapper{
             width:17cm;
@@ -110,7 +112,7 @@ export default function FollowUpGroupStatistical(props: any) {
           .print-title{
             line-height:40px;
             font-weight:700;
-            font-size:18px;
+            font-size:25px;
             text-align:center;
             margin-bottom:5px;
           }
@@ -144,6 +146,7 @@ export default function FollowUpGroupStatistical(props: any) {
       })
       .then((res) => {
         setTableData(res.data.list)
+        setDataTotal(res.data.totalCount)
         setIsOK1(true)
       }, err => setIsOK1(false))
   }
@@ -652,9 +655,9 @@ export default function FollowUpGroupStatistical(props: any) {
       console.log(e.data);
       
       if(!queryObj.wardCode){
-        appStore.history.push(`/nursingNewFollowUp/随访统计?wardCode=${e.data.wardCode}`)
+        appStore.history.push(`/nursingFollowUp/随访统计?wardCode=${e.data.wardCode}`)
       }else{
-        appStore.history.push(`/nursingNewFollowUp/随访统计?wardCode=${queryObj.wardCode}&&empNo=${e.data.empNo}`)
+        appStore.history.push(`/nursingFollowUp/随访统计?wardCode=${queryObj.wardCode}&&empNo=${e.data.empNo}`)
       }
       
     }
@@ -684,15 +687,15 @@ export default function FollowUpGroupStatistical(props: any) {
           {deptList.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>}
-        <span className='label'>科室成员:</span>
-        <Select style={{ width: 100 }} value={empNo} onChange={(value: any) => setEmpNo(value)}>
+        {!queryObj.empNo&&<span className='label'>科室成员:</span>}
+        {!queryObj.empNo&&<Select style={{ width: 100 }} value={empNo} onChange={(value: any) => setEmpNo(value)}>
           <Select.Option value=''>全部</Select.Option>
           {empList.map((item: any, index: number) => (
             <Select.Option key={index} value={item.empNo}>
               {item.empName}
             </Select.Option>
           ))}
-        </Select>
+        </Select>}
         <span className='label'>时间:</span>
         <DatePicker.RangePicker
           allowClear

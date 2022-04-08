@@ -111,7 +111,8 @@ export default function 待分配出院患者(props: Props) {
     },
     {
       title: '操作',
-      width: 150,
+      width: 100,
+      fixed: 'right',
       render(text: any, record: any, index: number) {
         return (
           <DoCon>

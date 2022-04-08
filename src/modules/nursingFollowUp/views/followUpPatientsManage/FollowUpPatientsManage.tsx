@@ -13,7 +13,7 @@ export default function FollowUpPatientsManage(props: any) {
   })
   const { queryObj, history } = appStore
   const handleTagChange = (tabId: string) => {
-    history.replace(`/nursingFollowUp?tabId=${tabId}`)
+    history.replace(`/nursingFollowUp/随访患者管理?tabId=${tabId}`)
   }
   const [templateList, setTemplateList]: any = useState([])
   const [deptList, setDeptList] = useState([] as any)

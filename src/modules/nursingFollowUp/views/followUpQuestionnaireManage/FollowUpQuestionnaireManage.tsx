@@ -165,7 +165,7 @@ export default function FollowUpQuestionnaireManage(props: any) {
         onChange={onChangeSearchText}
         className='input_hj'
       />
-      <Button onClick={() => getData()}>
+      <Button type="primary" onClick={() => getData()}>
         查询
       </Button>
     </PageHeader>

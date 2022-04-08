@@ -22,7 +22,7 @@ export default class NurseFilesService extends BaseApiService {
         obj[key] = "";
       }
     });
-    return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj));
+    return this.post(`/auditeNurseFileIndexNys/getByFormCodePC`, this.stringify(obj));
   }
 
   // 查看护士首页信息
@@ -467,6 +467,14 @@ export default class NurseFilesService extends BaseApiService {
       `/auditeNurseFileIndexNys/findNurseFileProcessedFlow`,
       this.stringify({ empNo, pageIndex, pageSize })
     )
+  }
+  /**
+   * 删除护士
+   * @param empNo 
+   * @returns 
+   */
+  public deleteNysNurse(params: any) {
+    return this.post(`/auditeNurseFileIndexNys/deleteNysNurse`, params)
   }
 }
 

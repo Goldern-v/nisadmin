@@ -14,8 +14,11 @@ export interface setInvestIn extends getDataIn {
 export interface getDeptScoreIn extends getDataIn {
   wardCode?: string
 }
+/**
+ * 获取各指标分数段分布 类型列表
+ * 1:优质护理病房知晓情况 2:入院介绍 3:病房及卫生间清洁 4:输液体验 5:疾病相关知识宣教 6:护理操作讲解 7:健康指导 8:生活照顾 9:隐私保护 10:整体满意度
+ */ 
 export type getEachVariousIndicatorsEnums = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
-// 1:优质护理病房知晓情况 2:入院介绍 3:病房及卫生间清洁 4:输液体验 5:疾病相关知识宣教 6:护理操作讲解 7:健康指导 8:生活照顾 9:隐私保护 10:整体满意度
 export interface getEachVariousIndicatorsIn extends getDataIn {
   typeList: Array<getEachVariousIndicatorsEnums>
 }

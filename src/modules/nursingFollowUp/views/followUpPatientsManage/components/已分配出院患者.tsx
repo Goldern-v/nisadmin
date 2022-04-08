@@ -8,6 +8,7 @@ import { ColumnProps } from 'antd/lib/table'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
 import moment from 'moment'
+import Right from 'src/modules/continuingEdu/views/trainingSetting/formCheck/components/Right'
 export interface Props { 
   deptList: any, //科室列表
 }
@@ -184,7 +185,8 @@ export default function 已分配出院患者(props:Props) {
     },
     {
       title: '操作',
-      width: 150,
+      width: 100,
+      fixed: 'right',
       render(text: any, record: any, index: number) {
         return (
           <DoCon>

@@ -60,7 +60,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           ////非贵州
           if (
-            !["gzsrm","gzhd", "whyx"].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm","gzhd", "whyx", "fsxt"].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -83,7 +83,11 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
       } else if(x == 'bedLabel') {
         if (appStore.HOSPITAL_ID == 'whyx'  && baseInfo.isBedNumber == '否' ) {
 
-        } else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
+        } 
+        else if (['gzsrm','nys'].includes(appStore.HOSPITAL_ID)) {
+
+        }
+        else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
         }

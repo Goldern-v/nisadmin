@@ -192,7 +192,7 @@ export default function DiseaseManage(props: any) {
         onChange={onChangeSearchText}
         className='ml-20'
       />
-      <Button onClick={() => getData()}>
+      <Button type="primary" onClick={() => getData()}>
         查询
       </Button>
       <Button onClick={() => handleAddGroup()}>

@@ -90,6 +90,14 @@ class NurseFilesListViewModel {
       fileDownload(res);
     });
   };
+  /**
+   * 删除护士
+   * @param empNo 
+   */
+  @action
+  public deleteNysNurse = (params: any) => {
+    return nurseFilesService.deleteNysNurse(params)
+  }
 }
 
 export const nurseFilesListViewModel = new NurseFilesListViewModel();

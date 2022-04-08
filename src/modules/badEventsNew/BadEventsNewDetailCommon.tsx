@@ -316,7 +316,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </Button> */}
           {appStore.hisMatch({
             map: {
-              'fqfybjy': <React.Fragment>
+              'fqfybjy,gxjb': <React.Fragment>
                 <Button
                   disabled={iframeLoading}
                   className='audit'
@@ -325,7 +325,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                 </Button>
               </React.Fragment>,
               other: <></>
-            }
+            },
+            vague: true,
           })}
         </div>
         <div className='status'>状态：{appStore.HOSPITAL_ID != 'lcey' ? stepCurrent?.nodeName : statusName}</div>

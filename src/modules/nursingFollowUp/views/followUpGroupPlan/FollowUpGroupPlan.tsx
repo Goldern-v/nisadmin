@@ -6,6 +6,7 @@ import { Select, Spin, message } from 'src/vendors/antd'
 import FollowUpGroupPlanServices from './services/FollowUpGroupPlanServices'
 import moment from 'moment'
 import { appStore, authStore } from 'src/stores'
+import $ from 'jquery'
 
 export interface Props { }
 const api = new FollowUpGroupPlanServices();
@@ -25,7 +26,7 @@ export default function FollowUpGroupPlan(props: any) {
   const [y, setY]: any = useState()
   const [isShow, setIsShow]: any = useState(false)
   const [patientId, setPatientId]: any = useState('')
-
+  const itemWidth = $('.calendar-body-item').width() || 0
   let nowMonth = moment().format('MM')
   let today = moment().format('DD')
   let yearList:number[] = []
@@ -106,7 +107,7 @@ export default function FollowUpGroupPlan(props: any) {
     setLoading(true)
     api
       .queryNursePageList({
-        wardCode: "",
+        wardCode: deptSelect,
         status: taskStatus,
         year: year,
         month: month,
@@ -122,8 +123,8 @@ export default function FollowUpGroupPlan(props: any) {
     setPatientId(col.patientId)
     setSelectList(col.visitFormList)
     let domReact = e.currentTarget.getBoundingClientRect()
-    const selectw = Math.ceil(domReact.left) - Math.ceil(domReact.width) - 20;//下拉框弹窗宽度
-    const selectH = Math.ceil(domReact.top) - Math.ceil(domReact.height) + 11;//下拉框弹窗高度
+    const selectw = Math.ceil(domReact.left) - 220 - ((250-Math.ceil(itemWidth))/2)
+    const selectH = Math.ceil(domReact.top) - 50 + Math.ceil(domReact.height)
     setX(selectw)
     setY(selectH)
     if(isShow){
@@ -313,7 +314,7 @@ const Wrapper = styled.div`
 	    border-bottom-color: #fef8b7;
       position: absolute;
       top: -24px;
-      left: 140px;
+      left: 45%;
     }
   }
 `
@@ -322,12 +323,13 @@ const MainCon = styled.div`
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   border-radius: 6px;
   background: rgb(255, 255, 255);
-  padding: 0 30px 20px 30px;
+  padding: 0 5px 20px 5px;
   box-sizing: border-box;
   height: calc(100vh - 120px);
   overflow-y: auto;
   .text-title{
-    min-width: 1370px;
+    width: 98%;
+    margin: 0 auto;
     font-size: 24px;
     padding: 10px 0;
     border-bottom: 1px solid #c9c9ca;
@@ -341,7 +343,7 @@ const MainCon = styled.div`
     overflow-x: auto;
     .calendar-title{
       height: 30px;
-      margin: 0 30px;
+      margin: 0 5px;
       background-color: #bce3d8;
       border: 1px solid #c9c9ca;
       border-bottom: none;
@@ -360,7 +362,7 @@ const MainCon = styled.div`
     .calendar-body{
       border-left: 1px solid #c9c9ca;
       border-bottom: 1px solid #c9c9ca;
-      margin: 0 30px 30px 30px;
+      margin: 0 5px 30px 5px;
       .calendar-body-row{
         display: flex;
         justify-content: space-evenly;
