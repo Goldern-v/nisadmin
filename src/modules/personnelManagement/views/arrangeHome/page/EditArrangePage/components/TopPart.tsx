@@ -156,7 +156,9 @@ export default observer(function TopPart() {
   });
   useEffect(() => {
     //当前月份的时间戳1号
-    let today = new Date(getCurrentMonth()[0].format("YYYY-MM-DD")).getTime()
+    // let today = new Date(getCurrentMonth()[0].format("YYYY-MM-DD")).getTime()
+    // 当前月份的时间戳5号
+    let today = moment(moment().format('YYYY-MM-05')).endOf('day').valueOf()
     // 选择开始的时间戳
     let startTime = new Date(selectViewModal.params.startTime).getTime()
     let flag = startTime < today && ['whyx'].includes(appStore.HOSPITAL_ID)
