@@ -38,6 +38,7 @@ const rules: Rules = {
   },
   patentNumber: (val) => {
     if (val) {
+      console.log('test-exp', val, /^ZL [0-9]{4} [0-9] [0-9]{7}\.[0-9X]$/.test(val))
       if (/^ZL [0-9]{4} [0-9] [0-9]{7}\.[0-9X]$/.test(val))
         return true
 
