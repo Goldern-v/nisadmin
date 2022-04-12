@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Select, Input, Button, DatePicker,message,Modal } from "antd";
 import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
 import { bacisManagData } from "../bacisPostgraduate";
 // import { formApplyModal } from "../FormApplyModal"; // 仓库数据
 import AddInternModal from "../model/AddInternModal"; // 新建弹窗
+import { appStore,authStore } from "src/stores";
+import { use } from "echarts";
 
 const Option = Select.Option;
 
@@ -27,6 +29,13 @@ export default observer(function ApplyHeader(props: Props) {
   const [exportVisible, setExportVisible] = useState(false); // 控制导入弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
 
   // 学历选项
   const deucOption: IDeucOption[] =[
@@ -152,6 +161,7 @@ export default observer(function ApplyHeader(props: Props) {
         </Button>
         <Button
           className="span"
+          disabled={isAdd}
           onClick={() =>{
             setEditVisible(true)
           } }

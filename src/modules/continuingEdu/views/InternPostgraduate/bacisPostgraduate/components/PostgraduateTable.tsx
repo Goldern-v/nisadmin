@@ -5,11 +5,11 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { bacisPostgraduateData } from "../bacisPostgraduate";
 // import FormEditModal from "../modal/FormEditModal"; // 修改弹窗
-import { appStore } from "src/stores";
 import AddPostgraduateModal from "../model/AddPostgraduateModal";
 import createModal from "src/libs/createModal";
 import {internPostgraduateApi} from "../../api/InternPostgraduate"
 import qs from "qs";
+import { appStore,authStore } from "src/stores";
 
 interface Props {}
 
@@ -18,14 +18,15 @@ export default observer(function ApplyTable(props: Props) {
   const [createClear, setCreateClear] = useState(true)
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
-  const [tableLoading, settableLoading] = useState(false); //tabel的loading的控制
-  const [tableData, setTableData] = useState([] as any) //tabel的数据
-  const [tablequery, setTableQuery] = useState({
-    pageIndex: 1,
-    pageSize: 20,
-    quarter: '',
-    keyWord: '',
-  } as any)
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
+
+  
 
   const columns: any = [
     {
@@ -178,6 +179,10 @@ export default observer(function ApplyTable(props: Props) {
 
   //删除
   const handleDelete = (record: any) => {
+    if(isAdd){
+      Message.warning('这是要护士长权限才可以操作！');
+      return
+    }
     let content = (
       <div>
         <div>您确定要删除选中的记录吗？</div>
@@ -205,29 +210,14 @@ export default observer(function ApplyTable(props: Props) {
   };
 
 
-  // 查看
-  const checkResult = (record: any) => {
-    let newQuery = {
-      formId: record.formId,
-      code: record.formCode,
-      haveHeader: false,
-      // title: formApplyModal.getTitle,
-      statusName: record.statusName
-    } as any;
-    appStore.history.push(`/continuingEduFormCheck?${qs.stringify(newQuery)}`);
-  };
-
   // 修改
   const handReWrite = (record: any) => {
+    if(isAdd){
+      Message.warning('这是要护士长权限才可以操作！');
+      return
+    }
     setEditParams(record),
     setEditVisible(true);
-    // addPostgraduateModal.show({
-    //   id: record.id,
-    //   onOkCallBack: () => {
-    //     Message.success("修改成功");
-    //     bacisPostgraduateData.onload();
-    //   }
-    // });
   };
 
   const handleEditOk = () => {

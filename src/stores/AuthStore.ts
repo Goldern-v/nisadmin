@@ -112,6 +112,24 @@ export default class AuthStore {
     }
   }
 
+
+  /** 是否是肖瑞芬护士长 */
+  public get isXiaoRuiFen() {
+    try {
+      return this.user && this.user.empNo == "QCR1102";
+    } catch (error) {
+      return "";
+    }
+  }
+  /** 是否是护理部主任 */
+  public get isHoundSing() {
+    try {
+      return this.user && this.user.empNo == "QCR1101"; //亚心
+    } catch (error) {
+      return "";
+    }
+  }
+
   public get isAd() {
     try {
       return (

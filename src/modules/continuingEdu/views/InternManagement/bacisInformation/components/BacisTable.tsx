@@ -6,7 +6,7 @@ import { Button, Modal, message as Message } from "antd";
 import { bacisManagData } from "../bacisPostgraduate";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import AddInternModal from "../model/AddInternModal"; // 修改弹窗
-import { appStore } from "src/stores";
+import { appStore,authStore } from "src/stores";
 import qs from "qs";
 
 interface Props {}
@@ -15,6 +15,13 @@ export default observer(function ApplyTable(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [createClear, setCreateClear] = useState(true)
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
 
 
   const columns: any = [
@@ -150,7 +157,7 @@ export default observer(function ApplyTable(props: Props) {
               <span
                 key={index}
                 onClick={() => (item.function ? item.function(record) : {})}
-                style={{color:item.color?item.color:''}}
+                style={{color:item.color?item.color:'',}}
               >
                 {item.text}
               </span>
@@ -163,6 +170,10 @@ export default observer(function ApplyTable(props: Props) {
 
   //删除
   const handleDelete = (record: any) => {
+    if(isAdd){
+      Message.warning('这是要护士长权限才可以操作！');
+      return
+    }
     let content = (
       <div>
         <div>您确定要删除选中的记录吗？</div>
@@ -191,6 +202,10 @@ export default observer(function ApplyTable(props: Props) {
   
   // 修改
   const handReWrite = (record: any) => {
+    if(isAdd){
+      Message.warning('这是要护士长权限才可以操作！');
+      return
+    }
     setEditParams(record);
     setEditVisible(true);
   };

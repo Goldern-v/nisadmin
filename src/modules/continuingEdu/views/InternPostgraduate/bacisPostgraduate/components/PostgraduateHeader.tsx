@@ -8,6 +8,7 @@ import { bacisPostgraduateData } from "../bacisPostgraduate"; // 仓库数据
 import {internPostgraduateApi} from "../../api/InternPostgraduate"
 
 import AddPostgraduateModal from "../model/AddPostgraduateModal"; // 新建弹窗
+import { appStore,authStore } from "src/stores";
 
 const Option = Select.Option;
 
@@ -25,6 +26,9 @@ export default observer(function ApplyHeader(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [deucOption, setdeucOption] = useState([]); // 科室信息
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+
+  
 
 
 
@@ -38,6 +42,13 @@ export default observer(function ApplyHeader(props: Props) {
       console.log(err);
     })
   },[])
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
+
 
   const handleEditOk = () => {
     // formApplyModal.onload();
@@ -121,6 +132,7 @@ export default observer(function ApplyHeader(props: Props) {
         <Button
           className="span"
           onClick={() => setEditVisible(true)}
+          disabled={isAdd}
         >
           添加进修生
         </Button>

@@ -69,6 +69,7 @@ import 审核集中管理 from "./views/审核集中管理/审核集中管理";
 // 亚心实习生管理基本信息
 import BacisManagement from "./views/InternManagement/bacisInformation/BacisManagement"
 import TeachingProgramme from "./views/InternManagement/bacisTeachingProgramme/TeachingProgramme"
+import InterntraineeRound from "./views/InternManagement/traineeShift/TraineeShift"
 
 // 亚心进修生管理
 import BaciPostgraduate from './views/InternPostgraduate/bacisPostgraduate/PostgraduateManagement'
@@ -911,6 +912,11 @@ export default function ContinuingEdu(props: Props) {
                 title: "实习生教学计划",
                 path: "/continuingEdu/实习生教学计划",
                 component: TeachingProgramme,
+              },
+              {
+                title: "实习生轮转计划",
+                path: "/continuingEdu/实习生轮转计划",
+                component: InterntraineeRound,
               },
             ],
           },
