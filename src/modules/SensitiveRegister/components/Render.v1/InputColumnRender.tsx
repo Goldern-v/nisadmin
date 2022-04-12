@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
 import styled from 'styled-components'
+import { appStore } from 'src/stores'
 
 const TextArea = Input.TextArea
 
@@ -16,14 +17,16 @@ export interface Props {
   handleNextIptFocus: any,
   onBlur?: Function,
   multiple?: boolean,
-  selectAll?: boolean
+  selectAll?: boolean,
+  /**登记本类型 */
+  registerCode?: string,
 }
 
 const getId = () => {
   return `input${new Date().getTime()}${parseInt((Math.random() * 1000000000000).toString())}`
 }
 
-export default function InputColumnRender(porps: Props) {
+export default function InputColumnRender(props: Props) {
   const {
     className,
     cellDisabled,
@@ -36,7 +39,8 @@ export default function InputColumnRender(porps: Props) {
     onBlur,
     onSelect,
     multiple,
-  } = porps
+    registerCode,
+  } = props
 
   const [editValue, setEditValue] = useState('')
   const [editVisible, setEditVisible] = useState(false)
@@ -67,7 +71,7 @@ export default function InputColumnRender(porps: Props) {
     <AutoComplete
       className={className || ''}
       id={id}
-      disabled={cellDisabled(record)}
+      disabled={cellDisabled(record, {itemCode})}
       dataSource={_options}
       value={editValue}
       onChange={value => {
@@ -117,7 +121,7 @@ export default function InputColumnRender(porps: Props) {
         autosize={{ minRows: 1 }}
         data-key={itemCode}
         onClick={() => setOpen(true)}
-        className={!cellDisabled(record) ? 'focus-allow' : 'focus-disabled'}
+        className={!cellDisabled(record, {itemCode}) ? 'focus-allow' : 'focus-disabled'}
         onKeyUp={(e) => {
           if (e.keyCode == 40 || e.keyCode == 38)
             setOpen(true)
@@ -140,14 +144,14 @@ export default function InputColumnRender(porps: Props) {
     <TextRender
       className={[
         className || '',
-        !cellDisabled(record) ? 'focus-allow' : 'focus-disabled'
+        !cellDisabled(record, {itemCode}) ? 'focus-allow' : 'focus-disabled'
       ].join(' ')}
       onClick={() => {
-        if (!cellDisabled(record)) {
+        if (!cellDisabled(record, {itemCode})) {
           setEditVisible(true)
         }
       }}>
-      <span>{editValue}</span>
+      <span>{['fqfybjy'].includes(appStore.HOSPITAL_ID) && registerCode === 'QCRG_22_3' && editValue !== '' && (itemCode + '').indexOf('率') > -1 && !isNaN(Number(editValue)) ? Number(editValue) * 100 + '%' : editValue}</span>
     </TextRender>
   )
 }

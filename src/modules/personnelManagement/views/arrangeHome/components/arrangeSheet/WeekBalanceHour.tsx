@@ -32,17 +32,17 @@ export const weekBalanceHour = (id: any) => {
   for (let j = 0; j < (list || []).length; j++) {
     real_balanceHour += Number(user.settingDtos[j].effectiveTime);
     // 计算加减班工时
-    if (['dghl'].includes(appStore.HOSPITAL_ID) && user.settingDtos[j].schAddOrSubs) {
-      let schAddOrSubs = user.settingDtos[j].schAddOrSubs.reduce((schAddOrSubs: any, current: any) => {
-        if (current.statusType == 2) {
-          return schAddOrSubs - Number(current.hour)
-        } else if (current.statusType == 1) {
-          return schAddOrSubs + Number(current.hour)
-        }
-        return schAddOrSubs
-      }, 0)
-      real_balanceHour += Number(schAddOrSubs)
-    }
+    // if (['dghl'].includes(appStore.HOSPITAL_ID) && user.settingDtos[j].schAddOrSubs) {
+    //   let schAddOrSubs = user.settingDtos[j].schAddOrSubs.reduce((schAddOrSubs: any, current: any) => {
+    //     if (current.statusType == 2) {
+    //       return schAddOrSubs - Number(current.hour)
+    //     } else if (current.statusType == 1) {
+    //       return schAddOrSubs + Number(current.hour)
+    //     }
+    //     return schAddOrSubs
+    //   }, 0)
+    //   real_balanceHour += Number(schAddOrSubs)
+    // }
   }
 
   /**每周应上天数 */
@@ -64,7 +64,6 @@ export const weekBalanceHour = (id: any) => {
   }
   /**实际应上时间 每天应上*实际上班天数*/
   let weekShouldDate = (weekDate / 7) * (user?.settingDtos && user.settingDtos.length > 0 ? user.settingDtos.length : 0);
-
 
   /** 如果存在一周7天都是 */
   // let weekObj: any = {};

@@ -55,17 +55,17 @@ export const totalCellContent = (id: any) => {
     // console.log('schAddOrSubs', current.schAddOrSubs)
     if (isOk && (appStore.HOSPITAL_ID === "wh")) {
       return total
-    } else if (['dghl'].includes(appStore.HOSPITAL_ID) && current.schAddOrSubs) {
-      // 计算加减班工时
-      let schAddOrSubs = current.schAddOrSubs.reduce((schAddOrSubs: any, current2: ArrangeItem | any) => {
-        if (current2.statusType == 2) {
-          return schAddOrSubs - Number(current2.hour)
-        } else if (current.statusType == 1) {
-          return schAddOrSubs + Number(current2.hour)
-        }
-        return schAddOrSubs
-      }, 0)
-      return total + Number(current.effectiveTime) + Number(schAddOrSubs)
+    // } else if (['dghl'].includes(appStore.HOSPITAL_ID) && current.schAddOrSubs) {
+    //   // 计算加减班工时
+    //   let schAddOrSubs = current.schAddOrSubs.reduce((schAddOrSubs: any, current2: ArrangeItem | any) => {
+    //     if (current2.statusType == 2) {
+    //       return schAddOrSubs - Number(current2.hour)
+    //     } else if (current.statusType == 1) {
+    //       return schAddOrSubs + Number(current2.hour)
+    //     }
+    //     return schAddOrSubs
+    //   }, 0)
+    //   return total + Number(current.effectiveTime) + Number(schAddOrSubs)
     } else {
       return total + Number(current.effectiveTime)
     }
