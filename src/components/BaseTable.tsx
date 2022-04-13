@@ -539,6 +539,9 @@ export const DoCon = styled.div`
   span {
     cursor: pointer;
     font-size: 12px;
+    &.text {
+      color: #000;
+    }
     &:hover {
       font-weight: bold;
     }

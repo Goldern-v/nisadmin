@@ -39,6 +39,7 @@ import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnR
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
+import SignColumnRender from "../../components/Render.v1/SignColumnRender";
 
 export interface Props {
   payload: any;
@@ -522,7 +523,28 @@ export default observer(function 敏感指标登记本(props: Props) {
       }
     ] : [],
     //后端返回的自定义项目
-    ...itemConfigList.map((item: any) => {
+    ...itemConfigList.map((item: any, index: number) => {
+      if (item.itemType == 'autograph' && ['whyx'].includes(appStore.HOSPITAL_ID)) {
+        return {
+          title: item.itemCode,
+          width: (15 * item.width || 50) + 8,
+          align: "center",
+          render: (text: string, record: any) => {
+            return <SignColumnRender {
+              ...{
+                cellDisabled,
+                record,
+                index,
+                itemCfg: item,
+                updateDataSource,
+                registerCode,
+                selectedBlockId,
+                getPage,
+              }
+            }/>
+          }
+  }
+      }
       return {
         title: item.children ? (
           <PTitleTh>
@@ -678,16 +700,21 @@ export default observer(function 敏感指标登记本(props: Props) {
         }
       },
     ] : [],
-    ...(config.signList || []).map((signItem: any) =>
-      signRowObj({
-        title: signItem.title,
-        width: 15 * signItem.width || 50,
-        dataIndex: signItem.fieldName,
-        aside: signItem.title,
-        registerCode,
-        updateDataSource,
-        selectedBlockId
-      })),
+    ...appStore.hisMatch({
+      map: {
+        whyx: [],
+        other: (config.signList || []).map((signItem: any) =>
+          signRowObj({
+            title: signItem.title,
+            width: 15 * signItem.width || 50,
+            dataIndex: signItem.fieldName,
+            aside: signItem.title,
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })),
+      }
+    }),
     {
       title: "操作",
       width: 50,
