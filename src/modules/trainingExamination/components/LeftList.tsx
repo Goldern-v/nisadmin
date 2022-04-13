@@ -29,6 +29,7 @@ export default function leftList(props: Props) {
     let isActive: string = type === item.type ? 'active' : ''
     return (
       <Li
+        key={item.type}
         className={isActive}
         onClick={() => {
           history.push('/trainingExamination/' + item.type)

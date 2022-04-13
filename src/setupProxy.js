@@ -86,11 +86,12 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9866"; // 聊城二院测试
     /** 佛山杏坛 */
     case "fsxt":
-      return "http://192.168.1.54:9883";
+      return "http://192.168.1.54:9886";
     // return 'http://192.168.20.83:8080'
     // return 'http://192.168.20.61:9091' // 宏群本地
     // return 'http://218.13.87.27:9094'//正式
     // return "http://192.168.20.57:9091"; // 伟贤本地
+    // return "http://192.168.1.106:8080"; // 信铭本地
     case "fssdy": //佛山市一
       // return 'http://192.168.20.57:9091'//
       // return "http://192.168.1.54:9866"; //

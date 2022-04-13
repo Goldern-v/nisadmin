@@ -269,7 +269,16 @@ export default observer(function Step1() {
               </Form.Field>
             </Col>
           )}
-
+          {stepViewModal.stepData2.organizationWay == "2" && appStore.HOSPITAL_ID === "fsxt" && (
+            <Col span={24}>
+              <Form.Field
+                label={`标准出勤率`}
+                name="standardCheckInRate"
+              >
+                <Input/>
+              </Form.Field>
+            </Col>
+          )}
           {stepViewModal.stepData2.organizationWay == "2" && (
             <Col span={24} className="rowDivF">
               <Form.Field

@@ -501,6 +501,7 @@ export default observer(function Table(props: Props) {
 
   /** 查看结果 */
   const checkResult = (record: any) => {
+    console.log('record', record)
     const teachingMethodArray = [
       "studyResultReview",
       "trainingResultReview",
@@ -578,6 +579,11 @@ export default observer(function Table(props: Props) {
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,
           pageSize: mainPageModal.pageSize
+        }}
+        onRow={record => {
+          return {
+            onDoubleClick: () => checkResult(record)
+          }
         }}
         onChange={pagination => {
           mainPageModal.pageIndex = pagination.current;
