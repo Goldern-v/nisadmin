@@ -70,6 +70,9 @@ export default function InputColumnRender(porps: Props) {
       disabled={cellDisabled(record)}
       dataSource={_options}
       value={editValue}
+      filterOption={(inputValue:string, option:any) =>
+        option.props.children.indexOf(inputValue) !== -1
+      }
       onChange={value => {
         value = value ? value.toString().replace(/\n/g, '') : ''
         setEditValue(value)

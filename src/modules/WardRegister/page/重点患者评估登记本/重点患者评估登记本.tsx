@@ -29,7 +29,7 @@ import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/Render.v1/FilterInput";
 // import TextArea from "antd/lib/input/TextArea";
-// import { wardRegisterService } from "../../services/WardRegisterService";
+import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
 // import { globalModal } from "src/global/globalModal";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
@@ -38,7 +38,6 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
-
 export interface Props {
   payload: any;
 }
@@ -47,9 +46,11 @@ const throttler = throttle();
 const throttler2 = throttle();
 
 export default observer(function 重点患者评估登记本(props: Props) {
+  
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
+  const [pharmacyList, setPharmacyList]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
   const [rangConfigList, setRangeConfigList] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
@@ -465,7 +466,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
         || itemCode.indexOf('失效期') >= 0)
       && record[itemCode]
     ) {
-      console.log(itemCode)
       var currentDate = moment()
       var endDate = moment(record[itemCode])
       if (endDate.isValid()) {
@@ -531,56 +531,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }
           },
         ],
-        // QCRG_12_2: [
-        //   {
-        //     title() {
-        //       return (
-        //         <LineCon className="height-50">
-        //           <TextCon>
-        //             <Text x="20%" y="65%" deg="0">
-        //               日期
-        //             </Text>
-        //             <Text x="70%" y="58%" deg="0">
-        //               属性
-        //             </Text>
-        //             <Text x="70%" y="8%" deg="0">
-        //               名称
-        //             </Text>
-        //           </TextCon>
-        //           <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-        //             <line x1="0" y1="0" x2="100%" y2="50%" />
-        //             <line x1="0" y1="0" x2="100%" y2="100%" />
-        //           </SvgCon>
-        //         </LineCon>
-        //       );
-        //     },
-        //     dataIndex: "recordDate",
-        //     align: "center",
-        //     colSpan: 1,
-        //     width: 120,
-        //     render(text: string, record: any, index: number) {
-        //       return (
-        //         <Input
-        //           disabled={cellDisabled(record)}
-        //           defaultValue={text}
-        //           onChange={e => {
-        //             record.recordDate = e.target.value
-        //             record.modified = true
-        //           }}
-        //           onBlur={() => updateDataSource()}
-        //           className={isEndTime(record) || ""}
-        //         />
-        //       );
-        //     }
-        //   },
-        //   // {
-        //   //   title: "班次",
-        //   //   colSpan: 0,
-        //   //   width: 73,
-        //   //   dataIndex: "range",
-        //   //   align: "center"
-        //   // }
-        // ],
         QCRG_14_1: [
           {
             title: "入库日期",
@@ -787,6 +737,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             // QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
+         
           if (item.itemType == 'date' || item.itemType == 'date_time' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
             let format = 'YYYY-MM-DD'
             if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
@@ -839,7 +790,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
               return false
             })()
-
+ 
             children = <InputColumnRender
               {...{
                 cellDisabled,
@@ -872,6 +823,22 @@ export default observer(function 重点患者评估登记本(props: Props) {
               children = <DisableSpan />
             }
           }
+          if (item.itemCode == '药品名称') {
+            children = <InputColumnRender
+            {...{
+              cellDisabled,
+              options: pharmacyList.map((itemCfg: any) => itemCfg || " "),
+              record,
+              className: childrenClassName,
+              itemCode: item.itemCode,
+              updateDataSource,
+              handleNextIptFocus,
+              onBlur: (newVal: string, oldVal: any) => {
+               console.log(newVal)
+              },
+            }}
+          />
+          }
 
           let obj = {
             children
@@ -880,6 +847,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         }
       };
     }),
+    
     //不同登记本固定的项目
     ...codeAdapter(
       {
@@ -1326,7 +1294,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
       }
     }
   ];
-
   const handlePreview = (file: any) => {
     if (getFileType(file.name) == 'img') {
       reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
@@ -1340,7 +1307,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)
-    // console.log(payload)
   }
 
   /** 公共函数 */
@@ -1379,7 +1345,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
     setSelectedRowKeys,
     paramMap
   });
-
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -1388,6 +1353,21 @@ export default observer(function 重点患者评估登记本(props: Props) {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
   }, [pageOptions, date, selectedBlockId]);
+useEffect(()=>{
+  if(registerCode==='QCRG_10'){
+    let param={
+      name:""
+    }
+    wardRegisterService.getPharmacy(param).then((res)=>{
+      let arr:Array<string>=[]
+      res.data.map((item:any)=>{
+       arr.push(item.name)
+      })
+      setPharmacyList(arr)
+    })
+  }
+
+},[])
 
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
