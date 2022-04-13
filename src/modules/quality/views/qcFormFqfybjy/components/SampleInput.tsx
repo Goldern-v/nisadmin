@@ -16,7 +16,9 @@ const defProps = {
 };
 export default function SampleInput(props: Props = defProps) {
   const [val, setVal] = useState(props.text);
-
+  useEffect(() => {
+    setVal(props.text)
+  }, [props.text])
   const handleKeyUp = (e: any) => {
     if (e.keyCode == 13) {
       props.save(val);

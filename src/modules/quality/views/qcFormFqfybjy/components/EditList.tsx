@@ -11,7 +11,7 @@ export interface Props {
   save: () => void;
 }
 
-export default function SampleInput(props: Props) {
+export default function EditList(props: Props) {
   const handleInput = (e: any, key: string, num: number) => {
     let newArr = JSON.parse(JSON.stringify(props.arr));
     newArr[num][key] = e;
@@ -21,14 +21,15 @@ export default function SampleInput(props: Props) {
   return (
     <Wrapper>
       {props.arr.map((item: any, i: number) => (
-        <div className="edit-item">
-          {props.editList.map((key: string) => {
+        <div className="edit-item" key={i}>
+          {props.editList.map((key: string, i1: number) => {
             if (
               ["content"].includes(key) ||
               (key === "author" && props.editList.length == 1)
             ) {
               return (
                 <Input.TextArea
+                  key={i1}
                   className="def-ipt def-textarea"
                   value={item[key]}
                   onInput={(e) => handleInput(e.currentTarget.value, key, i)}
@@ -37,6 +38,7 @@ export default function SampleInput(props: Props) {
             }
             return (
               <Input
+                key={i1}
                 className="def-ipt"
                 value={item[key]}
                 onInput={(e) => handleInput(e.currentTarget.value, key, i)}

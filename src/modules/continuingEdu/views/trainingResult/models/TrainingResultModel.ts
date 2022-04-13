@@ -212,6 +212,12 @@ class TrainingResultModel {
       .exportSignInInfo(appStore.queryObj.id || "")
       .then(res => fileDownload(res));
   }
+  /**杏坛医院-导出签到信息 */
+  @action public handleSignExportXingtan() {
+    trainingResultService
+      .exportSignInInfoXingtan(appStore.queryObj.id || "")
+      .then(res => fileDownload(res));
+  }
 
   /**导出出勤率统计信息 */
   @action public handleAttendanceExport() {

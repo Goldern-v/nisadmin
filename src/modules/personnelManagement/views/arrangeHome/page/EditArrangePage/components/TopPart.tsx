@@ -156,12 +156,17 @@ export default observer(function TopPart() {
   });
   useEffect(() => {
     //当前月份的时间戳1号
-    // let today = new Date(getCurrentMonth()[0].format("YYYY-MM-DD")).getTime()
+    let todayOne = new Date(getCurrentMonth()[0].format("YYYY-MM-DD")).getTime()
     // 当前月份的时间戳5号
-    let today = moment(moment().format('YYYY-MM-05')).endOf('day').valueOf()
+    let today = moment(moment().format('YYYY-MM-05')).endOf('day').valueOf();
+    let currentTime = new Date().getTime()
+
     // 选择开始的时间戳
     let startTime = new Date(selectViewModal.params.startTime).getTime()
-    let flag = startTime < today && ['whyx'].includes(appStore.HOSPITAL_ID)
+    let flag =false
+    if (currentTime >= today) {
+      flag = (startTime<todayOne) && ['whyx'].includes(appStore.HOSPITAL_ID)
+    }
     setShowLock(!flag)
   }, [selectViewModal.params.startTime])
 
