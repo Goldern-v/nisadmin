@@ -176,7 +176,62 @@ export default observer(function TrainingResultReview() {
       width: 100,
     }
   ]
-
+  let fsxtColumns: ColumnProps<any>[] = [
+    {
+      dataIndex: 'empName',
+      title: '姓名',
+      align: 'center',
+      width: 80,
+    },
+    {
+      dataIndex: 'empNo',
+      title: '工号',
+      align: 'center',
+      width: 60,
+    },
+    {
+      dataIndex: 'empTitle',
+      title: '职称',
+      align: 'center',
+      width: 80,
+    },
+    {
+      dataIndex: 'bigDeptName',
+      title: '片区',
+      align: 'center',
+      width: 80,
+    },
+    {
+      dataIndex: 'deptName',
+      title: '病区',
+      align: 'center',
+      width: 120,
+    },
+    ...statusColumns,
+    {
+      dataIndex: 'creditDesc',
+      title: '学分',
+      align: 'center',
+      width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
+    },
+    {
+      dataIndex: 'classHoursDesc',
+      title: '学时',
+      align: 'center',
+      width: 100,
+    }
+  ]
+  // columns = appStore.HOSPITAL_ID === 'fsxt' ? fsxtColumns : columns
+  columns = appStore.hisMatch({
+    map: {
+      fsxt: fsxtColumns,
+      other: columns,
+    }
+  })
   if (baseInfo.questionStat) {
     columns = columns.concat([
       {
@@ -330,6 +385,12 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
+            fsxt: 
+            <React.Fragment>
+              {isSignType &&
+              <Button onClick={() => trainingResultModel.handleSignExportXingtan()}>导出签到信息</Button>}
+              <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+            </React.Fragment>,
             // gxjb: <span></span>,
             other: <React.Fragment>
               {isSignType &&
@@ -453,7 +514,7 @@ export default observer(function TrainingResultReview() {
   </Wrapper>
 })
 
-const TableWrapper = styled(TabledCon)`
+const TableWrapper = styled(TabledCon as any)`
   position: relative;
   height: 100%;
   td{

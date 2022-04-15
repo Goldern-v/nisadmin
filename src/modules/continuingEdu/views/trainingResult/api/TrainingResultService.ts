@@ -123,6 +123,14 @@ export default class TrainingResultService extends BaseApiService {
       { responseType: "blob" }
     );
   }
+  /**杏坛医院-查看结果-导出签到信息 */
+  public exportSignInInfoXingtan(cetpId: string) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/exportSignInXinTanInfo`,
+      qs.stringify({ cetpId }),
+      { responseType: "blob" }
+    );
+  }
 
   /**查看结果-导出出勤率统计信息 */
   public exportAttendanceRateStatInfo(cetpId: string) {

@@ -177,6 +177,11 @@ export default class WardRegisterService extends BaseApiService {
     return this.post(`/schShiftSetting/getListByDate`, params)
   }
 
+/** 获取病区登记本药品接口*/
+public getPharmacy(obj: any) {
+  return this.post(`drug/getListByName`, obj);
+}
+
   /**QCRF.2.12、登记本数据：获取对应项目的已填写数据列表 */
   public distinctItemData(
     registerCode: string,
