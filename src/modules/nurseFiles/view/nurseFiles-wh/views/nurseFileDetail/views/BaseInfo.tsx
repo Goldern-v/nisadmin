@@ -14,13 +14,21 @@ import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import { ScrollBox } from "src/components/common";
 import { openAuditModal } from "../config/auditModalConfig";
-
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
   // return appStore.queryObj.empNo == authStore!.user!.empNo
   return appStore.match.path == "/selfNurseFile/:type";
 };
+export  const editFlag=()=>{
+  if((authStore.isAdmin||authStore.isRoleManage||authStore.isAd||JSON.parse(sessionStorage.getItem('user')||'').empNo===appStore.queryObj.empNo)&&['gxjb'].includes(appStore.HOSPITAL_ID)){
+    return true
+  }else{
+    false
+  }
+}
+
+
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal);
   let [tableData, setTableData]: [any, any] = useState([]);
@@ -64,7 +72,33 @@ export default observer(function BaseInfo() {
     // },
   ]
   const limitsComponent = () => {
-    let btnList = [];
+    let btnList:Array<object> = [];
+      if(['gxjb'].includes(appStore.HOSPITAL_ID)){
+        btnList = editFlag()?[
+          {
+            label: "修改",
+            onClick: () => {
+              editBaseInfoModal.show({
+                id: id,
+                data: info,
+              });
+            },
+          },
+          {
+            label: "查看",
+            onClick: () => {
+              openAuditModal("基本信息", info, getTableData);
+            },
+          },
+        ]:[
+          {
+            label: "查看",
+            onClick: () => {
+              openAuditModal("基本信息", info, getTableData);
+            },
+          },
+        ];
+      }else{
     if (isSelf()) {
       btnList = [
         {
@@ -93,6 +127,7 @@ export default observer(function BaseInfo() {
         },
       ];
     }
+  }
     return btnList;
   };
 

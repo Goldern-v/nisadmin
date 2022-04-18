@@ -12,7 +12,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import { openAuditModal } from '../config/auditModalConfig'
-import { isSelf } from './BaseInfo'
+import { isSelf,editFlag} from './BaseInfo'
 import Do from '../components/Do'
 import { getTitle } from '../config/title'
 export interface Props extends RouteComponentProps {}
@@ -152,7 +152,7 @@ export default observer(function WorkRegistrationForm() {
   }, [])
 
   return (
-    <BaseLayout title='临床护理工作情况登记表' btnList={[]}>
+    <BaseLayout title='临床护理工作情况登记表' btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}
