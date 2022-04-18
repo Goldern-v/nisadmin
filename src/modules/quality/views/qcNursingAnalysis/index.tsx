@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React, { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { api } from "./api/index";
-import { Button, message, Spin, Table } from 'antd'
+import { Button, DatePicker, message, Spin, Table } from 'antd'
 
 import HorizonBar from "../components/HorizonBar";
 import Pie from "../components/Pie";
@@ -10,12 +10,18 @@ import BolaChart from "../components/BolaChart"
 import { ColumnProps } from "antd/lib/table";
 import printing from 'printing'
 import { PageTitle, Place } from "src/components/common";
+import moment from 'moment'
+import { getCurrentMonth } from "src/utils/date/currentMonth";
 
 // 满意度调查分析
 export default observer(function QcNursingAnalysis(props) {
-  const [params, setParams] = useState({
-    startDate: "",
-    endDate: "",
+  const dateFormat = 'YYYY-MM-DD'
+  const [params, setParams] = useState(() => {
+    let [m1, m2] = getCurrentMonth()
+    return {
+      startDate: m1.format(dateFormat),
+      endDate: m2.format(dateFormat),
+    }
   });
 
   const [allQualityScore, setAllQualityScore] = useState<any>([]);
@@ -136,7 +142,7 @@ export default observer(function QcNursingAnalysis(props) {
 
   useEffect(() => {
     init();
-  }, []);
+  }, [params]);
 
   const init = async () => {
     try {
@@ -186,11 +192,8 @@ export default observer(function QcNursingAnalysis(props) {
   const [isPrint, setIsPrint] = useState(false)
   const setImg = () => {
     let imgEl = document.querySelectorAll('.chart-img') as any
-    console.log('test-imgEl', imgEl)
-    console.log('test-, chartsImg', chartsImg)
     if (imgEl.length) {
       for (let i = 0; i < imgEl.length; i++) {
-        console.log('test-chartsImg[i], i', chartsImg[i], i)
         chartsImg[i] && (imgEl[i].src = chartsImg[i])
       }
     }
@@ -228,6 +231,11 @@ export default observer(function QcNursingAnalysis(props) {
           .ant-table-row{
             background:rgba(108, 183, 252,.3);
           }
+          .chart-img {
+            max-height: 260mm;
+            width: 100%;
+            object-fit: cover
+          }
         `
       }).then(() => {
         setIsPrint(false)
@@ -256,8 +264,19 @@ export default observer(function QcNursingAnalysis(props) {
     <Wrapper>
       <Spin spinning={loading}>
         <div className="qcNursing-analysis-title">
-          <PageTitle>满意度调查分析</PageTitle>
+          <PageTitle>三级护理分析</PageTitle>
           <Place/>
+          <DatePicker.RangePicker
+            value={[moment(params.startDate), moment(params.endDate)]}
+            format={dateFormat}
+            allowClear={false}
+            onChange={(m: any) => {
+              setParams({
+                startDate: m[0]?.format(dateFormat) || '',
+                endDate: m[1]?.format(dateFormat) || ''
+              })
+          }}/>
+          <Button style={{margin: '0 4px'}} type="primary" onClick={init}>查询</Button>
           <Button onClick={handlePrint}>打印</Button>
         </div>
         <div className="qcNursing-analysis-layer">
