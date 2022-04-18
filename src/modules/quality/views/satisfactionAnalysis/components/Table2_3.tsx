@@ -6,6 +6,13 @@ interface Props {
 }
 export default observer(function Table2_3(props: Props) {
   useEffect(() => {}, [props.list]);
+  const formatNurseItem = (arr: any) => {
+    if (arr) {
+      let text = arr.join(',').replace(/无[,]?/mg, '')
+      return text || '---'
+    }
+    return '---'
+  }
   return (
     <Wrapper>
       <table
@@ -33,8 +40,8 @@ export default observer(function Table2_3(props: Props) {
                   <td rowSpan={item.wardList.length}>{item.areaName}</td>
                 )}
                 <td>{v.wardName}</td>
-                <td>{v.nurseList ? v.nurseList.join(",") : "---"}</td>
-                <td>{v.headNurseList ? v.headNurseList.join(",") : "---"}</td>
+                <td>{formatNurseItem(v.nurseList)}</td>
+                <td>{formatNurseItem(v.headNurseList)}</td>
               </tr>
             ));
           })}

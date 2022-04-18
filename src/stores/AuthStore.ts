@@ -116,7 +116,7 @@ export default class AuthStore {
   /** 是否是肖瑞芬护士长 */
   public get isXiaoRuiFen() {
     try {
-      return this.user && this.user.empNo == "QCR1102";
+      return this.user && this.user.roleManageCodeList.includes('QCR1102');
     } catch (error) {
       return "";
     }
@@ -124,7 +124,7 @@ export default class AuthStore {
   /** 是否是护理部主任 */
   public get isHoundSing() {
     try {
-      return this.user && this.user.empNo == "QCR1101"; //亚心
+      return this.user && this.user.roleManageCodeList.includes('QCR0008') ; //亚心
     } catch (error) {
       return "";
     }
@@ -206,6 +206,32 @@ export default class AuthStore {
     }
   }
 
+  /** 护长、教学组长以上*/
+  public get isTeachingNurse() {
+    //     QCR0004  护士长
+    // WHYX_QCR5001  代教护士
+    // WHYX_QCR5002  见习代教护士
+    // WHYX_QCR5003  总代教护士
+    let adminCode = ['QCR0004', 'WHYX_QCR5001', 'WHYX_QCR5002', 'WHYX_QCR5003']
+    try {
+      if (!this.user) return false
+      let arrdeis =  adminCode.find((item)=>{
+        if(this.user){
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if(arrdeis) {
+        return true
+      }else{
+        return false
+      }
+
+      
+     
+    } catch (error) {
+      return false
+    }
+  }
   /** 护长、教学组长以上*/
   public get isHeadNurse() {
     //     SYS0001  管理员

@@ -155,6 +155,7 @@ export default observer(function ApplyHeader(props: Props) {
         </Button>
         <Button
           className="span"
+          disabled={isAdd}
           onClick={()=>{bacisManagData.export()}}
         >
           导出

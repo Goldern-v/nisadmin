@@ -12,7 +12,7 @@ interface Props {
 export default observer(function BolaChart(props: Props) {
   let chartRef: any = React.createRef();
   const { barKey, lineKey, xKey } = props;
-  const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
+  const colors = ['#4472c4', '#ed7d31', '#a5a5a5', '#ffc000', '#70ad47']
 
   useEffect(() => {
     chartRef.getEchartsInstance().setOption(getOption());
@@ -39,40 +39,24 @@ export default observer(function BolaChart(props: Props) {
       }],
       yAxis: [{
         type: 'value',
+        name: '扣分累计',
+        boundaryGap: [0, 0.1],
+        splitLine: false
+      },{
+        type: 'value',
         name: '百分比',
         axisLabel: {
           formatter: '{value} %'
         },
         splitLine: false
-      },
-      {
-        type: 'value',
-        name: '扣分累计',
-        boundaryGap: [0, 0.1],
-        splitLine: false
       }],
       grid: { bottom: 90, top: 30 },
       series: [
         {
-          name: '百分比',
-          type: 'line',
-          label: {
-            show: true,
-            position: [-15, -15],
-            formatter: '{c}%',
-          },
-          tooltip: {
-            valueFormatter: function (value: any) {
-              return value + '%';
-            }
-          },
-          data: props.list.map((v: any) => parseFloat(v[lineKey])),
-        },
-        {
           type: "bar",
           name: "扣分累计",
-          yAxisIndex: 1,
-          // barCategoryGap: '0%',
+          yAxisIndex: 0,
+          barCategoryGap: '0%',
           data: props.list.map((v: any) => v[barKey]),
           label: {
             show: true,
@@ -91,14 +75,29 @@ export default observer(function BolaChart(props: Props) {
                   return colors[obj.dataIndex % colors.length];
                 }
               },
-              // borderWidth : 1,
-              // borderRadius : 2,
               label: {
                 show: true,
                 position: 'top'
               }
             }
           },
+        },
+        {
+          name: '百分比',
+          type: 'line',
+          yAxisIndex: 1,
+          label: {
+            show: true,
+            position: [-15, -15],
+            formatter: '{c}%',
+          },
+          tooltip: {
+            valueFormatter: function (value: any) {
+              return value + '%';
+            }
+          },
+          // 贵州需求：第一个从0%开始
+          data: props.list.map((v: any,i: number) => i == 0 ? 0 : parseFloat(v[lineKey])),
         },
       ],
     };
