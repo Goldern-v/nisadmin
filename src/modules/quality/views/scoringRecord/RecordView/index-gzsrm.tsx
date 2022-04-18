@@ -498,7 +498,7 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
                 <tr>
-                  <td>危重、一及术后患者护理(10分)</td>
+                  <td>危重、一级术后患者护理(10分)</td>
                   <td colSpan={3} className='text-left'>
                     <p>1、床单位整洁（2分）。</p>
                     <p>2、患者三短六洁（2分）。</p>

@@ -29,16 +29,16 @@ const baseConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile"
   },
-  {
-    name: "病区登记本",
-    path: "/wardRegister",
-    hidden: !appStore.isDev
-  },
-  {
-    name: '不良事件',
-    path: '/badEventsNew',
-    hidden: !appStore.isDev,
-  },
+  // {
+  //   name: "病区登记本",
+  //   path: "/wardRegister",
+  //   hidden: !appStore.isDev
+  // },
+  // {
+  //   name: '不良事件',
+  //   path: '/badEventsNew',
+  //   hidden: !appStore.isDev,
+  // },
   // {
   //   name: '不良事件分析报告',
   //   path: '/badEvents/alanysis/1/1'
@@ -78,20 +78,20 @@ const baseConfig: navConfigItem[] = [
       }
     ]
   },
-  {
-    name: "学习培训",
-    path: "/continuingEdu"
-    // hidden: !appStore.isDev
-  },
-  {
-    name: "敏感指标",
-    path: "/indicator"
-  },
-  {
-    name: "敏感指标登记本",
-    path: "/sensitiveRegister",
-    // hidden: !appStore.isDev
-  },
+  // {
+  //   name: "学习培训",
+  //   path: "/continuingEdu"
+  //   // hidden: !appStore.isDev
+  // },
+  // {
+  //   name: "敏感指标",
+  //   path: "/indicator"
+  // },
+  // {
+  //   name: "敏感指标登记本",
+  //   path: "/sensitiveRegister",
+  //   // hidden: !appStore.isDev
+  // },
   {
     name: "统计查询",
     path: "/statistic"
@@ -100,10 +100,10 @@ const baseConfig: navConfigItem[] = [
     name: "通知公告",
     path: "/notice"
   },
-  {
-    name: "护理制度",
-    path: "/nursingRulesNew"
-  },
+  // {
+  //   name: "护理制度",
+  //   path: "/nursingRulesNew"
+  // },
   {
     name: "系统设置",
     path: "/setting"

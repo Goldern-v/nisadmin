@@ -186,6 +186,12 @@ export default function BaseSetting(props: Props) {
             </div>
             <div className="content">{info.signInEndTime}</div>
           </div>
+          {appStore.HOSPITAL_ID == 'fsxt' && <div className="row">
+            <div className="label" style={{ width: _labelWidth }}>
+              标准出勤率：
+            </div>
+            <div className="content">{info.standardCheckInRate}</div>
+          </div>}
           <div className="row">
             <div className="label" style={{ width: _labelWidth }}>
               签到方式：

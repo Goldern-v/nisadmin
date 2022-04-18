@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
 import styled from 'styled-components'
+import { appStore } from 'src/stores'
 
 const TextArea = Input.TextArea
 
@@ -23,7 +24,7 @@ const getId = () => {
   return `input${new Date().getTime()}${parseInt((Math.random() * 1000000000000).toString())}`
 }
 
-export default function InputColumnRender(porps: Props) {
+export default function InputColumnRender(props: Props) {
   const {
     className,
     cellDisabled,
@@ -36,7 +37,7 @@ export default function InputColumnRender(porps: Props) {
     onBlur,
     onSelect,
     multiple,
-  } = porps
+  } = props
 
   const [editValue, setEditValue] = useState('')
   const [editVisible, setEditVisible] = useState(false)
@@ -54,7 +55,8 @@ export default function InputColumnRender(porps: Props) {
     if (multiple && selectAll && options.length > 0) _options = ['全部', ...options]
     else _options = options
   }
-
+  const [newOptions, setNewOptions] = useState(_options) 
+  const [multiSearchFlag, setMultiSearchFlag] = useState(false)
   useLayoutEffect(() => {
     if (editVisible) {
       let el = document.getElementById(id)
@@ -63,12 +65,26 @@ export default function InputColumnRender(porps: Props) {
     }
   }, [editVisible])
 
+  const handleSearch = (val: string) => {
+    if (_options && _options.length > 0 && ['whyx'].includes(appStore.HOSPITAL_ID)) {
+      
+      if (multiple) {
+        val = val.slice(val.lastIndexOf(';') + 1)
+        if (val) {
+          setMultiSearchFlag(true)
+        }
+      }
+      console.log('test-val', val)
+      setNewOptions(val ? _options?.filter(v => v.indexOf(val) > -1) : _options)
+    }  
+  }
+
   return editVisible ? (
     <AutoComplete
       className={className || ''}
       id={id}
       disabled={cellDisabled(record)}
-      dataSource={_options}
+      dataSource={newOptions}
       value={editValue}
       onChange={value => {
         value = value ? value.toString().replace(/\n/g, '') : ''
@@ -89,6 +105,7 @@ export default function InputColumnRender(porps: Props) {
         }
         onBlur && onBlur(editValue, oldVal)
       }}
+      onSearch={handleSearch}
       onSelect={(payload: any) => {
         if (multiple) {
           let newPayload = ''
@@ -97,6 +114,10 @@ export default function InputColumnRender(porps: Props) {
             newPayload = options?.join(';') || ''
           } else {
             let editValueArr = (editValue || '').split(';')
+            if (multiSearchFlag) {
+              editValueArr.pop()
+              setMultiSearchFlag(false)
+            }
             if (editValueArr.indexOf(payload) >= 0)
               newPayload = editValue
             else

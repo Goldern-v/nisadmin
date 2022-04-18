@@ -143,6 +143,11 @@ export default observer(function Step5() {
                     )}
                 </td>
               </tr>
+              {appStore.HOSPITAL_ID == 'fsxt' && 
+              <tr>
+                <td className="key">标准出勤率：</td>
+                <td className="value">{pxStepViewModal.stepData2.standardCheckInRate}</td>
+              </tr>}
               <tr>
                 <td className="key">签到方式：</td>
                 <td className="value">
