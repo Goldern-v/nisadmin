@@ -47,7 +47,7 @@ export default class InternPostgraduateApi extends BaseApiService {
   public async uploadPictures(filename:any) {
     let newFormData = new FormData()
     newFormData.set('file', filename)
-    return this.post(`/studyAndTrain/courseLibrary/uploadPictures`, newFormData);
+    return this.post(`/studyAndTrain/teachPlanAdvancedStu//uploadPictures`, newFormData);
   }
 }
 export const internPostgraduateApi = new InternPostgraduateApi();

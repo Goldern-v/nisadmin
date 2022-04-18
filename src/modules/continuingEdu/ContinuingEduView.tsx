@@ -712,6 +712,8 @@ export default function ContinuingEdu(props: Props) {
     hide: () => !["hj", "dgxg"].includes(appStore.HOSPITAL_ID),
   };
 
+  console.log(authStore.isTeachingNurse,'gao');
+  
   // 菜单列表
   const LEFT_MENU_CONFIG = [
     ...appStore.hisMatch({
@@ -912,6 +914,7 @@ export default function ContinuingEdu(props: Props) {
                 title: "实习生教学计划",
                 path: "/continuingEdu/实习生教学计划",
                 component: TeachingProgramme,
+                hide: () => !authStore.isTeachingNurse,
               },
               {
                 title: "实习生轮转计划",
@@ -940,6 +943,7 @@ export default function ContinuingEdu(props: Props) {
                 title: "进修生教学计划",
                 path: "/continuingEdu/进修生教学计划",
                 component: TeachingPostgraduate,
+                hide: () => !authStore.isTeachingNurse,
               },
             ],
           },
