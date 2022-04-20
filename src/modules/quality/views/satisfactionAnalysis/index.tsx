@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { api } from "./api/index";
-import { Button, Input, message, Spin, Table } from 'antd'
+import { Button, DatePicker, Input, message, Spin, Table } from 'antd'
 
 import Table2_1 from "./components/Table2_1";
 import HorizonBar from "../components/HorizonBar";
@@ -12,13 +12,19 @@ import Pie from "../components/Pie";
 import BolaChart from "../components/BolaChart";
 import { PageTitle, Place } from "src/components/common";
 import printing from 'printing'
-
+import moment from 'moment'
+import { getCurrentMonth } from "src/utils/date/currentMonth";
 // 满意度调查分析
 export default observer(function SatisfactionAnalysis(props) {
-  const [params, setParams] = useState({
-    startDate: "",
-    endDate: "",
+  const dateFormat = 'YYYY-MM-DD'
+  const [params, setParams] = useState(() => {
+    let [m1, m2] = getCurrentMonth()
+    return {
+      startDate: m1.format(dateFormat),
+      endDate: m2.format(dateFormat),
+    }
   });
+
   const [wardCode, setWardCode] = useState("");
 
   const [investigationCount, setInvestigationCount] = useState<any>({});
@@ -76,7 +82,7 @@ export default observer(function SatisfactionAnalysis(props) {
   ]
   useEffect(() => {
     init();
-  }, []);
+  }, [params]);
 
   const init = async () => {
     try {
@@ -203,6 +209,11 @@ export default observer(function SatisfactionAnalysis(props) {
           .ant-table-row{
             background:rgba(108, 183, 252,.3);
           }
+          .chart-img {
+            max-height: 260mm;
+            width: 100%;
+            object-fit: cover
+          }
         `
       }).then(() => {
         setIsPrint(false)
@@ -234,6 +245,17 @@ export default observer(function SatisfactionAnalysis(props) {
         <div className="satisfaction-analysis-title">
           <PageTitle>满意度调查分析</PageTitle>
           <Place/>
+          <DatePicker.RangePicker
+            value={[moment(params.startDate), moment(params.endDate)]}
+            format={dateFormat}
+            allowClear={false}
+            onChange={(m: any) => {
+              setParams({
+                startDate: m[0]?.format(dateFormat) || '',
+                endDate: m[1]?.format(dateFormat) || ''
+              })
+          }}/>
+          <Button style={{margin: '0 4px'}} type="primary" onClick={init}>查询</Button>
           <Button onClick={handlePrint}>打印</Button>
         </div>
         <div className="satisfaction-analysis-layer">
@@ -280,7 +302,7 @@ export default observer(function SatisfactionAnalysis(props) {
             <Table2_1 list={deptScoreList} />
             <h3>2.2全院各科室满意度得分汇总(图表-条形)</h3>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[0]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[0]}/>
             }
             {
               !isPrint && <HorizonBar list={deptScoreList} yKey="wardName" xKey="averageScore" isDataZoom={true} />
@@ -299,7 +321,7 @@ export default observer(function SatisfactionAnalysis(props) {
             />
             <h3>2.4.2各病房护理单元总体满意度(图表-饼状)</h3>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[1]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[1]}/>
             }
             {
               !isPrint &&
@@ -316,7 +338,7 @@ export default observer(function SatisfactionAnalysis(props) {
             />
             <h3>3.1.1各指标总体满意度(图表-条形)</h3>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[2]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[2]}/>
             }
             {
               !isPrint &&
@@ -337,7 +359,7 @@ export default observer(function SatisfactionAnalysis(props) {
                 />
                 <h3>3.2.{index + 1}.2指标“优质护理病房知晓情况”满意度(图表-饼状)</h3>
                 {
-                  isPrint && chartsImg.length && <img src={chartsImg[3 + index]}/>
+                  isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[3 + index]}/>
                 }
                 {
                   !isPrint &&
@@ -350,7 +372,7 @@ export default observer(function SatisfactionAnalysis(props) {
             <Table columns={columns4_1} dataSource={dissatisfied} pagination={false}/>
             <h3>4.2不满意指标柏拉图分析(图表-柏拉图)</h3>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[13]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[13]}/>
             }
             {
               !isPrint &&
@@ -358,7 +380,7 @@ export default observer(function SatisfactionAnalysis(props) {
             }
             <h2>五、门诊科室满意度情况分析</h2>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[14]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[14]}/>
             }
             {
               !isPrint &&
@@ -366,7 +388,7 @@ export default observer(function SatisfactionAnalysis(props) {
             }
             <h2>六、特殊科室满意度情况分析</h2>
             {
-              isPrint && chartsImg.length && <img src={chartsImg[15]}/>
+              isPrint && chartsImg.length && <img className="chart-img" src={chartsImg[15]}/>
             }
             {
               !isPrint &&
@@ -381,9 +403,11 @@ export default observer(function SatisfactionAnalysis(props) {
 
 const Wrapper = styled.div`
   position: relative;
-  .ant-input {
-    height: 24px;
-    text-align: center;
+  .satisfaction-analysis-layer {
+    .ant-input {
+      height: 24px;
+      text-align: center;
+    }
   }
   h2,
   h3,

@@ -231,7 +231,11 @@ class SheetViewModal {
         fsxt: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
-            cellObj.schAddOrSubs[0].statusType) == "1"
+            cellObj.schAddOrSubs[0].statusType) == "1",
+        whyx: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
       }),
       isReduceWordTime: appStore.hisAdapter({
         hj: () =>
@@ -251,6 +255,10 @@ class SheetViewModal {
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2",
         fsxt: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
+        whyx: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2"

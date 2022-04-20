@@ -16,7 +16,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditRankChangeModal from '../modal/EditRankChangeModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
-import { isSelf } from './BaseInfo'
+import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
@@ -109,7 +109,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='层级变动' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='层级变动' btnList={isSelf() || editFlag()? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editRankChangeModal.Component getTableData={getTableData} />
     </BaseLayout>

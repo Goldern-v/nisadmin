@@ -236,7 +236,7 @@ export default function EditWorkHistoryModal(props: Props) {
         labelWidth={200}
         onChange={onFieldChange}
         rules={rules}
-      >
+       >
         <Row>
           <Col span={12}>
             <Form.Field label={`姓名`} name="empName">
@@ -408,11 +408,17 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          <Col span={12}>
-            <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
-              <SelectOrAutoInput dict="鞋码大小" />
-            </Form.Field>
-          </Col>
+         {appStore.HOSPITAL_ID !== 'gxjb'?
+           <Col span={12}>
+           <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
+             <SelectOrAutoInput dict="鞋码大小" />
+           </Form.Field>
+         </Col>: <Col span={12}>
+           <Form.Field label={`家庭住址`} name="address">
+           <Input />
+           </Form.Field>
+         </Col>
+         } 
           {appStore.HOSPITAL_ID === 'sdlj' && <Col span={12}>
             <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
               <SelectOrAutoInput dict="鞋码大小" />
