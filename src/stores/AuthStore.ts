@@ -124,7 +124,7 @@ export default class AuthStore {
   /** 是否是护理部主任 */
   public get isHoundSing() {
     try {
-      return this.user && this.user.roleManageCodeList.includes('QCR0008') ; //亚心
+      return this.user && this.user.roleManageCodeList.includes('QCR0008'); //亚心
     } catch (error) {
       return "";
     }
@@ -163,6 +163,7 @@ export default class AuthStore {
       if (this.isAdmin) return true;
 
       if (this.user && this.user.roleManageCode === "QCR0001") return true;
+      if (this.user && this.user.roleManageCode === "QCR0004") return true;
 
       if (
         this.user &&
@@ -175,6 +176,7 @@ export default class AuthStore {
       return false;
     }
   }
+
 
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
@@ -192,7 +194,16 @@ export default class AuthStore {
       return false;
     }
   }
-
+  //南医三只有护士长才能修改护士权限
+  public get isRoleManageNYS() {
+    console.log(this.user)
+    try {
+      if (this.user && this.user.roleManageCode === "QCR0004") return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
   /** 是否是护士长 */
   public get isRoleManage() {
     try {
@@ -215,19 +226,19 @@ export default class AuthStore {
     let adminCode = ['QCR0004', 'WHYX_QCR5001', 'WHYX_QCR5002', 'WHYX_QCR5003']
     try {
       if (!this.user) return false
-      let arrdeis =  adminCode.find((item)=>{
-        if(this.user){
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
           return this.user.roleManageCodeList.includes(item)
         }
       })
-      if(arrdeis) {
+      if (arrdeis) {
         return true
-      }else{
+      } else {
         return false
       }
 
-      
-     
+
+
     } catch (error) {
       return false
     }
