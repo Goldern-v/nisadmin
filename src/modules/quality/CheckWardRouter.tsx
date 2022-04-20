@@ -94,13 +94,13 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
         component: nightRoundsDutyRecord,
       },
       {
-        title: "护长夜查房评分记录",
+        title: "护士长夜查房评分记录",
         path: "/checkWard/scoringRecord",
         icon: <CFJL />,
         component: ScoringRecord
       },
       {
-        title: "护长季度查房报告分析",
+        title: "护士长季度查房报告分析",
         path: "/checkWard/quarterScoringRecord",
         icon: <CFJL />,
         component: QuarterScoringRecord

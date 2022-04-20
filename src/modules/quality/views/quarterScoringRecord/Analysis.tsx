@@ -280,7 +280,7 @@ export default observer(function Analysis() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>护长季度查房报告分析</PageTitle>
+          <PageTitle>护{['gzsrm'].includes(appStore.HOSPITAL_ID) ? '士' : ''}长季度查房报告分析</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

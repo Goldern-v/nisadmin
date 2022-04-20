@@ -252,7 +252,7 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>护长夜查房评分记录</div>
+        <div className='page-title'>护{['gzsrm'].includes(appStore.HOSPITAL_ID) ? '士' : ''}长夜查房评分记录</div>
         {appStore.HOSPITAL_ID === 'gzsrm' && <Checkbox style={{ marginLeft: '14px' }} onChange={onCheckboxChange}>我的创建</Checkbox>}
         <div className='button-group'>
           <span className='label'>科室：</span>
