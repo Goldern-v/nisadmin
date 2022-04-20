@@ -177,7 +177,7 @@ const columns: ColumnProps<any>[] = [
       return (
         <DoCon>
           <span onClick={() => onDoubleClick(row)}>查看</span>
-          {store.authStore.isDepartment && store.authStore.isRoleManage &&<span onClick={() => handleDelete(row)}>删除</span>}
+          {store.authStore.isRoleManageNYS &&<span onClick={() => handleDelete(row)}>删除</span>}
         </DoCon>
       );
     }
