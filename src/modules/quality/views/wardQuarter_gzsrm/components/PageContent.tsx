@@ -43,12 +43,17 @@ export default function PageContent(props: Props) {
   }, [pageData])
 
   const getBolatuOption = (data: any) => {
-
-    // let value1 = deductionData.map((item: any) => item['pointItem'])
-    let value1:any = []
-    let value2 = deductionData.map((item: any) => item['percentage'].split('%')[0]).sort((a,b)=>{
-      return b-a
+    let listData:any[] = [];
+    deductionData.map((item:any) =>{
+      listData.push(item["percentages"])
     })
+    listData[0] = '0%'
+    // listData.unshift('0%')
+    // console.log(listData,'ddd');
+    let value2 = listData.map((item:any)=>{
+       return (item.split('%')[0])
+    })
+    let value1:any = []
     let value3 = deductionData.map((item: any) => item['pointFrequency']).sort((a,b)=>{
       return b-a
     })
@@ -78,7 +83,11 @@ export default function PageContent(props: Props) {
         selectedMode: false,
         data: ['扣分项目', '百分比']
       },
-
+      
+      grid: {
+        left: '10%',
+        bottom:'20%'
+      },
       xAxis: [
         {
           type: 'category',
@@ -87,10 +96,12 @@ export default function PageContent(props: Props) {
           },
           // prettier-ignore
           data: value1,
-          // axisLabel: {
-          //   interval: 0,
-          //   rotate: 40
-          // }
+          axisLabel: {
+            interval: 0,
+            rotate: 30,
+          },
+         
+          
         }
       ],
       yAxis: [
@@ -149,6 +160,7 @@ export default function PageContent(props: Props) {
         {
           name: '扣分项目',
           type: 'bar',
+          barCategoryGap:"0%",
           data: value3,
           yAxisIndex: 1,
           itemStyle: {
@@ -204,7 +216,7 @@ export default function PageContent(props: Props) {
       message.warning('实查护士长数比应查护士长数多')
     }else if(data.actualCheckNum&&data.shouldCheckNum){
       data.checkRate = ((data.actualCheckNum / data.shouldCheckNum) * 100) == 100 ? (data.actualCheckNum / data.shouldCheckNum) * 100 + '%' : (((data.actualCheckNum / data.shouldCheckNum) * 100).toFixed(2)) + '%'
-      console.log((data.actualCheckNum / data.shouldCheckNum) * 100);
+      // console.log((data.actualCheckNum / data.shouldCheckNum) * 100); 
       
       
       let newdata: any = [];
@@ -318,7 +330,7 @@ export default function PageContent(props: Props) {
     {<div className='second-content-bolatu'>
       <div className='second-content-table-title'>{`2.2夜查房主要扣分项(图表-柏拉图)`}</div>
       <div className='second-content-bolatu-bolatu'>
-        {!isPrint && deductionData && <ReactEcharts style={{ height: 450, width: 680, margin: '0 auto' }} option={getBolatuOption(deductionData)} />}
+        {!isPrint && deductionData && <ReactEcharts style={{ height: 550, width: 680, margin: '0 auto' }} option={getBolatuOption(deductionData)} />}
         {/* <img src={chartsImg} alt="" /> */}
         {isPrint && deductionData && chartsImg && <img src={chartsImg} alt="" />}
       </div>
