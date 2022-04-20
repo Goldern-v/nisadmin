@@ -163,7 +163,6 @@ export default class AuthStore {
       if (this.isAdmin) return true;
 
       if (this.user && this.user.roleManageCode === "QCR0001") return true;
-      if (this.user && this.user.roleManageCode === "QCR0004") return true;
 
       if (
         this.user &&
@@ -189,16 +188,6 @@ export default class AuthStore {
 
       if (this.user && this.user.roleManageCode === "QCR0003") return true;
 
-      return false;
-    } catch (error) {
-      return false;
-    }
-  }
-  //南医三只有护士长才能修改护士权限
-  public get isRoleManageNYS() {
-    console.log(this.user)
-    try {
-      if (this.user && this.user.roleManageCode === "QCR0004") return true;
       return false;
     } catch (error) {
       return false;

@@ -91,7 +91,7 @@ export default observer(function SelectCon(props: any, context: any) {
         <Button type="primary" onClick={onSearch}>
           搜索
         </Button>
-        <Button onClick={() => setVisible(true)} disabled={!store.authStore.isRoleManageNYS}>+添加护士</Button>
+        <Button onClick={() => setVisible(true)} disabled={!store.authStore.isRoleManage}>+添加护士</Button>
         <Button onClick={downloadExportTemplate}>下载导入模板</Button>
         <Button onClick={handleImportClick}>导入</Button>
         {importIptVisible && <input id="import-xls-file-ipt" type="file" onChange={handleImportChange} />}
