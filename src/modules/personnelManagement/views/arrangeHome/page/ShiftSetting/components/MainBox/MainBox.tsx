@@ -162,32 +162,32 @@ export default function MainBox() {
     
     ...appStore.hisMatch({
       map:{
-        lcey:[
-          {
-            title: "夏-白小时数",
-            dataIndex: "settingMorningHour",
-            key: "settingMorningHour",
-            width: 90
-          },
-          {
-            title: "夏-夜小时数",
-            dataIndex: "settingNightHour",
-            key: "settingNightHour",
-            width: 90
-          },
-          {
-            title: "冬-白小时数",
-            dataIndex: "settingWinMorningHour",
-            key: "settingWinMorningHour",
-            width: 90
-          },
-          {
-            title: "冬-夜小时数",
-            dataIndex: "settingWinNightHour",
-            key: "settingWinNightHour",
-            width: 90
-          },
-        ],
+        // lcey:[
+        //   {
+        //     title: "夏-白小时数",
+        //     dataIndex: "settingMorningHour",
+        //     key: "settingMorningHour",
+        //     width: 90
+        //   },
+        //   {
+        //     title: "夏-夜小时数",
+        //     dataIndex: "settingNightHour",
+        //     key: "settingNightHour",
+        //     width: 90
+        //   },
+        //   {
+        //     title: "冬-白小时数",
+        //     dataIndex: "settingWinMorningHour",
+        //     key: "settingWinMorningHour",
+        //     width: 90
+        //   },
+        //   {
+        //     title: "冬-夜小时数",
+        //     dataIndex: "settingWinNightHour",
+        //     key: "settingWinNightHour",
+        //     width: 90
+        //   },
+        // ],
         other:[{
           title: "白小时数",
           dataIndex: "settingMorningHour",
