@@ -823,7 +823,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               children = <DisableSpan />
             }
           }
-          if (item.itemCode == '药品名称') {
+          if (item.itemCode == '药品名称'||item.itemCode == '名称') {
             children = <InputColumnRender
             {...{
               cellDisabled,
@@ -834,7 +834,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
               updateDataSource,
               handleNextIptFocus,
               onBlur: (newVal: string, oldVal: any) => {
-               console.log(newVal)
               },
             }}
           />
@@ -1356,7 +1355,20 @@ export default observer(function 重点患者评估登记本(props: Props) {
 useEffect(()=>{
   if(registerCode==='QCRG_10'){
     let param={
-      name:""
+      name:"",
+      type:"备用药"
+    }
+    wardRegisterService.getPharmacy(param).then((res)=>{
+      let arr:Array<string>=[]
+      res.data.map((item:any)=>{
+       arr.push(item.name)
+      })
+      setPharmacyList(arr)
+    })
+  }else if(registerCode==='QCRG_12_2'){
+    let param={
+      name:"",
+      type:"急救车药品"
     }
     wardRegisterService.getPharmacy(param).then((res)=>{
       let arr:Array<string>=[]
@@ -1368,6 +1380,7 @@ useEffect(()=>{
   }
 
 },[])
+
 
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
