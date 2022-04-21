@@ -103,8 +103,8 @@ export default function AddShiftModal(props: Props) {
     const [workTime1, workTime2] = (timeRange || "").split("-");
     const [workTime3, workTime4] = (timeRange2 || "").split("-");
     return {
-      workTime1: moment(workTime1, "HH:mm"),
-      workTime2: moment(workTime2, "HH:mm"),
+      workTime1: workTime1 ? moment(workTime1, "HH:mm") : undefined,
+      workTime2: workTime2 ? moment(workTime2, "HH:mm") : undefined,
       workTime3: workTime3 ? moment(workTime3, "HH:mm") : undefined,
       workTime4: workTime4 ? moment(workTime4, "HH:mm") : undefined,
     };
@@ -116,8 +116,8 @@ export default function AddShiftModal(props: Props) {
     const [workTime5, workTime6] = (timeRange || "").split("-");
     const [workTime7, workTime8] = (timeRange2 || "").split("-");
     return {
-      workTime5: moment(workTime5, "HH:mm"),
-      workTime6: moment(workTime6, "HH:mm"),
+      workTime5: workTime5 ? moment(workTime5, "HH:mm") : undefined,
+      workTime6: workTime6 ? moment(workTime6, "HH:mm") : undefined,
       workTime7: workTime7 ? moment(workTime7, "HH:mm") : undefined,
       workTime8: workTime8 ? moment(workTime8, "HH:mm") : undefined,
     };
@@ -184,7 +184,6 @@ export default function AddShiftModal(props: Props) {
   };
 
   useLayoutEffect(() => {
-    console.log(refForm.current, 9998)
     if (refForm.current && visible) refForm!.current!.clean();
     /** 如果是修改 */
     if (refForm.current && visible) {
@@ -262,12 +261,11 @@ export default function AddShiftModal(props: Props) {
       }
       else {
         setTip(true)
-        refForm.current && refForm.current.setField("effectiveTime", null);
+        refForm.current && refForm.current.setField("effectiveTime", props.editData.effectiveTime);
       }
     }, [time1, time2, time3, time4]);
   }
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    console.log(name, 7778)
     if (appStore.HOSPITAL_ID === "lcey") {
 
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
@@ -280,12 +278,11 @@ export default function AddShiftModal(props: Props) {
         setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h") : 0)
         setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h") : 0)
       }
-      if (name === 'effectiveTime') {
-        const { effectiveTime } = form.getFields();
-        console.log(effectiveTime, 678)
-        if (effectiveTime) setTip(false)
-        else setTip(true)
-      }
+      // if (name === 'effectiveTime') {
+      //   const { effectiveTime } = form.getFields();
+      //   if (effectiveTime) setTip(false)
+      //   else setTip(true)
+      // }
     }
     // 之前有的标准工时计算 现在有两个时间段不自动计算
     /*if (name === "workTime") {
