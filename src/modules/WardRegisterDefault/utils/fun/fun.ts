@@ -32,6 +32,7 @@ export interface ItemConfigItem {
   setMsgMap?: Function,
   setDataMap?: Function,
   dataMap?: any,
+  customSign?: any[],
 }
 
 export function getFun(context: any) {
@@ -58,7 +59,8 @@ export function getFun(context: any) {
     setDataMap,
     setConfig,
     config,
-    dataMap
+    dataMap,
+    customSign,
   } = context;
 
   /** 初始化 */
@@ -619,12 +621,20 @@ export function getFun(context: any) {
       .then((res) => {
         let selectedRows = dataSource.filter((item: any) =>
           selectedRowKeys.indexOf(item.key) >= 0)
-
+        // 自定义签名不需要复制
+        let customSignObj: Record<string,any> = {}
+        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+          customSign.map((v:any) => {
+            customSignObj[v.itemCode] = ''
+          })
+        }
         let newRows = selectedRows.map((item: any) => {
           let newItem = JSON.parse(JSON.stringify(item))
           delete newItem.id
+
           return {
             ...newItem,
+            ...customSignObj,
             recordDate: moment().format('YYYY-MM-DD'),
             signerName: '',
             signerNo: '',

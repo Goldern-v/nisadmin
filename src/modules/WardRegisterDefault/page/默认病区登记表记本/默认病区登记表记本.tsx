@@ -874,7 +874,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     selectedRowKeys,
     setSelectedRowKeys,
     setConfig,
-    paramMap
+    paramMap,
+    customSign,
   });
 
   useEffect(() => {

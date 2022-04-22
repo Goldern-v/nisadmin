@@ -102,8 +102,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     //武汉亚心
     case "whyx":
-      return "192.168.1.106:8080" // 信铭本地
-      // return "http://192.168.1.54:9885"; // 测试环境
+      // return "http://192.168.1.106:8080" // 信铭本地
+      return "http://192.168.1.54:9885"; // 测试环境
     // return "http://192.168.20.35:9091" // 宏群本地
     // return 'http://192.168.1.106:9091'
     // return 'http://220.202.32.51:9091'  //正式环境
