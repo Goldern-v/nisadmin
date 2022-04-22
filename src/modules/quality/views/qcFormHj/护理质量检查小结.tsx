@@ -95,7 +95,7 @@ export default observer(function 护理质量检查小结() {
       }
     },
     {
-      title: '通过率(% )',
+      title: ['gzsrm'].includes(appStore.HOSPITAL_ID)?'质量结果':'通过率(% )',
       dataIndex: 'evalRate',
       width: 80,
       align: 'center'
@@ -134,7 +134,6 @@ export default observer(function 护理质量检查小结() {
       .then(res => {
         setLoading(false)
         if (res.data) {
-
           setTableData(res.data.wardDetailList || [])
 
           setChartData(res.data.itemCountList || [])
