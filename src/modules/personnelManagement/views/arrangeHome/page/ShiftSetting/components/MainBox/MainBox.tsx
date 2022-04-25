@@ -17,6 +17,7 @@ import createModal from "src/libs/createModal";
 import AddShiftModal from "../../modal/AddShiftModal";
 import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
 import { Icon } from "src/vendors/antd";
+import moment from 'moment'
 import PostScoreCell from "../../../../components/arrangeSheet/postScoreCell";
 // import emitter from 'src/libs/ev'
 
@@ -49,6 +50,7 @@ let colorLumpMap: any = {
   gray: '灰色', //#999999
   white: '白色' //#ffffff
 }
+
 export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
@@ -72,6 +74,15 @@ export default function MainBox() {
     }),
   );
 
+
+  const dstTime = ():boolean => {
+    const nowTime=moment().format('YYYY-MM-D HH:mm:ss')
+    const year=moment().year()
+    const dstTimeStart=moment(`${year}-05-01`)
+    const dstTimeEnd=moment(`${year}-09-30`)
+    return moment(nowTime).isBetween(dstTimeStart,dstTimeEnd)
+    
+  }
   const handleSwitchClick = (checked: boolean) => {
     const newArr = shiftList.map((item: any) => {
       item.status = checked
@@ -159,49 +170,44 @@ export default function MainBox() {
           ""
         )
     },
-    
+    {
+      title: "上班时间",
+      dataIndex: "workTime",
+      key: "workTime",
+      width: 200
+    },
     ...appStore.hisMatch({
       map:{
-        // lcey:[
-        //   {
-        //     title: "夏-白小时数",
-        //     dataIndex: "settingMorningHour",
-        //     key: "settingMorningHour",
-        //     width: 90
-        //   },
-        //   {
-        //     title: "夏-夜小时数",
-        //     dataIndex: "settingNightHour",
-        //     key: "settingNightHour",
-        //     width: 90
-        //   },
-        //   {
-        //     title: "冬-白小时数",
-        //     dataIndex: "settingWinMorningHour",
-        //     key: "settingWinMorningHour",
-        //     width: 90
-        //   },
-        //   {
-        //     title: "冬-夜小时数",
-        //     dataIndex: "settingWinNightHour",
-        //     key: "settingWinNightHour",
-        //     width: 90
-        //   },
-        // ],
-        other:[{
-          title: "白小时数",
-          dataIndex: "settingMorningHour",
-          key: "settingMorningHour",
-          width: 90
-        },
-        {
-          title: "夜小时数",
-          dataIndex: "settingNightHour",
-          key: "settingNightHour",
-          width: 90
-        },]
+        lcey:[
+          {
+            title: "工时(小时）",
+            dataIndex: dstTime()?"effectiveTime":"winterEffectiveTime",
+            key: dstTime()?"effectiveTime":"winterEffectiveTime",
+            width: 90
+          },
+        ],
+        other:[
+          {
+            title: "工时(小时）",
+            dataIndex: "effectiveTime",
+            key: "effectiveTime",
+            width: 90
+          },
+        ]
       }
     }),
+    {
+      title: "白小时数",
+      dataIndex: "settingMorningHour",
+      key: "settingMorningHour",
+      width: 90
+    },
+    {
+      title: "夜小时数",
+      dataIndex: "settingNightHour",
+      key: "settingNightHour",
+      width: 90
+    },
     ...appStore.hisMatch({
       map: {
         whyx: [
@@ -351,6 +357,7 @@ export default function MainBox() {
                   onClick={(e: any) => {
                     addShiftModal.show({
                       editData: record,
+                      clickType:"editForm",
                       // 添加字段type：区分医院和登陆者身份
                       type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
                       identity:
