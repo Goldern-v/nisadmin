@@ -325,6 +325,10 @@ export default observer(function SelectCon() {
       message.warning('批量导出前请先选择科室！');
     }
   };
+  /**刷新分组护士列表 */
+  useEffect(() => {
+    sheetViewModal.setNurseList()
+  }, [selectViewModal.params.group, selectViewModal.params.deptCode])
 
   return (
     <Wrapper>
@@ -427,6 +431,24 @@ export default observer(function SelectCon() {
             </Select>
           </div>
         </div>
+        {
+          ['whyx'].includes(appStore.HOSPITAL_ID)
+          && <div className="item item-nurse">
+            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号" 
+            showSearch
+            optionFilterProp="title"
+            onChange={(e:any) => sheetViewModal.changeNurseId(e)}
+            style={{ width: 100 }}>
+              {
+                sheetViewModal.nurseList.map((v:any) => (
+                  <Select.Option value={v.id} title={v.empName} key={v.id}>
+                    {v.empName}
+                  </Select.Option>
+                ))
+              }
+            </Select>
+          </div>
+        }
         <div className="item">
           <Button
             type="primary"

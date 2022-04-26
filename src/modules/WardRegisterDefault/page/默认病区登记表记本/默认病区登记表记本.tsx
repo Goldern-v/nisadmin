@@ -823,7 +823,6 @@ export default observer(function 敏感指标登记本(props: Props) {
           } type="primary"
           onClick={() => deleteSelectedRows(isWhyx ? {beforeReqCB: (arr: any) =>{
             let index = arr.findIndex((v: any) => customSign.filter((v1: any) => v[v1.itemCode]).length > 0)
-            console.log('test-index, arr', index, arr)
             if (index > -1) {
               Modal.warn({
                 centered: true,

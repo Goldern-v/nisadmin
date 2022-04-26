@@ -2,7 +2,7 @@ import service from "src/services/api/index";
 import { cloneJson } from "./../../../../../utils/json/clone";
 import { appStore, authStore } from "./../../../../../stores/index";
 import { SymbolItem, ArrangeItem } from "./../types/Sheet";
-import { observable, computed, action } from "mobx";
+import { observable, computed, action, autorun } from "mobx";
 import { selectViewModal } from "./SelectViewModal";
 import { notSelectViewModal } from "../page/notRelease/components/SelectViewModal";
 import { dateDiff } from "src/utils/date/dateDiff";
@@ -11,10 +11,13 @@ import { arrangeService } from "../services/ArrangeService";
 import { notArrangeService } from "../services/notReleaseService";
 import monnet from "src/vendors/moment";
 import { message } from "src/vendors/antd";
+import _ from 'lodash'
+
 import {
   cleanCell,
   copyRowClick
 } from "../components/arrangeSheet/cellClickEvent";
+import api from "src/services/api/index";
 
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
@@ -310,7 +313,7 @@ class SheetViewModal {
       return [null, null];
     }
   }
-
+  /** 获取排班人员信息*/
   getSheetTableData() {
     if (!this.isInitEd) return this.init();
     this.tableLoading = true;
@@ -343,6 +346,10 @@ class SheetViewModal {
         );
       } else {
         this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
+      }
+      if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        this.sheetTableDataCopy = _.cloneDeep(this.sheetTableData)
+        this.searchNurseId()
       }
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
@@ -684,6 +691,41 @@ class SheetViewModal {
       appStore.HOSPITAL_ID == 'gzhd' && this.getHDArrangeMeal();
       this.getAllDeptList()
     });
+  }
+  /**排班人员信息复制 */
+  @observable public sheetTableDataCopy: any = []
+  // 分组护士列表
+  @observable public nurseList: any = []
+  @action
+  async setNurseList() {
+    try {
+      this.nurseId = ''
+      if (selectViewModal.params.group == '') {
+        let res1 = await api.personnelSettingApiService.getScheduler(selectViewModal.params.deptCode || '')
+        if (res1.data) {
+          this.nurseList = res1.data
+        }
+        return
+      }
+      const res2 = await api.personnelSettingApiService.getById(selectViewModal.params.group)
+      if (res2.data) {
+        this.nurseList = res2.data
+      }
+    } catch (e) {
+      this.nurseList = []
+    }
+  }
+  /**护士id */
+  @observable public nurseId: string = ''
+  changeNurseId(e: any) {
+    this.nurseId = e
+    this.searchNurseId()
+  }
+  searchNurseId() {
+    if (this.nurseId) {
+      const curItem = this.nurseList.find((v: any) => v.id === this.nurseId)
+      this.sheetTableData = this.sheetTableDataCopy.filter((v: any) => v.empName === curItem.empName && v.empNo === curItem.empNo)
+    }
   }
 }
 
