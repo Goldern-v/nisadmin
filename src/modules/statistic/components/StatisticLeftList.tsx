@@ -47,8 +47,8 @@ const LEFT_MENU_CONFIG = [
               hide: appStore.HOSPITAL_ID == "nys"
             },
             {
-              title: "科室排班统计（按班次）",
-              path: "/statistic/科室排班统计（按班次）",
+              title: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
+              path: `/statistic/科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
               hide: appStore.HOSPITAL_ID == "nys"
             },
             {

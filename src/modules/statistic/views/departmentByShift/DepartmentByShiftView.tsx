@@ -42,6 +42,12 @@ export default function StatisticView() {
   // 夜班
   const [nightMap, setNightMap] = useState({})
 
+  // 聊城 按工时/按班次 班次1 小时2
+  const [statusRadio, setStatusRadio] = useState('1')
+
+  const [morningHourTableData, setMorningHourTableData] = useState([] as any[])
+  const [nightHourTableData, setNightHourListTableData] = useState([] as any[])
+
   const handleFilterObjChange = (newFilterObj: any) => {
     setFilterObj(newFilterObj)
 
@@ -74,7 +80,7 @@ export default function StatisticView() {
       })
   }
 
-  const getTableData = (_query?: any, _filterObj?: any) => {
+  const getTableData = (data?: string, _query?: any, _filterObj?: any) => {
     let reqQuery = { ..._query || query }
     let currentFilterObj = _filterObj || filterObj
     let filterTypes = Object.keys(filterObj)
@@ -88,17 +94,25 @@ export default function StatisticView() {
         ...reqQuery,
         season: 'summer',
         ls: filterList.join(',')
-      })
+      }, data)
         .then(res => {
           setTableData(res.data.list || [])
           setHourMap(res.data.hourMap || {})
           setMorningMap(res.data.morningMap || {})
           setNightMap(res.data.nightMap || {})
+          if (data === '2') {
+            setMorningHourTableData(res.data.morningHourList || [])
+            setNightHourListTableData(res.data.nightHourList || [])
+          }
         }).catch(() => { // 防止没有选的情况下 接口拦截 前端合计没有清零的问题
           setTableData([])
           setHourMap({})
           setMorningMap({})
           setNightMap({})
+          if (data === '2') {
+            setMorningHourTableData([])
+            setNightHourListTableData([])
+          }
         })
     } else {
       Promise.all(filterTypes.map((type: string) => {
@@ -110,7 +124,7 @@ export default function StatisticView() {
           ...reqQuery,
           type,
           ls: filterList.join(',')
-        })
+        }, data)
       }))
         .then((resArr) => {
           let newTableDataObj = {} as any
@@ -142,9 +156,16 @@ export default function StatisticView() {
   }
 
   const handleExport = () => {
-    if (tableData.length <= 0) {
-      message.warn("暂无记录")
-      return
+    if (statusRadio === '2') {
+      if (morningHourTableData.length <= 0) {
+        message.warn("暂无记录")
+        return
+      }
+    } else {
+      if (tableData.length <= 0) {
+        message.warn("暂无记录")
+        return
+      }
     }
 
     let reqQuery = { ...query }
@@ -157,18 +178,27 @@ export default function StatisticView() {
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
         ls: filterList.join(','),
-      }, true)
+      }, statusRadio, true)
         .then(res => fileDownload(res))
+    }
+  }
+
+  const radioChange = (data: string) => {
+    setStatusRadio(data)
+    getTableData(data)
+    if (data === '1') {
+      setMorningHourTableData([])
+      setNightHourListTableData([])
     }
   }
 
   useEffect(() => {
     setInited(true)
-    getShiftAndRange((_filterObj: any) => getTableData(query, _filterObj))
+    getShiftAndRange((_filterObj: any) => getTableData('1', query, _filterObj))
   }, [])
 
   useEffect(() => {
-    if (inited) getTableData()
+    if (inited) getTableData(statusRadio)
   }, [query])
 
   return (
@@ -180,13 +210,14 @@ export default function StatisticView() {
 
           setQuery(newQuery)
         }}
+        radioChange={radioChange}
         onExport={handleExport} />
       <MidMidCon>
         <LeftCon>
-          <StatisticMIdHeaderDepartment />
+          <StatisticMIdHeaderDepartment statusRadio={statusRadio} />
           {/* 对应表 */}
           <TableCon>
-            <TableFirst tableData={tableData} hourMap={hourMap} morningMap={morningMap} nightMap={nightMap} filterObj={filterObj} />
+            <TableFirst byHours={{morningHourTableData, nightHourTableData}} statusRadio={statusRadio} tableData={tableData} hourMap={hourMap} morningMap={morningMap} nightMap={nightMap} filterObj={filterObj} />
           </TableCon>
         </LeftCon>
         <RigthCon>

@@ -2,6 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import qs from 'qs'
+import { appStore } from 'src/stores'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
   public async postNurseScheduling(exportData: any = true) {
@@ -113,18 +114,24 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 科室排班统计（按班次）
-  public async postDepartmentByShiftView(data: any, toExport: any = false) {
+  public async postDepartmentByShiftView(data: any, statusRadio: string = '1', toExport: any = false, ) {
     let postData = {
       ...data,
       status: !toExport
     }
-
     let trancePostData = this.stringify(postData)
-
-    if (toExport) {
-      return this.post(`/scheduling/countByDeptCode`, trancePostData, { responseType: 'blob' })
+    if (statusRadio === '1') {
+      if (toExport) {
+        return this.post(`/scheduling/countByDeptCode`, trancePostData, { responseType: 'blob' })
+      } else {
+        return this.post(`/scheduling/countByDeptCode`, trancePostData)
+      }
     } else {
-      return this.post(`/scheduling/countByDeptCode`, trancePostData)
+      if (toExport) {
+        return this.post(`/scheduling/countByDeptCodeLc`, trancePostData, { responseType: 'blob' })
+      } else {
+        return this.post(`/scheduling/countByDeptCodeLc`, trancePostData)
+      }
     }
   }
   // 科室白班统计（按月份）

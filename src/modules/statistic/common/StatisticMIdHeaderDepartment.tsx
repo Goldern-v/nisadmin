@@ -6,7 +6,11 @@ import { authStore, appStore } from 'src/stores/index'
 import emitter from 'src/libs/ev'
 import { observer } from 'mobx-react-lite'
 
-export default observer(function StatisticMIdHeader () {
+export interface Props {
+  statusRadio?: String
+}
+
+export default observer(function StatisticMIdHeader (props: Props) {
   const [title, setTitle] = useState(() => {
     let deptName = authStore.selectedDeptName || ''
     statisticViewModel.deptName = deptName
@@ -31,7 +35,8 @@ export default observer(function StatisticMIdHeader () {
   return (
     <Con>
       {/* {authStore.selectedDeptName} */}
-      <div className='firstTitle'>{appStore.match.params.name}</div>
+      {!appStore.match.params.name.includes('科室排班统计（按班次') ? <div className='firstTitle'>{appStore.match.params.name}</div> : 
+      <div className='firstTitle'>科室排班统计({props.statusRadio === '1' ? '按班次' : '按工时'}</div>}
       <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>
