@@ -119,7 +119,6 @@ export default function ToolBar() {
         value: record.status != null ? record.status : true
       }
     };
-    console.log("编辑排班-", record);
     addShift("编辑排班");
   });
   const save = (e: any) => {
@@ -454,6 +453,7 @@ export default function ToolBar() {
           <Button
             onClick={() => {
               addShiftModal.show({
+                clickType:"addForm",
                 onOkCallBack: () => {
                   emitter.emit("更新班次列表");
                 }

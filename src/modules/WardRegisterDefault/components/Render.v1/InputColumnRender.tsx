@@ -74,7 +74,6 @@ export default function InputColumnRender(props: Props) {
           setMultiSearchFlag(true)
         }
       }
-      console.log('test-val', val)
       setNewOptions(val ? _options?.filter(v => v.indexOf(val) > -1) : _options)
     }  
   }

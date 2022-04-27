@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, DatePicker, Modal, message } from "antd";
+import { Button, DatePicker, Modal, message, Input } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
@@ -170,6 +170,10 @@ export default observer(function TopPart() {
     setShowLock(!flag)
   }, [selectViewModal.params.startTime])
 
+  useEffect(() => {
+    sheetViewModal.setNurseList()
+  }, [selectViewModal.params.group, selectViewModal.params.deptCode])
+
   return (
     <Wrapper>
       <BreadcrumbBox
@@ -311,6 +315,24 @@ export default observer(function TopPart() {
             </Select>
           </div>
         </div>
+        {
+          ['whyx'].includes(appStore.HOSPITAL_ID)
+          && <div className="item item-nurse">
+            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号" 
+            showSearch
+            optionFilterProp="title"
+            onChange={(e:any) => sheetViewModal.changeNurseId(e)}
+            style={{ width: 120 }}>
+              {
+                sheetViewModal.nurseList.map((v:any) => (
+                  <Select.Option value={v.id} title={v.empName} key={v.id}>
+                    {v.empName}
+                  </Select.Option>
+                ))
+              }
+            </Select>
+          </div>
+        }
         <div className="item">
           <Button type="primary" onClick={() => sheetViewModal.init()}>
             查询

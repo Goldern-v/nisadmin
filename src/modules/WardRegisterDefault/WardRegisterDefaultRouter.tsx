@@ -60,31 +60,52 @@ function WardRegisterDefaultRouter() {
       title: item.registerName,
       path: `/wardRegister/${item.registerCode}`,
       component: { ...默认病区登记表记本 },
-      hide: !item.menu,
+      hide: ['whyx'].includes(appStore.HOSPITAL_ID) ? false : !item.menu,
       icon: <ZDHZ />,
       payload: {
         registerCode: item.registerCode,
         registerName: item.registerName
+      },
+      custom: {
+        textColor: ['whyx'].includes(appStore.HOSPITAL_ID) ? item.color : ''
       }
     }))
   ]
-
+  // 1：日 2：周 3：月 4：班次）
+  const colorList = [
+    '',
+    '#00c8ff',
+    '#804000',
+    '#f5df81',
+    '#f00'
+  ]
   const initNavList = () => {
     setLoading(true)
-    wardRegisterDefaultService.getMenu()
-      .then(res => {
-        setLoading(false)
-        if (res.data) setRegisterList(res.data.map((menuItem: any) => {
-          let pathArr = menuItem.url.split('/')
-          let registerCode = pathArr[pathArr.length - 1]
-
-          return {
-            ...menuItem,
-            registerName: menuItem.name,
-            registerCode,
-          }
-        }))
-      }, () => setLoading(false))
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      wardRegisterDefaultService.getMenuByDeptCode()
+        .then(res => {
+          if (res.data) setRegisterList(res.data.map((item: any) => ({
+            ...item,
+            color: item.color || (item.inventoryTimeType ? colorList[item.inventoryTimeType] : '')
+          })))
+          setLoading(false)
+        }, () => setLoading(false))
+    } else {
+      wardRegisterDefaultService.getMenu()
+        .then(res => {
+          setLoading(false)
+          if (res.data) setRegisterList(res.data.map((menuItem: any) => {
+            let pathArr = menuItem.url.split('/')
+            let registerCode = pathArr[pathArr.length - 1]
+  
+            return {
+              ...menuItem,
+              registerName: menuItem.name,
+              registerCode,
+            }
+          }))
+        }, () => setLoading(false))
+    }
   }
   useEffect(() => {
     initNavList()

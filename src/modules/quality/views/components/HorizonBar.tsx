@@ -55,7 +55,6 @@ export default observer(function HorizonBar(props: Props) {
               color: function(obj: any) {
                 if (!averItem) return '#416dbb'
                 let key = isHorizon ? xKey : yKey
-                console.log('test-obj', obj, averItem[key])
                 if (averTexts.includes(obj.name)) return 'rgb(255, 255, 0)'
                 if (Number(obj.value) >= Number(averItem[key])) return '#416dbb'
                 return '#f00'
