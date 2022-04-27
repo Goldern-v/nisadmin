@@ -36,7 +36,7 @@ export default observer(function StatisticMIdHeader (props: Props) {
     <Con>
       {/* {authStore.selectedDeptName} */}
       {!appStore.match.params.name.includes('科室排班统计（按班次') ? <div className='firstTitle'>{appStore.match.params.name}</div> : 
-      <div className='firstTitle'>科室排班统计({props.statusRadio === '1' ? '按班次' : '按工时'}</div>}
+      <div className='firstTitle'>科室排班统计({props.statusRadio === '1' ? '按班次' : '按工时'})</div>}
       <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>
