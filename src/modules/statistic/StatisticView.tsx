@@ -91,7 +91,7 @@ export default function StatisticView() {
       component: NurseVacationByMonthView
     },
     { name: '护士节假日排班表', path: '/statistic/护士节假日排班表', component: NurseHolidayScheduleView },
-    { name: '科室排班统计（11按班次/按小时）', path: '/statistic/科室排班统计（按班次/按小时）', component: DepartmentByShiftView },
+    { name: '科室排班统计（按班次/按工时）', path: '/statistic/科室排班统计（按班次/按工时）', component: DepartmentByShiftView },
     {
       name: '科室白班统计（按月份）',
       path: '/statistic/科室白班统计（按月份）',

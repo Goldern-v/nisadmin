@@ -55,7 +55,7 @@ export default function BedSituation(props: Props) {
           <Option value="winter">冬令时</Option>
         </Select>
       }
-      {appStore.HOSPITAL_ID==='lcey' && 
+      {appStore.HOSPITAL_ID === 'lcey' && 
         <Radio.Group className='radio' value={state} onChange={stateChange}>
           <Radio.Button value="1">按班次</Radio.Button>
           <Radio.Button value="2">按工时</Radio.Button>

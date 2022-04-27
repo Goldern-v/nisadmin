@@ -82,7 +82,7 @@ export default function BedSituation(props: Props) {
 
   const getShiftClassDom_byHour1 = getShiftClass.map((item: any) => {
 
-    return <th colSpan={2} key={item.toString()}>{item}</th>
+    return <th  colSpan={2} key={item.toString()}>{item}</th>
     
   })
   const getShiftClassDom_byHour2 = getShiftClass.map((item: any) => {
@@ -182,7 +182,7 @@ export default function BedSituation(props: Props) {
             {statusRadio ==='1' ? <div>
                 <tr>
                   <th>序号</th>
-                  <th>科室</th>
+                  <th className='administrative'>科室</th>
                   {getShiftClassDom}
                   {visibleType ? (
                     <th>合计</th>
@@ -197,11 +197,11 @@ export default function BedSituation(props: Props) {
               </div> :
               <div>
                 <tr>
-                  <th rowSpan={2}>序号</th>
-                  <th rowSpan={2}>科室</th>
+                  <th style={{'verticalAlign': 'middle'}} rowSpan={2}>序号</th>
+                  <th style={{'verticalAlign': 'middle'}} className='administrative' rowSpan={2}>科室</th>
                   {getShiftClassDom_byHour1}
                   {visibleType ? (
-                    <th rowSpan={2}>合计</th>
+                    <th style={{'verticalAlign': 'middle'}} rowSpan={2}>合计</th>
                   ) : (
                     <React.Fragment>
                       <th>班次大类合计</th>
@@ -281,7 +281,7 @@ const Con = styled.div`
           box-sizing: border-box;
           min-width: 60px;
         }
-        th:nth-of-type(2) {
+        th.administrative {
           box-sizing: border-box;
           min-width: 150px;
         }
