@@ -83,13 +83,14 @@ export default function StatisticView() {
     let reqQuery = { ..._query || query }
     let currentFilterObj = _filterObj || filterObj
     let filterTypes = Object.keys(filterObj)
+    if (appStore.HOSPITAL_ID !== 'lcey') reqQuery = {...reqQuery, season: 'summer' }
     if (reqQuery.type) {
       let filterList = currentFilterObj[reqQuery.type].list
         .filter((item: any) => item.checked)
         .map((item: any) => item.name)
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
-        season: 'summer',
+        // season: 'summer',
         ls: filterList.join(',')
       }, data)
         .then(res => {
@@ -126,7 +127,7 @@ export default function StatisticView() {
         .then((resArr) => {
           let newTableDataObj = {} as any
           resArr.forEach((res: any, resIdx: number) => {
-            if (res.data)
+            if (res.data?.length > 0)
               res.data.forEach((item: any, itemIdx: number) => {
                 let deptName = item['科室']
 
@@ -227,7 +228,6 @@ export default function StatisticView() {
         query={query}
         onChange={(payload: any) => {
           let newQuery = { ...query, ...payload }
-
           setQuery(newQuery)
         }}
         radioChange={radioChange}

@@ -156,8 +156,8 @@ export default function BedSituation(props: Props) {
   })
   getTdDom_byHour.push(
     <tr>
-      <td>{visibleTable_byHour().length + 1}</td>
-      <td>合计</td>
+      {/* <td>{visibleTable_byHour().length + 1}</td> */}
+      <td colSpan={2}>合计</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => {
         let arr = ['白小时', '夜小时']
         return arr.map((item, i) => (i%2) !== 0  ? <td key={indexTd}>{byHourNightMap[itemTd]}</td> : <td key={indexTd + 1}>{byHourMorningMap[itemTd]}</td>)
