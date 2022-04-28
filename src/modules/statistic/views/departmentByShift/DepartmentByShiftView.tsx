@@ -64,9 +64,8 @@ export default function StatisticView() {
       .then(res => {
         let shiftTypeList = res[0].data.map((item: any) => item.name)
         let rangeNameList = res[1].data.map((item: any) => item.name)
-
         let newFilterObj = { ...filterObj }
-
+        
         let shiftTypeSelected = newFilterObj['shift_type'].checked
         newFilterObj['shift_type'].list = shiftTypeList.map((name: string) => ({ name, checked: shiftTypeSelected }))
 
@@ -84,12 +83,10 @@ export default function StatisticView() {
     let reqQuery = { ..._query || query }
     let currentFilterObj = _filterObj || filterObj
     let filterTypes = Object.keys(filterObj)
-
     if (reqQuery.type) {
       let filterList = currentFilterObj[reqQuery.type].list
         .filter((item: any) => item.checked)
         .map((item: any) => item.name)
-
       statisticsApi.postDepartmentByShiftView({
         ...reqQuery,
         season: 'summer',
@@ -185,10 +182,33 @@ export default function StatisticView() {
 
   const radioChange = (data: string) => {
     setStatusRadio(data)
-    getTableData(data)
     if (data === '1') {
       setMorningHourTableData([])
       setNightHourListTableData([])
+      setFilterObj({
+        ['shift_type']: {
+          checked: true,
+          list: filterObj['shift_type'].list.map((item: any) => ({name: item.name, checked: true}))
+        },
+        ['range_name']: {
+          checked: false,
+          list: filterObj['range_name'].list.map((item: any) => ({name: item.name, checked: false}))
+        },
+      } as any)
+      setQuery({...query, type: 'shift_type'})
+      // getTableData(data, {...query, type: 'shift_type'}, _filterObj)
+    } else {
+      setFilterObj({
+        ['shift_type']: {
+          checked: false,
+          list: filterObj['shift_type'].list.map((item: any) => ({name: item.name, checked: false}))
+        },
+        ['range_name']: {
+          checked: true,
+          list: filterObj['range_name'].list.map((item: any) => ({name: item.name, checked: true}))
+        },
+      } as any)
+      setQuery({...query, type: 'range_name'})
     }
   }
 
@@ -227,6 +247,7 @@ export default function StatisticView() {
               onFilterObjChange={handleFilterObjChange} />
               :
               <NurseByShiftChoose
+                statusRadio={statusRadio}
                 filterObj={filterObj}
                 onFilterObjChange={handleFilterObjChange} />}
           </div>
