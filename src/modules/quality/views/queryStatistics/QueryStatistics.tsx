@@ -10,6 +10,7 @@ import FormSelect from 'src/modules/quality/views/qualityControlRecord/component
 import queryStatisticsServices from './services/queryStatisticsServices'
 import { fileDownload } from 'src/utils/file/file'
 import { PageTitle } from 'src/components/common'
+import { appStore } from 'src/stores'
 
 export interface Props extends RouteComponentProps { }
 
@@ -41,28 +42,58 @@ export default observer(function QueryStatistics(props: any) {
       width: 100,
       align: 'center'
     },
-    {
-      title: '最低通过率',
-      dataIndex: 'evalRateMin',
-      key: 'evalRateMin',
-      width: 100,
-      align: 'center'
-    },
-
-    {
-      title: '最高通过率',
-      dataIndex: 'evalRateMax',
-      key: 'evalRateMax',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '平均通过率',
-      dataIndex: 'evalRateAvg',
-      key: 'evalRateAvg',
-      width: 100,
-      align: 'center'
-    }
+    ...appStore.hisMatch({
+      map:{
+        gzsrm:[
+          {
+            title: '最低分数',
+            dataIndex: 'netTotalScoreMin',
+            key: 'netTotalScoreMin',
+            width: 100,
+            align: 'center'
+          },
+      
+          {
+            title: '最高分数',
+            dataIndex: 'netTotalScoreMax',
+            key: 'netTotalScoreMax',
+            width: 100,
+            align: 'center'
+          },
+          {
+            title: '平均分',
+            dataIndex: 'netTotalScoreAvg',
+            key: 'netTotalScoreAvg',
+            width: 100,
+            align: 'center'
+          }
+        ],
+        other:[
+          {
+            title: '最低通过率',
+            dataIndex: 'evalRateMin',
+            key: 'evalRateMin',
+            width: 100,
+            align: 'center'
+          },
+      
+          {
+            title: '最高通过率',
+            dataIndex: 'evalRateMax',
+            key: 'evalRateMax',
+            width: 100,
+            align: 'center'
+          },
+          {
+            title: '平均通过率',
+            dataIndex: 'evalRateAvg',
+            key: 'evalRateAvg',
+            width: 100,
+            align: 'center'
+          }
+        ]
+      }
+    })
   ]
 
   useEffect(() => {

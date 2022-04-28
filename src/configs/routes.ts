@@ -272,6 +272,7 @@ const QcOneRouterNys = lazy(() =>
   import("src/modules/quality/QcOneRouter_nys")
 );
 const QcOneRouterWhyx = lazy(() => import("src/modules/quality/QcOneRouter_whyx"));
+const QcOneRouterGzsrm = lazy(() => import("src/modules/quality/QcOneRouter_Gzsrm"));
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const CommunityRoundsRouter = lazy(() =>
   import("src/modules/communityRounds/CommunityRoundsRouter")
@@ -845,6 +846,7 @@ const routes: RouteItem[] = [
   setLayout("/qcOneDghl", QcOneRouterDghl, layouts.MainLayout),
   setLayout("/qcOneNys", QcOneRouterNys, layouts.MainLayout),
   setLayout("/qcOneWhyx", QcOneRouterWhyx, layouts.MainLayout),
+  setLayout("/qcOneGzsrm", QcOneRouterGzsrm, layouts.MainLayout),
   setLayout("/qcTwo", QcTwoRouter, layouts.MainLayout),
   setLayout(
     "/communityRoundsRouter/:pannelName",

@@ -18,6 +18,7 @@ import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore, authStore } from "src/stores";
 import { observer } from "src/vendors/mobx-react-lite";
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
+import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检查小结";
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
@@ -158,7 +159,7 @@ export default observer(function QcTwoRouter(props: Props) {
           title: "护理质量检查小结",
           icon: <YDBG />,
           path: "/qcTwo/护理质量检查小结?qcLevel=2",
-          component: 护理质量检查小结,
+          component: Gzsrm_护理质量检查小结,
           keepAlive: true,
           // hide: !appStore.isDev,
           disabledKeepAlive:
