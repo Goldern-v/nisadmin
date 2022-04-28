@@ -9,23 +9,23 @@ export interface IQcGradeParams {
   endDate?: string
   order?: string
 }
-export interface IQcGradeOutput extends Record<string,any> {
-  wardCode: string	
-  wardName: string	
-  nurseQuality: number	
-  nursingUnit: number	
-  criticallyPatient: number	
-  gradedNursing: number	
-  nursingDocument: number	
-  infectionManagement: number	
-  chargeNurse: number	
-  keyLink: number	
-  qualitySpecialized: number	
-  clinicalReality: number	
-  teachingInspection: number	
-  nNursingSkill: number	
-  firstAidCooperation: number	
-  satisfaction: number	
+export interface IQcGradeOutput extends Record<string, any> {
+  wardCode: string
+  wardName: string
+  nurseQuality: number
+  nursingUnit: number
+  criticallyPatient: number
+  gradedNursing: number
+  nursingDocument: number
+  infectionManagement: number
+  chargeNurse: number
+  keyLink: number
+  qualitySpecialized: number
+  clinicalReality: number
+  teachingInspection: number
+  nNursingSkill: number
+  firstAidCooperation: number
+  satisfaction: number
   average: number
 }
 
@@ -70,6 +70,10 @@ class QcFormGzsrmService extends BaseApiService {
   public rectificationResult(query: {}) {
     return this.post('/qcPdca/save/rectificationResult', query)
   }
+  /**护理质量检查小结 贵州市人民医院*/
+  public countTemplateDetail(params: any) {
+    return this.post(`/qcCount/countTemplateDetail`, params)
+  }
   /**
    * 获取三级质控平均分统计列表
    * params wardCode	科室编号
@@ -77,7 +81,7 @@ class QcFormGzsrmService extends BaseApiService {
    * endDate	2021-11-11
    * order	排序 1升序 -1倒叙
    */
-   public async getQcGradeList(params: IQcGradeParams) {
+  public async getQcGradeList(params: IQcGradeParams) {
     return this.post(`/qcGradeCount/countResult`, params)
   }
   /**
@@ -87,7 +91,11 @@ class QcFormGzsrmService extends BaseApiService {
    */
   public async exportCountResult(params: IQcGradeParams) {
     return this.post('/qcGradeCount/exportCountResult', params, { responseType: 'blob' })
-    .then(res => fileDownload(res))
+      .then(res => fileDownload(res))
+  }
+  /**护理质量检查小结导出 */
+  public countDetailExport(params: any) {
+    return this.post(`/qcCount/countTemplateResult/export`, params, { responseType: 'blob' })
   }
 }
 

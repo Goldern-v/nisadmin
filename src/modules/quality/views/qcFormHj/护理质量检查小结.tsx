@@ -94,12 +94,12 @@ export default observer(function 护理质量检查小结() {
         </div>
       }
     },
-    {
-      title: ['gzsrm'].includes(appStore.HOSPITAL_ID)?'质量结果':'通过率(% )',
-      dataIndex: 'evalRate',
-      width: 80,
-      align: 'center'
-    },
+      {
+        title: '通过率(% )',
+        dataIndex: 'evalRate',
+        width: 80,
+        align: 'center'
+      },
     {
       title: '备注',
       dataIndex: 'remarkList',

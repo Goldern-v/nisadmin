@@ -26,6 +26,7 @@ import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结"
 
 // import 护理质量统计查询 from './views/qcFormNys/护理质量统计查询'
 import 护理质量检查小结Nys from "./views/qcFormNys/护理质量检查小结";
+import 护理质量检查小结Gzsrm from "./views/qcFormGzsrm/护理质量检查小结";
 import 护理质量巡查情况汇总表Nys from "./views/qcFormNys/护理质量巡查情况汇总表";
 
 // import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
@@ -66,6 +67,7 @@ export default function QcThreeRouter(props: Props) {
     component: appStore.hisMatch({
       map: {
         nys: 护理质量检查小结Nys,
+        gzsrm:护理质量检查小结Gzsrm,
         other: 护理质量检查小结,
       },
     }),
@@ -166,7 +168,6 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/qcNursingAnalysis",
     component: qcNursingAnalysis,
   };
-
 
   let extra_menu: any = appStore.hisMatch({
     map: {
