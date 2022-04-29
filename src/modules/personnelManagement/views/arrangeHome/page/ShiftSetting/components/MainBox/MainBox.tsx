@@ -170,12 +170,26 @@ export default function MainBox() {
           ""
         )
     },
-    {
-      title: "上班时间",
-      dataIndex: "workTime",
-      key: "workTime",
-      width: 200
-    },
+    ...appStore.hisMatch({
+      map:{
+        lcey:[
+          {
+            title: "上班时间",
+            dataIndex: dstTime()?"workTime":'winWorkTime',
+            key: dstTime()?"workTime":'winWorkTime',
+            width: 200
+          },
+        ],
+        other:[
+          {
+            title: "上班时间",
+            dataIndex: "workTime",
+            key: "workTime",
+            width: 200
+          },
+        ],
+      }
+    }),
     ...appStore.hisMatch({
       map:{
         lcey:[
