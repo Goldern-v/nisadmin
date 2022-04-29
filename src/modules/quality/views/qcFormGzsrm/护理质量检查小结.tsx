@@ -73,7 +73,7 @@ export default observer(function 护理质量检查小结() {
       title: '科室',
       dataIndex: 'wardName',
       width: 180,
-      align: 'left',
+      align: 'center',
       render:(value:any, row:any, index:number)=>{
         return {children:value,props:{colSpan:row.colSpan,rowSpan:row.rowSpan}}
       },
@@ -85,7 +85,7 @@ export default observer(function 护理质量检查小结() {
       title: '质控项目',
       dataIndex: 'qcName',
       width: 210,
-      align: 'left',
+      align: 'center',
       onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
@@ -94,7 +94,7 @@ export default observer(function 护理质量检查小结() {
       title: '平均分',
       dataIndex: 'averageScore',
       width: 80,
-      align: 'left',
+      align: 'center',
       onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
