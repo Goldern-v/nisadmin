@@ -74,10 +74,10 @@ export default observer(function 护理质量检查小结() {
       dataIndex: 'wardName',
       width: 180,
       align: 'left',
-      render:(value:any, row:any, index:any)=>{
+      render:(value:any, row:any, index:number)=>{
         return {children:value,props:{colSpan:row.colSpan,rowSpan:row.rowSpan}}
       },
-      onCell:(record:any,rowIndex:any)=>{
+      onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
     },
@@ -86,7 +86,7 @@ export default observer(function 护理质量检查小结() {
       dataIndex: 'qcName',
       width: 210,
       align: 'left',
-      onCell:(record:any,rowIndex:any)=>{
+      onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
     },
@@ -95,7 +95,7 @@ export default observer(function 护理质量检查小结() {
       dataIndex: 'averageScore',
       width: 80,
       align: 'left',
-      onCell:(record:any,rowIndex:any)=>{
+      onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
     },
@@ -111,7 +111,7 @@ export default observer(function 护理质量检查小结() {
           })}
         </div>
       },
-      onCell:(record:any,rowIndex:any)=>{
+      onCell:(record:any,rowIndex:number)=>{
         return {className:`${record.wardCode}`}
       }
     },
