@@ -264,13 +264,14 @@ switch (appStore.HOSPITAL_ID) {
     if (appStore.HOSPITAL_ID === "lcey") {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
-        setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h") : 0)
-        setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h") : 0)
+        console.log(workTime1, workTime2, workTime3, workTime4,'时间')
+        setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h",true) : 0)
+        setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
       }
       if (["workTime5", "workTime6", "workTime7", "workTime8"].includes(name)) {
         const { workTime5, workTime6, workTime7, workTime8 } = form.getFields();
-        setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h") : 0)
-        setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h") : 0)
+        setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h",true) : 0)
+        setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
       }
       // if (name === 'effectiveTime') {
       //   const { effectiveTime } = form.getFields();

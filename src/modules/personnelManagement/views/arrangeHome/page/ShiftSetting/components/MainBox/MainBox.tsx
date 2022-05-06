@@ -174,9 +174,15 @@ export default function MainBox() {
       map:{
         lcey:[
           {
-            title: "上班时间",
-            dataIndex: dstTime()?"workTime":'winWorkTime',
-            key: dstTime()?"workTime":'winWorkTime',
+            title: "夏上班时间",
+            dataIndex: "workTime",
+            key: "workTime",
+            width: 200
+          },
+          {
+            title: "冬上班时间",
+            dataIndex: 'winWorkTime',
+            key: 'winWorkTime',
             width: 200
           },
         ],
@@ -194,8 +200,14 @@ export default function MainBox() {
       map:{
         lcey:[
           {
-            title: "工时(小时）",
-            dataIndex: dstTime()?"effectiveTime":"winterEffectiveTime",
+            title: "夏工时(小时）",
+            dataIndex:"effectiveTime",
+            key: "effectiveTime",
+            width: 90
+          },
+          {
+            title: "冬工时(小时）",
+            dataIndex: "winterEffectiveTime",
             key: dstTime()?"effectiveTime":"winterEffectiveTime",
             width: 90
           },
