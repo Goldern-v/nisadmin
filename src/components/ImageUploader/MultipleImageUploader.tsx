@@ -168,7 +168,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
     return (
       <Wrapper>
         {/* {JSON.stringify(src)} */}
-        {!preview && src &&
+        {!preview && src &&Array.isArray(src)&&
           src.map((item: string, index: number) => (
             <Inner key={index} className="inner">
               <Icon type='close' title='删除图片' onClick={() => this.deletetImg(index)} />
