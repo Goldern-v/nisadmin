@@ -89,6 +89,13 @@ switch (appStore.HOSPITAL_ID) {
   const [time2, setTime2] = useState(0)
   const [time3, setTime3] = useState(0)
   const [time4, setTime4] = useState(0)
+  // 白小时
+  const [summer_daytime, setSummer_daytime] = useState(0)
+  const [summer_nightTime, setSummer_nightTime] = useState(0)
+  const [winter_daytime, setWinter_daytime] = useState(0)
+  const [winter_nightTime, setWinter_nightTime] = useState(0)
+
+
 
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
@@ -228,7 +235,7 @@ switch (appStore.HOSPITAL_ID) {
               status: true,
               rangeLimit: "",
               settingNightHour: "0",
-              settingMorningHour: "0",
+              settingMorningHour: appStore.HOSPITAL_ID == 'lcey' ? "8" : '0',
               coefficient: "",
               backgroundColor: "#ffffff",
               npProportion: "0"
@@ -238,7 +245,7 @@ switch (appStore.HOSPITAL_ID) {
               workTime7: moment("14:00", "HH:mm"),
               workTime8: moment("17:30", "HH:mm"),
               settingWinNightHour: '0',
-              settingWinMorningHour: '0'
+              settingWinMorningHour: '7.5'
             } : {}));
           }
         });
@@ -255,6 +262,15 @@ switch (appStore.HOSPITAL_ID) {
         if((time3 !== 0 && time4 !== 0)){
           from.setField("winterEffectiveTime", time3 + time4);
         }
+        // 聊城二院-冬夏白夜小时计算
+        if (time3 !== 0 && summer_daytime !== 0) {
+          from.setField("settingMorningHour", time3 + summer_daytime)
+        }
+        from.setField("settingNightHour", summer_nightTime)
+        if (time3 !== 0 && winter_daytime !== 0) {
+          from.setField("settingWinMorningHour", time3 + winter_daytime)
+        }
+        from.setField("settingWinNightHour", winter_nightTime)
       } 
     },[time1,time2,time3,time4])
 
@@ -264,14 +280,31 @@ switch (appStore.HOSPITAL_ID) {
     if (appStore.HOSPITAL_ID === "lcey") {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
-        console.log(workTime1, workTime2, workTime3, workTime4,'时间')
         setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h",true) : 0)
         setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
+
+        let summer_nightTime = workTime4 && workTime4.diff(moment("18:00", "HH:mm"), "h", true)
+        if (summer_nightTime >= 0) { 
+          setSummer_daytime(workTime3 ? moment("18:00", "HH:mm").diff(workTime3, "h", true) : 0)
+          setSummer_nightTime(workTime4 ? summer_nightTime : 0)
+        } else{
+          setSummer_daytime(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
+          setSummer_nightTime(0)
+        }
       }
       if (["workTime5", "workTime6", "workTime7", "workTime8"].includes(name)) {
         const { workTime5, workTime6, workTime7, workTime8 } = form.getFields();
         setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h",true) : 0)
         setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
+        
+        let winter_nightTime = workTime8 && workTime8.diff(moment("17:30", "HH:mm"), 'h', true)
+        if (winter_nightTime >= 0) {
+          setWinter_daytime(workTime7 ? moment("17:30", "HH:mm").diff(workTime7, "h", true) : 0)
+          setWinter_nightTime(workTime8 ? winter_nightTime : 0)
+        } else {
+          setWinter_daytime(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
+          setWinter_nightTime(0)
+        }
       }
       // if (name === 'effectiveTime') {
       //   const { effectiveTime } = form.getFields();
