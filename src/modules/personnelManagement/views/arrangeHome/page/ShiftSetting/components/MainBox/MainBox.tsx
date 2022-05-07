@@ -113,7 +113,6 @@ export default function MainBox() {
       dataIndex: "status",
       key: "是否排班",
       width: 100,
-      fixed: 'left',
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
@@ -136,14 +135,12 @@ export default function MainBox() {
       dataIndex: "name",
       key: "name",
       width: 150,
-      fixed: 'left',
     },
     {
       title: "类别",
       dataIndex: "shiftType",
       key: "shiftType",
       width: 100,
-      fixed: 'left',
     },
     {
       title: "颜色标记",
