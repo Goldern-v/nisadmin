@@ -32,6 +32,7 @@ export default function PersonnelManagementView() {
         return menuConfig_gzhd;
       case 'dghl':
       case 'fqfybjy':
+      case 'nfzxy':
         return menuConfig_dghl;
       case 'lcey':
         return menuConfig_lcey;
