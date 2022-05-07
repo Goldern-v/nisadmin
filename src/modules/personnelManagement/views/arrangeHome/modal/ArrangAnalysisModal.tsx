@@ -40,6 +40,43 @@ export default function ArrangAnalysisModal(props: Props) {
   const [dataSource, setDataSource]: any = useState([]);
   const [columns, setColumns]: any = useState([]);
 
+  /**
+   * 数组对象去重合并
+   * @param arr 数组对象
+   * @returns 
+   */
+  const removeDuplicate=(arr:any[])=> {
+    const newArr: any[] = [];
+    const arrKey: any[] = [];
+    arr.forEach((item) => {
+      let index = arrKey.indexOf(item.name);
+      if (index == -1) {
+        arrKey.push(item.name);
+        newArr.push(item);
+      } else {
+        newArr[index] = mergeObject(newArr[index], item);
+      }
+    });
+    return newArr;
+  }
+
+  /**
+   * 合并两个对象内容对象key的值也合并
+   * @param obj 
+   * @param target 
+   * @returns 
+   */
+  const mergeObject = (obj:any, target:any) =>{
+    let cloneObj = {};
+    Object.keys(obj).forEach((item) => {
+      if (item != "name" && item != "key") {
+        cloneObj[item] = obj[item].concat(target[item]);
+      } else {
+        cloneObj[item] = obj[item];
+      }
+    });
+    return cloneObj;
+  }
   useLayoutEffect(() => {
     if (visible) {
       setColumns([
@@ -61,7 +98,7 @@ export default function ArrangAnalysisModal(props: Props) {
                   let total: any = 0;
                   let keys = Object.keys(record);
                   for (let key of keys) {
-                    console.log(key, record[key], "aaa");
+                    // console.log(key, record[key], "aaa");
                     if (!(key == "name" || key === "key")) {
                       total += record[key].length;
                     }
@@ -82,7 +119,7 @@ export default function ArrangAnalysisModal(props: Props) {
             render(text: any, record: any, index: any) {
               const content = (
                 <div>
-                  {text.length
+                  {text?.length
                     ? text.map((item: any) => {
                       let userId = item.userId;
                       let [user, list] = sheetViewModal.getUser(userId);
@@ -99,7 +136,7 @@ export default function ArrangAnalysisModal(props: Props) {
                   content={content}
                   trigger="hover"
                 >
-                  <div style={{ cursor: "pointer" }}>{text.length}</div>
+                  <div style={{ cursor: "pointer" }}>{text?.length}</div>
                 </Popover>
               );
             }
@@ -132,32 +169,52 @@ export default function ArrangAnalysisModal(props: Props) {
       ]);
 
       let list = [];
+      let settingsList = [];
       let allCell = sheetViewModal.getAllCell(false);
       for (let i = 0; i < sheetViewModal.arrangeMenu.length; i++) {
         let obj: any = {
           name: sheetViewModal.arrangeMenu[i].name
         };
+        let settingsObj: any = {
+          name: sheetViewModal.arrangeMenu[i].name
+        }
         for (let d of sheetViewModal.dateList) {
           obj[d] = allCell.filter(
             (item: any) => item.workDate == d && item.rangeName == obj.name
           );
+          settingsObj[d] = allCell.filter((item: any) => {
+            return item.workDate == d && item.settings && item.settings[0].rangeName == settingsObj.name
+            }
+         );
         }
         if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
           // 没有被选择的班次不统计
           let flag = false
+          let flag1 = false
           Object.keys(obj).forEach((item, index) => {
             if ((item !== 'key' && item !== 'name') && obj[item].length) {
               flag = true
             }
           })
+          Object.keys(settingsObj).forEach((item, index) => {
+            if ((item !== 'key' && item !== 'name') && settingsObj[item].length) {
+              flag1 = true
+            }
+          })
           flag && list.push(obj);
+          flag1 && settingsList.push(settingsObj)
         } else {
           list.push(obj);
+          settingsList.push(settingsObj)
         }
 
       }
-      console.log(list)
-      setDataSource(list);
+      
+      // 追加排班也算进统计
+      // let mergeArr = list.concat(settingsList)
+      let mergeArr = [...list,...settingsList]
+      let newArr = removeDuplicate(mergeArr)
+      setDataSource(newArr);
     }
   }, [visible]);
 
