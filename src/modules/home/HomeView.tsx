@@ -16,6 +16,7 @@ import WardCodeEmpName from './components/WardCodeEmpName'
 import emitter from 'src/libs/ev'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import BedSituationJmfy from './components/BedSituationJmfy'
 // import FullPageLoading from 'src/components/loading/FullPageLoading'
 // export interface Props extends RouteComponentProps {}
 
@@ -42,7 +43,12 @@ export default observer(function HomeView() {
   const pannelAll = {
     bedSituation: {
       name: '床位情况',
-      component: <BedSituation />
+      component: appStore.hisMatch({
+        map: {
+          jmfy: <BedSituationJmfy/>,
+          other: <BedSituation />
+        }
+      })
     },
     missionToday: {
       name: '今日任务',
