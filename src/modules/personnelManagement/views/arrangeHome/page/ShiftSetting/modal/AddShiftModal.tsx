@@ -257,20 +257,20 @@ switch (appStore.HOSPITAL_ID) {
       // 如果是添加班次，就计算时间工时总和  如果是编辑，直接显示后端返回的值
       if(from&&props.clickType==='addForm') {
         if ((time1 !== 0 && time2 !== 0 )) {
-          from.setField("effectiveTime", time1 + time2);
+          from.setField("effectiveTime", (time1 + time2).toFixed(2));
         }
         if((time3 !== 0 && time4 !== 0)){
-          from.setField("winterEffectiveTime", time3 + time4);
+          from.setField("winterEffectiveTime", (time3 + time4).toFixed(2));
         }
         // 聊城二院-冬夏白夜小时计算
-        if (time3 !== 0 && summer_daytime !== 0) {
-          from.setField("settingMorningHour", time3 + summer_daytime)
+        if (time1 !== 0 && summer_daytime !== 0) {
+          from.setField("settingMorningHour", (time1 + summer_daytime).toFixed(2))
         }
-        from.setField("settingNightHour", summer_nightTime)
+        from.setField("settingNightHour", summer_nightTime.toFixed(2))
         if (time3 !== 0 && winter_daytime !== 0) {
-          from.setField("settingWinMorningHour", time3 + winter_daytime)
+          from.setField("settingWinMorningHour", (time3 + winter_daytime).toFixed(2))
         }
-        from.setField("settingWinNightHour", winter_nightTime)
+        from.setField("settingWinNightHour", winter_nightTime.toFixed(2))
       } 
     },[time1,time2,time3,time4])
 
@@ -349,6 +349,7 @@ switch (appStore.HOSPITAL_ID) {
       onOk={onSave}
       okText="保存"
       forceRender
+      maskClosable={appStore.HOSPITAL_ID === "lcey" ? false : true}
     >
       <Wrapper>
         <Spin spinning={modalLoading}>
