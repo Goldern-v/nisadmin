@@ -264,7 +264,7 @@ export default observer(function BaseInfo() {
             if (target) val = target.name
           }
           let fieldCode = mapCfgItem.fieldCode
-          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0].name
+          let name = clothingInfo.filter((item, index) => item.type == fieldCode)[0]?.name
           // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]
 
