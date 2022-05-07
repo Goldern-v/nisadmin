@@ -50,16 +50,13 @@ export default function AduitModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
-      // props.tableData ? setTableData(props.tableData) : setTableData([])
       props.title ? setTitle(props.title) : setTitle('审核')
-      // console.log(props.fileData, 'props.fileDataprops.fileData')
       props.fileData ? setFileData(props.fileData) : setFileData([])
       setAgree('agree')
       setOpinion('')
       setSpinning(true)
       if (props.type === 'nurseWHInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
-
           setSpinning(false)
           let data = { ...res.data, ...res.data.maps }
           setResData(data)
@@ -101,7 +98,6 @@ export default function AduitModal(props: Props) {
       } else {
         /** 获取详情 */
         modalService.getByIdAudite(props.type, props.id, props.empNo).then((res) => {
-          console.log(props.type, 88865)
           setSpinning(false)
           let data = res.data
           setResData(data)
@@ -171,7 +167,6 @@ export default function AduitModal(props: Props) {
     } else if (agree === 'disagree') {
       agreeStatus = false
     }
-    console.log(props.allData, 113445)
     let postData = {
       id: props.id,
       empNo: props.allData?.empNo || props.allData?.commiterNo,
@@ -180,9 +175,6 @@ export default function AduitModal(props: Props) {
       flag: agreeStatus,
       detail: opinion
     }
-    // props.getTableData && props.getTableData()
-    // console.log(props.getTableData, '123213')
-    // onCancel()
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
       message.success('审核成功')
       emitter.emit('refreshNurseFileDeatilLeftMenu')

@@ -87,6 +87,13 @@ export default observer(function BaseInfo() {
                   ['执业证书' + (index + 1)]: item
                 }
               })
+              : []),
+            ...(hdryQuaimage
+              ? hdryQuaimage.map((item: any, index: number) => {
+                return {
+                  ['资格证书' + (index + 1)]: item
+                }
+              })
               : [])
           ],
           allData: info
