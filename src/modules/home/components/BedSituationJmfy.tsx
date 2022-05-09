@@ -99,13 +99,6 @@ export default observer(function BedSituation () {
         })
     
   }, [authStore.selectedDeptCode])
-  const scale = [
-    {
-      dataKey: 'percent',
-      min: 0,
-      formatter: '.0%'
-    }
-  ]
 
   return (
     <div>
