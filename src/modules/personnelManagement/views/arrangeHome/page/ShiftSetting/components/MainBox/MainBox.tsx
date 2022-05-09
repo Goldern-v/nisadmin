@@ -336,14 +336,14 @@ export default function MainBox() {
     },
     {
       title: "冬白小时数",
-      dataIndex: "settingWinNightHour",
-      key: "settingWinNightHour",
+      dataIndex: "settingWinMorningHour",
+      key: "settingWinMorningHour",
       width: '10%'
     },
     {
       title: "冬夜小时数",
-      dataIndex: "settingWinMorningHour",
-      key: "settingWinMorningHour",
+      dataIndex: "settingWinNightHour",
+      key: "settingWinNightHour",
       width:'10%'
     },
   ];
