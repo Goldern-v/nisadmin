@@ -86,10 +86,14 @@ const baseConfig: navConfigItem[] = [
     path: "/indicator"
   },
   {
-    name: "敏感指标登记本",
-    path: "/sensitiveRegister",
-    // hidden: !appStore.isDev
+    name: "病区登记本",
+    path: "/wardRegister",
   },
+  // {
+  //   name: "敏感指标登记本",
+  //   path: "/sensitiveRegister",
+  //   // hidden: !appStore.isDev
+  // },
   {
     name: "统计查询",
     path: "/statistic"
