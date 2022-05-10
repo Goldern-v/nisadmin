@@ -121,7 +121,6 @@ export default function AuditsTableDHSZ(props: Props) {
     nurseFilesService.auditeStatusNurseInDept(type, current, pageSize, searchText).then((res) => {
       setLoading(false)
       setTableData(res.data.list)
-      console.log(res.data.list, 'res.data.listres.data.list')
       setTotal(res.data.totalCount)
       setCurrent(res.data.pageIndex)
       setPageSize(res.data.pageSize)
