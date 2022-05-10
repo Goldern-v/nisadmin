@@ -420,7 +420,7 @@ class SheetViewModal {
     let list = this.getSelectCellList(true);
     this.sheetTableData.reduce((pre: any, item: any, index: any) => {
       if (item.groupName === this.groupName) {
-        item.settingDtos = list;
+        copyRowClick(item.settingDtos,list,false)
       } else {
         return item.groupName;
       }
