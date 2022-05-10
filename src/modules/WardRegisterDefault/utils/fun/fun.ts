@@ -726,12 +726,12 @@ export function getFun(context: any) {
     let selectedRows = dataSource
       .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
     
-    // 排除未签名的
+    // 排除已签名的
     let textArr: string[] = []
     let signItems = selectedRows.filter((item: any) => item[type])
     if (signItems.length > 0) {
       let idxArr = signItems.map((item: any) => dataSource.indexOf(item) + 1)
-      textArr.push(`第${idxArr.join('、')}条未签名`)
+      textArr.push(`第${idxArr.join('、')}条已签名`)
       Modal.warn({
         centered: true,
         title: '提示',
