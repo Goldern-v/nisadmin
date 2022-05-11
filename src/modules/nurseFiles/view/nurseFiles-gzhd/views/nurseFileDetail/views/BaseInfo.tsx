@@ -18,6 +18,7 @@ export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
+  let [hdryQuaimage, setHdryQuaimage]: [any, any] = useState([])
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
 
@@ -74,7 +75,7 @@ export default observer(function BaseInfo() {
             {
               职业证书截止日期: 'zyzsEffectiveUpDate',
               资格名称: 'qualificationName'
-            }
+            },
           ],
           fileData: [
             {
@@ -84,6 +85,13 @@ export default observer(function BaseInfo() {
               ? info.zyzsUrl.split(',').map((item: any, index: number) => {
                 return {
                   ['执业证书' + (index + 1)]: item
+                }
+              })
+              : []),
+            ...(hdryQuaimage
+              ? hdryQuaimage.map((item: any, index: number) => {
+                return {
+                  ['资格证书' + (index + 1)]: item
                 }
               })
               : [])
@@ -122,9 +130,12 @@ export default observer(function BaseInfo() {
 
     reqMethod(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
+      let imgList=data.maps.hdry_qua_cer_image?data.maps.hdry_qua_cer_image.split(','):[]
+      setHdryQuaimage(imgList)
       setInfo(data)
       setIdData(data.empNo)
       setId(data.id)
+      //表格信息
       setTableData([
         {
           性别: sexEnum[data.sex],
@@ -161,6 +172,10 @@ export default observer(function BaseInfo() {
         {
           职业证书截止日期: data.zyzsEffectiveUpDate,
           资格名称: data.qualificationName
+        },
+        {
+          工作年限: data.maps.hdry_working_year,
+          资格证书编号: data.maps.hdry_qua_cer_no
         }
       ])
     })
@@ -216,6 +231,16 @@ export default observer(function BaseInfo() {
           <div className='img-con'>
             {info.zyzsUrl ? (
               info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+            ) : (
+                <img src={require('../../../images/证件空态度.png')} alt='' />
+              )}
+          </div>
+        </ZyzsCon>
+        <ZyzsCon>
+          <span>资格证书：</span>
+          <div className='img-con'>
+            {hdryQuaimage ? (
+              hdryQuaimage.map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
             ) : (
                 <img src={require('../../../images/证件空态度.png')} alt='' />
               )}

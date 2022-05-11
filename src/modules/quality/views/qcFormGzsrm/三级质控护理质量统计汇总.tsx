@@ -148,6 +148,27 @@ export default observer(function(props) {
       order: "-1",
     };
   };
+  const handleDataMathFloot=(data:object)=>{
+    let key=['average',
+      'chargeNurse',
+      'clinicalReality',
+      'criticallyPatient',
+      'firstAidCooperation',
+      'gradedNursing',
+      'infectionManagement',
+      'keyLink',
+      'nNursingSkill',
+      'nurseQuality',
+      'nursingDocument',
+      'nursingUnit',
+      'qualitySpecialized',
+      'satisfaction',
+      'teachingInspection']
+      key.forEach((keyItem:string)=>{
+      data[keyItem]=Math.floor(data[keyItem] * 100) / 100 
+
+      })
+  }
   const { deptList } = authStore;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<IQcGradeOutput[]>([]);
@@ -156,7 +177,12 @@ export default observer(function(props) {
     try {
       setLoading(true);
       const res = await qcFormGzsrmService.getQcGradeList(params);
+      
+     res.data.map((item:object)=>{
+      handleDataMathFloot(item)
+      })
       setData(res.data || []);
+      
       setLoading(false);
     } catch (err) {
       setLoading(false);

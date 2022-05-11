@@ -16,7 +16,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditArticleModal from '../modal/EditArticleModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
-import { isSelf } from './BaseInfo'
+import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 
 export interface Props extends RouteComponentProps { }
@@ -144,7 +144,7 @@ export default observer(function Awards() {
   }, [])
 
   return (
-    <BaseLayout title='文章' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='文章' btnList={isSelf()||editFlag() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={260} surplusWidth={250} type={['spaceRow']} />
       <editArticleModal.Component getTableData={getTableData} />
     </BaseLayout>

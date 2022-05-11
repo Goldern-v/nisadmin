@@ -80,23 +80,23 @@ export default observer(function LeftMenu(props: Props) {
         } else {
           return (
             <Menu.Item key={item.path}>
-              <span>
-                {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
-                <span title={item.title}>{item.title}</span>
-                {item.addIcon && (
-                  <AddIcon
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      traineeShiftModal.isOkBtn = true;
-                    }}
-                  >
-                    +
-                  </AddIcon>
-                )}
-                <span className="selected-arrow">
-                  <img src={require("./images/菜单选中右箭头.png")} alt="" />
-                </span>
-              </span>
+              <MenuItemCon className="menu-item" textColor={item?.custom?.textColor ? item.custom.textColor : ''}>
+                  {item.icon && <MenuIcon className="menu-icon">{item.icon}</MenuIcon>}
+                  <span title={item.title}>{item.title}</span>
+                  {item.addIcon && (
+                    <AddIcon
+                      onClick={(e: any) => {
+                        e.stopPropagation();
+                        traineeShiftModal.isOkBtn = true;
+                      }}
+                    >
+                      +
+                    </AddIcon>
+                  )}
+                  <span className="selected-arrow">
+                    <img src={require("./images/菜单选中右箭头.png")} alt="" />
+                  </span>
+              </MenuItemCon>
             </Menu.Item>
           );
         }
@@ -274,6 +274,9 @@ const Wrapper = styled.div`
         path {
           fill: ${active_text_color};
         }
+        .menu-item {
+          color: ${active_text_color} !important;
+        }
       }
     }
 
@@ -384,3 +387,16 @@ const AddIcon = styled.div`
   margin: auto 0;
   right: 45px;
 `;
+const MenuItemCon = styled.div<{textColor: string}>`
+  ${(props) => {
+    if (props.textColor) {
+      return `
+        color: ${props.textColor};
+        .menu-icon svg path {
+          fill: ${props.textColor};
+        }
+      `
+    }
+    return ''
+  }}
+`

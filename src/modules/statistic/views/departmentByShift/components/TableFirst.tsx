@@ -10,17 +10,23 @@ export interface Props {
   filterObj: any,
   hourMap?: {},
   morningMap?: {},
-  nightMap?: {}
+  nightMap?: {},
+  statusRadio?: String,
+  byHours?: any
 }
 
 export default function BedSituation(props: Props) {
-  const { tableData, filterObj, hourMap,morningMap,nightMap } = props
+  const { tableData, filterObj, hourMap, morningMap, nightMap, statusRadio, byHours } = props
   Object.assign(hourMap, {科室: '工时合计'})
   Object.assign(morningMap, {科室: '白班合计'})
   Object.assign(nightMap, {科室: '夜班合计'})
+  const byHourNightMap = {...nightMap, 科室: '合计'}
+  const byHourMorningMap = {...morningMap, 科室: '合计'}
   
   const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
+  
+  const {morningHourTableData, nightHourTableData} = byHours
 
   const getShiftClass = (() => {
     let colNameList = [] as any[]
@@ -53,15 +59,36 @@ export default function BedSituation(props: Props) {
         }
       })
     })
-    if(appStore.HOSPITAL_ID === 'lcey') visibleData.push(sumupRow, nightMap, morningMap, hourMap)
+    if(appStore.HOSPITAL_ID === 'lcey') {
+      if (statusRadio === '1') {
+        visibleData.push(sumupRow, nightMap, morningMap, hourMap)
+      } else {
+        visibleData.push(hourMap)
+      }
+    }
     else visibleData.push(sumupRow, hourMap)
     return visibleData
   }
-  // useEffect(() => {
-  // }, [])
+
+  const visibleTable_byHour = () => {
+    let visibleData_byHour = [...nightHourTableData.length > 0 ? nightHourTableData : vertialTable]
+    return visibleData_byHour
+  }
 
   // th DOM
-  const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
+  const getShiftClassDom = getShiftClass.map((item: any) => {
+    return <th key={item.toString()}>{item}</th>
+  })
+
+  const getShiftClassDom_byHour1 = getShiftClass.map((item: any) => {
+
+    return <th  colSpan={2} key={item.toString()}>{item}</th>
+    
+  })
+  const getShiftClassDom_byHour2 = getShiftClass.map((item: any) => {
+    let y = ['白小时', '夜小时']
+    return y.map((it: any) => <th key={it.toString()}>{it}</th>)
+  })
 
   // td DOM
   const getTdDom = visibleTable()
@@ -82,6 +109,7 @@ export default function BedSituation(props: Props) {
             return <td key={indexTd}>{itemTr[itemTd]}</td>
           }
         })}
+
         {visibleType ? (
           <td>{itemTr.合计}</td>
         ) : (
@@ -93,26 +121,100 @@ export default function BedSituation(props: Props) {
       </tr>
     ))
 
+  const getTdDom_byHour = visibleTable_byHour()
+  .map((itemTr: any, index: number) => {
+    return (
+      <tr key={index}>
+        {!(itemTr.科室 || '').match('合计') ? (
+          <React.Fragment>
+            <td>{itemTr.序列 || index + 1}</td>
+            <td>{itemTr.科室}</td>
+          </React.Fragment>
+        ) : (
+          <td colSpan={2}>{itemTr.科室}</td>
+        )}
+        {getShiftClass.map((itemTd: any, indexTd: number) => {
+          let arr = ['白小时', '夜小时']
+          return arr.map((item, i) => {
+            if (itemTd === '序列') {
+              return <td key={indexTd}>{index + 1}</td>
+            } else {
+              return (i%2) !== 0  ? <td key={indexTd}>{itemTr[itemTd]}</td> : <td key={indexTd + 1}>{morningHourTableData[index] && morningHourTableData[index][itemTd]}</td>
+            }
+          })
+        })}
+        {visibleType ? (
+          <td>{itemTr.合计}</td>
+        ) : (
+          <React.Fragment>
+            <td>{itemTr.合计}</td>
+            <td>{itemTr.合计1}</td>
+          </React.Fragment>
+        )}
+      </tr>
+    )
+  })
+  getTdDom_byHour.push(
+    <tr>
+      {/* <td>{visibleTable_byHour().length + 1}</td> */}
+      <td colSpan={2}>合计</td>
+      {getShiftClass.map((itemTd: any, indexTd: number) => {
+        let arr = ['白小时', '夜小时']
+        return arr.map((item, i) => (i%2) !== 0  ? <td key={indexTd}>{byHourNightMap[itemTd]}</td> : <td key={indexTd + 1}>{byHourMorningMap[itemTd]}</td>)
+      })}
+      {visibleType ? (
+        <td>{byHourNightMap['合计'] + byHourMorningMap['合计']}</td>
+      ) : (
+        <React.Fragment>
+          <td>{byHourNightMap['合计'] + byHourMorningMap['合计']}</td>
+          <td>{byHourNightMap['合计1'] + byHourMorningMap['合计1']}</td>
+        </React.Fragment>
+      )}
+    </tr>
+  )
+
   return (
     <Con>
       <div className='tableCon'>
         <div className='tableHead'>
           <table>
             <tbody>
-              <tr>
-                <th>序号</th>
-                <th>科室</th>
-                {getShiftClassDom}
-                {visibleType ? (
-                  <th>合计</th>
-                ) : (
-                  <React.Fragment>
-                    <th>班次大类合计</th>
-                    <th>自定义班次合计</th>
-                  </React.Fragment>
-                )}
-              </tr>
-              {getTdDom}
+            {statusRadio ==='1' ? <div>
+                <tr>
+                  <th>序号</th>
+                  <th className='administrative'>科室</th>
+                  {getShiftClassDom}
+                  {visibleType ? (
+                    <th>合计</th>
+                  ) : (
+                    <React.Fragment>
+                      <th>班次大类合计</th>
+                      <th>自定义班次合计</th>
+                    </React.Fragment>
+                  )}
+                </tr>
+                {getTdDom}
+              </div> :
+              <div>
+                <tr>
+                  <th style={{'verticalAlign': 'middle'}} rowSpan={2}>序号</th>
+                  <th style={{'verticalAlign': 'middle'}} className='administrative' rowSpan={2}>科室</th>
+                  {getShiftClassDom_byHour1}
+                  {visibleType ? (
+                    <th style={{'verticalAlign': 'middle'}} rowSpan={2}>合计</th>
+                  ) : (
+                    <React.Fragment>
+                      <th>班次大类合计</th>
+                      <th>自定义班次合计</th>
+                    </React.Fragment>
+                  )}
+                </tr>
+                <tr>
+                  {getShiftClassDom_byHour2}
+                </tr>
+
+                {getTdDom_byHour}
+              </div>}
             </tbody>
           </table>
         </div>
@@ -179,7 +281,7 @@ const Con = styled.div`
           box-sizing: border-box;
           min-width: 60px;
         }
-        th:nth-of-type(2) {
+        th.administrative {
           box-sizing: border-box;
           min-width: 150px;
         }

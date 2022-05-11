@@ -16,7 +16,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditMonographModal from '../modal/EditMonographModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
-import { isSelf } from './BaseInfo'
+import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function Monograph() {
@@ -110,7 +110,7 @@ export default observer(function Monograph() {
   }, [])
 
   return (
-    <BaseLayout title='专著' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='专著' btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editMonographModal.Component getTableData={getTableData} />
     </BaseLayout>

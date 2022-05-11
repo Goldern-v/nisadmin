@@ -29,7 +29,6 @@ export default observer(function TopCon(props: any) {
   const handleCreate = () => {
     setFormCreateVisible(true);
   };
-
   const title = () => {
     let defaultTitle = `${numToChinese(qualityControlRecordVM.level)}级质控`;
     return appStore.hisMatch({
@@ -124,7 +123,7 @@ export default observer(function TopCon(props: any) {
         setQcCodeList([{ qcCode: "", qcName: "全部" }, ...res.data]);
     } catch (err) {}
   };
-  const isWhyx = ["whyx"].includes(appStore.HOSPITAL_ID);
+  const isWhyx = ["whyx",'gzsrm'].includes(appStore.HOSPITAL_ID);
   const qcCodeCon = useCallback(() => {
     if (isWhyx) {
       return (
@@ -225,23 +224,6 @@ export default observer(function TopCon(props: any) {
                 <Radio value={-5}>我已处理</Radio>
               </Radio.Group>
             </div>
-            // : qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2?//一级质控
-            // (
-            //   <div className='radio-con'>
-            //     <Radio.Group
-            //       name='radiogroup'
-            //       value={qualityControlRecordVM.readWay}
-            //       onChange={(e) => {
-            //         qualityControlRecordVM.readWay = e.target.value
-            //         props.refreshData()
-            //       }}
-            //     >
-            //       <Radio value={1}>按科室查看</Radio>
-            //       <Radio value={2}>按质控组查看</Radio>
-            //     </Radio.Group>
-            //   </div>
-            // )
-            // :''
           ),
           whyx: "",
           default: qualityControlRecordVM.formSelectList.length >= 1 &&

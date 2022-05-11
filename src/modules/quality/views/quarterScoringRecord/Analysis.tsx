@@ -139,6 +139,7 @@ export default observer(function Analysis() {
         return (
           <DoCon>
             <span onClick={() => handleReview(record)}>查看</span>
+            <span onClick={() => hanleDelect(record)}>删除</span>
           </DoCon>
         )
       }
@@ -180,6 +181,15 @@ export default observer(function Analysis() {
 
     // console.log(record)
     history.push(`/checkWard/QuarterViewGZ?${qs.stringify(obj)}`)
+  }
+  const hanleDelect = (record: any) => {
+    console.log(record)
+    api.wardRoundRateDelete(record.id).then((res)=>{
+      message.success('删除成功！', () => {
+        getTableData()
+      })
+    }).catch(err => console.log(err))
+    
   }
 
   const handleSearch = () => {
@@ -280,7 +290,7 @@ export default observer(function Analysis() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>护长季度查房报告分析</PageTitle>
+          <PageTitle>护{['gzsrm'].includes(appStore.HOSPITAL_ID) ? '士' : ''}长季度查房报告分析</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

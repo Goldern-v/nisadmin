@@ -16,7 +16,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
-import { isSelf } from './BaseInfo'
+import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
@@ -161,7 +161,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='参与科研课题' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='参与科研课题' btnList={isSelf() || editFlag()? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editJoinScientificModal.Component getTableData={getTableData} />
     </BaseLayout>

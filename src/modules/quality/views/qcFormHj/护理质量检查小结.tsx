@@ -94,12 +94,12 @@ export default observer(function 护理质量检查小结() {
         </div>
       }
     },
-    {
-      title: '通过率(% )',
-      dataIndex: 'evalRate',
-      width: 80,
-      align: 'center'
-    },
+      {
+        title: '通过率(% )',
+        dataIndex: 'evalRate',
+        width: 80,
+        align: 'center'
+      },
     {
       title: '备注',
       dataIndex: 'remarkList',
@@ -134,7 +134,6 @@ export default observer(function 护理质量检查小结() {
       .then(res => {
         setLoading(false)
         if (res.data) {
-
           setTableData(res.data.wardDetailList || [])
 
           setChartData(res.data.itemCountList || [])

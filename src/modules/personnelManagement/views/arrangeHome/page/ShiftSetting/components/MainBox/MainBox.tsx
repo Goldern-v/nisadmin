@@ -17,7 +17,9 @@ import createModal from "src/libs/createModal";
 import AddShiftModal from "../../modal/AddShiftModal";
 import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
 import { Icon } from "src/vendors/antd";
+import moment from 'moment'
 import PostScoreCell from "../../../../components/arrangeSheet/postScoreCell";
+import { overflow } from "html2canvas/dist/types/css/property-descriptors/overflow";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
@@ -49,6 +51,7 @@ let colorLumpMap: any = {
   gray: '灰色', //#999999
   white: '白色' //#ffffff
 }
+
 export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
@@ -72,6 +75,15 @@ export default function MainBox() {
     }),
   );
 
+
+  const dstTime = ():boolean => {
+    const nowTime=moment().format('YYYY-MM-D HH:mm:ss')
+    const year=moment().year()
+    const dstTimeStart=moment(`${year}-05-01`)
+    const dstTimeEnd=moment(`${year}-09-30`)
+    return moment(nowTime).isBetween(dstTimeStart,dstTimeEnd)
+    
+  }
   const handleSwitchClick = (checked: boolean) => {
     const newArr = shiftList.map((item: any) => {
       item.status = checked
@@ -81,12 +93,13 @@ export default function MainBox() {
     setSelectAll(checked)
   }
 
-  const columns = [
+  const columns = appStore.HOSPITAL_ID !== "lcey" ? 
+  [
     {
       title: "序号",
       dataIndex: "index",
       key: "index",
-      width: 60,
+      width: 50,
       render: (text: string, record: any, index: any) => index + 1
     },
     {
@@ -94,15 +107,6 @@ export default function MainBox() {
         return (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span>列入排班</span>
-            {
-              appStore.HOSPITAL_ID === 'jmfy' &&
-              <Switch
-                size="small"
-                defaultChecked={selectAll}
-                style={{ marginLeft: '5px' }}
-                onClick={handleSwitchClick}
-              />
-            }
           </div>
         )
       },
@@ -130,13 +134,13 @@ export default function MainBox() {
       title: "班次名称",
       dataIndex: "name",
       key: "name",
-      width: 150
+      width: 150,
     },
     {
       title: "类别",
       dataIndex: "shiftType",
       key: "shiftType",
-      width: 100
+      width: 100,
     },
     {
       title: "颜色标记",
@@ -211,6 +215,7 @@ export default function MainBox() {
             }
           },
         ],
+
         other: []
       },
     }),
@@ -227,8 +232,121 @@ export default function MainBox() {
         other: []
       }
     }),
-  ];
+  ]:[
+    {
+      title: "序号",
+      dataIndex: "index",
+      key: "index",
+      width: '5%',
+      render: (text: string, record: any, index: any) => index + 1
+    },
+    {
+      title: () => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span>列入排班</span>
+          </div>
+        )
+      },
+      dataIndex: "status",
+      key: "是否排班",
+      width: '10%',
+      render: (text: any, record: any, index: any) =>
+        record.id ? (
+          <span>
+            <Switch
+              size="small"
+              onChange={(check: any) => {
+                record.status = check;
+                // console.log(record, userList, 'chekc')
+                setShiftList([...shiftList]);
+              }}
+              checked={text}
+            />
+          </span>
+        ) : (
+          ""
+        )
+    },
+    {
+      title: "班次名称",
+      dataIndex: "name",
+      key: "name",
+      width: '10%'
+    },
+    {
+      title: "类别",
+      dataIndex: "shiftType",
+      key: "shiftType",
+      width: '7%'
+    },
+    {
+      title: "颜色标记",
+      dataIndex: "nameColor",
+      key: "nameColor",
+      width: '10%',
+      render: (text: string, record: any) =>
+        text && text.length > 0 ? (
+          <span>
+            {
+              <Tag color={record.nameColor} key={text}>
+                {colorMapCN[text]}
+              </Tag>}
 
+          </span>
+        ) : (
+          ""
+        )
+    },
+    {
+      title: "夏上班时间",
+      dataIndex: "workTime",
+      key: "workTime",
+      width: '20%'
+    },
+    {
+      title: "夏工时(小时）",
+      dataIndex:"effectiveTime",
+      key: "effectiveTime",
+      width: '13%'
+    },
+    {
+      title: "夏白小时数",
+      dataIndex: "settingMorningHour",
+      key: "settingMorningHour",
+      width: '10%'
+    },
+    {
+      title: "夏夜小时数",
+      dataIndex: "settingNightHour",
+      key: "settingNightHour",
+      width: '10%'
+    },
+    {
+      title: "冬上班时间",
+      dataIndex: 'winWorkTime',
+      key: 'winWorkTime',
+      width: '20%'
+    },
+    {
+      title: "冬工时(小时）",
+      dataIndex: "winterEffectiveTime",
+      key: "winterEffectiveTime",
+      width:'13%'
+    },
+    {
+      title: "冬白小时数",
+      dataIndex: "settingWinMorningHour",
+      key: "settingWinMorningHour",
+      width: '10%'
+    },
+    {
+      title: "冬夜小时数",
+      dataIndex: "settingWinNightHour",
+      key: "settingWinNightHour",
+      width:'10%'
+    },
+  ];
   // new:南医三护士长可以编辑排班设置
   let promise =
     (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb")
@@ -319,7 +437,7 @@ export default function MainBox() {
       columns.push({
         title: "操作",
         dataIndex: "title",
-        width: 100,
+        width: '10%',
         key: "title",
         render: (text: string, record: any) => {
           if (disableArrangeList.includes(record.name)) {
@@ -331,6 +449,7 @@ export default function MainBox() {
                   onClick={(e: any) => {
                     addShiftModal.show({
                       editData: record,
+                      clickType:"editForm",
                       // 添加字段type：区分医院和登陆者身份
                       type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
                       identity:
@@ -479,7 +598,6 @@ export default function MainBox() {
 
       if (res && res.data) {
         tableData = res.data;
-
         let rowKeys = new Array();
         tableData.map((oneObj: any, index: number) => {
           if (oneObj.status === true) {
@@ -499,8 +617,6 @@ export default function MainBox() {
           (allUser as any).push(oneUser);
           selectedRowsArray.push(oneUser);
         });
-
-        // genEmptyTable(allUser)
         setShiftList(tableData);
       }
     });
@@ -517,13 +633,14 @@ export default function MainBox() {
   };
   return (
     <Wrapper>
+      <div>
       <BaseTable
         bordered
         size="small"
         columns={columns}
         dataSource={shiftList}
         pagination={false}
-        surplusHeight={232}
+        surplusHeight={272}
         fixedFooter={true}
         moveRow={moveRow}
         type={["diagRow", "spaceRow"]}
@@ -538,16 +655,17 @@ export default function MainBox() {
           </span>
         )}
       />
-      {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
+      </div>
+
       <addShiftModal.Component />
+
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
-  /* background: #eee; */
+  /* background:green; */
   /* height: 100%; */
   /* padding: 0 20px 20px 20px; */
-  width: 100%;
   table,
   tr,
   td,
@@ -555,8 +673,12 @@ const Wrapper = styled.div`
   th div {
     text-align: center !important;
     padding: 3px !important;
-  }
+    
 
+  }
+  table {
+    width:1300px;
+  }
   /* 表格前端打勾样式 */
   .ant-table-thead > tr > th.ant-table-selection-column,
   .ant-table-tbody > tr > td.ant-table-selection-column,

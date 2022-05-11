@@ -27,7 +27,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
-  const [searchText, setSearchText] = useState(false)
+  const [searchText, setSearchText] = useState('')
 
   const columns: any = [
     {
@@ -113,7 +113,6 @@ export default function AuditsTableDHSZ(props: Props) {
     nurseFilesService.auditeStatusNurseInDept(type, current, pageSize, searchText).then((res) => {
       setLoading(false)
       setTableData(res.data.list)
-      console.log(res.data.list, 'res.data.listres.data.list')
       setTotal(res.data.totalCount)
       setCurrent(res.data.pageIndex)
       setPageSize(res.data.pageSize)

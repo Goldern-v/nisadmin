@@ -5,10 +5,11 @@ import { ScrollBox } from 'src/components/common'
 export interface Props {
   filterObj?: any
   onFilterObjChange?: Function
+  statusRadio? : String
 }
 
 export default function BedSituation(props: Props) {
-  const { filterObj, onFilterObjChange } = props
+  const { filterObj, onFilterObjChange, statusRadio } = props
 
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
 
@@ -48,6 +49,7 @@ export default function BedSituation(props: Props) {
 
     onFilterObjChange && onFilterObjChange(newFilterObj)
   }
+  console.log(filterObj, 888)
 
   const filterList = () => {
     return Object.keys(filterObj).map((key: string) => (
@@ -74,12 +76,12 @@ export default function BedSituation(props: Props) {
       <RightChooseByShift>
         <div className='RightChooseByShiftHeader'>统计班次</div>
         <div className='RightChooseByShiftRadio'>
-          <Radio
+          {statusRadio === '1' &&<Radio
             checked={filterObj['shift_type']?.checked}
             onClick={() =>
               handleTypeChange('shift_type')}>
             按班次大类
-          </Radio>
+          </Radio>}
           <Radio
             checked={filterObj['range_name']?.checked}
             onClick={() =>

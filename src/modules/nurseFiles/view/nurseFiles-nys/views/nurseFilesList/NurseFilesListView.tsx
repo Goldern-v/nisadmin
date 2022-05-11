@@ -177,13 +177,12 @@ const columns: ColumnProps<any>[] = [
       return (
         <DoCon>
           <span onClick={() => onDoubleClick(row)}>查看</span>
-          {store.authStore.isDepartment && store.authStore.isRoleManage &&<span onClick={() => handleDelete(row)}>删除</span>}
+          {store.authStore.isRoleManage &&<span onClick={() => handleDelete(row)}>删除</span>}
         </DoCon>
       );
     }
   }
 ];
-
 const onDoubleClick = (record: any) => {
   store.appStore.history.push(
     `/nurseFileDetail/baseInfo?empNo=${record.empNo}`

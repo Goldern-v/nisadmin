@@ -32,6 +32,7 @@ export interface ItemConfigItem {
   setMsgMap?: Function,
   setDataMap?: Function,
   dataMap?: any,
+  customSign?: any[],
 }
 
 export function getFun(context: any) {
@@ -58,7 +59,8 @@ export function getFun(context: any) {
     setDataMap,
     setConfig,
     config,
-    dataMap
+    dataMap,
+    customSign,
   } = context;
 
   /** 初始化 */
@@ -619,12 +621,20 @@ export function getFun(context: any) {
       .then((res) => {
         let selectedRows = dataSource.filter((item: any) =>
           selectedRowKeys.indexOf(item.key) >= 0)
-
+        // 自定义签名不需要复制
+        let customSignObj: Record<string,any> = {}
+        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+          customSign.map((v:any) => {
+            customSignObj[v.itemCode] = ''
+          })
+        }
         let newRows = selectedRows.map((item: any) => {
           let newItem = JSON.parse(JSON.stringify(item))
           delete newItem.id
+
           return {
             ...newItem,
+            ...customSignObj,
             recordDate: moment().format('YYYY-MM-DD'),
             signerName: '',
             signerNo: '',
@@ -643,7 +653,7 @@ export function getFun(context: any) {
   }
 
   /**批量删除 */
-  const deleteSelectedRows = () => {
+  const deleteSelectedRows = ({beforeReqCB} = {beforeReqCB: () => {}} as Record<string,any>) => {
     if (selectedRowKeys.length <= 0) {
       message.warn('未勾选项目')
       return
@@ -653,10 +663,13 @@ export function getFun(context: any) {
     let restList = dataSource.filter((item: any) =>
       selectedRowKeys.indexOf(item.key) < 0)
 
-    let deleteIds = dataSource.filter((item: any) => {
+    let deleteLists = dataSource.filter((item: any) => {
       return selectedRowKeys.indexOf(item.key) >= 0 && item.id
-    }).map((item: any) => ({ id: item.id }))
-
+    })
+    let deleteIds = deleteLists.map((item: any) => ({ id: item.id }))
+    /**请求前的操作 */
+    if (beforeReqCB && beforeReqCB(deleteLists) === false) return 
+    
     globalModal
       .confirm("删除确认", "确定要删除吗？")
       .then((res: any) => {
@@ -703,6 +716,51 @@ export function getFun(context: any) {
         }
       }, timeout || 0)
   }
+  /**批量自定义签名 */
+  const handleBatchSign = (type: string) => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+    
+    let selectedRows = dataSource
+      .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+    
+    // 排除已签名的
+    let textArr: string[] = []
+    let signItems = selectedRows.filter((item: any) => item[type])
+    if (signItems.length > 0) {
+      let idxArr = signItems.map((item: any) => dataSource.indexOf(item) + 1)
+      textArr.push(`第${idxArr.join('、')}条已签名`)
+      Modal.warn({
+        centered: true,
+        title: '提示',
+        content: textArr.join(',')
+      })
+      return
+    }
+    
+    /**签名 */
+    globalModal
+      .confirm(`${type}批量签名确认`, `你确定${type}签名吗？`)
+      .then(async(res) => {
+        setPageLoading(true)
+        try {
+          const res1 = await wardRegisterDefaultService.saveAndSignAll(
+            registerCode,
+            selectedBlockId,
+            selectedRows.map((v: any) => ({ ...v, [type]: authStore.user?.empName }))
+          )
+          if (res1.code == '200') {
+            message.success('签名成功')
+            getPage()
+            setPageLoading(false)
+          }
+        } catch (e) {
+          setPageLoading(false)
+        }
+      })
+  }
 
   return {
     onInitData,
@@ -721,7 +779,8 @@ export function getFun(context: any) {
     handleCopyCreateRow,
     fixInputValue,
     deleteSelectedRows,
-    getMsgList
+    getMsgList,
+    handleBatchSign,
   };
 }
 /**获取当月最后一周的日期 */

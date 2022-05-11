@@ -115,7 +115,6 @@ export default observer(function BadEventReportSummary(props) {
     try {
       setLoading(true)
       const res = await badEventsNewService.getBeRegistrationSummaryYc(params)
-      console.log('test-res', res)
       if (res.code == 200) {
         setData(res.data)
       }

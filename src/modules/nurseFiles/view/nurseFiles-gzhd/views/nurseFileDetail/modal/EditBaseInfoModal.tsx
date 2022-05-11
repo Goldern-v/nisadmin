@@ -87,6 +87,8 @@ export default function EditWorkHistoryModal(props: Props) {
     //zyzsEffectiveUpDate
     value.zyzsEffectiveUpDate && (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
+    value.maps.hdry_qua_cer_image && (value.maps.hdry_qua_cer_image = value.maps.hdry_qua_cer_image.join(','))
+
     nurseFilesService.saveOrUpdate({ ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -99,6 +101,8 @@ export default function EditWorkHistoryModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
+    let mapList=data.maps
+    mapList.hdry_qua_cer_image=mapList.hdry_qua_cer_image ? mapList.hdry_qua_cer_image.split(',') : [],
       refForm!.current!.setFields({
         birthday: data.birthday ? moment(data.birthday) : null,
         empName: data.empName,
@@ -107,6 +111,7 @@ export default function EditWorkHistoryModal(props: Props) {
         job: data.job,
         nation: data.nation,
         age: data.age,
+        maps:mapList,
         nativePlace: data.nativePlace,
         highestEducation: data.highestEducation,
         zyzsNumber: data.zyzsNumber,
@@ -119,7 +124,7 @@ export default function EditWorkHistoryModal(props: Props) {
         newTitle: data.newTitle,
         goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
       })
-      // refForm.current.setField('unit', 123)
+
     }
   }, [visible])
 
@@ -260,6 +265,16 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
+          <Col span={12}>
+            <Form.Field label={`工作年限`} name='maps.hdry_working_year'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`资格证书编号`} name='maps.hdry_qua_cer_no'>
+              <Input />
+            </Form.Field>
+          </Col>
         </Row>
         <Row>
           <Col span={12}>
@@ -269,6 +284,12 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`添加护士执业证书`} name='zyzsUrl'>
+              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
+              <MultipleImageUploader text='添加图片' />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`添加资格证书`} name='maps.hdry_qua_cer_image'>
               {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader text='添加图片' />
             </Form.Field>

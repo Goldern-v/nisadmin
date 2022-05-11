@@ -100,7 +100,7 @@ export default observer(function Cell(props: Props) {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
             type: "text",
-            disabled: disableByName,
+            disabled:['whyx'].includes(appStore.HOSPITAL_ID) ?  false: disableByName,
             onClick: () => {
               editEffectiveTimeModal.show({
                 data: sheetViewModal.selectedCell,

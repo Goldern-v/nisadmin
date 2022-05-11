@@ -337,7 +337,7 @@ export default observer(function TraineeShift(props: Props) {
   // 保存轮科时间
   const saveAllRotateTimes = () => {
     let obj: any = {
-      sheetId: getId,
+      sheetId: traineeShiftModal.sheetId,
       rotateGroupList: tableList
     };
     traineeShiftApi

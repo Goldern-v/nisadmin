@@ -63,7 +63,7 @@ export default class TraineeShiftApi extends BaseApiService {
   // 查询全部实习生
   public async queryGraduateInternPageList(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternListWithGoupInfo`,
+      `/studyAndTrain/intern/deptRotationSchedule/queryGraduateInternListWithGoupYaXinInfo`,
       obj
     );
   }

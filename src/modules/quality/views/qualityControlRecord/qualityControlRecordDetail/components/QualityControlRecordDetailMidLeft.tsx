@@ -279,11 +279,21 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   currentHospitalId: qcMatchCode
                 })}
                 {/* <div>跟踪日期：{messageBoxData.followEvaluateDate}</div> */}
-                <div>
+                {/* <div>
                   通过率：
                   {messageBoxData.evalRate &&
                     messageBoxData.evalRate.toFixed(2) + "%"}
-                </div>
+                </div> */}
+                {appStore.hisMatch({
+                  map: {
+                    gzsrm: <span></span>,
+                    other: <div>
+                    通过率：
+                    {messageBoxData.evalRate &&
+                      messageBoxData.evalRate.toFixed(2) + "%"}
+                  </div> 
+                  },
+                })}
               </div>
         }
         

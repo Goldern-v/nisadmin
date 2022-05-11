@@ -32,29 +32,21 @@ export interface Props extends ModalComponentProps {
   editData?: any;
   type?: any; // 区分医院（吴敏）
   identity?: any; // 区分登陆者身份（吴敏）
+  clickType:string,
 }
+
+
+export default function AddShiftModal(props: Props) {
+  const [title, setTitle] = useState('添加班次');
+  const [shiftList, setShiftList] = useState([]);
+  const [colorList, setColorList] = useState([]);
+  const [backgroundColorList, setBackgroundColorList] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [tip, setTip] = useState(false);
 
 /** 设置规则 */
 let rules: Rules
-// appStore.HOSPITAL_ID == "hj"
-//   ? {
-//     name: (val) => !!val || "请填写班次名称",
-//     shiftType: (val) => !!val || "请填写班次类别",
-//     // workTime: val => !!val || "请填写上班时间",
-//     workTime1: (val) => !!val || "请填写上班开始时间",
-//     workTime2: (val) => !!val || "请填写上班结束时间",
-//     effectiveTime: (val) => !!val || "请填写标准工时",
-//     nameColor: (val) => !!val || "请填写颜色标记",
-//   }
-//   : {
-//     name: (val) => !!val || "请填写班次名称",
-//     shiftType: (val) => !!val || "请填写班次类别",
-//     // workTime: val => !!val || "请填写上班时间",
-//     workTime1: (val) => !!val || "请填写上班开始时间",
-//     workTime2: (val) => !!val || "请填写上班结束时间",
-//     effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
-//   };
-switch (appStore.HOSPITAL_ID) {
+switch (appStore.HOSPITAL_ID) {  
   case 'hj':
     rules = {
       name: (val) => !!val || "请填写班次名称",
@@ -65,17 +57,19 @@ switch (appStore.HOSPITAL_ID) {
       effectiveTime: (val) => !!val || "请填写标准工时",
       nameColor: (val) => !!val || "请填写颜色标记",
     }
+    break;
   case 'lcey':
     rules = {
       name: (val) => !!val || "请填写班次名称",
       shiftType: (val) => !!val || "请填写班次类别",
-      // workTime: val => !!val || "请填写上班时间",
       workTime1: (val) => !!val || "请填写上班开始时间",
       workTime2: (val) => !!val || "请填写上班结束时间",
       workTime5: (val) => !!val || "请填写上班开始时间",
       workTime6: (val) => !!val || "请填写上班结束时间",
       effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
+      winterEffectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
     };
+    break;
   default:
     rules = {
       name: (val) => !!val || "请填写班次名称",
@@ -85,15 +79,23 @@ switch (appStore.HOSPITAL_ID) {
       workTime2: (val) => !!val || "请填写上班结束时间",
       effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
     }
+    break;
+    
 }
 
-export default function AddShiftModal(props: Props) {
-  const [title, setTitle] = useState("添加班次");
-  const [shiftList, setShiftList] = useState([]);
-  const [colorList, setColorList] = useState([]);
-  const [backgroundColorList, setBackgroundColorList] = useState([]);
-  const [modalLoading, setModalLoading] = useState(false);
-  const [tip, setTip] = useState(false);
+
+  // 聊城二院-冬夏令 计算时间
+  const [time1, setTime1] = useState(0)
+  const [time2, setTime2] = useState(0)
+  const [time3, setTime3] = useState(0)
+  const [time4, setTime4] = useState(0)
+  // 白小时
+  const [summer_daytime, setSummer_daytime] = useState(0)
+  const [summer_nightTime, setSummer_nightTime] = useState(0)
+  const [winter_daytime, setWinter_daytime] = useState(0)
+  const [winter_nightTime, setWinter_nightTime] = useState(0)
+
+
 
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
@@ -103,8 +105,8 @@ export default function AddShiftModal(props: Props) {
     const [workTime1, workTime2] = (timeRange || "").split("-");
     const [workTime3, workTime4] = (timeRange2 || "").split("-");
     return {
-      workTime1: moment(workTime1, "HH:mm"),
-      workTime2: moment(workTime2, "HH:mm"),
+      workTime1: workTime1 ? moment(workTime1, "HH:mm") : undefined,
+      workTime2: workTime2 ? moment(workTime2, "HH:mm") : undefined,
       workTime3: workTime3 ? moment(workTime3, "HH:mm") : undefined,
       workTime4: workTime4 ? moment(workTime4, "HH:mm") : undefined,
     };
@@ -116,8 +118,8 @@ export default function AddShiftModal(props: Props) {
     const [workTime5, workTime6] = (timeRange || "").split("-");
     const [workTime7, workTime8] = (timeRange2 || "").split("-");
     return {
-      workTime5: moment(workTime5, "HH:mm"),
-      workTime6: moment(workTime6, "HH:mm"),
+      workTime5: workTime5 ? moment(workTime5, "HH:mm") : undefined,
+      workTime6: workTime6 ? moment(workTime6, "HH:mm") : undefined,
       workTime7: workTime7 ? moment(workTime7, "HH:mm") : undefined,
       workTime8: workTime8 ? moment(workTime8, "HH:mm") : undefined,
     };
@@ -184,9 +186,9 @@ export default function AddShiftModal(props: Props) {
   };
 
   useLayoutEffect(() => {
-    console.log(refForm.current, 9998)
     if (refForm.current && visible) refForm!.current!.clean();
     /** 如果是修改 */
+    if(props.clickType==='editForm')  setTitle('编辑班次')//同步更改弹窗标题
     if (refForm.current && visible) {
       setModalLoading(true);
       let from = refForm.current;
@@ -204,6 +206,7 @@ export default function AddShiftModal(props: Props) {
               // workTime: props.editData.workTime,
               ...parsingTime(props.editData.workTime),
               effectiveTime: props.editData.effectiveTime,
+              winterEffectiveTime: props.editData.winterEffectiveTime,
               nameColor: props.editData.nameColor,
               status: props.editData.status,
               rangeLimit: props.editData.rangeLimit,
@@ -227,11 +230,12 @@ export default function AddShiftModal(props: Props) {
               workTime3: moment("14:00", "HH:mm"),
               workTime4: moment("18:00", "HH:mm"),
               effectiveTime: "8",
+              winterEffectiveTime: '8',
               nameColor: appStore.HOSPITAL_ID == 'whyx' ? '#333333' : "",
               status: true,
               rangeLimit: "",
               settingNightHour: "0",
-              settingMorningHour: "0",
+              settingMorningHour: appStore.HOSPITAL_ID == 'lcey' ? "8" : '0',
               coefficient: "",
               backgroundColor: "#ffffff",
               npProportion: "0"
@@ -239,53 +243,74 @@ export default function AddShiftModal(props: Props) {
               workTime5: moment("8:00", "HH:mm"),
               workTime6: moment("12:00", "HH:mm"),
               workTime7: moment("14:00", "HH:mm"),
-              workTime8: moment("18:00", "HH:mm"),
+              workTime8: moment("17:30", "HH:mm"),
               settingWinNightHour: '0',
-              settingWinMorningHour: '0'
+              settingWinMorningHour: '7.5'
             } : {}));
           }
         });
     }
   }, [visible]);
-
-  // 聊城二院-冬夏令 计算时间
-  const [time1, setTime1] = useState(0)
-  const [time2, setTime2] = useState(0)
-  const [time3, setTime3] = useState(0)
-  const [time4, setTime4] = useState(0)
-
   if (appStore.HOSPITAL_ID === 'lcey') {
-    useLayoutEffect(() => {
-      if ((time1 !== 0 && time2 !== 0 && time3 !== 0 && time4 !== 0 && (time1 + time2 === time3 + time4))) {
-        setTip(false);
-        refForm.current && refForm.current.setField("effectiveTime", time1 + time2);
-      }
-      else {
-        setTip(true)
-        refForm.current && refForm.current.setField("effectiveTime", null);
-      }
-    }, [time1, time2, time3, time4]);
+    useLayoutEffect(()=>{
+      const from = refForm.current;
+      // 如果是添加班次，就计算时间工时总和  如果是编辑，直接显示后端返回的值
+      if(from&&props.clickType==='addForm') {
+        if ((time1 !== 0 && time2 !== 0 )) {
+          from.setField("effectiveTime", (time1 + time2).toFixed(2));
+        }
+        if((time3 !== 0 && time4 !== 0)){
+          from.setField("winterEffectiveTime", (time3 + time4).toFixed(2));
+        }
+        // 聊城二院-冬夏白夜小时计算
+        if (time1 !== 0 && summer_daytime !== 0) {
+          from.setField("settingMorningHour", (time1 + summer_daytime).toFixed(2))
+        }
+        from.setField("settingNightHour", summer_nightTime.toFixed(2))
+        if (time3 !== 0 && winter_daytime !== 0) {
+          from.setField("settingWinMorningHour", (time3 + winter_daytime).toFixed(2))
+        }
+        from.setField("settingWinNightHour", winter_nightTime.toFixed(2))
+      } 
+    },[time1,time2,time3,time4])
+
+      
   }
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    console.log(name, 7778)
     if (appStore.HOSPITAL_ID === "lcey") {
-
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
-        setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h") : 0)
-        setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h") : 0)
+        setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h",true) : 0)
+        setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
+
+        let summer_nightTime = workTime4 && workTime4.diff(moment("18:00", "HH:mm"), "h", true)
+        if (summer_nightTime >= 0) { 
+          setSummer_daytime(workTime3 ? moment("18:00", "HH:mm").diff(workTime3, "h", true) : 0)
+          setSummer_nightTime(workTime4 ? summer_nightTime : 0)
+        } else{
+          setSummer_daytime(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
+          setSummer_nightTime(0)
+        }
       }
       if (["workTime5", "workTime6", "workTime7", "workTime8"].includes(name)) {
         const { workTime5, workTime6, workTime7, workTime8 } = form.getFields();
-        setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h") : 0)
-        setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h") : 0)
+        setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h",true) : 0)
+        setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
+        
+        let winter_nightTime = workTime8 && workTime8.diff(moment("17:30", "HH:mm"), 'h', true)
+        if (winter_nightTime >= 0) {
+          setWinter_daytime(workTime7 ? moment("17:30", "HH:mm").diff(workTime7, "h", true) : 0)
+          setWinter_nightTime(workTime8 ? winter_nightTime : 0)
+        } else {
+          setWinter_daytime(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
+          setWinter_nightTime(0)
+        }
       }
-      if (name === 'effectiveTime') {
-        const { effectiveTime } = form.getFields();
-        console.log(effectiveTime, 678)
-        if (effectiveTime) setTip(false)
-        else setTip(true)
-      }
+      // if (name === 'effectiveTime') {
+      //   const { effectiveTime } = form.getFields();
+      //   if (effectiveTime) setTip(false)
+      //   else setTip(true)
+      // }
     }
     // 之前有的标准工时计算 现在有两个时间段不自动计算
     /*if (name === "workTime") {
@@ -324,6 +349,7 @@ export default function AddShiftModal(props: Props) {
       onOk={onSave}
       okText="保存"
       forceRender
+      maskClosable={appStore.HOSPITAL_ID === "lcey" ? false : true}
     >
       <Wrapper>
         <Spin spinning={modalLoading}>
@@ -397,7 +423,7 @@ export default function AddShiftModal(props: Props) {
                 </Form.Field>
               </Col>
               {appStore.HOSPITAL_ID == "lcey" &&
-                <div>
+                <React.Fragment>
                   <Col span={13}>
                     <Form.Field label={`冬令上班时间`} name="workTime5" required>
                       <TimePicker format={"HH:mm"} />
@@ -425,15 +451,45 @@ export default function AddShiftModal(props: Props) {
                       <TimePicker format={"HH:mm"} />
                     </Form.Field>
                   </Col>
-                  {tip && <Col span={24}>
+                  {/* {tip && <Col span={24}>
                     <div style={{ fontSize: "12px", margin: '-18px 0 0 120px', color: "red" }}>*注意：夏令时和冬令时上班时长不同，需求手动填写标准工时！</div>
-                  </Col>}
-                </div>}
-              <Col span={24}>
-                <Form.Field label={`标准工时`} name="effectiveTime" required>
+                  </Col>} */}
+                </React.Fragment>}
+              {
+                appStore.hisMatch({
+                  map: {
+                    lcey: <div>
+                      <Col span={24}>
+                        <Form.Field label={`夏标准工时`} name="effectiveTime" required>
+                          <Input />
+                        </Form.Field>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Field label={`冬标准工时`} name="winterEffectiveTime" required>
+                          <Input />
+                        </Form.Field>
+                      </Col>
+                    </div>,
+                    other: <div>
+                      <Col span={24}>
+                        <Form.Field label={`标准工时`} name="effectiveTime" required>
+                          <Input />
+                        </Form.Field>
+                      </Col>
+                    </div>
+                  }
+                })
+              }
+              {/* <Col span={24}>
+                <Form.Field label={`夏标准工时`} name="effectiveTime" required>
                   <Input />
                 </Form.Field>
               </Col>
+              <Col span={24}>
+                <Form.Field label={`冬标准工时`} name="winterEffectiveTime" required>
+                  <Input />
+                </Form.Field>
+              </Col> */}
               <Col span={24}>
                 <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令白工时' : `白工时`} name="settingMorningHour">
                   <Input />

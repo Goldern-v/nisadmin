@@ -33,10 +33,10 @@ export default function SignColumnRender(props: Props) {
   const { itemCode } = itemCfg
 
   const handleSign = () => {
-    if(!authStore.isRoleManage) {
-      message.error(`非护士长无法${props.record[itemCode] && '取消'}签名`)
-      return
-    }
+    // if(!authStore.isRoleManage) {
+    //   message.error(`非护士长无法${props.record[itemCode] && '取消'}签名`)
+    //   return
+    // }
     const confirmText: [string, string] = props.record[itemCode] ? [`${itemCode}签名取消`, `你确定取消${itemCode}签名吗？`] : [`${itemCode}签名确认`, `你确定${itemCode}签名吗？`]
     globalModal.confirm(...confirmText)
     .then(async(res: any) => {

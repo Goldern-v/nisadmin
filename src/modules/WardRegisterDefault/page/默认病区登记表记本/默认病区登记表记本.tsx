@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Button } from "antd";
+import React, { useState, useEffect, useMemo, useLayoutEffect, Fragment, useRef } from "react";
+import { Button, Modal } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -455,6 +455,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     return false;
   }
   //registerName
+  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -524,7 +525,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     //后端返回的自定义项目
     ...itemConfigList.map((item: any, index: number) => {
-      if (item.itemType == 'autograph' && ['whyx'].includes(appStore.HOSPITAL_ID)) {
+      if (item.itemType == 'autograph' && isWhyx) {
         return {
           title: item.itemCode,
           width: (15 * item.width || 50) + 8,
@@ -543,7 +544,7 @@ export default observer(function 敏感指标登记本(props: Props) {
               }
             }/>
           }
-  }
+        }
       }
       return {
         title: item.children ? (
@@ -715,7 +716,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           })),
       }
     }),
-    {
+    ...(isWhyx && !authStore.isAdmin ? [] : [{
       title: "操作",
       width: 50,
       className: "",
@@ -733,7 +734,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           </DoCon>
         );
       }
-    }
+    }])
   ];
 
   const handlePreview = (file: any) => {
@@ -755,6 +756,85 @@ export default observer(function 敏感指标登记本(props: Props) {
     setSelectedRowKeys(payload)
     // console.log(payload)
   }
+  /**自定义签名按钮配置 */ 
+  const [customSign,setCustomSign] = useState<any[]>([])
+  useEffect(() => {
+    setCustomSign(itemConfigList.filter((v: any) => v.itemType == 'autograph'))
+  }, [itemConfigList])
+
+  /**批量按钮 */
+  const SelectedBtnCon = observer(function(props: Record<string, any>) {
+    const {config,customSign} = props
+    return (<Fragment>
+      {
+        appStore.hisMatch({
+          map: {
+            'whyx': (
+              <Fragment>
+                {customSign.map((item: any) => (
+                  <Button
+                    key={item.itemCode}
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => {handleBatchSign(item.itemCode)}}>
+                      {item.itemCode}签名
+                  </Button>
+                ))}
+              </Fragment>
+            ),
+            'other': (
+              <Fragment>
+                {(config.signList || []).map((signItem: any) => (
+                  <Button
+                    key={signItem.fieldName}
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() =>
+                      handleAuditAll(signItem.title, signItem.fieldName === 'auditorName' ? 'audit' : 'sign')}>
+                    {signItem.title}签名
+                  </Button>
+                ))}
+              </Fragment>
+            )
+          }
+        })
+      }
+      
+      {isWhyx ? (
+        <Button
+          disabled={
+            (pageLoading ||
+            selectedRowKeys.length <= 0)
+          }
+          type="primary"
+          onClick={() => handleCopyCreateRow()}>
+          复制新增
+        </Button>):''}
+        <Button
+          disabled={
+            pageLoading ||
+            selectedRowKeys.length <= 0
+          } type="primary"
+          onClick={() => deleteSelectedRows(isWhyx ? {beforeReqCB: (arr: any) =>{
+            let index = arr.findIndex((v: any) => customSign.filter((v1: any) => v[v1.itemCode]).length > 0)
+            if (index > -1) {
+              Modal.warn({
+                centered: true,
+                title: '提示',
+                content: `第${index + 1}条已签名,不能删除`})
+              return false
+            }
+          }}: {})}>
+          删除
+        </Button>
+    </Fragment>)
+  })
 
   /** 公共函数 */
   const {
@@ -772,7 +852,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     handleAuditAll,
     fixInputValue,
     handleCopyCreateRow,
-    deleteSelectedRows
+    deleteSelectedRows,
+    handleBatchSign,
   } = getFun({
     registerCode,
     registerName,
@@ -792,7 +873,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     selectedRowKeys,
     setSelectedRowKeys,
     setConfig,
-    paramMap
+    paramMap,
+    customSign,
   });
 
   useEffect(() => {
@@ -808,16 +890,17 @@ export default observer(function 敏感指标登记本(props: Props) {
     selectedBlockId && throttler(getPage);
   }, [pageOptions, date, selectedBlockId, selectedRange]);
 
+  const pageHeaderRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
-    if (tableHead) {
-      setSurplusHeight(tableHead.offsetHeight + 180);
+    if (tableHead && pageHeaderRef?.current) {
+      setSurplusHeight(tableHead.offsetHeight + 140 + pageHeaderRef.current?.offsetHeight);
     }
   });
 
   return (
     <Container>
-      <PageHeader>
+      <NewPageHeader ref={pageHeaderRef}>
         {authStore.isAdmin && (
           <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
             修订
@@ -917,12 +1000,25 @@ export default observer(function 敏感指标登记本(props: Props) {
                 设置
               </Button>
             )}
-            {authStore.isNotANormalNurse && (
-              <Button onClick={onDelete}>删除</Button>
-            )}
+            {
+              appStore.hisMatch({
+                map: {
+                  whyx: authStore.isAdmin ? (
+                    <Button onClick={onDelete}>版本删除</Button>
+                  ) : '',
+                  other: authStore.isNotANormalNurse ? (
+                    <Button onClick={onDelete}>删除</Button>
+                  ) : '',
+                }
+              })
+            }
           </React.Fragment>
         )}
-      </PageHeader>
+        {
+          isWhyx &&
+          <SelectedBtnCon {...{config,customSign}}/>
+        }
+      </NewPageHeader>
       <TableCon>
         {selectedBlockId ? (
           <React.Fragment>
@@ -956,39 +1052,12 @@ export default observer(function 敏感指标登记本(props: Props) {
                 return ''
               }}
             />
-            <div className="selected-operate-con">
-              {(config?.signList || []).map((signItem: any) => (
-                <Button
-                  key={signItem.fieldName}
-                  disabled={
-                    pageLoading ||
-                    selectedRowKeys.length <= 0
-                  }
-                  type="primary"
-                  onClick={() =>
-                    handleAuditAll(signItem.title, signItem.fieldName === 'auditorName' ? 'audit' : 'sign')}>
-                  {signItem.title}签名
-                </Button>
-              ))}
-               {appStore.HOSPITAL_ID==='whyx'? (
-                  <Button
-                      disabled={
-                        (pageLoading ||
-                        selectedRowKeys.length <= 0)
-                      }
-                      type="primary"
-                      onClick={() => handleCopyCreateRow()}>
-                      复制新增
-                    </Button>):''}
-              <Button
-                disabled={
-                  pageLoading ||
-                  selectedRowKeys.length <= 0
-                } type="primary"
-                onClick={() => deleteSelectedRows()}>
-                删除
-              </Button>
-            </div>
+            {
+              !isWhyx &&
+              <div className="selected-operate-con">
+                <SelectedBtnCon {...{config,customSign}}/>
+              </div>
+            }
           </React.Fragment>
         ) : (
           <NullBox
@@ -1044,6 +1113,15 @@ const Container = styled(Wrapper)`
     color: orange !important;
   }
 `;
+const  NewPageHeader = styled(PageHeader)`
+height: auto;
+min-height: 50px;
+flex-wrap: wrap;
+justify-content: flex-end;
+padding-top: 5px;
+.ant-btn {
+  margin-bottom: 5px;
+}`;
 
 const LineCon = styled.div`
   width: 100%;

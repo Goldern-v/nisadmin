@@ -51,7 +51,6 @@ export default class NurseFilesService extends BaseApiService {
   // 1查找护士基本信息 个人
   public async nurseInformationSelf(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    console.log(this, "thisthis");
     return this.get(`/nurseInformation/getByEmpNo/${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;

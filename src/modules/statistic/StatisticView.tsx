@@ -91,7 +91,7 @@ export default function StatisticView() {
       component: NurseVacationByMonthView
     },
     { name: '护士节假日排班表', path: '/statistic/护士节假日排班表', component: NurseHolidayScheduleView },
-    { name: '科室排班统计（按班次）', path: '/statistic/科室排班统计（按班次）', component: DepartmentByShiftView },
+    { name: '科室排班统计（按班次/按工时）', path: '/statistic/科室排班统计（按班次/按工时）', component: DepartmentByShiftView },
     {
       name: '科室白班统计（按月份）',
       path: '/statistic/科室白班统计（按月份）',
@@ -148,6 +148,7 @@ export default function StatisticView() {
 
   let currentRoutePath = store.appStore.history.location.pathname
   let CurrentRoute = leftListPath.find((item) => item.path === currentRoutePath)
+  console.log(CurrentRoute, 9998)
   // let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
   return (
     <Con>

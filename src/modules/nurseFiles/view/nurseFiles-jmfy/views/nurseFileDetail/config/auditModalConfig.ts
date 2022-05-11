@@ -406,7 +406,6 @@ export function openAuditModal(title: string, row: any, getTableData: any) {
         })
       }
     case '轮科经历':
-      console.log('testOnly-1')
       return globalModal.auditModal.show({
         empNo: row.empNo,
         getTableData: getTableData,

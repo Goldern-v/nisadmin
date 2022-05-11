@@ -5,7 +5,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-import { Button, message, Select } from 'antd'
+import { Button, message, Radio, Select } from 'antd'
 import emitter from 'src/libs/ev'
 import { appStore } from "src/stores";
 import { fileDownload } from 'src/utils/file/file'
@@ -16,17 +16,22 @@ const { Option } = Select;
 export interface Props {
   onChange?: Function
   onExport?: Function
+  radioChange?: Function
   query?: any
 }
 
 export default function BedSituation(props: Props) {
-  const { query, onChange, onExport } = props
+  const { query, onChange, onExport, radioChange } = props
+  const [state, setState] = useState('1')
 
   // 查询
   function searchButtonClick() {
     onChange && onChange()
   }
-
+  const stateChange = (e: any) => {
+    radioChange && radioChange(e.target.value)
+    setState(e.target.value)
+  }
   const exportButtonClick = () => onExport && onExport()
 
   return (
@@ -50,6 +55,12 @@ export default function BedSituation(props: Props) {
           <Option value="winter">冬令时</Option>
         </Select>
       }
+      {appStore.HOSPITAL_ID === 'lcey' && 
+        <Radio.Group className='radio' value={state} onChange={stateChange}>
+          <Radio.Button value="1">按班次</Radio.Button>
+          <Radio.Button value="2">按工时</Radio.Button>
+        </Radio.Group>
+      }
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>
@@ -71,6 +82,9 @@ const Con = styled.div`
   padding-left: 14px;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  .radio{
+    margin-left: 20px;
+  }
 `
 const Spacing = styled.div`
   width: 20px;

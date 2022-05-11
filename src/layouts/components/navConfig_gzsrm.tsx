@@ -34,7 +34,7 @@ const baseConfig: navConfigItem[] = [
     children: [
       {
         name: "一级质控",
-        path: "/qcOneHj",
+        path: "/qcOneGzsrm",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
       {

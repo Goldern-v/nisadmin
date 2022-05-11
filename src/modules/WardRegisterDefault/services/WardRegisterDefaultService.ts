@@ -183,6 +183,10 @@ export default class WardRegisterDefaultService extends BaseApiService {
   public getMenu() {
     return this.get('menu/getMenuList/SYS_MENU_002')
   }
+  /**根据科室获取菜单 */
+  public getMenuByDeptCode() {
+    return this.get('qcRegisterBlock/getListByDept')
+  }
 }
 
 export const wardRegisterDefaultService = new WardRegisterDefaultService();

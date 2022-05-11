@@ -49,7 +49,6 @@ export default function AduitModal(props: Props) {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
       props.title ? setTitle(props.title) : setTitle('审核')
-      // console.log(props.fileData, 'props.fileDataprops.fileData')
       props.fileData ? setFileData(props.fileData) : setFileData([])
       setAgree('agree')
       setOpinion('')
@@ -89,7 +88,6 @@ export default function AduitModal(props: Props) {
 
             return newRow
           })
-
           setTableData(tableData)
 
           setAuditeListDtos(data.auditeListDtos)
@@ -100,7 +98,6 @@ export default function AduitModal(props: Props) {
           }
 
           setAuditStatus(data.auditedStatusName)
-
           setFileData([
             {
               个人头像: data.nearImageUrl
@@ -111,6 +108,13 @@ export default function AduitModal(props: Props) {
                   ['执业证书' + (index + 1)]: item
                 }
               })
+              : []),
+            ...(data.hdry_qua_cer_image
+              ? data.hdry_qua_cer_image.split(',').map((item: any, index: number) => {
+                return {
+                  ['资格证书' + (index + 1)]: item
+                }
+              })
               : [])
           ])
 
@@ -119,9 +123,10 @@ export default function AduitModal(props: Props) {
             return new Promise((resolve, reject) => {
               service.commonApiService.listNurseExpand('User')
                 .then(res => {
+                  //合并拓展项目，但是有些存在拓展项目是图片
                   resolve({
                     maps,
-                    mapsConfig: res.data,
+                    mapsConfig: res.data.filter((item:any)=>{return !item.fieldName.includes('图片')}),
                     tableData,
                   })
                 }, (e) => reject(e))
