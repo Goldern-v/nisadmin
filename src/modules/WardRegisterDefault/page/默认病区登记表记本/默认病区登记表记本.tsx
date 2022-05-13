@@ -525,7 +525,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     //后端返回的自定义项目
     ...itemConfigList.map((item: any, index: number) => {
-      if (item.itemType == 'autograph' && isWhyx) {
+      if (item.itemType.indexOf('autograph') == 0 && isWhyx) {
         return {
           title: item.itemCode,
           width: (15 * item.width || 50) + 8,
@@ -759,7 +759,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   /**自定义签名按钮配置 */ 
   const [customSign,setCustomSign] = useState<any[]>([])
   useEffect(() => {
-    setCustomSign(itemConfigList.filter((v: any) => v.itemType == 'autograph'))
+    setCustomSign(itemConfigList.filter((v: any) => v.itemType.indexOf('autograph') == 0))
   }, [itemConfigList])
 
   /**批量按钮 */
