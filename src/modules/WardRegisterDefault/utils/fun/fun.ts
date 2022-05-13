@@ -726,12 +726,19 @@ export function getFun(context: any) {
     let selectedRows = dataSource
       .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
     
+    const curItem = customSign.find((v:any) => v.itemCode == type)
+    const roleList = curItem?.itemType.split('-')[1] ? (curItem?.itemType.split('-')[1]).split(',') : []
+  
+    if (roleList.length > 0 && authStore.user) {
+      let flag = (authStore.user.roleManageCodeList || []).find((v:string) => roleList.indexOf(v)> -1)
+      if (!flag) return message.error(`权限不足，无法签名`)
+    }
     // 排除已签名的
     let textArr: string[] = []
     let signItems = selectedRows.filter((item: any) => item[type])
     if (signItems.length > 0) {
       let idxArr = signItems.map((item: any) => dataSource.indexOf(item) + 1)
-      textArr.push(`第${idxArr.join('、')}条已签名`)
+      textArr.push(`第${idxArr.join('、')}条已签名，请检查！`)
       Modal.warn({
         centered: true,
         title: '提示',
