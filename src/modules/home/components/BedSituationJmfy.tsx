@@ -63,7 +63,7 @@ export default observer(function BedSituation () {
         .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
     }
     if (!(authStore.selectedDeptCode && authStore.selectedDeptCode !== '8204')) return
-      HomeApi.bedInfo(postData)
+      HomeApi.bedInfoByJMFY(postData)
         .then(async (res: any) => {
   
           if (res) {

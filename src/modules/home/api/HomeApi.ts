@@ -69,6 +69,15 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData);
     return this.post(`/indexInfo/bedInfo`, trancePostData);
   }
+  public async bedInfoByJMFY(data: any) {
+    const postData = {
+      wardCode: data.wardCode, // string 必须参数 科室编码
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
+    };
+    let trancePostData = this.stringify(postData);
+    return this.post(`/indexInfo/bedInfoJMFY`, trancePostData);
+  }
 
   // 1.今日任务
   public async todayTask(data: any) {
