@@ -123,20 +123,20 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: "center"
   },
-  {
-    title: "执业证书编号",
-    dataIndex: "zyzsNumber",
-    key: "zyzsNumber",
-    width: 120,
-    align: "center"
-  },
-  {
-    title: "执业证书有效截止日期",
-    dataIndex: "zyzsEffectiveUpDate",
-    key: "zyzsEffectiveUpDate",
-    width: 120,
-    align: "center"
-  },
+  // {
+  //   title: "执业证书编号",
+  //   dataIndex: "zyzsNumber",
+  //   key: "zyzsNumber",
+  //   width: 120,
+  //   align: "center"
+  // },
+  // {
+  //   title: "执业证书有效截止日期",
+  //   dataIndex: "zyzsEffectiveUpDate",
+  //   key: "zyzsEffectiveUpDate",
+  //   width: 120,
+  //   align: "center"
+  // },
   {
     title: "来院工作时间",
     dataIndex: "goHospitalWorkDate",

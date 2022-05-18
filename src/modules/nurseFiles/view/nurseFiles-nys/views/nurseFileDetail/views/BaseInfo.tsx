@@ -76,10 +76,10 @@ export default observer(function BaseInfo() {
                   参加工作时间: `goWorkTime`,
                   最高学历: `highestEducation`
                 },
-                {
-                  // 护士执业证书编号: `zyzsNumber`,
-                  护士执业证书有效截止日期: `zyzsEffectiveUpDate`,
-                },
+                // {
+                //   护士执业证书编号: `zyzsNumber`,
+                //   护士执业证书有效截止日期: `zyzsEffectiveUpDate`,
+                // },
                 {
                   技术职称: `newTitle`,
                   身份证号: `cardNumber`,
@@ -102,7 +102,7 @@ export default observer(function BaseInfo() {
                 },
                 {
                   开始从事护理时间: "zyzsNursingPostDate",
-                  获取执业证书开始时间: "zyzsDate"
+                  // 获取执业证书开始时间: "zyzsDate"
                 }
               ],
               fileData: [
@@ -152,10 +152,10 @@ export default observer(function BaseInfo() {
           参加工作时间: data.goWorkTime,
           最高学历: data.highestEducation
         },
-        {
-          // 护士执业证书编号: data.zyzsNumber,
-          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
-        },
+        // {
+        //   护士执业证书编号: data.zyzsNumber,
+        //   护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+        // },
         {
           技术职称: data.newTitle,
           身份证号: data.cardNumber,
@@ -178,7 +178,7 @@ export default observer(function BaseInfo() {
         },
         {
           开始从事护理时间: data.zyzsNursingPostDate,
-          获取执业证书开始时间: data.zyzsDate
+          // 获取执业证书开始时间: data.zyzsDate
         }
       ]);
     });
