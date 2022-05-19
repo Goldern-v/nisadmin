@@ -37,6 +37,7 @@ import { navConfig as navConfig_fsxtSelf } from "./navConfig_fsxtSelf";
 import { navConfig as navConfig_sdlj } from "./navConfig_sdlj";
 import { navConfig as navConfig_sdljSelf } from "./navConfig_sdljSelf";
 import { navConfig as navConfig_lyrm } from "./navConfig_lyrm";
+import { navConfig as navConfig_gdtj } from "./navConfig_gdtj";
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -175,6 +176,8 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == "lyrm") {
       return navConfig_lyrm;
       //return navConfig_sdljSelf
+    } else if (appStore.HOSPITAL_ID == 'gdtj') {
+      return navConfig_gdtj(appStore, authStore)
     }
     return navConfig;
   })();

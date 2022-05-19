@@ -80,6 +80,10 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-foshanxingtan'
   }
 
+  // 广东同江
+  if (process.env.npm_lifecycle_event.indexOf('9892') >= 0) {
+    folderSrc = '/crdata/webProject/manage-tongjiang'
+  }
   
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {

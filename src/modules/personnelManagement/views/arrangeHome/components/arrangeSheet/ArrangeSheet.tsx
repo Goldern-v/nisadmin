@@ -62,6 +62,7 @@ export default observer(function ArrangeSheet(props: Props) {
       fsxt: () => EditVacationCountModal_wh,
       sdlj: () => EditVacationCountModal_wh,
       whyx: () => EditVacationCountModal_wh,
+      gdtj: () => EditVacationCountModal_wh,
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
@@ -484,7 +485,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -734,6 +735,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 fssdy: () => 7,
                 whyx: () => 6,
                 sdlj: () => 6,
+                gdtj: () => 6,
               })) *
             70 +
             widthNys +

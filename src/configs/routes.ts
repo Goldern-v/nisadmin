@@ -1007,7 +1007,7 @@ const routes: RouteItem[] = [
   },
   ...appStore.hisMatch({
     map: {
-      "gzsrm,lyrm": [
+      "gzsrm,lyrm,gdtj": [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"
@@ -1031,11 +1031,24 @@ const routes: RouteItem[] = [
   //   path: '/quality',
   //   redirect: '/quality/qualityControlRecord/3'
   // },
+  ...appStore.hisMatch({
+    map: {
+      "gdtj": [
+        {
+          path: "/",
+          redirect: "/setting"
+        }
+      ],
+      other: [
+        {
+          path: "/",
+          redirect: "/home"
+        }
+      ],
+    },
+    vague: true,
+  }),
 
-  {
-    path: "/",
-    redirect: "/home"
-  }
 ];
 
 export default routes;

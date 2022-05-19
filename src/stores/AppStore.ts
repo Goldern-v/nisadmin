@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -127,7 +127,9 @@ export default class AppStore {
       case "lyrm":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
         break;
-
+      case "gdtj":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.jpg`);
+        break;
       default:
         break;
     }

@@ -115,6 +115,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
       return "https://info.cr-health.com:20203"; // 武汉测试
 
+    // 广东同江
+    case "gdtj":
+    return "http://192.168.1.54:9892";
+    
     default:
       return "http://192.168.1.54:9866";
   }
