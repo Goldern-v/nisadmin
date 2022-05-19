@@ -188,7 +188,7 @@ export default function StatisticView() {
       setMorningHourTableData([])
       setNightHourListTableData([])
     }
-    // 注释的代码是 按小时的时候 屏蔽掉-自定义班次
+    // 注释的代码是 按小时的时候 屏蔽掉-按班次大类
     // if (data === '1') {
     //   setFilterObj({
     //     ['shift_type']: {
