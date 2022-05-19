@@ -148,7 +148,7 @@ export default function StatisticView() {
 
   let currentRoutePath = store.appStore.history.location.pathname
   let CurrentRoute = leftListPath.find((item) => item.path === currentRoutePath)
-  console.log(CurrentRoute, 9998)
+
   // let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
   return (
     <Con>
