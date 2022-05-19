@@ -69,7 +69,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 60px;
     background: #fff;
-    padding: 0px 20px; 15px;
+    padding: 0px 20px;
     border-bottom: 1px solid #ddd;
 
     .title{

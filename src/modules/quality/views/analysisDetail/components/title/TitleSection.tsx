@@ -1,0 +1,43 @@
+import styled from 'styled-components'
+import React, { useState, useEffect } from 'react'
+
+import { observer } from 'src/vendors/mobx-react-lite'
+import EditButton from 'src/modules/quality/components/EditButton'
+
+export interface Props {
+  sectionId: string
+  sectionTitle?: string | undefined
+  modalTitle?: string | undefined,
+  modal: any
+}
+
+export default observer(function TitleSection(props: Props) {
+  let { sectionId, sectionTitle } = props
+  let data = props.modal.getSectionData(sectionId)
+  let text = data ? data.text : ''
+  useEffect(() => {})
+  return (
+    <Wrapper>
+      <div className='title'>{text}</div>
+      <EditButton border={true} onClick={() => props.modal.openEditModal(sectionId)}>
+        编辑
+      </EditButton>
+    </Wrapper>
+  )
+})
+const Wrapper = styled.div`
+  min-height: 60px;
+  padding: 40px 30px 20px;
+  position: relative;
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 60px;
+  }
+  button {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+  }
+`
