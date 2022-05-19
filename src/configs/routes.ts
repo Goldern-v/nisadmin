@@ -517,6 +517,7 @@ const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/Sing
 // 移动端界面-患者随访问卷首页
 import FollowUpIndex from "src/modules/mobilePage/patientFollowUp/FollowUpIndex"
 import FollowUpDetail from "src/modules/mobilePage/patientFollowUp/FollowUpDetail"
+import AnalysisDetail from "src/modules/quality/views/analysisDetail/AnalysisDetail";
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -789,6 +790,12 @@ const routes: RouteItem[] = [
   setLayout(
     "/qualityAnalysisReport",
     QualityAnalysisReportView,
+    layouts.MainLayout
+  ),
+  // 一二级质控问题汇总详情
+  setLayout(
+    "/analysisDetail",
+    AnalysisDetail,
     layouts.MainLayout
   ),
   setLayout(

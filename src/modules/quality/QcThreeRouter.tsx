@@ -40,6 +40,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 import AdministrativeWard from "./views/administrativeWard";
 import SatisfactionAnalysis from "./views/satisfactionAnalysis";
 import qcNursingAnalysis from "./views/qcNursingAnalysis";
+import qcThreeResult from "./views/qcThreeResult/index"
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
@@ -168,6 +169,12 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/qcNursingAnalysis",
     component: qcNursingAnalysis,
   };
+  const route_qcThreeResult = {
+    title: "三级质控结果汇总表",
+    icon: <JCTJ/>,
+    path: "/qcThree/qcThreeResult",
+    component: qcThreeResult
+  }
 
   let extra_menu: any = appStore.hisMatch({
     map: {
@@ -245,6 +252,7 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控月度报告,
         route_三级质控汇总报告,
         route_三级质控问题汇总,
+        // route_qcThreeResult,
       ],
       other: [
         route_护理质量巡查情况汇总表_nys,
