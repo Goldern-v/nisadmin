@@ -26,7 +26,8 @@ import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
 import AdministrativeWard from "./views/administrativeWard";
 import SafetyChecklist from "./views/safetyChecklist";
-import Analysis from "./views/analysis/Analysis";
+// import Analysis from "./views/analysis/Analysis";
+import Analysis from "./views/analysisWhyx/Analysis";
 import SummaryReport from "./views/summaryReport/SummaryReport";
 import ProblemSummary from "./views/problemSummary/ProblemSummary";
 

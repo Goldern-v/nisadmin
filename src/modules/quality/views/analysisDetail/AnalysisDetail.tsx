@@ -11,6 +11,7 @@ import printing from 'printing'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { analysisDetailApi } from './api'
+import Header from '../analysisDetail/components/header/headerSection'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function AnalysisDetail() {
@@ -122,6 +123,7 @@ export default observer(function AnalysisDetail() {
       </HeadCon>
       <ScrollCon>
         <Page ref={pageRef} className='print-page'>
+          <Header sectionTitle={`2022年护理部${1}病区${5}月工作报表（护士长)`}></Header>
           {analysisDetailModal.current.sectionList.map((item: any, index: number) => {
             if (item.sectionId) {
               let Components = analysisDetailModal.current.getSection(item.sectionId)
@@ -180,10 +182,7 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  img {
-    max-width: 200px;
-    max-height: 200px;
-  }
+
 `
 
 const ScrollCon = styled(ScrollBox)`

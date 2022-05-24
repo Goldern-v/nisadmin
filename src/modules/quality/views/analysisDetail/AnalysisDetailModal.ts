@@ -6,8 +6,8 @@ import React from 'react'
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
 
+import { sectionList as sectionList1 } from './config/sectionList'
 import { sectionList as sectionList2 } from './config/sectionList2'
-
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
 import { AllData, DeptItem, DetailItem } from './types'
@@ -135,7 +135,7 @@ export class AnalysisDetailModal {
   }
 }
 // 根据不同的列表进行实例化
-export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: sectionList2, ...obj2})
+export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: [...sectionList1,...sectionList2], ...obj2})
 
 export const getModal = ()=> {
   const queryObj = appStore.queryObj

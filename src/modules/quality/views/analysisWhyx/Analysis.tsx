@@ -73,7 +73,7 @@ export default observer(function Analysis() {
 
   const columns: ColumnProps<any>[] = [
     {
-      title: "序号",
+      title: "序号11",
       key: "index",
       width: 50,
       align: "center",
