@@ -20,8 +20,8 @@ export interface SectionListItem extends Record<string, any> {
   modal?: any
   section?: any
   modalWidth?: any
-  onSave: Function
-  keyName: string
+  onSave?: Function
+  keyName?: string
 }
 
 interface ModalCase {
@@ -38,7 +38,7 @@ interface SectionCase {
   data?: any
   modal?: any
   section?: any
-  keyName: string
+  keyName?: string
 }
 
 interface Constr {
