@@ -7,7 +7,7 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable from 'src/components/BaseTable'
 import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
-import OneLevelTitle from 'src/modules/quality/components/OneLevelTitle'
+import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -97,14 +97,13 @@ export default observer(function qualityIndexSection(props: Props) {
   ]
   const footer=(
     <div className='table_Bottom'>
-    <div>1、上报不良事件：<input value={bottom &&bottom.blsj}/></div>
-    <div>2、事件类型及级别：<input value={bottom &&bottom.lxjb}/></div>
+   <div>1、上报不良事件：{bottom &&bottom.blsj}</div>
+    <div>2、事件类型及级别：{bottom &&bottom.lxjb}</div>
     </div>)
   return (
     <Wrapper>
-      <OneLevelTitle  text={'二、护理质量指标'} />
-      <OneLevelTitle  text={sectionTitle} />
-      <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)} className='editButon'>编辑</EditButton>
+      <TwoLevelTitle  text={sectionTitle} />
+      <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)} >编辑</EditButton>
       <BaseTable  columns={columns}  dataSource={ data.list &&data.list.tableData}
        footer={()=>footer}
       />
@@ -128,6 +127,10 @@ const Wrapper = styled.div`
     font-weight: bold;
     padding-left: 30px;
   }
+  .table_Bottom div{
+    /* display: inline-block; */
+
+  }
   .text-box {
     padding-left: 65px;
     padding-right: 15px;
@@ -136,9 +139,6 @@ const Wrapper = styled.div`
   }
   input {
     border: none;
-  }
-  .editButon {
-    margin-top: 22px !important;
   }
 `
 const TextCon = styled.pre`

@@ -15,11 +15,17 @@ import departmentResultSection from '../components/departmentResult/departmentRe
 import departmentResultModal from '../components/departmentResult/departmentResultModal'
 import conclusionSection from '../components/conclusion/conclusionSection'
 import conclusionModal from '../components/conclusion/conclusionModal'
+import planCompletionSection from '../components/planCompletion/planCompletionSection'
+import planCompletionModal from '../components/planCompletion/planCompletionModal'
+import OperationSection from '../components/Operation/OperationSection'
+import OperationMoadl from '../components/Operation/OperationMoadl'
+import ImprovementsSection from '../components/Improvements/Section'
+import ImprovementsMoadl from '../components/Improvements/Modal'
 // 二级质控汇总配置
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '1_1',
-    sectionTitle: '一、上月护理质量问题改进反馈:(手填)',
+    sectionTitle: '一、上月护理质量问题改进反馈:',
     modalTitle: '上月护理质量问题改进反馈',
     data: {},
     keyName: 'key1_1',
@@ -29,6 +35,13 @@ export const sectionList: SectionListItem[] = [
     },
     section: ProblemImpSection,
     modal: ProblemImpModal
+  },
+  {
+    sectionId: '2',
+    sectionTitle: '二、护理质量指标',
+    modalTitle: '',
+    keyName: '',
+    section: LevelTitleSection
   },
   {
     sectionId: '2_1',
@@ -69,7 +82,52 @@ export const sectionList: SectionListItem[] = [
     section: conclusionSection,
     modal: conclusionModal
   },
-  
+  {
+    sectionId: '3',
+    sectionTitle: '三、本月工作完成情况：',
+    modalTitle: '',
+    keyName: '',
+    section: LevelTitleSection
+  },
+  {
+    sectionId: '3_1',
+    sectionTitle: '1、本月计划完成情况:',
+    modalTitle: '编辑本月计划完成情况',
+    data: {},
+    keyName: 'key2_2',
+    async onSave (val: any) {
+      console.log('test-val', val);
+      (this as any).setSectionData('2_2', [{}])
+    },
+    section: planCompletionSection,
+    modal: planCompletionModal
+  },
+  {
+    sectionId: '3_2',
+    sectionTitle: '2、科室经营情况:',
+    modalTitle: '编辑科室经营情况',
+    data: {},
+    keyName: 'key3_2',
+    async onSave (val: any) {
+      console.log('test-val', val);
+      (this as any).setSectionData('3_2', [{}])
+    },
+    section: OperationSection,
+    modal: OperationMoadl
+  },
+  {
+    sectionId: '3_3',
+    sectionTitle: '3、本月护理主要问题分析改进:',
+    modalTitle: '编辑问题分析改进',
+    data: {},
+    keyName: 'key3_3',
+    async onSave (val: any) {
+      console.log('test-val', val);
+      (this as any).setSectionData('3_3', [{}])
+    },
+    section: ImprovementsSection,
+    modal: ImprovementsMoadl
+  },
   {
     sectionId: '4_4',
     sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',

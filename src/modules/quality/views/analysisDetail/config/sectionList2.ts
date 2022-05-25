@@ -19,7 +19,7 @@ import conclusionModal from '../components/conclusion/conclusionModal'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '1_1',
-    sectionTitle: '一、上月护理质量问题改进反馈:(手填)',
+    sectionTitle: '一、上月护理质量问题改进反馈:',
     modalTitle: '上月护理质量问题改进反馈',
     data: {},
     keyName: 'key1_1',
@@ -29,6 +29,13 @@ export const sectionList: SectionListItem[] = [
     },
     section: ProblemImpSection,
     modal: ProblemImpModal
+  },
+  {
+    sectionId: '2',
+    sectionTitle: '二、护理质量指标',
+    modalTitle: '',
+    keyName: '',
+    section: LevelTitleSection
   },
   {
     sectionId: '2_1',

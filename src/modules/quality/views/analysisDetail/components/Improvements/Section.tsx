@@ -7,6 +7,7 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import EditButton from 'src/modules/quality/components/EditButton'
 import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
+import { dataTool } from 'echarts'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -15,8 +16,8 @@ export interface Props {
 }
 const columns: ColumnProps<any>[] = [
   {
-    title: '指标',
-    dataIndex: 'zb',
+    title: '质量项目',
+    dataIndex: 'zlxm',
     align: 'center',
     width: 60
   },
@@ -27,37 +28,29 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
-    title: '原因分析',
+    title: '原因分析及整改措施',
     dataIndex: 'yyfx',
     width: 100,
     align: 'center'
   },
   {
-    title: '整改措施',
+    title: '效果评价',
     dataIndex: 'zgcs',
     width: 100,
     align: 'center'
   },
-  {
-    title: '效果评价',
-    dataIndex: 'xgpj',
-    width: 100,
-    align: 'center'
-  },
+  
 ]
-export default observer(function ProblemImpSection(props: Props) {
+export default observer(function ImprovementsSection(props: Props) {
   let { sectionId, sectionTitle} = props 
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let conclusion:any=data&&data.list&&data.list.conclusion
   let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <div>共 <a>  {conclusion&&conclusion.zb}  </a> 项指标，达标<a>  {conclusion&&conclusion.db}  </a>项，未达标<a>  {conclusion&&conclusion.wdb}  </a>项</div>
-      <div>科室不达标指标分析改进：</div>
-      <BaseTable columns={columns} dataSource={data.list&&data.list.tableData}/>
+      <BaseTable columns={columns} dataSource={dataTool&&data.list}/>
     </Wrapper>
   )
 })

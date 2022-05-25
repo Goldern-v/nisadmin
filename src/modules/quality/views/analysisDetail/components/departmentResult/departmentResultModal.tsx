@@ -4,8 +4,7 @@ import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
-import { LastImproveItem, Report, TypeCompare } from '../../types'
-
+import { tableCon } from '../../style/modal'
 export interface Props {
   sectionId: string
   data: any
@@ -39,7 +38,7 @@ export default function qualityIndexModal(props: Props) {
         return (
           <input
             type='text'
-            className='cell-input'
+            className='cell-ipt'
             value={record.xm|| ''}
             onChange={(e) => {
               record.xm = e.target.value
@@ -61,7 +60,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.zlhgf|| ''}
                 onChange={(e) => {
                   record.zlhgf = e.target.value
@@ -79,7 +78,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.hgl|| ''}
                 onChange={(e) => {
                   record.hgl = e.target.value
@@ -103,7 +102,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.hgsccs|| ''}
                 onChange={(e) => {
                   record.hgsccs= e.target.value
@@ -121,7 +120,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.pjf|| ''}
                 onChange={(e) => {
                   record.pjf = e.target.value
@@ -139,7 +138,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.hgl2|| ''}
                 onChange={(e) => {
                   record.hgl2 = e.target.value
@@ -157,7 +156,7 @@ export default function qualityIndexModal(props: Props) {
             return (
               <input
                 type='text'
-                className='cell-input'
+                className='cell-ipt'
                 value={record.wdb|| ''}
                 onChange={(e) => {
                   record.wdb = e.target.value
@@ -179,13 +178,5 @@ export default function qualityIndexModal(props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
-  text {
-    min-height: 200px !important;
-    resize: none;
-  }
-  input {
-    border: none;
-    width: 90%;
-  }
+const Wrapper = styled(tableCon)`
 `

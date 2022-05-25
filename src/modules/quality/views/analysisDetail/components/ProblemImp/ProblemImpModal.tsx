@@ -4,14 +4,14 @@ import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
-import { LastImproveItem, Report, TypeCompare } from '../../types'
+import { tableCon } from '../../style/modal'
 
 export interface Props {
   sectionId: string
   data: any
   setData: any
 }
-export default function ProblemImpModal(props: Props) {
+export default function ImprovementsModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   useEffect(() => { }, [])
@@ -23,7 +23,7 @@ export default function ProblemImpModal(props: Props) {
         return (
           <input
             type='text'
-            className='cell-input'
+            className='cell-ipt'
             value={record.question|| ''}
             onChange={(e) => {
               record.question = e.target.value
@@ -41,7 +41,7 @@ export default function ProblemImpModal(props: Props) {
         return (
           <input
             type='text'
-            className='cell-input'
+            className='cell-ipt'
             value={record.feetback|| ''}
             onChange={(e) => {
               record.feetback = e.target.value
@@ -89,12 +89,5 @@ export default function ProblemImpModal(props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
-  text {
-    min-height: 200px !important;
-    resize: none;
-  }
-  input {
-    border: none;
-  }
+const Wrapper = styled(tableCon)`
 `

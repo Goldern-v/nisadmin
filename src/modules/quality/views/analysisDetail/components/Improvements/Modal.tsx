@@ -13,14 +13,13 @@ export interface Props {
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let conclusion: any = cloneData && cloneData.list && cloneData.list.conclusion
   useEffect(() => { }, [])
 
   const columns: ColumnProps<any>[] = [
     {
-      title: '指标',
+      title: '质量项目',
       align: 'center',
-      dataIndex: "zb",
+      dataIndex: "zlxm",
       width: 60,
       // render(text:string, record:any, index:number) {
       //   return (
@@ -58,7 +57,7 @@ export default function qualityIndexModal(props: Props) {
       },
     },
     {
-      title: '原因分析',
+      title: '原因分析及整改措施',
       width: 100,
       align: 'center',
       render(text: string, record: any, index: number) {
@@ -76,30 +75,6 @@ export default function qualityIndexModal(props: Props) {
               }}
             />
           </div>
-        )
-      },
-    },
-    {
-      title: '整改措施',
-      dataIndex: 'zgcs',
-      width: 100,
-      align: 'center',
-      render(text: string, record: any, index: number) {
-        return (
-          <div className='inp_textArea'>
-            <TextArea
-              className='cell-textArea'
-              value={record.zgcs || ''}
-              rows={14}
-              placeholder="最多输入500个字"
-              maxLength={500}
-              onChange={(e) => {
-                record.zgcs = e.target.value
-                setData(cloneData)
-              }}
-            />
-          </div>
-
         )
       },
     },
@@ -128,21 +103,7 @@ export default function qualityIndexModal(props: Props) {
   ]
   return (
     <Wrapper>
-      <div className='edit_text'>
-        共<input value={conclusion && conclusion.zb} onChange={(e) => {
-          cloneData.list.conclusion.zb = e.target.value;
-          setData(cloneData)
-        }} />
-        项指标，达标<input value={conclusion && conclusion.db} onChange={(e) => {
-          cloneData.list.conclusion.db = e.target.value;
-          setData(cloneData)
-        }} />
-        项，未达标<input value={conclusion && conclusion.wdb} onChange={(e) => {
-          cloneData.list.conclusion.wdb = e.target.value;
-          setData(cloneData)
-        }} />项</div>
-      <div className='table_title'>科室不达标指标分析改进:</div>
-      <BaseTable columns={columns} dataSource={cloneData.list && cloneData.list.tableData} />
+      <BaseTable columns={columns} dataSource={cloneData.list && cloneData.list} />
     </Wrapper>
   )
 }

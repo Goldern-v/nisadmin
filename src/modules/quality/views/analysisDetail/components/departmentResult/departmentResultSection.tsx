@@ -6,7 +6,7 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable from 'src/components/BaseTable'
 import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
-import OneLevelTitle from 'src/modules/quality/components/OneLevelTitle'
+import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -89,7 +89,7 @@ export default observer(function ProblemImpSection(props: Props) {
   ]
   return (
     <Wrapper>
-      <OneLevelTitle text={sectionTitle} />
+      <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
       <BaseTable dataSource={data.list} columns={columns}/>
     </Wrapper>
