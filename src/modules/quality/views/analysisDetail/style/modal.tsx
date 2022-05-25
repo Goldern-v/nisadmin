@@ -14,6 +14,7 @@ export const tableCon = styled.div`
     resize: none;
     &:focus {
       background: ${(p) => p.theme.$mlc};
+      box-shadow: none;
     }
   }
 ` as any

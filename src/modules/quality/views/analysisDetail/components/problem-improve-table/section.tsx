@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
@@ -12,31 +12,30 @@ export interface Props {
   modalTitle?: string | undefined,
 }
 
-export default observer(function NursingJobEvalTableSection(props: Props) {
+export default observer(function ProblemImproveTableSection(props: Props) {
   let { sectionId, sectionTitle } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let value: any[] = (data ? data.value : []) || []
-  
   const columns = [
     {
       key: 'deptName',
-      title: '科室',
+      title: '质量项目',
+      width: 110,
+    },
+    {
+      key: 'deptName',
+      title: '主要问题（汇总A、B-A类问题）',
       width: 110,
     },
     {
       key: 'empName',
-      title: '护士长',
-      width: 80,
+      title: '原因分析及整改措施',
+      width: 200,
     },
     {
       key: 'score',
-      title: '得分',
-      width: 80,
-    },
-    {
-      key: 'mq',
-      title: '主要问题',
+      title: '效果评价',
       width: 200,
     },
   ]
@@ -66,8 +65,3 @@ const Wrapper = styled.div`
   }
 `
 
-const TextCon = styled.pre`
-  margin: 10px 50px;
-  min-height: 40px;
-  white-space: pre-wrap;
-`

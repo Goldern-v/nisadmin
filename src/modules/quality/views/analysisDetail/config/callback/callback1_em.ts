@@ -46,6 +46,16 @@ export const obj =  {
         ]
 
       },
+      '3_3': [
+        
+        {
+          deptName: '',
+          empName: '',
+          score: '',
+          mq: ''
+        }
+        
+      ],
       '4_4': {
         q: 'question',
         r: {
@@ -82,6 +92,7 @@ export const obj =  {
         key5_1: '2',
         key5_2: '1',
       },
+      img: []
     }
   },
   formatData() {
@@ -89,9 +100,11 @@ export const obj =  {
     (this as any).getSectionData('2_1').list = (this as any).allData['key2_1'];
     (this as any).getSectionData('2_2').list = (this as any).allData['key2_2'];
     (this as any).getSectionData('2_3').list = (this as any).allData['key2_3'];
+    (this as any).getSectionData('3_3').value = (this as any).allData['3_3'];
     (this as any).getSectionData('4_4').value = (this as any).allData['4_4'];
     (this as any).getSectionData('4_7').value = replenishList((this as any).allData['4_7'], 6);
     (this as any).getSectionData('4_8').report = (this as any).allData.report;
+    (this as any).getSectionData('4_0').value = (this as any).allData.img;
     (this as any).getSectionData('5_1').report = (this as any).allData.report;
     (this as any).getSectionData('5_2').report = (this as any).allData.report;
     

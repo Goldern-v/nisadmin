@@ -15,6 +15,10 @@ import departmentResultSection from '../components/departmentResult/departmentRe
 import departmentResultModal from '../components/departmentResult/departmentResultModal'
 import conclusionSection from '../components/conclusion/conclusionSection'
 import conclusionModal from '../components/conclusion/conclusionModal'
+import ProblemImproveTableSection from '../components/problem-improve-table/section'
+import ProblemImproveTableModal from "../components/problem-improve-table/modal";
+import FileUploaderSection from '../components/file-upload/section'
+import FileUploaderModal from '../components/file-upload/modal'
 // 二级质控汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -24,7 +28,6 @@ export const sectionList: SectionListItem[] = [
     data: {},
     keyName: 'key1_1',
     async onSave (val: any) {
-      console.log('test-val', val);
       (this as any).setSectionData('1_1', val)
     },
     section: ProblemImpSection,
@@ -37,7 +40,6 @@ export const sectionList: SectionListItem[] = [
     data: {},
     keyName: 'key2_1',
     async onSave (val: any) {
-      console.log('test-val', val);
       (this as any).setSectionData('2_1', [{}])
     },
     section: qualityIndexSection,
@@ -50,7 +52,6 @@ export const sectionList: SectionListItem[] = [
     data: {},
     keyName: 'key2_2',
     async onSave (val: any) {
-      console.log('test-val', val);
       (this as any).setSectionData('2_2', [{}])
     },
     section: departmentResultSection,
@@ -63,13 +64,24 @@ export const sectionList: SectionListItem[] = [
     data: {},
     keyName: 'key2_2',
     async onSave (val: any) {
-      console.log('test-val', val);
       (this as any).setSectionData('2_2', [{}])
     },
     section: conclusionSection,
     modal: conclusionModal
   },
   
+  {
+    sectionId: '3_3',
+    sectionTitle: '3、本月护理主要问题分析改进',
+    modalTitle: '编辑本月护理主要问题分析改进',
+    data: {},
+    keyName: '',
+    async onSave (val: any) {
+      (this as any).setSectionData('3_3', val)
+    },
+    section: ProblemImproveTableSection,
+    modal: ProblemImproveTableModal
+  },
   {
     sectionId: '4_4',
     sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
@@ -107,8 +119,20 @@ export const sectionList: SectionListItem[] = [
     modal: TextareaModal
   },
   {
+    sectionId: '4_0',
+    sectionTitle: '四、现场图片',
+    modalTitle: '编辑现场图片',
+    keyName: '',
+    data: {},
+    async onSave (val: any) {
+      (this as any).setSectionData('4_0', val)
+    },
+    section: FileUploaderSection,
+    modal: FileUploaderModal
+  },
+  {
     sectionId: '5',
-    sectionTitle: '四、下月工作重点',
+    sectionTitle: '五、下月工作重点',
     modalTitle: '',
     keyName: '',
     section: LevelTitleSection
