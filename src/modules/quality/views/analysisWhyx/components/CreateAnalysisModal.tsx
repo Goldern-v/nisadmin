@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-// import { RouteComponentProps } from 'react-router'
 import { Modal, Row, Col, Radio, Select, DatePicker, Input } from 'antd'
 import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
-// import { appStore } from 'src/stores'
-// import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
 
 const Option = Select.Option
@@ -14,9 +11,11 @@ export interface Props {
   visible: boolean
   onOk: any
   onCancel: any
-  groupRoleList: any
+  wardList: any
   allowClear?: boolean
   loading?: boolean
+  /**reportName的字段排列 */
+  reportFn?: Function
 }
 
 export default function CreateAnalysisModal(props: Props) {
@@ -24,17 +23,17 @@ export default function CreateAnalysisModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    groupRoleCode: (val) => !!val || '请选择质控组',
-    year: (val) => !!val || '请选择年度',
-    indexInType: (val) => !!val || '请选择月份',
-    beginDate: (val) => !!val || '请选择开始时间',
+    wardCode: (val) => !!val || '请选择科室',
+    reportYear: (val) => !!val || '请选择年度',
+    reportMonth: (val) => !!val || '请选择月份',
+    startDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间'
   }
 
-  const { visible, onCancel, onOk, groupRoleList, allowClear, loading } = props
+  const { visible, onCancel, onOk, wardList, allowClear, loading } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
-  const [beginDate, setBeginDate] = useState(null as any | null)
+  const [startDate, setStartDate] = useState(null as any | null)
   const [endDate, setEndDate] = useState(null as any | null)
 
   useEffect(() => {
@@ -46,17 +45,17 @@ export default function CreateAnalysisModal(props: Props) {
           let month = nowMoment.format('M');
 
           refForm.current.setFields({
-            year: nowMoment,
-            beginDate: null,
+            reportYear: nowMoment,
+            startDate: null,
             endDate: null,
             reportName: '',
             groupRoleCode: '',
-            indexInType: month
+            reportMonth: month
           })
         }
       }, 300)
 
-      setBeginDate(null)
+      setStartDate(null)
       setEndDate(null)
     }
   }, [visible])
@@ -68,14 +67,15 @@ export default function CreateAnalysisModal(props: Props) {
       current
         .validateFields()
         .then((res) => {
-          let { reportName, groupRoleCode, year, beginDate, endDate, indexInType } = formData
+          let { reportName, wardCode, reportYear, startDate, endDate, reportMonth } = formData
           let params: any = {
-            reportName: reportName,
-            groupRoleCode: groupRoleCode,
-            year: year ? year.format('YYYY') : '',
-            beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
+            reportName,
+            wardCode,
+            wardName: wardList.find((v: any) => v.code == wardCode)?.name || '',
+            reportYear: reportYear ? reportYear.format('YYYY') : '',
+            startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
             endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
-            indexInType
+            reportMonth
           }
 
           onOk && onOk(params)
@@ -86,16 +86,15 @@ export default function CreateAnalysisModal(props: Props) {
 
   const handlePanelChange = (value: any) => {
     setYearPickerIsOpen(false)
-    setFormItem('year', value)
+    setFormItem('reportYear', value)
 
     if (refForm.current) {
-
-      setBeginDateAndEndDate(value, Number(refForm.current.getField('indexInType')) - 1)
+      setBeginDateAndEndDate(value, Number(refForm.current.getField('reportMonth')) - 1)
     }
   }
 
   const handleYearClear = () => {
-    setFormItem('year', null)
+    setFormItem('reportYear', null)
   }
 
   const handleOpenChange = (status: boolean) => {
@@ -117,9 +116,9 @@ export default function CreateAnalysisModal(props: Props) {
   }
 
   const moreThanStart = (date: any) => {
-    if (!beginDate) return false
+    if (!startDate) return false
 
-    if (date.format('x') >= beginDate.format('x')) return false
+    if (date.format('x') >= startDate.format('x')) return false
     return true
   }
 
@@ -131,12 +130,12 @@ export default function CreateAnalysisModal(props: Props) {
   }
 
   const handleFormChange = (key: any, val: any) => {
-    if (key == 'beginDate') setBeginDate(val)
+    if (key == 'startDate') setStartDate(val)
 
-    if (key == 'indexInType') {
+    if (key == 'reportMonth') {
       if (refForm.current) {
-        let year = refForm.current.getField('year');
-        setBeginDateAndEndDate(year, Number(val) - 1)
+        let reportYear = refForm.current.getField('reportYear');
+        setBeginDateAndEndDate(reportYear, Number(val) - 1)
       }
     }
 
@@ -145,28 +144,28 @@ export default function CreateAnalysisModal(props: Props) {
     if (key !== 'reportName') setReportName()
   }
 
-  const setBeginDateAndEndDate = (year: any, month: number) => {
-    if (year) {
-      year = Moment(year);
-      year.month(month);
+  const setBeginDateAndEndDate = (reportYear: any, month: number) => {
+    if (reportYear) {
+      reportYear = Moment(reportYear);
+      reportYear.month(month);
 
-      let beginDate = Moment(year);
-      let endDate: any = new Date(year.format('YYYY/MM/DD'));
+      let startDate = Moment(reportYear);
+      let endDate: any = new Date(reportYear.format('YYYY/MM/DD'));
 
-      beginDate.date(1);
+      startDate.date(1);
 
       endDate.setMonth(endDate.getMonth() + 1);
       endDate.setDate(0);
       endDate = Moment(endDate);
 
-      setBeginDate(beginDate)
+      setStartDate(startDate)
       setEndDate(endDate)
-      setFormItem('beginDate', beginDate)
+      setFormItem('startDate', startDate)
       setFormItem('endDate', endDate)
     } else {
-      setBeginDate(null)
+      setStartDate(null)
       setEndDate(null)
-      setFormItem('beginDate', null)
+      setFormItem('startDate', null)
       setFormItem('endDate', null)
     }
   }
@@ -174,24 +173,24 @@ export default function CreateAnalysisModal(props: Props) {
   const setReportName = () => {
     let current = refForm.current
     if (current) {
-      let { year, indexInType, groupRoleCode } = current.getFields()
-      if (!year || !indexInType || !groupRoleCode) return
+      let { reportYear, reportMonth, wardCode } = current.getFields()
+      if (!reportYear || !reportMonth || !wardCode) return
 
-      let yearStr = year.format('YYYY')
-      let monthStr = indexInType
-      let groupRoleName: any = ''
+      let yearStr = reportYear.format('YYYY')
+      let monthStr = reportMonth
+      let wardName: any = ''
 
-      for (let i = 0; i < groupRoleList.length; i++) {
-        if (groupRoleList[i].code == groupRoleCode) groupRoleName = groupRoleList[i].name
+      for (let i = 0; i < wardList.length; i++) {
+        if (wardList[i].code == wardCode) wardName = wardList[i].name
       }
 
-      if (groupRoleName.split('、').length > 1) {
-        groupRoleName = groupRoleName.split('、')
-        groupRoleName.shift()
-        groupRoleName = groupRoleName.join('、')
+      if (wardName.split('、').length > 1) {
+        wardName = wardName.split('、')
+        wardName.shift()
+        wardName = wardName.join('、')
       }
 
-      let reportName = `${yearStr}年${monthStr}月${groupRoleName}反馈与分析`
+      let reportName = `${yearStr}年${wardName}病区${monthStr}月工作报表`
 
       setFormItem('reportName', reportName)
     }
@@ -206,11 +205,11 @@ export default function CreateAnalysisModal(props: Props) {
               报告年度：
             </Col>
             <Col span={19}>
-              <Form.Field name='year'>
+              <Form.Field name='reportYear'>
                 <DatePicker
                   open={yearPickerIsOpen}
                   mode='year'
-                  className='year-picker'
+                  className='reportYear-picker'
                   placeholder='选择年度'
                   format='YYYY'
                   onChange={handleYearClear}
@@ -225,7 +224,7 @@ export default function CreateAnalysisModal(props: Props) {
               报告月份：
             </Col>
             <Col span={19}>
-              <Form.Field name='indexInType'>
+              <Form.Field name='reportMonth'>
                 <Select>{MonthList()}</Select>
               </Form.Field>
             </Col>
@@ -235,7 +234,7 @@ export default function CreateAnalysisModal(props: Props) {
               质控日期：
             </Col>
             <Col span={9}>
-              <Form.Field name='beginDate'>
+              <Form.Field name='startDate'>
                 <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} />
               </Form.Field>
             </Col>
@@ -248,12 +247,12 @@ export default function CreateAnalysisModal(props: Props) {
           </Row>
           <Row>
             <Col span={5} className='label'>
-              质控组：
+              科室：
             </Col>
             <Col span={19}>
-              <Form.Field name='groupRoleCode'>
+              <Form.Field name='wardCode'>
                 <Select>
-                  {groupRoleList.map((item: any) => (
+                  {wardList.map((item: any) => (
                     <Option value={item.code} key={item.code}>
                       {item.name}
                     </Option>
