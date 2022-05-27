@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   .title {
     font-size: 38px;
     font-weight: bold;
-    margin-top: -20px;
+    margin-top: -25px;
     text-align:center;
     color:black;
   }

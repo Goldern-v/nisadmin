@@ -18,26 +18,26 @@ const columns: ColumnProps<any>[] = [
   {
     title: '质量项目',
     dataIndex: 'zlxm',
-    align: 'center',
+    align: 'left',
     width: 60
   },
   {
     title: '主要问题',
     dataIndex: 'zywt',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '原因分析及整改措施',
     dataIndex: 'yyfx',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '效果评价',
     dataIndex: 'zgcs',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   
 ]

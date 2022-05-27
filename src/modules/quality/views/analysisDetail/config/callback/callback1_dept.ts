@@ -1,5 +1,4 @@
 import { replenishList } from "./../../util/tool";
-
 export const obj = {
   getData() {
     return {
@@ -190,30 +189,30 @@ export const obj = {
       {
         ygznr:
         {
-        gzjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-        pxjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+          gzjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+          pxjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
         },
         wcqk:
         {
-        gzjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-        pxjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+          gzjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+          pxjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
         }
 
       },
-      key3_2:{hsdb:98,sjbz:86,zlhs:87,sjzl:76,zghs:99,zgzl:45,pjcw:'80%',bczz:87,pjzy:8,yybr:78,ryrs:98,zrbr:5,cybr:19,zcbr:187,swbr:0,jrss:9,wkss:19,gzdf:98,RWbigger:877,RWsmall:76,CMI:123812,swl:'3%',whcybr:'80%'},
-      key3_3:[
-        {zlxm:"（一）分级护理（含基础护理、危重护理、围术期护理等）",zywt:"操作不熟练，操作时间慢123123",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（二）优质护理与人文关怀质量（含整体护理、健康教育、人文关怀、老年护理等）",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（三）专科护理（含引流管护理、气道护理、专科仪器操作）",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（四）导管相关护理（PIVC、CVC、PICC/MC）",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（五）护理文件书写",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（六）消毒隔离",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（七）护理安全管理（一）（二）",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（八）科室综合管理质量",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（九）预防住院患者压力性损伤护理质量",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（十）预防住院患者跌倒/坠床护理质量",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"（十一）疫情常态化管理",zywt:"操作不熟练，操作时间慢",yyfx:'护士入职时间短,需加强培训',xgpj:""},
-        {zlxm:"",zywt:"",yyfx:'',xgpj:""},
+      key3_2: { hsdb: 98, sjbz: 86, zlhs: 87, sjzl: 76, zghs: 99, zgzl: 45, pjcw: '80%', bczz: 87, pjzy: 8, yybr: 78, ryrs: 98, zrbr: 5, cybr: 19, zcbr: 187, swbr: 0, jrss: 9, wkss: 19, gzdf: 98, RWbigger: 877, RWsmall: 76, CMI: 123812, swl: '3%', whcybr: '80%' },
+      key3_3: [
+        { zlxm: "（一）分级护理（含基础护理、危重护理、围术期护理等）", zywt: "操作不熟练，操作时间慢123123", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（二）优质护理与人文关怀质量（含整体护理、健康教育、人文关怀、老年护理等）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（三）专科护理（含引流管护理、气道护理、专科仪器操作）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（四）导管相关护理（PIVC、CVC、PICC/MC）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（五）护理文件书写", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（六）消毒隔离", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（七）护理安全管理（一）（二）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（八）科室综合管理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（九）预防住院患者压力性损伤护理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（十）预防住院患者跌倒/坠床护理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "（十一）疫情常态化管理", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
+        { zlxm: "", zywt: "", yyfx: '', xgpj: "" },
       ],
       "4_4": {
         q: "question",
@@ -251,10 +250,30 @@ export const obj = {
         key5_1: "2",
         key5_2: "1",
       },
+      fieldData: {
+        ultQuestion: '',
+        improveFeedback: '',
+      },
+      pageData: {
+        id: null,
+        isDeleted: null,
+        publisherName: "",
+        publisherNo: "",
+        publisherTime: "",
+        renderTableDataMap: null,
+        reportLevel: "",
+        reportMonth: "",
+        reportName: "",
+        updateTime: "",
+        updaterName: "",
+        updaterNo: "",
+        wardCode: "",
+        wardName: "",
+      }
     };
   },
   formatData() {
-    (this as any).getSectionData("1_1").list = (this as any).allData["key1_1"];
+    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_1").list = (this as any).allData["key2_1"];
     (this as any).getSectionData("2_2").list = (this as any).allData["key2_2"];
     (this as any).getSectionData("2_3").list = (this as any).allData["key2_3"];
@@ -270,4 +289,4 @@ export const obj = {
     (this as any).getSectionData("5_1").report = (this as any).allData.report;
     (this as any).getSectionData("5_2").report = (this as any).allData.report;
   },
-};
+}

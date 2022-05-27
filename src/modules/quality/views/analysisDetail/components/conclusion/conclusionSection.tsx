@@ -17,32 +17,32 @@ const columns: ColumnProps<any>[] = [
   {
     title: '指标',
     dataIndex: 'zb',
-    align: 'center',
+    align: 'left',
     width: 60
   },
   {
     title: '主要问题',
     dataIndex: 'zywt',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '原因分析',
     dataIndex: 'yyfx',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '整改措施',
     dataIndex: 'zgcs',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '效果评价',
     dataIndex: 'xgpj',
     width: 100,
-    align: 'center'
+    align: 'left'
   },
 ]
 export default observer(function ProblemImpSection(props: Props) {
@@ -55,8 +55,8 @@ export default observer(function ProblemImpSection(props: Props) {
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <div>共 <a>  {conclusion&&conclusion.zb}  </a> 项指标，达标<a>  {conclusion&&conclusion.db}  </a>项，未达标<a>  {conclusion&&conclusion.wdb}  </a>项</div>
-      <div>科室不达标指标分析改进：</div>
+      <div className='context'>共 <a>  {conclusion&&conclusion.zb}  </a> 项指标，达标<a>  {conclusion&&conclusion.db}  </a>项，未达标<a>  {conclusion&&conclusion.wdb}  </a>项</div>
+      <div className='context'>科室不达标指标分析改进：</div>
       <BaseTable columns={columns} dataSource={data.list&&data.list.tableData}/>
     </Wrapper>
   )
@@ -78,6 +78,9 @@ const Wrapper = styled.div`
     line-height: 40px;
     width:100px;
     text-decoration: underline;
+  }
+  .context {
+    margin-left:26px;
   }
 `
 

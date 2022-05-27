@@ -1,7 +1,10 @@
+import { observer } from 'mobx-react-lite';
+import { data } from 'jquery';
 import { sectionList } from './../../../badEventsNew/views/BadEventReport/config/sectionList';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
 import React from 'react'
+const queryObj = appStore.queryObj
 
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
@@ -26,7 +29,6 @@ export interface SectionListItem extends Record<string, any> {
   onSave?: Function
   keyName?: string
 }
-
 interface ModalCase {
   show: (...arr: any) => void
   hide(): void
@@ -49,26 +51,28 @@ interface Constr {
   formatData: Function
   getData: Function
 }
-
+interface ReportFieldData {
+    reportId: number,
+    data?:any
+}
 export class AnalysisDetailModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = []
   @observable public allData: Partial<AllData> = {
     report: {}
   }
-  private formatData: Function = () => {}
-  private getData: Function = () => {}
+  private formatData: Function = () => { }
+  private getData: Function = () => { }
 
   constructor({
     sectionList,
     formatData,
-    getData
+    getData,
   }: Constr) {
     this.sectionList = sectionList
     this.formatData = formatData.bind(this)
     this.getData = getData
   }
-
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {
@@ -108,6 +112,12 @@ export class AnalysisDetailModal {
     let obj = this.getSection(sectionId)
     if (obj) {
       Object.assign(obj.data, data)
+      //保存数据
+      const saveData:ReportFieldData={
+        reportId:queryObj.id,
+        data:obj.data.value
+      }
+      this.saveReportFieldData(saveData)
       return true
     } else {
       return false
@@ -118,6 +128,10 @@ export class AnalysisDetailModal {
   getDataInAllData(key: string) {
     return this.allData[key] || {}
   }
+  /** 保存属性类型报告数据集 */
+  saveReportFieldData(data:ReportFieldData ) {
+    analysisDetailApi.saveReportFieldData(data)
+  }
 
   get report() {
     return this.getDataInAllData('report') || {}
@@ -126,11 +140,33 @@ export class AnalysisDetailModal {
   /** 数据初始化 */
   initData() {
     // 实例化并使用bind绑定数据
-    // let { data } = await this.getData()
-    let data = this.getData()
-    this.allData = data
-    // 拼接数据
-    this.formatData()
+    this.allData = this.getData()
+    analysisDetailApi.getPageDetaile(1).then((res) => {
+      console.log('接口数据======》', res.data)
+      if (res.code == 200) {
+        let { fieldDataMap } = res.data
+        let {
+          createTime,
+          creatorName,
+          creatorNo,
+          publisherName,
+          status,
+          reportName,
+          updateTime
+        } = res.data
+        this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
+        this.allData.pageInfo = {
+          createTime,
+          creatorName,
+          creatorNo,
+          publisherName,
+          status,
+          reportName,
+          updateTime
+        }
+        this.formatData()
+      }
+    })
   }
   init() {
     this.initData()
@@ -140,14 +176,15 @@ export class AnalysisDetailModal {
 // 根据不同的列表进行实例化
 
 // 病区
-export const analysisDetailModal1Dept = new AnalysisDetailModal({ sectionList: sectionList1Dept, ...obj1Dept})
+export const analysisDetailModal1Dept = new AnalysisDetailModal({ sectionList: sectionList1Dept, ...obj1Dept })
 // 急诊
-export const analysisDetailModal1Em = new AnalysisDetailModal({ sectionList: sectionList1Em, ...obj1Em})
+export const analysisDetailModal1Em = new AnalysisDetailModal({ sectionList: sectionList1Em, ...obj1Em })
 // 二级
-export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: sectionList2, ...obj2})
+export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: sectionList2, ...obj2 })
 
-export const getModal = ()=> {
-  const queryObj = appStore.queryObj
+//url链接数据
+export const getModal = () => {
+  
   // level=1&deptName=病区
   if (queryObj?.level == '2') {
     return analysisDetailModal2

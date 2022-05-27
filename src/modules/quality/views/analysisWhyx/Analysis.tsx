@@ -153,13 +153,13 @@ export default observer(function Analysis() {
 
   const handleReview = (record: any) => {
     const obj = {
-      type: record.type,
-      year: record.year,
       reportMonth: record.reportMonth,
       beginDate: record.beginDate,
       endDate: record.endDate,
-      groupRoleCode: record.groupRoleCode,
       reportName: record.reportName,
+      deptName:record.wardName,
+      level,
+      id: record.id
     };
     history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`);
   };

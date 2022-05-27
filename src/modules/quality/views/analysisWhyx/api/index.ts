@@ -47,12 +47,6 @@ export default class AnalysisService extends BaseApiService {
   public qcRoleCodeSelf() {
     return this.get('/qcItem/dict/qcRoleCodeSelf')
   }
-  // public getPage(query: any) {
-  //   return this.post('/qcAnalysis/getPage', query)
-  // }
-  // public createReport(params: any) {
-  //   return this.post('/qcAnalysis/createReport', params)
-  // }
 
   public push(params: any) {
     return this.post('/qcItem/push/deptNotAuditList', params)
@@ -65,6 +59,7 @@ export default class AnalysisService extends BaseApiService {
   public getPage(params: getPageIn) {
   return this.post(`${this.path}getPage`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
   }
+
   /**创建报告 */
   public createReport(params: createReportIn) {
   return this.post(`${this.path}createReport`, { ...params, hospitalCode: appStore.HOSPITAL_ID})

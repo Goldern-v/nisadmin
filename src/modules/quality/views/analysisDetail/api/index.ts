@@ -1,3 +1,4 @@
+import { data } from 'jquery';
 import { appStore } from '../../../../../stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 // import { analysisDetailModal } from '../AnalysisDetailModal'
@@ -25,108 +26,14 @@ export default class AnalysisDetailApi extends BaseApiService {
   public cancelPublishReport(obj?: any) {
     return this.post(`/qcAnalysis/cancelPublish`, appStore.queryObj)
   }
-
-  // /** 更新上月质量问题，持续改进效果评价 */
-  // public updateImproveItemCompareList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/improveItemCompareList`, obj)
-  // }
-  // /** 更新检查科室描述语 */
-  // public updateCheckDeptDesc(checkDeptDesc?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     checkDeptDesc: checkDeptDesc
-  //   }
-  //   return this.post(`/qcAnalysis/update/checkDeptDesc`, obj)
-  // }
-  // /** 更新2-1 */
-  // public updateReport(report?: any) {
-  //   return this.post(`/qcAnalysis/update/report`, report)
-  // }
-  // /** 更新质量扣分比 */
-  // public updateTypeCompareList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/typeCompareList`, obj)
-  // }
-  // /** 更新本月质量扣分科室排序 */
-  // public updateDeptItemList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/deptItemList`, obj)
-  // }
-
-  // /** 更新重点问题 */
-  // public updateDetailItemList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/detailItemList`, obj)
-  // }
-  // /** 更新亮点问题 */
-  // public updateHighlightItemList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/highlightItemList`, obj)
-  // }
-  // /** 更新重点问题 */
-  // public updateKeyItemList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/keyItemList`, obj)
-  // }
-  // /** 更新持续改进问题 */
-  // public updateCurrentImproveItemList(itemList?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     itemList: itemList
-  //   }
-  //   return this.post(`/qcAnalysis/update/currentImproveItemList`, obj)
-  // }
-  // /** 更新追踪科室 */
-  // public updateFollowUpDeptDesc(followUpDeptDesc?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     followUpDeptDesc: followUpDeptDesc
-  //   }
-  //   return this.post(`/qcAnalysis/update/followUpDeptDesc`, obj)
-  // }
-  // /** 更新下个月重点检查 */
-  // public updateKeyCheckItemDesc(keyCheckItemDesc?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     keyCheckItemDesc: keyCheckItemDesc
-  //   }
-  //   return this.post(`/qcAnalysis/update/keyCheckItemDesc`, obj)
-  // }
-  // /** 更新建议 */
-  // public updateSuggestions(suggestions?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     suggestions: suggestions
-  //   }
-  //   return this.post(`/qcAnalysis/update/suggestions`, obj)
-  // }
-  // /** 更新报告名称 */
-  // public updateReportName(reportName?: any) {
-  //   let obj = {
-  //     ...analysisDetailModal.report,
-  //     reportName: reportName
-  //   }
-  //   return this.post(`/qcAnalysis/update/reportName`, obj)
-  // }
+  /**查看详细报告 */
+  public getPageDetaile(reportId: number) {
+    return this.get(`/baseReport/getReport/${reportId}`)
+  }
+  /**保存属性类型报告数据 */
+  public saveReportFieldData(data:any) {
+    return this.post(`/reportFieldData/save`,data)
+  }
 }
 
 export const analysisDetailApi = new AnalysisDetailApi()
