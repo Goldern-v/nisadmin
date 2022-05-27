@@ -23,7 +23,7 @@ const getId = () => {
   return `input${new Date().getTime()}${parseInt((Math.random() * 1000000000000).toString())}`
 }
 
-export default function InputColumnRender(porps: Props) {
+export default function InputColumnRender(props: Props) {
   const {
     className,
     cellDisabled,
@@ -36,7 +36,7 @@ export default function InputColumnRender(porps: Props) {
     onBlur,
     onSelect,
     multiple,
-  } = porps
+  } = props
 
   const [editValue, setEditValue] = useState('')
   const [editVisible, setEditVisible] = useState(false)
@@ -71,7 +71,10 @@ export default function InputColumnRender(porps: Props) {
       dataSource={_options}
       value={editValue}
       filterOption={(inputValue:string, option:any) =>
-        option.props.children.indexOf(inputValue) !== -1
+        {
+          if (multiple) return true
+          return option.props.children.indexOf(inputValue) !== -1
+        }
       }
       onChange={value => {
         value = value ? value.toString().replace(/\n/g, '') : ''

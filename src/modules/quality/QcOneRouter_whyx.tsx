@@ -3,7 +3,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import QualityControlRecord from "./views/qualityControlRecord/QualityControlRecord";
-import Analysis from "./views/analysis/Analysis";
+import Analysis from "./views/analysisWhyx/Analysis";
 import SummaryReport from "./views/summaryReport/SummaryReport";
 import ProblemSummary from "./views/problemSummary/ProblemSummary";
 
