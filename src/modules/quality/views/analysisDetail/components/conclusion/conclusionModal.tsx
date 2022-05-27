@@ -22,18 +22,6 @@ export default function qualityIndexModal(props: Props) {
       align: 'center',
       dataIndex: "zb",
       width: 60,
-      // render(text:string, record:any, index:number) {
-      //   return (
-      //     <TextArea
-      //       className='cell-textArea'
-      //       value={record.zb|| ''}
-      //       onChange={(e) => {
-      //         record.zb = e.target.value
-      //         setData(cloneData)
-      //       }}
-      //     />
-      //   )
-      // },
     },
     {
       title: '主要问题',
