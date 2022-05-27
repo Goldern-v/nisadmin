@@ -74,4 +74,9 @@ const Wrapper = styled.div`
     font-weight: bold;
     margin-right: 60px;
   }
+  button {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+  }
 `
