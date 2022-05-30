@@ -21,11 +21,9 @@ export default observer(function AnalysisDetail() {
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])
-  let report: Report = analysisDetailModal.current.getDataInAllData('report')
+  let report: Report = analysisDetailModal.current.getDataInAllData('pageInfo')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
-    let title = document.title
-    document.title = report.reportName
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -63,9 +61,6 @@ export default observer(function AnalysisDetail() {
          tr{ page-break-inside:avoid; page-break-after:auto }
       `
     })
-    setTimeout(() => {
-      document.title = title
-    }, 500)
   }
   const onDelete = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
@@ -105,7 +100,7 @@ export default observer(function AnalysisDetail() {
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
+            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status'>保存</span>:<span className='status'>发布</span>}</span>}
           </span>
         </div>
         <div className='tool-con'>
@@ -123,7 +118,7 @@ export default observer(function AnalysisDetail() {
       </HeadCon>
       <ScrollCon>
         <Page ref={pageRef} className='print-page'>
-          <Header sectionTitle={`2022年护理部${1}病区${5}月工作报表（护士长)`}></Header>
+          <Header sectionTitle={report.reportName}></Header>
           {analysisDetailModal.current.sectionList.map((item: any, index: number) => {
             if (item.sectionId) {
               let Components = analysisDetailModal.current.getSection(item.sectionId)
@@ -174,6 +169,11 @@ const HeadCon = styled.div`
     button {
       margin-left: 15px;
     }
+  }
+  .status {
+    color:red;
+    font-size: 14px;
+    margin-left:10px
   }
 `
 const Page = styled.div`
