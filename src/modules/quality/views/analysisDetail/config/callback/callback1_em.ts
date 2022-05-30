@@ -69,6 +69,13 @@ export const obj =  {
           index1: '',
         }
       ],
+      '3_4': {
+        i1: '1',
+        i2: '1',
+        i3: '1',
+        i4: '1',
+        i5: '1',
+      },
       '4_4': {
         q: 'question',
         r: {
@@ -115,6 +122,7 @@ export const obj =  {
     (this as any).getSectionData('2_3').list = (this as any).allData['key2_3'];
     (this as any).getSectionData("3_1").text = (this as any).allData["key3_1"];
     (this as any).getSectionData("3_1").list = (this as any).allData["3_3"];
+    (this as any).getSectionData('3_4').list = (this as any).allData['3_4'];
     (this as any).getSectionData('4_4').value = (this as any).allData['4_4'];
     (this as any).getSectionData('4_8').report = (this as any).allData.report;
     (this as any).getSectionData('4_0').value = (this as any).allData.img;

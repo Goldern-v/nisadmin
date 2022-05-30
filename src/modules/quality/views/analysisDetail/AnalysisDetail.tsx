@@ -18,6 +18,8 @@ export default observer(function AnalysisDetail() {
   const pageRef: any = useRef<HTMLElement>()
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
+  const { queryObj } = appStore
+  console.log('test-',analysisDetailModal.current.routePath)
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])
@@ -64,30 +66,30 @@ export default observer(function AnalysisDetail() {
   }
   const onDelete = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      analysisDetailApi.deleteReport().then((res) => {
+      analysisDetailApi.deleteReport(queryObj.id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
   }
   const onPublish = () => {
     globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
-      analysisDetailApi.publishReport().then((res) => {
+      analysisDetailApi.publishReport(queryObj.id).then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
   }
   const onCancelPublish = () => {
     globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
-      analysisDetailApi.cancelPublishReport().then((res) => {
+      analysisDetailApi.revokeReport(queryObj.id).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
@@ -96,7 +98,7 @@ export default observer(function AnalysisDetail() {
     <Wrapper>
       <HeadCon>
         {/* check: 需要修改 */}
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/analysis' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '分析报告', link: analysisDetailModal.current.routePath }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>

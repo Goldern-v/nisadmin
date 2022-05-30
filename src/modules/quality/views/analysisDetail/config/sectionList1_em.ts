@@ -18,6 +18,8 @@ import planCompletionSection from "../components/planCompletion/planCompletionSe
 import planCompletionModal from "../components/planCompletion/planCompletionModal";
 import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
+import OperationEmSection from '../components/operation-em/section'
+import OperationEmModal from '../components/operation-em/modal'
 // 二级质控汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -193,9 +195,20 @@ export const sectionList: SectionListItem[] = [
     async onSave(val: any) {
       (this as any).setSectionData("3_3", val);
     },
-    
     section: tableSection,
     modal: tableModal,
+  },
+  {
+    sectionId: '3_4',
+    sectionTitle: '4、科室经营情况:',
+    modalTitle: '编辑科室经营情况',
+    data: {},
+    async onSave (val: any) {
+      console.log('test-val', val);
+      (this as any).setSectionData('3_4', [{}])
+    },
+    section: OperationEmSection,
+    modal: OperationEmModal
   },
   {
     sectionId: "4_4",

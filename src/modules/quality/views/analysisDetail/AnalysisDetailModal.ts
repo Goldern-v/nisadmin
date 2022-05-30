@@ -1,6 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import { data } from 'jquery';
-import { sectionList } from './../../../badEventsNew/views/BadEventReport/config/sectionList';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
 import React from 'react'
@@ -16,7 +14,7 @@ import { obj as obj1Dept } from './config/callback/callback1_dept'
 import { obj as obj1Em } from './config/callback/callback1_em'
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
-import { AllData, DeptItem, DetailItem } from './types'
+import { AllData } from './types'
 export interface SectionListItem extends Record<string, any> {
   sectionId?: string
 
@@ -137,6 +135,17 @@ export class AnalysisDetailModal {
     return this.getDataInAllData('report') || {}
   }
 
+  @observable private queryObj: any = appStore.queryObj
+  
+  /**路由路径 */
+  @computed
+  get routePath() {
+    let { id, level, type } = this.queryObj
+    if (level == 1) return '/qcOneWhyx/analysis?level=1'
+    if (level == 2) return '/qcTwoWhyx/analysis?level=2'
+    return ''
+  }
+
   /** 数据初始化 */
   initData() {
     // 实例化并使用bind绑定数据
@@ -184,7 +193,7 @@ export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: secti
 
 //url链接数据
 export const getModal = () => {
-  
+  const queryObj = appStore.queryObj
   // level=1&deptName=病区
   if (queryObj?.level == '2') {
     return analysisDetailModal2

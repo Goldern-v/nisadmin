@@ -17,12 +17,12 @@ export default class AnalysisDetailApi extends BaseApiService {
 
   //   return this.post(`/qcAnalysis/getReport`, appStore.queryObj)
   // }
-  public deleteReport(obj?: any) {
-    return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
-  }
-  public publishReport(obj?: any) {
-    return this.post(`/qcAnalysis/publish`, appStore.queryObj)
-  }
+  // public deleteReport(obj?: any) {
+  //   return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
+  // }
+  // public publishReport(obj?: any) {
+  //   return this.post(`/qcAnalysis/publish`, appStore.queryObj)
+  // }
   public cancelPublishReport(obj?: any) {
     return this.post(`/qcAnalysis/cancelPublish`, appStore.queryObj)
   }
@@ -33,6 +33,19 @@ export default class AnalysisDetailApi extends BaseApiService {
   /**保存属性类型报告数据 */
   public saveReportFieldData(data:any) {
     return this.post(`/reportFieldData/save`,data)
+  }
+  /**发布报告 */
+  public publishReport(reportId: number) {
+    return this.post(`/baseReport/publish/${reportId}
+    /baseReport/revoke/${reportId}`)
+  }
+  /**撤销报告 */
+  public revokeReport(reportId: number) {
+    return this.post(`/baseReport/revoke/${reportId}
+    /baseReport/revoke/${reportId}`)
+  }
+  public deleteReport(reportId: number) {
+    return this.post(`/baseReport/delete/${reportId}`)
   }
 }
 
