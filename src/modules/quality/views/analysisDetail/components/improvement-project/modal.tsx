@@ -102,7 +102,6 @@ export default observer(function ImprovementProjectModal(props: Props) {
       </div>
       <div className='ipt'>
         <TextArea value={report.q} onChange={(e:any) => { handleChange(e.target.value, 'q')}} autosize={{minRows: 3}} />
-
       </div>
       <div>
         A: 标准化内容
@@ -118,16 +117,7 @@ export default observer(function ImprovementProjectModal(props: Props) {
 })
 const ModalMainCon = styled(MainCon)`
   margin: 0;
-  .ipt>.ant-input, .ipt--small>.ant-input {
-    border: none;
-    resize: none;
-    line-height: 21px;
-    padding: 0;
-    outline: none;
-    &:focus {
-      outline: none;
-      border: none;
-      box-shadow: none;
-    }
+  .ipt, .ipt--small {
+    padding: 0px;
   }
 `

@@ -18,3 +18,18 @@ export const tableCon = styled.div`
     }
   }
 ` as any
+
+export const FieldDataCon = styled.div`
+  textarea {
+    line-height: 21px;
+    width: 100%;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    border: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+` as any

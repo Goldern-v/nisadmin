@@ -84,26 +84,26 @@ export default observer(function FishBon(props: Props) {
     <Wrapper boneTitle={['人','机','物','法','环']}>
       <div className='body'>
         <div className='body-item'>
-          <div className='body-bone'></div>
+          <div className='body-bone' onClick={() => {changeFocus('r')}}></div>
           <div className='body-bone'></div>
           <div className='body-item__text' onClick={() => {changeFocus('r')}}>{obj.r}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
+          <div className='body-bone' onClick={() => {changeFocus('j')}}></div>
           <div className='body-bone'></div>
           <div className='body-item__text' onClick={() => {changeFocus('j')}}>{obj.j}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
+          <div className='body-bone' onClick={() => {changeFocus('w')}}></div>
           <div className='body-item__text' onClick={() => {changeFocus('w')}}>{obj.w}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
+          <div className='body-bone' onClick={() => {changeFocus('f')}}></div>
           <div className='body-bone'></div>
           <div className='body-item__text' onClick={() => {changeFocus('f')}}>{obj.f}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
+          <div className='body-bone' onClick={() => {changeFocus('h')}}></div>
           <div className='body-item__text' onClick={() => {changeFocus('h')}}>{obj.h}</div>
         </div>
         {isFocus && isEdit && (<Input.TextArea ref={iptRef} rows={6} value={curVal.value} style={iptSty} onChange={(e: any) => changeCurVal(e)} onBlur={() => handleBlur()} />)}
@@ -236,13 +236,9 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
       position: relative;
       z-index: 3;
     }
-    .ant-input {
-      background: transparent;
-    }
   }
   .ant-input {
     font-size: 13px;
     line-height: 17px;
-    resize: none;
   }
 `

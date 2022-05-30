@@ -1,9 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
-import { Input } from 'src/vendors/antd'
-import { Report } from '../../types'
-import { getModal } from '../../AnalysisDetailModal'
-import { message } from 'antd'
 import MultiFileUploader from 'src/components/MultiFileUploader'
 export interface Props {
   sectionId: string

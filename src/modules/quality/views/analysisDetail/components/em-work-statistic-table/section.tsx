@@ -5,6 +5,8 @@ import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
 import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
 import BaseTable from 'src/components/BaseTable'
+import moment from 'moment'
+import { ColumnProps } from 'antd/es/table'
 
 export interface Props {
   sectionId: string
@@ -12,30 +14,29 @@ export interface Props {
   modalTitle?: string | undefined,
 }
 
-export default observer(function ProblemImproveTableSection(props: Props) {
+export default observer(function EmWorkStatisticTableSection(props: Props) {
   let { sectionId, sectionTitle } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let value: any[] = (data ? data.value : []) || []
-  const columns = [
+  let Year:string = moment().format('YYYY')
+  const columns: ColumnProps<any>[] = [
     {
       key: 'deptName',
-      title: '质量项目',
+      dataIndex: 'deptName',
+      title: '项目',
       width: 110,
     },
     {
-      key: 'deptName',
-      title: '主要问题（汇总A、B-A类问题）',
-      width: 110,
-    },
-    {
-      key: 'empName',
-      title: '原因分析及整改措施',
+      key: 'mq',
+      dataIndex: 'mq',
+      title: Number(Year) - 1 + '年' ,
       width: 200,
     },
     {
-      key: 'score',
-      title: '效果评价',
+      key: 'empName',
+      dataIndex: 'empName',
+      title: Year + '年',
       width: 200,
     },
   ]
@@ -56,6 +57,12 @@ const Wrapper = styled.div`
     position: absolute;
     top: 0px;
     right: 20px;
+  }
+  .text-box {
+    padding-left: 65px;
+    padding-right: 15px;
+    padding-bottom: 2px;
+    padding-top: 2px;
   }
 `
 

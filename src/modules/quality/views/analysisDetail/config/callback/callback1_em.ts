@@ -44,17 +44,30 @@ export const obj =  {
           { zb: "护理指标高评分", zywt: "护理部门主要问题是红红火火恍恍惚惚或", yyfx: "原因分析原因分析原因分析哈哈哈", zgcs: "整改护理部署的措施", xgpj: "满意满意继续努力" },
           { zb: "护理指标高评分", zywt: "护理部门主要问题是红红火火恍恍惚惚或", yyfx: "原因分析原因分析原因分析哈哈哈", zgcs: "整改护理部署的措施", xgpj: "满意满意继续努力" },
         ]
-
+      },
+      key3_1:
+      {
+        ygznr:
+        {
+        gzjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+        pxjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+        },
+        wcqk:
+        {
+        gzjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+        pxjh:' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
+        }
       },
       '3_3': [
-        
         {
-          deptName: '',
-          empName: '',
-          score: '',
-          mq: ''
+          year: '2020',
+          index4: '',
+          index3: '',
+          index2: '',
+          index0: '',
+          index5: '',
+          index1: '',
         }
-        
       ],
       '4_4': {
         q: 'question',
@@ -100,9 +113,9 @@ export const obj =  {
     (this as any).getSectionData('2_1').list = (this as any).allData['key2_1'];
     (this as any).getSectionData('2_2').list = (this as any).allData['key2_2'];
     (this as any).getSectionData('2_3').list = (this as any).allData['key2_3'];
-    (this as any).getSectionData('3_3').value = (this as any).allData['3_3'];
+    (this as any).getSectionData("3_1").text = (this as any).allData["key3_1"];
+    (this as any).getSectionData("3_1").list = (this as any).allData["3_3"];
     (this as any).getSectionData('4_4').value = (this as any).allData['4_4'];
-    (this as any).getSectionData('4_7').value = replenishList((this as any).allData['4_7'], 6);
     (this as any).getSectionData('4_8').report = (this as any).allData.report;
     (this as any).getSectionData('4_0').value = (this as any).allData.img;
     (this as any).getSectionData('5_1').report = (this as any).allData.report;

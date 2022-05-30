@@ -83,6 +83,7 @@ export default observer(function Analysis() {
     {
       title: "科室",
       key: "wardName",
+      dataIndex: 'wardName',
       align: "left",
       width: 120,
     },
@@ -114,6 +115,12 @@ export default observer(function Analysis() {
       dataIndex: "createTime",
       width: 120,
       align: "center",
+    },
+    {
+      title: '发布人',
+      key: 'publisherName',
+      dataIndex: 'publisherName',
+      width: 120,
     },
     {
       title: "状态",
