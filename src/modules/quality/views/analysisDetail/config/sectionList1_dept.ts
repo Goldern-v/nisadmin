@@ -51,7 +51,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_1',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_1', [{}])
+      (this as any).setSectionData('2_1', val)
     },
     section: qualityIndexSection,
     modal: qualityIndexModal
@@ -64,7 +64,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_2', val)
     },
     section: departmentResultSection,
     modal: departmentResultModal
@@ -74,10 +74,10 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '3、结论:',
     modalTitle: '编辑结论',
     data: {},
-    keyName: 'key2_2',
+    keyName: 'key2_3',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_3', val)
     },
     section: conclusionSection,
     modal: conclusionModal
@@ -94,10 +94,10 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '1、本月计划完成情况:',
     modalTitle: '编辑本月计划完成情况',
     data: {},
-    keyName: 'key2_2',
+    keyName: 'key3_1',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('3_1', val)
     },
     section: planCompletionSection,
     modal: planCompletionModal
@@ -110,7 +110,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key3_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('3_2', [{}])
+      (this as any).setSectionData('3_2', val)
     },
     section: OperationSection,
     modal: OperationMoadl
@@ -123,7 +123,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key3_3',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('3_3', [{}])
+      (this as any).setSectionData('3_3', val)
     },
     section: ImprovementsSection,
     modal: ImprovementsMoadl
@@ -157,7 +157,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '8、特殊事件及需解决的问题',
     modalTitle: '编辑特殊事件及需解决的问题',
     data: {},
-    keyName: 'key4_8',
+    keyName: 'specialEventSolvedProblem',
     async onSave (val: any) {
       (this as any).setSectionData('4_8', val)
     },
@@ -176,7 +176,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '1、科室工作计划',
     modalTitle: '编辑科室工作计划',
     data: {},
-    keyName: 'key5_1',
+    keyName: 'deptWorkPlanForNextMonth',
     async onSave (val: any) {
       (this as any).setSectionData('5_1', val)
     },
@@ -188,7 +188,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '2、科室培训计划',
     modalTitle: '编辑科室培训计划',
     data: {},
-    keyName: 'key5_2',
+    keyName: 'nextMonthDeptTrainingPlan',
     async onSave (val: any) {
       (this as any).setSectionData('5_2', val)
     },

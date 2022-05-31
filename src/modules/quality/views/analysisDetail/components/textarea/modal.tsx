@@ -14,8 +14,7 @@ export interface Props {
 export default function TextareaModal(props: Props) {
   let { sectionId, setData, data } = props
   const analysisDetailModal = useRef(getModal())
-
-  let report: Report = (data ? data.report : {}) || {}
+  let report: Report = (data ? data.value : {}) || {}
   let section = analysisDetailModal.current.getSection(sectionId)
   const keyName = section?.keyName ? section.keyName : ''
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -25,7 +24,7 @@ export default function TextareaModal(props: Props) {
     }
     if (setData) {
       setData({
-        report: { ...report, [keyName]: e.target.value }
+        value: {...report,[keyName]:e.target.value}
       })
     }
   }

@@ -51,7 +51,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_1',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_1', [{}])
+      (this as any).setSectionData('2_1', val)
     },
     section: qualityIndexSection,
     modal: qualityIndexModal
@@ -64,7 +64,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_2', val)
     },
     section: departmentResultSection,
     modal: departmentResultModal
@@ -77,7 +77,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_2', val)
     },
     section: conclusionSection,
     modal: conclusionModal
