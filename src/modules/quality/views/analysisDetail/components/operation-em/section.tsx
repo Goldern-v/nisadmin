@@ -5,6 +5,7 @@ import { LastImproveItem, Report } from "../../types";
 import { getModal } from "../../AnalysisDetailModal";
 import EditButton from "src/modules/quality/components/EditButton";
 import TwoLevelTitle from "src/modules/quality/components/TwoLevelTitle";
+import { OperationSecCon } from "../../style/section";
 export interface Props {
   sectionId: string;
   sectionTitle?: string | undefined;
@@ -27,8 +28,7 @@ export default observer(function OperationEmSection(props: Props) {
       <div className="context">（1）人力资源情况：</div>
       <div className="context">急诊：</div>
       <div className="context">
-        区域定编：<div>{}</div>人;实际编制:<div>{}</div>人;
-        截止本月底实际在岗:
+        区域定编：<div>{}</div>人;实际编制:<div>{}</div>人; 截止本月底实际在岗:
         <div>{1}</div>人
       </div>
       <div className="context">
@@ -49,7 +49,7 @@ export default observer(function OperationEmSection(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled.div`
+const Wrapper = styled(OperationSecCon)`
   min-height: 60px;
   position: relative;
   .title {
@@ -57,25 +57,10 @@ const Wrapper = styled.div`
     font-weight: bold;
     margin-right: 60px;
   }
-  .context {
-    /* text-align: center; */
-    margin-left: 50px;
-  }
+
   button {
     position: absolute;
     top: 0px;
     right: 20px;
   }
-  .context div {
-    display: inline-block;
-    width: 60px;
-    text-align: center;
-    border-bottom: 1px solid #000;
-  }
-`;
-
-const TextCon = styled.pre`
-  margin: 10px 50px;
-  min-height: 40px;
-  white-space: pre-wrap;
 `;

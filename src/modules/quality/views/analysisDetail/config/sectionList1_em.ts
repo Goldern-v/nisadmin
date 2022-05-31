@@ -20,7 +20,7 @@ import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
 import OperationEmSection from '../components/operation-em/section'
 import OperationEmModal from '../components/operation-em/modal'
-// 二级质控汇总配置
+// 一级质控汇总配置 急诊
 export const sectionList: SectionListItem[] = [
   {
     sectionId: "1_1",
@@ -95,6 +95,17 @@ export const sectionList: SectionListItem[] = [
     },
     section: planCompletionSection,
     modal: planCompletionModal,
+  },
+  {
+    sectionId: "3_2",
+    sectionTitle: "2、本月急诊护理工作量统计（与上一年同期对比）",
+    modalTitle: "编辑本月急诊护理工作量统计",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_2", val);
+    },
+    section: tableSection,
+    modal: tableModal,
   },
   {
     sectionId: "3_3",
@@ -209,6 +220,36 @@ export const sectionList: SectionListItem[] = [
     },
     section: OperationEmSection,
     modal: OperationEmModal
+  },
+  {
+    sectionId: '3_5',
+    sectionTitle: "5、本月护理质量问题分析改进",
+    data: {
+      level: 2
+    },
+    section: LevelTitleSection,
+  },
+  {
+    sectionId: "3_5_1",
+    sectionTitle: "（1）急诊",
+    modalTitle: "编辑急诊",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_5_1", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
+  {
+    sectionId: "3_5_2",
+    sectionTitle: "（2）日间病房",
+    modalTitle: "编辑日间病房",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_5_2", val);
+    },
+    section: tableSection,
+    modal: tableModal,
   },
   {
     sectionId: "4_4",

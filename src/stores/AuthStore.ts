@@ -261,6 +261,34 @@ export default class AuthStore {
   public get isOnlyInternsManage() {
     return this.user && this.user.userType == "1" ? true : false;
   }
+  /**是否是张俊 */
+  public get isZJ() {
+    return !!(this.user && this.user.empNo === '284')
+  }
+  /**是否是胡柳 */
+  public get isHL() {
+    return !!(this.user && this.user.empNo === '75')
+  }
+  public get isEmpNoAdmin() {
+    return !!(this.user && this.user.empNo == 'admin')
+  }
+  // 三级质控已发布查看权限 护士长，护理部
+  public get level3publishedWatch() {
+    return this.isRoleManage || this.isDepartment
+  }
+  // 三级质控审核权限
+  public get level3Check() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin
+  }
+  // 二级质控查看权限
+  public get level2Watch() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse
+  }
+  // 一级质控查看权限
+  public get level1Watch() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isOnlyRoleManage
+  }
+  
 
   /** 用户初始化 */
   @action

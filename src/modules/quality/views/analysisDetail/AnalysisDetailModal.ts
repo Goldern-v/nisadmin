@@ -1,3 +1,4 @@
+import { authStore } from './../../../../stores/index';
 import { observer } from 'mobx-react-lite';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
@@ -142,8 +143,15 @@ export class AnalysisDetailModal {
   get routePath() {
     let { id, level, type } = this.queryObj
     if (level == 1) return '/qcOneWhyx/analysis?level=1'
-    if (level == 2) return '/qcTwoWhyx/analysis?level=2'
+    if (level == 2) return '/qcTwo/analysis?level=2'
     return ''
+  }
+
+  // 审核权限
+  public get checkRole() {
+    let { level } = this.queryObj
+    if (level == 1) return authStore.level2Watch
+    return authStore.level3Check 
   }
 
   /** 数据初始化 */

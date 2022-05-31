@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MainCon  = styled.div`
   margin: 10px 30px;
   display: grid;
-  grid-template-rows: 36px auto;
+  grid-template-rows: 36px auto auto;
   grid-template-columns: 50% auto;
   grid-gap: 1px 1px;
   background-color: #e7e7e7;

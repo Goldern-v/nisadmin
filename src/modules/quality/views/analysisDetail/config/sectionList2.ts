@@ -1,5 +1,4 @@
 import { SectionListItem } from '../AnalysisDetailModal'
-import TextareaSection from '../components/textarea/section'
 import TextareaSection2 from '../components/textarea/section2'
 import TextareaModal from '../components/textarea/modal'
 import ImprovementProjectSection from '../components/improvement-project/section'
@@ -15,6 +14,13 @@ import departmentResultSection from '../components/departmentResult/departmentRe
 import departmentResultModal from '../components/departmentResult/departmentResultModal'
 import conclusionSection from '../components/conclusion/conclusionSection'
 import conclusionModal from '../components/conclusion/conclusionModal'
+import tableSection from "../components/table/section";
+import tableModal from "../components/table/modal";
+import planCompletionSection from "../components/planCompletion/planCompletionSection";
+import planCompletionModal from "../components/planCompletion/planCompletionModal";
+
+import Operation2Section from '../components/operation-2/section'
+import Operation2Modal from '../components/operation-2/modal'
 // 二级质控汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -39,8 +45,8 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: '2_1',
-    sectionTitle: '1、科室一级质量结果',
-    modalTitle: '编辑质量指标',
+    sectionTitle: '1、二级质量指标结果',
+    modalTitle: '编辑二级质量指标结果',
     data: {},
     keyName: 'key2_1',
     async onSave (val: any) {
@@ -52,7 +58,7 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: '2_2',
-    sectionTitle: '2、科室专科护理监测指标结果',
+    sectionTitle: '2、区域监测指标结果',
     modalTitle: '编辑监测指标结果',
     data: {},
     keyName: 'key2_2',
@@ -76,7 +82,51 @@ export const sectionList: SectionListItem[] = [
     section: conclusionSection,
     modal: conclusionModal
   },
-  
+  {
+    sectionId: "3",
+    sectionTitle: "三、本月工作完成情况",
+    data: {
+      level: 1,
+    },
+    section: LevelTitleSection,
+  },
+  {
+    sectionId: "3_1",
+    sectionTitle: "1、本月计划完成情况:",
+    modalTitle: "编辑本月计划完成情况",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_1", val);
+    },
+    section: planCompletionSection,
+    modal: planCompletionModal,
+  },
+  {
+    sectionId: '3_2',
+    sectionTitle: '2、科室经营情况:',
+    modalTitle: '编辑科室经营情况',
+    data: {
+      value: {
+        i: ''
+      }
+    },
+    async onSave (val: any) {
+      (this as any).setSectionData('3_2', val)
+    },
+    section: Operation2Section,
+    modal: Operation2Modal
+  },
+  {
+    sectionId: "3_3",
+    sectionTitle: "3、本月护理质量问题分析改进",
+    modalTitle: "编辑本月护理质量问题分析改进",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_3", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
   {
     sectionId: '4_4',
     sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
@@ -90,11 +140,32 @@ export const sectionList: SectionListItem[] = [
     modal: ImprovementProjectModal
   },
   {
+    sectionId: "3_5",
+    sectionTitle: "5、区域护理不良事件",
+    modalTitle: "编辑区域护理不良事件",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_5", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
+  {
+    sectionId: "3_6",
+    sectionTitle: "6、参与安全讨论及床边查房：（科室、主要内容）",
+    modalTitle: "编辑参与安全讨论及床边查房",
+    data: {},
+    async onSave(val: any) {
+      (this as any).setSectionData("3_6", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
+  {
     sectionId: '4_7',
     sectionTitle: '7、科室护士长管理工作评价结果：',
     modalTitle: '编辑科室护士长管理工作评价结果',
     data: {},
-    keyName: '',
     async onSave (val: any) {
       (this as any).setSectionData('4_7', val)
     },

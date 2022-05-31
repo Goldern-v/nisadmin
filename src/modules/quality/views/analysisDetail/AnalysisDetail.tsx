@@ -19,7 +19,6 @@ export default observer(function AnalysisDetail() {
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
   const { queryObj } = appStore
-  console.log('test-',analysisDetailModal.current.routePath)
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])
@@ -108,9 +107,10 @@ export default observer(function AnalysisDetail() {
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {report.status == '1' && analysisDetailModal.current.checkRole && (
             <Button onClick={onCancelPublish}>撤销</Button>
-          ) : (
+          )}
+          { report.status != '1' && analysisDetailModal.current.checkRole && (
             <Button onClick={onPublish}>发布</Button>
           )}
 

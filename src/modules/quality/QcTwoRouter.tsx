@@ -91,6 +91,7 @@ export default observer(function QcTwoRouter(props: Props) {
     path: "/qcTwo/analysis?level=2",
     component: Analysis,
     keepAlive: true,
+    hide: authStore.level2Watch,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
   };
 

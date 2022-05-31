@@ -33,3 +33,34 @@ export const FieldDataCon = styled.div`
     }
   }
 ` as any
+
+export const OperationModCon = styled.div`
+  .context {
+    /* text-align: center; */
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 10px;
+    &.context-title {
+      margin-left: 0px;
+    }
+  }
+
+  .context .ant-input {
+    width: 60px;
+    padding: 0;
+    height: 28px;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+      box-shadow: none;
+    }
+  }
+` as any
