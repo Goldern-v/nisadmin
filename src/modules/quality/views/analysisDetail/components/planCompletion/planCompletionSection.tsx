@@ -17,8 +17,7 @@ export default observer(function planCompletionSection(props: Props) {
   let { sectionId, sectionTitle } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let ygznr=data.text&&data.text.ygznr
-  let wcqk=data.text&&data.text.wcqk
+  let value=data.value ? data.value : {}
   let report: Report = (data ? data.report : {}) || {}
 
   return (
@@ -37,13 +36,13 @@ export default observer(function planCompletionSection(props: Props) {
             <div className='text'>
               <div className='title'> 1.工作计划:</div>
               <span>
-                {ygznr&&ygznr.gzjh}
+                {value.monthWorkPlan||<span>无</span>}
               </span>
             </div>
             <div className='text'>
               <div className='title'> 2.培训计划:</div>
               <span>
-              {ygznr&&ygznr.pxjh}
+              {value.trainingPlanOfTheMonth||<span>无</span>}
               </span>
             </div>
           </div>
@@ -51,13 +50,13 @@ export default observer(function planCompletionSection(props: Props) {
             <div className='text'>
               <div className='title'> 1.工作计划:</div>
               <span>
-              {wcqk&&wcqk.gzjh}
+              {value.monthWorkDoneCase||<span>无</span>}
               </span>
             </div>
             <div className='text'>
               <div className='title'> 2.培训计划:</div>
               <span>
-              {wcqk&&wcqk.pxjh}
+              {value.monthTrainDoneCase||<span>无</span>}
               </span>
             </div>
           </div>

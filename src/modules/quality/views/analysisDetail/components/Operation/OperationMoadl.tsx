@@ -11,8 +11,8 @@ export interface Props {
 }
 export default function OperationMoadl(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [] })
-  let editData: any = cloneData && cloneData.list
+  let cloneData: any = cloneJson(data || { value: {}})
+  let value: any = cloneData ?  cloneData.value : {}
   useEffect(() => { }, [])
 
   return (
@@ -20,106 +20,106 @@ export default function OperationMoadl(props: Props) {
       <div className='edit_text'>
         <div className='context'>(1) 人员情况:</div>
         <div className='context'>
-          护士定编:<div><input value={editData && editData.hsdb} onChange={(e) => {
-          cloneData.list.hsdb = e.target.value;
+          护士定编:<div><input value={value && value.nurseCount} onChange={(e) => {
+          value.nurseCount = e.target.value;
           setData(cloneData)
         }} /></div>人;
-        实际护士编制:<div><input value={editData && editData.sjbz} onChange={(e) => {
-            cloneData.list.sjbz = e.target.value;
+        实际护士编制:<div><input value={value && value.actualNurseCount} onChange={(e) => {
+            value.actualNurseCount = e.target.value;
             setData(cloneData)
           }} /></div>人;
         </div>
         <div className='context'>
-          助理护士定编:<div><input value={editData && editData.zlhs} onChange={(e) => {
-            cloneData.list.zlhs = e.target.value;
+          助理护士定编:<div><input value={value && value.assistantNurseCount} onChange={(e) => {
+            value.assistantNurseCount = e.target.value;
             setData(cloneData)
           }} /></div>人;
-          实际助理护士:<div><input value={editData && editData.sjzl} onChange={(e) => {
-            cloneData.list.sjzl = e.target.value;
+          实际助理护士:<div><input value={value && value.actualInternNurseCount} onChange={(e) => {
+            value.actualInternNurseCount = e.target.value;
             setData(cloneData)
           }} /></div>人;
         </div>
         <div className='context'>
-          截止本月底实际在岗护士:<div><input value={editData && editData.zghs} onChange={(e) => {
-            cloneData.list.zghs = e.target.value;
+          截止本月底实际在岗护士:<div><input value={value && value.actualDutyNursesCount} onChange={(e) => {
+            value.actualDutyNursesCount = e.target.value;
             setData(cloneData)
           }} /></div>人;
-          在岗助理护士:<div><input value={editData && editData.zgzl} onChange={(e) => {
-            cloneData.list.zgzl = e.target.value;
+          在岗助理护士:<div><input value={value && value.actualDutyInternNurseCount} onChange={(e) => {
+            value.actualDutyInternNurseCount = e.target.value;
             setData(cloneData)
           }} /></div>人;
         </div>
         <div className='context'>(2) (<div style={{width:'30px',color:'blue'}}>{5}</div>月)上月科室住院病人动态:</div>
         <div className='context'>
-          平均床位使用率%:<div><input value={editData && editData.pjcw} onChange={(e) => {
-            cloneData.list.pjcw = e.target.value;
+          平均床位使用率%:<div><input value={value && value.averageBedOccupancy} onChange={(e) => {
+            value.averageBedOccupancy = e.target.value;
             setData(cloneData)
-          }} /></div>人;病床周转次数:<div><input value={editData && editData.bczz} onChange={(e) => {
-            cloneData.list.bczz = e.target.value;
+          }} /></div>人;病床周转次数:<div><input value={value && value.bedTurnovers} onChange={(e) => {
+            value.bedTurnovers = e.target.value;
             setData(cloneData)
-          }} /></div>;科室平均住院日:<div><input value={editData && editData.pjzy} onChange={(e) => {
-            cloneData.list.pjzy = e.target.value;
+          }} /></div>;科室平均住院日:<div><input value={value && value.deptAverageInDepartment} onChange={(e) => {
+            value.deptAverageInDepartment = e.target.value;
             setData(cloneData)
           }} /></div>;
         </div>
         <div className='context'>
-          原有病人数:<div><input value={editData && editData.yybr} onChange={(e) => {
-            cloneData.list.yybr = e.target.value;
+          原有病人数:<div><input value={value && value.existingPatientCount} onChange={(e) => {
+            value.existingPatientCount = e.target.value;
             setData(cloneData)
-          }} /></div>入院人数:<div><input value={editData && editData.ryrs} onChange={(e) => {
-            cloneData.list.ryrs = e.target.value;
+          }} /></div>入院人数:<div><input value={value && value.admissions} onChange={(e) => {
+            value.admissions = e.target.value;
             setData(cloneData)
-          }} /></div> 转入病人数:<div><input value={editData && editData.zrbr} onChange={(e) => {
-            cloneData.list.zrbr = e.target.value;
+          }} /></div> 转入病人数:<div><input value={value && value.transferredPatientCount} onChange={(e) => {
+            value.transferredPatientCount = e.target.value;
             setData(cloneData)
-          }} /></div> 出院人数:<div><input value={editData && editData.cybr} onChange={(e) => {
-            cloneData.list.cybr = e.target.value;
-            setData(cloneData)
-          }} /></div>
-        </div>
-        <div className='context'>
-          转出病人数:<div><input value={editData && editData.zcbr} onChange={(e) => {
-            cloneData.list.zcbr = e.target.value;
-            setData(cloneData)
-          }} /></div> 
-          死亡人数:<div><input value={editData && editData.swbr} onChange={(e) => {
-            cloneData.list.swbr = e.target.value;
-            setData(cloneData)
-          }} /></div>
-          介入手术数:<div><input value={editData && editData.jrss} onChange={(e) => {
-            cloneData.list.jrss = e.target.value;
-            setData(cloneData)
-          }} /></div> 
-          外科手术数:<div><input value={editData && editData.wkss} onChange={(e) => {
-            cloneData.list.wkss = e.target.value;
+          }} /></div> 出院人数:<div><input value={value && value.dischargedPeopleCount} onChange={(e) => {
+            value.dischargedPeopleCount = e.target.value;
             setData(cloneData)
           }} /></div>
         </div>
         <div className='context'>
-          科室护理工作量得分：:<input value={editData && editData.gzdf} onChange={(e) => {
-          cloneData.list.gzdf = e.target.value;
+          转出病人数:<div><input value={value && value.transferredOutPatientCount} onChange={(e) => {
+            value.transferredOutPatientCount = e.target.value;
+            setData(cloneData)
+          }} /></div> 
+          死亡人数:<div><input value={value && value.deathToll} onChange={(e) => {
+            value.deathToll = e.target.value;
+            setData(cloneData)
+          }} /></div>
+          介入手术数:<div><input value={value && value.interventionalProcedureCount} onChange={(e) => {
+            value.interventionalProcedureCount = e.target.value;
+            setData(cloneData)
+          }} /></div> 
+          外科手术数:<div><input value={value && value.numberOfSurgicalOperations} onChange={(e) => {
+            value.numberOfSurgicalOperations = e.target.value;
+            setData(cloneData)
+          }} /></div>
+        </div>
+        <div className='context'>
+          科室护理工作量得分：:<input value={value && value.deptNursingWorkloadScore} onChange={(e) => {
+          value.deptNursingWorkloadScore = e.target.value;
           setData(cloneData)
         }} /></div>
         <div className='context'>
-          (2)(<div style={{width:'30px',color:'blue'}}>{5}</div>月)科室DRGS情况:RW ＞2:<div><input value={editData && editData.RWbigger} onChange={(e) => {
-          cloneData.list.RWbigger = e.target.value;
+          (2)(<div style={{width:'30px',color:'blue'}}>{5}</div>月)科室DRGS情况:RW ＞2:<div><input value={value && value.rw1} onChange={(e) => {
+          value.rw1 = e.target.value;
           setData(cloneData)
         }} /></div>;
-        RW ＜0.5:<div><input value={editData && editData.RWsmall} onChange={(e) => {
-          cloneData.list.RWsmall = e.target.value;
+        RW ＜0.5:<div><input value={value && value.rw2} onChange={(e) => {
+          value.rw2 = e.target.value;
           setData(cloneData)
         }} /></div>;
-        CMI值:<div><input value={editData && editData.CMI} onChange={(e) => {
-          cloneData.list.CMI = e.target.value;
+        cmi值:<div><input value={value && value.cmi} onChange={(e) => {
+          value.cmi = e.target.value;
           setData(cloneData)
         }} /></div>;
-        低风险死亡率:<div><input value={editData && editData.swl} onChange={(e) => {
-          cloneData.list.swl = e.target.value;
+        低风险死亡率:<div><input value={value && value.lowRiskMortality} onChange={(e) => {
+          value.lowRiskMortality = e.target.value;
           setData(cloneData)
         }} /></div>。 </div>
         <div className='context'>
-          (4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div><input value={editData && editData.whcybr} onChange={(e) => {
-          cloneData.list.whcybr = e.target.value;
+          (4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div><input value={value && value.homeServiceRate} onChange={(e) => {
+          value.homeServiceRate = e.target.value;
           setData(cloneData)
         }} /></div></div>
       </div>

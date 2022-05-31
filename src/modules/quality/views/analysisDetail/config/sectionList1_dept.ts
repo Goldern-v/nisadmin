@@ -51,7 +51,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_1',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_1', [{}])
+      (this as any).setSectionData('2_1', val)
     },
     section: qualityIndexSection,
     modal: qualityIndexModal
@@ -64,7 +64,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key2_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_2', val)
     },
     section: departmentResultSection,
     modal: departmentResultModal
@@ -74,10 +74,10 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '3、结论:',
     modalTitle: '编辑结论',
     data: {},
-    keyName: 'key2_2',
+    keyName: 'key2_3',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('2_3', val)
     },
     section: conclusionSection,
     modal: conclusionModal
@@ -94,10 +94,10 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: '1、本月计划完成情况:',
     modalTitle: '编辑本月计划完成情况',
     data: {},
-    keyName: 'key2_2',
+    keyName: 'key3_1',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('2_2', [{}])
+      (this as any).setSectionData('3_1', val)
     },
     section: planCompletionSection,
     modal: planCompletionModal
@@ -110,7 +110,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key3_2',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('3_2', [{}])
+      (this as any).setSectionData('3_2', val)
     },
     section: OperationSection,
     modal: OperationMoadl
@@ -123,7 +123,7 @@ export const sectionList: SectionListItem[] = [
     keyName: 'key3_3',
     async onSave (val: any) {
       console.log('test-val', val);
-      (this as any).setSectionData('3_3', [{}])
+      (this as any).setSectionData('3_3', val)
     },
     section: ImprovementsSection,
     modal: ImprovementsMoadl

@@ -2,112 +2,6 @@ import { replenishList } from "./../../util/tool";
 export const obj = {
   getData() {
     return {
-      key1_1: [
-        {
-          question: "疫情期间上班人手不足",
-          feetback: "问题反馈,需要紧急调配人手",
-        },
-        {
-          question: "疫情期间上班人手不足",
-          feetback: "问题反馈,需要紧急调配人手",
-        },
-        {
-          question: "疫情期间上班人手不足",
-          feetback: "问题反馈,需要紧急调配人手",
-        },
-        {
-          question: "疫情期间上班人手不足",
-          feetback: "问题反馈,需要紧急调配人手",
-        },
-      ],
-      key2_1: {
-        tableData: [
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-          {
-            lx: "过程",
-            xm: "分级护理表质量",
-            zlhgf: "合格分90分",
-            hgl: ">=90%",
-            hgsccs: "9/10",
-            pjf: "92",
-            hgl2: "93%",
-            wdb: "达标",
-          },
-        ],
-        bottom: {
-          blsj: 7,
-          lxjb: "高级",
-        },
-      },
       key2_2: [
         {
           xm: "分级护理表质量",
@@ -185,20 +79,6 @@ export const obj = {
           },
         ],
       },
-      key3_1:
-      {
-        ygznr:
-        {
-          gzjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-          pxjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-        },
-        wcqk:
-        {
-          gzjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-          pxjh: ' 首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划，首先工作计划然后工作计划最后工作计划',
-        }
-
-      },
       key3_2: { hsdb: 98, sjbz: 86, zlhs: 87, sjzl: 76, zghs: 99, zgzl: 45, pjcw: '80%', bczz: 87, pjzy: 8, yybr: 78, ryrs: 98, zrbr: 5, cybr: 19, zcbr: 187, swbr: 0, jrss: 9, wkss: 19, gzdf: 98, RWbigger: 877, RWsmall: 76, CMI: 123812, swl: '3%', whcybr: '80%' },
       key3_3: [
         { zlxm: "（一）分级护理（含基础护理、危重护理、围术期护理等）", zywt: "操作不熟练，操作时间慢123123", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
@@ -253,6 +133,60 @@ export const obj = {
       fieldData: {
         ultQuestion: '',
         improveFeedback: '',
+        monthWorkPlan: "",
+        trainingPlanOfTheMonth: "",
+        monthWorkDoneCase: "",
+        monthTrainDoneCase: "",
+        nurseCount: "",
+        actualNurseCount: "",
+        assistantNurseCount: "",
+        actualInternNurseCount: "",
+        actualDutyNursesCount: "",
+        actualDutyInternNurseCount: "",
+        averageBedOccupancy: "",
+        bedTurnovers: "",
+        deptAverageInDepartment: "",
+        existingPatientCount: "",
+        admissions: "",
+        transferredPatientCount: "",
+        dischargedPeopleCount: "",
+        transferredOutPatientCount: "",
+        deathToll: "",
+        interventionalProcedureCount: "",
+        numberOfSurgicalOperations: "",
+        deptNursingWorkloadScore: "",
+        cmi: "",
+        lowRiskMortality: "",
+        specialEventSolvedProblem: "",
+        livePictures: "",
+        deptWorkPlanForNextMonth: "",
+        nextMonthDeptTrainingPlan: "",
+        reportAdverseEvents: "1221",
+        eventTypeAndLevel: "测试",
+        overallIndicator: "11",
+        standardIndicators: "123",
+        nonComplianceIndicators: "11",
+        rw1: "",
+        rw2: "",
+        causeAnalysisPeople: "",
+        homeServiceRate: "",
+        question: "问题",
+        causeAnalysisMachine: "机",
+        causeAnalysisThing: "物",
+        causeAnalysisLaw: "法",
+        causeAnalysisRing: "环",
+        causeAnalysisQuestion: "原因分析问题",
+        mainReason: "",
+        setGoal: "",
+        planPrincipal: "",
+        planImplementationSite: "",
+        planImplementationTime: "",
+        planCountermeasures: "",
+        planMainReason: "",
+        planQuestion: "",
+        implementation: "",
+        effectConfirmed: "",
+        standardizedContent: "",
       },
       pageData: {
         id: null,
@@ -274,13 +208,15 @@ export const obj = {
   },
   formatData() {
     (this as any).getSectionData("1_1").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_1").list = (this as any).allData["key2_1"];
     (this as any).getSectionData("2_2").list = (this as any).allData["key2_2"];
-    (this as any).getSectionData("2_3").list = (this as any).allData["key2_3"];
-    (this as any).getSectionData("3_1").text = (this as any).allData["key3_1"];
-    (this as any).getSectionData("3_2").list = (this as any).allData["key3_2"];
+    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_1").list= {};
+    (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_3").list = (this as any).allData["key3_3"];
-    (this as any).getSectionData("4_4").value = (this as any).allData["4_4"];
+    (this as any).getSectionData("4_4").value = (this as any).allData.fieldData;
     (this as any).getSectionData("4_7").value = replenishList(
       (this as any).allData["4_7"],
       6

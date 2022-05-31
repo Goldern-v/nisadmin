@@ -19,6 +19,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let report: any = (data ? data.value : {}) || {}
+  console.log(12);
   
   return (
     <Wrapper>

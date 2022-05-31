@@ -49,13 +49,14 @@ export default observer(function ProblemImpSection(props: Props) {
   let { sectionId, sectionTitle} = props 
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let conclusion:any=data&&data.list&&data.list.conclusion
+  let conclusion:any=data&&data.value
+  console.log(data)
   let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <div className='context'>共 <a>  {conclusion&&conclusion.zb}  </a> 项指标，达标<a>  {conclusion&&conclusion.db}  </a>项，未达标<a>  {conclusion&&conclusion.wdb}  </a>项</div>
+      <div className='context'>共 <div className='inp'>  {conclusion&&conclusion.overallIndicator}  </div> 项指标，达标<div className='inp'>  {conclusion&&conclusion.standardIndicators}  </div>项，未达标<div className='inp'>  {conclusion&&conclusion.nonComplianceIndicators}  </div>项</div>
       <div className='context'>科室不达标指标分析改进：</div>
       <BaseTable columns={columns} dataSource={data.list&&data.list.tableData}/>
     </Wrapper>
@@ -81,6 +82,12 @@ const Wrapper = styled.div`
   }
   .context {
     margin-left:26px;
+  }
+  .inp {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    border-bottom: 1px solid #000;
   }
 `
 

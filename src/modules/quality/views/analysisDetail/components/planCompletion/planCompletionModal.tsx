@@ -13,9 +13,8 @@ export interface Props {
 }
 export default function planCompletionModal(props: Props) {
   let { sectionId, setData, data } = props;
-  let cloneData: any = cloneJson(data || { text: [] });
-  let ygznr = cloneData.text && cloneData.text.ygznr;
-  let wcqk = cloneData.text && cloneData.text.wcqk;
+  let cloneData: any = cloneJson(data || { value: {} });
+  let value = cloneData.value ? cloneData.value :{}
 
   useEffect(() => {}, []);
 
@@ -30,12 +29,12 @@ export default function planCompletionModal(props: Props) {
               <div className="title"> 1.工作计划:</div>
               <TextArea
                 className="cell-textArea"
-                value={(ygznr && ygznr.gzjh) || ""}
+                value={(value.monthWorkPlan) }
                 autosize={{minRows: 6}}
                 placeholder="最多输入500个字"
                 maxLength={500}
                 onChange={(e) => {
-                  ygznr.gzjh = e.target.value;
+                  value.monthWorkPlan = e.target.value;
                   setData(cloneData);
                 }}
               />
@@ -44,12 +43,12 @@ export default function planCompletionModal(props: Props) {
               <div className="title"> 2.培训计划:</div>
               <TextArea
                 className="cell-textArea"
-                value={(ygznr && ygznr.pxjh) || ""}
+                value={(value.trainingPlanOfTheMonth) }
                 autosize={{minRows: 6}}
                 placeholder="最多输入500个字"
                 maxLength={500}
                 onChange={(e) => {
-                  ygznr.pxjh = e.target.value;
+                  value.trainingPlanOfTheMonth = e.target.value;
                   setData(cloneData);
                 }}
               />
@@ -60,12 +59,12 @@ export default function planCompletionModal(props: Props) {
               <div className="title"> 1.工作计划:</div>
               <TextArea
                 className="cell-textArea"
-                value={(wcqk && wcqk.gzjh) || ""}
+                value={(value.monthWorkDoneCase) || ""}
                 autosize={{minRows: 6}}
                 placeholder="最多输入500个字"
                 maxLength={500}
                 onChange={(e) => {
-                  wcqk.gzjh = e.target.value;
+                  value.monthWorkDoneCase = e.target.value;
                   setData(cloneData);
                 }}
               />
@@ -74,12 +73,12 @@ export default function planCompletionModal(props: Props) {
               <div className="title"> 2.培训计划:</div>
               <TextArea
                 className="cell-textArea"
-                value={(wcqk && wcqk.pxjh) || ""}
+                value={(value.monthTrainDoneCase) }
                 autosize={{minRows: 6}}
                 placeholder="最多输入500个字"
                 maxLength={500}
                 onChange={(e) => {
-                  wcqk.pxjh = e.target.value;
+                 value.monthTrainDoneCase = e.target.value;
                   setData(cloneData);
                 }}
               />
