@@ -13,10 +13,6 @@ export interface Props {
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  // cloneData.list.tableData&&cloneData.list.tableData.push(...[
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""},
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""},
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""}
   // ])
 
   useEffect(() => { }, [])

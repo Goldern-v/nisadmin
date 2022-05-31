@@ -12,10 +12,9 @@ export interface Props {
 }
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [] })
-  let conclusion: any = cloneData && cloneData.list && cloneData.list.conclusion
+  let cloneData: any = cloneJson(data || { list: [], conclusion:{}})
+  let conclusion: any = cloneData && cloneData.value 
   useEffect(() => { }, [])
-
   const columns: ColumnProps<any>[] = [
     {
       title: '指标',
@@ -117,16 +116,16 @@ export default function qualityIndexModal(props: Props) {
   return (
     <Wrapper>
       <div className='edit_text'>
-        共<input value={conclusion && conclusion.zb} onChange={(e) => {
-          cloneData.list.conclusion.zb = e.target.value;
+        共<input value={conclusion && conclusion.overallIndicator} onChange={(e) => {
+          conclusion.overallIndicator = e.target.value;
           setData(cloneData)
         }} />
-        项指标，达标<input value={conclusion && conclusion.db} onChange={(e) => {
-          cloneData.list.conclusion.db = e.target.value;
+        项指标，达标<input value={conclusion && conclusion.standardIndicators} onChange={(e) => {
+          conclusion.standardIndicators= e.target.value;
           setData(cloneData)
         }} />
-        项，未达标<input value={conclusion && conclusion.wdb} onChange={(e) => {
-          cloneData.list.conclusion.wdb = e.target.value;
+        项，未达标<input value={conclusion && conclusion.nonComplianceIndicators} onChange={(e) => {
+          conclusion.nonComplianceIndicators = e.target.value;
           setData(cloneData)
         }} />项</div>
       <div className='table_title'>科室不达标指标分析改进:</div>
