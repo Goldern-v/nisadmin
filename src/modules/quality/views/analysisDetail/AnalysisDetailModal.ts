@@ -51,8 +51,9 @@ interface Constr {
   getData: Function
 }
 interface ReportFieldData {
-    reportId: number,
-    data?:any
+  reportId: number,
+  tableName?: string,
+  data?: any
 }
 export class AnalysisDetailModal {
   @observable baseModal: ModalCase | null = null
@@ -112,11 +113,22 @@ export class AnalysisDetailModal {
     if (obj) {
       Object.assign(obj.data, data)
       //保存数据
-      const saveData:ReportFieldData={
-        reportId:queryObj.id,
-        data:obj.data.value
+      if (obj.data.value) {
+        const saveData: ReportFieldData = {
+          reportId: queryObj.id,
+          data: obj.data.value
+        }
+        this.saveReportFieldData(saveData)
       }
-      this.saveReportFieldData(saveData)
+      if (obj.data.list) {
+        const saveData: ReportFieldData = {
+          reportId: queryObj.id,
+          tableName: obj.data.tableName || '',
+          data: obj.data.list
+        }
+        this.saveReportTableData(saveData)
+      }
+      
       return true
     } else {
       return false
@@ -128,8 +140,13 @@ export class AnalysisDetailModal {
     return this.allData[key] || {}
   }
   /** 保存属性类型报告数据集 */
-  saveReportFieldData(data:ReportFieldData ) {
+  saveReportFieldData(data: ReportFieldData) {
     analysisDetailApi.saveReportFieldData(data)
+  }
+
+  /**报告表格编辑 */
+  saveReportTableData(data: ReportFieldData) {
+    analysisDetailApi.saveReportTableData(data)
   }
 
   get report() {
@@ -137,7 +154,7 @@ export class AnalysisDetailModal {
   }
 
   @observable private queryObj: any = appStore.queryObj
-  
+
   /**路由路径 */
   @computed
   get routePath() {
@@ -151,7 +168,7 @@ export class AnalysisDetailModal {
   public get checkRole() {
     let { level } = this.queryObj
     if (level == 1) return authStore.level2Watch
-    return authStore.level3Check 
+    return authStore.level3Check
   }
 
   /** 数据初始化 */

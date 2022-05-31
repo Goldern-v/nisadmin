@@ -79,7 +79,6 @@ export const obj = {
           },
         ],
       },
-      key3_2: { hsdb: 98, sjbz: 86, zlhs: 87, sjzl: 76, zghs: 99, zgzl: 45, pjcw: '80%', bczz: 87, pjzy: 8, yybr: 78, ryrs: 98, zrbr: 5, cybr: 19, zcbr: 187, swbr: 0, jrss: 9, wkss: 19, gzdf: 98, RWbigger: 877, RWsmall: 76, CMI: 123812, swl: '3%', whcybr: '80%' },
       key3_3: [
         { zlxm: "（一）分级护理（含基础护理、危重护理、围术期护理等）", zywt: "操作不熟练，操作时间慢123123", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
         { zlxm: "（二）优质护理与人文关怀质量（含整体护理、健康教育、人文关怀、老年护理等）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
@@ -215,13 +214,8 @@ export const obj = {
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_1").list= {};
     (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_3").list = (this as any).allData["key3_3"];
-    (this as any).getSectionData("4_4").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("4_7").value = replenishList(
-      (this as any).allData["4_7"],
-      6
-    );
-    (this as any).getSectionData("4_8").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_3").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },

@@ -100,24 +100,3 @@ export default function OperationEmModal(props: Props) {
     </OperationModCon>
   );
 }
-const Wrapper = styled.div`
-  .edit_text input {
-    width: 60px;
-    border: none;
-    text-align: center;
-    border-bottom: #000 solid 1px;
-    &:focus {
-      background: ${(p) => p.theme.$mlc};
-    }
-  }
-  text {
-    min-height: 200px !important;
-    resize: none;
-  }
-  .context div {
-    display: inline-block;
-    width: 60px;
-    text-align: center;
-    border-bottom: 1px solid #000;
-  }
-`;

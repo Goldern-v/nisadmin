@@ -12,6 +12,7 @@ export const SectionCon = styled.div`
 `
 export const OperationSecCon = styled.div`
   padding-bottom: 5px;
+  padding-right: 20px;
   .context {
     /* text-align: center; */
     line-height: 24px;

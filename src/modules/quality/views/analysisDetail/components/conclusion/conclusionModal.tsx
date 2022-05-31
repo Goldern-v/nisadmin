@@ -12,7 +12,7 @@ export interface Props {
 }
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [], conclusion:{}})
+  let cloneData: any = cloneJson(data || { list: [], value:{}})
   let conclusion: any = cloneData && cloneData.value 
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
@@ -31,12 +31,12 @@ export default function qualityIndexModal(props: Props) {
           <div className='inp_textArea'>
             <TextArea
               className='cell-textArea'
-              value={record.zywt || ''}
+              value={record.mainProblem || ''}
               rows={14}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
-                record.zywt = e.target.value
+                record.mainProblem = e.target.value
                 setData(cloneData)
               }}
             />
@@ -53,12 +53,12 @@ export default function qualityIndexModal(props: Props) {
           <div className='inp_textArea'>
             <TextArea
               className='cell-textArea'
-              value={record.yyfx || ''}
+              value={record.causeAnalysis || ''}
               rows={14}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
-                record.yyfx = e.target.value
+                record.causeAnalysis = e.target.value
                 setData(cloneData)
               }}
             />
@@ -76,12 +76,12 @@ export default function qualityIndexModal(props: Props) {
           <div className='inp_textArea'>
             <TextArea
               className='cell-textArea'
-              value={record.zgcs || ''}
+              value={record.correctiveMeasures || ''}
               rows={14}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
-                record.zgcs = e.target.value
+                record.correctiveMeasures = e.target.value
                 setData(cloneData)
               }}
             />
@@ -99,12 +99,12 @@ export default function qualityIndexModal(props: Props) {
           <div className='inp_textArea'>
             <TextArea
               className='cell-textArea'
-              value={record.xgpj || ''}
+              value={record.evaluation || ''}
               rows={14}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
-                record.xgpj = e.target.value
+                record.evaluation = e.target.value
                 setData(cloneData)
               }}
             />

@@ -6,6 +6,7 @@ import { getModal } from '../../AnalysisDetailModal'
 import { ColumnProps } from 'antd/lib/table'
 import EditButton from 'src/modules/quality/components/EditButton'
 import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
+import { OperationSecCon } from '../../style/section'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -22,7 +23,7 @@ export default observer(function OperationSection(props: Props) {
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <div className='context'>(1) 人员情况:</div>
+      <div className='context context-title'>(1) 人员情况:</div>
       <div className='context'>
         护士定编:<div>{value.nurseCount}</div>人;实际护士编制:<div>{value.actualNurseCount}</div>人;
       </div>
@@ -32,7 +33,7 @@ export default observer(function OperationSection(props: Props) {
       <div className='context'>
       截止本月底实际在岗护士:<div>{value.actualDutyNursesCount}</div>人;在岗助理护士:<div>{value.actualDutyInternNurseCount}</div>人;
       </div>
-      <div className='context'>(2) (<div>{5}</div>月)上月科室住院病人动态:</div>
+      <div className='context context-title'>(2) (<div>{5}</div>月)上月科室住院病人动态:</div>
       <div className='context'>
       平均床位使用率%:<div>{value.averageBedOccupancy}</div>;病床周转次数:<div>{value.bedTurnovers}</div>;科室平均住院日:<div>{value.deptAverageInDepartment}</div>;
       </div>
@@ -43,12 +44,12 @@ export default observer(function OperationSection(props: Props) {
       转出病人数:<div>{value.transferredOutPatientCount}</div> 死亡人数:<div>{value.deathToll}</div>介入手术数:<div>{value.interventionalProcedureCount}</div> 外科手术数:<div>{value.numberOfSurgicalOperations}</div>
       </div>
       <div className='context'>科室护理工作量得分：:<div>{value.deptNursingWorkloadScore}</div></div>
-      <div className='context'>(2) (<div>{5}</div>月)科室DRGS情况：RW ＞2:<div>{value.rw1}</div>;RW ＜0.5:<div>{value.rw2}</div>;CMI值:<div>{value.cmi}</div>;低风险死亡率:<div>{value.lowRiskMortality}</div>。 </div>
-      <div className='context'>(4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div>{value.homeServiceRate}</div></div>
+      <div className='context context-title'>(3) (<div>{5}</div>月)科室DRGS情况：RW ＞2:<div>{value.rw1}</div>;RW ＜0.5:<div>{value.rw2}</div>;CMI值:<div>{value.cmi}</div>;低风险死亡率:<div>{value.lowRiskMortality}</div>。 </div>
+      <div className='context context-title'>(4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div>{value.homeServiceRate}</div></div>
     </Wrapper>
   )
 })
-const Wrapper = styled.div`
+const Wrapper = styled(OperationSecCon)`
   min-height: 60px;
   position: relative;
   .title {
@@ -56,25 +57,9 @@ const Wrapper = styled.div`
     font-weight: bold;
     margin-right: 60px;
   }
-  .context {
-    /* text-align: center; */
-    margin-left: 50px;
-  }
   button {
     position: absolute;
     top: 0px;
     right: 20px;
   }
-  .context div{
-    display: inline-block;
-    width: 60px;
-    text-align: center;
-    border-bottom: 1px solid #000;
-  }
-`
-
-const TextCon = styled.pre`
-  margin: 10px 50px;
-  min-height: 40px;
-  white-space: pre-wrap;
 `
