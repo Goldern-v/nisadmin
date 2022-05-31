@@ -58,9 +58,9 @@ interface ReportFieldData {
 export class AnalysisDetailModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = []
-  @observable public allData: Partial<AllData> = {
-    report: {}
-  }
+  @observable public allData: Partial<AllData> = {}
+  // 模板数据
+  @observable public configData: Record<string, any> = {}
   private formatData: Function = () => { }
   private getData: Function = () => { }
 
@@ -115,14 +115,14 @@ export class AnalysisDetailModal {
       //保存数据
       if (obj.data.value) {
         const saveData: ReportFieldData = {
-          reportId: queryObj.id,
+          reportId: appStore.queryObj.id,
           data: obj.data.value
         }
         this.saveReportFieldData(saveData)
       }
       if (obj.data.list) {
         const saveData: ReportFieldData = {
-          reportId: queryObj.id,
+          reportId: appStore.queryObj.id,
           tableName: obj.data.tableName || '',
           data: obj.data.list
         }
@@ -175,7 +175,7 @@ export class AnalysisDetailModal {
   initData() {
     // 实例化并使用bind绑定数据
     this.allData = this.getData()
-    analysisDetailApi.getPageDetaile(1).then((res) => {
+    analysisDetailApi.getPageDetaile(appStore.queryObj.id).then((res) => {
       console.log('接口数据======》', res.data)
       if (res.code == 200) {
         let { fieldDataMap } = res.data
@@ -186,7 +186,9 @@ export class AnalysisDetailModal {
           publisherName,
           status,
           reportName,
-          updateTime
+          updateTime,
+          tableDataMap,
+          reportTemplateDto
         } = res.data
         this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
         this.allData.pageInfo = {
@@ -197,6 +199,10 @@ export class AnalysisDetailModal {
           status,
           reportName,
           updateTime
+        }
+        this.allData.tableDataMap = tableDataMap
+        this.configData = {
+          tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
         }
         this.formatData()
       }

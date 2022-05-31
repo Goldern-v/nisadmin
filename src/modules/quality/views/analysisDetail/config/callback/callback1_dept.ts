@@ -211,6 +211,7 @@ export const obj = {
     (this as any).getSectionData("2_1").list = (this as any).allData["key2_1"];
     (this as any).getSectionData("2_2").list = (this as any).allData["key2_2"];
     (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("2_3").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3});
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_1").list= {};
     (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;

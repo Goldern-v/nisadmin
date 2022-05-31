@@ -14,13 +14,32 @@ export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [], value:{}})
   let conclusion: any = cloneData && cloneData.value 
+  let list: any[] = cloneData && cloneData.list
+  
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
       title: '指标',
       align: 'center',
-      dataIndex: "zb",
+      dataIndex: "index",
       width: 60,
+      render(text: string, record: any, index: number) {
+        return (
+          <div className='inp_textArea'>
+            <TextArea
+              className='cell-textArea'
+              value={record.index || ''}
+              rows={14}
+              placeholder="最多输入100个字"
+              maxLength={100}
+              onChange={(e) => {
+                record.index = e.target.value
+                setData(cloneData)
+              }}
+            />
+          </div>
+        )
+      },
     },
     {
       title: '主要问题',
@@ -129,7 +148,7 @@ export default function qualityIndexModal(props: Props) {
           setData(cloneData)
         }} />项</div>
       <div className='table_title'>科室不达标指标分析改进:</div>
-      <BaseTable columns={columns} dataSource={cloneData.list && cloneData.list.tableData} />
+      <BaseTable columns={columns} dataSource={list} />
     </Wrapper>
   )
 }

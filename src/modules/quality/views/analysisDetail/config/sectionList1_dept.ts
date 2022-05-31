@@ -60,7 +60,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_3',
     sectionTitle: '结论:',
     modalTitle: '编辑结论',
-    data: {},
+    data: {
+      tableName: 'deptNotPassIndexImprove'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_3', val)
     },
