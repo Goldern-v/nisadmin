@@ -19,7 +19,6 @@ export default observer(function AnalysisDetail() {
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
   const { queryObj } = appStore
-  console.log('test-',analysisDetailModal.current.routePath)
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])

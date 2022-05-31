@@ -20,9 +20,7 @@ export default observer(function qualityIndexSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data:any = analysisDetailModal.current.getSectionData(sectionId)
   // const value:any=data?data.value:{}
-  let value: any = (data ? data.value : {}) || {}
-  console.log(1);
-  
+  let value: any = (data ? data.value : {}) || {}  
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',

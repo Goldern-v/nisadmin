@@ -749,8 +749,6 @@ export default observer(function 敏感指标登记本(props: Props) {
   }
 
   const addPatient = () => {
-    console.log(1);
-
   }
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)

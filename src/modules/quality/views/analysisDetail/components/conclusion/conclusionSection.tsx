@@ -50,7 +50,6 @@ export default observer(function ProblemImpSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let conclusion:any=data&&data.value
-  console.log(data)
   let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>

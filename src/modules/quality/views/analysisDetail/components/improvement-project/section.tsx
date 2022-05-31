@@ -18,9 +18,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
   let { sectionId, sectionTitle, keyName } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let report: any = (data ? data.value : {}) || {}
-  console.log(12);
-  
+  let report: any = (data ? data.value : {}) || {}  
   return (
     <Wrapper>
       <TwoLevelTitle text={sectionTitle}/>
@@ -33,7 +31,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
           </span>
         </div>
         <div className="ipt">
-          {report.q}
+          {report.question}
         </div>
         <div>原因分析
           <span className='title-small'>
@@ -46,7 +44,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
           </span>
         </div>
         <div className='ipt'>
-          <FishBone value={report.r}/>
+          <FishBone value={report}/>
         </div>
         <div>主要原因
           <span className='title-small'>
@@ -54,11 +52,11 @@ export default observer(function ImprovementProjectSection(props: Props) {
           </span>
         </div>
         <div className="ipt">
-          {report.mr}
+          {report.mainReason}
         </div>
         <div>设定目标</div>
         <div className="ipt">
-          {report.sign}
+          {report.setGoal}
         </div>
         <div>改善方案</div>
         <div>问题What</div>
@@ -67,30 +65,36 @@ export default observer(function ImprovementProjectSection(props: Props) {
         <div>实施时间When</div>
         <div>实施地点Where</div>
         <div>负责人Who</div>
-        <div>{report.what}</div>
-        <div>{report.why}</div>
-        <div>{report.how}</div>
-        <div>{report.when}</div>
-        <div>{report.where}</div>
-        <div>{report.who}</div>
+        <div>{report.planQuestion}</div>
+        <div>{report.planMainReason}</div>
+        <div>{report.planCountermeasures}</div>
+        <div>{report.planImplementationTime}</div>
+        <div>{report.planImplementationSite}</div>
+        <div>{report.planPrincipal}</div>
         <div>
           D：执行（具体措施执行情况）
         </div>
-        <div className='ipt'></div>
+        <div className='ipt'>
+          {report.implementation}
+        </div>
         <div>
           C: 效果确认
           <span className='title-small'>
             （评价是否达到设定目标）
           </span>
         </div>
-        <div className='ipt'></div>
+        <div className='ipt'>
+          {report.effectConfirmed}
+        </div>
         <div>
           A: 标准化内容
           <span className='title-small'>
             （科室规定/制度/流程）
           </span>
         </div>
-        <div className='ipt'></div>
+        <div className='ipt'>
+          {report.standardizedContent}
+        </div>
       </MainCon>
     </Wrapper>
   )

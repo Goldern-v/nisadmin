@@ -157,7 +157,7 @@ export const obj = {
         deptNursingWorkloadScore: "",
         cmi: "",
         lowRiskMortality: "",
-        specialEventSolvedProblem: "",
+        specialEventSolvedProblem: "问题测试",
         livePictures: "",
         deptWorkPlanForNextMonth: "",
         nextMonthDeptTrainingPlan: "",
@@ -168,7 +168,7 @@ export const obj = {
         nonComplianceIndicators: "11",
         rw1: "",
         rw2: "",
-        causeAnalysisPeople: "",
+        causeAnalysisPeople: "人",
         homeServiceRate: "",
         question: "问题",
         causeAnalysisMachine: "机",
@@ -176,17 +176,17 @@ export const obj = {
         causeAnalysisLaw: "法",
         causeAnalysisRing: "环",
         causeAnalysisQuestion: "原因分析问题",
-        mainReason: "",
-        setGoal: "",
-        planPrincipal: "",
-        planImplementationSite: "",
-        planImplementationTime: "",
-        planCountermeasures: "",
-        planMainReason: "",
-        planQuestion: "",
-        implementation: "",
-        effectConfirmed: "",
-        standardizedContent: "",
+        mainReason: "主要原因",
+        setGoal: "目标",
+        planPrincipal: "主要负责人",
+        planImplementationSite: "1",
+        planImplementationTime: "2",
+        planCountermeasures: "3",
+        planMainReason: "4",
+        planQuestion: "5",
+        implementation: "6",
+        effectConfirmed: "7",
+        standardizedContent: "8",
       },
       pageData: {
         id: null,
@@ -221,8 +221,8 @@ export const obj = {
       (this as any).allData["4_7"],
       6
     );
-    (this as any).getSectionData("4_8").report = (this as any).allData.report;
-    (this as any).getSectionData("5_1").report = (this as any).allData.report;
-    (this as any).getSectionData("5_2").report = (this as any).allData.report;
+    (this as any).getSectionData("4_8").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },
 }
