@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { ColumnProps } from 'antd/lib/table'
 import { cloneJson } from 'src/utils/json/clone'
 import { Input } from 'src/vendors/antd'
+import {  Report } from '../../types'
 import { OperationModCon } from '../../style/modal'
 
 export interface Props {
@@ -14,6 +15,7 @@ export default function OperationMoadl(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { value: {}})
   let value: any = cloneData ?  cloneData.value : {}
+  let pageInfo: Report= cloneData ? cloneData.pageInfo : {}
   useEffect(() => { }, [])
 
   return (
@@ -49,7 +51,7 @@ export default function OperationMoadl(props: Props) {
             setData(cloneData)
           }} /></div>人;
         </div>
-        <div className='context context-title'>(2) (<div style={{width:'30px',color:'blue'}}>{5}</div>月)上月科室住院病人动态:</div>
+        <div className='context context-title'>(2) (<div style={{width:'30px',color:'blue',textAlign:'center'}}>{pageInfo&&pageInfo.reportMonth}</div>月)上月科室住院病人动态:</div>
         <div className='context'>
           平均床位使用率%:<div><Input value={value && value.averageBedOccupancy} onChange={(e) => {
             value.averageBedOccupancy = e.target.value;
@@ -101,7 +103,7 @@ export default function OperationMoadl(props: Props) {
           setData(cloneData)
         }} /></div>
         <div className='context context-title'>
-          (3)(<div style={{width:'30px',color:'blue'}}>{5}</div>月)科室DRGS情况:RW ＞2:<div><Input value={value && value.rw1} onChange={(e) => {
+          (3)(<div style={{width:'30px',color:'blue',textAlign:'center'}}>{pageInfo&&pageInfo.reportMonth}</div>月)科室DRGS情况:RW ＞2:<div><Input value={value && value.rw1} onChange={(e) => {
           value.rw1 = e.target.value;
           setData(cloneData)
         }} /></div>;

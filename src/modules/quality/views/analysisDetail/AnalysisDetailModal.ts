@@ -185,6 +185,8 @@ export class AnalysisDetailModal {
           creatorNo,
           publisherName,
           status,
+          reportMonth,
+          reportYear,
           reportName,
           updateTime,
           tableDataMap,
@@ -198,6 +200,8 @@ export class AnalysisDetailModal {
           publisherName,
           status,
           reportName,
+          reportMonth,
+          reportYear,
           updateTime
         }
         this.allData.tableDataMap = tableDataMap
