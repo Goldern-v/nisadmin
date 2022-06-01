@@ -161,8 +161,6 @@ export default observer(function Analysis() {
 
   const handleReview = (record: any) => {
     const obj = {
-      reportMonth: record.reportMonth,
-      reportName: record.reportName,
       deptName:record.wardName,
       level,
       id: record.id
