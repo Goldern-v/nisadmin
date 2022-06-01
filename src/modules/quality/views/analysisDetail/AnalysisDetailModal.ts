@@ -185,6 +185,8 @@ export class AnalysisDetailModal {
           creatorNo,
           publisherName,
           status,
+          reportMonth,
+          reportYear,
           reportName,
           updateTime
         } = res.data
@@ -196,6 +198,8 @@ export class AnalysisDetailModal {
           publisherName,
           status,
           reportName,
+          reportMonth,
+          reportYear,
           updateTime
         }
         this.formatData()

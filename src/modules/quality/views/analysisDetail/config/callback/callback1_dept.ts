@@ -214,6 +214,7 @@ export const obj = {
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_1").list= {};
     (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
     (this as any).getSectionData("3_3").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
