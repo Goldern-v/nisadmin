@@ -28,7 +28,8 @@ export default observer(function Analysis() {
   const { history } = appStore;
   // 科室列表
   const [wardList, setWardList] = useState([]);
-  // const [groupRoleListSelf, setGroupRolelistSelf] = useState([]);
+  // 默认科室
+  const [defDept, setDefDept] = useState('');
 
   //进度条相关
   const [createProgressVisible, setCreateProgressVisible] = useState(false);
@@ -49,10 +50,8 @@ export default observer(function Analysis() {
   useEffect(() => {
     service.commonApiService.getNursingUnitSelf().then((res) => {
       if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
+      setDefDept(res.data.defaultDept)
     });
-    // api.qcRoleCodeSelf().then((res) => {
-    //   if (res.data instanceof Array) setGroupRolelistSelf(res.data);
-    // });
   }, []);
 
   useEffect(() => {
@@ -426,12 +425,13 @@ export default observer(function Analysis() {
         />
       </div>
       <CreateAnalysisModal
-        allowClear={createClear}
+        allowClear={true}
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
         wardList={wardList.filter((item: any) => item.code)}
         loading={!!(createLoading == "start")}
+        defDept={defDept}
       />
     </Wrapper>
   );
