@@ -133,12 +133,13 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: "护理人员统计",
                   path: "/statistic/护理人员统计",
-                  hide: appStore.HOSPITAL_ID == "jmfy"
+                  hide: ["jmfy",'nys'].includes(appStore.HOSPITAL_ID)
                 },
                 { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
                 {
                   title: "科室护士明细表",
                   path: "/statistic/科室护士明细表",
+                  hide: ['nys'].includes(appStore.HOSPITAL_ID)
                 },
                 ...appStore.hisMatch({
                   map: {

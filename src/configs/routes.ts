@@ -223,6 +223,11 @@ const QualityAnalysisReportView = lazy(() =>
     "src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView"
   )
 );
+const QualityAnalysisReportViewwhyx = lazy(() =>
+  import(
+    "src/modules/quality/views/analysisDetail/AnalysisDetail"
+  )
+);
 const NurseFilesView = lazy(() =>
   import("src/modules/nurseFiles/NurseFilesView")
 );
@@ -789,7 +794,8 @@ const routes: RouteItem[] = [
   ),
   setLayout(
     "/qualityAnalysisReport",
-    QualityAnalysisReportView,
+    ['whyx'].includes(appStore.HOSPITAL_ID)?QualityAnalysisReportViewwhyx: QualityAnalysisReportView,
+    // QualityAnalysisReportView,
     layouts.MainLayout
   ),
   // 一二级质控问题汇总详情

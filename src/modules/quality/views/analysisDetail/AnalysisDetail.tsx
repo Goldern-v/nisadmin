@@ -11,20 +11,20 @@ import printing from 'printing'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { analysisDetailApi } from './api'
+import Header from '../analysisDetail/components/header/headerSection'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function AnalysisDetail() {
   const pageRef: any = useRef<HTMLElement>()
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
+  const { queryObj } = appStore
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])
-  let report: Report = analysisDetailModal.current.getDataInAllData('report')
+  let report: Report = analysisDetailModal.current.getDataInAllData('pageInfo')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
-    let title = document.title
-    document.title = report.reportName
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -62,36 +62,33 @@ export default observer(function AnalysisDetail() {
          tr{ page-break-inside:avoid; page-break-after:auto }
       `
     })
-    setTimeout(() => {
-      document.title = title
-    }, 500)
   }
   const onDelete = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      analysisDetailApi.deleteReport().then((res) => {
+      analysisDetailApi.deleteReport(queryObj.id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
   }
   const onPublish = () => {
     globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
-      analysisDetailApi.publishReport().then((res) => {
+      analysisDetailApi.publishReport(queryObj.id).then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
   }
   const onCancelPublish = () => {
     globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
-      analysisDetailApi.cancelPublishReport().then((res) => {
+      analysisDetailApi.revokeReport(queryObj.id).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          appStore.history.push(analysisDetailModal.current.routePath)
         }, 500)
       })
     })
@@ -100,19 +97,20 @@ export default observer(function AnalysisDetail() {
     <Wrapper>
       <HeadCon>
         {/* check: 需要修改 */}
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/analysis' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '分析报告', link: analysisDetailModal.current.routePath }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
+            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status'>保存</span>:<span className='status'>发布</span>}</span>}
           </span>
         </div>
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {report.status == '1' && analysisDetailModal.current.checkRole && (
             <Button onClick={onCancelPublish}>撤销</Button>
-          ) : (
+          )}
+          { report.status != '1' && analysisDetailModal.current.checkRole && (
             <Button onClick={onPublish}>发布</Button>
           )}
 
@@ -122,6 +120,7 @@ export default observer(function AnalysisDetail() {
       </HeadCon>
       <ScrollCon>
         <Page ref={pageRef} className='print-page'>
+          <Header sectionTitle={report.reportName}></Header>
           {analysisDetailModal.current.sectionList.map((item: any, index: number) => {
             if (item.sectionId) {
               let Components = analysisDetailModal.current.getSection(item.sectionId)
@@ -173,6 +172,11 @@ const HeadCon = styled.div`
       margin-left: 15px;
     }
   }
+  .status {
+    color:red;
+    font-size: 14px;
+    margin-left:10px
+  }
 `
 const Page = styled.div`
   width: 720px;
@@ -180,10 +184,7 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  img {
-    max-width: 200px;
-    max-height: 200px;
-  }
+
 `
 
 const ScrollCon = styled(ScrollBox)`
