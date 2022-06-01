@@ -12,6 +12,7 @@ import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { analysisDetailApi } from './api'
 import Header from '../analysisDetail/components/header/headerSection'
+import { routePath, checkRole } from './util/tool'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function AnalysisDetail() {
@@ -68,7 +69,7 @@ export default observer(function AnalysisDetail() {
       analysisDetailApi.deleteReport(queryObj.id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push(analysisDetailModal.current.routePath)
+          appStore.history.push(routePath())
         }, 500)
       })
     })
@@ -78,7 +79,7 @@ export default observer(function AnalysisDetail() {
       analysisDetailApi.publishReport(queryObj.id).then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push(analysisDetailModal.current.routePath)
+          appStore.history.push(routePath())
         }, 500)
       })
     })
@@ -88,7 +89,7 @@ export default observer(function AnalysisDetail() {
       analysisDetailApi.revokeReport(queryObj.id).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push(analysisDetailModal.current.routePath)
+          appStore.history.push(routePath())
         }, 500)
       })
     })
@@ -97,7 +98,7 @@ export default observer(function AnalysisDetail() {
     <Wrapper>
       <HeadCon>
         {/* check: 需要修改 */}
-        <BaseBreadcrumb data={[{ name: '分析报告', link: analysisDetailModal.current.routePath }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '分析报告', link: routePath() }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
@@ -107,10 +108,10 @@ export default observer(function AnalysisDetail() {
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' && analysisDetailModal.current.checkRole && (
+          {report.status == '1' && checkRole() && (
             <Button onClick={onCancelPublish}>撤销</Button>
           )}
-          { report.status != '1' && analysisDetailModal.current.checkRole && (
+          { report.status != '1' && checkRole() && (
             <Button onClick={onPublish}>发布</Button>
           )}
 

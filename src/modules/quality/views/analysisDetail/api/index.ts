@@ -40,16 +40,15 @@ export default class AnalysisDetailApi extends BaseApiService {
   }
   /**发布报告 */
   public publishReport(reportId: number) {
-    return this.post(`/baseReport/publish/${reportId}
+    return this.get(`/baseReport/publish/${reportId}
     /baseReport/revoke/${reportId}`);
   }
   /**撤销报告 */
   public revokeReport(reportId: number) {
-    return this.post(`/baseReport/revoke/${reportId}
-    /baseReport/revoke/${reportId}`);
+    return this.get(`/baseReport/revoke/${reportId}`);
   }
   public deleteReport(reportId: number) {
-    return this.post(`/baseReport/delete/${reportId}`);
+    return this.get(`/baseReport/delete/${reportId}`);
   }
 }
 

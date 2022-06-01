@@ -16,6 +16,9 @@ import planCompletionSection from '../components/planCompletion/planCompletionSe
 import planCompletionModal from '../components/planCompletion/planCompletionModal'
 import OperationSection from '../components/Operation/OperationSection'
 import OperationMoadl from '../components/Operation/OperationMoadl'
+import tableSection from "../components/table/section";
+import tableModal from "../components/table/modal";
+
 // 一级质控病区汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -99,8 +102,8 @@ export const sectionList: SectionListItem[] = [
     modal: OperationMoadl
   },
   {
-    sectionId: '3_3',
-    sectionTitle: '3、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
+    sectionId: '3_4',
+    sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
     modalTitle: '编辑主要护理问题改进方案',
     data: {},
     async onSave (val: any) {
@@ -109,7 +112,19 @@ export const sectionList: SectionListItem[] = [
     section: ImprovementProjectSection,
     modal: ImprovementProjectModal
   },
-
+  {
+    sectionId: "3_3",
+    sectionTitle: "3、本月护理主要问题分析改进",
+    modalTitle: "编辑本月护理主要问题分析改进",
+    data: {
+      tableName: 'monthCareProblemImprove'
+    },
+    async onSave(val: any) {
+      (this as any).setSectionData("3_3", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
   {
     sectionId: '3_5',
     sectionTitle: '5、特殊事件及需解决的问题',

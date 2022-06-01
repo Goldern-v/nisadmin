@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
 import React from 'react'
-const queryObj = appStore.queryObj
 
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
@@ -49,6 +48,7 @@ interface Constr {
   sectionList: SectionListItem[]
   formatData: Function
   getData: Function
+  initRender?: Function
 }
 interface ReportFieldData {
   reportId: number,
@@ -63,15 +63,18 @@ export class AnalysisDetailModal {
   @observable public configData: Record<string, any> = {}
   private formatData: Function = () => { }
   private getData: Function = () => { }
+  private initRender: Function = () => { }
 
   constructor({
     sectionList,
     formatData,
     getData,
+    initRender
   }: Constr) {
     this.sectionList = sectionList
     this.formatData = formatData.bind(this)
     this.getData = getData
+    initRender && (this.initRender = initRender)
   }
   /** 返回组件实例 */
   @action
@@ -128,7 +131,7 @@ export class AnalysisDetailModal {
         }
         this.saveReportTableData(saveData)
       }
-      
+
       return true
     } else {
       return false
@@ -153,63 +156,49 @@ export class AnalysisDetailModal {
     return this.getDataInAllData('report') || {}
   }
 
-  @observable private queryObj: any = appStore.queryObj
-
-  /**路由路径 */
-  @computed
-  get routePath() {
-    let { id, level, type } = this.queryObj
-    if (level == 1) return '/qcOneWhyx/analysis?level=1'
-    if (level == 2) return '/qcTwo/analysis?level=2'
-    return ''
-  }
-
-  // 审核权限
-  public get checkRole() {
-    let { level } = this.queryObj
-    if (level == 1) return authStore.level2Watch
-    return authStore.level3Check
-  }
-
   /** 数据初始化 */
-  initData() {
-    // 实例化并使用bind绑定数据
-    this.allData = this.getData()
-    analysisDetailApi.getPageDetaile(appStore.queryObj.id).then((res) => {
+  async initData() {
+    try {
+      this.initRender && (await this.initRender())
+      console.log('test-only-2')
+      // 实例化并使用bind绑定数据
+      this.allData = this.getData()
+      const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id)
       console.log('接口数据======》', res.data)
-      if (res.code == 200) {
-        let { fieldDataMap } = res.data
-        let {
-          createTime,
-          creatorName,
-          creatorNo,
-          publisherName,
-          status,
-          reportName,
-          updateTime,
-          tableDataMap,
-          reportTemplateDto
-        } = res.data
-        this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
-        this.allData.pageInfo = {
-          createTime,
-          creatorName,
-          creatorNo,
-          publisherName,
-          status,
-          reportName,
-          updateTime
-        }
-        this.allData.tableDataMap = tableDataMap
-        this.configData = {
-          tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
-        }
-        this.formatData()
+      if (res.code != 200) return
+      let { fieldDataMap } = res.data
+      let {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportName,
+        updateTime,
+        tableDataMap,
+        reportTemplateDto
+      } = res.data
+      this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
+      this.allData.pageInfo = {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportName,
+        updateTime
       }
-    })
+      this.allData.tableDataMap = tableDataMap
+      this.configData = {
+        tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
+      }
+      this.formatData()
+    } catch (error) {
+
+    }
   }
-  init() {
-    this.initData()
+  async init() {
+    await this.initData()
     this.baseModal = createModal(BaseModal)
   }
 }
@@ -229,6 +218,6 @@ export const getModal = () => {
   if (queryObj?.level == '2') {
     return analysisDetailModal2
   }
-  if (queryObj?.level == '1' && queryObj.deptName == '急诊') return analysisDetailModal1Em
+  if (queryObj?.level == '1' && queryObj.deptName && queryObj.deptName.indexOf('急诊') > -1) return analysisDetailModal1Em
   return analysisDetailModal1Dept
 }

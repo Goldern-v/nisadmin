@@ -16,6 +16,7 @@ import { getTempName } from "./utils";
 import { MonthList } from "../../utils/toolCon";
 import YearPicker from "src/components/YearPicker";
 import useLevel from "./utils/useLevel";
+import { analysisModal } from './AnalysisModal'
 
 const api = new AnalysisService();
 const Option = Select.Option;
@@ -161,8 +162,6 @@ export default observer(function Analysis() {
   const handleReview = (record: any) => {
     const obj = {
       reportMonth: record.reportMonth,
-      beginDate: record.beginDate,
-      endDate: record.endDate,
       reportName: record.reportName,
       deptName:record.wardName,
       level,
@@ -203,20 +202,29 @@ export default observer(function Analysis() {
         templateName: getTempName(level),
       })
       .then((res) => {
-        if (res.code == 200) {
+        if (res.code == '200') {
           handleCreateCancel();
           setCreateProgressVisible(false);
           // setCreateAnalysisVisible(true)
           setCreateClear(true);
           setCreateLoading("");
+          const params: Record<string, any> = {
+            id: res.data.id || '',
+            level,
+            deptName: getTempName(level, res.data.code)
+          }
+          const {reportTemplateDto, renderTableDataMap} = res.data
+          analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
+
           appStore.history.push(
-            `/qualityAnalysisReport?${qs.stringify(res.data.report)}`
+            `/qualityAnalysisReport?${qs.stringify(params)}`
           );
         } else {
           failedCallback(res.desc || "");
         }
       })
       .catch((err) => {
+        console.log('test-only-4', err)
         failedCallback(err || "");
       });
   };

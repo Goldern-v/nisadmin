@@ -1,4 +1,7 @@
-import { replenishList } from "./../../util/tool";
+import { getBlank, replenishList } from "./../../util/tool";
+import { analysisModal } from '../../../analysisWhyx/AnalysisModal';
+import { appStore } from "src/stores";
+
 export const obj = {
   getData() {
     return {
@@ -79,47 +82,7 @@ export const obj = {
           },
         ],
       },
-      key3_3: [
-        { zlxm: "（一）分级护理（含基础护理、危重护理、围术期护理等）", zywt: "操作不熟练，操作时间慢123123", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（二）优质护理与人文关怀质量（含整体护理、健康教育、人文关怀、老年护理等）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（三）专科护理（含引流管护理、气道护理、专科仪器操作）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（四）导管相关护理（PIVC、CVC、PICC/MC）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（五）护理文件书写", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（六）消毒隔离", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（七）护理安全管理（一）（二）", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（八）科室综合管理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（九）预防住院患者压力性损伤护理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（十）预防住院患者跌倒/坠床护理质量", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "（十一）疫情常态化管理", zywt: "操作不熟练，操作时间慢", yyfx: '护士入职时间短,需加强培训', xgpj: "" },
-        { zlxm: "", zywt: "", yyfx: '', xgpj: "" },
-      ],
-      "4_4": {
-        q: "question",
-        r: {
-          r: "人",
-          j: "机",
-          w: "物",
-          f: "法",
-          h: "环",
-        },
-        mr: "mainReason",
-        sign: "目标",
-        what: "what",
-        why: "Why",
-        how: "How",
-        when: "When",
-        where: "Where",
-        who: "Who",
-        c: "content",
-      },
-      "4_7": [
-        {
-          deptName: "",
-          empName: "",
-          score: "",
-          mq: "",
-        },
-      ],
+
       report: {
         key1_1: "2",
         key2_1: "2",
@@ -211,13 +174,63 @@ export const obj = {
     (this as any).getSectionData("2_1").list = (this as any).allData["key2_1"];
     (this as any).getSectionData("2_2").list = (this as any).allData["key2_2"];
     (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("2_3").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3});
+    (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3 });
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_1").list= {};
     (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_3").value = (this as any).allData.fieldData;
+
+    (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.monthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.monthCareProblemImprove : [] || [];
+
+    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },
+  /**初始化自动提取 */
+  async initRender() {
+    if (!(analysisModal.renderData && analysisModal.tableTempList)) return
+    const { renderData, tableTempList } = analysisModal
+    const obj: Record<string, any> = {}
+    Object.keys(renderData).map((v: string) => {
+      obj[v] = []
+      // 本月护理主要问题分析改进 提取
+      if (v == 'monthCareProblemImprove') {
+        const data: Record<string, any> = {}
+        renderData[v].map((v1: any) => {
+          if (data[v1.item] != undefined) {
+            v1.mainProblem && (data[v1.item] += v1.mainProblem + '/n')
+            return
+          }
+          data[v1.item] = v1.mainProblem || ''
+        })
+        let blank = getBlank(tableTempList[v])
+        Object.keys(data).map((v2: any) => {
+          obj[v].push({ ...blank, item: v2, mainProblem: data[v2] })
+        })
+        return
+      }
+      const blank = getBlank(tableTempList[v])
+      renderData[v].map((v3: any) => {
+        obj[v].push({ ...blank, ...v3 })
+      })
+    });
+    let proList: any[] = []
+    const reportId = appStore.queryObj.id
+    Object.keys(obj).map((v4: string) => {
+      if (!obj[v4]) return
+      const params = {
+        reportId,
+        tableName: v4,
+        data: obj[v4]
+      }
+      proList.push((this as any).saveReportTableData(params))
+    })
+    try {
+      await Promise.all(proList)
+      analysisModal.clearRenderData()
+      console.log('test-1', 1)
+      return true
+    } catch (e) {
+    }
+  }
 }
