@@ -106,6 +106,7 @@ export default observer(function qualityIndexSection(props: Props) {
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)} >编辑</EditButton>
       <BaseTable  columns={columns}  dataSource={ data.list &&data.list.tableData}
        footer={()=>footer}
+       fixedFooter={true}
       />
     </Wrapper>
   )
@@ -127,7 +128,9 @@ const Wrapper = styled.div`
     font-weight: bold;
     padding-left: 30px;
   }
-  .table_Bottom div{
+  .table_Bottom {
+    position: relative;
+    bottom: 0;
     /* display: inline-block; */
 
   }
