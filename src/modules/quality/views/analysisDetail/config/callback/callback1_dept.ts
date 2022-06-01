@@ -5,84 +5,6 @@ import { appStore } from "src/stores";
 export const obj = {
   getData() {
     return {
-      key2_2: [
-        {
-          xm: "分级护理表质量",
-          zlhgf: "合格分90分",
-          hgl: ">=90%",
-          hgsccs: "9/10",
-          pjf: "92",
-          hgl2: "93%",
-          wdb: "达标",
-        },
-        {
-          xm: "分级护理表质量",
-          zlhgf: "合格分90分",
-          hgl: ">=90%",
-          hgsccs: "9/10",
-          pjf: "92",
-          hgl2: "93%",
-          wdb: "达标",
-        },
-        {
-          xm: "分级护理表质量",
-          zlhgf: "合格分90分",
-          hgl: ">=90%",
-          hgsccs: "9/10",
-          pjf: "92",
-          hgl2: "93%",
-          wdb: "达标",
-        },
-        {
-          xm: "分级护理表质量",
-          zlhgf: "合格分90分",
-          hgl: ">=90%",
-          hgsccs: "9/10",
-          pjf: "92",
-          hgl2: "93%",
-          wdb: "达标",
-        },
-        {
-          xm: "分级护理表质量",
-          zlhgf: "合格分90分",
-          hgl: ">=90%",
-          hgsccs: "9/10",
-          pjf: "92",
-          hgl2: "93%",
-          wdb: "达标",
-        },
-      ],
-      key2_3: {
-        conclusion: {
-          zb: 100,
-          db: 80,
-          wdb: 20,
-        },
-        tableData: [
-          {
-            zb: "护理指标高评分",
-            zywt: "护理部门主要问题是红红火火恍恍惚惚或",
-            yyfx: "原因分析原因分析原因分析哈哈哈",
-            zgcs: "整改护理部署的措施",
-            xgpj: "满意满意继续努力",
-          },
-          {
-            zb: "护理指标高评分",
-            zywt: "护理部门主要问题是红红火火恍恍惚惚或",
-            yyfx: "原因分析原因分析原因分析哈哈哈",
-            zgcs: "整改护理部署的措施",
-            xgpj: "满意满意继续努力",
-          },
-          {
-            zb: "护理指标高评分",
-            zywt: "护理部门主要问题是红红火火恍恍惚惚或",
-            yyfx: "原因分析原因分析原因分析哈哈哈",
-            zgcs: "整改护理部署的措施",
-            xgpj: "满意满意继续努力",
-          },
-        ],
-      },
-
       report: {
         key1_1: "2",
         key2_1: "2",
@@ -171,8 +93,8 @@ export const obj = {
   formatData() {
     (this as any).getSectionData("1_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("2_1").list = (this as any).allData["key2_1"];
-    (this as any).getSectionData("2_2").list = (this as any).allData["key2_2"];
+    (this as any).getSectionData("2_1").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptOneQualityIndexResult',len:(this as any).allData.tableDataMap['deptOneQualityIndexResult'].length+3});
+    (this as any).getSectionData("2_2").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptCareMonitorIndexResult', len: 5});
     (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3 });
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
@@ -215,6 +137,7 @@ export const obj = {
         obj[v].push({ ...blank, ...v3 })
       })
     });
+    
     let proList: any[] = []
     const reportId = appStore.queryObj.id
     Object.keys(obj).map((v4: string) => {
@@ -227,10 +150,10 @@ export const obj = {
       proList.push((this as any).saveReportTableData(params))
     })
     try {
-      await Promise.all(proList)
+      const val =await Promise.all(proList)
       analysisModal.clearRenderData()
       console.log('test-1', 1)
-      return true
+      return val
     } catch (e) {
     }
   }

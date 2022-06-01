@@ -19,6 +19,7 @@ export const OperationSecCon = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    text-align: center;
     margin-left: 60px;
     &.context-title {
       margin-left: 50px;
@@ -34,4 +35,5 @@ export const OperationSecCon = styled.div`
     height: 24px;
     border-bottom: 1px solid #000;
   }
+
 ` as any

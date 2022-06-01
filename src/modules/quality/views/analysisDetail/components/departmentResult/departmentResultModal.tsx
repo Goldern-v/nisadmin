@@ -5,6 +5,7 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { tableCon } from '../../style/modal'
+
 export interface Props {
   sectionId: string
   data: any
@@ -35,9 +36,9 @@ export default function qualityIndexModal(props: Props) {
           <input
             type='text'
             className='cell-ipt'
-            value={record.xm|| ''}
+            value={record.item|| ''}
             onChange={(e) => {
-              record.xm = e.target.value
+              record.item = e.target.value
               setData(cloneData)
             }}
           />
@@ -57,9 +58,9 @@ export default function qualityIndexModal(props: Props) {
               <input
                 type='text'
                 className='cell-ipt'
-                value={record.zlhgf|| ''}
+                value={record.qualityPassScore|| ''}
                 onChange={(e) => {
-                  record.zlhgf = e.target.value
+                  record.qualityPassScore = e.target.value
                   setData(cloneData)
                 }}
               />
@@ -75,9 +76,9 @@ export default function qualityIndexModal(props: Props) {
               <input
                 type='text'
                 className='cell-ipt'
-                value={record.hgl|| ''}
+                value={record.standardPassRate|| ''}
                 onChange={(e) => {
-                  record.hgl = e.target.value
+                  record.standardPassRate = e.target.value
                   setData(cloneData)
                 }}
               />
@@ -94,17 +95,26 @@ export default function qualityIndexModal(props: Props) {
           title: '合格数/抽查数',
           align: 'center',
           width:100,
-          render(text:string, record:any, index:number) {
+          render(text: string, record: any, index: number) {
             return (
-              <input
-                type='text'
-                className='cell-ipt'
-                value={record.hgsccs|| ''}
-                onChange={(e) => {
-                  record.hgsccs= e.target.value
-                  setData(cloneData)
-                }}
-              />
+              <div className='inp_textArea' >
+                <input
+                  className='cell-textArea'
+                  value={record.qualifiedCount|| ''}
+                  onChange={(e) => {
+                    record.qualifiedCount= e.target.value
+                    setData(cloneData)
+                  }}
+                />/
+                <input
+                  className='cell-textArea'
+                  value={record.checkCount|| ''}
+                  onChange={(e) => {
+                    record.checkCount= e.target.value
+                    setData(cloneData)
+                  }}
+                />
+              </div>
             )
           },
         },
@@ -117,9 +127,9 @@ export default function qualityIndexModal(props: Props) {
               <input
                 type='text'
                 className='cell-ipt'
-                value={record.pjf|| ''}
+                value={record.averageScore|| ''}
                 onChange={(e) => {
-                  record.pjf = e.target.value
+                  record.averageScore = e.target.value
                   setData(cloneData)
                 }}
               />
@@ -135,9 +145,9 @@ export default function qualityIndexModal(props: Props) {
               <input
                 type='text'
                 className='cell-ipt'
-                value={record.hgl2|| ''}
+                value={record.passRate|| ''}
                 onChange={(e) => {
-                  record.hgl2 = e.target.value
+                  record.passRate = e.target.value
                   setData(cloneData)
                 }}
               />
@@ -153,9 +163,9 @@ export default function qualityIndexModal(props: Props) {
               <input
                 type='text'
                 className='cell-ipt'
-                value={record.wdb|| ''}
+                value={record.standardStatus|| ''}
                 onChange={(e) => {
-                  record.wdb = e.target.value
+                  record.standardStatus = e.target.value
                   setData(cloneData)
                 }}
               />
@@ -175,4 +185,16 @@ export default function qualityIndexModal(props: Props) {
   )
 }
 const Wrapper = styled(tableCon)`
+input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
 `

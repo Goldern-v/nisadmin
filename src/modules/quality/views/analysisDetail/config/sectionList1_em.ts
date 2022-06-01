@@ -100,7 +100,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_2",
     sectionTitle: "2、本月急诊护理工作量统计（与上一年同期对比）",
     modalTitle: "编辑本月急诊护理工作量统计",
-    data: {},
+    data: {
+      tableName:'emrNursingWorkStatistics'
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_2", val);
     },

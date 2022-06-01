@@ -19,7 +19,6 @@ export default observer(function OperationSection(props: Props) {
   let data = analysisDetailModal.current.getSectionData(sectionId) 
   let pageInfo: Report= data ? data.pageInfo : {}
   let value = data.value ? data.value : {}
-  console.log(data,'dddd')
   let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>

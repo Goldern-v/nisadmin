@@ -41,7 +41,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_1',
     sectionTitle: '1、科室一级质量结果',
     modalTitle: '编辑质量指标',
-    data: {},
+    data: {
+      tableName: 'deptOneQualityIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_1', val)
     },
@@ -52,7 +54,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_2',
     sectionTitle: '2、科室专科护理监测指标结果',
     modalTitle: '编辑监测指标结果',
-    data: {},
+    data: {
+      tableName:'deptCareMonitorIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_2', val)
     },

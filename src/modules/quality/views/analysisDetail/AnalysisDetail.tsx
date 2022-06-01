@@ -19,6 +19,7 @@ export default observer(function AnalysisDetail() {
   const pageRef: any = useRef<HTMLElement>()
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
+  console.log(analysisDetailModal,'analysisDetailModal')
   const { queryObj } = appStore
   useEffect(() => {
     analysisDetailModal.current.init()
