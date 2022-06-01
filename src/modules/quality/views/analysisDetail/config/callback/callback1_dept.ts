@@ -2,6 +2,19 @@ import { getBlank, replenishList } from "./../../util/tool";
 import { analysisModal } from '../../../analysisWhyx/AnalysisModal';
 import { appStore } from "src/stores";
 
+/**固定渲染数据 */
+const FIXED_ITEMS = [
+  '采血扫描合格率',
+  '长期口服药扫描合格率',
+  '长期静脉给药扫描合格率',
+  '静脉炎发生例数',
+  '药液渗出发生例数',
+  '各类导管非计划拔管例数',
+  '锐器伤发生例数',
+  '',
+  '',
+  ''
+]
 export const obj = {
   getData() {
     return {
@@ -120,7 +133,7 @@ export const obj = {
         cmi: "",
         lowRiskMortality: "",
         specialEventSolvedProblem: "",
-        livePictures: "",
+        livePictures: [],
         deptWorkPlanForNextMonth: "",
         nextMonthDeptTrainingPlan: "",
         reportAdverseEvents: "",
@@ -184,6 +197,8 @@ export const obj = {
 
     (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
+
     (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },
@@ -210,10 +225,16 @@ export const obj = {
         })
         return
       }
+
       const blank = getBlank(tableTempList[v])
       renderData[v].map((v3: any) => {
         obj[v].push({ ...blank, ...v3 })
       })
+      if (v == 'deptOneQualityIndexResult') {
+        FIXED_ITEMS.map((v4: string) => {
+          obj[v].push({ ...blank, item: v4 })
+        })
+      }
     });
     let proList: any[] = []
     const reportId = appStore.queryObj.id
@@ -227,10 +248,10 @@ export const obj = {
       proList.push((this as any).saveReportTableData(params))
     })
     try {
-      await Promise.all(proList)
+      const res = await Promise.all(proList)
       analysisModal.clearRenderData()
       console.log('test-1', 1)
-      return true
+      return res
     } catch (e) {
     }
   }

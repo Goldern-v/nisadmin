@@ -18,6 +18,8 @@ import OperationSection from '../components/Operation/OperationSection'
 import OperationMoadl from '../components/Operation/OperationMoadl'
 import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
+import FileUploaderSection from "../components/file-upload/section";
+import FileUploaderModal from "../components/file-upload/modal";
 
 // 一级质控病区汇总配置
 export const sectionList: SectionListItem[] = [
@@ -138,8 +140,21 @@ export const sectionList: SectionListItem[] = [
     modal: TextareaModal
   },
   {
-    sectionId: '4',
-    sectionTitle: '四、下月工作重点',
+    sectionId: "4",
+    sectionTitle: "四、现场图片",
+    modalTitle: "编辑现场图片",
+    data: {
+      tableName: 'attachment'
+    },
+    async onSave(val: any) {
+      (this as any).setSectionData("4", val);
+    },
+    section: FileUploaderSection,
+    modal: FileUploaderModal,
+  },
+  {
+    sectionId: '5',
+    sectionTitle: '五、下月工作重点',
     modalTitle: '',
     keyName: '',
     section: LevelTitleSection

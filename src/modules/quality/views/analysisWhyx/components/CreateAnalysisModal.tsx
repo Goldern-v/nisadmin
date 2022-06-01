@@ -16,6 +16,7 @@ export interface Props {
   loading?: boolean
   /**reportName的字段排列 */
   reportFn?: Function
+  defDept?: string
 }
 
 export default function CreateAnalysisModal(props: Props) {
@@ -30,7 +31,7 @@ export default function CreateAnalysisModal(props: Props) {
     endDate: (val) => !!val || '请选择结束时间'
   }
 
-  const { visible, onCancel, onOk, wardList, allowClear, loading } = props
+  const { visible, onCancel, onOk, wardList, allowClear, loading, defDept } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
   const [startDate, setStartDate] = useState(null as any | null)
@@ -43,14 +44,15 @@ export default function CreateAnalysisModal(props: Props) {
         if (refForm.current) {
           let nowMoment = Moment();
           let month = nowMoment.format('M');
-
+          
           refForm.current.setFields({
             reportYear: nowMoment,
             startDate: null,
             endDate: null,
             reportName: '',
             groupRoleCode: '',
-            reportMonth: month
+            reportMonth: month,
+            wardCode: defDept || ''
           })
         }
       }, 300)
