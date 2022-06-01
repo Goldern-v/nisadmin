@@ -174,8 +174,10 @@ export class AnalysisDetailModal {
         publisherName,
         status,
         reportName,
+        reportMonth,
         updateTime,
         tableDataMap,
+        reportYear,
         reportTemplateDto
       } = res.data
       this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
@@ -185,6 +187,8 @@ export class AnalysisDetailModal {
         creatorNo,
         publisherName,
         status,
+        reportMonth,
+        reportYear,
         reportName,
         updateTime
       }
@@ -219,5 +223,6 @@ export const getModal = () => {
     return analysisDetailModal2
   }
   if (queryObj?.level == '1' && queryObj.deptName && queryObj.deptName.indexOf('急诊') > -1) return analysisDetailModal1Em
+  
   return analysisDetailModal1Dept
 }

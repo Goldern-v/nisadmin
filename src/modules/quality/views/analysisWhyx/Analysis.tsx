@@ -160,9 +160,7 @@ export default observer(function Analysis() {
 
   const handleReview = (record: any) => {
     const obj = {
-      reportMonth: record.reportMonth,
-      reportName: record.reportName,
-      deptName:record.wardName,
+      deptName: getTempName(level, record.wardCode),
       level,
       id: record.id
     };
@@ -198,7 +196,7 @@ export default observer(function Analysis() {
       .createReport({
         ...params,
         reportLevel: level,
-        templateName: getTempName(level),
+        templateName: getTempName(level, params.wardCode),
       })
       .then((res) => {
         if (res.code == '200') {
@@ -210,7 +208,7 @@ export default observer(function Analysis() {
           const params: Record<string, any> = {
             id: res.data.id || '',
             level,
-            deptName: getTempName(level, res.data.code)
+            deptName: getTempName(level, res.data.wardCode)
           }
           const {reportTemplateDto, renderTableDataMap} = res.data
           analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })

@@ -56,7 +56,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_2',
     sectionTitle: '2、科室专科护理监测指标结果',
     modalTitle: '编辑监测指标结果',
-    data: {},
+    data: {
+      tableName:'deptCareMonitorIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_2', val)
     },

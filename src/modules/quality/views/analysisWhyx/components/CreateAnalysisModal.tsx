@@ -4,6 +4,8 @@ import { Modal, Row, Col, Radio, Select, DatePicker, Input } from 'antd'
 import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
 import Moment from 'moment'
+import { getTypeName } from "../utils";
+import { appStore } from 'src/stores'
 
 const Option = Select.Option
 
@@ -191,8 +193,8 @@ export default function CreateAnalysisModal(props: Props) {
         wardName.shift()
         wardName = wardName.join('、')
       }
-
-      let reportName = `${yearStr}年${wardName}病区${monthStr}月工作报表`
+      let type = getTypeName(appStore.queryObj.level, wardCode)
+      let reportName = `${yearStr}年${wardName}${type}${monthStr}月工作报表`
 
       setFormItem('reportName', reportName)
     }
