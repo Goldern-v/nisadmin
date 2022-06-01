@@ -1,5 +1,19 @@
-import { replenishList } from './../../util/tool';
-
+import { appStore } from 'src/stores';
+import { analysisModal } from './../../../analysisWhyx/AnalysisModal';
+import { getBlank, replenishList } from './../../util/tool';
+/**固定渲染数据 */
+const FIXED_ITEMS = [
+  '采血扫描合格率',
+  '长期口服药扫描合格率',
+  '长期静脉给药扫描合格率',
+  '静脉炎发生例数',
+  '药液渗出发生例数',
+  '各类导管非计划拔管例数',
+  '锐器伤发生例数',
+  '',
+  '',
+  ''
+]
 export const obj =  {
 
   getData() {
@@ -129,5 +143,56 @@ export const obj =  {
     (this as any).getSectionData('5_1').report = (this as any).allData.report;
     (this as any).getSectionData('5_2').report = (this as any).allData.report;
     
+  },
+  async initRender() {
+    if (!(analysisModal.renderData && analysisModal.tableTempList)) return
+    const { renderData, tableTempList } = analysisModal
+    const obj: Record<string, any> = {}
+    Object.keys(renderData).map((v: string) => {
+      obj[v] = []
+      // 本月护理主要问题分析改进 提取
+      if (v == 'monthCareProblemImprove') {
+        const data: Record<string, any> = {}
+        renderData[v].map((v1: any) => {
+          if (data[v1.item] != undefined) {
+            v1.mainProblem && (data[v1.item] += v1.mainProblem + '/n')
+            return
+          }
+          data[v1.item] = v1.mainProblem || ''
+        })
+        let blank = getBlank(tableTempList[v])
+        Object.keys(data).map((v2: any) => {
+          obj[v].push({ ...blank, item: v2, mainProblem: data[v2] })
+        })
+        return
+      }
+
+      const blank = getBlank(tableTempList[v])
+      renderData[v].map((v3: any) => {
+        obj[v].push({ ...blank, ...v3 })
+      })
+      if (v == 'deptOneQualityIndexResult') {
+        FIXED_ITEMS.map((v4: string) => {
+          obj[v].push({ ...blank, item: v4 })
+        })
+      }
+    });
+    let proList: any[] = []
+    const reportId = appStore.queryObj.id
+    Object.keys(obj).map((v4: string) => {
+      if (!obj[v4]) return
+      const params = {
+        reportId,
+        tableName: v4,
+        data: obj[v4]
+      }
+      proList.push((this as any).saveReportTableData(params))
+    })
+    try {
+      const res = await Promise.all(proList)
+      analysisModal.clearRenderData()
+      return res
+    } catch (e) {
+    }
   }
 }

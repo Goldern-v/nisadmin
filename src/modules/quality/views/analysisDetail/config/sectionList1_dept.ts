@@ -43,7 +43,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_1',
     sectionTitle: '1、科室一级质量结果',
     modalTitle: '编辑质量指标',
-    data: {},
+    data: {
+      tableName: 'deptOneQualityIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_1', val)
     },
@@ -104,17 +106,6 @@ export const sectionList: SectionListItem[] = [
     modal: OperationMoadl
   },
   {
-    sectionId: '3_4',
-    sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
-    modalTitle: '编辑主要护理问题改进方案',
-    data: {},
-    async onSave (val: any) {
-      (this as any).setSectionData('3_3', val)
-    },
-    section: ImprovementProjectSection,
-    modal: ImprovementProjectModal
-  },
-  {
     sectionId: "3_3",
     sectionTitle: "3、本月护理主要问题分析改进",
     modalTitle: "编辑本月护理主要问题分析改进",
@@ -126,6 +117,17 @@ export const sectionList: SectionListItem[] = [
     },
     section: tableSection,
     modal: tableModal,
+  },
+  {
+    sectionId: '3_4',
+    sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
+    modalTitle: '编辑主要护理问题改进方案',
+    data: {},
+    async onSave (val: any) {
+      (this as any).setSectionData('3_3', val)
+    },
+    section: ImprovementProjectSection,
+    modal: ImprovementProjectModal
   },
   {
     sectionId: '3_5',

@@ -133,7 +133,7 @@ export const obj = {
         cmi: "",
         lowRiskMortality: "",
         specialEventSolvedProblem: "",
-        livePictures: [],
+        livePictures: '',
         deptWorkPlanForNextMonth: "",
         nextMonthDeptTrainingPlan: "",
         reportAdverseEvents: "",
