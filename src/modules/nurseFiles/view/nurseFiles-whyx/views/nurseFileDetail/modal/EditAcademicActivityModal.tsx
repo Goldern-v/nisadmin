@@ -39,7 +39,7 @@ export default function EditPersonWinningModal(props: Props) {
     hostUnit: (val) => !!val || '请填写举办单位',
     hostAddress: (val) => !!val || '请填写举办地点',
     qualification: (val) => !!val || '请填写以何种资格获得邀请',
-    urlImageOne: (val) => !!val || '请上传附件',
+    // urlImageOne: (val) => !!val || '请上传附件',
   }
   // if (signShow !== '修改') {
   //   rules = Object.assign(rules, {
@@ -100,8 +100,8 @@ export default function EditPersonWinningModal(props: Props) {
           return item
         }
       })
-      let { empNo, empName } = JSON.parse(sessionStorage.getItem('user') || '')
-      userList.push({ empNo, empName })
+      // let { empNo, empName } = JSON.parse(sessionStorage.getItem('user') || '')
+      // userList.push({ empNo, empName })
     }
 
     nurseFilesService.commonSaveOrUpdate('nurseWHAcademic', { ...obj, userList, ...value, sign }).then((res: any) => {
@@ -274,11 +274,18 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`以何种资格获得邀请`} name='qualification' required>
-              <Input maxLength={25} />
+              {/* <Input maxLength={25} /> */}
+              <Select>
+                {['讲学、审编、评审的专家', '指定的学会负责人、会议主持人', '担任理事、委员，参加本学会召开的年会', '论文被选定进行大会交流', '国际、国家级心血管领域的重要会议', '与医院科研相关的会议'].map((item) => (
+                  <Select.Option value={item} key={item}>
+                    {item}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne' required>
+            <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
