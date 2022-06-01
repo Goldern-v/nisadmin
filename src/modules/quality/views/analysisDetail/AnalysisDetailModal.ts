@@ -115,14 +115,14 @@ export class AnalysisDetailModal {
       //保存数据
       if (obj.data.value) {
         const saveData: ReportFieldData = {
-          reportId: queryObj.id,
+          reportId: appStore.queryObj.id,
           data: obj.data.value
         }
         this.saveReportFieldData(saveData)
       }
       if (obj.data.list) {
         const saveData: ReportFieldData = {
-          reportId: queryObj.id,
+          reportId: appStore.queryObj.id,
           tableName: obj.data.tableName || '',
           data: obj.data.list
         }
@@ -175,7 +175,7 @@ export class AnalysisDetailModal {
   initData() {
     // 实例化并使用bind绑定数据
     this.allData = this.getData()
-    analysisDetailApi.getPageDetaile(1).then((res) => {
+    analysisDetailApi.getPageDetaile(appStore.queryObj.id).then((res) => {
       console.log('接口数据======》', res.data)
       if (res.code == 200) {
         let { fieldDataMap } = res.data

@@ -62,4 +62,7 @@ const Wrapper = styled(OperationSecCon)`
     top: 0px;
     right: 20px;
   }
+  .context div {
+    text-align: center;
+  }
 `
