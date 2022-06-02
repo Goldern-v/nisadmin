@@ -14,7 +14,37 @@ const FIXED_ITEMS = [
   '',
   ''
 ]
-
+const emrNursing = [
+  '接诊人数',
+  '收入院人数',
+  '抢救人数',
+'留观人数',
+ ' 120人数',
+  '死亡人数',
+  '急诊PCI人数',
+  '',
+  ''
+]
+const yearList=[
+  '2021','2022'
+]
+const emrMonthCare=[
+  "（一）急诊护理质量",
+"（二）消毒隔离管理",
+"（三）护理安全管理",
+"（四）疫情常态化管理",
+"（五）发热诊室护理管理",
+"（六）急诊120急救车质量管理",
+"",
+]
+const dayMontCare= [
+  "（一）日间病房护理质量",
+  "（二）消毒隔离管理",
+  "（三）护理安全管理",
+  "（四）疫情常态化管理",
+  "（五）护理文件书写",
+  ""
+]
 export const obj = {
   getData() {
     return {
@@ -96,6 +126,7 @@ export const obj = {
         renderTableDataMap: null,
         reportLevel: "",
         reportMonth: "",
+        reportYear:"",
         reportName: "",
         updateTime: "",
         updaterName: "",
@@ -114,17 +145,18 @@ export const obj = {
     (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3 });
     (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'emrNursingWorkStatistics', len: 7 });
+    (this as any).getSectionData("3_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayNursingWorkStatistics', len: 2 });
     (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
     (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
 
-    (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayNursingWorkStatistics : [] || [];
+    // (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayNursingWorkStatistics : [] || [];
     (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
     
     (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_4").pageInfo= (this as any).allData.pageInfo;
-    (this as any).getSectionData("3_5_1").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.emrMonthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5_1").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'emrMonthCareProblemImprove', len: 7 });
     (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
-    (this as any).getSectionData("3_5_2").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayMonthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayMonthCareProblemImprove', len: 6});
     (this as any).getSectionData("3_5_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayMonthCareProblemImprove : [] || [];
     
     (this as any).getSectionData("3_6").value = (this as any).allData.fieldData;
@@ -166,7 +198,29 @@ export const obj = {
           obj[v].push({ ...blank, item: v4 })
         })
       }
+
     });
+    const blankEmr = getBlank(tableTempList['emrNursingWorkStatistics'])
+    const blankDayNur = getBlank(tableTempList['dayNursingWorkStatistics'])
+    const blankemg = getBlank(tableTempList['emrMonthCareProblemImprove'])
+    const blankDayMonth = getBlank(tableTempList['dayMonthCareProblemImprove'])
+    obj['emrNursingWorkStatistics'] = []
+    obj['dayNursingWorkStatistics'] = []
+    obj['emrMonthCareProblemImprove'] = []
+    obj['dayMonthCareProblemImprove'] = []
+
+    emrNursing.map((x:any)=>{
+        obj['emrNursingWorkStatistics'].push({ ...blankEmr,item:x})
+      })
+      yearList.map((x:any)=>{
+        obj['dayNursingWorkStatistics'].push({ ...blankDayNur,year:x})
+      })
+      emrMonthCare.map((x:any)=>{
+        obj['emrMonthCareProblemImprove'].push({ ...blankemg,item:x})
+      })
+      dayMontCare.map((x:any)=>{
+        obj['dayMonthCareProblemImprove'].push({ ...emrMonthCare,item:x})
+      })
     let proList: any[] = []
     const reportId = appStore.queryObj.id
     Object.keys(obj).map((v4: string) => {

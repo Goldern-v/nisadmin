@@ -19,6 +19,7 @@ export default function qualityIndexModal(props: Props) {
     {
       title: '序号',
       align: 'center',
+      width: 40,
       render(text: any, record: any, index: number) {
         return index + 1
       },
@@ -169,6 +170,7 @@ export default function qualityIndexModal(props: Props) {
                   value={record.passRate || ''}
                   onChange={(e) => {
                     record.passRate = e.target.value
+                    record.standardStatus=!record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
                     setData(cloneData)
                   }}
                 />
@@ -185,7 +187,7 @@ export default function qualityIndexModal(props: Props) {
               <div className='inp_textArea'>
                 <Input
                   className='cell-textArea'
-                  value={record.standardStatus || ''}
+                  value={!record.passRate? "" : Number(record.passRate)>=90? "达标" : "未达标"}
                   onChange={(e) => {
                     record.standardStatus = e.target.value
                     setData(cloneData)
@@ -251,8 +253,15 @@ const Wrapper = styled.div`
     border: none;
     outline: none;
     background: transparent;
+    align-items: center;
     border-radius: 0;
     resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .table_Bottom input{
+    align-items: center;
     &:focus {
       background: ${(p) => p.theme.$mlc};
     }

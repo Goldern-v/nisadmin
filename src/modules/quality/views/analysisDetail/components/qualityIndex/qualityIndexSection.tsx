@@ -25,7 +25,7 @@ export default observer(function qualityIndexSection(props: Props) {
     {
       title: '序号',
       align: 'center',
-      width: 60,
+      width: 40,
     render(text: any, record: any, index: number) {
       return index + 1
     },
@@ -33,14 +33,14 @@ export default observer(function qualityIndexSection(props: Props) {
     {
       title: '类型',
       dataIndex: 'type',
-      width: 100,
+      width: 60,
       align: 'center'
     },
     {
       title: '项目',
       dataIndex: 'item',
       align: 'center',
-      width: 60
+      width: 160
     },
     {
       title: '达标值',
@@ -93,9 +93,15 @@ export default observer(function qualityIndexSection(props: Props) {
       },
       {
         title: '未达标',
-        dataIndex: 'standardStatus',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {!record.passRate? "" : Number(record.passRate)>=90? "达标" : "未达标"}
+            </div>
+          )
+        },
       }
     ]
     },

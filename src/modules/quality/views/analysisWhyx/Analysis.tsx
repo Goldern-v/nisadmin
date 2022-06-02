@@ -210,9 +210,9 @@ export default observer(function Analysis() {
             level,
             deptName: getTempName(level, res.data.wardCode)
           }
+          
           const {reportTemplateDto, renderTableDataMap} = res.data
           analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
-
           appStore.history.push(
             `/qualityAnalysisReport?${qs.stringify(params)}`
           );
@@ -246,7 +246,7 @@ export default observer(function Analysis() {
       .then((res) => {
         setTableLoading(false);
 
-        if (res.data.totalPage) setDataTotal(res.data.totalPage);
+        if (res.data.totalCount) setDataTotal(res.data.totalCount);
         else setDataTotal(0);
 
         if (res.data.list instanceof Array)
@@ -298,6 +298,7 @@ export default observer(function Analysis() {
           <Select
             style={{ width: "171px" }}
             onChange={(code: any) => (wardCode = code)}
+            
           >
             {wardList.map((item: any, idx: number) => (
               <Option value={item.code} key={idx}>
@@ -372,6 +373,9 @@ export default observer(function Analysis() {
         </Select>
         <div className="label">科室：</div>
         <Select
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           value={query.wardCode}
           onChange={(wardCode: any) => {
             setQuery({ ...query, wardCode });

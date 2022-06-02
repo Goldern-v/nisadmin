@@ -15,6 +15,7 @@ import { obj as obj1Em } from './config/callback/callback1_em'
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
 import { AllData } from './types'
+import { analysisModal } from '../analysisWhyx/AnalysisModal';
 export interface SectionListItem extends Record<string, any> {
   sectionId?: string
 
@@ -122,6 +123,7 @@ export class AnalysisDetailModal {
           data: obj.data.value
         }
         this.saveReportFieldData(saveData)
+        this.initData()
       }
       if (obj.data.list) {
         const saveData: ReportFieldData = {
@@ -131,6 +133,7 @@ export class AnalysisDetailModal {
         }
         this.saveReportTableData(saveData)
       }
+      this.initData
 
       return true
     } else {
@@ -159,7 +162,7 @@ export class AnalysisDetailModal {
   /** 数据初始化 */
   async initData() {
     try {
-      this.initRender && (await this.initRender())
+     this.initRender && (await this.initRender())
       console.log('test-only-2')
       // 实例化并使用bind绑定数据
       this.allData = this.getData()
@@ -196,7 +199,9 @@ export class AnalysisDetailModal {
       this.configData = {
         tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
       }
-      this.formatData()
+
+     await this.formatData()
+
     } catch (error) {
 
     }

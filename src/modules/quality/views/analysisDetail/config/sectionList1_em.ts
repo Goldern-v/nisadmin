@@ -45,7 +45,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_1",
     sectionTitle: "1、科室一级质量结果",
     modalTitle: "编辑质量指标",
-    data: {},
+    data: {
+      tableName: 'deptOneQualityIndexResult'
+    },
     keyName: "key2_1",
     async onSave(val: any) {
       (this as any).setSectionData("2_1", val);
@@ -57,7 +59,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_2",
     sectionTitle: "2、科室专科护理监测指标结果",
     modalTitle: "编辑监测指标结果",
-    data: {},
+    data: {
+      tableName:'deptCareMonitorIndexResult'
+    },
     keyName: "key2_2",
     async onSave(val: any) {
       (this as any).setSectionData("2_2", val);
@@ -69,7 +73,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_3",
     sectionTitle: "结论:",
     modalTitle: "编辑结论",
-    data: {},
+    data: {
+      tableName: 'deptNotPassIndexImprove'
+    },
     keyName: "key2_2",
     async onSave(val: any) {
       (this as any).setSectionData("2_2", val);
@@ -113,7 +119,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_3",
     sectionTitle: "3、日间病房护理工作量统计：（与上一年同期对比）:",
     modalTitle: "编辑日间病房护理工作量统计",
-    data: {},
+    data: {
+      tableName:"dayNursingWorkStatistics"
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_3", val);
     },
@@ -136,7 +144,8 @@ export const sectionList: SectionListItem[] = [
     sectionId: '3_5',
     sectionTitle: "5、本月护理质量问题分析改进",
     data: {
-      level: 2
+      level: 2,
+      tableName: 'monthCareProblemImprove'
     },
     section: LevelTitleSection,
   },
@@ -144,7 +153,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_5_1",
     sectionTitle: "（1）急诊",
     modalTitle: "编辑急诊",
-    data: {},
+    data: {
+      tableName:"emrMonthCareProblemImprove"
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_5_1", val);
     },
@@ -155,7 +166,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_5_2",
     sectionTitle: "（2）日间病房",
     modalTitle: "编辑日间病房",
-    data: {},
+    data: {
+      tableName:"dayMonthCareProblemImprove"
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_5_2", val);
     },

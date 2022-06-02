@@ -46,7 +46,7 @@ export default function CreateAnalysisModal(props: Props) {
         if (refForm.current) {
           let nowMoment = Moment();
           let month = nowMoment.format('M');
-          
+
           refForm.current.setFields({
             reportYear: nowMoment,
             startDate: null,
@@ -239,23 +239,26 @@ export default function CreateAnalysisModal(props: Props) {
             </Col>
             <Col span={9}>
               <Form.Field name='startDate'>
-                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} />
+                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} disabled={true} />
               </Form.Field>
             </Col>
             <Col span={1}>至</Col>
             <Col span={9}>
               <Form.Field name='endDate'>
-                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} />
+                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} disabled={true} />
               </Form.Field>
             </Col>
           </Row>
           <Row>
             <Col span={5} className='label'>
-              科室：
+              科室222：
             </Col>
             <Col span={19}>
               <Form.Field name='wardCode'>
-                <Select>
+
+                <Select showSearch optionFilterProp="children" 
+                filterOption={(inputValue: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0}>
                   {wardList.map((item: any) => (
                     <Option value={item.code} key={item.code}>
                       {item.name}

@@ -171,10 +171,6 @@ export const obj = {
       proList.push((this as any).saveReportTableData(params))
     })
     try {
-      const val =await Promise.all(proList)
-      analysisModal.clearRenderData()
-      console.log('test-1', 1)
-      return val
       const res = await Promise.all(proList)
       analysisModal.clearRenderData()
       console.log('test-1', 1)

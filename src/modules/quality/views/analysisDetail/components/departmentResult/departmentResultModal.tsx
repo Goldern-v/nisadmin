@@ -148,6 +148,7 @@ export default function qualityIndexModal(props: Props) {
                 value={record.passRate|| ''}
                 onChange={(e) => {
                   record.passRate = e.target.value
+                  record.standardStatus=!record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
                   setData(cloneData)
                 }}
               />

@@ -85,9 +85,15 @@ export default observer(function ProblemImpSection(props: Props) {
       },
       {
         title: '未达标',
-        dataIndex: 'standardStatus',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {!record.passRate? "" : Number(record.passRate)>=90 ? "达标" : "未达标"}
+            </div>
+          )
+        },
       }
     ]
     },

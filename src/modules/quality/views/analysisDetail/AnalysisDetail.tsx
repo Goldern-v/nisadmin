@@ -19,11 +19,11 @@ export default observer(function AnalysisDetail() {
   const pageRef: any = useRef<HTMLElement>()
   // 根据params获取对应实例
   const analysisDetailModal = useRef(getModal())
-  console.log(analysisDetailModal,'analysisDetailModal')
   const { queryObj } = appStore
   useEffect(() => {
     analysisDetailModal.current.init()
   }, [])
+
   let report: Report = analysisDetailModal.current.getDataInAllData('pageInfo')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
@@ -103,11 +103,11 @@ export default observer(function AnalysisDetail() {
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status'>保存</span>:<span className='status'>发布</span>}</span>}
+            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status_save'>保存</span>:<span className='status_publish'>发布</span>}</span>}
           </span>
         </div>
         <div className='tool-con'>
-          <Button onClick={onDelete}>删除</Button>
+          {report.status == '0'&&checkRole()&&(<Button onClick={onDelete}>删除</Button>)}
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
           {report.status == '1' && checkRole() && (
             <Button onClick={onCancelPublish}>撤销</Button>
@@ -120,8 +120,8 @@ export default observer(function AnalysisDetail() {
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
-      <ScrollCon>
-        <Page ref={pageRef} className='print-page'>
+      <ScrollCon status={report.status}>
+        <Page ref={pageRef} className='print-page' >
           <Header sectionTitle={report.reportName}></Header>
           {analysisDetailModal.current.sectionList.map((item: any, index: number) => {
             if (item.sectionId) {
@@ -174,11 +174,17 @@ const HeadCon = styled.div`
       margin-left: 15px;
     }
   }
-  .status {
+  .status_save {
     color:red;
     font-size: 14px;
     margin-left:10px
   }
+  .status_publish {
+    color:rgb(74, 164, 234);
+    font-size: 14px;
+    margin-left:10px
+  }
+  
 `
 const Page = styled.div`
   width: 720px;
@@ -187,8 +193,12 @@ const Page = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
-`
 
+`
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
+  .ant-btn {
+    display:${props => props.status=='1' ? "none" : "block"};
+    
+  }
 `

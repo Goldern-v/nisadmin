@@ -8,6 +8,7 @@ export class AnalysisModal  {
   setRenderData(data: Obj) {
     this.renderData = data.renderTableDataMap || {}
     this.tableTempList = data.reportTableFieldTemplateList || {}
+    
   }
   /**使用完提取数据后，清除数据 */
   clearRenderData() {
