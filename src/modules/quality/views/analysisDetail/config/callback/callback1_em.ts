@@ -117,11 +117,20 @@ export const obj = {
     (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
     (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
 
-    (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.monthCareProblemImprove : [] || [];
-    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.monthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayNursingWorkStatistics : [] || [];
+    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
+    
     (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_4").pageInfo= (this as any).allData.pageInfo;
-    (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_5_1").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.emrMonthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5_2").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayMonthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayMonthCareProblemImprove : [] || [];
+    
+    (this as any).getSectionData("3_6").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_7").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
+
     (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },
