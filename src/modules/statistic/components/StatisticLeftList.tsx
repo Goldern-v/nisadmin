@@ -189,7 +189,11 @@ const LEFT_MENU_CONFIG = [
           title: "护理质量统计",
           icon: <HZCXTJ />,
           path: "/statistic/护理质量统计",
-        }
+        },
+        // { title: '现有专业技术资格', path: '/statistic/现有专业技术资格', icon: <HZCXTJ /> },
+        // { title: '现有专业技术资格级别', path: '/statistic/现有专业技术资格级别', icon: <HZCXTJ /> },
+        // { title: '现任专业技术职务', path: '/statistic/现任专业技术职务', icon: <HZCXTJ /> },
+        // { title: '现任专业技术职务级别', path: '/statistic/现任专业技术职务级别', icon: <HZCXTJ /> },
       ],
       other: []
     }
