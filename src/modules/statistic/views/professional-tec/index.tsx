@@ -19,7 +19,6 @@ export default observer(function ProfessionalTec() {
   const { deptList } = authStore
 
   const { match } = appStore
-  console.log('test-history', match)
   const [query, setQuery] = useState({
     deptCode: '',
 
@@ -63,7 +62,6 @@ export default observer(function ProfessionalTec() {
     statisticsApi.countProfessional({ ...query, ...item})
       .then((res: any) => {
         setLoading(false)
-
         let dataList = res.data
         if (dataList) {
           const {
@@ -84,7 +82,11 @@ export default observer(function ProfessionalTec() {
   useEffect(() => {
     getData()
   }, [query])
-
+  useEffect(() => {
+    setQuery({
+      deptCode: '',
+    })
+  }, [match.params.name])
 
   useEffect(() => {
     let resizeCallBack = () => setChartHeight(chartHeightCol())
@@ -114,7 +116,7 @@ export default observer(function ProfessionalTec() {
       <Button type="primary" onClick={handleSearch}>查询</Button>
     </div>}
     body={<Spin spinning={loading}>
-      <div className="main-title">护士学历分布</div>
+      <div className="main-title">{match.params.name}</div>
       <div className="right-group">
         <Radio.Group
           size="small"
