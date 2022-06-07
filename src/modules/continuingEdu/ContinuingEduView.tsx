@@ -902,6 +902,7 @@ export default function ContinuingEdu(props: Props) {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
+      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -936,6 +937,7 @@ export default function ContinuingEdu(props: Props) {
       title: "进修生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
+      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {

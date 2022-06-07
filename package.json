@@ -182,7 +182,7 @@
     "build:whyx": "env-cmd -e whyx react-app-rewired build && env-cmd -e whyx node buildZip",
     "build:sdlj": "env-cmd -e sdlj react-app-rewired build && env-cmd -e sdlj node buildZip",
     "build:lyrm": "env-cmd -e lyrm react-app-rewired build && env-cmd -e lyrm node buildZip",
-    "build:gdtj": "env-cmd -e gdtj react-app-rewired build && env-cmd -e lyrm node buildZip",
+    "build:gdtj": "env-cmd -e gdtj react-app-rewired build && env-cmd -e gdtj node buildZip",
     "zip": "env-cmd -e wh node buildZip",
     "deploy": "yarn build && node publish.js",
     "publish:45": "npm run build:hj && node publish.js",

@@ -74,13 +74,13 @@ const columns: ColumnProps<any>[] = [
     width: 50,
     align: "center"
   },
-  {
-    title: "职称",
-    dataIndex: "newTitle",
-    key: "newTitle",
-    width: 90,
-    align: "center"
-  },
+  // {
+  //   title: "职称",
+  //   dataIndex: "newTitle",
+  //   key: "newTitle",
+  //   width: 90,
+  //   align: "center"
+  // },
   {
     title: "类型",
     dataIndex: "nurseHierarchy",
@@ -165,6 +165,62 @@ const columns: ColumnProps<any>[] = [
     width: 60,
     align: "center",
     render: (text: any) => text == '1' ? '是' : '否'
+  },
+  {
+    title: "身份证号",
+    dataIndex: "cardNo",
+    key: "cardNo",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "岗位类别",
+    dataIndex: "postType",
+    key: "postType",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "个人身份",
+    dataIndex: "grfs",
+    key: "grfs",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "现有专业技术资格",
+    dataIndex: "xyzyjszg",
+    key: "xyzyjszg",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "现有专业技术资格级别",
+    dataIndex: "xyzyjszgjb",
+    key: "xyzyjszgjb",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "现任专业技术职务",
+    dataIndex: "xrzyjszw",
+    key: "xrzyjszw",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "现任专业技术职务级别",
+    dataIndex: "xrzyjszwjb",
+    key: "xrzyjszwjb",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "手机号码",
+    dataIndex: "phone",
+    key: "phone",
+    width: 100,
+    align: "center"
   },
   {
     title: "操作",

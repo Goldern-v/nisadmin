@@ -16,6 +16,7 @@ const ButtonStyl = styled(Button)<{ border: number }>`
     &.ant-btn {
       background: rgba(0, 0, 0, 0);
       box-shadow: none;
+      height: 24px;
     }
     &.ant-btn[disabled],
     &.ant-btn[disabled]:hover {
