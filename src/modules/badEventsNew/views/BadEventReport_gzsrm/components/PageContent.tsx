@@ -135,7 +135,7 @@ export default function PageContent(props: Props) {
           normal: {
             color: function (obj: any) {
               if (obj.dataIndex >= 0) {
-                return colors[obj.dataIndex];
+                return colors[obj.dataIndex % colors.length];
               }
             },
             // borderWidth : 1,
@@ -197,7 +197,7 @@ export default function PageContent(props: Props) {
             <div className='second-content-bolatu-title'>{`${index + 1}.2${item.reportItem}（图表-柏拉图）`}</div>
             <div className='second-content-bolatu-bolatu'>
               {!isPrint && <ReactEcharts style={{ height: 400 }} option={getBolatuOption(item)} />}
-              {isPrint && chartsImg.length && <img src={chartsImg[index]} alt="" />}
+              {isPrint && chartsImg.length && <img className='img-bola' src={chartsImg[index]} alt="" />}
             </div>
           </div>}
         </div>
@@ -231,5 +231,8 @@ const Wrapper = styled.div`
   }
   .second-content-bolatu-bolatu{
     text-indent:0;
+  }
+  .img-bola {
+    object-fit: cover;
   }
 `
