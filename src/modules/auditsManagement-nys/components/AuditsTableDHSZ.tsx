@@ -21,6 +21,8 @@ import GroupsHlbModal from "../modal/GroupsHlbModal";
 import { message } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
+import NursingConsultationModal from "../modal/NursingConsultationModal";
+
 export interface Props {
   showType: string;
   keyword: string;
@@ -49,7 +51,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const groupsEmpNoAduitModal = createModal(GroupsEmpNoAduitModal);
   const groupsHlbModal = createModal(GroupsHlbModal);
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
-
+  const nursingConsultationModal = createModal(NursingConsultationModal)
   const toDetails = (row: any) => {
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
@@ -80,6 +82,16 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           row.othersMessage.id
         }`
       );
+    } else if (showType == "nursingConsultation") {
+      nursingConsultationModal.show({
+        info: row,
+        needAudit:props.needAudit,
+        callback: () => {
+          setSelectedRows([]);
+          setSelectedRowKeys([]);
+          emitter.emit("refreshNurseAuditTable");
+        },
+      })
     }
   };
 
@@ -108,6 +120,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           ? "二级质控"
           : text == "sr"
           ? "特殊时段查房"
+          : text == "nursingConsultation" 
+          ? "护理会诊"
           : "";
       },
     },
@@ -291,7 +305,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   useEffect(() => {
     showType && onload(current, searchText, props.selectedDate, pageSize);
-  }, [needAudit, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode]);
+  }, [needAudit, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode,showType]);
 
   return (
     <Wrapper>
@@ -332,6 +346,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <groupsEmpNoAduitModal.Component />
       <groupsHlbModal.Component />
       <goupsSrAduitModal.Component />
+      <nursingConsultationModal.Component />
     </Wrapper>
   );
 });
