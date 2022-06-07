@@ -85,9 +85,15 @@ export default observer(function TraineeShift(props: Props) {
       let str1 = "";
       let str2 = "";
       let semicolon = "";
-      data.map((item: any, i: any) => {
+      data.map((item: any, i: any) => {       
+        let subDepartmentName = item.subDepartmentName && JSON.parse(item.subDepartmentName)
+        let deptName = subDepartmentName && subDepartmentName.join("|")
         let text = item.empName || "";
-        let text1 = `${item.empName}:${item.remark}` || "";
+        if(!deptName) {
+          var text1 = `${item.empName}` || "";
+        } else {
+          var text1 = `${item.empName}:${deptName}` || "";
+        }
         let semicolon1 = text && i !== data.length - 1 ? " 、" : "";
         if (data.length < 4) {
           semicolon = text && i !== data.length - 1 ? " 、" : "";
@@ -101,11 +107,11 @@ export default observer(function TraineeShift(props: Props) {
       });
       
       return data.length > 3 ? (
-        <Tooltip placement="right" title={str2}>
+        <Tooltip placement="right" title={str2} overlayStyle={{minWidth: 1150}}>
           {`${str1}...`}
         </Tooltip>
       ) : (
-        <Tooltip placement="right" title={str2}>
+        <Tooltip placement="right" title={str2} overlayStyle={{minWidth: 1150}}>
         {`${str}`}
       </Tooltip>
        
@@ -259,7 +265,7 @@ export default observer(function TraineeShift(props: Props) {
       align: "center",
       fixed: "left",
       className: "rotatePersonsList",
-      render(text: any) {
+      render(text: any) {  
         return setTextData(text);
       }
     },
@@ -335,13 +341,13 @@ export default observer(function TraineeShift(props: Props) {
   };
 
   // 保存轮科时间
-  const saveAllRotateTimes = () => {
+  const saveAllRotateTimesYaXin = () => {
     let obj: any = {
       sheetId: traineeShiftModal.sheetId,
       rotateGroupList: tableList
     };
     traineeShiftApi
-      .saveAllRotateTimes(obj)
+      .saveAllRotateTimesYaXin(obj)
       .then(res => {
         if (res.code == 200) {
           Message.success("保存成功");
@@ -453,7 +459,7 @@ export default observer(function TraineeShift(props: Props) {
           <Button
             disabled={showWeek || isAdd}
             type="primary"
-            onClick={() => saveAllRotateTimes()}
+            onClick={() => saveAllRotateTimesYaXin()}
           >
             保存
           </Button>
