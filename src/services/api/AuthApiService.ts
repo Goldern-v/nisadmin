@@ -16,6 +16,12 @@ export default class AuthApiService extends BaseApiService {
       if(res.errorCode){
         return res
       }
+      let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$") 
+      if (['sdlj'].includes(appStore.HOSPITAL_ID) && !regexp.test(password)) {
+        message.error('当前登录密码强度较弱，请修改密码后登录!')
+        window.location.href = '#/resetpassword'
+        return
+      }
       let { adminNurse, authToken, user } = res.data
       user = { ...user, wsp: compileStr(password) }
       sessionStorage.setItem('adminNurse', adminNurse)

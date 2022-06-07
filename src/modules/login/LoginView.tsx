@@ -274,6 +274,11 @@ export default withRouter(function LoginView(props: Props) {
                 }}>
                   <span>重置密码</span>
                 </div>,
+                'sdlj':<div className="resetpassword CheckItem" onClick={() => {
+                  history.push('/resetpassword')
+                }}>
+                  <span>重置密码</span>
+                </div>,
                 default: null
               }
             })}
