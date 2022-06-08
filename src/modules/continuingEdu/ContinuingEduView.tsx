@@ -70,6 +70,7 @@ import 审核集中管理 from "./views/审核集中管理/审核集中管理";
 import BacisManagement from "./views/InternManagement/bacisInformation/BacisManagement"
 import TeachingProgramme from "./views/InternManagement/bacisTeachingProgramme/TeachingProgramme"
 import InterntraineeRound from "./views/InternManagement/traineeShift/TraineeShift"
+import ClinicalEvaluation from "./views/InternManagement/clinicalEvaluation/ClinicalEvaluation"
 
 // 亚心进修生管理
 import BaciPostgraduate from './views/InternPostgraduate/bacisPostgraduate/PostgraduateManagement'
@@ -712,7 +713,7 @@ export default function ContinuingEdu(props: Props) {
     hide: () => !["hj", "dgxg"].includes(appStore.HOSPITAL_ID),
   };
 
-  console.log(authStore.isTeachingNurse,'gao');
+  // console.log(authStore.isTeachingNurse,'gao');
   
   // 菜单列表
   const LEFT_MENU_CONFIG = [
@@ -897,7 +898,7 @@ export default function ContinuingEdu(props: Props) {
         },
       ],
     },
-    {
+    appStore.HOSPITAL_ID == 'whyx' && {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
@@ -921,6 +922,11 @@ export default function ContinuingEdu(props: Props) {
                 title: "实习生轮转计划",
                 path: "/continuingEdu/实习生轮转计划",
                 component: InterntraineeRound,
+              },
+              {
+                title: "实习生临床评定",
+                path: "/continuingEdu/实习生临床评定",
+                component: ClinicalEvaluation,
               },
             ],
           },

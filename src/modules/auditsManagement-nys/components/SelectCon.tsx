@@ -21,7 +21,7 @@ interface Props {
 }
 export default function SelectCon(props: Props) {
   const [visible, setVisible] = useState(false);
-  // const [showTypeDict, setShowTypeDict] = useState([]);
+  const [showTypeDict, setShowTypeDict] = useState([]);
   let { showType, setShowType, keyword, setKeyword } = props;
   const handleOk = () => {
     setVisible(false);
@@ -44,10 +44,10 @@ export default function SelectCon(props: Props) {
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => { };
 
   useEffect(() => {
-    // service.commonApiService.dictInfo("audit_type").then(res => {
-    //   setShowTypeDict(res.data);
-    //   setShowType(res.data[0] ? res.data[0].code : "");
-    // });
+    service.commonApiService.dictInfo("audit_type").then(res => {
+      setShowTypeDict(res.data);
+      setShowType(res.data[0] ? res.data[0].code : "");
+    });
   }, []);
   return (
     <React.Fragment>
@@ -73,7 +73,7 @@ export default function SelectCon(props: Props) {
           </React.Fragment>
         )}
 
-        {/* <span style={{ marginLeft: 20 }}>类型：</span>
+        <span style={{ marginLeft: 20 }}>类型：</span>
         <Select
           value={showType}
           onChange={(value: any) => setShowType(value)}
@@ -84,7 +84,7 @@ export default function SelectCon(props: Props) {
               {item.name}
             </Select.Option>
           ))}
-        </Select> */}
+        </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
         <MultipleDeptSelect deptKey="完整科室" />

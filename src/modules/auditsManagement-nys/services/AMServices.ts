@@ -81,6 +81,16 @@ export default class AMServices extends BaseApiService {
   public srRecordBatchHandleNode(obj: any) {
     return this.post(`/srRecord/batchHandleNode`, obj);
   }
+
+  //查看护理会诊详情
+  public nursingConsultationDetail(url: string) {
+    return this.get(url)
+  }
+
+  // 审核护理会诊
+  public auditNursingConsultation(obj: any) {
+    return this.post(`/nursingConsultation/auditNursingConsultation`, obj);
+  }
 }
 
 export const aMServices = new AMServices();

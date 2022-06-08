@@ -53,7 +53,16 @@ export default withRouter(function ResetPasswordView(props: Props) {
     // }
   }
   useEffect(() => {
-    getPasswordRule()
+    if (['sdlj'].includes(appStore.HOSPITAL_ID)) {
+      setReg({
+        flag: true,
+        // rule: "^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z~!@#$%^&*._?]+$)(?![a-z0-9]+$)(?![a-z~!@#$%^&*._?]+$)(?![0-9~!@#$%^&*._?]+$)[a-zA-Z0-9~!@#$%^&*._?]{8,}$",
+        rule: "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$",
+        ruleMsg: "密码长度至少8位且必须包含大小写字母、特殊符号、数字"
+      })
+    } else {
+      getPasswordRule()
+    }
   }, [])
   //获取正则
   const getPasswordRule = () => {

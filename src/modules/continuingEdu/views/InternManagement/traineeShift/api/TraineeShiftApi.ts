@@ -39,16 +39,16 @@ export default class TraineeShiftApi extends BaseApiService {
     );
   }
   // 保存轮科时间
-  public async saveAllRotateTimes(obj: any) {
+  public async saveAllRotateTimesYaXin(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/saveAllRotateTimes`,
+      `/studyAndTrain/intern/deptRotationSchedule/saveAllRotateTimesYaXin`,
       obj
     );
   }
   // 删除轮科小组(单条数据)
   public async deleteGroup(groupId: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/deleteGroup`,
+      `/studyAndTrain/intern/deptRotationSchedule/deleteGroupYaXin`,
       qs.stringify({ groupId })
     );
   }
@@ -94,6 +94,13 @@ export default class TraineeShiftApi extends BaseApiService {
       qs.stringify({ sheetId })
     );
   }
+  // 武汉亚心查询全部科室（已勾选）
+  public async queryAllDeptsAndRotateYaXinDepts(sheetId: any) {
+    return this.post(
+      `/studyAndTrain/intern/deptRotationSchedule/queryAllDeptsAndRotateYaXinDepts`,
+      qs.stringify({ sheetId })
+    );
+  }
   // 获取所有的已选科室
   public async queryAllRorateDepts() {
     return this.post(
@@ -130,7 +137,7 @@ export default class TraineeShiftApi extends BaseApiService {
       deptCodeList
     };
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/deleteRotateDepts`,
+      `/studyAndTrain/intern/deptRotationSchedule/deleteRotateDeptsYaXin`,
       obj
     );
   }
@@ -162,7 +169,7 @@ export default class TraineeShiftApi extends BaseApiService {
       empNoList
     };
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/deleteRotatePersonsFromRotateGroup`,
+      `/studyAndTrain/intern/deptRotationSchedule/deleteRotatePersonsFromRotateGroupYaXin`,
       obj
     );
   }
@@ -171,7 +178,7 @@ export default class TraineeShiftApi extends BaseApiService {
    * 实习生轮课表导入模版
    */
   public exportSheetTemplate(sheetId: string | number) {
-    return this.post('/studyAndTrain/intern/deptRotationSchedule/exportSheetTemplate', { sheetId }, { responseType: 'blob' })
+    return this.post('/studyAndTrain/intern/deptRotationSchedule/exportSheetTemplateYaXin', { sheetId }, { responseType: 'blob' })
   }
 
   /**
@@ -184,7 +191,7 @@ export default class TraineeShiftApi extends BaseApiService {
     newFormData.set('filename', filename)
     newFormData.set('sheetId', sheetId)
 
-    return this.post('/studyAndTrain/intern/deptRotationSchedule/importSheetTemplate', newFormData)
+    return this.post('/studyAndTrain/intern/deptRotationSchedule/importSheetTemplateYaXin', newFormData)
   }
 }
 export const traineeShiftApi = new TraineeShiftApi();
