@@ -16,6 +16,11 @@ import planCompletionSection from '../components/planCompletion/planCompletionSe
 import planCompletionModal from '../components/planCompletion/planCompletionModal'
 import OperationSection from '../components/Operation/OperationSection'
 import OperationMoadl from '../components/Operation/OperationMoadl'
+import tableSection from "../components/table/section";
+import tableModal from "../components/table/modal";
+import FileUploaderSection from "../components/file-upload/section";
+import FileUploaderModal from "../components/file-upload/modal";
+import Bottom from "../components/bottomNote/section";
 // 一级质控病区汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -38,7 +43,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_1',
     sectionTitle: '1、科室一级质量结果',
     modalTitle: '编辑质量指标',
-    data: {},
+    data: {
+      tableName: 'deptOneQualityIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_1', val)
     },
@@ -49,7 +56,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_2',
     sectionTitle: '2、科室专科护理监测指标结果',
     modalTitle: '编辑监测指标结果',
-    data: {},
+    data: {
+      tableName:'deptCareMonitorIndexResult'
+    },
     async onSave (val: any) {
       (this as any).setSectionData('2_2', val)
     },
@@ -60,8 +69,11 @@ export const sectionList: SectionListItem[] = [
     sectionId: '2_3',
     sectionTitle: '结论:',
     modalTitle: '编辑结论',
-    data: {},
+    data: {
+      tableName: 'deptNotPassIndexImprove'
+    },
     async onSave (val: any) {
+
       (this as any).setSectionData('2_3', val)
     },
     section: conclusionSection,
@@ -97,17 +109,29 @@ export const sectionList: SectionListItem[] = [
     modal: OperationMoadl
   },
   {
-    sectionId: '3_3',
-    sectionTitle: '3、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
+    sectionId: "3_3",
+    sectionTitle: "3、本月护理主要问题分析改进",
+    modalTitle: "编辑本月护理主要问题分析改进",
+    data: {
+      tableName: 'monthCareProblemImprove'
+    },
+    async onSave(val: any) {
+      (this as any).setSectionData("3_3", val);
+    },
+    section: tableSection,
+    modal: tableModal,
+  },
+  {
+    sectionId: '3_4',
+    sectionTitle: '4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）',
     modalTitle: '编辑主要护理问题改进方案',
     data: {},
     async onSave (val: any) {
-      (this as any).setSectionData('3_3', val)
+      (this as any).setSectionData('3_4', val)
     },
     section: ImprovementProjectSection,
     modal: ImprovementProjectModal
   },
-
   {
     sectionId: '3_5',
     sectionTitle: '5、特殊事件及需解决的问题',
@@ -121,8 +145,21 @@ export const sectionList: SectionListItem[] = [
     modal: TextareaModal
   },
   {
-    sectionId: '4',
-    sectionTitle: '四、下月工作重点',
+    sectionId: "4",
+    sectionTitle: "四、现场图片",
+    modalTitle: "编辑现场图片",
+    data: {
+      tableName: 'attachment'
+    },
+    async onSave(val: any) {
+      (this as any).setSectionData("4", val);
+    },
+    section: FileUploaderSection,
+    modal: FileUploaderModal,
+  },
+  {
+    sectionId: '5',
+    sectionTitle: '五、下月工作重点',
     modalTitle: '',
     keyName: '',
     section: LevelTitleSection
@@ -150,5 +187,9 @@ export const sectionList: SectionListItem[] = [
     },
     section: TextareaSection2,
     modal: TextareaModal
+  },
+  {
+    sectionId: '6_1',
+    section: Bottom,
   },
 ]

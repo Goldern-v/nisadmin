@@ -39,20 +39,6 @@ export default function planCompletionModal(props: Props) {
             />
           </div>
           <div className="text">
-            <div className="title"> 2.培训计划:</div>
-            <TextArea
-              className="cell-textArea"
-              value={value.trainingPlanOfTheMonth}
-              autosize={{ minRows: 6 }}
-              placeholder="最多输入500个字"
-              maxLength={500}
-              onChange={(e) => {
-                value.trainingPlanOfTheMonth = e.target.value;
-                setData(cloneData);
-              }}
-            />
-          </div>
-          <div className="text">
             <div className="title"> 1.工作计划:</div>
             <TextArea
               className="cell-textArea"
@@ -66,6 +52,21 @@ export default function planCompletionModal(props: Props) {
               }}
             />
           </div>
+          <div className="text">
+            <div className="title"> 2.培训计划:</div>
+            <TextArea
+              className="cell-textArea"
+              value={value.trainingPlanOfTheMonth}
+              autosize={{ minRows: 6 }}
+              placeholder="最多输入500个字"
+              maxLength={500}
+              onChange={(e) => {
+                value.trainingPlanOfTheMonth = e.target.value;
+                setData(cloneData);
+              }}
+            />
+          </div>
+          
           <div className="text">
             <div className="title"> 2.培训计划:</div>
             <TextArea

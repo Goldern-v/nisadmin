@@ -338,7 +338,7 @@ export default class AuthStore {
   }
   // 一级质控查看权限
   public get level1Watch() {
-    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isOnlyRoleManage
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isRoleManage
   }
   
 

@@ -46,7 +46,13 @@ export const OperationModCon = styled.div`
       margin-left: 0px;
     }
   }
+  .month-context {
+    display:inline-block;
+    border-bottom:1px solid #000;
+    width:60px;
+    text-align: center;
 
+  }
   .context .ant-input {
     width: 60px;
     padding: 0;

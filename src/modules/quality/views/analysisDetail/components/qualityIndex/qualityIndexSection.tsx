@@ -14,49 +14,48 @@ export interface Props {
   modalTitle?: string | undefined,
   keyName: string
 }
-
 export default observer(function qualityIndexSection(props: Props) {
   let { sectionId, sectionTitle} = props
   const analysisDetailModal = useRef(getModal())
   let data:any = analysisDetailModal.current.getSectionData(sectionId)
   // const value:any=data?data.value:{}
   let value: any = (data ? data.value : {}) || {}  
+  let list: any[] = (data ? data.list : []) || [];
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
       align: 'center',
-      width: 60,
+      width: 40,
     render(text: any, record: any, index: number) {
       return index + 1
     },
     },
     {
       title: '类型',
-      dataIndex: 'lx',
-      width: 100,
+      dataIndex: 'type',
+      width: 40,
       align: 'center'
     },
     {
       title: '项目',
-      dataIndex: 'xm',
+      dataIndex: 'item',
       align: 'center',
-      width: 60
+      width: 160
     },
     {
       title: '达标值',
-      dataIndex: 'dbz',
       width: 100,
       align: 'center',
       children:[
         {
         title: '质量合格分',
-        dataIndex: 'zlhgf',
+        dataIndex: 'qualityPassScore',
         align: 'center',
-        width: 60
+        width: 90
       },
       {
         title: '合格率',
-        dataIndex: 'hgl',
+        dataIndex: 'standardPassRate',
         align: 'center',
         width: 60
       }
@@ -64,33 +63,45 @@ export default observer(function qualityIndexSection(props: Props) {
     },
     {
       title: '检查结果',
-      dataIndex: 'jcjg',
       width: 100,
       align: 'center',
       children:[
         {
         title: '合格数/抽查数',
-        dataIndex: 'hgsccs',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {record.qualifiedCount&&record.checkCount ? `${record.qualifiedCount}/${record.checkCount}` : ""}
+            </div>
+          )
+        },
       },
       {
         title: '平均分',
-        dataIndex: 'pjf',
+        dataIndex: 'averageScore',
         align: 'center',
-        width: 60
+        width: 60,
+
       },
         {
         title: '合格率%',
-        dataIndex: 'hgl2',
+        dataIndex: 'passRate',
         align: 'center',
-        width: 60
+        width: 60,
       },
       {
         title: '未达标',
-        dataIndex: 'wdb',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {!record.passRate? "" : Number(record.passRate)>=90? "达标" : "未达标"}
+            </div>
+          )
+        },
       }
     ]
     },
@@ -104,7 +115,7 @@ export default observer(function qualityIndexSection(props: Props) {
     <Wrapper>
       <TwoLevelTitle  text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)} >编辑</EditButton>
-      <BaseTable  columns={columns}  dataSource={ data.list &&data.list.tableData}
+      <BaseTable  columns={columns}  dataSource={ data&&data.list}
        footer={()=>footer}
        fixedFooter={true}
       />

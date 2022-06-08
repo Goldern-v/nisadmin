@@ -16,6 +16,11 @@ import { getTempName } from "./utils";
 import { MonthList } from "../../utils/toolCon";
 import YearPicker from "src/components/YearPicker";
 import useLevel from "./utils/useLevel";
+import { analysisModal } from './AnalysisModal'
+
+import { obj as obj1Dept } from '../analysisDetail/config/callback/callback1_dept'
+import { obj as obj1Em } from '../analysisDetail/config/callback/callback1_em'
+import { obj as obj2 } from '../analysisDetail/config/callback/callback2'
 
 const api = new AnalysisService();
 const Option = Select.Option;
@@ -27,7 +32,8 @@ export default observer(function Analysis() {
   const { history } = appStore;
   // 科室列表
   const [wardList, setWardList] = useState([]);
-  // const [groupRoleListSelf, setGroupRolelistSelf] = useState([]);
+  // 默认科室
+  const [defDept, setDefDept] = useState('');
 
   //进度条相关
   const [createProgressVisible, setCreateProgressVisible] = useState(false);
@@ -48,10 +54,8 @@ export default observer(function Analysis() {
   useEffect(() => {
     service.commonApiService.getNursingUnitSelf().then((res) => {
       if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
+      setDefDept(res.data.defaultDept)
     });
-    // api.qcRoleCodeSelf().then((res) => {
-    //   if (res.data instanceof Array) setGroupRolelistSelf(res.data);
-    // });
   }, []);
 
   useEffect(() => {
@@ -158,8 +162,9 @@ export default observer(function Analysis() {
     setQuery({ ...query, reportYear: null, reportMonth: "" });
   };
 
-  const handleReview = (record: any) => {
+  const handleReview =async (record: any) => {
     const obj = {
+      deptName: getTempName(level, record.wardCode),
       level,
       id: record.id
     };
@@ -173,7 +178,24 @@ export default observer(function Analysis() {
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
-
+  const initRenderData=async (data:any)=>{
+    const params: Record<string, any> = {
+      id: data.id || '',
+      level,
+      deptName: getTempName(level, data.wardCode)
+    }
+    const {reportTemplateDto, renderTableDataMap} = data
+    analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
+    if(level=='1'&&getTempName(level, data.wardCode).indexOf('急诊') > -1){
+     await obj1Em.initRender(data.id)
+    }else{
+      await obj2.initRender(data.id)
+    }
+    await obj1Dept.initRender(data.id)
+      appStore.history.push(
+        `/qualityAnalysisReport?${qs.stringify(params)}`
+      );
+  }
   const handleCreateOk = (params: any) => {
     if (!params.reportName) return;
 
@@ -195,23 +217,22 @@ export default observer(function Analysis() {
       .createReport({
         ...params,
         reportLevel: level,
-        templateName: getTempName(level),
+        templateName: getTempName(level, params.wardCode),
       })
       .then((res) => {
-        if (res.code == 200) {
+        if (res.code == '200') {
           handleCreateCancel();
           setCreateProgressVisible(false);
           // setCreateAnalysisVisible(true)
           setCreateClear(true);
           setCreateLoading("");
-          appStore.history.push(
-            `/qualityAnalysisReport?${qs.stringify(res.data.report)}`
-          );
+          initRenderData(res.data)
         } else {
           failedCallback(res.desc || "");
         }
       })
       .catch((err) => {
+        console.log('test-only-4', err)
         failedCallback(err || "");
       });
   };
@@ -236,7 +257,7 @@ export default observer(function Analysis() {
       .then((res) => {
         setTableLoading(false);
 
-        if (res.data.totalPage) setDataTotal(res.data.totalPage);
+        if (res.data.totalCount) setDataTotal(res.data.totalCount);
         else setDataTotal(0);
 
         if (res.data.list instanceof Array)
@@ -288,6 +309,7 @@ export default observer(function Analysis() {
           <Select
             style={{ width: "171px" }}
             onChange={(code: any) => (wardCode = code)}
+            
           >
             {wardList.map((item: any, idx: number) => (
               <Option value={item.code} key={idx}>
@@ -362,6 +384,9 @@ export default observer(function Analysis() {
         </Select>
         <div className="label">科室：</div>
         <Select
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           value={query.wardCode}
           onChange={(wardCode: any) => {
             setQuery({ ...query, wardCode });
@@ -415,12 +440,13 @@ export default observer(function Analysis() {
         />
       </div>
       <CreateAnalysisModal
-        allowClear={createClear}
+        allowClear={true}
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
         wardList={wardList.filter((item: any) => item.code)}
         loading={!!(createLoading == "start")}
+        defDept={defDept}
       />
     </Wrapper>
   );
