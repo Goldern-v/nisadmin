@@ -251,7 +251,7 @@ export default function CreateAnalysisModal(props: Props) {
           </Row>
           <Row>
             <Col span={5} className='label'>
-              科室222：
+              科室：
             </Col>
             <Col span={19}>
               <Form.Field name='wardCode'>

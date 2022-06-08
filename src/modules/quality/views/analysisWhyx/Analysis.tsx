@@ -18,6 +18,10 @@ import YearPicker from "src/components/YearPicker";
 import useLevel from "./utils/useLevel";
 import { analysisModal } from './AnalysisModal'
 
+import { obj as obj1Dept } from '../analysisDetail/config/callback/callback1_dept'
+import { obj as obj1Em } from '../analysisDetail/config/callback/callback1_em'
+import { obj as obj2 } from '../analysisDetail/config/callback/callback2'
+
 const api = new AnalysisService();
 const Option = Select.Option;
 const rankTextList = ["", "一", "二", "三"];
@@ -158,7 +162,7 @@ export default observer(function Analysis() {
     setQuery({ ...query, reportYear: null, reportMonth: "" });
   };
 
-  const handleReview = (record: any) => {
+  const handleReview =async (record: any) => {
     const obj = {
       deptName: getTempName(level, record.wardCode),
       level,
@@ -174,7 +178,24 @@ export default observer(function Analysis() {
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
-
+  const initRenderData=async (data:any)=>{
+    const params: Record<string, any> = {
+      id: data.id || '',
+      level,
+      deptName: getTempName(level, data.wardCode)
+    }
+    const {reportTemplateDto, renderTableDataMap} = data
+    analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
+    if(level=='1'&&getTempName(level, data.wardCode).indexOf('急诊') > -1){
+     await obj1Em.initRender(data.id)
+    }else{
+      await obj2.initRender(data.id)
+    }
+    await obj1Dept.initRender(data.id)
+      appStore.history.push(
+        `/qualityAnalysisReport?${qs.stringify(params)}`
+      );
+  }
   const handleCreateOk = (params: any) => {
     if (!params.reportName) return;
 
@@ -205,17 +226,7 @@ export default observer(function Analysis() {
           // setCreateAnalysisVisible(true)
           setCreateClear(true);
           setCreateLoading("");
-          const params: Record<string, any> = {
-            id: res.data.id || '',
-            level,
-            deptName: getTempName(level, res.data.wardCode)
-          }
-          
-          const {reportTemplateDto, renderTableDataMap} = res.data
-          analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
-          appStore.history.push(
-            `/qualityAnalysisReport?${qs.stringify(params)}`
-          );
+          initRenderData(res.data)
         } else {
           failedCallback(res.desc || "");
         }

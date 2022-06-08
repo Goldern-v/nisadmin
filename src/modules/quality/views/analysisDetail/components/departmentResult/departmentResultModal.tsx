@@ -33,7 +33,8 @@ export default function qualityIndexModal(props: Props) {
       width:160,
       render(text:string, record:any, index:number) {
         return (
-          <input
+          <div className='inp_textArea'>
+            <input
             type='text'
             className='cell-ipt'
             value={record.item|| ''}
@@ -42,6 +43,8 @@ export default function qualityIndexModal(props: Props) {
               setData(cloneData)
             }}
           />
+          </div>
+          
         )
       },
     },
@@ -55,6 +58,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text:string, record:any, index:number) {
             return (
+              <div className='inp_textArea'>
               <input
                 type='text'
                 className='cell-ipt'
@@ -64,6 +68,7 @@ export default function qualityIndexModal(props: Props) {
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         },
@@ -73,6 +78,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text:string, record:any, index:number) {
             return (
+              <div className='inp_textArea'>
               <input
                 type='text'
                 className='cell-ipt'
@@ -82,6 +88,7 @@ export default function qualityIndexModal(props: Props) {
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         }
@@ -97,7 +104,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text: string, record: any, index: number) {
             return (
-              <div className='inp_textArea' >
+              <div className='inp_textArea double' >
                 <input
                   className='cell-textArea'
                   value={record.qualifiedCount|| ''}
@@ -124,6 +131,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text:string, record:any, index:number) {
             return (
+              <div className='inp_textArea'>
               <input
                 type='text'
                 className='cell-ipt'
@@ -133,6 +141,7 @@ export default function qualityIndexModal(props: Props) {
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         },
@@ -142,6 +151,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text:string, record:any, index:number) {
             return (
+              <div className='inp_textArea'>
               <input
                 type='text'
                 className='cell-ipt'
@@ -152,6 +162,7 @@ export default function qualityIndexModal(props: Props) {
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         },
@@ -161,6 +172,7 @@ export default function qualityIndexModal(props: Props) {
           width:100,
           render(text:string, record:any, index:number) {
             return (
+              <div className='inp_textArea'>
               <input
                 type='text'
                 className='cell-ipt'
@@ -170,6 +182,7 @@ export default function qualityIndexModal(props: Props) {
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         }
@@ -186,8 +199,20 @@ export default function qualityIndexModal(props: Props) {
   )
 }
 const Wrapper = styled(tableCon)`
-input {
+.inp_textArea input {
     width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+.double input {
+    width: 45%;
     height: 100%;
     border: none;
     outline: none;

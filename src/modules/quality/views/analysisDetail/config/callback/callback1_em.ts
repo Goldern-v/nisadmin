@@ -1,6 +1,7 @@
 import { appStore } from 'src/stores';
 import { analysisModal } from './../../../analysisWhyx/AnalysisModal';
 import { getBlank, replenishList } from './../../util/tool';
+import {analysisDetailApi} from '../../api'
 /**固定渲染数据 */
 const FIXED_ITEMS = [
   '采血扫描合格率',
@@ -48,7 +49,26 @@ const dayMontCare= [
 export const obj = {
   getData() {
     return {
-      fieldData: {
+      fieldData1_1:{
+        ultQuestion: '',
+        improveFeedback: '',
+      },
+      fieldData2_1:{
+        reportAdverseEvents: "",
+        eventTypeAndLevel: "",
+      },
+      fieldData2_3:{
+        overallIndicator: "",
+        standardIndicators: "",
+        nonComplianceIndicators: "",
+      },
+      fieldData3_1:{
+        monthWorkPlan: "",
+        trainingPlanOfTheMonth: "",
+        monthWorkDoneCase: "",
+        monthTrainDoneCase: "",
+      },
+      fieldData3_4:{
         emergencyAreaCount: "",
         actualEmergencyCount: "",
         actualEmergencyDutyCount: "",
@@ -56,49 +76,13 @@ export const obj = {
         notRectifiedNurse: "",
         regularPracticeNurse: "",
         nurseTurnoverRate: "",
+        dayWardCount:"",
         nursingWorkloadScore: '',
         actualDayWardDutyCount:'',
         actualDayWardCount:"",
-        dayWardCount:'',
-        ultQuestion: '',
-        improveFeedback: '',
-        monthWorkPlan: "",
-        trainingPlanOfTheMonth: "",
-        monthWorkDoneCase: "",
-        monthTrainDoneCase: "",
-        nurseCount: "",
-        actualNurseCount: "",
-        assistantNurseCount: "",
-        actualInternNurseCount: "",
-        actualDutyNursesCount: "",
-        actualDutyInternNurseCount: "",
-        averageBedOccupancy: "",
-        bedTurnovers: "",
-        deptAverageInDepartment: "",
-        existingPatientCount: "",
-        admissions: "",
-        transferredPatientCount: "",
-        dischargedPeopleCount: "",
-        transferredOutPatientCount: "",
-        deathToll: "",
-        interventionalProcedureCount: "",
-        numberOfSurgicalOperations: "",
-        deptNursingWorkloadScore: "",
-        cmi: "",
-        lowRiskMortality: "",
-        specialEventSolvedProblem: "",
-        livePictures: "",
-        deptWorkPlanForNextMonth: "",
-        nextMonthDeptTrainingPlan: "",
-        reportAdverseEvents: "",
-        eventTypeAndLevel: "",
-        overallIndicator: "",
-        standardIndicators: "",
-        nonComplianceIndicators: "",
-        rw1: "",
-        rw2: "",
+      },
+      fieldData3_6:{
         causeAnalysisPeople: "",
-        homeServiceRate: "",
         question: "",
         causeAnalysisMachine: "",
         causeAnalysisThing: "",
@@ -116,6 +100,15 @@ export const obj = {
         implementation: "",
         effectConfirmed: "",
         standardizedContent: "",
+      },
+      fieldData3_7:{
+        specialEventSolvedProblem:"",
+      },
+      fieldData5_1:{
+        deptWorkPlanForNextMonth: "",
+      },
+      fieldData5_2:{
+        nextMonthDeptTrainingPlan: "",
       },
       pageData: {
         id: null,
@@ -137,37 +130,34 @@ export const obj = {
     };
   },
   formatData() {
-    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData1_1;
+    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData2_1;
+    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData2_3;
+    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData3_1;
+    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData3_4;
+    (this as any).getSectionData("3_6").value = (this as any).allData.fieldData3_6;
+    (this as any).getSectionData("3_7").value = (this as any).allData.fieldData3_7;
+    (this as any).getSectionData("5_1").value = (this as any).allData.fieldData5_1;
+    (this as any).getSectionData("5_2").value = (this as any).allData.fieldData5_2;
     (this as any).getSectionData("2_1").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.deptOneQualityIndexResult : [] || [];
     (this as any).getSectionData("2_2").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptCareMonitorIndexResult', len: 5});
-    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3 });
-    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
     (this as any).getSectionData("3_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'emrNursingWorkStatistics', len: 7 });
     (this as any).getSectionData("3_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayNursingWorkStatistics', len: 2 });
-    (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
-    (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
-
-    // (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.dayNursingWorkStatistics : [] || [];
-    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
-    
-    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_4").pageInfo= (this as any).allData.pageInfo;
     (this as any).getSectionData("3_5_1").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'emrMonthCareProblemImprove', len: 7 });
-    (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
     (this as any).getSectionData("3_5_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayMonthCareProblemImprove', len: 6});
+    (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
+    (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
+    (this as any).getSectionData("3_4").pageInfo= (this as any).allData.pageInfo;
+    (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
+    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
+    (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
     (this as any).getSectionData("3_5_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayMonthCareProblemImprove : [] || [];
     
-    (this as any).getSectionData("3_6").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_7").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
 
-    (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
   },
   /**初始化自动提取 */
-  async initRender() {
+  async initRender(reportId:number) {
     if (!(analysisModal.renderData && analysisModal.tableTempList)) return
     const { renderData, tableTempList } = analysisModal
     const obj: Record<string, any> = {}
@@ -222,7 +212,6 @@ export const obj = {
         obj['dayMonthCareProblemImprove'].push({ ...emrMonthCare,item:x})
       })
     let proList: any[] = []
-    const reportId = appStore.queryObj.id
     Object.keys(obj).map((v4: string) => {
       if (!obj[v4]) return
       const params = {
@@ -230,7 +219,7 @@ export const obj = {
         tableName: v4,
         data: obj[v4]
       }
-      proList.push((this as any).saveReportTableData(params))
+      proList.push(analysisDetailApi.saveReportTableData(params))
     })
     try {
       const res = await Promise.all(proList)

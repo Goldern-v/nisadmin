@@ -20,6 +20,7 @@ import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
 import OperationEmSection from '../components/operation-em/section'
 import OperationEmModal from '../components/operation-em/modal'
+import Bottom from "../components/bottomNote/section";
 // 一级质控汇总配置 急诊
 export const sectionList: SectionListItem[] = [
   {
@@ -30,6 +31,7 @@ export const sectionList: SectionListItem[] = [
     keyName: "key1_1",
     async onSave(val: any) {
       (this as any).setSectionData("1_1", val);
+     
     },
     section: ProblemImpSection,
     modal: ProblemImpModal,
@@ -76,9 +78,9 @@ export const sectionList: SectionListItem[] = [
     data: {
       tableName: 'deptNotPassIndexImprove'
     },
-    keyName: "key2_2",
+    keyName: "key2_3",
     async onSave(val: any) {
-      (this as any).setSectionData("2_2", val);
+      (this as any).setSectionData("2_3", val);
     },
     section: conclusionSection,
     modal: conclusionModal,
@@ -183,7 +185,7 @@ export const sectionList: SectionListItem[] = [
     data: {},
     keyName: "",
     async onSave(val: any) {
-      (this as any).setSectionData("3_7", val);
+      (this as any).setSectionData("3_6", val);
     },
     section: ImprovementProjectSection,
     modal: ImprovementProjectModal,
@@ -193,7 +195,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: "7、特殊事件及需解决的问题",
     modalTitle: "编辑特殊事件及需解决的问题",
     data: {},
-    keyName: "key4_8",
+    keyName: "specialEventSolvedProblem",
     async onSave(val: any) {
       (this as any).setSectionData("3_7", val);
     },
@@ -224,7 +226,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: "1、科室工作计划",
     modalTitle: "编辑科室工作计划",
     data: {},
-    keyName: "key5_1",
+    keyName: "deptWorkPlanForNextMonth",
     async onSave(val: any) {
       (this as any).setSectionData("5_1", val);
     },
@@ -236,11 +238,15 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: "2、科室培训计划",
     modalTitle: "编辑科室培训计划",
     data: {},
-    keyName: "key5_2",
+    keyName: "nextMonthDeptTrainingPlan",
     async onSave(val: any) {
       (this as any).setSectionData("5_2", val);
     },
     section: TextareaSection2,
     modal: TextareaModal,
+  },
+  {
+    sectionId: "6",
+    section: Bottom ,
   },
 ];

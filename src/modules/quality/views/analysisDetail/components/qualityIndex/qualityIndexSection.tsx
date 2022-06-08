@@ -33,7 +33,7 @@ export default observer(function qualityIndexSection(props: Props) {
     {
       title: '类型',
       dataIndex: 'type',
-      width: 60,
+      width: 40,
       align: 'center'
     },
     {
@@ -51,7 +51,7 @@ export default observer(function qualityIndexSection(props: Props) {
         title: '质量合格分',
         dataIndex: 'qualityPassScore',
         align: 'center',
-        width: 60
+        width: 90
       },
       {
         title: '合格率',

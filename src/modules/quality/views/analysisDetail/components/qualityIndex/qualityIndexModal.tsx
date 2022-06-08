@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
@@ -28,6 +27,7 @@ export default function qualityIndexModal(props: Props) {
       title: '类型',
       dataIndex: 'type',
       align: 'center',
+      width: 60,
       render(text: string, record: any, index: number) {
         return (
           <div className='inp_textArea'>
@@ -72,6 +72,7 @@ export default function qualityIndexModal(props: Props) {
           title: '质量合格分',
           dataIndex: 'qualityPassScore',
           align: 'center',
+          width:60,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
@@ -91,6 +92,7 @@ export default function qualityIndexModal(props: Props) {
           title: '合格率',
           dataIndex: 'standardPassRate',
           align: 'center',
+          width:60,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
@@ -115,10 +117,10 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '合格数/抽查数',
           align: 'center',
-          width: 80,
+          width: 110,
           render(text: string, record: any, index: number) {
             return (
-              <div className='inp_textArea' >
+              <div className='inp_textArea double' >
                 <Input
                   className='cell-textArea'
                   value={record.qualifiedCount|| ''}
@@ -182,6 +184,7 @@ export default function qualityIndexModal(props: Props) {
           title: '未达标',
           dataIndex: 'standardStatus',
           align: 'center',
+          width:60,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
@@ -199,25 +202,6 @@ export default function qualityIndexModal(props: Props) {
         }
       ]
     },
-    // {
-    //   title: '操作',
-    //   key: '操作',
-    //   width: 60,
-    //   render(text: any, record: any, index: number) {
-    //     return (
-    //       <DoCon>
-    //         <span
-    //           onClick={(e) => {
-    //             cloneData.list.splice(index, 1)
-    //             setData(cloneData)
-    //           }}
-    //         >
-    //           删除
-    //         </span>
-    //       </DoCon>
-    //     )
-    //   }
-    // }
   ]
 
   return (
@@ -247,8 +231,21 @@ const Wrapper = styled.div`
   input {
     border: none;
   }
-  .inp_textArea input {
+  .inp_textArea  input {
     width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    align-items: center;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .double input {
+    width: 46%;
     height: 100%;
     border: none;
     outline: none;

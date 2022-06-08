@@ -20,7 +20,7 @@ import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
 import FileUploaderSection from "../components/file-upload/section";
 import FileUploaderModal from "../components/file-upload/modal";
-
+import Bottom from "../components/bottomNote/section";
 // 一级质控病区汇总配置
 export const sectionList: SectionListItem[] = [
   {
@@ -73,6 +73,7 @@ export const sectionList: SectionListItem[] = [
       tableName: 'deptNotPassIndexImprove'
     },
     async onSave (val: any) {
+
       (this as any).setSectionData('2_3', val)
     },
     section: conclusionSection,
@@ -186,5 +187,9 @@ export const sectionList: SectionListItem[] = [
     },
     section: TextareaSection2,
     modal: TextareaModal
+  },
+  {
+    sectionId: '6_1',
+    section: Bottom,
   },
 ]

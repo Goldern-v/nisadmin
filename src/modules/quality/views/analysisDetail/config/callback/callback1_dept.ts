@@ -1,6 +1,6 @@
 import { getBlank, replenishList } from "./../../util/tool";
 import { analysisModal } from '../../../analysisWhyx/AnalysisModal';
-import { appStore } from "src/stores";
+import {analysisDetailApi} from '../../api'
 
 /**固定渲染数据 */
 const FIXED_ITEMS = [
@@ -18,22 +18,26 @@ const FIXED_ITEMS = [
 export const obj = {
   getData() {
     return {
-      report: {
-        key1_1: "2",
-        key2_1: "2",
-        key2_2: "2",
-        key2_3: "2",
-        key4_8: "2",
-        key5_1: "2",
-        key5_2: "1",
-      },
-      fieldData: {
+      fieldData1_1:{
         ultQuestion: '',
         improveFeedback: '',
+      },
+      fieldData2_1:{
+        reportAdverseEvents: "",
+        eventTypeAndLevel: "",
+      },
+      fieldData2_3:{
+        overallIndicator: "",
+        standardIndicators: "",
+        nonComplianceIndicators: "",
+      },
+      fieldData3_1:{
         monthWorkPlan: "",
         trainingPlanOfTheMonth: "",
         monthWorkDoneCase: "",
         monthTrainDoneCase: "",
+      },
+      fieldData3_2:{
         nurseCount: "",
         actualNurseCount: "",
         assistantNurseCount: "",
@@ -53,20 +57,14 @@ export const obj = {
         numberOfSurgicalOperations: "",
         deptNursingWorkloadScore: "",
         cmi: "",
-        lowRiskMortality: "",
-        specialEventSolvedProblem: "",
-        livePictures: '',
-        deptWorkPlanForNextMonth: "",
-        nextMonthDeptTrainingPlan: "",
-        reportAdverseEvents: "",
-        eventTypeAndLevel: "",
-        overallIndicator: "",
-        standardIndicators: "",
-        nonComplianceIndicators: "",
+        lowRiskMortality:"",
         rw1: "",
         rw2: "",
-        causeAnalysisPeople: "",
         homeServiceRate: "",
+
+      },
+      fieldData3_4:{
+        causeAnalysisPeople: "",
         question: "",
         causeAnalysisMachine: "",
         causeAnalysisThing: "",
@@ -84,6 +82,15 @@ export const obj = {
         implementation: "",
         effectConfirmed: "",
         standardizedContent: "",
+      },
+      fieldData3_5:{
+        specialEventSolvedProblem: "",
+      },
+      fieldData5_1:{
+        deptWorkPlanForNextMonth: "",
+      },
+      fieldData5_2:{
+        nextMonthDeptTrainingPlan: "",
       },
       pageData: {
         id: null,
@@ -104,28 +111,25 @@ export const obj = {
     };
   },
   formatData() {
-    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData1_1;
+    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData2_1;
+    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData2_3;
+    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData3_1;
+    (this as any).getSectionData("3_2").value = (this as any).allData.fieldData3_2;
+    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData3_4;
+    (this as any).getSectionData("3_5").value = (this as any).allData.fieldData3_5;
+    (this as any).getSectionData("5_1").value = (this as any).allData.fieldData5_1;
+    (this as any).getSectionData("5_2").value = (this as any).allData.fieldData5_2;
     (this as any).getSectionData("2_1").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.deptOneQualityIndexResult : [] || [];
     (this as any).getSectionData("2_2").list = replenishList({data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptCareMonitorIndexResult', len: 5});
-    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData;
     (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'deptNotPassIndexImprove', len: 3 });
-    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_2").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
-
     (this as any).getSectionData("3_3").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.monthCareProblemImprove : [] || [];
-    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.monthCareProblemImprove : [] || [];
-
-    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("3_5").value = (this as any).allData.fieldData;
     (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
-
-    (this as any).getSectionData("5_1").value = (this as any).allData.fieldData;
-    (this as any).getSectionData("5_2").value = (this as any).allData.fieldData;
+    (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
+    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.monthCareProblemImprove : [] || [];
   },
   /**初始化自动提取 */
-  async initRender() {
+  async initRender(reportId:number) {
     if (!(analysisModal.renderData && analysisModal.tableTempList)) return
     const { renderData, tableTempList } = analysisModal
     const obj: Record<string, any> = {}
@@ -160,7 +164,6 @@ export const obj = {
     });
     
     let proList: any[] = []
-    const reportId = appStore.queryObj.id
     Object.keys(obj).map((v4: string) => {
       if (!obj[v4]) return
       const params = {
@@ -168,7 +171,7 @@ export const obj = {
         tableName: v4,
         data: obj[v4]
       }
-      proList.push((this as any).saveReportTableData(params))
+      proList.push(analysisDetailApi.saveReportTableData(params))
     })
     try {
       const res = await Promise.all(proList)
