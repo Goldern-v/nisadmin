@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
 import React from 'react'
-const queryObj = appStore.queryObj
 
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
@@ -16,6 +15,8 @@ import { obj as obj1Em } from './config/callback/callback1_em'
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
 import { AllData } from './types'
+import { analysisModal } from '../analysisWhyx/AnalysisModal';
+import { Console } from 'console';
 export interface SectionListItem extends Record<string, any> {
   sectionId?: string
 
@@ -49,6 +50,7 @@ interface Constr {
   sectionList: SectionListItem[]
   formatData: Function
   getData: Function
+  initRender?: Function
 }
 interface ReportFieldData {
   reportId: number,
@@ -58,21 +60,25 @@ interface ReportFieldData {
 export class AnalysisDetailModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = []
-  @observable public allData: Partial<AllData> = {
-    report: {}
-  }
+  @observable public allData: Partial<AllData> = {}
+  // 模板数据
+  @observable public configData: Record<string, any> = {}
   private formatData: Function = () => { }
   private getData: Function = () => { }
+  private initRender: Function = () => { }
 
   constructor({
     sectionList,
     formatData,
     getData,
+    initRender
   }: Constr) {
     this.sectionList = sectionList
     this.formatData = formatData.bind(this)
     this.getData = getData
+    initRender && (this.initRender = initRender)
   }
+
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {
@@ -108,8 +114,10 @@ export class AnalysisDetailModal {
   }
   /** 设置组件数据 */
   @action
-  setSectionData(sectionId: string, data: any) {
+ async setSectionData(sectionId: string, data: any) {
     let obj = this.getSection(sectionId)
+    console.log(sectionId,'sectionId')
+    console.log(obj,'obj')
     if (obj) {
       Object.assign(obj.data, data)
       //保存数据
@@ -118,7 +126,7 @@ export class AnalysisDetailModal {
           reportId: appStore.queryObj.id,
           data: obj.data.value
         }
-        this.saveReportFieldData(saveData)
+       await this.saveReportFieldData(saveData)
       }
       if (obj.data.list) {
         const saveData: ReportFieldData = {
@@ -126,9 +134,9 @@ export class AnalysisDetailModal {
           tableName: obj.data.tableName || '',
           data: obj.data.list
         }
-        this.saveReportTableData(saveData)
+       await this.saveReportTableData(saveData)
       }
-      
+
       return true
     } else {
       return false
@@ -153,61 +161,60 @@ export class AnalysisDetailModal {
     return this.getDataInAllData('report') || {}
   }
 
-  @observable private queryObj: any = appStore.queryObj
-
-  /**路由路径 */
-  @computed
-  get routePath() {
-    let { id, level, type } = this.queryObj
-    if (level == 1) return '/qcOneWhyx/analysis?level=1'
-    if (level == 2) return '/qcTwo/analysis?level=2'
-    return ''
-  }
-
-  // 审核权限
-  public get checkRole() {
-    let { level } = this.queryObj
-    if (level == 1) return authStore.level2Watch
-    return authStore.level3Check
-  }
-
   /** 数据初始化 */
-  initData() {
-    // 实例化并使用bind绑定数据
-    this.allData = this.getData()
-    analysisDetailApi.getPageDetaile(appStore.queryObj.id).then((res) => {
+  async initData() {
+    try {
+      // this.initRender && (await this.initRender())
+      // 实例化并使用bind绑定数据
+      this.allData = this.getData()
+      const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id)
       console.log('接口数据======》', res.data)
-      if (res.code == 200) {
-        let { fieldDataMap } = res.data
-        let {
-          createTime,
-          creatorName,
-          creatorNo,
-          publisherName,
-          status,
-          reportMonth,
-          reportYear,
-          reportName,
-          updateTime
-        } = res.data
-        this.allData.fieldData = { ...this.allData.fieldData, ...fieldDataMap }
-        this.allData.pageInfo = {
-          createTime,
-          creatorName,
-          creatorNo,
-          publisherName,
-          status,
-          reportName,
-          reportMonth,
-          reportYear,
-          updateTime
+      if (res.code != 200) return
+      let { fieldDataMap } = res.data
+      let {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportName,
+        reportMonth,
+        updateTime,
+        tableDataMap,
+        reportYear,
+        reportTemplateDto
+      } = res.data
+
+      for(let keys of Object.keys(this.allData)){
+          for(let item of Object.keys(this.allData[keys])){
+       if(fieldDataMap.hasOwnProperty(item)) {
+        this.allData[keys][item]=fieldDataMap[item]
+       }
         }
-        this.formatData()
       }
-    })
+      this.allData.pageInfo = {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportMonth,
+        reportYear,
+        reportName,
+        updateTime
+      }
+      this.allData.tableDataMap = tableDataMap
+
+      this.configData = {
+        tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
+      }
+      await this.formatData()
+    } catch (error) {
+
+    }
   }
-  init() {
-    this.initData()
+  async init() {
+    await this.initData()
     this.baseModal = createModal(BaseModal)
   }
 }
@@ -227,6 +234,7 @@ export const getModal = () => {
   if (queryObj?.level == '2') {
     return analysisDetailModal2
   }
-  if (queryObj?.level == '1' && queryObj.deptName == '急诊') return analysisDetailModal1Em
+  if (queryObj?.level == '1' && queryObj.deptName && queryObj.deptName.indexOf('急诊') > -1) return analysisDetailModal1Em
+
   return analysisDetailModal1Dept
 }

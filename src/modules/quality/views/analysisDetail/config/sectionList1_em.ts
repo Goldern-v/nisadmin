@@ -20,6 +20,7 @@ import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
 import OperationEmSection from '../components/operation-em/section'
 import OperationEmModal from '../components/operation-em/modal'
+import Bottom from "../components/bottomNote/section";
 // 一级质控汇总配置 急诊
 export const sectionList: SectionListItem[] = [
   {
@@ -30,6 +31,7 @@ export const sectionList: SectionListItem[] = [
     keyName: "key1_1",
     async onSave(val: any) {
       (this as any).setSectionData("1_1", val);
+     
     },
     section: ProblemImpSection,
     modal: ProblemImpModal,
@@ -45,7 +47,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_1",
     sectionTitle: "1、科室一级质量结果",
     modalTitle: "编辑质量指标",
-    data: {},
+    data: {
+      tableName: 'deptOneQualityIndexResult'
+    },
     keyName: "key2_1",
     async onSave(val: any) {
       (this as any).setSectionData("2_1", val);
@@ -57,7 +61,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_2",
     sectionTitle: "2、科室专科护理监测指标结果",
     modalTitle: "编辑监测指标结果",
-    data: {},
+    data: {
+      tableName:'deptCareMonitorIndexResult'
+    },
     keyName: "key2_2",
     async onSave(val: any) {
       (this as any).setSectionData("2_2", val);
@@ -69,10 +75,12 @@ export const sectionList: SectionListItem[] = [
     sectionId: "2_3",
     sectionTitle: "结论:",
     modalTitle: "编辑结论",
-    data: {},
-    keyName: "key2_2",
+    data: {
+      tableName: 'deptNotPassIndexImprove'
+    },
+    keyName: "key2_3",
     async onSave(val: any) {
-      (this as any).setSectionData("2_2", val);
+      (this as any).setSectionData("2_3", val);
     },
     section: conclusionSection,
     modal: conclusionModal,
@@ -100,7 +108,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_2",
     sectionTitle: "2、本月急诊护理工作量统计（与上一年同期对比）",
     modalTitle: "编辑本月急诊护理工作量统计",
-    data: {},
+    data: {
+      tableName:'emrNursingWorkStatistics'
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_2", val);
     },
@@ -109,99 +119,10 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: "3_3",
-    sectionTitle: "3、本月计划完成情况:",
-    modalTitle: "编辑本月计划完成情况",
+    sectionTitle: "3、日间病房护理工作量统计：（与上一年同期对比）:",
+    modalTitle: "编辑日间病房护理工作量统计",
     data: {
-      list: [
-        {
-          tableDataId: '1',
-          index: '4',
-          mainProblem: '3',
-          causeAnalysis: '2',
-          correctiveMeasures: '1',
-          evaluation: '0',
-        }
-      ],
-      tempList: [
-        {
-          id: 30,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 1,
-          fieldWidth: null,
-          fieldIndex: 0,
-          fieldName: "tableDataId",
-          fieldComment: "表格行数据id",
-        },
-        {
-          id: 18,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 0,
-          fieldWidth: null,
-          fieldIndex: 1,
-          fieldName: "index",
-          fieldComment: "指标",
-        },
-        {
-          id: 19,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 0,
-          fieldWidth: null,
-          fieldIndex: 2,
-          fieldName: "mainProblem",
-          fieldComment: "主要问题",
-        },
-        {
-          id: 20,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 0,
-          fieldWidth: null,
-          fieldIndex: 3,
-          fieldName: "causeAnalysis",
-          fieldComment: "原因分析",
-        },
-        {
-          id: 21,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 0,
-          fieldWidth: null,
-          fieldIndex: 4,
-          fieldName: "correctiveMeasures",
-          fieldComment: "整改措施",
-        },
-        {
-          id: 22,
-          reportTemplateId: 1,
-          tableName: "deptNotPassIndexImprove",
-          widgetType: "text",
-          editable: 1,
-          options: "",
-          hidden: 0,
-          fieldWidth: null,
-          fieldIndex: 5,
-          fieldName: "evaluation",
-          fieldComment: "效果评价",
-        },
-      ],
+      tableName:"dayNursingWorkStatistics"
     },
     async onSave(val: any) {
       (this as any).setSectionData("3_3", val);
@@ -225,7 +146,8 @@ export const sectionList: SectionListItem[] = [
     sectionId: '3_5',
     sectionTitle: "5、本月护理质量问题分析改进",
     data: {
-      level: 2
+      level: 2,
+      tableName: 'monthCareProblemImprove'
     },
     section: LevelTitleSection,
   },
@@ -233,7 +155,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_5_1",
     sectionTitle: "（1）急诊",
     modalTitle: "编辑急诊",
-    data: {},
+    data: {
+      tableName:"emrMonthCareProblemImprove"
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_5_1", val);
     },
@@ -244,7 +168,9 @@ export const sectionList: SectionListItem[] = [
     sectionId: "3_5_2",
     sectionTitle: "（2）日间病房",
     modalTitle: "编辑日间病房",
-    data: {},
+    data: {
+      tableName:"dayMonthCareProblemImprove"
+    },
     async onSave(val: any) {
       (this as any).setSectionData("3_5_2", val);
     },
@@ -252,26 +178,26 @@ export const sectionList: SectionListItem[] = [
     modal: tableModal,
   },
   {
-    sectionId: "4_4",
+    sectionId: "3_6",
     sectionTitle:
-      "4、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）",
+      "6、主要护理问题改进方案：（安全隐患、发生频次高的问题等，每季度至少有一项改进）",
     modalTitle: "编辑主要护理问题改进方案",
     data: {},
     keyName: "",
     async onSave(val: any) {
-      (this as any).setSectionData("4_4", val);
+      (this as any).setSectionData("3_6", val);
     },
     section: ImprovementProjectSection,
     modal: ImprovementProjectModal,
   },
   {
-    sectionId: "4_8",
-    sectionTitle: "5、特殊事件及需解决的问题",
+    sectionId: "3_7",
+    sectionTitle: "7、特殊事件及需解决的问题",
     modalTitle: "编辑特殊事件及需解决的问题",
     data: {},
-    keyName: "key4_8",
+    keyName: "specialEventSolvedProblem",
     async onSave(val: any) {
-      (this as any).setSectionData("4_8", val);
+      (this as any).setSectionData("3_7", val);
     },
     section: TextareaSection2,
     modal: TextareaModal,
@@ -300,7 +226,7 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: "1、科室工作计划",
     modalTitle: "编辑科室工作计划",
     data: {},
-    keyName: "key5_1",
+    keyName: "deptWorkPlanForNextMonth",
     async onSave(val: any) {
       (this as any).setSectionData("5_1", val);
     },
@@ -312,11 +238,15 @@ export const sectionList: SectionListItem[] = [
     sectionTitle: "2、科室培训计划",
     modalTitle: "编辑科室培训计划",
     data: {},
-    keyName: "key5_2",
+    keyName: "nextMonthDeptTrainingPlan",
     async onSave(val: any) {
       (this as any).setSectionData("5_2", val);
     },
     section: TextareaSection2,
     modal: TextareaModal,
+  },
+  {
+    sectionId: "6",
+    section: Bottom ,
   },
 ];

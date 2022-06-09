@@ -37,13 +37,14 @@ export default observer(function planCompletionSection(props: Props) {
             <span>{value.monthWorkPlan || <span>无</span>}</span>
           </div>
           <div className="text">
-            <div className="title"> 2.培训计划:</div>
-            <span>{value.trainingPlanOfTheMonth || <span>无</span>}</span>
-          </div>
-          <div className="text">
             <div className="title"> 1.工作计划:</div>
             <span>{value.monthWorkDoneCase || <span>无</span>}</span>
           </div>
+          <div className="text">
+            <div className="title"> 2.培训计划:</div>
+            <span>{value.trainingPlanOfTheMonth || <span>无</span>}</span>
+          </div>
+         
           <div className="text">
             <div className="title"> 2.培训计划:</div>
             <span>{value.monthTrainDoneCase || <span>无</span>}</span>

@@ -54,8 +54,8 @@ export default function QcOneRouterHj(props: Props) {
     },
     route_analysis,
 
-    route_summaryReport,
-    route_problemSummary,
+    // route_summaryReport,
+    // route_problemSummary,
   ];
   useEffect(() => {}, [props.history.location.pathname]);
   let currentRoutePath = props.history.location.pathname || "";

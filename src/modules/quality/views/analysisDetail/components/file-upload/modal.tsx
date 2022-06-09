@@ -10,18 +10,17 @@ export interface Props {
 export default function FileUploaderModal(props: Props) {
   let { sectionId, setData, data } = props
 
-  let value: any[] = (data ? data.value : []) || []
+  let list: any = (data ? data.list : []) || []
   const handleChange = (e: any[]) => {
-    console.log('test-e', e)
     if (setData) {
       setData({
-        value: e
+        list: e.map((v: any) => ({name: v.name, path: v.path}))
       })
     }
   }
   return (
     <Wrapper>
-      <MultiFileUploader maxSize={2097152} typeList={['jpeg','png', 'jpg', 'gif']} data={value} onChange={(e: any[])=> handleChange(e)} />
+      <MultiFileUploader type="summaryReport" maxSize={2097152} typeList={['jpeg','png', 'jpg', 'gif']} data={list} onChange={(e: any[])=> handleChange(e)} />
     </Wrapper>
   )
 }
