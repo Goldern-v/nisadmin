@@ -14,7 +14,8 @@ import {
   Input,
   AutoComplete,
   TimePicker,
-  Switch
+  Switch,
+  Select
 } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
 import service from "src/services/api";
@@ -72,10 +73,16 @@ export default function ToolBar() {
   const [colorMap, setColorMap]: [any, any] = useState({});
   const [colorMapCN, setColorMapCN]: [any, any] = useState({});
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+  const [shiftType, setShiftType] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [nameColor, setNameColor] = useState<string>('');
+  const [nameColorList, setNameColorList] = useState<any[]>([]);
+  const [shiftTypeList, setShiftTypeList] = useState<any[]>([]);
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
+
     service.commonApiService.dictInfo("sch_range_color").then(res => {
       let colorMap: any = {};
       let colorMapCN: any = {};
@@ -88,9 +95,11 @@ export default function ToolBar() {
       setColorMap(colorMap);
       setColorMapCN(colorMapCN);
       setDataSourceColorCN(dataSourceColorCN);
+      setNameColorList(res.data)
     });
     service.commonApiService.dictInfo("sch_range_shift_type").then(res => {
       setBangci(res.data.map((res: any) => res.name));
+      setShiftTypeList(res.data)
     });
   }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
   emitter.removeAllListeners("弹窗编辑排班");
@@ -434,6 +443,69 @@ export default function ToolBar() {
       <Wrapper>
         <Title>班次设置</Title>
         <div style={{ flex: 1 }} />
+        {
+          appStore.hisMatch({
+            map: {
+              'jmfy': <React.Fragment>
+                <span className="item">班次名称:</span>
+                <Input value={name}
+                  style={{ width: 120 }}
+                  onChange={(e) => {
+                  setName(e.target.value);emitter.emit("更新班次列表",{name:e.target.value,shiftType,nameColor});
+                }}></Input>
+                  {/* <Select
+                    value={name}
+                    onChange={(value: any) => { setShiftType(value);emitter.emit("更新班次列表",{name:value,shiftType,nameColor}); }}
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                  <Select.Option value="">全部</Select.Option>
+                  {shiftTypeList.map((item: any, index: number) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select> */}
+                <span className="item">班次类别:</span>
+                  <Select
+                    value={shiftType}
+                    onChange={(value: any) => { setShiftType(value);emitter.emit("更新班次列表",{shiftType:value,name,nameColor}); }}
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                  <Select.Option value="">全部</Select.Option>
+                  {shiftTypeList.map((item: any, index: number) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+                <span className="item">颜色:</span>
+                  <Select
+                    value={nameColor}
+                    onChange={(value: any) => { setNameColor(value);emitter.emit("更新班次列表",{nameColor:value,shiftType,name}); }}
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                  <Select.Option value="">全部</Select.Option>
+                  {nameColorList.map((item: any, index: number) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+                <span className="item"></span>
+              </React.Fragment>,
+              other:"",
+            },
+          })
+        }
         <DeptSelect
           onChange={() => {
             emitter.emit("更新班次列表");
@@ -518,6 +590,9 @@ const Wrapper = styled.div`
 
   form.Item {
     width: "250px";
+  }
+  .item {
+    margin: 0 10px 5px;
   }
 `;
 // const TimePicker = styled.div`
