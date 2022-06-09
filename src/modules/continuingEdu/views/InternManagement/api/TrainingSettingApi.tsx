@@ -71,6 +71,30 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.post(`/studyAndTrain/courseLibrary/uploadPictures`, newFormData);
   }
 
- 
+  // 实习生临床评定获取表单列表（查询接口）
+  public async getFormListYaXin(obj: any) {
+    return this.post(`/studyAndTrain/clinicalIdentificationOfInterns/queryClinicalIdentificationListByPage`, obj);
+  }
+  // 实习生临床评定获取实习科室
+  public async getUintList() {
+    return this.get(`/user/nursingUnit`);
+  }
+  // 实习生临床评定导出接口
+  public async exportPageListYaXin(obj: any) {
+    return this.post(
+      `/studyAndTrain/clinicalIdentificationOfInterns/countExcel`,
+      obj,
+      {
+        responseType: "blob"
+      }
+    );
+  }
+  // 实习生临床评定保存接口
+  public async saveClinicalYaXin(obj: any) {
+    return this.post(
+      `/studyAndTrain/clinicalIdentificationOfInterns/saveOrUpdateClinicalIdentificationList`,
+      obj
+    );
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

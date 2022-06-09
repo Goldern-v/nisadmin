@@ -176,6 +176,28 @@ export default class AuthStore {
     }
   }
 
+  /** 武汉亚心是否是护理部 */
+  public get isDepartmentYaXin() {
+    // QCR1100  护理部(孙琳)
+    // QCR0001  护理部
+    let adminCode = ['QCR1100', 'QCR0001']
+    try {
+      if (this.isAdmin) return true;
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if (arrdeis) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
 
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
@@ -203,6 +225,36 @@ export default class AuthStore {
       if (this.user.post == '护长') return true
     } catch (error) {
       return false;
+    }
+  }
+
+  /** 武汉亚心护长、教学组长以上*/
+  public get isTeachingNurseYaXin() {
+    // QCR1102  护士长(肖瑞芳)
+    // QCR0007  副护士长
+    // QCR0003  科护士长
+    // QCR0004  护士长
+    // WHYX_QCR5003  总代教护士
+    // WHYX_QCR5002  见习代教护士
+    // WHYX_QCR5001  代教护士
+    let adminCode = ['QCR1102', 'QCR0007', 'QCR0003', 'QCR0004', 'WHYX_QCR5003', 'WHYX_QCR5002', 'WHYX_QCR5001']
+    try {
+      if (!this.user) return false
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if (arrdeis) {
+        return true
+      } else {
+        return false
+      }
+
+
+
+    } catch (error) {
+      return false
     }
   }
 
@@ -286,7 +338,7 @@ export default class AuthStore {
   }
   // 一级质控查看权限
   public get level1Watch() {
-    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isOnlyRoleManage
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isRoleManage
   }
   
 

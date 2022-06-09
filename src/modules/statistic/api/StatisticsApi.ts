@@ -334,6 +334,14 @@ class StatisticsApi extends BaseApiService {
   public countNoFeverPatient(query: any) {
     return this.post('/vitalSign/getFeverNo', query)
   }
+  // 现有专业技术资格
+  // 现有专业技术资格级别
+  // 现任专业技术职务
+  // 现任专业技术职务级别
+  public countProfessional(query: Record<string,any>) {
+    return this.post('/countInformation/countProfessional', query)
+
+  }
 }
 
 let statisticsApi = new StatisticsApi()

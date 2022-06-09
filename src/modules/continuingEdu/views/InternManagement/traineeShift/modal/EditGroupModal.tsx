@@ -2,12 +2,14 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Modal, message as Message, InputNumber, Button, Select,Input } from "antd";
+import { Modal, message as Message, InputNumber, Button, Select, Input } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
 import AddTraineeModal from "./AddTraineeModal"; // 添加修改弹窗
 import { nonsense } from "antd-mobile/lib/picker";
+import { appStore } from "src/stores";
+const { Option } = Select;
 
 export interface Props {
   groupNum: any;
@@ -25,6 +27,7 @@ export default observer(function EditGroupModal(props: Props) {
   const [editTraineeBtn, setEditTraineeBtn] = useState(false); //添加实习生弹窗
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [idArr, setIdArr]: any = useState([]); // 选中id
+  const [deptList, setDeptList] = useState([] as any[])
   const groupTypeList = [
     { name: "全部", code: "全部" },
     { name: 1, code: 1 },
@@ -88,21 +91,45 @@ export default observer(function EditGroupModal(props: Props) {
       align: "center"
     },
     {
-      title: "备注",
-      dataIndex: "remark",
-      width: 60, 
+      title: "科室",
+      dataIndex: "subDepartmentName",
+      width: 200, 
       align: "center",
       render:(text:any,record:any) => {
         return(
-          <Input  value={text} style={{border:'none',resize:'none',outline:'none'}}  onChange={(val: any) => {
-            let values = val.target
-            
-            record.remark = values.value;
-            updateData(record)
-          }}/>
+          <Select
+            mode='multiple'
+            value={text ? JSON.parse(text) : undefined}
+            onChange={(deptName: any, deptCode: any) => {
+              record.subDepartmentName = JSON.stringify(deptName)
+              let idCode = deptCode.map((item: any) => item.key)
+              let code = idCode.join(",")
+              record.subDepartmentCode = code
+              updateData(record)
+            }}
+          >
+            {
+              traineeShiftModal.whyxDeptTableList.map((item: any) => <Option value={item.deptName} key={item.deptCode}>{item.deptName}</Option>)
+            }
+          </Select>
         )
       }
     },
+    // {
+    //   title: "备注",
+    //   dataIndex: "remark",
+    //   width: 60, 
+    //   align: "center",
+    //   render:(text:any,record:any) => {
+    //     return(
+    //       <Input  value={text} style={{border:'none',resize:'none',outline:'none'}}  onChange={(val: any) => {
+    //         let values = val.target
+    //         record.remark = values.value;
+    //         updateData(record)
+    //       }}/>
+    //     )
+    //   }
+    // },
     // {
     //   title: "分组",
     //   dataIndex: "groupNum",
@@ -148,16 +175,19 @@ export default observer(function EditGroupModal(props: Props) {
     if (visible) traineeShiftModal.groupOnload();
   }, [visible]);
 
+  useEffect(() => {
+    if (visible) traineeShiftModal.whyxDeptOnload(); 
+  }, [visible, traineeShiftModal.sheetId]);
+
   //初始化筛选条件
   const initValue = () => {
     setGroupStype("全部"); //分组情况
     setGroupName("全部");
     setSelectedRowKeys([]);
   };
-  //保存备注
+  //保存科室
   const handleSave = ()=>{
     traineeShiftApi.saveOrUpDateByGroupYaXin(traineeShiftModal.groupTableCopyList).then((res)=>{
-      console.log(res);
       if(res.code == 200){
         Message.success(res.desc)
         handleCancel()
@@ -322,7 +352,7 @@ export default observer(function EditGroupModal(props: Props) {
 
   return (
     <Modal
-      width="600px"
+      width="800px"
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
@@ -465,6 +495,12 @@ const Wrapper = styled.div`
   .checkButton {
     margin-right: 15px;
     float: right;
+  }
+  .ant-select-enabled {
+    width:100%
+  }
+  .ant-select-selection {
+    border:none
   }
 `;
 const ModalHeader = styled.div`

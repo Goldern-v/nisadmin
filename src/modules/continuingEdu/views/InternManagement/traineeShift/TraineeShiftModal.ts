@@ -21,6 +21,11 @@ class TraineeShiftModal {
   @observable public deptTableCopyList: any = []; // 表格展示数据
   @observable public deptTableLoading = false; //表格loading
 
+  // 武汉亚心科室信息
+  @observable public whyxDeptTableList: any = []; //表格数据
+  @observable public whyxDeptTableCopyList: any = []; // 表格展示数据
+  @observable public whyxDeptTableLoading = false; //表格
+
   // 实习生全部信息初始化
   @observable public allGroupKeyWord: any = undefined; //关键字
   @observable public selectedYear: any = moment(); //选中年份
@@ -94,6 +99,16 @@ class TraineeShiftModal {
       this.deptTableLoading = false;
       this.deptTableList = res.data;
       this.deptTableCopyList = res.data;
+    });
+  }
+
+  //武汉亚心全部科室
+  whyxDeptOnload() {
+    this.whyxDeptTableLoading = true;
+    traineeShiftApi.queryAllDeptsAndRotateYaXinDepts(this.sheetId).then(res => {
+      this.whyxDeptTableLoading = false;
+      this.whyxDeptTableList = res.data;
+      this.whyxDeptTableCopyList = res.data;
     });
   }
 
