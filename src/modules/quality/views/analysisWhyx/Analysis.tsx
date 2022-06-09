@@ -187,7 +187,7 @@ export default observer(function Analysis() {
     const {reportTemplateDto, renderTableDataMap} = data
     analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
     if(level=='1'&&getTempName(level, data.wardCode).indexOf('急诊') > -1){
-     await obj1Em.initRender(data.id)
+      await obj1Em.initRender(data.id)
     }else{
       await obj2.initRender(data.id)
     }
@@ -461,6 +461,7 @@ const Wrapper = styled.div`
     margin: 0 15px 5px 15px;
     flex: 1;
   }
+  
 `;
 const ModalCon = styled.div`
   & > div {

@@ -19,13 +19,14 @@ export default observer(function ProblemImpSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let value = data?.value
-  let tableData = value ? [{ ultQuestion: value.ultQuestion, improveFeedback: value.improveFeedback }] : []
+  let tableData = value ? [{ ultQuestion: value&&value.ultQuestion, improveFeedback: value&&value.improveFeedback }] : []
   const columns: ColumnProps<any>[] = [
     {
       title: '上月问题',
       dataIndex: 'ultQuestion',
       align: 'center',
-      width: 60
+      width: 60,
+      
     },
     {
       title: '问题反馈',
@@ -38,7 +39,7 @@ export default observer(function ProblemImpSection(props: Props) {
     <Wrapper>
       <OneLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} scroll={{x:'max-content',y:200}}/>
     </Wrapper>
   )
 })

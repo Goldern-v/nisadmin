@@ -18,7 +18,11 @@ export default observer(function TableSection(props: Props) {
   const { sectionTitle, sectionId } = props;
   const analysisDetailModal = useRef(getModal());
   let data = analysisDetailModal.current.getSectionData(sectionId);
+  // console.log(data,1);
+  
   const columns = useColumns({ tempList: data.tempList || []})
+  // console.log(columns,data.tempList,'data.tempListdata.tempList');
+  
   return (
     <SectionCon>
       {data.level == 1 ? (

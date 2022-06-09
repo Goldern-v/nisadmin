@@ -130,6 +130,7 @@ export const obj = {
     };
   },
   formatData() {
+    console.log(1);
     (this as any).getSectionData("1_1").value = (this as any).allData.fieldData1_1;
     (this as any).getSectionData("2_1").value = (this as any).allData.fieldData2_1;
     (this as any).getSectionData("2_3").value = (this as any).allData.fieldData2_3;
@@ -146,10 +147,10 @@ export const obj = {
     (this as any).getSectionData("3_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayNursingWorkStatistics', len: 2 });
     (this as any).getSectionData("3_5_1").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'emrMonthCareProblemImprove', len: 7 });
     (this as any).getSectionData("3_5_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'dayMonthCareProblemImprove', len: 6});
-    (this as any).getSectionData("4").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
-    (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
+    (this as any).getSectionData("4_0").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.attachment : [] || [];
     (this as any).getSectionData("3_4").pageInfo= (this as any).allData.pageInfo;
     (this as any).getSectionData("3_2").pageInfo= (this as any).allData.pageInfo;
+    (this as any).getSectionData("3_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrNursingWorkStatistics : [] || [];
     (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
     (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
     (this as any).getSectionData("3_5_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayMonthCareProblemImprove : [] || [];

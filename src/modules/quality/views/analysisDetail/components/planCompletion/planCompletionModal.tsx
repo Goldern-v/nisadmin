@@ -29,7 +29,7 @@ export default function planCompletionModal(props: Props) {
             <TextArea
               className="cell-textArea"
               value={value.monthWorkPlan}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
@@ -43,7 +43,7 @@ export default function planCompletionModal(props: Props) {
             <TextArea
               className="cell-textArea"
               value={value.monthWorkDoneCase || ""}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
@@ -57,7 +57,7 @@ export default function planCompletionModal(props: Props) {
             <TextArea
               className="cell-textArea"
               value={value.trainingPlanOfTheMonth}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
@@ -72,7 +72,7 @@ export default function planCompletionModal(props: Props) {
             <TextArea
               className="cell-textArea"
               value={value.monthTrainDoneCase}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {

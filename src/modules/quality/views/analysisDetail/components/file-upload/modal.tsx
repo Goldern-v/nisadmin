@@ -20,7 +20,7 @@ export default function FileUploaderModal(props: Props) {
   }
   return (
     <Wrapper>
-      <MultiFileUploader type="summaryReport" maxSize={2097152} typeList={['jpeg','png', 'jpg', 'gif']} data={list} onChange={(e: any[])=> handleChange(e)} />
+      <MultiFileUploader type="summaryReport" maxSize={2097152} typeList={['jpeg','png', 'jpg', 'gif']} data={list} onChange={(e: any[])=> handleChange(e)} size={11}/>
     </Wrapper>
   )
 }
