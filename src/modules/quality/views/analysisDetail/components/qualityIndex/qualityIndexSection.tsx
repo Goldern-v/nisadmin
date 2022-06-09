@@ -21,6 +21,7 @@ export default observer(function qualityIndexSection(props: Props) {
   // const value:any=data?data.value:{}
   let value: any = (data ? data.value : {}) || {}  
   let list: any[] = (data ? data.list : []) || [];
+  
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',

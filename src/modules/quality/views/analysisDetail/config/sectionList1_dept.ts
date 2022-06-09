@@ -136,6 +136,7 @@ export const sectionList: SectionListItem[] = [
     sectionId: '3_5',
     sectionTitle: '5、特殊事件及需解决的问题',
     modalTitle: '编辑特殊事件及需解决的问题',
+    maxLength:100,
     data: {},
     keyName: 'specialEventSolvedProblem',
     async onSave (val: any) {

@@ -1,8 +1,5 @@
-import { authStore } from './../../../../stores/index';
-import { observer } from 'mobx-react-lite';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
-import React from 'react'
 
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
@@ -15,8 +12,6 @@ import { obj as obj1Em } from './config/callback/callback1_em'
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
 import { AllData } from './types'
-import { analysisModal } from '../analysisWhyx/AnalysisModal';
-import { Console } from 'console';
 export interface SectionListItem extends Record<string, any> {
   sectionId?: string
 
@@ -27,7 +22,8 @@ export interface SectionListItem extends Record<string, any> {
   section?: any
   modalWidth?: any
   onSave?: Function
-  keyName?: string
+  keyName?: string,
+  maxLenght?:number,
 }
 interface ModalCase {
   show: (...arr: any) => void
@@ -44,6 +40,7 @@ interface SectionCase {
   modal?: any
   section?: any
   keyName?: string
+  maxLenght?:number
 }
 
 interface Constr {
@@ -116,8 +113,6 @@ export class AnalysisDetailModal {
   @action
  async setSectionData(sectionId: string, data: any) {
     let obj = this.getSection(sectionId)
-    console.log(sectionId,'sectionId')
-    console.log(obj,'obj')
     if (obj) {
       Object.assign(obj.data, data)
       //保存数据
@@ -184,7 +179,6 @@ export class AnalysisDetailModal {
         reportYear,
         reportTemplateDto
       } = res.data
-
       for(let keys of Object.keys(this.allData)){
           for(let item of Object.keys(this.allData[keys])){
        if(fieldDataMap.hasOwnProperty(item)) {
@@ -204,11 +198,10 @@ export class AnalysisDetailModal {
         updateTime
       }
       this.allData.tableDataMap = tableDataMap
-
       this.configData = {
         tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
       }
-      await this.formatData()
+      this.formatData()
     } catch (error) {
 
     }

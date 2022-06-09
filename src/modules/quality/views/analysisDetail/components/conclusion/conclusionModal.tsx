@@ -135,15 +135,15 @@ export default function qualityIndexModal(props: Props) {
   return (
     <Wrapper>
       <div className='edit_text'>
-        共<input value={conclusion && conclusion.overallIndicator} onChange={(e) => {
+        共<input type='number' value={conclusion && conclusion.overallIndicator} onChange={(e) => {
           conclusion.overallIndicator = e.target.value;
           setData(cloneData)
         }} />
-        项指标，达标<input value={conclusion && conclusion.standardIndicators} onChange={(e) => {
+        项指标，达标<input type='number' value={conclusion && conclusion.standardIndicators} onChange={(e) => {
           conclusion.standardIndicators= e.target.value;
           setData(cloneData)
         }} />
-        项，未达标<input value={conclusion && conclusion.nonComplianceIndicators} onChange={(e) => {
+        项，未达标<input type='number' value={conclusion && conclusion.nonComplianceIndicators} onChange={(e) => {
           conclusion.nonComplianceIndicators = e.target.value;
           setData(cloneData)
         }} />项</div>
@@ -154,6 +154,13 @@ export default function qualityIndexModal(props: Props) {
 }
 const Wrapper = styled.div`
 .edit_text input{
+
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 width:60px;
 border: none;
 text-align: center;

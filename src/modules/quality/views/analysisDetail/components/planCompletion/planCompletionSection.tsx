@@ -67,4 +67,8 @@ const Wrapper = styled.div`
     top: 0px;
     right: 20px;
   }
+  .text {
+    height: 200px;
+    overflow: auto;
+  }
 `;

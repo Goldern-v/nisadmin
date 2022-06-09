@@ -53,7 +53,6 @@ export default function QcOneRouterHj(props: Props) {
         (appStore.history && appStore.history.action) !== "POP",
     },
     route_analysis,
-
     // route_summaryReport,
     // route_problemSummary,
   ];

@@ -149,6 +149,13 @@ const Wrapper = styled.div`
   * {
     font-size: 14px;
   }
+
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 
 const HeadCon = styled.div`
@@ -193,12 +200,14 @@ const Page = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
-
 `
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
   .ant-btn {
     display:${props => props.status=='1' ? "none" : "block"};
     
+  }
+  input {
+    -moz-appearance: textfield;
   }
 `

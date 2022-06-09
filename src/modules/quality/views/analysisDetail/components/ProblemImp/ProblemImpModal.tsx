@@ -14,7 +14,7 @@ export interface Props {
 export default function ImprovementsModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { value: [] })
-  const tableData = cloneData.value ? [cloneData.value] : []
+  const tableData = cloneData.value ? cloneData&&[cloneData.value] : []
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
@@ -26,6 +26,7 @@ export default function ImprovementsModal(props: Props) {
             className='cell-ipt'
             value={record.ultQuestion || ''}
             rows={14}
+            autosize={false}
             maxLength={500}
             onChange={(e) => {
               record.ultQuestion = e.target.value
@@ -44,6 +45,7 @@ export default function ImprovementsModal(props: Props) {
           <TextArea
             className='cell-ipt'
             rows={14}
+            autosize={false}
             maxLength={500}
             value={record.improveFeedback || ''}
             onChange={(e) => {
