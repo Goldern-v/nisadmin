@@ -23,14 +23,14 @@ export default class ScheduleShiftApiService extends BaseApiService {
     return this.post(`/schShiftSetting/updateStatus`, postData)
   }
   // 1.查找班次设置列表
-  public async getShiftListByCode (data: any) {
+  public async getShiftListByCode (deptCode: string) {
     // deptCode - 科室编码
     // status - 启用状态 true或者false
     const postData = {
-      // deptCode: deptCode,
+      deptCode: deptCode
       // status: ''
     }
-    return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(data))
+    return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(postData))
   }
 
   // 1.查找班次设置列表
