@@ -12,7 +12,6 @@ import { globalModal } from 'src/global/globalModal'
 import { badEventReportService } from './services/BadEventReportService'
 import PageContent from "./components/PageContent"
 import qs from 'qs'
-import { List } from 'antd'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
@@ -24,6 +23,8 @@ export default observer(function NursingReportDetailView() {
   const [spinning, setSpinning] = useState(false)
   const [quarterRate, setQuarterRate] = useState("")
   const [defaultDept, setDefaultDept] = useState("")
+  const [text, setText] = useState('')
+  const showText = ['gzsrm'].includes(appStore.HOSPITAL_ID)
 
   useEffect(() => {
     let search = appStore.location.search
@@ -62,6 +63,12 @@ export default observer(function NursingReportDetailView() {
       }
     })
       .catch(err => { })
+    if (showText) {
+      badEventReportService.getText(query.id).then((res: any) => {
+        setText(res.data)
+      })
+        .catch(e => {})
+    }
   }, [])
 
 
@@ -131,14 +138,26 @@ export default observer(function NursingReportDetailView() {
   //     })
   //   })
   // }
-  const onSave = () => {
-    let params = { list: pageData, rateId: currentPage.id }
-    badEventReportService.saveReport(params).then((res) => {
-      message.success('保存成功')
-      setTimeout(() => {
-        appStore.history.push('/checkWard/quarterScoringRecord')
-      }, 500)
-    })
+  const onSave = async () => {
+    try {
+      let params = { list: pageData, rateId: currentPage.id }
+      const promiseList: any[] = [badEventReportService.saveReport(params)]
+      if (showText) {
+        promiseList.push(badEventReportService.saveText({
+          id: currentPage.id,
+          text
+        }))
+      }
+      const res = await Promise.all(promiseList)
+      if (res) {
+        message.success('保存成功')
+        setTimeout(() => {
+          appStore.history.push('/checkWard/quarterScoringRecord')
+        }, 500)
+      }     
+      
+    } catch (e) {
+    }
   }
 
   return (
@@ -161,7 +180,7 @@ export default observer(function NursingReportDetailView() {
         <Spin spinning={spinning} >
           <Page ref={pageRef} className='print-page'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.title}</div>
-            <PageContent deductionData={deductionData} quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} ></PageContent>
+            <PageContent deductionData={deductionData} quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} text={text} setText={setText}></PageContent>
           </Page>
         </Spin>
       </ScrollCon>
