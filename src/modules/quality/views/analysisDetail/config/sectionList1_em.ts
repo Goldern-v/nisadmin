@@ -136,7 +136,6 @@ export const sectionList: SectionListItem[] = [
     modalTitle: '编辑科室经营情况',
     data: {},
     async onSave (val: any) {
-      console.log('test-val', val);
       (this as any).setSectionData('3_4', val)
     },
     section: OperationEmSection,
