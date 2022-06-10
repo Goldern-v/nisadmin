@@ -5,6 +5,8 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { tableCon } from '../../style/modal'
+import { Input, Select } from 'src/vendors/antd'
+const { Option } = Select;
 
 export interface Props {
   sectionId: string
@@ -34,7 +36,7 @@ export default function qualityIndexModal(props: Props) {
       render(text:string, record:any, index:number) {
         return (
           <div className='inp_textArea'>
-            <input
+           <Input
             type='text'
             className='cell-ipt'
             value={record.item|| ''}
@@ -55,12 +57,13 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '质量合格分',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
               <div className='inp_textArea'>
-              <input
-                type='text'
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
                 value={record.qualityPassScore|| ''}
                 onChange={(e) => {
@@ -75,12 +78,13 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '合格率',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
               <div className='inp_textArea'>
-              <input
-                type='text'
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
                 value={record.standardPassRate|| ''}
                 onChange={(e) => {
@@ -105,16 +109,22 @@ export default function qualityIndexModal(props: Props) {
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea double' >
-                <input
+               <Input
                   className='cell-textArea'
+                  type='number'
+                  min={0}
+                  placeholder={"合格数"}
                   value={record.qualifiedCount|| ''}
                   onChange={(e) => {
                     record.qualifiedCount= e.target.value
                     setData(cloneData)
                   }}
                 />/
-                <input
+               <Input
                   className='cell-textArea'
+                  type='number'
+                  min={0}
+                  placeholder={"抽查数"}
                   value={record.checkCount|| ''}
                   onChange={(e) => {
                     record.checkCount= e.target.value
@@ -128,12 +138,13 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '平均分',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
               <div className='inp_textArea'>
-              <input
-                type='text'
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
                 value={record.averageScore|| ''}
                 onChange={(e) => {
@@ -148,12 +159,13 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '合格率%',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
               <div className='inp_textArea'>
-              <input
-                type='text'
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
                 value={record.passRate|| ''}
                 onChange={(e) => {
@@ -164,24 +176,24 @@ export default function qualityIndexModal(props: Props) {
               />
               </div>
             )
-          },
+          }
         },
         {
           title: '未达标',
           align: 'center',
-          width:100,
+          width:70,
           render(text:string, record:any, index:number) {
             return (
               <div className='inp_textArea'>
-              <input
-                type='text'
-                className='cell-ipt'
-                value={record.standardStatus|| ''}
-                onChange={(e) => {
-                  record.standardStatus = e.target.value
-                  setData(cloneData)
-                }}
-              />
+                <Select value={record.standardStatus} className="select"
+                  onChange={(value: any) => {
+                    record.standardStatus = value
+                    setData(cloneData)
+                  }}
+                >
+                  <Option value="达标">达标</Option>
+                  <Option value="未达标">未达标</Option>
+                </Select>
               </div>
             )
           },
@@ -222,5 +234,10 @@ const Wrapper = styled(tableCon)`
     &:focus {
       background: ${(p) => p.theme.$mlc};
     }
+  }
+  .select {
+    padding: 0;
+    width: 100%;
+    text-align: center;
   }
 `

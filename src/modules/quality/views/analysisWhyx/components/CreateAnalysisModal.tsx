@@ -26,7 +26,7 @@ export default function CreateAnalysisModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    wardCode: (val) => !!val || '请选择科室',
+    wardCode: (val) => !!val || '请选择片区',
     reportYear: (val) => !!val || '请选择年度',
     reportMonth: (val) => !!val || '请选择月份',
     startDate: (val) => !!val || '请选择开始时间',
@@ -251,14 +251,13 @@ export default function CreateAnalysisModal(props: Props) {
           </Row>
           <Row>
             <Col span={5} className='label'>
-              科室：
+              片区：
             </Col>
             <Col span={19}>
               <Form.Field name='wardCode'>
-
                 <Select showSearch optionFilterProp="children" 
-                filterOption={(inputValue: any, option: any) =>
-                  option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0}>
+                disabled={true}
+                >
                   {wardList.map((item: any) => (
                     <Option value={item.code} key={item.code}>
                       {item.name}

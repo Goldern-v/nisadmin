@@ -25,7 +25,8 @@ export default function QcOneRouterHj(props: Props) {
     component: Analysis,
     keepAlive: true,
     hide:  !authStore.level1Watch,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    disabledKeepAlive: true,
   };
 
   const route_summaryReport = {

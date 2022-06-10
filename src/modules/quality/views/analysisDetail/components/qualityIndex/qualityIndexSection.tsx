@@ -99,7 +99,7 @@ export default observer(function qualityIndexSection(props: Props) {
         render(text: string, record: any, index: number) {
           return (
             <div className='inp_textArea'>
-            {!record.passRate? "" : Number(record.passRate)>=90? "达标" : "未达标"}
+            {!record.standardStatus&&record.passRate? ( Number(record.passRate)>=90?'达标':'不达标' ): record.standardStatus}
             </div>
           )
         },
@@ -119,6 +119,7 @@ export default observer(function qualityIndexSection(props: Props) {
       <BaseTable  columns={columns}  dataSource={ data&&data.list}
        footer={()=>footer}
        fixedFooter={true}
+       scroll={{x:'max-content',y:500}}
       />
     </Wrapper>
   )

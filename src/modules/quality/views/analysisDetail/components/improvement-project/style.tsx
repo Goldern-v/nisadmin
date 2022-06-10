@@ -33,8 +33,13 @@ export const MainCon  = styled(FieldDataCon)`
     text-align: center;
     color: red;
   }
+  .fixed {
+    height: 100px;
+    overflow: hidden;
+  }
   .ipt {
     grid-column: 2 / 8;
     min-height: 73px;
+    overflow: auto;
   }
 ` as any

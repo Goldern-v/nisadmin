@@ -26,7 +26,7 @@ export default function planCompletionModal(props: Props) {
           <div className="title-top">完成情况</div>
           <div className="text">
             <div className="title"> 1.工作计划:</div>
-            <TextArea
+            {/* <TextArea
               className="cell-textArea"
               value={value.monthWorkPlan}
               autosize={{ minRows: 10 ,maxRows:10}}
@@ -36,7 +36,8 @@ export default function planCompletionModal(props: Props) {
                 value.monthWorkPlan = e.target.value;
                 setData(cloneData);
               }}
-            />
+            /> */}
+            {value.monthWorkPlan||'无'}
           </div>
           <div className="text">
             <div className="title"> 1.工作计划:</div>

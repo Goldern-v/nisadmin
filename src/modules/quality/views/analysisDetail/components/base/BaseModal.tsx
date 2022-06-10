@@ -45,7 +45,7 @@ export default observer(function BaseModal(props: Props) {
       onOk={onSave}
       okText='保存'
       forceRender
-      width={(sectionData && sectionData.modalWidth) || 720}
+      width={(sectionData && sectionData.modalWidth) || 1000}
       centered
     >
       {Component && <Component {...props.sectionData} data={data} setData={setData} />}

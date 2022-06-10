@@ -236,6 +236,9 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
       z-index: 3;
     }
   }
+  .body-item__text {
+    word-break:break-all;
+  }
   .ant-input {
     font-size: 13px;
     line-height: 17px;

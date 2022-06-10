@@ -90,7 +90,7 @@ export default observer(function ProblemImpSection(props: Props) {
         render(text: string, record: any, index: number) {
           return (
             <div className='inp_textArea'>
-            {!record.passRate? "" : Number(record.passRate)>=90 ? "达标" : "未达标"}
+            {!record.standardStatus&&record.passRate? ( Number(record.passRate)>=90?'达标':'不达标' ): record.standardStatus}
             </div>
           )
         },
@@ -102,7 +102,7 @@ export default observer(function ProblemImpSection(props: Props) {
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <BaseTable dataSource={data.list} columns={columns}/>
+      <BaseTable dataSource={data.list} columns={columns} scroll={{x:'max-content',y:500}}/>
     </Wrapper>
   )
 })

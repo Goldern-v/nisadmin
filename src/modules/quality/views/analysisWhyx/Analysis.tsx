@@ -85,7 +85,7 @@ export default observer(function Analysis() {
       render: (name: string) => <div title={name}>{name}</div>,
     },
     {
-      title: "科室",
+      title: "片区",
       key: "wardName",
       dataIndex: 'wardName',
       align: "left",
@@ -382,7 +382,7 @@ export default observer(function Analysis() {
           <Option value="0">保存</Option>
           <Option value="1">发布</Option>
         </Select>
-        <div className="label">科室：</div>
+        <div className="label">片区：</div>
         <Select
         showSearch
         filterOption={(input: any, option: any) =>

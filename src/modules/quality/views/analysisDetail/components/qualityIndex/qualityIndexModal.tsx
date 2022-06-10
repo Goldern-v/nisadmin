@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
-import { Input } from 'src/vendors/antd'
+import { Input, Select } from 'src/vendors/antd'
+const { Option } = Select;
 export interface Props {
   sectionId: string
   data: any
@@ -12,7 +13,7 @@ export interface Props {
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { value: {} })
-  let value: any = cloneData &&cloneData.value ? cloneData.value : {}
+  let value: any = cloneData && cloneData.value ? cloneData.value : {}
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
@@ -31,7 +32,7 @@ export default function qualityIndexModal(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <div className='inp_textArea'>
-            <Input
+           <Input
               className='cell-textArea'
               value={record.type || ''}
               onChange={(e) => {
@@ -42,7 +43,7 @@ export default function qualityIndexModal(props: Props) {
           </div>
         )
       },
-      
+
     },
     {
       title: '项目',
@@ -52,7 +53,7 @@ export default function qualityIndexModal(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <div className='inp_textArea'>
-            <Input
+           <Input
               className='cell-textArea'
               value={record.item || ''}
               onChange={(e) => {
@@ -72,12 +73,14 @@ export default function qualityIndexModal(props: Props) {
           title: '质量合格分',
           dataIndex: 'qualityPassScore',
           align: 'center',
-          width:60,
+          width: 70,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
-                <Input
+               <Input
                   className='cell-textArea'
+                  type="number"
+                  min={0}
                   value={record.qualityPassScore || ''}
                   onChange={(e) => {
                     record.qualityPassScore = e.target.value
@@ -92,12 +95,14 @@ export default function qualityIndexModal(props: Props) {
           title: '合格率',
           dataIndex: 'standardPassRate',
           align: 'center',
-          width:60,
+          width: 70,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
-                <Input
+               <Input
                   className='cell-textArea'
+                  type="number"
+                  min={0}
                   value={record.standardPassRate || ''}
                   onChange={(e) => {
                     record.standardPassRate = e.target.value
@@ -117,23 +122,29 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '合格数/抽查数',
           align: 'center',
-          width: 110,
+          width: 160,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea double' >
-                <Input
+               <Input
                   className='cell-textArea'
-                  value={record.qualifiedCount|| ''}
+                  type="number"
+                  min={0}
+                  placeholder='合格数'
+                  value={record.qualifiedCount || ''}
                   onChange={(e) => {
-                    record.qualifiedCount= e.target.value
+                    record.qualifiedCount = e.target.value
                     setData(cloneData)
                   }}
                 />/
-                <Input
+               <Input
                   className='cell-textArea'
-                  value={record.checkCount|| ''}
+                  type="number"
+                  min={0}
+                  placeholder='抽查数'
+                  value={record.checkCount || ''}
                   onChange={(e) => {
-                    record.checkCount= e.target.value
+                    record.checkCount = e.target.value
                     setData(cloneData)
                   }}
                 />
@@ -145,11 +156,14 @@ export default function qualityIndexModal(props: Props) {
           title: '平均分',
           dataIndex: 'averageScore',
           align: 'center',
+          width: 70,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
-                <Input
+               <Input
                   className='cell-textArea'
+                  type="number"
+                  min={0}
                   value={record.averageScore || ''}
                   onChange={(e) => {
                     record.averageScore = e.target.value
@@ -164,15 +178,18 @@ export default function qualityIndexModal(props: Props) {
           title: '合格率%',
           dataIndex: 'passRate',
           align: 'center',
+          width: 70,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
-                <Input
+               <Input
                   className='cell-textArea'
+                  type="number"
+                  min={0}
                   value={record.passRate || ''}
                   onChange={(e) => {
                     record.passRate = e.target.value
-                    record.standardStatus=!record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
+                    record.standardStatus = !record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
                     setData(cloneData)
                   }}
                 />
@@ -184,18 +201,19 @@ export default function qualityIndexModal(props: Props) {
           title: '未达标',
           dataIndex: 'standardStatus',
           align: 'center',
-          width:60,
+          width: 90,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea'>
-                <Input
-                  className='cell-textArea'
-                  value={!record.passRate? "" : Number(record.passRate)>=90? "达标" : "未达标"}
-                  onChange={(e) => {
-                    record.standardStatus = e.target.value
+                <Select value={record.standardStatus} className="select"
+                  onChange={(value: any) => {
+                    record.standardStatus = value
                     setData(cloneData)
                   }}
-                />
+                >
+                  <Option value="达标">达标</Option>
+                  <Option value="未达标">未达标</Option>
+                </Select>
               </div>
             )
           },
@@ -206,7 +224,7 @@ export default function qualityIndexModal(props: Props) {
 
   return (
     <Wrapper>
-      <BaseTable columns={columns} dataSource={(cloneData && cloneData.list|| [])}
+      <BaseTable columns={columns} dataSource={(cloneData && cloneData.list || [])}
       />
       <div className='table_Bottom'>
         <div>1、上报不良事件：<input value={value.reportAdverseEvents || ""}
@@ -244,6 +262,9 @@ const Wrapper = styled.div`
       background: ${(p) => p.theme.$mlc};
     }
   }
+  .border-input {
+    border:1px solid rgb(228, 228, 228);
+  }
   .double input {
     width: 46%;
     height: 100%;
@@ -262,5 +283,10 @@ const Wrapper = styled.div`
     &:focus {
       background: ${(p) => p.theme.$mlc};
     }
+  }
+  .select {
+    padding: 0;
+    width: 100%;
+    text-align: center;
   }
 `

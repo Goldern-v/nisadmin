@@ -30,7 +30,7 @@ import SafetyChecklist from "./views/safetyChecklist";
 import Analysis from "./views/analysisWhyx/Analysis";
 import SummaryReport from "./views/summaryReport/SummaryReport";
 import ProblemSummary from "./views/problemSummary/ProblemSummary";
-
+console.log(authStore&&authStore.level2Watch)
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
     title: "单个质控表单汇总",
@@ -90,9 +90,8 @@ export default observer(function QcTwoRouter(props: Props) {
     icon: <YDBG />,
     path: "/qcTwo/analysis?level=2",
     component: Analysis,
-    keepAlive: true,
-    hide: authStore.level2Watch,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    hide: !authStore.level2Watch,
+    disabledKeepAlive: true,
   };
 
   const route_summaryReport = {
