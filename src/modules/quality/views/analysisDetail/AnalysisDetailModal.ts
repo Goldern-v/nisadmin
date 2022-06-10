@@ -40,7 +40,7 @@ interface SectionCase {
   modal?: any
   section?: any
   keyName?: string
-  maxLenght?:number
+  maxLength?:number
 }
 
 interface Constr {

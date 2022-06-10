@@ -182,7 +182,7 @@ export const sectionList: SectionListItem[] = [
     data: {
     },
     keyName: 'specialEventSolvedProblem',
-    maxLenght:100,
+    maxLength:100,
     async onSave (val: any) {
       (this as any).setSectionData('3_8', val)
     },
