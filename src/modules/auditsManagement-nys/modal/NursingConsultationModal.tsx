@@ -39,7 +39,7 @@ export default function NursingConsultationModal(props: Props) {
     if (err) return;
     let data ={
       consultationId:dataInfo.consultationId,
-      auditEmpNo: authStore.user?.empName,
+      auditEmpNo: authStore.user?.empNo,
       operationType: "1",
       auditStatus: value.status,
       auditNode:"head_nurse_audit",
