@@ -279,6 +279,15 @@ export default function BaseSetting(props: Props) {
           {info.teachingTypeName} ({info.teachingMethodName})
         </div>
       </div>
+      {appStore.HOSPITAL_ID === "whyx" && 
+        <div className="row">
+          <div className="label" style={{ width: _labelWidth }}>
+            二级类型：
+          </div>
+          <div className="content">
+            {info.secondaryType}
+          </div>
+        </div>}
       {!["gxjb"].includes(appStore.HOSPITAL_ID) && <div className="row">
         <div className="label" style={{ width: _labelWidth }}>
           类别：

@@ -243,7 +243,8 @@ class StepViewModal {
 
   @observable public dictObj = {
     /** 学习地址 */
-    studyAndTrainAddress: []
+    studyAndTrainAddress: [],
+    studytrain_train_detail_info_secondarytype: [], //武汉亚心学习培训-培训管理-科室学习二级类型字典
   };
   /** 初始化字典项 */
   initDict() {

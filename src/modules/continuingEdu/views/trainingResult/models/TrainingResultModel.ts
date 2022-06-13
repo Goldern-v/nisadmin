@@ -3,6 +3,7 @@ import { appStore } from "src/stores";
 import { trainingResultService } from "./../api/TrainingResultService";
 import { fileDownload } from "src/utils/file/file";
 import { allMenusModal } from "../../allMenus/AllMenusModal";
+import { message as Message } from "src/vendors/antd";
 
 class TrainingResultModel {
   private defaultQuery = (): any => {
@@ -31,6 +32,16 @@ class TrainingResultModel {
   @observable deptList = [] as any[]; //病区列表
   @observable titleList = [] as any[]; //职称列表
   @observable menuInfo = {} as any;
+  @observable tableCopyList: any = []; // 表格展示数据
+  @observable teacher = ""; //培训教师
+  @observable time = ""; //培训时间
+  @observable address = ""; //培训地址
+  @observable people = ""; //参与人员
+  @observable cetpId = ""; //主键
+  @observable comments = ""; //效果评价
+  @observable trainingDepartment = "";//培训科室
+  @observable trainingPhotos = ""; //培训照片
+  @observable trainingDeptName = [] as any[]; //科室
 
   /**是否为线下签到类型 */
   @computed get isSignType() {
@@ -239,6 +250,49 @@ class TrainingResultModel {
       .exportResults(appStore.queryObj.id || "", urlName)
       .then(res => fileDownload(res));
   }
+
+  // 武汉亚心培训实施记录界面获取表格数据
+  onload() {
+    trainingResultService.getTrainImplementationByCetpId(appStore.queryObj.id || "").then(res => {
+      this.tableCopyList = res.data.personList;
+      this.teacher = res.data.latTpTeachingTaskList[0].empName;
+      this.time = res.data.baseInfo.startTime;
+      this.address = res.data.baseInfo.address;
+      this.people = res.data.personList[0].empName
+      this.trainingDepartment = res.data.latTrainImplementationResult.trainingDepartment
+      this.comments = res.data.latTrainImplementationResult.comments
+      this.trainingPhotos = res.data.latTrainImplementationResult.trainingPhotos
+    })
+  }
+
+  // 武汉亚心培训实施记录界面获取培训科室
+  getDeptName() {
+    trainingResultService.getUintList().then(res => {
+      this.trainingDeptName = res.data.deptList
+    })
+  }
+
+  /** 武汉亚心培训实施记录界面保存表格数据 */
+  handleSave() {
+    let obj: any = {
+      cetpId: appStore.queryObj.id || "",
+      comments: this.comments,
+      trainingDepartment: this.trainingDepartment,
+      trainingPhotos: this.trainingPhotos,
+    };
+    trainingResultService
+      .saveOrUpdateTrainImplementation(obj)
+      .then(res => {
+        if (res.code == 200) {
+          Message.success("保存成功");
+          this.onload();
+        } else {
+          Message.error(`${res.dec}`);
+        }
+      })
+      .catch(e => { });
+
+  };
 }
 
 export const trainingResultModel = new TrainingResultModel();
