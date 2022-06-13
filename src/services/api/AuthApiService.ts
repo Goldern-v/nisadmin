@@ -52,7 +52,7 @@ export default class AuthApiService extends BaseApiService {
         } else {
           message.warning('无审核权限', 3, () => autoLoginTnNisInfoBe())
         }
-      } else if (appStore.HOSPITAL_ID == 'gdtj') {
+      } else if (['gdtj','whfk'].includes(appStore.HOSPITAL_ID)) {
         window.location.href = '#/setting'
       }else {
         window.location.href = '#/home'
