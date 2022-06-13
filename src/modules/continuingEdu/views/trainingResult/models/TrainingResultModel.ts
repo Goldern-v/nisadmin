@@ -259,9 +259,6 @@ class TrainingResultModel {
       this.time = res.data.baseInfo.startTime;
       this.address = res.data.baseInfo.address;
       this.people = res.data.personList[0].empName
-      this.trainingDepartment = res.data.latTrainImplementationResult.trainingDepartment
-      this.comments = res.data.latTrainImplementationResult.comments
-      this.trainingPhotos = res.data.latTrainImplementationResult.trainingPhotos
     })
   }
 
