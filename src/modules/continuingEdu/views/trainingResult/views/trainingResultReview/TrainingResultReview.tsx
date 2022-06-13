@@ -25,6 +25,7 @@ import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetMod
 
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from '../../api/TrainingResultService'
+import TrainingRecordTable from './TrainingRecordTable'
 
 const TabPane = Tabs.TabPane
 
@@ -506,6 +507,10 @@ export default observer(function TrainingResultReview() {
               }
             </TabPane>
           )}
+          {appStore.HOSPITAL_ID === "whyx" && 
+            <TabPane tab="培训实施记录" key="2">
+              <TrainingRecordTable />
+            </TabPane>}
         </Tabs>
       </TableWrapper>
     </MainPannel>

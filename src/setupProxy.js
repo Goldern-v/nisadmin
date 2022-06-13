@@ -119,6 +119,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "gdtj":
     return "http://192.168.1.54:9892";
     
+    // 武汉市肺科医院
+    case "whfk":
+      return "http://192.168.1.54:9884";
+    
     default:
       return "http://192.168.1.54:9866";
   }

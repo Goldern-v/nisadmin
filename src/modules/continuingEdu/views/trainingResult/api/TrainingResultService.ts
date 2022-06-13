@@ -212,6 +212,24 @@ export default class TrainingResultService extends BaseApiService {
   public async displayOrHideScores(obj: any) {
     return this.post(`/studyAndTrain/examManage/displayOrHideScores`, obj);
   }
+
+  // 武汉亚心培训实施记录界面--获取信息
+  public async getTrainImplementationByCetpId(cetpId: string) {
+    return this.post(`/studyAndTrain/teachingPlanManage/getTrainImplementationByCetpId`,qs.stringify({ cetpId }))
+  }
+
+  // 武汉亚心培训实施记录界面--获取培训科室
+  public async getUintList() {
+    return this.get(`/user/nursingUnit`);
+  }
+
+  // 武汉亚心培训实施记录界面--保存接口
+  public async saveOrUpdateTrainImplementation(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/saveOrUpdateTrainImplementation`,
+      obj
+    );
+  }
 }
 
 export const trainingResultService = new TrainingResultService();
