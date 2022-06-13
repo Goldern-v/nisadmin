@@ -76,7 +76,7 @@ export default function NursingConsultationModal(props: Props) {
             status: nursingConsultation.status == 0 ? '' : nursingConsultation.status,
             memberList: members.reduce((current:string,item:any) => {
               current += item.empName + '、'
-              return current.replace('、','') 
+              return current.replace(/、$/,'')
             },'')
           });
         });
