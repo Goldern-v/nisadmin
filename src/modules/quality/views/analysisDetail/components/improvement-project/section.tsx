@@ -30,7 +30,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
             （请简要陈述：日期、时间、事情经过）
           </span>
         </div>
-        <div className="ipt">
+        <div className="ipt fixed">
           {report.question}
         </div>
         <div>原因分析
@@ -54,30 +54,30 @@ export default observer(function ImprovementProjectSection(props: Props) {
         <div className="ipt">
           {report.mainReason}
         </div>
-        <div>设定目标</div>
+        <div  className='title_left'>设定目标</div>
         <div className="ipt">
           {report.setGoal}
         </div>
-        <div>改善方案</div>
-        <div>问题What</div>
-        <div>主要原因Why</div>
-        <div>对策方案How</div>
-        <div>实施时间When</div>
-        <div>实施地点Where</div>
-        <div>负责人Who</div>
+        <div className='title_left'>改善方案</div>
+        <div>问题<div>What</div></div>
+        <div>主要原因<div>Why</div></div>
+        <div>对策方案<div>How</div></div>
+        <div>实施时间<div>When</div></div>
+        <div>实施地点<div>Where</div></div>
+        <div>负责人<div>Who</div></div>
         <div>{report.planQuestion}</div>
         <div>{report.planMainReason}</div>
         <div>{report.planCountermeasures}</div>
         <div>{report.planImplementationTime}</div>
         <div>{report.planImplementationSite}</div>
         <div>{report.planPrincipal}</div>
-        <div>
+        <div  className='title_left'>
           D：执行（具体措施执行情况）
         </div>
         <div className='ipt'>
           {report.implementation}
         </div>
-        <div>
+        <div >
           C: 效果确认
           <span className='title-small'>
             （评价是否达到设定目标）
@@ -86,7 +86,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
         <div className='ipt'>
           {report.effectConfirmed}
         </div>
-        <div>
+        <div >
           A: 标准化内容
           <span className='title-small'>
             （科室规定/制度/流程）

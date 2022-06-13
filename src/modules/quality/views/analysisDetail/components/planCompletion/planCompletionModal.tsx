@@ -26,38 +26,25 @@ export default function planCompletionModal(props: Props) {
           <div className="title-top">完成情况</div>
           <div className="text">
             <div className="title"> 1.工作计划:</div>
-            <TextArea
+            {/* <TextArea
               className="cell-textArea"
               value={value.monthWorkPlan}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
                 value.monthWorkPlan = e.target.value;
                 setData(cloneData);
               }}
-            />
-          </div>
-          <div className="text">
-            <div className="title"> 2.培训计划:</div>
-            <TextArea
-              className="cell-textArea"
-              value={value.trainingPlanOfTheMonth}
-              autosize={{ minRows: 6 }}
-              placeholder="最多输入500个字"
-              maxLength={500}
-              onChange={(e) => {
-                value.trainingPlanOfTheMonth = e.target.value;
-                setData(cloneData);
-              }}
-            />
+            /> */}
+            {value.monthWorkPlan||'无'}
           </div>
           <div className="text">
             <div className="title"> 1.工作计划:</div>
             <TextArea
               className="cell-textArea"
               value={value.monthWorkDoneCase || ""}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {
@@ -70,8 +57,23 @@ export default function planCompletionModal(props: Props) {
             <div className="title"> 2.培训计划:</div>
             <TextArea
               className="cell-textArea"
+              value={value.trainingPlanOfTheMonth}
+              autosize={{ minRows: 10 ,maxRows:10}}
+              placeholder="最多输入500个字"
+              maxLength={500}
+              onChange={(e) => {
+                value.trainingPlanOfTheMonth = e.target.value;
+                setData(cloneData);
+              }}
+            />
+          </div>
+          
+          <div className="text">
+            <div className="title"> 2.培训计划:</div>
+            <TextArea
+              className="cell-textArea"
               value={value.monthTrainDoneCase}
-              autosize={{ minRows: 6 }}
+              autosize={{ minRows: 10 ,maxRows:10}}
               placeholder="最多输入500个字"
               maxLength={500}
               onChange={(e) => {

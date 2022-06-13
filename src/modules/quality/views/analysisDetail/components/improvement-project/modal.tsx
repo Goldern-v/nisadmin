@@ -42,7 +42,7 @@ export default observer(function ImprovementProjectModal(props: Props) {
           （请简要陈述：日期、时间、事情经过）
         </span>
       </div>
-      <div className="ipt">
+      <div className="ipt fixed">
         <TextArea value={report.question} onChange={(e:any) => { handleChange(e.target.value, 'question')}} autosize={{minRows: 3}} />
       </div>
       <div>原因分析
@@ -71,12 +71,12 @@ export default observer(function ImprovementProjectModal(props: Props) {
         <TextArea value={report.setGoal} onChange={(e:any) => { handleChange(e.target.value, 'setGoal')}} autosize={{minRows: 3}} />
       </div>
       <div>改善方案</div>
-      <div>问题What</div>
-      <div>主要原因Why</div>
-      <div>对策方案How</div>
-      <div>实施时间When</div>
-      <div>实施地点Where</div>
-      <div>负责人Who</div>
+      <div>问题<div>What</div></div>
+      <div>主要原因<div>Why</div></div>
+      <div>对策方案<div>How</div></div>
+      <div>实施时间<div>When</div></div>
+      <div>实施地点<div>Where</div></div>
+      <div>负责人<div>Who</div></div>
       <div className='ipt--small'>
         <TextArea value={report.planQuestion} onChange={(e:any) => { handleChange(e.target.value, 'planQuestion')}} autosize={{minRows: 3}} />
       </div>

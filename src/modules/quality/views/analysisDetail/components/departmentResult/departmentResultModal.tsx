@@ -5,6 +5,9 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { tableCon } from '../../style/modal'
+import { Input, Select } from 'src/vendors/antd'
+const { Option } = Select;
+
 export interface Props {
   sectionId: string
   data: any
@@ -32,15 +35,18 @@ export default function qualityIndexModal(props: Props) {
       width:160,
       render(text:string, record:any, index:number) {
         return (
-          <input
+          <div className='inp_textArea'>
+           <Input
             type='text'
             className='cell-ipt'
-            value={record.xm|| ''}
+            value={record.item|| ''}
             onChange={(e) => {
-              record.xm = e.target.value
+              record.item = e.target.value
               setData(cloneData)
             }}
           />
+          </div>
+          
         )
       },
     },
@@ -51,36 +57,42 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '质量合格分',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
-              <input
-                type='text'
+              <div className='inp_textArea'>
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
-                value={record.zlhgf|| ''}
+                value={record.qualityPassScore|| ''}
                 onChange={(e) => {
-                  record.zlhgf = e.target.value
+                  record.qualityPassScore = e.target.value
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         },
         {
           title: '合格率',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
-              <input
-                type='text'
+              <div className='inp_textArea'>
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
-                value={record.hgl|| ''}
+                value={record.standardPassRate|| ''}
                 onChange={(e) => {
-                  record.hgl = e.target.value
+                  record.standardPassRate = e.target.value
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         }
@@ -94,71 +106,95 @@ export default function qualityIndexModal(props: Props) {
           title: '合格数/抽查数',
           align: 'center',
           width:100,
-          render(text:string, record:any, index:number) {
+          render(text: string, record: any, index: number) {
             return (
-              <input
-                type='text'
-                className='cell-ipt'
-                value={record.hgsccs|| ''}
-                onChange={(e) => {
-                  record.hgsccs= e.target.value
-                  setData(cloneData)
-                }}
-              />
+              <div className='inp_textArea double' >
+               <Input
+                  className='cell-textArea'
+                  type='number'
+                  min={0}
+                  placeholder={"合格数"}
+                  value={record.qualifiedCount|| ''}
+                  onChange={(e) => {
+                    record.qualifiedCount= e.target.value
+                    setData(cloneData)
+                  }}
+                />/
+               <Input
+                  className='cell-textArea'
+                  type='number'
+                  min={0}
+                  placeholder={"抽查数"}
+                  value={record.checkCount|| ''}
+                  onChange={(e) => {
+                    record.checkCount= e.target.value
+                    setData(cloneData)
+                  }}
+                />
+              </div>
             )
           },
         },
         {
           title: '平均分',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
-              <input
-                type='text'
+              <div className='inp_textArea'>
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
-                value={record.pjf|| ''}
+                value={record.averageScore|| ''}
                 onChange={(e) => {
-                  record.pjf = e.target.value
+                  record.averageScore = e.target.value
                   setData(cloneData)
                 }}
               />
+              </div>
             )
           },
         },
         {
           title: '合格率%',
           align: 'center',
-          width:100,
+          width:60,
           render(text:string, record:any, index:number) {
             return (
-              <input
-                type='text'
+              <div className='inp_textArea'>
+             <Input
+                type='number'
+                min={0}
                 className='cell-ipt'
-                value={record.hgl2|| ''}
+                value={record.passRate|| ''}
                 onChange={(e) => {
-                  record.hgl2 = e.target.value
+                  record.passRate = e.target.value
+                  record.standardStatus=!record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
                   setData(cloneData)
                 }}
               />
+              </div>
             )
-          },
+          }
         },
         {
           title: '未达标',
           align: 'center',
-          width:100,
+          width:70,
           render(text:string, record:any, index:number) {
             return (
-              <input
-                type='text'
-                className='cell-ipt'
-                value={record.wdb|| ''}
-                onChange={(e) => {
-                  record.wdb = e.target.value
-                  setData(cloneData)
-                }}
-              />
+              <div className='inp_textArea'>
+                <Select value={record.standardStatus} className="select"
+                  onChange={(value: any) => {
+                    record.standardStatus = value
+                    setData(cloneData)
+                  }}
+                >
+                  <Option value="达标">达标</Option>
+                  <Option value="未达标">未达标</Option>
+                </Select>
+              </div>
             )
           },
         }
@@ -175,4 +211,33 @@ export default function qualityIndexModal(props: Props) {
   )
 }
 const Wrapper = styled(tableCon)`
+.inp_textArea input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+.double input {
+    width: 45%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .select {
+    padding: 0;
+    width: 100%;
+    text-align: center;
+  }
 `

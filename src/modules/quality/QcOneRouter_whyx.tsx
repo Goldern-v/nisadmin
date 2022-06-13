@@ -25,7 +25,8 @@ export default function QcOneRouterHj(props: Props) {
     component: Analysis,
     keepAlive: true,
     hide:  !authStore.level1Watch,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    disabledKeepAlive: true,
   };
 
   const route_summaryReport = {
@@ -53,9 +54,8 @@ export default function QcOneRouterHj(props: Props) {
         (appStore.history && appStore.history.action) !== "POP",
     },
     route_analysis,
-
-    route_summaryReport,
-    route_problemSummary,
+    // route_summaryReport,
+    // route_problemSummary,
   ];
   useEffect(() => {}, [props.history.location.pathname]);
   let currentRoutePath = props.history.location.pathname || "";

@@ -27,6 +27,14 @@ export default class BadEventReportService extends BaseApiService {
   public saveReport(params:any){
     return this.post(`/badEventReport/saveReport`,params);
   }
+  /**保存报告文本 */
+  public saveReportRemark(params: any){
+    return this.post(`/badEventReport/saveReportRemark`,params);
+  }
+  /**获取报告文本 */
+  public getReportRemark(id: string){
+    return this.get(`/badEventReport/getReportRemark/${id}`);
+  }
 }
 
 export const badEventReportService = new BadEventReportService()

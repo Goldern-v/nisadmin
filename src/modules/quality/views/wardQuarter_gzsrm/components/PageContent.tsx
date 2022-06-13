@@ -3,18 +3,18 @@ import styled from 'styled-components'
 import { Table, Input } from 'antd'
 import { message, } from 'src/vendors/antd'
 import ReactEcharts from 'echarts-for-react';
-import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
-import { badEventReportService } from '../services/BadEventReportService'
-import { isElementAccessExpression } from 'typescript';
+import { appStore } from 'src/stores';
 interface Props {
   pageData: Array<any>,
   currentPage: Object,
   isPrint: Boolean,
   quarterRate: String,
   deductionData: Array<any>,
+  text: string,
+  setText: Function
 }
 export default function PageContent(props: Props) {
-  const { pageData, isPrint, quarterRate, deductionData } = props
+  const { pageData, isPrint, quarterRate, deductionData, text, setText } = props
   const [chartsImg, setChartsImg]: any = useState('')
   const [deduction, getdeduction]: any = useState("")
   const [isInput, getinput]: any = useState(false)
@@ -302,6 +302,7 @@ export default function PageContent(props: Props) {
   return <Wrapper>
     <div className="first-content-box">
       <div className='first-title'>{`一、护士长实际查房率(表格)`}</div>
+      {['gzsrm'].includes(appStore.HOSPITAL_ID) && <Input.TextArea className='print-page__ipt' autosize={{ minRows: 3}} value={text} onChange={ (e: any) => setText(e.target.value)} />}
       <div className='second-content-box'>
         <div className='second-content-table'>
           <div className='second-content-table-title'>{`第${pageData ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div>
@@ -393,5 +394,10 @@ const Wrapper = styled.div`
   .second-content-bolatu-bolatu{
     border:1px solid #ddd;
     margin: '0 auto';
+  }
+  .print-page__ipt {
+    margin: 0px 20px 15px;
+    resize: none;
+    width: calc(100% - 40px);
   }
 `

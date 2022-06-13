@@ -18,7 +18,6 @@ export default observer(function TextareaSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
   let report: Report = (data ? data.report : {}) || {}
-  
   return (
     <Wrapper>
       <OneLevelTitle text={sectionTitle} />

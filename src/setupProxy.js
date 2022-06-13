@@ -62,7 +62,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://info.cr-health.com:20103' // 公司厚街测试环境-和公司测试环境地址对接
       // return 'http://192.168.20.10:9091' // 本地
-      // return 'http://192.168.1.54:9866' // 测试环境
+      return 'http://119.145.71.86:9801' // 测试环境
       // return "http://192.168.20.10:9091";
       // return "http://192.168.20.83:8080"; // 彬哥本地
       return "http://192.168.1.54:9875"; // 公司-贵州省人民医院-内网
@@ -118,6 +118,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // 广东同江
     case "gdtj":
     return "http://192.168.1.54:9892";
+    
+    // 武汉市肺科医院
+    case "whfk":
+      return "http://192.168.1.54:9884";
     
     default:
       return "http://192.168.1.54:9866";

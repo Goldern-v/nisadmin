@@ -35,6 +35,8 @@ export function getAddArrangeMenuList(
         type: "text",
         dataSource: obj[keys[i]][j],
         async onClick(item: any) {
+          sheetViewModal.tableLoading = true
+          sheetViewModal.tableLoading = true
           if (appStore.HOSPITAL_ID == 'wh') {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
@@ -62,6 +64,7 @@ export function getAddArrangeMenuList(
             selectedCellObj!.shiftType = item.dataSource.shiftType;
             selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
           }
+          sheetViewModal.tableLoading = false
         }
       });
     }

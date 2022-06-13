@@ -11,10 +11,17 @@ import BaseApiService from './BaseApiService'
 import { compileStr } from 'src/utils/encode/encode';
 
 export default class AuthApiService extends BaseApiService {
-  public login(username: string, password: string, code: string, repaint: any,) {
+  public login(username: string, password: string, code: string, repaint: any,orgPsd?:string) {
     return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password, code: code, repaint: repaint })).then((res:any) => {
       if(res.errorCode){
         return res
+      }
+      // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$") 
+      let regexp = new RegExp("^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$")
+      if (['sdlj'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
+        message.error('当前登录密码强度较弱，请修改密码后登录!')
+        window.location.href = '#/resetpassword'
+        return
       }
       let { adminNurse, authToken, user } = res.data
       user = { ...user, wsp: compileStr(password) }
@@ -45,7 +52,7 @@ export default class AuthApiService extends BaseApiService {
         } else {
           message.warning('无审核权限', 3, () => autoLoginTnNisInfoBe())
         }
-      } else if (appStore.HOSPITAL_ID == 'gdtj') {
+      } else if (['gdtj','whfk'].includes(appStore.HOSPITAL_ID)) {
         window.location.href = '#/setting'
       }else {
         window.location.href = '#/home'

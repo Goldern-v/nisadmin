@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import { badEventReportService } from './services/BadEventReportService'
 import PageContent from "./components/PageContent"
 import qs from 'qs'
+import { Input } from 'antd'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
@@ -20,6 +21,7 @@ export default observer(function NursingReportDetailView() {
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
   const [spinning, setSpinning] = useState(false)
+  const showText = ['gzsrm'].includes(appStore.HOSPITAL_ID)
 
   useEffect(() => {
     let search = appStore.location.search
@@ -41,6 +43,12 @@ export default observer(function NursingReportDetailView() {
       setPageData(list)
       setSpinning(false)
     })
+    if (showText && query.id) {
+      badEventReportService.getReportRemark(query.id).then((res: any) => {
+        query.remark = res.data
+        setCurrentPage(query)
+      }).catch(e => {})
+    }
   }, [])
 
 
@@ -120,12 +128,21 @@ export default observer(function NursingReportDetailView() {
   const onSave = () => {
     setSpinning(true)
     let params = currentPage
+    const { id = '', remark = '' } = currentPage
+    if (params.id && showText) {
+      badEventReportService.saveReportRemark({id, remark}).then((res: any) => {
+        message.success('保存成功')
+        setSpinning(false)
+      }).catch(e => setSpinning(false))
+      return
+    }
     badEventReportService.saveReport(params).then((res) => {
       message.success('保存成功')
+      setSpinning(false)
       setTimeout(() => {
         appStore.history.push('/badEventsNew/不良事件分析报告')
       }, 500)
-    })
+    }).catch(e => setSpinning(false))
   }
   return (
     <Wrapper>
@@ -148,6 +165,7 @@ export default observer(function NursingReportDetailView() {
         <Spin spinning={spinning}>
           <Page ref={pageRef} className='print-page'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.name}</div>
+            {showText && <Input.TextArea className='print-page__ipt' autosize={{ minRows: 3}} value={currentPage.remark} onChange={ (e: any) => setCurrentPage({ ...currentPage, remark: e.target.value})} />}
             <PageContent isPrint={isPrint} pageData={pageData} currentPage={currentPage}></PageContent>
           </Page>
         </Spin>
@@ -193,6 +211,11 @@ const Page = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   min-height:700px;
+  .print-page__ipt {
+    margin: 15px 20px;
+    resize: none;
+    width: calc(100% - 40px);
+  }
 `
 
 const ScrollCon = styled(ScrollBox)`

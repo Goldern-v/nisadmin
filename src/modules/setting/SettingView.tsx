@@ -96,7 +96,7 @@ const LEFT_MENU_CONFIG = [
     component: 节假日设置,
     hide: appStore.hisMatch({
       map: {
-        "gzsrm,bhsrm,qzxyy,lyrm,gdtj": true,
+        "gzsrm,bhsrm,qzxyy,lyrm,gdtj,whfk": true,
         other: false,
       },
       vague: true,
@@ -108,7 +108,7 @@ const LEFT_MENU_CONFIG = [
     path: "/setting/科室文件共享",
     hide: appStore.hisMatch({
       map: {
-        "gzsrm,bhsrm,qzxyy,lyrm,gdtj": true,
+        "gzsrm,bhsrm,qzxyy,lyrm,gdtj,whfk": true,
         other: false,
       },
       vague: true,

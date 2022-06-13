@@ -17,9 +17,10 @@ export default function TextareaModal(props: Props) {
   let report: Report = (data ? data.value : {}) || {}
   let section = analysisDetailModal.current.getSection(sectionId)
   const keyName = section?.keyName ? section.keyName : ''
+  const maxLength=section?.maxLength ? section.maxLength : 1000
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length > 1000) {
-      message.warn('最多1000个字')
+    if (e.target.value.length > maxLength) {
+      message.warn(`最多${maxLength}个字`)
       return
     }
     if (setData) {

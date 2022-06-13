@@ -4,6 +4,8 @@ import { Modal, Row, Col, Radio, Select, DatePicker, Input } from 'antd'
 import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
 import Moment from 'moment'
+import { getTypeName } from "../utils";
+import { appStore } from 'src/stores'
 
 const Option = Select.Option
 
@@ -16,6 +18,7 @@ export interface Props {
   loading?: boolean
   /**reportName的字段排列 */
   reportFn?: Function
+  defDept?: string
 }
 
 export default function CreateAnalysisModal(props: Props) {
@@ -23,14 +26,14 @@ export default function CreateAnalysisModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    wardCode: (val) => !!val || '请选择科室',
+    wardCode: (val) => !!val || '请选择片区',
     reportYear: (val) => !!val || '请选择年度',
     reportMonth: (val) => !!val || '请选择月份',
     startDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间'
   }
 
-  const { visible, onCancel, onOk, wardList, allowClear, loading } = props
+  const { visible, onCancel, onOk, wardList, allowClear, loading, defDept } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
   const [startDate, setStartDate] = useState(null as any | null)
@@ -50,7 +53,8 @@ export default function CreateAnalysisModal(props: Props) {
             endDate: null,
             reportName: '',
             groupRoleCode: '',
-            reportMonth: month
+            reportMonth: month,
+            wardCode: defDept || ''
           })
         }
       }, 300)
@@ -189,8 +193,8 @@ export default function CreateAnalysisModal(props: Props) {
         wardName.shift()
         wardName = wardName.join('、')
       }
-
-      let reportName = `${yearStr}年${wardName}病区${monthStr}月工作报表`
+      let type = getTypeName(appStore.queryObj.level, wardCode)
+      let reportName = `${yearStr}年${wardName}${type}${monthStr}月工作报表`
 
       setFormItem('reportName', reportName)
     }
@@ -235,23 +239,25 @@ export default function CreateAnalysisModal(props: Props) {
             </Col>
             <Col span={9}>
               <Form.Field name='startDate'>
-                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} />
+                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} disabled={true} />
               </Form.Field>
             </Col>
             <Col span={1}>至</Col>
             <Col span={9}>
               <Form.Field name='endDate'>
-                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} />
+                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} disabled={true} />
               </Form.Field>
             </Col>
           </Row>
           <Row>
             <Col span={5} className='label'>
-              科室：
+              片区：
             </Col>
             <Col span={19}>
               <Form.Field name='wardCode'>
-                <Select>
+                <Select showSearch optionFilterProp="children" 
+                disabled={true}
+                >
                   {wardList.map((item: any) => (
                     <Option value={item.code} key={item.code}>
                       {item.name}

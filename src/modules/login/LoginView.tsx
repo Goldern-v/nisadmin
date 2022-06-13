@@ -84,9 +84,9 @@ export default withRouter(function LoginView(props: Props) {
       message.warning("请填写验证码！")
       return;
     }
-    (process.env.NODE_ENV !== 'development') && (["fssdy"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
+    (process.env.NODE_ENV !== 'development') && (["fssdy", "sdlj"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
     service.authApiService
-      .login(_username, _password, verificationCode, "")
+      .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
         if (isSavePassword) {
           const userLoginInfoMap = JSON.parse(
@@ -270,6 +270,11 @@ export default withRouter(function LoginView(props: Props) {
             {appStore.hisMatch({
               map: {
                 'whyx': <div className="resetpassword CheckItem" onClick={() => {
+                  history.push('/resetpassword')
+                }}>
+                  <span>重置密码</span>
+                </div>,
+                'sdlj':<div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
                   <span>重置密码</span>

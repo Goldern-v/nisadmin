@@ -14,13 +14,32 @@ export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [], value:{}})
   let conclusion: any = cloneData && cloneData.value 
+  let list: any[] = cloneData && cloneData.list
+  
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
       title: '指标',
       align: 'center',
-      dataIndex: "zb",
+      dataIndex: "index",
       width: 60,
+      render(text: string, record: any, index: number) {
+        return (
+          <div className='inp_textArea'>
+            <TextArea
+              className='cell-textArea'
+              value={record.index || ''}
+              rows={14}
+              placeholder="最多输入100个字"
+              maxLength={100}
+              onChange={(e) => {
+                record.index = e.target.value
+                setData(cloneData)
+              }}
+            />
+          </div>
+        )
+      },
     },
     {
       title: '主要问题',
@@ -116,25 +135,32 @@ export default function qualityIndexModal(props: Props) {
   return (
     <Wrapper>
       <div className='edit_text'>
-        共<input value={conclusion && conclusion.overallIndicator} onChange={(e) => {
+        共<input type='number' value={conclusion && conclusion.overallIndicator} onChange={(e) => {
           conclusion.overallIndicator = e.target.value;
           setData(cloneData)
         }} />
-        项指标，达标<input value={conclusion && conclusion.standardIndicators} onChange={(e) => {
+        项指标，达标<input type='number' value={conclusion && conclusion.standardIndicators} onChange={(e) => {
           conclusion.standardIndicators= e.target.value;
           setData(cloneData)
         }} />
-        项，未达标<input value={conclusion && conclusion.nonComplianceIndicators} onChange={(e) => {
+        项，未达标<input type='number' value={conclusion && conclusion.nonComplianceIndicators} onChange={(e) => {
           conclusion.nonComplianceIndicators = e.target.value;
           setData(cloneData)
         }} />项</div>
       <div className='table_title'>科室不达标指标分析改进:</div>
-      <BaseTable columns={columns} dataSource={cloneData.list && cloneData.list.tableData} />
+      <BaseTable columns={columns} dataSource={list} />
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
 .edit_text input{
+
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 width:60px;
 border: none;
 text-align: center;

@@ -728,7 +728,7 @@ export default observer(function Cell(props: Props) {
         onContextMenu={onContextMenu}
         onClick={onClick}
         className={classNames(cellConfig)}
-        backgroundColor={cellObj.backgroundColor}
+        backgroundColor={ ['whyx'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ''}
       >
         {/* backgroundColor={['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ""} */}
         {appStore.isDev && (

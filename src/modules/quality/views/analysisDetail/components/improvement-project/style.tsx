@@ -22,12 +22,24 @@ export const MainCon  = styled(FieldDataCon)`
       grid-row: 5 / 7;
     }
   }
+  .title_left {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
   .title-small {
     white-space: pre-wrap;
     font-size: 12px;
+    text-align: center;
+    color: red;
+  }
+  .fixed {
+    height: 100px;
+    overflow: hidden;
   }
   .ipt {
     grid-column: 2 / 8;
     min-height: 73px;
+    overflow: auto;
   }
 ` as any
