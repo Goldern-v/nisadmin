@@ -11,7 +11,6 @@ export interface Props {
 }
 export default function OperationEmModal(props: Props) {
   let { sectionId, setData, data } = props;
-  // let cloneData: any = cloneJson(data || { value: [] })
   let value: any = data ? data.value : {}  ;
   let pageInfo:any= data && data.pageInfo ? data.pageInfo : {}
   const handleChange = (e: any, key: string) => {
@@ -31,16 +30,22 @@ export default function OperationEmModal(props: Props) {
         <div className="context">
           区域定编：
           <Input
+          type="number"
+          min={0}
             value={value.emergencyAreaCount}
             onChange={(e: any) => handleChange(e.target.value, "emergencyAreaCount")}
           />
           人;实际编制:
           <Input
+          type="number"
+          min={0}
             value={value.actualEmergencyCount}
             onChange={(e: any) => handleChange(e.target.value, "actualEmergencyCount")}
           />
           人; 截止本月底实际在岗:
           <Input
+          type="number"
+          min={0}
             value={value.actualEmergencyDutyCount}
             onChange={(e: any) => handleChange(e.target.value, "actualEmergencyDutyCount")}
           />
@@ -49,16 +54,22 @@ export default function OperationEmModal(props: Props) {
         <div className="context">
           本月离职护士{" "}
           <Input
+          type="number"
+          min={0}
             value={value.emergencyResignNurse}
             onChange={(e: any) => handleChange(e.target.value, "emergencyResignNurse")}
           />
           人（未转正护士{" "}
           <Input
+          type="number"
+          min={0}
             value={value.notRectifiedNurse}
             onChange={(e: any) => handleChange(e.target.value, "notRectifiedNurse")}
           />
           人，转正执业护士{" "}
           <Input
+          type="number"
+          min={0}
             value={value.regularPracticeNurse}
             onChange={(e: any) => handleChange(e.target.value, "regularPracticeNurse")}
           />
@@ -67,6 +78,8 @@ export default function OperationEmModal(props: Props) {
         <div className="context">
           本月护士离职率 
           <Input
+          type="number"
+          min={0}
             value={value.nurseTurnoverRate}
             onChange={(e: any) => handleChange(e.target.value, "nurseTurnoverRate")}
           />
@@ -75,16 +88,22 @@ export default function OperationEmModal(props: Props) {
         <div className="context">
           日间病房：定编： 
           <Input
+          type="number"
+          min={0}
             value={value.dayWardCount}
             onChange={(e: any) => handleChange(e.target.value, "dayWardCount")}
           />
           人；实际编制： 
           <Input
+          type="number"
+          min={0}
             value={value.actualDayWardCount}
             onChange={(e: any) => handleChange(e.target.value, "actualDayWardCount")}
           />
           人；截止本月底实际在岗
           <Input
+          type="number"
+          min={0}
             value={value.actualDayWardDutyCount}
             onChange={(e: any) => handleChange(e.target.value, "actualDayWardDutyCount")}
           />
@@ -94,6 +113,8 @@ export default function OperationEmModal(props: Props) {
           （2）<div className="month-context">{pageInfo.reportMonth}</div>
           （月）上月急诊护理工作量得分： 
           <Input
+          type="number"
+          min={0}
             value={value.nursingWorkloadScore}
             onChange={(e: any) => handleChange(e.target.value, "nursingWorkloadScore")}
           />
