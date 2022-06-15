@@ -251,12 +251,12 @@ export default function CreateAnalysisModal(props: Props) {
           </Row>
           <Row>
             <Col span={5} className='label'>
-              片区：
+              {appStore.queryObj.level==1 ? '科室:' : "片区："}
             </Col>
             <Col span={19}>
               <Form.Field name='wardCode'>
                 <Select showSearch optionFilterProp="children" 
-                disabled={true}
+                disabled={appStore.queryObj.level==1 ? true : false}
                 >
                   {wardList.map((item: any) => (
                     <Option value={item.code} key={item.code}>

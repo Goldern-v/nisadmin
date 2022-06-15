@@ -30,7 +30,7 @@ export default observer(function Analysis() {
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [createClear, setCreateClear] = useState(true);
   const { history } = appStore;
-  // 科室列表
+  // 科室列表、2级质控是片区列表
   const [wardList, setWardList] = useState([]);
   // 默认科室
   const [defDept, setDefDept] = useState('');
@@ -52,10 +52,27 @@ export default observer(function Analysis() {
   const level = useLevel();
 
   useEffect(() => {
-    service.commonApiService.getNursingUnitSelf().then((res) => {
-      if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
-      setDefDept(res.data.defaultDept)
-    });
+    if (level == 2) {
+      service.commonApiService.getTwoInpatientArea().then((res)=>{
+        let data=res.data
+
+        if(Array.isArray(res.data)){
+          data.unshift({
+            "code": "",
+            "name": "全部"
+          })
+          setWardList(data)
+        } 
+        setDefDept(res.data[1].code)
+      })
+    }
+    else {
+      service.commonApiService.getNursingUnitSelf().then((res) => {
+        if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
+        setDefDept(res.data.defaultDept)
+      });
+    }
+
   }, []);
 
   useEffect(() => {
@@ -162,7 +179,7 @@ export default observer(function Analysis() {
     setQuery({ ...query, reportYear: null, reportMonth: "" });
   };
 
-  const handleReview =async (record: any) => {
+  const handleReview = async (record: any) => {
     const obj = {
       deptName: getTempName(level, record.wardCode),
       level,
@@ -178,23 +195,23 @@ export default observer(function Analysis() {
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
-  const initRenderData=async (data:any)=>{
+  const initRenderData = async (data: any) => {
     const params: Record<string, any> = {
       id: data.id || '',
       level,
       deptName: getTempName(level, data.wardCode)
     }
-    const {reportTemplateDto, renderTableDataMap} = data
+    const { reportTemplateDto, renderTableDataMap } = data
     analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
-    if(level=='1'&&getTempName(level, data.wardCode).indexOf('急诊') > -1){
+    if (level == '1' && getTempName(level, data.wardCode).indexOf('急诊') > -1) {
       await obj1Em.initRender(data.id)
-    }else{
+    } else {
       await obj2.initRender(data.id)
     }
     await obj1Dept.initRender(data.id)
-      appStore.history.push(
-        `/qualityAnalysisReport?${qs.stringify(params)}`
-      );
+    appStore.history.push(
+      `/qualityAnalysisReport?${qs.stringify(params)}`
+    );
   }
   const handleCreateOk = (params: any) => {
     if (!params.reportName) return;
@@ -309,7 +326,7 @@ export default observer(function Analysis() {
           <Select
             style={{ width: "171px" }}
             onChange={(code: any) => (wardCode = code)}
-            
+
           >
             {wardList.map((item: any, idx: number) => (
               <Option value={item.code} key={idx}>
@@ -382,11 +399,11 @@ export default observer(function Analysis() {
           <Option value="0">保存</Option>
           <Option value="1">发布</Option>
         </Select>
-        <div className="label">片区：</div>
+        <div className="label">{level == 1 ? "科室：" : "片区："}</div>
         <Select
-        showSearch
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           value={query.wardCode}
           onChange={(wardCode: any) => {
             setQuery({ ...query, wardCode });
@@ -400,7 +417,6 @@ export default observer(function Analysis() {
           ))}
         </Select>
         <Button onClick={handleSearch}>查询</Button>
-
         <Button onClick={handleCreate} type="primary">
           创建
         </Button>

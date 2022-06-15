@@ -116,7 +116,8 @@ export default function qualityIndexModal(props: Props) {
                   placeholder={"合格数"}
                   value={record.qualifiedCount|| ''}
                   onChange={(e) => {
-                    record.qualifiedCount= e.target.value
+                    let value=e.target.value.match(/^\d*(\.?\d{0,2})/g)?e.target.value.match(/^\d*(\.?\d{0,2})/g):[]
+                    record.qualifiedCount = value&&value[0]
                     setData(cloneData)
                   }}
                 />/
@@ -127,7 +128,8 @@ export default function qualityIndexModal(props: Props) {
                   placeholder={"抽查数"}
                   value={record.checkCount|| ''}
                   onChange={(e) => {
-                    record.checkCount= e.target.value
+                    let value=e.target.value.match(/^\d*(\.?\d{0,2})/g)?e.target.value.match(/^\d*(\.?\d{0,2})/g):[]
+                    record.checkCount = value&&value[0]
                     setData(cloneData)
                   }}
                 />

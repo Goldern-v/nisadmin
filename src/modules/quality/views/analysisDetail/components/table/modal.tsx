@@ -16,7 +16,6 @@ export default observer(function TableModal(props: Props) {
     isEdit: true,
     setData,
   });
-
   return (
     <Wrapper>
       <BaseTable dataSource={data?.list || []} columns={columns} />

@@ -130,7 +130,6 @@ export const obj = {
     };
   },
   formatData() {
-    console.log(1);
     (this as any).getSectionData("1_1").value = (this as any).allData.fieldData1_1;
     (this as any).getSectionData("2_1").value = (this as any).allData.fieldData2_1;
     (this as any).getSectionData("2_3").value = (this as any).allData.fieldData2_3;

@@ -13,6 +13,8 @@ interface Props {
 }
 const INPUT_ENUMS = {
   textarea: 'TextArea',
+  DatePicker:'DatePicker',
+  TimePicker:'TimePicker'
 
 }
 export const useColumns = (props: Props) => {
@@ -30,7 +32,7 @@ export const useColumns = (props: Props) => {
       }
       if (v.editable && isEdit) {
         item.render = (text: any, row: any, index: number) => {
-          if (['text', 'textarea'].includes(v.widgetType)) {
+          if (['text', 'textarea','DatePicker','TimePicker'].includes(v.widgetType)) {
             return <TableInput type={INPUT_ENUMS[v.widgetType]} row={row} index={index} setVal={setData} str={v.fieldName} />
           }
         }
