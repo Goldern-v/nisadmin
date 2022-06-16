@@ -17,12 +17,11 @@ export default observer(function TextareaSection2(props: Props) {
   let { sectionId, sectionTitle, keyName } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let report: Report = (data ? data.report : {}) || {}
-  
+  let value=data ? data.value :{}
   return (
     <Wrapper>
       <TwoLevelTitle text={sectionTitle}/>
-      <TextCon>{report[keyName]}</TextCon>
+      <TextCon>{value&&value[keyName]}</TextCon>
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

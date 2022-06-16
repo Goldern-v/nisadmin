@@ -44,7 +44,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "护士节假日排班表",
               path: "/statistic/护士节假日排班表",
-              hide: appStore.HOSPITAL_ID == "nys"
+              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
             },
             {
               title: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
@@ -77,7 +77,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "科室节假日排班表",
               path: "/statistic/科室节假日排班表",
-              hide: appStore.HOSPITAL_ID == "nys"
+              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
             }
           ]
         },
@@ -133,12 +133,13 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: "护理人员统计",
                   path: "/statistic/护理人员统计",
-                  hide: appStore.HOSPITAL_ID == "jmfy"
+                  hide: ["jmfy",'nys'].includes(appStore.HOSPITAL_ID)
                 },
                 { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
                 {
                   title: "科室护士明细表",
                   path: "/statistic/科室护士明细表",
+                  hide: ['nys'].includes(appStore.HOSPITAL_ID)
                 },
                 ...appStore.hisMatch({
                   map: {
@@ -188,7 +189,11 @@ const LEFT_MENU_CONFIG = [
           title: "护理质量统计",
           icon: <HZCXTJ />,
           path: "/statistic/护理质量统计",
-        }
+        },
+        { title: '现有专业技术资格', path: '/statistic/现有专业技术资格', icon: <HZCXTJ /> },
+        { title: '现有专业技术资格级别', path: '/statistic/现有专业技术资格级别', icon: <HZCXTJ /> },
+        { title: '现任专业技术职务', path: '/statistic/现任专业技术职务', icon: <HZCXTJ /> },
+        { title: '现任专业技术职务级别', path: '/statistic/现任专业技术职务级别', icon: <HZCXTJ /> },
       ],
       other: []
     }

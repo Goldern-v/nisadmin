@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -833,8 +833,16 @@ export default observer(function 重点患者评估登记本(props: Props) {
               itemCode: item.itemCode,
               updateDataSource,
               handleNextIptFocus,
-              onBlur: (newVal: string, oldVal: any) => {
-              },
+              onBlur: ['QCRG_12_2'].includes(registerCode) && ['dgxg'].includes(appStore.HOSPITAL_ID)
+              ? (newVal: string, oldVal: any) => {
+                if (newVal && !pharmacyList.includes(newVal)) {
+                  // message.warn('请选择下拉选项')
+                  // record.modified = false
+                  record[item.itemCode] = oldVal && pharmacyList.includes(oldVal) ? oldVal : '';
+                  updateDataSource(true)
+                }
+              }
+              : (newVal: string, oldVal: any) => {},
             }}
           />
           }

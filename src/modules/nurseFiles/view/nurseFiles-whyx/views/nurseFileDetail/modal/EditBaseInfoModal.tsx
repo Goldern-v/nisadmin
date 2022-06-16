@@ -117,6 +117,11 @@ export default function EditWorkHistoryModal(props: Props) {
     value.jobStartDate &&
       (value.jobStartDate = value.jobStartDate.format("YYYY-MM-DD"));
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
+    // value.maps = {
+    //   ...value.maps,
+    //   newtitle_url:value.newtitle_url,
+    //   highesteducation_url:value.highesteducation_url
+    // }
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
       .then((res: any) => {
@@ -189,6 +194,8 @@ export default function EditWorkHistoryModal(props: Props) {
           zyzsEffectiveUpDate: data.zyzsEffectiveUpDate || null,
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
         },
+        "highesteducation_url":data.maps.highesteducation_url,
+        "newtitle_url":data.maps.newtitle_url,
       });
     }
   }, [visible]);
@@ -494,6 +501,27 @@ export default function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`合同到期时间`} name="maps.contractexdate">
               <Input disabled />
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Field label={`最高学历证书`} name="maps.highesteducation_url">
+              <ImageUploader
+                upload={uploadCard}
+                text="添加学历证书"
+                tip={"上传学历证书"}
+              />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`最高职称证书`} name="maps.newtitle_url">
+              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
+              <ImageUploader
+                upload={uploadCard}
+                text="添加最高职称证书"
+                tip={"上传最高职称证书"}
+              />
             </Form.Field>
           </Col>
         </Row>

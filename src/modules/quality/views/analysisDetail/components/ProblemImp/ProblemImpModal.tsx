@@ -1,19 +1,20 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
-import { LastImproveItem, Report, TypeCompare } from '../../types'
-
+import { tableCon } from '../../style/modal'
+import { Input } from 'src/vendors/antd'
+const { TextArea } = Input
 export interface Props {
   sectionId: string
   data: any
   setData: any
 }
-export default function ProblemImpModal(props: Props) {
+export default function ImprovementsModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [] })
+  let cloneData: any = cloneJson(data || { value: [] })
+  const tableData = cloneData.value ? cloneData&&[cloneData.value] : []
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
@@ -21,12 +22,14 @@ export default function ProblemImpModal(props: Props) {
       key: '上月问题',
       render(text, record, index) {
         return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.question|| ''}
+          <TextArea
+            className='cell-ipt'
+            value={record.ultQuestion || ''}
+            rows={14}
+            autosize={false}
+            maxLength={500}
             onChange={(e) => {
-              record.question = e.target.value
+              record.ultQuestion = e.target.value
               setData(cloneData)
             }}
           />
@@ -39,62 +42,26 @@ export default function ProblemImpModal(props: Props) {
       key: '上月问题',
       render(text, record, index) {
         return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.feetback|| ''}
+          <TextArea
+            className='cell-ipt'
+            rows={14}
+            autosize={false}
+            maxLength={500}
+            value={record.improveFeedback || ''}
             onChange={(e) => {
-              record.feetback = e.target.value
+              record.improveFeedback = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
-      width: 200
     },
-    {
-      title: '操作',
-      key: '操作',
-      width: 80,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
-    }
   ]
-
-  const addItem = () => {
-    cloneData.list.push({
-      question: '',
-      feetback: '',
-    })
-    setData(cloneData)
-  }
   return (
     <Wrapper>
-      <Button icon='plus' size='small' onClick={addItem}>
-        添加
-      </Button>
-      <BaseTable columns={columns} dataSource={(cloneData.list || [])} />
+      <BaseTable columns={columns} dataSource={(tableData)} />
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
-  text {
-    min-height: 200px !important;
-    resize: none;
-  }
-  input {
-    border: none;
-  }
+const Wrapper = styled(tableCon)`
 `

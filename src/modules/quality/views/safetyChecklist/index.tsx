@@ -155,7 +155,7 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>行政查房记录</div>
+        <div className='page-title'>安全检查表</div>
         <div className='button-group'>
           <span className='label'>科室：</span>
           <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ deptCode: deptCode === '全院' ? '' : deptCode })} />

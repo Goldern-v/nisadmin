@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { Place } from "src/components/common";
-import list from "src/modules/personnelManagement/views/arrangeHome/page/nightShiftStatistics/list";
 import styled from "styled-components";
 import EditButton from "../../EditButton";
 // import TextareaModal from "./modal";

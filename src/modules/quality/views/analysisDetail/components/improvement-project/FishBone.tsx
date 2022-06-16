@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { getCodeLength } from 'src/utils/string'
-const indexObj = ['r','j','w','f','h']
+const indexObj = ['causeAnalysisPeople','causeAnalysisMachine','causeAnalysisThing','causeAnalysisLaw','causeAnalysisRing']
 
 export interface Props {
   value: any
@@ -12,19 +12,18 @@ export interface Props {
 }
 export default observer(function FishBon(props: Props) {
   const { value, onChange, isEdit = false} = props
-
   useEffect(() => {
     if (value) {
       setObj(value)
     }
   }, [value])
   const [obj, setObj] = useState({
-    r: '',
-    j: '',
-    w: '', 
-    f: '',
-    h: '',
-    p: ''
+    causeAnalysisPeople: '',
+    causeAnalysisMachine: '',
+    causeAnalysisThing: '', 
+    causeAnalysisLaw: '',
+    causeAnalysisRing: '',
+    causeAnalysisQuestion: ''
   })
   const [isFocus, setIsFocus] = useState(false)
   const [curVal, setCurVal] = useState<any>({ value: '', key: ''})
@@ -84,36 +83,36 @@ export default observer(function FishBon(props: Props) {
     <Wrapper boneTitle={['人','机','物','法','环']}>
       <div className='body'>
         <div className='body-item'>
+          <div className='body-bone' onClick={() => {changeFocus('causeAnalysisPeople')}}></div>
           <div className='body-bone'></div>
-          <div className='body-bone'></div>
-          <div className='body-item__text' onClick={() => {changeFocus('r')}}>{obj.r}</div>
+          <div className='body-item__text' onClick={() => {changeFocus('causeAnalysisPeople')}}>{obj.causeAnalysisPeople}</div>
         </div>
         <div className='body-item'>
+          <div className='body-bone' onClick={() => {changeFocus('causeAnalysisMachine')}}></div>
           <div className='body-bone'></div>
-          <div className='body-bone'></div>
-          <div className='body-item__text' onClick={() => {changeFocus('j')}}>{obj.j}</div>
+          <div className='body-item__text' onClick={() => {changeFocus('causeAnalysisMachine')}}>{obj.causeAnalysisMachine}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
-          <div className='body-item__text' onClick={() => {changeFocus('w')}}>{obj.w}</div>
+          <div className='body-bone' onClick={() => {changeFocus('causeAnalysisThing')}}></div>
+          <div className='body-item__text' onClick={() => {changeFocus('causeAnalysisThing')}}>{obj.causeAnalysisThing}</div>
         </div>
         <div className='body-item'>
+          <div className='body-bone' onClick={() => {changeFocus('causeAnalysisLaw')}}></div>
           <div className='body-bone'></div>
-          <div className='body-bone'></div>
-          <div className='body-item__text' onClick={() => {changeFocus('f')}}>{obj.f}</div>
+          <div className='body-item__text' onClick={() => {changeFocus('causeAnalysisLaw')}}>{obj.causeAnalysisLaw}</div>
         </div>
         <div className='body-item'>
-          <div className='body-bone'></div>
-          <div className='body-item__text' onClick={() => {changeFocus('h')}}>{obj.h}</div>
+          <div className='body-bone' onClick={() => {changeFocus('causeAnalysisRing')}}></div>
+          <div className='body-item__text' onClick={() => {changeFocus('causeAnalysisRing')}}>{obj.causeAnalysisRing}</div>
         </div>
         {isFocus && isEdit && (<Input.TextArea ref={iptRef} rows={6} value={curVal.value} style={iptSty} onChange={(e: any) => changeCurVal(e)} onBlur={() => handleBlur()} />)}
       </div>
       <div className='head'>
         <div>问题:</div>
-        {!isEdit && <div>{obj.p}</div>}
-        {isEdit && <Input.TextArea rows={6} value={obj.p} onChange={e=> {
-          setObj({ ...obj, p: e.target.value })
-          onChange && onChange({ ...obj, p: e.target.value })
+        {!isEdit && <div>{obj.causeAnalysisQuestion}</div>}
+        {isEdit && <Input.TextArea rows={6} value={obj.causeAnalysisQuestion} onChange={e=> {
+          setObj({ ...obj, causeAnalysisQuestion: e.target.value })
+          onChange && onChange({ ...obj, causeAnalysisQuestion: e.target.value })
         }} />}
       </div>
     </Wrapper>
@@ -236,13 +235,12 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
       position: relative;
       z-index: 3;
     }
-    .ant-input {
-      background: transparent;
-    }
+  }
+  .body-item__text {
+    word-break:break-all;
   }
   .ant-input {
     font-size: 13px;
     line-height: 17px;
-    resize: none;
   }
 `

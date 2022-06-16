@@ -6,7 +6,7 @@ import { ColumnProps } from 'antd/lib/table'
 import BaseTable from 'src/components/BaseTable'
 import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
-import OneLevelTitle from 'src/modules/quality/components/OneLevelTitle'
+import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -30,25 +30,24 @@ export default observer(function ProblemImpSection(props: Props) {
     },
     {
       title: '项目',
-      dataIndex: 'xm',
+      dataIndex: 'item',
       align: 'center',
       width: 60
     },
     {
       title: '达标值',
-      dataIndex: 'dbz',
       width: 100,
       align: 'center',
       children:[
         {
         title: '质量合格分',
-        dataIndex: 'zlhgf',
+        dataIndex: 'qualityPassScore',
         align: 'center',
         width: 60
       },
       {
         title: '合格率',
-        dataIndex: 'hgl',
+        dataIndex: 'standardPassRate',
         align: 'center',
         width: 60
       }
@@ -56,42 +55,54 @@ export default observer(function ProblemImpSection(props: Props) {
     },
     {
       title: '检查结果',
-      dataIndex: 'jcjg',
       width: 100,
       align: 'center',
       children:[
         {
         title: '合格数/抽查数',
-        dataIndex: 'hgsccs',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {record.qualifiedCount ? record.qualifiedCount : ""}/{record.checkCount ? record.checkCount : ""}
+            </div>
+          )
+        },
+
       },
       {
         title: '平均分',
-        dataIndex: 'pjf',
+        dataIndex: 'averageScore',
         align: 'center',
         width: 60
       },
         {
         title: '合格率%',
-        dataIndex: 'hgl2',
+        dataIndex: 'passRate',
         align: 'center',
         width: 60
       },
       {
         title: '未达标',
-        dataIndex: 'wdb',
         align: 'center',
-        width: 60
+        width: 60,
+        render(text: string, record: any, index: number) {
+          return (
+            <div className='inp_textArea'>
+            {!record.standardStatus&&record.passRate? ( Number(record.passRate)>=90?'达标':'不达标' ): record.standardStatus}
+            </div>
+          )
+        },
       }
     ]
     },
   ]
   return (
     <Wrapper>
-      <OneLevelTitle text={sectionTitle} />
+      <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <BaseTable dataSource={data.list} columns={columns}/>
+      <BaseTable dataSource={data.list} columns={columns} scroll={{x:'max-content',y:500}}/>
     </Wrapper>
   )
 })

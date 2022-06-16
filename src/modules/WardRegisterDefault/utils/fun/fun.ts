@@ -61,6 +61,8 @@ export function getFun(context: any) {
     config,
     dataMap,
     customSign,
+    customBatch,
+    itemConfigList
   } = context;
 
   /** 初始化 */
@@ -769,6 +771,35 @@ export function getFun(context: any) {
       })
   }
 
+  /**批量设置班次 */
+
+  const handleBatchSet = (data: any) => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+    let selectedRows = dataSource.filter((item: any) =>selectedRowKeys.indexOf(item.key) >= 0)
+    console.log(selectedRows);
+    
+    let newRows = dataSource.map((item: any) => {
+      let newItem = JSON.parse(JSON.stringify(item))
+      if (selectedRowKeys.indexOf(item.key) >= 0) {
+        newItem['班次'] = data.type
+        newItem['modified'] = true
+      }
+      return {
+        ...newItem,
+      }
+    })
+
+    let newDataSource = [...newRows]
+    setDataSource([])
+    setSelectedRowKeys([])
+    setTimeout(() => {
+      setDataSource(newDataSource)
+    })
+  }
+
   return {
     onInitData,
     getPage,
@@ -788,6 +819,7 @@ export function getFun(context: any) {
     deleteSelectedRows,
     getMsgList,
     handleBatchSign,
+    handleBatchSet
   };
 }
 /**获取当月最后一周的日期 */

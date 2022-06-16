@@ -1,99 +1,181 @@
-import { replenishList } from './../../util/tool';
+import { getBlank, replenishList } from "./../../util/tool";
+import { analysisModal } from '../../../analysisWhyx/AnalysisModal';
+import { analysisDetailApi } from '../../api'
 
-export const obj =  {
-
+/**固定渲染数据 */
+const FIXED_ITEMS = [
+  '疫情常态化管理',
+  '静脉炎发生例数',
+  '药业渗出发生例数',
+  '各类管道滑脱发生例数',
+  '人工气道脱出例数',
+  '各类导管非计划拔管例数',
+  '锐器伤发生例数',
+  '',
+  '',
+  '',
+]
+export const obj = {
   getData() {
     return {
-      key1_1: [
-        { question: "疫情期间上班人手不足", feetback: "问题反馈,需要紧急调配人手" },
-        { question: "疫情期间上班人手不足", feetback: "问题反馈,需要紧急调配人手" },
-        { question: "疫情期间上班人手不足", feetback: "问题反馈,需要紧急调配人手" },
-        { question: "疫情期间上班人手不足", feetback: "问题反馈,需要紧急调配人手" },
-      ],
-      key2_1: {
-        tableData: [
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-          { lx: "过程", xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-        ],
-        bottom: {
-          blsj: 7,
-          lxjb: '高级'
-        }
+      fieldData1_1: {
+        ultQuestion: '',
+        improveFeedback: '',
       },
-      key2_2: [
-        { xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-        { xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-        { xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-        { xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-        { xm: "分级护理表质量", zlhgf: "合格分90分", hgl: ">=90%", hgsccs: "9/10", pjf: "92", hgl2: "93%", wdb: "达标" },
-      ],
-      key2_3: {
-        conclusion: {
-          zb: 100,
-          db: 80,
-          wdb: 20
-        },
-        tableData: [
-          { zb: "护理指标高评分", zywt: "护理部门主要问题是红红火火恍恍惚惚或", yyfx: "原因分析原因分析原因分析哈哈哈", zgcs: "整改护理部署的措施", xgpj: "满意满意继续努力" },
-          { zb: "护理指标高评分", zywt: "护理部门主要问题是红红火火恍恍惚惚或", yyfx: "原因分析原因分析原因分析哈哈哈", zgcs: "整改护理部署的措施", xgpj: "满意满意继续努力" },
-          { zb: "护理指标高评分", zywt: "护理部门主要问题是红红火火恍恍惚惚或", yyfx: "原因分析原因分析原因分析哈哈哈", zgcs: "整改护理部署的措施", xgpj: "满意满意继续努力" },
-        ]
-
+      fieldData2_1: {
+        reportAdverseEvents: "",
+        eventTypeAndLevel: "",
       },
-      '4_4': {
-        q: 'question',
-        r: {
-          r: '人',
-          j: '机',
-          w: '物',
-          f: '法',
-          h: '环',
-        },
-        mr: 'mainReason',
-        sign: '目标',
-        what: 'what',
-        why: 'Why',
-        how: 'How',
-        when: 'When',
-        where: 'Where',
-        who: 'Who',
-        c: 'content'
+      fieldData2_3: {
+        overallIndicator: "",
+        standardIndicators: "",
+        nonComplianceIndicators: "",
       },
-      '4_7': [
-        {
-          deptName: '',
-          empName: '',
-          score: '',
-          mq: ''
-        }
-      ],
-      report: {
-        key1_1: '2',
-        key2_1: '2',
-        key2_2: '2',
-        key2_3: '2',
-        key4_8: '2',
-        key5_1: '2',
-        key5_2: '1',
+      fieldData3_1: {
+        monthWorkPlan: "",
+        trainingPlanOfTheMonth: "",
+        monthWorkDoneCase: "",
+        monthTrainDoneCase: "",
       },
-    }
+      fieldData3_2: {
+        areaNurseCount: "",
+        assistantNurseCount: "",
+        careWorkerCount: "",
+        clerkCount: "",
+        actualNurseCount: "",
+        actualAssistantNurseCount: "",
+        actualCareWorkerCount: "",
+        actualClerkCount: "",
+        dutyNurseCount: "",
+        dutyAssistantNurseCount: "",
+        dutyCareWorkerCount: "",
+        dutyClerkCount: "",
+        resignNurseCount: "",
+        notRectifiedNurseCount: "",
+        regularPracticeNurseCount: "",
+        nurseTurnoverRate: "",
+        actualOpenBedArea: "",
+        bedNurseRatio: "",
+        avgNursePatientRatio: "",
+        dayNursePatientRatio: "",
+        nightNursePatientRatio: "",
+        avgBedUsage: "",
+        bedTurnoversCount: "",
+        deptAvgHospitalDay: "",
+        existingPatientCount: "",
+        admissionCount: "",
+        transferDiseaseCount: "",
+        leaveHospitalCount: "",
+        outDiseaseCount: "",
+        deadCount: "",
+        interventionSurgeryCount: "",
+        surgicalSurgeryCount: "",
+        homeCountCompletionCase: "",
+      },
+      fieldData3_4: {
+        causeAnalysisPeople: "",
+        question: "",
+        causeAnalysisMachine: "",
+        causeAnalysisThing: "",
+        causeAnalysisLaw: "",
+        causeAnalysisRing: "",
+        causeAnalysisQuestion: "",
+        mainReason: "",
+        setGoal: "",
+        planPrincipal: "",
+        planImplementationSite: "",
+        planImplementationTime: "",
+        planCountermeasures: "",
+        planMainReason: "",
+        planQuestion: "",
+        implementation: "",
+        effectConfirmed: "",
+        standardizedContent: "",
+      },
+      fieldData3_8: {
+        specialEventSolvedProblem: "",
+      },
+      fieldData4_1: {
+        deptWorkPlanForNextMonth: "",
+      },
+      fieldData4_2: {
+        nextMonthDeptTrainingPlan: "",
+      },
+      pageData: {
+        id: null,
+        isDeleted: null,
+        publisherName: "",
+        publisherNo: "",
+        publisherTime: "",
+        renderTableDataMap: null,
+        reportLevel: "",
+        reportMonth: "",
+        reportName: "",
+        updateTime: "",
+        updaterName: "",
+        updaterNo: "",
+        wardCode: "",
+        wardName: "",
+      }
+    };
   },
-   formatData() {
-    (this as any).getSectionData('1_1').list = (this as any).allData['key1_1'];
-    (this as any).getSectionData('2_1').list = (this as any).allData['key2_1'];
-    (this as any).getSectionData('2_2').list = (this as any).allData['key2_2'];
-    (this as any).getSectionData('2_3').list = (this as any).allData['key2_3'];
-    (this as any).getSectionData('4_4').value = (this as any).allData['4_4'];
-    (this as any).getSectionData('4_7').value = replenishList((this as any).allData['4_7'], 6);
-    (this as any).getSectionData('4_8').report = (this as any).allData.report;
-    (this as any).getSectionData('5_1').report = (this as any).allData.report;
-    (this as any).getSectionData('5_2').report = (this as any).allData.report;
-    
+  formatData() {
+    (this as any).getSectionData("1_1").value = (this as any).allData.fieldData1_1;
+    (this as any).getSectionData("2_1").value = (this as any).allData.fieldData2_1;
+    (this as any).getSectionData("2_3").value = (this as any).allData.fieldData2_3;
+    (this as any).getSectionData("3_1").value = (this as any).allData.fieldData3_1;
+    (this as any).getSectionData("3_2").value = (this as any).allData.fieldData3_2;
+    (this as any).getSectionData("3_4").value = (this as any).allData.fieldData3_4;
+    (this as any).getSectionData("3_8").value = (this as any).allData.fieldData3_8;
+    (this as any).getSectionData("4_1").value = (this as any).allData.fieldData4_1;
+    (this as any).getSectionData("4_2").value = (this as any).allData.fieldData4_2;
+    (this as any).getSectionData("2_1").list = (this as any).allData.tableDataMap ? (this as any).allData.tableDataMap.deptSecondQualityIndexResult : [] || [];
+    (this as any).getSectionData("2_2").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'areaCareMonitorIndexResult', len: 5 });
+    (this as any).getSectionData("2_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'areaNotPassIndexImprove', len: 3 });
+    (this as any).getSectionData("3_3").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'monthCareProblemImprove', len: 3 });
+    (this as any).getSectionData("3_5").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'areaNursingAdverseEvents', len: 2 });
+    (this as any).getSectionData("3_6").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'joinSafetyDiscussAndBedside', len: 3 });
+    (this as any).getSectionData("3_7").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'headNurseWorkAssessResults', len: 3 });
+    (this as any).getSectionData("3_2").pageInfo = (this as any).allData.pageInfo;
+    (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.monthCareProblemImprove : [] || [];
+    (this as any).getSectionData("3_5").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.areaNursingAdverseEvents : [] || [];
+    (this as any).getSectionData("3_6").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.joinSafetyDiscussAndBedside : [] || [];
+    (this as any).getSectionData("3_7").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.headNurseWorkAssessResults : [] || [];
+  },
+  /**初始化自动提取 */
+  async initRender(reportId: number) {
+    if (!(analysisModal.renderData && analysisModal.tableTempList)) return
+    const { renderData, tableTempList } = analysisModal
+    const obj: Record<string, any> = {}
+    Object.keys(renderData).map((v: string) => {
+      const blank = getBlank(tableTempList[v])
+      obj[v] = []
+      renderData[v].map((v3: any) => {
+        if(obj[v])  obj[v].push({ ...blank, ...v3 })
+       
+      })
+      if (v == 'deptSecondQualityIndexResult') {
+        FIXED_ITEMS.map((v4: string) => {
+          obj[v].push({ ...blank, item: v4 })
+        })
+      }
+    });
+
+    let proList: any[] = []
+    Object.keys(obj).map((v4: string) => {
+      if (!obj[v4]) return
+      const params = {
+        reportId,
+        tableName: v4,
+        data: obj[v4]
+      }
+      proList.push(analysisDetailApi.saveReportTableData(params))
+    })
+    try {
+      const res = await Promise.all(proList)
+      analysisModal.clearRenderData()
+      return res
+    } catch (e) {
+    }
   }
 }

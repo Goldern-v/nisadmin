@@ -3,7 +3,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import QualityControlRecord from "./views/qualityControlRecord/QualityControlRecord";
-import Analysis from "./views/analysis/Analysis";
+import Analysis from "./views/analysisWhyx/Analysis";
 import SummaryReport from "./views/summaryReport/SummaryReport";
 import ProblemSummary from "./views/problemSummary/ProblemSummary";
 
@@ -14,7 +14,7 @@ import { ReactComponent as EJZK } from "./images/icon/EJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG2.svg";
 import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
 import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { qcOneTitle } from "./data/qcTitle";
 
 export default function QcOneRouterHj(props: Props) {
@@ -24,7 +24,9 @@ export default function QcOneRouterHj(props: Props) {
     path: "/qcOneWhyx/analysis?level=1",
     component: Analysis,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    hide:  !authStore.level1Watch,
+    // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+    disabledKeepAlive: true,
   };
 
   const route_summaryReport = {
@@ -52,8 +54,8 @@ export default function QcOneRouterHj(props: Props) {
         (appStore.history && appStore.history.action) !== "POP",
     },
     route_analysis,
-    route_summaryReport,
-    route_problemSummary,
+    // route_summaryReport,
+    // route_problemSummary,
   ];
   useEffect(() => {}, [props.history.location.pathname]);
   let currentRoutePath = props.history.location.pathname || "";

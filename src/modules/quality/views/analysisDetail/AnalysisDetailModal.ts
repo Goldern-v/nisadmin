@@ -1,7 +1,5 @@
-import { sectionList } from './../../../badEventsNew/views/BadEventReport/config/sectionList';
 import { appStore } from 'src/stores';
 import { observable, computed, action } from 'mobx'
-import React from 'react'
 
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
@@ -13,7 +11,7 @@ import { obj as obj1Dept } from './config/callback/callback1_dept'
 import { obj as obj1Em } from './config/callback/callback1_em'
 import { obj as obj2 } from './config/callback/callback2'
 import { analysisDetailApi } from './api'
-import { AllData, DeptItem, DetailItem } from './types'
+import { AllData } from './types'
 export interface SectionListItem extends Record<string, any> {
   sectionId?: string
 
@@ -24,9 +22,9 @@ export interface SectionListItem extends Record<string, any> {
   section?: any
   modalWidth?: any
   onSave?: Function
-  keyName?: string
+  keyName?: string,
+  maxLenght?:number,
 }
-
 interface ModalCase {
   show: (...arr: any) => void
   hide(): void
@@ -42,31 +40,40 @@ interface SectionCase {
   modal?: any
   section?: any
   keyName?: string
+  maxLength?:number
 }
 
 interface Constr {
   sectionList: SectionListItem[]
   formatData: Function
   getData: Function
+  initRender?: Function
 }
-
+interface ReportFieldData {
+  reportId: number,
+  tableName?: string,
+  data?: any
+}
 export class AnalysisDetailModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = []
-  @observable public allData: Partial<AllData> = {
-    report: {}
-  }
-  private formatData: Function = () => {}
-  private getData: Function = () => {}
+  @observable public allData: Partial<AllData> = {}
+  // 模板数据
+  @observable public configData: Record<string, any> = {}
+  private formatData: Function = () => { }
+  private getData: Function = () => { }
+  private initRender: Function = () => { }
 
   constructor({
     sectionList,
     formatData,
-    getData
+    getData,
+    initRender
   }: Constr) {
     this.sectionList = sectionList
     this.formatData = formatData.bind(this)
     this.getData = getData
+    initRender && (this.initRender = initRender)
   }
 
   /** 返回组件实例 */
@@ -104,10 +111,27 @@ export class AnalysisDetailModal {
   }
   /** 设置组件数据 */
   @action
-  setSectionData(sectionId: string, data: any) {
+ async setSectionData(sectionId: string, data: any) {
     let obj = this.getSection(sectionId)
     if (obj) {
       Object.assign(obj.data, data)
+      //保存数据
+      if (obj.data.value) {
+        const saveData: ReportFieldData = {
+          reportId: appStore.queryObj.id,
+          data: obj.data.value
+        }
+       await this.saveReportFieldData(saveData)
+      }
+      if (obj.data.list) {
+        const saveData: ReportFieldData = {
+          reportId: appStore.queryObj.id,
+          tableName: obj.data.tableName || '',
+          data: obj.data.list
+        }
+       await this.saveReportTableData(saveData)
+      }
+
       return true
     } else {
       return false
@@ -118,40 +142,92 @@ export class AnalysisDetailModal {
   getDataInAllData(key: string) {
     return this.allData[key] || {}
   }
+  /** 保存属性类型报告数据集 */
+  saveReportFieldData(data: ReportFieldData) {
+    analysisDetailApi.saveReportFieldData(data)
+  }
+
+  /**报告表格编辑 */
+  saveReportTableData(data: ReportFieldData) {
+    analysisDetailApi.saveReportTableData(data)
+  }
 
   get report() {
     return this.getDataInAllData('report') || {}
   }
 
   /** 数据初始化 */
-  initData() {
-    // 实例化并使用bind绑定数据
-    // let { data } = await this.getData()
-    let data = this.getData()
-    this.allData = data
-    // 拼接数据
-    this.formatData()
+  async initData() {
+    try {
+      // this.initRender && (await this.initRender())
+      // 实例化并使用bind绑定数据
+      this.allData = this.getData()
+      const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id)
+      console.log('接口数据======》', res.data)
+      if (res.code != 200) return
+      let { fieldDataMap } = res.data
+      let {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportName,
+        reportMonth,
+        updateTime,
+        tableDataMap,
+        reportYear,
+        reportTemplateDto
+      } = res.data
+      for(let keys of Object.keys(this.allData)){
+          for(let item of Object.keys(this.allData[keys])){
+       if(fieldDataMap.hasOwnProperty(item)) {
+        this.allData[keys][item]=fieldDataMap[item]
+       }
+        }
+      }
+      this.allData.pageInfo = {
+        createTime,
+        creatorName,
+        creatorNo,
+        publisherName,
+        status,
+        reportMonth,
+        reportYear,
+        reportName,
+        updateTime
+      }
+      this.allData.tableDataMap = tableDataMap
+      this.configData = {
+        tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
+      }
+      this.formatData()
+    } catch (error) {
+
+    }
   }
-  init() {
-    this.initData()
+  async init() {
+    await this.initData()
     this.baseModal = createModal(BaseModal)
   }
 }
 // 根据不同的列表进行实例化
 
 // 病区
-export const analysisDetailModal1Dept = new AnalysisDetailModal({ sectionList: sectionList1Dept, ...obj1Dept})
+export const analysisDetailModal1Dept = new AnalysisDetailModal({ sectionList: sectionList1Dept, ...obj1Dept })
 // 急诊
-export const analysisDetailModal1Em = new AnalysisDetailModal({ sectionList: sectionList1Em, ...obj1Em})
+export const analysisDetailModal1Em = new AnalysisDetailModal({ sectionList: sectionList1Em, ...obj1Em })
 // 二级
-export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: sectionList2, ...obj2})
+export const analysisDetailModal2 = new AnalysisDetailModal({ sectionList: sectionList2, ...obj2 })
 
-export const getModal = ()=> {
+//url链接数据
+export const getModal = () => {
   const queryObj = appStore.queryObj
   // level=1&deptName=病区
   if (queryObj?.level == '2') {
     return analysisDetailModal2
   }
-  if (queryObj?.level == '1' && queryObj.deptName == '急诊') return analysisDetailModal1Em
+  if (queryObj?.level == '1' && queryObj.deptName && queryObj.deptName.indexOf('急诊') > -1) return analysisDetailModal1Em
+
   return analysisDetailModal1Dept
 }

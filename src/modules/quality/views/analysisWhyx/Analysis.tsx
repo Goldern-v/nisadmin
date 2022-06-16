@@ -6,64 +6,78 @@ import { ColumnProps } from "antd/lib/table";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import moment, { duration } from "moment";
-import QualityAnalysisService from "./api";
+import AnalysisService from "./api";
 
 import CreateAnalysisModal from "./components/CreateAnalysisModal";
 import qs from "qs";
-import { PageTitle } from "src/components/common";
-import { useKeepAliveEffect } from "src/vendors/keep-alive";
+import { PageHeader, PageTitle, Place } from "src/components/common";
+import service from "src/services/api";
+import { getTempName } from "./utils";
+import { MonthList } from "../../utils/toolCon";
+import YearPicker from "src/components/YearPicker";
+import useLevel from "./utils/useLevel";
+import { analysisModal } from './AnalysisModal'
 
-const api = new QualityAnalysisService();
+import { obj as obj1Dept } from '../analysisDetail/config/callback/callback1_dept'
+import { obj as obj1Em } from '../analysisDetail/config/callback/callback1_em'
+import { obj as obj2 } from '../analysisDetail/config/callback/callback2'
+
+const api = new AnalysisService();
 const Option = Select.Option;
+const rankTextList = ["", "一", "二", "三"];
 
 export default observer(function Analysis() {
-  //
-  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [createClear, setCreateClear] = useState(true);
   const { history } = appStore;
-  const [groupRoleList, setGroupRolelist] = useState([]);
-  const [groupRoleListSelf, setGroupRolelistSelf] = useState([]);
+  // 科室列表、2级质控是片区列表
+  const [wardList, setWardList] = useState([]);
+  // 默认科室
+  const [defDept, setDefDept] = useState('');
 
   //进度条相关
   const [createProgressVisible, setCreateProgressVisible] = useState(false);
   const [createLoading, setCreateLoading] = useState("");
 
   const [query, setQuery] = useState({
-    year: moment() as null | moment.Moment,
+    reportYear: moment() as null | moment.Moment,
+    reportMonth: moment().month() + 1 + "",
     pageIndex: 1,
     pageSize: 20,
-    type: "month",
-    indexInType: moment().month() + 1 + "",
     status: "",
+    wardCode: "",
     groupRoleCode: "",
   } as any);
-  const { location } = appStore;
-  const [level, setLevel] = useState(3);
-  const rankTextList = ["", "一", "二", "三"];
+  // 质控等级
+  const level = useLevel();
+
   useEffect(() => {
-    if (location.search) {
-      let obj = qs.parse(location.search.substring(1));
-      obj.level && setLevel(obj.level);
+    if (level == 2) {
+      service.commonApiService.getTwoInpatientArea().then((res)=>{
+        let data=res.data
+
+        if(Array.isArray(res.data)){
+          data.unshift({
+            "code": "",
+            "name": "全部"
+          })
+          setWardList(data)
+        } 
+        setDefDept(res.data[1].code)
+      })
     }
-    api.qcRoleCode().then((res) => {
-      if (res.data instanceof Array) setGroupRolelist(res.data);
-    });
-    api.qcRoleCodeSelf().then((res) => {
-      if (res.data instanceof Array) setGroupRolelistSelf(res.data);
-    });
+    else {
+      service.commonApiService.getNursingUnitSelf().then((res) => {
+        if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
+        setDefDept(res.data.defaultDept)
+      });
+    }
+
   }, []);
 
   useEffect(() => {
     getTableData();
   }, [query]);
-
-  useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === "POP") {
-      getTableData();
-    }
-    return () => {};
-  });
 
   const [dataTotal, setDataTotal] = useState(0 as number);
 
@@ -73,7 +87,7 @@ export default observer(function Analysis() {
 
   const columns: ColumnProps<any>[] = [
     {
-      title: "序号11",
+      title: "序号",
       key: "index",
       width: 50,
       align: "center",
@@ -83,31 +97,22 @@ export default observer(function Analysis() {
       title: "报告名称",
       key: "reportName",
       dataIndex: "reportName",
-      className: "align-left",
       align: "left",
       width: 200,
       render: (name: string) => <div title={name}>{name}</div>,
     },
     {
-      title: "报告年度",
-      key: "year",
-      dataIndex: "year",
-      width: 90,
-      align: "center",
-      render: (year: string) => `${year}年`,
+      title: "片区",
+      key: "wardName",
+      dataIndex: 'wardName',
+      align: "left",
+      width: 120,
     },
-    {
-      title: "报告月份",
-      key: "indexInType",
-      dataIndex: "indexInType",
-      width: 90,
-      align: "center",
-      render: (month: string) => `${month}月`,
-    },
+
     {
       title: "质控开始日期",
-      key: "beginDate",
-      dataIndex: "beginDate",
+      key: "startDate",
+      dataIndex: "startDate",
       width: 90,
       align: "center",
     },
@@ -133,16 +138,22 @@ export default observer(function Analysis() {
       align: "center",
     },
     {
+      title: '发布人',
+      key: 'publisherName',
+      dataIndex: 'publisherName',
+      width: 120,
+    },
+    {
       title: "状态",
       key: "status",
       dataIndex: "status",
       width: 80,
       align: "center",
-      render: (status: string) => {
+      render: (status: any) => {
         switch (status) {
-          case "0":
+          case 0:
             return <span style={{ color: "red" }}>保存</span>;
-          case "1":
+          case 1:
             return "发布";
           default:
             return "-";
@@ -164,31 +175,16 @@ export default observer(function Analysis() {
     },
   ];
 
-  const handlePanelChange = (value: any) => {
-    setYearPickerIsOpen(false);
-    setQuery({ ...query, year: value });
-  };
-
-  const handleOpenChange = (status: boolean) => {
-    setYearPickerIsOpen(status);
-  };
-
   const handleYearClear = () => {
-    setQuery({ ...query, year: null, indexInType: "" });
+    setQuery({ ...query, reportYear: null, reportMonth: "" });
   };
 
-  const handleReview = (record: any) => {
+  const handleReview = async (record: any) => {
     const obj = {
-      type: record.type,
-      year: record.year,
-      indexInType: record.indexInType,
-      beginDate: record.beginDate,
-      endDate: record.endDate,
-      groupRoleCode: record.groupRoleCode,
-      reportName: record.reportName,
+      deptName: getTempName(level, record.wardCode),
+      level,
+      id: record.id
     };
-
-    // console.log(record)
     history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`);
   };
 
@@ -197,10 +193,26 @@ export default observer(function Analysis() {
   };
 
   const handleCreate = () => {
-    // history.push('/qualityAnalysisEdit')
     setCreateAnalysisVisible(true);
   };
-
+  const initRenderData = async (data: any) => {
+    const params: Record<string, any> = {
+      id: data.id || '',
+      level,
+      deptName: getTempName(level, data.wardCode)
+    }
+    const { reportTemplateDto, renderTableDataMap } = data
+    analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
+    if (level == '1' && getTempName(level, data.wardCode).indexOf('急诊') > -1) {
+      await obj1Em.initRender(data.id)
+    } else {
+      await obj2.initRender(data.id)
+    }
+    await obj1Dept.initRender(data.id)
+    appStore.history.push(
+      `/qualityAnalysisReport?${qs.stringify(params)}`
+    );
+  }
   const handleCreateOk = (params: any) => {
     if (!params.reportName) return;
 
@@ -208,17 +220,6 @@ export default observer(function Analysis() {
     // setCreateAnalysisVisible(false)
     setCreateProgressVisible(true);
     setCreateLoading("start");
-
-    let successCallback = () => {
-      setCreateLoading("done");
-      setCreateClear(true);
-      message.success("创建成功", 2, () => {
-        setCreateProgressVisible(false);
-        setCreateClear(true);
-        setCreateLoading("");
-        getTableData();
-      });
-    };
 
     let failedCallback = (msg?: string) => {
       // setCreateLoading('failed')
@@ -230,23 +231,25 @@ export default observer(function Analysis() {
     };
 
     api
-      .createReport({ ...params, type: "month" })
+      .createReport({
+        ...params,
+        reportLevel: level,
+        templateName: getTempName(level, params.wardCode),
+      })
       .then((res) => {
-        if (res.code == 200) {
+        if (res.code == '200') {
           handleCreateCancel();
           setCreateProgressVisible(false);
           // setCreateAnalysisVisible(true)
           setCreateClear(true);
           setCreateLoading("");
-          appStore.history.push(
-            `/qualityAnalysisReport?${qs.stringify(res.data.report)}`
-          );
-          // successCallback()
+          initRenderData(res.data)
         } else {
           failedCallback(res.desc || "");
         }
       })
       .catch((err) => {
+        console.log('test-only-4', err)
         failedCallback(err || "");
       });
   };
@@ -257,19 +260,21 @@ export default observer(function Analysis() {
 
   const getTableData = () => {
     setTableLoading(true);
-    let year = "";
-    if (query.year !== null) year = query.year.format("YYYY");
+    let reportYear = "";
+    if (query.reportYear !== null) reportYear = query.reportYear.format("YYYY");
 
     let reqQuery = {
       ...query,
-      year,
+      reportLevel: level,
+      reportYear,
+      templateName: getTempName(level),
     };
     api
       .getPage(reqQuery)
       .then((res) => {
         setTableLoading(false);
 
-        if (res.data.totalPage) setDataTotal(res.data.totalPage);
+        if (res.data.totalCount) setDataTotal(res.data.totalCount);
         else setDataTotal(0);
 
         if (res.data.list instanceof Array)
@@ -286,21 +291,17 @@ export default observer(function Analysis() {
         setTableLoading(false);
       });
   };
-
+  /**推送 */
   const handleAlert = () => {
-    // if (!query.groupRoleCode) {
-    //   message.warning('未选择质控组')
-    //   return
-    // }
-    let month = query.indexInType;
-    let year = query.year.format("YYYY");
+    let month = query.reportMonth;
+    let year = query.reportYear.format("YYYY");
     if (month.length == 1) month = "0" + month;
     let dateStr = `${year}-${month}-01`;
     let beginDate = moment(dateStr);
     let endDate = moment(dateStr)
       .add(1, "M")
       .subtract(1, "d");
-    let groupRoleCode = "";
+    let wardCode = "";
 
     const content = (
       <ModalCon>
@@ -321,12 +322,13 @@ export default observer(function Analysis() {
           />
         </div>
         <div>
-          <span>质 控 组: </span>
+          <span>科 室: </span>
           <Select
             style={{ width: "171px" }}
-            onChange={(code: any) => (groupRoleCode = code)}
+            onChange={(code: any) => (wardCode = code)}
+
           >
-            {groupRoleListSelf.map((item: any, idx: number) => (
+            {wardList.map((item: any, idx: number) => (
               <Option value={item.code} key={idx}>
                 {item.name}
               </Option>
@@ -340,8 +342,8 @@ export default observer(function Analysis() {
       title: "推送科室未审核记录",
       content: content,
       onOk: () => {
-        if (groupRoleCode == "") {
-          message.warning("未选择质控组");
+        if (wardCode == "") {
+          message.warning("未选择科室");
           return;
         }
         setTableLoading(true);
@@ -349,7 +351,7 @@ export default observer(function Analysis() {
           .push({
             beginDate: beginDate.format("YYYY-MM-DD"),
             endDate: endDate.format("YYYY-MM-DD"),
-            groupRoleCode,
+            wardCode,
           })
           .then(
             (res) => {
@@ -362,120 +364,78 @@ export default observer(function Analysis() {
     });
   };
 
-  const MonthList = () => {
-    let options = [];
-    for (let i = 12; i > 0; i--) {
-      let month = i;
-      options.push(
-        <Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>
-      );
-    }
-
-    return options;
-  };
-
   return (
     <Wrapper>
-      <div className="topbar">
-        <div className="float-left">
-          <PageTitle>{rankTextList[level]}级质控月度报告</PageTitle>
-        </div>
-        <div className="float-right">
-          <div className="item">
-            <div className="label">报告年度：</div>
-            <div className="content">
-              <DatePicker
-                style={{ width: 100 }}
-                value={query.year}
-                open={yearPickerIsOpen}
-                mode="year"
-                className="year-picker"
-                placeholder="全部"
-                format="YYYY"
-                onChange={handleYearClear}
-                onOpenChange={handleOpenChange}
-                onPanelChange={handlePanelChange}
-              />
-            </div>
-          </div>
-          <div className="item">
-            <div className="label">报告月份：</div>
-            <div className="content">
-              <Select
-                style={{ width: 100 }}
-                className="month-select"
-                value={query.indexInType}
-                onChange={(month: any) => {
-                  setQuery({ ...query, indexInType: month });
-                }}
-              >
-                <Option value="">全部</Option>
-                {MonthList()}
-              </Select>
-            </div>
-          </div>
-          <div className="item">
-            <div className="label">状态：</div>
-            <div className="content">
-              <Select
-                style={{ width: 100 }}
-                value={query.status}
-                onChange={(status: any) => {
-                  setQuery({ ...query, status });
-                }}
-              >
-                <Option value="">全部</Option>
-                <Option value="0">保存</Option>
-                <Option value="1">发布</Option>
-              </Select>
-            </div>
-          </div>
-          <div className="item">
-            <div className="label">质控组：</div>
-            <div className="content">
-              <Select
-                value={query.groupRoleCode}
-                onChange={(groupRoleCode: any) => {
-                  setQuery({ ...query, groupRoleCode });
-                }}
-                className="recode-type-select"
-              >
-                <Option value="">全部</Option>
-                {groupRoleList.map((item: any) => (
-                  <Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-          </div>
-          <div className="item">
-            <Button onClick={handleSearch}>查询</Button>
-          </div>
-          <div className="item">
-            {" "}
-            <Button onClick={handleCreate} type="primary">
-              创建
-            </Button>{" "}
-          </div>
-          <div className="item">
-            <Button
-              disabled={groupRoleListSelf.length <= 0}
-              onClick={handleAlert}
-              title="推送科室未审核记录"
-              type="primary"
-            >
-              <Icon type="bell" style={{ fontSize: "16px" }} />
-            </Button>
-          </div>
-        </div>
-      </div>
+      <PageHeader>
+        <PageTitle>{rankTextList[level]}级质控月度报告</PageTitle>
+        <Place />
+        <div className="label">报告年度：</div>
+        <YearPicker
+          style={{ width: 100 }}
+          value={query.reportYear}
+          onChange={handleYearClear}
+        />
+        <div className="label">报告月份：</div>
+        <Select
+          style={{ width: 100 }}
+          className="month-select"
+          value={query.reportMonth}
+          onChange={(month: any) => {
+            setQuery({ ...query, reportMonth: month });
+          }}
+        >
+          <Option value="">全部</Option>
+          {MonthList()}
+        </Select>
+        <div className="label">状态：</div>
+        <Select
+          style={{ width: 100 }}
+          value={query.status}
+          onChange={(status: any) => {
+            setQuery({ ...query, status });
+          }}
+        >
+          <Option value="">全部</Option>
+          <Option value="0">保存</Option>
+          <Option value="1">发布</Option>
+        </Select>
+        <div className="label">{level == 1 ? "科室：" : "片区："}</div>
+        <Select
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          value={query.wardCode}
+          onChange={(wardCode: any) => {
+            setQuery({ ...query, wardCode });
+          }}
+          className="recode-type-select"
+        >
+          {wardList.map((item: any) => (
+            <Option value={item.code} key={item.code}>
+              {item.name}
+            </Option>
+          ))}
+        </Select>
+        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleCreate} type="primary">
+          创建
+        </Button>
+        <Button
+          disabled={wardList.length <= 0}
+          onClick={handleAlert}
+          title="推送科室未审核记录"
+          type="primary"
+        >
+          <Icon type="bell" style={{ fontSize: "16px" }} />
+        </Button>
+      </PageHeader>
       <div className="main-contain">
         <BaseTable
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={230}
+          surplusWidth={30}
           onRow={(record: any) => {
             return {
               onDoubleClick: () => record.reportName && handleReview(record),
@@ -496,83 +456,28 @@ export default observer(function Analysis() {
         />
       </div>
       <CreateAnalysisModal
-        allowClear={createClear}
+        allowClear={true}
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        groupRoleList={groupRoleListSelf}
+        wardList={wardList.filter((item: any) => item.code)}
         loading={!!(createLoading == "start")}
+        defDept={defDept}
       />
     </Wrapper>
   );
 });
 
 const Wrapper = styled.div`
-  position: relative;
-  padding-top: 55px;
   height: 100%;
   width: 100%;
-
-  div.topbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px 5px 10px 15px;
-    box-sizing: border-box;
-    height: 55px;
-    overflow: hidden;
-    .float-left {
-      float: left;
-    }
-
-    .float-right {
-      float: right;
-    }
-
-    .item {
-      display: inline-block;
-      margin-right: 10px;
-      vertical-align: middle;
-      & > div {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .label {
-      }
-      .content {
-        .year-picker {
-          width: 75px;
-        }
-        .recode-type-select {
-          min-width: 200px;
-        }
-        .month-select {
-          width: 72px;
-        }
-      }
-    }
-  }
-
+  display: flex;
+  flex-direction: column;
   .main-contain {
-    height: 100%;
-    width: 100%;
-    padding: 15px;
-    padding-top: 0;
-    .align-left {
-      position: relative;
-      > div {
-        position: absolute;
-        left: 5px;
-        right: 5px;
-        top: 5px;
-        height: 30px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
+    margin: 0 15px 5px 15px;
+    flex: 1;
   }
+  
 `;
 const ModalCon = styled.div`
   & > div {

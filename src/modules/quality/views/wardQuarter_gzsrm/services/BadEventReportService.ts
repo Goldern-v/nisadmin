@@ -1,6 +1,11 @@
 import { appStore } from 'src/stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs'
+
+export interface saveTextIn {
+  id: string
+  text: string
+}
 export default class BadEventReportService extends BaseApiService {
   /** 获取病区护理工作报表 */
   public getDetailList(obj?: any) {
@@ -26,6 +31,15 @@ export default class BadEventReportService extends BaseApiService {
   public saveReport(params: any) {
     return this.post(`/wardRoundRate/saveData`, params);
   }
+  /**保存文本 */
+  public saveText(params: saveTextIn) {
+    return this.post(`/wardRoundRate/saveText`, params);
+  }
+  /**获取文本 */
+  public getText(id: string) {
+    return this.get(`/wardRoundRate/getText/${id}`);
+  }
+
 }
 
 export const badEventReportService = new BadEventReportService()

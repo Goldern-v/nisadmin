@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
-import { LastImproveItem, Report, TypeCompare } from '../../types'
-
+import { Input, Select } from 'src/vendors/antd'
+const { Option } = Select;
 export interface Props {
   sectionId: string
   data: any
@@ -13,120 +12,234 @@ export interface Props {
 }
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [] })
-  const bottom=cloneData.list&&cloneData.list.bottom
-  // cloneData.list.tableData&&cloneData.list.tableData.push(...[
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""},
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""},
-  //   {index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""}
-  // ])
-  
+  let cloneData: any = cloneJson(data || { value: {} })
+  let value: any = cloneData && cloneData.value ? cloneData.value : {}
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: 'index',
       align: 'center',
-    render(text: any, record: any, index: number) {
+      width: 40,
+      render(text: any, record: any, index: number) {
         return index + 1
       },
     },
     {
       title: '类型',
-      dataIndex: 'lx',
-      align: 'center'
+      dataIndex: 'type',
+      align: 'center',
+      width: 60,
+      render(text: string, record: any, index: number) {
+        return (
+          <div className='inp_textArea'>
+           <Input
+              className='cell-textArea'
+              value={record.type || ''}
+              onChange={(e) => {
+                record.type = e.target.value
+                setData(cloneData)
+              }}
+            />
+          </div>
+        )
+      },
+
     },
     {
       title: '项目',
-      dataIndex: 'xm',
+      dataIndex: 'item',
       align: 'center',
-      width:120
+      width: 120,
+      render(text: string, record: any, index: number) {
+        return (
+          <div className='inp_textArea'>
+           <Input
+              className='cell-textArea'
+              value={record.item || ''}
+              onChange={(e) => {
+                record.item = e.target.value
+                setData(cloneData)
+              }}
+            />
+          </div>
+        )
+      },
     },
     {
       title: '达标值',
       align: 'center',
-      children:[
+      children: [
         {
-        title: '质量合格分',
-        dataIndex: 'zlhgf',
-        align: 'center',
-      },
-      {
-        title: '合格率',
-        dataIndex: 'hgl',
-        align: 'center',
-      }
-    ]
+          title: '质量合格分',
+          dataIndex: 'qualityPassScore',
+          align: 'center',
+          width: 70,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea'>
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  value={record.qualityPassScore || ''}
+                  onChange={(e) => {
+                    record.qualityPassScore = e.target.value
+                    setData(cloneData)
+                  }}
+                />
+              </div>
+            )
+          },
+        },
+        {
+          title: '合格率',
+          dataIndex: 'standardPassRate',
+          align: 'center',
+          width: 70,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea'>
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  value={record.standardPassRate || ''}
+                  onChange={(e) => {
+                    record.standardPassRate = e.target.value
+                    setData(cloneData)
+                  }}
+                />
+              </div>
+            )
+          },
+        }
+      ]
     },
     {
       title: '检查结果',
-      dataIndex: 'jcjg',
       align: 'center',
-      children:[
+      children: [
         {
-        title: '合格数/抽查数',
-        dataIndex: 'hgsccs',
-        align: 'center',
-      },
-      {
-        title: '平均分',
-        dataIndex: 'pjf',
-        align: 'center',
-      },
+          title: '合格数/抽查数',
+          align: 'center',
+          width: 160,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea double' >
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  placeholder='合格数'
+                  value={record.qualifiedCount || ''}
+                  onChange={(e) => {
+                    let value=e.target.value.match(/^\d*(\.?\d{0,2})/g)?e.target.value.match(/^\d*(\.?\d{0,2})/g):[]
+                    record.qualifiedCount = value&&value[0]
+                    setData(cloneData)
+                  }}
+                />/
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  placeholder='抽查数'
+                  value={record.checkCount || ''}
+                  onChange={(e) => {
+                    let value=e.target.value.match(/^\d*(\.?\d{0,2})/g)?e.target.value.match(/^\d*(\.?\d{0,2})/g):[]
+                    record.checkCount = value&&value[0]
+                    setData(cloneData)
+                  }}
+                />
+              </div>
+            )
+          },
+        },
         {
-        title: '合格率%',
-        dataIndex: 'hgl2',
-        align: 'center',
-      },
-      {
-        title: '未达标',
-        dataIndex: 'wdb',
-        align: 'center',
-      }
-    ]
+          title: '平均分',
+          dataIndex: 'averageScore',
+          align: 'center',
+          width: 70,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea'>
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  value={record.averageScore || ''}
+                  onChange={(e) => {
+                    record.averageScore = e.target.value
+                    setData(cloneData)
+                  }}
+                />
+              </div>
+            )
+          },
+        },
+        {
+          title: '合格率%',
+          dataIndex: 'passRate',
+          align: 'center',
+          width: 70,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea'>
+               <Input
+                  className='cell-textArea'
+                  type="number"
+                  min={0}
+                  value={record.passRate || ''}
+                  onChange={(e) => {
+                    record.passRate = e.target.value
+                    record.standardStatus = !record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
+                    setData(cloneData)
+                  }}
+                />
+              </div>
+            )
+          },
+        },
+        {
+          title: '未达标',
+          dataIndex: 'standardStatus',
+          align: 'center',
+          width: 90,
+          render(text: string, record: any, index: number) {
+            return (
+              <div className='inp_textArea'>
+                <Select value={record.standardStatus} className="select"
+                  onChange={(value: any) => {
+                    record.standardStatus = value
+                    setData(cloneData)
+                  }}
+                >
+                  <Option value="达标">达标</Option>
+                  <Option value="未达标">未达标</Option>
+                </Select>
+              </div>
+            )
+          },
+        }
+      ]
     },
-    {
-      title: '操作',
-      key: '操作',
-      width: 80,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.tableData.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
-    }
   ]
 
-  const addItem = () => {
-    cloneData.list.tableData&&cloneData.list.tableData.push({index:"",lx:"",xm:"",zlhgf:"",hgl:"",hgsccs:"",pjf:"",hgl2:"",wdb:""},)
-    setData(cloneData)
-
-  }
-  const footer=(
-    <div className='table_Bottom'>
-   <div>1、上报不良事件：<input value={bottom&&bottom.blsj}/></div>
-    <div>2、事件类型及级别：<input value={bottom&&bottom.lxjb}/></div>
-    </div>)
-  
   return (
     <Wrapper>
-      <Button icon='plus' size='small' onClick={addItem}>
-        添加
-      </Button>
-      <BaseTable columns={columns} dataSource={(cloneData.list&&cloneData.list.tableData || [])} 
-      footer={()=>footer} 
+      <BaseTable columns={columns} dataSource={(cloneData && cloneData.list || [])}
       />
-     
-     
+      <div className='table_Bottom'>
+        <div>1、上报不良事件：<input value={value.reportAdverseEvents || ""}
+          onChange={(e) => {
+            value.reportAdverseEvents = e.target.value
+            setData(cloneData)
+          }} /></div>
+        <div>2、事件类型及级别：<input value={value.eventTypeAndLevel || ""} onChange={(e) => {
+          value.eventTypeAndLevel = e.target.value
+          setData(cloneData)
+        }} /></div>
+      </div>
+
     </Wrapper>
   )
 }
@@ -137,5 +250,45 @@ const Wrapper = styled.div`
   }
   input {
     border: none;
+  }
+  .inp_textArea  input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    align-items: center;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .border-input {
+    border:1px solid rgb(228, 228, 228);
+  }
+  .double input {
+    width: 46%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    align-items: center;
+    border-radius: 0;
+    resize: none;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .table_Bottom input{
+    align-items: center;
+    &:focus {
+      background: ${(p) => p.theme.$mlc};
+    }
+  }
+  .select {
+    padding: 0;
+    width: 100%;
+    text-align: center;
   }
 `

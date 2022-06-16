@@ -88,14 +88,14 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     // },
     {
       name: "健康宣教",
-      path: "/setting/typeDict",
-      children: [
+      path: "/setting",
+      // children: [
         // {
         //   name: "健康宣教",
         //   path: "/setting/typeDict",
         //   icon: require("../images/menu-icon/三级质控@2x.png"),
         // },
-      ],
+      // ],
     },
   ];
 	

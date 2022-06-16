@@ -53,7 +53,17 @@ export default withRouter(function ResetPasswordView(props: Props) {
     // }
   }
   useEffect(() => {
-    getPasswordRule()
+    if (['sdlj','dghl'].includes(appStore.HOSPITAL_ID)) {
+      setReg({
+        flag: true,
+        // rule: "^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z~!@#$%^&*._?]+$)(?![a-z0-9]+$)(?![a-z~!@#$%^&*._?]+$)(?![0-9~!@#$%^&*._?]+$)[a-zA-Z0-9~!@#$%^&*._?]{8,}$",
+        // rule: "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$",
+        rule:"^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$",
+        ruleMsg: "字母大写，字母小写，特殊字符，数字四组中两种以上的随机组合,且长度不能少于8位"
+      })
+    } else {
+      getPasswordRule()
+    }
   }, [])
   //获取正则
   const getPasswordRule = () => {

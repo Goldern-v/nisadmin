@@ -14,18 +14,18 @@ export interface Props {
 export default function TextareaModal(props: Props) {
   let { sectionId, setData, data } = props
   const analysisDetailModal = useRef(getModal())
-
-  let report: Report = (data ? data.report : {}) || {}
+  let report: Report = (data ? data.value : {}) || {}
   let section = analysisDetailModal.current.getSection(sectionId)
   const keyName = section?.keyName ? section.keyName : ''
+  const maxLength=section?.maxLength ? section.maxLength : 1000
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length > 1000) {
-      message.warn('最多1000个字')
+    if (e.target.value.length > maxLength) {
+      message.warn(`最多${maxLength}个字`)
       return
     }
     if (setData) {
       setData({
-        report: { ...report, [keyName]: e.target.value }
+        value: {...report,[keyName]:e.target.value}
       })
     }
   }

@@ -114,6 +114,12 @@ export default observer(function Step5() {
             <td className="key">培训地址：</td>
             <td className="value">{pxStepViewModal.stepData2.address}</td>
           </tr>
+          {appStore.HOSPITAL_ID == 'whyx' && 
+          <tr>
+            <td className="key">二级类型：</td>
+            <td className="value">{pxStepViewModal.stepData2.secondaryType}</td>
+          </tr>
+          }
 
           {pxStepViewModal.stepData2.organizationWay == "2" && (
             <React.Fragment>

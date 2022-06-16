@@ -26,13 +26,23 @@ export interface Props {
   style?: any,
   size?: number,
   data?: FileItem[]
+  // 文件大小限制 按字节
+  maxSize?: number
+  // 可上传文件类型
+  typeList?: string[]
+}
+const setSizeText = (size: number, i = 0):any => {
+  let suffixList = ['B','K', 'M']
+  if (size < 1024  || i >= suffixList.length - 1 ) {
+    return size + suffixList[i]
+  }
+  return setSizeText(parseInt(size / 1024 + ''), i + 1)
 }
 
 export default function MultiFileUploader(props: Props) {
-  const { accept, type, onChange, data, readOnly, size, style } = props
-
+  const { accept, type, onChange, data, readOnly, size, style, maxSize, typeList } = props
+  const maxSizeText = maxSize ? setSizeText(maxSize) : ''
   const [iptVisible, setIptVisible] = useState(true)
-
   const [loading, setLoading] = useState(false)
 
   const [randomClass, setRandomClass] = useState('')
@@ -58,7 +68,21 @@ export default function MultiFileUploader(props: Props) {
 
       let reqList = [] as any
       for (let i = 0; i < files.length; i++) {
-
+        // 限制文件大小
+        if(maxSize) {
+          if (files[i].size> maxSize) {
+            message.warn(`超过最大文件限制，最大上传文件大小限制为${maxSizeText}`)
+            return
+          }
+        }
+        // 限制文件类型
+        if (typeList) {
+          
+          if (typeList.findIndex((v: any) => files[i].type.indexOf(v) > -1) == -1) {
+            message.warn(`该类型不允许上传，允许上文件类型为${typeList.join('、')}`)
+            return
+          }
+        }
         if (type) {
           let form = new FormData()
           form.append('file', files[i])

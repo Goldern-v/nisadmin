@@ -176,6 +176,28 @@ export default class AuthStore {
     }
   }
 
+  /** 武汉亚心是否是护理部 */
+  public get isDepartmentYaXin() {
+    // QCR1100  护理部(孙琳)
+    // QCR0001  护理部
+    let adminCode = ['QCR1100', 'QCR0001']
+    try {
+      if (this.isAdmin) return true;
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if (arrdeis) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
 
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
@@ -203,6 +225,36 @@ export default class AuthStore {
       if (this.user.post == '护长') return true
     } catch (error) {
       return false;
+    }
+  }
+
+  /** 武汉亚心护长、教学组长以上*/
+  public get isTeachingNurseYaXin() {
+    // QCR1102  护士长(肖瑞芳)
+    // QCR0007  副护士长
+    // QCR0003  科护士长
+    // QCR0004  护士长
+    // WHYX_QCR5003  总代教护士
+    // WHYX_QCR5002  见习代教护士
+    // WHYX_QCR5001  代教护士
+    let adminCode = ['QCR1102', 'QCR0007', 'QCR0003', 'QCR0004', 'WHYX_QCR5003', 'WHYX_QCR5002', 'WHYX_QCR5001']
+    try {
+      if (!this.user) return false
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if (arrdeis) {
+        return true
+      } else {
+        return false
+      }
+
+
+
+    } catch (error) {
+      return false
     }
   }
 
@@ -261,6 +313,34 @@ export default class AuthStore {
   public get isOnlyInternsManage() {
     return this.user && this.user.userType == "1" ? true : false;
   }
+  /**是否是张俊 */
+  public get isZJ() {
+    return !!(this.user && this.user.empNo === '284')
+  }
+  /**是否是胡柳 */
+  public get isHL() {
+    return !!(this.user && this.user.empNo === '75')
+  }
+  public get isEmpNoAdmin() {
+    return !!(this.user && this.user.empNo == 'admin')
+  }
+  // 三级质控已发布查看权限 护士长，护理部
+  public get level3publishedWatch() {
+    return this.isRoleManage || this.isDepartment
+  }
+  // 三级质控审核权限
+  public get level3Check() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin
+  }
+  // 二级质控查看权限
+  public get level2Watch() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse
+  }
+  // 一级质控查看权限
+  public get level1Watch() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isRoleManage
+  }
+  
 
   /** 用户初始化 */
   @action

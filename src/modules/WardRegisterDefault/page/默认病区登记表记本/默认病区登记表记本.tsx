@@ -40,7 +40,7 @@ import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnR
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 import SignColumnRender from "../../components/Render.v1/SignColumnRender";
-
+import SettingShiftModal from "./modal/SettingShiftModal";
 export interface Props {
   payload: any;
 }
@@ -94,6 +94,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal)
+  const settingShiftModal = createModal(SettingShiftModal)
   const updateDataSource = (isAll?: boolean) => {
     if (isAll) {
       setDataSource([]);
@@ -749,22 +750,34 @@ export default observer(function 敏感指标登记本(props: Props) {
   }
 
   const addPatient = () => {
-    console.log(1);
-
   }
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)
     // console.log(payload)
   }
   /**自定义签名按钮配置 */ 
-  const [customSign,setCustomSign] = useState<any[]>([])
+  const [customSign, setCustomSign] = useState<any[]>([])
+  // 自定义批量按钮
+  const [customBatch,setCustomBatch] = useState<any[]>([])
   useEffect(() => {
     setCustomSign(itemConfigList.filter((v: any) => v.itemType.indexOf('autograph') == 0))
+    setCustomBatch(itemConfigList.filter((v: any) => v.itemCode == '班次'))
   }, [itemConfigList])
+
+  const setShift = () => {
+    let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
+    let optionList = (options.options as "").split(";").map((itemCfg: any) => itemCfg || " ")
+    settingShiftModal.show({
+      data:optionList,
+      onOkCallBack: (value) => {
+        handleBatchSet(value)
+      }
+    })
+}
 
   /**批量按钮 */
   const SelectedBtnCon = observer(function(props: Record<string, any>) {
-    const {config,customSign} = props
+    const {config,customSign,customBatch} = props
     return (<Fragment>
       {
         appStore.hisMatch({
@@ -781,6 +794,18 @@ export default observer(function 敏感指标登记本(props: Props) {
                     type="primary"
                     onClick={() => {handleBatchSign(item.itemCode)}}>
                       {item.itemCode}签名
+                  </Button>
+                ))}
+                {customBatch.map((item: any) => (
+                  <Button
+                    key={item.itemCode}
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => {setShift()}}>
+                      批量修改班次
                   </Button>
                 ))}
               </Fragment>
@@ -854,6 +879,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     handleCopyCreateRow,
     deleteSelectedRows,
     handleBatchSign,
+    handleBatchSet
   } = getFun({
     registerCode,
     registerName,
@@ -875,6 +901,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     setConfig,
     paramMap,
     customSign,
+    customBatch,
+    itemConfigList
   });
 
   useEffect(() => {
@@ -1016,7 +1044,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         )}
         {
           isWhyx &&
-          <SelectedBtnCon {...{config,customSign}}/>
+          <SelectedBtnCon {...{config,customSign,customBatch}}/>
         }
       </NewPageHeader>
       <TableCon>
@@ -1069,6 +1097,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
+      <settingShiftModal.Component />
       {/* 患者弹窗 */}
       <PatientDialog
         visible={patientVisible}
