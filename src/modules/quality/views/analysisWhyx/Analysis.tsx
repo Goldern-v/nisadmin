@@ -53,16 +53,16 @@ export default observer(function Analysis() {
 
   useEffect(() => {
     if (level == 2) {
-      service.commonApiService.getTwoInpatientArea().then((res)=>{
-        let data=res.data
+      service.commonApiService.getTwoInpatientArea().then((res) => {
+        let data = res.data
 
-        if(Array.isArray(res.data)){
+        if (Array.isArray(res.data)) {
           data.unshift({
             "code": "",
             "name": "全部"
           })
           setWardList(data)
-        } 
+        }
         setDefDept(res.data[1].code)
       })
     }
@@ -203,12 +203,17 @@ export default observer(function Analysis() {
     }
     const { reportTemplateDto, renderTableDataMap } = data
     analysisModal.setRenderData({ renderTableDataMap, reportTableFieldTemplateList: reportTemplateDto.reportTableFieldTemplateList || {} })
-    if (level == '1' && getTempName(level, data.wardCode).indexOf('急诊') > -1) {
-      await obj1Em.initRender(data.id)
+
+    if (level == '1') {
+      if (getTempName(level, data.wardCode).indexOf('急诊') > -1) {
+        await obj1Em.initRender(data.id)
+      } else {
+        await obj1Dept.initRender(data.id)
+      }
+
     } else {
       await obj2.initRender(data.id)
     }
-    await obj1Dept.initRender(data.id)
     appStore.history.push(
       `/qualityAnalysisReport?${qs.stringify(params)}`
     );
