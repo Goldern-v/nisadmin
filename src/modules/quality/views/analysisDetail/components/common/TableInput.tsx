@@ -21,7 +21,7 @@ export default observer(function TableInput(props: Props) {
         item[str] = e.target.value
         props.setVal((prev: any) => {
           const cloneData = cloneJson(prev)
-          cloneData[index] = item
+          cloneData.list[index] = item
           return cloneData
         })
       }

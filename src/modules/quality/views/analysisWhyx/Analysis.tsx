@@ -12,7 +12,7 @@ import CreateAnalysisModal from "./components/CreateAnalysisModal";
 import qs from "qs";
 import { PageHeader, PageTitle, Place } from "src/components/common";
 import service from "src/services/api";
-import { getTempName } from "./utils";
+import { getTempName, getSearchTempName } from "./utils";
 import { MonthList } from "../../utils/toolCon";
 import YearPicker from "src/components/YearPicker";
 import useLevel from "./utils/useLevel";
@@ -46,7 +46,6 @@ export default observer(function Analysis() {
     pageSize: 20,
     status: "",
     wardCode: "",
-    groupRoleCode: "",
   } as any);
   // 质控等级
   const level = useLevel();
@@ -250,7 +249,7 @@ export default observer(function Analysis() {
       ...query,
       reportLevel: level,
       reportYear,
-      templateName: getTempName(level),
+      templateName: getSearchTempName(level),
     };
     api
       .getPage(reqQuery)

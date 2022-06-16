@@ -9,8 +9,13 @@ const DEF_ONE_TEMP_NAME = '一级质控病区月度汇总报告'
 
 /**获取模板名称 */
 export const getTempName = (level: number, deptCode?: string): string => {
-  if (level == 2) {
-    return '二级质控区域月度汇总报告'
+  switch(level) {
+    case 2:
+      return '二级质控区域月度汇总报告'
+    case 3.3:
+      return '三级质控问题分析改进报告'
+    default:
+      break
   }
   if (level == 1) {
     if (deptCode) {
@@ -19,7 +24,7 @@ export const getTempName = (level: number, deptCode?: string): string => {
     }
     return DEF_ONE_TEMP_NAME
   }
-  return '三级质控病区月度汇总报告'
+  return ''
 }
 
 export const getTypeName = (level: number, deptCode?: string): string => {
@@ -34,4 +39,11 @@ export const getTypeName = (level: number, deptCode?: string): string => {
     return DEF_ONE_TEMP_NAME
   }
   return '病区'
+}
+
+/**返回分页查询所需的templateName */
+export  const getSearchTempName = (level: number): string => {
+  let name = getTempName(level)
+  if (level == 1) return name + ',' + deptObj.map(v=> v.name).join(',')
+  return name
 }
