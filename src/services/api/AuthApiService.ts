@@ -18,7 +18,7 @@ export default class AuthApiService extends BaseApiService {
       }
       // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$") 
       let regexp = new RegExp("^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$")
-      if (['sdlj'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
+      if (['sdlj','dghl'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
         message.error('当前登录密码强度较弱，请修改密码后登录!')
         window.location.href = '#/resetpassword'
         return

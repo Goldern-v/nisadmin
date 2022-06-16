@@ -53,7 +53,7 @@ export default withRouter(function ResetPasswordView(props: Props) {
     // }
   }
   useEffect(() => {
-    if (['sdlj'].includes(appStore.HOSPITAL_ID)) {
+    if (['sdlj','dghl'].includes(appStore.HOSPITAL_ID)) {
       setReg({
         flag: true,
         // rule: "^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z~!@#$%^&*._?]+$)(?![a-z0-9]+$)(?![a-z~!@#$%^&*._?]+$)(?![0-9~!@#$%^&*._?]+$)[a-zA-Z0-9~!@#$%^&*._?]{8,}$",
