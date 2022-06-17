@@ -8,11 +8,11 @@ const deptObj = [
 const DEF_ONE_TEMP_NAME = '一级质控病区月度汇总报告'
 
 /**获取模板名称 */
-export const getTempName = (level: number, deptCode?: string): string => {
-  switch(level) {
-    case 2:
+export const getTempName = (level: number | string, deptCode?: string): string => {
+  switch(level+ '') {
+    case '2':
       return '二级质控区域月度汇总报告'
-    case 3.3:
+    case '3.3':
       return '三级质控问题分析改进报告'
     default:
       break
@@ -27,7 +27,7 @@ export const getTempName = (level: number, deptCode?: string): string => {
   return ''
 }
 
-export const getTypeName = (level: number, deptCode?: string): string => {
+export const getTypeName = (level: number | string, deptCode?: string): string => {
   if (level == 2) {
     return '区域'
   }
@@ -42,7 +42,7 @@ export const getTypeName = (level: number, deptCode?: string): string => {
 }
 
 /**返回分页查询所需的templateName */
-export  const getSearchTempName = (level: number): string => {
+export  const getSearchTempName = (level: number | string): string => {
   let name = getTempName(level)
   if (level == 1) return name + ',' + deptObj.map(v=> v.name).join(',')
   return name

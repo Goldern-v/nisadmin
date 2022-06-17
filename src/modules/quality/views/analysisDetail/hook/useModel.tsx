@@ -19,7 +19,6 @@ export const useInstance = () => {
   useEffect(() => {
     setInstance(getInstance())
     return () => {
-      console.log('test-only-2')
     }
   },[appStore.queryObj])
   return {instance, getInstance}

@@ -253,7 +253,6 @@ export default observer(function Analysis() {
         }
       })
       .catch((err) => {
-        console.log('test-only-4', err)
         failedCallback(err || "");
       });
   };
