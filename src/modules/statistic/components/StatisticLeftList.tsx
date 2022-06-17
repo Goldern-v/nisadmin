@@ -161,6 +161,14 @@ const LEFT_MENU_CONFIG = [
             }
           })
         },
+        // 厚街演示显示，正式打包屏蔽
+        // {
+        //   title: "病区设备统计",
+        //   icon: <ZZHSDA />,
+        //   hide: appStore.HOSPITAL_ID !== "hj",
+        //   path: "/statistic/病区设备统计",
+        // },
+        
       ]
     }
   }),

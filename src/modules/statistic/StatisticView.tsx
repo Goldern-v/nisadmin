@@ -50,6 +50,8 @@ import 护士在职状态分析 from "./views/护士在职状态分析/护士在
 import 护士离职原因分析 from "./views/护士离职原因分析/护士离职原因分析";
 // 发热患者统计
 import FeverPatient from "./views/feverPatients/FeverPatient";
+// 病区设备统计
+import WardEquipment from './views/wardEquipment/WardEquipment'
 
 // 全院护理人员一览表
 import NurseList from "./views/nursingStatistics/nurseList/NurseList";
@@ -238,6 +240,12 @@ export default function StatisticView() {
       path: "/statistic/发热患者统计",
       component: FeverPatient,
     },
+    // 病区设备统计
+    {
+      name: "病区设备统计",
+      path: "/statistic/病区设备统计",
+      component: WardEquipment,
+    },
     ...appStore.hisMatch({
       map: {
         nys: [
@@ -269,6 +277,8 @@ export default function StatisticView() {
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 
   let currentRoutePath = store.appStore.history.location.pathname;
+  console.log(currentRoutePath);
+  
   let CurrentRoute = leftListPath.find(
     (item) => item.path === currentRoutePath
   );

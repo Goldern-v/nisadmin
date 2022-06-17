@@ -193,6 +193,7 @@
     "publish:9868": "npm run build:gzhd && node publish.js",
     "publish:9872": "npm run build:jmfy && node publish.js",
     "publish:9874": "npm run build:dghl && node publish.js",
+    "publish:9863": "npm run build:hj && node publish.js",
     "publish:9964": "npm run build:wh && node publish.js",
     "publish:9871": "npm run build:lcey && node publish.js",
     "publish:9875": "npm run build:gzsrm && node publish.js",
