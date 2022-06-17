@@ -4,6 +4,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import styled from 'styled-components'
 import { getModal } from '../../AnalysisDetailModal'
 import FishBone from './FishBone'
+import { DatePicker } from 'antd';
 import { MainCon } from './style'
 export interface Props {
   sectionId: string
@@ -87,7 +88,7 @@ export default observer(function ImprovementProjectModal(props: Props) {
         <TextArea value={report.planCountermeasures} onChange={(e:any) => { handleChange(e.target.value, 'planCountermeasures')}} autosize={{minRows: 3}} />
       </div>
       <div className='ipt--small'>
-        <TextArea value={report.planImplementationTime} onChange={(e:any) => { handleChange(e.target.value, 'planImplementationTime')}} autosize={{minRows: 3}} />
+        <TextArea value={report.planImplementationTime } onChange={(e:any) => { handleChange(e.target.value, 'planImplementationTime')}} autosize={{minRows: 3}} />
       </div>
       <div className='ipt--small'>
         <TextArea value={report.planImplementationSite} onChange={(e:any) => { handleChange(e.target.value, 'planImplementationSite')}} autosize={{minRows: 3}} />

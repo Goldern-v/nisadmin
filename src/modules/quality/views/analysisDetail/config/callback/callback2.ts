@@ -148,10 +148,11 @@ export const obj = {
     const { renderData, tableTempList } = analysisModal
     const obj: Record<string, any> = {}
     Object.keys(renderData).map((v: string) => {
-
       const blank = getBlank(tableTempList[v])
+      obj[v] = []
       renderData[v].map((v3: any) => {
-        obj[v].push({ ...blank, ...v3 })
+        if(obj[v])  obj[v].push({ ...blank, ...v3 })
+       
       })
       if (v == 'deptSecondQualityIndexResult') {
         FIXED_ITEMS.map((v4: string) => {

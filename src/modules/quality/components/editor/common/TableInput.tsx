@@ -1,15 +1,15 @@
-import { Input } from 'antd'
+import { Input , DatePicker , TimePicker } from 'antd'
 import { observer } from 'mobx-react'
+import moment from 'moment';
 import React from 'react'
 import styled from 'styled-components'
 import { cloneJson } from 'src/utils/json/clone'
-
 export interface Props {
   row: any
   str: string
   index: number
   setVal: any,
-  type?: 'TextArea' | undefined
+  type?: 'TextArea' |'DatePicker'| 'TimePicker' | undefined
 }
 export default observer(function TableInput(props: Props) {
   const { str, index, type } = props
@@ -30,5 +30,8 @@ export default observer(function TableInput(props: Props) {
 })
 
 const Wrapper = styled.div`
-
+.ant-calendar-picker {
+  width: 100%;
+  height: 100%;
+}
 `

@@ -147,7 +147,6 @@ export default function Operation2Modal(props: Props) {
         />
         张，床护比：
         <Input
-        type='number'
           value={value.bedNurseRatio}
           onChange={(e: any) => handleChange(e.target.value, "bedNurseRatio")}
         />{" "}
@@ -156,19 +155,16 @@ export default function Operation2Modal(props: Props) {
       <div className="context">
         平均护患比：
         <Input
-        type='number'
           value={value.avgNursePatientRatio}
           onChange={(e: any) => handleChange(e.target.value, "avgNursePatientRatio")}
         />{" "}
         白班护患比：
         <Input
-        type='number'
           value={value.dayNursePatientRatio}
           onChange={(e: any) => handleChange(e.target.value, "dayNursePatientRatio")}
         />{" "}
         夜班护患比：
         <Input
-        type='number'
           value={value.nightNursePatientRatio}
           onChange={(e: any) => handleChange(e.target.value, "nightNursePatientRatio")}
         />
@@ -255,7 +251,6 @@ export default function Operation2Modal(props: Props) {
       <div className="context context-title">
         （4）各科室居家人数完成情况：
         <Input
-        type='number'
           value={value.homeCountCompletionCase}
           onChange={(e: any) => handleChange(e.target.value, "homeCountCompletionCase")}
         />

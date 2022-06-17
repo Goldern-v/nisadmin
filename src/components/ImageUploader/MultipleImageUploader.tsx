@@ -4,6 +4,7 @@ import { Icon, message } from 'antd'
 import service from 'src/services/api'
 import tinyPic from 'src/utils/img/tinyPic'
 import Zimage from 'src/components/Zimage'
+import { message as Message } from "src/vendors/antd";
 
 export interface Props {
   tip: string
@@ -15,7 +16,8 @@ export interface Props {
   onChange: (value: string[], ids?: string[], defaultValue?: string[]) => void
   uploadOption?: any,
   sizeLimited?: number,
-  preview?: boolean
+  preview?: boolean;
+  imgLimitedMb?: number; // 图片大小
 }
 
 export interface State {
@@ -92,7 +94,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
   }
 
   private onChange = async (e: Event) => {
-    const { upload, onChange, sizeLimited, value } = this.props
+    const { upload, onChange, sizeLimited, value, imgLimitedMb } = this.props
     const $input = e.target as HTMLInputElement
 
     const files = ($input.files && $input.files) || null
@@ -129,6 +131,11 @@ export default class MultipleImageUploader extends React.Component<Props, State>
       try {
         const promiseList = []
         for (let i = 0; i < files.length; i++) {
+          /** 判断图片大小 */
+          let imgMb: number = files[i].size / 1024 / 1024
+          if (imgLimitedMb && imgLimitedMb < imgMb) {
+            return Message.error(`图片大小不能超过${imgLimitedMb}M`);
+          }
           /** 图片压缩 */
           let img = await tinyPic(files[i])
           var fileObj = new File([img.img], files[i].name, { type: files[i].type, lastModified: Date.now() })
@@ -142,6 +149,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
         }
         let res = await Promise.all(promiseList)
         let value = res.map((item: any) => item.data.path)
+        
         let ids = res.map((item: any) => item.data.id)
         this.setState({ loading: false })
         value && onChange(

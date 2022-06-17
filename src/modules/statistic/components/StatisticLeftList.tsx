@@ -44,7 +44,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "护士节假日排班表",
               path: "/statistic/护士节假日排班表",
-              hide: appStore.HOSPITAL_ID == "nys"
+              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
             },
             {
               title: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
@@ -77,7 +77,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "科室节假日排班表",
               path: "/statistic/科室节假日排班表",
-              hide: appStore.HOSPITAL_ID == "nys"
+              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
             }
           ]
         },
@@ -161,6 +161,14 @@ const LEFT_MENU_CONFIG = [
             }
           })
         },
+        // 厚街演示显示，正式打包屏蔽
+        // {
+        //   title: "病区设备统计",
+        //   icon: <ZZHSDA />,
+        //   hide: appStore.HOSPITAL_ID !== "hj",
+        //   path: "/statistic/病区设备统计",
+        // },
+        
       ]
     }
   }),

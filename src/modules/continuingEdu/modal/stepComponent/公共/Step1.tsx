@@ -13,7 +13,7 @@ import { cloneJson } from "src/utils/json/clone";
 import TypeEditModal from "src/modules/continuingEdu/views/mainTablePage/modal/TypeEditModal";
 import { appStore } from "src/stores/index";
 import qs from "qs";
-export interface Props { }
+import { pxStepViewModal } from "../培训/PXStepViewModal";
 
 export default function Step1() {
   const [editVisible, setEditVisible] = useState(false); // 控制类型管理弹窗状态
@@ -46,6 +46,8 @@ export default function Step1() {
   }, [typeList]);
 
   const onFormChange = (name: string, value: any, form: Form) => {
+    console.log(1111111111,name,value,form);
+    
     if (name == "id") {
       let obj: any = typeList.find((item: any) => item.id == value);
       if (obj) {
@@ -69,6 +71,9 @@ export default function Step1() {
           teachingMethodMap[stepViewModal.stepData1.teachingMethod as any]
         );
       }
+    }
+    else if(name == "secondType") {
+      pxStepViewModal.stepData2.secondaryType = value
     }
   };
 
@@ -147,6 +152,22 @@ export default function Step1() {
               <Input readOnly />
             </Form.Field>
           </Col>
+          {appStore.HOSPITAL_ID == 'whyx' && stepViewModal.stepData1.teachingMethodName == '培训' &&
+          <Row>
+          <Col span={24}>
+            <Form.Field label={`二级类型`} name="secondType">
+              <Select
+              >
+                {stepViewModal.dictObj.studytrain_train_detail_info_secondarytype.map((item: any) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>
+        </Row>
+          }
         </Row>
       </Form>
       <TypeEditModal

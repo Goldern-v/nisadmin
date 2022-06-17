@@ -833,7 +833,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               itemCode: item.itemCode,
               updateDataSource,
               handleNextIptFocus,
-              onBlur: ['QCRG_12_2'].includes(registerCode)
+              onBlur: ['QCRG_12_2'].includes(registerCode) && ['dgxg'].includes(appStore.HOSPITAL_ID)
               ? (newVal: string, oldVal: any) => {
                 if (newVal && !pharmacyList.includes(newVal)) {
                   // message.warn('请选择下拉选项')

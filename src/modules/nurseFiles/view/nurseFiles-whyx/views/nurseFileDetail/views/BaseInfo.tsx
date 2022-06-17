@@ -14,7 +14,7 @@ import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import { ScrollBox } from "src/components/common";
 import { openAuditModal } from "../config/auditModalConfig";
-
+import { Row,Col } from "antd";
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
@@ -286,6 +286,30 @@ export default observer(function BaseInfo() {
             ))}
           </tbody>
         </InfoTable>
+        <ZyzsCon>
+          <Row>
+            <Col span={12}>
+              <span>最高学历证书：</span>
+              <div className="img-con">
+              {info.maps?.highesteducation_url ? (
+                <Zimage src={info.maps.highesteducation_url} alt="" />
+              ) : (
+                <img src={require("../../../images/证件空态度.png")} alt="" />
+                )}
+              </div>
+            </Col>
+          <Col span={12}>
+          <span>最高职称证书：</span>
+          <div className="img-con">
+            {info.maps?.newtitle_url ? (
+              <Zimage src={info.maps.newtitle_url} alt="" />
+              ) : (
+                <img src={require("../../../images/证件空态度.png")} alt="" />
+                )}
+              </div>
+          </Col>
+          </Row>
+        </ZyzsCon>
         <ZyzsCon>
           <span>护士执业证书：</span>
           <div className="img-con">

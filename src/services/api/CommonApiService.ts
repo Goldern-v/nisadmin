@@ -251,6 +251,10 @@ export default class CommonApiService extends BaseApiService {
   public deptInbigDeptListSelf() {
     return this.get(`/qcItem/dict/deptInbigDeptListSelf`);
   }
+  /** 二级质控片区 */
+  public getTwoInpatientArea() {
+    return this.get(`/dept/oneDeptList`);
+  }
 
   /** 根据科室获取科室全部护士 */
   public userDictInfo(wardCode: string, query?: { getAllRelUser: boolean }) {

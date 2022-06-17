@@ -74,7 +74,7 @@ export default observer(function qualityIndexSection(props: Props) {
         render(text: string, record: any, index: number) {
           return (
             <div className='inp_textArea'>
-            {record.qualifiedCount&&record.checkCount ? `${record.qualifiedCount}/${record.checkCount}` : ""}
+            {record.qualifiedCount ? record.qualifiedCount : ""}/{record.checkCount ? record.checkCount : ""}
             </div>
           )
         },

@@ -77,7 +77,9 @@ export default observer(function NursingReportDetailView() {
     let printFun = isPrint ? printing : printing.preview
     setTimeout(() => {
       printFun(pageRef.current, {
+        // 插入所有link和style标签到打印，默认是false
         injectGlobalCss: true,
+        // 指定扫描样式，默认是true（全部）
         scanStyles: false,
         css: `
            .ant-btn {

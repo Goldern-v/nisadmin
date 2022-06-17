@@ -49,6 +49,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const wardCode = editQuery.wardCode || authStore.selectedDeptCode
 
+  const exGruop =['重点专科护理安全管理组','护理管理评价体系考核组','护理文书质量考评小组','预防管路脱出/感染质控组','预防VTE护理质控组','安全管理质控组','病房管理质控','关键环节质控组','护士素质质控组']
+  const exForm =['糖尿病知识掌握率查检表','普通病房评价表','介入科评价表','护士素质检查表','儿保科护理质量考核标准','护理零容忍检查表','护理人员分级护理制度检查表','护理查对制度检查表','护理人员服务规范考核标准' ,'优质护理服务质量评价标准','药品管理检查表','门诊护理核心指标检查表','培训管理核心指标检查表']
+
   const monthList = (() => {
     let currentMonth = 12;
     let monthArr = []
@@ -300,6 +303,28 @@ export default observer(function WorkPlainEditModal(props: Props) {
             </Select>
           </Col>
         </Row>
+        {/* 测试使用 */}
+        {/* <Row>
+          <Col span={2}>检查小组:</Col>
+          <Col span={20}>
+          <Select>
+            {exGruop.map(item=>{
+              return <Option value={item}>{item}</Option>
+            })}
+            </Select>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={2}>检查表单:</Col>
+          <Col span={20}>
+          <Select>
+            {exForm.map(item=>{
+              return <Option value={item}>{item}</Option>
+            })}
+            </Select>
+          </Col>
+        </Row> */}
+        {/* 测试使用 */}
         <Row>
           <Col span={2}>内容:</Col>
           <Col span={20}>

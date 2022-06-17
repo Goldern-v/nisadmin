@@ -29,6 +29,8 @@ const defaultStepData2 = {
   organizationWay: 2,
   /**  培训地址（如：护理app） */
   address: "护士app",
+  /**  二级类型 */
+  secondaryType: "",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: null,
   /**  学员学分 */
@@ -239,6 +241,7 @@ class StepViewModal {
         teacherCredit: this.stepData2.teacherCredit,
         teacherClassHours: this.stepData2.teacherClassHours,
         questionStatList: stepViewModal.stepData4PX.questionStatList,
+        secondaryType: this.stepData2.secondaryType,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
             return [

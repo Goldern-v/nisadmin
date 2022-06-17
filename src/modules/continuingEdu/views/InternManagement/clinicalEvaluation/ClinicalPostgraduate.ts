@@ -39,6 +39,7 @@ class ClinicalManagModel {
   @observable public totalPage: any = 0; //总页数
   @observable public selectedDate: any = crrentMonth(); //护士长界面实习时间
   @observable public selectedYearDate: any = moment(); //护理部界面实习时间
+  @observable public isNursingDepartment = false; //是否为护理部
   @observable public headerTableList = []; //头部表格内容
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
@@ -56,7 +57,8 @@ class ClinicalManagModel {
       keyWord: this.keyWord, //关键字
       empName: this.empName, //姓名
       internshipStartTime: authStore.isDepartmentYaXin ? this.selectedYearDate.format("YYYY-01-01") : this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
-      internshipEndTime: authStore.isDepartmentYaXin ? this.selectedYearDate.format("YYYY-12-31") : this.selectedDate[1].format(`YYYY-MM-${moment(new Date()).daysInMonth()}`) // 结束时间
+      internshipEndTime: authStore.isDepartmentYaXin ? this.selectedYearDate.format("YYYY-12-31") : this.selectedDate[1].format(`YYYY-MM-${moment(new Date()).daysInMonth()}`), // 结束时间isNursingDepartment
+      isNursingDepartment: this.isNursingDepartment, //是否为护理部
     };
   }
   get getObj() {

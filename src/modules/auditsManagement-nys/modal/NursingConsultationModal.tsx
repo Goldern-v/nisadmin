@@ -39,7 +39,7 @@ export default function NursingConsultationModal(props: Props) {
     if (err) return;
     let data ={
       consultationId:dataInfo.consultationId,
-      auditEmpNo: authStore.user?.empName,
+      auditEmpNo: authStore.user?.empNo,
       operationType: "1",
       auditStatus: value.status,
       auditNode:"head_nurse_audit",
@@ -76,7 +76,7 @@ export default function NursingConsultationModal(props: Props) {
             status: nursingConsultation.status == 0 ? '' : nursingConsultation.status,
             memberList: members.reduce((current:string,item:any) => {
               current += item.empName + '、'
-              return current.replace('、','') 
+              return current.replace(/、$/,'')
             },'')
           });
         });
