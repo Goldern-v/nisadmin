@@ -256,9 +256,9 @@ export default function QcThreeRouter(props: Props) {
         route_福清三级质控问题原因措施汇总,
       ],
       whyx: [
-        route_三级质控月度报告,
-        route_三级质控汇总报告,
-        route_三级质控问题汇总,
+        // route_三级质控月度报告,
+        // route_三级质控汇总报告,
+        // route_三级质控问题汇总,
         route_qcThreeResult,
         route_qcThreeProblem,
       ],
