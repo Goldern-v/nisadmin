@@ -456,7 +456,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     return false;
   }
   //registerName
-  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -704,7 +704,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     ...appStore.hisMatch({
       map: {
-        whyx: [],
+        'whyx,lyyz,qhwy': [],
         other: (config.signList || []).map((signItem: any) =>
           signRowObj({
             title: signItem.title,
@@ -715,7 +715,8 @@ export default observer(function 敏感指标登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           })),
-      }
+      },
+      vague: true
     }),
     ...(isWhyx && !authStore.isAdmin ? [] : [{
       title: "操作",
@@ -782,7 +783,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       {
         appStore.hisMatch({
           map: {
-            'whyx': (
+            'whyx,lyyz,qhwy': (
               <Fragment>
                 {customSign.map((item: any) => (
                   <Button
@@ -827,7 +828,8 @@ export default observer(function 敏感指标登记本(props: Props) {
                 ))}
               </Fragment>
             )
-          }
+          },
+          vague: true
         })
       }
       
@@ -1031,13 +1033,14 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  whyx: authStore.isAdmin ? (
+                  'whyx,lyyz,qhwy': authStore.isAdmin ? (
                     <Button onClick={onDelete}>版本删除</Button>
                   ) : '',
                   other: authStore.isNotANormalNurse ? (
                     <Button onClick={onDelete}>删除</Button>
                   ) : '',
-                }
+                },
+                vague: true
               })
             }
           </React.Fragment>
