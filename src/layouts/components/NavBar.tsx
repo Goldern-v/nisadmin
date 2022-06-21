@@ -191,7 +191,6 @@ export default observer(function NavBar(props: any) {
     return navConfig;
   })();
 
-  console.log('test-realNavConfig', realNavConfig)
   let location = appStore.location;
 
   const LogoView = () => {
