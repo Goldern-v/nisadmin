@@ -120,7 +120,7 @@ export default function OperationMoadl(props: Props) {
           setData(cloneData)
         }} /></div>。 </div>
         <div className='context context-title'>
-          (4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div><Input type='number' value={value && value.homeServiceRate} onChange={(e) => {
+          (4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div><Input style={{width:'200px'}} value={value && value.homeServiceRate} onChange={(e) => {
           value.homeServiceRate = e.target.value;
           setData(cloneData)
         }} /></div></div>
