@@ -582,13 +582,17 @@ export default function MainBox() {
     }
   });
 
-  emitter.addListener("更新班次列表", () => {
-    getShiftList();
+  emitter.addListener("更新班次列表", (data?:any) => {
+    getShiftList(data||'');
   });
-  const getShiftList = () => {
+  const getShiftList = (data?:any) => {
     let deptCode = scheduleStore.getDeptCode(); // '2508' ||
     setTableLoading(true);
-    service.scheduleShiftApiService.getShiftListByCode(deptCode).then(res => {
+    let obj = {
+      deptCode,
+      ...data
+    }
+    service.scheduleShiftApiService.getShiftListByCode(obj).then(res => {
       setTableLoading(false);
 
       let oneUser = new Object();

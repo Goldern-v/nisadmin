@@ -38,7 +38,7 @@ export default function InputColumnRender(props: Props) {
     onSelect,
     multiple,
   } = props
-
+  
   const [editValue, setEditValue] = useState('')
   const [editVisible, setEditVisible] = useState(false)
   const [open, setOpen] = useState(false)
@@ -76,6 +76,22 @@ export default function InputColumnRender(props: Props) {
       }
       setNewOptions(val ? _options?.filter(v => v.indexOf(val) > -1) : _options)
     }  
+  }
+
+  const shiftColor = (record:any) => {
+    if (['whyx'].includes(appStore.HOSPITAL_ID) && record['班次'] && itemCode=='班次') {
+      if (editValue == 'A班') { 
+        return 'green'
+      } else if (editValue == 'P班') {
+        return 'blue'
+      } else if (editValue == 'N班') {
+        return 'yellow'
+      } else {
+        return 'gray'
+      }
+    } else {
+      return ''
+    }
   }
 
   return editVisible ? (
@@ -160,7 +176,8 @@ export default function InputColumnRender(props: Props) {
     <TextRender
       className={[
         className || '',
-        !cellDisabled(record) ? 'focus-allow' : 'focus-disabled'
+          !cellDisabled(record) ? 'focus-allow' : 'focus-disabled',
+          shiftColor(record)
       ].join(' ')}
       onClick={() => {
         if (!cellDisabled(record)) {
@@ -191,5 +208,21 @@ const TextRender = styled.div`
     width: 1px;
     height: 100%;
     vertical-align: middle;
+  }
+  &.green {
+    background: #32b378;
+    color: #fff;
+  }
+  &.blue {
+    background: #007aff;
+    color: #fff;
+  }
+  &.yellow {
+    background: #ffa500;
+    color: #fff;
+  }
+  &.gray {
+    background: #999999;
+    color: #fff;
   }
 `
