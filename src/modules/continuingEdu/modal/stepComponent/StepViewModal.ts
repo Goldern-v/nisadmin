@@ -71,6 +71,7 @@ class StepViewModal {
 
   /** 步骤一完整 */
   public isOkStep = (step: number, type: string) => {
+    
     /** step 必须完整 */
     if (step == 0) {
       if (!this.stepData1.teachingMethod) {
@@ -85,12 +86,13 @@ class StepViewModal {
       const scorePersonList =
         stepData2.scorePersonList && stepData2.scorePersonList.length; // 评分负责人
       const address = stepData2.address && stepData2.address.length; // 实操考核地址
-      console.log(sicPersonList, sicPersonList, scorePersonList, "333333");
+     
+      // console.log(sicPersonList, sicPersonList, scorePersonList,"333333");
       if (!stepData2.title || !stepData2.startTime) {
         return false;
       }
       if (type === "实操") {
-        if (sicPersonList === 0 || address === 0 || scorePersonList === 0) {
+        if (sicPersonList === 0 || address === 0 || scorePersonList === 0 ) {
           return false;
         }
       }
@@ -103,6 +105,16 @@ class StepViewModal {
           return false;
         }
       }
+      
+      if(type === "实操"){
+        const stepData2 = this.getCurrentStepViewModal
+        ? this.getCurrentStepViewModal.stepData2
+        : {};        
+        if(!stepData2.prcaticalData.code){// 实操评分表
+          return false
+        }
+      }
+      
     }
     return true;
   };

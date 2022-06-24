@@ -76,6 +76,9 @@ import ClinicalEvaluation from "./views/InternManagement/clinicalEvaluation/Clin
 import BaciPostgraduate from './views/InternPostgraduate/bacisPostgraduate/PostgraduateManagement'
 import TeachingPostgraduate from './views/InternPostgraduate/PostgraduateTeachingProgramme/TeachingPostgraduate'
 
+// 实操评分管理
+import PracticalOperationScore from './views/practicalOperationScore/PracticalOperationScore'
+
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -958,6 +961,14 @@ export default function ContinuingEdu(props: Props) {
         })
       ],
     },
+    {
+      title: "实操评分管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/PracticalOperationScore",
+      component: PracticalOperationScore,
+      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+        
+    },
 
     ...appStore.hisMatch({
       map: {
@@ -984,6 +995,7 @@ export default function ContinuingEdu(props: Props) {
         ["hj", "dgxg"].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
+    
     {
       title: "菜单设置",
       icon: <KSGL />,
