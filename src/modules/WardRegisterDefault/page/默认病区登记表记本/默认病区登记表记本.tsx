@@ -10,7 +10,8 @@ import {
   Input,
   Select,
   DatePicker,
-  Popover
+  Popover,
+  InputNumber
 } from "src/vendors/antd";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
@@ -41,11 +42,12 @@ import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 import SignColumnRender from "../../components/Render.v1/SignColumnRender";
 import SettingShiftModal from "./modal/SettingShiftModal";
+import SettingGeneralModal from "./modal/SettingGeneralModal";
 export interface Props {
   payload: any;
 }
 
-const throttler = throttle();
+const throttler = throttle(500);
 const throttler2 = throttle();
 
 export default observer(function 敏感指标登记本(props: Props) {
@@ -95,6 +97,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal)
   const settingShiftModal = createModal(SettingShiftModal)
+  const settingGeneralModal = createModal(SettingGeneralModal)
   const updateDataSource = (isAll?: boolean) => {
     if (isAll) {
       setDataSource([]);
@@ -456,7 +459,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     return false;
   }
   //registerName
-  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -637,6 +640,9 @@ export default observer(function 敏感指标登记本(props: Props) {
                 handleNextIptFocus,
                 updateDataSource,
                 registerCode,
+                onChangeDate: (newVal: string) => {
+                  watchRecord(item.itemCode, record)
+                },
               }}
             />
           }
@@ -672,7 +678,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
-                onBlur: (newVal: string, oldVal: any) => { },
+                onBlur: (newVal: string, oldVal: any) => {},
                 selectAll: multiple,
               }}
             />
@@ -704,7 +710,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     ...appStore.hisMatch({
       map: {
-        whyx: [],
+        'whyx,lyyz,qhwy': [],
         other: (config.signList || []).map((signItem: any) =>
           signRowObj({
             title: signItem.title,
@@ -715,7 +721,8 @@ export default observer(function 敏感指标登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           })),
-      }
+      },
+      vague: true
     }),
     ...(isWhyx && !authStore.isAdmin ? [] : [{
       title: "操作",
@@ -737,6 +744,26 @@ export default observer(function 敏感指标登记本(props: Props) {
       }
     }])
   ];
+  let handlePer = (arr: string[], data: any) => {
+    let hours: any = ''
+    if (data[arr[0]] && data[arr[1]]) {
+      let startDate = moment(data[arr[0]])
+      let endDate = moment(data[arr[1]])
+      const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
+      hours = Math.floor(m / 30) * 0.5 +'小时';
+    }
+    data[arr[2]] = String(hours)
+  }
+  const watchRecordSeries = {
+    '起始时间': ['起始时间', '终止时间', '消毒时长（h）'],
+    '终止时间': ['起始时间', '终止时间', '消毒时长（h）'],
+    '消毒时长（h）': ['起始时间', '终止时间', '消毒时长（h）'],
+  }
+  const watchRecord = (value: any, data: any) => {
+    let key = value
+    if (!key || !watchRecordSeries[key]) return
+    handlePer(watchRecordSeries[key], data)
+  }
 
   const handlePreview = (file: any) => {
     if (getFileType(file.name) == 'img') {
@@ -766,25 +793,37 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   const setShift = () => {
     let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
-    let optionList = (options.options as "").split(";").map((itemCfg: any) => itemCfg || " ")
+    let optionList = (options.options as any).split(";").map((itemCfg: any) => itemCfg || " ")
     settingShiftModal.show({
       data:optionList,
       onOkCallBack: (value) => {
         handleBatchSet(value)
       }
     })
-}
+  }
+
+  const setGeneral = () => {
+    let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
+    let optionList = (options.options as any).split(";").map((itemCfg: any) => itemCfg || " ")
+    settingGeneralModal.show({
+      data:optionList,
+      onOkCallBack: (value) => {
+        handleGeneralSet(value)
+      }
+    })
+  }
 
   /**批量按钮 */
   const SelectedBtnCon = observer(function(props: Record<string, any>) {
-    const {config,customSign,customBatch} = props
+    const { config, customSign, customBatch } = props;    
+    const general =['whyx'].includes(appStore.HOSPITAL_ID) && customSign.find((item: any) => item.itemCode == '护士签名') && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
           map: {
-            'whyx': (
+            'whyx,lyyz,qhwy': (
               <Fragment>
-                {customSign.map((item: any) => (
+                {customSign && customSign.map((item: any) => (
                   <Button
                     key={item.itemCode}
                     disabled={
@@ -796,7 +835,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                       {item.itemCode}签名
                   </Button>
                 ))}
-                {customBatch.map((item: any) => (
+                {customBatch && customBatch.map((item: any) => (
                   <Button
                     key={item.itemCode}
                     disabled={
@@ -808,6 +847,17 @@ export default observer(function 敏感指标登记本(props: Props) {
                       批量修改班次
                   </Button>
                 ))}
+                {
+                  general && <Button
+                    disabled={
+                      pageLoading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => {setGeneral()}}>
+                      批量复制签名
+                  </Button>
+                }
               </Fragment>
             ),
             'other': (
@@ -827,7 +877,8 @@ export default observer(function 敏感指标登记本(props: Props) {
                 ))}
               </Fragment>
             )
-          }
+          },
+          vague: true
         })
       }
       
@@ -879,7 +930,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     handleCopyCreateRow,
     deleteSelectedRows,
     handleBatchSign,
-    handleBatchSet
+    handleBatchSet,
+    handleGeneralSet
   } = getFun({
     registerCode,
     registerName,
@@ -1031,13 +1083,14 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  whyx: authStore.isAdmin ? (
+                  'whyx,lyyz,qhwy': authStore.isAdmin ? (
                     <Button onClick={onDelete}>版本删除</Button>
                   ) : '',
                   other: authStore.isNotANormalNurse ? (
                     <Button onClick={onDelete}>删除</Button>
                   ) : '',
-                }
+                },
+                vague: true
               })
             }
           </React.Fragment>
@@ -1047,7 +1100,9 @@ export default observer(function 敏感指标登记本(props: Props) {
           <SelectedBtnCon {...{config,customSign,customBatch}}/>
         }
       </NewPageHeader>
-      <TableCon>
+      <TableCon
+      className={[['whyx'].includes(appStore.HOSPITAL_ID) ? 'whyxTable':''].join(' ')}
+      >
         {selectedBlockId ? (
           <React.Fragment>
             <BaseTable
@@ -1067,6 +1122,9 @@ export default observer(function 敏感指标登记本(props: Props) {
                   setPageOptions({ ...pageOptions, pageIndex })
                 },
                 onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                  console.log('pageIndex',pageIndex);
+                  console.log('pageSize',pageSize);
+                  
                   setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
                 },
                 pageSizeOptions: ['20', '30', '40', '50', '100'],
@@ -1086,6 +1144,19 @@ export default observer(function 敏感指标登记本(props: Props) {
                 <SelectedBtnCon {...{config,customSign}}/>
               </div>
             }
+            {
+              appStore.hisMatch({
+                map: {
+                  'whyx':<div className="search-box">
+                    <InputNumber onChange={(value) => {
+                      setPageOptions({ ...pageOptions, pageSize:value, pageIndex: 1 })
+                    }} placeholder="请输入条数" />
+                </div>
+                },
+                vague: true
+              })
+            }
+
           </React.Fragment>
         ) : (
           <NullBox
@@ -1098,6 +1169,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       <settingModal.Component />
       <previewModal.Component />
       <settingShiftModal.Component />
+      <settingGeneralModal.Component />
       {/* 患者弹窗 */}
       <PatientDialog
         visible={patientVisible}

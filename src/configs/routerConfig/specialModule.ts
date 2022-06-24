@@ -572,6 +572,35 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
+} else if (['lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
+  specialModule = [
+    ...homeRouter(HomeView),
+    // 档案
+    setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/selfNurseFile/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    // 护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ]  
 }
 // else if (process.env.REACT_APP_HOSPITAL_ID == "fssdy") {
 //   specialModule = [

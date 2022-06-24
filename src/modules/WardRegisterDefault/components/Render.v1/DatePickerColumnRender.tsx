@@ -14,6 +14,7 @@ export interface Props {
   registerCode: any,
   format?: string,
   showTime?: boolean,
+  onChangeDate?:Function
 }
 
 /** 时间选择render组件 */
@@ -29,6 +30,7 @@ export default function DatePickerColumnRender(props: Props) {
     registerCode,
     format,
     showTime,
+    onChangeDate
   } = props
 
   const { itemCode } = itemCfg
@@ -55,6 +57,7 @@ export default function DatePickerColumnRender(props: Props) {
         record[itemCode] = newVal
         record.modified = true
         updateDataSource()
+        onChangeDate && onChangeDate(newVal)
       }}
     />
   }
@@ -71,10 +74,10 @@ export default function DatePickerColumnRender(props: Props) {
     className={[className, queryClassName,].join(' ')}
     onChange={(val: any) => {
       let newVal = val ? val.format(_format) : ''
-
       record[itemCode] = newVal
       record.modified = true
 
+      onChangeDate && onChangeDate(newVal)
       // if (
       //   registerCode == 'QCRG_19_2' ||
       //   registerCode == 'QCRG_11' ||

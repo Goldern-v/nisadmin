@@ -27,6 +27,7 @@ export default class HealthProagandaService extends BaseApiService {
 
   //删除字典
   public async delete(missionId: string) {
+    if (['whfk'].includes(appStore.HOSPITAL_ID)) return this.postDelete(missionId)
     return this.get(`/briefMission/delete/${missionId}`)
   }
   //获取字典content
@@ -44,6 +45,12 @@ export default class HealthProagandaService extends BaseApiService {
     return this.post(`/briefMission/uploadPicture?App-Token-Nursing=${appStore.getAppToken()}&Auth-Token-Nursing=${authStore.authToken}`, newFormData, {
       onUploadProgress: (payload: any) => onUploadProgress && onUploadProgress(payload)
     })
+  }
+  // 删除字典
+  public async postDelete(id: string){
+    const formData = new FormData()
+    formData.set('bodyMissionId', id)
+    return this.post(`/briefMission/postDelete`, formData)
   }
 }
 

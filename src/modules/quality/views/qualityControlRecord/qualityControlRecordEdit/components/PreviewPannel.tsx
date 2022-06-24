@@ -188,7 +188,7 @@ export default observer(function PreviewPannel(props: Props) {
             </div>
           )}
           <br />
-          <div>
+          {!["gzsrm"].includes(appStore.HOSPITAL_ID) && <div>
             通过率为：
             {["whyx"].includes(appStore.HOSPITAL_ID)
               ? `${yxGradeObj.right} / ${yxGradeObj.total} × 100% = ${
@@ -196,7 +196,7 @@ export default observer(function PreviewPannel(props: Props) {
                 }`
               : result.rate}
             %
-          </div>
+          </div>}
         </div>
       </div>
       <div className="item-gorup-info">
