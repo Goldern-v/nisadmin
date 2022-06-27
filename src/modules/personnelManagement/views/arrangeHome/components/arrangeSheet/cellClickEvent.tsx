@@ -37,7 +37,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (appStore.HOSPITAL_ID == 'wh') {
+          if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
