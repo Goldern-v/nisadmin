@@ -187,9 +187,16 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>质控病区：{messageBoxData.wardName}</div>
           {appStore.hisMatch({
             map: {
-              nys: <span></span>,
-              QCTP209: <span></span>,
-              gzsrm: <span></span>,
+              whyx: detailData?.master?.isBedNumber === '是' 
+                ? <div>
+                    病人姓名：{messageBoxData && messageBoxData.patientName}
+                  </div> 
+                : <span></span>
+            },
+            currentHospitalId: qcMatchCode
+          })}
+          {appStore.hisMatch({
+            map: {
               whyx: detailData?.master?.isBedNumber === '是' 
                 ? <div>
                     床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
