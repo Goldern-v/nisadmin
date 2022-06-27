@@ -31,6 +31,9 @@ class SingleSignOnDefaultServices {
 
           window.location.href = '#/home'
         }
+      }).catch(error => {
+        message.error(error)
+        window.location.href = '#/login'
       })
   }
 }

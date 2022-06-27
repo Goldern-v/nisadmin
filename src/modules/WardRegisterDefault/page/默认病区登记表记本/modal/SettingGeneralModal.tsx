@@ -25,7 +25,7 @@ export default function SettingGeneralModal(props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
 
-    if(!value.type && !value.sign && !value.copy) return message.error('请选择操作内容')
+    if(!value.type && !value.sign && !value.copy && !value.time) return message.error('请选择操作内容')
     onOkCallBack && onOkCallBack(value)
 
     onCancel()
@@ -39,13 +39,14 @@ export default function SettingGeneralModal(props: Props) {
         type: "",
         sign: false,
         copy: false,
+        time:null,
       })
     }
   }, [visible])
 
   return (
     <Modal
-      title={'批量'}
+      title={'批量修改'}
       width={400}
       visible={visible}
       onCancel={onCancel}
@@ -56,6 +57,11 @@ export default function SettingGeneralModal(props: Props) {
     >
       <Form ref={refForm} rules={rules} labelWidth={70}>
         <Row>
+          <Col span={24}>
+            <Form.Field label={`日期`} name='time'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
           <Col span={24}>
             <Form.Field label={`班次`} name='type'>
               <Select>
@@ -70,7 +76,7 @@ export default function SettingGeneralModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`复制`} name='copy'>
+            <Form.Field label={`复制新增`} name='copy'>
               <Switch checkedChildren="是" unCheckedChildren="否" />
             </Form.Field>
           </Col>
