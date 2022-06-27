@@ -813,9 +813,11 @@ export function getFun(context: any) {
       newRows = selectedRows.map((item: any) => {
         let newItem = JSON.parse(JSON.stringify(item))
         delete newItem.id
+        newItem['班次'] = data.type ? data.type : newItem['班次']
+        newItem['护士签名'] = data.sign ? authStore.user?.empName : ""
         return {
           ...newItem,
-          recordDate: moment().format('YYYY-MM-DD'),
+          recordDate: data.time? moment(data.time).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
           signerName: '',
           signerNo: '',
           auditorName: '',
@@ -830,12 +832,18 @@ export function getFun(context: any) {
         registerCode,
         selectedBlockId,
         selectedRows.map((v: any) => {
-          if (data.type) {
+          // if (data.type) {
+          //   v['班次'] = data.type
+          // }
+          // if (data.time) {
+          //   v['recordDate'] = moment(data.time).format('YYYY-MM-DD')
+          // }
+          if (!data.copy) {
+            v['护士签名'] = data.sign ? authStore.user?.empName : ""
             v['班次'] = data.type
           }
           return {
             ...v,
-            '护士签名': data.sign ? authStore.user?.empName : ""
           }
         })
       )
