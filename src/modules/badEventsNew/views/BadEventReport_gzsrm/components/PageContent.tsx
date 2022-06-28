@@ -233,6 +233,7 @@ const Wrapper = styled.div`
     text-indent:0;
   }
   .img-bola {
+    width: 100%;
     object-fit: cover;
   }
 `

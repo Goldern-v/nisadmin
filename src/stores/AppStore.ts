@@ -1,6 +1,6 @@
 import { action, observable, computed } from "mobx";
 import * as H from "history";
-import { match } from "react-router";
+import * as reactRouter from "react-router";
 import qs from "qs";
 
 /**
@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -48,7 +48,7 @@ export default class AppStore {
 
   /** 路由控制器 */
   @observable public history!: H.History;
-  @observable public match!: match<any>;
+  @observable public match!: reactRouter.match<any>;
   @observable public location!: H.Location<any>;
   /** 页面高度 */
   @observable public wih: number = window.innerHeight;

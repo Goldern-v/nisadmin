@@ -1,7 +1,7 @@
 import service from "src/services/api/index";
 import { cloneJson } from "./../../../../../utils/json/clone";
 import { appStore, authStore } from "./../../../../../stores/index";
-import { SymbolItem, ArrangeItem } from "./../types/Sheet";
+import * as Sheet from "./../types/Sheet";
 import { observable, computed, action, autorun } from "mobx";
 import { selectViewModal } from "./SelectViewModal";
 import { notSelectViewModal } from "../page/notRelease/components/SelectViewModal";
@@ -37,11 +37,11 @@ class SheetViewModal {
   @observable public notArrangeMenu: any[] = [];
   @observable public arrangeMeal = [];
   @observable public hdArrangeMeal = [];
-  @observable public schSymbolList: SymbolItem[] = [];
+  @observable public schSymbolList: Sheet.SymbolItem[] = [];
   /** 选中的格子 */
-  @observable public selectedCell: ArrangeItem = {};
+  @observable public selectedCell: Sheet.ArrangeItem = {};
   // 选中的格子列表（只用来批量赋值） 东莞横沥需要多个格子一起赋值
-  @observable public selectedCellList: ArrangeItem[] = [];
+  @observable public selectedCellList: Sheet.ArrangeItem[] = [];
   @observable public allCell: any[] = [];
   /** 加载状态 */
   @observable public tableLoading: boolean = false;
@@ -199,7 +199,7 @@ class SheetViewModal {
   }
 
   /** 解析cellobj 获取额外信息 */
-  analyseCell(cellObj: ArrangeItem): any {
+  analyseCell(cellObj: Sheet.ArrangeItem): any {
     if (!cellObj) return {};
 
     const cellConfig = {
@@ -608,10 +608,10 @@ class SheetViewModal {
         /** 基本序号 */
         let _baseCount = baseCount;
         list
-          .filter((item: ArrangeItem) => {
+          .filter((item: Sheet.ArrangeItem) => {
             return item.rangeName == this.countArrangeNameList[j];
           })
-          .forEach((item: ArrangeItem, index: number) => {
+          .forEach((item: Sheet.ArrangeItem, index: number) => {
             if (item.rangeNameCodeList) {
               _index = 0;
               _baseCount = Number(item.rangeNameCodeList);

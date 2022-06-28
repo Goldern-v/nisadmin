@@ -262,6 +262,14 @@ export default class CommonApiService extends BaseApiService {
     if (query) queryStr = `?${qs.stringify(query)}`;
     return this.get(`/user/userDictInfo/${wardCode}${queryStr}`);
   }
+  // 武汉亚心获取实操评分表下拉内容
+  public getPraticalGradeManage(){
+    return this.post(`/studyAndTrain/praticalGradeManage/getPage`,{})
+  }
+  // 武汉亚心获取实操评分表下拉内容
+  public getDetailByPaperId(paperId:any){
+    return this.post(`/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({paperId}))
+  }
 
   /**
    * 签名

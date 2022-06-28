@@ -2,6 +2,7 @@ import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import moment from "moment";
 import { appStore } from "src/stores";
+import service from "src/services/api";
 
 const defaultStepData2: any = {
   /** 考试名称 **/
@@ -33,6 +34,10 @@ const defaultStepData2: any = {
   scorePersonList: [],
   /** 题目统计信息 */
   scoreItems: [],
+  /* 武汉亚心实操表下拉内容 */
+  selectPrcaticalOperation:'',
+  adminTable:"请选择",
+  prcaticalData:{},
   totalScores: 0,
   passScores: 0,
   scoreInApp: 1, //是否app评分 --1是 0否
@@ -113,6 +118,8 @@ class StepViewModal {
   @observable public stepData5: any = cloneJson(defaultStepData5);
   @observable public title = "";
 
+
+
   /** 步骤一完整 */
   public isOkStep = (step: number) => {
     let stepArr = [this.stepData2];
@@ -130,6 +137,10 @@ class StepViewModal {
       let keys = Object.keys(obj);
       return keys.every(item => obj[item] !== "");
     }
+  };
+
+  public getpraticalGradeManageId = (id:any)=>{
+    return service.commonApiService.getDetailByPaperId(id)
   };
 
   /** 清空数据 */
@@ -187,6 +198,7 @@ class StepViewModal {
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
         scoreItems: this.stepData2.scoreItems,
+        paperId: this.stepData2.adminTable,
         totalScores: this.stepData2.totalScores,
         passScores: this.stepData2.passScores,
         scoreInApp: this.stepData2.scoreInApp,

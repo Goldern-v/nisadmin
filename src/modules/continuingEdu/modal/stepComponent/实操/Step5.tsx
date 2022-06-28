@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React from "react";
-import { Radio, Input } from "antd";
+import React,{ useState, useEffect } from "react";
+import { Radio, Input,Button } from "antd";
 import { scStepViewModal } from "./SCStepViewModal";
 import { stepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
@@ -8,9 +8,14 @@ import moment from "moment";
 import ShowTable from "./ShowTable";
 import { appStore } from "src/stores";
 import { newStudentCreditTypeMap } from "./../StepCommon";
+import PracticalPreview from './PracticalPreview'
 export interface Props { }
 
 export default observer(function Step5() {
+  const [modalVisible,setModalVisible] = useState(false)
+  const [modalParams,setModalParams] = useState({})
+  const [btnLoading,setBtnLoading] = useState(false)
+  const [modalTitle,setModalTitle] = useState('')
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
@@ -30,6 +35,22 @@ export default observer(function Step5() {
   //   3: "市级"
   // };
   const studentCreditTypeMap = newStudentCreditTypeMap;
+
+  const handlePreview =()=>{
+    setBtnLoading(true)
+    scStepViewModal.getpraticalGradeManageId(scStepViewModal.stepData2.prcaticalData.code).then(res=>{
+      setModalParams(res.data)
+      setModalTitle('预览')
+      setModalVisible(true)
+      setBtnLoading(false)
+    })
+    
+  }
+  const handleModelOk = ()=>{
+    setModalVisible(false)
+    console.log('ddd');
+    
+  }
 
   return (
     <Wrapper>
@@ -225,17 +246,26 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
-
-          <tr>
-            <td className="key">评分项上传：</td>
-            <td className="value" />
-          </tr>
-          <tr>
-            <td className="key" />
-            <td className="value">
-              <ShowTable />
-            </td>
-          </tr>
+          {appStore.HOSPITAL_ID == 'whyx' ? 
+              <tr>
+                <td className="key">实操评分管理表：</td>
+                <td className="value">{scStepViewModal.stepData2.selectPrcaticalOperation}<Button onClick={handlePreview} loading={btnLoading} >预览</Button></td>
+              </tr> :
+              (
+                <div>
+                  <tr>
+                    <td className="key">评分项上传：</td>
+                    <td className="value" />
+                  </tr>
+                  <tr>
+                    <td className="key" />
+                    <td className="value">
+                      <ShowTable />
+                    </td>
+                  </tr>
+                </div>
+              )
+            }
           <tr>
             <td className="key">通知设置：</td>
             <td className="value">
@@ -265,6 +295,13 @@ export default observer(function Step5() {
           </tr>
         </tbody>
       </table>
+      <PracticalPreview 
+        modalVisible={modalVisible}
+        modalTitle={modalTitle}
+        params={modalParams}
+        onCancel={() => { setModalVisible(false)}}
+        onOk={handleModelOk}
+        ></PracticalPreview>
     </Wrapper>
   );
 });

@@ -56,6 +56,8 @@ export default observer(function NurseFilesView(props: Props) {
   const OnTheJobComponent = (() => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
+      case 'lyyz':
+      case 'qhwy':
         return NurseFilesListView_wh;
       case "hj":
         return NurseFilesListView_hj;
@@ -568,6 +570,8 @@ export default observer(function NurseFilesView(props: Props) {
   const menuConfig = () => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
+      case 'lyyz':
+      case 'qhwy':
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;

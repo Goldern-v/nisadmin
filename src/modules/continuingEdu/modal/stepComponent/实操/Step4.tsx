@@ -6,6 +6,7 @@ import {
   Input,
   Checkbox,
   InputNumber,
+  Select,
 } from "antd";
 import Form from "src/components/Form";
 import { scStepViewModal as stepViewModal } from "./SCStepViewModal";
@@ -15,12 +16,17 @@ import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import { appStore } from "src/stores";
+import service from "src/services/api";
+
+
 
 export interface Props { }
 
 export default observer(function Step4() {
   const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
+  const [pratical,setPratical] = useState([])
+  const [selectLoading,setSelectLoading] = useState(false)
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
 
@@ -37,10 +43,38 @@ export default observer(function Step4() {
       }
     }
     Object.assign(stepViewModal.stepData2, data);
-  };
+  };  
+  const handleonvaluechange = () =>{
+    if(appStore.HOSPITAL_ID == "whyx"){
+      let list = pratical.find((item:any)=>{
+        return stepViewModal.stepData2.adminTable == item.code
+      }) 
+      if(refForm.current){
+        refForm.current.setField("prcaticalData",list)
+        refForm.current.setField("selectPrcaticalOperation",stepViewModal.stepData2.prcaticalData.value)
+        refForm.current.setField("totalScores",stepViewModal.stepData2.prcaticalData.totalScore)
+      }
+    }
+  }
 
   useLayoutEffect(() => {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
+    service.commonApiService.getPraticalGradeManage().then(res =>{
+      let praticalList:any= []
+      res.data.list.map((item:any) =>{
+        let operObj = {
+          value:`${item.paperName}/${item.chapter}`,
+          code: item.id,
+          paperName:item.paperName,
+          chapter:item.chapter,
+          totalScore:item.totalScore,
+        }
+        praticalList.push(operObj)
+      })
+      if(praticalList.length){
+        setPratical(praticalList);
+      }
+    })
   }, []);
 
   return (
@@ -90,9 +124,18 @@ export default observer(function Step4() {
             </Col>
           ) : (
             <Col span={24}>
+              {appStore.HOSPITAL_ID !== "whyx" ?
               <Form.Field label={`上传题库`} name="scoreItems">
                 <UpdateTable type="sc" />
               </Form.Field>
+              :<Form.Field label={`选择实操评分管理表`} name="adminTable" onValueChange={handleonvaluechange}>
+              <Select>
+                {pratical.length && pratical.map((item:any,index:any) => (
+                  <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+              }       
             </Col>
           )}
         </Row>

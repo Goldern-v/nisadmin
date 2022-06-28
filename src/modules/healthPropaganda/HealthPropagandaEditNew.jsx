@@ -75,10 +75,17 @@ export default observer(function HealthPropagandaEditNew(props) {
   }
 
   const initData = () => {
-    if (match.params.id) {
+    let id = match.params.id
+    // 肺科正式的id有/,match.params.id 拿不到/及后面的数据
+    if (['whfk'].includes(appStore.HOSPITAL_ID)) {
+      let text = window.location.href.split('healthPropagandaEditNew/')[1]
+      text && (id = text)
+    }
+    
+    if (id) {
       setEditorLaoding(true)
       Promise.all([
-        healthProagandaService.getContent(match.params.id),
+        healthProagandaService.getContent(id),
         healthProagandaService.getTypeList()
       ])
         .then((res) => {

@@ -148,6 +148,19 @@ export const TableCon = styled.div`
       }
     }
   }
+  &.whyxTable {
+    .ant-pagination {
+      margin-right: 110px !important;
+    }
+  }
+  .search-box {
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+    .ant-input-number {
+      width: 100px;
+    }
+  }
 `;
 
 export const ThBox = styled.div`

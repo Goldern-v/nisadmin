@@ -514,7 +514,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = appStore.HOSPITAL_ID === 'wh'
+  let isWh = ['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",
@@ -582,13 +582,17 @@ export default function MainBox() {
     }
   });
 
-  emitter.addListener("更新班次列表", () => {
-    getShiftList();
+  emitter.addListener("更新班次列表", (data?:any) => {
+    getShiftList(data||'');
   });
-  const getShiftList = () => {
+  const getShiftList = (data?:any) => {
     let deptCode = scheduleStore.getDeptCode(); // '2508' ||
     setTableLoading(true);
-    service.scheduleShiftApiService.getShiftListByCode(deptCode).then(res => {
+    let obj = {
+      deptCode,
+      ...data
+    }
+    service.scheduleShiftApiService.getShiftListByCode(obj).then(res => {
       setTableLoading(false);
 
       let oneUser = new Object();

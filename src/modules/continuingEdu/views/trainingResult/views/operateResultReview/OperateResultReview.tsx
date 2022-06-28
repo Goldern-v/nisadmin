@@ -200,12 +200,16 @@ export default observer(function OperateResultReview() {
   ]
 
   const handleViewScore = (record: any) => {
+    console.log(record);
+    
     if (!record.signInTime) return
 
     //查看考核成绩
     examScoreEdit.show({
       cetpId: appStore.queryObj.id,
       empNo: record.empNo,
+      empName: record.empName,
+      isValidResult: record.isValidResult,
       type: editable ? 'edit' : 'view',
       onOkCallBack: () => {
         trainingResultModel.getTableData()

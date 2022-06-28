@@ -42,3 +42,7 @@
   "body": "const ${1:Wrapper} = styled.${2:div}`$3`"
 },
 ```
+
+## 配置新医院， /home路由白屏
+
+需要在src/configs/routerConfig/specialModule.ts 页面进行新医院的配置

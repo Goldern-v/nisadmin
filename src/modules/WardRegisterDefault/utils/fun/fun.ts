@@ -625,7 +625,7 @@ export function getFun(context: any) {
           selectedRowKeys.indexOf(item.key) >= 0)
         // 自定义签名不需要复制
         let customSignObj: Record<string,any> = {}
-        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
           customSign.map((v:any) => {
             customSignObj[v.itemCode] = ''
           })
@@ -779,7 +779,6 @@ export function getFun(context: any) {
       return
     }
     let selectedRows = dataSource.filter((item: any) =>selectedRowKeys.indexOf(item.key) >= 0)
-    console.log(selectedRows);
     
     let newRows = dataSource.map((item: any) => {
       let newItem = JSON.parse(JSON.stringify(item))
@@ -798,6 +797,64 @@ export function getFun(context: any) {
     setTimeout(() => {
       setDataSource(newDataSource)
     })
+  }
+
+  /**综合设置 */
+  const handleGeneralSet = async (data: any) => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+    let selectedRows = dataSource.filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+
+    // 复制
+    let newRows = []
+    if (data.copy) {
+      newRows = selectedRows.map((item: any) => {
+        let newItem = JSON.parse(JSON.stringify(item))
+        delete newItem.id
+        newItem['班次'] = data.type ? data.type : newItem['班次']
+        newItem['护士签名'] = data.sign ? authStore.user?.empName : ""
+        return {
+          ...newItem,
+          recordDate: data.time? moment(data.time).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+          signerName: '',
+          signerNo: '',
+          auditorName: '',
+          auditorNo: ''
+        }
+      })
+    }
+    selectedRows = [...newRows,...selectedRows]
+    setPageLoading(true)
+    try {
+      const res1 = await wardRegisterDefaultService.saveAndSignAll(
+        registerCode,
+        selectedBlockId,
+        selectedRows.map((v: any) => {
+          // if (data.type) {
+          //   v['班次'] = data.type
+          // }
+          // if (data.time) {
+          //   v['recordDate'] = moment(data.time).format('YYYY-MM-DD')
+          // }
+          if (!data.copy) {
+            v['护士签名'] = data.sign ? authStore.user?.empName : ""
+            v['班次'] = data.type
+          }
+          return {
+            ...v,
+          }
+        })
+      )
+      if (res1.code == '200') {
+        message.success('修改成功')
+        getPage()
+        setPageLoading(false)
+      }
+    } catch (e) {
+      setPageLoading(false)
+    }
   }
 
   return {
@@ -819,7 +876,8 @@ export function getFun(context: any) {
     deleteSelectedRows,
     getMsgList,
     handleBatchSign,
-    handleBatchSet
+    handleBatchSet,
+    handleGeneralSet
   };
 }
 /**获取当月最后一周的日期 */
