@@ -1,15 +1,15 @@
-import { Button, DatePicker, Icon, Input, Radio, Select } from "antd";
-import { observer } from "mobx-react";
-import React, { useState } from "react";
-import { PageHeader, PageTitle, Place } from "src/components/common";
-import styled from "styled-components";
-import moment from "moment";
-import { MonthList } from "../../utils/toolCon";
-import YearPicker from "src/components/YearPicker";
-import { getTempName } from "../analysisWhyx/utils";
-import { analysisService } from "../analysisWhyx/api";
+import moment from 'moment'
+import YearPicker from 'src/components/YearPicker'
+import styled from 'styled-components'
+import React, { useState } from 'react'
+import { Button, DatePicker, Icon, Input, Radio, Select } from 'antd'
+import { observer } from 'mobx-react'
+import { PageHeader, PageTitle, Place } from 'src/components/common'
 
-
+import CreateAnalysisModal from './components/CreateAnalysisModal'
+import { MonthList } from '../../utils/toolCon'
+import { getTempName } from '../analysisWhyx/utils'
+import { analysisService } from '../analysisWhyx/api'
 
 /**
  * 三级质控问题分析改进 by亚心
@@ -23,24 +23,33 @@ export default observer(function QcThreeProblem(props) {
   const [loading, setLoading] = useState(false);
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [groupRoleListSelf, setGroupRoleListSelf] = useState([]);
-  const [data, setData] = useState<Record<string, any>>({})
+  const [data, setData] = useState<Record<string, any>>({});
   const columns = [
-    'A级质量问题及科室',
-    '原因分析',
-    '改进措施',
-    '评价效果',
-    'mainProblem1','causeAnalysis1','correctiveWay1','evaluation1',
-    'B—>A级质量问题及科室',
-    '原因分析',
-    '改进措施',
-    '评价效果',
-    'mainProblem2','causeAnalysis2','correctiveWay2','evaluation2',
-    '其他共性问题',
-    '原因分析',
-    '改进措施',
-    '评价效果',
-    'mainProblem3','causeAnalysis3','correctiveWay3','evaluation3',
-  ]
+    "A级质量问题及科室",
+    "原因分析",
+    "改进措施",
+    "评价效果",
+    "mainProblem1",
+    "causeAnalysis1",
+    "correctiveWay1",
+    "evaluation1",
+    "B—>A级质量问题及科室",
+    "原因分析",
+    "改进措施",
+    "评价效果",
+    "mainProblem2",
+    "causeAnalysis2",
+    "correctiveWay2",
+    "evaluation2",
+    "其他共性问题",
+    "原因分析",
+    "改进措施",
+    "评价效果",
+    "mainProblem3",
+    "causeAnalysis3",
+    "correctiveWay3",
+    "evaluation3",
+  ];
   const handleYearClear = (e: any) => {
     console.log("test-e", e);
     setQuery({ ...query, reportYear: e });
@@ -63,15 +72,43 @@ export default observer(function QcThreeProblem(props) {
     analysisService
       .getOneReport(reqQuery)
       .then((res: any) => {
-        console.log('test-res', res)
+        console.log("test-res", res);
+        setLoading(false)
       })
-      .catch(e => {})
+      .catch((e) => setLoading(false));
   };
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
   const handleExport = () => {};
 
+  const handleCreateOk = (params: any) => {
+    if (!params.reportName) return
+    console.log('test-params', params)
+    setLoading(true)
+    analysisService
+      .createReport({
+        ...params,
+        reportLevel: 3,
+        templateName: getTempName(3.3),
+      })
+      .then((res) => {
+        if (res.code == '200') {
+          let { reportYear, reportMonth } = params
+          setLoading(false)
+
+          setQuery({
+            reportYear,
+            reportMonth
+          })
+          return
+        }
+        setLoading(false)
+      })
+      .catch((err) => {
+        setLoading(false)
+      });
+  };
 
   return (
     <Wrapper>
@@ -79,8 +116,12 @@ export default observer(function QcThreeProblem(props) {
         <PageTitle>三级质控问题分析改进</PageTitle>
         <Place />
         <div className="label">报告年度：</div>
-        <YearPicker style={{ width: 100 }} value={query.reportYear} onChange={handleYearClear} />
-        
+        <YearPicker
+          style={{ width: 100 }}
+          value={query.reportYear}
+          onChange={handleYearClear}
+        />
+
         <div className="label">报告月份：</div>
         <Select
           style={{ width: 100 }}
@@ -92,7 +133,7 @@ export default observer(function QcThreeProblem(props) {
         >
           {MonthList()}
         </Select>
-        
+
         <Button onClick={handleSearch}>查询</Button>
 
         <Button onClick={handleCreate} type="primary">
@@ -108,21 +149,37 @@ export default observer(function QcThreeProblem(props) {
         </Button>
       </PageHeader>
       {/* {!data.id && <div className="contain--empty">该月份没有报告，请创建报告</div>} */}
-      {!data.id && <Main>
-        <div className="contain">
-          <div className="contain__title">1234</div>
-          <div className="contain__main">
-            {
-              columns.map((v:any, i: number) => {
+      {!data.id && (
+        <Main>
+          <div className="contain">
+            <div className="contain__title">1234</div>
+            <div className="contain__main">
+              {columns.map((v: any, i: number) => {
                 if (i % 8 <= 3) {
-                  return <div className="contain__main__title">{v}</div>
+                  return (
+                    <div className="contain__main__title" key={i}>
+                      {v}
+                    </div>
+                  );
                 }
-                return <div className="contain__main__ipt">{data[v] || 'dknasrdshdjkasfvs\n健康的哈说\n过\n的话顺风车AHSK金打个就腹背受敌想见你，传达\n室\n刚恢\n复健康妇姑荷箪食进口车打法上半年的飞机撒是否\n会加快打造健康发卡机是'}</div>
-              })
-            }
+                return (
+                  <div className="contain__main__ipt" key={i}>
+                    {data[v]}
+                  </div>
+                );
+              })}
+            </div>
+            <div>整改方式选项：①发放纠正预防措施报告     ②下月再次跟进     ③现场立即纠正 （填写说明：针对问题选择相应整改方式，注明跟进内容。）</div>
           </div>
-        </div>
-      </Main>}
+        </Main>
+      )}
+      <CreateAnalysisModal
+        allowClear={true}
+        visible={createAnalysisVisible}
+        loading={loading}
+        onCancel={() => setCreateAnalysisVisible(false)}
+        onOk={handleCreateOk}
+      />
     </Wrapper>
   );
 });
@@ -142,7 +199,7 @@ const Main = styled.div`
   .contain {
     margin: 0px 15px 15px;
     padding: 10px;
-    min-height: 100%;
+    min-height: calc(100% - 15px);
     background: #fff;
 
     .contain__title {
@@ -165,9 +222,9 @@ const Main = styled.div`
         font-size: 14px;
         padding: 4px;
         line-height: 20px;
-        flex-basis: 25%;  
+        flex-basis: 25%;
         border: 1px solid #eeeeee;
-        min-height: 128px;
+        min-height: 148px;
         white-space: pre-wrap;
         word-break: break-all;
       }
