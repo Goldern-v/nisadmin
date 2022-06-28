@@ -64,5 +64,10 @@ export default class AnalysisService extends BaseApiService {
   public createReport(params: createReportIn) {
   return this.post(`${this.path}createReport`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
   }
-
+  /**查询单条报告 */
+  public getOneReport(params: getPageIn) {
+  return this.post(`${this.path}getOneReport`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
+  }
 }
+
+export const analysisService = new AnalysisService()

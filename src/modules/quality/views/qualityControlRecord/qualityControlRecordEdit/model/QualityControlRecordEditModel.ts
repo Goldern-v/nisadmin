@@ -107,6 +107,7 @@ class QualityControlRecordEditModel {
     bedNurseList: [] as BedNurse[],//管床护士
     wardCode: '', //科室编码
     bedLabel: '', //床号
+    patientName:'',//质控病人
     inpNo: '', //入院号
     followEvaluate: false, //是否追踪评价
     followEvaluateDate: '', //追踪评价日期
@@ -459,6 +460,7 @@ class QualityControlRecordEditModel {
       bedLabel,
       inpNo,
       followEvaluate,
+      patientName,
       followEvaluateDate,
       bedNurseList,
       userList,
@@ -512,7 +514,7 @@ class QualityControlRecordEditModel {
       wardCode,
       evalDate,
       patientId: '',
-      patientName: '',
+      patientName: patientName || '',
       visitId: '22',
       bedLabel,
       inpNo,

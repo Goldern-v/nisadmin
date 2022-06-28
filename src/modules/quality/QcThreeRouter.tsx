@@ -41,6 +41,7 @@ import AdministrativeWard from "./views/administrativeWard";
 import SatisfactionAnalysis from "./views/satisfactionAnalysis";
 import qcNursingAnalysis from "./views/qcNursingAnalysis";
 import qcThreeResult from "./views/qcThreeResult/index"
+import qcThreeProblem from "./views/qcThreeProblem/index"
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
@@ -175,6 +176,12 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/qcThreeResult",
     component: qcThreeResult
   }
+  const route_qcThreeProblem = {
+    title: "三级质控问题分析改进",
+    icon: <JCTJ/>,
+    path: "/qcThree/qcThreeProblem",
+    component: qcThreeProblem
+  }
 
   let extra_menu: any = appStore.hisMatch({
     map: {
@@ -249,10 +256,11 @@ export default function QcThreeRouter(props: Props) {
         route_福清三级质控问题原因措施汇总,
       ],
       whyx: [
-        route_三级质控月度报告,
-        route_三级质控汇总报告,
-        route_三级质控问题汇总,
-        // route_qcThreeResult,
+        // route_三级质控月度报告,
+        // route_三级质控汇总报告,
+        // route_三级质控问题汇总,
+        route_qcThreeResult,
+        route_qcThreeProblem,
       ],
       other: [
         route_护理质量巡查情况汇总表_nys,

@@ -176,7 +176,6 @@ export const obj = {
     try {
       const res = await Promise.all(proList)
       analysisModal.clearRenderData()
-      console.log('test-1', 1)
       return res
     } catch (e) {
     }

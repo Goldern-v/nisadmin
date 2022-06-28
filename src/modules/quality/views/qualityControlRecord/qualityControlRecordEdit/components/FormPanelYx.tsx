@@ -189,6 +189,20 @@ export default observer(function FormPannel() {
           </div>
         </div>
       }
+      {baseInfo.isBedNumber !== '否' &&
+        <div className="item">
+          <div className="label">病人姓名:</div>
+          <div className={checkClass('patientName')}>
+            <Input
+              placeholder="请输入病人姓名"
+              value={master.patientName}
+              onChange={(e: any) => {
+                qcModel.setMasterErrObj('patientName', false)
+                qcModel.setMaster({ ...master, patientName: e.target.value })
+              }} />
+          </div>
+        </div>
+      }
       <div className="item">
         <div className="label">合格率:</div>
         <Input className="content" disabled value={qcModel.yxGradeObj.rate + '%'} />
