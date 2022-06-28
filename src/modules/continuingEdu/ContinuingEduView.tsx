@@ -962,14 +962,14 @@ export default function ContinuingEdu(props: Props) {
         })
       ],
     },
-    {
-      title: "实操评分管理",
-      icon: <TKGL />,
-      path: "/continuingEdu/PracticalOperationScore",
-      component: PracticalOperationScore,
-      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-        
-    },
+    // {
+    //   title: "实操评分管理",
+    //   icon: <TKGL />,
+    //   path: "/continuingEdu/PracticalOperationScore",
+    //   component: PracticalOperationScore,
+    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+
+    // },
 
     ...appStore.hisMatch({
       map: {
