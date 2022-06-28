@@ -28,6 +28,7 @@ class QualityControlRecordVM {
   @observable public readWay: any = 1
   @observable public allData: any = {}
   @observable public qcCode: any = ''
+  @observable public  creatorName: any = ''
 
   async init(level: number) {
     this.filterForm = ''
@@ -38,6 +39,7 @@ class QualityControlRecordVM {
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.allData = {}
     this.qcCode = ''
+    this.creatorName= ''
     let dictChainNodeFn: any = null
     let fn = appStore.hisMatch({
       map: {
