@@ -1,4 +1,3 @@
-import { log } from "console";
 import { observable, computed, action } from "mobx";
 import { operationScoreApi } from './api/OperationScore'
 import { fileDownload } from "src/utils/file/file";

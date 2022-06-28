@@ -43,19 +43,18 @@ export default observer(function Step4() {
       }
     }
     Object.assign(stepViewModal.stepData2, data);
-    
   };  
   const handleonvaluechange = () =>{
     if(appStore.HOSPITAL_ID == "whyx"){
-      stepViewModal.stepData2.prcaticalData = pratical.find((item:any)=>{
+      let list = pratical.find((item:any)=>{
         return stepViewModal.stepData2.adminTable == item.code
       }) 
-      if(stepViewModal.stepData2.prcaticalData){
-        stepViewModal.stepData2.totalScores = stepViewModal.stepData2.prcaticalData.totalScore
-        stepViewModal.stepData2.selectPrcaticalOperation = stepViewModal.stepData2.prcaticalData.value
+      if(refForm.current){
+        refForm.current.setField("prcaticalData",list)
+        refForm.current.setField("selectPrcaticalOperation",stepViewModal.stepData2.prcaticalData.value)
+        refForm.current.setField("totalScores",stepViewModal.stepData2.prcaticalData.totalScore)
       }
     }
-    refForm.current && refForm.current.setFields(stepViewModal.stepData2);
   }
 
   useLayoutEffect(() => {

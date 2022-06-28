@@ -13,7 +13,11 @@ interface props {
 }
 export default observer(function PracticalImportModal(props: props) {
   const { modalVisible, modalTitle, params, onCancel, onOk } = props;
- 
+  useEffect(()=>{
+    if(params.latPraticalGradeSubjectDtoList){
+      params.latPraticalGradeSubjectDtoList = params.latPraticalGradeSubjectDtoList.sort((a:any,b:any)=> a.sort - b.sort)
+    }
+  },[params])
   const handleOk = () => {
     onOk && onOk(params);
     params.value=null;
@@ -47,11 +51,14 @@ export default observer(function PracticalImportModal(props: props) {
       footer={[
         <Footer key={15}>
           {modalTitle != "预览" && (
-            <Button type="primary" onClick={handleOk}>
+            <div>
+             <Button type="primary" onClick={handleOk}>
               确认
-            </Button>
+             </Button>
+             <Button onClick={handleCancel}>取消</Button>
+            </div>
           )}
-          <Button onClick={handleCancel}>取消</Button>
+          <Button type="primary" onClick={handleCancel}>关闭</Button>
         </Footer>,
       ]}
     >

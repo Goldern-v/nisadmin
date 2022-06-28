@@ -109,7 +109,9 @@ class StepViewModal {
       if(type === "实操"){
         const stepData2 = this.getCurrentStepViewModal
         ? this.getCurrentStepViewModal.stepData2
-        : {};        
+        : {};    
+        console.log(stepData2.prcaticalData.code);
+            
         if(!stepData2.prcaticalData.code){// 实操评分表
           return false
         }

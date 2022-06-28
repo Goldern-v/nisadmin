@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import QuestionList from './QuestionList'
 import AwnserInfo from './AwnserInfo'
 import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
+import { appStore } from 'src/stores'
 export interface Props extends ModalComponentProps {
   id?: number | string, //教学计划ceptId
   teachingMethodName?: string, //教学类型名称
@@ -131,9 +132,7 @@ export default observer(function TestPageModal(props: Props) {
     width={hideAnwserInfo ? 900 : 1200}
     visible={visible}
     onCancel={onCancel}
-    footer={[
-      <Button type='primary' onClick={handleExportWord}>导出</Button>
-    ]}
+    footer={appStore.HOSPITAL_ID == 'fsxt' ? [<Button type='primary' onClick={handleExportWord}>导出</Button>]:[]}
     bodyStyle={{ padding: 0 }}
     title={`${teachingMethodName} ${title}`}
     confirmLoading={loading}>
