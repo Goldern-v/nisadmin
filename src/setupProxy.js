@@ -124,7 +124,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // 武汉市肺科医院
     case "whfk":
       return "http://192.168.1.54:9884";
-    
+    //南方中西医
+    case "nfzxy":
+      return "http://218.107.37.134:9091"   //正式
     default:
       return "http://192.168.1.54:9866";
   }
