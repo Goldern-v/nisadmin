@@ -82,6 +82,18 @@ export default observer(function BadEventNewList() {
       align: "left",
       width: 160
     },
+    ...appStore.hisMatch({
+      map: {
+        nys: [{
+          title: "患者姓名",
+          dataIndex: "name",
+          key: "name",
+          align: "center",
+          width: 80
+        }],
+        other: []
+      }
+    }),
     {
       title: "科室",
       dataIndex: "deptName",

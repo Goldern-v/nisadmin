@@ -56,16 +56,17 @@ export default observer(function FishBon(props: Props) {
     // 限制行数，字数
     const index = indexObj.findIndex(v => v == curVal.key)
     const maxLen = [16, 16, 20, 26, 26][index]
+    const maxLine = 8
     let {value} = e.target
     const lineList = value.split('\n')
-    if (lineList.length > 6) return
+    if (lineList.length > maxLine) return
     else {
       let len = 0
       lineList.map((v:string) => {
         const vLen = getCodeLength(v)
         len += Math.ceil(vLen / maxLen)
       })
-      if (len > 6) return
+      if (len > maxLine) return
     }
     setCurVal({ ...curVal, value})
     setObj({ ...obj, [curVal.key]: value})
@@ -129,7 +130,7 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
     flex-wrap: wrap;
     position: relative;
     .body-item {
-      height: 150px;
+      height: 165px;
       width: calc(100% / 3 + 60px);
       margin-left: -60px;
       position: relative;
@@ -137,7 +138,7 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
         white-space: pre-line;
         padding: 30px 0 5px;
         font-size: 13px;
-        line-height: 17px;
+        line-height: 16px;
         height: 100%;
         box-sizing: border-box;
         cursor: pointer;
@@ -146,7 +147,7 @@ const Wrapper = styled.div<{boneTitle: string[]}>`
 
     .body-bone {
       float: left;
-      height: 150px;
+      height: 165px;
       width: 60px;
       shape-outside: polygon(0 0, 2px 0,100% 100%,calc(100% - 2px) 100%, 0 0);
       &:first-child {

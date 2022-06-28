@@ -514,7 +514,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = appStore.HOSPITAL_ID === 'wh'
+  let isWh = ['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",

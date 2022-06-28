@@ -747,17 +747,19 @@ export default observer(function 敏感指标登记本(props: Props) {
   let handlePer = (arr: string[], data: any) => {
     let hours: any = ''
     if (data[arr[0]] && data[arr[1]]) {
-      let startDate = moment(data[arr[0]])
-      let endDate = moment(data[arr[1]])
+      let startDate = moment(moment(data[arr[0]]).format('YYYY-MM-DD HH:MM'))
+      let endDate = moment(moment(data[arr[1]]).format('YYYY-MM-DD HH:MM'))
       const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
-      hours = Math.floor(m / 30) * 0.5 +'小时';
+      hours = Math.floor(m / 30) * 0.5 + '小时';
+      console.log(startDate,endDate);
+      
     }
     data[arr[2]] = String(hours)
   }
   const watchRecordSeries = {
-    '起始时间': ['起始时间', '终止时间', '消毒时长（h）'],
-    '终止时间': ['起始时间', '终止时间', '消毒时长（h）'],
-    '消毒时长（h）': ['起始时间', '终止时间', '消毒时长（h）'],
+    '起始时间': ['起始时间', '终止时间', '消毒时长'],
+    '终止时间': ['起始时间', '终止时间', '消毒时长'],
+    '消毒时长（h）': ['起始时间', '终止时间', '消毒时长'],
   }
   const watchRecord = (value: any, data: any) => {
     let key = value
@@ -835,7 +837,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                       {item.itemCode}签名
                   </Button>
                 ))}
-                {customBatch && customBatch.map((item: any) => (
+                {/* {customBatch && customBatch.map((item: any) => (
                   <Button
                     key={item.itemCode}
                     disabled={
@@ -846,7 +848,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                     onClick={() => {setShift()}}>
                       批量修改班次
                   </Button>
-                ))}
+                ))} */}
                 {
                   general && <Button
                     disabled={
@@ -855,7 +857,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                     }
                     type="primary"
                     onClick={() => {setGeneral()}}>
-                      批量复制签名
+                      批量修改
                   </Button>
                 }
               </Fragment>
@@ -882,7 +884,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         })
       }
       
-      {isWhyx ? (
+      {isWhyx && !general ? (
         <Button
           disabled={
             (pageLoading ||
@@ -891,7 +893,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           type="primary"
           onClick={() => handleCopyCreateRow()}>
           复制新增
-        </Button>):''}
+        </Button>):""}
         <Button
           disabled={
             pageLoading ||
@@ -1122,9 +1124,6 @@ export default observer(function 敏感指标登记本(props: Props) {
                   setPageOptions({ ...pageOptions, pageIndex })
                 },
                 onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                  console.log('pageIndex',pageIndex);
-                  console.log('pageSize',pageSize);
-                  
                   setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
                 },
                 pageSizeOptions: ['20', '30', '40', '50', '100'],
@@ -1149,7 +1148,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 map: {
                   'whyx':<div className="search-box">
                     <InputNumber onChange={(value) => {
-                      setPageOptions({ ...pageOptions, pageSize:value, pageIndex: 1 })
+                      setPageOptions({ ...pageOptions, pageSize:value || 20, pageIndex: 1 })
                     }} placeholder="请输入条数" />
                 </div>
                 },

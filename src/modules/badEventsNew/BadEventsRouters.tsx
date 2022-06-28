@@ -21,6 +21,7 @@ import BadEventReportListNew_gzsrm from './views/BadEventReportListNew_gzsrm/Bad
 import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
 import BadEventSummary from "./views/BadEventSummary";
 import BadEventReportSummary from "./views/BadEventReportSummary";
+import BadEventSummaryGxjb from './views/BadEventSummary_gxjb'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -99,7 +100,19 @@ export default function BadEventsRouters(props: Props) {
       map: {
         gzsrm: [],
         lcey: [],
-        gxjb: [],
+        gxjb: [
+          // {
+          //   title: '不良事件汇总',
+          //   path: `${baseRouter}/summary`,
+          //   children: [
+          //     {
+          //       title: '不良事件分类汇总表',
+          //       path: `${baseRouter}/summary/classify`,
+          //       component: BadEventSummaryGxjb
+          //     }
+          //   ]
+          // }
+        ],
         fqfybjy: [
           {
             title: '不良事件统计',

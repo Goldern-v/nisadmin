@@ -1,6 +1,7 @@
 import { RangePickerValue } from "antd/lib/date-picker/interface";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import moment from 'moment'
+import { appStore } from "src/stores";
 
 export interface iSearchForm {
   empName?: string,
@@ -22,10 +23,17 @@ export class SearchForm implements iSearchForm {
   pageSize?: number
 
   constructor() {
-    this.date = [
-      moment(moment().format('YYYY-MM-01')),
-      moment(moment().add(1, 'year').format('YYYY-MM-01'))
-    ]
+    if (['jmfy'].includes(appStore.HOSPITAL_ID)) {
+      this.date = [
+        moment(moment().format('YYYY-MM-DD')),
+        moment(moment().format('YYYY-MM-DD'))
+      ]
+    } else {      
+      this.date = [
+        moment(moment().format('YYYY-MM-01')),
+        moment(moment().add(1, 'year').format('YYYY-MM-01'))
+      ]
+    }
     this.status = ''
     this.deliveryMode = ''
     this.pageIndex = 1

@@ -320,7 +320,11 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
               <div className="itemCon" key={itemIndex}>
                 <div className="itemTitleCon">
                   {item.isSensitiveIndex === '是' && <Icon type="star" theme='filled'/>}
-                  {item.itemShowCode} {item.qcItemName}
+                  {item.itemShowCode}
+                  {item.problemLevel && (
+                    <span style={{ color: '#469b30' }}>（{item.problemLevel}）</span>
+                  )}
+                  {item.qcItemName}
                 </div>
                 <div className="itemMidCon">
                   <Radio.Group

@@ -95,7 +95,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
