@@ -36,14 +36,14 @@ const columns: ColumnProps<any>[] = [
     width: 50
   },
   {
-    title: "科室",
+    title: "科室名称",
     dataIndex: "deptName",
     key: "deptName",
     width: 120,
     align: "center"
   },
   {
-    title: "员工号",
+    title: "工号",
     dataIndex: "empNo",
     key: "empNo",
     width: 70,
@@ -58,6 +58,13 @@ const columns: ColumnProps<any>[] = [
   },
 
   {
+    title: "年龄",
+    dataIndex: "age",
+    key: "age",
+    width: 50,
+    align: "center"
+  },
+  {
     title: "性别",
     dataIndex: "sex",
     key: "sex",
@@ -67,13 +74,6 @@ const columns: ColumnProps<any>[] = [
       return sex === "0" ? "男" : sex === "1" ? "女" : "";
     }
   },
-  {
-    title: "年龄",
-    dataIndex: "age",
-    key: "age",
-    width: 50,
-    align: "center"
-  },
   // {
   //   title: "职称",
   //   dataIndex: "newTitle",
@@ -81,20 +81,20 @@ const columns: ColumnProps<any>[] = [
   //   width: 90,
   //   align: "center"
   // },
-  {
-    title: "类型",
-    dataIndex: "nurseHierarchy",
-    key: "nurseHierarchy",
-    width: 70,
-    align: "center"
-  },
-  {
-    title: "职务",
-    dataIndex: "job",
-    key: "job",
-    width: 120,
-    align: "center"
-  },
+  // {
+  //   title: "类型",
+  //   dataIndex: "nurseHierarchy",
+  //   key: "nurseHierarchy",
+  //   width: 70,
+  //   align: "center"
+  // },
+  // {
+  //   title: "职务",
+  //   dataIndex: "job",
+  //   key: "job",
+  //   width: 120,
+  //   align: "center"
+  // },
   {
     title: "最高学历",
     dataIndex: "highestEducation",
@@ -109,20 +109,20 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: "center"
   },
-  {
-    title: "籍贯",
-    dataIndex: "nativePlace",
-    key: "nativePlace",
-    width: 100,
-    align: "center"
-  },
-  {
-    title: "民族",
-    dataIndex: "nation",
-    key: "nation",
-    width: 70,
-    align: "center"
-  },
+  // {
+  //   title: "籍贯",
+  //   dataIndex: "nativePlace",
+  //   key: "nativePlace",
+  //   width: 100,
+  //   align: "center"
+  // },
+  // {
+  //   title: "民族",
+  //   dataIndex: "nation",
+  //   key: "nation",
+  //   width: 70,
+  //   align: "center"
+  // },
   // {
   //   title: "执业证书编号",
   //   dataIndex: "zyzsNumber",
@@ -137,39 +137,46 @@ const columns: ColumnProps<any>[] = [
   //   width: 120,
   //   align: "center"
   // },
+  // {
+  //   title: "来院工作时间",
+  //   dataIndex: "goHospitalWorkDate",
+  //   key: "goHospitalWorkDate",
+  //   width: 120,
+  //   align: "center"
+  // },
+  // {
+  //   title: "工作编制",
+  //   dataIndex: "workConversion",
+  //   key: "workConversion",
+  //   width: 80,
+  //   align: "center"
+  // },
+  // {
+  //   title: "纳编时间",
+  //   dataIndex: "enrolDate",
+  //   key: "enrolDate",
+  //   width: 120,
+  //   align: "center"
+  // },
+  // {
+  //   title: "是否返聘员工",
+  //   dataIndex: "hireEmployees",
+  //   key: "hireEmployees",
+  //   width: 60,
+  //   align: "center",
+  //   render: (text: any) => text == '1' ? '是' : '否'
+  // },
   {
-    title: "来院工作时间",
-    dataIndex: "goHospitalWorkDate",
-    key: "goHospitalWorkDate",
-    width: 120,
+    title: "身份证出生日期",
+    dataIndex: "birthday",
+    key: "birthday",
+    width: 100,
     align: "center"
-  },
-  {
-    title: "工作编制",
-    dataIndex: "workConversion",
-    key: "workConversion",
-    width: 80,
-    align: "center"
-  },
-  {
-    title: "纳编时间",
-    dataIndex: "enrolDate",
-    key: "enrolDate",
-    width: 120,
-    align: "center"
-  },
-  {
-    title: "是否返聘员工",
-    dataIndex: "hireEmployees",
-    key: "hireEmployees",
-    width: 60,
-    align: "center",
-    render: (text: any) => text == '1' ? '是' : '否'
   },
   {
     title: "身份证号",
     dataIndex: "cardNumber",
-    key: "cardNo",
+    key: "cardNumber",
     width: 100,
     align: "center"
   },
@@ -182,8 +189,22 @@ const columns: ColumnProps<any>[] = [
   },
   {
     title: "个人身份",
-    dataIndex: "grfs",
-    key: "grfs",
+    dataIndex: "grsf",
+    key: "grsf",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "参加工作时间",
+    dataIndex: "goWorkTime",
+    key: "goWorkTime",
+    width: 100,
+    align: "center"
+  },
+  {
+    title: "入职时间",
+    dataIndex: "goHospitalWorkDate",
+    key: "goHospitalWorkDate",
     width: 100,
     align: "center"
   },
