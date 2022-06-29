@@ -1,21 +1,21 @@
-import qs from "qs";
-import BaseTable from "src/components/BaseTable";
-import store from "src/stores";
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
-import { numberToArray } from "src/utils/array/array";
-import { observer } from "mobx-react-lite";
-import { message, Modal, Spin } from "antd";
-import { ColumnProps } from "antd/lib/table";
-import { theme } from "src/styles/theme";
+import qs from 'qs'
+import BaseTable from 'src/components/BaseTable'
+import store from 'src/stores'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { numberToArray } from 'src/utils/array/array'
+import { observer } from 'mobx-react-lite'
+import { message, Modal, Spin } from 'antd'
+import { ColumnProps } from 'antd/lib/table'
+import { theme } from 'src/styles/theme'
 
-import FilterCon from "./components/FilterCon";
-import NurseCard from "./components/NurseCard";
-import PaginationCon from "./components/PaginationCon";
-import SelectCon from "./components/SelectCon";
-import { nurseFilesService } from "../../services/NurseFilesService";
-import { nurseFilesListViewModel } from "./NurseFilesListViewModel";
+import FilterCon from './components/FilterCon'
+import NurseCard from './components/NurseCard'
+import PaginationCon from './components/PaginationCon'
+import SelectCon from './components/SelectCon'
+import { nurseFilesService } from '../../services/NurseFilesService'
+import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 
 export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
@@ -168,7 +168,7 @@ const columns: ColumnProps<any>[] = [
   },
   {
     title: "身份证号",
-    dataIndex: "cardNo",
+    dataIndex: "cardNumber",
     key: "cardNo",
     width: 100,
     align: "center"
