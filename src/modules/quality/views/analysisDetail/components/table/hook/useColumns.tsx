@@ -1,6 +1,6 @@
 import { ColumnProps } from "antd/es/table"
 import React, { useEffect, useState } from "react"
-import TableInput from 'src/modules/quality/components/editor/common/TableInput'
+import TableInput from '../../common/TableInput'
 /**
  * tempList 后端table模板
  * isEdit 是否编辑

@@ -53,6 +53,7 @@ export default observer(function Table(props: Props) {
 
 const Wrapper = styled.div`
   margin: 5px 50px;
+  overflow: auto;
   table {
     border-collapse: collapse;
     border-color: #cccccc;

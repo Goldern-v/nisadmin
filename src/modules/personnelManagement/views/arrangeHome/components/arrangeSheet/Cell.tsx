@@ -200,6 +200,21 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
+            'nfzxy': [
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加备注",
+                type: "text",
+                onClick: () => {
+                  addRemakeModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(value: any) {
+                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+                    }
+                  });
+                }
+              }
+            ],
             other: []
           }
         }),

@@ -104,6 +104,7 @@ export default observer(function QualityControlRecord() {
         beginDate: qualityControlRecordVM.filterDate[0].format("YYYY-MM-DD"),
         endDate: qualityControlRecordVM.filterDate[1].format("YYYY-MM-DD"),
         qcCode: qualityControlRecordVM.qcCode || "",
+        creatorName: qualityControlRecordVM.creatorName || "",
       };
       qualityControlRecordApi
         .instanceGetPageByCondition(sendData)

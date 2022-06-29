@@ -517,6 +517,18 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
             </React.Fragment>,
+            nfzxy: <React.Fragment>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={printRosterExcel}>
+                  打印排班
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
+                </Button>
+              </div>
+            </React.Fragment>,
             other: <div className="item">
               <Button className="statistics getExcel" onClick={exportExcel}>
                 导出科室

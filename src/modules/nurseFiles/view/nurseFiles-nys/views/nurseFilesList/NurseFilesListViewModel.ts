@@ -1,10 +1,8 @@
-import { fileDownload } from "src/utils/file/file";
-import { observable, computed, action, reaction } from "mobx";
-import {
-  nurseFilesService,
-  NurseQuery
-} from "../../services/NurseFilesService";
-import { authStore } from "src/stores";
+import { fileDownload } from 'src/utils/file/file'
+import { action, computed, observable, reaction } from 'mobx'
+import { authStore } from 'src/stores'
+
+import { nurseFilesService, NurseQuery } from '../../services/NurseFilesService'
 
 const kssxMap: any = {
   全部: "",
@@ -42,7 +40,7 @@ class NurseFilesListViewModel {
   @observable public goHospitalWorkEndYear: string = "";
 
   @observable public pageIndex: number = 1;
-  @observable public pageSize: number = 100;
+  @observable public pageSize: number = 10000;
   @observable public totalCount: number = 0;
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];

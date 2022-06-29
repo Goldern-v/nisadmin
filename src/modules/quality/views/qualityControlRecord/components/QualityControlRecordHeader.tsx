@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react-lite";
-import { Button, DatePicker, Modal, message } from "antd";
+import { Button, DatePicker, Tooltip , Input} from "antd";
 import DeptSelect from "src/components/DeptSelect";
 import FormSelect from "src/modules/quality/views/qualityControlRecord/components/common/FormSelect";
 import StateSelect from "src/modules/quality/views/qualityControlRecord/components/common/StateSelect";
@@ -123,9 +123,9 @@ export default observer(function TopCon(props: any) {
         setQcCodeList([{ qcCode: "", qcName: "全部" }, ...res.data]);
     } catch (err) {}
   };
-  const isWhyx = ["whyx",'gzsrm'].includes(appStore.HOSPITAL_ID);
+  const isWhyx = ["whyx"].includes(appStore.HOSPITAL_ID);
   const qcCodeCon = useCallback(() => {
-    if (isWhyx) {
+    if (isWhyx||['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       return (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>质控表单:</span>
@@ -136,19 +136,36 @@ export default observer(function TopCon(props: any) {
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }
-            style={{ width: 180 }}
+            dropdownMatchSelectWidth={false}
+            style={{ width: 200 }}
             value={qualityControlRecordVM.qcCode}
             onChange={(value: any) => {
               qualityControlRecordVM.qcCode = value;
               props.refreshData();
             }}
           >
+
             {qcCodeList.map((item: any) => (
-              <Select.Option value={item.qcCode} key={item.qcCode}>
+              <Select.Option value={item.qcCode} key={item.qcCode} style={{fontSize:'12px'}} title={item.qcName}>
                 {item.qcName}
-              </Select.Option>
+              </Select.Option >
+
             ))}
           </Select>
+        </React.Fragment>
+      );
+    }
+    return "";
+  }, [qcCodeList]);
+  const qcDeptCon = useCallback(() => {
+    if (isWhyx) {
+      return (
+        <React.Fragment>
+          <span style={{ margin: "0 3px 0 15px" }}>质控人员:</span>
+          <Input style={{width:'70px'}} value={qualityControlRecordVM.creatorName} onChange={(e: any) => {
+              qualityControlRecordVM.creatorName = e.target.value;
+              props.refreshData();
+            }}/>
         </React.Fragment>
       );
     }
@@ -180,6 +197,7 @@ export default observer(function TopCon(props: any) {
     <Wrapper>
       <PageTitle>{title()}</PageTitle>
       <Place />
+      {qcDeptCon()}
       {qcCodeCon()}
       <span style={{ margin: "0 3px 0 0" }}>日期:</span>
       <DatePicker.RangePicker
@@ -345,8 +363,14 @@ const Wrapper = styled.div`
     overflow: auto;
     min-width: 248px;
   }
+  .dropdown-style {
+    color:red;
+  }
 `;
 const QualityControlCon = styled.div`
   /* margin-left: 30px; */
   /* display: flex; */
+  .dropdown-style {
+    color:red;
+  }
 `;

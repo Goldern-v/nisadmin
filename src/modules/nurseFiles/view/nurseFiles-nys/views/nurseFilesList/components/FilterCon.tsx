@@ -1,13 +1,14 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
-import { observer } from "mobx-react-lite";
-import { Button, Tag, Row, Col, Select, Input } from "antd";
-import { theme } from "src/styles/theme";
-import Form from "src/components/Form";
-import YearTimeRangePicker from "src/components/YearTimeRangePicker";
-import { to } from "src/libs/fns";
-import service from "src/services/api";
+import Form from 'src/components/Form'
+import YearTimeRangePicker from 'src/components/YearTimeRangePicker'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Button, Col, Input, Row, Select, Tag } from 'antd'
+import { theme } from 'src/styles/theme'
+import { to } from 'src/libs/fns'
+
+import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 
 const FILTER_MAP: any = {
   学历: ["全部", "中专", "大专", "本科", "研究生", "博士"],
