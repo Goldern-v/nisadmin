@@ -50,15 +50,15 @@ export default observer(function PracticalImportModal(props: props) {
       width={800}
       footer={[
         <Footer key={15}>
-          {modalTitle != "预览" && (
+          {modalTitle != "预览" ? (
             <div>
              <Button type="primary" onClick={handleOk}>
               确认
              </Button>
              <Button onClick={handleCancel}>取消</Button>
             </div>
-          )}
-          <Button type="primary" onClick={handleCancel}>关闭</Button>
+          ): <Button type="primary" onClick={handleCancel}>关闭</Button>
+        }
         </Footer>,
       ]}
     >
@@ -179,10 +179,11 @@ export default observer(function PracticalImportModal(props: props) {
                             </td>
                           )}
                           <td className="td-center">
-                            {modalTitle == "预览" ? (
+                            {/* {modalTitle == "预览" ? (
                               itemDto.content
-                            ) : (
+                            ) : ( */}
                               <TextArea
+                                readOnly={modalTitle == "预览"}
                                 defaultValue={itemDto.content}
                                 className="td-center inp_textArea"
                                 onChange={(e) => {
@@ -197,7 +198,7 @@ export default observer(function PracticalImportModal(props: props) {
                                 }}
                                 autosize={{ minRows: 3 }}
                               />
-                            )}
+                            {/* )} */}
                           </td>
                           <td className="td-center">
                             {modalTitle == "预览" ? (

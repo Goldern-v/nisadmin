@@ -84,6 +84,7 @@ export default observer(function Notification() {
         let data: any =[
           {
             text: "下载",
+            function:getCurrDownloadTemplate,
           },
           {
             text: "预览",
@@ -197,6 +198,10 @@ export default observer(function Notification() {
     setModalVisible(false);
     practicalOperationScore.onload();
     setModalParams({});
+  }
+
+  const getCurrDownloadTemplate = (val:any) =>{
+    practicalOperationScore.getSeveralDownloadTemplate(val.id)
   }
 
   return (
