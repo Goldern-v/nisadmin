@@ -462,6 +462,406 @@ const getColumns = (cloneData: any, calBack: Function) => {
       ]
     },
     {
+      title: () => (<span>3-6备总消<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num36Bzx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num36Bzx}
+                onChange={(e: any) => {
+                  record.num36Bzx = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total36Bzx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total36Bzx}
+                onChange={(e: any) => {
+                  record.total36Bzx = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>8-12备/休<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num812Bx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num812Bx}
+                onChange={(e: any) => {
+                  record.num812Bx = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total812Bx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total812Bx}
+                onChange={(e: any) => {
+                  record.total812Bx = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>8-4/下夜<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num84Xy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num84Xy}
+                onChange={(e: any) => {
+                  record.num84Xy = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total84Xy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total84Xy}
+                onChange={(e: any) => {
+                  record.total84Xy = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>8-4/下待<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num84Xd",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num84Xd}
+                onChange={(e: any) => {
+                  record.num84Xd = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total84Xd",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total84Xd}
+                onChange={(e: any) => {
+                  record.total84Xd = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>休/下待<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "numXxd",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.numXxd}
+                onChange={(e: any) => {
+                  record.numXxd = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "totalXxd",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.totalXxd}
+                onChange={(e: any) => {
+                  record.totalXxd = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>休/助夜<br/>金额：150</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "numXzy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.numXzy}
+                onChange={(e: any) => {
+                  record.numXzy = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "totalXzy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.totalXzy}
+                onChange={(e: any) => {
+                  record.totalXzy = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>助夜<br/>金额：150</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "numZy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.numZy}
+                onChange={(e: any) => {
+                  record.numZy = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "totalZy",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.totalZy}
+                onChange={(e: any) => {
+                  record.totalZy = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>84产下<br/>金额：100</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num84Cx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num84Cx}
+                onChange={(e: any) => {
+                  record.num84Cx = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total84Cx",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total84Cx}
+                onChange={(e: any) => {
+                  record.total84Cx = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>3-6值<br/>金额：150</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num36Z",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num36Z}
+                onChange={(e: any) => {
+                  record.num36Z = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total36Z",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total36Z}
+                onChange={(e: any) => {
+                  record.total36Z = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
+      title: () => (<span>2-5值<br/>金额：150</span>),
+      children: [
+        {
+          title: "数量",
+          dataIndex: "num25Z",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.num25Z}
+                onChange={(e: any) => {
+                  record.num25Z = e.target.value;
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        },
+        {
+          title: "金额",
+          dataIndex: "total25Z",
+          width: 50,
+          align: "center",
+          render(text: any, record: any, index: number) {
+            return (
+              <Input
+                value={record.total25Z}
+                onChange={(e: any) => {
+                  record.total25Z = e.target.value;
+                  calBack('addAllMoney', record)
+                  calBack('setData', cloneData)
+                }}
+              />
+            );
+          }
+        }
+      ]
+    },
+    {
       title: "总金额",
       dataIndex: "总金额",
       width: 50,
@@ -523,11 +923,33 @@ const item = {
   total812Xsy: "",
   numB: "",
   totalB: "",
+  num36Bzx: "",
+  total36Bzx: "",
+  num812Bx:"",
+  total812Bx: "",
+  num84Xy: "",
+  total84Xy: "",
+  num84Xd: "",
+  total84Xd: "",
+  numXxd: "",
+  totalXxd: "",
+  numXzy: "",
+  totalXzy: "",
+  numZy: "",
+  totalZy: "",
+  num84Cx: "",
+  total84Cx: "",
+  num36Z: "",
+  total36Z: "",
+  num25Z: "",
+  total25Z: "",
   totalAll: "",
 }
 
-const moneyKeyList = ["totalSy","totalXy","totalZ","totalD","total120","total84Bz","total812Xxy","totalXxy","totalXsy","total812Xsy","totalB"]
-
+const moneyKeyList = ["totalSy", "totalXy", "totalZ", "totalD", "total120", "total84Bz", "total812Xxy", "totalXxy",
+  "totalXsy", "total812Xsy", "totalB", "total36Bzx", "total812Bx", "total84Xy", "total84Xy",
+  "total84Xd","totalXxd","totalXzy","totalZy","totalZy","total84Cx","total36Z","total25Z"
+]
 const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
   const momentDate = otherObj.ksfzrAutographDate ? moment(otherObj.ksfzrAutographDate) : undefined
   const momentDate2 = otherObj.zgbmyjAutographDate ? moment(otherObj.zgbmyjAutographDate) : undefined
@@ -554,6 +976,31 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
         <col width="50"/>
         <col width="50"/>
         <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        <col width="50"/>
+        
       </colgroup>
       <tbody>
       <tr className="header">
@@ -569,9 +1016,39 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
         <td colSpan={2}>休上夜<br/>金额：100</td>
         <td colSpan={2}>812休上夜<br/>金额：100</td>
         <td colSpan={2}>(转院)备<br/>金额：100</td>
+        <td colSpan={2}>3-6备总消<br/>金额：100</td>
+        <td colSpan={2}>8-12备/休<br/>金额：100</td>
+        <td colSpan={2}>8-4/下夜<br/>金额：100</td>
+        <td colSpan={2}>8-4/下待<br/>金额：100</td>
+        <td colSpan={2}>休/下待<br/>金额：100</td>
+        <td colSpan={2}>休/助夜<br/>金额：150</td>
+        <td colSpan={2}>助夜<br/>金额：150</td>
+        <td colSpan={2}>84产下<br/>金额：100</td>
+        <td colSpan={2}>3-6值<br/>金额：150</td>
+        <td colSpan={2}>2-5值<br/>金额：150</td>
         <td rowSpan={2}>总金额</td>
       </tr>
       <tr className="header">
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
+        <td>数量</td>
+        <td>金额</td>
         <td>数量</td>
         <td>金额</td>
         <td>数量</td>
@@ -620,6 +1097,26 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
           <td style={{ textAlign: "center" }}>{item.total812Xsy}</td>
           <td style={{ textAlign: "center" }}>{item.numB}</td>
           <td style={{ textAlign: "center" }}>{item.totalB}</td>
+          <td style={{ textAlign: "center" }}>{item.num36Bzx}</td>
+          <td style={{ textAlign: "center" }}>{item.total36Bzx}</td>
+          <td style={{ textAlign: "center" }}>{item.num812Bx}</td>
+          <td style={{ textAlign: "center" }}>{item.total812Bx}</td>
+          <td style={{ textAlign: "center" }}>{item.num84Xy}</td>
+          <td style={{ textAlign: "center" }}>{item.total84Xy}</td>
+          <td style={{ textAlign: "center" }}>{item.num84Xd}</td>
+          <td style={{ textAlign: "center" }}>{item.total84Xd}</td>
+          <td style={{ textAlign: "center" }}>{item.numXxd}</td>
+          <td style={{ textAlign: "center" }}>{item.totalXxd}</td>
+          <td style={{ textAlign: "center" }}>{item.numXzy}</td>
+          <td style={{ textAlign: "center" }}>{item.totalXzy}</td>
+          <td style={{ textAlign: "center" }}>{item.numZy}</td>
+          <td style={{ textAlign: "center" }}>{item.totalZy}</td>
+          <td style={{ textAlign: "center" }}>{item.num84Cx}</td>
+          <td style={{ textAlign: "center" }}>{item.total84Cx}</td>
+          <td style={{ textAlign: "center" }}>{item.num36Z}</td>
+          <td style={{ textAlign: "center" }}>{item.total36Z}</td>
+          <td style={{ textAlign: "center" }}>{item.num25Z}</td>
+          <td style={{ textAlign: "center" }}>{item.total25Z}</td>
           <td style={{ textAlign: "center" }}>{item.totalAll}</td>
         </tr>
       ))}
@@ -646,10 +1143,31 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
         <td style={{ textAlign: "center" }}/>
         <td style={{ textAlign: "center" }}/>
         <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }} />
+          
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
+        <td style={{ textAlign: "center" }}/>
         <td style={{ textAlign: "center" }}/>
         <td style={{ textAlign: "center" }}>{otherObj.allMoney}</td>
       </tr>
-      <tr>
+      {/* <tr>
         <td colSpan={8} style={{ textAlign: "left" }}>
           <span>科室负责人:</span>
           <Input
@@ -704,7 +1222,7 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
             onChange={date => setOtherObj('zgbmyjAutographDate', moment(date).format('YYYY-MM-DD'))}
           />
         </td>
-      </tr>
+      </tr> */}
       </tbody>
     </table>
   )

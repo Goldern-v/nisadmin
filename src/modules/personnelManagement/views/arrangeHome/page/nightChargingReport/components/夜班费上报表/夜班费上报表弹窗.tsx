@@ -75,6 +75,12 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
     setData(cloneData);
   };
 
+  useEffect(() => {
+    if (!cloneData.list.length) {
+      addItem()
+    }
+  },[])
+
   return (
     <Wrapper>
       <div className="button-con">
@@ -85,6 +91,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
 
       <BaseTable
         surplusHeight={400}
+        surplusWidth={200}
         columns={columns}
         dataSource={cloneData.list || []}
         wrapperStyle={{
