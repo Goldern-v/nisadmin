@@ -2,7 +2,7 @@ import styled from 'styled-components'
 // import React from 'react'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import React, { useState, useEffect } from 'react'
-import { authStore } from 'src/stores/index'
+import { authStore,appStore } from 'src/stores/index'
 import emitter from 'src/libs/ev'
 import { observer } from 'mobx-react-lite'
 
@@ -15,9 +15,13 @@ export default observer(function StatisticMIdHeader() {
   })
   const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
   const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
+  const [isDate, setIsDate] = useState(true)
   useEffect(() => {
     let getTitleByAuthStore = statisticViewModel.deptName + '护士休假统计'
     setTitle(getTitleByAuthStore)
+    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      setIsDate(!/(按月份)/.test(authStore.selectedDeptNameAdd))
+    }
     // emitter.removeAllListeners('设置统计页标题')
   }, [])
   emitter.removeAllListeners('设置统计页日期')
@@ -32,9 +36,11 @@ export default observer(function StatisticMIdHeader() {
     <Con>
       {/* {authStore.selectedDeptName} */}
       <div className='firstTitle'>{authStore.selectedDeptNameAdd || '全院'}</div>
-      <div className='secondTitle'>
+      {
+       isDate && <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>
+      }
     </Con>
   )
 })

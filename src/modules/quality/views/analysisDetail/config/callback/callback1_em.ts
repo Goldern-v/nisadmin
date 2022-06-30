@@ -1,7 +1,9 @@
-import { appStore } from 'src/stores';
-import { analysisModal } from './../../../analysisWhyx/AnalysisModal';
-import { getBlank, replenishList } from './../../util/tool';
-import {analysisDetailApi} from '../../api'
+import { appStore } from 'src/stores'
+
+import { analysisModal } from './../../../analysisWhyx/AnalysisModal'
+import { getBlank, replenishList } from './../../util/tool'
+import { analysisDetailApi } from '../../api'
+
 /**固定渲染数据 */
 const FIXED_ITEMS = [
   '采血扫描合格率',
@@ -168,7 +170,7 @@ export const obj = {
         const data: Record<string, any> = {}
         renderData[v].map((v1: any) => {
           if (data[v1.item] != undefined) {
-            v1.mainProblem && (data[v1.item] += v1.mainProblem + '/n')
+            v1.mainProblem && (data[v1.item] += v1.mainProblem + '\n')
             return
           }
           data[v1.item] = v1.mainProblem || ''
