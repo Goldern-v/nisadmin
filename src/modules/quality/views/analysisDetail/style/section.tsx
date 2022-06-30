@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const SectionCon = styled.div`
   min-height: 60px;
@@ -8,6 +8,10 @@ export const SectionCon = styled.div`
     position: absolute;
     top: 0px;
     right: 20px;
+  }
+  .ant-table td {
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 `
 export const OperationSecCon = styled.div`

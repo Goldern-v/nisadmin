@@ -1,23 +1,22 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { DatePicker, Select, Button, message, Icon, Modal } from "antd";
-import BaseTable, { DoCon } from "src/components/BaseTable";
-import { ColumnProps } from "antd/lib/table";
-import { appStore } from "src/stores";
-import { observer } from "mobx-react-lite";
-import moment, { duration } from "moment";
-import AnalysisService from "./api";
+import qs from 'qs'
+import YearPicker from 'src/components/YearPicker'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import moment, { duration } from 'moment'
+import React, { useEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { Button, DatePicker, Icon, message, Modal, Select } from 'antd'
+import { ColumnProps } from 'antd/lib/table'
+import { appStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
+import { PageHeader, PageTitle, Place } from 'src/components/common'
 
-import CreateAnalysisModal from "./components/CreateAnalysisModal";
-import qs from "qs";
-import { PageHeader, PageTitle, Place } from "src/components/common";
-import service from "src/services/api";
-import { getTempName, getSearchTempName } from "./utils";
-import { MonthList } from "../../utils/toolCon";
-import YearPicker from "src/components/YearPicker";
-import useLevel from "./utils/useLevel";
+import AnalysisService from './api'
+import CreateAnalysisModal from './components/CreateAnalysisModal'
+import useLevel from './utils/useLevel'
+import { getSearchTempName, getTempName } from './utils'
+import { MonthList } from '../../utils/toolCon'
 import { analysisModal } from './AnalysisModal'
-
 import { obj as obj1Dept } from '../analysisDetail/config/callback/callback1_dept'
 import { obj as obj1Em } from '../analysisDetail/config/callback/callback1_em'
 import { obj as obj2 } from '../analysisDetail/config/callback/callback2'
