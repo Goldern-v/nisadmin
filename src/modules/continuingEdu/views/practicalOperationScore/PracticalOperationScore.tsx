@@ -84,20 +84,25 @@ export default observer(function Notification() {
         let data: any =[
           {
             text: "下载",
+            color:'00A680',
             function:getCurrDownloadTemplate,
           },
           {
             text: "预览",
+            color:'00A680',
             function:getPreviewDetail,
           },
           {
             text: "编辑",
+            color:'00A680',
             function:getEditDetail,
+            using:record.using,
           },
           {
             text: "删除",
             color:'#f33',
             function:handleDelect,
+            using:record.using,
           }
         ];
         return (
@@ -105,8 +110,8 @@ export default observer(function Notification() {
             {data.map((item: any, index: any) => (
               <span
                 key={index}
-                onClick={() => (item.function ? item.function(record) : {})}
-                style={{color:item.color?item.color:'',}}
+                onClick={() => (item.function && !item.using ? item.function(record) : {})}
+                style={{color:item.color && !item.using ? item.color:'#ddd', }}
               >
                 {item.text}
               </span>
@@ -199,7 +204,6 @@ export default observer(function Notification() {
     practicalOperationScore.onload();
     setModalParams({});
   }
-
   const getCurrDownloadTemplate = (val:any) =>{
     practicalOperationScore.getSeveralDownloadTemplate(val.id)
   }
