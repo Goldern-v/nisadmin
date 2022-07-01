@@ -87,7 +87,7 @@ export default function MainBox() {
       dataIndex: 'wednesdayName',
       key: 'wednesdayName',
       width: 100,
-      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
+      render: (text: string, record: any) => getTextColor(text, record, record.wednesdayNameColor)
     },
     {
       title: '周四',
