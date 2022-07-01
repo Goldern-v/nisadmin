@@ -573,7 +573,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
       NurseFileDetailView_wh,
       layouts.MainLayout
     ),
-    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
     // 护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
     setLayout(
