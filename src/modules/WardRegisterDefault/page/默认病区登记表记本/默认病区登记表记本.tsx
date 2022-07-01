@@ -759,7 +759,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   const watchRecordSeries = {
     '起始时间': ['起始时间', '终止时间', '消毒时长'],
     '终止时间': ['起始时间', '终止时间', '消毒时长'],
-    '消毒时长（h）': ['起始时间', '终止时间', '消毒时长'],
+    '消毒时长': ['起始时间', '终止时间', '消毒时长'],
   }
   const watchRecord = (value: any, data: any) => {
     let key = value
@@ -804,11 +804,14 @@ export default observer(function 敏感指标登记本(props: Props) {
     })
   }
 
-  const setGeneral = () => {
+  const setGeneral = (data:any) => {
     let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
-    let optionList = (options.options as any).split(";").map((itemCfg: any) => itemCfg || " ")
+    let optionList = (options.options as any)?.split(";").map((itemCfg: any) => itemCfg || " ")
     settingGeneralModal.show({
-      data:optionList,
+      data: {
+        optionList,
+        signName:data.itemCode
+      },
       onOkCallBack: (value) => {
         handleGeneralSet(value)
       }
@@ -818,7 +821,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   /**批量按钮 */
   const SelectedBtnCon = observer(function(props: Record<string, any>) {
     const { config, customSign, customBatch } = props;    
-    const general =['whyx'].includes(appStore.HOSPITAL_ID) && customSign.find((item: any) => item.itemCode == '护士签名') && customBatch.length != 0
+    const general =['whyx'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
@@ -856,7 +859,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                       selectedRowKeys.length <= 0
                     }
                     type="primary"
-                    onClick={() => {setGeneral()}}>
+                    onClick={() => {setGeneral(customSign[0])}}>
                       批量修改
                   </Button>
                 }
@@ -910,7 +913,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             }
           }}: {})}>
           删除
-        </Button>
+      </Button>
     </Fragment>)
   })
 
