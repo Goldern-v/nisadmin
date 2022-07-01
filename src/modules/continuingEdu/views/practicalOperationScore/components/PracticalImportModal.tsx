@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { practicalOperationScore } from "../PracticalOperationScoreModal";
 import { Button, Modal, Input, } from "antd";
 import Form from "src/components/Form";
+import autoUpdate from "src/utils/autoUpdate";
 const { TextArea } = Input;
 interface props {
   modalVisible: boolean | undefined;
@@ -60,6 +61,7 @@ export default observer(function PracticalImportModal(props: props) {
       onCancel={handleCancel}
       destroyOnClose={true}
       width={800}
+      bodyStyle={{height:'600px',overflow:'auto'}}
       footer={[
         <Footer key={15}>
           {modalTitle != "预览" ? (
@@ -85,7 +87,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.paperName}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "paperName");
                       }}
@@ -100,7 +102,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.chapter}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "chapter");
                       }}
@@ -115,7 +117,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.technology}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "technology");
                       }}
@@ -133,7 +135,7 @@ export default observer(function PracticalImportModal(props: props) {
                     // <Form.Field name="totalScore">
                         <Input
                           ref={refForm}
-                          className="td-center"
+                          className="td-center border-none"
                           style={{ width: 60 }}
                           value={params.totalScore}
                         />
@@ -179,7 +181,7 @@ export default observer(function PracticalImportModal(props: props) {
                               ) : (
                                 <Input
                                   defaultValue={item.name}
-                                  className="td-center"
+                                  className="td-center border-none"
                                   onChange={(e) => {
                                     handleInput(
                                       e,
@@ -221,7 +223,7 @@ export default observer(function PracticalImportModal(props: props) {
                             ) : (
                               <Input
                                 defaultValue={itemDto.score}
-                                className="td-center"
+                                className="td-center border-none"
                                 onChange={(e) => {
                                   handleInput(
                                     e,
@@ -295,6 +297,12 @@ const Wrapper = styled.div`
     }
     .td-center {
       text-align: center;
+    }
+    .border-none{
+      border: none;
+      &:focus {
+        background: ${(p) => p.theme.$mlc};
+      }
     }
     .inp_textArea {
       width: 100%;
