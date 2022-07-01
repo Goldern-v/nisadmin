@@ -1,18 +1,25 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Button } from "antd";
 import { appStore } from "src/stores";
 
 export interface Props {
-  info?: any
+  info?: any;
 }
 
 //参与人员
 export default function OperateSetting(props: Props) {
-  const { info } = props
-  info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList = info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList.sort((a:any,b:any)=>a.sort-b.sort)
+  const { info } = props;
+  if (
+    info.latPraticalGradePaperDto &&
+    info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList
+  ) {
+    info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList = info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList.sort(
+      (a: any, b: any) => a.sort - b.sort
+    );
+  }
 
-  return  (appStore.HOSPITAL_ID !== 'whyx'?
+  return appStore.HOSPITAL_ID !== "whyx" ? (
     <Wrapper>
       <div className="content-item-title">上传设置</div>
       <div className="row">
@@ -30,7 +37,7 @@ export default function OperateSetting(props: Props) {
       <div className="pd">
         <table>
           <colgroup>
-            <col width='50px' />
+            <col width="50px" />
           </colgroup>
           <tbody>
             <tr className="header">
@@ -43,19 +50,26 @@ export default function OperateSetting(props: Props) {
               <td>走位考核标准</td>
               <td>40</td>
             </tr> */}
-            {info.scoreItemList.length > 0 && info.scoreItemList.map((item: any, idx: number) =>
-              <tr key={idx}>
-                <td>{idx + 1}</td>
-                <td>{item.itemName}</td>
-                <td>{item.scores}</td>
-              </tr>)}
-            {info.scoreItemList.length <= 0 && <tr>
-              <td colSpan={3} style={{ color: "#666" }}>暂无评分项目</td>
-            </tr>}
+            {info.scoreItemList.length > 0 &&
+              info.scoreItemList.map((item: any, idx: number) => (
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>{item.itemName}</td>
+                  <td>{item.scores}</td>
+                </tr>
+              ))}
+            {info.scoreItemList.length <= 0 && (
+              <tr>
+                <td colSpan={3} style={{ color: "#666" }}>
+                  暂无评分项目
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
-    </Wrapper> :
+    </Wrapper>
+  ) : (
     <Wrapper>
       <div className="content-item-title">实操设置</div>
       <div className="row">
@@ -68,28 +82,28 @@ export default function OperateSetting(props: Props) {
       </div>
       <div className="table-title">实操评分管理表</div>
       <table className="modal-table">
-            <tbody>
-              <tr>
-                <td colSpan={2} className="td-center" style={{fontSize:14}}>
-                  {info.latPraticalGradePaperDto.paperName}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={2} className="td-bold td-center">
-                  {info.latPraticalGradePaperDto.chapter}
-                </td>
-              </tr>
-              <tr className="td-bold">
-                <td>
-                  {info.latPraticalGradePaperDto.technology}
-                </td>
-                <td>
-                  操作规范
-                </td>
-              </tr>
-            </tbody>
-          </table>
-      <table className="modal-table">
+        {info.latPraticalGradePaperDto && (
+          <tbody>
+            <tr>
+              <td colSpan={2} className="td-center" style={{ fontSize: 14 }}>
+                {info.latPraticalGradePaperDto.paperName}
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2} className="td-bold td-center">
+                {info.latPraticalGradePaperDto.chapter}
+              </td>
+            </tr>
+            <tr className="td-bold">
+              <td>{info.latPraticalGradePaperDto.technology}</td>
+              <td>操作规范</td>
+            </tr>
+          </tbody>
+        )}
+      </table>
+      {info.latPraticalGradePaperDto &&
+        info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList && (
+          <table className="modal-table">
             <colgroup>
               <col width={180} />
               <col />
@@ -105,12 +119,13 @@ export default function OperateSetting(props: Props) {
               </tr>
             </thead>
             <tbody>
-              {info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList &&
+              {info.latPraticalGradePaperDto &&
+                info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList &&
                 info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList.map(
                   (item: any, index: any) =>
                     item.latPraticalGradeOperationDtoList.map(
                       (itemDto: any, indexDot: any) => (
-                        <tr key={indexDot + 'fds'}>
+                        <tr key={indexDot + "fds"}>
                           {indexDot == 0 && (
                             <td
                               className="td-center"
@@ -122,51 +137,46 @@ export default function OperateSetting(props: Props) {
                               {item.name}
                             </td>
                           )}
-                          <td className="td-center">
-                            {itemDto.content}
-                          </td>
-                          <td className="td-center">
-                            {itemDto.score}
-                          </td>
-                          <td className="td-center">
-                            {itemDto.description}
-                          </td>
+                          <td className="td-center">{itemDto.content}</td>
+                          <td className="td-center">{itemDto.score}</td>
+                          <td className="td-center">{itemDto.description}</td>
                         </tr>
                       )
                     )
                 )}
             </tbody>
           </table>
+        )}
     </Wrapper>
- )
+  );
 }
 const Wrapper = styled.div`
   font-size: 13px;
-  .pd{
+  .pd {
     margin-bottom: 10px;
     padding: 0 15px;
   }
-  .row{
+  .row {
     margin-bottom: 5px;
     width: 100%;
     font-size: 13px;
     overflow: hidden;
-    .label{
+    .label {
       float: left;
       text-align: right;
-      &.w-98{
+      &.w-98 {
         width: 98px;
       }
     }
-    .content{
+    .content {
       overflow: hidden;
     }
   }
-  .table-title{
+  .table-title {
     font-size: 14px;
     padding-top: 10px;
   }
-  table{
+  table {
     border-collapse: collapse;
     border-color: #cccccc;
     width: 100%;
@@ -204,5 +214,4 @@ const Wrapper = styled.div`
       text-align: center;
     }
   }
-
-`
+`;
