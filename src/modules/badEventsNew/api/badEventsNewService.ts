@@ -1,9 +1,17 @@
+import qs from 'qs'
 import BaseApiService from 'src/services/api/BaseApiService'
-import qs from 'qs';
 
 export interface dateIn {
   dateBegin: string,
   dateEnd: string
+}
+export interface revokeIn {
+  empNo: string,
+  password: string
+  id: string,
+  noPass: boolean,
+  nodeCode: string,
+  operateType: 'withdraw',
 }
 export default class BadEventsNewService extends BaseApiService {
   //不良事件列表
@@ -223,6 +231,14 @@ export default class BadEventsNewService extends BaseApiService {
   // 不良事件汇总表导出
   public async exportBeRegistrationSummaryYc(params: dateIn) {
    return this.post(`/badEventReport/exportBeRegistrationSummaryYc`,params, { responseType: 'blob' });
+  }
+  /**
+   * 撤销流程 by贵州
+   * @param params 
+   * @returns
+   */
+  public async handleRevoke(params: revokeIn) {
+    return await this.post(`/form/badEventMaster/common/operateBadEvent`, params)
   }
 }
 
