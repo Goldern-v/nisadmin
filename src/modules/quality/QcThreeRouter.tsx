@@ -1,25 +1,36 @@
-import LeftMenu from "src/components/LeftMenu";
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "src/components/RouterView";
-import QualityControlRecord from "./views/qualityControlRecord/QualityControlRecord";
-import QueryStatistics from "./views/queryStatistics/QueryStatistics";
-import Analysis from "./views/analysis/Analysis";
-import SummaryReport from "./views/summaryReport/SummaryReport";
-import WorkSummaryReportList from "./views/workSummaryReportList/WorkSummaryReportList";
-import ProblemSummary from "./views/problemSummary/ProblemSummary";
-import { Provider, KeepAlive } from "react-keep-alive";
-import WritingForm from "./views/writingForm/WritingForm";
-import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
-import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
-import { ReactComponent as CFJHBG } from "./images/icon/CFJHBG.svg";
-import CheckWardReportList from "./views/checkWard/view/reportList/CheckWardReportList";
-import RecordView from "./views/checkWard/view/record/RecordView";
-import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
-import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
-import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
+import LeftMenu from 'src/components/LeftMenu'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'src/components/RouterView'
+import { KeepAlive, Provider } from 'react-keep-alive'
+import { appStore } from 'src/stores'
 
-import { qcThreeTitle } from "./data/qcTitle";
+import AdministrativeWard from './views/administrativeWard'
+import Analysis from './views/analysis/Analysis'
+import RecordView from './views/checkWard/view/record/RecordView'
+import CheckWardReportList from './views/checkWard/view/reportList/CheckWardReportList'
+import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
+import committeeWorkReport from './views/committeeWorkReport'
+import ProblemSummary from './views/problemSummary/ProblemSummary'
+import qcNursingAnalysis from './views/qcNursingAnalysis'
+import qcThreeProblem from './views/qcThreeProblem/index'
+import qcThreeResult from './views/qcThreeResult/index'
+import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+import QueryStatistics from './views/queryStatistics/QueryStatistics'
+import SatisfactionAnalysis from './views/satisfactionAnalysis'
+import SummaryReport from './views/summaryReport/SummaryReport'
+import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
+import WritingForm from './views/writingForm/WritingForm'
+import { ReactComponent as CFJL } from './images/icon/CFJL.svg'
+import { ReactComponent as CFJHB } from './images/icon/CFJHB.svg'
+import { ReactComponent as CFJHBG } from './images/icon/CFJHBG.svg'
+import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
+import { ReactComponent as WJSX } from './images/icon/WJSX.svg'
+import { qcThreeTitle } from './data/qcTitle'
+import { ReactComponent as SJZK } from './images/icon/SJZK.svg'
+import { ReactComponent as YDBG } from './images/icon/YDBG.svg'
+import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
+import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
 
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
 // import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
@@ -37,18 +48,6 @@ import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-import AdministrativeWard from "./views/administrativeWard";
-import SatisfactionAnalysis from "./views/satisfactionAnalysis";
-import qcNursingAnalysis from "./views/qcNursingAnalysis";
-import qcThreeResult from "./views/qcThreeResult/index"
-import qcThreeProblem from "./views/qcThreeProblem/index"
-
-import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
-import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
-import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
-import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
-import { appStore } from "src/stores";
-
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
 
@@ -182,6 +181,12 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/qcThreeProblem",
     component: qcThreeProblem
   }
+  const route_committeeWorkReport = {
+    title: '委员会小组工作报告',
+    icon: <JCTJ />,
+    path: "/qcThree/committeeWorkReport",
+    component: committeeWorkReport
+  }
 
   let extra_menu: any = appStore.hisMatch({
     map: {
@@ -259,6 +264,7 @@ export default function QcThreeRouter(props: Props) {
         // route_三级质控月度报告,
         // route_三级质控汇总报告,
         // route_三级质控问题汇总,
+        route_committeeWorkReport,
         route_qcThreeResult,
         route_qcThreeProblem,
       ],

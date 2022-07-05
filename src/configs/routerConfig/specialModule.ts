@@ -168,10 +168,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (["wh","gxjb","fssdy","fsxt","sdlj","lyrm","gdtj"].includes(appStore.HOSPITAL_ID)) {
-  // process.env.REACT_APP_HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || 
-  // appStore.HOSPITAL_ID == 'fssdy' || appStore.HOSPITAL_ID == 'fsxt'
-  // || appStore.HOSPITAL_ID == 'sdlj' || appStore.HOSPITAL_ID == 'lyrm' || appStore.HOSPITAL_ID == 'gdtj'
+} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj"].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
@@ -588,6 +585,37 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ]  
+} else if (["lyrm"].includes(appStore.HOSPITAL_ID)) {
+  specialModule = [
+    ...homeRouter(HomeView),
+    // 档案 武汉
+    setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/selfNurseFile/:type",
+      NurseFileDetailView_wh,
+      layouts.MainLayout
+    ),
+    // 审核 武汉版本
+    setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
+    // 护理制度 厚街
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
 }
 // else if (process.env.REACT_APP_HOSPITAL_ID == "fssdy") {
 //   specialModule = [
