@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react-lite";
-import { Button, DatePicker, Tooltip} from "antd";
+import { Button, DatePicker, Tooltip , Input} from "antd";
 import DeptSelect from "src/components/DeptSelect";
 import FormSelect from "src/modules/quality/views/qualityControlRecord/components/common/FormSelect";
 import StateSelect from "src/modules/quality/views/qualityControlRecord/components/common/StateSelect";
@@ -157,6 +157,20 @@ export default observer(function TopCon(props: any) {
     }
     return "";
   }, [qcCodeList]);
+  const qcDeptCon = useCallback(() => {
+    if (isWhyx) {
+      return (
+        <React.Fragment>
+          <span style={{ margin: "0 3px 0 15px" }}>质控人员:</span>
+          <Input style={{width:'70px'}} value={qualityControlRecordVM.creatorName} onChange={(e: any) => {
+              qualityControlRecordVM.creatorName = e.target.value;
+              props.refreshData();
+            }}/>
+        </React.Fragment>
+      );
+    }
+    return "";
+  }, [qcCodeList]);
   const [createBtn, setCreateBtn] = useState(true);
   useEffect(() => {
     if (isWhyx) {
@@ -183,6 +197,7 @@ export default observer(function TopCon(props: any) {
     <Wrapper>
       <PageTitle>{title()}</PageTitle>
       <Place />
+      {qcDeptCon()}
       {qcCodeCon()}
       <span style={{ margin: "0 3px 0 0" }}>日期:</span>
       <DatePicker.RangePicker
