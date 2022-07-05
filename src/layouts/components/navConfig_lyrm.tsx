@@ -10,19 +10,18 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
-
 export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appStore,authStore) => ([
   {
     name: "首页",
     path: "/home",
   },
-  // {
-  //   name: "社区查房",
-  //   path: "/communityRoundsRouter"
-  // },
   {
     name: "审核管理",
     path: "/auditsManagement"
+  },
+  {
+    name: "档案管理",
+    path: "/nurseFile",
   },
   {
     name: "排班管理",
@@ -55,62 +54,29 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
       },
     ]
   },
-  // {
-  //   name: "病区登记本",
-  //   path: "/wardRegister"
-  //   // hidden: !appStore.isDev
-  // },
-
   {
     name: "学习培训",
     path: "/continuingEdu",
   },
-  // {
-  //   name: "不良事件",
-  //   path: "/wardRegister",
-  //   hidden: !appStore.isDev
-  // },
-  // {
-  //   name: "通知公告",
-  //   path: "/notice"
-  // },
+  {
+    name: "不良事件",
+    path: "/badEventsNew",
+    hidden: !appStore.isDev
+  },
   {
     name: "护理制度",
     path: "/nursingRulesNew"
   },
   {
-    name: "档案管理",
-    path: "/nurseFile",
+    name: "统计查询",
+    path: "/statistic",
+    hidden: () => !appStore.isDev,
   },
   {
     name: "我的档案",
     path: "/selfNurseFile",
   },
-  // {
-  //   name: "病区管理",
-  //   path: "/wardManagement",
-  // },
-  {
-    name: "统计查询",
-    path: "/statistic",
-    hidden: () => !appStore.isDev,
-  },
-  // {
-  //   name: "进出感染区统计",
-  //   path: "/InfectedAreasCount",
-  //   hidden: () => {
-  //     if (appStore.isDev) return false;
-
-  //     if (
-  //       authStore.user &&
-  //       authStore.user.empNo &&
-  //       authStore.user.empNo.toLowerCase() == "xxk001"
-  //     )
-  //       return false;
-
-  //     return true;
-  //   }
-  // }
+  
   {
     name: "系统设置",
     path: "/setting",
