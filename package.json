@@ -211,6 +211,7 @@
     "publish:yczyy-be": "npm run build:yczyy-be && node publish-be.js",
     "publish:9885": "npm run build:whyx && node publish.js",
     "publish:9883": "npm run build:fssdy && node publish.js",
+    "publish:9884": "npm run build:whfk && node publish.js",
     "publish:9887": "npm run build:sdlj && node publish.js",
     "publish:9889": "npm run build:gxjb && node publish.js",
     "publish:9903": "npm run build:fssdy && node publish.js",

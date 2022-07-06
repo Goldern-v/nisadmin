@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { ColumnProps } from 'antd/lib/table'
+import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { ColumnProps } from 'antd/lib/table'
 import { cloneJson } from 'src/utils/json/clone'
 import { Input, Select } from 'src/vendors/antd'
+
 const { Option } = Select;
 export interface Props {
   sectionId: string
@@ -12,7 +13,8 @@ export interface Props {
 }
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { value: {} })
+  let cloneData: any = cloneJson(data || { value: {},list: [] })
+  cloneData.list = cloneData?.list.map((v: any) => v.averageScore !=null ? {...v, averageScore: Number(v.averageScore).toFixed(2)}:v)
   let value: any = cloneData && cloneData.value ? cloneData.value : {}
   useEffect(() => { }, [])
   const columns: ColumnProps<any>[] = [
@@ -165,6 +167,7 @@ export default function qualityIndexModal(props: Props) {
                <Input
                   className='cell-textArea'
                   type="number"
+                  step={0.01}
                   min={0}
                   value={record.averageScore || ''}
                   onChange={(e) => {
