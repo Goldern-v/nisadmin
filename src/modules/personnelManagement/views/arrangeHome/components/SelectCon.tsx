@@ -166,8 +166,11 @@ export default observer(function SelectCon() {
         </Checkbox.Group>
       </div>,
       onOk: () => {
-        // console.log(visibleArr)
-        printModal.printArrangeDghl(visibleArr)
+        if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+          printModal.printArrangeNew(visibleArr)
+        } else {
+          printModal.printArrangeDghl(visibleArr)
+        }
       }
     })
   };

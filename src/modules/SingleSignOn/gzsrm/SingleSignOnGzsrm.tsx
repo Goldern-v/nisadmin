@@ -10,12 +10,29 @@ export default withRouter(function SingleSignOnGzsrm(props: any) {
   const searchObj = qs.parse(search.replace('?', ''))
 
   const authorizeAndSignIn = () => {
-    singleSignOnGzsrmServices.autoLogin({
-      token: searchObj.token || searchObj.ticket || '',
-      v_url: searchObj.service || '',
-      appCode: "HLTLXT",
-      appName: "护理管理系统",
-    })
+    let params = {}
+    console.log('searchObj',searchObj);
+    if (searchObj.appCode && searchObj.appName) {
+      params = {
+        token: "",
+        appCode: searchObj.appCode,
+        appName: searchObj.appName,
+        v_token: searchObj.v_token,
+        tradeCode: "nursing_ssoLogin_2"
+      }
+    } else {
+      params = {
+        token: searchObj.token || searchObj.ticket || '',
+        v_url: searchObj.service || '',
+      }
+    }
+    singleSignOnGzsrmServices.autoLogin(params)
+    // singleSignOnGzsrmServices.autoLogin({
+    //   token: searchObj.token || searchObj.ticket || '',
+    //   v_url: searchObj.service || '',
+    //   appCode: "HLTLXT",
+    //   appName: "护理管理系统",
+    // })
   }
 
   useEffect(() => {
