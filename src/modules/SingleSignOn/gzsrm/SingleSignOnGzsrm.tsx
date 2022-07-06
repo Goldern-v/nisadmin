@@ -12,18 +12,18 @@ export default withRouter(function SingleSignOnGzsrm(props: any) {
   const authorizeAndSignIn = () => {
     let params = {}
     console.log('searchObj',searchObj);
-    if (searchObj.appCode && searchObj.appName) {
-      params = {
-        token: "",
-        appCode: searchObj.appCode,
-        appName: searchObj.appName,
-        v_token: searchObj.v_token,
-        tradeCode: "nursing_ssoLogin_2"
-      }
-    } else {
+    if (searchObj.service) {
       params = {
         token: searchObj.token || searchObj.ticket || '',
         v_url: searchObj.service || '',
+      }
+    } else {
+      params = {
+        token: "",
+        appCode: "HLTLXT",
+        appName: "护理管理系统",
+        v_token: searchObj.token,
+        tradeCode: "nursing_ssoLogin_2"
       }
     }
     singleSignOnGzsrmServices.autoLogin(params)

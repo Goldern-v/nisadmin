@@ -810,6 +810,11 @@ export function getFun(context: any) {
     // 复制
     let newRows = []
     if (data.copy) {
+      // 自定义签名不需要复制
+      let customSignObj: Record<string,any> = {}
+      customSign.map((v:any) => {
+        customSignObj[v.itemCode] = ''
+      })
       newRows = selectedRows.map((item: any) => {
         let newItem = JSON.parse(JSON.stringify(item))
         delete newItem.id
@@ -817,6 +822,7 @@ export function getFun(context: any) {
         newItem[data.signName] = data.sign ? authStore.user?.empName : ""
         return {
           ...newItem,
+          ...customSignObj,
           recordDate: data.time? moment(data.time).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
           signerName: '',
           signerNo: '',
