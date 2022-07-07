@@ -88,6 +88,14 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9863') >= 0) {
     folderSrc = '/crdata/webProject/manage-ys'
   }
+  // 临邑
+  if (process.env.npm_lifecycle_event.indexOf('9890') >= 0) {
+    folderSrc = '/crdata/webProject/manage-linyi'
+  }
+  // 肺科
+  if (process.env.npm_lifecycle_event.indexOf('9884') >= 0) {
+    folderSrc = '/crdata/webProject/manage-wuhanfeike'
+  }
   
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {

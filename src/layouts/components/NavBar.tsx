@@ -1,46 +1,47 @@
-import styled from "styled-components";
-import React from "react";
-import { RouteComponentProps } from "react-router";
-import { observer } from "mobx-react-lite";
-import { Place } from "src/components/common";
-import { authStore, appStore } from "src/stores";
-import service from "src/services/api";
-import { Menu, Dropdown, Tooltip } from "src/vendors/antd";
-import { navConfig, navConfigItem } from "./navConfig_hj";
-import { navConfig as navConfig_hjInterns } from "./navConfig_hjInterns";
-import { navConfig as navConfig_wh } from "./navConfig_wh";
-import { navConfig as navConfig_fssdy } from "./navConfig_fssdy";
-import { navConfig as navConfig_fssdySelf } from "./navConfig_fssdySelf";
-import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
-import { navConfig as navConfig_ys } from "./navConfig_ys";
-import { navConfig as navConfig_nys } from "./navConfig_nys";
-import { navConfig as navConfig_dzlc } from "./navConfig_dzlc";
-import { navConfig as navConfig_gzhd } from "./navConfig_gzhd";
-import { navConfig as navConfig_lcey } from "./navConfig_lcey";
-import { navConfig as navConfig_dghl } from "./navConfig_dghl";
-import { navConfig as navConfig_gzsrm } from "./navConfig_gzsrm";
-import { navConfig as navConfig_jmfy } from "./navConfig_jmfy";
-import { navConfig as navConfig_dgxg } from "./navConfig_dgxg";
-import { navConfig as navConfig_yczyy } from "./navConfig_yczyy";
-import { navConfig as navConfig_nfzxy } from "./navConfig_nfzxy";
-import { navConfig as navConfig_fqfybjy } from "./navConfig_fqfybjy";
-import { navConfig as navConfig_wjgdszd } from "./navConfig_wjgdszd";
-import { navConfig as navConfig_bhsrm } from "./navConfig_bhsrm";
-import { navConfig as navConfig_qzxyy } from "./navConfig_qzxyy";
-import { navConfig as navConfig_gxjb } from "./navConfig_gxjb";
-import { navConfig as navConfig_gxjbSelf } from "./navConfig_gxjbSelf";
-import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
-import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
-import { navConfig as navConfig_whyx } from "./navConfig_whyx";
-import { navConfig as navConfig_fsxt } from "./navConfig_fsxt";
-import { navConfig as navConfig_fsxtSelf } from "./navConfig_fsxtSelf";
-import { navConfig as navConfig_sdlj } from "./navConfig_sdlj";
-import { navConfig as navConfig_sdljSelf } from "./navConfig_sdljSelf";
-import { navConfig as navConfig_lyrm } from "./navConfig_lyrm";
-import { navConfig as navConfig_gdtj } from "./navConfig_gdtj";
-import { navConfig as navConfig_whfk } from "./navConfig_whfk";
-import { navConfig as navConfig_lyyz } from "./navConfig_lyyz";
-import { navConfig as navConfig_qhwy } from "./navConfig_qhwy";
+import React from 'react'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import { RouteComponentProps } from 'react-router'
+import { observer } from 'mobx-react-lite'
+import { Place } from 'src/components/common'
+import { appStore, authStore } from 'src/stores'
+import { Dropdown, Menu, Tooltip } from 'src/vendors/antd'
+import { ReactComponent as SYSC } from 'src/modules/UserManual/images/SYSC.svg'
+import { ReactComponent as SYSCSZ } from 'src/modules/UserManual/images/SYSCSZ.svg'
+
+import { navConfig, navConfigItem } from './navConfig_hj'
+import { navConfig as navConfig_hjInterns } from './navConfig_hjInterns'
+import { navConfig as navConfig_wh } from './navConfig_wh'
+import { navConfig as navConfig_fssdy } from './navConfig_fssdy'
+import { navConfig as navConfig_fssdySelf } from './navConfig_fssdySelf'
+import { navConfig as navConfig_whSelf } from './navConfig_whSelf'
+import { navConfig as navConfig_ys } from './navConfig_ys'
+import { navConfig as navConfig_nys } from './navConfig_nys'
+import { navConfig as navConfig_dzlc } from './navConfig_dzlc'
+import { navConfig as navConfig_gzhd } from './navConfig_gzhd'
+import { navConfig as navConfig_lcey } from './navConfig_lcey'
+import { navConfig as navConfig_dghl } from './navConfig_dghl'
+import { navConfig as navConfig_gzsrm } from './navConfig_gzsrm'
+import { navConfig as navConfig_jmfy } from './navConfig_jmfy'
+import { navConfig as navConfig_dgxg } from './navConfig_dgxg'
+import { navConfig as navConfig_yczyy } from './navConfig_yczyy'
+import { navConfig as navConfig_nfzxy } from './navConfig_nfzxy'
+import { navConfig as navConfig_fqfybjy } from './navConfig_fqfybjy'
+import { navConfig as navConfig_wjgdszd } from './navConfig_wjgdszd'
+import { navConfig as navConfig_bhsrm } from './navConfig_bhsrm'
+import { navConfig as navConfig_qzxyy } from './navConfig_qzxyy'
+import { navConfig as navConfig_gxjb } from './navConfig_gxjb'
+import { navConfig as navConfig_gxjbSelf } from './navConfig_gxjbSelf'
+import { navConfig as navConfig_whyx } from './navConfig_whyx'
+import { navConfig as navConfig_fsxt } from './navConfig_fsxt'
+import { navConfig as navConfig_fsxtSelf } from './navConfig_fsxtSelf'
+import { navConfig as navConfig_sdlj } from './navConfig_sdlj'
+import { navConfig as navConfig_sdljSelf } from './navConfig_sdljSelf'
+import { navConfig as navConfig_lyrm } from './navConfig_lyrm'
+import { navConfig as navConfig_gdtj } from './navConfig_gdtj'
+import { navConfig as navConfig_whfk } from './navConfig_whfk'
+import { navConfig as navConfig_lyyz } from './navConfig_lyyz'
+import { navConfig as navConfig_qhwy } from './navConfig_qhwy'
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -177,7 +178,7 @@ export default observer(function NavBar(props: any) {
       return navConfig_sdlj(appStore, authStore);
       //return navConfig_sdljSelf
     } else if (appStore.HOSPITAL_ID == "lyrm") {
-      return navConfig_lyrm;
+      return navConfig_lyrm(appStore, authStore)
       //return navConfig_sdljSelf
     } else if (appStore.HOSPITAL_ID == 'gdtj') {
       return navConfig_gdtj(appStore, authStore)

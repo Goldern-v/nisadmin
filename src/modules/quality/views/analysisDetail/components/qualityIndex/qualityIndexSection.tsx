@@ -1,13 +1,15 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useRef, Children } from 'react'
-import { Button } from 'antd'
-import { observer } from 'src/vendors/mobx-react-lite'
-import { LastImproveItem, Report } from '../../types'
-import { ColumnProps } from 'antd/lib/table'
 import BaseTable from 'src/components/BaseTable'
-import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
 import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
+import styled from 'styled-components'
+import React, { Children, useEffect, useRef, useState } from 'react'
+import { Button } from 'antd'
+import { observer } from 'src/vendors/mobx-react-lite'
+import { ColumnProps } from 'antd/lib/table'
+
+import { LastImproveItem, Report } from '../../types'
+import { getModal } from '../../AnalysisDetailModal'
+
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -84,6 +86,9 @@ export default observer(function qualityIndexSection(props: Props) {
         dataIndex: 'averageScore',
         align: 'center',
         width: 60,
+        render(text:any, row: any) {
+          return text != null ? Number(text).toFixed(2) : '-'
+        }
 
       },
         {

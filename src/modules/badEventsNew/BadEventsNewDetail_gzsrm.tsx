@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Steps, Icon, Spin, Modal, Divider, Input, message } from 'antd'
-import { Link, withRouter } from 'react-router-dom'
-import styled from 'styled-components'
-import AuditModal_gzsrm from './components/AuditModal_gzsrm'
-import badEventsNewService from './api/badEventsNewService'
-import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { Button, Divider, Icon, Input, message, Modal, Spin, Steps } from 'antd'
+import { Link, withRouter } from 'react-router-dom'
+import { appStore, authStore } from 'src/stores'
+
+import AuditModal_gzsrm from './components/AuditModal_gzsrm'
+import UserCheckModal from './components/UserCheckModal'
+import badEventsNewService, { revokeIn } from './api/badEventsNewService'
 
 const api = new badEventsNewService()
 
@@ -38,6 +40,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const { master, handlenodeDto, itemDataMap } = detailData
 
   const [iframeLoading, setIframeLoading] = useState(true)
+  
+  const [userCheckVisible, setUserCheckVisible] = useState(false)
 
   let stepCurrent = [...handlenodeDto].reverse().find((step: any) => step.nodeCode === master.currentNodeCode)
   //下一步的审核状态
@@ -158,6 +162,44 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   const handleIframeLoad = () => {
     setIframeLoading(false)
   }
+  const handleRevoke = () => {
+    Modal.confirm({
+      title: '撤销',
+      content: '是否继续撤销?',
+      onOk() {
+        setUserCheckVisible(true)
+      } 
+    })
+    
+  }
+  const handleUserCheckOk = async(msg: any) => {
+    console.log('test-msg', msg)
+    let params: revokeIn = {
+      empNo: msg.empNo,
+      password: msg.password,
+      id: master?.id,
+      noPass: true,
+      nodeCode: stepNext?.nodeCode || '',
+      operateType: "withdraw"
+    }
+    try {
+      const res = await api.handleRevoke(params)
+      handleOk()
+    } catch (e) {
+    }
+  }
+  // 撤销按钮 需要护理部权限 可撤销到提交
+  const revokeBtn = () => {
+    if (!authStore.isDepartment) return ''
+    if (!['nursing_minister_audit',
+    'district_nurse_audit',
+    'nursing_minister_comfirm'].includes(stepCurrent?.nodeCode)) return ''
+    return (
+      <Button className='audit' onClick={handleRevoke} type="primary">
+        撤销
+      </Button>
+    )
+  }
 
   const AuditBtn = () => {
     let btnDisable = iframeLoading
@@ -234,6 +276,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       iframeEl.contentWindow.print()
     }
   }
+  // 是否为撤销项
+  const isRevoke = (item: any) => {
+    return item && item.expand == 'withdraw'
+  }
 
   return (
     <Wrapper>
@@ -255,6 +301,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </Button>
           {AuditBtn()}
           {opinion()}
+          {revokeBtn()}
           {/* {stepNext && stepNext.operatorStatus == 'nurse_auditor' && (
             <Button
               disabled={iframeLoading}
@@ -314,18 +361,19 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                         ? <Input.TextArea
                           defaultValue={item.handleContent}
                           rows={2}
-                          disabled={!authStore.isDepartment}
+                          disabled={!authStore.isDepartment || isRevoke(item)}
                           onChange={(e) =>
                             // setFormItem({ 'SR0004024': e.target.value })
                             // console.log(e.target.value)
                             setOpinionContent({ ...item, handleContent: e.target.value })
                           }
+                          className={isRevoke(item) ? 'revoke': ''}
                           style={{
                             background: 'rgb(238,238,238)',
                             borderRadius: '5px',
-                            padding: '0 5px'
+                            padding: '0 5px',
                           }}
-                        /> : item.handleContent ? <div className="handle-content">
+                        /> : item.handleContent ? <div className={`handle-content ${isRevoke(item) ? ' revoke': ''}`}>
                           <span>{item.handleContent}</span>
                         </div> : ""
                       }
@@ -367,6 +415,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         nodeInfo={stepNext}
         onCancel={handleCancel}
       />
+      <UserCheckModal
+        visible={userCheckVisible}
+        onCancel={() => setUserCheckVisible(false)}
+        onOk={handleUserCheckOk} />
     </Wrapper>
   )
 })
@@ -502,5 +554,8 @@ const Wrapper = styled.div`
     padding: 5px 10px;
     margin-right: 20px;
     border-radius: 3px;
+  }
+  .revoke {
+    color: #f00
   }
 `

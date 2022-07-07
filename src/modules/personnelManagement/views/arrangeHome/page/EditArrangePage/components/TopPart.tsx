@@ -398,11 +398,34 @@ export default observer(function TopPart() {
             暂存
           </Button>
         </div>
-        <div className="item">
-          <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
-            撤回
-          </Button>
-        </div>
+        {
+          appStore.hisMatch({
+            map: {
+              nfzxy: <React.Fragment>
+                {
+                  authStore.isDepartment && <div className="item">
+                  <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
+                    撤回
+                  </Button>
+                </div>
+                }
+              </React.Fragment>,
+              other:<div className="item">
+              <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
+                撤回
+              </Button>
+            </div>
+            },
+          })
+        }
+        {
+          ['nfzxy'].includes(appStore.HOSPITAL_ID) ? !authStore.isDepartment ? "" : "" :
+          <div className="item">
+            <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
+              撤回
+            </Button>
+          </div>
+        }
         <div className="item">
           <Button
             type="primary"

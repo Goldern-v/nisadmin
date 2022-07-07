@@ -1,10 +1,25 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Icon, Upload, DatePicker, Input, InputNumber, Modal, Radio, Row, Select, Spin } from 'src/vendors/antd'
 import moment from 'moment'
-import { authStore, appStore } from "src/stores";
-import NurseHandBookService from '../services/NurseHandBookService'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  Col,
+  DatePicker,
+  Icon,
+  Input,
+  InputNumber,
+  Modal,
+  Radio,
+  Row,
+  Select,
+  Spin,
+  Upload,
+} from 'src/vendors/antd'
+import { appStore, authStore } from 'src/stores'
 import { message } from 'antd/es'
+
+import NurseHandBookService from '../services/NurseHandBookService'
+
 const api = new NurseHandBookService();
 export interface Props {
   visible: boolean,
@@ -136,7 +151,7 @@ export default function NurseHandBookModal(props: any) {
         year: year,
         title: searchText,
         deptCode: deptSelect,
-        deptName: user.deptName,
+        deptName: deptList.find((v: any) => deptSelect == v.code)?.name || '',
         creatorName: searchText1,
         fileIds: fileIdList,
       })
