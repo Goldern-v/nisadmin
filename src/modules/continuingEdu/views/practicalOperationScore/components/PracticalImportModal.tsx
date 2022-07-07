@@ -45,7 +45,7 @@ export default observer(function PracticalImportModal(props: props) {
       })
     })
     let scoreParams = list.reduce((per,curr)=>{
-      return parseInt(per) + parseInt(curr.score)
+      return parseFloat(per) + parseFloat(curr.score)
     },0)
     if(refForm.current && refForm.current.input && refForm.current.input.value){
       refForm.current.input.value = scoreParams;

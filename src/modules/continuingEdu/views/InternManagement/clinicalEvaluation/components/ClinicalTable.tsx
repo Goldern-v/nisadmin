@@ -47,7 +47,7 @@ export default observer(function ApplyTable(props: Props) {
     {
       title: "实习时间",
       dataIndex: "实习时间",
-      width: 150,
+      width: 130,
       align: "center",
       render(text: string, record: any) {
         return record.internshipBeginTime && record.internshipEndTime ? `${record.internshipBeginTime} ~ ${record.internshipEndTime}` : '';
@@ -57,7 +57,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "操作考核成绩",
       dataIndex: "operationScore",
       align: "center",
-      width: 100,
+      width: 80,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -75,7 +75,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "理论开合成绩",
       dataIndex: "theoryScore",
       align: "center",
-      width: 100,
+      width: 80,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -132,6 +132,27 @@ export default observer(function ApplyTable(props: Props) {
       }
     },
     {
+      title: "优秀实习生",
+      dataIndex: "isGoodIntern",
+      align: "center",
+      width: 80,
+      render:(text: any,record: any) => {
+        return (
+          <Select 
+            style={{ width: 80 }}
+            value={text}
+            onChange={(value: any,option: any) => {
+              record.isGoodIntern = option.props.value;
+              updateData(record)
+            }}
+          >
+            <Select.Option value={1}>{'是'}</Select.Option>
+            <Select.Option value={0}>{'否'}</Select.Option>
+          </Select>
+        )
+      }
+    },
+    {
       title: "总体评价",
       dataIndex: "overallEvaluation",
       align: "center",
@@ -168,6 +189,7 @@ export default observer(function ApplyTable(props: Props) {
     );
     (clinicalManagData.tableList[dataIndexOne] as any) = record;
     const arrOne = clinicalManagData.tableList.slice();
+    
     clinicalManagData.tableList = [];
     clinicalManagData.tableList = arrOne;
     

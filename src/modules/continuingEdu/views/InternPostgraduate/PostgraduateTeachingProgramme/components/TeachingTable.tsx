@@ -176,12 +176,7 @@ export default observer(function ApplyTable(props: Props) {
           teachingPost.onload();
         }}
       />
-      {/* <FormEditModal
-        visible={editVisible}
-        params={editParams}
-        onCancel={handleEditCancel}
-        onOk={handleEditOk}
-      /> */}
+      <previewModal.Component />
     </Wrapper>
   );
 });

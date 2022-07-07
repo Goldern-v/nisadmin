@@ -110,24 +110,24 @@ export default observer(function ApplyTable(props: Props) {
       align: "center",
       width: 100
     },
-    {
-      title: "带教老师",
-      dataIndex: "teachTeacher",
-      align: "center",
-      width: 100
-    },
-    {
-      title: "操作成绩",
-      dataIndex: "operationScore",
-      align: "center",
-      width: 100
-    },
-    {
-      title: "理论成绩",
-      dataIndex: "theoryScore",
-      align: "center",
-      width: 100
-    },
+    // {
+    //   title: "带教老师",
+    //   dataIndex: "teachTeacher",
+    //   align: "center",
+    //   width: 100
+    // },
+    // {
+    //   title: "操作成绩",
+    //   dataIndex: "operationScore",
+    //   align: "center",
+    //   width: 100
+    // },
+    // {
+    //   title: "理论成绩",
+    //   dataIndex: "theoryScore",
+    //   align: "center",
+    //   width: 100
+    // },
     {
       title: "备注",
       dataIndex: "remark",
