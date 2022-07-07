@@ -270,33 +270,33 @@ export default observer(function TraineeShift(props: Props) {
       }
     },
     ...rotateList,
-    {
-      title: "教学查房时间",
-      dataIndex: "teachingRoundTime",
-      width: traineeShiftModal.tableDeptList.length ? 280 : 850,
-      align: "center",
-      render(text: any, record: any) {
-        return (
-          <DatePicker
-            disabled={showWeek}
-            size="small"
-            showTime
-            allowClear
-            value={text ? moment(text) : undefined}
-            format="YYYY-MM-DD HH:mm"
-            onChange={(value: any) => {
-              record.teachingRoundTime = value
-                ? value.format("YYYY-MM-DD HH:mm")
-                : null;
-              setTableList(traineeShiftModal.tableList);
-              const arrOne = traineeShiftModal.tableList.slice();
-              traineeShiftModal.tableList = [];
-              traineeShiftModal.tableList = arrOne;
-            }}
-          />
-        );
-      }
-    },
+    // {
+    //   title: "教学查房时间",
+    //   dataIndex: "teachingRoundTime",
+    //   width: traineeShiftModal.tableDeptList.length ? 280 : 850,
+    //   align: "center",
+    //   render(text: any, record: any) {
+    //     return (
+    //       <DatePicker
+    //         disabled={showWeek}
+    //         size="small"
+    //         showTime
+    //         allowClear
+    //         value={text ? moment(text) : undefined}
+    //         format="YYYY-MM-DD HH:mm"
+    //         onChange={(value: any) => {
+    //           record.teachingRoundTime = value
+    //             ? value.format("YYYY-MM-DD HH:mm")
+    //             : null;
+    //           setTableList(traineeShiftModal.tableList);
+    //           const arrOne = traineeShiftModal.tableList.slice();
+    //           traineeShiftModal.tableList = [];
+    //           traineeShiftModal.tableList = arrOne;
+    //         }}
+    //       />
+    //     );
+    //   }
+    // },
     {
       title: "操作",
       key: "cz",
