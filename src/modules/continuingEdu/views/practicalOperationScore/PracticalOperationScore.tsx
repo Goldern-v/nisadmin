@@ -178,16 +178,16 @@ export default observer(function Notification() {
       practicalOperationScore.tableLoading = true;
       operationScoreApi.importPraticalGrade(file)
         .then(res => {
-          if(res.code < 250){
+          if(res.code == 200){
             let list = res.data
             setModalTitle('导入')
             practicalOperationScore.tableLoading = false;
             setModalParams(list);
             setModalVisible(true);
           }
-        }, err =>err)
-        .catch(err=>{
-          console.log(err);
+        }, err =>{
+          Message.error('导入失败！');
+          practicalOperationScore.tableLoading = false;
         })
       document.body.removeChild(importEl)
     }

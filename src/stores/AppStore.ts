@@ -118,6 +118,9 @@ export default class AppStore {
       case "dgxg":
         logoUrl = require("src/assets/images/东莞谢岗.png");
         break;
+      case "lcey":
+        logoUrl = require("src/assets/images/liaocheng_logo.png");
+        break;
       case "gzhd":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
         break;

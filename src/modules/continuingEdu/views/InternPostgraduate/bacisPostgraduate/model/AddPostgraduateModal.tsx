@@ -199,11 +199,11 @@ export default observer(function AddInternModal(props: Props){
     setyearPickerIsOpen(false)
   }
   const handlePanelStartChange = (value: any) => {
-    if(formRef.current && formRef.current.state.values.studyTimeBegin){
+    if(formRef.current && formRef.current.state.values.studyTimeEnd){
       let hours = (moment
-        .duration(moment(formRef.current.state.values.studyTimeEnd, 'YYYY/MM/DD HH:mm')
-        .diff(moment(value, 'YYYY/MM/DD HH:mm'))
-        ).asHours());
+        .duration(moment(formRef.current.state.values.studyTimeEnd, 'YYYY/MM/DD')
+        .diff(moment(value, 'YYYY/MM/DD'))
+        ).asHours()).toFixed(0);
       setFormItem("duration" , hours)
     }
     
@@ -211,11 +211,11 @@ export default observer(function AddInternModal(props: Props){
     setFormItem("studyTimeBegin" , value)
   }
   const handlePanelEndChange = (value: any) => {
-    if(formRef.current && formRef.current.state.values.studyTimeEnd){
+    if(formRef.current && formRef.current.state.values.studyTimeBegin){
       let hours = (moment
-        .duration(moment(value, 'YYYY/MM/DD HH:mm')
-        .diff(moment(formRef.current.state.values.studyTimeBegin, 'YYYY/MM/DD HH:mm'))
-        ).asHours());
+        .duration(moment(value, 'YYYY/MM/DD')
+        .diff(moment(formRef.current.state.values.studyTimeBegin, 'YYYY/MM/DD'))
+        ).asHours()).toFixed(0);
       setFormItem("duration" , hours)
     }
     setendPickerIsOpen(false)

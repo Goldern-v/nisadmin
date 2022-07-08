@@ -72,7 +72,7 @@ export default observer(function ApplyTable(props: Props) {
       }
     },
     {
-      title: "理论开合成绩",
+      title: "理论考核成绩",
       dataIndex: "theoryScore",
       align: "center",
       width: 80,
