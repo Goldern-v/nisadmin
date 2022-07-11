@@ -34,6 +34,8 @@ export default observer(function ExamineTable() {
           ? "二级质控"
           : text == "sr"
           ? "特殊时段查房"
+          : text == "badEventMaster"
+          ? "不良事件"
           : "";
       },
     },
@@ -70,6 +72,7 @@ export default observer(function ExamineTable() {
       keyword
     );
     let qualityCheck3 = HomeApi.pendingPage(current, pageSize, "sr", keyword);
+    let qualityCheck4 = HomeApi.pendingPage(current, pageSize, "badEventMaster", keyword);
     let nurseFileCheck = HomeApi.pendingPage(
       current,
       pageSize,
@@ -78,7 +81,7 @@ export default observer(function ExamineTable() {
     );
 
     setLoadingTable(true);
-    Promise.all([qualityCheck1, qualityCheck2, qualityCheck3, nurseFileCheck])
+    Promise.all([qualityCheck1, qualityCheck2, qualityCheck3, qualityCheck4, nurseFileCheck])
       .then((values) => {
         setLoadingTable(false);
         let array: any = [
@@ -86,6 +89,7 @@ export default observer(function ExamineTable() {
           ...(values[1].data.list || []),
           ...(values[2].data.list || []),
           ...(values[3].data.list || []),
+          ...(values[4].data.list || []),
         ];
         console.log(array, "array");
         //按照提交时间先后排序
@@ -137,6 +141,12 @@ export default observer(function ExamineTable() {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
           record.othersMessage.id
+        }`
+      );
+    } else if (record.type == "badEventMaster") {
+      window.open(
+        `/crNursing/manage/#${
+          record.othersMessage.auditedUrl
         }`
       );
     }
