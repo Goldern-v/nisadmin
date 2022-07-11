@@ -1,14 +1,13 @@
 import Moment from 'moment'
 import Form from 'src/components/Form'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { Col, DatePicker, Input, Modal, Radio, Row, Select } from 'antd'
+import React, { useLayoutEffect, useRef, useState } from 'react'
+import { Col, DatePicker, Input, Modal, Row } from 'antd'
 import { Rules } from 'src/components/Form/interfaces'
 import { appStore } from 'src/stores'
+import { currentMonth } from 'src/utils/date/rangeMethod'
 
 import { getTypeName } from '../../analysisWhyx/utils'
-
-const Option = Select.Option
 
 export interface Props {
   visible: boolean
@@ -18,44 +17,31 @@ export interface Props {
   loading?: boolean
   /**reportName的字段排列 */
   reportFn?: Function
-  defDept?: string
 }
 
 export default function CreateAnalysisModal(props: Props) {
-  const refForm = React.createRef<Form>()
+  const refForm = useRef<any>()
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
     reportYear: (val) => !!val || '请选择年度',
-    reportMonth: (val) => !!val || '请选择月份',
-    startDate: (val) => !!val || '请选择开始时间',
-    endDate: (val) => !!val || '请选择结束时间'
+    dates: (val) => !!val || '请选择质控日期',
   }
 
-  const { visible, onCancel, onOk, allowClear, loading, defDept } = props
+  const { visible, onCancel, onOk, allowClear, loading } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
-  const [startDate, setStartDate] = useState(null as any | null)
-  const [endDate, setEndDate] = useState(null as any | null)
 
-  useEffect(() => {
-    if (visible && allowClear) {
-      setTimeout(_ => {
-        if (refForm.current) {
-          let nowMoment = Moment();
-
-          refForm.current.setFields({
-            reportYear: nowMoment,
-            startDate: null,
-            endDate: null,
-            reportName: '',
-            groupRoleCode: '',
-          })
-        }
-      }, 300)
-
-      setStartDate(null)
-      setEndDate(null)
+  useLayoutEffect(() => {
+    if (allowClear) {
+      if (refForm.current) {
+        let nowMoment = Moment();
+        refForm.current.setFields({
+          reportYear: nowMoment,
+          dates: currentMonth(),
+          reportName: '',
+        })
+      }
     }
   }, [visible])
 
@@ -65,27 +51,25 @@ export default function CreateAnalysisModal(props: Props) {
       let formData = current.getFields()
       current
         .validateFields()
-        .then((res) => {
-          let { reportName, reportYear, startDate, endDate } = formData
+        .then((res: any) => {
+          let { reportName, reportYear, dates } = formData
           let params: any = {
             reportName,
             reportYear: reportYear ? reportYear.format('YYYY') : '',
-            startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
-            endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
+            startDate: dates[0] ? dates[0].format('YYYY-MM-DD') : '',
+            endDate: dates[1] ? dates[1].format('YYYY-MM-DD') : '',
           }
-
           onOk && onOk(params)
         })
-        .catch((e) => { })
+        .catch((e: any) => {})
     }
   }
 
   const handlePanelChange = (value: any) => {
     setYearPickerIsOpen(false)
-    setFormItem('reportYear', value)
-
+    
     if (refForm.current) {
-      // setBeginDateAndEndDate(value, Number(refForm.current.getField('reportMonth')) - 1)
+      setFormItem('reportYear', value)
     }
   }
 
@@ -101,76 +85,21 @@ export default function CreateAnalysisModal(props: Props) {
     if (refForm.current) refForm.current.setField(key, value)
   }
 
-  const MonthList = () => {
-    let options = []
-    for (let i = 12; i > 0; i--) {
-      let month = i
-      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
-    }
-
-    return options
-  }
-
-  const moreThanStart = (date: any) => {
-    if (!startDate) return false
-
-    if (date.format('x') >= startDate.format('x')) return false
-    return true
-  }
-
-  const lessThanEnd = (date: any) => {
-    if (!endDate) return false
-
-    if (date.format('x') < endDate.format('x')) return false
-    return true
-  }
-
   const handleFormChange = (key: any, val: any) => {
-    if (key == 'startDate') setStartDate(val)
-
-    if (key == 'endDate') setEndDate(val)
-
     if (key !== 'reportName') setReportName()
-  }
-
-  const setBeginDateAndEndDate = (reportYear: any, month: number) => {
-    if (reportYear) {
-      reportYear = Moment(reportYear);
-      reportYear.month(month);
-
-      let startDate = Moment(reportYear);
-      let endDate: any = new Date(reportYear.format('YYYY/MM/DD'));
-
-      startDate.date(1);
-
-      endDate.setMonth(endDate.getMonth() + 1);
-      endDate.setDate(0);
-      endDate = Moment(endDate);
-
-      setStartDate(startDate)
-      setEndDate(endDate)
-      setFormItem('startDate', startDate)
-      setFormItem('endDate', endDate)
-    } else {
-      setStartDate(null)
-      setEndDate(null)
-      setFormItem('startDate', null)
-      setFormItem('endDate', null)
-    }
   }
 
   const setReportName = () => {
     let current = refForm.current
     if (current) {
-      let { reportYear } = current.getFields()
-      if (!reportYear) return
-
+      let { reportYear, dates } = current.getFields()
+      if (!reportYear || !dates) return
+      let reportName = ''
       let yearStr = reportYear.format('YYYY')
-      let monthStr = 1
-
-      let type = getTypeName(3.1)
-      let reportName = `${yearStr}年${1}${type}${monthStr}月工作报表`
-
+      let [d1, d2] = dates
+      if (d2 && d2.diff(d1, 'days') < 32 && d1.format('YYYY') == yearStr) {
+        reportName = `护理委员会${yearStr}年${d1.format('M')}月工作报表`
+      }
       setFormItem('reportName', reportName)
     }
   }
@@ -203,15 +132,9 @@ export default function CreateAnalysisModal(props: Props) {
             <Col span={5} className='label'>
               质控日期：
             </Col>
-            <Col span={9}>
-              <Form.Field name='startDate'>
-                <DatePicker placeholder='开始时间' disabledDate={lessThanEnd} disabled={true} />
-              </Form.Field>
-            </Col>
-            <Col span={1}>至</Col>
-            <Col span={9}>
-              <Form.Field name='endDate'>
-                <DatePicker placeholder='结束时间' disabledDate={moreThanStart} disabled={true} />
+            <Col span={19}>
+              <Form.Field name='dates'>
+                <DatePicker.RangePicker format="YYYY-MM-DD" />
               </Form.Field>
             </Col>
           </Row>

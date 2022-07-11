@@ -2,13 +2,14 @@ import qs from 'qs'
 import service from 'src/services/api'
 import styled from 'styled-components'
 import moment, { duration } from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { Button, DatePicker, Icon, message, Modal, Select } from 'antd'
+import { Button, DatePicker, Icon, Input, message, Modal, Select } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
+import { currentMonth } from 'src/utils/date/rangeMethod'
 
 import AnalysisService from '../analysisWhyx/api'
 import useLevel from '../analysisWhyx/utils/useLevel'
@@ -27,15 +28,19 @@ export default observer(function Analysis() {
   // 默认科室
   const [defDept, setDefDept] = useState('');
   const [createLoading, setCreateLoading] = useState("");
-
-  const [query, setQuery] = useState({
-    pageIndex: 1,
-    pageSize: 20,
-    status: "",
-
-  } as any);
+  const defQuery = useCallback(() => {
+    const [m1,m2] = currentMonth()
+    return {
+      pageIndex: 1,
+      pageSize: 20,
+      startDate: m1.format('YYYY-MM-DD'),
+      endDate: m2.format('YYYY-MM-DD'),
+      reportName: '',
+    }
+  }, [])
+  const [query, setQuery] = useState<Record<string,any>>(defQuery());
   // 质控等级
-  const level = useLevel();
+  const level = 3.1;
 
   useEffect(() => {
     service.commonApiService.getNursingUnitSelf().then((res) => {
@@ -147,11 +152,11 @@ export default observer(function Analysis() {
 
   const handleReview = async (record: any) => {
     const obj = {
-      deptName: getTempName(level, record.wardCode),
+      deptName: getTempName(level),
       level,
       id: record.id
     };
-    history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`);
+    history.push(`/committeeWorkReportDetail?${qs.stringify(obj)}`);
   };
 
   const handleSearch = () => {
@@ -161,14 +166,14 @@ export default observer(function Analysis() {
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
-  const initRenderData = async (data: any) => {
+  const openDetailPage = async (data: any) => {
     const params: Record<string, any> = {
       id: data.id || '',
       level,
-      deptName: getTempName(level, data.wardCode)
+      deptName: getTempName(3.1)
     }
     appStore.history.push(
-      `/committeeWorkReport?${qs.stringify(params)}`
+      `/committeeWorkReportDetail?${qs.stringify(params)}`
     );
   }
   const handleCreateOk = (params: any) => {
@@ -186,14 +191,14 @@ export default observer(function Analysis() {
       .createReport({
         ...params,
         reportLevel: level,
-        templateName: getTempName(level, params.wardCode),
+        templateName: getTempName(level),
       })
       .then((res) => {
         if (res.code == '200') {
           handleCreateCancel();
           setCreateClear(true);
           setCreateLoading("");
-          initRenderData(res.data)
+          openDetailPage(res.data)
         } else {
           failedCallback(res.desc || "");
         }
@@ -317,7 +322,7 @@ export default observer(function Analysis() {
         <Place />
         
         <div className="label">日期：</div>
-        <DatePicker.RangePicker />
+        <DatePicker.RangePicker value={[moment(query.startDate), moment(query.endDate)]} />
         <div className="label">状态：</div>
         <Select
           style={{ width: 100 }}
@@ -330,6 +335,7 @@ export default observer(function Analysis() {
           <Option value="0">保存</Option>
           <Option value="1">发布</Option>
         </Select>
+        <Input placeholder='请输入关键字' value={query.reportName}/>
         
         <Button onClick={handleSearch}>查询</Button>
         <Button onClick={handleCreate} type="primary">
@@ -376,7 +382,6 @@ export default observer(function Analysis() {
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
         loading={!!(createLoading == "start")}
-        defDept={defDept}
       />
     </Wrapper>
   );
@@ -391,7 +396,10 @@ const Wrapper = styled.div`
     margin: 0 15px 5px 15px;
     flex: 1;
   }
-  
+  input.ant-input {
+    width: 130px;
+    margin-left: 5px;
+  }
 `;
 const ModalCon = styled.div`
   & > div {

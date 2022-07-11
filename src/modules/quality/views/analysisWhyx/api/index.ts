@@ -1,6 +1,6 @@
-import { appStore } from 'src/stores';
-import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs'
+import BaseApiService from 'src/services/api/BaseApiService'
+import { appStore } from 'src/stores'
 
 export interface getPageIn extends Record<string, any> {
   hospitalCode?: string
@@ -57,12 +57,12 @@ export default class AnalysisService extends BaseApiService {
    * @returns 
    */
   public getPage(params: getPageIn) {
-  return this.post(`${this.path}getPage`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
+  return this.post(`${this.path}getPage`, { ...params, reportLevel: parseInt(params.reportLevel + ''), hospitalCode: appStore.HOSPITAL_ID})
   }
 
   /**创建报告 */
   public createReport(params: createReportIn) {
-  return this.post(`${this.path}createReport`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
+  return this.post(`${this.path}createReport`, { ...params, reportLevel: parseInt(params.reportLevel + ''), hospitalCode: appStore.HOSPITAL_ID})
   }
   /**查询单条报告 */
   public getOneReport(params: getPageIn) {
