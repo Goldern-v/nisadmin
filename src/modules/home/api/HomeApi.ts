@@ -24,7 +24,7 @@ class StatisticsApi extends BaseApiService {
         pageSize: pageSize || 10, //条数，number
         type: showType, //类型（质量检查or档案管理），string
         keyword,
-        deptCodes: [authStore.selectedDeptCode] //科室，string
+        deptCodes: showType == "badEventMaster"?["全院"]:[authStore.selectedDeptCode] //科室，string
       };
     }
     return this.post(`/flow/task/pendingPage`, data);
