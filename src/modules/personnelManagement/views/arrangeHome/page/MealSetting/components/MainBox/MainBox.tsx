@@ -168,7 +168,14 @@ export default function MainBox() {
     fridayNameColor: '',
     saturdayNameColor: '',
     sundayNameColor: '',
-    status: ''
+    status: '',
+    mondaySymbol: '', 
+    tuesdaySymbol: '', 
+    wednesdaySymbol: '', 
+    thursdaySymbol: '', 
+    fridaySymbol: '', 
+    saturdaySymbol: '', 
+    sundaySymbol: '', 
   }
 
   let allUser = new Array()

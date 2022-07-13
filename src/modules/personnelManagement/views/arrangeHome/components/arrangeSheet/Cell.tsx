@@ -105,7 +105,7 @@ export default observer(function Cell(props: Props) {
               editEffectiveTimeModal.show({
                 data: sheetViewModal.selectedCell,
                 onOkCallBack(data: any) {
-                  console.log(data, "datadata");
+                  // console.log(data, "datadata");
                   sheetViewModal.selectedCell.detail = data.detail;
 
                   if (data.statusType == "1") {
