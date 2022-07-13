@@ -96,6 +96,8 @@ export default observer(function AddInternModal(props: Props){
         if(params){
           current.clear()
           let data = {...params}
+          console.log(data);
+          
           let {
             year,
             natureOfLearning,
@@ -107,6 +109,7 @@ export default observer(function AddInternModal(props: Props){
             education,
             originalWorkUnit,
             studyDeptName01,
+            studyDeptCode01,
             studyTimeEnd,
             studyTimeBegin,
             duration,
@@ -133,6 +136,7 @@ export default observer(function AddInternModal(props: Props){
             education,
             originalWorkUnit,
             studyDeptName01,
+            studyDeptCode01,
             studyTimeEnd:studyTimeEnd?moment(studyTimeEnd):null,
             studyTimeBegin:studyTimeBegin?moment(studyTimeBegin):null,
             duration,
@@ -169,6 +173,14 @@ export default observer(function AddInternModal(props: Props){
           if (current) {
             let newParams = current.getFields();
             let id = params ? params.id : null;
+            deucOption.map((item:any)=>{
+              if(newParams.studyDeptName01 == item.code) {
+                newParams.studyDeptCode01 = item.code
+                newParams.studyDeptName01 = item.name
+              }
+            })
+            console.log(newParams);
+            
             let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id}
             internPostgraduateApi.getSaveFormData(addParams).then((res)=>{
               console.log(res);

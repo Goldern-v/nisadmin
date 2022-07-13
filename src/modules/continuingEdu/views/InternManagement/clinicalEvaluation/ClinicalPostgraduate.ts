@@ -129,6 +129,12 @@ class ClinicalManagModel {
       })
   }
 
+  /**删除患者 */
+  deleteIdentification(obj:Object){
+    return trainingSettingApi.deleteClinicalIdentification(obj)
+  }
+
+
   /** 保存表格数据 */
   handleSave() {
     trainingSettingApi
@@ -156,8 +162,6 @@ class ClinicalManagModel {
     if (dictName == '全部科室') {
       return this.allDeptAll
     } else {
-      console.log(this.dict);
-      
       return this.dict[dictList[dictName]] || []
     }
   }

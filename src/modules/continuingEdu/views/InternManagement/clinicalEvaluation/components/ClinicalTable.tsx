@@ -42,7 +42,22 @@ export default observer(function ApplyTable(props: Props) {
       title: "带教老师",
       dataIndex: "teachTeacher",
       align: "center",
-      width: 60
+      width: 60,
+      render:(text:any,record:any) => {
+        return(
+        <TextArea
+            style={{border:'none',resize:'none',outline:'none'}} 
+            autosize={{ minRows: 1 }}
+            maxLength={200}
+            value={text}
+            onChange={e => {
+            // console.log(e.target.value)
+            record.teachTeacher = e.target.value
+            updateData(record)
+          }}
+        />
+        )
+      }
     },
     {
       title: "实习时间",
@@ -173,13 +188,45 @@ export default observer(function ApplyTable(props: Props) {
         )
       }
     },
+    {
+      title: "操作",
+      dataIndex: "overallEvaluation",
+      align: "center",
+      width: 80,
+      render(text: any, record: any) {
+        let data: any = [
+        {
+          text: "删除",
+          color:'#f44',
+          function: handleDelete
+        }];
+        return (
+          <DoCon>
+            {data.map((item: any, index: any) => (
+              <span
+                key={index}
+                style={{color:item.color?item.color:''}}
+                onClick={() => (item.function ? item.function(record) : {})}
+              >
+                {item.text}
+              </span>
+            ))}
+          </DoCon>
+        );
+      }
+    },
   ];
 
-  const handleEditOk = () => {
-    setEditVisible(false);
-    Message.success('修改成功！')
-    clinicalManagData.onload();
-  };
+  const handleDelete = (record:any) => {
+    let obj = {
+      groupId:record.groupId,
+      empNo:record.empNo,
+    }
+    clinicalManagData.deleteIdentification(obj).then((res:any)=>{
+      Message.success('删除成功！')
+      clinicalManagData.onload();
+    })
+  }
 
   // 更新数据
   const updateData = (record: any) => {

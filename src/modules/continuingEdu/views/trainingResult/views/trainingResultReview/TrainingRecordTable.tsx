@@ -130,13 +130,15 @@ export default observer(function TrainingRecordTable() {
                 <MultipleImageUploader
                   accept='image/jpg'
                   text="添加图片"
-                  imgLimitedMb={2}
+                  imgLimitedMb={20}
                   value={trainingResultModel.trainingPhotos.split(',').filter((item: string) => item)}
                   tip={
-                    "支持png、jpg格式，单文件最大支持2m 最多上传10张 "
+                    "支持png、jpg格式，单文件最大支持20m 最多上传10张 "
                   }
                   sizeLimited={10}
                   onChange={(imgs) => {
+                    console.log(imgs);
+                    
                     trainingResultModel.trainingPhotos = imgs.join(',')
                     updateData(trainingResultModel.trainingPhotos)
                   }}
