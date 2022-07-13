@@ -1,14 +1,16 @@
+import moment from 'moment'
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, Select, Input, DatePicker, message, Modal, Switch } from 'antd'
+import React, { useCallback, useEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { Button, DatePicker, Input, message, Modal, Select, Switch } from 'antd'
 import { PaginationConfig } from 'src/vendors/antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
+
 import BatchDistribution from '../../components/BatchDistribution'
-import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import FollowUpPatientsManageServices from '../services/FollowUpPatientsManageServices'
-import moment from 'moment'
+
+const { Option } =  Select
 export interface Props { 
   deptList: any,
   diseaseList: any,
@@ -33,6 +35,10 @@ export default function 待分配出院患者(props: Props) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
   const [total, setTotal]: any = useState(0)
   const [templateList, setTemplateList]: any = useState([])
+  // 诊断字段
+  const [diagnosisList, setDiagnosisList] = useState<any[]>([])
+  const [diagnosis, setDiagnosis] = useState('')
+
   const columns: ColumnProps<any>[] = [
     {
       title: '护理单元',
@@ -142,6 +148,7 @@ export default function 待分配出院患者(props: Props) {
         startDate,
         endDate,
         keyword: searchText,
+        diagnosis,
       })
       .then((res) => {
         setPageLoading(false)
@@ -163,10 +170,39 @@ export default function 待分配出院患者(props: Props) {
     setIsAdd(false)
     setEditVisible(true)
   }
+  const filterFn = useCallback(
+    (input: any, option: any) => {
+      return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    },
+    []
+  )
+  /**诊断列表 */
+  const getDiagnosisList = useCallback(() => {
+    if (!deptSelect) {
+      setDiagnosisList([])
+      return
+    }
+    api.getDictItemValueList({
+        dictCode: 'ward_nursing',
+        itemCode: deptSelect
+      }).then((res: any) => {
+      if (res.code == 200) {
+        const list = res.data || []
+        setDiagnosisList(list)
+        setDiagnosis('')
+      }
+    }).catch(e => {})
+  }, [deptSelect])
+  
   useEffect(() => {
     setDeptSelect(user.deptCode)
     getTemplateList(user.deptCode)
+    getDiagnosisList()
   }, [])
+
+  useEffect(() => {
+    getDiagnosisList()
+  }, [deptSelect])
   
   useEffect(() => {
     getData()
@@ -174,7 +210,8 @@ export default function 待分配出院患者(props: Props) {
     query.pageIndex,
     query.pageSize,
     date,
-    deptSelect
+    deptSelect,
+    diagnosis,
   ])
   return <Wrapper>
     <PageHeader>
@@ -184,15 +221,31 @@ export default function 待分配出院患者(props: Props) {
         value={deptSelect}
         style={{ width: 180 }}
         showSearch
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        filterOption={(input: any, option: any) => filterFn(input, option)}
         onChange={(val: string) => {
+          if (val == '') {
+            setDiagnosis('')
+          }
           setDeptSelect(val)
           getTemplateList(val)
         }}>
-        <Select.Option value={''}>全部</Select.Option>
+        <Option value={''}>全部</Option>
         {props.deptList.map((item: any, idx: any) =>
-          <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+          <Option key={idx} value={item.code}>{item.name}</Option>)}
+      </Select>
+      <span className="label">诊断:</span>
+      <Select
+        value={diagnosis}
+        style={{width: 120}}
+        showSearch
+        filterOption={(input: any, option: any) => filterFn(input, option)}
+        onChange={(val: string) => {
+          setDiagnosis(val)
+        }}>
+        <Option value={''}>全部</Option>
+        {diagnosisList.map((v:string, i: number) => 
+          <Option key={i} value={v}>{v}</Option>
+        )}
       </Select>
       <span className='label'>出院时间:</span>
       <DatePicker.RangePicker

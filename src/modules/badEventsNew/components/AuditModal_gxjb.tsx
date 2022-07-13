@@ -296,7 +296,7 @@ export default observer(function AduitModal(props: Props) {
                       eventLevel: e.target.value,
                     })
                   }>
-                  <Radio value={"意外事件"} >意外事件</Radio>
+                  {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   <Radio value={"Ⅰ级事件"} >Ⅰ级事件</Radio>
                   <Radio value={"Ⅱ级事件"} >Ⅱ级事件</Radio>
                   <Radio value={"Ⅲ级事件"} >Ⅲ级事件</Radio>
@@ -385,7 +385,7 @@ export default observer(function AduitModal(props: Props) {
                     <Radio value={"严重差错"} >严重差错</Radio>
                     <Radio value={"一般差错"} >一般差错</Radio>
                     <Radio value={"缺点"} >缺点</Radio>
-                    <Radio value={"意外事件"} >意外事件</Radio>
+                    {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   </Radio.Group>
                 </Col>
               </Row>
