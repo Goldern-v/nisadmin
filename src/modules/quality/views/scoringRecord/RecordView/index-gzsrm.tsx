@@ -157,7 +157,7 @@ export default observer((props: Props) => {
         }
         // }
         const res = await api.saveItem({
-          master: appStore.queryObj.id || tableId ? master : obj,
+          master: appStore.queryObj.id || tableId ? { ...master, wardCode: wardString.wardCode, wardName: wardString.wardName } : obj,
           itemDataMap: form,
           commit: status
         })
