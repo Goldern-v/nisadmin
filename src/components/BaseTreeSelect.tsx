@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Tabs, Input, Cascader } from 'antd'
+import { appStore } from 'src/stores'
 const TabPane = Tabs.TabPane
 export interface Props {
   config?: any[]
@@ -62,7 +63,7 @@ export default React.forwardRef(function BaseTreeSelect(props: Props, ref: any) 
         fieldNames={fieldNames}
         notFoundContent='暂无数据'
         showSearch
-        allowClear
+        allowClear={appStore.HOSPITAL_ID === 'jmfy' ? false : true} 
         popupClassName={'popup-menus'}
         className={'class-menus'}
         ref={ref}

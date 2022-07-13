@@ -154,7 +154,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const handleOk = () => {
-    setTimeout(() => appStore.history.goBack(), 1000)
+    setTimeout(() => {
+      // appStore.history.goBack()
+      appStore.history.push('/badEventsNew')
+    }, 1000)
   }
 
   const handleCancel = () => {
@@ -292,7 +295,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </span>
           <Button
             className='audit'
-            onClick={() => appStore.history.goBack()}>
+            onClick={() => {
+              // appStore.history.goBack()
+              appStore.history.push('/badEventsNew')
+            }}>
             返回
           </Button>
           {AuditBtn()}

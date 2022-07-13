@@ -146,15 +146,15 @@ export default function PrintPageNys(props: Props) {
     <div className="main-title">《{title}》</div>
     <div className="baseInfo-list">
       <div className="boxLeft">
-        <div>姓名：{baseInfo.empName}</div>
-        <div>科室：{baseInfo.deptName}</div>
-        <div>题目数量：{baseInfo.totalQuestionsCount}</div>
+        <div>姓名：{baseInfo?.empName}</div>
+        <div>科室：{baseInfo?.deptName}</div>
+        <div>题目数量：{baseInfo?.totalQuestionsCount}</div>
       </div>
       <div className="boxRight">
-        <div>答题情况：{baseInfo.answerRightCount}/{baseInfo.totalQuestionsCount}
+        <div>答题情况：{baseInfo?.answerRightCount}/{baseInfo?.totalQuestionsCount}
           <span style={{ color: '#aaa' }}>（正确题数/答题数）</span></div>
         {/* <div>及格分数线：{baseInfo.passScores || 0}分</div> */}
-        <div>答题用时：{baseInfo.timeForAnswerDesc}</div>
+        <div>答题用时：{baseInfo?.timeForAnswerDesc}</div>
       </div>
     </div>
     <div className="question-list">

@@ -105,7 +105,7 @@ export default observer(function Cell(props: Props) {
               editEffectiveTimeModal.show({
                 data: sheetViewModal.selectedCell,
                 onOkCallBack(data: any) {
-                  console.log(data, "datadata");
+                  // console.log(data, "datadata");
                   sheetViewModal.selectedCell.detail = data.detail;
 
                   if (data.statusType == "1") {
@@ -185,7 +185,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'fssdy': [
+            'fssdy,nfzxy,whyx': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
@@ -200,23 +200,24 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'nfzxy': [
-              {
-                icon: require("../../images/修改工时.png"),
-                label: "添加备注",
-                type: "text",
-                onClick: () => {
-                  addRemakeModal.show({
-                    data: sheetViewModal.selectedCell,
-                    onOkCallBack(value: any) {
-                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
-                    }
-                  });
-                }
-              }
-            ],
+            // 'nfzxy': [
+            //   {
+            //     icon: require("../../images/修改工时.png"),
+            //     label: "添加备注",
+            //     type: "text",
+            //     onClick: () => {
+            //       addRemakeModal.show({
+            //         data: sheetViewModal.selectedCell,
+            //         onOkCallBack(value: any) {
+            //           sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+            //         }
+            //       });
+            //     }
+            //   }
+            // ],
             other: []
-          }
+          },
+          vague:true,
         }),
         {
           icon: require("../../images/休假计数.png"),

@@ -418,14 +418,6 @@ export default observer(function TopPart() {
             },
           })
         }
-        {
-          ['nfzxy'].includes(appStore.HOSPITAL_ID) ? !authStore.isDepartment ? "" : "" :
-          <div className="item">
-            <Button onClick={cancelPush} disabled={!showLock || !sheetViewModal.isPush}>
-              撤回
-            </Button>
-          </div>
-        }
         <div className="item">
           <Button
             type="primary"

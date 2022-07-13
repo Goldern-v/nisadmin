@@ -56,7 +56,7 @@ export default observer(function AduitModal(props: Props) {
   const handleUserCheckOk = (userAudit: any, userInfo: any) => {
     // 片区护长审核是否通过
     auditFormSubmit(userAudit, userInfo)
-    // setUserCheckVisible(false)
+    setUserCheckVisible(false)
   }
 
   const auditFormSubmit = (userAudit: any, userInfo: any) => {
@@ -264,7 +264,7 @@ export default observer(function AduitModal(props: Props) {
                 </Radio.Group>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <Col span={6} className="row-title">不良事件定性:</Col>
               <Col span={18}>
                 <Radio.Group
@@ -283,7 +283,7 @@ export default observer(function AduitModal(props: Props) {
                   <Radio value={"意外事件"} >意外事件</Radio>
                 </Radio.Group>
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <Col span={6} className="row-title">谈论事件级别:</Col>
               <Col span={18}>
@@ -296,7 +296,7 @@ export default observer(function AduitModal(props: Props) {
                       eventLevel: e.target.value,
                     })
                   }>
-                  <Radio value={"意外事件"} >意外事件</Radio>
+                  {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   <Radio value={"Ⅰ级事件"} >Ⅰ级事件</Radio>
                   <Radio value={"Ⅱ级事件"} >Ⅱ级事件</Radio>
                   <Radio value={"Ⅲ级事件"} >Ⅲ级事件</Radio>
@@ -385,7 +385,7 @@ export default observer(function AduitModal(props: Props) {
                     <Radio value={"严重差错"} >严重差错</Radio>
                     <Radio value={"一般差错"} >一般差错</Radio>
                     <Radio value={"缺点"} >缺点</Radio>
-                    <Radio value={"意外事件"} >意外事件</Radio>
+                    {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   </Radio.Group>
                 </Col>
               </Row>

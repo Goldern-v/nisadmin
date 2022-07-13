@@ -1,3 +1,4 @@
+import qs from 'qs'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
 
@@ -25,6 +26,14 @@ export default class FollowUpPatientsManageServices extends BaseApiService {
   //分配随访小组
   public allotVisitTeam(obj: PageOptions | any) {
     return this.post(`/visit/visitPatientData/allotVisitTeam`, obj)
+  }
+  /**
+   * 根据科室返回诊断列表
+   * @param obj 
+   * @returns 
+   */
+  public getDictItemValueList(obj: any) {
+    return this.get(`/dict/common/getDictItemValueList?${qs.stringify(obj)}`, )
   }
 }
 

@@ -22,6 +22,10 @@ export const newStudentCreditTypeList: Array<IStudentCreditType> = appStore.hisM
       { name: "科级", code: 5 },
       { name: "病区", code: 6 },
     ],
+    whyx: [
+      { name: "I级学分", code: 1 },
+      { name: "II级学分", code: 2 },
+    ],
     other: [
       { name: "院级学分", code: 1 },
       { name: "片区学分", code: 2 },
@@ -46,6 +50,10 @@ export const newStudentCreditTypeMap: any = appStore.hisMatch({
       4: "院级",
       5: "科级",
       6: "病区"
+    },
+    whyx: { 
+      1: "I级学分", 
+      2: "II级学分",
     },
     other: {
       1: "国家级",
