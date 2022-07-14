@@ -221,14 +221,14 @@ export default function AduitModal(props: Props) {
 
     let postData = {
       id: props.id,
-      empNo: props.allData.empNo,
-      empName: props.allData.empName,
-      saveStatus: props.allData.saveStatus,
+      empNo: props.allData?.empNo || props.allData?.commiterNo,
+      empName: props.allData?.empName || props.allData?.commiterName,
+      saveStatus: props.allData?.saveStatus || props.allData?.auditedEntityName,
       flag: agreeStatus,
       detail: opinion,
       type: props.type,
     }
-
+    
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
       message.success('审核成功')
       emitter.emit('refreshNurseFileDeatilLeftMenu')
