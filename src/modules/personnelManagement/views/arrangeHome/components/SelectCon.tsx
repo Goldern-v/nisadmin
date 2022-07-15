@@ -1,31 +1,22 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { selectViewModal } from "../viewModal/SelectViewModal";
-import { observer } from "mobx-react-lite";
-import {
-  DatePicker,
-  Button,
-  Select,
-  message,
-  Dropdown,
-  Menu,
-  Modal,
-  Checkbox,
-  Upload,
-} from "src/vendors/antd";
-import { fileDownload } from "src/utils/file/file";
-import { appStore, authStore } from "src/stores";
-import DeptSelect from "src/components/DeptSelect";
-import moment from "moment";
-import { scheduleStore } from "src/stores";
-import { arrangeService } from "../services/ArrangeService";
-import { sheetViewModal } from "../viewModal/SheetViewModal";
-import { printModal } from "../viewModal/PrintModal";
-import service from "src/services/api";
-import { DictItem } from "src/services/api/CommonApiService";
-import createModal from "src/libs/createModal";
-import ShowStandardTimeModal from "../modal/ShowStandardTimeModal";
-import ImportModal from "./importModal";
+import moment from 'moment'
+import DeptSelect from 'src/components/DeptSelect'
+import createModal from 'src/libs/createModal'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Button, Checkbox, DatePicker, Dropdown, Menu, message, Modal, Select, Upload } from 'src/vendors/antd'
+import { fileDownload } from 'src/utils/file/file'
+import { appStore, authStore } from 'src/stores'
+import { scheduleStore } from 'src/stores'
+import { DictItem } from 'src/services/api/CommonApiService'
+
+import ShowStandardTimeModal from '../modal/ShowStandardTimeModal'
+import ImportModal from './importModal'
+import { selectViewModal } from '../viewModal/SelectViewModal'
+import { arrangeService } from '../services/ArrangeService'
+import { sheetViewModal } from '../viewModal/SheetViewModal'
+import { printModal } from '../viewModal/PrintModal'
 
 export interface Props {
 }
@@ -568,7 +559,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx", "fssdy"].includes(appStore.HOSPITAL_ID)) &&
+        {(["wh", "gxjb", "fsxt", "whyx", "fssdy","lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -579,7 +570,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx"].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"

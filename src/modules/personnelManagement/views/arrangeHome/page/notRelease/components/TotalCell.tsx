@@ -1,14 +1,15 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
-import { observer } from "mobx-react-lite";
-import { sheetViewModal } from "../../../viewModal/SheetViewModal";
-import { ArrangeItem } from "../../../types/Sheet";
-import { cloneJson } from "src/utils/json/clone";
-import { message as Message } from "antd";
-import { appStore } from "src/stores";
+import moment from 'moment'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { Button } from 'antd'
+import { observer } from 'mobx-react-lite'
+import { cloneJson } from 'src/utils/json/clone'
+import { message as Message } from 'antd'
+import { appStore } from 'src/stores'
 
-import moment from "moment";
+import { sheetViewModal } from '../../../viewModal/SheetViewModal'
+import { ArrangeItem } from '../../../types/Sheet'
+
 export interface Props {
   id: any;
 }
@@ -52,7 +53,7 @@ export const totalCellContent = (id: any) => {
   // 武汉
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
-    return isOk && (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == 'gxjb')
+    return isOk && (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID))
       ? total
       : total + Number(current.effectiveTime);
   }, 0);

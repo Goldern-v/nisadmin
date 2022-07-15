@@ -1,26 +1,25 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import update from 'immutability-helper'
+import createModal from 'src/libs/createModal'
+import emitter from 'src/libs/ev'
+import service from 'src/services/api'
+import AppStore from 'src/stores/AppStore'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { RouteComponentProps } from 'react-router'
+import { Icon, Input, message, Modal, Switch, Table } from 'antd'
+import { appStore, authStore, scheduleStore } from 'src/stores'
+import { DragDropContext } from 'react-dnd'
+import { globalModal } from 'src/global/globalModal'
+import { observer } from 'mobx-react-lite'
+
+import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
+import addTutorModal from '../../modal/AddTutorModal'
+
 // import { Link } from 'react-router-dom'
 
-import { Table, Input, Switch, message, Icon, Modal } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from "src/services/api";
-import { scheduleStore, appStore, authStore } from "src/stores";
-
-import emitter from "src/libs/ev";
-import BaseTable, { DoCon } from "src/components/BaseTable";
-
-import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-import update from "immutability-helper";
-import { globalModal } from "src/global/globalModal";
-import createModal from "src/libs/createModal";
-import AddScheduleNursingModal from "../../modal/AddScheduleNursingModal";
-import addTutorModal from "../../modal/AddTutorModal";
-import AppStore from "src/stores/AppStore";
-import { observer } from "mobx-react-lite";
-
 // const Option = Select.Option
 export interface Props extends RouteComponentProps { }
 
@@ -187,6 +186,34 @@ export default observer(function MainBox() {
         },
       ],
       gxjb: () => [
+        {
+          title: "开始时间",
+          dataIndex: "startDate",
+          key: "startDate",
+          width: 120,
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70,
+        },
+      ],
+      lyyz: () => [
+        {
+          title: "开始时间",
+          dataIndex: "startDate",
+          key: "startDate",
+          width: 120,
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70,
+        },
+      ],
+      qhwy: () => [
         {
           title: "开始时间",
           dataIndex: "startDate",

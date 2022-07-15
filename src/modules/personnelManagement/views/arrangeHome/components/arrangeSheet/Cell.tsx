@@ -1,26 +1,21 @@
-import styled from "styled-components";
-import React, { useState, useEffect, useRef } from "react";
-import { Button } from "antd";
-import { ContextMenu } from "../../types/contextMenu";
-import { observer, toJS } from "src/vendors/mobx-react-lite";
-import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { dateDiff } from "src/utils/date/dateDiff";
-import monnet from "src/vendors/moment";
-import classNames from "classnames";
-import { type } from "os";
-import { SymbolItem, ArrangeItem } from "../../types/Sheet";
-import {
-  getAddArrangeMenuList,
-  copyRowClick,
-  cleanCell,
-  cleanCellList,
-  copyCellClick
-} from "./cellClickEvent";
-import { message, Popover } from "src/vendors/antd";
-import { cloneJson } from "src/utils/json/clone";
-import { appStore, authStore } from "src/stores";
-import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
-import moment from "moment";
+import classNames from 'classnames'
+import moment from 'moment'
+import monnet from 'src/vendors/moment'
+import styled from 'styled-components'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button } from 'antd'
+import { observer, toJS } from 'src/vendors/mobx-react-lite'
+import { dateDiff } from 'src/utils/date/dateDiff'
+import { type } from 'os'
+import { message, Popover } from 'src/vendors/antd'
+import { cloneJson } from 'src/utils/json/clone'
+import { appStore, authStore } from 'src/stores'
+
+import { ContextMenu } from '../../types/contextMenu'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { ArrangeItem, SymbolItem } from '../../types/Sheet'
+import { cleanCell, cleanCellList, copyCellClick, copyRowClick, getAddArrangeMenuList } from './cellClickEvent'
+import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
 
 export interface Props {
   contextMenu: ContextMenu;
@@ -706,6 +701,56 @@ export default observer(function Cell(props: Props) {
       );
     },
     whyx: () => {
+      return (
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
+          ? "加班"
+          : "减班") +
+        ":" +
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+          ? cellObj.schAddOrSubs[0].hour
+          : 0) +
+        "h" +
+        "，" +
+        `现:${cellObj.effectiveTime || 0}h，` +
+        `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `白:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingMorningHour) ||
+        0}h，` +
+        `夜:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingNightHour) ||
+        0}h`
+      );
+    },
+    lyyz: () => {
+      return (
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType == "1"
+          ? "加班"
+          : "减班") +
+        ":" +
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+          ? cellObj.schAddOrSubs[0].hour
+          : 0) +
+        "h" +
+        "，" +
+        `现:${cellObj.effectiveTime || 0}h，` +
+        `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `白:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingMorningHour) ||
+        0}h，` +
+        `夜:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingNightHour) ||
+        0}h`
+      );
+    },
+    qhwy: () => {
       return (
         (cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&
