@@ -75,26 +75,71 @@ export default function ToolBar() {
           value: record.status != null ? record.status : true
         },
         mondaySymbol: {
-          value: record.mondaySymbol || ''
+          value: record.mondaySymbolName || ''
         },
         tuesdaySymbol: {
-          value: record.tuesdaySymbol || ''
+          value: record.tuesdaySymbolName || ""
         }, 
         wednesdaySymbol: {
-          value: record.wednesdaySymbol || ''
+          value: record.wednesdaySymbolName || ''
         },
         thursdaySymbol: {
-          value: record.thursdaySymbol || ''
+          value: record.thursdaySymbolName || ''
         },
         fridaySymbol: {
-          value: record.fridaySymbol || ''
+          value: record.fridaySymbolName || ''
         },
         saturdaySymbol: {
-          value: record.saturdaySymbol || ''
+          value: record.saturdaySymbolName || ''
         },
         sundaySymbol: {
+          value: record.sundaySymbolName || ''
+        },
+        mondaySymbolId: {
+          value: record.mondaySymbol || ''
+        },
+        tuesdaySymbolId: {
+          value: record.tuesdaySymbol || ''
+        },
+        wednesdaySymbolId: {
+          value: record.wednesdaySymbol || ''
+        },
+        thursdaySymbolId: {
+          value: record.thursdaySymbol || ''
+        },
+        fridaySymbolId: {
+          value: record.fridaySymbol || ''
+        },
+        saturdaySymbolId: {
+          value: record.saturdaySymbol || ''
+        },
+        sundaySymbolId: {
           value: record.sundaySymbol || ''
         },
+
+
+        mondaySymbolColor: {
+          value: record.mondaySymbolColor || ''
+        },
+        tuesdaySymbolColor: {
+          value: record.tuesdaySymbolColor || ''
+        },
+        wednesdaySymbolColor: {
+          value: record.wednesdaySymbolColor || ''
+        },
+        thursdaySymbolColor: {
+          value: record.thursdaySymbolColor || ''
+        },
+        fridaySymbolColor: {
+          value: record.fridaySymbolColor || ''
+        },
+        saturdaySymbolColor: {
+          value: record.saturdaySymbolColor || ''
+        },
+        sundaySymbolColor: {
+          value: record.sundaySymbolColor || ''
+        },
+
       }
       addMeal('编辑排班套餐')
     })
@@ -376,14 +421,18 @@ export default function ToolBar() {
         sundaySymbol: Form.createFormField({
           ...props.sundaySymbol,
           value: props.sundaySymbol.value
-        }), 
+        }),
+        // mondaySymbolName: Form.createFormField({
+        //   ...props.mondaySymbolName,
+        //   value: props.mondaySymbolName.value
+        // })
       }
     },
     onValuesChange(_: any, values: any) {
       console.log(values)
     }
   })((props: any) => {
-    const { getFieldDecorator, getFieldValue } = props.form
+    const { getFieldDecorator, getFieldValue, getFieldProps } = props.form
     customizedForm = props.form
 
     const formItemLayout = {
@@ -405,9 +454,9 @@ export default function ToolBar() {
           }
           {getFieldDecorator('mondaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('mondayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('mondayName')} style={{ width: 70, color: symbols.filter((item) => fields.mondaySymbol.value === item.id)[0]?.symbolColor || fields.mondaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -417,9 +466,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('tuesdaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('tuesdayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('tuesdayName')} style={{ width: 70, color: symbols.filter((item) => fields.tuesdaySymbol.value === item.id)[0]?.symbolColor || fields.tuesdaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -429,9 +478,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('wednesdaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('wednesdayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('wednesdayName')} style={{ width: 70, color: symbols.filter((item) => fields.wednesdaySymbol.value === item.id)[0]?.symbolColor || fields.wednesdaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -441,9 +490,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('thursdaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('thursdayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('thursdayName')} style={{ width: 70, color: symbols.filter((item) => fields.thursdaySymbol.value === item.id)[0]?.symbolColor || fields.thursdaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -453,9 +502,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('fridaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('fridayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('fridayName')} style={{ width: 70, color: symbols.filter((item) => fields.fridaySymbol.value === item.id)[0]?.symbolColor || fields.fridaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -465,9 +514,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('saturdaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('saturdayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('saturdayName')} style={{ width: 70, color: symbols.filter((item) => fields.saturdaySymbol.value === item.id)[0]?.symbolColor || fields.saturdaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -477,9 +526,9 @@ export default function ToolBar() {
           })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
           {getFieldDecorator('sundaySymbol', {
             rules: [{ required: false, message: '' }]
-          })(<Select disabled={!getFieldValue('sundayName')} style={{ width: 70 }}>
+          })(<Select disabled={!getFieldValue('sundayName')} style={{ width: 70, color: symbols.filter((item) => fields.sundaySymbol.value === item.id)[0]?.symbolColor || fields.sundaySymbolColor.value}}>
             {symbols.map((item: any) => (
-              <Option value={item.symbol}>{item.symbol}</Option>
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
             ))}
           </Select>)}
         </Form.Item>
@@ -491,6 +540,7 @@ export default function ToolBar() {
   })
 
   const handleFormChange = (changedFields: any) => {
+    //  mondaySymbolName: objSymbol['symbol'], mondaySymbolColor: objSymbol['symbolColor']
     fields = { ...fields, ...changedFields }
     // console.log('handleFormChange', changedFields, customizedForm)
 
@@ -552,6 +602,22 @@ export default function ToolBar() {
     fridaySymbol: { value: ''}, 
     saturdaySymbol: { value: ''},
     sundaySymbol: { value: ''}, 
+
+    mondaySymbolId: { value: ''},
+    tuesdaySymbolId: { value: ''},
+    wednesdaySymbolId: { value: ''},
+    thursdaySymbolId: { value: ''},
+    fridaySymbolId: { value: ''}, 
+    saturdaySymbolId: { value: ''},
+    sundaySymbolId: { value: ''}, 
+
+    mondaySymbolColor: { value: ''},
+    tuesdaySymbolColor: { value: ''},
+    wednesdaySymbolColor: { value: ''},
+    thursdaySymbolColor: { value: ''},
+    fridaySymbolColor: { value: ''}, 
+    saturdaySymbolColor: { value: ''},
+    sundaySymbolColor: { value: ''}, 
   }
 
   const getShiftIdByName = (name: string) => {
@@ -582,7 +648,16 @@ export default function ToolBar() {
       thursdaySymbol: fields.thursdaySymbol.value || '',  
       fridaySymbol: fields.fridaySymbol.value || '', 
       saturdaySymbol: fields.saturdaySymbol.value || '',  
-      sundaySymbol: fields.sundaySymbol.value || '',  
+      sundaySymbol: fields.sundaySymbol.value || '',
+
+      mondaySymbolId: fields.mondaySymbolId.value || '',
+      tuesdaySymbolId: fields.tuesdaySymbolId.value || '', 
+      wednesdaySymbolId: fields.wednesdaySymbolId.value || '', 
+      thursdaySymbolId: fields.thursdaySymbolId.value || '',  
+      fridaySymbolId: fields.fridaySymbolId.value || '', 
+      saturdaySymbolId: fields.saturdaySymbolId.value || '',  
+      sundaySymbolId: fields.sundaySymbolId.value || '',
+
     }
     if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
       for (let key in postData) {
@@ -652,6 +727,22 @@ export default function ToolBar() {
         fridaySymbol: { value: ''},
         saturdaySymbol: { value: ''}, 
         sundaySymbol: { value: ''}, 
+
+        mondaySymbolId: { value: ''},
+        tuesdaySymbolId: { value: ''},
+        wednesdaySymbolId: { value: ''},
+        thursdaySymbolId: { value: ''},  
+        fridaySymbolId: { value: ''},
+        saturdaySymbolId: { value: ''}, 
+        sundaySymbolId: { value: ''}, 
+
+        mondaySymbolColor: { value: ''},
+        tuesdaySymbolColor: { value: ''},
+        wednesdaySymbolColor: { value: ''},
+        thursdaySymbolColor: { value: ''},  
+        fridaySymbolColor: { value: ''},
+        saturdaySymbolColor: { value: ''}, 
+        sundaySymbolColor: { value: ''}, 
       }
     }
     // if (!modalInfo) {
