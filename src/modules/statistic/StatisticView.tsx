@@ -86,11 +86,25 @@ export default function StatisticView() {
       path: "/statistic/护士排班统计（按班次）",
       component: NurseByShiftView,
     },
-    {
-      name: "护士白班统计（按月份)",
-      path: "/statistic/护士白班统计（按月份）",
-      component: NurseWhiteShiftByMonthView,
-    },
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            name: "护士日班统计（按月份)",
+            path: "/statistic/护士日班统计（按月份）",
+            component: NurseWhiteShiftByMonthView,
+          },
+        ],
+        default: [
+          {
+            name: "护士白班统计（按月份)",
+            path: "/statistic/护士白班统计（按月份）",
+            component: NurseWhiteShiftByMonthView,
+          },
+        ]
+      }
+    }),
+
     {
       name: "护士夜班统计（按月份）",
       path: "/statistic/护士夜班统计（按月份）",

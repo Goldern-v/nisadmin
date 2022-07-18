@@ -70,9 +70,10 @@ class StatisticsApi extends BaseApiService {
   // 护士休假统计（按月份）
   public async postNurseByMonth(classShow: string, showType: any, exportData: any = true) {
     if (classShow === '白班') {
-      classShow = ['whyx'].includes(appStore.HOSPITAL_ID)? '白班' : 'A班'
+      classShow = ['whyx'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
+      classShow = ['nys'].includes(appStore.HOSPITAL_ID) ? '日班' : classShow
     } else if (classShow === '夜班') {
-      classShow = 'P班'
+      classShow = classShow = ['nys'].includes(appStore.HOSPITAL_ID) ? '夜班' : 'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     }
