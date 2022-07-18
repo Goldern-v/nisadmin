@@ -98,16 +98,16 @@ export default observer((props: Props) => {
       <BreadcrumbBox
         style={{ padding: '5px 10px 0', height: '26px' }}
         data={appStore.queryObj.id ? [
-          { name: '节前安全检查表', link: '/qcTwo/safetyChecklist' },
-          { name: "节前安全检查表详情" },
+          { name: '安全检查表', link: '/qcTwo/safetyChecklist' },
+          { name: "安全检查表详情" },
         ] : [
-          { name: '节前安全检查表', link: '/qcTwo/safetyChecklist' },
-          { name: "新建节前安全检查表" },
+          { name: '安全检查表', link: '/qcTwo/safetyChecklist' },
+          { name: "新建安全检查表" },
         ]}
       />
       <HeadWrapper>
         <div>
-          <div style={{ fontWeight: "bold" }}>{master.deptName}节前安全检查表</div>
+          <div style={{ fontWeight: "bold" }}>{master.deptName}安全检查表</div>
         </div>
         <div className='right-bottom'>
           <Button disabled={viewOnly} type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>
@@ -118,7 +118,7 @@ export default observer((props: Props) => {
         <div className='table-main'>
           <div className='table-wrapper'>
             <div className='table-title'>
-              节前安全检查表
+              安全检查表
             </div>
             {/* className={'disable'} */}
             <table className={viewOnly ? 'viewOnly' : '' }>
@@ -134,6 +134,7 @@ export default observer((props: Props) => {
                     <Radio value={3}>五一</Radio>
                     <Radio value={4}>国庆</Radio>
                     <Radio value={5}>特殊节日</Radio>
+                    <Radio value={6}>专项检查</Radio>
                   </Radio.Group>
                 </td>
               </tr>
