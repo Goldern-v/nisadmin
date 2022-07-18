@@ -36,7 +36,10 @@ import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
 import qs from 'qs'
 import { nurseFilesService } from '../../services/NurseFilesService'
-
+import continuingEducation_sdlj from './views/continuingEducation_sdlj'
+import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
+import MajorErrors from './views/MajorErrors'
+import ToNewPost_sdlj from './views/ToNewPost_sdlj'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -70,6 +73,23 @@ const ROUTE_LIST = [
     component: OnEducation,
     name: '外出进修'
   },
+  ...appStore.HOSPITAL_ID === 'sdlj' ? [
+    {
+      type: 'continuingEducation',
+      component: continuingEducation_sdlj,
+      name: '继续教育及三基考试'
+    },
+    {
+      type: 'technologiesAndProjects',
+      component: technologiesAndProjects_sdlj,
+      name: '新技术、新项目情况'
+    },
+    {
+      type: 'MajorErrors',
+      component: MajorErrors,
+      name: '重大差错事故及惩罚'
+    },
+  ] : [],
   {
     /** 方明处理 */
     type: 'hostingScientific',
@@ -123,11 +143,19 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-  {
-    type: 'toNewPost',
-    component: ToNewPost,
-    name: '岗位变动'
-  },
+  ...appStore.HOSPITAL_ID === 'sdlj' ? [
+    {
+      type: 'toNewPost',
+      component: ToNewPost_sdlj,
+      name: '岗位变动'
+    }
+  ] : [
+    {
+      type: 'toNewPost',
+      component: ToNewPost,
+      name: '岗位变动'
+    }
+  ],
   {
     type: 'PositionChange',
     component: PositionChange,
