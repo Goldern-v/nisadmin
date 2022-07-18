@@ -902,7 +902,7 @@ export default function ContinuingEdu(props: Props) {
         },
       ],
     },
-    appStore.HOSPITAL_ID == 'whyx' && {
+    {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,

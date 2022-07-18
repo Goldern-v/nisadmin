@@ -91,16 +91,16 @@ export default observer(function ImportModal(props: Props) {
       width: 50
     },
     {
-      title: "科室",
-      dataIndex: "deptCode",
+      title: "科室名称",
+      dataIndex: "deptName",
       width: 120,
       className: 'ipt-cell',
       align: "center",
       render: (text: any, row: any, index: number) =>
-        selectRender(text, row, index, 'deptCode', deptList)
+        selectRender(text, row, index, 'deptName', deptList)
     },
     {
-      title: "员工号",
+      title: "工号",
       dataIndex: "empNo",
       width: 70,
       className: 'ipt-cell',
@@ -118,6 +118,15 @@ export default observer(function ImportModal(props: Props) {
         textAreaRender(text, row, index, 'empName')
     },
     {
+      title: "年龄",
+      dataIndex: "age",
+      width: 70,
+      className: 'ipt-cell',
+      align: "center",
+      render: (text: any, row: any, index: number) =>
+        textAreaRender(text, row, index, 'age')
+    },
+    {
       title: "性别",
       dataIndex: "sex",
       width: 50,
@@ -132,25 +141,25 @@ export default observer(function ImportModal(props: Props) {
       //   return sex === "0" ? "男" : sex === "1" ? "女" : "";
       // }
     },
-    {
-      title: "年龄",
-      dataIndex: "age",
-      width: 50,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'age')
-    },
-    {
-      title: "职称",
-      dataIndex: "newTitle",
-      width: 90,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        selectRender(text, row, index, 'newTitle',
-          [{ code: '', name: '' }, ...titleList])
-    },
+    // {
+    //   title: "年龄",
+    //   dataIndex: "age",
+    //   width: 50,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     textAreaRender(text, row, index, 'age')
+    // },
+    // {
+    //   title: "职称",
+    //   dataIndex: "newTitle",
+    //   width: 90,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     selectRender(text, row, index, 'newTitle',
+    //       [{ code: '', name: '' }, ...titleList])
+    // },
     // {
     //   title: "类型",
     //   dataIndex: "nurseHierarchy",
@@ -166,16 +175,16 @@ export default observer(function ImportModal(props: Props) {
     //         }
     //       }))
     // },
-    {
-      title: "职务",
-      dataIndex: "job",
-      width: 120,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        selectRender(text, row, index, 'job',
-          [{ code: '', name: '' }, ...postList])
-    },
+    // {
+    //   title: "职务",
+    //   dataIndex: "job",
+    //   width: 120,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     selectRender(text, row, index, 'job',
+    //       [{ code: '', name: '' }, ...postList])
+    // },
     {
       title: "最高学历",
       dataIndex: "highestEducation",
@@ -186,44 +195,80 @@ export default observer(function ImportModal(props: Props) {
         selectRender(text, row, index, 'highestEducation',
           [{ code: '', name: '' }, ...educationList])
     },
-    // {
-    //   title: "状态",
-    //   dataIndex: "status",
-    //   width: 70,
-    //   align: "center",
-    //   className: 'ipt-cell',
-    //   render: (text: any, row: any, index: number) =>
-    //     textAreaRender(text, row, index, 'status')
-    // },
     {
-      title: "籍贯",
-      dataIndex: "nativePlace",
-      width: 100,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'nativePlace')
-    },
-    {
-      title: "民族",
-      dataIndex: "nation",
+      title: "状态",
+      dataIndex: "status",
       width: 70,
       align: "center",
       className: 'ipt-cell',
       render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'nation')
+        textAreaRender(text, row, index, 'status')
     },
+    // {
+    //   title: "籍贯",
+    //   dataIndex: "nativePlace",
+    //   width: 100,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     textAreaRender(text, row, index, 'nativePlace')
+    // },
+    // {
+    //   title: "民族",
+    //   dataIndex: "nation",
+    //   width: 70,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     textAreaRender(text, row, index, 'nation')
+    // },
     {
-      title: "执业证书编号",
-      dataIndex: "zyzsNumber",
+      title: "身份证出生日期",
+      dataIndex: "birthday",
       width: 120,
       align: "center",
       className: 'ipt-cell',
       render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'zyzsNumber')
+        dateRender(text, row, index, 'birthday')
     },
     {
-      title: "来院工作时间",
+      title: "身份证号",
+      dataIndex: "cardNumber",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+        textAreaRender(text, row, index, 'cardNumber')
+    },
+    {
+      title: "岗位类别",
+      dataIndex: "postType",
+      width: 80,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+        textAreaRender(text, row, index, 'postType')
+    },
+    {
+      title: "个人身份",
+      dataIndex: "grsf",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+      textAreaRender(text, row, index, 'grsf')
+    },
+    {
+      title: "参加工作时间",
+      dataIndex: "goWorkTime",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+        dateRender(text, row, index, 'goWorkTime')
+    },
+    {
+      title: "入职时间",
       dataIndex: "goHospitalWorkDate",
       width: 120,
       align: "center",
@@ -232,29 +277,62 @@ export default observer(function ImportModal(props: Props) {
         dateRender(text, row, index, 'goHospitalWorkDate')
     },
     {
-      title: "工作编制",
-      dataIndex: "workConversion",
-      width: 80,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'workConversion')
-    },
-    {
-      title: "纳编时间",
-      dataIndex: "enrolDate",
+      title: "现有专业技术资格",
+      dataIndex: "xyzyjszg",
       width: 120,
       align: "center",
       className: 'ipt-cell',
       render: (text: any, row: any, index: number) =>
-        dateRender(text, row, index, 'goHospitalWorkDate')
-    }
+      textAreaRender(text, row, index, 'xyzyjszg')
+    },
+    {
+      title: "现有专业技术资格级别",
+      dataIndex: "xyzyjszgjb",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+      textAreaRender(text, row, index, 'xyzyjszgjb')
+    },
+    {
+      title: "现任专业技术职务",
+      dataIndex: "xrzyjszw",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+      textAreaRender(text, row, index, 'xrzyjszw')
+    },
+    {
+      title: "现任专业技术职务级别",
+      dataIndex: "xrzyjszwjb",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+      textAreaRender(text, row, index, 'xrzyjszwjb')
+    },
+    {
+      title: "手机号码",
+      dataIndex: "phone",
+      width: 120,
+      align: "center",
+      className: 'ipt-cell',
+      render: (text: any, row: any, index: number) =>
+      textAreaRender(text, row, index, 'phone')
+    },
   ]
   //nurseFilesListViewModel.loadNursingList()
   const handleOk = () => {
     setLoading(true)
+    let list = tableData.map((item) => {
+      return {
+        ...item,
+        isNurse: true
+      }
+    })
     nurseFilesService
-      .saveListImport(tableData)
+      .saveListImport(list)
       .then(res => {
         setLoading(false)
         onCancel && onCancel()
