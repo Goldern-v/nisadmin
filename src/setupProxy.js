@@ -127,6 +127,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     //南方中西医
     case "nfzxy":
       return "http://218.107.37.134:9091"   //正式
+    case 'qhwy': 
+      return "http://223.220.175.6:50014/" // 医院正式
     default:
       return "http://192.168.1.54:9866";
   }
