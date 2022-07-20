@@ -10,6 +10,7 @@ import { balanceHour } from "./../components/arrangeSheet/BalanceHour";
 import { publicHour } from "./../components/arrangeSheet/PublicHour";
 
 import printing from "printing";
+import { connect } from "http2";
 
 class PrintModal {
   public printArrange(
@@ -1746,9 +1747,10 @@ class PrintModal {
     document.body.removeChild(div);
   }
 
-  public printArrangeNew(colVisibleList: string[]) {
+  public printArrangeNew(colVisibleList: string[],sheetTableData:any[]) {
     let params = selectViewModal.params;
-    let nurseGroup = sheetViewModal.sheetTableData;
+    // let nurseGroup = sheetViewModal.sheetTableData;
+    let nurseGroup = sheetTableData
     let deptName = scheduleStore.getDeptName();
     let remark = sheetViewModal.remark || "";
     if (!params) return;
@@ -1995,7 +1997,7 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        style: "padding:15px 0 !important",
+        style: "",
         colSpan: dateRow.length + colsBeforeVisible.length + colsAfterVisible.length,
         class: "main-title",
         content: `${deptName}护士排班表
@@ -2044,8 +2046,8 @@ class PrintModal {
           let printContent = document.querySelector(
             `#${printId} .arrange-page-print`
           );
-          // <div class="page-no">第 ${pageNo + 1} 页</div>
           let pageSplit = `
+            <div class="page-no">第 ${pageNo + 1} 页</div>
             <div class="page-split"></div>
             `;
           if (printContent) {
@@ -2054,31 +2056,44 @@ class PrintModal {
             onePage.className = "one-page";
             onePage.innerHTML = `
               ${newTable}
+              ${remarkEl}
               ${pageSplit}
               `;
             printContent.appendChild(onePage);
           }
           pageNo++;
         }
-        if ((j + 1) == sheetViewModal.sheetTableData.length) {
-          let printContent = document.querySelector(
-            `#table-0-${pageNo - 1}`
-          );
-          // let remove = document.querySelector(`#table-0-${pageNo - 1} .page-no`)
-          let remove2 = document.querySelector(`#table-0-${pageNo - 1} .page-split`)
-          let onePage = document.createElement("div");
-          if (printContent && remove2) {
-            // printContent.removeChild(remove)
-            printContent.removeChild(remove2)
-            // <div class="page-no">第 ${pageNo} 页</div> 
-            onePage.innerHTML = `
-            ${remarkEl}
-            `
-            printContent.appendChild(onePage)
-          }
-        }
+        //最后一页才打印备注
+        // if ((j + 1) == sheetTableData.length) {
+        //   let printContent = document.querySelector(
+        //     `#table-0-${pageNo - 1}`
+        //   );
+        //   // let remove = document.querySelector(`#table-0-${pageNo - 1} .page-no`)
+        //   let remove2 = document.querySelector(`#table-0-${pageNo - 1} .page-split`)
+        //   let onePage = document.createElement("div");
+        //   if (printContent && remove2) {
+        //     // printContent.removeChild(remove)
+        //     printContent.removeChild(remove2)
+        //     // <div class="page-no">第 ${pageNo} 页</div> 
+        //     onePage.innerHTML = `
+        //     ${remarkEl}
+        //     `
+        //     printContent.appendChild(onePage)
+        //   }
+        // }
         //拼装行
         let tr = "";
+        if (nurse.groupNameTitle) { 
+          let newTr = document.createElement("tr");
+          let tdDom = tdEl({colSpan:nurse.colSpan,content:nurse.groupNameTitle})
+          newTr.innerHTML = tdDom;
+          let targetTable = document.querySelector(`#${tableId} tbody`);
+          if (targetTable) {
+            targetTable.appendChild(newTr)
+          }
+          trDom += `<tr class="page-split">${tdDom}<tr>`
+          continue;
+        }
         //排班内容前的固定列内容
         for (let k = 0; k < colsBeforeVisible.length; k++) {
           let column = colsBeforeVisible[k]
@@ -2178,8 +2193,7 @@ class PrintModal {
         groups = groups.map((item1: any) => {
           let rangeName = ''
           if (nurse.empName)
-            rangeName = item1.rangeName || "/"
-
+            rangeName = item1.rangeName || "/"          
           return tdEl({
             colSpan: item1.col,
             content: rangeName,
@@ -2253,7 +2267,7 @@ class PrintModal {
       overflow: hidden;
     }
     .one-page{
-      padding-top: 30px;
+      padding-top: 10px;
     }
     table{
       border-collapse: collapse;

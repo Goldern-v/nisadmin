@@ -51,8 +51,8 @@ export default observer(function MainLayout(props: Props) {
       if (res && res.data && res.data.deptList) {
         store.authStore.deptList = res.data.deptList || [];
         if (!store.authStore.defaultDeptCode) {
-          store.authStore.defaultDeptCode = store.authStore.deptList[0]?.code;
-          store.authStore.selectedDeptCode = store.authStore.deptList[0]?.code;
+          store.authStore.defaultDeptCode = store.authStore.deptList[0]?.code || '';
+          store.authStore.selectedDeptCode = store.authStore.deptList[0]?.code || '';
         }
       }
     });

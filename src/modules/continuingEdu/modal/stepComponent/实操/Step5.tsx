@@ -252,7 +252,7 @@ export default observer(function Step5() {
                 <td className="value">{scStepViewModal.stepData2.selectPrcaticalOperation}<Button onClick={handlePreview} loading={btnLoading} >预览</Button></td>
               </tr> :
               (
-                <div>
+                <React.Fragment>
                   <tr>
                     <td className="key">评分项上传：</td>
                     <td className="value" />
@@ -263,7 +263,7 @@ export default observer(function Step5() {
                       <ShowTable />
                     </td>
                   </tr>
-                </div>
+                </React.Fragment>
               )
             }
           <tr>
