@@ -481,6 +481,10 @@ const InfoTable = styled.table`
     font-size: 13px;
     border: 1px solid #dbe0e4;
     vertical-align: middle;
+    div{
+      max-height:150px;
+      overflow: auto;
+    }
   }
   & tr td:nth-of-type(1),
   & tr td:nth-of-type(3) {

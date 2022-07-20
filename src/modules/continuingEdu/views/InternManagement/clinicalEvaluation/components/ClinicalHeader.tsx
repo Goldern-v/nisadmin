@@ -51,15 +51,15 @@ export default observer(function ClinicalHeader(props: Props) {
     clinicalManagData.onload()
   }
 
-  const handleOpenChange = (status: boolean) => {
-    setyearPickerIsOpen(status)
-  }
+  // const handleOpenChange = (status: boolean) => {
+  //   setyearPickerIsOpen(status)
+  // }
 
-  const handlePanelChangeYear = (value: any) => {
-    setyearPickerIsOpen(false)
-    clinicalManagData.selectedYearDate = value
-    clinicalManagData.onload()
-  }
+  // const handlePanelChangeYear = (value: any) => {
+  //   setyearPickerIsOpen(false)
+  //   clinicalManagData.selectedYearDate = value
+  //   clinicalManagData.onload()
+  // }
 
   const handlePanelChangeMonth = (value: any, mode: any) => {
     clinicalManagData.selectedDate = value;
@@ -69,8 +69,9 @@ export default observer(function ClinicalHeader(props: Props) {
   return (
     <Wrapper>
       <RightIcon>
-        <span style={{lineHeight:'32px'}}>{authStore.isDepartmentYaXin ? '年份：' : '月份：'}</span>
-        {authStore.isDepartmentYaXin ? 
+        {/* <span style={{lineHeight:'32px'}}>{authStore.isDepartmentYaXin ? '年份：' : '月份：'}</span> */}
+        <span style={{lineHeight:'32px'}}>实习时间：</span>
+        {/* {authStore.isDepartmentYaXin ? 
         <DatePicker
         format="YYYY"
         mode='year'
@@ -83,12 +84,11 @@ export default observer(function ClinicalHeader(props: Props) {
         }}
         onOpenChange={handleOpenChange}
         onPanelChange={handlePanelChangeYear}
-      />
-         : 
+      /> */}
         <DatePicker.RangePicker
           format="YYYY-MM"
           mode={mode}
-          allowClear={false}
+          placeholder={['开始时间', '结束时间']}
           style={{ width: 220 }}
           value={clinicalManagData.selectedDate}
           onChange={date => { 
@@ -96,7 +96,7 @@ export default observer(function ClinicalHeader(props: Props) {
             clinicalManagData.onload();
           }}
           onPanelChange={handlePanelChangeMonth}
-        />}
+        />
         {authStore.isDepartmentYaXin &&
           <div>
           <span className="span">实习科室：</span>

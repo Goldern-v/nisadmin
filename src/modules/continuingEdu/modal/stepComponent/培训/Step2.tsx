@@ -79,7 +79,7 @@ export default observer(function Step1() {
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
   const getStudentCreditTypeList = () => {
-    if (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID === "gxjb") {
+    if (appStore.HOSPITAL_ID === "wh" || appStore.HOSPITAL_ID === "gxjb", appStore.HOSPITAL_ID === "whyx") {
       // setStudentCreditTypeList([
       //   { name: "国家级", code: 1 },
       //   { name: "省级", code: 2 },
@@ -87,6 +87,7 @@ export default observer(function Step1() {
       // ]);
       setStudentCreditTypeList(newStudentCreditTypeList)
     } else {
+      console.log(allStepViewModal.getThirdName, 777777)
       if (allStepViewModal.getThirdName == "院级") {
         setStudentCreditTypeList([{ name: "院级学分", code: 1 }]);
       } else if (allStepViewModal.getThirdName == "科级") {

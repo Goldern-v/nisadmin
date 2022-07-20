@@ -70,6 +70,7 @@ export default observer(function BedSituation () {
           if (res) {
             let totalBed: any = res.data.totalBed
             let useBed: any = res.data.useBed
+            console.log(totalBed, useBed, 88888888)
             setTotalBed(totalBed)
             setUseBed(useBed)
             // setSourceData([
@@ -106,6 +107,7 @@ export default observer(function BedSituation () {
           if (res) {
             let totalBed: any = res.data.totalBed
             let useBed: any = res.data.useBed
+            
             setTotalBed(totalBed)
             setUseBed(useBed)
             // setSourceData([
@@ -168,12 +170,12 @@ export default observer(function BedSituation () {
         <div className='ChartConLeft'>
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare' />
-            <div className='leftItemMessage'>已占用：{((useBed / totalBed) * 100).toFixed(0)}%</div>
+            <div className='leftItemMessage'>已占用：{!+useBed ? 0 : ((useBed / totalBed) * 100).toFixed(0)}%</div>
           </div>
 
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor' />
-            <div className='leftItemMessage'>空床：{((1 - useBed / totalBed) * 100).toFixed(0)}%</div>
+            <div className='leftItemMessage'>空床：{!+useBed ? 100 : ((1 - useBed / totalBed) * 100).toFixed(0)}%</div>
           </div>
         </div>
 

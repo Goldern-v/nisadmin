@@ -1,31 +1,22 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import moment from 'moment'
+import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import createModal from 'src/libs/createModal'
+import emitter from 'src/libs/ev'
+import DeptSelect from 'src/modules/statistic/common/DeptSelect'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { AutoComplete, Button, Form, Input, message, Modal, Select, Switch, TimePicker } from 'antd'
+import { appStore, authStore, scheduleStore } from 'src/stores'
+
+import AddShiftModal from '../../modal/AddShiftModal'
+import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
+
 // import { Link } from 'react-router-dom'
 // import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
-import emitter from "src/libs/ev";
-
-import {
-  Button,
-  message,
-  Modal,
-  Form,
-  Input,
-  AutoComplete,
-  TimePicker,
-  Switch,
-  Select
-} from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from "src/services/api";
-import moment from "moment";
-import { scheduleStore, authStore, appStore } from "src/stores";
-import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import createModal from "src/libs/createModal";
-import AddShiftModal from "../../modal/AddShiftModal";
-import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
-import DeptSelect from "src/modules/statistic/common/DeptSelect";
 import UpdateAllModal from "../../modal/UpdateAllModal"; // 一级菜单弹窗
 
 // import emitter from 'src/libs/ev'
@@ -38,10 +29,11 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        wh: AddShiftModal_wh,
+        'wh,lyyz,qhwy': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
-      }
+      },
+      vague: true
     }),
   );
 
@@ -413,6 +405,8 @@ export default function ToolBar() {
   const isOk = () => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
+      case "lyyz":
+      case "qhwy":
         return authStore.isRoleManage;
       // case "gxjb":
       //   return authStore.isRoleManage;

@@ -1,39 +1,40 @@
-import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Button } from "antd";
-import BaseTable, { DoCon } from "src/components/BaseTable";
-import { ColumnProps, Input, Modal, message, Tooltip } from "src/vendors/antd";
-import { createContextMenu } from "./ContextMenu";
-import Cell from "./Cell";
-// import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
-import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import moment from "moment";
-import { getWeekString, getWeekString2 } from "src/utils/date/week";
-import { observer } from "mobx-react-lite";
-import classNames from "classnames";
-import createModal from "src/libs/createModal";
-import EditEffectiveTimeModal from "../../modal/EditEffectiveTimeModal";
-import EditVacationCountModal from "../../modal/EditVacationCountModal";
-import EditVacationCountModal_wh from "../../modal/EditEffectiveTimeModal_wh";
-import AddAccumulativeLeaveModal from "../../modal/AddAccumulativeLeaveModal";
-import AddRemakeModal from "../../modal/AddRemakeModal";
-import { ArrangeItem } from "../../types/Sheet";
-import TotalCell from "./TotalCell";
-import NightHourCell from "./NightHourCell";
-import PostScoreCell from "./postScoreCell";
-import TotalHoliday from "./TotalHoliday";
-import { appStore } from "src/stores";
-import update from "immutability-helper";
-import AddUpHourCell from "./AddUpHourCell";
-import BalanceHour from "./BalanceHour";
-import WeekBalanceHour from "./WeekBalanceHour"; //本周结余时数
-import PublicHour from "./PublicHour";
-import HolidayHour from "./HolidayHour";
-import service from "src/services/api";
-import { cloneJson } from "src/utils/json/clone";
-import TotalHolidayHourNys from "./TotalHolidayHourNys";
-import HolidayHourNys from "./HolidayHourNys";
+import classNames from 'classnames'
+import update from 'immutability-helper'
+import moment from 'moment'
+import createModal from 'src/libs/createModal'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { Button } from 'antd'
+import { ColumnProps, Input, message, Modal, Tooltip } from 'src/vendors/antd'
+import { getWeekString, getWeekString2 } from 'src/utils/date/week'
+import { observer } from 'mobx-react-lite'
+import { appStore } from 'src/stores'
+import { cloneJson } from 'src/utils/json/clone'
 
+import AddAccumulativeLeaveModal from '../../modal/AddAccumulativeLeaveModal'
+import AddRemakeModal from '../../modal/AddRemakeModal'
+import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
+import EditVacationCountModal_wh from '../../modal/EditEffectiveTimeModal_wh'
+import EditVacationCountModal from '../../modal/EditVacationCountModal'
+import AddUpHourCell from './AddUpHourCell'
+import BalanceHour from './BalanceHour'
+import Cell from './Cell'
+import HolidayHour from './HolidayHour'
+import HolidayHourNys from './HolidayHourNys'
+import NightHourCell from './NightHourCell'
+import PostScoreCell from './postScoreCell'
+import PublicHour from './PublicHour'
+import TotalCell from './TotalCell'
+import TotalHoliday from './TotalHoliday'
+import TotalHolidayHourNys from './TotalHolidayHourNys'
+import { createContextMenu } from './ContextMenu'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { ArrangeItem } from '../../types/Sheet'
+
+// import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
+import WeekBalanceHour from "./WeekBalanceHour"; //本周结余时数
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -63,6 +64,8 @@ export default observer(function ArrangeSheet(props: Props) {
       sdlj: () => EditVacationCountModal_wh,
       whyx: () => EditVacationCountModal_wh,
       gdtj: () => EditVacationCountModal_wh,
+      lyyz: () => EditVacationCountModal_wh,
+      qhwy: () => EditVacationCountModal_wh,
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
@@ -485,7 +488,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -736,6 +739,8 @@ export default observer(function ArrangeSheet(props: Props) {
                 whyx: () => 6,
                 sdlj: () => 6,
                 gdtj: () => 6,
+                lyyz: () => 6,
+                qhwy: () => 6,
               })) *
             70 +
             widthNys +

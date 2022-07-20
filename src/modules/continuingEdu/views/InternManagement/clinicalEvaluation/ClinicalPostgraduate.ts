@@ -1,6 +1,6 @@
 import { observable, computed } from "mobx";
 import {trainingSettingApi} from "../api/TrainingSettingApi";
-import { crrentMonth } from "src/utils/moment/crrentMonth";
+import { crrentMonth, noCrrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore, authStore } from "src/stores/index";
 import { T } from "antd/lib/upload/utils";
@@ -37,8 +37,7 @@ class ClinicalManagModel {
   @observable public pageSize: any = 20; //每页大小
   @observable public totalCount: any = 0; //总条数
   @observable public totalPage: any = 0; //总页数
-  @observable public selectedDate: any = crrentMonth(); //护士长界面实习时间
-  @observable public selectedYearDate: any = moment(); //护理部界面实习时间
+  @observable public selectedDate: any = noCrrentMonth(); //护士长界面实习时间
   @observable public isNursingDepartment = false; //是否为护理部
   @observable public headerTableList = []; //头部表格内容
   @observable public tableList = []; //表格内容
@@ -47,6 +46,39 @@ class ClinicalManagModel {
 
   @computed
   get postObj() { 
+    const startFormat: string = "YYYY-MM-01"
+    // 取最后一天
+    const endFormat: string = `YYYY-MM-${moment(this.selectedDate[1]).daysInMonth()}`
+    
+    const internshipTime = (type: string, format: string) => {
+      console.log('this.selectedDate', this.selectedDate)
+      if(type == 'start') {
+        return this.selectedDate[0] ? this.selectedDate[0].format(format) : null
+      } else if (type == 'end') {
+        return this.selectedDate[1] ? this.selectedDate[1].format(format) : null
+      } else {
+        return null
+      }
+      // if (type == 'start') {
+      //   if (authStore.isDepartmentYaXin) {
+      //     return this.selectedDate[0] ? this.selectedDate[0].format(format) : null
+      //   } else {
+      //     return this.selectedDate[0] ? this.selectedDate[0].format(format) : crrentMonth()[0].format("YYYY-01-01")
+      //   }
+      // } else if (type == 'end') {
+      //   if (authStore.isDepartmentYaXin) {
+      //     return this.selectedDate[1] ? this.selectedDate[1].format(format) : null
+      //   } else {
+      //     if (this.selectedDate[1]) {
+      //       return this.selectedDate[1].format(format)
+      //     } else {
+      //       this.selectedDate[1]
+      //     }
+      //   }
+      // } else {
+      //   return null
+      // }
+    }
     return {
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
@@ -56,8 +88,8 @@ class ClinicalManagModel {
       deptNameMultiple: this.deptNameMultiple, //科室名称
       keyWord: this.keyWord, //关键字
       empName: this.empName, //姓名
-      internshipStartTime: authStore.isDepartmentYaXin ? this.selectedYearDate.format("YYYY-01-01") : this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
-      internshipEndTime: authStore.isDepartmentYaXin ? this.selectedYearDate.format("YYYY-12-31") : this.selectedDate[1].format(`YYYY-MM-${moment(new Date()).daysInMonth()}`), // 结束时间isNursingDepartment
+      internshipStartTime: internshipTime('start', startFormat), //开始时间
+      internshipEndTime: internshipTime('end', endFormat), // 结束时间
       isNursingDepartment: this.isNursingDepartment, //是否为护理部
     };
   }
