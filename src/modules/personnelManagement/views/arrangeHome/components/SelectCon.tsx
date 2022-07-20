@@ -141,6 +141,10 @@ export default observer(function SelectCon() {
   // 打印排班Excel
   const printRosterExcel = () => {
     let visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1']
+    let newArr: any[] = []
+    let noEmpNoArr: any[] = []
+    let noGroupArr: any[] = []
+    let settingLength = sheetViewModal.sheetTableData[0].settingDtos.length
     Modal.confirm({
       title: '选择要打印的列',
       centered: true,
@@ -157,8 +161,20 @@ export default observer(function SelectCon() {
         </Checkbox.Group>
       </div>,
       onOk: () => {
+        settingLength += visibleArr.length + 1
         if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
-          printModal.printArrangeNew(visibleArr)
+          selectViewModal.params.groupList.map((group: any) => {
+            let arr = sheetViewModal.sheetTableData.filter((item:any) => {
+              return group.groupName == item.groupName
+            })
+            newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+          })
+          sheetViewModal.sheetTableData.forEach((item:any) => {
+            if(!item.empNo) noEmpNoArr.push(item)
+            if(item.empNo && !item.groupName) noGroupArr.push(item)
+          })
+          newArr = newArr.concat([{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,[{id:"实习生",groupNameTitle:"实习生",colSpan:settingLength}],noEmpNoArr)
+          printModal.printArrangeNew(visibleArr,newArr)
         } else {
           printModal.printArrangeDghl(visibleArr)
         }
