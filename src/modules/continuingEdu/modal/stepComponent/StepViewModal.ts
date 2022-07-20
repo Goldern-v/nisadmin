@@ -112,8 +112,10 @@ class StepViewModal {
         : {};    
         console.log(stepData2.prcaticalData.code);
             
-        if(!stepData2.prcaticalData.code){// 实操评分表
+        if(!stepData2.prcaticalData.code && appStore.HOSPITAL_ID == 'whyx'){// 实操评分表
           return false
+        }else{
+          return true
         }
       }
       

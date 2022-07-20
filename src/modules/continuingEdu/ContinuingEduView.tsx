@@ -78,6 +78,11 @@ import TeachingPostgraduate from './views/InternPostgraduate/PostgraduateTeachin
 
 // 实操评分管理
 import PracticalOperationScore from './views/practicalOperationScore/PracticalOperationScore'
+// 培训日历
+import TariningCalendars from './views/trainingCalendar/TariningCalendars'
+
+// 培训日历
+import PromotionApplication from './views/promotionApplication/PromotionApplication'
 
 /**厚街学习资源 */
 //学习的网站链接
@@ -721,6 +726,13 @@ export default function ContinuingEdu(props: Props) {
   
   // 菜单列表
   const LEFT_MENU_CONFIG = [
+    // { 
+    //   hide: appStore.HOSPITAL_ID != 'whyx',
+    //   title: "培训日历",
+    //   icon: <RYGL />,
+    //   path: "/continuingEdu/TariningCalendars",
+    //   component: TariningCalendars,
+    // },
     ...appStore.hisMatch({
       map: {
         "hj,dgxg,lyyz,qhwy": [
@@ -902,7 +914,7 @@ export default function ContinuingEdu(props: Props) {
         },
       ],
     },
-    appStore.HOSPITAL_ID == 'whyx' && {
+    {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
@@ -968,7 +980,6 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/PracticalOperationScore",
       component: PracticalOperationScore,
       hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-
     },
 
     ...appStore.hisMatch({
@@ -986,6 +997,13 @@ export default function ContinuingEdu(props: Props) {
         ],
       },
     }),
+    // {
+    //   title: "晋升申请",
+    //   icon: <JSGL />,
+    //   path: "/continuingEdu/PromotionApplication",
+    //   component: PromotionApplication,
+    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    // },
     {
       title: "类型管理",
       icon: <TKGL />,
