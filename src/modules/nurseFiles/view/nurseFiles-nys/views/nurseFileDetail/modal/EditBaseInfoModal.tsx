@@ -69,10 +69,10 @@ const rules: Rules = {
   address: (val) => !!val || "请填写家庭住址",
   goHospitalWorkDate: (val) => !!val || "请填写来院工作时间",
   workConversion: (val) => !!val || "请填写工作编制",
-  enrolDate: (val) => !!val || "请填写纳编时间",
-  firstDegree: (val) => !!val || "请填写第一学历",
-  nearImageUrl: (val) => !!val || "请添加个人头像",
-  zyzsNursingPostDate: (val) => !!val || "请填写开始从事护理时间",
+  // enrolDate: (val) => !!val || "请填写纳编时间",
+  // firstDegree: (val) => !!val || "请填写第一学历",
+  // nearImageUrl: (val) => !!val || "请添加个人头像",
+  // zyzsNursingPostDate: (val) => !!val || "请填写开始从事护理时间",
   // zyzsDate: (val) => !!val || "请填写获取执业证书开始时间",
 };
 
@@ -313,12 +313,12 @@ export default observer(function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`纳编时间`} name="enrolDate" required>
+            <Form.Field label={`纳编时间`} name="enrolDate">
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`第一学历`} name="firstDegree" required>
+            <Form.Field label={`第一学历`} name="firstDegree">
               <Select>
                 {EDUCATION_LIST.map((name: string) => (
                   <Option value={name} key={name}>
@@ -332,7 +332,6 @@ export default observer(function EditWorkHistoryModal(props: Props) {
             <Form.Field
               label={`开始从事护理时间`}
               name="zyzsNursingPostDate"
-              required
             >
               <DatePicker />
             </Form.Field>
@@ -345,7 +344,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
         </Row>
         <Row>
           <Col span={12}>
-            <Form.Field label={`添加个人头像`} name="nearImageUrl" required>
+            <Form.Field label={`添加个人头像`} name="nearImageUrl">
               <ImageUploader
                 upload={uploadCard}
                 maxSize={2048000}
