@@ -3,39 +3,20 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import { DatePicker,Input  } from 'antd';
-import {PromotionAppUtils} from '../../PromotionAppUtils';
+import { DatePicker } from 'antd';
 
 interface Props{
   printRef?: any;
-  obj?:any
 }
 
 export default observer(function ApplicationN1(props:Props) {
-  const {tableObj} = PromotionAppUtils
+
+  const [year,setyear] = useState(moment())
   const [yearPickerIsOpen,setyearPickerIsOpen] = useState(false)
-  const [yearPickerIsOpen1,setyearPickerIsOpen1] = useState(false)
-  const handleChange = (e:any , value:any) =>{
-    console.log(e,value);
-    tableObj[value] = e
+  const handleChange = (value:any) =>{
+    setyear(value)
     setyearPickerIsOpen(false)
   }
-  const handleChange1 = (e:any , value:any) =>{
-    tableObj[value] = e
-    setyearPickerIsOpen1(false)
-  }
-
-  const handelTextarea = (e:any , value:any) =>{
-    console.log(e,value,e.persist());
-    let ctext = e.target.value;
-    tableObj[value] = ctext
-  }
-
-  const handleInput = (e:React.ChangeEvent<HTMLInputElement>, value:any) =>{
-    tableObj[value] = e.target.value
-  }
-
-  
   return (
     <Wrapper ref={props.printRef} id="formPrintPage">
       <div className="wrapper-pages-form">
@@ -59,27 +40,20 @@ export default observer(function ApplicationN1(props:Props) {
               <td>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input defaultValue="26888888" value={tableObj.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
-                  <input className="mar-btom" type="text" value={tableObj.JS0000001} onChange={(e)=>{handleInput(e,'JS0000001')}}/>
+                  <input type="text" />
                 </div>
               </td>
               <td>
-                <div className="base-item">
-                  <span>姓名：</span>
-                  <input className="mar-btom" type="text"  value={tableObj.JS0000002} onChange={(e)=>{handleInput(e,'JS0000002')}} />
-                </div>
+                <span>姓名：</span>
+                <input type="text" />
               </td>
               <td>
-                <div className="base-item">
-                  <span>SAP号码：</span>
-                  <input className="mar-btom" type="text"  value={tableObj.JS0000003} onChange={(e)=>{handleInput(e,'JS0000003')}} />
-                </div>
+                <span>SAP号码 </span>
+                <input type="text" />
               </td>
               <td>
-                <div className="base-item">
-                  <span>来院时间：</span>
-                  <input className="mar-btom" type="text"  value={tableObj.JS0000004} onChange={(e)=>{handleInput(e,'JS0000004')}} />
-                </div>
+                <span>来院时间：</span>
+                <input type="text" />
               </td>
             </tr>
             <tr>
@@ -87,25 +61,24 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>学历：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
-                    disabled={false}      
-                    values={tableObj.JS0000005}
-                    inputKey={'JS0000005'}
-                    option={[{label:"大专",value:'A'},{label:"本科",value:'B'}]}
+                    disabled={false}
+                    values={'dasf'}
+                    option={["大专", "本科（标准、大专及以上）"]}
                   />
-                  （标准、大专及以上）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <SelectBox
+                  inputKey={'education'}
                     type="checkbox"
                     disabled={false}      
-                    values={tableObj.JS0000006}
-                    inputKey={'serial'}
-                    option={[{label:"护士执业证书编号:",value:'护士执业证书编号:'}]}
+                    values={'dasf'}
+                    option={["护士执业证书编号："]}
                   />
-                  <input className="mar-btom" type="text"  value={tableObj.JS0000006} onChange={(e)=>{handleInput(e,'JS0000006')}} />
+                  <input type="text" />
                 </div>
               </td>
             </tr>
@@ -114,11 +87,11 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>职称：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000007}
-                    inputKey={'JS0000007'}
-                    option={[ {label:"初级（士）",value:'A'},{label:"初级（师）",value:'B'}]}
+                    values={'dasf'}
+                    option={["初级（士）", "初级（师）"]}
                   />
                   <span style={{ marginLeft: 15 }}>
                     （标准：初级（士）及以上）
@@ -134,13 +107,14 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>1、N0分层培训手册填写：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001001}
-                    inputKey={'JS0001001'}
-                    option={[ {label:"均填写完成",value:'A'},{label:"未填写完整",value:'B'}]}
-                  />（标准：完成相关培训并填写完整）
+                    values={'dasf'}
+                    option={["均填写完成", "未填写完整"]}
+                  />
                 </div>
+                <div>（标准：完成相关培训并填写完整）</div>
               </td>
             </tr>
             <tr>
@@ -148,34 +122,42 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>2、资质认证：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="checkbox"
                     disabled={false}      
-                    values={tableObj.JS0001002}
-                    inputKey={'JS0001002'}
-                    option={[{label:"CPR资质证",value:'A'},{label:"静脉治疗资质证",value:'B'},{label:"文件书写资质证",value:'C'},{label:"夜班资质证（病区）",value:'D'}]}
-                  />（标准：获得以上资质证）
+                    values={'dasf'}
+                    option={["CPR资质证", "静脉治疗资质证", "文件书写资质证"]}
+                  />
+                  <SelectBox
+                  inputKey={'education'}
+                    type="checkbox"
+                    disabled={false}      
+                    values={'dasf'}
+                    option={["夜班资质证（病区）"]}
+                  />
+                  （标准：获得以上资质证）
                 </div>
               </td>
             </tr>
             <tr>
               <td colSpan={3}>
                 <div className="base-item">
-                  <span>3、三基理论考核：<DatePicker
-                          value={tableObj.JS0001003}
+                  <span>3、三基理论考核： <DatePicker
+                          value={year}
                           open={yearPickerIsOpen}
                           mode='year'
                           className='year-picker'
                           placeholder='全部'
                           format='YYYY'
                           onOpenChange={()=>{setyearPickerIsOpen(true)}}
-                          onPanelChange={(e)=>{handleChange(e,'JS0001003')} }
+                          onPanelChange={handleChange}
                         />年度</span>
                   <SelectBox
-                    type="radio"
+                  inputKey={'education'}
+                    type="checkbox"
                     disabled={false}      
-                    values={tableObj.JS0001004}
-                    inputKey={'JS0001004'}
-                    option={[ {label:"合格",value:'A'},{label:"补考合格",value:'B'},{label:"未考核",value:'C'}]}
+                    values={'dasf'}
+                    option={["合格", "补考合格", "未考核"]}
                   />
                   （标准80分，含补考合格）
                 </div>
@@ -185,21 +167,21 @@ export default observer(function ApplicationN1(props:Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <span>4、专科理论考核：<DatePicker
-                          value={tableObj.JS0001005}
-                          open={yearPickerIsOpen1}
+                          value={year}
+                          open={yearPickerIsOpen}
                           mode='year'
                           className='year-picker'
                           placeholder='全部'
                           format='YYYY'
-                          onOpenChange={()=>{setyearPickerIsOpen1(true)}}
-                          onPanelChange={(e)=>{handleChange1(e,'JS0001005')}}
+                          onOpenChange={()=>{setyearPickerIsOpen(true)}}
+                          onPanelChange={handleChange}
                         />年度</span>
                   <SelectBox
-                    type="radio"
+                  inputKey={'education'}
+                    type="checkbox"
                     disabled={false}      
-                    values={tableObj.JS0001006}
-                    inputKey={'JS0001006'}
-                    option={[{label:"合格",value:'A'},{label:"补考合格",value:'B'},{label:"未考核",value:'C'}]}
+                    values={'dasf'}
+                    option={["合格", "补考合格", "未考核"]}
                   />
                   （标准60分，含补考合格）
                 </div>
@@ -213,11 +195,11 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>1、能独立从事一般患者护理工作</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001007}
-                    inputKey={'JS0001007'}
-                    option={[{label:"能",value:'A'},{label:"暂不能",value:'B'}]}
+                    values={'dasf'}
+                    option={["能", "暂不能"]}
                   />
                 （标准：能）
                 </div>
@@ -228,12 +210,12 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>2、转正后持续工作时间：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001008}
-                    inputKey={'JS0001008'}
-                    option={[{label:"工作时间≥12月",value:'A'},{label:"工作时间≤12月",value:'B'}]}
-                  />
+                    values={'dasf'}
+                    option={["工作时间≥12月", "工作时间≤12月"]}
+                  />{" "}
                   （标准：≥12月）
                 </div>
               </td>
@@ -243,12 +225,12 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>3、参与临床倒班时间：</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001009}
-                    inputKey={'JS0001009'}
-                    option={[{label:"≥4个月",value:'A'},{label:"＜4个月",value:'B'}]}
-                  />
+                    values={'dasf'}
+                    option={["≥4个月", "＜4个月"]}
+                  />{" "}
                   （标准≥4个月）
                 </div>
               </td>
@@ -258,13 +240,14 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span>4、各类长休假情况： </span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001010}
-                    inputKey={'JS0001010'}
-                    option={[{label:"无各长休假假",value:'A'},{label:"有各类假等",value:'B'}]}
+                    values={'dasf'}
+                    option={["无各长休假假", "4.有各类假等"]}
                   />
-                  （原由及累计时间：<input className="acc-time" type="text"  value={tableObj.JS0001011} onChange={(e)=>{handleInput(e,'JS0001011')}} />）
+                  （原由及累计时间：
+                  <input type="text" />）
                   （因孕产连续休假时间≥8个月，或申报晋级前12个月，其他缺勤≥3个月者，不能参加2021年分层晋级）
                 </div>
               </td>
@@ -273,7 +256,7 @@ export default observer(function ApplicationN1(props:Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
-                  <textarea defaultValue={tableObj.JS0001012} style={{ width: 405,whiteSpace:'pre-wrap',lineHeight:'24px' }} className="textarea" onChange={(e)=>{handelTextarea(e,'JS0001012')}}/>
+                  <textarea style={{ width: 405 }} />
                 </div>
               </td>
             </tr>
@@ -283,13 +266,13 @@ export default observer(function ApplicationN1(props:Props) {
                   <span className="title-item">四、自我总结</span>
                   （优点及需要改进的地方）
                 </div>
-                <div style={{ height: 370 }}>
-                  <textarea className="textarea-summarize" defaultValue={tableObj.JS0001013} onChange={(e)=>{handelTextarea(e,'JS0001013')}}/>
-                  <div style={{ marginLeft: 300 }} className="base-item">
+                <div style={{ height: 400 }}>
+                  <textarea style={{ width: 700, height: 350 }} />
+                  <div style={{ marginLeft: 300 }}>
                     <span>申请人签名：</span>
-                    <input className="acc-time" type="text"  value={tableObj.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} />
+                    <input type="text" />
                     <span>申请日期：</span>
-                    <input className="acc-time" type="text"  value={tableObj.JS0001011} onChange={(e)=>{handleInput(e,'JS0001011')}} />
+                    <input type="text" />
                   </div>
                 </div>
               </td>
@@ -297,8 +280,8 @@ export default observer(function ApplicationN1(props:Props) {
           </tbody>
         </table>
       </div>
-      <div className="wrapper-pages-form" style={{paddingTop:"20px"}}>
-        <table>
+      <div className="wrapper-pages-form">
+        <table style={{marginTop:20}}>
           <colgroup>
             <col width={160} />
             <col width={160} />
@@ -316,30 +299,30 @@ export default observer(function ApplicationN1(props:Props) {
                 <div className="base-item">
                   <span style={{marginRight:53}}>1.护长审核</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000007}
-                    inputKey={'education'}
-                    option={[{label:"合格",value:'A'},{label:"不合格",value:'B'}]}
+                    values={'dasf'}
+                    option={["合格", "不合格"]}
                   />
                   <span style={{marginLeft:40}}>护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                   <span style={{marginLeft:13}}>日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                 </div>
                 <div className="base-item">
                   <span style={{marginRight:40}}>2.科护长审核</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000007}
-                    inputKey={'education'}
-                    option={[{label:"合格",value:'A'},{label:"不合格",value:'B'}]}
+                    values={'dasf'}
+                    option={["合格", "不合格"]}
                   />
                   <span style={{marginLeft:40}}>科护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                   <span>日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                 </div>
               </td>
             </tr>
@@ -352,21 +335,21 @@ export default observer(function ApplicationN1(props:Props) {
               <td colSpan={4}>
                 <div className="base-item">
                   <span>1.理论考核：</span>
-                  <input className="border mar-btom acc-time" type="text"  value={tableObj.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> 分
+                  <input type="text" className="border"/> 分
                   <span style={{ marginLeft: 40 }}>
                   （标准分60分）  
                   </span>
                 </div>
                 <div className="base-item">
                   <span>2.床边综合能力考核：</span>
-                  <input className="border mar-btom acc-time" type="text"  value={tableObj.JS0001015} onChange={(e)=>{handleInput(e,'JS0001015')}} /> 分
+                  <input type="text"  className="border"/> 分
                   <span style={{ marginLeft: 40 }}>
                   （标准分60分）  
                   </span>
                 </div>
                 <div className="base-item">
                   <span>3.读书报告：</span>
-                  <input className="border mar-btom acc-time" type="text"  value={tableObj.JS0001016} onChange={(e)=>{handleInput(e,'JS0001016')}} /> 分
+                  <input type="text"  className="border"/> 分
                   <span style={{ marginLeft: 40 }}>
                   （标准分60分）  
                   </span>
@@ -381,52 +364,52 @@ export default observer(function ApplicationN1(props:Props) {
             <tr>
               <td colSpan={4}>
                 <div className="base-item">
-                  <span style={{ marginRight: 126 }}>1.{moment().format("YYYY")}年度无护理服务投诉</span>
+                  <span style={{ marginRight: 126 }}>1.2021年度无护理服务投诉</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001017}
-                    inputKey={'JS0001017'}
-                    option={[{label:"无",value:'A'},{label:"有",value:'B'}]}
+                    values={'dasf'}
+                    option={["无", "有"]}
                   />
                   <span >
                   （标准分60分）  
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 178 }}>2.{moment().format("YYYY")}年绩效考核</span>
+                  <span style={{ marginRight: 178 }}>2.2021年绩效考核</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001018}
-                    inputKey={'JS0001018'}
-                    option={[{label:"A",value:'A'},{label:"B",value:'B'},{label:"C或D",value:'C或D'}]}
+                    values={'dasf'}
+                    option={["A", "B" , "C或D"]}
                   />
                   <span >
                   （标准分60分）  
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 40 }}>3.{moment().format("YYYY")}年无个人原因的III级护理不良事件</span>
+                  <span style={{ marginRight: 40 }}>3.2021年无个人原因的III级护理不良事件</span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001019}
-                    inputKey={'JS0001019'}
-                    option={[{label:"无",value:'A'},{label:"有",value:'B'}]}
+                    values={'dasf'}
+                    option={["无", "有"]}
                   />
                   <span >
                   （标准分3分）  
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 165 }}>4.{moment().format("YYYY")}年度学分达标 </span>
+                  <span style={{ marginRight: 165 }}>4.2021年度学分达标 </span>
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0001020}
-                    inputKey={'JS0001020'}
-                    option={[{label:"达标",value:'A'},{label:"不达标",value:'B'}]}
+                    values={'dasf'}
+                    option={["达标", "不达标"]}
                   />
                   <span >
                   （标准分3分）  
@@ -446,18 +429,18 @@ export default observer(function ApplicationN1(props:Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000019}
-                    inputKey={'JS0000019'}
-                    option={[ {label:"同意晋升",value:'A'},{label:"不予晋升",value:'B'}]}
+                    values={'dasf'}
+                    option={["同意晋升", "不予晋升"]}
                   />
                 </div>
                 <div className="base-item">
                   <span style={{ marginLeft: 165 }}>科护士签名：</span>
-                  <input type="text"  className="mar-btom"/>
+                  <input type="text" />
                   <span>审核日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                 </div>
               </td>
             </tr>
@@ -468,18 +451,18 @@ export default observer(function ApplicationN1(props:Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <SelectBox
+                  inputKey={'education'}
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000023}
-                    inputKey={'JS0000023'}
-                    option={[{label:"同意晋升",value:'A'},{label:"不予晋升",value:'B'}]}
+                    values={'dasf'}
+                    option={["同意晋升", "不予晋升"]}
                   />
                 </div>
                 <div className="base-item">
                   <span style={{ marginLeft: 165 }}>科护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                   <span>审核日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" />
                 </div>
               </td>
             </tr>
@@ -499,12 +482,12 @@ const Wrapper = styled.div`
   height: 680px;
   padding: 8px 10px;
   overflow-y: auto;
-  font-size: 12px ;
   .wrapper-pages-form {
     background-color: #fff;
     width: 780px;
     height: 1080px;
-    margin: 15px auto;
+    margin: 10px auto;
+    border: 1px solid #ccc;
     padding: 0 40px;
     .form-title {
       display: flex;
@@ -518,7 +501,7 @@ const Wrapper = styled.div`
       tr {
         td {
           border: 1px solid #000;
-          line-height: 30px;
+          line-height: 26px;
           input,
           textarea {
             border: none;
@@ -526,10 +509,9 @@ const Wrapper = styled.div`
             resize: none;
             width: 100px;
             overflow: hidden;
-            line-height: 15px;
-          }
-          .border{
-            border-bottom: 1px solid #000;
+            .border{
+              border-bottom: 1px solid #000;
+            }
           }
         }
       }
@@ -539,7 +521,6 @@ const Wrapper = styled.div`
       align-items: center;
       flex-wrap: wrap;
     }
-    
     .title-item {
       font-weight: bold;
     }
@@ -569,31 +550,13 @@ const Wrapper = styled.div`
       color: #27ba8b;
       line-height: 26px;
     }
-    .textarea-summarize{
-      width: 700px;
-      height: 320px;
-      line-height:24px;
-    }
-    .year-picker{
-      width: 38px;
-      input{
-        width: 38px;
-      }
-    }
-    .acc-time{
-      width: 80px;
-    }
   }
   .ant-calendar-picker-icon , .ant-calendar-picker-clear{
     display: none;
   }
   .ant-input{
     padding: 0;
-    border: none;
-    resize: none;
-    outline: none;
-    overflow: hidden;
-    /* width: 40px !important; */
+    width: 40px !important;
     height: 15px;
     text-align: center;
   }
