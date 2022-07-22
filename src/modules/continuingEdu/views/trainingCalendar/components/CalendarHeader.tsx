@@ -73,7 +73,7 @@ export default observer(function CalendarHeader() {
           })}
         </Select>
         <Button style={{ marginLeft: 15 }}  onClick={exportCalend}>导出</Button>
-        <Button style={{ marginLeft: 15 }}>打印</Button>
+        {/* <Button style={{ marginLeft: 15 }}>打印</Button> */}
 
       </Header>
 

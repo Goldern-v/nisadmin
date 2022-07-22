@@ -9,7 +9,7 @@ import CalenderDayMian from './CalendarDayMain'
 export default observer(function TariningCalendars() {
   const [weekList,setWeekList] = useState([]as string[]);
   useEffect(()=>{
-    setWeekList(['星期日','星期一', '星期二', '星期三', '星期四', '星期五', '星期六',])
+    setWeekList(['星期一', '星期二', '星期三', '星期四', '星期五', '星期六','星期日'])
   },[])
 
   
