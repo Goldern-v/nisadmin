@@ -338,9 +338,9 @@ class SheetViewModal {
       if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
         this.getHourStart()
       }
-      // 休假天数是否按已休天数来显示 
+      // 休假天数是否按已休天数来显示
       // 医院初始化时可能会报错 建议不开启
-      if (['wh', 'fqfybjy', 'gxjb', 'nys'].includes(appStore.HOSPITAL_ID)) {
+      if (['wh', 'fqfybjy', 'gxjb', 'nys',"lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );

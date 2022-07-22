@@ -1,6 +1,6 @@
-import BaseApiService from "src/services/api/BaseApiService";
-import { appStore, authStore } from "src/stores";
-import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
+import BaseApiService from 'src/services/api/BaseApiService'
+import { appStore, authStore } from 'src/stores'
+import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 
 export default class AMServices extends BaseApiService {
   /** 待审核列表 */
@@ -91,6 +91,15 @@ export default class AMServices extends BaseApiService {
   public auditNursingConsultation(obj: any) {
     return this.post(`/nursingConsultation/auditNursingConsultation`, obj);
   }
+  
+  /**
+   * 获取人员列表
+   * @returns 
+   */
+  public listCanParticipateInMember() {
+    return this.get(`/nursingConsultation/listCanParticipateInMember`);
+  }
+
 }
 
 export const aMServices = new AMServices();
