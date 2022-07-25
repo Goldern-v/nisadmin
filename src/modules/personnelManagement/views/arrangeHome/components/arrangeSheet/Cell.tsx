@@ -490,7 +490,7 @@ export default observer(function Cell(props: Props) {
     sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
-    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime || cellConfig.isJiJiaTime) {
+    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime || cellConfig.isJiJiaTime || cellConfig.isWorkTime) {
       return setHoverShow(visible);
     } else {
       return setHoverShow(false);
@@ -772,7 +772,10 @@ export default observer(function Cell(props: Props) {
         `夜:${(cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&
           cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
+        0}h，` + (
+        cellObj.workTime ? `
+          ${cellObj.rangeName} : ${cellObj.workTime}
+        ` : '')
       );
     },
   });

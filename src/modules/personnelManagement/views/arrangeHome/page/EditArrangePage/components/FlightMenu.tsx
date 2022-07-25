@@ -159,6 +159,10 @@ function MenuCon(props: { dataSource: any[] }) {
       ) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
+      // 添加班次时间段
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+        cell!.workTime = item.workTime
+      }
       // if (
       //   _rangeName &&
       //   cell.userId &&

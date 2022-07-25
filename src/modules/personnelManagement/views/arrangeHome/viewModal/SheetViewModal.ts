@@ -287,6 +287,14 @@ class SheetViewModal {
       }),
       isSelected:
         this.selectedCell == cellObj || this.copyCellList.includes(cellObj) || this.selectedCellList.includes(cellObj),
+      // 是否存在排班
+      isWorkTime: appStore.hisMatch({
+        map: {
+          qhwy: !!cellObj.workTime,
+          default: false
+        }
+      }),
+
     };
     return cellConfig;
   }
