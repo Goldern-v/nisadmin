@@ -224,7 +224,8 @@ function MealCon(props: { dataSource: any[] }) {
 
   const onClick = async (item: any) => {
     /** 套餐同步 */
-    if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
+    // 新医院搬武汉版本时不要搬过去，有问题
+    if (['wh'].includes(appStore.HOSPITAL_ID)) {
       let res = await service.scheduleMealApiService.checkMeal(item.id)
     }
     if (sheetViewModal.selectedCell) {
