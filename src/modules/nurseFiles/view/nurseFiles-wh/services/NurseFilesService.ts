@@ -22,11 +22,19 @@ export default class NurseFilesService extends BaseApiService {
     //     obj[key] = ''
     //   }
     // })
-    return this.post(`/auditeNurseListWH/getByFormCodePC`, obj)
+    return this.post(`/auditeNurseListWH/${appStore.HOSPITAL_ID == 'nfzxy' ? 'getByFormCodePcNFZXY' : 'getByFormCodePC'}`, obj)
   }
   // 导出护士列表
   public async countExcel(obj: any, onDownloadProgress: (progressEvent: any) => void) {
-    return this.post(`/auditeNurseListWH/${appStore.HOSPITAL_ID === 'gxjb' ? 'countExcelForJB' : 'countExcel'}`, obj, {
+    return this.post(`/auditeNurseListWH/${
+      appStore.hisMatch({
+        map: {
+          'gxjb': 'countExcelForJB',
+          'nfzxy': 'countExcelForNFZXY',
+          other: 'countExcel'
+        },
+      })
+    }`, obj, {
       responseType: 'blob',
       onDownloadProgress: onDownloadProgress
     })

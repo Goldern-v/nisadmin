@@ -378,7 +378,7 @@ export default function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>}
-          <Col span={12}>
+          <Col span={12} style={{height:appStore.HOSPITAL_ID == 'qhwy' ? '52px' : '53px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
             </Form.Field>
@@ -388,7 +388,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
+          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12} style={{height:appStore.HOSPITAL_ID == 'qhwy' ? '52px' : '53px' }}>
             <Form.Field label={`院内工作地点`} name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
             </Form.Field>
@@ -433,6 +433,11 @@ export default function EditWorkHistoryModal(props: Props) {
           ) : (
             ""
           )}
+          {appStore.HOSPITAL_ID === "qhwy" && <Col span={12}>
+            <Form.Field label={`护理学会会员证号`} name="membershipCardNumber">
+              <Input />
+            </Form.Field>
+          </Col>}
         </Row>
         <Row>
           <Col span={12}>

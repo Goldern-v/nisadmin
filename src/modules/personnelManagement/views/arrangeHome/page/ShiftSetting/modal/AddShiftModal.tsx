@@ -43,7 +43,7 @@ export default function AddShiftModal(props: Props) {
   const [backgroundColorList, setBackgroundColorList] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
   const [tip, setTip] = useState(false);
-
+  const [holiday,setHoliday] = useState<boolean>(false)
 /** 设置规则 */
 let rules: Rules
 switch (appStore.HOSPITAL_ID) {  
@@ -69,6 +69,17 @@ switch (appStore.HOSPITAL_ID) {
       effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
       winterEffectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
     };
+    break;
+    case 'nfzxy':
+      rules = {
+        name: (val) => !!val || "请填写班次名称",
+        shiftType: (val) => !!val || "请填写班次类别",
+        // workTime: val => !!val || "请填写上班时间",
+        workTime1: (val) => !!val || "请填写上班开始时间",
+        workTime2: (val) => !!val || "请填写上班结束时间",
+        effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
+      }
+      holiday && (rules = {})
     break;
   default:
     rules = {
@@ -126,12 +137,15 @@ switch (appStore.HOSPITAL_ID) {
   };
 
   const getTimeStr = (
-    time1: moment.Moment,
-    time2: moment.Moment,
+    time1?: moment.Moment,
+    time2?: moment.Moment,
     time3?: moment.Moment,
     time4?: moment.Moment
   ) => {
-    let str = time1.format("HH:mm") + "-" + time2.format("HH:mm");
+    let str = ""
+    if (time1 && time2) {
+      str = time1.format("HH:mm") + "-" + time2.format("HH:mm");
+    }
     if (time3 && time4) {
       str += ";" + time3.format("HH:mm") + "-" + time4.format("HH:mm");
     }
@@ -277,6 +291,10 @@ switch (appStore.HOSPITAL_ID) {
       
   }
   const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID) && name == 'shiftType') {
+      setHoliday(value=='休假')
+    }
+    
     if (appStore.HOSPITAL_ID === "lcey") {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
@@ -396,7 +414,7 @@ switch (appStore.HOSPITAL_ID) {
               {/*<div style={tips}>例如：多个上班时间段可用;隔开，如08:00-12:00;02:00-18:00</div>*/}
               {/* 时间段1 */}
               <Col span={13}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? `夏令上班时间` : '上班时间'} name="workTime1" required>
+                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? `夏令上班时间` : '上班时间'} name="workTime1" required={(['nfzxy'].includes(appStore.HOSPITAL_ID) && holiday)?false:true}>
                   <TimePicker format={"HH:mm"} />
                 </Form.Field>
               </Col>
@@ -566,6 +584,11 @@ switch (appStore.HOSPITAL_ID) {
                     required={appStore.HOSPITAL_ID == "hj"}
                   >
                     <Select>
+                      {
+                        ['nfzxy'].includes(appStore.HOSPITAL_ID) && <Select.Option value="">
+                          无
+                        </Select.Option>
+                      }
                       {colorList.map((item: any, index: number) => (
                         <Select.Option key={index} value={item.code}>
                           {item.name}

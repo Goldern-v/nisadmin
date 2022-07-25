@@ -45,8 +45,8 @@ export interface Props extends RouteComponentProps {
 // }
 let colorLumpMap: any = {
   red: '红色', //#F23D35
-  green: '绿色', //#007AFF
-  blue: '蓝色', //#32B378
+  green: '绿色', //#32B378
+  blue: '蓝色', //#007AFF
   yellow: '黄色', //#f7ff02
   gray: '灰色', //#999999
   white: '白色' //#ffffff

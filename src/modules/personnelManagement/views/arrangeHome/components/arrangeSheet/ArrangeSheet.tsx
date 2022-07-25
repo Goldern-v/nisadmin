@@ -840,22 +840,36 @@ export default observer(function ArrangeSheet(props: Props) {
           footer={() => {
             return (
               <React.Fragment>
-                {appStore.HOSPITAL_ID == 'whyx' && <div className="remark-con system">
-                  <div className="remark-title">
-                    系统标注:
-                  </div>
-                  <div>
-                    <p>
-                      1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
-                    </p>
-                    <p>
-                      2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
-                    </p>
-                    <p>
-                      3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
-                    </p>
-                  </div>
-                </div>
+                {
+                  appStore.hisMatch({
+                    map: {
+                      'qhwy': <div className='remark-con system'>
+                                <div className="remark-title">
+                                  系统标注:
+                                </div>
+                          <div>
+                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表二线；</p>
+                          </div>
+                      </div>,
+                      'whyx':<div className="remark-con system">
+                              <div className="remark-title">
+                                系统标注:
+                              </div>
+                              <div>
+                                <p>
+                                  1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
+                                </p>
+                                <p>
+                                  2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
+                                </p>
+                                <p>
+                                  3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
+                                </p>
+                              </div>
+                            </div>,
+                      default:""
+                    }
+                  })
                 }
                 <div className={"remark-con real"}>
                   <div className="remark-title">
