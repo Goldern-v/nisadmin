@@ -15,11 +15,6 @@ const { Step } = Steps;
 
 export default observer(function PromotionAppHeader() {
   const printRef: any = useRef(null);
-  useEffect(()=>{
-    if(PromotionAppUtils.editStatus == '编辑'){
-      PromotionAppUtils.status = '0'
-    }
-  },[])
   const tabList = [
     {
       title:'NO升N1',
@@ -48,9 +43,17 @@ export default observer(function PromotionAppHeader() {
     if(value == '创建'){
       PromotionAppUtils.onSave()
       PromotionAppUtils.editStatus = '编辑'
-      PromotionAppUtils.status = '0'
+      PromotionAppUtils.master.status = '0'
+    } else if(value == '编辑'){
+      PromotionAppUtils.editStatus = '取消编辑';
+      PromotionAppUtils.edit = true;
+    }else if(value == '取消编辑'){
+      PromotionAppUtils.editStatus = '编辑';
+      PromotionAppUtils.edit = false;
     }
-    
+  }
+  const handleSubmit = (value:any) =>{
+    PromotionAppUtils.onSubmit()
   }
   // 切换tabs触发切换
   const onTabsChange = (key: any) => {
@@ -125,7 +128,7 @@ export default observer(function PromotionAppHeader() {
             <TabPane tab={tItem.title} key={tItem.key} disabled={tItem.disabled}>
               <StepHeader>
                 <div className="heigth-left">
-                <Steps current={Number(PromotionAppUtils.status)} labelPlacement="vertical" size="small"  className="Steps-list">
+                <Steps current={Number(PromotionAppUtils.flowStatus)} labelPlacement="vertical" size="small"  className="Steps-list">
                   <Step title="填写一到四项信息"  />
                   <Step title="资质审核"  />
                   <Step title="填写六、七项信息" />
@@ -135,14 +138,14 @@ export default observer(function PromotionAppHeader() {
                 </div>
                 <div className="heigth-right">
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}}>{PromotionAppUtils.editStatus}</Button>
-                  <Button type="primary">提交申请</Button>
+                  <Button type="primary" onClick={handleSubmit}>提交申请</Button>
                   <Button type="primary">保存</Button>
                   <Button>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>
                 </div>
               </StepHeader>
               {
-                PromotionAppUtils.editStatus == '编辑' ? <PromotionTable printRef={printRef}></PromotionTable>: <Empty style={{height:680,paddingTop: '152px'}}/>
+                PromotionAppUtils.editStatus == '编辑' || PromotionAppUtils.editStatus == '取消编辑' ? <PromotionTable printRef={printRef}></PromotionTable>: <Empty style={{height:680,paddingTop: '152px'}}/>
               }
               
             </TabPane>
