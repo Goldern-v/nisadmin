@@ -80,7 +80,7 @@ export default observer(function TraineeFiles(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'hj': [
+        'hj,qhwy': [
           {
             title: "在院状态",
             dataIndex: "isOnJob",
@@ -100,7 +100,8 @@ export default observer(function TraineeFiles(props: Props) {
           }
         ],
         'other': []
-      }
+      },
+      vague: true
     }),
     {
       title: "联系电话",
@@ -323,7 +324,7 @@ export default observer(function TraineeFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => setEditVisible(true)}>添加实习生</Button>
-          {appStore.HOSPITAL_ID == 'hj' &&
+          {['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&
             <span>
               <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
               <Button

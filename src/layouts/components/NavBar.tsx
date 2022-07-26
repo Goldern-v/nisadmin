@@ -125,7 +125,7 @@ const MenuCon = observer(function(props: {
 export default observer(function NavBar(props: any) {
   const realNavConfig = (() => {
     if (authStore.isOnlyInternsManage) {
-      return navConfig_hjInterns;
+      return navConfig_hjInterns(appStore, authStore);
     }
     if (appStore.HOSPITAL_ID == "wh") {
       if (authStore.isRoleManage) return navConfig_wh;
