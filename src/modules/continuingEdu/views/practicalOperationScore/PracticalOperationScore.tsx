@@ -51,6 +51,12 @@ export default observer(function Notification() {
       width: 60
     },
     {
+      title: "技术名称",
+      dataIndex: "technology",
+      align: "center",
+      width: 120
+    },
+    {
       title: "分数",
       dataIndex: "totalScore",
       align: "center",
