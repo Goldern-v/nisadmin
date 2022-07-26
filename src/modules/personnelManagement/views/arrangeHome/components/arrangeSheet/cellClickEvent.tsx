@@ -64,6 +64,10 @@ export function getAddArrangeMenuList(
             selectedCellObj!.effectiveTimeOld = item.dataSource.effectiveTime;
             selectedCellObj!.shiftType = item.dataSource.shiftType;
             selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
+            // 添加班次时间段
+            if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+              selectedCellObj!.workTime = item.dataSource.workTime
+            }
           }
           sheetViewModal.tableLoading = false
         }
@@ -92,6 +96,10 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       }
       if (['whyx'].includes(appStore.HOSPITAL_ID)) {
         list[i].coefficient = copyRow[i].coefficient;
+      }
+      // 添加班次时间段
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+        list[i].workTime = copyRow[i].workTime
       }
       if (isClean) {
         /** 清空复制行 */
@@ -155,6 +163,11 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     }
     if (['whyx'].includes(appStore.HOSPITAL_ID)) {
       cell.coefficient = copyCell.coefficient;
+    }
+
+    // 添加班次时间段
+    if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+      cell!.workTime = copyCell.workTime
     }
 
     /** 序号同步 */

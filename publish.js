@@ -97,6 +97,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-wuhanfeike'
   }
   
+  //南方中西医
+  if (process.env.npm_lifecycle_event.indexOf('9879') >= 0) {
+    folderSrc = '/crdata/webProject/manage-nanfangzhongxiyi'
+  }
+
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'

@@ -130,7 +130,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm": false,
+        "hj,lyrm,qhwy": false, 
         other: !appStore.isDev,
       },
       vague: true,
@@ -279,10 +279,25 @@ export default observer(function NurseFilesView(props: Props) {
         },
       ],
     },
+    ...appStore.hisMatch({
+      map: {
+        "qhwy": [
+          nursingEduFilesCon
+        ], 
+        other: [],
+      },
+      vague: true,
+    }),
     {
       title: "护理实习生花名册",
       path: "/nurseFile/traineeFiles",
-      hide: !appStore.isDev,
+      hide: appStore.hisMatch({
+        map: {
+          "qhwy": false, 
+          other: !appStore.isDev,
+        },
+        vague: true,
+      }),
       component: TraineeFiles,
       icon: <TXHSCX />,
     },
@@ -730,6 +745,7 @@ export default observer(function NurseFilesView(props: Props) {
         "gzsrm",
         "fqfybjy",
         "nfzxy",
+        "qhwy",
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
     )

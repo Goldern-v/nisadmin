@@ -115,7 +115,7 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 80,
       align: "center"
     },
-    appStore.HOSPITAL_ID == "hj" &&{
+    ['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&{
       title: "学历",
       dataIndex: "isOnJob",
       width: 80,
@@ -366,7 +366,7 @@ export default observer(function NursingEduFiles(props: Props) {
             <Select.Option value="1">女</Select.Option>
           </Select>
           {
-            appStore.HOSPITAL_ID === 'hj' &&<React.Fragment>
+            ['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&<React.Fragment>
               <span>在院状态：</span>
               <Select
                 style={{ width: 90 }}
@@ -407,7 +407,7 @@ export default observer(function NursingEduFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => addNurse()}>添加进修生</Button>
-          {appStore.HOSPITAL_ID == 'hj' &&
+          {['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&
             <span>
               <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
               <Button
