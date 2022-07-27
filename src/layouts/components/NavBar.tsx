@@ -294,17 +294,17 @@ export default observer(function NavBar(props: any) {
           view = (
             <React.Fragment>
               <img
-                src={require("../images/liaocheng_logo.png")}
+                src={require("../images/lcey_logo.jpg")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}
               />
-              {/* <img
+              <img
                 src={require("../images/护理管理系统.png")}
                 alt=""
                 className="name"
                 style={{ paddingRight: 30 }}
-              /> */}
+              />
             </React.Fragment>
           );
           break;
