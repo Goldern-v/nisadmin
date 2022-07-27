@@ -175,6 +175,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
             <colgroup>
               <col width={180} />
               <col width={80} />
+              <col width={120} />
               <col />
               <col width={80} />
               <col width={180} />
@@ -183,6 +184,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
               <tr className="td-center">
                 <td>项目</td>
                 <td className='td-color'>当前得分</td>
+                <td>扣分原因</td>
                 <td>操作内容</td>
                 <td>评分标准</td>
                 <td>重要与说明</td>
@@ -208,6 +210,9 @@ export default observer(function ExamScoreEditModal(props: Props) {
                           )}
                           <td className="td-center td-color">
                             {itemDto.studentScore}
+                          </td>
+                          <td className="td-center">
+                            {itemDto.remark}
                           </td>
                           <td className="td-center">
                           <TextArea className='inp_textArea' value={itemDto.content} autosize={{ minRows: 3 }}></TextArea>
