@@ -15,6 +15,7 @@ import { meunConfig as menuConfig_dgxg } from "./config/menuConfig_dgxg";
 import { meunConfig as menuConfig_whyx } from "./config/menuConfig_whyx";
 import { meunConfig as menuConfig_qhwy } from "./config/menuConfig_qhwy";
 import { meunConfig as menuConfig_lyrm } from "./config/menuConfig_lyrm";
+import { meunConfig as menuConfig_whsl } from "./config/menuConfig_whsl";
 
 export interface Props {
 }
@@ -59,6 +60,8 @@ export default function PersonnelManagementView() {
         return menuConfig_lyrm;
       case 'gdtj':
         return menuConfig_wh;
+      case 'whsl':
+        return menuConfig_whsl
       default:
         return menuConfig_hj;
     }

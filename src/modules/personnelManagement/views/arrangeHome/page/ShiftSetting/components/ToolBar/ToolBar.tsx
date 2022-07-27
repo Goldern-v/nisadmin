@@ -29,7 +29,7 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy': AddShiftModal_wh,
+        'wh,lyyz,qhwy,"whsl': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
