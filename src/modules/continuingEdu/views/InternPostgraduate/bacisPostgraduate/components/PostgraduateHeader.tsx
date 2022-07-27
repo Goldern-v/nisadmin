@@ -18,6 +18,7 @@ export default observer(function ApplyHeader(props: Props) {
   const [query, setQuery] = useState({
     year: moment() as null | moment.Moment,
     deucValue:'',
+    deptCodes:'',
     sexValue:'',
     keyWord:'',
   } as any) //初始化默认值
@@ -28,12 +29,15 @@ export default observer(function ApplyHeader(props: Props) {
   const [deucOption, setdeucOption] = useState([]); // 科室信息
   const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
 
+  const [deptDefault,setDeptDefault] = useState({key: '', label: '全部'})//科室选择，select用labelInValue，所以value为key:value格式
+
   
 
 
 
   useEffect(()=>{
-    internPostgraduateApi.getnursingAll().then((res)=>{
+    // 获取科室
+    internPostgraduateApi.getnursingDeptRole().then((res)=>{
       let deptListall = [];
       deptListall = res.data.deptList
       deptListall.unshift({code:'',name:'全部'})
@@ -96,14 +100,17 @@ export default observer(function ApplyHeader(props: Props) {
         <span className="span">进修科室：</span>
         <Select
           style={{ width: 180 }}
-          value={bacisPostgraduateData.deucValue}
-          onChange={(val: string) => {
-            bacisPostgraduateData.deucValue = val
+          labelInValue
+          value={deptDefault}
+          onChange={(val: any) => {
+            bacisPostgraduateData.deptCodes = val.key
+            bacisPostgraduateData.deucValue = val.label
+            setDeptDefault(val)
             bacisPostgraduateData.onload()
           }}
         >
           {deucOption.map((item:any)=>{
-            return <Option value={item.name} key={item.code}>{item.name}</Option>
+            return <Option value={item.code} key={item.code}>{item.name}</Option>
           })}
         </Select>
         

@@ -14,6 +14,7 @@ class BacisPostgraduateModel {
   @observable public year = moment() as undefined | moment.Moment; //年份
   @observable public sex =""; //性别
   @observable public deucValue ="全部"; //进修科室
+  @observable public deptCodes=''; //进修科室 以数组的形式
   @observable public selectTypeList: any = []; //类型
   @observable public selectedState = ""; //状态
   @observable public key: string = "0"; //状态
@@ -37,6 +38,7 @@ class BacisPostgraduateModel {
     return {
       year:moment(this.year).format("YYYY"), //年份
       studyDeptName01: this.deucValue == '全部'? '' :this.deucValue, //进修科室
+      studyDeptCode01Multiple: this.deptCodes!=''?[this.deptCodes]:[],
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
       total: this.total, //每页大小
