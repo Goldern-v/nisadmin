@@ -83,10 +83,24 @@ const columns1: ColumnProps<any>[] = [
     align: 'center'
   },
   {
+    title: '出生年月',
+    dataIndex: 'birthday',
+    key: 'birthday',
+    width: 100,
+    align: 'center'
+  },
+  {
     title: '年龄',
     dataIndex: 'age',
     key: 'age',
     width: 50,
+    align: 'center'
+  },
+  {
+    title: '婚姻状况',
+    dataIndex: 'maritalStatus',
+    key: 'maritalStatus',
+    width: 70,
     align: 'center'
   },
   {
@@ -118,10 +132,24 @@ const columns1: ColumnProps<any>[] = [
     align: 'center'
   },
   {
+    title: '第一学历',
+    dataIndex: 'first_degree',
+    key: 'first_degree',
+    width: 70,
+    align: 'center'
+  },
+  {
     title: '最高学历',
     dataIndex: 'highestEducation',
     key: 'highestEducation',
     width: 80,
+    align: 'center'
+  },
+  {
+    title: '学历类别',
+    dataIndex: 'education_type',
+    key: 'education_type',
+    width: 70,
     align: 'center'
   },
   {
@@ -174,6 +202,20 @@ const columns1: ColumnProps<any>[] = [
     dataIndex: 'shoeSize',
     key: 'shoeSize',
     width: 80,
+    align: 'center'
+  },
+  {
+    title: '参加工作时间',
+    dataIndex: 'goWorkTime',
+    key: 'goWorkTime',
+    width: 100,
+    align: 'center'
+  },
+  {
+    title: '来院时间',
+    dataIndex: 'goHospitalWorkDate',
+    key: 'goHospitalWorkDate',
+    width: 100,
     align: 'center'
   },
   {
@@ -366,6 +408,14 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
+  appStore.HOSPITAL_ID === 'qhwy' ?
+  {
+    title: '护理学会会员证号',
+    dataIndex: 'membershipCardNumber',
+    key: 'membershipCardNumber',
+    width: 110,
+    align: 'center'
+  } : {},
   {
     title: '身份证号',
     dataIndex: 'cardNumber',

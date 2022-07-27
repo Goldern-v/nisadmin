@@ -115,10 +115,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     现职务任职起始时间: 'jobStartDate',
                     院内工作地点: 'workAddress'
                   },
-                  appStore.HOSPITAL_ID === 'sdlj' && {
-                    工作护理单元: 'deptName',
-                    夏季鞋码大小: 'shoeSize',
-                  },
+                  ...appStore.hisMatch({
+                    map: {
+                      'sdlj': [{
+                        工作护理单元: 'deptName',
+                        夏季鞋码大小: 'shoeSize',
+                      }],
+                      other: []
+                    },
+                  }),
                   (() => {
                     switch (appStore.HOSPITAL_ID) {
                       case 'gxjb': 
@@ -137,6 +142,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                         };
                     }
                   })(),
+                  ...appStore.hisMatch({
+                    map: {
+                      'qhwy': [{
+                        护理学会会员证号: 'membershipCardNumber',
+                      }],
+                      other: []
+                    },
+                  }),
                   ...appStore.hisMatch({
                     map: {
                       'fsxt': [

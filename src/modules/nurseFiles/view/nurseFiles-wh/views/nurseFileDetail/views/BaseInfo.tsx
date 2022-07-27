@@ -204,6 +204,11 @@ export default observer(function BaseInfo() {
                 夏季鞋码大小: data.shoeSize,
                 冬季鞋码大小: data?.maps.winter_shoe_size,
               };
+            case "qhwy":
+              return {
+                鞋码大小: data.shoeSize,
+                护理学会会员证号: data.membershipCardNumber,
+              };
             default:
               return {
                 鞋码大小: data.shoeSize,

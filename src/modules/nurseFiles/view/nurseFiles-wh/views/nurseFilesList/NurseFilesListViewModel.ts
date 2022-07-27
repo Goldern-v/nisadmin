@@ -22,7 +22,7 @@ class NurseFilesListViewModel {
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
   @action
-  public loadNursingList = () => {
+  public loadNursingList = () => { //getByFormCodePcNFZXY
     this.listSpinning = true
     nurseFilesService
       .getByFormCodePC({

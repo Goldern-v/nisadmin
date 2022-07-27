@@ -27,7 +27,9 @@ export default observer(function SelectBox(props:Props){
     }
   }
   const onCheckboxChange = (e:any,value:any) =>{
-    tableObj[value] = e;
+    let list = e.filter((item:any)=> item != ',')
+    console.log(list);
+    tableObj[value] = list.toString();
   }
   return(
     <Wrapper>

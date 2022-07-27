@@ -5,6 +5,7 @@ import moment from "moment";
 import SelectBox from "./SelectBox";
 import { DatePicker,Input  } from 'antd';
 import {PromotionAppUtils} from '../../PromotionAppUtils';
+import UserCheckModal from './UserCheckModal'
 
 interface Props{
   printRef?: any;
@@ -15,8 +16,9 @@ export default observer(function ApplicationN1(props:Props) {
   const {tableObj} = PromotionAppUtils
   const [yearPickerIsOpen,setyearPickerIsOpen] = useState(false)
   const [yearPickerIsOpen1,setyearPickerIsOpen1] = useState(false)
+  //验证用户弹窗显示
+  const [userCheckVisible, setUserCheckVisible] = useState(false)
   const handleChange = (e:any , value:any) =>{
-    console.log(e,value);
     tableObj[value] = e
     setyearPickerIsOpen(false)
   }
@@ -26,7 +28,6 @@ export default observer(function ApplicationN1(props:Props) {
   }
 
   const handelTextarea = (e:any , value:any) =>{
-    console.log(e,value,e.persist());
     let ctext = e.target.value;
     tableObj[value] = ctext
   }
@@ -35,12 +36,19 @@ export default observer(function ApplicationN1(props:Props) {
     tableObj[value] = e.target.value
   }
 
+  const handleUserCheckOk = (userAudit: any,value:any) => {
+    console.log(userAudit,value)
+    // auditFormSubmit(userAudit)
+    setUserCheckVisible(false)
+  }
   
   return (
+
     <Wrapper ref={props.printRef} id="formPrintPage">
+      <div className="zindex-form" style={{display:(PromotionAppUtils.edit == true && PromotionAppUtils.editStatus != '编辑') ? 'none' : ''}}></div>
       <div className="wrapper-pages-form">
         <div className="form-title">
-          临床护理人员晋升申请表（N0→N1）（{moment().format("YYYY")}版）
+          临床护理人员晋升申请表（N0→N1）（{tableObj.JS0000027 || moment().format("YYYY")}版）
         </div>
         <table>
           <colgroup>
@@ -98,13 +106,7 @@ export default observer(function ApplicationN1(props:Props) {
               </td>
               <td colSpan={2}>
                 <div className="base-item">
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}      
-                    values={tableObj.JS0000006}
-                    inputKey={'serial'}
-                    option={[{label:"护士执业证书编号:",value:'护士执业证书编号:'}]}
-                  />
+                  护士执业证书编号:
                   <input className="mar-btom" type="text"  value={tableObj.JS0000006} onChange={(e)=>{handleInput(e,'JS0000006')}} />
                 </div>
               </td>
@@ -287,9 +289,10 @@ export default observer(function ApplicationN1(props:Props) {
                   <textarea className="textarea-summarize" defaultValue={tableObj.JS0001013} onChange={(e)=>{handelTextarea(e,'JS0001013')}}/>
                   <div style={{ marginLeft: 300 }} className="base-item">
                     <span>申请人签名：</span>
-                    <input className="acc-time" type="text"  value={tableObj.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} />
+                    <div onClick={()=>{setUserCheckVisible(true)}} className="sign-item">{tableObj.JS0000009}</div>
+                    {/* <input className="acc-time" type="text"  value={tableObj.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
-                    <input className="acc-time" type="text"  value={tableObj.JS0001011} onChange={(e)=>{handleInput(e,'JS0001011')}} />
+                    <input className="acc-time" type="text"  value={tableObj.JS0000010} onChange={(e)=>{handleInput(e,'JS0000010')}} />
                   </div>
                 </div>
               </td>
@@ -318,28 +321,28 @@ export default observer(function ApplicationN1(props:Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000007}
-                    inputKey={'education'}
+                    values={tableObj.JS0000011}
+                    inputKey={'JS0000011'}
                     option={[{label:"合格",value:'A'},{label:"不合格",value:'B'}]}
                   />
                   <span style={{marginLeft:40}}>护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom"  value={tableObj.JS0000012}/>
                   <span style={{marginLeft:13}}>日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom"  value={tableObj.JS0000014}/>
                 </div>
                 <div className="base-item">
                   <span style={{marginRight:40}}>2.科护长审核</span>
                   <SelectBox
                     type="radio"
                     disabled={false}      
-                    values={tableObj.JS0000007}
-                    inputKey={'education'}
+                    values={tableObj.JS0000015}
+                    inputKey={'JS0000015'}
                     option={[{label:"合格",value:'A'},{label:"不合格",value:'B'}]}
                   />
                   <span style={{marginLeft:40}}>科护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom"  value={tableObj.JS0000016}/>
                   <span>日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom"  value={tableObj.JS0000018}/>
                 </div>
               </td>
             </tr>
@@ -381,7 +384,7 @@ export default observer(function ApplicationN1(props:Props) {
             <tr>
               <td colSpan={4}>
                 <div className="base-item">
-                  <span style={{ marginRight: 126 }}>1.{moment().format("YYYY")}年度无护理服务投诉</span>
+                  <span style={{ marginRight: 126 }}>1.{tableObj.JS0000027 || moment().format("YYYY")}年度无护理服务投诉</span>
                   <SelectBox
                     type="radio"
                     disabled={false}      
@@ -394,7 +397,7 @@ export default observer(function ApplicationN1(props:Props) {
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 178 }}>2.{moment().format("YYYY")}年绩效考核</span>
+                  <span style={{ marginRight: 178 }}>2.{tableObj.JS0000027 || moment().format("YYYY")}年绩效考核</span>
                   <SelectBox
                     type="radio"
                     disabled={false}      
@@ -407,7 +410,7 @@ export default observer(function ApplicationN1(props:Props) {
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 40 }}>3.{moment().format("YYYY")}年无个人原因的III级护理不良事件</span>
+                  <span style={{ marginRight: 40 }}>3.{tableObj.JS0000027 || moment().format("YYYY")}年无个人原因的III级护理不良事件</span>
                   <SelectBox
                     type="radio"
                     disabled={false}      
@@ -420,7 +423,7 @@ export default observer(function ApplicationN1(props:Props) {
                   </span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 165 }}>4.{moment().format("YYYY")}年度学分达标 </span>
+                  <span style={{ marginRight: 165 }}>4.{tableObj.JS0000027 || moment().format("YYYY")}年度学分达标 </span>
                   <SelectBox
                     type="radio"
                     disabled={false}      
@@ -455,9 +458,9 @@ export default observer(function ApplicationN1(props:Props) {
                 </div>
                 <div className="base-item">
                   <span style={{ marginLeft: 165 }}>科护士签名：</span>
-                  <input type="text"  className="mar-btom"/>
+                  <input type="text"  className="mar-btom" value={tableObj.JS0000020}/>
                   <span>审核日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom"  value={tableObj.JS0000022}/>
                 </div>
               </td>
             </tr>
@@ -477,9 +480,9 @@ export default observer(function ApplicationN1(props:Props) {
                 </div>
                 <div className="base-item">
                   <span style={{ marginLeft: 165 }}>科护士签名：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom" value={tableObj.JS0000024}/>
                   <span>审核日期：</span>
-                  <input type="text" className="mar-btom"/>
+                  <input type="text" className="mar-btom" value={tableObj.JS0000026}/>
                 </div>
               </td>
             </tr>
@@ -491,6 +494,11 @@ export default observer(function ApplicationN1(props:Props) {
           <div className="add-accessory">添加附件</div><span>（文件大小不超过5M，支持pdf、word、execl最多上传5份文件）</span>
         </div>
       </div>
+
+      <UserCheckModal
+        visible={userCheckVisible}
+        onCancel={() => setUserCheckVisible(false)}
+        onOk={handleUserCheckOk} />
     </Wrapper>
   );
 });
@@ -500,6 +508,16 @@ const Wrapper = styled.div`
   padding: 8px 10px;
   overflow-y: auto;
   font-size: 12px ;
+  position: relative;
+  .zindex-form{
+    position: absolute;
+    top: 23px;
+    left: 21.5%;
+    background-color: transparent;
+    width: 780px;
+    height: 2200px;
+    z-index: 99;
+  }
   .wrapper-pages-form {
     background-color: #fff;
     width: 780px;
@@ -582,6 +600,10 @@ const Wrapper = styled.div`
     }
     .acc-time{
       width: 80px;
+    }
+    .sign-item{
+      width: 80px;
+      height: 26px;
     }
   }
   .ant-calendar-picker-icon , .ant-calendar-picker-clear{

@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { Button, DatePicker, Tooltip , Input} from "antd";
 import DeptSelect from "src/components/DeptSelect";
 import FormSelect from "src/modules/quality/views/qualityControlRecord/components/common/FormSelect";
+import TableSelect from "src/modules/quality/views/qualityControlRecord/components/common/TableSelect";
 import StateSelect from "src/modules/quality/views/qualityControlRecord/components/common/StateSelect";
 import { qualityControlRecordVM } from "../QualityControlRecordVM";
 import { qualityControlRecordApi } from "../api/QualityControlRecordApi";
@@ -243,6 +244,21 @@ export default observer(function TopCon(props: any) {
               </Radio.Group>
             </div>
           ),
+          hj: qualityControlRecordVM.formSelectList.length >= 1 && (
+              <div className="radio-con">
+                <Radio.Group
+                  name="radiogroup"
+                  value={qualityControlRecordVM.readWay}
+                  onChange={(e) => {
+                    qualityControlRecordVM.readWay = e.target.value;
+                    props.refreshData();
+                  }}
+                >
+                  <Radio value={1}>按科室查看</Radio>
+                  <Radio value={2}>按质控组查看</Radio>
+                </Radio.Group>
+              </div>
+            ),
           whyx: "",
           default: qualityControlRecordVM.formSelectList.length >= 1 &&
             qualityControlRecordVM.level != 2 && (
@@ -263,7 +279,7 @@ export default observer(function TopCon(props: any) {
         },
       })}
 
-      {(qualityControlRecordVM.readWay == 1 ||
+      {(qualityControlRecordVM.readWay == 1 &&
         qualityControlRecordVM.level == 2) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>科室:</span>
@@ -294,6 +310,12 @@ export default observer(function TopCon(props: any) {
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>检查小组:</span>
           <FormSelect refreshData={props.refreshData} />
+        </React.Fragment>
+      )}
+      {appStore.HOSPITAL_ID == "hj" && (
+        <React.Fragment>
+          <span style={{ margin: "0 3px 0 15px" }}>表单小组:</span>
+          <TableSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
 
@@ -333,7 +355,8 @@ export default observer(function TopCon(props: any) {
 });
 
 const Wrapper = styled.div`
-  height: 50px;
+  /* max-height: 100px; */
+  min-height: 50px;
   /* background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
   border-bottom: 1px solid #dbe0e4; */
@@ -342,7 +365,9 @@ const Wrapper = styled.div`
   font-size: 13px;
   color: #333333;
   padding: 0 15px 0 15px;
+  line-height: 50px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   z-index: 1;
   /* .ant-calendar-range-picker-separator {
@@ -354,6 +379,7 @@ const Wrapper = styled.div`
     border: 1px solid #ddd;
     white-space: wrap;
     min-height: 32px;
+    line-height: 32px !important;
     display: flex;
     align-items: center;
     justify-content: center;

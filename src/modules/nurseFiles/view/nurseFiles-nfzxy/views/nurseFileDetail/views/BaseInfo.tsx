@@ -283,6 +283,17 @@ export default observer(function BaseInfo() {
                 </td>
               </tr>
             ))}
+            {appStore.HOSPITAL_ID == 'nfzxy' &&
+            <tr>
+              <td>来院时间</td>
+              <td>
+                <Value>{nurseFileDetailViewModal.nurserInfo.goHospitalWorkDate}</Value>
+              </td>
+              <td></td>
+              <td colSpan={2}>
+                <Value></Value>
+              </td>
+            </tr>}
           </tbody>
         </InfoTable>
         <ZyzsCon>

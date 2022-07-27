@@ -244,6 +244,10 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "1",
+        whsl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
       }),
       isReduceWordTime: appStore.hisAdapter({
         hj: () =>
@@ -278,6 +282,10 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2",
+        whsl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
       }),
       isJiJiaTime: appStore.hisMatch({
         map: {
@@ -287,6 +295,14 @@ class SheetViewModal {
       }),
       isSelected:
         this.selectedCell == cellObj || this.copyCellList.includes(cellObj) || this.selectedCellList.includes(cellObj),
+      // 是否存在排班
+      isWorkTime: appStore.hisMatch({
+        map: {
+          qhwy: !!cellObj.workTime,
+          default: false
+        }
+      }),
+
     };
     return cellConfig;
   }
@@ -340,7 +356,7 @@ class SheetViewModal {
       }
       // 休假天数是否按已休天数来显示
       // 医院初始化时可能会报错 建议不开启
-      if (['wh', 'fqfybjy', 'gxjb', 'nys',"lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
+      if (['wh', 'fqfybjy', 'gxjb', 'nys',"lyyz","qhwy","whsl"].includes(appStore.HOSPITAL_ID)) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );
