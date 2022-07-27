@@ -59,25 +59,6 @@ class ClinicalManagModel {
       } else {
         return null
       }
-      // if (type == 'start') {
-      //   if (authStore.isDepartmentYaXin) {
-      //     return this.selectedDate[0] ? this.selectedDate[0].format(format) : null
-      //   } else {
-      //     return this.selectedDate[0] ? this.selectedDate[0].format(format) : crrentMonth()[0].format("YYYY-01-01")
-      //   }
-      // } else if (type == 'end') {
-      //   if (authStore.isDepartmentYaXin) {
-      //     return this.selectedDate[1] ? this.selectedDate[1].format(format) : null
-      //   } else {
-      //     if (this.selectedDate[1]) {
-      //       return this.selectedDate[1].format(format)
-      //     } else {
-      //       this.selectedDate[1]
-      //     }
-      //   }
-      // } else {
-      //   return null
-      // }
     }
     return {
       pageIndex: this.pageIndex, //页码

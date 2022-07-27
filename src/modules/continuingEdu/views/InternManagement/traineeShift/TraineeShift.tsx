@@ -297,7 +297,7 @@ export default observer(function TraineeShift(props: Props) {
     //     );
     //   }
     // },
-    {
+    authStore.isDepartment && {
       title: "操作",
       key: "cz",
       width: 100,

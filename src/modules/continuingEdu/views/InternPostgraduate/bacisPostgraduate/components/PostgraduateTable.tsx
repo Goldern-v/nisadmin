@@ -144,7 +144,7 @@ export default observer(function ApplyTable(props: Props) {
       align: "left",
       width: 220
     },
-    {
+    authStore.isDepartment && {
       title: "操作",
       dataIndex: "cz",
       width: 150,
