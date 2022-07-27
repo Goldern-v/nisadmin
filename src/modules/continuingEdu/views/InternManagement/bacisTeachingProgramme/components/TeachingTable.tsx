@@ -5,7 +5,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import {teachingProgramma} from "../teachingProgramma"
-import { appStore } from "src/stores";
+import { appStore,authStore } from "src/stores";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import ReactZmage from "react-zmage";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
@@ -72,11 +72,12 @@ export default observer(function ApplyTable(props: Props) {
           text: "预览",
           function: handlePreview
         },
-        {
-          text: "删除",
-          color:'#f44',
-          function: handleDelete
-        }];
+        // {
+        //   text: "删除",
+        //   color:'#f44',
+        //   function: handleDelete
+        // }
+      ];
         return (
           <DoCon>
             {data.map((item: any, index: any) => (

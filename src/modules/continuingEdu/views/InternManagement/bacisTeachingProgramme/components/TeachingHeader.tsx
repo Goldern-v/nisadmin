@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState, useLayoutEffect,ChangeEvent } from "react";
+import React, { useState, useLayoutEffect,ChangeEvent, useEffect } from "react";
 import { Select, Input, Button, DatePicker, Modal, message} from "antd";
 import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
 import {teachingProgramma} from "../teachingProgramma"
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
+import { appStore,authStore } from "src/stores";
 import {trainingSettingApi} from "../../api/TrainingSettingApi";
 
 // import { formApplyModal } from "../FormApplyModal"; // 仓库数据
@@ -29,7 +30,14 @@ export default observer(function ApplyHeader(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
 
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
 
   const handleEditOk = () => {
     // formApplyModal.onload();
@@ -139,6 +147,7 @@ export default observer(function ApplyHeader(props: Props) {
         <Button
           className="span"
           type="primary"
+          disabled={isAdd}
           onClick={()=>{
             setEditVisible(true)
           }}
