@@ -23,6 +23,7 @@ export default observer(function QrcodeSbmitModal(props: Props) {
     map: {
       hj: process.env.REACT_APP_BLANK_DEMO ? 'http://info.cr-health.com:20101' : 'http://120.197.141.41:9091',
       gzhd: 'http://120.238.239.27:9094',
+      qhwy: 'http://223.220.175.6:50014',
       other: ''
     },
   })
