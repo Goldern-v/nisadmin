@@ -1,41 +1,17 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-// import { badEventsNewService } from '../../api/badEventsNewService'
-import moment from 'moment'
-// import { PageTitle, Place, PageHeader } from 'src/components/common';
-import { Button, DatePicker, Select } from 'antd';
-// import { fileDownload } from 'src/utils/file/file'
-import BaseTable from 'src/components/BaseTable'
-import { ColumnProps } from 'antd/lib/table'
-import { getColumnsNames, SUMMARY_TYPES } from './enums'
-import { quarterList } from 'src/enums/date'
 
 import BadEventHeader from './components/BadEventHeader'
 import BadEventTable from './components/BadEventTable';
+import { badEventData_gxjb } from './BadEvent_gxjb';
 
-const Option = Select.Option
 
 export default observer(function BadEventSummaryQuarterGxjb(props) {
-
+	useEffect(() => {
+		badEventData_gxjb.init()
 	
-	const [data, setData] = useState<any[]>([])
-	const [loading, setLoading] = useState(false)
-
-
-
-	const columns: ColumnProps<any>[] = [
-
-		...getColumnsNames('1').map((v: string) => {
-			return {
-				title: v,
-				dataIndex: v,
-				width: 80,
-				align: "center"
-			} as ColumnProps<any>
-		})
-	]
-
+	}, [])
 	
 	return (
 		<Wrapper>

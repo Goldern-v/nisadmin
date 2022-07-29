@@ -4,7 +4,8 @@ import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
 import { T } from "antd/lib/upload/utils";
-import moment from 'moment'
+import moment from 'moment';
+import { badEventApi_gxjb } from "./api";
 
 class BadEvent_gxjb {
   @observable public id = ""; //菜单id
@@ -33,8 +34,12 @@ class BadEvent_gxjb {
   @observable public knowledgePointDivisionTree: any = []; // 知识点划分
   @observable public learningFormTree: any = []; // 教学方式
 
-  @observable public eventType='' //汇总类型
+  @observable public eventType={key: '', label: '全部'} //选中的汇总类型
   @observable public currentQuarter = moment().quarter() //当前季度
+  @observable public deptList = []//科室列表
+  @observable public selectDept=''
+
+
 
   @computed
   get postObj() {
@@ -48,10 +53,19 @@ class BadEvent_gxjb {
       keyWord:this.keyWord, //关键字
     };
   }
+  get formContent(){
+    return{
+      eventType:this.eventType,
+      currentQuarter:this.currentQuarter,
+      selectDept:this.selectDept
+    }
+  }
 
   /** 获取表格数据 */
   onload() {
-    alert('获取数据')
+    console.log('获取数据')
+    console.log(this.formContent)
+    // alert('获取数据')
     // this.tableLoading = true;
     // internPostgraduateApi.getFormList(this.postObj).then(res => {
     //   this.tableLoading = false;
@@ -75,7 +89,28 @@ class BadEvent_gxjb {
     this.hjSelectedType = this.selectTypeList[Number(key)].id;
   }
 
+  // 获取科室
+  getnursingDept(){
+    if(this.deptList.length>1) return 
+    
+    badEventApi_gxjb.getnursingDeptRole().then(res => {
+			console.log(res.data)
+			let deptListall = [];
+			deptListall = res.data.deptList || []
+			deptListall.unshift({code:'',name:'全部'})
+			// setDeptList(deptListall)
+      this.deptList = deptListall
+		}).catch(err => {
+
+		})
+  }
+
   init() {
+    // 初始化数据
+    this.eventType = {key: '', label: '全部'}
+    this.currentQuarter = moment().quarter()
+    this.selectDept=''
+    this.getnursingDept()
     this.onload();
   }
 }
