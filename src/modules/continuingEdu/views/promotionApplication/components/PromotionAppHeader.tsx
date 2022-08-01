@@ -14,31 +14,36 @@ const { Step } = Steps;
 
 
 export default observer(function PromotionAppHeader() {
+  const [printwih ,setprintwih]  = useState('2100px')
   const printRef: any = useRef(null);
   const tabList = [
     {
       title:'NO升N1',
       key:'1',
+      code:'HSJS_0001',
      
     },
     {
       title:'N1升N2',
       key:'2',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 1 ||  authStore.user?.currentLevel == ''
+      code:'HSJS_0002',
+      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 1 ||  authStore.user?.currentLevel == ''
     },
     {
       title:'N2升N3',
       key:'3',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 2 ||  authStore.user?.currentLevel == ''
+      code:'HSJS_0003',
+      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 2 ||  authStore.user?.currentLevel == ''
     },
     {
       title:'N3升N4',
       key:'4',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 3 ||  authStore.user?.currentLevel == ''
+      code:'HSJS_0004',
+      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 3 ||  authStore.user?.currentLevel == ''
     },
   ]
   
-  // 
+  // 编辑
   const handleEdit =(value:any)=>{
     if(value == '创建'){
       PromotionAppUtils.onSave()
@@ -52,21 +57,52 @@ export default observer(function PromotionAppHeader() {
       PromotionAppUtils.edit = false;
     }
   }
+  // 提交
   const handleSubmit = (value:any) =>{
     PromotionAppUtils.onSubmit()
   }
+  // 保存
+  const handleSave = (value:any) =>{
+    PromotionAppUtils.onSave()
+  }
+  // 撤销
+  const handlerevocation = ()=>{
+    PromotionAppUtils.onCancelForm().then((res)=>{
+      console.log(res);
+      
+    })
+  }
   // 切换tabs触发切换
   const onTabsChange = (key: any) => {
-    console.log(authStore.user?.currentLevel);
-    if(authStore.user?.currentLevel == '' || authStore.user?.currentLevel == 'N0'){
-      console.log(key);
-      
-      if(key > 1){
-        Message.warning('当前晋升职位和点击晋升表不符合！');
-      }else{
-        PromotionAppUtils.tabsKey = key;
-      }
+    // if(authStore.user?.currentLevel == '' || authStore.user?.currentLevel == 'N0'){
+    //   if(key > 1){
+    //     Message.warning('当前晋升职位和点击晋升表不符合！');
+    //   }else{
+    //     PromotionAppUtils.tabsKey = key;
+    //   }
+    // }
+    if(key == 1){
+      PromotionAppUtils.master.formCode = "HSJS_0001"
+      PromotionAppUtils.master.formName = "N0->N1"
+      setprintwih('2100px')
+      PromotionAppUtils.createOnload()
+    }else if(key == 2){
+      PromotionAppUtils.master.formCode = "HSJS_0002"
+      PromotionAppUtils.master.formName = "N1->N2"
+      setprintwih('3200px')
+      PromotionAppUtils.createOnload()
+    }else if(key == 3){
+      PromotionAppUtils.master.formCode = "HSJS_0003"
+      PromotionAppUtils.master.formName = "N2->N3"
+      setprintwih('3200px')
+      PromotionAppUtils.createOnload()
+    }else if(key == 4){
+      PromotionAppUtils.master.formCode = "HSJS_0004"
+      PromotionAppUtils.master.formName = "N3->N4"
+      setprintwih('3200px')
+      PromotionAppUtils.createOnload()
     }
+    PromotionAppUtils.tabsKey = key;
   };
   // 打印
   const handlePrint = async ()=>{
@@ -84,7 +120,7 @@ export default observer(function PromotionAppHeader() {
            font-size:12px  !important;
            }
            #formPrintPage {
-            height:2100px;
+            height:${printwih};
             overflow: hidden;
             display: inline-bolck !important;
             margin: 0;
@@ -101,11 +137,22 @@ export default observer(function PromotionAppHeader() {
           word-wrap: break-word; 
             word-break: break-all;
           }
-          .mar-btom{
-           margin-bottom: -1px;
+          .wih-150{
+            width: 150px;
           }
           .acc-time{
-            width:60px !important;
+            width:38px !important;
+            text-align:center;
+            margin:0;
+            padding:0;
+            line-height: 12px;
+          }
+          .mar-btom{
+            width:100px !important;
+            text-align:center;
+            margin:0;
+            padding:0;
+            line-height: 12px;
           }
           .textarea{
             width: 405px;
@@ -128,7 +175,7 @@ export default observer(function PromotionAppHeader() {
             <TabPane tab={tItem.title} key={tItem.key} disabled={tItem.disabled}>
               <StepHeader>
                 <div className="heigth-left">
-                <Steps current={Number(PromotionAppUtils.flowStatus)} labelPlacement="vertical" size="small"  className="Steps-list">
+                <Steps status={PromotionAppUtils.master.noPass == true ? "error" : undefined}  current={Number(PromotionAppUtils.flowStatus) || -1} labelPlacement="vertical" size="small"  className="Steps-list">
                   <Step title="填写一到四项信息"  />
                   <Step title="资质审核"  />
                   <Step title="填写六、七项信息" />
@@ -139,8 +186,8 @@ export default observer(function PromotionAppHeader() {
                 <div className="heigth-right">
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}}>{PromotionAppUtils.editStatus}</Button>
                   <Button type="primary" onClick={handleSubmit}>提交申请</Button>
-                  <Button type="primary">保存</Button>
-                  <Button>撤销申请</Button>
+                  <Button type="primary" onClick={handleSave}>保存</Button>
+                  <Button onClick={handlerevocation}>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>
                 </div>
               </StepHeader>

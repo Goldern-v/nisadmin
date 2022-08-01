@@ -5,7 +5,7 @@ import ApplicationN1 from "./view/ApplicationN1";
 import ApplicationN2 from "./view/ApplicationN2";
 import ApplicationN3 from "./view/ApplicationN3";
 import ApplicationN4 from "./view/ApplicationN4";
-import {PromotionAppUtils} from '../PromotionAppUtils';
+import { PromotionDetaitUtils } from './promotionDedait';
 import {Spin,Icon } from 'antd';
 import moment from 'moment'
 
@@ -17,18 +17,18 @@ export default observer(function PromotionTable(props:Props){
   return(
     <Wrapper>
         <div className="table-left">
-          <Spin spinning={PromotionAppUtils.loading}>
+          <Spin spinning={PromotionDetaitUtils.loading}>
               {
-                PromotionAppUtils.tabsKey == "1" &&  <ApplicationN1 printRef={props.printRef}></ApplicationN1>
+                PromotionDetaitUtils.master.formName == "N0->N1" &&  <ApplicationN1 printRef={props.printRef}></ApplicationN1>
               }
               {
-                PromotionAppUtils.tabsKey == "2" &&  <ApplicationN2 printRef={props.printRef}></ApplicationN2>
+                PromotionDetaitUtils.master.formName == "N1->N2" &&  <ApplicationN2 printRef={props.printRef}></ApplicationN2>
               }
               {
-                PromotionAppUtils.tabsKey == "3" &&  <ApplicationN3 printRef={props.printRef}></ApplicationN3>
+                PromotionDetaitUtils.master.formName == "N2->N3" &&  <ApplicationN3 printRef={props.printRef}></ApplicationN3>
               }
               {
-              PromotionAppUtils.tabsKey == "4" &&  <ApplicationN4 printRef={props.printRef}></ApplicationN4>
+                PromotionDetaitUtils.master.formName == "N3->N4" &&  <ApplicationN4 printRef={props.printRef}></ApplicationN4>
               }
           </Spin>
         </div>
@@ -36,7 +36,7 @@ export default observer(function PromotionTable(props:Props){
         <div className="right-head">审核过程</div>
         <div className="audit-mian">
           {
-            PromotionAppUtils.handlenodeDto.length ? (PromotionAppUtils.handlenodeDto.map((item: any, idx: number) =>
+            PromotionDetaitUtils.handlenodeDto.length ? (PromotionDetaitUtils.handlenodeDto.map((item: any, idx: number) =>
               (idx == 0 ?
               <div className="audit-item" key={idx}>
                 <div className="emp-img">
@@ -70,7 +70,7 @@ export default observer(function PromotionTable(props:Props){
             )) : <div className="right-nomains">暂无审核记录~</div>
           }
         </div>
-        
+       
       </div>
     </Wrapper>
   )
@@ -87,7 +87,7 @@ const Wrapper = styled.div`
   }
   .table-right{
     width: 300px;
-    height: 680px;
+    height: 770px;
     margin-left: 7px;
     background-color: #fff;
     box-shadow: 0px 1px 5px 0px #999;
@@ -117,7 +117,7 @@ const Wrapper = styled.div`
     }
   }
   .audit-mian{
-    height: 600px;
+    height: 740px;
     overflow-y:auto;
   }
   .audit-item{

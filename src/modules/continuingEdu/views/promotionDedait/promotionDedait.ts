@@ -1,14 +1,13 @@
 import { observable, computed } from "mobx";
 import { fileDownload } from "src/utils/file/file";
-import { PromotionApplicationApi } from './api/PromotionApplicationApi'
+import { badEventReportService } from './services/BadEventReportService'
 import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
-import {master, tableObjN1, tableObjN2, tableObjN3, tableObjN4} from './types'
-import { log } from "console";
+import {master,tableObjN1,tableObjN2,tableObjN3,tableObjN4} from './types'
 
 class PromotionApp {
   @observable public loading = false; // 晋升表code
-  @observable public editStatus = '创建'; // 晋升表修改状态
+  @observable public editStatus = '编辑'; // 晋升表修改状态
   @observable public flowStatus = ''; // 填表流程主题状态
   @observable public edit = false; // 晋升表修改状态
   @observable public nextNodeCode = ""; // 提交&&创建&&保存
@@ -19,82 +18,40 @@ class PromotionApp {
   @observable public tableObjN2 = tableObjN2;  // 表单的数据2
   @observable public tableObjN3 = tableObjN3;  // 表单的数据3
   @observable public tableObjN4 = tableObjN4;  // 表单的数据4
- 
   @observable public handlenodeDto = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
-
+ 
   @computed get listObj() {
+    let tableObj = {}
+
+    this.handleDifferent(tableObj)
+    
     return {
       master: this.master,
-      itemDataMap: this.handleDifferent(),
+      itemDataMap: tableObj,
       commitStep: this.commitStep,
     }
   }
-  // 保存和创建
-  onSave() {
-    this.loading = true;
-    this.commitStep = '';
-    let obj = {
-      master : this.master,
-      itemDataMap: this.handleDifferent(),
-      commitStep: this.commitStep,
-    }
-    PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
-      if(res.code == 200){
-        console.log('1111111111');
-        this.loading = false;
-        this.createOnload()
-      }else{
-        this.loading = false;
-      }
-    }).catch(() => {
-      this.loading = false;
-    })
-  }
-  // 提交
-  onSubmit() {
-    this.loading = true;
-    console.log( this.master.nextNodeCode);
-    
-    let obj = {
-      master : this.master,
-      itemDataMap: this.handleDifferent(),
-      commitStep: this.master.nextNodeCode || '',
-    }
-    PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
-      this.loading = false;
-      this.createOnload()
-    }).catch(() => {
-      this.loading = false;
-    })
-  }
-  // 撤销
-  onCancelForm() {
-    return PromotionApplicationApi.getcancelById(this.master.id)
-  }
-   // 处理不同的表逻辑
-   handleDifferent(){
+
+  // 处理不同的表逻辑
+  handleDifferent(tableValue:any){
     let list = {'HSJS_0001':this.tableObjN1,'HSJS_0002':this.tableObjN2,'HSJS_0003':this.tableObjN3,'HSJS_0004':this.tableObjN4}
     for(let key in list){
       if (this.master.formCode == key) {
-        let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
-        checkCode.map((item)=>{
-          list[key][item] = list[key][item]&& list[key][item].toString()
-        })
-        return  list[key]
+        return  tableValue = list[key]
       }
     } 
   }
   // 重新赋值
   setAssignment(objList:any , keys:any) {
-    return  keys.map((item:any)=> objList[item]= objList[item] ? moment(objList[item]) : undefined)
+    return  keys.map((item:any)=> objList[item]= moment(objList[item]))
   }
   // 重新赋值
   setAssignmentCheck(objList:any , keys:any) {
     keys.map((item:any)=>{
       let arrStr: string = objList[item]
       if (arrStr) {
-        return objList[item] = arrStr.split(',').filter((item: any) => item != '')
+        return objList.JS0000037 = arrStr.split(',').filter((item: any) => item != '')
       }
     })
   }
@@ -103,10 +60,10 @@ class PromotionApp {
   createOnload() {
     this.loading = true;
     let createObj: any = {
-      empNo: authStore.user?.empNo,
-      formCode: this.master.formCode,
+      id: this.master.id,
     };
-    PromotionApplicationApi.getByEmpNoAndFormCode(createObj).then(res => {
+    badEventReportService.getDetailList(createObj).then(res => {
+      this.loading = false;
       if (res.data) {
         this.master = { ...res.data.master }
         if(Object.keys(res.data.itemDataMap).length){
@@ -114,15 +71,18 @@ class PromotionApp {
           let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
           this.setAssignment(res.data.itemDataMap,dateCode)
           this.setAssignmentCheck(res.data.itemDataMap,checkCode)
-          
           // 跟据不同表赋值
+          let list = {'HSJS_0001':this.tableObjN1,'HSJS_0002':this.tableObjN2,'HSJS_0003':this.tableObjN3,'HSJS_0004':this.tableObjN4}
+          for(let key in list){
+            if (this.master.formCode == key) {
+              return  list[key] = { ...res.data.itemDataMap }
+            }
+          }
           if (this.master.formCode == 'HSJS_0001') {
             this.tableObjN1 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0002') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN2.carePatientList
             this.tableObjN2 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0003') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN3.carePatientList
             this.tableObjN3 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0004') {
             this.tableObjN4 = { ...res.data.itemDataMap }
@@ -171,11 +131,30 @@ class PromotionApp {
         }
         if (this.editStatus == '编辑' || this.editStatus == '取消编辑' || this.master.id) {
           this.editStatus = '编辑'
-        } else {
-          this.editStatus = '创建'
         }
       }else{
-        this.master = master
+        this.master = {
+          id: '', // 晋升表code
+          formCode: this.master.formCode, // 晋升表code
+          formName: this.master.formCode, // 晋升表名称
+          status: "-1", // 晋升表状态
+          nextNodeCode: "", // 提交&&创建&&保存
+          creatorNo: authStore.user?.empNo,
+          creatorName: authStore.user?.empName,
+          updaterNo: authStore.user?.empNo,
+          updaterName: authStore.user?.empName,
+          updateTime: moment().format("YYYY-MM-DD HH:mm"),
+          currentLevel: authStore.user?.currentLevel,
+          deptName: authStore.user?.deptName,
+          empNo: authStore.user?.empNo,
+          empName: authStore.user?.empNo,
+          chainCode: "HSJS_COMMON",
+          chainName: "护士晋升申请通用",
+          attachmentCount: 0,
+          lastCommitTime: "2022-07-20 14:51",
+          hasRead: false,
+          noPass: false,
+        }
         this.flowStatus = ''
         this.editStatus = '创建'
         this.attachmentList = []
@@ -191,19 +170,14 @@ class PromotionApp {
           this.tableObjN4 = this.tableObjN4
         }
       }
-      this.loading = false;
-
+      
     })
   }
 
   // 删除附件
   deleteAttachment(obj: any) {
-    return PromotionApplicationApi.deleteAttachment(obj)
+    return badEventReportService.deleteAttachment(obj)
   }
-  // 获取护士晋升详情
-  // getlistOnload(){
-  //   PromotionApplicationApi.getpromotionList(id)
-  // }
 }
 
-export const PromotionAppUtils = new PromotionApp()
+export const PromotionDetaitUtils = new PromotionApp()

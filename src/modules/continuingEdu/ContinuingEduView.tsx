@@ -81,8 +81,10 @@ import PracticalOperationScore from './views/practicalOperationScore/PracticalOp
 // 培训日历
 import TariningCalendars from './views/trainingCalendar/TariningCalendars'
 
-// 培训日历
+// 晋升申请
 import PromotionApplication from './views/promotionApplication/PromotionApplication'
+// 亚心晋升管理
+import PromotionManagement from './views/promotionManagement/PromotionManagement'
 
 /**厚街学习资源 */
 //学习的网站链接
@@ -206,6 +208,14 @@ export default function ContinuingEdu(props: Props) {
             queyMenuAuthInfo("nm_lat_promotemanage") ||
             authStore.isOnlyInternsManage,
         },
+      ],
+      "whyx":[
+        {
+          title: "晋升管理",
+          icon: <JSGL />,
+          path: "/continuingEdu/PromotionManagement",
+          component: PromotionManagement,
+        }
       ],
       other: [
         {
