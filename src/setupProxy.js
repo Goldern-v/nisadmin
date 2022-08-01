@@ -127,10 +127,17 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9884";
     //南方中西医
     case "nfzxy":
-      return "http://192.168.1.54:9879" //测试服
-      // return "http://218.107.37.134:9091" ;  //正式
+      // return "http://192.168.1.54:9879" //测试服
+      return "http://218.107.37.134:9091" ;  //正式
+    //青海五院
     case 'qhwy': 
-      // return "http://223.220.175.6:50014/" // 医院正式
+      return "http://223.220.175.6:50014/" // 医院正式
+    //威海市立
+    case 'whsl': 
+      return "http://192.168.1.54:9896" 
+    //漳州五院
+    case 'qhwy': 
+      return "http://192.168.1.54:9897"
     default:
       return "http://192.168.1.54:9866";
   }
