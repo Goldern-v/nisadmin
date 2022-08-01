@@ -82,8 +82,8 @@ class TobeBed {
     let endTime = (tobeBedModal.date && tobeBedModal.date[1] && tobeBedModal.date[1].format("YYYY-MM-DD"))
     let deptCode = authStore.selectedDeptCode;
     let saveAll = []
-    saveAll = this.AllCell.map((item: any) => {
-      let bedList = item.bedList.map((obj: any) => {
+    saveAll = this.tobeBedTableData.map((item: any) => {
+      let bedList = (item.bedList || []).map((obj: any) => {
         return {
           deptCode: authStore.selectedDeptCode,
           deptName: authStore.selectedDeptName,

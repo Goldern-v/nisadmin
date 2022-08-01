@@ -86,6 +86,7 @@ export default observer(function FilterCon() {
       name: value.name,
       newTitle: value.newTitle,
       nurseHierarchy: value.nurseHierarchy,
+      membershipCardNumber: value.membershipCardNumber,
       job: value.job,
       highestEducation: value.highestEducation,
       politicsLook: value.politicsLook,

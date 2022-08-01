@@ -76,9 +76,10 @@ export default observer(function TubeBed() {
     })
   }
   const schTubeSyncEmp = () => {
-    tobeBedModal.schTubeSyncEmp().then(() => {
+    tobeBedModal.schTubeSyncEmp().then((res) => {
       message.success("同步人员成功");
-      onLoad()
+      // onLoad()
+      tobeBedModal.tobeBedTableData = res.data
     })
   }
   useLayoutEffect(() => {

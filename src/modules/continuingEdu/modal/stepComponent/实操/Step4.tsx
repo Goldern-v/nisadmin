@@ -77,6 +77,11 @@ export default observer(function Step4() {
     })
   }, []);
 
+//   选择实操评分管理表 下拉选框模糊查询
+  const fetchOptions = (inputValue:any,option:any) => {
+	return option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
+  };
+
   return (
     <Wrapper>
       <Form
@@ -129,12 +134,15 @@ export default observer(function Step4() {
                 <UpdateTable type="sc" />
               </Form.Field>
               :<Form.Field label={`选择实操评分管理表`} name="adminTable" onValueChange={handleonvaluechange}>
-              <Select>
-                {pratical.length && pratical.map((item:any,index:any) => (
-                  <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
+                <Select
+                  showSearch
+				  filterOption={fetchOptions}
+                >
+                  {pratical.length && pratical.map((item:any,index:any) => (
+                    <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
               }       
             </Col>
           )}

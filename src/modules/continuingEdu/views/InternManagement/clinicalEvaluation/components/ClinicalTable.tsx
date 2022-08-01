@@ -27,7 +27,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "姓名",
       dataIndex: "empName",
       align: "center",
-      width: 50,
+      width: 150,
       render: (text: string, record: any) => {
         return {
           children: text,
@@ -42,7 +42,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "带教老师",
       dataIndex: "teachTeacher",
       align: "center",
-      width: 60,
+      width: 150,
       render:(text:any,record:any) => {
         return(
         <TextArea
@@ -62,7 +62,7 @@ export default observer(function ApplyTable(props: Props) {
     {
       title: "实习时间",
       dataIndex: "实习时间",
-      width: 130,
+      width: 300,
       align: "center",
       render(text: string, record: any) {
         return record.internshipBeginTime && record.internshipEndTime ? `${record.internshipBeginTime} ~ ${record.internshipEndTime}` : '';
@@ -72,7 +72,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "操作考核成绩",
       dataIndex: "operationScore",
       align: "center",
-      width: 80,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -90,7 +90,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "理论考核成绩",
       dataIndex: "theoryScore",
       align: "center",
-      width: 80,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -108,7 +108,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "综合评定",
       dataIndex: "comprehensiveScore",
       align: "center",
-      width: 100,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -126,7 +126,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "留院结果",
       dataIndex: "detentionResults",
       align: "center",
-      width: 150,
+      width: 200,
       render:(text: any,record: any) => {
         return (
           <Select 
@@ -150,7 +150,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "优秀实习生",
       dataIndex: "isGoodIntern",
       align: "center",
-      width: 80,
+      width: 100,
       render:(text: any,record: any) => {
         return (
           <Select 
@@ -188,7 +188,7 @@ export default observer(function ApplyTable(props: Props) {
         )
       }
     },
-    {
+    authStore.isDepartment && {
       title: "操作",
       dataIndex: "overallEvaluation",
       align: "center",
@@ -214,7 +214,7 @@ export default observer(function ApplyTable(props: Props) {
           </DoCon>
         );
       }
-    },
+    }
   ];
 
   const handleDelete = (record:any) => {

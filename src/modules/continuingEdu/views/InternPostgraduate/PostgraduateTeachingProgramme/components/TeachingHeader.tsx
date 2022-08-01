@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Select, Input, Button, DatePicker,Modal,message } from "antd";
 import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
@@ -9,6 +9,7 @@ import {teachingPost} from "../TeachingPost"
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import {internPostgraduateApi} from "../../api/InternPostgraduate";
 import Zimage from "src/components/Zimage";
+import { appStore,authStore } from "src/stores";
 // import FormEditModal from "../modal/FormEditModal"; // 新建弹窗
 
 const Option = Select.Option;
@@ -28,6 +29,13 @@ export default observer(function ApplyHeader(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
+  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+
+  useEffect(()=>{
+    if(!authStore.isXiaoRuiFen && !authStore.isHoundSing && !authStore.isSuperAdmin){
+      setIsAdd(true)
+    }
+  },[isAdd])
 
 
   const handleEditOk = () => {
@@ -137,6 +145,7 @@ export default observer(function ApplyHeader(props: Props) {
         <Button
           className="span"
           type="primary"
+          disabled={isAdd}
           onClick={()=>{ setEditVisible(true)}}
         >
           导入

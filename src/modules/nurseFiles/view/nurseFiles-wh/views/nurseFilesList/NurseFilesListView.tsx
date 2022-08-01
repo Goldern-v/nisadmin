@@ -408,6 +408,14 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
+  appStore.HOSPITAL_ID === 'qhwy' ?
+  {
+    title: '护理学会会员证号',
+    dataIndex: 'membershipCardNumber',
+    key: 'membershipCardNumber',
+    width: 110,
+    align: 'center'
+  } : {},
   {
     title: '身份证号',
     dataIndex: 'cardNumber',

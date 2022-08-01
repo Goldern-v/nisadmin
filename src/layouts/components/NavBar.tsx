@@ -42,6 +42,7 @@ import { navConfig as navConfig_gdtj } from './navConfig_gdtj'
 import { navConfig as navConfig_whfk } from './navConfig_whfk'
 import { navConfig as navConfig_lyyz } from './navConfig_lyyz'
 import { navConfig as navConfig_qhwy } from './navConfig_qhwy'
+import { navConfig as navConfig_whsl } from './navConfig_whsl'
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -125,7 +126,7 @@ const MenuCon = observer(function(props: {
 export default observer(function NavBar(props: any) {
   const realNavConfig = (() => {
     if (authStore.isOnlyInternsManage) {
-      return navConfig_hjInterns;
+      return navConfig_hjInterns(appStore, authStore);
     }
     if (appStore.HOSPITAL_ID == "wh") {
       if (authStore.isRoleManage) return navConfig_wh;
@@ -188,6 +189,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_lyyz(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'qhwy') {
       return navConfig_qhwy(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == 'whsl') {
+      return navConfig_whsl(appStore, authStore)
     }
     return navConfig;
   })();
@@ -291,17 +294,17 @@ export default observer(function NavBar(props: any) {
           view = (
             <React.Fragment>
               <img
-                src={require("../images/liaocheng_logo.png")}
+                src={require("../images/lcey_logo.jpg")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}
               />
-              {/* <img
+              <img
                 src={require("../images/护理管理系统.png")}
                 alt=""
                 className="name"
                 style={{ paddingRight: 30 }}
-              /> */}
+              />
             </React.Fragment>
           );
           break;
@@ -323,6 +326,18 @@ export default observer(function NavBar(props: any) {
               <div className="nameTitle">
                 {appStore.hospitalOtherName}护理管理系统
               </div>
+            </React.Fragment>
+          );
+          break;
+        case "whsl":
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../../assets/images/whsl_logo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 38 }}
+              />
             </React.Fragment>
           );
           break;

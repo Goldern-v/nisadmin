@@ -555,7 +555,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (['lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
+} else if (['lyyz','qhwy','whsl'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     ...homeRouter(HomeView),
     // 档案
