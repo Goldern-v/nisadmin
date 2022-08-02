@@ -223,6 +223,7 @@ export default function TraineeFilesEditModal(props: Props) {
       onOk={checkForm}
       confirmLoading={editLoading}
       title={params.identifier ? "修改" : "添加"}
+      bodyStyle={{maxHeight: 'calc(74vh)'}}
     >
       <Wrapper>
         <Form ref={formRef} rules={appStore.HOSPITAL_ID == 'nys' ? nysRules : rules}>

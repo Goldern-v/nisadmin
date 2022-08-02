@@ -217,12 +217,19 @@ export default observer(function 其他人员(props: Props) {
       width: 150,
       align: "center"
     },
-    {
-      title: "进修科室二",
-      dataIndex: "refresherDeptName02",
-      width: 150,
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        'qhwy': [],
+        other: [
+          {
+            title: "进修科室二",
+            dataIndex: "refresherDeptName02",
+            width: 150,
+            align: "center"
+          },
+        ]
+      }
+    }),
     {
       title: "家庭地址",
       dataIndex: "address",

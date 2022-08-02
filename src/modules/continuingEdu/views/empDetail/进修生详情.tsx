@@ -94,8 +94,14 @@ export default observer(function 进修生详情(props: any) {
             <tr>
               <td className='td-title'>进修科室一</td>
               <td className='td-content'>{baseInfo.refresherDeptName01}</td>
-              <td className='td-title'>进修科室二</td>
-              <td className='td-content'>{baseInfo.refresherDeptName02}</td>
+              {
+                !['qhwy'].includes(appStore.HOSPITAL_ID) && (
+                  <>
+                    <td className='td-title'>进修科室二</td>
+                    <td className='td-content'>{baseInfo.refresherDeptName02}</td>
+                  </>
+                )
+              }
             </tr>
             <tr>
               <td className='td-title'>是否住宿</td>
