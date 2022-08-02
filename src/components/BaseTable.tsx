@@ -564,7 +564,7 @@ export const TableHeadCon = styled.div`
   align-items: center;
   z-index: 1;
 `;
-export const TabledCon = styled.div`
+export const TabledCon: any = styled.div`
   margin: 0px 15px;
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
   background-color: #fff;
