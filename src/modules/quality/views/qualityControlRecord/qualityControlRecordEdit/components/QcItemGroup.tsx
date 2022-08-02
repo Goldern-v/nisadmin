@@ -351,6 +351,22 @@ export default observer(function QcItemGroup(props: Props) {
                     onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
                 </div>
               </div>,
+			  gzhd:<>
+			  	{
+				!qcModel.baseInfo.useScore && <div className="sub-item-list">
+					<div style={{ marginTop: 5 }}>
+						<Input.TextArea
+							value={item.remark}
+							autosize={{ minRows: 2 }}
+							placeholder="备注"
+							onChange={(e) => handleItemChange({
+							...item,
+							remark: e.target.value,
+							}, itemIndex)} />
+					</div>
+				</div>
+			  }
+			  </>,
               lcey: !qcModel.baseInfo.useScore &&
                 <div className='notesCon' style={{ borderBottom: 'none' }}>
                   <div className='notesLeftCon'>备注</div>
