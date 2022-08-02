@@ -17,6 +17,10 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+// import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { string } from 'prop-types';
+// import { nurseFilesListViewModel } from './../../../../nurseFiles-wh/views/nurseFilesList/NurseFilesListViewModel';
+import { nurseFilesListViewModel } from './../../nurseFilesList/NurseFilesListViewModel';
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -45,6 +49,8 @@ export interface Props extends ModalComponentProps {
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
+  const[ditList,setDitList]=useState([])
+  // <Array<{name:string;age:number}>>=([{name:'tom',age:15}])
 
   const onFieldChange = () => { }
 
@@ -98,6 +104,7 @@ export default function EditWorkHistoryModal(props: Props) {
   }
 
   useLayoutEffect(() => {
+    setDitList(nurseFilesListViewModel.nursePostList2 as any)
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
@@ -111,6 +118,8 @@ export default function EditWorkHistoryModal(props: Props) {
         job: data.job,
         nation: data.nation,
         age: data.age,
+        nursingJob:data.nursingJob,
+        // goHospitalWorkYear:data.goHospitalWorkYear, 工作年限不用保存
         maps:mapList,
         nativePlace: data.nativePlace,
         highestEducation: data.highestEducation,
@@ -127,6 +136,9 @@ export default function EditWorkHistoryModal(props: Props) {
 
     }
   }, [visible])
+
+  
+  
 
   return (
     <Modal
@@ -266,13 +278,31 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`工作年限`} name='maps.hdry_working_year'>
-              <Input />
+            <Form.Field label={`工作年限`} name='goHospitalWorkYear'>
+              <Input disabled />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`资格证书编号`} name='maps.hdry_qua_cer_no'>
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护理岗位`} name='nursingJob'>
+            <Select
+            showSearch
+            filterOption={(input:any, option:any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }>
+              {ditList.length>0 && 
+              ditList.map((item: string, index: any) => (
+                <Option 
+                value={item} 
+                key={index}>
+                  {item}
+                </Option>
+            ))}
+              </Select>
             </Form.Field>
           </Col>
         </Row>
