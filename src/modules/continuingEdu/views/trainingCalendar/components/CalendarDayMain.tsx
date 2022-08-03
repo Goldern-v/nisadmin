@@ -108,9 +108,11 @@ const DayWrapper = styled.div`
   border: 1px solid #ccc;
   height: 141px;
   display: flex;
+  position: relative;
   .left-day{
     height:100%;
-    width: 90%;
+    width: 100%;
+    padding-left: 6px;
     flex:none;
     text-align: left;
     flex-wrap: wrap;
@@ -136,7 +138,8 @@ const DayWrapper = styled.div`
     }
   }
   .right-day{
-    height:100%;
+    position: absolute;
+    right: 0;
     width:9% !important ;
     flex:none;
     font-weight: bold;

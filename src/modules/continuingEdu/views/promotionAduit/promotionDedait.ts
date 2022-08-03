@@ -32,6 +32,26 @@ class PromotionApp {
       commitStep: this.commitStep,
     }
   }
+   // 保存和创建
+   onSave() {
+    this.loading = true;
+    this.commitStep = '';
+    let obj = {
+      master : this.master,
+      itemDataMap: this.handleDifferent(),
+      commitStep: this.commitStep,
+    }
+    badEventReportService.getSaveOrCommit(obj).then((res) => {
+      if(res.code == 200){
+        this.loading = false;
+        this.createOnload()
+      }else{
+        this.loading = false;
+      }
+    }).catch(() => {
+      this.loading = false;
+    })
+  }
   // 重新赋值
   setAssignment(objList:any , keys:string[]) {
     return  keys.map((item:string)=> objList[item]= moment(objList[item]))
@@ -49,6 +69,19 @@ class PromotionApp {
   savdfege (){
     let query = qs.parse(appStore.location.search.replace('?', ''))
     return this.handlenodeDto.filter((step: any) => step.nodeCode === query?.othersMessage?.nextNodeCode).find((item:any) => item.status == '0') || {nodeName:''}
+  }
+   // 处理不同的表逻辑
+   handleDifferent(){
+    let list = {'HSJS_0001':this.tableObjN1,'HSJS_0002':this.tableObjN2,'HSJS_0003':this.tableObjN3,'HSJS_0004':this.tableObjN4}
+    for(let key in list){
+      if (this.master.formCode == key) {
+        let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
+        checkCode.map((item)=>{
+          list[key][item] = list[key][item]&& list[key][item].toString()
+        })
+        return  list[key]
+      }
+    } 
   }
 
   // 获取当前用户的晋升表id

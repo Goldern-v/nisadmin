@@ -6,9 +6,7 @@ import {PromotionAppUtils} from '../PromotionAppUtils'
 import printing from "printing";
 import { useRef } from "src/types/react";
 import { appStore,authStore } from "src/stores/index";
-import { Tabs , Steps, Button,message as Message, Empty, message   } from 'antd';
-
-
+import { Tabs , Steps, Button,message, Empty, Modal   } from 'antd';
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
@@ -27,28 +25,35 @@ export default observer(function PromotionAppHeader() {
       title:'N1升N2',
       key:'2',
       code:'HSJS_0002',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 1 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 1
     },
     {
       title:'N2升N3',
       key:'3',
       code:'HSJS_0003',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 2 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 2
     },
     {
       title:'N3升N4',
       key:'4',
       code:'HSJS_0004',
-      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 3 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 3
     },
   ]
   
   // 编辑
   const handleEdit =(value:any)=>{
     if(value == '创建'){
-      PromotionAppUtils.onSave()
-      PromotionAppUtils.editStatus = '编辑'
-      PromotionAppUtils.master.status = '0'
+      Modal.confirm({
+        title: '是否确定创建晋升表？',
+        onOk() {
+          PromotionAppUtils.onSave()
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+     
     } else if(value == '编辑'){
       PromotionAppUtils.editStatus = '取消编辑';
       PromotionAppUtils.edit = true;

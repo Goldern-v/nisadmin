@@ -30,6 +30,11 @@ export default function NurseReviews(props: Props) {
       fromCode:PromotionDetaitUtils.master.formCode,
       handleTime:moment().format("YYYY-MM-DD HH:mm:ss")
     }
+    if(aduitData.nodeCode == 'nurse_handle'){
+      let list = PromotionDetaitUtils.handleDifferent()
+      console.log(list);
+      
+    }
     badEventReportService.getHandleNode(obj).then((res)=>{
       if(res.code == '200'){
         Message.success('操作成功');

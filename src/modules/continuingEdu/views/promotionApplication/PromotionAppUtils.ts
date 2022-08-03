@@ -5,6 +5,7 @@ import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
 import { message } from "antd";
 import {master, tableObjN1, tableObjN2, tableObjN3, tableObjN4 ,AdituCommitOneN1,AdituCommitTwoN1,AdituCommitOneN2,AdituCommitTwoN2,AdituCommitOneN3,AdituCommitTwoN3,AdituCommitOneN4,AdituCommitTwoN4} from './types'
+import { log } from "console";
 
 
 class PromotionApp {
@@ -44,16 +45,25 @@ class PromotionApp {
   onSave() {
     this.loading = true;
     this.commitStep = '';
+    console.log(this.handleDifferent());
+    const  filterDifferData = {...this.handleDifferent(), carePatientList:null}
+
     let obj = {
       master : this.master,
-      itemDataMap: this.handleDifferent(),
+      itemDataMap:  PromotionAppUtils.editStatus == '创建' ?filterDifferData : this.handleDifferent(),
       commitStep: this.commitStep,
     }
+
+    
     PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
       if(res.code == 200){
         this.loading = false;
+        PromotionAppUtils.editStatus = '编辑'
+        PromotionAppUtils.master.status = '0'
         this.createOnload()
       }else{
+        this.editStatus = "创建";
+        this.edit = false;
         this.loading = false;
       }
     }).catch(() => {
@@ -223,7 +233,9 @@ class PromotionApp {
           this.editStatus = '创建'
         }
       }else{
-        this.master = master
+        this.master = {
+          ...this.master
+        }
         this.flowStatus = ''
         this.editStatus = '创建'
         this.attachmentList = []

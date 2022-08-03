@@ -38,6 +38,14 @@ export default class BadEventReportService extends BaseApiService {
   public getHandleNode(query:any) {
     return this.post(`/nurse/promotion/handleNode`,query)
   }
+  //
+
+  public getSaveOrCommit(obj:any){
+    return this.post(
+      `/nurse/promotion/saveOrCommit`,
+      obj
+    )
+  } 
 
 }
 
