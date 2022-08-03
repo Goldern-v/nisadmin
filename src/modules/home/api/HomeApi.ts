@@ -67,6 +67,9 @@ class StatisticsApi extends BaseApiService {
       endDate: data.endTime // string 必须参数 结束时间
     };
     let trancePostData = this.stringify(postData);
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID)) { 
+      return this.post(`/indexInfo/bedInfoHis`, trancePostData);   
+    }
     return this.post(`/indexInfo/bedInfo`, trancePostData);
   }
   public async bedInfoByJMFY(data: any) {
@@ -87,6 +90,9 @@ class StatisticsApi extends BaseApiService {
       endDate: data.endTime // string 必须参数 结束时间
     };
     let trancePostData = this.stringify(postData);
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID)) { 
+      return this.post(`/indexInfo/todayTaskHis`, trancePostData);   
+    }
     return this.post(`/indexInfo/todayTask`, trancePostData);
   }
 
@@ -118,6 +124,9 @@ class StatisticsApi extends BaseApiService {
       endDate: data.endTime // string 必须参数 结束时间
     };
     let trancePostData = this.stringify(postData);
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID)) { 
+      return this.post(`/indexInfo/patientConditionHis`, trancePostData);   
+    }
     return this.post(`/indexInfo/patientCondition`, trancePostData);
   }
 

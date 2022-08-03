@@ -217,6 +217,7 @@ export default function NursingEditModal(props: Props) {
       onOk={checkForm}
       confirmLoading={editLoading}
       title={params.identifier ? "修改" : "添加"}
+      bodyStyle={{maxHeight: 'calc(74vh)'}}
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
@@ -398,33 +399,36 @@ export default function NursingEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          <Row>
-            <Col span={6} className="label">
-              进修科室二:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="studyDeptCode02">
-                <Select
-                  style={{ width: 180 }}
-                  allowClear
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {deptList.map((item: any) => {
-                    return (
-                      <Select.Option value={item.code} key={item}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+          {
+            !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+              <Row>
+                <Col span={6} className="label">
+                  进修科室二:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="studyDeptCode02">
+                    <Select
+                      style={{ width: 180 }}
+                      allowClear
+                      showSearch
+                      filterOption={(input: any, option: any) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {deptList.map((item: any) => {
+                        return (
+                          <Select.Option value={item.code} key={item}>
+                            {item.name}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>
+          }
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 家庭住址:

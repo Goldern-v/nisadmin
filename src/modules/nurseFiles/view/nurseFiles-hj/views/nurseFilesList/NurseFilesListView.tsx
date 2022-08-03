@@ -69,8 +69,15 @@ const columns: ColumnProps<any>[] = [
   },
   {
     title: "年龄",
-    dataIndex: "age",
+    dataIndex: "ageNew",
     key: "age",
+    width: 50,
+    align: "center"
+  },
+  {
+    title: "工作年限",
+    dataIndex: "takeWorkYear",
+    key: "takeWorkYear",
     width: 50,
     align: "center"
   },

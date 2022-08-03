@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TabledCon } from "src/components/BaseTable";
 import YearPicker from "src/components/YearPicker";
@@ -26,7 +26,7 @@ export default observer(function NursingEduFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
   const qrcodeSbmitModal = createModal(QrcodeSbmitModal);
-  const refresherCheckModal = createModal(RefresherCheckModal);
+  const refresherCheckModal = useMemo(() => createModal(RefresherCheckModal), []);
   const [visible, setVisible] = useState(false);
   const [hdParams, setHdParams] = useState({} as any);
   const [hdVisible, setHdVisible] = useState(false);
@@ -116,7 +116,7 @@ export default observer(function NursingEduFiles(props: Props) {
       align: "center"
     },
     ['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&{
-      title: "学历",
+      title: "在院状态",
       dataIndex: "isOnJob",
       width: 80,
       align: "center",
@@ -199,12 +199,19 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 200,
       align: "center"
     },
-    {
-      title: "进修科室二",
-      dataIndex: "studyDeptName02",
-      width: 200,
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        'qhwy': [],
+        other: [
+          {
+            title: "进修科室二",
+            dataIndex: "studyDeptName02",
+            width: 200,
+            align: "center"
+          },
+        ]
+      }
+    }),
     {
       title: "家庭住址",
       dataIndex: "address",
@@ -284,16 +291,16 @@ export default observer(function NursingEduFiles(props: Props) {
   const saveOrUpload = (record: any) => {
     setEditParams(record);
     setEditVisible(true);
-    setHdParams(record)
-    setVisible(true);
+    // setHdParams(record)
+    // setVisible(true);
   };
 
   // 弹窗
   const handleEditCancel = () => {
     setEditVisible(false);
     setEditParams({});
-    setHdParams({})
-    setVisible(false);
+    // setHdParams({})
+    // setVisible(false);
   };
   const handleEditOk = () => {
     nursingEduFilesModal.onload();
@@ -466,12 +473,12 @@ export default observer(function NursingEduFiles(props: Props) {
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
-      <HdNursingEditModal
+      {/* <HdNursingEditModal
         visible={visible}
         params={hdParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
-      />
+      /> */}
       <qrcodeSbmitModal.Component />
       <refresherCheckModal.Component />
     </Wrapper>

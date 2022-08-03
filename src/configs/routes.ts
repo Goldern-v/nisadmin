@@ -485,6 +485,13 @@ const 典型案例库审核详情 = lazy(() =>
   )
 );
 
+//学习培训-晋级申请表（亚心）
+const PromotionDetail = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/promotionDedait/promotionDetait"
+  )
+);
+
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
   import("src/modules/infectedAreasCount/InfectedAreasCount")
@@ -602,6 +609,7 @@ const routes: RouteItem[] = [
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
   setLayout("/onlineLearningReview", OnlineLearningReview, layouts.MainLayout),
   setLayout("/examOrExercise", ExamOrExercise, layouts.MainLayout),
+  setLayout("/continuingEdu/examOrExercise", PromotionDetail, layouts.MainLayout),
   setLayout("/examScore", ExamScore, layouts.MainLayout),
 
   setLayout(

@@ -11,15 +11,12 @@ import {
   Modal as ModalMb,
   TextareaItem
 } from 'antd-mobile'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN'
 import moment from 'moment'
 import { educationList } from './data/education'
 import { traineeInfoSubmitService } from './api/TraineeInfoSubmitService'
-import { message } from 'antd'
-
 export interface Props { }
-
 export default function TraineeInfoSubmit() {
   const [params, setParams] = useState({
     name: '',
@@ -179,10 +176,14 @@ export default function TraineeInfoSubmit() {
 
         if (typeof result !== 'boolean') {
           message.error(result)
+          rulesTotal[key].error = true
+          setRules(rulesTotal)
           return false
         }
+        rulesTotal[key].error = false
       }
     }
+    setRules(rulesTotal)
 
     return true
   }
@@ -214,6 +215,7 @@ export default function TraineeInfoSubmit() {
     <div className="content" style={{ display: finished ? 'none' : 'block' }}>
       <ListMb>
         <InputItem
+          error={rules['name'].error}
           value={params.name}
           placeholder="请输入"
           onChange={(name: string) => setParams({ ...params, name })}>
@@ -233,12 +235,14 @@ export default function TraineeInfoSubmit() {
           <ListMb.Item className="sex-row" arrow="horizontal">性别</ListMb.Item>
         </Picker>
         <InputItem
+          error={rules['idCardNo'].error}
           value={params.idCardNo}
           placeholder="请输入"
           onChange={(idCardNo: string) => setParams({ ...params, idCardNo })}>
           身份证号
         </InputItem>
         <InputItem
+          error={rules['phone'].error}
           value={params.phone}
           placeholder="请输入"
           onChange={(phone: string) => setParams({ ...params, phone })}>
@@ -247,12 +251,14 @@ export default function TraineeInfoSubmit() {
       </ListMb>
       <ListMb>
         <InputItem
+          error={rules['schoolName'].error}
           value={params.schoolName}
           placeholder="请输入"
           onChange={(schoolName: string) => setParams({ ...params, schoolName })}>
           院校
         </InputItem>
         <InputItem
+          error={rules['major'].error}
           value={params.major}
           placeholder="请输入"
           onChange={(major: string) => setParams({ ...params, major })}>
@@ -267,7 +273,7 @@ export default function TraineeInfoSubmit() {
           onChange={(payload: any) => {
             if (payload[0]) setParams({ ...params, education: payload[0] })
           }}>
-          <ListMb.Item className="education-row" arrow="horizontal">学历</ListMb.Item>
+          <ListMb.Item className="education-row" arrow="horizontal" error={rules['education'].error}>学历</ListMb.Item>
         </Picker>
       </ListMb>
       <ListMb>
@@ -302,7 +308,7 @@ export default function TraineeInfoSubmit() {
             ...params,
             internshipBegin: moment(date).format('YYYY-MM-DD')
           })}>
-          <ListMb.Item arrow="horizontal">开始时间</ListMb.Item>
+          <ListMb.Item arrow="horizontal" error={rules['internshipBegin'].error}>开始时间</ListMb.Item>
         </DatePickerMb>
         <DatePickerMb
           value={params.internshipEnd ? moment(params.internshipEnd).toDate() : undefined}
@@ -312,7 +318,7 @@ export default function TraineeInfoSubmit() {
             ...params,
             internshipEnd: moment(date).format('YYYY-MM-DD')
           })}>
-          <ListMb.Item arrow="horizontal">结束时间</ListMb.Item>
+          <ListMb.Item arrow="horizontal" error={rules['internshipEnd'].error}>结束时间</ListMb.Item>
         </DatePickerMb>
       </ListMb>
       <ListMb>
@@ -331,7 +337,7 @@ export default function TraineeInfoSubmit() {
               })
             }
           }}>
-          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">实习科室</ListMb.Item>
+          <ListMb.Item className="studyDeptCode-row" arrow="horizontal" error={rules['studyDeptCode'].error}>实习科室</ListMb.Item>
         </Picker>
         <Picker
           extra="请选择"
@@ -350,18 +356,21 @@ export default function TraineeInfoSubmit() {
       </ListMb>
       <ListMb>
         <InputItem
+          error={rules['address'].error}
           value={params.address}
           placeholder="请输入"
           onChange={(address: string) => setParams({ ...params, address })}>
           家庭住址
         </InputItem>
         <InputItem
+          error={rules['emergencyContactPerson'].error}
           value={params.emergencyContactPerson}
           placeholder="请输入"
           onChange={(emergencyContactPerson: string) => setParams({ ...params, emergencyContactPerson })}>
           紧急联系人
         </InputItem>
         <InputItem
+          error={rules['emergencyContactPhone'].error}
           value={params.emergencyContactPhone}
           placeholder="请输入"
           onChange={(emergencyContactPhone: string) => setParams({ ...params, emergencyContactPhone })}>
