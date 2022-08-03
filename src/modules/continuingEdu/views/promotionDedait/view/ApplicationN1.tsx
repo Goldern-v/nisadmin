@@ -114,7 +114,6 @@ export default observer(function ApplicationN1(props: Props) {
       }
       return isLt5M && !isExceed
     },
-    // defaultFileList: PromotionDetaitUtils.attachmentList,
    
     onChange:(file)=>{
       file.fileList = PromotionDetaitUtils.attachmentList;
@@ -185,7 +184,7 @@ export default observer(function ApplicationN1(props: Props) {
             />
           )}
       </div>
-      <div
+      {/* <div
         className="first-form"
         style={{
           top:
@@ -198,7 +197,7 @@ export default observer(function ApplicationN1(props: Props) {
         onClick={() => {
           message.warning("当前暂不可编辑，请根据流程进行修改！");
         }}
-      />
+      /> */}
       <div className="wrapper-pages-form">
         <div className="form-title">
           临床护理人员晋升申请表（N0→N1）（{moment().format("YYYY")}版）
@@ -220,7 +219,6 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input defaultValue="26888888" value={tableObjN1.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     className="mar-btom"
                     type="text"
@@ -524,7 +522,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
                   <textarea
-                    defaultValue={tableObjN1.JS0000034}
+                    value={tableObjN1.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -547,7 +545,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 370 }}>
                   <textarea
                     className="textarea-summarize"
-                    defaultValue={tableObjN1.JS0000035}
+                    value={tableObjN1.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -562,7 +560,6 @@ export default observer(function ApplicationN1(props: Props) {
                     >
                       {tableObjN1.JS0000010}
                     </div>
-                    {/* <input className="acc-time" type="text"  value={tableObjN1.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
                     <input
                       className="wih-150"
@@ -619,14 +616,18 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000014}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000014");
+                    }}
                   />
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000016}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000016");
+                    }}
                   />
                 </div>
                 <div className="base-item">
@@ -646,14 +647,18 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000019}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000019");
+                    }}
                   />
                   <span>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000021}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000021");
+                    }}
                   />
                 </div>
               </td>
@@ -803,14 +808,18 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000024}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000024");
+                    }}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000026}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000026");
+                    }}
                   />
                 </div>
               </td>
@@ -836,14 +845,18 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000029}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000029");
+                    }}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     value={tableObjN1.JS0000031}
-                    readOnly
+                    onChange={(e) => {
+                      handleInput(e, "JS0000031");
+                    }}
                   />
                 </div>
               </td>

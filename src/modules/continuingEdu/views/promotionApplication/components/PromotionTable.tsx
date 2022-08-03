@@ -5,77 +5,122 @@ import ApplicationN1 from "./view/ApplicationN1";
 import ApplicationN2 from "./view/ApplicationN2";
 import ApplicationN3 from "./view/ApplicationN3";
 import ApplicationN4 from "./view/ApplicationN4";
-import {PromotionAppUtils} from '../PromotionAppUtils';
-import {Spin,Icon } from 'antd';
-import moment from 'moment'
+import { PromotionAppUtils } from "../PromotionAppUtils";
+import { Spin, Icon } from "antd";
+import moment from "moment";
 
 export interface Props {
   printRef?: any;
 }
 
-export default observer(function PromotionTable(props:Props){
-  return(
+export default observer(function PromotionTable(props: Props) {
+  return (
     <Wrapper>
-        <div className="table-left">
-          <Spin spinning={PromotionAppUtils.loading}>
-              {
-                PromotionAppUtils.tabsKey == "1" &&  <ApplicationN1 printRef={props.printRef}></ApplicationN1>
-              }
-              {
-                PromotionAppUtils.tabsKey == "2" &&  <ApplicationN2 printRef={props.printRef}></ApplicationN2>
-              }
-              {
-                PromotionAppUtils.tabsKey == "3" &&  <ApplicationN3 printRef={props.printRef}></ApplicationN3>
-              }
-              {
-              PromotionAppUtils.tabsKey == "4" &&  <ApplicationN4 printRef={props.printRef}></ApplicationN4>
-              }
-          </Spin>
-        </div>
+      <div className="table-left">
+        <Spin spinning={PromotionAppUtils.loading}>
+          {PromotionAppUtils.tabsKey == "1" && (
+            <ApplicationN1 printRef={props.printRef} />
+          )}
+          {PromotionAppUtils.tabsKey == "2" && (
+            <ApplicationN2 printRef={props.printRef} />
+          )}
+          {PromotionAppUtils.tabsKey == "3" && (
+            <ApplicationN3 printRef={props.printRef} />
+          )}
+          {PromotionAppUtils.tabsKey == "4" && (
+            <ApplicationN4 printRef={props.printRef} />
+          )}
+        </Spin>
+      </div>
       <div className="table-right">
         <div className="right-head">审核过程</div>
         <div className="audit-mian">
-          {
-            PromotionAppUtils.handlenodeDto.length ? (PromotionAppUtils.handlenodeDto.map((item: any, idx: number) =>
-              (idx == 0 ?
-              <div className="audit-item" key={idx}>
-                <div className="emp-img">
-                  <img src={item.nearImageUrl} alt=""/>
-                 <Icon type="check-circle" theme="filled" className="step-status success"/>
-                </div>
-                <div className="info">
-                  <div className="step-title">
-                    <span>{item.nodeName}</span>
+          {PromotionAppUtils.handlenodeDto.length ? (
+            PromotionAppUtils.handlenodeDto.map((item: any, idx: number) =>
+              idx == 0 ? (
+                item.status == 0 ? (
+                  <div className="audit-item" key={idx}>
+                    <div className="emp-img">
+                      <img src={item.nearImageUrl} alt="" />
+                    </div>
+                    <div className="info">
+                      <div className="step-title">
+                        <span>{item.nodeName}</span>
+                      </div>
+                      <div className="emp-name">未完成</div>
+                    </div>
                   </div>
-                  <div className="emp-name">{item.handlerName}</div>
-                  <div className="emp-name">{`${item.handleTime} (星期${moment(item.handleTime).format('E')})` }</div>
-                </div>
-              </div>:<div className="audit-item" key={idx}>
-                <div className="emp-img">
-                  <img src={item.nearImageUrl} alt=""/>
-                  {item.noPass == true || item.nodeCode =='withdraw' ?
-                    <Icon type="close-circle" theme="filled" className="step-status error"/> :
-                    <Icon type="check-circle" theme="filled" className="step-status success"/>}
-                </div>
-                <div className="info">
-                  <div className="step-title">
-                    <span>{item.handlerName}</span>
+                ) : (
+                  <div className="audit-item" key={idx}>
+                    <div className="emp-img">
+                      <img src={item.nearImageUrl} alt="" />
+                      <Icon
+                        type="check-circle"
+                        theme="filled"
+                        className="step-status success"
+                      />
+                    </div>
+                    <div className="info">
+                      <div className="step-title">
+                        <span>{item.nodeName}</span>
+                      </div>
+                      <div className="emp-name">{item.handlerName}</div>
+                      <div className="emp-name">{`${
+                        item.handleTime
+                      } (星期${moment(item.handleTime).format("E")})`}</div>
+                    </div>
                   </div>
-                  <div className="emp-name">{item.nodeName}</div>
-                  <div className="emp-name">{`${item.handleTime} (星期${moment(item.handleTime).format('E')})` }</div>
-                
+                )
+              ) : item.status != 0 ? (
+                <div className="audit-item" key={idx}>
+                  <div className="emp-img">
+                    <img src={item.nearImageUrl} alt="" />
+                    {item.noPass == true || item.nodeCode == "withdraw" ? (
+                      <Icon
+                        type="close-circle"
+                        theme="filled"
+                        className="step-status error"
+                      />
+                    ) : (
+                      <Icon
+                        type="check-circle"
+                        theme="filled"
+                        className="step-status success"
+                      />
+                    )}
+                  </div>
+                  <div className="info">
+                    <div className="step-title">
+                      <span>{item.handlerName}</span>
+                    </div>
+                    <div className="emp-name">{item.nodeName}</div>
+                    <div className="emp-name">{`${
+                      item.handleTime
+                    } (星期${moment(item.handleTime).format("E")})`}</div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="audit-item" key={idx}>
+                  <div className="emp-img">
+                    <img src={item.nearImageUrl} alt="" />
+                  </div>
+                  <div className="info">
+                    <div className="step-title">
+                      <span>{item.nodeName}</span>
+                    </div>
+                    <div className="emp-name">未完成</div>
+                  </div>
+                </div>
               )
-            )) : <div className="right-nomains">暂无审核记录~</div>
-          }
+            )
+          ) : (
+            <div className="right-nomains">暂无审核记录~</div>
+          )}
         </div>
-        
       </div>
     </Wrapper>
-  )
-
-})
+  );
+});
 
 const Wrapper = styled.div`
   height: 100%;
@@ -122,7 +167,7 @@ const Wrapper = styled.div`
   }
   .audit-item{
     color: #666;
-    padding-top: 10px;
+    padding-top: 40px;
     position: relative;
     &::before{
       position: absolute;
@@ -152,7 +197,7 @@ const Wrapper = styled.div`
         border-radius: 50%;
         object-fit: cover;
         display:inline-block;
-        background: url('${require('src/assets/护士默认头像.png')}');
+        background: url('${require("src/assets/护士默认头像.png")}');
         background-size: 100%;
       }
       .step-status{
@@ -179,4 +224,4 @@ const Wrapper = styled.div`
       }
     }
   }
-`
+`;

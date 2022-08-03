@@ -225,7 +225,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input defaultValue="26888888" value={tableObjN3.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
+                  {/* <Input value="26888888" value={tableObjN3.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     type="text"
                     value={tableObjN3.JS0000001}
@@ -650,7 +650,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
                   <textarea
-                    defaultValue={tableObjN3.JS0000034}
+                    value={tableObjN3.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -836,7 +836,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 250 }}>
                   <textarea
                     className="textarea-summarize"
-                    defaultValue={tableObjN3.JS0000035}
+                    value={tableObjN3.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -1263,7 +1263,7 @@ export default observer(function ApplicationN1(props: Props) {
             {new Array(6).fill('').map((item:any,index)=><tr  key={index}>
               <td>
               <Input.TextArea
-                defaultValue={'dd'}
+                value={'dd'}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextarea(e, "JS0000034");
@@ -1273,7 +1273,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input.TextArea
-                defaultValue={'dd'}
+                value={'dd'}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextarea(e, "JS0000034");
@@ -1283,7 +1283,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input.TextArea
-                defaultValue={'dd'}
+                value={'dd'}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextarea(e, "JS0000034");
@@ -1293,7 +1293,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input.TextArea
-                defaultValue={'dd'}
+                value={'dd'}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextarea(e, "JS0000034");

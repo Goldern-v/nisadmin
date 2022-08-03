@@ -37,22 +37,22 @@ export default observer(function NursingReportDetailView() {
       PromotionDetaitUtils.master.formCode = "HSJS_0001"
       PromotionDetaitUtils.master.formName = value
       setprintwih('2100px')
-      PromotionDetaitUtils.createOnload()
+      PromotionDetaitUtils.getUesrPromotionList()
     }else if(value == "N1->N2"){
       PromotionDetaitUtils.master.formCode = "HSJS_0002"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
-      PromotionDetaitUtils.createOnload()
+      PromotionDetaitUtils.getUesrPromotionList()
     }else if(value == "N2->N3"){
       PromotionDetaitUtils.master.formCode = "HSJS_0003"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
-      PromotionDetaitUtils.createOnload()
+      PromotionDetaitUtils.getUesrPromotionList()
     }else if(value == "N3->N4"){
       PromotionDetaitUtils.master.formCode = "HSJS_0004"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
-      PromotionDetaitUtils.createOnload()
+      PromotionDetaitUtils.getUesrPromotionList()
     }
   }
    // 打印
@@ -114,6 +114,10 @@ export default observer(function NursingReportDetailView() {
         `
     });
   }
+  // 保存
+  const handleSave = ()=>{
+    PromotionDetaitUtils.onSave()
+  }
   // 编辑
   const handleEdit =(value:any)=>{
     if(value == '编辑'){
@@ -138,7 +142,7 @@ export default observer(function NursingReportDetailView() {
         <div className='tool-con'>
           <Button loading={spinning} onClick={handlePrint}>打印</Button>
           <Button  type="primary" loading={spinning} onClick={()=>{handleEdit(PromotionDetaitUtils.editStatus)}}>{PromotionDetaitUtils.editStatus}</Button>
-          <Button  type="primary" loading={spinning}>保存</Button>
+          <Button  type="primary" loading={spinning} onClick={handleSave}>保存</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
           <Select defaultValue={PromotionDetaitUtils.master.formName} style={{ width: 200 }} onChange={handletabsList}>
             <Select.Option value="N0->N1">{'N0->N1'}</Select.Option>
@@ -150,7 +154,7 @@ export default observer(function NursingReportDetailView() {
       </HeadCon>
       <ScrollCon>
         <Spin spinning={spinning} >
-       { PromotionDetaitUtils.editStatus == '编辑' || PromotionDetaitUtils.editStatus == '取消编辑' ? <PromotionTable printRef={printRef}></PromotionTable>: <Empty style={{height:680,paddingTop: '152px'}}/>}
+       { PromotionDetaitUtils.isEditList  ? <PromotionTable printRef={printRef}></PromotionTable>: <Empty style={{height:680,paddingTop: '152px'}}/>}
         </Spin>
       </ScrollCon>
     </Wrapper>

@@ -86,7 +86,6 @@ export default observer(function ApplyTable(props: Props) {
   ];
 
   const handleExamine = (record:any)=>{
-    console.log(record)
     const obj = {
       id: record.id,
       currentLevel:record.currentLevel,

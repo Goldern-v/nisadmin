@@ -66,6 +66,11 @@ export default observer(function ApplicationN1(props: Props) {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN3[value] = e.target.value;
   };
+  const handelTextareas = (e: any, value: any,key:number) => {
+    let ctext = e.target.value;
+    tableObjN3.carePatientList[key][value] = ctext
+    tableObjN3.carePatientList[key].masterId = PromotionDetaitUtils.master.id
+  };
   const handleUserCheckOk = (userAudit: any, value: any) => {
     console.log(userAudit, value);
     PromotionDetaitUtils.tableObjN3.JS0000010 = value.empName;
@@ -1260,45 +1265,42 @@ export default observer(function ApplicationN1(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {new Array(6).fill('').map((item:any,index)=><tr  key={index}>
+          {PromotionDetaitUtils.tableObjN2.carePatientList.length == 6 && PromotionDetaitUtils.tableObjN2.carePatientList.map((item:any,index:number)=><tr key={index}>
               <td>
-              <Input.TextArea
-                defaultValue={'dd'}
+              <Input
+                value={item.patientName}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "patientName",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input
+                value={item.medicalRecordNo}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "medicalRecordNo",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input.TextArea
+                value={item.careMessage}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "careMessage",index);
                 }}
                 autosize={{ minRows: 3 }}
               />
               </td>
               <td>
-              <Input.TextArea
-                defaultValue={'dd'}
+              <Input
+                value={item.careTime}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "careTime",index);
                 }}
-                autosize={{ minRows: 3 }}
-              />
-              </td>
-              <td>
-              <Input.TextArea
-                defaultValue={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
-              />
-              </td>
-              <td>
-              <Input.TextArea
-                defaultValue={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
               />
               </td>
             </tr>

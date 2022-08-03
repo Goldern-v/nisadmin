@@ -768,7 +768,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
                   <textarea
-                    defaultValue={tableObjN4.JS0000034}
+                    value={tableObjN4.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -961,7 +961,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 250 }}>
                   <textarea
                     className="textarea-summarize"
-                    defaultValue={tableObjN4.JS0000035}
+                    value={tableObjN4.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}

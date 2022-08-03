@@ -141,10 +141,10 @@ export default observer(function ApplicationN1(props: Props) {
               : "",
         }}
         onClick={() => {
-          message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
+          message.warning("当前为审核查看,不可编辑！");
         }}
       >
-        { isAduit.noPass == true && (
+        {/* { isAduit.noPass == true && (
           <img
             src={require("../image/审批不通过.png")}
             className="form-status-img"
@@ -171,7 +171,7 @@ export default observer(function ApplicationN1(props: Props) {
               src={require("../image/待审批.png")}
               className="form-status-img"
             />
-          )}
+          )} */}
       </div>
       <div
         className="first-form"

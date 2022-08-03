@@ -6,7 +6,7 @@ import {PromotionAppUtils} from '../PromotionAppUtils'
 import printing from "printing";
 import { useRef } from "src/types/react";
 import { appStore,authStore } from "src/stores/index";
-import { Tabs , Steps, Button,message as Message, Empty   } from 'antd';
+import { Tabs , Steps, Button,message as Message, Empty, message   } from 'antd';
 
 
 const { TabPane } = Tabs;
@@ -27,19 +27,19 @@ export default observer(function PromotionAppHeader() {
       title:'N1升N2',
       key:'2',
       code:'HSJS_0002',
-      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 1 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 1 ||  authStore.user?.currentLevel == ''
     },
     {
       title:'N2升N3',
       key:'3',
       code:'HSJS_0003',
-      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 2 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 2 ||  authStore.user?.currentLevel == ''
     },
     {
       title:'N3升N4',
       key:'4',
       code:'HSJS_0004',
-      // disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 3 ||  authStore.user?.currentLevel == ''
+      disabled:Number(authStore.user?.currentLevel.split('N')[1]) >= 3 ||  authStore.user?.currentLevel == ''
     },
   ]
   
@@ -67,15 +67,36 @@ export default observer(function PromotionAppHeader() {
   }
   // 撤销
   const handlerevocation = ()=>{
+    
     PromotionAppUtils.onCancelForm().then((res)=>{
-      console.log(res);
-      
+      if(res.code == 200 ){
+        message.success('撤销成功！')
+        PromotionAppUtils.createOnload()
+      }
     })
   }
   // 切换tabs触发切换
   const onTabsChange = (key: any) => {
     // if(authStore.user?.currentLevel == '' || authStore.user?.currentLevel == 'N0'){
     //   if(key > 1){
+    //     Message.warning('当前晋升职位和点击晋升表不符合！');
+    //   }else{
+    //     PromotionAppUtils.tabsKey = key;
+    //   }
+    // }else if(authStore.user?.currentLevel == 'N1'){
+    //   if(key > 2){
+    //     Message.warning('当前晋升职位和点击晋升表不符合！');
+    //   }else{
+    //     PromotionAppUtils.tabsKey = key;
+    //   }
+    // }else if(authStore.user?.currentLevel == 'N2'){
+    //   if(key > 3){
+    //     Message.warning('当前晋升职位和点击晋升表不符合！');
+    //   }else{
+    //     PromotionAppUtils.tabsKey = key;
+    //   }
+    // }else if(authStore.user?.currentLevel == 'N3'){
+    //   if(key > 4){
     //     Message.warning('当前晋升职位和点击晋升表不符合！');
     //   }else{
     //     PromotionAppUtils.tabsKey = key;
