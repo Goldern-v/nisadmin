@@ -107,6 +107,11 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
     folderSrc = '/crdata/webProject/manage-weihai'
   }
 
+  //漳州五院
+  if (process.env.npm_lifecycle_event.indexOf('9897') >= 0) {
+    folderSrc = '/crdata/webProject/manage-zhangzhou'
+  }
+  
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'

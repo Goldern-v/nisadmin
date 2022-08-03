@@ -16,6 +16,7 @@ export default observer(function QrcodeSbmitModal(props: Props) {
     map: {
       hj: 'http://192.168.1.54:9864',
       gzhd: 'http://192.168.1.54:9868',
+      qhwy: location.host,
       other: ''
     },
   })

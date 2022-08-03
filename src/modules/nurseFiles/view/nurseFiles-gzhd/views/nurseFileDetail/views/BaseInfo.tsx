@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { nurseFilesListViewModel } from '../../nurseFilesList/NurseFilesListViewModel'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -21,6 +22,8 @@ export default observer(function BaseInfo() {
   let [hdryQuaimage, setHdryQuaimage]: [any, any] = useState([])
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
+
+  const [ditList, setDitList] = useState([])
 
   const limitsComponent = () => {
     let auditBtnText = info.statusColor === '1' ? '审核' : '查看'
@@ -76,6 +79,9 @@ export default observer(function BaseInfo() {
               职业证书截止日期: 'zyzsEffectiveUpDate',
               资格名称: 'qualificationName'
             },
+            {
+              护理岗位: 'nursingJob',
+            },
           ],
           fileData: [
             {
@@ -108,7 +114,7 @@ export default observer(function BaseInfo() {
           onClick: () => {
             editBaseInfoModal.show({
               id: id,
-              data: info
+              data: info,
             })
           }
         },
@@ -174,12 +180,25 @@ export default observer(function BaseInfo() {
           资格名称: data.qualificationName
         },
         {
-          工作年限: data.maps.hdry_working_year,
+          工作年限: data.goHospitalWorkYear,
           资格证书编号: data.maps.hdry_qua_cer_no
-        }
+        },
+        {
+          护理岗位: data.nursingJob,
+        },
       ])
     })
   }
+  useEffect(() => {
+    // 获取护理岗位列表
+    nurseFilesService.findDitList().then(res=>{
+      let nursePostList = []
+      nursePostList = res.data.map((it:any)=>{return it.name})
+      nurseFilesListViewModel.nursePostList2 = nursePostList
+    }).catch(err=>{
+    })
+
+  }, [])
   useEffect(() => {
     getTableData()
   }, [appStore.queryObj])

@@ -300,20 +300,21 @@ export default observer(function Layout() {
     //   setOpenNotRadio(1)
     //   return
     // }
-    qualityControlRecordApi
-      .getFilterQcCodeList()
-      .then((res) => {
-        setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
-      })
-      .catch((err) => {});
+    // qualityControlRecordApi
+    //   .getFilterQcCodeList()
+    //   .then((res) => {
+    //     setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
+    //   })
+    //   .catch((err) => {});
   }, []);
   return (
-    <React.Fragment>
-      {
-        map(openNotRadio)
-      }
-      {/* {openNotRadio ? <QcrEditNoRadio /> : <QualityControlRecordEdit />} */}
-    </React.Fragment>
+    // <React.Fragment>
+    //   {
+    //     map(openNotRadio)
+    //   }
+    //   {/* {openNotRadio ? <QcrEditNoRadio /> : <QualityControlRecordEdit />} */}
+    // </React.Fragment>
+    <QualityControlRecordEdit />
   );
 });
 
