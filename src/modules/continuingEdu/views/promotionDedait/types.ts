@@ -149,51 +149,6 @@ export const tableObjN2 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
-
 };  // 表单的数据2
 export const tableObjN3 = {
   JS0000001: '', // 科室
@@ -290,50 +245,6 @@ export const tableObjN3 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2,
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
 };  // 表单的数据3
 export const tableObjN4 = {
   JS0000001:'', // 科室

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import { Icon , Upload, Button, message,Spin,Input } from "antd";
+import { Icon , Upload, DatePicker, message,Spin,Input } from "antd";
 import { PromotionAppUtils } from "../../PromotionAppUtils";
 import UserCheckModal from "./UserCheckModal";
 import DateModal from './Datemodal';
@@ -52,6 +52,9 @@ export default observer(function ApplicationN1(props: Props) {
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
     tableObjN4[value] = ctext;
+  };
+  const onDatePickerChange = (e: any, value: any) => {
+    tableObjN4[value] = e;
   };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN4[value] = e.target.value;
@@ -305,26 +308,14 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    type="text"
-                    value={tableObjN4.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={moment(tableObjN4.JS0000004)}  />
+                 （标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N3资质时间</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN4.JS0000133}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000133");
-                    }}
-                  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000133')}} defaultValue={moment(tableObjN4.JS0000133)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>

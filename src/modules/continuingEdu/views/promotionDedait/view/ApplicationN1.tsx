@@ -56,6 +56,9 @@ export default observer(function ApplicationN1(props: Props) {
     tableObjN1[value] = e;
     setyearPickerIsOpen(false);
   };
+  const onDatePickerChange = (e: any, value: any) => {
+    tableObjN1[value] = e;
+  };
   const handleChange1 = (e: any, value: any) => {
     tableObjN1[value] = e;
     setyearPickerIsOpen1(false);
@@ -258,14 +261,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN1.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={moment(tableObjN1.JS0000004)}  />
                 </div>
               </td>
             </tr>

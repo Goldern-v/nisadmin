@@ -68,7 +68,11 @@ export default observer(function PromotionAppHeader() {
   }
   // 保存
   const handleSave = (value:any) =>{
-    PromotionAppUtils.onSave()
+    if(['编辑','创建'].includes(PromotionAppUtils.editStatus)){
+      return message.warning('当前没有在编辑情况下！')
+    }else{
+      PromotionAppUtils.onSave()
+    }
   }
   // 撤销
   const handlerevocation = ()=>{

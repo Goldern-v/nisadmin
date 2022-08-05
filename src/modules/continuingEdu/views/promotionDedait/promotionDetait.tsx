@@ -116,7 +116,11 @@ export default observer(function NursingReportDetailView() {
   }
   // 保存
   const handleSave = ()=>{
+    if(['编辑','创建'].includes(PromotionDetaitUtils.editStatus)){
+      return message.warning('当前没有在编辑情况下！')
+    }else{
     PromotionDetaitUtils.onSave()
+    }
   }
   // 编辑
   const handleEdit =(value:any)=>{

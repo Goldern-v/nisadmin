@@ -27,7 +27,7 @@ export const tableObjN1 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000006: '', // 护士职业证书编号
   JS0000007: '', // 职称
@@ -78,10 +78,10 @@ export const tableObjN2 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000007: '', // 职称
-  JS0000008: '', // 获得初级护师_年度
+  JS0000008: undefined, // 获得初级护师_年度
   JS0000010: '', // 申请人签名
   JS0000011: '', // 申请日期
   JS0000012: '', // 护长审核
@@ -149,57 +149,12 @@ export const tableObjN2 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
-
 };  // 表单的数据2
 export const tableObjN3 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000007: '', // 职称
   JS0000008: undefined, // 获得初级护师_年度
@@ -290,56 +245,12 @@ export const tableObjN3 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2,
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
 };  // 表单的数据3
 export const tableObjN4 = {
   JS0000001:'', // 科室
   JS0000002:'', // 姓名
   JS0000003:'', // SAP号码
-  JS0000004:'', // 来院时间
+  JS0000004:undefined, // 来院时间
   JS0000005:'', // 学历
   JS0000007:'', // 职称
   JS0000009: undefined, // 获得主管护师_年度
@@ -497,7 +408,6 @@ export const AdituCommitOneN2 =[
   "JS0000004", 
   "JS0000005", 
   "JS0000007", 
-  "JS0000008", 
   "JS0000010", 
   "JS0000011", 
   "JS0000054",
@@ -509,8 +419,6 @@ export const AdituCommitOneN2 =[
   "JS0000061",
   "JS0000041",
   "JS0000042",
-  "JS0000043",
-  "JS0000062",
   "JS0000063",
   "JS0000064",
   "JS0000065",
@@ -567,13 +475,10 @@ export const AdituCommitOneN3 =[
   "JS0000096",
   "JS0000097",
   "JS0000098",
-  "JS0000099",
   "JS0000100",
   "JS0000101",
-  "JS0000102",
   "JS0000041",
   "JS0000042",
-  "JS0000043",
   "JS0000103",
   "JS0000104",
   "JS0000105",
@@ -598,9 +503,7 @@ export const AdituCommitOneN3 =[
   "JS0000118",
   "JS0000119",
   "JS0000120",
-  "JS0000121",
   "JS0000122",
-  "JS0000124",
   "JS0000125",
   "JS0000035",
 ]
@@ -644,17 +547,13 @@ export const AdituCommitOneN4 =[
   "JS0000094", 
   "JS0000095", 
   "JS0000097", 
-  "JS0000098", 
-  "JS0000099", 
+  "JS0000098",  
   "JS0000100", 
   "JS0000101", 
-  "JS0000102", 
   "JS0000136", 
   "JS0000137", 
-  "JS0000138", 
   "JS0000041", 
   "JS0000042", 
-  "JS0000043", 
   "JS0000139", 
   "JS0000140", 
   "JS0000141", 

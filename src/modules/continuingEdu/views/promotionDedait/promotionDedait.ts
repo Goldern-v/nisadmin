@@ -22,7 +22,50 @@ class PromotionApp {
   @observable public tableObjN4 = tableObjN4;  // 表单的数据4
   @observable public handlenodeDto = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
- 
+  @observable public  carePatientList = [
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:'',
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+  ]
   @computed get listObj() {
     let tableObj = {}
     return {

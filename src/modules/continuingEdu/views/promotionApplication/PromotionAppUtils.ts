@@ -33,6 +33,50 @@ class PromotionApp {
  
   @observable public handlenodeDto = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
+  @observable public carePatientList = [
+    {
+      masterId: this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+  ]
 
   @computed get listObj() {
     return {
@@ -45,12 +89,10 @@ class PromotionApp {
   onSave() {
     this.loading = true;
     this.commitStep = '';
-    console.log(this.handleDifferent());
-    const  filterDifferData = {...this.handleDifferent(), carePatientList:null}
-
     let obj = {
       master : this.master,
-      itemDataMap:  PromotionAppUtils.editStatus == '创建' ?filterDifferData : this.handleDifferent(),
+      itemDataMap:this.handleDifferent(),
+      carePatientList:this.carePatientList,
       commitStep: this.commitStep,
     }
 
@@ -82,6 +124,7 @@ class PromotionApp {
           master : this.master,
           itemDataMap: this.handleDifferent(),
           commitStep: this.master.nextNodeCode || '',
+          carePatientList:this.carePatientList,
         }
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
@@ -177,10 +220,10 @@ class PromotionApp {
           if (this.master.formCode == 'HSJS_0001') {
             this.tableObjN1 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0002') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN2.carePatientList
+            // res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN2.carePatientList
             this.tableObjN2 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0003') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN3.carePatientList
+            // res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN3.carePatientList
             this.tableObjN3 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0004') {
             this.tableObjN4 = { ...res.data.itemDataMap }
@@ -192,7 +235,8 @@ class PromotionApp {
           return item
         })
         if(res.data.handlenodeDto.length){
-          this.handlenodeDto = res.data.handlenodeDto
+          let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
+          this.handlenodeDto =DtoData ? res.data.handlenodeDto:[]
         }else{
           this.handlenodeDto = []
         }

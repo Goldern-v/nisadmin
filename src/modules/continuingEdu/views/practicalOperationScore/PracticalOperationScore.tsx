@@ -90,17 +90,17 @@ export default observer(function Notification() {
         let data: any =[
           {
             text: "下载",
-            color:'00A680',
+            color:'#00A680',
             function:getCurrDownloadTemplate,
           },
           {
             text: "预览",
-            color:'00A680',
+            color:'#00A680',
             function:getPreviewDetail,
           },
           {
             text: "编辑",
-            color:'00A680',
+            color:'#00A680',
             function:getEditDetail,
             using:record.using,
           },
