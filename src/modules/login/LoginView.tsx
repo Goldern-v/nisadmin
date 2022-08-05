@@ -84,7 +84,7 @@ export default withRouter(function LoginView(props: Props) {
       message.warning("请填写验证码！")
       return;
     }
-    (process.env.NODE_ENV !== 'development') && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
+    (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
     service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
