@@ -20,6 +20,7 @@ export default class AuthStore {
 
   /** 当前用户科室列表 */
   @observable public deptList: DeptType[] = [];
+  @observable public treeDeptList: DeptType[] = [];
   /** 当前用户默认科室 */
   @observable public defaultDeptCode: any = "";
   /** 当前用户默认科室名 */

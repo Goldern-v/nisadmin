@@ -11,6 +11,7 @@ import { ColumnProps } from 'antd/lib/table'
 import { theme } from 'src/styles/theme'
 
 import FilterCon from './components/FilterCon'
+import FilterConTree from './components/FilterConTree'
 
 import PaginationCon from './components/PaginationCon'
 import SelectCon from './components/SelectCon'
@@ -477,7 +478,9 @@ export default observer(function NurseFilesListView() {
   return (
     <Wrapper>
       <SelectCon />
-      <FilterCon />
+      {['sdlj'].includes(appStore.HOSPITAL_ID)
+        ? <FilterConTree />
+        : <FilterCon />}
       {/* <Spin spinning={nurseFilesListViewModel.listSpinning}>
         <NurseCardCon>
           {nurseFilesListViewModel.nurseList.map((item: any, index: number) => (
