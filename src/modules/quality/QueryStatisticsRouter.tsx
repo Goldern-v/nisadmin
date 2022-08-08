@@ -11,7 +11,8 @@ import ProblemSummary from "./views/problemSummary/ProblemSummary";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 import QueryStatistics from "./views/queryStatistics/QueryStatistics";
 import WritingForm from "./views/writingForm/WritingForm";
-
+import VTEForm from "./views/VTEForm/vteForm";
+import NotVTEForm from "./views/notVTEForm/notVteForm";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 
@@ -27,6 +28,18 @@ const LEFT_MENU_CONFIG: any = [
     path: "/queryStatistics/writingForm",
     icon: <WJSX />,
     component: WritingForm
+  },
+  {
+    title: "术科VTE质量单统计",
+    path: "/queryStatistics/VTE",
+    icon: <WJSX />,
+    component: VTEForm
+  },
+  {
+    title: "非术科VTE质量单统计",
+    path: "/queryStatistics/notVTE",
+    icon: <WJSX />,
+    component: NotVTEForm
   }
 ];
 
