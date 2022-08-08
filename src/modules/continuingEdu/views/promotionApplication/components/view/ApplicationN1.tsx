@@ -162,7 +162,7 @@ export default observer(function ApplicationN1(props: Props) {
             className="form-status-img"
           />
         )}
-        { isAduit.noPass == false && !DotPass && (
+        { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&(
           <img
             src={require("../image/审批通过.png")}
             className="form-status-img"
@@ -254,7 +254,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={moment(tableObjN1.JS0000004)}  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN1.JS0000004 && moment(tableObjN1.JS0000004)}  />
                 </div>
               </td>
             </tr>
@@ -385,7 +385,7 @@ export default observer(function ApplicationN1(props: Props) {
                       value={tableObjN1.JS0000041}
                       keys={"JS0000041"}
                     />
-                    年度
+                    年度 
                   </span>
                   <SelectBox
                     type="radio"

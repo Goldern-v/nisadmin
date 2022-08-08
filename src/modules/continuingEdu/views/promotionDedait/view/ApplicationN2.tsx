@@ -327,13 +327,13 @@ export default observer(function ApplicationN1(props: Props) {
             <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN2.JS0000004 && moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N1资质时间：</span>
-                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} defaultValue={moment(tableObjN2.JS0000054)}  />
+                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} defaultValue={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>

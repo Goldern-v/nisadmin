@@ -30,7 +30,21 @@ export default observer(function NursingReportDetailView() {
     PromotionDetaitUtils.createOnload()
   }, [])
 
-  const handleUserCheckOk = (userAudit: any, value: any) => {
+  const handleUserCheckOk = (data: any) => {
+    let nurseCodeList = {'HSJS_0001':'tableObjN1','HSJS_0002':'tableObjN2','HSJS_0003':'tableObjN3','HSJS_0004':'tableObjN4'};
+    let nodeCodeList = {'nurse_handle':['JS0000012','JS0000014','JS0000016'],'big_head_nurse':['JS0000017','JS0000019','JS0000021'],'promotion_team_audit':['JS0000022','JS0000024','JS0000026'],'nursing_minister_audit':['JS0000027','JS0000029','JS0000031']};
+    Object.keys(nurseCodeList).map((item:string)=>{
+      if(data.fromCode == item){
+        Object.keys(nodeCodeList).map((key:string)=>{
+          if(data.nodeCode == key){
+            PromotionDetaitUtils[nurseCodeList[item]][nodeCodeList[key][0]] = data.noPass ? 'B' : 'A'
+            PromotionDetaitUtils[nurseCodeList[item]][nodeCodeList[key][1]] = data.empName
+            PromotionDetaitUtils[nurseCodeList[item]][nodeCodeList[key][2]] = data.handleTime
+          }
+        })
+      }
+    });
+    PromotionDetaitUtils.onSave();
     setUserCheckVisible(false);
     appStore.history.goBack()
   };

@@ -251,13 +251,14 @@ const StepHeader = styled.div`
   display: flex;
   align-items: center;
   .heigth-left{
-    width: 60%;
+    width: 72%;
     .Steps-list{
       padding-left: 100px;
+      width:900px;
     }
   }
   .heigth-right{
-    width: 40%;
+    width: 28%;
     display: flex;
     justify-content: space-around;
   }

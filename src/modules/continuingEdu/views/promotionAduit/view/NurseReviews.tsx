@@ -4,6 +4,7 @@ import { Modal, message as Message,Row, Col, Input,Radio  } from 'antd'
 import { badEventReportService } from '../services/BadEventReportService'
 import { PromotionDetaitUtils } from '../promotionDedait';
 import moment from 'moment'
+import { appStore, authStore } from 'src/stores'
 
 export interface Props {
   visible: boolean
@@ -28,17 +29,18 @@ export default function NurseReviews(props: Props) {
       noPass:userAudit.noPass,
       formId:PromotionDetaitUtils.master.id,
       fromCode:PromotionDetaitUtils.master.formCode,
-      handleTime:moment().format("YYYY-MM-DD HH:mm:ss")
+      handleTime:moment().format("YYYY-MM-DD HH:mm:ss"),
+      empName:authStore.user?.empName,
     }
     if(aduitData.nodeCode == 'nurse_handle'){
       let list = PromotionDetaitUtils.handleDifferent()
-      console.log(list);
-      
     }
+    // console.log(obj);
+    
     badEventReportService.getHandleNode(obj).then((res)=>{
       if(res.code == '200'){
         Message.success('操作成功');
-        onOk()
+        onOk(obj)
       }
     })
   }

@@ -88,6 +88,7 @@ const Wrapper = styled.div`
   .ant-radio-wrapper{
     font-size: 12px;
     margin: 0px;
+    margin-left: 5px;
   }
   .ant-checkbox-wrapper{
     font-size: 12px;

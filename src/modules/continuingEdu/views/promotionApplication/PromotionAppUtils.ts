@@ -117,6 +117,8 @@ class PromotionApp {
    
     if(this.master.nextNodeCode == 'commit'){
       let isInfo = formList.some((item:string) =>  !rawForm[item])
+      console.log();
+      
       if(isInfo){
         return message.warning('填写一到四还有信息未填，请确认！')
       }else{
@@ -152,6 +154,8 @@ class PromotionApp {
           this.loading = false;
         })
       } 
+    }else{
+        message.warning('申请还待审核！')
     }
   }
   // 提交
@@ -159,13 +163,13 @@ class PromotionApp {
     if (this.master.formCode == 'HSJS_0001') {
       this.handelStep <object>(this.AdituCommitOneN1,this.AdituCommitTwoN1,this.tableObjN1)
     }else if(this.master.formCode == 'HSJS_0002'){
-      this.handelStep <object>(this.AdituCommitOneN2,this.AdituCommitTwoN1,this.tableObjN2)
+      this.handelStep <object>(this.AdituCommitOneN2,this.AdituCommitTwoN2,this.tableObjN2)
     }
     else if(this.master.formCode == 'HSJS_0003'){
-      this.handelStep <object>(this.AdituCommitOneN3,this.AdituCommitTwoN1,this.tableObjN3)
+      this.handelStep <object>(this.AdituCommitOneN3,this.AdituCommitTwoN3,this.tableObjN3)
     }
     else if(this.master.formCode == 'HSJS_0004'){
-      this.handelStep <object>(this.AdituCommitOneN4,this.AdituCommitTwoN1,this.tableObjN4)
+      this.handelStep <object>(this.AdituCommitOneN4,this.AdituCommitTwoN4,this.tableObjN4)
     }
 
   }

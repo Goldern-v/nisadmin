@@ -83,6 +83,7 @@ class PromotionApp {
       master : this.master,
       itemDataMap: this.handleDifferent(),
       commitStep: this.commitStep,
+      carePatientList: this.carePatientList
     }
     badEventReportService.getSaveOrCommit(obj).then((res) => {
       if(res.code == 200){
