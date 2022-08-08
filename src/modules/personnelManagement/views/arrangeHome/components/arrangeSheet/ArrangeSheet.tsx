@@ -777,6 +777,7 @@ export default observer(function ArrangeSheet(props: Props) {
         });
         break;
       case "whyx":
+      case "qhwy":
         const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRowWhyx) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
@@ -804,7 +805,7 @@ export default observer(function ArrangeSheet(props: Props) {
               $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]],
             });
             // 东莞横沥移动单独处理：右边移动 护士信息一起移动
-            if (["dghl", "fqfybjy","qhwy"].includes(appStore.HOSPITAL_ID)) {
+            if (["dghl", "fqfybjy"].includes(appStore.HOSPITAL_ID)) {
               leftList = update(leftList, {
                 $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
               });

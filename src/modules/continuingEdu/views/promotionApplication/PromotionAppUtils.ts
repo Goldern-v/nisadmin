@@ -3,8 +3,10 @@ import { fileDownload } from "src/utils/file/file";
 import { PromotionApplicationApi } from './api/PromotionApplicationApi'
 import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
-import {master, tableObjN1, tableObjN2, tableObjN3, tableObjN4} from './types'
+import { message } from "antd";
+import {master, tableObjN1, tableObjN2, tableObjN3, tableObjN4 ,AdituCommitOneN1,AdituCommitTwoN1,AdituCommitOneN2,AdituCommitTwoN2,AdituCommitOneN3,AdituCommitTwoN3,AdituCommitOneN4,AdituCommitTwoN4} from './types'
 import { log } from "console";
+
 
 class PromotionApp {
   @observable public loading = false; // 晋升表code
@@ -19,9 +21,62 @@ class PromotionApp {
   @observable public tableObjN2 = tableObjN2;  // 表单的数据2
   @observable public tableObjN3 = tableObjN3;  // 表单的数据3
   @observable public tableObjN4 = tableObjN4;  // 表单的数据4
+  @observable public AdituCommitOneN1 = AdituCommitOneN1;  // 表单的数据 N0 1-4
+  @observable public AdituCommitTwoN1 = AdituCommitTwoN1;  // 表单的数据 N0 6-7
+  @observable public AdituCommitOneN2 = AdituCommitOneN2;  // 表单的数据 N1-4
+  @observable public AdituCommitTwoN2 = AdituCommitTwoN2;  // 表单的数据 N1 6-7
+  @observable public AdituCommitOneN3 = AdituCommitOneN3;  // 表单的数据 N2 1-4
+  @observable public AdituCommitTwoN3 = AdituCommitTwoN3;  // 表单的数据 N2 6-7
+  @observable public AdituCommitOneN4 = AdituCommitOneN4;  // 表单的数据 N3 1-4
+  @observable public AdituCommitTwoN4 = AdituCommitTwoN4;  // 表单的数据 N3 6-7
+
  
   @observable public handlenodeDto = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
+  @observable public carePatientList = [
+    {
+      masterId: this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+    {
+      masterId:this.master.id,
+      careTime:"",
+      careMessage:"",
+      medicalRecordNo:"",
+      patientName:""
+    },
+  ]
 
   @computed get listObj() {
     return {
@@ -36,37 +91,87 @@ class PromotionApp {
     this.commitStep = '';
     let obj = {
       master : this.master,
-      itemDataMap: this.handleDifferent(),
+      itemDataMap:this.handleDifferent(),
+      carePatientList:this.carePatientList,
       commitStep: this.commitStep,
     }
+
+    
     PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
       if(res.code == 200){
-        console.log('1111111111');
         this.loading = false;
+        PromotionAppUtils.editStatus = '编辑'
+        PromotionAppUtils.master.status = '0'
         this.createOnload()
       }else{
+        this.editStatus = "创建";
+        this.edit = false;
         this.loading = false;
       }
     }).catch(() => {
       this.loading = false;
     })
   }
+
+  handelStep <T>(formList:string[],formListTwo:string[], rawForm:T){
+   
+    if(this.master.nextNodeCode == 'commit'){
+      let isInfo = formList.some((item:string) =>  !rawForm[item])
+      console.log();
+      
+      if(isInfo){
+        return message.warning('填写一到四还有信息未填，请确认！')
+      }else{
+        let obj = {
+          master : this.master,
+          itemDataMap: this.handleDifferent(),
+          commitStep: this.master.nextNodeCode || '',
+          carePatientList:this.carePatientList,
+        }
+        this.loading = true;
+        PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
+          this.loading = false;
+          this.createOnload()
+        }).catch(() => {
+          this.loading = false;
+        })
+      } 
+    }else if (this.master.nextNodeCode == 'commit_kh_pj'){
+      let isInfo = formListTwo.some((item:string) =>  !rawForm[item])
+      if(isInfo){
+        return message.warning('填写六、七项还有信息未填，请确认！')
+      }else{
+        let obj = {
+          master : this.master,
+          itemDataMap: this.handleDifferent(),
+          commitStep: this.master.nextNodeCode || '',
+        }
+        this.loading = true;
+        PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
+          this.loading = false;
+          this.createOnload()
+        }).catch(() => {
+          this.loading = false;
+        })
+      } 
+    }else{
+        message.warning('申请还待审核！')
+    }
+  }
   // 提交
   onSubmit() {
-    this.loading = true;
-    console.log( this.master.nextNodeCode);
-    
-    let obj = {
-      master : this.master,
-      itemDataMap: this.handleDifferent(),
-      commitStep: this.master.nextNodeCode || '',
+    if (this.master.formCode == 'HSJS_0001') {
+      this.handelStep <object>(this.AdituCommitOneN1,this.AdituCommitTwoN1,this.tableObjN1)
+    }else if(this.master.formCode == 'HSJS_0002'){
+      this.handelStep <object>(this.AdituCommitOneN2,this.AdituCommitTwoN2,this.tableObjN2)
     }
-    PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
-      this.loading = false;
-      this.createOnload()
-    }).catch(() => {
-      this.loading = false;
-    })
+    else if(this.master.formCode == 'HSJS_0003'){
+      this.handelStep <object>(this.AdituCommitOneN3,this.AdituCommitTwoN3,this.tableObjN3)
+    }
+    else if(this.master.formCode == 'HSJS_0004'){
+      this.handelStep <object>(this.AdituCommitOneN4,this.AdituCommitTwoN4,this.tableObjN4)
+    }
+
   }
   // 撤销
   onCancelForm() {
@@ -99,7 +204,7 @@ class PromotionApp {
     })
   }
 
-  // 获取当前用户的晋升表id
+  // 获取当前用户的晋升表数据
   createOnload() {
     this.loading = true;
     let createObj: any = {
@@ -119,10 +224,10 @@ class PromotionApp {
           if (this.master.formCode == 'HSJS_0001') {
             this.tableObjN1 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0002') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN2.carePatientList
+            // res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN2.carePatientList
             this.tableObjN2 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0003') {
-            res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN3.carePatientList
+            // res.data.itemDataMap.carePatientList =  res.data.itemDataMap.carePatientList || this.tableObjN3.carePatientList
             this.tableObjN3 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0004') {
             this.tableObjN4 = { ...res.data.itemDataMap }
@@ -134,7 +239,8 @@ class PromotionApp {
           return item
         })
         if(res.data.handlenodeDto.length){
-          this.handlenodeDto = res.data.handlenodeDto
+          let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
+          this.handlenodeDto =DtoData ? res.data.handlenodeDto:[]
         }else{
           this.handlenodeDto = []
         }
@@ -175,7 +281,9 @@ class PromotionApp {
           this.editStatus = '创建'
         }
       }else{
-        this.master = master
+        this.master = {
+          ...this.master
+        }
         this.flowStatus = ''
         this.editStatus = '创建'
         this.attachmentList = []

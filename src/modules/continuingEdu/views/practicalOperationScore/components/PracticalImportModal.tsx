@@ -213,6 +213,7 @@ export default observer(function PracticalImportModal(props: props) {
                                     "content"
                                   );
                                 }}
+                                maxLength={1000}
                                 autosize={{ minRows: 3 }}
                               />
                             {/* )} */}

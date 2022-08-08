@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import { Icon , Upload, DatePicker, message,Spin,Input } from "antd";
-import { PromotionAppUtils } from "../../PromotionAppUtils";
+import { Icon , Upload, Button, message,Spin,Input } from "antd";
+import { PromotionDetaitUtils } from '../promotionDedait';
 import UserCheckModal from "./UserCheckModal";
 import DateModal from './Datemodal';
 import { appStore, authStore } from "src/stores/index";
@@ -29,39 +29,36 @@ interface webProps {
 
 
 export default observer(function ApplicationN1(props: Props) {
-  const { tableObjN4 } = PromotionAppUtils;
+  const { tableObjN4 } = PromotionDetaitUtils;
   const [DotPass, setDotPass] = useState(false);
   const [upLoading,setupLoading] = useState(false)
   const [isAduit, setisAduit] = useState({noPass:false,nodeCode:''});
 
   useEffect(() => {
-    if(PromotionAppUtils.handlenodeDto.length){
-      let DotList: any = PromotionAppUtils.handlenodeDto.filter(
+    if(PromotionDetaitUtils.handlenodeDto.length){
+      let DotList: any = PromotionDetaitUtils.handlenodeDto.filter(
         (item: any) => item.status == 1
       );
       let DotObject: any = DotList.length && DotList[DotList.length - 1];
-      let isDotPass = PromotionAppUtils.handlenodeDto.some(
+      let isDotPass = PromotionDetaitUtils.handlenodeDto.some(
         (item: any) => item.status == 0
       );
       setDotPass(isDotPass);
       setisAduit(DotObject);
     }
-  }, [PromotionAppUtils.handlenodeDto]);
+  }, [PromotionDetaitUtils.handlenodeDto]);
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
     tableObjN4[value] = ctext;
   };
-  const onDatePickerChange = (e: any, value: any) => {
-    tableObjN4[value] = e;
-  };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN4[value] = e.target.value;
   };
   const handleUserCheckOk = (userAudit: any, value: any) => {
-    PromotionAppUtils.tableObjN4.JS0000010 = value.empName;
-    PromotionAppUtils.tableObjN4.JS0000011 = moment(value.updateTime).format(
+    PromotionDetaitUtils.tableObjN4.JS0000010 = value.empName;
+    PromotionDetaitUtils.tableObjN4.JS0000011 = moment(value.updateTime).format(
       "YYYY-MM-DD HH:mm"
     );
     // auditFormSubmit(userAudit)
@@ -70,11 +67,11 @@ export default observer(function ApplicationN1(props: Props) {
   const handleRomve = (data:any)=>{
     setupLoading(true)
     let delDate = {id:data.id,masterId:data.entityId}
-    PromotionAppUtils.deleteAttachment(delDate).then((res)=>{
+    PromotionDetaitUtils.deleteAttachment(delDate).then((res)=>{
         if(res.code == 200){
           message.success('删除成功')
           setupLoading(false)
-          PromotionAppUtils.attachmentList = PromotionAppUtils.attachmentList.filter((item:any) => item.id != data.id)
+          PromotionDetaitUtils.attachmentList = PromotionDetaitUtils.attachmentList.filter((item:any) => item.id != data.id)
         }
       
     })
@@ -85,7 +82,7 @@ export default observer(function ApplicationN1(props: Props) {
     accept: ".pdf , .word , .execl , .xls",
     action: "/crNursing/api/nurse/promotion/uploadAttachment",
     method: "POST",
-    data: { masterId: PromotionAppUtils.master.id },
+    data: { masterId: PromotionDetaitUtils.master.id },
     headers: {
       "App-Token-Nursing": appStore.getAppToken(),
       "Auth-Token-Nursing": authStore.getAuthToken(),
@@ -95,7 +92,7 @@ export default observer(function ApplicationN1(props: Props) {
     
      //文件上传之前的操作
     beforeUpload: (file) => {
-      const isExceed =  PromotionAppUtils.attachmentList.length >= 5
+      const isExceed =  PromotionDetaitUtils.attachmentList.length >= 5
       if (isExceed) {
         message.error('最多上传5份文件!');
       }
@@ -105,10 +102,10 @@ export default observer(function ApplicationN1(props: Props) {
       }
       return isLt5M && !isExceed
     },
-    // defaultFileList: PromotionAppUtils.attachmentList,
+    // defaultFileList: PromotionDetaitUtils.attachmentList,
    
     onChange:(file)=>{
-      file.fileList = PromotionAppUtils.attachmentList;
+      file.fileList = PromotionDetaitUtils.attachmentList;
       if (file.file.status === 'uploading' || file.fileList.length >= 5) {
         return;
       }
@@ -116,14 +113,14 @@ export default observer(function ApplicationN1(props: Props) {
         if(file.file.response.code == 200){
           message.success(file.file?.response?.desc)
           const data:any = file.file.response.data
-          let allDataList:any = PromotionAppUtils.attachmentList
+          let allDataList:any = PromotionDetaitUtils.attachmentList
           data.status = data.status == 1 ? 'done' : 'error' 
           data.url = data.path
           allDataList.push({...data})
-          PromotionAppUtils.attachmentList = allDataList
-          console.log(PromotionAppUtils.attachmentList);
+          PromotionDetaitUtils.attachmentList = allDataList
+          console.log(PromotionDetaitUtils.attachmentList);
           
-          // PromotionAppUtils.attachmentList.push()
+          // PromotionDetaitUtils.attachmentList.push()
         }else {
           message.error(file.file?.response?.desc)
         }
@@ -138,16 +135,16 @@ export default observer(function ApplicationN1(props: Props) {
         className="zindex-form"
         style={{
           display:
-            PromotionAppUtils.edit == true &&
-            PromotionAppUtils.editStatus == "取消编辑"
+            PromotionDetaitUtils.edit == true &&
+            PromotionDetaitUtils.editStatus == "取消编辑"
               ? "none"
               : "",
         }}
         onClick={() => {
-          message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
+          message.warning("当前为审核查看,不可编辑！");
         }}
       >
-        { isAduit.noPass == true && (
+        {/* { isAduit.noPass == true && (
           <img
             src={require("../image/审批不通过.png")}
             className="form-status-img"
@@ -159,7 +156,7 @@ export default observer(function ApplicationN1(props: Props) {
             className="form-status-img"
           />
         )}
-        { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length && (
+        { isAduit.noPass == false && !DotPass && (
           <img
             src={require("../image/审批通过.png")}
             className="form-status-img"
@@ -168,27 +165,27 @@ export default observer(function ApplicationN1(props: Props) {
         {isAduit.nodeCode != "withdraw" &&
           isAduit.noPass != true &&
           DotPass &&
-          Number(PromotionAppUtils.flowStatus) > 0 &&
-          PromotionAppUtils.master.status != "" && (
+          Number(PromotionDetaitUtils.flowStatus) > 0 &&
+          PromotionDetaitUtils.master.status != "" && (
             <img
               src={require("../image/待审批.png")}
               className="form-status-img"
             />
-          )}
+          )} */}
       </div>
       <div
         className="first-form"
         style={{
           top:
-            PromotionAppUtils.edit == true &&
-            PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            PromotionDetaitUtils.edit == true &&
+            PromotionDetaitUtils.editStatus == "取消编辑" &&
+            Number(PromotionDetaitUtils.flowStatus) > 0
               ? "23px"
               : "1118px",
           height:
-            PromotionAppUtils.edit == true &&
-            PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            PromotionDetaitUtils.edit == true &&
+            PromotionDetaitUtils.editStatus == "取消编辑" &&
+            Number(PromotionDetaitUtils.flowStatus) > 0
               ? "1080px"
               : "2213px",
         }}
@@ -308,16 +305,25 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN4.JS0000004 && moment(tableObjN4.JS0000004)}  />
-                 （标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <input
+                    type="text"
+                    value={tableObjN4.JS0000004}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000004");
+                    }}
+                  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N3资质时间</span>
-                  <DatePicker 
-                    onChange={(e)=>{onDatePickerChange(e,'JS0000133')}} 
-                    defaultValue={moment(tableObjN4.JS0000133)}  
+                  <input
+                    className="mar-btom"
+                    type="text"
+                    value={tableObjN4.JS0000133}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000133");
+                    }}
                   />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
@@ -1430,7 +1436,7 @@ export default observer(function ApplicationN1(props: Props) {
           <span>（文件大小不超过5M，支持pdf、word、execl最多上传5份文件）</span>
         </div>
         <div className="word-item">
-          {PromotionAppUtils.attachmentList.map((item:any)=>{
+          {PromotionDetaitUtils.attachmentList.map((item:any)=>{
              return <div  key={item.uid} >
                 <Spin spinning={upLoading} delay={500} >
                 <div className="upload-item">
@@ -1452,7 +1458,7 @@ export default observer(function ApplicationN1(props: Props) {
 });
 
 const Wrapper = styled.div`
-  height: 680px;
+  height: 770px;
   padding: 8px 10px;
   overflow-y: auto;
   font-size: 12px;

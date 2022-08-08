@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import {Icon , Upload, Button, message,Spin,Input } from "antd";
+import {Icon , Upload, DatePicker, message,Spin,Input } from "antd";
 import DateModal from './Datemodal';
 import { PromotionDetaitUtils } from '../promotionDedait';
 import UserCheckModal from "./UserCheckModal";
@@ -30,8 +30,6 @@ interface webProps {
 
 export default observer(function ApplicationN1(props: Props) {
   const { tableObjN3 } = PromotionDetaitUtils;
-  const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false);
-  const [yearPickerIsOpen1, setyearPickerIsOpen1] = useState(false);
   const [DotPass, setDotPass] = useState(false);
   const [upLoading,setupLoading] = useState(false)
   const [isAduit, setisAduit] = useState({noPass:false,nodeCode:''});
@@ -51,13 +49,8 @@ export default observer(function ApplicationN1(props: Props) {
   }, [PromotionDetaitUtils.handlenodeDto]);
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
-  const handleChange = (e: any, value: any) => {
+  const onDatePickerChange = (e: any, value: any) => {
     tableObjN3[value] = e;
-    setyearPickerIsOpen(false);
-  };
-  const handleChange1 = (e: any, value: any) => {
-    tableObjN3[value] = e;
-    setyearPickerIsOpen1(false);
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
@@ -65,6 +58,11 @@ export default observer(function ApplicationN1(props: Props) {
   };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN3[value] = e.target.value;
+  };
+  const handelTextareas = (e: any, value: any,key:number) => {
+    let ctext = e.target.value;
+    PromotionDetaitUtils.carePatientList[key][value] = ctext
+    PromotionDetaitUtils.carePatientList[key].masterId = PromotionDetaitUtils.master.id
   };
   const handleUserCheckOk = (userAudit: any, value: any) => {
     console.log(userAudit, value);
@@ -313,32 +311,20 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             <tr>
-              <td colSpan={2}>
+            <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    type="text"
-                    value={tableObjN3.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN3.JS0000004 && moment(tableObjN3.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N2资质时间：</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN3.JS0000091}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000091");
-                    }}
-                  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000091')}} defaultValue={moment(tableObjN3.JS0000091 && tableObjN3.JS0000091)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
+             
             </tr>
             <tr>
               <td rowSpan={5} style={{ textAlign: "center" }}>
@@ -1260,45 +1246,42 @@ export default observer(function ApplicationN1(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {new Array(6).fill('').map((item:any,index)=><tr  key={index}>
+          {PromotionDetaitUtils.carePatientList.length == 6 && PromotionDetaitUtils.carePatientList.map((item:any,index:number)=><tr key={index}>
               <td>
-              <Input.TextArea
-                defaultValue={'dd'}
+              <Input
+                value={item.patientName}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "patientName",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input
+                value={item.medicalRecordNo}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "medicalRecordNo",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input.TextArea
+                value={item.careMessage}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "careMessage",index);
                 }}
                 autosize={{ minRows: 3 }}
               />
               </td>
               <td>
-              <Input.TextArea
-                defaultValue={'dd'}
+              <Input
+                value={item.careTime}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "careTime",index);
                 }}
-                autosize={{ minRows: 3 }}
-              />
-              </td>
-              <td>
-              <Input.TextArea
-                defaultValue={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
-              />
-              </td>
-              <td>
-              <Input.TextArea
-                defaultValue={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
               />
               </td>
             </tr>

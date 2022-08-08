@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import { Icon , Upload, DatePicker, message,Spin,Input } from "antd";
+import { Icon , Upload, Button, message,Spin,Input } from "antd";
+import DateModal from './Datemodal';
 import { PromotionDetaitUtils } from '../promotionDedait';
 import UserCheckModal from "./UserCheckModal";
-import DateModal from './Datemodal';
 import { appStore, authStore } from "src/stores/index";
 
 interface Props {
@@ -27,12 +27,35 @@ interface webProps {
   onChange: (file:any)=> void;
 }
 
+interface aduit {
+  appointUser: boolean;
+  beRecordId: number;
+  canHandle: boolean;
+  canUpdate: boolean;
+  chainCode: string;
+  evalDate: null;
+  expand: string;
+  handleContent: string;
+  handleTime: string;
+  handlerName: string;
+  handlerNo: string;
+  noPass: boolean;
+  nodeCode: string;
+  nodeIndexNo: null;
+  nodeName: string;
+  status: string;
+}
 
 export default observer(function ApplicationN1(props: Props) {
-  const { tableObjN4 } = PromotionDetaitUtils;
+  const { tableObjN2 } = PromotionDetaitUtils;
+  const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false);
+  const [yearPickerIsOpen1, setyearPickerIsOpen1] = useState(false);
   const [DotPass, setDotPass] = useState(false);
   const [upLoading,setupLoading] = useState(false)
-  const [isAduit, setisAduit] = useState({noPass:false,nodeCode:''});
+  const [isAduit, setisAduit] = useState({
+    noPass: false,
+    nodeCode:''
+  });
 
   useEffect(() => {
     if(PromotionDetaitUtils.handlenodeDto.length){
@@ -49,19 +72,29 @@ export default observer(function ApplicationN1(props: Props) {
   }, [PromotionDetaitUtils.handlenodeDto]);
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
-  const onDatePickerChange = (e: any, value: any) => {
-    tableObjN4[value] = e;
+  const handleChange = (e: any, value: any) => {
+    tableObjN2[value] = e;
+    setyearPickerIsOpen(false);
+  };
+  const handleChange1 = (e: any, value: any) => {
+    tableObjN2[value] = e;
+    setyearPickerIsOpen1(false);
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
-    tableObjN4[value] = ctext;
+    tableObjN2[value] = ctext;
+  };
+  const handelTextareas = (e: any, value: any,key:number) => {
+    let ctext = e.target.value;
+    tableObjN2.carePatientList[key][value] = ctext
+    tableObjN2.carePatientList[key].masterId = PromotionDetaitUtils.master.id
   };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
-    tableObjN4[value] = e.target.value;
+    tableObjN2[value] = e.target.value;
   };
   const handleUserCheckOk = (userAudit: any, value: any) => {
-    PromotionDetaitUtils.tableObjN4.JS0000010 = value.empName;
-    PromotionDetaitUtils.tableObjN4.JS0000011 = moment(value.updateTime).format(
+    PromotionDetaitUtils.tableObjN2.JS0000010 = value.empName;
+    PromotionDetaitUtils.tableObjN2.JS0000011 = moment(value.updateTime).format(
       "YYYY-MM-DD HH:mm"
     );
     // auditFormSubmit(userAudit)
@@ -121,9 +154,6 @@ export default observer(function ApplicationN1(props: Props) {
           data.url = data.path
           allDataList.push({...data})
           PromotionDetaitUtils.attachmentList = allDataList
-          console.log(PromotionDetaitUtils.attachmentList);
-          
-          // PromotionDetaitUtils.attachmentList.push()
         }else {
           message.error(file.file?.response?.desc)
         }
@@ -144,10 +174,10 @@ export default observer(function ApplicationN1(props: Props) {
               : "",
         }}
         onClick={() => {
-          message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
+          message.warning("当前为审核查看,不可编辑！");
         }}
       >
-        { isAduit.noPass == true && (
+         {/* { isAduit.noPass == true && (
           <img
             src={require("../image/审批不通过.png")}
             className="form-status-img"
@@ -174,7 +204,7 @@ export default observer(function ApplicationN1(props: Props) {
               src={require("../image/待审批.png")}
               className="form-status-img"
             />
-          )}
+          )} */}
       </div>
       <div
         className="first-form"
@@ -198,7 +228,7 @@ export default observer(function ApplicationN1(props: Props) {
       />
       <div className="wrapper-pages-form">
         <div className="form-title">
-          临床护理人员晋升申请表（N3→N4）（{moment().format("YYYY")}版）
+          临床护理人员晋升申请表（N1→N2）（{moment().format("YYYY")}版）
         </div>
         <table>
           <colgroup>
@@ -217,9 +247,10 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>科室：</span>
+                  {/* <Input defaultValue="26888888" value={tableObjN2.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     type="text"
-                    value={tableObjN4.JS0000001}
+                    value={tableObjN2.JS0000001}
                     onChange={(e) => {
                       handleInput(e, "JS0000001");
                     }}
@@ -232,7 +263,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="mar-btom"
                     type="text"
-                    value={tableObjN4.JS0000002}
+                    value={tableObjN2.JS0000002}
                     onChange={(e) => {
                       handleInput(e, "JS0000002");
                     }}
@@ -247,7 +278,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="mar-btom"
                     type="text"
-                    value={tableObjN4.JS0000003}
+                    value={tableObjN2.JS0000003}
                     onChange={(e) => {
                       handleInput(e, "JS0000003");
                     }}
@@ -260,7 +291,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000005}
+                    values={tableObjN2.JS0000005}
                     inputKey={"JS0000005"}
                     option={[
                       { label: "大专", value: "A" },
@@ -278,66 +309,66 @@ export default observer(function ApplicationN1(props: Props) {
                 <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000007}
+                    values={tableObjN2.JS0000007}
                     inputKey={"JS0000007"}
                     option={[
-                      { label: "主管护师", value: "C" },
-                    ]}
-                  />
-                    （<DateModal 
-                      value={tableObjN4.JS0000009}
-                      keys={"JS0000009"}
-                    />
-                    年获得）
-                <SelectBox
-                    type="radio"
-                    disabled={false}
-                    values={tableObjN4.JS0000007}
-                    inputKey={"JS0000007"}
-                    option={[
-                      { label: "副主任护师 ", value: "D" },
+                      { label: "初级（士）", value: "A" },
+                      { label: "初级（师）", value: "B" },
+                      { label: "主管护师 ", value: "C" },
                     ]}
                   />
                   <span style={{ marginLeft: 15 }}>
-                  （标准：副主任护师或获得主管护师3年以上）
+                    （标准：护师及以上职称或获得护士职称5年以上）
                   </span> 
                   </div>
               </td>
             </tr>
             <tr>
-            <td colSpan={2}>
+              <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN4.JS0000004 && moment(tableObjN4.JS0000004)}  />
-                 （标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <input
+                    type="text"
+                    value={tableObjN2.JS0000004}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000004");
+                    }}
+                  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
-                  <span>取得N3资质时间</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000133')}} defaultValue={tableObjN4.JS0000133 && moment(tableObjN4.JS0000133)}  />
+                  <span>取得N1资质时间：</span>
+                  <input
+                    className="mar-btom"
+                    type="text"
+                    value={tableObjN2.JS0000054}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000054");
+                    }}
+                  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
             </tr>
             <tr>
-              <td rowSpan={5} style={{ textAlign: "center" }}>
+              <td rowSpan={4} style={{ textAlign: "center" }}>
                 二、分层培训
               </td>
               <td colSpan={3}>
                 <div className="base-item">
-                  <span>1、N3层级培训课程、操作技能完成率：</span>
+                  <span>1、N1分层培训：</span>
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000134}
-                    inputKey={"JS0000134"}
+                    values={tableObjN2.JS0000055}
+                    inputKey={"JS0000055"}
                     option={[
-                      { label: "≥60%", value: "A" },
-                      { label: "＜60%", value: "B" },
+                      { label: "完成相关培训", value: "A" },
+                      { label: "未完成相关培训", value: "B" },
                     ]}
                   />
-                  （标准：≥60%）
+                  （查看“分层手册填写”情况）
                 </div>
               </td>
             </tr>
@@ -348,54 +379,15 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="checkbox"
                     disabled={false}
-                    values={tableObjN4.JS0000135}
-                    inputKey={"JS0000135"}
+                    values={tableObjN2.JS0000056}
+                    inputKey={"JS0000056"}
                     option={[
-                      { label: " ", value: "A" },
+                      { label: "CPR资质证", value: "A" },
+                      { label: "专科准入资质证（重症、急诊填写）", value: "B" },
+                      { label: "床边教学老师培训合格证", value: "C" },
                     ]}
                   />
-                  <input
-                    className="border"
-                    type="text"
-                    value={tableObjN4.JS0000094}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000094");
-                    }}
-                  />专科护士证
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <SelectBox
-                      type="checkbox"
-                      disabled={false}
-                      values={tableObjN4.JS0000135}
-                      inputKey={"JS0000135"}
-                      option={[
-                        { label: " ", value: "B" },
-                      ]}
-                    />
-                    <input
-                      className="border"
-                      type="text"
-                      value={tableObjN4.JS0000095}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000095");
-                      }}
-                    /> <span>专长护理资质证（气道护理、IABP护理、CRRT护理、心衰/心衰超滤、皮肤、</span> 
-                    <span>糖尿病、健康教育讲师、疼痛、静疗、康复）</span>
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <SelectBox
-                      type="checkbox"
-                      disabled={false}
-                      values={tableObjN4.JS0000135}
-                      inputKey={"JS0000135"}
-                      option={[
-                        { label: "获得“护理论文撰写提高班”合格证书", value: "C" },
-                      ]}
-                    />
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                （标准：1、获得专科护士证或一项专长护理资质证 2、获得“护理论文撰写提高班”合格证书）
+                  （标准：获得以上资质证）
                 </div>
               </td>
             </tr>
@@ -403,57 +395,38 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <span>
-                  3、三基理论考核：
+                    3、三基理论考核：
                     <DateModal 
-                      value={tableObjN4.JS0000097}
-                      keys={"JS0000097"}
+                      value={tableObjN2.JS0000057}
+                      keys={"JS0000057"}
                     />
-                    年度
+                   年度
                   </span>
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000098}
-                    inputKey={"JS0000098"}
+                    values={tableObjN2.JS0000058}
+                    inputKey={"JS0000058"}
                     option={[
                       { label: "合格", value: "A" },
-                      { label: "补考", value: "B" },
+                      { label: "不合格", value: "B" },
                     ]}
                   />
-                  <span style={{marginLeft:40}}></span>
-                    <DateModal 
-                      value={tableObjN4.JS0000100}
-                      keys={"JS0000100"}
-                    />
-                    年度
-                  <SelectBox
-                    type="radio"
-                    disabled={false}
-                    values={tableObjN4.JS0000101}
-                    inputKey={"JS0000101"}
-                    option={[
-                      { label: "合格", value: "A" },
-                      { label: "补考", value: "B" },
-                    ]}
-                  />
-                </div>
-                <div className="base-item">
-                  <span style={{marginLeft:100}}></span>
                   <DateModal 
-                      value={tableObjN4.JS0000136}
-                      keys={"JS0000136"}
+                      value={tableObjN2.JS0000060}
+                      keys={"JS0000060"}
                     />
                     年度
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000137}
-                    inputKey={"JS0000137"}
+                    values={tableObjN2.JS0000061}
+                    inputKey={"JS0000061"}
                     option={[
                       { label: "合格", value: "A" },
-                      { label: "补考", value: "B" },
+                      { label: "不合格", value: "B" },
                     ]}
-                  />（标准：合格，不含补考）
+                  />（标准80分，不含补考）
                 </div>
               </td>
             </tr>
@@ -461,9 +434,9 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <span>
-                  4、专科理论考核：
-                  <DateModal 
-                      value={tableObjN4.JS0000041}
+                    4、专科理论考核：
+                    <DateModal 
+                      value={tableObjN2.JS0000041}
                       keys={"JS0000041"}
                     />
                     年度
@@ -471,220 +444,54 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000042}
+                    values={tableObjN2.JS0000042}
                     inputKey={"JS0000042"}
                     option={[
                       { label: "合格", value: "A" },
                       { label: "补考合格", value: "B" },
                       { label: "未考核", value: "C" },
                     ]}
-                  />（标准80分，不含补考合格）
+                  />（标准70分，含补考合格，未考核请注明原因）
                 </div>
               </td>
             </tr>
             <tr>
-              <td colSpan={3}>
-                <div className="base-item">
-                  <span> 5、发表护理论文：</span>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000139}
-                    inputKey={"JS0000139"}
-                    option={[
-                      { label: "≥ 2篇", value: "1" },
-                    ]}
-                  /> 
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000140}
-                    inputKey={"JS0000140"}
-                    option={[
-                      { label: "参编书籍", value: "1" },
-                    ]}
-                  /> 
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000141}
-                    inputKey={"JS0000141"}
-                    option={[
-                      { label: "专利发明人第一人", value: "1" },
-                    ]}
-                  />
-                </div>
-                <div className="base-item">
-                  <span style={{marginLeft:50}}>1)  论文题目：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000142}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000142");
-                      }}
-                    />
-                  <span style={{marginLeft:50}}> 发表时间： </span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000143}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000143");
-                      }}
-                    />
-                </div>
-                <div className="base-item"style={{marginLeft:70}}>
-                  <span> 期刊名称：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000144}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000144");
-                      }}
-                    />
-                  <span style={{marginLeft:50}}> 影响因子：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000145}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000145");
-                      }}
-                    />
-                </div>
-                <div className="base-item">
-                  <span style={{marginLeft:50}}>2)  论文题目：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000146}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000146");
-                      }}
-                    />
-                  <span style={{marginLeft:50}}> 发表时间： </span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000147}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000147");
-                      }}
-                    />
-                </div>
-                <div className="base-item"style={{marginLeft:70}}>
-                  <span> 期刊名称：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000148}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000148");
-                      }}
-                    />
-                  <span style={{marginLeft:50}}> 影响因子：</span>
-                  <input
-                      className="border other-time"
-                      type="text"
-                      value={tableObjN4.JS0000149}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000149");
-                      }}
-                    />
-                </div>
-                <div className="base-item"style={{marginLeft:50}}>
-                  <span> 3) 其他（参编书籍、专利）：</span>
-                  <input
-                      className="border"
-                      style={{width:300}}
-                      type="text"
-                      value={tableObjN4.JS0000150}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000150");
-                      }}
-                    />
-                </div>
-                (标准：以第一作者发表论文N3阶段≥2篇，含至少1篇影响因子≥0.6；北大核心或统计源核心可1篇或参编书籍一本或专利发明人第一人
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={3} style={{ textAlign: "center" }}>
+              <td rowSpan={6} style={{ textAlign: "center" }}>
                 三、工作能力
               </td>
               <td colSpan={3}>
                 <div className="base-item">
-                  <span>1、患者护理：</span>
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <span> 指导下级护士进行危重患者护理: </span>
+                  <span>1、能独立承担各班次工作</span>
                   <SelectBox
-                    type="checkbox"
+                    type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000151}
-                    inputKey={"JS0000151"}
+                    values={tableObjN2.JS0000063}
+                    inputKey={"JS0000063"}
                     option={[
-                      { label: "能指导下级护士进行疑难、危重、抢救护理，主持大科疑难讨论≥1次", value: "1" },
+                      { label: "能", value: "A" },
+                      { label: "暂不能", value: "B" },
                     ]}
                   />
-                  
+                  （标准：能）
                 </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                主持时间及患者信息
-                   <input
-                      className="border"
-                      style={{width:300}}
-                      type="text"
-                      value={tableObjN4.JS0000152}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000152");
-                      }}
-                    />
-                  
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={3}>
+                <div className="base-item">
+                  <span>2、能独立进行危重患者护理</span>
                   <SelectBox
-                    type="checkbox"
+                    type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000153}
-                    inputKey={"JS0000153"}
+                    values={tableObjN2.JS0000064}
+                    inputKey={"JS0000064"}
                     option={[
-                      { label: "参与区域/院级疑难危重会诊", value: "1" },
+                      { label: "能", value: "A" },
+                      { label: "暂不能", value: "B" },
                     ]}
                   />
-                   <input
-                      className="border"
-                      style={{width:300}}
-                      type="text"
-                      value={tableObjN4.JS0000154}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000154");
-                      }}
-                    />
+                  （标准：能）
                 </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000155}
-                    inputKey={"JS0000155"}
-                    option={[
-                      { label: "参与", value: "1" },
-                    ]}
-                  />
-                   <input
-                      className="border"
-                      style={{width:200}}
-                      type="text"
-                      value={tableObjN4.JS0000156}
-                      onChange={(e) => {
-                        handleInput(e, "JS0000156");
-                      }}
-                    />
-                    护理门诊 （标准：至少具备一项） 
-                </div>
-                
               </td>
             </tr>
             <tr>
@@ -692,24 +499,25 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>3、</span>
                   <DateModal 
-                      value={tableObjN4.JS0000065}
+                      value={tableObjN2.JS0000065}
                       keys={"JS0000065"}
-                    />年-
-                  <DateModal 
-                      value={tableObjN4.JS0000066}
+                    />
+                    年-
+                    <DateModal 
+                      value={tableObjN2.JS0000066}
                       keys={"JS0000066"}
                     />年N班班次：
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000067}
+                    values={tableObjN2.JS0000067}
                     inputKey={"JS0000067"}
                     option={[
-                      { label: "≥25个/年", value: "A" },
-                      { label: "＜25个/年", value: "B" },
+                      { label: "≥35个/年", value: "A" },
+                      { label: "＜35个/年 ", value: "B" },
                     ]}
                   />
-                  （标准≥25个/年） 
+                  （标准≥35个/年）
                 </div>
               </td>
             </tr>
@@ -720,7 +528,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000032}
+                    values={tableObjN2.JS0000032}
                     inputKey={"JS0000032"}
                     option={[
                       { label: "无各长休假假", value: "A" },
@@ -731,7 +539,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="acc-time"
                     type="text"
-                    value={tableObjN4.JS0000033}
+                    value={tableObjN2.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
@@ -740,26 +548,72 @@ export default observer(function ApplicationN1(props: Props) {
                 </div>
               </td>
             </tr>
-            
-          </tbody>
-        </table>
-      </div>
-      <div className="wrapper-pages-form" style={{ paddingTop: "50px" }}>
-        <table>
-          <colgroup>
-            <col width={80} />
-            <col width={240} />
-            <col width={180} />
-            <col width={700 - 500} />
-          </colgroup>
-          <tbody>
-          <tr>
-              <td></td>
+            <tr>
               <td colSpan={3}>
                 <div className="base-item">
-                  <span>5、曾获得何种荣誉： </span>
+                  <span>5、参与教学： </span>
+                  <SelectBox
+                    type="checkbox"
+                    disabled={false}
+                    values={tableObjN2.JS0000068}
+                    inputKey={"JS0000068"}
+                    option={[
+                      { label: "健教大课堂授课次", value: "A" },
+                    ]}
+                  />：
+                  <input
+                    className=" border mar-btom"
+                    type="text"
+                    value={tableObjN2.JS0000069}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000069");
+                    }}
+                  />次；  授课时间及课题 
+                   <input
+                    className=" border mar-btom"
+                    type="text"
+                    value={tableObjN2.JS0000070}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000070");
+                    }}
+                  />
+                </div>
+                <div className="base-item">
+                  <span style={{marginLeft:125}}> </span>
+                  <SelectBox
+                    type="checkbox"
+                    disabled={false}
+                    values={tableObjN2.JS0000071}
+                    inputKey={"JS0000071"}
+                    option={[
+                      { label: "理论授课", value: "B" },
+                    ]}
+                  />：
+                  <input
+                    className=" border mar-btom"
+                    type="text"
+                    value={tableObjN2.JS0000072}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000072");
+                    }}
+                  />次；  授课时间及课题 
+                   <input
+                    className=" border mar-btom"
+                    type="text"
+                    value={tableObjN2.JS0000073}
+                    onChange={(e) => {
+                      handleInput(e, "JS0000073");
+                    }}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={3}>
+                <div className="base-item">
+                  <span>6、曾获得何种荣誉： </span>
                   <textarea
-                    value={tableObjN4.JS0000034}
+                    value={tableObjN2.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -775,184 +629,15 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             <tr>
-            <td></td>
-              <td colSpan={3}>
-                <div className="base-item">
-                  <span>6、教学情况： </span>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000109}
-                    inputKey={"JS0000109"}
-                    option={[
-                      { label: "实习/轮转/新护士带教", value: "1" },
-                    ]}
-                  />
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000110}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000110");
-                    }}
-                  />人；临床带教时间及姓名
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000111}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000111");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000115}
-                    inputKey={"JS0000115"}
-                    option={[
-                      { label: "健康宣教大课堂授课", value: "1" },
-                    ]}
-                  />
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000116}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000116");
-                    }}
-                  />次；授课时间及课题
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000117}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000117");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000157}
-                    inputKey={"JS0000157"}
-                    option={[
-                      { label: "院级教学工作：授课时间及课题", value: "1" },
-                    ]}
-                  />
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000158}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000158");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:77}}>
-                （ 标准：1、N3阶段带教实习生/进修/轮转/新上岗护士≥2人；
-              <br />2、N3阶段院级教学工作≥4学时；或参加健康宣教大课堂授课10学时）
-                </div>
-              </td>
-            </tr>
-          <tr>
-            <td></td>
-              <td colSpan={3}>
-                <div className="base-item">
-                  <span>7、参与管理：</span>
-                </div>
-                <div className="base-item" style={{marginLeft:30}}>
-                <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000118}
-                    inputKey={"JS0000118"}
-                    option={[
-                      { label: "协助护士长病房管理，具有提升护理品质的能力，组织安全讨论会≥1次组织时间和主题", value: "1" },
-                    ]}
-                  />
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000119}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000119");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:30}}>
-                <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000120}
-                    inputKey={"JS0000120"}
-                    option={[
-                      { label: "参与QCC（骨干成员） QCC主题、承担角色", value: "1" },
-                    ]}
-                  />
-                  <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000121}
-                    style={{width:200}}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000121");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:30}}>
-                <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000122}
-                    inputKey={"JS0000122"}
-                    option={[
-                      { label: "参与专科小组/委员会 ：  ", value: "1" },
-                    ]}
-                  />
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000123}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000123");
-                    }}
-                  />专科/委员会，承担角色
-                   <input
-                    className="acc-time border"
-                    type="text"
-                    value={tableObjN4.JS0000124}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000124");
-                    }}
-                  />
-                </div>
-                <div className="base-item" style={{marginLeft:30}}>
-                <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000125}
-                    inputKey={"JS0000125"}
-                    option={[
-                      { label: "未参与 ", value: "1" },
-                    ]}
-                  />
-                </div>
-                （ 标准：1、N3阶段参与病房管理，组织安全讨论会1次 2、N3阶段承担QCC骨干成员或专科小组/委员会核心成员）
-              </td>
-            </tr>
-          <tr>
               <td colSpan={4}>
                 <div className="base-item">
                   <span className="title-item">四、自我总结</span>
                   （优点及需要改进的地方）
                 </div>
-                <div style={{ height: 250 }}>
+                <div style={{ height: 330 }}>
                   <textarea
                     className="textarea-summarize"
-                    value={tableObjN4.JS0000035}
+                    value={tableObjN2.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -965,21 +650,21 @@ export default observer(function ApplicationN1(props: Props) {
                       }}
                       className="sign-item"
                     >
-                      {tableObjN4.JS0000010}
+                      {tableObjN2.JS0000010}
                     </div>
-                    {/* <input className="acc-time" type="text"  value={tableObjN4.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
+                    {/* <input className="acc-time" type="text"  value={tableObjN2.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
                     <input
                       className="acc-time"
                       type="text"
                       style={{ width: "150px" }}
-                      value={tableObjN4.JS0000011}
+                      value={tableObjN2.JS0000011}
                       onChange={(e) => {
                         handleInput(e, "JS0000011");
                       }}
                       onClick={(e) => {
-                        if (!tableObjN4.JS0000011) {
-                          tableObjN4.JS0000011 = moment().format(
+                        if (!tableObjN2.JS0000011) {
+                          tableObjN2.JS0000011 = moment().format(
                             "YYYY-MM-DD HH:mm"
                           );
                         }
@@ -989,6 +674,18 @@ export default observer(function ApplicationN1(props: Props) {
                 </div>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="wrapper-pages-form" style={{ paddingTop: "20px" }}>
+        <table>
+          <colgroup>
+            <col width={160} />
+            <col width={160} />
+            <col width={180} />
+            <col width={700 - 500} />
+          </colgroup>
+          <tbody>
             <tr>
               <td className="title-item" colSpan={4}>
                 五、资质审核
@@ -1001,7 +698,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000012}
+                    values={tableObjN2.JS0000012}
                     inputKey={"JS0000012"}
                     option={[
                       { label: "合格", value: "A" },
@@ -1012,15 +709,15 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000014}
                     readOnly
+                    value={tableObjN2.JS0000014}
                   />
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000016}
                     readOnly
+                    value={tableObjN2.JS0000016}
                   />
                 </div>
                 <div className="base-item">
@@ -1028,7 +725,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000017}
+                    values={tableObjN2.JS0000017}
                     inputKey={"JS0000017"}
                     option={[
                       { label: "合格", value: "A" },
@@ -1039,15 +736,15 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000019}
                     readOnly
+                    value={tableObjN2.JS0000019}
                   />
                   <span>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000021}
                     readOnly
+                    value={tableObjN2.JS0000021}
                   />
                 </div>
               </td>
@@ -1060,32 +757,11 @@ export default observer(function ApplicationN1(props: Props) {
             <tr>
               <td colSpan={4}>
                 <div className="base-item">
-                  <span>是否申请免考 </span>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000126}
-                    inputKey={"JS0000126"}
-                    option={[
-                      { label: "否（选否者填写考核成绩）", value: "A" },
-                      { label: "申请免考（免考原由", value: "B" },
-                    ]}
-                  />
-                 <input
-                    className="border mar-btom acc-time"
-                    type="text"
-                    value={tableObjN4.JS0000127}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000127");
-                    }}
-                  />）
-                </div>
-                <div className="base-item">
                   <span>1.理论考核：</span>
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN4.JS0000047}
+                    value={tableObjN2.JS0000047}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
@@ -1097,56 +773,28 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN4.JS0000048}
+                    value={tableObjN2.JS0000048}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
                     }}
                   />{" "}
-                  分<span style={{ marginLeft: 40 }}>（标准80分）</span>
+                  分<span style={{ marginLeft: 40 }}>（标准分60分）</span>
                 </div>
                 <div className="base-item">
-                  <span>3.CPR抢救配合考核：</span>
+                  <span>3.个案论文：</span>
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN4.JS0000128}
+                    value={tableObjN2.JS0000074}
                     onChange={(e) => {
-                      handleInput(e, "JS0000128");
+                      handleInput(e, "JS0000074");
                     }}
                   />{" "}
-                  分<span style={{ marginLeft: 40 }}>（标准85分）</span>
-                </div>
-                <div className="base-item">
-                  <span>4.同行评议结果：</span>
-                  <SelectBox
-                    type="checkbox"
-                    disabled={false}
-                    values={tableObjN4.JS0000159}
-                    inputKey={"JS0000159"}
-                    option={[
-                      { label: "优秀", value: "A" },
-                      { label: "称职", value: "B" },
-                      { label: "基本称职", value: "C" },
-                      { label: "不称职  ", value: "D" },
-                    ]}
-                  />（标准：称职及以上）
+                  分<span style={{ marginLeft: 40 }}>（标准分3分）</span>
                 </div>
               </td>
             </tr>
-            
-          </tbody>
-        </table>
-      </div>
-      <div className="wrapper-pages-form" style={{ paddingTop: "80px" }}>
-      <table>
-          <colgroup>
-            <col width={80} />
-            <col width={240} />
-            <col width={180} />
-            <col width={700 - 500} />
-          </colgroup>
-          <tbody>
-          <tr>
+            <tr>
               <td className="title-item" colSpan={4}>
                 七、综合评价
               </td>
@@ -1155,188 +803,136 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={4}>
                 <div className="base-item">
                   <span style={{ marginRight: 99 }}>
-                  1.护理服务投诉（标准：无）： 
+                  1.近两年无护理服务投诉： 
                   </span>
                   <DateModal 
-                      value={tableObjN4.JS0000129}
-                      keys={"JS0000129"}
+                      value={tableObjN2.JS0000075}
+                      keys={"JS0000075"}
                     />年
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000130}
-                    inputKey={"JS0000130"}
-                    option={[
-                      { label: "无", value: "A" },
-                      { label: "有", value: "B" },
-                    ]}
-                  />
-                   <DateModal 
-                      value={tableObjN4.JS0000131}
-                      keys={"JS0000131"}
-                    />年
-                  <SelectBox
-                    type="radio"
-                    disabled={false}
-                    values={tableObjN4.JS0000132}
-                    inputKey={"JS0000132"}
+                    values={tableObjN2.JS0000076}
+                    inputKey={"JS0000076"}
                     option={[
                       { label: "无", value: "A" },
                       { label: "有", value: "B" },
                     ]}
                   />
                   <DateModal 
-                      value={tableObjN4.JS0000160}
-                      keys={"JS0000160"}
+                      value={tableObjN2.JS0000077}
+                      keys={"JS0000077"}
                     />年
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000161}
-                    inputKey={"JS0000161"}
+                    values={tableObjN2.JS0000078}
+                    inputKey={"JS0000078"}
                     option={[
                       { label: "无", value: "A" },
                       { label: "有", value: "B" },
                     ]}
                   />
+                  <span>（标准：无）</span>
                 </div>
                 <div className="base-item">
                   <span style={{ marginRight: 117 }}>
-                  2. 年度绩效考核结果（标准:B级以上）：
+                  2. 年度绩效考核结果：
                   </span>
                   <DateModal 
-                      value={tableObjN4.JS0000079}
+                      value={tableObjN2.JS0000079}
                       keys={"JS0000079"}
                     />年
                      <input
                         type="text"
                         style={{margin:"0px 10px"}}
                         className="mar-btom border acc-time"
-                        value={tableObjN4.JS0000080}
+                        value={tableObjN2.JS0000080}
                         onChange={(e) => {
                           handleInput(e, "JS0000080");
                         }}
                       />
                       <DateModal 
-                      value={tableObjN4.JS0000081}
+                      value={tableObjN2.JS0000081}
                       keys={"JS0000081"}
                     />年
                      <input
                         type="text"
                         style={{margin:"0px 10px"}}
                         className="mar-btom border acc-time"
-                        value={tableObjN4.JS0000082}
+                        value={tableObjN2.JS0000082}
                         onChange={(e) => {
                           handleInput(e, "JS0000082");
                         }}
                       />
-                      <DateModal 
-                      value={tableObjN4.JS0000162}
-                      keys={"JS0000162"}
-                    />年
-                     <input
-                        type="text"
-                        style={{margin:"0px 10px"}}
-                        className="mar-btom border acc-time"
-                        value={tableObjN4.JS0000163}
-                        onChange={(e) => {
-                          handleInput(e, "JS0000163");
-                        }}
-                      />
+                      （标准:B级以上）
                 </div>
                 <div className="base-item">
                   <span style={{ marginRight: 20 }}>
-                  3.无个人原因导致的III级护理不良事件（标准:无）   ：
+                  3.无个人原因导致的III级护理不良事件：
                   </span>
                   <DateModal 
-                      value={tableObjN4.JS0000083}
+                      value={tableObjN2.JS0000083}
                       keys={"JS0000083"}
                     />年
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000084}
+                    values={tableObjN2.JS0000084}
                     inputKey={"JS0000084"}
                     option={[
                       { label: "无", value: "A" },
                       { label: "有", value: "B" },
                     ]}
-                  />;
+                  />
                   <DateModal 
-                      value={tableObjN4.JS0000085}
+                      value={tableObjN2.JS0000085}
                       keys={"JS0000085"}
                     />年
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000086}
+                    values={tableObjN2.JS0000086}
                     inputKey={"JS0000086"}
                     option={[
                       { label: "无", value: "A" },
                       { label: "有", value: "B" },
                     ]}
                   />
-                   <DateModal 
-                      value={tableObjN4.JS0000164}
-                      keys={"JS0000164"}
-                    />年
-                  <SelectBox
-                    type="radio"
-                    disabled={false}
-                    values={tableObjN4.JS0000165}
-                    inputKey={"JS0000165"}
-                    option={[
-                      { label: "无", value: "A" },
-                      { label: "有", value: "B" },
-                    ]}
-                  />
+                  <span>（标准：无）</span>
                 </div>
                 <div className="base-item">
                   <span style={{ marginRight: 125 }}>
-                  4.继续教育学分达标（标准:达标）： 
+                  4.年度学分达标： 
                   </span>
                   <DateModal 
-                      value={tableObjN4.JS0000166}
-                      keys={"JS0000166"}
+                      value={tableObjN2.JS0000087}
+                      keys={"JS0000087"}
                     />年
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000167}
-                    inputKey={"JS0000167"}
+                    values={tableObjN2.JS0000088}
+                    inputKey={"JS0000088"}
                     option={[
                       { label: "达标", value: "A" },
                       { label: "不达标", value: "B" },
                     ]}
                   />
                   <DateModal 
-                      value={tableObjN4.JS0000168}
-                      keys={"JS0000168"}
+                      value={tableObjN2.JS0000089}
+                      keys={"JS0000089"}
                     />年
                      <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000169}
-                    inputKey={"JS0000169"}
+                    values={tableObjN2.JS0000090}
+                    inputKey={"JS0000090"}
                     option={[
                       { label: "达标", value: "A" },
                       { label: "不达标", value: "B" },
                     ]}
-                  />
-                  <DateModal 
-                      value={tableObjN4.JS0000170}
-                      keys={"JS0000170"}
-                    />年
-                     <SelectBox
-                    type="radio"
-                    disabled={false}
-                    values={tableObjN4.JS0000171}
-                    inputKey={"JS0000171"}
-                    option={[
-                      { label: "达标", value: "A" },
-                      { label: "不达标", value: "B" },
-                    ]}
-                  />
+                  />（标准:达标）
                 </div>
               </td>
             </tr>
@@ -1352,7 +948,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000022}
+                    values={tableObjN2.JS0000022}
                     inputKey={"JS0000022"}
                     option={[
                       { label: "同意晋升", value: "A" },
@@ -1365,15 +961,15 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000024}
                     readOnly
+                    value={tableObjN2.JS0000024}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000026}
                     readOnly
+                    value={tableObjN2.JS0000026}
                   />
                 </div>
               </td>
@@ -1385,7 +981,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <SelectBox
                     type="radio"
                     disabled={false}
-                    values={tableObjN4.JS0000027}
+                    values={tableObjN2.JS0000027}
                     inputKey={"JS0000027"}
                     option={[
                       { label: "同意晋升", value: "A" },
@@ -1398,22 +994,22 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000029}
                     readOnly
+                    value={tableObjN2.JS0000029}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN4.JS0000031}
                     readOnly
+                    value={tableObjN2.JS0000031}
                   />
                 </div>
               </td>
             </tr>
           </tbody>
-      </table>
-      <div className="remark">
+        </table>
+        <div className="remark">
         备注：1、晋级审核请同时提交职称/学历复印件、个案论文（附个案论文评价表）、床边综合能力考核资料!
         </div>
         <div className="remark">
@@ -1438,6 +1034,67 @@ export default observer(function ApplicationN1(props: Props) {
               </div>
           })}
         </div>
+      </div>
+      <div className="wrapper-pages-form" style={{ paddingTop: "40px" }}>
+        <table>
+          <colgroup>
+            <col width={120} />
+            <col width={130} />
+            <col width={250} />
+            <col width={700 - 500} />
+          </colgroup>
+          <thead>
+            <tr>
+              <td>患者姓名</td>
+              <td>病案号</td>
+              <td>总结患者危险点或<br />发现异常病情主动上报 </td>
+              <td>护理的具体时间（N1期间）</td>
+            </tr>
+          </thead>
+          <tbody>
+            {PromotionDetaitUtils.tableObjN2.carePatientList.length == 6 && PromotionDetaitUtils.tableObjN2.carePatientList.map((item:any,index:number)=><tr key={index}>
+              <td>
+              <Input
+                value={item.patientName}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "patientName",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input
+                value={item.medicalRecordNo}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "medicalRecordNo",index);
+                }}
+              />
+              </td>
+              <td>
+              <Input.TextArea
+                value={item.careMessage}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "careMessage",index);
+                }}
+                autosize={{ minRows: 3 }}
+              />
+              </td>
+              <td>
+              <Input
+                value={item.careTime}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "careTime",index);
+                }}
+              />
+              </td>
+            </tr>
+            )}
+            
+          </tbody>
+        </table>
       </div>
       <UserCheckModal
         visible={userCheckVisible}
@@ -1478,7 +1135,6 @@ const Wrapper = styled.div`
     transform: translate(-50%, 0%);
     background-color: transparent;
     width: 780px;
-    height: 1080px;
     z-index: 89;
   }
   .upload-item{
@@ -1545,6 +1201,9 @@ const Wrapper = styled.div`
     .title-item {
       font-weight: bold;
     }
+    .word-item{
+      height: 200px;
+    }
     .remark {
       color: #b3b3b3;
       line-height: 26px;
@@ -1574,7 +1233,7 @@ const Wrapper = styled.div`
     }
     .textarea-summarize {
       width: 700px;
-      height: 200px;
+      height: 280px;
       line-height: 24px;
       text-align: left;
     }
@@ -1585,14 +1244,8 @@ const Wrapper = styled.div`
         width: 38px;
       }
     }
-    .word-item{
-      height: 200px;
-    }
     .acc-time {
       width: 80px;
-    }
-    .other-time {
-      width: 150px;
     }
     .mar-btom{
       margin: 0 10px;

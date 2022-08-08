@@ -46,12 +46,10 @@ export default observer(function SelectBox(props:Props){
   }
   const onCheckboxChange = (e:any,value:any) =>{
     let list = e.filter((item:any)=> item != ',')
-    
     if(PromotionDetaitUtils.master.formCode == 'HSJS_0001'){
       tableObjN1[value] = list.toString();
     } else if (PromotionDetaitUtils.master.formCode == 'HSJS_0002') {
       tableObjN2[value] = list.toString();
-      console.log(tableObjN2[value]);
     } else if (PromotionDetaitUtils.master.formCode == 'HSJS_0003') {
       tableObjN3[value] = list.toString();
     } else if (PromotionDetaitUtils.master.formCode == 'HSJS_0004') {
@@ -68,7 +66,7 @@ export default observer(function SelectBox(props:Props){
           </Radio.Group>
           })
         ):(
-          <Checkbox.Group options={option} defaultValue={values} onChange={(e)=>{onCheckboxChange(e,inputKey)}} />
+          <Checkbox.Group options={option} value={values} onChange={(e)=>{onCheckboxChange(e,inputKey)}} />
         )
       }
     </Wrapper>

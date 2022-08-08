@@ -23,13 +23,6 @@ export default class BadEventReportService extends BaseApiService {
       newFormData
     )
   }
-  // 保存接口
-  public getSaveOrCommit(obj:any){
-    return this.post(
-      `/nurse/promotion/saveOrCommit`,
-      obj
-    )
-  } 
    //检查用户名和密码
    public async checkUser(query: any) {
     return this.post(`/form/checkUser`, query);
@@ -41,6 +34,18 @@ export default class BadEventReportService extends BaseApiService {
     newFormData.set('masterId', query.masterId)
     return this.post(`/nurse/promotion/deleteAttachment`, newFormData);
   }
+  // 晉升审核
+  public getHandleNode(query:any) {
+    return this.post(`/nurse/promotion/handleNode`,query)
+  }
+  //
+
+  public getSaveOrCommit(obj:any){
+    return this.post(
+      `/nurse/promotion/saveOrCommit`,
+      obj
+    )
+  } 
 
 }
 

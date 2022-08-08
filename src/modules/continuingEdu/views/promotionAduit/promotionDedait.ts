@@ -3,6 +3,7 @@ import { fileDownload } from "src/utils/file/file";
 import { badEventReportService } from './services/BadEventReportService'
 import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
+import qs from 'qs'
 import {master,tableObjN1,tableObjN2,tableObjN3,tableObjN4} from './types'
 
 class PromotionApp {
@@ -22,50 +23,7 @@ class PromotionApp {
   @observable public tableObjN4 = tableObjN4;  // 表单的数据4
   @observable public handlenodeDto = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
-  @observable public  carePatientList = [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
+ 
   @computed get listObj() {
     let tableObj = {}
     return {
@@ -74,16 +32,14 @@ class PromotionApp {
       commitStep: this.commitStep,
     }
   }
-
-  // 保存和创建
-  onSave() {
+   // 保存和创建
+   onSave() {
     this.loading = true;
     this.commitStep = '';
     let obj = {
       master : this.master,
       itemDataMap: this.handleDifferent(),
       commitStep: this.commitStep,
-      carePatientList: this.carePatientList
     }
     badEventReportService.getSaveOrCommit(obj).then((res) => {
       if(res.code == 200){
@@ -96,8 +52,26 @@ class PromotionApp {
       this.loading = false;
     })
   }
-  // 处理不同的表逻辑
-  handleDifferent(){
+  // 重新赋值
+  setAssignment(objList:any , keys:string[]) {
+    return  keys.map((item:string)=> objList[item]= moment(objList[item]))
+  }
+  // 重新赋值
+  setAssignmentCheck(objList:any , keys:string[]) {
+    keys.map((item:string)=>{
+      let arrStr: string = objList[item]
+      if (arrStr) {
+        return objList.JS0000037 = arrStr.split(',').filter((item: string) => item != '')
+      }
+    })
+  }
+
+  savdfege (){
+    let query = qs.parse(appStore.location.search.replace('?', ''))
+    return this.handlenodeDto.filter((step: any) => step.nodeCode === query?.othersMessage?.nextNodeCode).find((item:any) => item.status == '0') || {nodeName:''}
+  }
+   // 处理不同的表逻辑
+   handleDifferent(){
     let list = {'HSJS_0001':this.tableObjN1,'HSJS_0002':this.tableObjN2,'HSJS_0003':this.tableObjN3,'HSJS_0004':this.tableObjN4}
     for(let key in list){
       if (this.master.formCode == key) {
@@ -108,20 +82,6 @@ class PromotionApp {
         return  list[key]
       }
     } 
-  }
-
-  // 重新赋值
-  setAssignment(objList:any , keys:any) {
-    return  keys.map((item:any)=> objList[item]= moment(objList[item]))
-  }
-  // 重新赋值
-  setAssignmentCheck(objList:any , keys:any) {
-    keys.map((item:any)=>{
-      let arrStr: string = objList[item]
-      if (arrStr) {
-        return objList.JS0000037 = arrStr.split(',').filter((item: any) => item != '')
-      }
-    })
   }
 
   // 获取当前用户的晋升表id

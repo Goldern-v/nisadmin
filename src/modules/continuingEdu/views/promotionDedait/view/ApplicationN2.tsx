@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import SelectBox from "./SelectBox";
-import { Icon , Upload, Button, message,Spin,Input } from "antd";
+import { Icon , Upload, DatePicker, message,Spin,Input } from "antd";
 import DateModal from './Datemodal';
 import { PromotionDetaitUtils } from '../promotionDedait';
 import UserCheckModal from "./UserCheckModal";
@@ -72,13 +72,9 @@ export default observer(function ApplicationN1(props: Props) {
   }, [PromotionDetaitUtils.handlenodeDto]);
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
-  const handleChange = (e: any, value: any) => {
+
+  const onDatePickerChange = (e: any, value: any) => {
     tableObjN2[value] = e;
-    setyearPickerIsOpen(false);
-  };
-  const handleChange1 = (e: any, value: any) => {
-    tableObjN2[value] = e;
-    setyearPickerIsOpen1(false);
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
@@ -86,8 +82,8 @@ export default observer(function ApplicationN1(props: Props) {
   };
   const handelTextareas = (e: any, value: any,key:number) => {
     let ctext = e.target.value;
-    tableObjN2.carePatientList[key][value] = ctext
-    tableObjN2.carePatientList[key].masterId = PromotionDetaitUtils.master.id
+    PromotionDetaitUtils.carePatientList[key][value] = ctext
+    PromotionDetaitUtils.carePatientList[key].masterId = PromotionDetaitUtils.master.id
   };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN2[value] = e.target.value;
@@ -251,7 +247,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input defaultValue="26888888" value={tableObjN2.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
+                  {/* <Input value="26888888" value={tableObjN2.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     type="text"
                     value={tableObjN2.JS0000001}
@@ -328,29 +324,16 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             <tr>
-              <td colSpan={2}>
+            <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    type="text"
-                    value={tableObjN2.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN2.JS0000004 && moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N1资质时间：</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN2.JS0000054}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000054");
-                    }}
-                  />
+                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} defaultValue={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
@@ -617,7 +600,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>6、曾获得何种荣誉： </span>
                   <textarea
-                    defaultValue={tableObjN2.JS0000034}
+                    value={tableObjN2.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -641,7 +624,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 330 }}>
                   <textarea
                     className="textarea-summarize"
-                    defaultValue={tableObjN2.JS0000035}
+                    value={tableObjN2.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -1056,10 +1039,10 @@ export default observer(function ApplicationN1(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {PromotionDetaitUtils.tableObjN2.carePatientList.length == 6 && PromotionDetaitUtils.tableObjN2.carePatientList.map((item:any,index:number)=><tr key={index}>
+            {PromotionDetaitUtils.carePatientList.length == 6 && PromotionDetaitUtils.carePatientList.map((item:any,index:number)=><tr key={index}>
               <td>
               <Input
-                defaultValue={item.patientName}
+                value={item.patientName}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextareas(e, "patientName",index);
@@ -1068,7 +1051,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input
-                defaultValue={item.medicalRecordNo}
+                value={item.medicalRecordNo}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextareas(e, "medicalRecordNo",index);
@@ -1077,7 +1060,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input.TextArea
-                defaultValue={item.careMessage}
+                value={item.careMessage}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextareas(e, "careMessage",index);
@@ -1087,7 +1070,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
               <td>
               <Input
-                defaultValue={item.careTime}
+                value={item.careTime}
                 className="td-center inp_textArea"
                 onChange={(e) => {
                   handelTextareas(e, "careTime",index);

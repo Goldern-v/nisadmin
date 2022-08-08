@@ -310,6 +310,8 @@ const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
 )
 
+
+
 // 贵州护长季度查房分析报告表
 const checkWardQuarterViewGzsrm = lazy(() =>
   import("src/modules/quality/views/wardQuarter_gzsrm/wardQuarter_gzsrm")
@@ -489,6 +491,12 @@ const 典型案例库审核详情 = lazy(() =>
 const PromotionDetail = lazy(() =>
   import(
     "src/modules/continuingEdu/views/promotionDedait/promotionDetait"
+  )
+);
+//审核管理-晋级申请表（亚心）
+const PromotionAduit = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/promotionAduit/promotionAudit"
   )
 );
 
@@ -877,6 +885,7 @@ const routes: RouteItem[] = [
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
+  setLayout("/PromotionAduit", PromotionAduit, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),

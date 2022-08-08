@@ -6,6 +6,7 @@ import SelectBox from "./SelectBox";
 import { DatePicker, Icon , Upload, Button, message,Spin } from "antd";
 import { PromotionAppUtils } from "../../PromotionAppUtils";
 import UserCheckModal from "./UserCheckModal";
+import DateModal from './Datemodal';
 import { appStore, authStore } from "src/stores/index";
 
 interface Props {
@@ -28,8 +29,6 @@ interface webProps {
 
 export default observer(function ApplicationN1(props: Props) {
   const { tableObjN1 } = PromotionAppUtils;
-  const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false);
-  const [yearPickerIsOpen1, setyearPickerIsOpen1] = useState(false);
   const [DotPass, setDotPass] = useState(false);
   const [upLoading,setupLoading] = useState(false)
   const [isAduit, setisAduit] = useState({
@@ -52,13 +51,8 @@ export default observer(function ApplicationN1(props: Props) {
   }, [PromotionAppUtils.handlenodeDto]);
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
-  const handleChange = (e: any, value: any) => {
+  const onDatePickerChange = (e: any, value: any) => {
     tableObjN1[value] = e;
-    setyearPickerIsOpen(false);
-  };
-  const handleChange1 = (e: any, value: any) => {
-    tableObjN1[value] = e;
-    setyearPickerIsOpen1(false);
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
@@ -168,7 +162,7 @@ export default observer(function ApplicationN1(props: Props) {
             className="form-status-img"
           />
         )}
-        { isAduit.noPass == false && !DotPass && (
+        { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&(
           <img
             src={require("../image/审批通过.png")}
             className="form-status-img"
@@ -220,7 +214,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input defaultValue="26888888" value={tableObjN1.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
+                  {/* <Input value="26888888" value={tableObjN1.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     className="mar-btom"
                     type="text"
@@ -260,14 +254,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN1.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN1.JS0000004 && moment(tableObjN1.JS0000004)}  />
                 </div>
               </td>
             </tr>
@@ -368,19 +355,9 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     3、三基理论考核：
-                    <DatePicker
+                    <DateModal 
                       value={tableObjN1.JS0000038}
-                      open={yearPickerIsOpen}
-                      mode="year"
-                      className="year-picker"
-                      placeholder="全部"
-                      format="YYYY"
-                      onOpenChange={() => {
-                        setyearPickerIsOpen(true);
-                      }}
-                      onPanelChange={(e) => {
-                        handleChange(e, "JS0000038");
-                      }}
+                      keys={"JS0000038"}
                     />
                     年度
                   </span>
@@ -404,21 +381,11 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     4、专科理论考核：
-                    <DatePicker
+                    <DateModal 
                       value={tableObjN1.JS0000041}
-                      open={yearPickerIsOpen1}
-                      mode="year"
-                      className="year-picker"
-                      placeholder="全部"
-                      format="YYYY"
-                      onOpenChange={() => {
-                        setyearPickerIsOpen1(true);
-                      }}
-                      onPanelChange={(e) => {
-                        handleChange1(e, "JS0000041");
-                      }}
+                      keys={"JS0000041"}
                     />
-                    年度
+                    年度 
                   </span>
                   <SelectBox
                     type="radio"
@@ -524,7 +491,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
                   <textarea
-                    defaultValue={tableObjN1.JS0000034}
+                    value={tableObjN1.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -547,7 +514,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 370 }}>
                   <textarea
                     className="textarea-summarize"
-                    defaultValue={tableObjN1.JS0000035}
+                    value={tableObjN1.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}

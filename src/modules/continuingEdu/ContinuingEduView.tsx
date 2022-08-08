@@ -736,13 +736,13 @@ export default function ContinuingEdu(props: Props) {
   
   // 菜单列表
   const LEFT_MENU_CONFIG = [
-    // { 
-    //   hide: appStore.HOSPITAL_ID != 'whyx',
-    //   title: "培训日历",
-    //   icon: <RYGL />,
-    //   path: "/continuingEdu/TariningCalendars",
-    //   component: TariningCalendars,
-    // },
+    { 
+      hide: appStore.HOSPITAL_ID != 'whyx',
+      title: "培训日历",
+      icon: <RYGL />,
+      path: "/continuingEdu/TariningCalendars",
+      component: TariningCalendars,
+    },
     ...appStore.hisMatch({
       map: {
         "hj,dgxg,lyyz,qhwy": [
@@ -1007,13 +1007,13 @@ export default function ContinuingEdu(props: Props) {
         ],
       },
     }),
-    // {
-    //   title: "晋升申请",
-    //   icon: <JSGL />,
-    //   path: "/continuingEdu/PromotionApplication",
-    //   component: PromotionApplication,
-    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-    // },
+    {
+      title: "晋升申请",
+      icon: <JSGL />,
+      path: "/continuingEdu/PromotionApplication",
+      component: PromotionApplication,
+      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    },
     {
       title: "类型管理",
       icon: <TKGL />,
