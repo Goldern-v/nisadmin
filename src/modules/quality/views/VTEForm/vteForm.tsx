@@ -450,17 +450,18 @@ export default observer(function WritingForm(props: any) {
       qualityControlRecordVM.filterDate[1]
     ) {
       writingFormService
-        .docWrite({
-          beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-          endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
-          wardCode: selectedDept
+        .getNurseVet({
+          Start_time: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+          End_time: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
+          Ward_code: selectedDept
         })
         .then((res) => {
           let r: any= [{
             recordSize: '✔',
             signature: ''
           }]
-          setTableData(r)
+          console.log(res.data, 8888)
+          setTableData(res.data.data)
           setLoadingTable(false)
         })
     } else {

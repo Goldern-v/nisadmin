@@ -136,7 +136,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'whsl': 
       return "http://192.168.1.54:9896" 
     //漳州五院
-    case 'qhwy': 
+    case 'zzwy': 
       return "http://192.168.1.54:9897"
     default:
       return "http://192.168.1.54:9866";
