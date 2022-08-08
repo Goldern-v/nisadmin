@@ -43,7 +43,7 @@ export const meunConfig: meunConfigItem[] = [
         title: "管床设置",
         path: "/personnelManagement/tubeBed",
         component: TubeBed,
-        iSlimit: true,
+        iSlimit: false,
       },
       {
         title: "我的期望排班",
