@@ -76,6 +76,7 @@ import ClinicalEvaluation from "./views/InternManagement/clinicalEvaluation/Clin
 import BaciPostgraduate from './views/InternPostgraduate/bacisPostgraduate/PostgraduateManagement'
 import TeachingPostgraduate from './views/InternPostgraduate/PostgraduateTeachingProgramme/TeachingPostgraduate'
 
+<<<<<<< HEAD
 // 实操评分管理
 import PracticalOperationScore from './views/practicalOperationScore/PracticalOperationScore'
 // 培训日历
@@ -85,6 +86,12 @@ import TariningCalendars from './views/trainingCalendar/TariningCalendars'
 import PromotionApplication from './views/promotionApplication/PromotionApplication'
 // 亚心晋升管理
 import PromotionManagement from './views/promotionManagement/PromotionManagement'
+=======
+// 亚心规培生管理
+import gaugePearson_BacisManagement from "./views/gaugePearson/bacisInformation/BacisManagement"
+import gaugePearson_TraineeShift from "./views/gaugePearson/traineeShift/TraineeShift"
+import gaugePearson_evaluate from "./views/gaugePearson/evaluate/evaluateTable"
+>>>>>>> e4001ce25e3f1de317cf70a3227f0d750a7caf87
 
 /**厚街学习资源 */
 //学习的网站链接
@@ -731,8 +738,11 @@ export default function ContinuingEdu(props: Props) {
     component: TrainingChartAnalysis,
     hide: () => !["hj", "dgxg,'lyyz','qhwy'"].includes(appStore.HOSPITAL_ID),
   };
+<<<<<<< HEAD
 
   // console.log(authStore.isTeachingNurse,'gao');
+=======
+>>>>>>> e4001ce25e3f1de317cf70a3227f0d750a7caf87
   
   // 菜单列表
   const LEFT_MENU_CONFIG = [
@@ -957,6 +967,28 @@ export default function ContinuingEdu(props: Props) {
             ],
           },
         })
+      ],
+    },
+    appStore.HOSPITAL_ID === "whyx" && {
+      title: "规培生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        {
+          title: "规培生基本信息汇总表",
+          path: "/continuingEdu/规培生基本信息汇总表",
+          component: gaugePearson_BacisManagement,
+        },
+        {
+          title: "规培生轮转计划",
+          path: "/continuingEdu/规培生轮转计划",
+          component: gaugePearson_TraineeShift,
+        },
+        {
+          title: "规培生出科评价",
+          path: "/continuingEdu/规培生出科评价",
+          component: gaugePearson_evaluate,
+        },
       ],
     },
     {
