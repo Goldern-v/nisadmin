@@ -288,7 +288,7 @@ export default withRouter(function LoginView(props: Props) {
             loading={loginLoading}
             style={{ marginTop: 20, height: 36 }}
           >
-            登陆系统
+            登录系统
           </Button>
         </BoxInput>
       </BgImg>
