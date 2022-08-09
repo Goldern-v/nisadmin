@@ -67,24 +67,10 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 		}
 		// clinicalData.postObj
 		clinicalApi.getMonthTable(obj).then(res => {
-			let itemList = res.data.itemList || []
-			if(itemList.length>0){
-				initTableData(itemList)
-				// itemList.map((it:any)=>{
-				// 	// 获取日期
-				// 	let day = it.recodeDate.split('-')[2]
-				// 	for(let kk in it){
-				// 		switch (kk) {
-				// 			case 'ddfsls':
-				// 				// 跌倒发生例数
-
-				// 				break;
-						
-				// 			default:
-				// 				break;
-				// 		}
-				// 	}
-				// })
+			let valueList = res.data.valueList || []
+			if(valueList.length>0){
+				initTableData(valueList,res.data)
+				// setTableLoading
 			}
 		  console.log(res.data)
 		  setTableLoading(false)

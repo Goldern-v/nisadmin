@@ -47,6 +47,7 @@ export default function ClinicalMonth(props: Props) {
 	const [data3, setData3] = useState([] as any);
 	const [spinning, setSpinning] = useState(true);
 	const [tableLoading, setTableLoading] = useState(false);
+	const [bodyData, setBodyData] = useState({} as any);
 
 	let dayList = [] as any, columnDay = {}
 	let tempData = []
@@ -266,7 +267,7 @@ export default function ClinicalMonth(props: Props) {
 
 				},
 				className: 'hua-line',
-				dataIndex: "classfiy",
+				dataIndex: "name",
 				align: "center",
 				width: 100,
 				// fixed: 'left'
@@ -312,23 +313,25 @@ export default function ClinicalMonth(props: Props) {
 	// 	console.log(clinicalData.tableLoading)
 		
 	// }, [])
-	const initTableData=(itemList:any)=>{
-		itemList.map((it:any)=>{
-			itemList.map((it:any)=>{
-				// 获取日期
-				let day = 'ss_'+it.recodeDate.split('-')[2]
-				for(let kk in it){
-					switch (kk) {
-						case 'ddfsls':
-							// 跌倒发生例数
-								initTableNumber(it[kk],'跌倒发生例数',day)
-							break;
-						default:
-							break;
-					}
-				}
-			})
-		})
+	const initTableData=(itemList:any,body:any)=>{
+		setBodyData(body)
+		setData3(itemList)
+		// itemList.map((it:any)=>{
+		// 	itemList.map((it:any)=>{
+		// 		// 获取日期
+		// 		let day = 'ss_'+it.recodeDate.split('-')[2]
+		// 		for(let kk in it){
+		// 			switch (kk) {
+		// 				case 'ddfsls':
+		// 					// 跌倒发生例数
+		// 						initTableNumber(it[kk],'跌倒发生例数',day)
+		// 					break;
+		// 				default:
+		// 					break;
+		// 			}
+		// 		}
+		// 	})
+		// })
 	}
 
 	const initTableNumber=(num:any,name:string,day:string)=>{
