@@ -7,10 +7,11 @@ import SelectCon from './components/SelectCon'
 // import { authStore, appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps { }
 
 export default function AuditsManagementView() {
-  const [showType, setShowType] = useState('nurseFileNys')
+  const [showType, setShowType] = useState(appStore.HOSPITAL_ID === 'wjgdszd' ? 'nurseFile' : 'nurseFileNys')
   const [needAudit, setNeedAudit] = useState(true)
   const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')

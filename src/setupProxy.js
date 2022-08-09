@@ -79,7 +79,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 武警广东省总队医院 */
     case "wjgdszd":
-      return "http://120.24.240.231:15091 "; // 武警广东省总队医院正式
+      return "http://120.24.240.231:8751"; // 武警广东省总队医院正式 crph / crph3675  
     case "gxjb":
       // return "http://58.59.133.37:9091"; // 正式
       return "http://192.168.1.54:9866"; // 测试环境

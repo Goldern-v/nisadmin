@@ -51,6 +51,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
+      wjgdszd: () => EditEffectiveTimeModal,
       wh: () => EditVacationCountModal_wh,
       gxjb: () => EditVacationCountModal_wh,
       lcey: () => EditVacationCountModal_wh,
@@ -399,7 +400,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 厚街特殊字段 */
-  if (appStore.HOSPITAL_ID == "hj") {
+  if (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "wjgdszd") {
     columns.push({
       title: (
         <div>
@@ -727,6 +728,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 yczyy: () => 2,
                 nys: () => (isEdit ? 6 : 5),
                 hj: () => 3,
+                wjgdszd: () => 3,
                 wh: () => 6,
                 gxjb: () => 6,
                 jmfy: () => 6,
@@ -770,6 +772,7 @@ export default observer(function ArrangeSheet(props: Props) {
   const moveRow = (dragIndex: number, hoverIndex: number) => {
     switch (appStore.HOSPITAL_ID) {
       case "hj":
+      case "wjgdszd":
         const dragRow = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRow) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
