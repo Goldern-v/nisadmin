@@ -240,6 +240,14 @@ export default class BadEventsNewService extends BaseApiService {
   public async handleRevoke(params: revokeIn) {
     return await this.post(`/form/badEventMaster/common/operateBadEvent`, params)
   }
+  /**
+   * 删除不良事件
+   * @param id 唯一值
+   * @returns 
+   */
+  public async deleteBE(id: string) {
+    return await this.post(`form/badEventMaster/master/delete`, { id })
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()
