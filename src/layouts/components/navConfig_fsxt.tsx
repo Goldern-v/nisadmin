@@ -80,6 +80,11 @@ const baseConfig: navConfigItem[] = [
         path: "/checkWard",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
+      {
+        name: "优良事件",
+        path: "/goodOrBadRouter",
+        icon: require("../images/menu-icon/护理查房@2x.png")
+      }
     ],
   },
   {
