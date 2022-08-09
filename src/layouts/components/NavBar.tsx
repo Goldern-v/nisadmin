@@ -297,7 +297,8 @@ export default observer(function NavBar(props: any) {
           view = (
             <React.Fragment>
               <img
-                src={require("../images/lcey_logo.jpg")}
+                // src={require("../images/lcey_logo.jpg")}
+                src={require("../images/liaocheng_logo.png")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}
