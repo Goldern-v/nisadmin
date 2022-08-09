@@ -64,7 +64,7 @@ export default observer(function SelectBox(props:Props){
         type && type == "radio" ?(
           option.map((item:any,index)=>{
             return <Radio.Group  value={values} key={index} >
-            <Radio value={item.value} onClick={(e)=>{onClickRadio(e,inputKey)}}>{item.label}</Radio>
+            <Radio value={item.value} onClick={(e)=>{onClickRadio(e,inputKey)}} disabled={disabled} >{item.label}</Radio>
           </Radio.Group>
           })
         ):(

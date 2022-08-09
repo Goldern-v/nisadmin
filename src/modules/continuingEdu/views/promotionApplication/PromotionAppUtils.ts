@@ -31,7 +31,7 @@ class PromotionApp {
   @observable public AdituCommitTwoN4 = AdituCommitTwoN4;  // 表单的数据 N3 6-7
 
  
-  @observable public handlenodeDto = [] //审核流程内容
+  @observable public handlenodeDto:any = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
   @observable public carePatientList = [
     {
@@ -240,7 +240,11 @@ class PromotionApp {
         })
         if(res.data.handlenodeDto.length){
           let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
-          this.handlenodeDto =DtoData ? res.data.handlenodeDto:[]
+          if(DtoData){
+            let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
+            let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
+            this.handlenodeDto = [...noZeroData,lastData]
+          }
         }else{
           this.handlenodeDto = []
         }
