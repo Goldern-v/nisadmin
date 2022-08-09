@@ -215,8 +215,8 @@ export default observer(function PromotionAppHeader() {
                 </div>
                 <div className="heigth-right">
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}}>{PromotionAppUtils.editStatus}</Button>
-                  <Button type="primary" onClick={handleSubmit}>提交申请</Button>
-                  <Button type="primary" onClick={handleSave}>保存</Button>
+                  <Button type="primary" onClick={handleSubmit}  disabled={Number(PromotionAppUtils.flowStatus) !== 0 || Number(PromotionAppUtils.flowStatus) !== 2} >提交申请</Button>
+                  <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑'} >保存</Button>
                   <Button onClick={handlerevocation}>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>
                 </div>

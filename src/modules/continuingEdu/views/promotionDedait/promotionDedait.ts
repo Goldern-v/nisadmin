@@ -20,7 +20,7 @@ class PromotionApp {
   @observable public tableObjN2 = tableObjN2;  // 表单的数据2
   @observable public tableObjN3 = tableObjN3;  // 表单的数据3
   @observable public tableObjN4 = tableObjN4;  // 表单的数据4
-  @observable public handlenodeDto = [] //审核流程内容
+  @observable public handlenodeDto:any[] = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
   @observable public  carePatientList = [
     {
@@ -156,7 +156,12 @@ class PromotionApp {
           return item
         })
         if(res.data.handlenodeDto.length){
-          this.handlenodeDto = res.data.handlenodeDto
+          let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
+          if(DtoData){
+            let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
+            let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
+            this.handlenodeDto = [...noZeroData,lastData]
+          }
         }else{
           this.handlenodeDto = []
         }
@@ -195,28 +200,7 @@ class PromotionApp {
           this.editStatus = '编辑'
         }
       }else{
-        this.master = {
-          id: '', // 晋升表code
-          formCode: this.master.formCode, // 晋升表code
-          formName: this.master.formCode, // 晋升表名称
-          status: "-1", // 晋升表状态
-          nextNodeCode: "", // 提交&&创建&&保存
-          creatorNo: authStore.user?.empNo,
-          creatorName: authStore.user?.empName,
-          updaterNo: authStore.user?.empNo,
-          updaterName: authStore.user?.empName,
-          updateTime: moment().format("YYYY-MM-DD HH:mm"),
-          currentLevel: authStore.user?.currentLevel,
-          deptName: authStore.user?.deptName,
-          empNo: authStore.user?.empNo,
-          empName: authStore.user?.empNo,
-          chainCode: "HSJS_COMMON",
-          chainName: "护士晋升申请通用",
-          attachmentCount: 0,
-          lastCommitTime: "2022-07-20 14:51",
-          hasRead: false,
-          noPass: false,
-        }
+        this.master = this.master
         this.flowStatus = ''
         this.editStatus = '编辑'
         this.attachmentList = []
@@ -269,8 +253,12 @@ class PromotionApp {
           return item
         })
         if(res.data.handlenodeDto.length){
-          this.handlenodeDto = res.data.handlenodeDto
-          console.log(this.handlenodeDto);
+          let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
+          if(DtoData){
+            let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
+            let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
+            this.handlenodeDto = [...noZeroData,lastData]
+          }
         }else{
           this.handlenodeDto = []
         }
