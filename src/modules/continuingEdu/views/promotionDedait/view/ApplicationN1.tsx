@@ -502,13 +502,14 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   （原由及累计时间：
                   <input
-                    className="acc-time"
+                    className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN1.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
-                  /><span>）</span>
+                  />
+                  <span>）</span>
                   （因孕产连续休假时间≥8个月，或申报晋级前12个月，其他缺勤≥3个月者，不能参加2021年分层晋级）
                 </div>
               </td>
@@ -599,7 +600,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginRight: 53 }}>1.护长审核</span>
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN1.JS0000012}
                     inputKey={"JS0000012"}
                     option={[
@@ -611,26 +612,25 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000014}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000014");
-                    }}
+                    defaultValue={tableObjN1.JS0000014}
+                    readOnly
+                    // onChange={(e) => {
+                    //   handleInput(e, "JS0000014");
+                    // }}
                   />
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000016}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000016");
-                    }}
+                    readOnly
+                    defaultValue={tableObjN1.JS0000016}
                   />
                 </div>
                 <div className="base-item">
                   <span style={{ marginRight: 40 }}>2.科护长审核</span>
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN1.JS0000017}
                     inputKey={"JS0000017"}
                     option={[
@@ -642,19 +642,13 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000019}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000019");
-                    }}
+                    defaultValue={tableObjN1.JS0000019}
                   />
                   <span>日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000021}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000021");
-                    }}
+                    defaultValue={tableObjN1.JS0000021}
                   />
                 </div>
               </td>
@@ -789,7 +783,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN1.JS0000022}
                     inputKey={"JS0000022"}
                     option={[
@@ -803,19 +797,13 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000024}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000024");
-                    }}
+                    defaultValue={tableObjN1.JS0000024}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000026}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000026");
-                    }}
+                    defaultValue={tableObjN1.JS0000026}
                   />
                 </div>
               </td>
@@ -826,7 +814,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN1.JS0000027}
                     inputKey={"JS0000027"}
                     option={[
@@ -840,19 +828,13 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000029}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000029");
-                    }}
+                    defaultValue={tableObjN1.JS0000029}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN1.JS0000031}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000031");
-                    }}
+                    defaultValue={tableObjN1.JS0000031}
                   />
                 </div>
               </td>

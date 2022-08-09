@@ -93,6 +93,7 @@ export default observer(function PromotionTable(props:Props){
                     <div className="step-title">
                       <span>{item.handlerName}</span>
                     </div>
+                    <div className="emp-name">{item.handleContent}</div>
                     <div className="emp-name">{item.nodeName}</div>
                     <div className="emp-name">{`${
                       item.handleTime

@@ -689,7 +689,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginRight: 53 }}>1.护长审核</span>
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN2.JS0000012}
                     inputKey={"JS0000012"}
                     option={[
@@ -716,7 +716,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginRight: 40 }}>2.科护长审核</span>
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN2.JS0000017}
                     inputKey={"JS0000017"}
                     option={[
@@ -939,7 +939,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN2.JS0000022}
                     inputKey={"JS0000022"}
                     option={[
@@ -972,7 +972,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <SelectBox
                     type="radio"
-                    disabled={false}
+                    disabled={true}
                     values={tableObjN2.JS0000027}
                     inputKey={"JS0000027"}
                     option={[
