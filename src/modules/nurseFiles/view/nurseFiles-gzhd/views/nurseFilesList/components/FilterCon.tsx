@@ -32,15 +32,13 @@ const FILTER_MAP: any = {
     "护理部副主任",
     "护理部主任"
   ],
-	护理岗位:nurseFilesListViewModel.nursePostList,
-  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"]
+  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"],
+  护理岗位:nurseFilesListViewModel.nursePostList,
 };
 
 type FilterMap = typeof FILTER_MAP;
 
 const getFilterAdapter = (label: string) => {
-  // console.log(label)
-  // return
   switch (label) {
     case "学历": {
       return nurseFilesListViewModel.filterXl;
@@ -124,15 +122,16 @@ const setFilterAdapter = (label: string, value: string) => {
         nurseFilesListViewModel.filterZw = value;
       }
       break;
-		case "护理岗位":
-      {
-        nurseFilesListViewModel.filterHLGW = value;
-      }
-      break;
+		
     case "科室属性":
       {
         nurseFilesListViewModel.filterKs = value;
       }
+    case "护理岗位":
+    {
+      nurseFilesListViewModel.filterHLGW = value;
+    }
+      break;
       break;
     default:
   }
@@ -140,10 +139,7 @@ const setFilterAdapter = (label: string, value: string) => {
 export default observer(function FilterCon() {
 	const [nowkey, setNowkey] = useState(1);
 	useEffect(() => {
-			// nurseFilesListViewModel.filterHLGW
 			// console.log('护理岗位')
-			// getFilterAdapter('护理岗位')
-			// setFilterAdapter('护理岗位','全部')
 			setTimeout(() => {
 				FILTER_MAP['护理岗位'] = nurseFilesListViewModel.nursePostList
 				setNowkey(Date.now())
@@ -191,8 +187,9 @@ export default observer(function FilterCon() {
         {Object.keys(FILTER_MAP).map((item, index) => {
           return (
             <FilterItem nowtime={nowkey}
-              key={index}
+              filterKey={index}
               label={item}
+              key={index}
               selected={getFilterAdapter(item)}
               options={FILTER_MAP[item]}
             />
@@ -233,6 +230,7 @@ interface FilterItemProps {
   selected: string;
   options: string[];
 	nowtime:number;
+  filterKey:number,
 }
 
 const FilterItem = (props: FilterItemProps) => {
@@ -247,6 +245,16 @@ const FilterItem = (props: FilterItemProps) => {
       color: #999;
       margin-right: 20px;
     }
+    &:last-child{
+      min-height: 36px;
+      height: auto;
+      .label,.option{
+        float: left;
+      }
+    }
+    .last-option{
+      overflow: hidden;
+    }
   `;
   const Option = styled.div<{ active: boolean }>`
     margin-right: 30px;
@@ -254,20 +262,42 @@ const FilterItem = (props: FilterItemProps) => {
     color: ${p => (p.active ? p.theme.$mtdc : "inherit")};
     font-weight: ${p => (p.active ? "bold" : "normal")};
   `;
-  let { label, options, selected,nowtime } = props;
+  let { label, options, selected,nowtime,filterKey } = props;
   return (
     <ItemStyl>
-      <div className="label" data-no={nowtime}>{label}：</div>
-      {options.map((item, index) => (
-        <Option
-          className="option"
-          active={item === selected}
-          key={index}
-          onClick={() => setFilterAdapter(label, item)}
-        >
-          {item}
-        </Option>
-      ))}
+      {
+        filterKey<(Object.keys(FILTER_MAP).length-1)?
+        <>
+        <div className="label" data-no={nowtime}>{label}：</div>
+          {options.map((item, index) => (
+            <Option
+              className="option"
+              active={item === selected}
+              key={index}
+              onClick={() => setFilterAdapter(label, item)}
+            >
+              {item}
+            </Option>
+          ))}
+        </> :<>
+        <div className="label" data-no={nowtime}>{label}：</div>
+        <div className="last-option">
+          {options.map((item, index) => (
+              <Option
+                className="option"
+                active={item === selected}
+                key={index}
+                onClick={() => setFilterAdapter(label, item)}
+              >
+                {item}
+              </Option>
+            ))}
+        </div>
+          
+        </>
+      }
+      
+      
     </ItemStyl>
   );
 };
