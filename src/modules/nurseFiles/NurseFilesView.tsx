@@ -130,7 +130,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy": false, 
+        "hj,lyrm,qhwy,fsxt": false, 
         other: !appStore.isDev,
       },
       vague: true,

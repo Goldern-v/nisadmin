@@ -77,7 +77,6 @@ export default observer(function ProblemImpSection(props: Props) {
       <BaseTable
         columns={columns}
         dataSource={list}
-        scroll={{x:'max-content',y:400}}
       />
     </Wrapper>
   );

@@ -84,7 +84,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "统计查询",
       path: "/statistic",
-      hidden: () => !appStore.isDev
+      // hidden: () => !appStore.isDev
     },
     {
       name: "系统设置",

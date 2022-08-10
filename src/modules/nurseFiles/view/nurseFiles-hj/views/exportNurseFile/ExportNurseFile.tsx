@@ -124,9 +124,9 @@ export default function ExportNurseFile(props: Props) {
           <PrintPage pageIndex={10}>
             <ThreeBases threeBaseList={threeBaseList} />
           </PrintPage>
-          <PrintPage pageIndex={11}>
+          {/* <PrintPage pageIndex={11}>
             <WorkRegistrationForm registrationWorkList={registrationWorkList} />
-          </PrintPage>
+          </PrintPage> */}
         </React.Fragment>
       )}
     </Wrapper>

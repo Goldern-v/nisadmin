@@ -116,7 +116,8 @@ export default function BaseInfo(props: Props) {
         {experienceList.map((item: any, index: number) => (
           <tr key={index}>
             <td>
-              {item.startTime} - {item.endTime || '至今'}
+              {/* {item.startTime} - {item.endTime || '至今'} */}
+              {item.startTime} - {index==0 ? '当天' : item.endTime}
             </td>
             <td>{item.unit}</td>
             <td>{item.professionalWork}</td>

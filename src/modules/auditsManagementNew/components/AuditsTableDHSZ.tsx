@@ -56,7 +56,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         `/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id
         }?qcCode=${row.othersMessage.qcCode}`
       );
-    } else if (showType == "nurseFileNys") {
+    } else if (showType == "nurseFileNys" || showType == "nurseFile") {
       service.commonApiService
         .getNurseInformation(row.commiterNo)
         .then((res) => {
@@ -200,10 +200,10 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
     getDataFun.then((res) => {
       setLoading(false);
-      setTableData(res.data.list);
-      setTotal(res.data.totalCount);
-      setCurrent(res.data.pageIndex);
-      setPageSize(res.data.pageSize);
+      setTableData(res.data?.list);
+      setTotal(res.data?.totalCount);
+      setCurrent(res.data?.pageIndex);
+      setPageSize(res.data?.pageSize);
     });
   };
 
@@ -287,7 +287,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   }, [tableData]);
 
   useEffect(() => {
-    showType && needAudit && onload(current, searchText, props.selectedDate, pageSize);
+    showType && (appStore.HOSPITAL_ID === 'wjgdszd' ? true : needAudit) && onload(current, searchText, props.selectedDate, pageSize);
     // console.log(111, needAudit, authStore.selectedDeptCode, statisticsViewModal.selectedDeptCode)
     // needAudit, showType, statisticsViewModal.selectedDeptCode
   }, []);

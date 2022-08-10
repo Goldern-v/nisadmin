@@ -1,7 +1,7 @@
 import moment from "moment";
 import store, { authStore, appStore } from "src/stores";
 import styled from "styled-components";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react-lite";
 import { Button, DatePicker, Tooltip , Input} from "antd";
@@ -173,19 +173,19 @@ export default observer(function TopCon(props: any) {
     return "";
   }, [qcCodeList]);
   const [createBtn, setCreateBtn] = useState(true);
+  const qcLevelKeys = useMemo(() => ([
+    "yx_one_level_quality_control",
+    "yx_two_level_quality_control",
+    "yx_tertiary_quality_control",
+    "yx_functional_supervision",
+  ]), [])
   useEffect(() => {
+    getQcCodeList();
     if (isWhyx) {
-      let arr = [
-        "yx_one_level_quality_control",
-        "yx_two_level_quality_control",
-        "yx_tertiary_quality_control",
-        "yx_functional_supervision",
-      ];
-      getQcCodeList();
       qualityControlRecordVM
         .judgePower({
           nodeCode: "commit",
-          chainCode: arr[qualityControlRecordVM.level - 1],
+          chainCode: qcLevelKeys[qualityControlRecordVM.level - 1],
           empNo: (authStore.user && authStore.user.empNo) || "",
         })
         .then((res) => {
@@ -279,8 +279,14 @@ export default observer(function TopCon(props: any) {
         },
       })}
 
-      {(qualityControlRecordVM.readWay == 1 &&
-        qualityControlRecordVM.level == 2) && (
+      {(appStore.hisMatch({
+        map: {
+          'hj': qualityControlRecordVM.readWay == 1 &&
+          qualityControlRecordVM.level == 2,
+          other: qualityControlRecordVM.readWay == 1 ||
+          qualityControlRecordVM.level == 2
+        }
+      })) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>科室:</span>
           <Select
