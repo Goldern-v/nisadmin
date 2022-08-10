@@ -102,7 +102,7 @@ export default observer(function ProblemImpSection(props: Props) {
     <Wrapper>
       <TwoLevelTitle text={sectionTitle} />
       <EditButton onClick={() => analysisDetailModal.current!.openEditModal(sectionId)}>编辑</EditButton>
-      <BaseTable dataSource={data.list} columns={columns} scroll={{x:'max-content',y:500}}/>
+      <BaseTable dataSource={data.list} columns={columns} />
     </Wrapper>
   )
 })
