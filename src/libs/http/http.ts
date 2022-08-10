@@ -9,7 +9,8 @@ import {
   onResponseRejected
 } from "./interceptors";
 
-axios.defaults.timeout = 0;
+// 上传大文件限制
+axios.defaults.timeout = 1800000;
 
 /** 带token */
 const http = axios.create(axiosConfig);

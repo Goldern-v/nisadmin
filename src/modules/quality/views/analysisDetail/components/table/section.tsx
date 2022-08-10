@@ -40,7 +40,6 @@ export default observer(function TableSection(props: Props) {
         dataSource={data.list}
         columns={columns}
         pagination={false}
-        scroll={{x:'max-content',y: 'max-content'}}
       />
     </SectionCon>
   );
