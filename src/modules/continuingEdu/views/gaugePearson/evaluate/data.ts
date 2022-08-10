@@ -8,19 +8,11 @@ import moment from 'moment'
 
 class evaluateData {
   @observable public id = ""; //菜单id
-  @observable public courseName = ""; //关键字
-  @observable public deptCode: any[] = []; // 科室
-  @observable public selectedType = ""; //类型
-  @observable public education =""; //学历
-  @observable public year = moment() as undefined | moment.Moment; //年份
-  @observable public yearImport = moment() as undefined | moment.Moment; //年份
-  @observable public sex =""; //性别
-  @observable public selectTypeList: any = []; //类型
-  @observable public selectedState = ""; //状态
-  @observable public key: string = "0"; //状态
-  @observable public pageIndex: any = 1; //页码
-  @observable public pageSize: any = 20; //每页大小
-  @observable public total: any = 0; //总条数
+  @observable public deptCode:string[] = []; // 科室
+  @observable public planTrainBeginTime = moment(); //规培时间开始时间
+  @observable public planTrainEndTime = moment(); //规培时间终止时间
+  @observable public deptCodeMultiple:string[] = []; //实习科室编码（多选）
+  @observable public keyWord:string = ''; //查询关键字
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
@@ -33,13 +25,13 @@ class evaluateData {
 
   @computed
   get postObj() {
+    console.log(this.planTrainBeginTime,this.planTrainEndTime);
+    
     return {
-      year:moment(this.year).format("YYYY"), //年份
-      // deptCode: this.deptCode,
-      courseName:this.courseName, //关键字
-      pageIndex:this.pageIndex,
-      pageSize:this.pageSize,
-      total:this.total,
+      planTrainBeginTime:moment(this.planTrainBeginTime).format("YYYY-MM-DD"), //开始时间
+      planTrainEndTime:moment(this.planTrainEndTime).format("YYYY-MM-DD"), //结束时间
+      deptCodeMultiple:this.deptCodeMultiple, //科室编码
+      keyWord:this.keyWord, //关键字
     };
   }
 
@@ -48,19 +40,19 @@ class evaluateData {
     this.tableLoading = true;
     trainingSettingApi.getQueryPageList(this.postObj).then(res => {
       this.tableLoading = false;
+      console.log(res);
+      
       this.tableList = res.data.list;
-      this.tableList.map((item:any)=>{
-        item.uploadDate = moment(item.uploadDate).format("YYYY-MM-DD HH:mm:ss")
-        item.modifyDate = moment(item.modifyDate).format("YYYY-MM-DD HH:mm:ss")
-      })
-      this.total = res.data.totalCount;
-      this.pageIndex = res.data.pageIndex;
-      this.pageSize = res.data.pageSize;
+      // this.tableList.map((item:any)=>{
+      //   item.uploadDate = moment(item.uploadDate).format("YYYY-MM-DD HH:mm:ss")
+      //   item.modifyDate = moment(item.modifyDate).format("YYYY-MM-DD HH:mm:ss")
+      // })
     });
   }
   // 保存
   save() {
-    this.tableLoading = true;
+    // this.tableLoading = true;
+    
     // trainingSettingApi.getQueryPageList(this.postObj).then(res => {
     //   this.tableLoading = false;
     //   this.tableList = res.data.list;
@@ -78,8 +70,19 @@ class evaluateData {
     fileDownload(list)
   }
 
+  getDeptList(){
+    trainingSettingApi.getnursingDeptRole().then(res =>{
+      if(res.data.deptList.length){
+
+        this.deptCode = [{code:'',name:'全院'}, ...res.data.deptList]
+      }
+      
+    })
+  }
+
   init() {
     this.onload();
+    this.getDeptList()
   }
 }
 export const evaluateDatas = new evaluateData();

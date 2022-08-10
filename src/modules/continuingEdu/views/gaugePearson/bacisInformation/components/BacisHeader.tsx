@@ -2,13 +2,11 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Select, Input, Button, DatePicker,message,Modal } from "antd";
-import { PageTitle } from "src/components/common";
 import moment, { duration } from 'moment'
 import { bacisManagData } from "../bacisPostgraduate";
 // import { formApplyModal } from "../FormApplyModal"; // 仓库数据
 import AddInternModal from "../model/AddInternModal"; // 新建弹窗
 import { appStore,authStore } from "src/stores";
-import { use } from "echarts";
 
 const Option = Select.Option;
 
@@ -22,7 +20,8 @@ export default observer(function ApplyHeader(props: Props) {
     year: moment() as null | moment.Moment,
     deucValue:'',
     sexValue:'',
-    keyWord:'',
+    region:'',
+    name:'',
   } as any) //初始化默认值
   const [createClear, setCreateClear] = useState(true)
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
@@ -128,9 +127,9 @@ export default observer(function ApplyHeader(props: Props) {
         <Input
           style={{ width: 150, marginLeft: 15, marginRight: 5 }}
           placeholder="请输入要搜索的片区"
-          value={bacisManagData.keyWord}
+          value={bacisManagData.region}
           onChange={e => {
-            bacisManagData.keyWord = e.target.value
+            bacisManagData.region = e.target.value
             bacisManagData.onload()
           }}
         />
@@ -138,9 +137,9 @@ export default observer(function ApplyHeader(props: Props) {
         <Input
           style={{ width: 150, marginLeft: 15, marginRight: 5 }}
           placeholder="请输入要搜索的姓名"
-          value={bacisManagData.keyWord}
+          value={bacisManagData.name}
           onChange={e => {
-            bacisManagData.keyWord = e.target.value
+            bacisManagData.name = e.target.value
             bacisManagData.onload()
           }}
         />
@@ -151,13 +150,13 @@ export default observer(function ApplyHeader(props: Props) {
         >
           查询
         </Button>
-        {/* <Button
+        <Button
           className="span"
           onClick={() => {
             bacisManagData.getImportTemplate();
           }}>
           下载模板
-        </Button> */}
+        </Button>
         <Button
           className="span"
           onClick={handelImprot}
@@ -184,6 +183,7 @@ export default observer(function ApplyHeader(props: Props) {
       <AddInternModal
         allowClear={createClear}
         visible={editVisible}
+        dataList={bacisManagData.teachingList || []}
         onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
       />

@@ -10,7 +10,7 @@ import {evaluateDatas} from "./data"
 // }
 export default observer(function BacisManagement() {
   useEffect(()=>{
-    evaluateDatas.onload()
+    evaluateDatas.init()
   },[])
   return (
     <Wrapper>

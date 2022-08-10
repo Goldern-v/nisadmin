@@ -143,6 +143,12 @@ export default observer(function ApplicationN1(props: Props) {
     },
   };
 
+  //点击跳转对应页
+  const handleSkip =(data:any)=> {
+    const path: string = data.path
+    window.open(path);
+  }
+
   return (
     <Wrapper ref={props.printRef} id="formPrintPage">
       <div
@@ -502,7 +508,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   （原由及累计时间：
                   <input
-                    className="border mar-btom acc-time"
+                    className="acc-time"
                     type="text"
                     value={tableObjN1.JS0000033}
                     onChange={(e) => {
@@ -854,7 +860,7 @@ export default observer(function ApplicationN1(props: Props) {
           {PromotionDetaitUtils.attachmentList.map((item:any)=>{
              return <div  key={item.uid} >
                 <Spin spinning={upLoading} delay={500} >
-                <div className="upload-item">
+                <div className="upload-item"  onClick={()=>{handleSkip(item)}}>
                   <span>{item.name}</span>
                   <Icon type="close-circle" theme="twoTone" twoToneColor="#f33838" onClick={()=>{handleRomve(item)} }/>
                 </div>

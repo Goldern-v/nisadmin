@@ -28,14 +28,19 @@ export default observer(function ApplyTable(props: Props) {
 
   const columns: any = [
     {
-      title: "序号",
-      dataIndex: "",
-      render: (text: any, record: any, index: number) => index + 1,
+      title: "姓名",
+      dataIndex: "courseName",
       align: "center",
-      width: 60
+      width: 120
     },
     {
-      title: "姓名",
+      title: "科室",
+      dataIndex: "courseName",
+      align: "center",
+      width: 120
+    },
+    {
+      title: "科室",
       dataIndex: "courseName",
       align: "center",
       width: 120
@@ -115,40 +120,33 @@ export default observer(function ApplyTable(props: Props) {
         );
       }
     },
-    // {
-    //   title: "操作",
-    //   dataIndex: "cz",
-    //   width: 100,
-    //   align: "center",
-    //   render(text: any, record: any) {
-    //     let data: any = [{
-    //       text: "下载",
-    //       function: handDownload
-    //     },
-    //     {
-    //       text: "预览",
-    //       function: handlePreview
-    //     },
-    //     {
-    //       text: "删除",
-    //       color:'#f44',
-    //       function: handleDelete
-    //     }];
-    //     return (
-    //       <DoCon>
-    //         {data.map((item: any, index: any) => (
-    //           <span
-    //             key={index}
-    //             style={{color:item.color?item.color:''}}
-    //             onClick={() => (item.function ? item.function(record) : {})}
-    //           >
-    //             {item.text}
-    //           </span>
-    //         ))}
-    //       </DoCon>
-    //     );
-    //   }
-    // }
+    {
+      title: "操作",
+      dataIndex: "cz",
+      width: 100,
+      align: "center",
+      render(text: any, record: any) {
+        let data: any = [
+        {
+          text: "删除",
+          color:'#f44',
+          function: handleDelete
+        }];
+        return (
+          <DoCon>
+            {data.map((item: any, index: any) => (
+              <span
+                key={index}
+                style={{color:item.color?item.color:''}}
+                onClick={() => (item.function ? item.function(record) : {})}
+              >
+                {item.text}
+              </span>
+            ))}
+          </DoCon>
+        );
+      }
+    }
   ];
 
   //删除
@@ -227,9 +225,6 @@ export default observer(function ApplyTable(props: Props) {
         //   pageSize: evaluateDatas.pageSize,
         // }}
         onChange={(pagination) => {
-          evaluateDatas.pageIndex = pagination.current;
-          evaluateDatas.total = pagination.total;
-          evaluateDatas.pageSize = pagination.pageSize;
           evaluateDatas.onload();
         }}
       />
