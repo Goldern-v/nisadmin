@@ -5,8 +5,8 @@ import { Select, Input, Button, DatePicker, Modal, message } from "antd";
 import { PageTitle } from "src/components/common";
 import { appStore, authStore } from 'src/stores'
 import moment, { duration } from 'moment'
-import { clinicalApi } from "./ClinicalApi";
-import { clinicalData } from "./ClinicalData";
+import { clinicalApi } from "../ClinicalApi";
+import { clinicalDataYear } from "../tsData/ClinicalDataYear";
 import { values } from "mobx";
 import { quarterList } from 'src/enums/date'
 import { fileDownload } from "src/utils/file/file";
@@ -14,42 +14,30 @@ const Option = Select.Option;
 
 interface Props {
 	title: string,
-	tableLoading:Boolean,
-	setTableLoading:Function,
-	initTableData:Function,
-	saveTableData:Function,
+	tableLoading: Boolean,
+	setTableLoading: Function,
+	initTableData: Function,
 }
 interface IDeucOption {
 	value: string;
 	item: string;
 }
-export default observer(function ClinicalHeaderByVicky(props: Props) {
+export default observer(function ClinicalYearHead(props: Props) {
 	const [deucOption, setdeucOption] = useState([]); // 科室信息
 	const [yearPickShow, setYearPickShow] = useState(false);
 
-	const pathname = appStore.location?.pathname
-	const {tableLoading,setTableLoading,initTableData,saveTableData} = props
-
-
-	// console.log(appStore.location.pathname)
-	const getMonths = () => {
-		let options = []
-		for (let i = 1; i <= 12; i++) {
-			options.push(<Option value={i.toString()} key={i.toString()}>{i.toString()}月</Option>)
-
-		}
-		return options
-	}
+	// const pathname = appStore.location?.pathname
+	const { tableLoading, setTableLoading, initTableData } = props
 
 	useEffect(() => {
 		setTableLoading(true)
+		// console.log('获取科室')
 		// 获取科室
 		clinicalApi.getnursingAll().then((res) => {
 			let deptListall = [];
 			deptListall = res.data.deptList
-			clinicalData.deptCode = res.data.defaultDept
+			clinicalDataYear.deptCodeYear = res.data.defaultDept
 			setdeucOption(deptListall)
-			// clinicalData.init()
 			// 查询数据
 			onload()
 		}).catch((err) => {
@@ -59,52 +47,33 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 	}, [])
 
 	/** 获取表格数据 */
-	const onload=()=> {
-		if(clinicalData.postObj.deptCode=='') return
-		clinicalApi.getMonthTable(clinicalData.postObj).then(res => {
-			let valueList = res.data.valueList || []
-			
-			if(valueList.length>0){
-				
-				initTableData(valueList,res.data)
-			}
-		  // console.log(res.data)
-		  setTableLoading(false)
-
-		});
-	  }
-
-	  useEffect(() => {
-		console.log('数据变化了')
+	const onload = () => {
 		setTableLoading(true)
-		onload()
-	  }, [clinicalData.postObj])
-	  
+		clinicalApi.getYearTable(clinicalDataYear.postObjYear).then(res => {
+			let valueList = res.data.valueList || []
 
-	const promotionLevelList = [
-		{ name: '全部', value: '' },
-		{ name: 'N0->N1', value: 'N0->N1' },
-		{ name: 'N1->N2', value: 'N1->N2' },
-		{ name: 'N2->N3', value: 'N2->N3' },
-		{ name: 'N3->N4', value: 'N3->N4' },
-	]
+			if (valueList.length > 0) {
+
+				initTableData(valueList, res.data)
+			}
+			// console.log(res.data)
+			setTableLoading(false)
+
+		}).catch(err => {
+			setTableLoading(false)
+		});
+	}
 
 	// 查询
 	const handelInquire = () => {
-		setTableLoading(true)
 		onload()
 	}
 
-	// 保存
-	const handlerSave=()=>{
-		saveTableData()
-	}
-
 	// 导出
-	const handlerExport = ()=>{
-		clinicalApi.exportMonthTable(clinicalData.postObj).then(res => {
-        fileDownload(res);
-      });
+	const handlerExport = () => {
+		clinicalApi.exportYearTable(clinicalDataYear.postObjYear).then(res => {
+			fileDownload(res);
+		});
 	}
 
 	return (
@@ -118,67 +87,28 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 					<DatePicker className="mr-15"
 						open={yearPickShow}
 						onOpenChange={status => {
-
 							setYearPickShow(status)
 						}}
 						onPanelChange={(value, mode) => {
-							// console.log(value, mode)
-							clinicalData.year = value
+							clinicalDataYear.yearYear = value
 							setYearPickShow(false)
+							onload()
 						}}
 						mode="year"
 						style={{ width: 120 }}
-						value={clinicalData.year}
+						value={clinicalDataYear.yearYear}
 						allowClear={true}
 						placeholder='选择年份'
 						format="YYYY"
-					// onChange={date => {
-					// 	clinicalData.year = date
-
-					// }} 
 					/>
 				</>
-				<>
-					<span>月份：</span>
-					<Select className="mr-15"
-						style={{ width: 120 }}
-						value={clinicalData.month}
-						onChange={(val: number) => {
-							clinicalData.month = val
-							// console.log('yuefen', val)
-							// clinicalData.onload()
-						}}
-					>
-						{getMonths()}
-					</Select>
-				</>
-				{pathname.indexOf('quarter')>-1 && 
-					<>
-						<span>季度：</span>
-						<Select className="mr-15"
-							style={{ width: 120 }}
-							value={clinicalData.quarter}
-							onChange={(val: any) => {
-								clinicalData.quarter = val
-								console.log('quarter', val)
-								// clinicalData.onload()
-							}}
-						>
-							{
-								quarterList.map((v:any, i:number) => (
-									<Option key={i} value={i + 1}>{v}</Option>
-								))
-							}
-						</Select>
-					</>
-				}
 				<span>科室：</span>
 				<Select className="mr-15"
 					style={{ width: 180 }}
-					value={clinicalData.deptCode}
+					value={clinicalDataYear.deptCodeYear}
 					onChange={(val: string) => {
-						clinicalData.deptCode = val
-						// clinicalData.onload()
+						clinicalDataYear.deptCodeYear = val
+						onload()
 					}}
 				>
 					{deucOption.map((item: any) => {
@@ -192,13 +122,7 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 				>
 					查询
 				</Button>
-				<Button
-					type="primary"
-					className="span"
-					onClick={handlerSave}
-				>
-					保存
-				</Button>
+
 				<Button
 					className="span"
 					onClick={handlerExport}

@@ -4,22 +4,13 @@ import styled from 'styled-components'
 import moment from "moment";
 import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import SignColumnRender from "./SignModal";
 import {
 	ColumnProps,
-	message,
-	Input,
-	Select,
-	DatePicker,
-	Popover,
-	Button,
-	InputNumber
 } from "src/vendors/antd";
 import { KeepAlive, Provider } from 'react-keep-alive'
 import { appStore } from 'src/stores'
-import ClinicalHeaderByVicky from './ClinicalHeaderByVicky';
-// import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
-// pimport { type } from 'os';
+import ClinicalYearHead from './header/ClinicalYearHead';
+import { clinicalDataYear } from './tsData/ClinicalDataYear';
 export interface Props {
 	payload: any;
 }
@@ -27,126 +18,15 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 export default function ClinicalYear(props: Props) {
 
 	// 搬运start
-	const [pageLoading, setPageLoading] = useState(false);
-	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(220);
-	const [pageOptions, setPageOptions]: any = useState({
-		pageIndex: 1,
-		pageSize: 20,
-		total: 0
-	});
-	const [total, setTotal] = useState(0);
 	// 搬运end
 
-	const [tableLoading, setTableLoading] = useState(false);
-	let dayList = [], columnDay = {}
+	const [tableLoading, setTableLoading] = useState(false)
+	const [quarterCons, setQuarterCons] = useState(['第一季度','第二季度','第三季度','第四季度']);
+	const [tableColumn, setTableColumn] = useState([] as any);
+	const [data2, setData2] = useState([] as any);
+	let monthList: ColumnProps<any>[] | any= [], columnDay = {}
 
-	const lastMonthDays = moment().subtract(1, 'month').daysInMonth()//上个月的总天数
-	// 时间从上个月的26号开始到这个月的25号
-	dayList = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
-	console.log(dayList)
-	dayList.map(it => {
-		columnDay['ss_' + it] = 0
-	})
-
-	// 签名
-	const updateDataSource = () => {
-		console.log('firstgetPage123456')
-		// if (isAll) {
-		//   setDataSource([]);
-		//   setDataSource([...dataSource]);
-		// } else {
-		//   throttler2(() => {
-		//     setDataSource([...dataSource]);
-		//   });
-		// }
-	};
-	const getPage = () => {
-		console.log('firstgetPage')
-		return 2
-	}
-	// end
-	let columnDayObj: ColumnProps<any>[] | any = []
-	dayList.map(it => {
-		columnDayObj.push({
-			title: it,
-			dataIndex: 'ss_' + it.toString(),
-			align: "center",
-			className: "input-cell",
-			width: 50,
-			render(text: any, record: any, index: number) {
-				if (index < 31) {
-					return (
-						<InputNumber
-							className='bcy-input-number'
-							min={0} max={100000}
-							size="small"
-							onChange={value => {
-								record.modified = true
-								record['ss_' + it.toString()] = value
-								let total = 0
-								for (let k in record) {
-									if (k.indexOf('ss_') > -1) {
-										total+=record[k]
-									}
-								}
-								record.rowTotal = total
-							}}
-						/>
-					);
-				}
-				return (<SignColumnRender {
-					...{
-						cellDisabled: () => false,
-						record,
-						index,
-						itemCfg: {},
-						updateDataSource,
-						registerCode: '5678',
-						selectedBlockId: null,
-						getPage,
-					}
-				} />)
-
-			}
-		})
-	})
-
-	const dataSource = [
-		{ recordDate: 0, classfiy: '入院患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '住院患者总数', ...columnDay },
-		{ recordDate: 0, classfiy: '留陪人数', ...columnDay },
-		{ recordDate: 0, classfiy: '给药错误发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '使用高危药物患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '高危药物外渗发生例次', ...columnDay },
-		{ recordDate: 0, classfiy: '输血患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '发生输血反应例次', ...columnDay },
-		{ recordDate: 0, classfiy: '留有胃管患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '胃管非计划性拔管例次', ...columnDay },
-		{ recordDate: 0, classfiy: '留有尿管患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '尿管非计划性拔管例次', ...columnDay },
-		{ recordDate: 0, classfiy: '尿道插管中泌尿道感染人数', ...columnDay },
-		{ recordDate: 0, classfiy: '留有中心静脉导管患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '中心静脉导管非计划性拔管例次', ...columnDay },
-		{ recordDate: 0, classfiy: '中心静脉插管中血流感染人数', ...columnDay },
-		{ recordDate: 0, classfiy: '留有引流管患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '引流管非计划性拔管例次', ...columnDay },
-		{ recordDate: 0, classfiy: '带入压疮总例数', ...columnDay },
-		{ recordDate: 0, classfiy: '新发压疮例数', ...columnDay },
-		{ recordDate: 0, classfiy: '需压疮高风险评估患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '压疮高风险评估阳性例数', ...columnDay },
-		{ recordDate: 0, classfiy: '排便失禁患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '失禁性皮炎发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '需跌倒/坠床高风险评估患者人数', ...columnDay },
-		{ recordDate: 0, classfiy: '跌倒/坠床高风险评估阳性例数', ...columnDay },
-		{ recordDate: 0, classfiy: '跌倒发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '坠床发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '患者误吸发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '患者走失发生例数', ...columnDay },
-		{ recordDate: 0, classfiy: '护士锐器损伤人数', ...columnDay },
-		// { recordDate: 0, classfiy: '', ...columnDay },
-	]
-	// console.log(dataSource)
 	const columns: ColumnProps<any>[] | any = [
 		{
 			title: "序号",
@@ -176,159 +56,101 @@ export default function ClinicalYear(props: Props) {
 
 			},
 			className: 'hua-line',
-			dataIndex: "classfiy",
+			dataIndex: "name",
 			align: "center",
 			width: 100,
 		},
-		// ...columnDayObj,
-    {
-			title: "1月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "2月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "3月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "第一季度",
-			dataIndex: "",
-			align: "center",
-			width: 60,
-		},
-		{
-			title: "4月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "5月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "6月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "第二季度",
-			dataIndex: "",
-			align: "center",
-			width: 60,
-		},
-		{
-			title: "7月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "8月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "9月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "第三季度",
-			dataIndex: "",
-			align: "center",
-			width: 60,
-		},
-		{
-			title: "10月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "11月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "12月",
-			dataIndex: "",
-			align: "center",
-			width: 40,
-		},
-		{
-			title: "第四季度",
-			dataIndex: "",
-			align: "center",
-			width: 60,
-		},
-		{
+	]
+
+
+	// 更新表头
+	useEffect(() => {
+		// console.log('更新表头了')
+		monthList = [] 
+		for (let mm = 1; mm < 13; mm++) {
+			monthList.push({
+				title: mm+"月",
+				dataIndex: clinicalDataYear.yearChange?.toString()+'_'+(mm>9?mm:'0'+mm)+'_01_1',
+				align: "center",
+				width: 40,
+			})
+			if(mm%3===0){
+				monthList.push({
+					title: quarterCons[mm/3-1],
+					dataIndex: "quarter"+mm/3,
+					align: "center",
+					width: 60,
+				},)
+			}
+			
+		}
+		monthList.push({
 			title: "合计",
-			dataIndex: "rowTotal",
+			dataIndex: "total",
 			align: "center",
 			width: 50,
-		},
-	]
-	// 搬运start
-	const handleSelectedChange = (payload: any[]) => {
-		setSelectedRowKeys(payload)
-		// console.log(payload)
-	}
-	// 搬运end
+		})
+		setTableColumn([...columns,...monthList])
+		setTableLoading(false)
+	}, [clinicalDataYear.yearChange])
 
-	const initTableData=(itemList:any)=>{
-		
+
+
+	const dataSource = [
+		{ recordDate: 0,  name: '入院患者人数',   },
+		{ recordDate: 0,  name: '住院患者总数',   },
+		{ recordDate: 0,  name: '留陪人数',   },
+		{ recordDate: 0,  name: '给药错误发生例数',   },
+		{ recordDate: 0,  name: '使用高危药物患者人数',   },
+		{ recordDate: 0,  name: '高危药物外渗发生例次',   },
+		{ recordDate: 0,  name: '输血患者人数',   },
+		{ recordDate: 0,  name: '发生输血反应例次',   },
+		{ recordDate: 0,  name: '留有胃管患者人数',   },
+		{ recordDate: 0,  name: '胃管非计划性拔管例次',   },
+		{ recordDate: 0,  name: '留有尿管患者人数',   },
+		{ recordDate: 0,  name: '尿管非计划性拔管例次',   },
+		{ recordDate: 0,  name: '尿道插管中泌尿道感染人数',   },
+		{ recordDate: 0,  name: '留有中心静脉导管患者人数',   },
+		{ recordDate: 0,  name: '中心静脉导管非计划性拔管例次',   },
+		{ recordDate: 0,  name: '中心静脉插管中血流感染人数',   },
+		{ recordDate: 0,  name: '留有引流管患者人数',   },
+		{ recordDate: 0,  name: '引流管非计划性拔管例次',   },
+		{ recordDate: 0,  name: '带入压疮总例数',   },
+		{ recordDate: 0,  name: '新发压疮例数',   },
+		{ recordDate: 0,  name: '需压疮高风险评估患者人数',   },
+		{ recordDate: 0,  name: '压疮高风险评估阳性例数',   },
+		{ recordDate: 0,  name: '排便失禁患者人数',   },
+		{ recordDate: 0,  name: '失禁性皮炎发生例数',   },
+		{ recordDate: 0,  name: '需跌倒/坠床高风险评估患者人数',   },
+		{ recordDate: 0,  name: '跌倒/坠床高风险评估阳性例数',   },
+		{ recordDate: 0,  name: '跌倒发生例数',   },
+		{ recordDate: 0,  name: '坠床发生例数',   },
+		{ recordDate: 0,  name: '患者误吸发生例数',   },
+		{ recordDate: 0,  name: '患者走失发生例数',   },
+		{ recordDate: 0,  name: '护士锐器损伤人数',   },
+		// { recordDate: 0,  name: '',   },
+	]
+
+	
+
+	const initTableData = (itemList: any, body: any) => {
+		// console.log('itemList', itemList)
+		setData2([])
+		setData2([...itemList])
 	}
 
 	return (
 		<Wrapper>
-			<ClinicalHeaderByVicky title='科室临床护理质量指标年度汇总' tableLoading={false} 
-			setTableLoading={setTableLoading} initTableData={initTableData} />
+			<ClinicalYearHead title='科室临床护理质量指标年度汇总' tableLoading={false}
+				setTableLoading={setTableLoading} initTableData={initTableData} />
 			<ScrollCon>
 				<BaseTable
 					className="record-page-table"
-					loading={pageLoading}
-					dataSource={dataSource}
-					// rowSelection={{
-					//   selectedRowKeys,
-					//   onChange: handleSelectedChange,
-					// }}
-					columns={columns.filter((item: any) => item)}
+					loading={tableLoading}
+					dataSource={data2}
+					columns={tableColumn}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
-				// useOuterPagination
-				// pagination={{
-				//   onChange: (pageIndex: number) => {
-				// 	setPageOptions({ ...pageOptions, pageIndex })
-				//   },
-				//   onShowSizeChange: (pageIndex: number, pageSize: number) => {
-				// 	setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-				//   },
-				//   pageSizeOptions: ['20', '30', '40', '50', '100'],
-				//   current: pageOptions.pageIndex,
-				//   pageSize: pageOptions.pageSize,
-				//   total: total
-				// }}
-				// rowClassName={(record: any, idx: number) => {
-				//   if (cellDisabled(record)) return 'disabled-row'
-
-				//   return ''
-				// }}
 
 				/>
 			</ScrollCon>
@@ -392,6 +214,7 @@ const Wrapper = styled.div`
   .disabled-row .color-orange *[disabled] {
     color: orange !important;
   }
+
 
   .bcy-input-number{
 	width: 100%;

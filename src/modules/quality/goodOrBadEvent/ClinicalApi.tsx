@@ -62,10 +62,48 @@ export default class ClinicalApi extends BaseApiService {
 	public async getnursingAll() {
 		return this.get(`/user/nursingUnit`);
 	}
-
+	// 获取月度汇总表
 	public async getMonthTable(obj: any) {
-		return this.get(`/goodEvent/master/getMonthlyForDeptCode?${qs.stringify(obj)}`);
+		return this.get(`/goodEvent/clinicalIndicators/getMonthlyForDeptCode?${qs.stringify(obj)}`);
 	}
+	// 保存月度汇总表
+	public async saveMonthTable(obj: any) {
+		return this.post(`/goodEvent/clinicalIndicators/saveMonthlyDto`,obj);
+	}
+
+	// 月度汇总表导出
+	public async exportMonthTable(obj: any) {
+		return this.get(`/goodEvent/clinicalIndicators/exportMonthlyForDeptCode?${qs.stringify(obj)}`, {
+			responseType: "blob"
+		});
+	}
+
+	// 获取年度汇总表
+	public async getYearTable(obj: any) {
+		return this.get(`/goodEvent/clinicalIndicators/getYearlyForDeptCode?${qs.stringify(obj)}`);
+	}
+	// 导出年度汇总表
+	public async exportYearTable(obj: any) {
+		return this.get(`/goodEvent/clinicalIndicators/exportYearlyForDeptCode?${qs.stringify(obj)}`, {
+			responseType: "blob"
+		});
+	}
+
+	// 全院季度
+	// 获取全院季度汇总表
+	public async getQuarterTable(obj: any) {
+		return this.post(`/goodEvent/clinicalIndicators/getQuarterForAll`,obj);
+	}
+	// 导出年度汇总表
+	public async exportQuarterTable(obj: any) {
+		return this.post(`/goodEvent/clinicalIndicators/exportQuarterForAll`,obj, {
+			responseType: "blob"
+		});
+	}
+
+	
+
+	
 
 
 

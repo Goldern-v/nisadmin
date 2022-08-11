@@ -296,7 +296,6 @@ export default function SumMonth(props: Props) {
 										total += record[k]
 									}
 								}
-
 								record.rowTotalY = total
 								tempData = data2
 								setData2([...tempData])
@@ -495,12 +494,16 @@ export default function SumMonth(props: Props) {
 	const initTableData=(itemList:any)=>{
 		
 	}
+	
+	const saveTableData = ()=>{
+	
+	}
 
 
 	return (
 		<Wrapper>
 			<ClinicalHeaderByVicky title='科室临床护理质量指标年度汇总' tableLoading={false} 
-			setTableLoading={setTableLoading} initTableData={initTableData} />
+			setTableLoading={setTableLoading} initTableData={initTableData} saveTableData={saveTableData}/>
 			<ScrollCon>
 				<BaseTable data-kkey={freshData}
 					className="record-page-table"

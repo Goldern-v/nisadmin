@@ -6,7 +6,8 @@ import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { clinicalData } from "./ClinicalData";
 import { PageTitle } from "src/components/common";
-import { quarterList } from 'src/enums/date'
+import { quarterList } from 'src/enums/date';
+import { clinicalApi } from './ClinicalApi';
 
 import SignColumnRender from "./SignModal";
 import {
@@ -32,7 +33,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 export default function ClinicalQuarter(props: Props) {
 
 	// 搬运start
-	const [pageLoading, setPageLoading] = useState(false);
+	
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(220);
 	const [pageOptions, setPageOptions]: any = useState({
@@ -42,63 +43,18 @@ export default function ClinicalQuarter(props: Props) {
 	});
 	const [total, setTotal] = useState(0);
 	// 搬运end
-
-	const [deptList, setDeptList] = useState(['神经内科1', '神经内科2', '神经内科3', '神经内科4']);
+	const [pageLoading, setPageLoading] = useState(false);
+	const [deptList, setDeptList] = useState([{name:'神经内科1',code:'980'}, 
+	{name:'神经内科2',code:'981'}, {name:'神经内科3',code:'982'}, {name:'神经内科4',code:'983'}]);
 	const [yearPickShow, setYearPickShow] = useState(false);
-	const [selectQuarter, setSelectQuarter] = useState(moment().quarter() as unknown);
+	const [selectQuarter, setSelectQuarter] = useState(moment().quarter() as any);
+	const [selectYear,setSelectYear] = useState(moment().year() as any ); //年份);
 	const [quartMms, setQuartMms] = useState([] as any);
-
-
-	const getPage = () => {
-		console.log('firstgetPage')
-		return 2
-	}
-	// end
-
+	const [column3, setColumn3] = useState([] as any);
 	// 科室-表头
 	let columnDayObj: ColumnProps<any>[] | any = []
-	deptList.map((ii:string)=>{
-		columnDayObj.push({
-				title: ii,
-				children:quartMms
-			})
-	})
-
-	const dataSource = [
-		{ recordDate: 0, classfiy: '入院患者人数'},
-		{ recordDate: 0, classfiy: '住院患者总数', },
-		{ recordDate: 0, classfiy: '留陪人数', },
-		{ recordDate: 0, classfiy: '给药错误发生例数', },
-		{ recordDate: 0, classfiy: '使用高危药物患者人数', },
-		{ recordDate: 0, classfiy: '高危药物外渗发生例次', },
-		{ recordDate: 0, classfiy: '输血患者人数', },
-		{ recordDate: 0, classfiy: '发生输血反应例次', },
-		{ recordDate: 0, classfiy: '留有胃管患者人数', },
-		{ recordDate: 0, classfiy: '胃管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '留有尿管患者人数', },
-		{ recordDate: 0, classfiy: '尿管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '尿道插管中泌尿道感染人数', },
-		{ recordDate: 0, classfiy: '留有中心静脉导管患者人数', },
-		{ recordDate: 0, classfiy: '中心静脉导管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '中心静脉插管中血流感染人数', },
-		{ recordDate: 0, classfiy: '留有引流管患者人数', },
-		{ recordDate: 0, classfiy: '引流管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '带入压疮总例数', },
-		{ recordDate: 0, classfiy: '新发压疮例数', },
-		{ recordDate: 0, classfiy: '需压疮高风险评估患者人数', },
-		{ recordDate: 0, classfiy: '压疮高风险评估阳性例数', },
-		{ recordDate: 0, classfiy: '排便失禁患者人数', },
-		{ recordDate: 0, classfiy: '失禁性皮炎发生例数', },
-		{ recordDate: 0, classfiy: '需跌倒/坠床高风险评估患者人数', },
-		{ recordDate: 0, classfiy: '跌倒/坠床高风险评估阳性例数', },
-		{ recordDate: 0, classfiy: '跌倒发生例数', },
-		{ recordDate: 0, classfiy: '坠床发生例数', },
-		{ recordDate: 0, classfiy: '患者误吸发生例数', },
-		{ recordDate: 0, classfiy: '患者走失发生例数', },
-		{ recordDate: 0, classfiy: '护士锐器损伤人数', },
-		// { recordDate: 0, classfiy: '',   },
-	]
-	// console.log(dataSource)
+	// end
+	
 	const columns: ColumnProps<any>[] | any = [
 		{
 			title: "",
@@ -137,20 +93,122 @@ export default function ClinicalQuarter(props: Props) {
 
 					},
 					className: 'hua-line',
-					dataIndex: "classfiy",
+					dataIndex: "name",
 					align: "center",
 					width: 100,
 				},
 			]
 		},
-		...columnDayObj,
-		{
-			title: "",
-			// align: "center",
-			// width: 50,
-			children:[{title:'合计',align: "center",width: 50,dataIndex: "kjjjjj"}]
-		},
 	]
+
+	// 挂载
+	useEffect(() => {
+		// console.log(moment().year())
+		getTableList()
+	}, [])
+
+	const getTableList = ()=>{
+		setPageLoading(true)
+		let params={
+			year:selectYear,
+			quarter:selectQuarter
+		}
+		clinicalApi.getQuarterTable(params).then(res => {
+			// console.log(res.data)
+			setDeptList(res.data.deptList)
+			
+			setPageLoading(false)
+			initColumn()
+
+		}).catch(err => {
+			setPageLoading(false)
+		});
+	}
+
+	useEffect(() => {
+		initColumn()
+	}, [selectQuarter])
+	
+
+
+	const initColumn = ()=>{
+		let monthArr = [(Number(selectQuarter)-1)*3+1,(Number(selectQuarter)-1)*3+2,(Number(selectQuarter)-1)*3+3]
+		deptList.map((ii: any) => {
+			columnDayObj.push({
+				title: ii.name,
+				children: [
+					{
+						title:monthArr[0].toString()+'月',
+						align: "center",
+						width: 50,
+						dataIndex:selectYear.toString()+'_'+(monthArr[0]>9?monthArr[0].toString():'0'+monthArr[0].toString())+'_01_1_'+ii.code,
+					},
+					{
+						title:monthArr[1].toString()+'月',
+						align: "center",
+						width: 50,
+						dataIndex:selectYear.toString()+'_'+(monthArr[1]>9?monthArr[1].toString():'0'+monthArr[1].toString())+'_01_1_'+ii.code,
+					},
+					{
+						title:monthArr[2].toString()+'月',
+						align: "center",
+						width: 50,
+						dataIndex:selectYear.toString()+'_'+(monthArr[2]>9?monthArr[2].toString():'0'+monthArr[2].toString())+'_01_1_'+ii.code,
+					}
+				]
+			})
+		})
+		debugger
+		columnDayObj.push(
+			{
+				title: "",
+				children: [{ title: '合计', align: "center", width: 50, dataIndex: "total"}]
+			}
+		)
+
+		setColumn3([...columns,...columnDayObj])
+
+	}	
+	
+
+	const dataSource = [
+		{ recordDate: 0, classfiy: '入院患者人数' },
+		{ recordDate: 0, classfiy: '住院患者总数', },
+		{ recordDate: 0, classfiy: '留陪人数', },
+		{ recordDate: 0, classfiy: '给药错误发生例数', },
+		{ recordDate: 0, classfiy: '使用高危药物患者人数', },
+		{ recordDate: 0, classfiy: '高危药物外渗发生例次', },
+		{ recordDate: 0, classfiy: '输血患者人数', },
+		{ recordDate: 0, classfiy: '发生输血反应例次', },
+		{ recordDate: 0, classfiy: '留有胃管患者人数', },
+		{ recordDate: 0, classfiy: '胃管非计划性拔管例次', },
+		{ recordDate: 0, classfiy: '留有尿管患者人数', },
+		{ recordDate: 0, classfiy: '尿管非计划性拔管例次', },
+		{ recordDate: 0, classfiy: '尿道插管中泌尿道感染人数', },
+		{ recordDate: 0, classfiy: '留有中心静脉导管患者人数', },
+		{ recordDate: 0, classfiy: '中心静脉导管非计划性拔管例次', },
+		{ recordDate: 0, classfiy: '中心静脉插管中血流感染人数', },
+		{ recordDate: 0, classfiy: '留有引流管患者人数', },
+		{ recordDate: 0, classfiy: '引流管非计划性拔管例次', },
+		{ recordDate: 0, classfiy: '带入压疮总例数', },
+		{ recordDate: 0, classfiy: '新发压疮例数', },
+		{ recordDate: 0, classfiy: '需压疮高风险评估患者人数', },
+		{ recordDate: 0, classfiy: '压疮高风险评估阳性例数', },
+		{ recordDate: 0, classfiy: '排便失禁患者人数', },
+		{ recordDate: 0, classfiy: '失禁性皮炎发生例数', },
+		{ recordDate: 0, classfiy: '需跌倒/坠床高风险评估患者人数', },
+		{ recordDate: 0, classfiy: '跌倒/坠床高风险评估阳性例数', },
+		{ recordDate: 0, classfiy: '跌倒发生例数', },
+		{ recordDate: 0, classfiy: '坠床发生例数', },
+		{ recordDate: 0, classfiy: '患者误吸发生例数', },
+		{ recordDate: 0, classfiy: '患者走失发生例数', },
+		{ recordDate: 0, classfiy: '护士锐器损伤人数', },
+		// { recordDate: 0, classfiy: '',   },
+	]
+
+	// console.log(dataSource)
+	
+
 	// 搬运start
 	const handleSelectedChange = (payload: any[]) => {
 		setSelectedRowKeys(payload)
@@ -165,11 +223,11 @@ export default function ClinicalQuarter(props: Props) {
 		let monthsChild = [] as any
 		quarterMonths = Array.from({ length: 3 }, (_, index) => index + (Number(selectQuarter) - 1) * 3 + 1)
 		// console.log('quarterMonths==',quarterMonths)
-		quarterMonths.map(it=>{
+		quarterMonths.map(it => {
 			monthsChild.push({
-				title: it+'月',
+				title: it + '月',
 				// dataIndex: "",
-				render: (text: any, record: any, index: number) => index + 1+Number(selectQuarter),
+				render: (text: any, record: any, index: number) => index + 1 + Number(selectQuarter),
 				align: "center",
 				width: 50
 			})
@@ -182,7 +240,6 @@ export default function ClinicalQuarter(props: Props) {
 
 	return (
 		<Wrapper>
-			{/* <ClinicalHeaderByVicky title='科室临床护理质量指标季度汇总' /> */}
 			<div className='clinical-header'>
 				<LeftIcon className='clinical-title'>
 					<PageTitle>科室临床护理质量指标季度汇总</PageTitle>
@@ -249,31 +306,9 @@ export default function ClinicalQuarter(props: Props) {
 					className="record-page-table"
 					loading={pageLoading}
 					dataSource={dataSource}
-					// rowSelection={{
-					//   selectedRowKeys,
-					//   onChange: handleSelectedChange,
-					// }}
 					columns={columns.filter((item: any) => item)}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
-				// useOuterPagination
-				// pagination={{
-				//   onChange: (pageIndex: number) => {
-				// 	setPageOptions({ ...pageOptions, pageIndex })
-				//   },
-				//   onShowSizeChange: (pageIndex: number, pageSize: number) => {
-				// 	setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-				//   },
-				//   pageSizeOptions: ['20', '30', '40', '50', '100'],
-				//   current: pageOptions.pageIndex,
-				//   pageSize: pageOptions.pageSize,
-				//   total: total
-				// }}
-				// rowClassName={(record: any, idx: number) => {
-				//   if (cellDisabled(record)) return 'disabled-row'
-
-				//   return ''
-				// }}
 
 				/>
 			</ScrollCon>

@@ -5,7 +5,12 @@ import moment from "moment";
 import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import SignColumnRender from "./SignModal";
-import {clinicalMonthTableData} from './ClinicalMonthTableData';
+import { clinicalMonthTableData } from './ClinicalMonthTableData';
+import { clinicalApi } from './ClinicalApi';
+import { throttle } from "src/utils/throttle/throttle";
+
+import InputRender from './InputRender';
+
 import {
 	ColumnProps,
 	message,
@@ -27,6 +32,7 @@ import { clinicalData } from './ClinicalData';
 export interface Props {
 	payload: any;
 }
+const throttler2 = throttle();
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 export default function ClinicalMonth(props: Props) {
@@ -51,78 +57,22 @@ export default function ClinicalMonth(props: Props) {
 
 	let dayList = [] as any, columnDay = {}
 	let tempData = []
+	let columnDayObj: ColumnProps<any>[] | any = []
 
 	const lastMonthDays = moment().subtract(1, 'month').daysInMonth()//上个月的总天数
 	// 时间从上个月的26号开始到这个月的25号
 	dayList = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
-	dayList.map((it: any) => {
-		columnDay['ss_' + it] = 0
-	})
-
-	console.log(clinicalMonthTableData.greeting)
+	
 	// 签名
 	const updateDataSource = () => {
-		// console.log('firstgetPage123456')
-		// if (isAll) {
-		//   setDataSource([]);
-		//   setDataSource([...dataSource]);
-		// } else {
-		//   throttler2(() => {
-		//     setDataSource([...dataSource]);
-		//   });
-		// }
+		console.log('更新table数据')
+
+
 	};
 	const getPage = () => {
 		console.log('firstgetPage')
 		return 2
 	}
-	// end
-	// let columnDayObj: ColumnProps<any>[] | any = []
-	// dayList.map(it => {
-	// 	columnDayObj.push({
-	// 		title: it,
-	// 		dataIndex: 'ss_' + it.toString(),
-	// 		align: "center",
-	// 		className: "input-cell",
-	// 		width: 50,
-	// 		render(text: any, record: any, index: number) {
-	// 			console.log('first')
-	// 			if (index < 31) {
-	// 				return (
-	// 					<InputNumber
-	// 						className='bcy-input-number'
-	// 						min={0} max={100000}
-	// 						size="small"
-	// 						onChange={value => {
-	// 							record.modified = truncate
-	// 							record['ss_' + it.toString()] = value
-	// 							let total = 0
-	// 							for (let k in record) {
-	// 								if (k.indexOf('ss_') > -1) {
-	// 									total += record[k]
-	// 								}
-	// 							}
-	// 							record.rowTotal = total
-	// 						}}
-	// 					/>
-	// 				);
-	// 			}
-	// 			return (<SignColumnRender {
-	// 				...{
-	// 					cellDisabled: () => false,
-	// 					record,
-	// 					index,
-	// 					itemCfg: {},
-	// 					updateDataSource,
-	// 					registerCode: '5678',
-	// 					selectedBlockId: null,
-	// 					getPage,
-	// 				}
-	// 			} />)
-
-	// 		}
-	// 	})
-	// })
 
 	let dataSource = [
 		{ recordDate: 0, classfiy: '入院患者人数', ...columnDay },
@@ -158,51 +108,112 @@ export default function ClinicalMonth(props: Props) {
 		{ recordDate: 0, classfiy: '护士锐器损伤人数', ...columnDay },
 		{ recordDate: 0, classfiy: '', ...columnDay },
 	]
-	// setData3([...dataSource])
 
 
+	const columns: ColumnProps<any>[] | any = [
+		{
+			title: "序号",
+			dataIndex: "",
+			render: (text: any, record: any, index: number) => {
+				if (index < 31) {
+					return index + 1
+				}
+				return {
+					children: <span>填报人</span>,
+					props: {
+						colSpan: 2,
+					},
+				};
 
+			},
+			align: "center",
+			width: 50
+		},
+		{
+			title: () => {
+				return (
+					<div className='table-hed-left'>
+						<span className='ml'>项目</span>
+						<span className='mr'>日期</span>
+					</div>
+				)
+			},
+			render: (text: any, record: any, index: number) => {
+				if (index < 31) {
+					return <span>{text}</span>
+				}
+				return {
+					props: {
+						colSpan: 0,
+					},
+				};
 
-	// 搬运start
-	const handleSelectedChange = (payload: any[]) => {
-		setSelectedRowKeys(payload)
-		// console.log(payload)
-	}
-	// 搬运end
-	
-		
-		let columnDayObj: ColumnProps<any>[] | any = []
+			},
+			className: 'hua-line',
+			dataIndex: "name",
+			align: "center",
+			width: 100,
+		},
+	]			
+
+	useEffect(() => {
+		// 头部数据改变，就要重新计算数据
+		columnDayObj = []
+		console.log(clinicalData.postObj.month)
+		let currrentPrefix = clinicalData.postObj.year?.toString() + '_' + clinicalData.postObj.month
+		let lastMonth = Number(clinicalData.postObj.month) - 1 > 9 ? Number(clinicalData.postObj.month) - 1 : '0' + (Number(clinicalData.postObj.month)-1).toString()
+		let lastPrefix = clinicalData.postObj.year?.toString() + '_' + lastMonth.toString()
+		let tempDataIndex = ''
+		let totalIndex = currrentPrefix+'_01_1'//合计的dataIndex是2022_08_01_1:32，固定每月的第一天，最后一位是1
 		dayList.map((it: any) => {
+			// 获取的是2022-07的数据
+			if (it > 25) {
+				// 上个月 dataIndex是2022_06_26_0，2022_06_27_0，...
+					tempDataIndex= lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0'
+
+			} else {
+				// 当前月 dataIndex是2022_07_01_0，2022_07_02_0，...
+					tempDataIndex= currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0'
+			}
 			columnDayObj.push({
-				title: (it>9?it.toString():'0'+it.toString()),
-				dataIndex: 'ss_' + it.toString(),
+				title: (it > 9 ? it.toString() : '0' + it.toString()),
+				dataIndex:tempDataIndex,
+				key:tempDataIndex,
 				align: "center",
 				className: "input-cell",
 				width: 50,
 				render(text: any, record: any, index: number) {
-					// console.log('first')
 					if (index < 31) {
 						return (
 							<InputNumber
 								className='bcy-input-number'
 								min={0} max={100000}
-								size="small" 
-								value={text}
+								size="small"
+								defaultValue={text}
 								onChange={value => {
-									// record.modified = truncate
-									record['ss_' + it.toString()] = value
+									if(it>25){
+										record[lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0']=value
+									}else{
+										record[currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0']=value
+									}
+									
+								}}
+								onBlur={() => {
 									let total = 0
 									for (let k in record) {
-										if (k.indexOf('ss_') > -1) {
+										if (k.split('_')[3]=='0') {
 											total += record[k]
 										}
 									}
-									record.rowTotal = total
+									record[totalIndex] = total
 									// console.log(record)
-									// console.log('data3',data3)
+									// console.log(data3)
+
 									tempData = data3
+									tempData[index]=record
 									setData3([...tempData])
-									// dataSource = [...tempData]
+									// console.log(data3)
+									// clinicalData.tableList=[...tempData]
 								}}
 							/>
 						);
@@ -223,167 +234,74 @@ export default function ClinicalMonth(props: Props) {
 				}
 			})
 		})
-		const columns: ColumnProps<any>[] | any = [
-			{
-				title: "序号",
-				dataIndex: "",
-				// fixed: 'left',
-				render: (text: any, record: any, index: number) => {
-					// console.log(text)
-					if (index < 31) {
-						return index + 1
-						// console.log(text,record,index)
-					}
-					return {
-						children: <span>填报人</span>,
-						props: {
-							colSpan: 2,
-						},
-					};
-
-				},
-				align: "center",
-				width: 50
-			},
-			{
-				title: () => {
-					return (
-						<div className='table-hed-left'>
-							<span className='ml'>项目</span>
-							<span className='mr'>日期</span>
-						</div>
-					)
-				},
-				render: (text: any, record: any, index: number) => {
-					if (index < 31) {
-						return <span>{text}</span>
-					}
-					return {
-						// children: <span>填报人</span>,
-						props: {
-							colSpan: 0,
-						},
-					};
-
-				},
-				className: 'hua-line',
-				dataIndex: "name",
-				align: "center",
-				width: 100,
-				// fixed: 'left'
-			},
-			...columnDayObj,
+		columnDayObj.push(
 			{
 				title: "合计",
-				key:'rowTotal',
-				dataIndex: "rowTotal",
+				key: totalIndex,
+				dataIndex: totalIndex,
 				align: "center",
 				width: 50,
-				// fixed: 'right'
 			},
-		]
-		// setColumns3(columns)
+		)
+		// console.log(columns)
+		setColumns3([...columns,...columnDayObj])
+	}, [clinicalData.postObj])
 
-	useEffect(() => {
-		setData3(dataSource as any)
-	}, [])
+
+	const initTableData = (itemList: any, body: any) => {
+		// console.log(itemList)
+		
+		// setData3([...itemList])
+			// setDataSource([...dataSource]);
+			// clinicalData.tableList = []
+			// clinicalData.tableList = [...itemList]
+			setData3([])
+			setData3(()=>{
+				return [...itemList]
+			})
+		
+	}
+	
 
 	
-	// let list={
-	// 	'住院患者总数2':[{date:'2022-07-07',2022_07_07_1:7,},{date:'2022-07-08',value:5,type:'0'},],
-	// 	'住院患者总数':[{date:'2022-07-07',value:7,type:'0'},{date:'2022-07-08',value:5,type:'0'},],
-	// }
-	// let dd = []
-	// let dday = {} as any
-	// for(let kk in list){
-	// 	dday = {}
-	// 	list[kk].map((it:any)=>{
-	// 		let ri = it.date.split('-')[2]
-	// 		dday['ss_'+ri]=it.value
-			
-	// 	})
-	// 	dd.push({
-	// 		name:kk,
-	// 		...dday
-	// 	})
-	// }
-	// console.log('dd',dd)
 
-	// useEffect(() => {
-	// 	console.log(clinicalData.tableLoading)
-		
-	// }, [])
-	const initTableData=(itemList:any,body:any)=>{
-		setBodyData(body)
-		setData3(itemList)
-		// itemList.map((it:any)=>{
-		// 	itemList.map((it:any)=>{
-		// 		// 获取日期
-		// 		let day = 'ss_'+it.recodeDate.split('-')[2]
-		// 		for(let kk in it){
-		// 			switch (kk) {
-		// 				case 'ddfsls':
-		// 					// 跌倒发生例数
-		// 						initTableNumber(it[kk],'跌倒发生例数',day)
-		// 					break;
-		// 				default:
-		// 					break;
-		// 			}
-		// 		}
-		// 	})
-		// })
-	}
-
-	const initTableNumber=(num:any,name:string,day:string)=>{
-		// for (let i = 0; i < data3.length; i++) {
-		// 	if(data3[i].classfiy==name){
-		// 		data3[i].[day]=num
-		// 		break;
-		// 	}
-		// }
+	const saveTableData = ()=>{
+		// setTableLoading(true)
+		let params = {
+			...clinicalData.postObj,
+			quarter:Math.floor(Number(clinicalData.month)%3===0?Number(clinicalData.month)/3:Number(clinicalData.month)/3+1),
+			// valueList:data3
+			valueList:clinicalData.tableList,
+		}
+		console.log('参数',params)
+		return
+		clinicalApi.saveMonthTable(params).then(res=>{
+			// console.log(res.data)
+			setTableLoading(false)
+			if(res.data.code=='200'){
+				message.success('保存成功')
+			}
+		}).catch(err=>{
+			setTableLoading(false)
+		})
 	}
 
 
 
 	return (
 		<Wrapper>
-			<ClinicalHeaderByVicky title='科室临床护理质量指标月度汇总' tableLoading={tableLoading} setTableLoading={setTableLoading} initTableData={initTableData} />
+			<ClinicalHeaderByVicky title='科室临床护理质量指标月度汇总' tableLoading={tableLoading} setTableLoading={setTableLoading} initTableData={initTableData} saveTableData={saveTableData} />
 			<ScrollCon>
-				{/* <Spin spinning={spinning} > */}
-					<BaseTable
-						className="record-page-table"
-						loading={tableLoading}
-						dataSource={data3}
-						// dataSource={dataSource}
-						// rowSelection={{
-						//   selectedRowKeys,
-						//   onChange: handleSelectedChange,
-						// }}
-						columns={columns.filter((item: any) => item)}
-						// columns={columns3}
-						surplusHeight={surplusHeight}
-						surplusWidth={300}
-						// useOuterPagination
-						// pagination={{
-						//   onChange: (pageIndex: number) => {
-						// 	setPageOptions({ ...pageOptions, pageIndex })
-						//   },
-						//   onShowSizeChange: (pageIndex: number, pageSize: number) => {
-						// 	setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-						//   },
-						//   pageSizeOptions: ['20', '30', '40', '50', '100'],
-						//   current: pageOptions.pageIndex,
-						//   pageSize: pageOptions.pageSize,
-						//   total: total
-						// }}
-						// rowClassName={(record: any, idx: number) => {
-						//   if (cellDisabled(record)) return 'disabled-row'
-
-						//   return ''
-						// }}
-
-					/>
-				{/* </Spin> */}
+				<BaseTable
+					className="record-page-table"
+					loading={tableLoading}
+					
+					// dataSource={clinicalData.tableList}
+					columns={columns3}
+					surplusHeight={surplusHeight}
+					surplusWidth={300}
+					dataSource={data3}
+				/>
 			</ScrollCon>
 
 		</Wrapper>

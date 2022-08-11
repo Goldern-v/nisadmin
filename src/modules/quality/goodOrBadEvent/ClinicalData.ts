@@ -23,6 +23,10 @@ class ClinicalData {
   @observable public quarter = moment().quarter() as unknown; //季度
   @observable public tableLoading = false; //表格loading
 
+  // 年份汇总数据
+  @observable public deptCodeYear = ""; //科室
+  @observable public yearYear = moment() as undefined | moment.Moment; //年份
+  // 年份汇总数据 end
 
   @observable public sex =""; //性别
   @observable public selectTypeList: any = []; //类型
@@ -32,13 +36,15 @@ class ClinicalData {
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
   @observable public selectedDate: any = crrentMonth(); //日期
-  @observable public tableList = []; //表格内容
-  // @observable public tableLoading = false; //表格loading
+  @observable public tableList = [] as any; //表格内容
+
+  
   @observable public uploadingStatus = false; //上传状态
   @observable public uploadingPath = ""; //上传路径
   @observable public uploadingName = ""; //上传名称
   @observable public uploadingId = ""; //上传id
 
+  // 月度汇总
   @computed
   get postObj() {
     return {
@@ -51,6 +57,18 @@ class ClinicalData {
       // pageSize: this.pageSize, //每页大小
       // total: this.total, //每页大小
     };
+  }
+
+  // 监听年变化，修改表头
+  @computed get yearChange(){
+    return this.yearYear?.year()
+  }
+  // 科室年度汇总
+  @computed get postObjYear(){
+    return {
+      year:this.yearYear?.year(),
+      deptCode:this.deptCodeYear
+    }
   }
 
  
@@ -70,7 +88,7 @@ class ClinicalData {
       clinicalApi.exportSheetTemplate(impObj)
         .then(res => {
           message.success('导入成功')
-          this.onload()
+          // this.onload()
         }, err => this.tableLoading = false)
 
       document.body.removeChild(importEl)
@@ -81,21 +99,19 @@ class ClinicalData {
 
 
   /** 获取表格数据 */
-  onload() {
-    // this.tableLoading = true;
-    console.log(this.postObj)
-    clinicalApi.getMonthTable(this.postObj).then(res => {
-      console.log(res.data)
-      // this.tableLoading = false;
-      this.tableList = res.data.list;
-      this.total = res.data.totalCount;
-      this.pageIndex = res.data.pageIndex;
-      this.pageSize = res.data.pageSize;
-    });
-  }
+  // onload() {
+  //   console.log(this.postObj)
+  //   clinicalApi.getMonthTable(this.postObj).then(res => {
+  //     console.log(res.data)
+  //     this.tableList = res.data.list;
+  //     this.total = res.data.totalCount;
+  //     this.pageIndex = res.data.pageIndex;
+  //     this.pageSize = res.data.pageSize;
+  //   });
+  // }
 
-  init() {
-    this.onload();
-  }
+  // init() {
+  //   this.onload();
+  // }
 }
 export const clinicalData = new ClinicalData();
