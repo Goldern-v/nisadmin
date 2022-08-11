@@ -46,23 +46,20 @@ export default function ClinicalMonth(props: Props) {
 		pageSize: 20,
 		total: 0
 	});
+	let lastMonthDays: any = moment().subtract(1, 'month').daysInMonth()//上个月的总天数
 	const [total, setTotal] = useState(0);
-	// 搬运end
-
 	const [columns3, setColumns3] = useState([] as any);
 	const [data3, setData3] = useState([] as any);
 	const [spinning, setSpinning] = useState(true);
 	const [tableLoading, setTableLoading] = useState(false);
 	const [bodyData, setBodyData] = useState({} as any);
-
+	let [dateList, setDateList]: any[] = useState([...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))])
 	let dayList = [] as any, columnDay = {}
 	let tempData = []
 	let columnDayObj: ColumnProps<any>[] | any = []
-
-	const lastMonthDays = moment().subtract(1, 'month').daysInMonth()//上个月的总天数
 	// 时间从上个月的26号开始到这个月的25号
 	dayList = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
-	
+
 	// 签名
 	const updateDataSource = () => {
 		console.log('更新table数据')
@@ -154,31 +151,25 @@ export default function ClinicalMonth(props: Props) {
 			align: "center",
 			width: 100,
 		},
-	]			
-
-	useEffect(() => {
-		// 头部数据改变，就要重新计算数据
-		columnDayObj = []
-		console.log(clinicalData.postObj.month)
-		let currrentPrefix = clinicalData.postObj.year?.toString() + '_' + clinicalData.postObj.month
-		let lastMonth = Number(clinicalData.postObj.month) - 1 > 9 ? Number(clinicalData.postObj.month) - 1 : '0' + (Number(clinicalData.postObj.month)-1).toString()
-		let lastPrefix = clinicalData.postObj.year?.toString() + '_' + lastMonth.toString()
-		let tempDataIndex = ''
-		let totalIndex = currrentPrefix+'_01_1'//合计的dataIndex是2022_08_01_1:32，固定每月的第一天，最后一位是1
-		dayList.map((it: any) => {
+		...dateList.map((it: any, col: any) => {
+			let currrentPrefix = clinicalData.postObj.year?.toString() + '_' + clinicalData.postObj.month
+			let lastMonth = Number(clinicalData.postObj.month) - 1 > 9 ? Number(clinicalData.postObj.month) - 1 : '0' + (Number(clinicalData.postObj.month) - 1).toString()
+			let lastPrefix = clinicalData.postObj.year?.toString() + '_' + lastMonth.toString()
+			let tempDataIndex = ''
+			let totalIndex = currrentPrefix + '_01_1'//合计的dataIndex是2022_08_01_1:32，固定每月的第一天，最后一位是1
 			// 获取的是2022-07的数据
 			if (it > 25) {
 				// 上个月 dataIndex是2022_06_26_0，2022_06_27_0，...
-					tempDataIndex= lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0'
+				tempDataIndex = lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'
 
 			} else {
 				// 当前月 dataIndex是2022_07_01_0，2022_07_02_0，...
-					tempDataIndex= currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0'
+				tempDataIndex = currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'
 			}
-			columnDayObj.push({
+			return {
 				title: (it > 9 ? it.toString() : '0' + it.toString()),
-				dataIndex:tempDataIndex,
-				key:tempDataIndex,
+				dataIndex: tempDataIndex,
+				key: tempDataIndex,
 				align: "center",
 				className: "input-cell",
 				width: 50,
@@ -191,26 +182,23 @@ export default function ClinicalMonth(props: Props) {
 								size="small"
 								defaultValue={text}
 								onChange={value => {
-									if(it>25){
-										record[lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0']=value
-									}else{
-										record[currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString())+'_0']=value
+									if (it > 25) {
+										record[lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'] = value
+									} else {
+										record[currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'] = value
 									}
-									
+
 								}}
 								onBlur={() => {
 									let total = 0
 									for (let k in record) {
-										if (k.split('_')[3]=='0') {
+										if (k.split('_')[3] == '0') {
 											total += record[k]
 										}
 									}
-									record[totalIndex] = total
-									// console.log(record)
-									// console.log(data3)
-
+									record["total"] = total
 									tempData = data3
-									tempData[index]=record
+									tempData[index] = record
 									setData3([...tempData])
 									// console.log(data3)
 									// clinicalData.tableList=[...tempData]
@@ -232,58 +220,65 @@ export default function ClinicalMonth(props: Props) {
 					} />)
 
 				}
-			})
-		})
-		columnDayObj.push(
-			{
-				title: "合计",
-				key: totalIndex,
-				dataIndex: totalIndex,
-				align: "center",
-				width: 50,
-			},
-		)
+			};
+		}),
+		{
+			title: "合计",
+			key: "total",
+			dataIndex: "total",
+			align: "center",
+			width: 50,
+		},
+	]
+
+	useEffect(() => {
+		// 头部数据改变，就要重新计算数据
+		columnDayObj = []
+		console.log(clinicalData.postObj.month)
+		lastMonthDays = moment(clinicalData.postObj.month).subtract(1, 'month').daysInMonth() || moment().subtract(1, 'month').daysInMonth()
+		let days = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
+		setDateList(days)
 		// console.log(columns)
-		setColumns3([...columns,...columnDayObj])
+		setColumns3([...columns, ...columnDayObj])
 	}, [clinicalData.postObj])
 
 
 	const initTableData = (itemList: any, body: any) => {
 		// console.log(itemList)
-		
-		// setData3([...itemList])
-			// setDataSource([...dataSource]);
-			// clinicalData.tableList = []
-			// clinicalData.tableList = [...itemList]
-			setData3([])
-			setData3(()=>{
-				return [...itemList]
-			})
-		
+
+		setData3([...itemList])
+		// setDataSource([...dataSource]);
+		// clinicalData.tableList = []
+		// clinicalData.tableList = [...itemList]
+		// setData3([])
+		// setData3(() => {
+		// 	return [...itemList]
+		// })
+
 	}
-	
 
-	
 
-	const saveTableData = ()=>{
+
+
+	const saveTableData = () => {
 		// setTableLoading(true)
 		let params = {
 			...clinicalData.postObj,
-			quarter:Math.floor(Number(clinicalData.month)%3===0?Number(clinicalData.month)/3:Number(clinicalData.month)/3+1),
+			quarter: Math.floor(Number(clinicalData.month) % 3 === 0 ? Number(clinicalData.month) / 3 : Number(clinicalData.month) / 3 + 1),
 			// valueList:data3
-			valueList:clinicalData.tableList,
+			valueList: clinicalData.tableList,
 		}
-		console.log('参数',params)
-		return
-		clinicalApi.saveMonthTable(params).then(res=>{
-			// console.log(res.data)
-			setTableLoading(false)
-			if(res.data.code=='200'){
-				message.success('保存成功')
-			}
-		}).catch(err=>{
-			setTableLoading(false)
-		})
+		console.log('参数', params)
+		return () => { }
+		// clinicalApi.saveMonthTable(params).then(res=>{
+		// 	// console.log(res.data)
+		// 	setTableLoading(false)
+		// 	if(res.data.code=='200'){
+		// 		message.success('保存成功')
+		// 	}
+		// }).catch(err=>{
+		// 	setTableLoading(false)
+		// })
 	}
 
 
@@ -295,9 +290,9 @@ export default function ClinicalMonth(props: Props) {
 				<BaseTable
 					className="record-page-table"
 					loading={tableLoading}
-					
+
 					// dataSource={clinicalData.tableList}
-					columns={columns3}
+					columns={columns}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
 					dataSource={data3}
