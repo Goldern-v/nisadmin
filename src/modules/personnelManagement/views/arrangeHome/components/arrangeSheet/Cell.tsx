@@ -180,7 +180,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'fssdy,nfzxy,whyx': [
+            'fssdy,nfzxy,whyx,sdlj': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
