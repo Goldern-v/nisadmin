@@ -51,7 +51,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisAdapter({
       hj: () => EditEffectiveTimeModal,
-      wjgdszd: () => EditEffectiveTimeModal,
+      wjgdszd: () => EditVacationCountModal_wh,
       wh: () => EditVacationCountModal_wh,
       gxjb: () => EditVacationCountModal_wh,
       lcey: () => EditVacationCountModal_wh,
@@ -400,7 +400,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   /** 厚街特殊字段 */
-  if (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "wjgdszd") {
+  if (appStore.HOSPITAL_ID == "hj") {
     columns.push({
       title: (
         <div>
@@ -490,7 +490,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -728,7 +728,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 yczyy: () => 2,
                 nys: () => (isEdit ? 6 : 5),
                 hj: () => 3,
-                wjgdszd: () => 3,
+                wjgdszd: () => 6,
                 wh: () => 6,
                 gxjb: () => 6,
                 jmfy: () => 6,
