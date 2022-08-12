@@ -4,17 +4,20 @@ import qs from "qs";
 
 export default class TrainingSettingApi extends BaseApiService {
 
-  // 获取表单列表
+  // 规培生基本信息汇总表-信息获取
   public async getFormList(obj: any) {
-    return this.post(`/nursefile/otherPersonInfo/graduateIntern/queryPageList`, obj);
-  }
-  // 添加实习生
-  public async AddFormSave(obj: any) {
-    return this.post(`/nursefile/otherPersonInfo/graduateIntern/saveOrUpdateYaXinInfo`, obj);
+    return this.post(`/studyAndTrain/planTrainStudentInfo/getPage`, obj);
   }
 
+  // 规培生基本信息汇总表-带教护士列表
+  public async getUserByRoleCode(roleCode: string) {
+    return this.get(`/flowRole/getUserByRoleCode/${roleCode}`);
+  }
 
- 
+  // 规培生基本信息汇总表-保存填写编辑接口
+  public async saveOrUpdateInfo(obj: any) {
+    return this.post(`/studyAndTrain/planTrainStudentInfo/saveOrUpdateInfo`, obj);
+  }
   // 表单删除
   public async deleteForm(id: any) {
     return this.post(
@@ -22,39 +25,51 @@ export default class TrainingSettingApi extends BaseApiService {
       { id }
     );
   }
-  // 表单导出
+  // 规培生基本信息汇总表-导出列表
   public async exportPageList(obj: any) {
     return this.post(
-      `/nursefile/otherPersonInfo/graduateIntern/exportPageYaXinList`,
+      `/studyAndTrain/planTrainStudentInfo/exportPlanTrainStudentInfo`,
       obj,
       {
         responseType: "blob"
       }
     );
   }
-  // 下载摸板
+  // 规培生基本信息汇总表-下载摸板
   public async downloadTemplate() {
     return this.get(
-      `/nursefile/otherPersonInfo/graduateIntern/downLoadGraduateInternInfoYaXinTemplate`,
+      `/studyAndTrain/planTrainStudentInfo/downLoadPlanTrainStudentInfoTemplate`,
       {
         responseType: "blob"
       }
     );
   }
-  // 表单导入
-  public async exportSheetTemplate(filename:any,year:any) {
+ 
+  // 规培生基本信息汇总表-表单导入
+  public async importSheetTemplate(filename:any) {
     let newFormData = new FormData()
     newFormData.set('file', filename)
-    newFormData.set('year', year)
     return this.post(
-      `/nursefile/otherPersonInfo/graduateIntern/importGraduateInternInfoYaXinTemplate`
+      `/studyAndTrain/planTrainStudentInfo/importPlanTrainStudentInfo`
       ,newFormData
     );
   }
 
-  // 实习生教学计划-获取表单列表
+
+  // 根据用户权限获取医院科室信息
+  public async getnursingDeptRole() {
+    return this.get(`/user/nursingUnit`);
+  }
+
+
+
+  // 规培生出科评价-获取表单列表
   public async getQueryPageList(obj: any) {
-    return this.post(`/studyAndTrain/courseLibrary/queryPageYaXinList`, obj);
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/queryGraduateEvaluateOfPlanTrainStuListByPage`, obj);
+  }
+  // 规培生出科评价-导出列表
+  public async countExcel(obj: any) {
+    return this.post(`/api/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj);
   }
   // 实习生教学计划-删除表单列表
   public async deleteQueryPageList(id: any) {

@@ -249,18 +249,10 @@ class PromotionApp {
           this.handlenodeDto = []
         }
         switch (res.data.master.status) {
-          case '':
-            this.flowStatus = ''
-            break;
           case '0':
             this.flowStatus = '0'
             break;
-          case '-2':
-            this.flowStatus = '0'
-            break;
           case '1':
-            this.flowStatus = '1'
-            break;
           case '2':
             this.flowStatus = '1'
             break;
@@ -277,6 +269,7 @@ class PromotionApp {
             this.flowStatus = '4'
             break;
           default:
+            this.flowStatus = ''
             break;
         }
         if (this.editStatus == '编辑' || this.editStatus == '取消编辑' || this.master.id) {

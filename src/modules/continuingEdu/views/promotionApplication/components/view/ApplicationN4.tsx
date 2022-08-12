@@ -132,6 +132,12 @@ export default observer(function ApplicationN1(props: Props) {
     },
   };
 
+  //点击跳转对应页
+  const handleSkip =(data:any)=> {
+    const path: string = data.path
+    window.open(path);
+  }
+
   return (
     <Wrapper ref={props.printRef} id="formPrintPage">
       <div
@@ -180,13 +186,13 @@ export default observer(function ApplicationN1(props: Props) {
         className="first-form"
         style={{
           top:
-            PromotionAppUtils.edit == true &&
+            PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "23px"
               : "1118px",
           height:
-            PromotionAppUtils.edit == true &&
+            PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "1080px"
@@ -195,7 +201,7 @@ export default observer(function ApplicationN1(props: Props) {
         onClick={() => {
           message.warning("当前暂不可编辑，请根据流程进行修改！");
         }}
-      />
+      ></div>
       <div className="wrapper-pages-form">
         <div className="form-title">
           临床护理人员晋升申请表（N3→N4）（{moment().format("YYYY")}版）
@@ -1433,7 +1439,7 @@ export default observer(function ApplicationN1(props: Props) {
           {PromotionAppUtils.attachmentList.map((item:any)=>{
              return <div  key={item.uid} >
                 <Spin spinning={upLoading} delay={500} >
-                <div className="upload-item">
+                <div className="upload-item" onClick={()=>{handleSkip(item)}} >
                   <span>{item.name}</span>
                   <Icon type="close-circle" theme="twoTone" twoToneColor="#f33838" onClick={()=>{handleRomve(item)} }/>
                 </div>

@@ -7,6 +7,14 @@ import { Rules } from "src/components/Form/interfaces";
 import {trainingSettingApi} from '../../api/TrainingSettingApi'
 import moment from 'moment'
 
+interface Teaching {
+  value:string,
+  code:string,
+}
+interface dept {
+  code:string,
+  name:string,
+}
 export interface Props {
   visible: boolean
   onOk: any
@@ -14,12 +22,14 @@ export interface Props {
   params?:any
   allowClear?: boolean
   loading?: boolean
+  dataList: Array<Teaching>
 }
 export default observer(function AddInternModal(props: Props){
-  const { visible, onCancel, onOk, params, allowClear, loading } = props
+  const { visible, onCancel, onOk, params, allowClear, loading, dataList} = props
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
   const [yearPickerIsOpen,setyearPickerIsOpen] =useState(false)
+  const [deptList, setDeptList] = useState([] as dept[])
 
   const setFormItem = (key: any, value: any) => {
     if (formRef.current) formRef.current.setField(key, value)
@@ -30,21 +40,15 @@ export default observer(function AddInternModal(props: Props){
     year: val => !!val || "年份不能为空",
     name: val => !!val || "姓名不能为空",
     sex: val => !!val || "性别不能为空",
-    age: val => !!val || "年龄不能为空",
+    birthday: val => !!val || "出生日期不能为空",
     education: val => !!val || "学历不能为空",
-    graduatedUniversity: val => !!val || "毕业学校不能为空",
-    phone: val => !!val || "联系电话不能为空",
-    address: val => !!val || "家庭地址不能为空",
-    currentAddress: val => !!val || "现住址不能为空",
-    emergencyContactPhone: val => !!val || "父母电话不能为空",
-    specialty: val => !!val || "特长不能为空",
-    schoolPosition: val => !!val || "在校职务不能为空",
-    healthStatus: val => !!val || "健康状况不能为空",
-    height: val => !!val || "身高不能为空",
-    weight: val => !!val || "体重不能为空",
-    teachTeacher: val => !!val || "带教老师不能为空",
-    operationScore: val => !!val || "操作成绩不能为空",
-    theoryScore: val => !!val || "理论成绩不能为空"
+    region: val => !!val || "区域不能为空",
+    sapCode: val => !!val || "SAP代码不能为空",
+    studyDeptCode: val => !!val || "科室不能为空",
+    incumbency: val => !!val || "在职情况为空",
+    distributionDate: val => !!val || "分配日期不能为空",
+    formalDate: val => !!val || "转正日期不能为空",
+    teachEmpNos: val => !!val || "带教护士不能为空",
   };
   // 学历
   const nurseHierarchyArr = [
@@ -65,24 +69,19 @@ export default observer(function AddInternModal(props: Props){
         let {
           year,
           name,
-          sex, 
-          age, 
+          sex,
+          birthday,
           education,
-          graduatedUniversity ,
-          phone,
-          address,
-          currentAddress,
-          emergencyContactPhone,
-          specialty,
-          schoolPosition,
-          healthStatus,
-          height,
-          weight,
-          teachTeacher,
-          operationScore,
-          theoryScore,
+          degree,
+          region,
+          sapCode,
+          studyDeptCode,
+          incumbency,
+          distributionDate,
+          formalDate,
+          teachEmpNo,
+          teachEmpName,
           remark,
-          SAP
         } = data
         nurseHierarchyArr.map((item:any)=>{
           if(item.name == education){
@@ -93,35 +92,38 @@ export default observer(function AddInternModal(props: Props){
           year:year?moment(year.toString()):null,
           name,
           sex:sex=='男'? '0' : '1', 
-          age, 
+          birthday:birthday? moment(birthday.toString()):null,
           education,
-          graduatedUniversity ,
-          phone,
-          address,
-          currentAddress,
-          emergencyContactPhone,
-          specialty,
-          schoolPosition,
-          healthStatus,
-          height,
-          weight,
-          teachTeacher,
-          operationScore,
-          theoryScore,
+          degree,
+          region,
+          sapCode,
+          studyDeptCode,
+          incumbency,
+          distributionDate:distributionDate? moment(distributionDate.toString()):null,
+          formalDate:formalDate? moment(formalDate.toString()):null,
+          teachEmpNos: teachEmpName && teachEmpNo ? `${teachEmpName},${teachEmpNo}`: '',
           remark,
-          SAP: SAP?.replace(/[^\d]/g,'')
-          // todo
-          // date: date?moment(date.toString()):null,
         })
       }else{
         current.clear()
         current.setFields({
-          sex:'0',
           year:moment(),
-          date:moment(),
-          education:'9'
+          sex:'0',
+          education:'9',
+          birthday:moment(),
+          incumbency:'在职',
+          distributionDate:moment(),
+          formalDate:moment(),
         })
       }
+      trainingSettingApi.getnursingDeptRole().then(res=>{
+        console.log(res);
+        if(res.data?.deptList.length){
+          let data:dept[] = res.data.deptList
+          setDeptList(data)
+        }
+      })
+      
     }, 100);
   }, [visible]);
 
@@ -135,21 +137,17 @@ export default observer(function AddInternModal(props: Props){
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            // console.log(params);
+            let id = params ? params.id : null;
+            let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id,teachEmpNo: newParams.teachEmpNos.split(',')[1], teachEmpName: newParams.teachEmpNos.split(',')[0]}
+            console.log(addParams);
             
-            let id = params ? params.id : null
-            let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id}
-            // console.log(addParams);
-            
-            trainingSettingApi.AddFormSave(addParams).then((res)=>{
+            trainingSettingApi.saveOrUpdateInfo(addParams).then((res)=>{
               if(res.code == '200'){
                 onOk && onOk()
               }
             }).catch((err)=>{
               console.log(err);
-              
             })
-            
           }
         }).catch(e => {
           console.log(e);
@@ -162,18 +160,9 @@ export default observer(function AddInternModal(props: Props){
     onCancel && onCancel();
   };
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
   // 表单变化函数
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-      
     // getTree(data.trainingKeyPointId, data.knowledgePointDivisionId)
   };
   const handlePanelChange = (value: any) => {
@@ -182,9 +171,9 @@ export default observer(function AddInternModal(props: Props){
   }
 
   const onValueChange = () => {
-    let cardNumber = formRef?.current?.getField("SAP");
+    let cardNumber = formRef?.current?.getField("sapCode");
     if (cardNumber)
-      formRef?.current?.setField("SAP", cardNumber.replace(/[^\d]/g,''));
+      formRef?.current?.setField("sapCode", cardNumber.replace(/[^\d]/g,''));
   }
 
 
@@ -219,14 +208,9 @@ export default observer(function AddInternModal(props: Props){
             </Col>
             {/* todo */}
             <Col span={24}>
-             <Form.Field label={`出生日期`} name="date" required>
+             <Form.Field label={`出生日期`} name="birthday" required>
                 <DatePicker />
              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`年龄：`} name="age" required>
-                <Input placeholder="请输入" />
-              </Form.Field>
             </Col>
             <Col span={24}>
              <Form.Field label={`学历：`}  name="education" required>
@@ -238,31 +222,31 @@ export default observer(function AddInternModal(props: Props){
              </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`学位：`}  name="education">
+              <Form.Field label={`学位：`}  name="degree">
                 <Input placeholder="请输入" />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`区域：`}  name="education" required>
+              <Form.Field label={`区域：`}  name="region" required>
                 <Input placeholder="请输入" />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`SAP代码：`} onValueChange={onValueChange}  name="SAP" required>
+              <Form.Field label={`SAP代码：`} onValueChange={onValueChange}  name="sapCode" required>
                 <Input placeholder="请输入" />
               </Form.Field>
             </Col>
             <Col span={24}>
-             <Form.Field label={`科室：`}  name="education" required>
-               <Select>
-                {nurseHierarchyArr.map(item => {
+             <Form.Field label={`科室：`}  name="studyDeptCode" required>
+               <Select placeholder="请选择">
+                {deptList.map(item => {
                   return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
                 })}
                </Select>
              </Form.Field>
             </Col>
             <Col span={24}>
-             <Form.Field label={`在职情况：`}  name="education" required>
+             <Form.Field label={`在职情况：`}  name="incumbency" required>
                <Select>
                 {['在职', '离职'].map(item => {
                   return <Select.Option value={item} key={item}>{item}</Select.Option>
@@ -271,13 +255,22 @@ export default observer(function AddInternModal(props: Props){
              </Form.Field>
             </Col>
             <Col span={24}>
-             <Form.Field label={`分配日期：`} name="date" required>
+             <Form.Field label={`分配日期：`} name="distributionDate" required>
                 <DatePicker />
              </Form.Field>
             </Col>
             <Col span={24}>
-             <Form.Field label={` 转正日期：`} name="date" required>
+             <Form.Field label={` 转正日期：`} name="formalDate" required>
                 <DatePicker />
+             </Form.Field>
+            </Col>
+            <Col span={24}>
+             <Form.Field label={`带教护士：`} name="teachEmpNos" required>
+              <Select>
+                  {dataList.map((item:Teaching) => {
+                    return <Select.Option value={item.value} key={item.code}>{item.code}</Select.Option>
+                  })}
+               </Select>
              </Form.Field>
             </Col>
             <Col span={24}>

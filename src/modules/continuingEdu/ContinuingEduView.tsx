@@ -961,10 +961,11 @@ export default function ContinuingEdu(props: Props) {
         })
       ],
     },
-    // appStore.HOSPITAL_ID === "whyx" && {
+    // {
     //   title: "规培生管理",
     //   path: "/continuingEdu",
     //   icon: <JXJH />,
+    //   hide:!["whyx"].includes(appStore.HOSPITAL_ID),
     //   children: [
     //     {
     //       title: "规培生基本信息汇总表",

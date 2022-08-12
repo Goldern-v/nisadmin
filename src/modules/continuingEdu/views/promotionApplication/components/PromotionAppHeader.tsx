@@ -205,7 +205,7 @@ export default observer(function PromotionAppHeader() {
             <TabPane tab={tItem.title} key={tItem.key} disabled={tItem.disabled}>
               <StepHeader>
                 <div className="heigth-left">
-                <Steps status={PromotionAppUtils.master.noPass == true ? "error" : undefined}  current={Number(PromotionAppUtils.flowStatus) || -1} labelPlacement="vertical" size="small"  className="Steps-list">
+                <Steps status={PromotionAppUtils.master.noPass == true ? "error" : undefined}  current={Number(PromotionAppUtils.flowStatus) != NaN ? Number(PromotionAppUtils.flowStatus) : -1} labelPlacement="vertical" size="small"  className="Steps-list">
                   <Step title="填写一到四项信息"  />
                   <Step title="资质审核"  />
                   <Step title="填写六、七项信息" />
@@ -215,7 +215,7 @@ export default observer(function PromotionAppHeader() {
                 </div>
                 <div className="heigth-right">
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}}>{PromotionAppUtils.editStatus}</Button>
-                  <Button type="primary" onClick={handleSubmit}  disabled={Number(PromotionAppUtils.flowStatus) !== 0 || Number(PromotionAppUtils.flowStatus) !== 2} >提交申请</Button>
+                  <Button type="primary" onClick={handleSubmit}  disabled={(Number(PromotionAppUtils.flowStatus) == 1 || Number(PromotionAppUtils.flowStatus) == 3 || Number(PromotionAppUtils.flowStatus) == 4)&& PromotionAppUtils.master.noPass== false} >提交申请</Button>
                   <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑'} >保存</Button>
                   <Button onClick={handlerevocation}>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>

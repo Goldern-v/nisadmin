@@ -26,6 +26,12 @@ export default observer(function ApplyTable(props: Props) {
 
   const columns: any = [
     {
+      title: "区域",
+      dataIndex: "region",
+      align: "center",
+      width: 100
+    },
+    {
       title: "序号",
       dataIndex: "",
       render: (text: any, record: any, index: number) => index + 1,
@@ -33,14 +39,8 @@ export default observer(function ApplyTable(props: Props) {
       width: 50
     },
     {
-      title: "区域",
-      dataIndex: "name",
-      align: "center",
-      width: 100
-    },
-    {
       title: "SAP代码",
-      dataIndex: "name",
+      dataIndex: "sapCode",
       align: "center",
       width: 100
     },
@@ -52,13 +52,13 @@ export default observer(function ApplyTable(props: Props) {
     },
     {
       title: "科室",
-      dataIndex: "sex",
+      dataIndex: "studyDeptName",
       align: "center",
       width: 120
     },
     {
       title: "在职情况",
-      dataIndex: "sex",
+      dataIndex: "incumbency",
       align: "center",
       width: 120
     },
@@ -70,7 +70,7 @@ export default observer(function ApplyTable(props: Props) {
     },
     {
       title: "出生日期",
-      dataIndex: "sex",
+      dataIndex: "birthday",
       align: "center",
       width: 120
     },
@@ -82,25 +82,25 @@ export default observer(function ApplyTable(props: Props) {
     },
     {
       title: "学位",
-      dataIndex: "education",
+      dataIndex: "degree",
       align: "center",
       width: 100
     },
     {
       title: "分配日期",
-      dataIndex: "graduatedUniversity",
+      dataIndex: "distributionDate",
       align: "center",
       width: 120
     },
     {
       title: "转正日期",
-      dataIndex: "phone",
+      dataIndex: "formalDate",
       align: "center",
       width: 120
     },
     {
       title: "备注",
-      dataIndex: "address",
+      dataIndex: "remark",
       align: "center",
       width: 200
     },
@@ -209,6 +209,7 @@ export default observer(function ApplyTable(props: Props) {
         allowClear={createClear}
         visible={editVisible}
         params={editParams}
+        dataList={bacisManagData.teachingList || []}
         onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
       />

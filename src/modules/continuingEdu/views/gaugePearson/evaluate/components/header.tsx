@@ -37,7 +37,7 @@ export default observer(function ApplyHeader(props: Props) {
   };
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
-    evaluateDatas.year = value
+    // evaluateDatas.year = value
     evaluateDatas.onload()
   }
 
@@ -46,7 +46,7 @@ export default observer(function ApplyHeader(props: Props) {
   }
 
   const handleYearClear = () => {
-    evaluateDatas.year = undefined;
+    // evaluateDatas.year = undefined;
   }
   // 查询
   const handelInquire = ()=>{
@@ -88,7 +88,7 @@ export default observer(function ApplyHeader(props: Props) {
   const handleOk = ()=>{
     let obj = {
       attachmentId:evaluateDatas.uploadingId,
-      year:moment(evaluateDatas.yearImport).format("YYYY") ,
+      // year:moment(evaluateDatas.yearImport).format("YYYY") ,
     }
     trainingSettingApi.saveOrUpdate(obj).then((res)=>{
       evaluateDatas.onload()
@@ -103,43 +103,36 @@ export default observer(function ApplyHeader(props: Props) {
   return (
     <Wrapper>
       <RightIcon>
-        <span style={{marginRight:'10px'}}>年份</span>
-        <DatePicker
-          style={{ width: 100 }}
-          value={evaluateDatas.year}
-          open={yearPickerIsOpen}
-          mode='year'
-          className='year-picker'
-          placeholder='全部'
-          format='YYYY'
-          onChange={handleYearClear}
-          onOpenChange={handleOpenChange}
-          onPanelChange={handlePanelChange}
+        <span style={{marginRight:'10px',marginLeft:'10px'}}>规培时间：</span>
+        <DatePicker.RangePicker
+          style={{width: '250px'}}
+          defaultValue={[evaluateDatas.planTrainBeginTime, evaluateDatas.planTrainEndTime]}
+          format={"YYYY-MM-DD"}
         />
         <span style={{marginLeft:'10px'}}>科室：</span>
         <Select
           mode="multiple"
           allowClear
-          style={{ width: '260px' }}
+          style={{ minWidth: '260px', maxWidth:'500px',  maxHeight: "110px"}}
           placeholder="请选择科室"
-          defaultValue={['全院']}
-          value={evaluateDatas.deptCode}
+          defaultValue={['']}
+          value={evaluateDatas.deptCodeMultiple}
           onChange={(value: any[]) => {
-            evaluateDatas.deptCode = value 
+            evaluateDatas.deptCodeMultiple = value 
             evaluateDatas.onload()
           }}
           // onChange={handleChange}
         >
-          {[{name: 'kk', code: '1'}].map((item: any) => {
-            return <Option value={item.code}>{item.name}</Option>
+          {evaluateDatas.deptCode.map((item: any) => {
+            return <Option value={item.code} key={item.code}>{item.name}</Option>
           })}
         </Select>
         <Input
           style={{ width: 180, marginLeft: 10, marginRight: 5 }}
           placeholder="请输入要搜索的关键字"
-          value={evaluateDatas.courseName}
+          value={evaluateDatas.keyWord}
           onChange={e => {
-            evaluateDatas.courseName = e.target.value 
+            evaluateDatas.keyWord = e.target.value 
             evaluateDatas.onload()
           }}
         />
@@ -179,10 +172,12 @@ export default observer(function ApplyHeader(props: Props) {
 const Wrapper = styled.div`
   width: calc(100vw-200px);
   justify-content: space-between;
-  height: 55px;
+  min-height: 55px;
+  max-height: 110px;
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;
+ 
 `;
 const LeftIcon = styled.div`
   padding: 0;
@@ -194,6 +189,9 @@ const RightIcon = styled.div`
   .span {
     font-size:14px;
     margin-left: 15px;
+  }
+  .ant-select-selection--multiple{
+    max-height: 90px;
   }
 `;
 const FileBox = styled.div`

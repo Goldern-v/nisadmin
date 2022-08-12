@@ -41,7 +41,7 @@ export default observer(function PromotionTable(props: Props) {
                 item.status == 0 ? (
                   <div className="audit-item" key={idx}>
                     <div className="emp-img">
-                      <img src={item.nearImageUrl} alt="" />
+                      <img src={item.imgUrl} alt="" />
                     </div>
                     <div className="info">
                       <div className="step-title">
@@ -53,7 +53,7 @@ export default observer(function PromotionTable(props: Props) {
                 ) : (
                   <div className="audit-item" key={idx}>
                     <div className="emp-img">
-                      <img src={item.nearImageUrl} alt="" />
+                      <img src={item.imgUrl} alt="" />
                       <Icon
                         type="check-circle"
                         theme="filled"
@@ -74,7 +74,7 @@ export default observer(function PromotionTable(props: Props) {
               ) : item.status != 0 ? (
                 <div className="audit-item" key={idx}>
                   <div className="emp-img">
-                    <img src={item.nearImageUrl} alt="" />
+                    <img src={item.imgUrl} alt="" />
                     {item.noPass == true || item.nodeCode == "withdraw" ? (
                       <Icon
                         type="close-circle"
@@ -103,7 +103,7 @@ export default observer(function PromotionTable(props: Props) {
               ) : (
                 <div className="audit-item" key={idx}>
                   <div className="emp-img">
-                    <img src={item.nearImageUrl} alt="" />
+                    <img src={item.imgUrl} alt="" />
                   </div>
                   <div className="info">
                     <div className="step-title">
@@ -163,6 +163,7 @@ const Wrapper = styled.div`
     }
   }
   .audit-mian{
+    margin-left:20px;
     height: 600px;
     overflow-y:auto;
   }
