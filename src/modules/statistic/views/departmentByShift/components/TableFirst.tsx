@@ -417,7 +417,7 @@ const Con = styled.div`
         } */
         .administrative {
           box-sizing: border-box;
-          min-width: 180px;
+          min-width: 200px;
         }
         /* td:nth-of-type(10) {
           box-sizing: border-box;
