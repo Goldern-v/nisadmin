@@ -54,9 +54,15 @@ export default observer(function ApplicationN1(props: Props) {
   const onDatePickerChange = (e: any, value: any) => {
     tableObjN3[value] = e;
   };
-  const handleChange1 = (e: any, value: any) => {
-    tableObjN3[value] = e;
-    setyearPickerIsOpen1(false);
+  const handelTextareas = (e: any, value: any,key:number) => {
+    let ctext = e.target.value;
+    PromotionAppUtils.carePatientList[key][value] = ctext
+    PromotionAppUtils.carePatientList[key].masterId = PromotionAppUtils.master.id
+  };
+  const handelDatePicker = (e: any, value: any,key:number) => {
+    let ctext = moment(e).format("YYYY-MM-DD HH:mm");
+    PromotionAppUtils.carePatientList[key][value] = ctext
+    PromotionAppUtils.carePatientList[key].masterId = PromotionAppUtils.master.id
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
@@ -191,13 +197,11 @@ export default observer(function ApplicationN1(props: Props) {
         className="first-form"
         style={{
           top:
-           PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "23px"
               : "1538px",
           height:
-           PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "1538px"
@@ -228,8 +232,9 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={2}>
                 <div className="base-item">
                   <span>科室：</span>
-                  {/* <Input value="26888888" value={tableObjN3.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
+                  {/* <Input defaultValue="26888888" value={tableObjN3.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
+                    className="mar-btom"
                     type="text"
                     value={tableObjN3.JS0000001}
                     onChange={(e) => {
@@ -316,19 +321,20 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             <tr>
-              <td colSpan={2}>
+            <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN3.JS0000004 && moment(tableObjN3.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} value={tableObjN3.JS0000004 && moment(tableObjN3.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N2资质时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000091')}} defaultValue={tableObjN3.JS0000091 && moment(tableObjN3.JS0000091)}  />
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000091')}} value={moment(tableObjN3.JS0000091 && tableObjN3.JS0000091)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
+             
             </tr>
             <tr>
               <td rowSpan={5} style={{ textAlign: "center" }}>
@@ -365,7 +371,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                   <input
-                    className="border"
+                    className="border mar-btom"
                     type="text"
                     value={tableObjN3.JS0000094}
                     onChange={(e) => {
@@ -394,7 +400,7 @@ export default observer(function ApplicationN1(props: Props) {
                       ]}
                     />
                     <input
-                      className="border"
+                      className="border mar-btom"
                       type="text"
                       value={tableObjN3.JS0000095}
                       onChange={(e) => {
@@ -414,7 +420,7 @@ export default observer(function ApplicationN1(props: Props) {
                       ]}
                     />
                     <input
-                      className="border"
+                      className="border mar-btom"
                       type="text"
                       value={tableObjN3.JS0000096}
                       onChange={(e) => {
@@ -515,7 +521,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span> 论文题目：</span>
                   <input
-                      className="border"
+                      className="border mar-btom"
                       type="text"
                       value={tableObjN3.JS0000104}
                       onChange={(e) => {
@@ -524,7 +530,7 @@ export default observer(function ApplicationN1(props: Props) {
                     />
                   <span> 发表时间： </span>
                   <input
-                      className="border"
+                      className="border mar-btom"
                       type="text"
                       value={tableObjN3.JS0000105}
                       onChange={(e) => {
@@ -533,7 +539,7 @@ export default observer(function ApplicationN1(props: Props) {
                     />
                   <span> 期刊名称：</span>
                   <input
-                      className="border"
+                      className="border mar-btom"
                       type="text"
                       value={tableObjN3.JS0000106}
                       onChange={(e) => {
@@ -624,9 +630,9 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   （原由及累计时间：
                   <input
-                    className="acc-time"
+                    className="mar-btom"
                     type="text"
-                    value={tableObjN3.JS0000033}
+                    defaultValue={tableObjN3.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
@@ -640,7 +646,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>5、曾获得何种荣誉： </span>
                   <textarea
-                    value={tableObjN3.JS0000034}
+                    defaultValue={tableObjN3.JS0000034}
                     style={{
                       width: 405,
                       whiteSpace: "pre-wrap",
@@ -669,7 +675,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000110}
                     onChange={(e) => {
@@ -677,7 +683,7 @@ export default observer(function ApplicationN1(props: Props) {
                     }}
                   />人；临床带教时间及姓名
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000111}
                     onChange={(e) => {
@@ -696,7 +702,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000113}
                     onChange={(e) => {
@@ -704,7 +710,7 @@ export default observer(function ApplicationN1(props: Props) {
                     }}
                   />学时；授课时间及课题
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000114}
                     onChange={(e) => {
@@ -723,7 +729,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000116}
                     onChange={(e) => {
@@ -731,7 +737,7 @@ export default observer(function ApplicationN1(props: Props) {
                     }}
                   />次；授课时间及课题
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000117}
                     onChange={(e) => {
@@ -774,7 +780,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                    <input
-                    className="acc-time border"
+                    className="mar-btom border"
                     type="text"
                     value={tableObjN3.JS0000119}
                     onChange={(e) => {
@@ -826,7 +832,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 250 }}>
                   <textarea
                     className="textarea-summarize"
-                    value={tableObjN3.JS0000035}
+                    defaultValue={tableObjN3.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -844,7 +850,7 @@ export default observer(function ApplicationN1(props: Props) {
                     {/* <input className="acc-time" type="text"  value={tableObjN3.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
                     <input
-                      className="acc-time"
+                      className="wih-150"
                       type="text"
                       style={{ width: "150px" }}
                       value={tableObjN3.JS0000011}
@@ -886,14 +892,14 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN3.JS0000014}
+                    defaultValue={tableObjN3.JS0000014}
                     readOnly
                   />
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
-                    value={tableObjN3.JS0000016}
+                    className="wih-150"
+                    defaultValue={tableObjN3.JS0000016}
                     readOnly
                   />
                 </div>
@@ -913,14 +919,14 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN3.JS0000019}
+                    defaultValue={tableObjN3.JS0000019}
                     readOnly
                   />
                   <span>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
-                    value={tableObjN3.JS0000021}
+                    className="wih-150"
+                    defaultValue={tableObjN3.JS0000021}
                     readOnly
                   />
                 </div>
@@ -948,7 +954,7 @@ export default observer(function ApplicationN1(props: Props) {
                  <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN3.JS0000127}
+                    defaultValue={tableObjN3.JS0000127}
                     onChange={(e) => {
                       handleInput(e, "JS0000127");
                     }}
@@ -959,7 +965,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN3.JS0000047}
+                    defaultValue={tableObjN3.JS0000047}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
@@ -971,7 +977,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN3.JS0000048}
+                    defaultValue={tableObjN3.JS0000048}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
                     }}
@@ -983,7 +989,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
-                    value={tableObjN3.JS0000128}
+                    defaultValue={tableObjN3.JS0000128}
                     onChange={(e) => {
                       handleInput(e, "JS0000128");
                     }}
@@ -1045,7 +1051,7 @@ export default observer(function ApplicationN1(props: Props) {
                         type="text"
                         style={{margin:"0px 10px"}}
                         className="mar-btom border acc-time"
-                        value={tableObjN3.JS0000080}
+                        defaultValue={tableObjN3.JS0000080}
                         onChange={(e) => {
                           handleInput(e, "JS0000080");
                         }}
@@ -1058,7 +1064,7 @@ export default observer(function ApplicationN1(props: Props) {
                         type="text"
                         style={{margin:"0px 10px"}}
                         className="mar-btom border acc-time"
-                        value={tableObjN3.JS0000082}
+                        defaultValue={tableObjN3.JS0000082}
                         onChange={(e) => {
                           handleInput(e, "JS0000082");
                         }}
@@ -1155,18 +1161,18 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN3.JS0000024}
+                    defaultValue={tableObjN3.JS0000024}
                     readOnly
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
-                    value={tableObjN3.JS0000026}
+                    className="wih-150"
+                    defaultValue={tableObjN3.JS0000026}
                     readOnly
                   />
                 </div>
@@ -1188,18 +1194,18 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
-                    value={tableObjN3.JS0000029}
+                    defaultValue={tableObjN3.JS0000029}
                     readOnly
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
-                    value={tableObjN3.JS0000031}
+                    className="wih-150"
+                    defaultValue={tableObjN3.JS0000031}
                     readOnly
                   />
                 </div>
@@ -1250,46 +1256,37 @@ export default observer(function ApplicationN1(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {new Array(6).fill('').map((item:any,index)=><tr  key={index}>
+          {PromotionAppUtils.carePatientList.length == 6 && PromotionAppUtils.carePatientList.map((item:any,index:number)=><tr key={index}>
               <td>
-              <Input.TextArea
-                value={'dd'}
+              <Input
+                value={item.patientName}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "patientName",index);
                 }}
-                autosize={{ minRows: 3 }}
+              />
+              </td>
+              <td>
+              <Input
+                value={item.medicalRecordNo}
+                className="td-center inp_textArea"
+                onChange={(e) => {
+                  handelTextareas(e, "medicalRecordNo",index);
+                }}
               />
               </td>
               <td>
               <Input.TextArea
-                value={'dd'}
+                value={item.careMessage}
                 className="td-center inp_textArea"
                 onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
+                  handelTextareas(e, "careMessage",index);
                 }}
                 autosize={{ minRows: 3 }}
               />
               </td>
-              <td>
-              <Input.TextArea
-                value={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
-              />
-              </td>
-              <td>
-              <Input.TextArea
-                value={'dd'}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextarea(e, "JS0000034");
-                }}
-                autosize={{ minRows: 3 }}
-              />
+              <td style={{textAlign:'center'}}>
+              <DatePicker showTime onChange={(e)=>{handelDatePicker(e, "careTime",index);}} value={(item.careTime ? moment(item.careTime) : undefined)} format="YYYY-MM-DD HH:mm" className="inp_textArea" key={'careTime' + index}/>
               </td>
             </tr>
             )}
@@ -1469,6 +1466,9 @@ const Wrapper = styled.div`
       }
       ::-webkit-scrollbar {
         display: none;
+      }
+      .ant-input{
+        width:150px;
       }
     }
   }

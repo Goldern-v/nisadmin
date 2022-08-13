@@ -158,13 +158,13 @@ export default observer(function ApplyHeader(props: Props) {
         >
           导出
         </Button>
-        <Button
+        {/* <Button
           className="span"
           type="primary"
           onClick={()=>{evaluateDatas.save()}}
         >
           保存
-        </Button>
+        </Button> */}
       </RightIcon>
     </Wrapper>
   );

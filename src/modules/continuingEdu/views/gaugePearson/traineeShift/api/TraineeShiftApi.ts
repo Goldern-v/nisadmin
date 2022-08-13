@@ -34,7 +34,7 @@ export default class TraineeShiftApi extends BaseApiService {
   // 查询轮科主页信息
   public async querySheetCompleteInfo(obj: any) {
     return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/querySheetCompleteInfo`,
+      `/studyAndTrain/planTrain/deptRotationSchedule/querySheetCompleteInfo`,
       obj
     );
   }

@@ -13,6 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 import { badEventReportService } from './services/BadEventReportService'
 import PromotionTable from './PromotionTable'
 import qs from 'qs'
+import { keys } from 'mobx'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
@@ -20,35 +21,40 @@ export default observer(function NursingReportDetailView() {
   const [printwih ,setprintwih]  = useState('2100px')
   const [currentPage, setCurrentPage]: any = useState({})
   const [spinning, setSpinning] = useState(false)
-  const showText = ['gzsrm'].includes(appStore.HOSPITAL_ID)
 
   useEffect(() => {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
-    setCurrentPage(query)
     PromotionDetaitUtils.master.id = query.id
+    PromotionDetaitUtils.master.formName = query.formName
+    PromotionDetaitUtils.master.formCode = query.formCode
+    let list:object = {"HSJS_0001":'2100px',"HSJS_0002":'2100px', "HSJS_0003":'3200px',"HSJS_0004":'3200px'}
+    Object.keys(list).map((item:string) => {
+      if(PromotionDetaitUtils.master.formCode == item){
+        setprintwih(list[item])
+      }
+    })
+    setCurrentPage(query)
     PromotionDetaitUtils.createOnload()
   }, [])
   // 切换表
   const handletabsList = (value:string)=>{
-    console.log(value);
-    PromotionDetaitUtils.master.formName = value
-    if(value == "N0->N1"){
+    if(value == "HSJS_0001"){
       PromotionDetaitUtils.master.formCode = "HSJS_0001"
       PromotionDetaitUtils.master.formName = value
       setprintwih('2100px')
       PromotionDetaitUtils.getUesrPromotionList()
-    }else if(value == "N1->N2"){
+    }else if(value == "HSJS_0002"){
       PromotionDetaitUtils.master.formCode = "HSJS_0002"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
       PromotionDetaitUtils.getUesrPromotionList()
-    }else if(value == "N2->N3"){
+    }else if(value == "HSJS_0003"){
       PromotionDetaitUtils.master.formCode = "HSJS_0003"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
       PromotionDetaitUtils.getUesrPromotionList()
-    }else if(value == "N3->N4"){
+    }else if(value == "HSJS_0004"){
       PromotionDetaitUtils.master.formCode = "HSJS_0004"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
@@ -90,6 +96,15 @@ export default observer(function NursingReportDetailView() {
           }
           .wih-150{
             width: 150px;
+            margin:0;
+            padding:0;
+            line-height: 12px;
+          }
+          .wih-300{
+            width: 300px;
+            margin:0;
+            padding:0;
+            line-height: 12px;
           }
           .acc-time{
             width:38px !important;
@@ -99,7 +114,7 @@ export default observer(function NursingReportDetailView() {
             line-height: 12px;
           }
           .mar-btom{
-            width:100px !important;
+            width:90px !important;
             text-align:center;
             margin:0;
             padding:0;
@@ -148,11 +163,11 @@ export default observer(function NursingReportDetailView() {
           <Button  type="primary" loading={spinning} onClick={()=>{handleEdit(PromotionDetaitUtils.editStatus)}}>{PromotionDetaitUtils.editStatus}</Button>
           <Button  type="primary" loading={spinning} onClick={handleSave}>保存</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
-          <Select defaultValue={PromotionDetaitUtils.master.formName} style={{ width: 200 }} onChange={handletabsList}>
-            <Select.Option value="N0->N1">{'N0->N1'}</Select.Option>
-            <Select.Option value="N1->N2">{'N1->N2'}</Select.Option>
-            <Select.Option value="N2->N3">{'N2->N3'}</Select.Option>
-            <Select.Option value="N3->N4">{'N3->N4'}</Select.Option>
+          <Select value={PromotionDetaitUtils.master.formCode} style={{ width: 200 }} onChange={handletabsList}>
+            <Select.Option value="HSJS_0001">{'N0->N1'}</Select.Option>
+            <Select.Option value="HSJS_0002">{'N1->N2'}</Select.Option>
+            <Select.Option value="HSJS_0003">{'N2->N3'}</Select.Option>
+            <Select.Option value="HSJS_0004">{'N3->N4'}</Select.Option>
           </Select>
         </div>
       </HeadCon>

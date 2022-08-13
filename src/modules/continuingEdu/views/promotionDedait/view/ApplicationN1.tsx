@@ -510,7 +510,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="acc-time"
                     type="text"
-                    value={tableObjN1.JS0000033}
+                    defaultValue={tableObjN1.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
@@ -627,7 +627,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
                     defaultValue={tableObjN1.JS0000016}
                   />
@@ -653,7 +653,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     defaultValue={tableObjN1.JS0000021}
                   />
                 </div>
@@ -799,7 +799,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -808,7 +808,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     defaultValue={tableObjN1.JS0000026}
                   />
                 </div>
@@ -830,7 +830,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -839,7 +839,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     defaultValue={tableObjN1.JS0000031}
                   />
                 </div>

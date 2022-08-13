@@ -188,7 +188,6 @@ export default observer(function ApplicationN1(props: Props) {
         className="first-form"
         style={{
           top:
-            PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "23px"
@@ -596,7 +595,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     value={tableObjN1.JS0000016}
                     readOnly
                   />
@@ -623,7 +622,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     value={tableObjN1.JS0000021}
                     readOnly
                   />
@@ -770,7 +769,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -780,7 +779,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     value={tableObjN1.JS0000026}
                     readOnly
                   />
@@ -803,7 +802,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -813,7 +812,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     value={tableObjN1.JS0000031}
                     readOnly
                   />

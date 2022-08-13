@@ -27,31 +27,10 @@ interface webProps {
   onChange: (file:any)=> void;
 }
 
-interface aduit {
-  appointUser: boolean;
-  beRecordId: number;
-  canHandle: boolean;
-  canUpdate: boolean;
-  chainCode: string;
-  evalDate: null;
-  expand: string;
-  handleContent: string;
-  handleTime: string;
-  handlerName: string;
-  handlerNo: string;
-  noPass: boolean;
-  nodeCode: string;
-  nodeIndexNo: null;
-  nodeName: string;
-  status: string;
-}
-
 export default observer(function ApplicationN1(props: Props) {
   const { tableObjN2 } = PromotionAppUtils;
-  const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false);
-  const [yearPickerIsOpen1, setyearPickerIsOpen1] = useState(false);
-  const [DotPass, setDotPass] = useState(false);
   const [upLoading,setupLoading] = useState(false)
+  const [DotPass, setDotPass] = useState(false);
   const [isAduit, setisAduit] = useState({
     noPass: false,
     nodeCode:''
@@ -73,13 +52,7 @@ export default observer(function ApplicationN1(props: Props) {
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
   const onDatePickerChange = (e: any, value: any) => {
-    console.log(e);
-    
     tableObjN2[value] = e;
-  };
-  const handleChange1 = (e: any, value: any) => {
-    tableObjN2[value] = e;
-    setyearPickerIsOpen1(false);
   };
   const handelTextarea = (e: any, value: any) => {
     let ctext = e.target.value;
@@ -87,6 +60,11 @@ export default observer(function ApplicationN1(props: Props) {
   };
   const handelTextareas = (e: any, value: any,key:number) => {
     let ctext = e.target.value;
+    PromotionAppUtils.carePatientList[key][value] = ctext
+    PromotionAppUtils.carePatientList[key].masterId = PromotionAppUtils.master.id
+  };
+  const handelDatePicker = (e: any, value: any,key:number) => {
+    let ctext = moment(e).format("YYYY-MM-DD HH:mm");
     PromotionAppUtils.carePatientList[key][value] = ctext
     PromotionAppUtils.carePatientList[key].masterId = PromotionAppUtils.master.id
   };
@@ -111,7 +89,6 @@ export default observer(function ApplicationN1(props: Props) {
           setupLoading(false)
           PromotionAppUtils.attachmentList = PromotionAppUtils.attachmentList.filter((item:any) => item.id != data.id)
         }
-      
     })
   }
 
@@ -221,13 +198,11 @@ export default observer(function ApplicationN1(props: Props) {
         className="first-form"
         style={{
           top:
-            PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            Number(PromotionAppUtils.flowStatus) > 0  
               ? "23px"
               : "1118px",
           height:
-            PromotionAppUtils.master.noPass== false && 
             PromotionAppUtils.editStatus == "取消编辑" &&
             Number(PromotionAppUtils.flowStatus) > 0
               ? "1080px"
@@ -237,7 +212,7 @@ export default observer(function ApplicationN1(props: Props) {
           message.warning("当前暂不可编辑，请根据流程进行修改！");
         }}
       ></div>
-      <div className="wrapper-pages-form">
+     <div className="wrapper-pages-form">
         <div className="form-title">
           临床护理人员晋升申请表（N1→N2）（{moment().format("YYYY")}版）
         </div>
@@ -261,6 +236,7 @@ export default observer(function ApplicationN1(props: Props) {
                   {/* <Input value="26888888" value={tableObjN2.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     type="text"
+                    className="mar-btom"
                     value={tableObjN2.JS0000001}
                     onChange={(e) => {
                       handleInput(e, "JS0000001");
@@ -335,16 +311,16 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             <tr>
-              <td colSpan={2}>
+            <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN2.JS0000004 &&  moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} value={tableObjN2.JS0000004 && moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N1资质时间：</span>
-                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} defaultValue={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
+                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} value={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
@@ -535,13 +511,14 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   （原由及累计时间：
                   <input
-                    className="acc-time"
+                    className="mar-btom acc-time"
                     type="text"
-                    value={tableObjN2.JS0000033}
+                    defaultValue={tableObjN2.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
-                  /> <span>）</span>
+                  />
+                  <span>）</span>
                   （晋级前12个月，累计缺勤时间≥6个月者，返岗当年不得参加晋级考核）
                 </div>
               </td>
@@ -653,7 +630,7 @@ export default observer(function ApplicationN1(props: Props) {
                     {/* <input className="acc-time" type="text"  value={tableObjN2.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
                     <input
-                      className="acc-time"
+                      className="wih-150"
                       type="text"
                       style={{ width: "150px" }}
                       value={tableObjN2.JS0000011}
@@ -708,14 +685,14 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     readOnly
-                    value={tableObjN2.JS0000014}
+                    defaultValue={tableObjN2.JS0000014}
                   />
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
-                    value={tableObjN2.JS0000016}
+                    defaultValue={tableObjN2.JS0000016}
                   />
                 </div>
                 <div className="base-item">
@@ -735,14 +712,14 @@ export default observer(function ApplicationN1(props: Props) {
                     type="text"
                     className="mar-btom"
                     readOnly
-                    value={tableObjN2.JS0000019}
+                    defaultValue={tableObjN2.JS0000019}
                   />
                   <span>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
-                    value={tableObjN2.JS0000021}
+                    defaultValue={tableObjN2.JS0000021}
                   />
                 </div>
               </td>
@@ -955,19 +932,19 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     readOnly
-                    value={tableObjN2.JS0000024}
+                    defaultValue={tableObjN2.JS0000024}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
-                    value={tableObjN2.JS0000026}
+                    defaultValue={tableObjN2.JS0000026}
                   />
                 </div>
               </td>
@@ -988,19 +965,19 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
                     readOnly
-                    value={tableObjN2.JS0000029}
+                    defaultValue={tableObjN2.JS0000029}
                   />
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
-                    value={tableObjN2.JS0000031}
+                    defaultValue={tableObjN2.JS0000031}
                   />
                 </div>
               </td>
@@ -1024,7 +1001,7 @@ export default observer(function ApplicationN1(props: Props) {
           {PromotionAppUtils.attachmentList.map((item:any)=>{
              return <div  key={item.uid} >
                 <Spin spinning={upLoading} delay={500} >
-                <div className="upload-item" onClick={()=>{handleSkip(item)}} >
+                <div className="upload-item"  onClick={()=>{handleSkip(item)}}>
                   <span>{item.name}</span>
                   <Icon type="close-circle" theme="twoTone" twoToneColor="#f33838" onClick={()=>{handleRomve(item)} }/>
                 </div>
@@ -1079,14 +1056,8 @@ export default observer(function ApplicationN1(props: Props) {
                 autosize={{ minRows: 3 }}
               />
               </td>
-              <td>
-              <Input
-                value={item.careTime}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextareas(e, "careTime",index);
-                }}
-              />
+              <td style={{textAlign:'center'}}>
+              <DatePicker showTime onChange={(e)=>{handelDatePicker(e, "careTime",index);}} value={(item.careTime ? moment(item.careTime) : undefined)} format="YYYY-MM-DD HH:mm" className="inp_textArea" key={'careTime' + index}/>
               </td>
             </tr>
             )}
@@ -1265,6 +1236,9 @@ const Wrapper = styled.div`
       }
       ::-webkit-scrollbar {
         display: none;
+      }
+      .ant-input{
+        width:150px;
       }
     }
   }
