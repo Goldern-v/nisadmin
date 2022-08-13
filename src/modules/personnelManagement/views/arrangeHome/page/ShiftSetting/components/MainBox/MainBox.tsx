@@ -68,7 +68,7 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy': AddShiftModal_wh,
+        'wh,lyyz,qhwy,wjgdszd': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },

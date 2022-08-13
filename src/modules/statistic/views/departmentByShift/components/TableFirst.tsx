@@ -25,6 +25,7 @@ export default function BedSituation(props: Props) {
   
   const vertialTable = [{}, {}, {}, {}, {}, {}, {}, {}]
   const visibleType = Object.keys(filterObj).find((key: string) => filterObj[key].checked)
+  console.log(visibleType,filterObj, 8888888888)
   
   const {morningHourTableData, nightHourTableData} = byHours
 
@@ -47,14 +48,15 @@ export default function BedSituation(props: Props) {
     let sumupRow = { '序列': visibleData.length + 1, '科室': '班次合计' } as any
 
     visibleData.forEach((item: any) => {
+    
       let keys = Object.keys(item)
 
       keys.forEach((key: string) => {
         if (!['序列', '科室'].includes(key)) {
           if (sumupRow[key]) {
-            sumupRow[key] = sumupRow[key] + item[key]
+            sumupRow[key] = (Number(sumupRow[key] + item[key])).toFixed(2)
           } else {
-            sumupRow[key] = item[key] || 0
+            sumupRow[key] = Number(item[key]).toFixed(2) || 0
           }
         }
       })
@@ -67,6 +69,7 @@ export default function BedSituation(props: Props) {
       }
     }
     else visibleData.push(sumupRow, hourMap)
+
     return visibleData
   }
 
@@ -81,8 +84,7 @@ export default function BedSituation(props: Props) {
   })
 
   const getShiftClassDom_byHour1 = getShiftClass.map((item: any) => {
-
-    return <th  colSpan={2} key={item.toString()}>{item}</th>
+    return <th colSpan={2} key={item.toString()}>{item}</th>
     
   })
   const getShiftClassDom_byHour2 = getShiftClass.map((item: any) => {
@@ -92,17 +94,50 @@ export default function BedSituation(props: Props) {
 
   // td DOM
   const getTdDom = visibleTable()
+    .map((itemTr: any, index: number) => {
+      return (
+        <tr key={index}>
+          {!(itemTr.科室 || '').match('合计') ? (
+            <React.Fragment>
+              <td>{itemTr.序列 || index + 1}</td>
+              <td className="administrative">{itemTr.科室}</td>
+            </React.Fragment>
+          ) : (
+            <td colSpan={2}>{Number(itemTr.科室).toFixed(2)}</td>
+          )}
+          {getShiftClass.map((itemTd: any, indexTd: number) => {
+            if (itemTd === '序列') {
+              return <td key={indexTd}>{index + 1}</td>
+            } else {
+              // return <td key={indexTd}>{itemTr[itemTd]}</td>
+              return <td key={indexTd}>{itemTr[itemTd] ? Number(itemTr[itemTd]).toFixed(2) : '0.00'}</td>
+            }
+          })}
+          {visibleType ? (
+            <td>{itemTr.合计 ? Number(itemTr.合计).toFixed(2) : '0.00'}</td>
+          ) : (
+            <React.Fragment>
+              <td>{itemTr.合计}</td>
+              <td>{itemTr.合计1}</td>
+            </React.Fragment>
+          )}
+        </tr>
+      )
+    })
+    
+    // td DOM
+    const getTdDom2 = visibleTable()
     .map((itemTr: any, index: number) => (
-      <tr key={index}>
+      <tr key={index} >
         {!(itemTr.科室 || '').match('合计') ? (
           <React.Fragment>
             <td>{itemTr.序列 || index + 1}</td>
-            <td>{itemTr.科室}</td>
+            <td className="administrative">{itemTr.科室}</td>
           </React.Fragment>
         ) : (
-          <td colSpan={2}>{itemTr.科室}</td>
+          <td className="administrative" colSpan={2}>{itemTr.科室}</td>
         )}
-        {getShiftClass.map((itemTd: any, indexTd: number) => {
+        {/* {getShiftClass.map((itemTd: any, indexTd: number) => {
           if (itemTd === '序列') {
             return <td key={indexTd}>{index + 1}</td>
           } else {
@@ -117,7 +152,7 @@ export default function BedSituation(props: Props) {
             <td>{itemTr.合计}</td>
             <td>{itemTr.合计1}</td>
           </React.Fragment>
-        )}
+        )} */}
       </tr>
     ))
 
@@ -128,10 +163,10 @@ export default function BedSituation(props: Props) {
         {!(itemTr.科室 || '').match('合计') ? (
           <React.Fragment>
             <td>{itemTr.序列 || index + 1}</td>
-            <td>{itemTr.科室}</td>
+            <td className="administrative">{itemTr.科室}</td>
           </React.Fragment>
         ) : (
-          <td colSpan={2}>{itemTr.科室}</td>
+          <td className="administrative" colSpan={2}>{itemTr.科室}</td>
         )}
         {getShiftClass.map((itemTd: any, indexTd: number) => {
           let arr = ['白小时', '夜小时']
@@ -153,7 +188,46 @@ export default function BedSituation(props: Props) {
         )}
       </tr>
     )
+    
   })
+
+  const getTdDom_byHour2 = visibleTable_byHour()
+  .map((itemTr: any, index: number) => {
+    return (
+      <tr key={index}>
+        {!(itemTr.科室 || '').match('合计') ? (
+          <React.Fragment>
+            <td>{itemTr.序列 || index + 1}</td>
+            <td className='administrative'>{itemTr.科室}</td>
+          </React.Fragment>
+        ) : (
+          <td className='administrative' colSpan={2}>{itemTr.科室}</td>
+        )}
+        {/* {getShiftClass.map((itemTd: any, indexTd: number) => {
+          let arr = ['白小时', '夜小时']
+          return arr.map((item, i) => {
+            if (itemTd === '序列') {
+              return <td key={indexTd}>{index + 1}</td>
+            } else {
+              return (i%2) !== 0  ? <td key={indexTd}>{itemTr[itemTd]}</td> : <td key={indexTd + 1}>{morningHourTableData[index] && morningHourTableData[index][itemTd]}</td>
+            }
+          })
+        })} */}
+        {/* {visibleType ? (
+          <td>{itemTr.合计}</td>
+        ) : (
+          <React.Fragment>
+            <td>{itemTr.合计}</td>
+            <td>{itemTr.合计1}</td>
+          </React.Fragment>
+        )} */}
+      </tr>
+    )
+    
+  })
+
+
+  
   getTdDom_byHour.push(
     <tr>
       {/* <td>{visibleTable_byHour().length + 1}</td> */}
@@ -172,54 +246,109 @@ export default function BedSituation(props: Props) {
       )}
     </tr>
   )
+  // getTdDom_byHour2.push(
+  //   <tr>
+  //     {/* <td>{visibleTable_byHour().length + 1}</td> */}
+  //     <td colSpan={2}>合计</td>
+  //     {getShiftClass.map((itemTd: any, indexTd: number) => {
+  //       let arr = ['白小时', '夜小时']
+  //       return arr.map((item, i) => (i%2) !== 0  ? <td key={indexTd}>{byHourNightMap[itemTd]}</td> : <td key={indexTd + 1}>{byHourMorningMap[itemTd]}</td>)
+  //     })}
+  //     {visibleType ? (
+  //       <td>{byHourNightMap['合计'] + byHourMorningMap['合计']}</td>
+  //     ) : (
+  //       <React.Fragment>
+  //         <td>{byHourNightMap['合计'] + byHourMorningMap['合计']}</td>
+  //         <td>{byHourNightMap['合计1'] + byHourMorningMap['合计1']}</td>
+  //       </React.Fragment>
+  //     )}
+  //   </tr>
+  // )
+
+  const onScroll = () => {
+    const exerciseContainerRoot = (document.getElementsByClassName('tableTrCon') as HTMLCollectionOf<HTMLElement>)[0];
+    const tableFixedFlet =  (document.getElementsByClassName('table-fixed_flet') as HTMLCollectionOf<HTMLElement>)[0];
+    tableFixedFlet.scrollTop = exerciseContainerRoot?.scrollTop
+  }
 
   return (
-    <Con>
-      <div className='tableCon'>
-        <div className='tableHead'>
-          <table>
-            <tbody>
-            {statusRadio ==='1' ? <div>
-                <tr>
-                  <th>序号</th>
-                  <th className='administrative'>科室</th>
-                  {getShiftClassDom}
-                  {visibleType ? (
-                    <th>合计</th>
-                  ) : (
-                    <React.Fragment>
-                      <th>班次大类合计</th>
-                      <th>自定义班次合计</th>
-                    </React.Fragment>
-                  )}
-                </tr>
-                {getTdDom}
-              </div> :
-              <div>
-                <tr>
-                  <th style={{'verticalAlign': 'middle'}} rowSpan={2}>序号</th>
-                  <th style={{'verticalAlign': 'middle'}} className='administrative' rowSpan={2}>科室</th>
-                  {getShiftClassDom_byHour1}
-                  {visibleType ? (
-                    <th style={{'verticalAlign': 'middle'}} rowSpan={2}>合计</th>
-                  ) : (
-                    <React.Fragment>
-                      <th>班次大类合计</th>
-                      <th>自定义班次合计</th>
-                    </React.Fragment>
-                  )}
-                </tr>
-                <tr>
-                  {getShiftClassDom_byHour2}
-                </tr>
-
-                {getTdDom_byHour}
-              </div>}
-            </tbody>
-          </table>
+      <Con className='table' onScroll={onScroll}>
+        <div className='tableCon'>
+          <div className='tableHead'>
+            <table style={{margin: (tableData.length === 0 || nightHourTableData.length === 0) ? '0 auto' : ''}}>
+              <tbody>
+              {statusRadio ==='1' ? 
+                <div style={{display: 'flex'}}>
+                  <tr className='fixed_flet_title' style={{display: (tableData.length === 0) ? 'none' : 'block'}}>
+                    <th>序号</th>
+                    <th className='administrative'>科室</th>
+                  </tr>
+                  <div className='table-fixed_flet' style={{display: (tableData.length === 0) ? 'none' : 'block'}}>
+                    {getTdDom2}
+                  </div>
+                  <div>
+                    <tr>
+                      <th>序号</th>
+                      <th className='administrative'>科室</th>
+                      {getShiftClassDom}
+                      {visibleType ? (
+                        <th>合计</th>
+                      ) : (
+                        <React.Fragment>
+                          <th>班次大类合计</th>
+                          <th>自定义班次合计</th>
+                        </React.Fragment>
+                      )}
+                    </tr>
+                    <div className='tableTrCon'>
+                      {getTdDom}
+                    </div>
+                  </div>
+                </div> 
+                :
+                <div style={{display: 'flex'}}>
+                  <tr className='fixed_flet_title' style={{display: (nightHourTableData.length === 0) ? 'none' : 'block'}}>
+                    <th style={{'verticalAlign': 'middle', height: '41px'}} rowSpan={2}>序号</th>
+                    <th style={{'verticalAlign': 'middle'}} className='administrative' rowSpan={2}>科室</th>
+                  </tr>
+                  <div className='table-fixed_flet byHour2' style={{display: (nightHourTableData.length === 0) ? 'none' : 'block'}}>
+                    {getTdDom_byHour2}
+                    {visibleType ? (
+                      <td style={{'verticalAlign': 'middle'}} colSpan={2}>合计</td>
+                    ) : (
+                      <React.Fragment>
+                        <td>班次大类合计</td>
+                        <td>自定义班次合计</td>
+                      </React.Fragment>
+                    )}
+                  </div>
+                  <div>
+                    <tr>
+                      <th style={{'verticalAlign': 'middle', height: '41px'}} rowSpan={2}>序号</th>
+                      <th style={{'verticalAlign': 'middle'}} className='administrative' rowSpan={2}>科室</th>
+                      {getShiftClassDom_byHour1}
+                      {visibleType ? (
+                        <th style={{'verticalAlign': 'middle', borderTop: '1px solid #d6d6d6'}} rowSpan={2}>合计</th>
+                      ) : (
+                        <React.Fragment>
+                          <th>班次大类合计</th>
+                          <th>自定义班次合计</th>
+                        </React.Fragment>
+                      )}
+                    </tr>
+                    <tr>
+                      {getShiftClassDom_byHour2}
+                    </tr>
+                    <div className='tableTrCon'>
+                      {getTdDom_byHour} 
+                    </div>
+                  </div>
+                </div>}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </Con>
+      </Con>
   )
 }
 
@@ -228,32 +357,37 @@ const Con = styled.div`
   flex: 1;
   margin-right: 30px;
   margin-bottom: 20px;
-  overflow: auto;
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 10px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
+  /* overflow-x: auto; */
+  /* position: relative; */
   .tableCon {
+    position: relative;
     .tableHead {
+      margin: 0 auto;
+      width: calc(100vw - 530px);
+      overflow: auto;
+      ::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+        height: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 5px;
+        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+      }
+      /*定义滚动条轨道 内阴影+圆角*/
+      ::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        box-shadow: inset 0 0 5px #ffffff;
+        border-radius: 5px;
+        background-color: #ffffff;
+      }
       table {
-        margin: 0 auto;
-        overflow-x: auto;
-        border: 1px solid #d6d6d6;
+        /* width: 100%; */
+        /* border: 1px solid #d6d6d6; */
         border-top: none;
+        /* overflow-x: auto; */
         /* 整体字体设置下*/
         /* 整体字体设置 上*/
         border-collapse: collapse;
@@ -264,7 +398,7 @@ const Con = styled.div`
           padding: 0;
           border: 1px solid #d6d6d6;
           background: rgba(242, 244, 245, 1);
-          min-width: 60px;
+          min-width: 85px;
           font-weight: bold;
         }
         /* 设置整体td */
@@ -272,81 +406,56 @@ const Con = styled.div`
           box-sizing: border-box;
           padding: 0;
           border: 1px solid #d6d6d6;
-          min-width: 60px;
+          min-width: 85px;
           height: 20px;
           border-top: none;
           /* width: 6%; */
         }
-        th:nth-of-type(1) {
+        /* th:nth-of-type(2) {
           box-sizing: border-box;
-          min-width: 60px;
-        }
-        th.administrative {
+          min-width: 200px;
+        } */
+        .administrative {
           box-sizing: border-box;
-          min-width: 150px;
+          min-width: 200px;
         }
+        /* td:nth-of-type(10) {
+          box-sizing: border-box;
+          min-width: 85px;
+        } */
+        
+      }
+      .table-fixed_flet{
+        position: absolute;
+        top: 21px;
+        left: 1px;
+        z-index: 2;
+        overflow-y: auto;
+        background: #fff;
+        height: calc(100vh - 300px);
+        ::-webkit-scrollbar{
+          width: 0px;
+        }
+      }
+      .byHour2{
+        top: 42px;
 
-        td:nth-of-type(1) {
-          box-sizing: border-box;
-          min-width: 60px;
-        }
-        td:nth-of-type(2) {
-          box-sizing: border-box;
-          min-width: 150px;
+      }
+      .tableTrCon{
+        /* height: 480px; */
+        height: calc(100vh - 300px);
+        overflow-y: auto;
+        ::-webkit-scrollbar{
+          width: 0px;
         }
       }
-    }
-    .tableMid {
-      width: 100%;
-      overflow: hidden;
-      /* overflow-y: auto; */
-      /* height: 380px; */
-      .tableMidCon {
-        width: calc(100%+20px);
-        table {
-          /* width: 100%; */
-          tr:nth-of-type(2n + 2) {
-            background: rgba(242, 244, 245, 1);
-          }
-          td {
-            box-sizing: border-box;
-            width: 6%;
-          }
-          .addRowClass {
-            background: rgba(228, 233, 235, 1) !important;
-          }
-          td:nth-of-type(1) {
-            box-sizing: border-box;
-            width: 3%;
-          }
-          td:nth-of-type(2) {
-            box-sizing: border-box;
-            width: 8%;
-          }
-          td:nth-of-type(3) {
-            box-sizing: border-box;
-            min-width: 6%;
-          }
-        }
+      .fixed_flet_title{
+        position: absolute;
+        z-index: 11;
+        top: 0px;
+        left: 1px;
       }
     }
-    .tableMid::-webkit-scrollbar {
-      /*滚动条整体样式*/
-      width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
-      height: 1px;
-    }
-    .tableMid::-webkit-scrollbar-thumb {
-      /*滚动条里面小方块*/
-      border-radius: 6px;
-      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-      background: rgba(194, 194, 194, 1);
-    }
-    .tableMid::-webkit-scrollbar-track {
-      padding: 0 1px;
-      /*滚动条里面轨道*/
-      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-      /* border-radius: 10px; */
-      background: rgba(237, 237, 237, 1);
-    }
+    
   }
 `
