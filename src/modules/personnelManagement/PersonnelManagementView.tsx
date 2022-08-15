@@ -26,6 +26,7 @@ export default function PersonnelManagementView() {
     switch (appStore.HOSPITAL_ID) {
       case 'wh':
       case 'lyyz':
+      case 'ytll':
         return menuConfig_wh;
       case 'qhwy':
         return menuConfig_qhwy;

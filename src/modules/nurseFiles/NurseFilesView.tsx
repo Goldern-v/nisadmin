@@ -97,6 +97,8 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_wh;
       case "gdtj":
         return NurseFilesListView_wh;
+      case "ytll":
+        return NurseFilesListView_wh;
       default:
         return NurseFilesListView_hj;
     }
@@ -130,7 +132,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt": false, 
+        "hj,lyrm,qhwy,fsxt,ytll": false, 
         other: !appStore.isDev,
       },
       vague: true,
@@ -281,7 +283,7 @@ export default observer(function NurseFilesView(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        "qhwy": [
+        "qhwy,ytll": [
           nursingEduFilesCon
         ], 
         other: [],
@@ -694,6 +696,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "wh":
       case 'lyyz':
       case 'qhwy':
+      case 'ytll':
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;

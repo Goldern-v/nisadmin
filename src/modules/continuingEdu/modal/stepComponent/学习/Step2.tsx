@@ -169,7 +169,7 @@ export default observer(function Step2() {
             </Form.Field>
           </Col>
 
-          {appStore.HOSPITAL_ID == "wh" && (
+          {(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "ytll")  && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
                 <Select style={{ width: 120 }}>

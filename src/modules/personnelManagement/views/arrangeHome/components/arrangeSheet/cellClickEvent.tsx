@@ -38,7 +38,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy',"whsl"].includes(appStore.HOSPITAL_ID)) {
+          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -91,7 +91,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
       list[i].backgroundColor = copyRow[i].backgroundColor;
-      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy","whsl"].includes(appStore.HOSPITAL_ID)) {
+      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy","whsl", "ytll"].includes(appStore.HOSPITAL_ID)) {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
       if (['whyx'].includes(appStore.HOSPITAL_ID)) {
@@ -115,7 +115,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].backgroundColor = "";
 
 
-        if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
+        if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
           copyRow[i].schAddOrSubs = [];
         }
         if (['whyx'].includes(appStore.HOSPITAL_ID)) {
@@ -158,7 +158,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.backgroundColor = copyCell.backgroundColor;
 
 
-    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
+    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
     if (['whyx'].includes(appStore.HOSPITAL_ID)) {
@@ -205,7 +205,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schRemarks = [];
   cellObj.schJiJias = [];
   cellObj.backgroundColor = ""
-  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
+  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;
