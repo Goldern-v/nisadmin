@@ -345,7 +345,7 @@ export default observer(function SocialpractiseResultReview() {
         <span className="label">类型:</span>
         <span className="content">
           {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
-          {(appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID == "gxjb") && baseInfo.categoryName}
+          {['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID) && baseInfo.categoryName}
         </span>
         <span className="label"> 参与人员:</span>
         <span className="content">

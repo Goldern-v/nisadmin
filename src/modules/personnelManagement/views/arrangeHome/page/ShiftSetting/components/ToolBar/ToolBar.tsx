@@ -29,7 +29,7 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,whsl,wjgdszd': AddShiftModal_wh,
+        'wh,lyyz,qhwy,whsl,wjgdszd,ytll': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
@@ -407,6 +407,7 @@ export default function ToolBar() {
       case "wh":
       case "lyyz":
       case "qhwy":
+      case "ytll":
         return authStore.isRoleManage;
       // case "gxjb":
       //   return authStore.isRoleManage;

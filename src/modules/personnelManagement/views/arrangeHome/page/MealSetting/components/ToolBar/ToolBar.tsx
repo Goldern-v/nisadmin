@@ -659,7 +659,7 @@ export default function ToolBar() {
       sundaySymbolId: fields.sundaySymbolId.value || '',
 
     }
-    if (['wh', 'lyyz', 'qhwy','whsl'].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll'].includes(appStore.HOSPITAL_ID)) {
       for (let key in postData) {
         if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
           if (postData[key]) {

@@ -575,7 +575,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx", "fssdy","lyyz","qhwy","whsl"].includes(appStore.HOSPITAL_ID)) &&
+        {(["wh", "gxjb", "fsxt", "whyx", "fssdy","lyyz","qhwy","whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -586,7 +586,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy","whsl"].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy","whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"

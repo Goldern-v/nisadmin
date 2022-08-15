@@ -72,7 +72,7 @@ export default function 实操评分添加(props: Props) {
 
   const [templateVisible, setTemplateVisible] = useState(false)
 
-  const selectPeopleModal = createModal(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID === 'gxjb' ? SelectPeopleModal_wh : SelectPeopleModal);
+  const selectPeopleModal = createModal(['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID) ? SelectPeopleModal_wh : SelectPeopleModal);
 
   const formatSelectPeople = (payload: any) => {
     let newPersonList = [] as any[]

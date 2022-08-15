@@ -175,7 +175,7 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = async (item: any) => {
-    if (appStore.HOSPITAL_ID == 'wh' || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID)) {
+    if (appStore.HOSPITAL_ID == 'wh' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {

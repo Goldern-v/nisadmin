@@ -54,7 +54,7 @@ export const totalCellContent = (id: any) => {
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
     // console.log('schAddOrSubs', current.schAddOrSubs)
-    if (isOk && (appStore.HOSPITAL_ID === "wh" || ["lyyz","qhwy"].includes(appStore.HOSPITAL_ID))) {
+    if (isOk && (appStore.HOSPITAL_ID === "wh" || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID))) {
       return total
     // } else if (['dghl'].includes(appStore.HOSPITAL_ID) && current.schAddOrSubs) {
     //   // 计算加减班工时

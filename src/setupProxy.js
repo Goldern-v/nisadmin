@@ -138,6 +138,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     //漳州五院
     case 'zzwy': 
       return "http://192.168.1.54:9897"
+    // 烟台玲珑医院
+    case 'ytll': 
+      return "http://192.168.1.54:9866"
     default:
       return "http://192.168.1.54:9866";
   }
