@@ -38,7 +38,7 @@ export default observer(function PromotionTable(props: Props) {
           {PromotionAppUtils.handlenodeDto.length ? (
             PromotionAppUtils.handlenodeDto.map((item: any, idx: number) =>
               idx == 0 ? (
-                item.status == 0 ? (
+                item.status == '0' ? (
                   <div className="audit-item" key={idx}>
                     <div className="emp-img">
                       <img src={item.imgUrl} alt="" />
@@ -71,7 +71,7 @@ export default observer(function PromotionTable(props: Props) {
                     </div>
                   </div>
                 )
-              ) : item.status != 0 ? (
+              ) : item.status != '0' ? (
                 <div className="audit-item" key={idx}>
                   <div className="emp-img">
                     <img src={item.imgUrl} alt="" />

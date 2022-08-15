@@ -169,6 +169,15 @@ export default observer(function PromotionAppHeader() {
           }
           .wih-150{
             width: 150px;
+            line-height: 12px;
+            margin:0;
+            padding:0;
+          }
+          .wih-300{
+            width: 300px;
+            line-height: 12px;
+            margin:0;
+            padding:0;
           }
           .acc-time{
             width:38px !important;
@@ -214,7 +223,7 @@ export default observer(function PromotionAppHeader() {
                 </Steps>
                 </div>
                 <div className="heigth-right">
-                  <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}}>{PromotionAppUtils.editStatus}</Button>
+                  <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}} disabled={!(PromotionAppUtils.master.nextNodeCode.indexOf('commit') != -1) && PromotionAppUtils.editStatus != '创建'}>{PromotionAppUtils.editStatus}</Button>
                   <Button type="primary" onClick={handleSubmit}  disabled={(Number(PromotionAppUtils.flowStatus) == 1 || Number(PromotionAppUtils.flowStatus) == 3 || Number(PromotionAppUtils.flowStatus) == 4)&& PromotionAppUtils.master.noPass== false} >提交申请</Button>
                   <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑'} >保存</Button>
                   <Button onClick={handlerevocation}>撤销申请</Button>

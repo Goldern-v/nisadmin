@@ -25,9 +25,7 @@ export default observer(function ApplyHeader(props: Props) {
   } as any) //初始化默认值
   const [createClear, setCreateClear] = useState(true)
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
-  const [exportVisible, setExportVisible] = useState(false); // 控制导入弹窗状态
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
-  const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
   const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
 
   useEffect(()=>{
@@ -55,10 +53,6 @@ export default observer(function ApplyHeader(props: Props) {
       bacisManagData.onload()
     })
   };
-  const handleOk = () => {
-    setExportVisible(false);
-    bacisManagData.import()
-  };
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
     bacisManagData.year = value
@@ -78,7 +72,7 @@ export default observer(function ApplyHeader(props: Props) {
   }
   // 导入
   const handelImprot = ()=>{
-    setExportVisible(true)
+    bacisManagData.import()
   }
 
   return (
@@ -187,24 +181,6 @@ export default observer(function ApplyHeader(props: Props) {
         onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
       />
-       <Modal title="导入实习生" visible={exportVisible} onOk={handleOk} onCancel={() => setExportVisible(false)}>
-         <span>请先选择导入年份：</span>
-          <DatePicker
-            style={{ width: 300 }}
-            value={bacisManagData.yearImport}
-            open={yearImportIsOpen}
-            mode='year'
-            className='year-picker'
-            placeholder='全部'
-            format='YYYY'
-            onChange={()=>{bacisManagData.yearImport = undefined}}
-            onOpenChange={(status)=>{ setyearImportIsOpen(status)}}
-            onPanelChange={(val)=>{
-              bacisManagData.yearImport = val
-              setyearImportIsOpen(false)
-            }}
-          />
-       </Modal>
     </Wrapper>
   );
 });

@@ -68,7 +68,7 @@ export default observer(function SelectBox(props:Props){
           </Radio.Group>
           })
         ):(
-          <Checkbox.Group options={option} value={values} onChange={(e)=>{onCheckboxChange(e,inputKey)}} />
+          <Checkbox.Group options={option} value={Array.isArray(values)? values : values} onChange={(e)=>{onCheckboxChange(e,inputKey)}} />
         )
       }
     </Wrapper>
@@ -88,7 +88,7 @@ const Wrapper = styled.div`
   .ant-radio-wrapper{
     font-size: 12px;
     margin: 0px;
-    margin-left: 5px;
+    margin-left: 3px;
   }
   .ant-checkbox-wrapper{
     font-size: 12px;

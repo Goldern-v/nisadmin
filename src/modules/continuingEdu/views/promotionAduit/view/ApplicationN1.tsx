@@ -6,6 +6,7 @@ import SelectBox from "./SelectBox";
 import { DatePicker, Icon , Upload, Button, message,Spin } from "antd";
 import { PromotionDetaitUtils } from '../promotionDedait';
 import UserCheckModal from "./UserCheckModal";
+import DateModal from './Datemodal';
 import { appStore, authStore } from "src/stores/index";
 
 interface Props {
@@ -256,14 +257,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <input
-                    className="mar-btom"
-                    type="text"
-                    value={tableObjN1.JS0000004}
-                    onChange={(e) => {
-                      handleInput(e, "JS0000004");
-                    }}
-                  />
+                  <DatePicker  value={tableObjN1.JS0000004 && moment(tableObjN1.JS0000004)}  />
                 </div>
               </td>
             </tr>
@@ -364,19 +358,9 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     3、三基理论考核：
-                    <DatePicker
+                    <DateModal 
                       value={tableObjN1.JS0000038}
-                      open={yearPickerIsOpen}
-                      mode="year"
-                      className="year-picker"
-                      placeholder="全部"
-                      format="YYYY"
-                      onOpenChange={() => {
-                        setyearPickerIsOpen(true);
-                      }}
-                      onPanelChange={(e) => {
-                        handleChange(e, "JS0000038");
-                      }}
+                      keys={"JS0000038"}
                     />
                     年度
                   </span>
@@ -400,19 +384,9 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     4、专科理论考核：
-                    <DatePicker
+                    <DateModal 
                       value={tableObjN1.JS0000041}
-                      open={yearPickerIsOpen1}
-                      mode="year"
-                      className="year-picker"
-                      placeholder="全部"
-                      format="YYYY"
-                      onOpenChange={() => {
-                        setyearPickerIsOpen1(true);
-                      }}
-                      onPanelChange={(e) => {
-                        handleChange1(e, "JS0000041");
-                      }}
+                      keys={"JS0000041"}
                     />
                     年度
                   </span>
@@ -543,7 +517,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div style={{ height: 370 }}>
                   <textarea
                     className="textarea-summarize"
-                    value={tableObjN1.JS0000035}
+                    defaultValue={tableObjN1.JS0000035}
                     onChange={(e) => {
                       handelTextarea(e, "JS0000035");
                     }}
@@ -800,7 +774,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -833,7 +807,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"

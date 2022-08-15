@@ -21,7 +21,7 @@ export default class TrainingSettingApi extends BaseApiService {
   // 表单删除
   public async deleteForm(id: any) {
     return this.post(
-      `/nursefile/otherPersonInfo/graduateIntern/deleteInfoById`,
+      `/studyAndTrain/planTrainStudentInfo/deleteInfoById`,
       { id }
     );
   }
@@ -69,11 +69,11 @@ export default class TrainingSettingApi extends BaseApiService {
   }
   // 规培生出科评价-导出列表
   public async countExcel(obj: any) {
-    return this.post(`/api/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj);
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj);
   }
   // 实习生教学计划-删除表单列表
   public async deleteQueryPageList(id: any) {
-    return this.post(`/studyAndTrain/courseLibrary/delete`, { id });
+    return this.post(`/studyAndTrain/planTrainStudentInfo/deleteInfoById`, { id });
   }
   // 导入教学计划课件-提交按钮
   public async saveOrUpdate(obj: any) {

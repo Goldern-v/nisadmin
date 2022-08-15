@@ -27,6 +27,8 @@ export default observer(function NursingReportDetailView() {
     let query = qs.parse(search.replace('?', ''))
     setCurrentPage(query)
     PromotionDetaitUtils.master.id = query.othersMessage.id
+    PromotionDetaitUtils.master.formName = query.othersMessage.formName
+    PromotionDetaitUtils.master.formCode = query.othersMessage.formCode
     PromotionDetaitUtils.createOnload()
   }, [])
 

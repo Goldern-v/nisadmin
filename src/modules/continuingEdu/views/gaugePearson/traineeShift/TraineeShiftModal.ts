@@ -60,8 +60,10 @@ class TraineeShiftModal {
     this.tableLoading = true;
     traineeShiftApi.querySheetCompleteInfo(this.postObj).then(res => {
       this.tableLoading = false;
-      this.tableDeptList = res.data.rotateDeptList;
-      this.tableList = res.data.rotateGroupsList;
+      console.log(res);
+      
+      // this.tableDeptList = res.data.rotateDeptList;
+      // this.tableList = res.data.rotateGroupsList;
     });
   }
 

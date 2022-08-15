@@ -27,7 +27,7 @@ export const tableObjN1 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000006: '', // 护士职业证书编号
   JS0000007: '', // 职称
@@ -55,9 +55,9 @@ export const tableObjN1 = {
   JS0000031: '', // 护理部科护士签名日期
   JS0000036: '', // N0分层培训手册填写
   JS0000037: '' || [] as any, // 资质认证
-  JS0000038: moment(), // 三基理论考核_年度
+  JS0000038: undefined, // 三基理论考核_年度
   JS0000039: '', // 三基理论考核
-  JS0000041: moment(), // 专科理论考核_年度
+  JS0000041: undefined, // 专科理论考核_年度
   JS0000042: '', // 专科理论考核
   JS0000044: '', // 独立从事一般患者护理工作
   JS0000045: '', // 转正后持续工作时间
@@ -78,10 +78,10 @@ export const tableObjN2 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000007: '', // 职称
-  JS0000008: '', // 获得初级护师_年度
+  JS0000008: undefined, // 获得初级护师_年度
   JS0000010: '', // 申请人签名
   JS0000011: '', // 申请日期
   JS0000012: '', // 护长审核
@@ -104,7 +104,7 @@ export const tableObjN2 = {
   JS0000029: '', // 护理部科护士签名
   JS0000030: '', // 护理部科护士签名工号
   JS0000031: '', // 护理部科护士签名日期
-  JS0000054: '', // 获取N1资质时间
+  JS0000054: undefined, // 获取N1资质时间
   JS0000055: '', // N1分层培训
   JS0000056: '' || [] as any, // 资质认证
   JS0000057: undefined, // 三基理论考核1_年度
@@ -149,57 +149,13 @@ export const tableObjN2 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
 
 };  // 表单的数据2
 export const tableObjN3 = {
   JS0000001: '', // 科室
   JS0000002: '', // 姓名
   JS0000003: '', // SAP号码
-  JS0000004: '', // 来院时间
+  JS0000004: undefined, // 来院时间
   JS0000005: '', // 学历
   JS0000007: '', // 职称
   JS0000008: undefined, // 获得初级护师_年度
@@ -290,56 +246,12 @@ export const tableObjN3 = {
   JS0000088: '', // 年度学分达标1
   JS0000089: undefined, // 年度学分达标2_年度
   JS0000090: '', // 年度学分达标2,
-  carePatientList : [
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-    {
-      masterId:'',
-      careTime:"",
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
-    },
-  ]
 };  // 表单的数据3
 export const tableObjN4 = {
   JS0000001:'', // 科室
   JS0000002:'', // 姓名
   JS0000003:'', // SAP号码
-  JS0000004:'', // 来院时间
+  JS0000004:undefined, // 来院时间
   JS0000005:'', // 学历
   JS0000007:'', // 职称
   JS0000009: undefined, // 获得主管护师_年度
@@ -365,7 +277,7 @@ export const tableObjN4 = {
   JS0000029:'', // 护理部科护士签名
   JS0000030:'', // 护理部科护士签名工号
   JS0000031:'', // 护理部科护士签名日期
-  JS0000133:'', // 获取N3资质时间
+  JS0000133:undefined, // 获取N3资质时间
   JS0000134:'', // N3层级培训课程、操作技能完成率
   JS0000135:'', // 资质认证
   JS0000094:'', // 资质认定_XXX专科护师证

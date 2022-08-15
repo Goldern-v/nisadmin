@@ -25,42 +25,42 @@ class PromotionApp {
   @observable public  carePatientList = [
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
     },
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
     },
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
     },
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
     },
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
     },
     {
       masterId:'',
-      careTime:"",
+      careTime:null,
       careMessage:"",
       medicalRecordNo:"",
       patientName:""
@@ -79,6 +79,9 @@ class PromotionApp {
   onSave() {
     this.loading = true;
     this.commitStep = '';
+    this.carePatientList.map((item:any)=>{
+      item.masterId = this.master.id
+    })
     let obj = {
       master : this.master,
       itemDataMap: this.handleDifferent(),
@@ -112,7 +115,7 @@ class PromotionApp {
 
   // 重新赋值
   setAssignment(objList:any , keys:any) {
-    return  keys.map((item:any)=> objList[item]= moment(objList[item]))
+    return  keys.map((item:any)=>  objList[item]= objList[item] ? moment(objList[item]) : undefined)
   }
   // 重新赋值
   setAssignmentCheck(objList:any , keys:any) {
@@ -135,7 +138,7 @@ class PromotionApp {
       if (res.data) {
         this.master = { ...res.data.master }
         if(Object.keys(res.data.itemDataMap).length){
-          let dateCode = ["JS0000008","JS0000009","JS0000038","JS0000041","JS0000057","JS0000075","JS0000077","JS0000060","JS0000065","JS0000066","JS0000075","JS0000077","JS0000079","JS0000081","JS0000083","JS0000085","JS0000087","JS0000089","JS0000091","JS0000097","JS0000100","JS0000129","JS0000131","JS0000136","JS0000162","JS0000164","JS0000166","JS0000168","JS0000170"]
+          let dateCode = ["JS0000004","JS0000008","JS0000009","JS0000038","JS0000041","JS0000054","JS0000057","JS0000060","JS0000065","JS0000066","JS0000075","JS0000077","JS0000079","JS0000081","JS0000083","JS0000085","JS0000087","JS0000089","JS0000091","JS0000097","JS0000100","JS0000129","JS0000131","JS0000136","JS0000160","JS0000162","JS0000164","JS0000166","JS0000168","JS0000170"]
           let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
           this.setAssignment(res.data.itemDataMap,dateCode)
           this.setAssignmentCheck(res.data.itemDataMap,checkCode)
@@ -144,8 +147,10 @@ class PromotionApp {
             this.tableObjN1 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0002') {
             this.tableObjN2 = { ...res.data.itemDataMap }
+            this.carePatientList = res.data.carePatientList.length ? res.data.carePatientList : this.carePatientList
           } else if (this.master.formCode == 'HSJS_0003') {
             this.tableObjN3 = { ...res.data.itemDataMap }
+            this.carePatientList = res.data.carePatientList.length ? res.data.carePatientList : this.carePatientList
           } else if (this.master.formCode == 'HSJS_0004') {
             this.tableObjN4 = { ...res.data.itemDataMap }
           }
@@ -160,7 +165,7 @@ class PromotionApp {
           if(DtoData){
             let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
             let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
-            this.handlenodeDto = [...noZeroData,lastData]
+            this.handlenodeDto = lastData? [...noZeroData,lastData] : noZeroData
           }
         }else{
           this.handlenodeDto = []
@@ -232,7 +237,7 @@ class PromotionApp {
       if (res.data) {
         this.master = { ...res.data.master }
         if(Object.keys(res.data.itemDataMap).length){
-          let dateCode = ["JS0000008","JS0000009","JS0000038","JS0000041","JS0000057","JS0000075","JS0000077","JS0000060","JS0000065","JS0000066","JS0000075","JS0000077","JS0000079","JS0000081","JS0000083","JS0000085","JS0000087","JS0000089","JS0000091","JS0000097","JS0000100","JS0000129","JS0000131","JS0000136","JS0000162","JS0000164","JS0000166","JS0000168","JS0000170"]
+          let dateCode = ["JS0000004","JS0000008","JS0000009","JS0000038","JS0000041","JS0000054","JS0000057","JS0000060","JS0000065","JS0000066","JS0000075","JS0000077","JS0000079","JS0000081","JS0000083","JS0000085","JS0000087","JS0000089","JS0000091","JS0000097","JS0000100","JS0000129","JS0000131","JS0000136","JS0000160","JS0000162","JS0000164","JS0000166","JS0000168","JS0000170"]
           let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
           this.setAssignment(res.data.itemDataMap,dateCode)
           this.setAssignmentCheck(res.data.itemDataMap,checkCode)
@@ -241,8 +246,10 @@ class PromotionApp {
             this.tableObjN1 = { ...res.data.itemDataMap }
           } else if (this.master.formCode == 'HSJS_0002') {
             this.tableObjN2 = { ...res.data.itemDataMap }
+            this.carePatientList = res.data.carePatientList.length ? res.data.carePatientList : this.carePatientList
           } else if (this.master.formCode == 'HSJS_0003') {
             this.tableObjN3 = { ...res.data.itemDataMap }
+            this.carePatientList = res.data.carePatientList.length ? res.data.carePatientList : this.carePatientList
           } else if (this.master.formCode == 'HSJS_0004') {
             this.tableObjN4 = { ...res.data.itemDataMap }
           }
@@ -257,7 +264,7 @@ class PromotionApp {
           if(DtoData){
             let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
             let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
-            this.handlenodeDto = [...noZeroData,lastData]
+            this.handlenodeDto = lastData? [...noZeroData,lastData] : noZeroData
           }
         }else{
           this.handlenodeDto = []

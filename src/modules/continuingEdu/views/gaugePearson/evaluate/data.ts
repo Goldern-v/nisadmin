@@ -40,30 +40,12 @@ class evaluateData {
     this.tableLoading = true;
     trainingSettingApi.getQueryPageList(this.postObj).then(res => {
       this.tableLoading = false;
-      console.log(res);
-      
       this.tableList = res.data.list;
       // this.tableList.map((item:any)=>{
       //   item.uploadDate = moment(item.uploadDate).format("YYYY-MM-DD HH:mm:ss")
       //   item.modifyDate = moment(item.modifyDate).format("YYYY-MM-DD HH:mm:ss")
       // })
     });
-  }
-  // 保存
-  save() {
-    // this.tableLoading = true;
-    
-    // trainingSettingApi.getQueryPageList(this.postObj).then(res => {
-    //   this.tableLoading = false;
-    //   this.tableList = res.data.list;
-    //   this.tableList.map((item:any)=>{
-    //     item.uploadDate = moment(item.uploadDate).format("YYYY-MM-DD HH:mm:ss")
-    //     item.modifyDate = moment(item.modifyDate).format("YYYY-MM-DD HH:mm:ss")
-    //   })
-    //   this.total = res.data.totalCount;
-    //   this.pageIndex = res.data.pageIndex;
-    //   this.pageSize = res.data.pageSize;
-    // });
   }
   /* *下载 */
   haneluploading(list:any){
@@ -73,7 +55,6 @@ class evaluateData {
   getDeptList(){
     trainingSettingApi.getnursingDeptRole().then(res =>{
       if(res.data.deptList.length){
-
         this.deptCode = [{code:'',name:'全院'}, ...res.data.deptList]
       }
       

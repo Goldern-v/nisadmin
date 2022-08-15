@@ -85,6 +85,11 @@ export default observer(function ApplicationN1(props: Props) {
     PromotionDetaitUtils.carePatientList[key][value] = ctext
     PromotionDetaitUtils.carePatientList[key].masterId = PromotionDetaitUtils.master.id
   };
+  const handelDatePicker = (e: any, value: any,key:number) => {
+    let ctext = moment(e).format("YYYY-MM-DD HH:mm");
+    PromotionDetaitUtils.carePatientList[key][value] = ctext
+    PromotionDetaitUtils.carePatientList[key].masterId = PromotionDetaitUtils.master.id
+  };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, value: any) => {
     tableObjN2[value] = e.target.value;
   };
@@ -256,6 +261,7 @@ export default observer(function ApplicationN1(props: Props) {
                   {/* <Input value="26888888" value={tableObjN2.deptName}  onChange={(e)=>{handleInput(e,'deptName')}}/> */}
                   <input
                     type="text"
+                    className="mar-btom"
                     value={tableObjN2.JS0000001}
                     onChange={(e) => {
                       handleInput(e, "JS0000001");
@@ -333,13 +339,13 @@ export default observer(function ApplicationN1(props: Props) {
             <td colSpan={2}>
                 <div className="base-item">
                   <span>来院时间：</span>
-                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} defaultValue={tableObjN2.JS0000004 && moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
+                  <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000004')}} value={tableObjN2.JS0000004 && moment(tableObjN2.JS0000004)}  />（标准：{moment().subtract(3,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
               <td colSpan={2}>
                 <div className="base-item">
                   <span>取得N1资质时间：</span>
-                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} defaultValue={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
+                   <DatePicker onChange={(e)=>{onDatePickerChange(e,'JS0000054')}} value={tableObjN2.JS0000054 && moment(tableObjN2.JS0000054)}  />
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
@@ -530,13 +536,14 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   （原由及累计时间：
                   <input
-                    className="acc-time"
+                    className="mar-btom acc-time"
                     type="text"
-                    value={tableObjN2.JS0000033}
+                    defaultValue={tableObjN2.JS0000033}
                     onChange={(e) => {
                       handleInput(e, "JS0000033");
                     }}
-                  /> <span>）</span>
+                  />
+                  <span>）</span>
                   （晋级前12个月，累计缺勤时间≥6个月者，返岗当年不得参加晋级考核）
                 </div>
               </td>
@@ -648,7 +655,7 @@ export default observer(function ApplicationN1(props: Props) {
                     {/* <input className="acc-time" type="text"  value={tableObjN2.JS0001014} onChange={(e)=>{handleInput(e,'JS0001014')}} /> */}
                     <span>申请日期：</span>
                     <input
-                      className="acc-time"
+                      className="wih-150"
                       type="text"
                       style={{ width: "150px" }}
                       value={tableObjN2.JS0000011}
@@ -708,7 +715,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginLeft: 13 }}>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
                     defaultValue={tableObjN2.JS0000016}
                   />
@@ -735,7 +742,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
                     defaultValue={tableObjN2.JS0000021}
                   />
@@ -950,7 +957,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -960,7 +967,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
                     defaultValue={tableObjN2.JS0000026}
                   />
@@ -983,7 +990,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                 </div>
                 <div className="base-item">
-                  <span style={{ marginLeft: 165 }}>科护士签名：</span>
+                  <span style={{ marginLeft: 145 }}>科护士签名：</span>
                   <input
                     type="text"
                     className="mar-btom"
@@ -993,7 +1000,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>审核日期：</span>
                   <input
                     type="text"
-                    className="mar-btom"
+                    className="wih-150"
                     readOnly
                     defaultValue={tableObjN2.JS0000031}
                   />
@@ -1074,14 +1081,8 @@ export default observer(function ApplicationN1(props: Props) {
                 autosize={{ minRows: 3 }}
               />
               </td>
-              <td>
-              <Input
-                value={item.careTime}
-                className="td-center inp_textArea"
-                onChange={(e) => {
-                  handelTextareas(e, "careTime",index);
-                }}
-              />
+              <td style={{textAlign:'center'}}>
+              <DatePicker showTime onChange={(e)=>{handelDatePicker(e, "careTime",index);}} value={(item.careTime ? moment(item.careTime) : undefined)} format="YYYY-MM-DD HH:mm" className="inp_textArea"/>
               </td>
             </tr>
             )}
@@ -1260,6 +1261,9 @@ const Wrapper = styled.div`
       }
       ::-webkit-scrollbar {
         display: none;
+      }
+      .ant-input{
+        width:150px;
       }
     }
   }
