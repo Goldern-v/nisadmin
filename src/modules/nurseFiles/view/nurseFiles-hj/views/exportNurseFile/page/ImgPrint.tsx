@@ -20,7 +20,7 @@ export default function OnePage(props: Props) {
       <PrintPage key={index} pageIndex={startPage[startIndex]+index}>
         <div className="NavTlt">附件</div>
         <div className="title">{imgObj.content}{imgObj.filterData.length>1&&index+1}</div>
-        <img src="http://120.24.240.231:19091/crNursing/asset/nurseAttachment/20190719/20190719121332sqJFFsFQ.jpg"/>
+        <img src={item}/>
       </PrintPage>
     )
   })
