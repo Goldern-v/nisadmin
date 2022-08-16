@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect,MutableRefObject } from 'react'
+import React, { useState, useEffect, MutableRefObject } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { Button, message, Spin } from 'src/vendors/antd'
@@ -8,91 +8,107 @@ import { ScrollBox } from 'src/components/common'
 import printing from 'printing'
 import { useRef } from 'src/types/react'
 import { appStore, authStore } from 'src/stores'
-import { globalModal } from 'src/global/globalModal'
 import { goodOrBadApi } from './GoodOrBadApi'
 import PrintContent from "./PrintContent"
 import qs from 'qs'
-export interface Props extends RouteComponentProps { }
-
-export default observer(function NursingReportDetailView() {
-  // 输入框
-  const [textArea1_1, setTextArea1_1] = useState('');
-  const [textArea1_2, setTextArea1_2] = useState('');
-  const [textArea1_3, setTextArea1_3] = useState('');
-  const [textArea1_4, setTextArea1_4] = useState('');
-  const [textArea2_1, setTextArea2_1] = useState('');
-  const [textArea3_1, setTextArea3_1] = useState('');
-  const [textArea4_1, setTextArea4_1] = useState('');
-  // const textArea1_1: MutableRefObject<any> = useRef('');
+import { clinicalApi } from './ClinicalApi'
+import { wholePrintData } from './tsData/WholePrintData'
+import { globalModal } from 'src/global/globalModal'
+// export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps<{ name?: string }> { }
+export default observer(function EventReportDetailView(props: Props) {
+	// 输入框
+	const [textArea1_1, setTextArea1_1] = useState('');
+	const [textArea1_2, setTextArea1_2] = useState('');
+	const [textArea1_3, setTextArea1_3] = useState('');
+	const [textArea1_4, setTextArea1_4] = useState('');
+	const [textArea2_1, setTextArea2_1] = useState('');
+	const [textArea3_1, setTextArea3_1] = useState('');
+	const [textArea4_1, setTextArea4_1] = useState('');
+	// const textArea1_1: MutableRefObject<any> = useRef('');
 	// const textArea1_2: MutableRefObject<any> = useRef(null);
 
 
-  const [pageData, setPageData] = useState([])
-  const [deductionData, setdeductionData] = useState([])
-  const [currentPage, setCurrentPage]: any = useState({})
-  const pageRef: any = useRef<HTMLElement>()
-  const [isPrint, setIsPrint] = useState(false)
-  const [spinning, setSpinning] = useState(false)
-  const [quarterRate, setQuarterRate] = useState("")
-  const [defaultDept, setDefaultDept] = useState("")
-  const [text, setText] = useState('')
-  const showText = ['fsxt'].includes(appStore.HOSPITAL_ID)
+	const [pageData, setPageData] = useState([])
+	const [deductionData, setdeductionData] = useState([])
+	const [currentPage, setCurrentPage]: any = useState({})
+	const pageRef: any = useRef<HTMLElement>()
+	const [isPrint, setIsPrint] = useState(false)
+	const [spinning, setSpinning] = useState(false)
+	const [quarterRate, setQuarterRate] = useState("")
+	const [defaultDept, setDefaultDept] = useState("")
+	const [text, setText] = useState('')
+	const showText = ['fsxt'].includes(appStore.HOSPITAL_ID)
 
-  useEffect(() => {
-    let search = appStore.location.search
-    let query = qs.parse(search.replace('?', ''))
-    query.name = query.name || query.themeName
-    let createData = []
-    let currData:any = []
-    setCurrentPage(query)
-    // setSpinning(true)
-    createData = query.list;
-    if(createData){
-      createData.map((item:any,index:any)=>{
-        let everylist ={month:'',shouldCheckNum:'',actualCheckNum:''};
-        everylist.month = item.month
-        everylist.shouldCheckNum = item.shouldNum
-        everylist.actualCheckNum = '0'
-        currData.push(everylist)
-      })
-      setPageData(currData)
-    }
-    // goodOrBadApi.getDetailList(query).then((res: any) => {
-    //   let list = res.data.list
-    //   if(list.length){
-    //     console.log(list);
-    //     setPageData(list)
-    //     setQuarterRate(res.data.quarterRate)
-    //   }
-    //   setSpinning(false)
-    // })
-    let params: any = { beginDate: query.startDate, endDate: query.endDate }
-    // goodOrBadApi.getPointCount(params).then((res: any) => {
-    //   if (res.code == 200) {
-    //     setdeductionData(res.data)
-    //     setSpinning(false)
-    //   }
-    // })
-    //   .catch(err => { })
-    if (showText) {
-      // goodOrBadApi.getText(query.id).then((res: any) => {
-      //   setText(res.data)
-      // })
-      //   .catch(e => {})
-    }
-  }, [])
+	const [propsData, setPropsData] = useState({} as any);
+	// console.log(sessionStorage.getItem('myreport'))
+	useEffect(() => {
+		console.log(appStore.location)
+		let propsData = qs.parse(sessionStorage.getItem('myreport') as string)
+		setPropsData(propsData)
+		setSpinning(true)
+		clinicalApi.getReportById({ masterId: propsData.id }).then((res: any) => {
+			wholePrintData.master = res.data.master || {}
+			wholePrintData.rowList = res.data.rowList || []
+			wholePrintData.evaluationList = res.data.evaluationList || []
+			if(res.data.evaluationList.length>0){
+				res.data.evaluationList.map((it:any)=>{
+					switch (it.evaluationCode) {
+						case 'Problem':
+							setTextArea1_1(it.content)
+							break;
+						case 'Analysis':
+							setTextArea1_2(it.content)
+							break;
+						case 'Target':
+							setTextArea1_3(it.content)
+							break;
+						case 'Plan':
+							setTextArea1_4(it.content)
+							break;
+						case 'Do':
+							setTextArea2_1(it.content)
+							break;
+						case 'Check':
+							setTextArea3_1(it.content)
+							break;
+						case 'Action':
+							setTextArea4_1(it.content)
+							break;
+						default:
+							break;
+					}
+				})
+			}
+			// res.data.evaluationList
+			setSpinning(false)
+		}).catch(err => {
+
+		})
+
+		// 卸载函数
+		return ()=>{
+			// sessionStorage.removeItem('myreport')
+		}
+
+	}, [])
+
+	
 
 
-  const onPrint = (isPrint: boolean) => {
-    setIsPrint(isPrint)
-    let printFun = isPrint ? printing : printing.preview
-    setTimeout(() => {
-      printFun(pageRef.current, {
-        // 插入所有link和style标签到打印，默认是false
-        injectGlobalCss: true,
-        // 指定扫描样式，默认是true（全部）
-        scanStyles: false,
-        css: `
+	const onPrint = (isPrint: boolean) => {
+		setIsPrint(isPrint)
+		let printFun = isPrint ? printing : printing.preview
+		setTimeout(() => {
+			printFun(pageRef.current, {
+				// 插入所有link和style标签到打印，默认是false
+				injectGlobalCss: true,
+				// 指定扫描样式，默认是true（全部）
+				scanStyles: false,
+				css: `
+				.print-page__ptext{
+					padding:0 6px;
+				}
            .ant-btn {
              display: none;
            }
@@ -133,99 +149,178 @@ export default observer(function NursingReportDetailView() {
           .chart-con .chart-con-img{
             max-width: 100%;
             display: inline!important;
-          }
+          }import { data } from 'jquery';
+
         `
-      }).then(() => {
-        setIsPrint(false)
-      })
-    }, 500)
-  }
-  // const onDelete = () => {
-  //   if (!currentPage.id) return message.warning('此报表尚未保存！')
-  //   globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-  //     goodOrBadApi.deleteReport(currentPage).then((res) => {
-  //       message.success('删除成功')
-  //       setTimeout(() => {
-  //         appStore.history.push('/checkWard/quarterScoringRecord')
-  //       }, 500)
-  //     })
-  //   })
-  // }
-  const onSave = async () => {
-    console.log(textArea1_1)
-    console.log(textArea1_2)
-    // try {
-    //   let params = { list: pageData, rateId: currentPage.id }
-    //   const promiseList: any[] = [goodOrBadApi.saveReport(params)]
-    //   if (showText) {
-    //     promiseList.push(goodOrBadApi.saveText({
-    //       id: currentPage.id,
-    //       text
-    //     }))
-    //   }
-    //   const res = await Promise.all(promiseList)
-    //   if (res) {
-    //     message.success('保存成功')
-    //     setTimeout(() => {
-    //       appStore.history.push('/checkWard/quarterScoringRecord')
-    //     }, 500)
-    //   }     
-      
-    // } catch (e) {
-    // }
-  }
+			}).then(() => {
+				setIsPrint(false)
+			})
+		}, 500)
+	}
 
-  return (
-    <Wrapper>
-      <HeadCon>
-        <BaseBreadcrumb data={[{ name: '护长季度查房分析报告', link: '/checkWard/quarterScoringRecord' }, { name: '报告详情', link: '' }]} />
-        {/* <div className='title'>{currentPage.title}</div> */}
-        <div className='title'>德国社会</div>
-        <div className='aside'>
-          <span>
-            {/* 由{currentPage.creatorName}创建于{currentPage.createDate}<span></span> */}
-            由{`hsj`}创建于{`jint`}<span></span>
-          </span>
-        </div>
-        <div className='tool-con'>
-          <Button onClick={() => onSave()} loading={spinning}>保存</Button>
-          <Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
-          <Button onClick={() => appStore.history.goBack()}>返回</Button>
-        </div>
-      </HeadCon>
-      <ScrollCon>
-        <Spin spinning={spinning} >
-          <Page ref={pageRef} className='print-page'>
-            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.title}</div>
-            <PrintContent 
-            deductionData={deductionData} 
-            quarterRate={quarterRate} 
-            isPrint={isPrint} 
-            pageData={pageData} 
-            currentPage={currentPage} 
-            text={text} 
-            setText={setText}
+	// 删除
+	const turnToDel = () => {
+	  globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
+	    clinicalApi.delReportById({
+			masterId:wholePrintData.master.id
+		}).then((res) => {
+	      message.success('删除成功')
+	      setTimeout(() => {
+				appStore.history.goBack()
+	        // appStore.history.push('/checkWard/quarterScoringRecord')
+	      }, 500)
+	    })
+	  })
+	}
+	// 保存
+	const onSave = async () => {
+		let params = {
+			master:wholePrintData.master,
+			"evaluationList": [
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Problem",
+					"content": textArea1_1
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Analysis",
+					"content": textArea1_2
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Target",
+					"content": textArea1_3
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Plan",
+					"content": textArea1_4
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Do",
+					"content": textArea2_1
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Check",
+					"content": textArea3_1
+				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Action",
+					"content": textArea4_1
+				},
+			],
+		}
+		// 本来已有报告
+		if(wholePrintData.evaluationList.length>0){
+			params.evaluationList = wholePrintData.evaluationList
+			params.evaluationList.map((it:any)=>{
+				switch (it.evaluationCode) {
+					case 'Problem':
+						it.content = textArea1_1
+						
+						break;
+					case 'Analysis':
+						it.content = textArea1_2
+						break;
+					case 'Target':
+						it.content = textArea1_3
+						break;
+					case 'Plan':
+						it.content = textArea1_4
+						break;
+					case 'Do':
+						it.content = textArea2_1
+						break;
+					case 'Check':
+						it.content = textArea3_1
+						break;
+					case 'Action':
+						it.content = textArea4_1
+						break;
+					default:
+						break;
+				}
+			})
+			
+		}
+		
+		// console.log(params)
+		// return false
+		setSpinning(true)
+		clinicalApi.saveNewReport(params).then(res=>{
+			if(res.code=='200'){
+				message.success('保存成功')
+				setTimeout(() => {
+					// appStore.history.push('/goodOrBadRouter/wholeAysi')
+					appStore.history.goBack()
+				}, 500)
+			}
+			setSpinning(false)
+		}).catch(err=>{
+			setSpinning(false)
+		})
+	}
 
-            textArea1_1={textArea1_1}
-            textArea1_2={textArea1_2}
-            textArea1_3={textArea1_3}
-            textArea1_4={textArea1_4}
-            textArea2_1={textArea2_1}
-            textArea3_1={textArea3_1}
-            textArea4_1={textArea4_1}
-            setTextArea1_1={setTextArea1_1}
-            setTextArea1_2={setTextArea1_2}
-            setTextArea1_3={setTextArea1_3}
-            setTextArea1_4={setTextArea1_4}
-            setTextArea2_1={setTextArea2_1}
-            setTextArea3_1={setTextArea3_1}
-            setTextArea4_1={setTextArea4_1}
-            ></PrintContent>
-          </Page>
-        </Spin>
-      </ScrollCon>
-    </Wrapper>
-  )
+	
+	
+
+	return (
+		<Wrapper>
+			<HeadCon>
+				<BaseBreadcrumb data={[{ name: '全院护理质量分析', link: '/goodOrBadRouter/wholeAysi' }, { name: '报告详情', link: '' }]} />
+				{propsData.reportType == '0' && <div className='title'>{propsData.belongsYear}年{Number(propsData.belongsCycle)}月全院护理质量汇总报告</div>}
+				{/* <div className='title'>{propsData.belongsYear}年第一季度全院护理质量汇总报告</div> */}
+				<div className='aside'>
+					<span>
+						{/* 由{currentPage.creatorName}创建于{currentPage.createDate}<span></span> */}
+						由{`${propsData.createName}`}创建于{`${propsData.createDate}`}<span></span>
+					</span>
+				</div>
+				<div className='tool-con'>
+					<Button onClick={() => turnToDel()}>删除</Button>
+					<Button onClick={() => onSave()} loading={spinning}>保存</Button>
+					<Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
+					<Button onClick={() => appStore.history.goBack()}>返回</Button>
+				</div>
+			</HeadCon>
+			<ScrollCon>
+				<Spin spinning={spinning} >
+					<Page ref={pageRef} className='print-page'>
+						<div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>{currentPage.title}</div>
+						<PrintContent
+							propsData={propsData}
+							deductionData={deductionData}
+							quarterRate={quarterRate}
+							isPrint={isPrint}
+							pageData={pageData}
+							currentPage={currentPage}
+							text={text}
+							setText={setText}
+
+							textArea1_1={textArea1_1}
+							textArea1_2={textArea1_2}
+							textArea1_3={textArea1_3}
+							textArea1_4={textArea1_4}
+							textArea2_1={textArea2_1}
+							textArea3_1={textArea3_1}
+							textArea4_1={textArea4_1}
+							setTextArea1_1={setTextArea1_1}
+							setTextArea1_2={setTextArea1_2}
+							setTextArea1_3={setTextArea1_3}
+							setTextArea1_4={setTextArea1_4}
+							setTextArea2_1={setTextArea2_1}
+							setTextArea3_1={setTextArea3_1}
+							setTextArea4_1={setTextArea4_1}
+						></PrintContent>
+					</Page>
+				</Spin>
+			</ScrollCon>
+		</Wrapper>
+	)
 })
 const Wrapper = styled.div`
   * {

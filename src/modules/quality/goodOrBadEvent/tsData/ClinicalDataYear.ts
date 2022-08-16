@@ -12,6 +12,7 @@ class ClinicalDataYear {
 
   // 年份汇总数据
   @observable public deptCodeYear = ""; //科室
+  @observable public deptNameYear = ""; //科室名称
   @observable public yearYear = moment() as undefined | moment.Moment; //年份
   // 年份汇总数据 end
 

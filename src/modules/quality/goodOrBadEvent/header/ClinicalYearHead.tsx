@@ -37,6 +37,7 @@ export default observer(function ClinicalYearHead(props: Props) {
 			let deptListall = [];
 			deptListall = res.data.deptList
 			clinicalDataYear.deptCodeYear = res.data.defaultDept
+			clinicalDataYear.deptNameYear = res.data.deptName
 			setdeucOption(deptListall)
 			// 查询数据
 			onload()
@@ -105,9 +106,11 @@ export default observer(function ClinicalYearHead(props: Props) {
 				<span>科室：</span>
 				<Select className="mr-15"
 					style={{ width: 180 }}
-					value={clinicalDataYear.deptCodeYear}
-					onChange={(val: string) => {
-						clinicalDataYear.deptCodeYear = val
+					labelInValue
+					value={{key:clinicalDataYear.deptCodeYear}}
+					onChange={(val: any) => {
+						clinicalDataYear.deptCodeYear = val.key
+						clinicalDataYear.deptNameYear = val.label
 						onload()
 					}}
 				>

@@ -8,6 +8,7 @@ import { clinicalData } from "./ClinicalData";
 import { PageTitle } from "src/components/common";
 import { quarterList } from 'src/enums/date';
 import { clinicalApi } from './ClinicalApi';
+import { fileDownload } from "src/utils/file/file";
 
 import SignColumnRender from "./SignModal";
 import {
@@ -33,7 +34,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 export default function ClinicalQuarter(props: Props) {
 
 	// 搬运start
-	
+
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(220);
 	const [pageOptions, setPageOptions]: any = useState({
@@ -44,17 +45,18 @@ export default function ClinicalQuarter(props: Props) {
 	const [total, setTotal] = useState(0);
 	// 搬运end
 	const [pageLoading, setPageLoading] = useState(false);
-	const [deptList, setDeptList] = useState([{name:'神经内科1',code:'980'}, 
-	{name:'神经内科2',code:'981'}, {name:'神经内科3',code:'982'}, {name:'神经内科4',code:'983'}]);
+	const [deptList, setDeptList] = useState([] as any);
 	const [yearPickShow, setYearPickShow] = useState(false);
 	const [selectQuarter, setSelectQuarter] = useState(moment().quarter() as any);
-	const [selectYear,setSelectYear] = useState(moment().year() as any ); //年份);
+	const [selectYear, setSelectYear] = useState(moment().year()); //年份);
 	const [quartMms, setQuartMms] = useState([] as any);
 	const [column3, setColumn3] = useState([] as any);
+	const [tableList, setTableList] = useState([] as any);
+	const [quarterNames, setQuarterNames] = useState(['一','二','三','四']);
 	// 科室-表头
 	let columnDayObj: ColumnProps<any>[] | any = []
 	// end
-	
+
 	const columns: ColumnProps<any>[] | any = [
 		{
 			title: "",
@@ -103,73 +105,92 @@ export default function ClinicalQuarter(props: Props) {
 
 	// 挂载
 	useEffect(() => {
-		// console.log(moment().year())
-		getTableList()
-	}, [])
-
-	const getTableList = ()=>{
 		setPageLoading(true)
-		let params={
-			year:selectYear,
-			quarter:selectQuarter
+		let params = {
+			year: clinicalData.yearQuarter?.year(),
+			quarter: selectQuarter
 		}
 		clinicalApi.getQuarterTable(params).then(res => {
-			// console.log(res.data)
-			setDeptList(res.data.deptList)
-			
-			setPageLoading(false)
-			initColumn()
+			// 科室设置
 
+			setDeptList(res.data.deptList)
+			setPageLoading(false)
+			// initColumn()
+			setTableList(res.data.valueList)
+		}).catch(err => {
+			setPageLoading(false)
+		});
+	}, [])
+
+	// 获取表格数据
+	const getTableList = () => {
+		setPageLoading(true)
+		let params = {
+			year: selectYear,
+			quarter: selectQuarter
+		}
+		clinicalApi.getQuarterTable(params).then(res => {
+			setPageLoading(false)
+			setTableList(res.data.valueList)
 		}).catch(err => {
 			setPageLoading(false)
 		});
 	}
 
 	useEffect(() => {
+		// 有变化
+		// console.log('有变化')
 		initColumn()
-	}, [selectQuarter])
-	
+		getTableList()
+	}, [selectQuarter, clinicalData.yearQuarter])
+
+	useEffect(() => {
+		initColumn()
+	}, [deptList])
 
 
-	const initColumn = ()=>{
-		let monthArr = [(Number(selectQuarter)-1)*3+1,(Number(selectQuarter)-1)*3+2,(Number(selectQuarter)-1)*3+3]
+
+	const initColumn = () => {
+		setColumn3([])
+		// 如果没有科室，不计算
+		if (deptList.length < 1) return
+
+		let monthArr = [(Number(selectQuarter) - 1) * 3 + 1, (Number(selectQuarter) - 1) * 3 + 2, (Number(selectQuarter) - 1) * 3 + 3]
 		deptList.map((ii: any) => {
 			columnDayObj.push({
 				title: ii.name,
 				children: [
 					{
-						title:monthArr[0].toString()+'月',
+						title: monthArr[0].toString() + '月',
 						align: "center",
 						width: 50,
-						dataIndex:selectYear.toString()+'_'+(monthArr[0]>9?monthArr[0].toString():'0'+monthArr[0].toString())+'_01_1_'+ii.code,
+						dataIndex: clinicalData.yearQuarter?.year() + '_' + (monthArr[0] > 9 ? monthArr[0].toString() : '0' + monthArr[0].toString()) + '_01_1_' + ii.code,
 					},
 					{
-						title:monthArr[1].toString()+'月',
+						title: monthArr[1].toString() + '月',
 						align: "center",
 						width: 50,
-						dataIndex:selectYear.toString()+'_'+(monthArr[1]>9?monthArr[1].toString():'0'+monthArr[1].toString())+'_01_1_'+ii.code,
+						dataIndex: clinicalData.yearQuarter?.year() + '_' + (monthArr[1] > 9 ? monthArr[1].toString() : '0' + monthArr[1].toString()) + '_01_1_' + ii.code,
 					},
 					{
-						title:monthArr[2].toString()+'月',
+						title: monthArr[2].toString() + '月',
 						align: "center",
 						width: 50,
-						dataIndex:selectYear.toString()+'_'+(monthArr[2]>9?monthArr[2].toString():'0'+monthArr[2].toString())+'_01_1_'+ii.code,
+						dataIndex: clinicalData.yearQuarter?.year() + '_' + (monthArr[2] > 9 ? monthArr[2].toString() : '0' + monthArr[2].toString()) + '_01_1_' + ii.code,
 					}
 				]
 			})
 		})
-		debugger
 		columnDayObj.push(
 			{
 				title: "",
-				children: [{ title: '合计', align: "center", width: 50, dataIndex: "total"}]
+				children: [{ title: '合计', align: "center", width: 50, dataIndex: "total" }]
 			}
 		)
+		setColumn3([...columns, ...columnDayObj])
 
-		setColumn3([...columns,...columnDayObj])
+	}
 
-	}	
-	
 
 	const dataSource = [
 		{ recordDate: 0, classfiy: '入院患者人数' },
@@ -206,37 +227,20 @@ export default function ClinicalQuarter(props: Props) {
 		// { recordDate: 0, classfiy: '',   },
 	]
 
-	// console.log(dataSource)
-	
-
-	// 搬运start
-	const handleSelectedChange = (payload: any[]) => {
-		setSelectedRowKeys(payload)
-		// console.log(payload)
+	// 查询
+	const handelInquire = () => {
+		getTableList()
 	}
-	// 搬运end
-	// console.log(clinicalData.quarter)
-
-	// 季度变化--生成月份表头
-	useEffect(() => {
-		let quarterMonths = []
-		let monthsChild = [] as any
-		quarterMonths = Array.from({ length: 3 }, (_, index) => index + (Number(selectQuarter) - 1) * 3 + 1)
-		// console.log('quarterMonths==',quarterMonths)
-		quarterMonths.map(it => {
-			monthsChild.push({
-				title: it + '月',
-				// dataIndex: "",
-				render: (text: any, record: any, index: number) => index + 1 + Number(selectQuarter),
-				align: "center",
-				width: 50
-			})
-		})
-		setQuartMms(monthsChild)
-		// console.log('columnDayObj==',columnDayObj)
-	}, [selectQuarter])
-
-
+	// 导出
+	const handlerExport = () => {
+		let params = {
+			year: clinicalData.yearQuarter?.year(),
+			quarter: selectQuarter
+		}
+		clinicalApi.exportQuarterTable(params).then(res => {
+			fileDownload(res);
+		});
+	}
 
 	return (
 		<Wrapper>
@@ -254,13 +258,14 @@ export default function ClinicalQuarter(props: Props) {
 								setYearPickShow(status)
 							}}
 							onPanelChange={(value, mode) => {
-								console.log(value, mode)
-								clinicalData.year = value
+								clinicalData.yearQuarter = value
+								// setSelectYear(value)
 								setYearPickShow(false)
 							}}
 							mode="year"
 							style={{ width: 120 }}
-							value={clinicalData.year}
+							value={clinicalData.yearQuarter}
+							// value={selectYear}
 							allowClear={true}
 							placeholder='选择年份'
 							format="YYYY"
@@ -278,7 +283,6 @@ export default function ClinicalQuarter(props: Props) {
 							value={selectQuarter}
 							onChange={(val: any) => {
 								setSelectQuarter(val)
-								console.log('quarter', val)
 								// clinicalData.onload()
 							}}
 						>
@@ -292,11 +296,16 @@ export default function ClinicalQuarter(props: Props) {
 
 
 					<Button
-						type="primary"
 						className="span"
-					// onClick={handelInquire}
+						onClick={handelInquire}
 					>
 						查询
+					</Button>
+					<Button
+						className="span"
+						onClick={handlerExport}
+					>
+						导出
 					</Button>
 				</RightIcon>
 			</div>
@@ -305,11 +314,12 @@ export default function ClinicalQuarter(props: Props) {
 				<BaseTable
 					className="record-page-table"
 					loading={pageLoading}
-					dataSource={dataSource}
-					columns={columns.filter((item: any) => item)}
+					dataSource={tableList}
+					columns={column3}
+					// columns={columns.filter((item: any) => item)}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
-
+					title={() => {return (<span>{clinicalData.yearQuarter?.year()}年第{quarterNames[Number(selectQuarter)-1]}季度临床护理质量指标季度汇总</span>)}}
 				/>
 			</ScrollCon>
 
@@ -350,6 +360,13 @@ const Wrapper = styled.div`
 	.mr{
 	float: right;
 	padding-right: 10px;
+	}
+	/* 头部标题 */
+	.ant-table-title{
+		text-align: center;
+		font-size: 20px;
+		color: #333;
+		font-weight: bold;
 	}
   }
   .ant-select-disabled .ant-select-selection{

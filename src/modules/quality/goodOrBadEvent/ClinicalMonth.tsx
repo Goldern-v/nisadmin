@@ -50,25 +50,28 @@ export default function ClinicalMonth(props: Props) {
 	const [total, setTotal] = useState(0);
 	const [columns3, setColumns3] = useState([] as any);
 	const [data3, setData3] = useState([] as any);
+
+	//用于保存最后一条数据，装载签名的code
+	const [signCodeItem, setSignCodeItem] = useState({} as any);
+
 	const [spinning, setSpinning] = useState(true);
 	const [tableLoading, setTableLoading] = useState(false);
 	const [bodyData, setBodyData] = useState({} as any);
+	// 时间从上个月的26号开始到这个月的25号
 	let [dateList, setDateList]: any[] = useState([...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))])
+
 	let dayList = [] as any, columnDay = {}
 	let tempData = []
 	let columnDayObj: ColumnProps<any>[] | any = []
-	// 时间从上个月的26号开始到这个月的25号
-	dayList = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
 
 	// 签名
 	const updateDataSource = () => {
-		console.log('更新table数据')
-
-
+		// console.log('更新table数据')
 	};
 	const getPage = () => {
-		console.log('firstgetPage')
-		return 2
+		// console.log('firstgetPage')
+		// return 2
+		// console.log(data3)
 	}
 
 	let dataSource = [
@@ -180,7 +183,7 @@ export default function ClinicalMonth(props: Props) {
 								className='bcy-input-number'
 								min={0} max={100000}
 								size="small"
-								defaultValue={text}
+								value={text}
 								onChange={value => {
 									if (it > 25) {
 										record[lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'] = value
@@ -209,8 +212,16 @@ export default function ClinicalMonth(props: Props) {
 					return (<SignColumnRender {
 						...{
 							cellDisabled: () => false,
+							recordKey:(it > 25?(lastPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0'):
+							(currrentPrefix + '_' + (it > 9 ? it.toString() : '0' + it.toString()) + '_0')
+							),
 							record,
 							index,
+							data3,
+							setData3,
+							signCodeItem, 
+							setSignCodeItem,
+							setTableLoading,
 							itemCfg: {},
 							updateDataSource,
 							registerCode: '5678',
@@ -230,30 +241,25 @@ export default function ClinicalMonth(props: Props) {
 			width: 50,
 		},
 	]
-
 	useEffect(() => {
 		// 头部数据改变，就要重新计算数据
-		columnDayObj = []
-		console.log(clinicalData.postObj.month)
-		lastMonthDays = moment(clinicalData.postObj.month).subtract(1, 'month').daysInMonth() || moment().subtract(1, 'month').daysInMonth()
+		// columnDayObj = []
+		// console.log(clinicalData.postObj.month)
+		lastMonthDays = moment(clinicalData.postObj.year + '-' + (Number(clinicalData.postObj.month) - 1), 'YYYY-MM').daysInMonth() || moment().subtract(1, 'month').daysInMonth()
 		let days = [...(Array.from({ length: (lastMonthDays - 26 + 1) }, (_, index) => index + 26 - 1 + 1)), ...(Array.from({ length: 25 }, (_, index) => index + 1))]
 		setDateList(days)
 		// console.log(columns)
-		setColumns3([...columns, ...columnDayObj])
+		setColumns3([...columns])
 	}, [clinicalData.postObj])
 
 
 	const initTableData = (itemList: any, body: any) => {
-		// console.log(itemList)
-
+		if(itemList.length>32){
+			setSignCodeItem(itemList[itemList.length-1])
+			itemList.pop()
+		}
+		setData3([])
 		setData3([...itemList])
-		// setDataSource([...dataSource]);
-		// clinicalData.tableList = []
-		// clinicalData.tableList = [...itemList]
-		// setData3([])
-		// setData3(() => {
-		// 	return [...itemList]
-		// })
 
 	}
 
@@ -261,24 +267,22 @@ export default function ClinicalMonth(props: Props) {
 
 
 	const saveTableData = () => {
-		// setTableLoading(true)
+		setTableLoading(true)
 		let params = {
 			...clinicalData.postObj,
 			quarter: Math.floor(Number(clinicalData.month) % 3 === 0 ? Number(clinicalData.month) / 3 : Number(clinicalData.month) / 3 + 1),
-			// valueList:data3
-			valueList: clinicalData.tableList,
+			valueList: [...data3,signCodeItem]
 		}
-		console.log('参数', params)
-		return () => { }
-		// clinicalApi.saveMonthTable(params).then(res=>{
-		// 	// console.log(res.data)
-		// 	setTableLoading(false)
-		// 	if(res.data.code=='200'){
-		// 		message.success('保存成功')
-		// 	}
-		// }).catch(err=>{
-		// 	setTableLoading(false)
-		// })
+		// console.log('保存',params)
+		// return
+		clinicalApi.saveMonthTable(params).then(res => {
+			setTableLoading(false)
+			if (res.code == '200') {
+				message.success('保存成功')
+			}
+		}).catch(err => {
+			setTableLoading(false)
+		})
 	}
 
 
@@ -290,12 +294,11 @@ export default function ClinicalMonth(props: Props) {
 				<BaseTable
 					className="record-page-table"
 					loading={tableLoading}
-
-					// dataSource={clinicalData.tableList}
 					columns={columns}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
 					dataSource={data3}
+					title={() => {return (<span>{clinicalData.deptName}{clinicalData.postObj.year}年{Number(clinicalData.postObj.month)}月份临床护理质量指标月度汇总</span>)}}
 				/>
 			</ScrollCon>
 
@@ -325,6 +328,13 @@ const Wrapper = styled.div`
 	.mr{
 	float: right;
 	padding-right: 10px;
+	}
+	/* 头部标题 */
+	.ant-table-title{
+		text-align: center;
+		font-size: 20px;
+		color: #333;
+		font-weight: bold;
 	}
   }
   .ant-select-disabled .ant-select-selection{

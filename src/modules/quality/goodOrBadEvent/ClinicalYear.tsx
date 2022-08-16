@@ -151,7 +151,7 @@ export default function ClinicalYear(props: Props) {
 					columns={tableColumn}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
-
+					title={() => {return (<span>{clinicalDataYear.deptNameYear}{clinicalDataYear.postObjYear.year}年临床护理质量指标月度汇总</span>)}}
 				/>
 			</ScrollCon>
 
@@ -181,6 +181,13 @@ const Wrapper = styled.div`
 	.mr{
 	float: right;
 	padding-right: 10px;
+	}
+	/* 头部标题 */
+	.ant-table-title{
+		text-align: center;
+		font-size: 20px;
+		color: #333;
+		font-weight: bold;
 	}
   }
   .ant-select-disabled .ant-select-selection{

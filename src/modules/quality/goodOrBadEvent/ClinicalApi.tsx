@@ -101,6 +101,51 @@ export default class ClinicalApi extends BaseApiService {
 		});
 	}
 
+	// 保存质量管理月度汇总
+  public saveTableData(obj?: any) {
+    return this.post(`/goodEvent/manageIndicators/saveDetail`, obj)
+  }
+  // 获取质量管理月度汇总
+  public getTableData(obj?: any) {
+    return this.post(`/goodEvent/manageIndicators/getByDeptCodeAndYearMonth?${qs.stringify(obj)}`)
+  }
+	// 获取质量管理年度汇总
+	public getTableDataYear(obj?: any) {
+    return this.post(`/goodEvent/manageIndicators/getGatherByDeptCodeAndYear?${qs.stringify(obj)}`, )
+  }
+		// 导出年度汇总表
+		public async exportSumYearTable(obj: any) {
+			return this.post(`/goodEvent/manageIndicators/exportGatherByDeptCodeAndYear?${qs.stringify(obj)}`, {
+				responseType: "blob"
+			});
+		}
+
+		// 获取质量管理年度汇总
+	public getTableDataWhole(obj?: any) {
+    return this.get(`/goodEvent/qualityReport/getReportList?${qs.stringify(obj)}`, )
+  }
+	// 全院 创建质量报告
+	public async createNewReport(obj: any) {
+		return this.post(`/goodEvent/qualityReport/createReport`,obj);
+	}
+	// 全院 保存质量报告接口
+	public async saveNewReport(obj: any) {
+		return this.post(`/goodEvent/qualityReport/saveReportContent`,obj);
+	}
+	// 根据主表Id获取信息
+	public getReportById(obj?: any) {
+    return this.get(`/goodEvent/qualityReport/getReportDetail?${qs.stringify(obj)}`, )
+  }
+	// 根据MasterId删除汇总报告
+	public async delReportById(obj: any) {
+		return this.post(`/goodEvent/qualityReport/deleteReport`,obj);
+	}
+
+	
+	
+		
+	
+	
 	
 
 	

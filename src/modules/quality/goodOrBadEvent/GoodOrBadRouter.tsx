@@ -3,7 +3,7 @@ import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { KeepAlive, Provider } from 'react-keep-alive'
-import { appStore } from 'src/stores'
+import { appStore,authStore } from 'src/stores'
 import { ReactComponent as CFJL } from "../images/icon/CFJL.svg";
 import ClinicalMonth from './ClinicalMonth'
 import ClinicalYear from './ClinicalYear'
@@ -26,7 +26,6 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 			// 科室临床护理质量指标
 			{
 				title: '临床护理质量指标',
-				hide: !appStore.isDev,
 				children: [
 					{
 						title: "科室质量指标月度汇总",
@@ -38,11 +37,13 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 					},
 					{
 						title: '科室质量指标年度汇总',
+						hide:!authStore.level3publishedWatch,
 						path: '/goodOrBadRouter/clinicalYear',
 						component: ClinicalYear
 					},
 					{
 						title: '全院质量指标季度汇总',
+						hide:!authStore.isDepartment,
 						path: '/goodOrBadRouter/clinicalQuarter',
 						component: ClinicalQuarter
 					},
@@ -69,6 +70,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 			},
 			{
 				title: "全院护理质量分析",
+				hide:!authStore.isDepartment,
 				path: "/goodOrBadRouter/wholeAysi",
 				component: WholeAysi,
 				keepAlive: true,

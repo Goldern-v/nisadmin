@@ -11,6 +11,7 @@ import moment from 'moment'
 class ClinicalData {
   @observable public id = ""; //菜单id
   @observable public deptCode = ""; //科室
+  @observable public deptName = ""; //科室名称
   @observable public promotionLevel = ""; //晋升等级
   @observable public keyWord = ""; //关键字
 
@@ -27,6 +28,12 @@ class ClinicalData {
   @observable public deptCodeYear = ""; //科室
   @observable public yearYear = moment() as undefined | moment.Moment; //年份
   // 年份汇总数据 end
+
+  // 季度汇总
+  @observable public yearQuarter = moment() as undefined | moment.Moment; //年份
+  
+  // 护理工作质量/管理指标年度汇总
+  @observable public yearSum = moment() as undefined | moment.Moment; //年份
 
   @observable public sex =""; //性别
   @observable public selectTypeList: any = []; //类型
@@ -59,6 +66,10 @@ class ClinicalData {
     };
   }
 
+  // 监听年变化，护理工作质量/管理指标年度汇总
+  @computed get yearSumChange(){
+    return this.yearSum?.year()
+  }
   // 监听年变化，修改表头
   @computed get yearChange(){
     return this.yearYear?.year()

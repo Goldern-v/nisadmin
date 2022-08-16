@@ -10,6 +10,7 @@ import { clinicalData } from "./ClinicalData";
 import { values } from "mobx";
 import { quarterList } from 'src/enums/date'
 import { fileDownload } from "src/utils/file/file";
+import { keyCommandHandlers } from './../views/analysis/editor/configs/handlers';
 const Option = Select.Option;
 
 interface Props {
@@ -48,6 +49,7 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 			let deptListall = [];
 			deptListall = res.data.deptList
 			clinicalData.deptCode = res.data.defaultDept
+			clinicalData.deptName = res.data.deptName
 			setdeucOption(deptListall)
 			// clinicalData.init()
 			// 查询数据
@@ -75,19 +77,11 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 	  }
 
 	  useEffect(() => {
-		console.log('数据变化了')
+		// console.log('数据变化了')
 		setTableLoading(true)
 		onload()
 	  }, [clinicalData.postObj])
 	  
-
-	const promotionLevelList = [
-		{ name: '全部', value: '' },
-		{ name: 'N0->N1', value: 'N0->N1' },
-		{ name: 'N1->N2', value: 'N1->N2' },
-		{ name: 'N2->N3', value: 'N2->N3' },
-		{ name: 'N3->N4', value: 'N3->N4' },
-	]
 
 	// 查询
 	const handelInquire = () => {
@@ -160,7 +154,7 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 							value={clinicalData.quarter}
 							onChange={(val: any) => {
 								clinicalData.quarter = val
-								console.log('quarter', val)
+								// console.log('quarter', val)
 								// clinicalData.onload()
 							}}
 						>
@@ -175,9 +169,12 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 				<span>科室：</span>
 				<Select className="mr-15"
 					style={{ width: 180 }}
-					value={clinicalData.deptCode}
-					onChange={(val: string) => {
-						clinicalData.deptCode = val
+					labelInValue
+					value={{key:clinicalData.deptCode}}
+					onChange={(val: any) => {
+						// console.log(val)
+						clinicalData.deptCode = val.key
+						clinicalData.deptName = val.label
 						// clinicalData.onload()
 					}}
 				>

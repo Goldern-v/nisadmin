@@ -7,6 +7,12 @@ export interface saveTextIn {
   text: string
 }
 export default class GoodOrBadApi extends BaseApiService {
+
+  
+
+
+
+
   /** 获取病区护理工作报表 */
   public getDetailList(obj?: any) {
     let { id } = obj

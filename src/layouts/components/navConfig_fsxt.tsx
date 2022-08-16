@@ -1,6 +1,7 @@
 // 佛山第一人民医院 用聊城二院模板
 import React from "react";
 import { appStore, authStore } from "src/stores";
+// import { authStore } from 'src/stores';
 
 export interface navConfigItem {
   onClick?: any;
@@ -82,8 +83,9 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "优良事件",
+        // hidden:!authStore.isNotANormalNurse,
         path: "/goodOrBadRouter",
-        icon: require("../images/menu-icon/护理查房@2x.png")
+        icon: require("../images/menu-icon/病区登记本@2x.png")
       }
     ],
   },

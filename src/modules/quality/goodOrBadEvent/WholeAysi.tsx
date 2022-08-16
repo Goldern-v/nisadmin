@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef,MutableRefObject } from 'react'
+import React, { useEffect, useState, useRef, MutableRefObject } from 'react'
 import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
 import moment from "moment";
@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { clinicalData } from "./ClinicalData";
 import { PageTitle } from "src/components/common";
-import { authStore, appStore } from 'src/stores';
+import store, { authStore, appStore } from 'src/stores';
 import qs from 'qs'
 // import { quarterList } from 'src/enums/date'
 
@@ -24,6 +24,7 @@ import {
 } from "src/vendors/antd";
 import { KeepAlive, Provider } from 'react-keep-alive'
 import ClinicalHeaderByVicky from './ClinicalHeaderByVicky';
+import { clinicalApi } from './ClinicalApi';
 // import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 // pimport { type } from 'os';
 const Option = Select.Option;
@@ -48,21 +49,30 @@ export default function WholeAysi(props: Props) {
 	// 搬运end
 
 	const [deptList, setDeptList] = useState(['神经内科1', '神经内科2', '神经内科3', '神经内科4']);
+
 	const [yearPickShow, setYearPickShow] = useState(false);
-	const [selectType, setSelectType] = useState(0);
-	const [quartMms, setQuartMms] = useState([] as any);
-	const [reportTypes, setReportTypes] = useState(["月度", "季度", "年度"]);
+
+	const [selectType, setSelectType] = useState('0');//选择的类型
+	const [reportTypes, setReportTypes] = useState([
+		{ title: "月度", type: '0' },
+		{ title: "季度", type: '1' },
+		{ title: "年度", type: '3' }
+	]);
+
+	const [tableList, setTableList] = useState([]);
+	const [selectYear, setSelectYear] = useState(moment() as undefined | moment.Moment);
 	// modal
 	const [modalVisible, setModalVisible] = useState(false);
-	const [modalReportType, setModalReportType] = useState('');
+	const [modalReportType, setModalReportType] = useState('0');
+	const [modalDate, setModalDate] = useState(['','']);
 	const { history } = appStore
+
 	const [params, setParams] = useState({
 		deptCode: '佛山',
 		templateId: 'xiantan'
-	  } as any)
+	} as any)
 
-
-	const reportName:MutableRefObject<any> = useRef('');
+	const reportName: MutableRefObject<any> = useRef('');
 
 	const getPage = () => {
 		console.log('firstgetPage')
@@ -73,110 +83,184 @@ export default function WholeAysi(props: Props) {
 
 
 	const dataSource = [
-		{ recordDate: 0, classfiy: '入院患者人数', },
-		{ recordDate: 0, classfiy: '住院患者总数', },
-		{ recordDate: 0, classfiy: '留陪人数', },
-		{ recordDate: 0, classfiy: '给药错误发生例数', },
-		{ recordDate: 0, classfiy: '使用高危药物患者人数', },
-		{ recordDate: 0, classfiy: '高危药物外渗发生例次', },
-		{ recordDate: 0, classfiy: '输血患者人数', },
-		{ recordDate: 0, classfiy: '发生输血反应例次', },
-		{ recordDate: 0, classfiy: '留有胃管患者人数', },
-		{ recordDate: 0, classfiy: '胃管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '留有尿管患者人数', },
-		{ recordDate: 0, classfiy: '尿管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '尿道插管中泌尿道感染人数', },
-		{ recordDate: 0, classfiy: '留有中心静脉导管患者人数', },
-		{ recordDate: 0, classfiy: '中心静脉导管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '中心静脉插管中血流感染人数', },
-		{ recordDate: 0, classfiy: '留有引流管患者人数', },
-		{ recordDate: 0, classfiy: '引流管非计划性拔管例次', },
-		{ recordDate: 0, classfiy: '带入压疮总例数', },
-		{ recordDate: 0, classfiy: '新发压疮例数', },
-		{ recordDate: 0, classfiy: '需压疮高风险评估患者人数', },
-		{ recordDate: 0, classfiy: '压疮高风险评估阳性例数', },
-		{ recordDate: 0, classfiy: '排便失禁患者人数', },
-		{ recordDate: 0, classfiy: '失禁性皮炎发生例数', },
-		{ recordDate: 0, classfiy: '需跌倒/坠床高风险评估患者人数', },
-		{ recordDate: 0, classfiy: '跌倒/坠床高风险评估阳性例数', },
-		{ recordDate: 0, classfiy: '跌倒发生例数', },
-		{ recordDate: 0, classfiy: '坠床发生例数', },
-		{ recordDate: 0, classfiy: '患者误吸发生例数', },
-		{ recordDate: 0, classfiy: '患者走失发生例数', },
-		{ recordDate: 0, classfiy: '护士锐器损伤人数', },
-		// { recordDate: 0, classfiy: '',   },
+		{
+			"id": 61,
+			"title": "年度报告111",
+			"createName": "admin",
+			"createDate": "2022-08-11",
+			"reportType": "0",
+			"beginDateStr": "2022-07-01",
+			"endDateStr": "2022-07-31",
+			"belongsYear": "2022",
+			"belongsCycle": "07"
+		},
+		{
+			"id": 61,
+			"title": "年度报告222",
+			"createName": "admin",
+			"createDate": "2022-08-11",
+			"reportType": "0",
+			"beginDateStr": "2022-07-01",
+			"endDateStr": "2022-07-31",
+			"belongsYear": "2022",
+			"belongsCycle": "07"
+		}
 	]
-	// console.log(dataSource)
 	const columns: ColumnProps<any>[] | any = [
 		{
 			title: "序号",
 			dataIndex: "",
 			render: (text: any, record: any, index: number) => index + 1,
 			align: "center",
-			width: 50
+			width: 30
 		},
 		{
 			title: "名称",
-			dataIndex: "classfiy",
+			dataIndex: "title",
 			align: "center",
 			width: 120
 		},
 		{
 			title: "类型",
-			// dataIndex: "classfiy",
-			render: (text: any, record: any, index: number) => "月度报告",
+			dataIndex: "reportType",
+			render: (text: any, record: any, index: number) => {
+				if (text == '0') {
+					return <span>月度报告</span>
+				} else if (text == '1') {
+					return <span>季度报告</span>
+				} else if (text == '2') {
+					return <span>年度报告</span>
+				}
+			},
 			align: "center",
-			width: 80
+			width: 70
 		},
 		{
 			title: "统计时间",
-			// dataIndex: "classfiy",
-			render: (text: any, record: any, index: number) => "2022-01-01～2022-01-31",
+			dataIndex: "beginDateStr",
+			render: (text: any, record: any, index: number) => {
+				return <span>{text}~{record['endDateStr']}</span>
+			},
 			align: "center",
-			width: 120
+			width: 150
 		},
 		{
 			title: "创建时间",
-			// dataIndex: "classfiy",
-			render: (text: any, record: any, index: number) => "2022-01-01～2022-01-31",
+			dataIndex: "createDate",
+			// render: (text: any, record: any, index: number) => "2022-01-01～2022-01-31",
 			align: "center",
-			width: 120
+			width: 100
 		},
 		{
 			title: "创建人",
-			// dataIndex: "classfiy",
-			render: (text: any, record: any, index: number) => "张家辉",
+			dataIndex: "createName",
+			// render: (text: any, record: any, index: number) => "张家辉",
 			align: "center",
-			width: 120
+			width: 70
 		},
 		{
 			title: "操作",
 			// dataIndex: "classfiy",
 			render: (text: any, record: any, index: number) => {
-				return <Button>查看</Button>
+				return (
+					<DoCon>
+						{/* <span onClick={() => row.empName && onDoubleClick(row)}>查看</span> */}
+						<span onClick={() => onDoubleClick(record)}>查看</span>
+					</DoCon>
+				)
 			},
 			align: "center",
-			width: 120
+			width: 60
 		},
 
 	]
-	// 搬运start
-	const handleSelectedChange = (payload: any[]) => {
-		setSelectedRowKeys(payload)
-		// console.log(payload)
+
+	useEffect(() => {
+		getTableList()
+	}, [])
+
+	const getTableList = (toYear?: undefined | moment.Moment, toType?: string) => {
+		setPageLoading(true)
+		clinicalApi.getTableDataWhole({
+			year: toYear?.year() || selectYear?.year(),
+			type: toType || selectType
+		}).then(res => {
+			setTableList(res.data || [])
+			setPageLoading(false)
+		}).catch(err => {
+			setPageLoading(false)
+		})
 	}
-	// 搬运end
-	// console.log(clinicalData.quarter)
+
+
+	// 点击查看
+	const onDoubleClick = (record: any) => {
+		// localStorage.setItem('empName', record.empName)
+		sessionStorage.setItem('myreport',qs.stringify(record))
+		store.appStore.history.push(`/goodOrBadWholePrint`)
+	}
 
 	// 点击新建
 	const handelNewModal = () => {
 		setModalVisible(true)
 	}
-	// modalOk 
+	// 点击确定
 	const handleOk = () => {
-		setModalVisible(false)
-		console.log(reportName.current.state.value)
-		history.push(`/goodOrBadWholePrint?${qs.stringify(params)}`)
+		if(!reportName.current.state.value || reportName.current.state.value.trim().length===0){
+			message.warning('请输入报告名称')
+			return false
+		}
+		if(modalDate[0]==''){
+			message.warning('请选择报告时间')
+			return false
+		}
+		// 判断是否在同一个月
+		if(modalReportType=='0'){
+			if(moment(modalDate[0]).month()!==moment(modalDate[1]).month()){
+				message.warning('报告时间须在同个月度范围')
+				return false
+			}
+		}
+		if(modalReportType=='1'){
+			if(moment(modalDate[0]).quarter()!==moment(modalDate[1]).quarter()){
+				message.warning('报告时间须在同个季度范围')
+				return false
+			}
+		}
+		if(modalReportType=='3'){
+			if(moment(modalDate[0]).year()!==moment(modalDate[1]).year()){
+				message.warning('报告时间须在同个年度范围')
+				return false
+			}
+		}
+		let belongsCycle = null
+		if(modalReportType=='0'){
+			belongsCycle = moment(modalDate[0]).format('MM')
+		}
+		else if(modalReportType=='1'){
+			belongsCycle = moment(modalDate[0]).quarter()
+		}else if(modalReportType=='2'){
+			belongsCycle = moment(modalDate[0]).format('YYYY')
+		}
+		let params = {
+			"title": reportName.current.state.value,
+			"createName": authStore.user?.empName,
+			"createDate": moment().format('YYYY-MM-DD'),
+			"reportType": modalReportType,
+			"beginDateStr": modalDate[0],
+			"endDateStr": modalDate[1],
+			"belongsCycle": belongsCycle,
+			"belongsYear": moment(modalDate[0]).format('YYYY')
+		}
+		clinicalApi.createNewReport(params).then(res=>{
+			// console.log(res)
+			setModalVisible(false)
+			sessionStorage.setItem('myreport',qs.stringify(res.data))
+			history.push(`/goodOrBadWholePrint?${qs.stringify(res.data)}`)
+		}).catch(err=>{
+			setModalVisible(false)
+		})
+		
 	}
 	// modal取消
 	const handleCancel = () => {
@@ -200,20 +284,18 @@ export default function WholeAysi(props: Props) {
 								setYearPickShow(status)
 							}}
 							onPanelChange={(value, mode) => {
-								console.log(value, mode)
-								clinicalData.year = value
+								// console.log(value, mode)
+								// clinicalData.year = value
+								setSelectYear(value)
 								setYearPickShow(false)
+								getTableList(value, selectType)
 							}}
 							mode="year"
 							style={{ width: 120 }}
-							value={clinicalData.year}
+							value={selectYear}
 							allowClear={true}
 							placeholder='选择年份'
-							format="YYYY"
-						// onChange={date => {
-						// 	clinicalData.year = date
-
-						// }} 
+							format="YYYY" 
 						/>
 					</>
 
@@ -224,13 +306,12 @@ export default function WholeAysi(props: Props) {
 							value={selectType}
 							onChange={(val: any) => {
 								setSelectType(val)
-								console.log('quarter', val)
-								// clinicalData.onload()
+								getTableList(selectYear, val)
 							}}
 						>
 							{
 								reportTypes.map((v: any, i: number) => (
-									<Option key={i} value={i + 1}>{v}</Option>
+									<Option key={v.type} value={v.type}>{v.title}</Option>
 								))
 							}
 						</Select>
@@ -238,9 +319,7 @@ export default function WholeAysi(props: Props) {
 
 
 					<Button
-						type="primary"
 						className="span"
-					// onClick={handelInquire}
 					>
 						查询
 					</Button>
@@ -258,33 +337,10 @@ export default function WholeAysi(props: Props) {
 				<BaseTable
 					className="record-page-table"
 					loading={pageLoading}
-					dataSource={dataSource}
-					// rowSelection={{
-					//   selectedRowKeys,
-					//   onChange: handleSelectedChange,
-					// }}
+					dataSource={tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusHeight={surplusHeight}
 					surplusWidth={300}
-				// useOuterPagination
-				// pagination={{
-				//   onChange: (pageIndex: number) => {
-				// 	setPageOptions({ ...pageOptions, pageIndex })
-				//   },
-				//   onShowSizeChange: (pageIndex: number, pageSize: number) => {
-				// 	setPageOptions({ ...pageOptions, pageSize, pageIndex: 1 })
-				//   },
-				//   pageSizeOptions: ['20', '30', '40', '50', '100'],
-				//   current: pageOptions.pageIndex,
-				//   pageSize: pageOptions.pageSize,
-				//   total: total
-				// }}
-				// rowClassName={(record: any, idx: number) => {
-				//   if (cellDisabled(record)) return 'disabled-row'
-
-				//   return ''
-				// }}
-
 				/>
 			</ScrollCon>
 			<MModal>
@@ -303,47 +359,49 @@ export default function WholeAysi(props: Props) {
 								<Input ref={reportName} />
 							</Col>
 						</Row>
-						<Row className="item-row" style={{marginTop:'15px'}}>
+						<Row className="item-row" style={{ marginTop: '15px' }}>
 							<Col span={4}>
 								<div className="label">报告类型:</div>
 							</Col>
 							<Col span={16}>
-							<Select
-								style={{ width: '100%' }}
-								value={modalReportType}
-								onChange={(val: any) => {
-									setModalReportType(val)
-									// clinicalData.onload(报告类型)
-								}}
-							>
-								{
-									reportTypes.map((v: any, i: number) => (
-										<Option key={i} value={i + 1}>{v}</Option>
-									))
-								}
-							</Select>
+								<Select
+									style={{ width: '100%' }}
+									value={modalReportType}
+									onChange={(val: any) => {
+										setModalReportType(val)
+										// clinicalData.onload(报告类型)
+									}}
+								>
+									{
+										reportTypes.map((v: any, i: number) => (
+											<Option key={v.type} value={v.type}>{v.title}</Option>
+										))
+									}
+								</Select>
 							</Col>
 						</Row>
-						<Row className="item-row" style={{marginTop:'15px'}}>
+						<Row className="item-row" style={{ marginTop: '15px' }}>
 							<Col span={4}>
 								<div className="label">报告时间:</div>
 							</Col>
 							<Col span={16}>
-								<RangePicker />
+								<RangePicker onChange={(dates: any, dateStrings: any) => {
+									setModalDate(dateStrings)
+								}} />
 							</Col>
 						</Row>
-						<Row className="item-row" style={{marginTop:'15px'}}>
+						<Row className="item-row" style={{ marginTop: '15px' }}>
 							<Col span={4}>
 								<div className="label">创建人:</div>
 							</Col>
 							<Col span={16}>
-								<Input value={`${authStore.user?.empName || ''} ${moment().format('YYYY-MM-DD')}`} />
+								<Input disabled value={`${authStore.user?.empName || ''} ${moment().format('YYYY-MM-DD')}`} />
 							</Col>
 						</Row>
 					</div>
 				</Modal>
 			</MModal>
-			
+
 		</Wrapper>
 	);
 }
@@ -415,6 +473,7 @@ const Wrapper = styled.div`
     color: orange !important;
   }
 
+
   .bcy-input-number{
 	width: 100%;
 	border:none;
@@ -444,7 +503,7 @@ const Wrapper = styled.div`
 
 `;
 
-const MModal=styled.div`
+const MModal = styled.div`
 	.modal-content{
 		
 	}
