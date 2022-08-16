@@ -87,7 +87,7 @@ export default function MainBox() {
       dataIndex: 'wednesdayName',
       key: 'wednesdayName',
       width: 100,
-      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
+      render: (text: string, record: any) => getTextColor(text, record, record.wednesdayNameColor)
     },
     {
       title: '周四',
@@ -168,7 +168,30 @@ export default function MainBox() {
     fridayNameColor: '',
     saturdayNameColor: '',
     sundayNameColor: '',
-    status: ''
+    status: '',
+    mondaySymbol: '', 
+    tuesdaySymbol: '', 
+    wednesdaySymbol: '', 
+    thursdaySymbol: '', 
+    fridaySymbol: '', 
+    saturdaySymbol: '', 
+    sundaySymbol: '', 
+
+    mondaySymbolName: '', 
+    tuesdaySymbolName: '', 
+    wednesdaySymbolName: '', 
+    thursdaySymbolName: '', 
+    fridaySymbolName: '', 
+    saturdaySymbolName: '', 
+    sundaySymbolName: '', 
+
+    mondaySymbolColor: '', 
+    tuesdaySymbolColor: '', 
+    wednesdaySymbolColor: '', 
+    thursdaySymbolColor: '', 
+    fridaySymbolColor: '', 
+    saturdaySymbolColor: '', 
+    sundaySymbolColor: '', 
   }
 
   let allUser = new Array()

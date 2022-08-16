@@ -1,13 +1,14 @@
-import { observer } from "mobx-react";
-import React, { useRef, useState } from "react";
+import BaseTable from 'src/components/BaseTable'
+import EditButton from 'src/modules/quality/components/EditButton'
+import OneLevelTitle from 'src/modules/quality/components/OneLevelTitle'
+import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
+import React, { useRef, useState } from 'react'
+import { observer } from 'mobx-react'
 
-import EditButton from "src/modules/quality/components/EditButton";
-import OneLevelTitle from "src/modules/quality/components/OneLevelTitle";
-import BaseTable from "src/components/BaseTable";
-import { getModal } from "../../AnalysisDetailModal";
-import TwoLevelTitle from "src/modules/quality/components/TwoLevelTitle";
-import { SectionCon } from "../../style/section";
-import {useColumns} from './hook/useColumns'
+import { getModal } from '../../AnalysisDetailModal'
+import { SectionCon } from '../../style/section'
+import { useColumns } from './hook/useColumns'
+
 export interface Props {
   sectionId: string;
   sectionTitle?: string | undefined;
@@ -39,9 +40,7 @@ export default observer(function TableSection(props: Props) {
         dataSource={data.list}
         columns={columns}
         pagination={false}
-        scroll={{x:'max-content',y:400}}
       />
     </SectionCon>
   );
 });
-

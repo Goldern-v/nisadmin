@@ -1,13 +1,15 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
 import LeftMenuPage from 'src/components/LeftMenuPage'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { Button } from 'antd'
+import { appStore } from 'src/stores'
+
 import NurseHandBook_jmfy from './page/NurseHandBook_jmfy'
 import NurseHandBook_lcey from './page/NurseHandBook_lcey'
 import { ReactComponent as WCJD } from './images/WCJD.svg'
 import { ReactComponent as CSWD } from './images/CSWD.svg'
 import { ReactComponent as BKES } from './images/BKSD.svg'
-import { appStore } from 'src/stores'
+
 export interface Props {}
 
 export default function NurseHandBookRouter() {
@@ -78,7 +80,7 @@ export default function NurseHandBookRouter() {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
-      lcey: [
+      'lcey,lyrm': [
         {
           title: '护士基本情况',
           path: '/nurseHandBookNew/lcBaseInfo',
@@ -123,7 +125,8 @@ export default function NurseHandBookRouter() {
         },
       ],
       default: []
-    }
+    },
+    vague: true,
   })
   
   

@@ -398,8 +398,8 @@ export default class NurseFilesService extends BaseApiService {
     return this.post('/nurseInformation/importExcel', formData)
   }
   /**批量保存导入得护士数据 */
-  public saveListImport(nurseNYSInformationDtos: any[]) {
-    return this.post(`/nurseInformation/saveListImport`, { nurseNYSInformationDtos })
+  public saveListImport(nurseInformationDtos: any[]) {
+    return this.post(`/nurseInformation/saveListImport`, { nurseInformationDtos })
   }
 
   /** 人力资源 */

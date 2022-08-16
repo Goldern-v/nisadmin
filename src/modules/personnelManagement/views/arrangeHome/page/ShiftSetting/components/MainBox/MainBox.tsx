@@ -1,25 +1,25 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import update from 'immutability-helper'
+import moment from 'moment'
+import createModal from 'src/libs/createModal'
+import emitter from 'src/libs/ev'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { RouteComponentProps } from 'react-router'
+import { Divider, message, Popconfirm, Switch, Table, Tag } from 'antd'
+import { appStore, authStore, scheduleStore } from 'src/stores'
+import { globalModal } from 'src/global/globalModal'
+import { Icon } from 'src/vendors/antd'
+import { overflow } from 'html2canvas/dist/types/css/property-descriptors/overflow'
+
+import PostScoreCell from '../../../../components/arrangeSheet/postScoreCell'
+import AddShiftModal from '../../modal/AddShiftModal'
+import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
+
 // import { Link } from 'react-router-dom'
 
-import { Table, message, Popconfirm, Divider, Tag, Switch } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from "src/services/api";
-import { scheduleStore, authStore, appStore } from "src/stores";
-import update from "immutability-helper";
-
-import emitter from "src/libs/ev";
-import BaseTable, { DoCon } from "src/components/BaseTable";
-
-import { globalModal } from "src/global/globalModal";
-import createModal from "src/libs/createModal";
-import AddShiftModal from "../../modal/AddShiftModal";
-import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
-import { Icon } from "src/vendors/antd";
-import moment from 'moment'
-import PostScoreCell from "../../../../components/arrangeSheet/postScoreCell";
-import { overflow } from "html2canvas/dist/types/css/property-descriptors/overflow";
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
@@ -45,8 +45,8 @@ export interface Props extends RouteComponentProps {
 // }
 let colorLumpMap: any = {
   red: '红色', //#F23D35
-  green: '绿色', //#007AFF
-  blue: '蓝色', //#32B378
+  green: '绿色', //#32B378
+  blue: '蓝色', //#007AFF
   yellow: '黄色', //#f7ff02
   gray: '灰色', //#999999
   white: '白色' //#ffffff
@@ -68,10 +68,11 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        wh: AddShiftModal_wh,
+        'wh,lyyz,qhwy,wjgdszd,ytll': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
-      }
+      },
+      vague: true
     }),
   );
 
@@ -349,7 +350,7 @@ export default function MainBox() {
   ];
   // new:南医三护士长可以编辑排班设置
   let promise =
-    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb")
+    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb" || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID))
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
@@ -514,7 +515,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = ['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)
+  let isWh = ['wh', 'lyyz', 'qhwy', "ytll"].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",

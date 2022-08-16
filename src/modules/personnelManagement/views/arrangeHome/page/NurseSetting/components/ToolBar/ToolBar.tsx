@@ -1,17 +1,16 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import DeptSelect from 'src/components/DeptSelect'
+import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import emitter from 'src/libs/ev'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Button, message } from 'antd'
+import { appStore, authStore } from 'src/stores'
+
 // import { Link } from 'react-router-dom'
 
-import emitter from "src/libs/ev";
-
-import { Button, message } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from "src/services/api";
-import { appStore, authStore } from "src/stores";
-import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import DeptSelect from "src/components/DeptSelect";
-
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
@@ -74,7 +73,7 @@ export default function ToolBar() {
           {
             appStore.hisMatch({
               map: {
-                'wh,gzsrm': '添加',
+                'wh,gzsrm,lyyz,qhwy,whsl,ytll': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
                 whyx: "添加实习/进修生护士",

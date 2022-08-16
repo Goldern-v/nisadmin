@@ -28,8 +28,8 @@ export const useColumns = (props: Props) => {
         title: v.fieldComment,
         key: v.fieldName,
         dataIndex: v.fieldName,
-        width: v.fieldWidth || 100
       }
+      if (v.fieldWidth) item.width = v.fieldWidth
       if (v.editable && isEdit) {
         item.render = (text: any, row: any, index: number) => {
           if (['text', 'textarea','DatePicker','TimePicker'].includes(v.widgetType)) {

@@ -98,9 +98,8 @@ export default function EditWorkHistoryModal(props: Props) {
             <Form.Field label={`考核结果`} name='checkResult' required>
               <Radio.Group defaultValue='称职' buttonStyle='solid'>
                 <Radio.Button value='优秀'>优秀</Radio.Button>
-                <Radio.Button value='称职'>称职</Radio.Button>
-                <Radio.Button value='基本称职'>基本称职</Radio.Button>
-                <Radio.Button value='不称职'>不称职</Radio.Button>
+                <Radio.Button value='合格'>合格</Radio.Button>
+                <Radio.Button value='不合格'>不合格</Radio.Button>
               </Radio.Group>
             </Form.Field>
           </Col>

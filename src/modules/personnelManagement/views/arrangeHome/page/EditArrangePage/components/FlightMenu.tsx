@@ -1,14 +1,15 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
-import BaseTabs from "src/components/BaseTabs";
-import { observer } from "mobx-react-lite";
-import moment from "moment";
-import { sheetViewModal } from "../../../viewModal/SheetViewModal";
-import { ArrangeItem } from "../../../types/Sheet";
-import { cloneJson } from "src/utils/json/clone";
-import { appStore } from "src/stores";
+import moment from 'moment'
+import BaseTabs from 'src/components/BaseTabs'
 import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { Button } from 'antd'
+import { observer } from 'mobx-react-lite'
+import { cloneJson } from 'src/utils/json/clone'
+import { appStore } from 'src/stores'
+
+import { sheetViewModal } from '../../../viewModal/SheetViewModal'
+import { ArrangeItem } from '../../../types/Sheet'
 
 export interface Props {
 }
@@ -158,6 +159,10 @@ function MenuCon(props: { dataSource: any[] }) {
       ) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
+      // 添加班次时间段
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+        cell!.workTime = item.workTime
+      }
       // if (
       //   _rangeName &&
       //   cell.userId &&
@@ -170,7 +175,7 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = async (item: any) => {
-    if (appStore.HOSPITAL_ID == 'wh') {
+    if (appStore.HOSPITAL_ID == 'wh' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
@@ -219,7 +224,8 @@ function MealCon(props: { dataSource: any[] }) {
 
   const onClick = async (item: any) => {
     /** 套餐同步 */
-    if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
+    // 新医院搬武汉版本时不要搬过去，有问题
+    if (['wh'].includes(appStore.HOSPITAL_ID)) {
       let res = await service.scheduleMealApiService.checkMeal(item.id)
     }
     if (sheetViewModal.selectedCell) {

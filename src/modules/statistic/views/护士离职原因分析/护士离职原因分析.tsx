@@ -24,7 +24,7 @@ export default observer(function 护士离职原因分析() {
 
   const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode: '',
+    deptCode:['whyx'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:"",
     startDate: _currentMonth[0].format('YYYY-MM-DD'),
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
@@ -130,7 +130,15 @@ export default observer(function 护士离职原因分析() {
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(deptCode: string) => setQuery({ ...query, deptCode })}>
-        <Option value={''}>全院</Option>
+        {
+          appStore.hisMatch({
+            map: {
+              whyx: "",
+              other:<Option value={''}>全院</Option>
+            },
+            vague: true
+          })  
+        }
         {deptList.map((dept: any, idx: number) =>
           <Option key={idx} value={dept.code}>{dept.name}</Option>
         )}

@@ -24,6 +24,10 @@ export default class CommonApiService extends BaseApiService {
   public async getUintList() {
     return this.get(`/user/nursingUnit`);
   }
+  // 获取含片区的科室树形列表 by顺德龙江
+  public async nursingUnit4Area() {
+    return this.get(`/user/nursingUnit4Area`);
+  }
   public async uploadFile(obj: any) {
     const trancePostData = new FormData();
     for (let key in obj) {

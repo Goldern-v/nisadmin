@@ -1,31 +1,22 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { selectViewModal } from "../viewModal/SelectViewModal";
-import { observer } from "mobx-react-lite";
-import {
-  DatePicker,
-  Button,
-  Select,
-  message,
-  Dropdown,
-  Menu,
-  Modal,
-  Checkbox,
-  Upload,
-} from "src/vendors/antd";
-import { fileDownload } from "src/utils/file/file";
-import { appStore, authStore } from "src/stores";
-import DeptSelect from "src/components/DeptSelect";
-import moment from "moment";
-import { scheduleStore } from "src/stores";
-import { arrangeService } from "../services/ArrangeService";
-import { sheetViewModal } from "../viewModal/SheetViewModal";
-import { printModal } from "../viewModal/PrintModal";
-import service from "src/services/api";
-import { DictItem } from "src/services/api/CommonApiService";
-import createModal from "src/libs/createModal";
-import ShowStandardTimeModal from "../modal/ShowStandardTimeModal";
-import ImportModal from "./importModal";
+import moment from 'moment'
+import DeptSelect from 'src/components/DeptSelect'
+import createModal from 'src/libs/createModal'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Button, Checkbox, DatePicker, Dropdown, Menu, message, Modal, Select, Upload } from 'src/vendors/antd'
+import { fileDownload } from 'src/utils/file/file'
+import { appStore, authStore } from 'src/stores'
+import { scheduleStore } from 'src/stores'
+import { DictItem } from 'src/services/api/CommonApiService'
+
+import ShowStandardTimeModal from '../modal/ShowStandardTimeModal'
+import ImportModal from './importModal'
+import { selectViewModal } from '../viewModal/SelectViewModal'
+import { arrangeService } from '../services/ArrangeService'
+import { sheetViewModal } from '../viewModal/SheetViewModal'
+import { printModal } from '../viewModal/PrintModal'
 
 export interface Props {
 }
@@ -150,6 +141,10 @@ export default observer(function SelectCon() {
   // 打印排班Excel
   const printRosterExcel = () => {
     let visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1']
+    let newArr: any[] = []
+    let noEmpNoArr: any[] = []
+    let noGroupArr: any[] = []
+    let settingLength = sheetViewModal.sheetTableData[0].settingDtos.length
     Modal.confirm({
       title: '选择要打印的列',
       centered: true,
@@ -166,8 +161,23 @@ export default observer(function SelectCon() {
         </Checkbox.Group>
       </div>,
       onOk: () => {
-        // console.log(visibleArr)
-        printModal.printArrangeDghl(visibleArr)
+        settingLength += visibleArr.length + 1
+        if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+          selectViewModal.params.groupList.map((group: any) => {
+            let arr = sheetViewModal.sheetTableData.filter((item:any) => {
+              return group.groupName == item.groupName
+            })
+            newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+          })
+          sheetViewModal.sheetTableData.forEach((item:any) => {
+            if(!item.empNo) noEmpNoArr.push(item)
+            if(item.empNo && !item.groupName) noGroupArr.push(item)
+          })
+          newArr = newArr.concat([{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,[{id:"实习生",groupNameTitle:"实习生",colSpan:settingLength}],noEmpNoArr)
+          printModal.printArrangeNew(visibleArr,newArr)
+        } else {
+          printModal.printArrangeDghl(visibleArr)
+        }
       }
     })
   };
@@ -517,6 +527,18 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
             </React.Fragment>,
+            nfzxy: <React.Fragment>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={printRosterExcel}>
+                  打印排班
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
+                </Button>
+              </div>
+            </React.Fragment>,
             other: <div className="item">
               <Button className="statistics getExcel" onClick={exportExcel}>
                 导出科室
@@ -553,7 +575,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx", "fssdy"].includes(appStore.HOSPITAL_ID)) &&
+        {(["wh", "gxjb", "fsxt", "whyx", "fssdy","lyyz","qhwy","whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -564,7 +586,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx"].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy","whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"

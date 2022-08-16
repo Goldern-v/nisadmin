@@ -10,16 +10,27 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
-
-const baseConfig: navConfigItem[] = [
+export type ConfigType = (app:any,auth: any) => navConfigItem[]
+const baseConfig:ConfigType = (app, auth) => ([
   {
     name: "学习培训",
     path: "/continuingEdu"
-  }
-];
+  },
+  ...appStore.hisMatch({
+    map: {
+      'qhwy': [
+        {
+          name: "排班管理",
+          path: "/personnelManagement"
+        },
+      ],
+      other: []
+    }
+  })
+]);
 
-const beConfig: navConfigItem[] = [];
+const beConfig: ConfigType = (app, auth) => ([]);
 
-export const navConfig: navConfigItem[] = appStore.onlyBadEvent
+export const navConfig: ConfigType = appStore.onlyBadEvent
   ? beConfig
   : baseConfig;

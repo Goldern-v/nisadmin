@@ -810,13 +810,19 @@ export function getFun(context: any) {
     // 复制
     let newRows = []
     if (data.copy) {
+      // 自定义签名不需要复制
+      let customSignObj: Record<string,any> = {}
+      customSign.map((v:any) => {
+        customSignObj[v.itemCode] = ''
+      })
       newRows = selectedRows.map((item: any) => {
         let newItem = JSON.parse(JSON.stringify(item))
         delete newItem.id
         newItem['班次'] = data.type ? data.type : newItem['班次']
-        newItem['护士签名'] = data.sign ? authStore.user?.empName : ""
+        newItem[data.signName] = data.sign ? authStore.user?.empName : ""
         return {
           ...newItem,
+          ...customSignObj,
           recordDate: data.time? moment(data.time).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
           signerName: '',
           signerNo: '',
@@ -839,8 +845,14 @@ export function getFun(context: any) {
           //   v['recordDate'] = moment(data.time).format('YYYY-MM-DD')
           // }
           if (!data.copy) {
-            v['护士签名'] = data.sign ? authStore.user?.empName : ""
-            v['班次'] = data.type
+            // v[data.signName] = data.sign ? authStore.user?.empName : data.cancelSign ? "" : v[data.signName]
+            if (data.sign) {
+              v[data.signName] = authStore.user?.empName
+            }
+            if (data.cancelSign) {
+              v[data.signName] =  ""
+            }
+            v['班次'] = data.type ? data.type : v['班次']
           }
           return {
             ...v,

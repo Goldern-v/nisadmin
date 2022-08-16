@@ -96,5 +96,12 @@ export default class TrainingSettingApi extends BaseApiService {
       obj
     );
   }
+  // 实习生临床评定删除接口
+  public async deleteClinicalIdentification(obj: any) {
+    return this.post(
+      `/studyAndTrain/clinicalIdentificationOfInterns/deleteClinicalIdentification`,
+      obj
+    );
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

@@ -10,7 +10,10 @@ import Analysis from './views/analysis/Analysis'
 import RecordView from './views/checkWard/view/record/RecordView'
 import CheckWardReportList from './views/checkWard/view/reportList/CheckWardReportList'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
+<<<<<<< HEAD
 import committeeWorkReport from './views/committeeWorkReport'
+=======
+>>>>>>> master
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 import qcNursingAnalysis from './views/qcNursingAnalysis'
 import qcThreeProblem from './views/qcThreeProblem/index'

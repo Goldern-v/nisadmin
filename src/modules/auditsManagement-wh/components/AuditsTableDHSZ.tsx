@@ -52,7 +52,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
 
   const toDetails = (row: any) => {
-    console.log("ok");
+    console.log("ok",showType,props.needAudit);
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
@@ -84,6 +84,15 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       );
     } else if (showType == "csr") {
       appStore.history.push(`/CommunityDetailsView/${row.othersMessage.id}`);
+    } else if (showType == "badEventMaster") {
+      window.open(
+        `/crNursing/manage/#${
+          row.othersMessage.auditedUrl
+        }`
+      )
+    }else if(showType === 'nursePromotion'){
+      row.needAudit = props.needAudit;
+      appStore.history.push(`/PromotionAduit?${qs.stringify(row)}`);
     }
   };
 
@@ -112,6 +121,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           ? "二级质控"
           : text == "sr"
           ? "特殊时段查房"
+          : text == "badEventMaster"
+          ? "不良事件"
           : "";
       },
     },

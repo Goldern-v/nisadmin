@@ -63,7 +63,16 @@ export default class ScheduleMealApiService extends BaseApiService {
       friday: data.friday, // string 必须参数 星期
       saturday: data.saturday, // string 必须参数 星期
       sunday: data.sunday, // string 必须参数 星期
-      status: data.status // Boolean 必须参数 启用状态 true或者false
+      status: data.status, // Boolean 必须参数 启用状态 true或者false
+      mondaySymbol: isNaN(data.mondaySymbol) ? data.mondaySymbolId : data.mondaySymbol, 
+      tuesdaySymbol: isNaN(data.tuesdaySymbol) ? data.tuesdaySymbolId : data.tuesdaySymbol, 
+      wednesdaySymbol: isNaN(data.wednesdaySymbol) ? data.wednesdaySymbolId : data.wednesdaySymbol,  
+      thursdaySymbol: isNaN(data.thursdaySymbol) ? data.thursdaySymbolId : data.thursdaySymbol, 
+      fridaySymbol: isNaN(data.fridaySymbol) ? data.fridaySymbolId : data.fridaySymbol,  
+      saturdaySymbol: isNaN(data.saturdaySymbol) ? data.saturdaySymbolId : data.saturdaySymbol,  
+      sundaySymbol: isNaN(data.sundaySymbol) ? data.sundaySymbolId : data.sundaySymbol, 
+      // mondaySymbolName: data.mondaySymbolName,
+      // mondaySymbolColor: data.mondaySymbolColor
     }
     return this.post(`/schMealSetting/saveOrUpdate`, postData)
   }

@@ -1,15 +1,28 @@
-import styled from "styled-components"
-import React, { useEffect, useState } from "react"
-import { observer } from "mobx-react-lite"
-import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import { Button, Input, Timeline, Modal, Col, Row, Radio, InputNumber, Select, message, DatePicker, Icon } from "src/vendors/antd";
-import { appStore, authStore } from "src/stores";
-import api from '../api'
-import moment from 'moment';
-import { stringify } from "qs";
-import verify from './verify'
+import moment from 'moment'
+import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import {
+  Button,
+  Col,
+  DatePicker,
+  Icon,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  Radio,
+  Row,
+  Select,
+  Timeline,
+} from 'src/vendors/antd'
+import { appStore, authStore } from 'src/stores'
+import { stringify } from 'qs'
 
+import api from '../api'
+import verify from './verify'
 
 interface Props {
 
@@ -144,7 +157,7 @@ export default observer((props: Props) => {
         }
         // }
         const res = await api.saveItem({
-          master: appStore.queryObj.id || tableId ? master : obj,
+          master: appStore.queryObj.id || tableId ? { ...master, wardCode: wardString.wardCode, wardName: wardString.wardName } : obj,
           itemDataMap: form,
           commit: status
         })

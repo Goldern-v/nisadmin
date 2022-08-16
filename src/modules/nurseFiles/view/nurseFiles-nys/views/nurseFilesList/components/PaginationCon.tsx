@@ -1,7 +1,8 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pagination } from 'antd'
 import { observer } from 'mobx-react-lite'
+
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 
 interface Props {
@@ -13,10 +14,11 @@ export default observer(function PaginationCon(props: Props) {
   let totalCount = nurseFilesListViewModel.totalCount
   let onChange = (pageIndex: number, pageSize: number | undefined) => {
     nurseFilesListViewModel.pageIndex = pageIndex
-    nurseFilesListViewModel.pageSize = pageSize || rowNum * 2
+    nurseFilesListViewModel.pageSize = pageSize != undefined && isNaN(pageSize) ? 10000 : (Number(pageSize) || rowNum * 2)
     nurseFilesListViewModel.loadNursingList()
+    console.log('test-pageSize', pageSize && isNaN(pageSize), nurseFilesListViewModel.pageSize)
   }
-  let pageSizeOptions = ['10', '20', '30','100']
+  let pageSizeOptions = ['10', '20', '30','100', '全部']
   return (
     <Wrapper>
       <Pagination

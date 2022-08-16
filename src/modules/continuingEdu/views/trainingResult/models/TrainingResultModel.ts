@@ -258,7 +258,12 @@ class TrainingResultModel {
       this.teacher = res.data.latTpTeachingTaskList[0].empName;
       this.time = res.data.baseInfo.startTime;
       this.address = res.data.baseInfo.address;
-      this.people = res.data.personList[0].empName
+      let empNameList = res.data.personList.map((item:any) => {
+          return item.empName
+      });
+      console.log(empNameList);
+      
+      this.people = empNameList.join(',')
     })
   }
 

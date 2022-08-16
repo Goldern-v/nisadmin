@@ -29,7 +29,7 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = appStore.hisMatch({
     map: {
-      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj, lyrm,gdtj": createModal(AduitModalWh),
+      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj, lyrm,gdtj,qhwy,lyyz,wjgdszd": createModal(AduitModalWh),
       other: createModal(AduitModal),
     },
     vague: true,
@@ -38,7 +38,7 @@ export default observer(function MainLayout(props: Props) {
   let groupsAduitModal = appStore.hisMatch({
     map: {
       "hj,ys,dzlc,gyd": createModal(GroupsAduitModal),
-      "wh,gzsrm,gxjb,fsxt,whyx,sdlj, lyrm,gdtj": createModal(GroupsAduitModalWh),
+      "wh,gzsrm,gxjb,fsxt,whyx,sdlj, lyrm,gdtj,qhwy,lyyz,wjgdszd": createModal(GroupsAduitModalWh),
       other: createModal(GroupsAduitModalNew),
     },
     vague: true,
@@ -51,8 +51,8 @@ export default observer(function MainLayout(props: Props) {
       if (res && res.data && res.data.deptList) {
         store.authStore.deptList = res.data.deptList || [];
         if (!store.authStore.defaultDeptCode) {
-          store.authStore.defaultDeptCode = store.authStore.deptList[0].code;
-          store.authStore.selectedDeptCode = store.authStore.deptList[0].code;
+          store.authStore.defaultDeptCode = store.authStore.deptList[0]?.code || '';
+          store.authStore.selectedDeptCode = store.authStore.deptList[0]?.code || '';
         }
       }
     });

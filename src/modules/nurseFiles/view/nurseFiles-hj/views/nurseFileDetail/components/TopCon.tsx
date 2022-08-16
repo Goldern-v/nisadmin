@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
 import LeaveModal from '../modal/LeaveModal'
-
+import { fileDownload } from 'src/utils/file/file'
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import ExportNurseFile from '../../exportNurseFile/ExportNurseFile'
@@ -46,6 +46,13 @@ export default observer(function TopCon() {
       store.appStore.history.replace(store.appStore.match.url + '?empNo=' + res.data.empNo)
     })
   }
+
+  const exportFile = () => {
+    nurseFilesService.exportFile(appStore.queryObj.empNo).then((res) => {
+      fileDownload(res);
+    })
+  }
+
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -61,6 +68,10 @@ export default observer(function TopCon() {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
+
+      <DeptChangeBtn4 onClick={() => exportFile()} >
+        导出个人附件
+      </DeptChangeBtn4>
 
       <DeptChangeBtn3 onClick={() => setInPrint(true)} loading={inPrint}>
         导出档案
@@ -172,5 +183,10 @@ const DeptChangeBtn2 = styled(Button)`
 const DeptChangeBtn3 = styled(Button)`
   position: absolute !important;
   right: 228px;
+  top: 34px;
+`
+const DeptChangeBtn4 = styled(Button)`
+  position: absolute !important;
+  right: 330px;
   top: 34px;
 `

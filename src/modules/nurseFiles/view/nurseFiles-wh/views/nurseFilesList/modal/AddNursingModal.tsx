@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Modal, Form, Input, Button, Radio, DatePicker, Select, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
+import TreeSelectCom from 'src/components/TreeSelectCom'
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
@@ -114,7 +115,13 @@ function AddNursingModal(props: Props) {
           {getFieldDecorator('deptCode', {
             initialValue: authStore.selectedDeptCode
           })(
-            <Select
+            ['sdlj'].includes(appStore.HOSPITAL_ID)
+            ? <TreeSelectCom
+            list={authStore.treeDeptList} 
+            placeholder='选择所属科室'
+            treeCheckable={false}
+          />
+          : <Select
               showSearch
               style={{ width: '100%' }}
               placeholder='选择所属科室'

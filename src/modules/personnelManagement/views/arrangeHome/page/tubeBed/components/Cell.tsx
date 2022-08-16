@@ -13,7 +13,7 @@ export interface Props {
 export default function Cell(props: Props) {
   let { dataSource, row, col, bedNoList } = props;
   let cellObj =
-    col < dataSource.bedList.length ? dataSource.bedList[col] : {};
+    col < dataSource.bedList?.length ? dataSource.bedList[col] : {};
   let defaultVal: any = cellObj.bedLabels ? cellObj.bedLabels.split(',') : [];
   const handleChange = (value: any) => {
     let cell: any = {};

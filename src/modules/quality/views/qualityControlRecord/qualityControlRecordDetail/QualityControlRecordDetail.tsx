@@ -125,23 +125,24 @@ export default function Layout() {
       setOpenNotRadio(0)
       return
     };
-    qualityControlRecordApi
-      .getFilterQcCodeList()
-      .then((res) => {
-        setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
-      })
-      .catch((err) => {
-        setOpenNotRadio(0)
-      });
+    // qualityControlRecordApi
+    //   .getFilterQcCodeList()
+    //   .then((res) => {
+    //     setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
+    //   })
+    //   .catch((err) => {
+    //     setOpenNotRadio(0)
+    //   });
   }, []);
   return (
-    <React.Fragment>
-      {
-        map(openNotRadio)
-      }
-      {/* {openNotRadio ? <QcrDetailNoRadio /> : <QualityControlRecordDetail/>
-      } */}
-    </React.Fragment>
+    // <React.Fragment>
+    //   {
+    //     map(openNotRadio)
+    //   }
+    //   {/* {openNotRadio ? <QcrDetailNoRadio /> : <QualityControlRecordDetail/>
+    //   } */}
+    // </React.Fragment>
+    <QualityControlRecordDetail />
     )
 }
 

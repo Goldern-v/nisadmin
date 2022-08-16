@@ -327,7 +327,7 @@ export default observer(function Step2() {
           </Col>
           {/* 类别 */}
           {/* {(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && ( */}
-          {(appStore.HOSPITAL_ID == "wh") && (
+          {(['wh', 'ytll'].includes(appStore.HOSPITAL_ID)) && (
             <Col span={24}>
               <Form.Field label={`类别`} name="category">
                 <Select style={{ width: 120 }}>

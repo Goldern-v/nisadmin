@@ -1,11 +1,12 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { getModal } from '../../AnalysisDetailModal'
 import EditButton from 'src/modules/quality/components/EditButton'
 import TwoLevelTitle from 'src/modules/quality/components/TwoLevelTitle'
-import FishBone from './FishBone'
+// import FishBone from './FishBone'
 import { MainCon } from './style'
+import MultiFileUploader from 'src/components/MultiFileUploader'
 
 export interface Props {
   sectionId: string
@@ -18,7 +19,18 @@ export default observer(function ImprovementProjectSection(props: Props) {
   let { sectionId, sectionTitle, keyName } = props
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId)
-  let report: any = (data ? data.value : {}) || {}  
+  let report: any = (data ? data.value : {}) || {}
+  // 鱼骨图图片列表
+  let images = useMemo(() => {
+    if (report.fishboneDiagram) {
+      return [{
+        path: report.fishboneDiagram,
+        id: '',
+        name: '',
+      }]
+    }
+    return []
+  }, [report])
   return (
     <Wrapper>
       <TwoLevelTitle text={sectionTitle}/>
@@ -44,7 +56,8 @@ export default observer(function ImprovementProjectSection(props: Props) {
           </span>
         </div>
         <div className='ipt'>
-          <FishBone value={report}/>
+          {/* <FishBone value={report}/> */}
+          <MultiFileUploader style={{marginTop: '0'}} data={images} readOnly={true} size={1} />
         </div>
         <div>主要原因
           <span className='title-small'>
@@ -111,5 +124,14 @@ const Wrapper = styled.div`
     padding-right: 15px;
     padding-bottom: 2px;
     padding-top: 2px;
+  }
+  .list-item {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `

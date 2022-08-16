@@ -72,11 +72,12 @@ export default observer(function ApplyTable(props: Props) {
           text: "预览",
           function: handlePreview
         },
-        {
-          text: "删除",
-          color:'#f44',
-          function: handleDelete
-        }];
+        // {
+        //   text: "删除",
+        //   color:'#f44',
+        //   function: handleDelete
+        // }
+      ];
         return (
           <DoCon>
             {data.map((item: any, index: any) => (
@@ -176,12 +177,7 @@ export default observer(function ApplyTable(props: Props) {
           teachingPost.onload();
         }}
       />
-      {/* <FormEditModal
-        visible={editVisible}
-        params={editParams}
-        onCancel={handleEditCancel}
-        onOk={handleEditOk}
-      /> */}
+      <previewModal.Component />
     </Wrapper>
   );
 });

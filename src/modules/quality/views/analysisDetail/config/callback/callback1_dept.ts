@@ -1,6 +1,6 @@
-import { getBlank, replenishList } from "./../../util/tool";
-import { analysisModal } from '../../../analysisWhyx/AnalysisModal';
-import {analysisDetailApi} from '../../api'
+import { getBlank, replenishList } from './../../util/tool'
+import { analysisModal } from '../../../analysisWhyx/AnalysisModal'
+import { analysisDetailApi } from '../../api'
 
 /**固定渲染数据 */
 const FIXED_ITEMS = [
@@ -64,13 +64,14 @@ export const obj = {
 
       },
       fieldData3_4:{
-        causeAnalysisPeople: "",
+        // causeAnalysisPeople: "",
         question: "",
-        causeAnalysisMachine: "",
-        causeAnalysisThing: "",
-        causeAnalysisLaw: "",
-        causeAnalysisRing: "",
-        causeAnalysisQuestion: "",
+        fishboneDiagram: '',
+        // causeAnalysisMachine: "",
+        // causeAnalysisThing: "",
+        // causeAnalysisLaw: "",
+        // causeAnalysisRing: "",
+        // causeAnalysisQuestion: "",
         mainReason: "",
         setGoal: "",
         planPrincipal: "",
@@ -140,14 +141,31 @@ export const obj = {
         const data: Record<string, any> = {}
         renderData[v].map((v1: any) => {
           if (data[v1.item] != undefined) {
-            v1.mainProblem && (data[v1.item] += v1.mainProblem + '/n')
+            Object.keys(v1).forEach((v2: any) => {
+              if (v2 !== 'item' && v1[v2]) {
+                if (data[v1.item][v2].length == 0) {
+                  data[v1.item][v2] = (`1.${v1[v2]}`)
+                  return
+                }
+                let len = data[v1.item][v2].split('\n').length
+                data[v1.item][v2] += (`\n${len == 0 ? 2 : len + 1}.${v1[v2]}`)
+              }
+            })
             return
           }
-          data[v1.item] = v1.mainProblem || ''
+          let {item, ...val} = v1
+          for(let key in val) {
+            if(val[key]) {
+              val[key] = '1.' + val[key]
+              continue
+            }
+            val[key] = ''
+          }
+          data[item] = val
         })
         let blank = getBlank(tableTempList[v])
         Object.keys(data).map((v2: any) => {
-          obj[v].push({ ...blank, item: v2, mainProblem: data[v2] })
+          obj[v].push({ ...blank, item: v2, ...data[v2] })
         })
         return
       }

@@ -9,23 +9,23 @@ import { RouteComponentProps } from 'react-router'
 import BaseTreeSelect from 'src/components/BaseTreeSelect'
 import emitter from 'src/libs/ev'
 
-import { Button, message, Modal, Form, Input, TreeSelect, Switch, Cascader } from 'antd'
+import { Button, message, Modal, Form, Input, TreeSelect, Switch, Select, Cascader } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 // import moment from 'moment'
 import { scheduleStore, appStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import DeptSelect from "src/modules/statistic/common/DeptSelect";
+import { arrangeService } from "src/modules/personnelManagement/views/arrangeHome/services/ArrangeService";
 
 // import emitter from 'src/libs/ev'
 
-// const Option = Select.Option
+const Option = Select.Option
 export interface Props extends RouteComponentProps { }
 
 export default function ToolBar() {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    //
 
     emitter.removeAllListeners('弹窗编辑排班套餐')
     emitter.removeAllListeners('获取排班列表')
@@ -73,14 +73,93 @@ export default function ToolBar() {
         },
         status: {
           value: record.status != null ? record.status : true
-        }
+        },
+        mondaySymbol: {
+          value: record.mondaySymbolName || ''
+        },
+        tuesdaySymbol: {
+          value: record.tuesdaySymbolName || ""
+        }, 
+        wednesdaySymbol: {
+          value: record.wednesdaySymbolName || ''
+        },
+        thursdaySymbol: {
+          value: record.thursdaySymbolName || ''
+        },
+        fridaySymbol: {
+          value: record.fridaySymbolName || ''
+        },
+        saturdaySymbol: {
+          value: record.saturdaySymbolName || ''
+        },
+        sundaySymbol: {
+          value: record.sundaySymbolName || ''
+        },
+        mondaySymbolId: {
+          value: record.mondaySymbol || ''
+        },
+        tuesdaySymbolId: {
+          value: record.tuesdaySymbol || ''
+        },
+        wednesdaySymbolId: {
+          value: record.wednesdaySymbol || ''
+        },
+        thursdaySymbolId: {
+          value: record.thursdaySymbol || ''
+        },
+        fridaySymbolId: {
+          value: record.fridaySymbol || ''
+        },
+        saturdaySymbolId: {
+          value: record.saturdaySymbol || ''
+        },
+        sundaySymbolId: {
+          value: record.sundaySymbol || ''
+        },
+
+
+        mondaySymbolColor: {
+          value: record.mondaySymbolColor || ''
+        },
+        tuesdaySymbolColor: {
+          value: record.tuesdaySymbolColor || ''
+        },
+        wednesdaySymbolColor: {
+          value: record.wednesdaySymbolColor || ''
+        },
+        thursdaySymbolColor: {
+          value: record.thursdaySymbolColor || ''
+        },
+        fridaySymbolColor: {
+          value: record.fridaySymbolColor || ''
+        },
+        saturdaySymbolColor: {
+          value: record.saturdaySymbolColor || ''
+        },
+        sundaySymbolColor: {
+          value: record.sundaySymbolColor || ''
+        },
+
       }
       addMeal('编辑排班套餐')
     })
     //
     initalTreeData()
-    //
+
+    //符号
+    getSchSymbolApi()
+
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+
+  // 符号接口
+  // const [symbols, getSchSymbols] = useState([])
+  let symbols = new Array()
+  const getSchSymbolApi = () => {
+    arrangeService.getSchSymbol().then(res => {
+      // this.schSymbolList = res.data;
+      if (res.code === '200') symbols = res.data
+    });
+  }
 
   const save = (e: any) => {
     // 获取选中班次套餐
@@ -88,7 +167,7 @@ export default function ToolBar() {
     // return
     emitter.emit('获取选中班次套餐列表', (mealList: any) => {
       // message.success('保存排班班次套餐设置')
-      console.log('获取选中班次套餐', mealList)
+      // console.log('获取选中班次套餐', mealList)
       // return
       mealList = mealList.filter((u: any) => {
         return u.status !== null
@@ -96,7 +175,7 @@ export default function ToolBar() {
       service.scheduleMealApiService.saveAll(mealList).then((res) => {
         message.success('保存排班班次套餐设置成功')
         // emitter.emit('更新班次套餐列表')
-        console.log('保存排班班次套餐', res)
+        // console.log('保存排班班次套餐', res)
       })
     })
   }
@@ -164,7 +243,7 @@ export default function ToolBar() {
       props.onChange(changedFields)
     },
     mapPropsToFields(props: any) {
-      console.log('mapPropsToFields', props)
+      // console.log('mapPropsToFields', props)
       return {
         id: Form.createFormField({
           ...props.id,
@@ -266,9 +345,204 @@ export default function ToolBar() {
     )
   })
 
+  const CustomizedFormJmfy = Form.create({
+    // name: 'coordinated',
+    onFieldsChange(props: any, changedFields: any) {
+      // props = { ...props, ...changedFields }
+      props.onChange(changedFields)
+    },
+    mapPropsToFields(props: any) {
+      // console.log('mapPropsToFieldsJmfy', props)
+      return {
+        id: Form.createFormField({
+          ...props.id,
+          value: props.id.value
+        }),
+        mealName: Form.createFormField({
+          ...props.mealName,
+          value: props.mealName.value
+        }),
+        mondayName: Form.createFormField({
+          ...props.mondayName,
+          value: props.mondayName.value
+        }),
+        tuesdayName: Form.createFormField({
+          ...props.tuesdayName,
+          value: props.tuesdayName.value
+        }),
+        wednesdayName: Form.createFormField({
+          ...props.wednesdayName,
+          value: props.wednesdayName.value
+        }),
+        thursdayName: Form.createFormField({
+          ...props.thursdayName,
+          value: props.thursdayName.value
+        }),
+        fridayName: Form.createFormField({
+          ...props.fridayName,
+          value: props.fridayName.value
+        }),
+        saturdayName: Form.createFormField({
+          ...props.saturdayName,
+          value: props.saturdayName.value
+        }),
+        sundayName: Form.createFormField({
+          ...props.sundayName,
+          value: props.sundayName.value
+        }),
+        status: Form.createFormField({
+          ...props.status,
+          value: props.status.value
+        }),
+        mondaySymbol: Form.createFormField({
+          ...props.mondaySymbol,
+          value: props.mondaySymbol.value
+        }),
+        tuesdaySymbol: Form.createFormField({
+          ...props.tuesdaySymbol,
+          value: props.tuesdaySymbol.value
+        }), 
+        wednesdaySymbol: Form.createFormField({
+          ...props.wednesdaySymbol,
+          value: props.wednesdaySymbol.value
+        }), 
+        thursdaySymbol: Form.createFormField({
+          ...props.thursdaySymbol,
+          value: props.thursdaySymbol.value
+        }), 
+        fridaySymbol: Form.createFormField({
+          ...props.fridaySymbol,
+          value: props.fridaySymbol.value
+        }), 
+        saturdaySymbol: Form.createFormField({
+          ...props.saturdaySymbol,
+          value: props.saturdaySymbol.value
+        }), 
+        sundaySymbol: Form.createFormField({
+          ...props.sundaySymbol,
+          value: props.sundaySymbol.value
+        }),
+        // mondaySymbolName: Form.createFormField({
+        //   ...props.mondaySymbolName,
+        //   value: props.mondaySymbolName.value
+        // })
+      }
+    },
+    onValuesChange(_: any, values: any) {
+      console.log(values)
+    }
+  })((props: any) => {
+    const { getFieldDecorator, getFieldValue, getFieldProps } = props.form
+    customizedForm = props.form
+
+    const formItemLayout = {
+      labelCol: { span: 5 },
+      wrapperCol: { span: 16 },
+    };
+    // layout='inline' {...formItemLayout}
+    return (
+      <Form layout='inline' {...formItemLayout}>
+        <Form.Item label='套餐名称' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('mealName', {
+            rules: [{ required: false, message: '班次套餐名称在同一科室下为唯一' }]
+          })(<Input style={{ width: inputWidth }} />)}
+        </Form.Item>
+        <Form.Item label='星期一' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('mondayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)
+          }
+          {getFieldDecorator('mondaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('mondayName')} style={{ width: 70, color: symbols.filter((item) => fields.mondaySymbol.value === item.id)[0]?.symbolColor || fields.mondaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期二' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('tuesdayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('tuesdaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('tuesdayName')} style={{ width: 70, color: symbols.filter((item) => fields.tuesdaySymbol.value === item.id)[0]?.symbolColor || fields.tuesdaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期三' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('wednesdayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('wednesdaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('wednesdayName')} style={{ width: 70, color: symbols.filter((item) => fields.wednesdaySymbol.value === item.id)[0]?.symbolColor || fields.wednesdaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期四' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('thursdayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('thursdaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('thursdayName')} style={{ width: 70, color: symbols.filter((item) => fields.thursdaySymbol.value === item.id)[0]?.symbolColor || fields.thursdaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期五' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('fridayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('fridaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('fridayName')} style={{ width: 70, color: symbols.filter((item) => fields.fridaySymbol.value === item.id)[0]?.symbolColor || fields.fridaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期六' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('saturdayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('saturdaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('saturdayName')} style={{ width: 70, color: symbols.filter((item) => fields.saturdaySymbol.value === item.id)[0]?.symbolColor || fields.saturdaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='星期日' style={FormFlexLayoutStyle()}>
+          {getFieldDecorator('sundayName', {
+            rules: [{ required: false, message: '' }]
+          })(<BaseTreeSelect style={{ width: inputWidthJmfy }} treeData={treeData} />)}
+          {getFieldDecorator('sundaySymbol', {
+            rules: [{ required: false, message: '' }]
+          })(<Select disabled={!getFieldValue('sundayName')} style={{ width: 70, color: symbols.filter((item) => fields.sundaySymbol.value === item.id)[0]?.symbolColor || fields.sundaySymbolColor.value}}>
+            {symbols.map((item: any) => (
+              <Option value={item.id} style={{ color: item.symbolColor}}>{item.symbol}</Option>
+            ))}
+          </Select>)}
+        </Form.Item>
+        <Form.Item label='启用' style={FormFlexLayoutStyle('64px')}>
+          {getFieldDecorator('status', { valuePropName: 'checked' })(<Switch />)}
+        </Form.Item>
+      </Form>
+    )
+  })
+
   const handleFormChange = (changedFields: any) => {
+    //  mondaySymbolName: objSymbol['symbol'], mondaySymbolColor: objSymbol['symbolColor']
     fields = { ...fields, ...changedFields }
-    console.log('handleFormChange', changedFields, customizedForm)
+    // console.log('handleFormChange', changedFields, customizedForm)
 
     // console.log('onFieldsChange', props, changedFields)
     //   let diff = 0
@@ -320,7 +594,30 @@ export default function ToolBar() {
     },
     status: {
       value: true
-    }
+    },
+    mondaySymbol: { value: ''},
+    tuesdaySymbol: { value: ''},
+    wednesdaySymbol: { value: ''},
+    thursdaySymbol: { value: ''},
+    fridaySymbol: { value: ''}, 
+    saturdaySymbol: { value: ''},
+    sundaySymbol: { value: ''}, 
+
+    mondaySymbolId: { value: ''},
+    tuesdaySymbolId: { value: ''},
+    wednesdaySymbolId: { value: ''},
+    thursdaySymbolId: { value: ''},
+    fridaySymbolId: { value: ''}, 
+    saturdaySymbolId: { value: ''},
+    sundaySymbolId: { value: ''}, 
+
+    mondaySymbolColor: { value: ''},
+    tuesdaySymbolColor: { value: ''},
+    wednesdaySymbolColor: { value: ''},
+    thursdaySymbolColor: { value: ''},
+    fridaySymbolColor: { value: ''}, 
+    saturdaySymbolColor: { value: ''},
+    sundaySymbolColor: { value: ''}, 
   }
 
   const getShiftIdByName = (name: string) => {
@@ -344,9 +641,25 @@ export default function ToolBar() {
       friday: getShiftIdByName(fields.fridayName.value) || '', // string 必须参数 标准工时
       saturday: getShiftIdByName(fields.saturdayName.value) || '', // string 必须参数 标准工时
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
-      status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
+      status: fields.status.value || false, // Boolean 必须参数 启用状态 true或者false
+      mondaySymbol: fields.mondaySymbol.value || '',
+      tuesdaySymbol: fields.tuesdaySymbol.value || '', 
+      wednesdaySymbol: fields.wednesdaySymbol.value || '', 
+      thursdaySymbol: fields.thursdaySymbol.value || '',  
+      fridaySymbol: fields.fridaySymbol.value || '', 
+      saturdaySymbol: fields.saturdaySymbol.value || '',  
+      sundaySymbol: fields.sundaySymbol.value || '',
+
+      mondaySymbolId: fields.mondaySymbolId.value || '',
+      tuesdaySymbolId: fields.tuesdaySymbolId.value || '', 
+      wednesdaySymbolId: fields.wednesdaySymbolId.value || '', 
+      thursdaySymbolId: fields.thursdaySymbolId.value || '',  
+      fridaySymbolId: fields.fridaySymbolId.value || '', 
+      saturdaySymbolId: fields.saturdaySymbolId.value || '',  
+      sundaySymbolId: fields.sundaySymbolId.value || '',
+
     }
-    if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll'].includes(appStore.HOSPITAL_ID)) {
       for (let key in postData) {
         if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
           if (postData[key]) {
@@ -358,13 +671,14 @@ export default function ToolBar() {
     service.scheduleMealApiService.save(postData).then((res) => {
       message.success('添加班次套餐成功')
       emitter.emit('更新班次套餐列表')
-      console.log('添加班次套餐成功', res)
+      // console.log('添加班次套餐成功', res)
       // 更新班次套餐列表
     })
     // message.success('onOk')
   }
 
   let inputWidth = '250px'
+  let inputWidthJmfy = '185px'
   // let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他']
   // let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
 
@@ -373,6 +687,7 @@ export default function ToolBar() {
   const addMeal = (title: string) => {
     // message.success('添加班次套餐')
     // console.log('Modal', Modal)
+
     if (title === '添加排班套餐' || title === '添加排班') {
       fields = {
         mealName: {
@@ -404,7 +719,30 @@ export default function ToolBar() {
         },
         status: {
           value: true
-        }
+        },
+        mondaySymbol: { value: ''},
+        tuesdaySymbol: { value: ''},
+        wednesdaySymbol: { value: ''},
+        thursdaySymbol: { value: ''},  
+        fridaySymbol: { value: ''},
+        saturdaySymbol: { value: ''}, 
+        sundaySymbol: { value: ''}, 
+
+        mondaySymbolId: { value: ''},
+        tuesdaySymbolId: { value: ''},
+        wednesdaySymbolId: { value: ''},
+        thursdaySymbolId: { value: ''},  
+        fridaySymbolId: { value: ''},
+        saturdaySymbolId: { value: ''}, 
+        sundaySymbolId: { value: ''}, 
+
+        mondaySymbolColor: { value: ''},
+        tuesdaySymbolColor: { value: ''},
+        wednesdaySymbolColor: { value: ''},
+        thursdaySymbolColor: { value: ''},  
+        fridaySymbolColor: { value: ''},
+        saturdaySymbolColor: { value: ''}, 
+        sundaySymbolColor: { value: ''}, 
       }
     }
     // if (!modalInfo) {
@@ -422,8 +760,13 @@ export default function ToolBar() {
       maskClosable: true,
       content: (
         <div>
-          <CustomizedForm {...fields} onChange={handleFormChange} />
-        </div>
+          {appStore.HOSPITAL_ID === 'jmfy' ? 
+            <CreateModal >
+              <CustomizedFormJmfy {...fields} onChange={handleFormChange} />
+            </CreateModal> : 
+            <CustomizedForm {...fields} onChange={handleFormChange} />
+          }
+       </div>
       )
     })
     // } else {
@@ -518,4 +861,17 @@ const FormFlexLayoutStyle = (offset: string = '60px') => ({
 const Title = styled.div`
   font-size: 20px;
   font-weight: bold;
+`
+
+const CreateModal = styled.div`
+.ant-modal-confirm-body{
+    width: 100%;
+}
+  .ant-form-item-children{
+    display: flex !important;
+  }
+  .ant-select{
+    margin-top: 4px;
+    margin-left: 10px;
+  }
 `

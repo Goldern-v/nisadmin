@@ -17,7 +17,7 @@ const initAuditInfo = () => {
   return {
     handleContent: '',
     expand: '',
-    auditDate: moment().format('YYYY-MM-DD'),
+    auditDate: moment().format('YYYY-MM-DD HH:mm:ss'),
     noPass: false,
     eventQualitative: "",//不良事件定性
     eventLevel: "",//科室谈论级别
@@ -56,7 +56,7 @@ export default observer(function AduitModal(props: Props) {
   const handleUserCheckOk = (userAudit: any, userInfo: any) => {
     // 片区护长审核是否通过
     auditFormSubmit(userAudit, userInfo)
-    // setUserCheckVisible(false)
+    setUserCheckVisible(false)
   }
 
   const auditFormSubmit = (userAudit: any, userInfo: any) => {
@@ -66,6 +66,7 @@ export default observer(function AduitModal(props: Props) {
       empNo: userAudit.empNo,
       password: userAudit.password,
       id: dataOrigin?.master?.id,
+      handleTime: auditInfo.auditDate
     } as any
 
     delete params.auditDate
@@ -126,8 +127,9 @@ export default observer(function AduitModal(props: Props) {
         break
       case 'gxjb_nursing_officer_audit': //护理部主任审核
         // 意见和日期
-        // saveParams['B0002059'] = auditInfo.handleContent
-        // saveParams['B0002058'] = auditInfo.auditDate
+        saveParams['B0032106'] = auditInfo.handleContent
+        saveParams['B0032101'] = userInfo.empName
+        // saveParams['B00321102'] = auditInfo.auditDate
         if (formName == '难免压力性损伤备案申报表') {
           saveParams['B0032101'] = userInfo.empName
           break
@@ -189,7 +191,7 @@ export default observer(function AduitModal(props: Props) {
   const AduitPannelContent = () => {
     let opionTitle = '审核意见'
     let auditDateTitle = '审核时间'
-    let auditTimeEditable = false
+    let auditTimeEditable = true
 
     switch (nodeCode) {
       case "gxjb_ward_nurse_audit":
@@ -230,11 +232,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>
@@ -261,7 +264,7 @@ export default observer(function AduitModal(props: Props) {
                 </Radio.Group>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <Col span={6} className="row-title">不良事件定性:</Col>
               <Col span={18}>
                 <Radio.Group
@@ -280,7 +283,7 @@ export default observer(function AduitModal(props: Props) {
                   <Radio value={"意外事件"} >意外事件</Radio>
                 </Radio.Group>
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <Col span={6} className="row-title">谈论事件级别:</Col>
               <Col span={18}>
@@ -293,7 +296,7 @@ export default observer(function AduitModal(props: Props) {
                       eventLevel: e.target.value,
                     })
                   }>
-                  <Radio value={"意外事件"} >意外事件</Radio>
+                  {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   <Radio value={"Ⅰ级事件"} >Ⅰ级事件</Radio>
                   <Radio value={"Ⅱ级事件"} >Ⅱ级事件</Radio>
                   <Radio value={"Ⅲ级事件"} >Ⅲ级事件</Radio>
@@ -317,11 +320,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>
@@ -381,7 +385,7 @@ export default observer(function AduitModal(props: Props) {
                     <Radio value={"严重差错"} >严重差错</Radio>
                     <Radio value={"一般差错"} >一般差错</Radio>
                     <Radio value={"缺点"} >缺点</Radio>
-                    <Radio value={"意外事件"} >意外事件</Radio>
+                    {/* <Radio value={"意外事件"} >意外事件</Radio> */}
                   </Radio.Group>
                 </Col>
               </Row>
@@ -402,11 +406,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>
@@ -430,11 +435,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>
@@ -458,11 +464,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>
@@ -506,11 +513,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={6} className="row-title">{auditDateTitle}：</Col>
               <Col span={18}>
                 <DatePicker
+                  showTime
                   allowClear={false}
                   value={moment(auditInfo.auditDate)}
                   disabled={!auditTimeEditable}
                   onChange={(_moment: moment.Moment) =>
-                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD') })} />
+                    setAuditInfo({ ...auditInfo, auditDate: _moment.format('YYYY-MM-DD HH:mm:ss') })} />
               </Col>
             </Row>
           </div>

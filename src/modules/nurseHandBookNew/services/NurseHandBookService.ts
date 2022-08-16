@@ -1,12 +1,12 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
-import { appStore } from "src/stores";
+import { appStore } from 'src/stores'
 
 const hospital: string =
 appStore.hisMatch({
   map: {
     jmfy: 'nurseManualJM',
-    lcey: 'nurseManualLC',
+    'lcey,lyrm': 'nurseManualLC',
     default: 'nurseManualJM',
   },
   vague: true,

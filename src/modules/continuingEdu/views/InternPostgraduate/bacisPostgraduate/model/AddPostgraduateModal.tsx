@@ -96,6 +96,8 @@ export default observer(function AddInternModal(props: Props){
         if(params){
           current.clear()
           let data = {...params}
+          console.log(data);
+          
           let {
             year,
             natureOfLearning,
@@ -107,6 +109,7 @@ export default observer(function AddInternModal(props: Props){
             education,
             originalWorkUnit,
             studyDeptName01,
+            studyDeptCode01,
             studyTimeEnd,
             studyTimeBegin,
             duration,
@@ -133,6 +136,7 @@ export default observer(function AddInternModal(props: Props){
             education,
             originalWorkUnit,
             studyDeptName01,
+            studyDeptCode01,
             studyTimeEnd:studyTimeEnd?moment(studyTimeEnd):null,
             studyTimeBegin:studyTimeBegin?moment(studyTimeBegin):null,
             duration,
@@ -157,6 +161,8 @@ export default observer(function AddInternModal(props: Props){
   }, [visible]);
 
 
+
+
   const handleOk = () => {
     let current = formRef.current;
     if (current) {
@@ -167,6 +173,14 @@ export default observer(function AddInternModal(props: Props){
           if (current) {
             let newParams = current.getFields();
             let id = params ? params.id : null;
+            deucOption.map((item:any)=>{
+              if(newParams.studyDeptName01 == item.code) {
+                newParams.studyDeptCode01 = item.code
+                newParams.studyDeptName01 = item.name
+              }
+            })
+            console.log(newParams);
+            
             let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id}
             internPostgraduateApi.getSaveFormData(addParams).then((res)=>{
               console.log(res);
@@ -197,10 +211,25 @@ export default observer(function AddInternModal(props: Props){
     setyearPickerIsOpen(false)
   }
   const handlePanelStartChange = (value: any) => {
+    if(formRef.current && formRef.current.state.values.studyTimeEnd){
+      let hours = (moment
+        .duration(moment(formRef.current.state.values.studyTimeEnd, 'YYYY/MM/DD')
+        .diff(moment(value, 'YYYY/MM/DD'))
+        ).asHours()).toFixed(0);
+      setFormItem("duration" , hours)
+    }
+    
     setstartPickerIsOpen(false)
     setFormItem("studyTimeBegin" , value)
   }
   const handlePanelEndChange = (value: any) => {
+    if(formRef.current && formRef.current.state.values.studyTimeBegin){
+      let hours = (moment
+        .duration(moment(value, 'YYYY/MM/DD')
+        .diff(moment(formRef.current.state.values.studyTimeBegin, 'YYYY/MM/DD'))
+        ).asHours()).toFixed(0);
+      setFormItem("duration" , hours)
+    }
     setendPickerIsOpen(false)
     setFormItem("studyTimeEnd" , value)
   }
@@ -224,7 +253,10 @@ export default observer(function AddInternModal(props: Props){
             </Col>
             <Col span={24}>
               <Form.Field label={`学习性质：`} name="natureOfLearning" required>
-                <Input placeholder="请输入" />
+                <Select>
+                    <Select.Option value={'参观学习'}>参观学习</Select.Option>
+                    <Select.Option value={'进修'}>进修</Select.Option>
+                </Select>
               </Form.Field>
             </Col>
             <Col span={24}>
@@ -287,23 +319,27 @@ export default observer(function AddInternModal(props: Props){
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`开始时间：`} name="studyTimeBegin" required>
-              <DatePicker
+              <Form.Field label={`开始时间：`} name="studyTimeBegin" required onValueChange={handlePanelStartChange}> 
+              <DatePicker onChange={()=>{setstartPickerIsOpen(false)}} />
+              {/* <DatePicker
+                  showTime={{ format: 'HH:mm' }}
                   open={startPickerIsOpen}
                   onChange={()=>{setstartPickerIsOpen(false)}}
                   onOpenChange={(status)=>{setstartPickerIsOpen(status)}}
                   onPanelChange={handlePanelStartChange}
-                />
+                /> */}
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`结束时间：`} name="studyTimeEnd" required>
-              <DatePicker
+              <Form.Field label={`结束时间：`} name="studyTimeEnd" required onValueChange={handlePanelEndChange}>
+              <DatePicker onChange={()=>{setendPickerIsOpen(false)}}  />
+              {/* <DatePicker
+                  showTime={{ format: 'HH:mm' }}
                   open={endPickerIsOpen}
                   onChange={()=>{setendPickerIsOpen(false)}}
                   onOpenChange={(status)=>{setendPickerIsOpen(status)}}
                   onPanelChange={handlePanelEndChange}
-                />
+                /> */}
               </Form.Field>
             </Col>
             <Col span={24}>

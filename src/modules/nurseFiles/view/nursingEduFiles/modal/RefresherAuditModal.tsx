@@ -4,6 +4,7 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import { Modal, message, Button, Row, Col, Spin } from 'antd'
 import { educationList } from '../data/education'
 import { nursingEduFilesApi } from '../api/NursingEduFilesApi'
+import { appStore } from 'src/stores'
 
 export interface Props extends ModalComponentProps {
   okCallback?: Function,
@@ -133,10 +134,13 @@ export default function RefresherAuditModal(props: Props) {
             <Col span={8} className="label">进修科室1：</Col>
             <Col span={16}>{info.studyDeptName01}</Col>
           </Row>
-          <Row>
-            <Col span={8} className="label">进修科室2：</Col>
-            <Col span={16}>{info.studyDeptName02}</Col>
-          </Row>
+          {
+            !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+              <Row>
+                <Col span={8} className="label">进修科室2：</Col>
+                <Col span={16}>{info.studyDeptName02}</Col>
+              </Row>
+          }
           <Row>
             <Col span={8} className="label">家庭住址：</Col>
             <Col span={16}>{info.address}</Col>

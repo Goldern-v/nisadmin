@@ -1,11 +1,12 @@
 import { Input } from 'antd'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { observer } from 'src/vendors/mobx-react-lite'
 import styled from 'styled-components'
 import { getModal } from '../../AnalysisDetailModal'
 import FishBone from './FishBone'
 import { DatePicker } from 'antd';
 import { MainCon } from './style'
+import MultiFileUploader from 'src/components/MultiFileUploader'
 export interface Props {
   sectionId: string
   data: any
@@ -27,13 +28,23 @@ export default observer(function ImprovementProjectModal(props: Props) {
       })
     }
   }
-  const handleChangeFishBone = (e: any) => {
-    if (setData) {
-      setData({
-        value: e
-      })
+  let images = useMemo(() => {
+    if (report.fishboneDiagram) {
+      return [{
+        path: report.fishboneDiagram,
+        id: '',
+        name: '',
+      }]
     }
-  }
+    return []
+  }, [report])
+  // const handleChangeFishBone = (e: any) => {
+  //   if (setData) {
+  //     setData({
+  //       value: e
+  //     })
+  //   }
+  // }
   const TextArea = Input.TextArea
   return (
     <ModalMainCon>
@@ -57,7 +68,8 @@ export default observer(function ImprovementProjectModal(props: Props) {
         </span>
       </div>
       <div className='ipt'>
-        <FishBone value={report} isEdit={true} onChange={(e: any) => handleChangeFishBone(e, )} />
+        {/* <FishBone value={report} isEdit={true} onChange={(e: any) => handleChangeFishBone(e, )} /> */}
+        <MultiFileUploader style={{marginTop: '0'}} type="summaryReport" maxSize={2097152} typeList={['jpeg','png', 'jpg', 'gif']} data={images} onChange={(e: any[])=> handleChange(e.length > 0 ? e[0].path : '', 'fishboneDiagram')} size={1} />
       </div>
       <div>主要原因
         <span className='title-small'>
@@ -127,5 +139,14 @@ const ModalMainCon = styled(MainCon)`
   margin: 0;
   .ipt, .ipt--small {
     padding: 0px;
+  }
+  .list-item {
+    width: calc(100% - 30px);
+    height: auto;
+    margin: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `

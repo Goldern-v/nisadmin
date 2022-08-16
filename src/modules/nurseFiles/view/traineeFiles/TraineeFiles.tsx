@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TabledCon } from "src/components/BaseTable";
 import YearPicker from "src/components/YearPicker";
@@ -25,7 +25,7 @@ export default observer(function TraineeFiles(props: Props) {
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
 
   const qrcodeSbmitModal = createModal(QrcodeSbmitModal);
-  const traineeCheckModal = createModal(TraineeCheckModal);
+  const traineeCheckModal = useMemo(() => createModal(TraineeCheckModal),[]);
 
   // 初始化数据
   useEffect(() => {
@@ -80,7 +80,7 @@ export default observer(function TraineeFiles(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'hj': [
+        'hj,qhwy': [
           {
             title: "在院状态",
             dataIndex: "isOnJob",
@@ -100,7 +100,8 @@ export default observer(function TraineeFiles(props: Props) {
           }
         ],
         'other': []
-      }
+      },
+      vague: true
     }),
     {
       title: "联系电话",
@@ -226,7 +227,6 @@ export default observer(function TraineeFiles(props: Props) {
     traineeFilesModal.onload();
     handleEditCancel();
   };
-
   return (
     <Wrapper>
       <PageHeader>
@@ -323,7 +323,7 @@ export default observer(function TraineeFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => setEditVisible(true)}>添加实习生</Button>
-          {appStore.HOSPITAL_ID == 'hj' &&
+          {['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&
             <span>
               <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
               <Button

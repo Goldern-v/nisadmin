@@ -7,6 +7,7 @@ import { userTypeList, educationList, titleList } from './../data/options'
 import { rules } from './../data/rules'
 import moment from 'moment'
 import { otherEmpService } from './../api/OtherEmpService'
+import { appStore } from 'src/stores'
 
 const Option = Select.Option
 const { RangePicker } = DatePicker
@@ -447,34 +448,41 @@ export default function ImportEditModal(props: Props) {
                 {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
               </Select>
           },
-          {
-            title: '进修科室二',
-            dataIndex: 'refresherDeptCode02',
-            className: 'ipt-cell',
-            width: 180,
-            align: 'center',
-            render: (text: any, record: any, idx: number) =>
-              <Select
-                style={{ width: '100%' }}
-                value={record.refresherDeptCode02}
-                showSearch
-                filterOption={(input: any, option: any) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                allowClear
-                onChange={(refresherDeptCode02: any) => {
-                  let refresherDeptName02 = ''
-                  let target = deptList.find((item: any) => item.code == refresherDeptCode02)
-                  if (target) refresherDeptName02 = target.name
-                  handleRecordChange({
-                    ...record,
-                    refresherDeptCode02: refresherDeptCode02 || '',
-                    refresherDeptName02
-                  }, idx)
-                }}>
-                {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
-              </Select>
-          },
+          ...appStore.hisMatch({
+            map: {
+              'qhwy': [],
+              other: [
+                {
+                  title: '进修科室二',
+                  dataIndex: 'refresherDeptCode02',
+                  className: 'ipt-cell',
+                  width: 180,
+                  align: 'center',
+                  render: (text: any, record: any, idx: number) =>
+                    <Select
+                      style={{ width: '100%' }}
+                      value={record.refresherDeptCode02}
+                      showSearch
+                      filterOption={(input: any, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      allowClear
+                      onChange={(refresherDeptCode02: any) => {
+                        let refresherDeptName02 = ''
+                        let target = deptList.find((item: any) => item.code == refresherDeptCode02)
+                        if (target) refresherDeptName02 = target.name
+                        handleRecordChange({
+                          ...record,
+                          refresherDeptCode02: refresherDeptCode02 || '',
+                          refresherDeptName02
+                        }, idx)
+                      }}>
+                      {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+                    </Select>
+                },
+              ]
+            }
+          }),
           ...defaultColumns1,
         ]
       case '3':

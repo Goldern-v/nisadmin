@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { practicalOperationScore } from "../PracticalOperationScoreModal";
-import { Button, Modal, Input } from "antd";
+import { Button, Modal, Input, } from "antd";
+import Form from "src/components/Form";
+import autoUpdate from "src/utils/autoUpdate";
 const { TextArea } = Input;
 interface props {
   modalVisible: boolean | undefined;
@@ -13,11 +15,17 @@ interface props {
 }
 export default observer(function PracticalImportModal(props: props) {
   const { modalVisible, modalTitle, params, onCancel, onOk } = props;
+  let refForm = React.createRef<Input>();
   useEffect(()=>{
     if(params.latPraticalGradeSubjectDtoList){
       params.latPraticalGradeSubjectDtoList = params.latPraticalGradeSubjectDtoList.sort((a:any,b:any)=> a.sort - b.sort)
     }
+
+    console.log(refForm.current);
+    
   },[params])
+
+  
   const handleOk = () => {
     onOk && onOk(params);
     params.value=null;
@@ -37,9 +45,14 @@ export default observer(function PracticalImportModal(props: props) {
       })
     })
     let scoreParams = list.reduce((per,curr)=>{
-      return parseInt(per) + parseInt(curr.score)
+      return parseFloat(per) + parseFloat(curr.score)
     },0)
+    if(refForm.current && refForm.current.input && refForm.current.input.value){
+      refForm.current.input.value = scoreParams;
+      params.totalScore = scoreParams;
+    }
   };
+ 
 
   return (
     <Modal
@@ -48,17 +61,18 @@ export default observer(function PracticalImportModal(props: props) {
       onCancel={handleCancel}
       destroyOnClose={true}
       width={800}
+      bodyStyle={{height:'600px',overflow:'auto'}}
       footer={[
         <Footer key={15}>
-          {modalTitle != "预览" && (
+          {modalTitle != "预览" ? (
             <div>
              <Button type="primary" onClick={handleOk}>
               确认
              </Button>
              <Button onClick={handleCancel}>取消</Button>
             </div>
-          )}
-          <Button type="primary" onClick={handleCancel}>关闭</Button>
+          ): <Button type="primary" onClick={handleCancel}>关闭</Button>
+        }
         </Footer>,
       ]}
     >
@@ -73,7 +87,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.paperName}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "paperName");
                       }}
@@ -88,7 +102,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.chapter}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "chapter");
                       }}
@@ -103,7 +117,7 @@ export default observer(function PracticalImportModal(props: props) {
                   ) : (
                     <Input
                       defaultValue={params.technology}
-                      className="td-center"
+                      className="td-center border-none"
                       onChange={(e) => {
                         handleInput(e, params, "technology");
                       }}
@@ -115,16 +129,19 @@ export default observer(function PracticalImportModal(props: props) {
                   {modalTitle == "预览" ? (
                     params.totalScore
                   ) : (
-                    <Input
-                      defaultValue={params.totalScore}
-                      className="td-center"
-                      style={{ width: 60 }}
-                      onChange={(e) => {
-                        handleInput(e, params, "totalScore");
-                      }}
-                    />
-                  )}
-                  分）
+                    // <Form
+                    // ref={refForm}
+                    // >
+                    // <Form.Field name="totalScore">
+                        <Input
+                          ref={refForm}
+                          className="td-center border-none"
+                          style={{ width: 60 }}
+                          value={params.totalScore}
+                        />
+                      //   </Form.Field>
+                      // </Form>
+                  )}分）
                 </td>
               </tr>
             </tbody>
@@ -164,7 +181,7 @@ export default observer(function PracticalImportModal(props: props) {
                               ) : (
                                 <Input
                                   defaultValue={item.name}
-                                  className="td-center"
+                                  className="td-center border-none"
                                   onChange={(e) => {
                                     handleInput(
                                       e,
@@ -179,10 +196,11 @@ export default observer(function PracticalImportModal(props: props) {
                             </td>
                           )}
                           <td className="td-center">
-                            {modalTitle == "预览" ? (
+                            {/* {modalTitle == "预览" ? (
                               itemDto.content
-                            ) : (
+                            ) : ( */}
                               <TextArea
+                                readOnly={modalTitle == "预览"}
                                 defaultValue={itemDto.content}
                                 className="td-center inp_textArea"
                                 onChange={(e) => {
@@ -195,9 +213,10 @@ export default observer(function PracticalImportModal(props: props) {
                                     "content"
                                   );
                                 }}
+                                maxLength={1000}
                                 autosize={{ minRows: 3 }}
                               />
-                            )}
+                            {/* )} */}
                           </td>
                           <td className="td-center">
                             {modalTitle == "预览" ? (
@@ -205,7 +224,7 @@ export default observer(function PracticalImportModal(props: props) {
                             ) : (
                               <Input
                                 defaultValue={itemDto.score}
-                                className="td-center"
+                                className="td-center border-none"
                                 onChange={(e) => {
                                   handleInput(
                                     e,
@@ -220,10 +239,8 @@ export default observer(function PracticalImportModal(props: props) {
                             )}
                           </td>
                           <td className="td-center">
-                            {modalTitle == "预览" ? (
-                              itemDto.description
-                            ) : (
                               <TextArea
+                                readOnly={modalTitle == "预览"}
                                 defaultValue={itemDto.description}
                                 className="td-center inp_textArea"
                                 onChange={(e) => {
@@ -238,7 +255,6 @@ export default observer(function PracticalImportModal(props: props) {
                                 }}
                                 autosize={{ minRows: 3 }}
                               />
-                            )}
                           </td>
                         </tr>
                       )
@@ -282,6 +298,12 @@ const Wrapper = styled.div`
     }
     .td-center {
       text-align: center;
+    }
+    .border-none{
+      border: none;
+      &:focus {
+        background: ${(p) => p.theme.$mlc};
+      }
     }
     .inp_textArea {
       width: 100%;

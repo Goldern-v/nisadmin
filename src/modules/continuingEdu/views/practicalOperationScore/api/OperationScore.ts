@@ -29,9 +29,9 @@ export default class OperationScoreApi extends BaseApiService {
     );
   }
   // 下载当前模板
-  public async severalDownloadTemplate(filename:any,) {
+  public async severalDownloadTemplate(paperId:any) {
     return this.get(
-      `/studyAndTrain/praticalGradeManage/downloadTemplate`,
+      `/studyAndTrain/praticalGradeManage/export?paperId=${paperId}`,
       {
         responseType: "blob"
       }

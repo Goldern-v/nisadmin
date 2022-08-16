@@ -27,7 +27,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "姓名",
       dataIndex: "empName",
       align: "center",
-      width: 50,
+      width: 150,
       render: (text: string, record: any) => {
         return {
           children: text,
@@ -42,12 +42,27 @@ export default observer(function ApplyTable(props: Props) {
       title: "带教老师",
       dataIndex: "teachTeacher",
       align: "center",
-      width: 60
+      width: 150,
+      render:(text:any,record:any) => {
+        return(
+        <TextArea
+            style={{border:'none',resize:'none',outline:'none'}} 
+            autosize={{ minRows: 1 }}
+            maxLength={200}
+            value={text}
+            onChange={e => {
+            // console.log(e.target.value)
+            record.teachTeacher = e.target.value
+            updateData(record)
+          }}
+        />
+        )
+      }
     },
     {
       title: "实习时间",
       dataIndex: "实习时间",
-      width: 150,
+      width: 300,
       align: "center",
       render(text: string, record: any) {
         return record.internshipBeginTime && record.internshipEndTime ? `${record.internshipBeginTime} ~ ${record.internshipEndTime}` : '';
@@ -57,7 +72,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "操作考核成绩",
       dataIndex: "operationScore",
       align: "center",
-      width: 100,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -72,10 +87,10 @@ export default observer(function ApplyTable(props: Props) {
       }
     },
     {
-      title: "理论开合成绩",
+      title: "理论考核成绩",
       dataIndex: "theoryScore",
       align: "center",
-      width: 100,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -93,7 +108,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "综合评定",
       dataIndex: "comprehensiveScore",
       align: "center",
-      width: 100,
+      width: 150,
       render:(text:any,record:any) => {
         return(
           <InputNumber
@@ -111,7 +126,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "留院结果",
       dataIndex: "detentionResults",
       align: "center",
-      width: 150,
+      width: 200,
       render:(text: any,record: any) => {
         return (
           <Select 
@@ -127,6 +142,27 @@ export default observer(function ApplyTable(props: Props) {
                 {item.name}
               </Select.Option>
             ))}
+          </Select>
+        )
+      }
+    },
+    {
+      title: "优秀实习生",
+      dataIndex: "isGoodIntern",
+      align: "center",
+      width: 100,
+      render:(text: any,record: any) => {
+        return (
+          <Select 
+            style={{ width: 80 }}
+            value={text}
+            onChange={(value: any,option: any) => {
+              record.isGoodIntern = option.props.value;
+              updateData(record)
+            }}
+          >
+            <Select.Option value={1}>{'是'}</Select.Option>
+            <Select.Option value={0}>{'否'}</Select.Option>
           </Select>
         )
       }
@@ -152,13 +188,45 @@ export default observer(function ApplyTable(props: Props) {
         )
       }
     },
+    authStore.isDepartment && {
+      title: "操作",
+      dataIndex: "overallEvaluation",
+      align: "center",
+      width: 80,
+      render(text: any, record: any) {
+        let data: any = [
+        {
+          text: "删除",
+          color:'#f44',
+          function: handleDelete
+        }];
+        return (
+          <DoCon>
+            {data.map((item: any, index: any) => (
+              <span
+                key={index}
+                style={{color:item.color?item.color:''}}
+                onClick={() => (item.function ? item.function(record) : {})}
+              >
+                {item.text}
+              </span>
+            ))}
+          </DoCon>
+        );
+      }
+    }
   ];
 
-  const handleEditOk = () => {
-    setEditVisible(false);
-    Message.success('修改成功！')
-    clinicalManagData.onload();
-  };
+  const handleDelete = (record:any) => {
+    let obj = {
+      groupId:record.groupId,
+      empNo:record.empNo,
+    }
+    clinicalManagData.deleteIdentification(obj).then((res:any)=>{
+      Message.success('删除成功！')
+      clinicalManagData.onload();
+    })
+  }
 
   // 更新数据
   const updateData = (record: any) => {
@@ -168,6 +236,7 @@ export default observer(function ApplyTable(props: Props) {
     );
     (clinicalManagData.tableList[dataIndexOne] as any) = record;
     const arrOne = clinicalManagData.tableList.slice();
+    
     clinicalManagData.tableList = [];
     clinicalManagData.tableList = arrOne;
     

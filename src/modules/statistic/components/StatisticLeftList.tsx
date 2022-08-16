@@ -29,10 +29,22 @@ const LEFT_MENU_CONFIG = [
               title: "护士排班统计（按班次）",
               path: "/statistic/护士排班统计（按班次）"
             },
-            {
-              title: "护士白班统计（按月份)",
-              path: "/statistic/护士白班统计（按月份）"
-            },
+            ...appStore.hisMatch({
+              map: {
+                nys: [
+                  {
+                    title: "护士日班统计（按月份)",
+                    path: "/statistic/护士日班统计（按月份）"
+                  },
+                ],
+                default: [
+                  {
+                    title: "护士白班统计（按月份)",
+                    path: "/statistic/护士白班统计（按月份）"
+                  },
+                ]
+              }
+            }),
             {
               title: "护士夜班统计（按月份）",
               path: "/statistic/护士夜班统计（按月份）"
@@ -143,14 +155,15 @@ const LEFT_MENU_CONFIG = [
                 },
                 ...appStore.hisMatch({
                   map: {
-                    lcey: [
+                    'lcey,hj': [
                       {
                         title: "护士职称分布",
                         path: "/statistic/护士职称分布",
                       },
                     ],
                     other: []
-                  }
+                  },
+                  vague:true
                 })
                 // {
                 //   title: "科室护士结构信息汇总表",

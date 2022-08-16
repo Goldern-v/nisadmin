@@ -54,6 +54,11 @@ class PracticalOperationScore {
       operationScoreApi.downloadTemplate()
         .then(res => fileDownload(res))
     }
+     /** 下载当前模板 */
+     getSeveralDownloadTemplate(id:any) {
+      operationScoreApi.severalDownloadTemplate(id)
+        .then(res => fileDownload(res))
+    }
 
 }
 

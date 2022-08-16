@@ -319,6 +319,8 @@ const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
 )
 
+
+
 // 贵州护长季度查房分析报告表
 const checkWardQuarterViewGzsrm = lazy(() =>
   import("src/modules/quality/views/wardQuarter_gzsrm/wardQuarter_gzsrm")
@@ -494,6 +496,19 @@ const 典型案例库审核详情 = lazy(() =>
   )
 );
 
+//学习培训-晋级申请表（亚心）
+const PromotionDetail = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/promotionDedait/promotionDetait"
+  )
+);
+//审核管理-晋级申请表（亚心）
+const PromotionAduit = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/promotionAduit/promotionAudit"
+  )
+);
+
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
   import("src/modules/infectedAreasCount/InfectedAreasCount")
@@ -603,6 +618,7 @@ const routes: RouteItem[] = [
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
   setLayout("/onlineLearningReview", OnlineLearningReview, layouts.MainLayout),
   setLayout("/examOrExercise", ExamOrExercise, layouts.MainLayout),
+  setLayout("/continuingEdu/examOrExercise", PromotionDetail, layouts.MainLayout),
   setLayout("/examScore", ExamScore, layouts.MainLayout),
 
   setLayout(
@@ -875,6 +891,7 @@ const routes: RouteItem[] = [
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
   setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
+  setLayout("/PromotionAduit", PromotionAduit, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),

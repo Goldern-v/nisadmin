@@ -23,7 +23,7 @@ export const nightHourCellContent = (id: any) => {
     list = user.settingDtos;
   }
   let total = list.reduce((total: any, current: ArrangeItem) => {
-    total += Number(current.settingNightHour);
+    total += Number(current.settingNightHour || 0);
     if (current.schAddOrSubs && current.schAddOrSubs.length) {
       if (current.schAddOrSubs[0].statusType == "1") {
         total += Number(current.schAddOrSubs[0].settingNightHour);
@@ -34,7 +34,6 @@ export const nightHourCellContent = (id: any) => {
     }
     return total;
   }, 0);
-
   return Number(total).toFixed(1)
 }
 

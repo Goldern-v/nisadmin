@@ -34,7 +34,7 @@ export default function Writings(props: Props) {
           <tbody>
             <tr>
               <td colSpan={4}>
-                <span className='title'>主要著作、译文、论文发表情况</span>
+                <span className='title'>著作译文论文</span>
               </td>
             </tr>
             <tr className='head'>

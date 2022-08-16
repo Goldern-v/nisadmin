@@ -4,3 +4,8 @@ import moment from 'moment'
 export const crrentMonth = () => {
   return [moment(moment().format('YYYY-MM') + '-01'), moment()]
 }
+
+/** 不设置默认时间 */
+export const noCrrentMonth = () => {
+  return ['', '']
+}

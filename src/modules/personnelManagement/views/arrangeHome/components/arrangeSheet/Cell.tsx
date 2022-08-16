@@ -1,26 +1,21 @@
-import styled from "styled-components";
-import React, { useState, useEffect, useRef } from "react";
-import { Button } from "antd";
-import { ContextMenu } from "../../types/contextMenu";
-import { observer, toJS } from "src/vendors/mobx-react-lite";
-import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { dateDiff } from "src/utils/date/dateDiff";
-import monnet from "src/vendors/moment";
-import classNames from "classnames";
-import { type } from "os";
-import { SymbolItem, ArrangeItem } from "../../types/Sheet";
-import {
-  getAddArrangeMenuList,
-  copyRowClick,
-  cleanCell,
-  cleanCellList,
-  copyCellClick
-} from "./cellClickEvent";
-import { message, Popover } from "src/vendors/antd";
-import { cloneJson } from "src/utils/json/clone";
-import { appStore, authStore } from "src/stores";
-import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
-import moment from "moment";
+import classNames from 'classnames'
+import moment from 'moment'
+import monnet from 'src/vendors/moment'
+import styled from 'styled-components'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button } from 'antd'
+import { observer, toJS } from 'src/vendors/mobx-react-lite'
+import { dateDiff } from 'src/utils/date/dateDiff'
+import { type } from 'os'
+import { message, Popover } from 'src/vendors/antd'
+import { cloneJson } from 'src/utils/json/clone'
+import { appStore, authStore } from 'src/stores'
+
+import { ContextMenu } from '../../types/contextMenu'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { ArrangeItem, SymbolItem } from '../../types/Sheet'
+import { cleanCell, cleanCellList, copyCellClick, copyRowClick, getAddArrangeMenuList } from './cellClickEvent'
+import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
 
 export interface Props {
   contextMenu: ContextMenu;
@@ -95,7 +90,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy',"whsl","wjgdszd", 'ytll'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -105,7 +100,7 @@ export default observer(function Cell(props: Props) {
               editEffectiveTimeModal.show({
                 data: sheetViewModal.selectedCell,
                 onOkCallBack(data: any) {
-                  console.log(data, "datadata");
+                  // console.log(data, "datadata");
                   sheetViewModal.selectedCell.detail = data.detail;
 
                   if (data.statusType == "1") {
@@ -185,7 +180,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'fssdy': [
+            'fssdy,nfzxy,whyx,sdlj': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
@@ -200,8 +195,24 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
+            // 'nfzxy': [
+            //   {
+            //     icon: require("../../images/修改工时.png"),
+            //     label: "添加备注",
+            //     type: "text",
+            //     onClick: () => {
+            //       addRemakeModal.show({
+            //         data: sheetViewModal.selectedCell,
+            //         onOkCallBack(value: any) {
+            //           sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+            //         }
+            //       });
+            //     }
+            //   }
+            // ],
             other: []
-          }
+          },
+          vague:true,
         }),
         {
           icon: require("../../images/休假计数.png"),
@@ -479,7 +490,7 @@ export default observer(function Cell(props: Props) {
     sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
-    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime || cellConfig.isJiJiaTime) {
+    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime || cellConfig.isJiJiaTime || cellConfig.isWorkTime) {
       return setHoverShow(visible);
     } else {
       return setHoverShow(false);
@@ -494,231 +505,88 @@ export default observer(function Cell(props: Props) {
       </div>
     </div>
   );
-
-  const title = appStore.hisAdapter({
-    hj: () => {
-      return (
-        (cellObj.effectiveTimeOld > cellObj.effectiveTime ? "减少" : "增加") +
-        "了" +
-        Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
-        "工时"
-      );
+  const title = appStore.hisMatch({
+    map: {
+      'hj': () => {
+        return (
+          (cellObj.effectiveTimeOld > cellObj.effectiveTime ? "减少" : "增加") +
+          "了" +
+          Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
+          "工时"
+        )
+      },
+      'jmfy':() => {
+        const jijia = cellObj.schJiJias && cellObj.schJiJias[0]
+        if (!jijia) return ''
+        return (
+          (jijia.statusType === '1' ? "增加" : "减少") +
+          "了" +
+          jijia.totalHoliday +
+          "天积假"
+        );
+      },
+      'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,whyx,lyyz,ytll': () => {
+        return (
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType == "1"
+            ? "加班"
+            : "减班") +
+            ":" +
+            (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+            ? cellObj.schAddOrSubs[0].hour
+            : 0) +
+            "h" +
+            "，" +
+            `现:${cellObj.effectiveTime || 0}h，` +
+            `原:${cellObj.effectiveTimeOld || 0}h，` +
+            `白:${(cellObj.schAddOrSubs &&
+              cellObj.schAddOrSubs.length &&
+              cellObj.schAddOrSubs[0].settingMorningHour) ||
+            0}h，` +
+            `夜:${(cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].settingNightHour) ||
+          0}h`
+        )
+      },
+      'qhwy,whsl':() => {
+        return (
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType == "1"
+            ? "加班"
+            : "减班") +
+          ":" +
+          (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
+            ? cellObj.schAddOrSubs[0].hour
+            : 0) +
+          "h" +
+          "，" +
+          `现:${cellObj.effectiveTime || 0}h，` +
+          `原:${cellObj.effectiveTimeOld || 0}h，` +
+          `白:${(cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].settingMorningHour) ||
+          0}h，` +
+          `夜:${(cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].settingNightHour) ||
+          0}h，` + (
+          cellObj.workTime ? `
+            ${cellObj.rangeName} : ${cellObj.workTime}
+          ` : '')
+        );
+      },
+      default:""
     },
-    jmfy: () => {
-      const jijia = cellObj.schJiJias && cellObj.schJiJias[0]
-      if (!jijia) return ''
-      return (
-        (jijia.statusType === '1' ? "增加" : "减少") +
-        "了" +
-        jijia.totalHoliday +
-        "天积假"
-      );
-    },
-    wh: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    gxjb: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    lcey: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    dghl: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    fqfybjy: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    fssdy: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    fsxt: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-    whyx: () => {
-      return (
-        (cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].statusType == "1"
-          ? "加班"
-          : "减班") +
-        ":" +
-        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
-          ? cellObj.schAddOrSubs[0].hour
-          : 0) +
-        "h" +
-        "，" +
-        `现:${cellObj.effectiveTime || 0}h，` +
-        `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `白:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingMorningHour) ||
-        0}h，` +
-        `夜:${(cellObj.schAddOrSubs &&
-          cellObj.schAddOrSubs.length &&
-          cellObj.schAddOrSubs[0].settingNightHour) ||
-        0}h`
-      );
-    },
-  });
+    vague:true,
+  })
+  
   return (
     <Popover
       content={content}
-      title={title}
+      title={title()}
       trigger="hover"
       placement="rightTop"
       visible={hoverShow}

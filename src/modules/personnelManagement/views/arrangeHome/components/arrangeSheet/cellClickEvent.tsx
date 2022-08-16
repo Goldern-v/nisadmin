@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ArrangeItem } from "../../types/Sheet";
-/** 追加排班 */
-import _ from "lodash";
-import { cloneJson } from "src/utils/json/clone";
-import { message } from "src/vendors/antd";
-import { appStore } from "src/stores";
-import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
+import _ from 'lodash'
 import service from 'src/services/api'
+import React, { useEffect, useRef, useState } from 'react'
+import { cloneJson } from 'src/utils/json/clone'
+import { message } from 'src/vendors/antd'
+import { appStore } from 'src/stores'
 
+import { ArrangeItem } from '../../types/Sheet'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
+
+/** 追加排班 */
 export function getAddArrangeMenuList(
   list: ArrangeItem[],
   selectedCellObj: ArrangeItem
@@ -37,7 +38,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
+          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -63,6 +64,10 @@ export function getAddArrangeMenuList(
             selectedCellObj!.effectiveTimeOld = item.dataSource.effectiveTime;
             selectedCellObj!.shiftType = item.dataSource.shiftType;
             selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
+            // 添加班次时间段
+            if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+              selectedCellObj!.workTime = item.dataSource.workTime
+            }
           }
           sheetViewModal.tableLoading = false
         }
@@ -86,11 +91,15 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
       list[i].backgroundColor = copyRow[i].backgroundColor;
-      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
+      if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy","whsl", "ytll"].includes(appStore.HOSPITAL_ID)) {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
       if (['whyx'].includes(appStore.HOSPITAL_ID)) {
         list[i].coefficient = copyRow[i].coefficient;
+      }
+      // 添加班次时间段
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+        list[i].workTime = copyRow[i].workTime
       }
       if (isClean) {
         /** 清空复制行 */
@@ -106,7 +115,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].backgroundColor = "";
 
 
-        if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
+        if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
           copyRow[i].schAddOrSubs = [];
         }
         if (['whyx'].includes(appStore.HOSPITAL_ID)) {
@@ -149,11 +158,16 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.backgroundColor = copyCell.backgroundColor;
 
 
-    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
+    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
     if (['whyx'].includes(appStore.HOSPITAL_ID)) {
       cell.coefficient = copyCell.coefficient;
+    }
+
+    // 添加班次时间段
+    if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+      cell!.workTime = copyCell.workTime
     }
 
     /** 序号同步 */
@@ -191,7 +205,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schRemarks = [];
   cellObj.schJiJias = [];
   cellObj.backgroundColor = ""
-  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb') {
+  if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;

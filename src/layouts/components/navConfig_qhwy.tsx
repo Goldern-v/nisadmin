@@ -1,5 +1,5 @@
-import React from "react";
-import { appStore, authStore } from "src/stores";
+import React from 'react'
+import { appStore, authStore } from 'src/stores'
 
 export interface navConfigItem {
   onClick?: any;
@@ -22,11 +22,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     // //   name: "社区查房",
     // //   path: "/communityRoundsRouter",
     // // },
-    // {
-    //   name: "审核管理",
-    //   path: "/auditsManagement",
-    //   hidden: !authStore.isRoleManage
-    // },
+    {
+      name: "审核管理",
+      path: "/auditsManagement",
+      hidden: !authStore.isRoleManage
+    },
     {
       name: "病区日志",
       path: "/wardLog"

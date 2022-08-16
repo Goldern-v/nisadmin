@@ -18,7 +18,7 @@ export interface Props { }
 export default observer(function 护士学历分布() {
   const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode: ''
+    deptCode:['whyx'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:""
   })
   const [data, setData] = useState([] as any[])
   const [chartData, setChartData] = useState([] as { type: string, value: number }[])
@@ -102,7 +102,16 @@ export default observer(function 护士学历分布() {
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={(deptCode: string) => setQuery({ ...query, deptCode })}>
-        <Option value={''}>全院</Option>
+        {
+          appStore.hisMatch({
+            map: {
+              whyx: "",
+              other:<Option value={''}>全院</Option>
+            },
+            vague: true
+          })  
+        }
+        
         {deptList.map((dept: any, idx: number) =>
           <Option key={idx} value={dept.code}>{dept.name}</Option>
         )}

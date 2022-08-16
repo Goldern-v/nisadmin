@@ -32,7 +32,7 @@ export default observer(function Step4() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") {
+    if (['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID)) {
       if (data.scoreItems && data.scoreItems.length > 4) {
         setIsOk(true);
         Object.assign(stepViewModal.stepData2, data);
@@ -77,6 +77,11 @@ export default observer(function Step4() {
     })
   }, []);
 
+//   选择实操评分管理表 下拉选框模糊查询
+  const fetchOptions = (inputValue:any,option:any) => {
+	return option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
+  };
+
   return (
     <Wrapper>
       <Form
@@ -99,7 +104,7 @@ export default observer(function Step4() {
           </Col>
         </Row>
         <Row style={{ marginTop: 20 }}>
-          {appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb" ? (
+          {['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID) ? (
             <Col span={24} style={{ height: "28px" }}>
               <span className="labelSpan">上传题库</span>
               <Checkbox
@@ -129,12 +134,15 @@ export default observer(function Step4() {
                 <UpdateTable type="sc" />
               </Form.Field>
               :<Form.Field label={`选择实操评分管理表`} name="adminTable" onValueChange={handleonvaluechange}>
-              <Select>
-                {pratical.length && pratical.map((item:any,index:any) => (
-                  <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
+                <Select
+                  showSearch
+				  filterOption={fetchOptions}
+                >
+                  {pratical.length && pratical.map((item:any,index:any) => (
+                    <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
               }       
             </Col>
           )}

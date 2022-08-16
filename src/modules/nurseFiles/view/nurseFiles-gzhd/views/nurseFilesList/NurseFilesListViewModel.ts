@@ -21,6 +21,8 @@ class NurseFilesListViewModel {
         this.filterXl +
         this.filterZc +
         this.filterCj +
+        this.filterWyearsCode +
+        this.filterHLGW +
         this.filterZw +
         this.filterKs,
       () => {
@@ -33,6 +35,9 @@ class NurseFilesListViewModel {
   @observable public filterXl: string = "全部";
   @observable public filterZc: string = "全部";
   @observable public filterCj: string = "全部";
+  @observable public filterWyears: string="全部";//工作年限
+  @observable public filterWyearsCode: string="";//工作年限
+  @observable public filterHLGW: string="全部";//护理岗位
   @observable public filterZw: string = "全部";
   @observable public filterKs: string = "全部";
   @observable public pageIndex: number = 1;
@@ -40,6 +45,9 @@ class NurseFilesListViewModel {
   @observable public totalCount: number = 0;
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
+  @observable public nursePostList:Array<string>=[]
+  @observable public nursePostList2:any=[]//没有‘全部’
+
   @observable public isOpenFilter: boolean = true;
   @observable public jobDate: any = []; //日期
   @observable public hospitalDate: any = []; //日期
@@ -50,6 +58,8 @@ class NurseFilesListViewModel {
       deptCode: authStore.selectedDeptCode /** 部门编码 */,
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
+      goHospitalYearType:this.filterWyearsCode,//工作年限
+      nursingJob:this.filterHLGW,//护理岗位
       currentLevel: this.filterCj /** 能级、层级 */,
       post: this.filterZw /**  职务  */,
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
@@ -97,6 +107,8 @@ class NurseFilesListViewModel {
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,
+      goHospitalWorkYear:this.filterWyearsCode,
+      nursingJob:this.filterHLGW,//护理岗位
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       post: this.filterZw /**  职务  */,
       empName: this.filterText /** 工号 */

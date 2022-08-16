@@ -8,6 +8,10 @@ export default class InternPostgraduateApi extends BaseApiService {
   public async getnursingAll() {
     return this.get(`/user/nursingUnit/all`);
   }
+  // 根据用户权限获取医院科室信息
+  public async getnursingDeptRole() {
+    return this.get(`/user/nursingUnit`);
+  }
   //获取进修生
   public async getFormList(obj: any) {
     return this.post(`/nursefile/otherPersonInfo/refresherStudent/queryPageListYaXin`, obj);

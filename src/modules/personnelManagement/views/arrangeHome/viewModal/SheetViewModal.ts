@@ -1,23 +1,20 @@
-import service from "src/services/api/index";
-import { cloneJson } from "./../../../../../utils/json/clone";
-import { appStore, authStore } from "./../../../../../stores/index";
-import * as Sheet from "./../types/Sheet";
-import { observable, computed, action, autorun } from "mobx";
-import { selectViewModal } from "./SelectViewModal";
-import { notSelectViewModal } from "../page/notRelease/components/SelectViewModal";
-import { dateDiff } from "src/utils/date/dateDiff";
-import moment from "moment";
-import { arrangeService } from "../services/ArrangeService";
-import { notArrangeService } from "../services/notReleaseService";
-import monnet from "src/vendors/moment";
-import { message } from "src/vendors/antd";
 import _ from 'lodash'
+import moment from 'moment'
+import service from 'src/services/api/index'
+import api from 'src/services/api/index'
+import monnet from 'src/vendors/moment'
+import { action, autorun, computed, observable } from 'mobx'
+import { dateDiff } from 'src/utils/date/dateDiff'
+import { message } from 'src/vendors/antd'
 
-import {
-  cleanCell,
-  copyRowClick
-} from "../components/arrangeSheet/cellClickEvent";
-import api from "src/services/api/index";
+import * as Sheet from './../types/Sheet'
+import { cloneJson } from './../../../../../utils/json/clone'
+import { appStore, authStore } from './../../../../../stores/index'
+import { selectViewModal } from './SelectViewModal'
+import { notSelectViewModal } from '../page/notRelease/components/SelectViewModal'
+import { arrangeService } from '../services/ArrangeService'
+import { notArrangeService } from '../services/notReleaseService'
+import { cleanCell, copyRowClick } from '../components/arrangeSheet/cellClickEvent'
 
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
@@ -239,6 +236,22 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "1",
+        lyyz: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
+        qhwy: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
+        whsl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "1",
+        ytll: () =>
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType) == "1",
       }),
       isReduceWordTime: appStore.hisAdapter({
         hj: () =>
@@ -264,7 +277,23 @@ class SheetViewModal {
         whyx: () =>
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
-            cellObj.schAddOrSubs[0].statusType) == "2"
+            cellObj.schAddOrSubs[0].statusType) == "2",
+        lyyz: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
+        qhwy: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
+        whsl: () =>
+          (cellObj.schAddOrSubs &&
+            cellObj.schAddOrSubs.length &&
+            cellObj.schAddOrSubs[0].statusType) == "2",
+        ytll: () =>
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType) == "2",
       }),
       isJiJiaTime: appStore.hisMatch({
         map: {
@@ -274,6 +303,14 @@ class SheetViewModal {
       }),
       isSelected:
         this.selectedCell == cellObj || this.copyCellList.includes(cellObj) || this.selectedCellList.includes(cellObj),
+      // 是否存在排班
+      isWorkTime: appStore.hisMatch({
+        map: {
+          qhwy: !!cellObj.workTime,
+          default: false
+        }
+      }),
+
     };
     return cellConfig;
   }
@@ -325,8 +362,9 @@ class SheetViewModal {
       if (['fssdy'].includes(appStore.HOSPITAL_ID)) {
         this.getHourStart()
       }
-      // 休假天数是否按已休天数来显示 
-      if (['wh', 'fqfybjy', 'gxjb', 'nys'].includes(appStore.HOSPITAL_ID)) {
+      // 休假天数是否按已休天数来显示
+      // 医院初始化时可能会报错 建议不开启
+      if (['wh', 'fqfybjy', 'gxjb', 'nys',"lyyz","qhwy","whsl"].includes(appStore.HOSPITAL_ID)) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );

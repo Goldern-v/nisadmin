@@ -42,9 +42,9 @@ export default observer(function AddInternModal(props: Props){
     healthStatus: val => !!val || "健康状况不能为空",
     height: val => !!val || "身高不能为空",
     weight: val => !!val || "体重不能为空",
-    teachTeacher: val => !!val || "带教老师不能为空",
-    operationScore: val => !!val || "操作成绩不能为空",
-    theoryScore: val => !!val || "理论成绩不能为空"
+    // teachTeacher: val => !!val || "带教老师不能为空",
+    // operationScore: val => !!val || "操作成绩不能为空",
+    // theoryScore: val => !!val || "理论成绩不能为空"
   };
   // 学历
   const nurseHierarchyArr = [
@@ -269,7 +269,7 @@ export default observer(function AddInternModal(props: Props){
                 <Input placeholder="请输入" />
               </Form.Field>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Field label={`带教老师：`} name="teachTeacher" required>
                 <Input placeholder="请输入" />
               </Form.Field>
@@ -283,7 +283,7 @@ export default observer(function AddInternModal(props: Props){
               <Form.Field label={`理论成绩：`} name="theoryScore" required>
                 <Input placeholder="请输入" />
               </Form.Field>
-            </Col>
+            </Col> */}
             <Col span={24}>
               <Form.Field label={`备注：`} name="remark" >
                 <Input placeholder="请输入" />

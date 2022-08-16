@@ -149,6 +149,7 @@ export default observer(function ApplyHeader(props: Props) {
           </Button>
         <Button
           className="span"
+          disabled={authStore.isDepartment ? false : true}
           onClick={handelImprot}
         >
           导入

@@ -11,10 +11,12 @@ export interface Props extends ModalComponentProps {
 
 export default observer(function QrcodeSbmitModal(props: Props) {
   const { visible, onCancel } = props
+
   const testIp = appStore.hisMatch({
     map: {
       hj: 'http://192.168.1.54:9864',
       gzhd: 'http://192.168.1.54:9868',
+      qhwy: location.host,
       other: ''
     },
   })
@@ -23,6 +25,7 @@ export default observer(function QrcodeSbmitModal(props: Props) {
     map: {
       hj: process.env.REACT_APP_BLANK_DEMO ? 'http://info.cr-health.com:20101' : 'http://120.197.141.41:9091',
       gzhd: 'http://120.238.239.27:9094',
+      qhwy: 'http://223.220.175.6:50014',
       other: ''
     },
   })

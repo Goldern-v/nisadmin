@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -118,6 +118,10 @@ export default class AppStore {
       case "dgxg":
         logoUrl = require("src/assets/images/东莞谢岗.png");
         break;
+      case "lcey":
+        // logoUrl = require("src/assets/images/lcey_logo.jpg");
+        logoUrl = require("src/assets/images/liaocheng_logo.png");
+        break;
       case "gzhd":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
         break;
@@ -128,6 +132,12 @@ export default class AppStore {
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
         break;
       case "gdtj":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.jpg`);
+        break;
+      case "whsl":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
+        break;
+      case "zzwy":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.jpg`);
         break;
       default:

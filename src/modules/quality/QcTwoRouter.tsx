@@ -1,35 +1,37 @@
-import LeftMenu from "src/components/LeftMenu";
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "src/components/RouterView";
-import QualityControlRecord from "./views/qualityControlRecord/QualityControlRecord";
-import WorkSummaryReportList from "./views/workSummaryReportList/WorkSummaryReportList";
+import LeftMenu from 'src/components/LeftMenu'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'src/components/RouterView'
+import { KeepAlive, Provider } from 'react-keep-alive'
+import { appStore, authStore } from 'src/stores'
+import { observer } from 'src/vendors/mobx-react-lite'
+
+import AdministrativeWard from './views/administrativeWard'
+import Analysis from './views/analysisWhyx/Analysis'
+import ProblemSummary from './views/problemSummary/ProblemSummary'
+import QualityControlKey from './views/qualityControlKey/QualityControlKey'
+import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+import SafetyChecklist from './views/safetyChecklist'
+import SummaryReport from './views/summaryReport/SummaryReport'
+import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
+import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
+import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
+import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
+import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
+import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
+
 import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡查情况汇总表";
 import 防疫专项检查片区汇总 from "./views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表";
 import 防疫专项检查汇总 from "./views/防疫专项检查汇总列表/防疫专项检查汇总列表";
 
-import { Provider, KeepAlive } from "react-keep-alive";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
-import { ReactComponent as EJZK } from "./images/icon/EJZK.svg";
-import { ReactComponent as YDBG } from "./images/icon/YDBG2.svg";
-import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
-import { appStore, authStore } from "src/stores";
-import { observer } from "src/vendors/mobx-react-lite";
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
 import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检查小结";
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
-import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
-import QualityControlKey from "./views/qualityControlKey/QualityControlKey";
-import AdministrativeWard from "./views/administrativeWard";
-import SafetyChecklist from "./views/safetyChecklist";
 // import Analysis from "./views/analysis/Analysis";
-import Analysis from "./views/analysisWhyx/Analysis";
-import SummaryReport from "./views/summaryReport/SummaryReport";
-import ProblemSummary from "./views/problemSummary/ProblemSummary";
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
     title: "单个质控表单汇总",
@@ -110,7 +112,7 @@ export default observer(function QcTwoRouter(props: Props) {
 
   const extra_menu = appStore.hisMatch({
     map: {
-      "hj,gxjb,lyyz,qhwy": [
+      "hj,gxjb,lyyz,qhwy,lyrm": [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,

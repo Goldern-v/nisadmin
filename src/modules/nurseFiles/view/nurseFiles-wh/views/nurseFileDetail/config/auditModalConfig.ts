@@ -115,10 +115,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     现职务任职起始时间: 'jobStartDate',
                     院内工作地点: 'workAddress'
                   },
-                  appStore.HOSPITAL_ID === 'sdlj' && {
-                    工作护理单元: 'deptName',
-                    夏季鞋码大小: 'shoeSize',
-                  },
+                  ...appStore.hisMatch({
+                    map: {
+                      'sdlj': [{
+                        工作护理单元: 'deptName',
+                        夏季鞋码大小: 'shoeSize',
+                      }],
+                      other: []
+                    },
+                  }),
                   (() => {
                     switch (appStore.HOSPITAL_ID) {
                       case 'gxjb': 
@@ -137,6 +142,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                         };
                     }
                   })(),
+                  ...appStore.hisMatch({
+                    map: {
+                      'qhwy': [{
+                        护理学会会员证号: 'membershipCardNumber',
+                      }],
+                      other: []
+                    },
+                  }),
                   ...appStore.hisMatch({
                     map: {
                       'fsxt': [
@@ -760,14 +773,22 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
-            {
-              原工作科室: `${appStore.HOSPITAL_ID === 'sdlj' ? 'oldDeptCode' : 'oldDeptName'}`,
+            appStore.HOSPITAL_ID !== 'sdlj' ? {
+              原工作科室: `oldDeptName`,
               现工作科室: `newDeptName`
+            } : {
+              开始时间: `transferDate`,
+              结束时间: `endDate`
             },
+            appStore.HOSPITAL_ID === 'sdlj' ? {
+              科室: `newDeptCode`,
+              考核成绩: `deptBeDepartment`
+            } : 
             {
-              ...appStore.HOSPITAL_ID === 'sdlj' ? {} : {现科室隶属部门: `deptBeDepartment`},
+              现科室隶属部门: `deptBeDepartment`,
               转岗时间: `transferDate`
-            }
+            },
+              
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -961,6 +982,89 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             }
           ],
           // fileData: [{}],
+          allData: row
+        })
+      }
+      break
+    case '继续教育及三基考试':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHEduSanki',
+          title: '审核继续教育学分统计及三基考试情况',
+          tableFormat: [
+            {
+              三基考核情况理论考核: `theoryAssess`,
+              三基考核情况理论补考: `theoryAssessMakeup`,
+              
+            },
+            {
+              三基考核情况操作考核: `operateAssess`,
+              三基考核情况操作补考: `operateAssessMakeup`
+            },
+            { 
+              年度: `year`,
+              继续教育是否达标: `standardInfo`
+            }
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
+      break
+    case '新技术、新项目开展情况': 
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHCarryOut',
+          title: '审核新技术新项目开展情况',
+          tableFormat: [
+            {
+              开展项目名称: `projectName`,
+              技术等级: `technologyLevel`,
+              
+            },
+            {
+              开始时间: `startDate`,
+              结束时间: `endDate`
+            },
+            {
+              开展例数: `numberCase`,
+              项目效益: `projectBenefit`,
+            }
+          ],
+          allData: row
+        })
+      }
+      break
+    case '重大差错事故及惩罚':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHPunishment',
+          title: '审核重差错事故及惩罚',
+          tableFormat: [
+            {
+              时间: `startDate`,
+              内容: `content`,
+              
+            },
+            {
+              备注: `remark`,
+            },
+          ],
           allData: row
         })
       }

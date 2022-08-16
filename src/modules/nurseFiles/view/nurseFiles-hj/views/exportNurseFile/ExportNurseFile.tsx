@@ -115,18 +115,18 @@ export default function ExportNurseFile(props: Props) {
           <PrintPage pageIndex={7}>
             <Awards awardWinningList={awardWinningList} />
           </PrintPage>
-          <PrintPage pageIndex={8}>
+          {/* <PrintPage pageIndex={8}>
             <BadEvent />
-          </PrintPage>
-          <PrintPage pageIndex={9}>
+          </PrintPage> */}
+          <PrintPage pageIndex={8}>
             <ExaminationResults yearCheckList={yearCheckList} />
           </PrintPage>
-          <PrintPage pageIndex={10}>
+          <PrintPage pageIndex={9}>
             <ThreeBases threeBaseList={threeBaseList} />
           </PrintPage>
-          <PrintPage pageIndex={11}>
+          {/* <PrintPage pageIndex={11}>
             <WorkRegistrationForm registrationWorkList={registrationWorkList} />
-          </PrintPage>
+          </PrintPage> */}
         </React.Fragment>
       )}
     </Wrapper>

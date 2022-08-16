@@ -2,7 +2,7 @@ import service from 'src/services/api'
 import { observable, computed, action } from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 let dictList = {
   民族: 'nation',
   初始学历: 'initial_education',
@@ -51,7 +51,17 @@ class StatisticsViewModal {
     await service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
       this.dict = res.data
     })
-    await service.commonApiService.getUintList().then((res) => {
+    const fn = appStore.hisMatch({
+      map: {
+        'sdlj': service.commonApiService.nursingUnit4Area.bind(service.commonApiService),
+        'other': service.commonApiService.getUintList.bind(service.commonApiService)
+      }
+    })
+    
+    await fn().then((res: any) => {
+      if (['sdlj'].includes(appStore.HOSPITAL_ID)) {
+        authStore.treeDeptList = res.data.deptList
+      }
       if (authStore.isDepartment) {
         this.allDeptAll = [{ name: '全院', code: '全院' }, ...res.data.deptList]
         this.selectedDeptCode = ['全院']

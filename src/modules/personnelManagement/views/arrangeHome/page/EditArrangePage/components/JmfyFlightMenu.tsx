@@ -193,6 +193,7 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.shiftType = mealObj.shiftType;
         list[i]!.statusType = "";
         list[i]!.schAddOrSubs = [];
+        if (appStore.HOSPITAL_ID === 'jmfy') list[i]!.addSymbols = [{symbol: mealObj.symbolname, symbolColor: mealObj.symbolcolor}]
       }
     }
   };
@@ -206,10 +207,25 @@ function MealCon(props: { dataSource: any[] }) {
       "thursday",
       "friday",
       "saturday",
-      "sunday"
+      "sunday",
+      'mondaySymbolName',
+      'tuesdaySymbolName',
+      'wednesdaySymbolName',
+      'thursdaySymbolName',
+      'fridaySymbolName',
+      'saturdaySymbolName',
+      'sundaySymbolName',
+      'mondaySymbolColor',
+      'tuesdaySymbolColor',
+      'wednesdaySymbolColor',
+      'thursdaySymbolColor',
+      'fridaySymbolColor',
+      'saturdaySymbolColor',
+      'sundaySymbolColor',
+
     ];
-    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType"];
-    let _keys = ["name", "nameColor", "effectiveTime", "shiftType"];
+    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", 'SymbolName', 'SymbolColor' ];
+    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", 'symbolname', 'symbolcolor'];
     let obj: any = {};
 
     for (let i = 0; i < keys.length; i++) {

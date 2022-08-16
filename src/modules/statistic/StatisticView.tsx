@@ -86,11 +86,25 @@ export default function StatisticView() {
       path: "/statistic/护士排班统计（按班次）",
       component: NurseByShiftView,
     },
-    {
-      name: "护士白班统计（按月份)",
-      path: "/statistic/护士白班统计（按月份）",
-      component: NurseWhiteShiftByMonthView,
-    },
+    ...appStore.hisMatch({
+      map: {
+        nys: [
+          {
+            name: "护士日班统计（按月份)",
+            path: "/statistic/护士日班统计（按月份）",
+            component: NurseWhiteShiftByMonthView,
+          },
+        ],
+        default: [
+          {
+            name: "护士白班统计（按月份)",
+            path: "/statistic/护士白班统计（按月份）",
+            component: NurseWhiteShiftByMonthView,
+          },
+        ]
+      }
+    }),
+
     {
       name: "护士夜班统计（按月份）",
       path: "/statistic/护士夜班统计（按月份）",
@@ -107,8 +121,9 @@ export default function StatisticView() {
       component: NurseHolidayScheduleView,
     },
     {
-      name: "科室排班统计（按班次/按工时）",
-      path: "/statistic/科室排班统计（按班次/按工时）",
+      // 没有加医院判断, 导致[科室排班统计（按班次)]模块一直用这个模块: NurseSchedulingView, 医院有提问题打包即可
+      name: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,  
+      path: `/statistic/科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
       component: DepartmentByShiftView,
     },
     {
@@ -217,22 +232,23 @@ export default function StatisticView() {
     },
     ...appStore.hisMatch({
       map: {
-        jmfy: [
+        'jmfy,lcey,hj': [
           {
             name: "护士职称分布",
             path: "/statistic/护士职称分布",
             component: 护士职称统计,
           },
         ],
-        lcey: [
-          {
-            name: "护士职称分布",
-            path: "/statistic/护士职称分布",
-            component: 护士职称统计,
-          },
-        ],
+        // lcey: [
+        //   {
+        //     name: "护士职称分布",
+        //     path: "/statistic/护士职称分布",
+        //     component: 护士职称统计,
+        //   },
+        // ],
         default: [],
       },
+      vague:true
     }),
     // 发热患者统计
     {

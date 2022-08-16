@@ -6,7 +6,8 @@ import moment from 'moment'
 
 class QualityControlRecordVM {
   /** 筛选列表 */
-  @observable public formSelectList: any = []
+  @observable public formSelectList: any = [] //质控小组列表
+  @observable public tableSelectList: any = [] //质控表单列表
   @observable public stateSelectList: any = []
   @observable public filterDeptList: any = []
   @observable public filterLevelList: any = [
@@ -29,6 +30,13 @@ class QualityControlRecordVM {
   @observable public allData: any = {}
   @observable public qcCode: any = ''
   @observable public  creatorName: any = ''
+  @computed
+  get query(){
+    return{
+      level:this.level,
+      templateName:''
+    }
+  }
 
   async init(level: number) {
     this.filterForm = ''
@@ -55,6 +63,10 @@ class QualityControlRecordVM {
     await Promise.all([
       qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
         this.formSelectList = res.data
+      }),
+      
+      qualityControlRecordApi.formTemplateList(this.query).then((res: any) => {
+        this.tableSelectList = res.data
       }),
       dictChainNodeFn(this.level).then((res: any) => {
         this.stateSelectList = res.data
