@@ -3,7 +3,6 @@ import {trainingSettingApi} from "../api/TrainingSettingApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
-import { T } from "antd/lib/upload/utils";
 import { message } from "antd";
 import moment from 'moment'
 import { readFile } from "fs";
