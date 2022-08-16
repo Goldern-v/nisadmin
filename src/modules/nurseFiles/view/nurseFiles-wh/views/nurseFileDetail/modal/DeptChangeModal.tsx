@@ -51,9 +51,9 @@ export default function DeptChangeModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (info && refForm.current && visible) {
-      let api = ['gxjb','qhwy'].includes(appStore.HOSPITAL_ID) ? service.commonApiService.getNursingUnitAll() : service.commonApiService.deptInbigDeptListSelf()
+      let api = ['gxjb','qhwy','wjgdszd'].includes(appStore.HOSPITAL_ID) ? service.commonApiService.getNursingUnitAll() : service.commonApiService.deptInbigDeptListSelf()
       api.then((res) => {
-        setDeptList(['gxjb','qhwy'].includes(appStore.HOSPITAL_ID) ? res.data?.deptList : res.data)
+        setDeptList(['gxjb','qhwy','wjgdszd'].includes(appStore.HOSPITAL_ID) ? res.data?.deptList : res.data)
       })
       refForm!.current!.setFields({
         date: moment(),

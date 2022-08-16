@@ -856,7 +856,7 @@ export default observer(function ArrangeSheet(props: Props) {
                                   系统标注:
                                 </div>
                           <div>
-                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表二线；</p>
+                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
                           </div>
                       </div>,
                       'whyx':<div className="remark-con system">
