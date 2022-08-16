@@ -354,7 +354,7 @@ export default observer(function TopPart() {
 
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
-          {appStore.HOSPITAL_ID == 'whyx' && <div className="number">
+          {['whyx','qhwy'].includes(appStore.HOSPITAL_ID) && <div className="number">
             <img src={require('./images/yuan.png')} alt='' className='yuan' />
             <span>{sheetViewModal.experNumber} </span>
           </div>}
@@ -362,7 +362,7 @@ export default observer(function TopPart() {
         {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
-            {appStore.HOSPITAL_ID == 'whyx' && <div className="number">
+            {['whyx','qhwy'].includes(appStore.HOSPITAL_ID) && <div className="number">
               <img src={require('./images/yuan.png')} alt='' className='yuan' />
               <span>{sheetViewModal.ExpectAsNumber}</span>
             </div>}

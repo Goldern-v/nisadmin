@@ -342,7 +342,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        whyx: [
+        "whyx,qhwy": [
           {
             title: "备注",
             dataIndex: "empRemark",
@@ -367,6 +367,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
         other: [],
       },
+      vague:true
     }),
     {
       title: (
@@ -719,6 +720,9 @@ export default observer(function ArrangeSheet(props: Props) {
           }
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
+          }
+          if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+            widthNys += 100
           }
           /** noscorll */
           (document as any).querySelector(
