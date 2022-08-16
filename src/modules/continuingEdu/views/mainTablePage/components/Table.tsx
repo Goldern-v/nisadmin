@@ -104,7 +104,7 @@ export default observer(function Table(props: Props) {
       align: "center"
     },
     //(appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") && {
-    (appStore.HOSPITAL_ID == "wh") && {
+    (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "ytll") && {
       title: "类别",
       dataIndex: "category",
       width: 120,

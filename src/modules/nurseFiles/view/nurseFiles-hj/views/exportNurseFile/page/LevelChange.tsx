@@ -25,7 +25,7 @@ export default function LevelChange(props: Props) {
         <tbody>
           <tr>
             <td colSpan={4}>
-              <span className='title'>医学学历教育</span>
+              <span className='title'>教育经历</span>
             </td>
           </tr>
           <tr>
@@ -60,7 +60,7 @@ export default function LevelChange(props: Props) {
         <tbody>
           <tr>
             <td colSpan={4}>
-              <span className='title'>职称及层级变动</span>
+              <span className='title'>职称变动</span>
             </td>
           </tr>
           <tr>

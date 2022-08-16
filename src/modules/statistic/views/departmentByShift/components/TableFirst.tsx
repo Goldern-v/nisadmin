@@ -17,9 +17,9 @@ export interface Props {
 
 export default function BedSituation(props: Props) {
   const { tableData, filterObj, hourMap, morningMap, nightMap, statusRadio, byHours } = props
-  Object.assign(hourMap, {科室: '工时合计'})
-  Object.assign(morningMap, {科室: '白班合计'})
-  Object.assign(nightMap, {科室: '夜班合计'})
+  hourMap && Object.assign(hourMap, {科室: '工时合计'})
+  morningMap && Object.assign(morningMap, {科室: '白班合计'})
+  nightMap && Object.assign(nightMap, {科室: '夜班合计'})
   const byHourNightMap = {...nightMap, 科室: '合计'}
   const byHourMorningMap = {...morningMap, 科室: '合计'}
   

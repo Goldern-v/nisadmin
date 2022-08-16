@@ -33,7 +33,7 @@ export default function BaseInfo(props: Props) {
         </colgroup>
         <tbody><tr>
           <td colSpan={6}>
-            <span className='title'>基本情况</span>
+            <span className='title'>基本信息</span>
           </td>
         </tr>
         <tr>

@@ -168,7 +168,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd"].includes(appStore.HOSPITAL_ID)) {
+} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
@@ -492,34 +492,34 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
 } else if (appStore.HOSPITAL_ID == 'wjgdszd') {
-  specialModule = [
-    // 新版敏感指标
-    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
-    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
-    // 新版审核界面
-    setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
-    setLayout(
-      "/nurseFileDetail/:type",
-      NurseFileDetailView_wjgdszd,
-      layouts.MainLayout
-    ),
-    // 新版审核管理
-    setLayout("/auditsManagement", AuditsManagementNewView, layouts.MainLayout),
-    ...homeRouter(HomeView),
-    //厚街护理制度
-    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
-    setLayout(
-      "/nursingRulesNewDetail",
-      NursingRulesNewDetail,
-      layouts.MainLayout
-    ),
-    setLayout(
-      "/NursingRulesPagePreView",
-      NursingRulesPagePreview,
-      layouts.MainLayout
-    ),
-    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  ];
+  // specialModule = [
+  //   // 新版敏感指标
+  //   setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+  //   setLayout("/indicator", IndicatorNew, layouts.MainLayout),
+  //   // 新版审核界面
+  //   setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
+  //   setLayout(
+  //     "/nurseFileDetail/:type",
+  //     NurseFileDetailView_wjgdszd,
+  //     layouts.MainLayout
+  //   ),
+  //   // 新版审核管理
+  //   setLayout("/auditsManagement", AuditsManagementNewView, layouts.MainLayout),
+  //   ...homeRouter(HomeView),
+  //   //厚街护理制度
+  //   setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+  //   setLayout(
+  //     "/nursingRulesNewDetail",
+  //     NursingRulesNewDetail,
+  //     layouts.MainLayout
+  //   ),
+  //   setLayout(
+  //     "/NursingRulesPagePreView",
+  //     NursingRulesPagePreview,
+  //     layouts.MainLayout
+  //   ),
+  //   setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  // ];
 } else if (appStore.HOSPITAL_ID == 'bhsrm') {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'qzxyy') {

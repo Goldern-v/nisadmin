@@ -51,7 +51,7 @@ const ROUTE_LIST = [
   {
     type: 'levelChange',
     component: LevelChange,
-    name: '职称及层级变动'
+    name: '职称变动'
   },
   {
     type: 'continuingEducation',
@@ -81,13 +81,13 @@ const ROUTE_LIST = [
   {
     type: 'threeBases',
     component: ThreeBases,
-    name: '医院三基考核'
+    name: '护理三基考核'
   },
-  {
-    type: 'workRegistrationForm',
-    component: WorkRegistrationForm,
-    name: '工作情况登记'
-  },
+  // {
+  //   type: 'workRegistrationForm',
+  //   component: WorkRegistrationForm,
+  //   name: '工作情况登记'
+  // },
   {
     type: 'fileList',
     component: FileList,

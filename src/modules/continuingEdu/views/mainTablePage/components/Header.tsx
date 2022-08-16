@@ -111,6 +111,7 @@ export default observer(function Header(props: Props) {
           }
         ],
         wh: () => [],
+        ytll: () => [],
         gxjb: () => [],
         nys: () => [
           {

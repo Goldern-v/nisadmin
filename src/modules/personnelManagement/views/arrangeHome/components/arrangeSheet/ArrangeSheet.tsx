@@ -68,6 +68,7 @@ export default observer(function ArrangeSheet(props: Props) {
       lyyz: () => EditVacationCountModal_wh,
       qhwy: () => EditVacationCountModal_wh,
       whsl: () => EditVacationCountModal_wh,
+      ytll: () => EditVacationCountModal_wh,
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
@@ -341,7 +342,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        whyx: [
+        "whyx,qhwy": [
           {
             title: "备注",
             dataIndex: "empRemark",
@@ -366,6 +367,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
         other: [],
       },
+      vague:true
     }),
     {
       title: (
@@ -490,7 +492,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -719,6 +721,9 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
           }
+          if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+            widthNys += 100
+          }
           /** noscorll */
           (document as any).querySelector(
             "#arrangeSheet #baseTable"
@@ -745,6 +750,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 lyyz: () => 6,
                 qhwy: () => 6,
                 whsl: () => 6,
+                ytll: () => 6,
               })) *
             70 +
             widthNys +
@@ -854,7 +860,7 @@ export default observer(function ArrangeSheet(props: Props) {
                                   系统标注:
                                 </div>
                           <div>
-                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表二线；</p>
+                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
                           </div>
                       </div>,
                       'whyx':<div className="remark-con system">

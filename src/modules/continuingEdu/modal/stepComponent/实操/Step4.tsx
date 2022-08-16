@@ -32,7 +32,7 @@ export default observer(function Step4() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb") {
+    if (['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID)) {
       if (data.scoreItems && data.scoreItems.length > 4) {
         setIsOk(true);
         Object.assign(stepViewModal.stepData2, data);
@@ -104,7 +104,7 @@ export default observer(function Step4() {
           </Col>
         </Row>
         <Row style={{ marginTop: 20 }}>
-          {appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == "gxjb" ? (
+          {['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID) ? (
             <Col span={24} style={{ height: "28px" }}>
               <span className="labelSpan">上传题库</span>
               <Checkbox
