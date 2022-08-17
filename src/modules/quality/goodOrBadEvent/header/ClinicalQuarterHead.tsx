@@ -6,7 +6,7 @@ import { PageTitle } from "src/components/common";
 import { appStore, authStore } from 'src/stores'
 import moment, { duration } from 'moment'
 import { clinicalApi } from "../ClinicalApi";
-import { sumData } from "../tsData/SumData";
+import { clinicalData } from "../ClinicalData";
 import { values } from "mobx";
 import { quarterList } from 'src/enums/date'
 import { fileDownload } from "src/utils/file/file";
@@ -14,23 +14,24 @@ const Option = Select.Option;
 
 interface Props {
 	title: string,
-	tableLoading: Boolean,
-	setTableLoading: Function,
-	initTableData: Function,
-	saveTable: Function,
-	onPrint: Function,
+	tableLoading:Boolean,
+	setTableLoading:Function,
+	initTableData:Function,
+	saveTableData:Function,
 }
 interface IDeucOption {
 	value: string;
 	item: string;
 }
-export default observer(function SumMonthHead(props: Props) {
+export default observer(function ClinicalQuarterHead(props: Props) {
 	const [deucOption, setdeucOption] = useState([]); // 科室信息
 	const [yearPickShow, setYearPickShow] = useState(false);
 
-	// const pathname = appStore.location?.pathname
-	const { tableLoading, setTableLoading, initTableData, saveTable, onPrint } = props
+	const pathname = appStore.location?.pathname
+	const {tableLoading,setTableLoading,initTableData,saveTableData} = props
 
+
+	// console.log(appStore.location.pathname)
 	const getMonths = () => {
 		let options = []
 		for (let i = 1; i <= 12; i++) {
@@ -42,15 +43,14 @@ export default observer(function SumMonthHead(props: Props) {
 
 	useEffect(() => {
 		setTableLoading(true)
-		// console.log('获取科室')
 		// 获取科室
 		clinicalApi.getnursingAll().then((res) => {
 			let deptListall = [];
 			deptListall = res.data.deptList
-			sumData.deptCode = res.data.defaultDept
-			sumData.deptName = res.data.deptName
+			clinicalData.deptCode = res.data.defaultDept
+			clinicalData.deptName = res.data.deptName
 			setdeucOption(deptListall)
-			setTableLoading(false)
+			// clinicalData.init()
 			// 查询数据
 			onload()
 		}).catch((err) => {
@@ -59,41 +59,46 @@ export default observer(function SumMonthHead(props: Props) {
 
 	}, [])
 
-	// 头部数据有变
-	// useEffect(() => {
-	// 	// 查询数据
-	// 	onload()
-	// }, [sumData.postObj])
-
-
 	/** 获取表格数据 */
-	const onload = () => {
-		// initTableData([])
-		setTableLoading(true)
-		clinicalApi.getTableData(sumData.postObj).then(res => {
-			let valueList = res.data.rowList || []
-			initTableData(valueList, res.data.master || {})
-			setTableLoading(false)
+	const onload=()=> {
+		if(clinicalData.postObj.deptCode=='') return
+		clinicalApi.getMonthTable(clinicalData.postObj).then(res => {
+			let valueList = res.data.valueList || []
+			
+			if(valueList.length>0){
+				
+				initTableData(valueList,res.data)
+			}
+		  // console.log(res.data)
+		  setTableLoading(false)
 
-		}).catch(err => {
-			setTableLoading(false)
 		});
-	}
+	  }
+
+	  useEffect(() => {
+		// console.log('数据变化了')
+		setTableLoading(true)
+		onload()
+	  }, [clinicalData.postObj])
+	  
 
 	// 查询
 	const handelInquire = () => {
+		setTableLoading(true)
 		onload()
 	}
 
 	// 保存
-	const handelSave = () => {
-		saveTable()
+	const handlerSave=()=>{
+		saveTableData()
 	}
 
-	const onPrintHead = (isPrint: boolean) => {
-		onPrint(isPrint)
+	// 导出
+	const handlerExport = ()=>{
+		clinicalApi.exportMonthTable(clinicalData.postObj).then(res => {
+        fileDownload(res);
+      });
 	}
-
 
 	return (
 		<Wrapper>
@@ -111,13 +116,12 @@ export default observer(function SumMonthHead(props: Props) {
 						}}
 						onPanelChange={(value, mode) => {
 							// console.log(value, mode)
-							sumData.year = value
-							onload()
+							clinicalData.year = value
 							setYearPickShow(false)
 						}}
 						mode="year"
 						style={{ width: 120 }}
-						value={sumData.year}
+						value={clinicalData.year}
 						allowClear={true}
 						placeholder='选择年份'
 						format="YYYY"
@@ -131,10 +135,9 @@ export default observer(function SumMonthHead(props: Props) {
 					<span>月份：</span>
 					<Select className="mr-15"
 						style={{ width: 120 }}
-						value={sumData.month}
+						value={clinicalData.month}
 						onChange={(val: number) => {
-							sumData.month = val
-							onload()
+							clinicalData.month = val
 							// console.log('yuefen', val)
 							// clinicalData.onload()
 						}}
@@ -142,15 +145,35 @@ export default observer(function SumMonthHead(props: Props) {
 						{getMonths()}
 					</Select>
 				</>
+				{pathname.indexOf('quarter')>-1 && 
+					<>
+						<span>季度：</span>
+						<Select className="mr-15"
+							style={{ width: 120 }}
+							value={clinicalData.quarter}
+							onChange={(val: any) => {
+								clinicalData.quarter = val
+								// console.log('quarter', val)
+								// clinicalData.onload()
+							}}
+						>
+							{
+								quarterList.map((v:any, i:number) => (
+									<Option key={i} value={i + 1}>{v}</Option>
+								))
+							}
+						</Select>
+					</>
+				}
 				<span>科室：</span>
 				<Select className="mr-15"
-					labelInValue
 					style={{ width: 180 }}
-					value={{ key: sumData.deptCode }}
+					labelInValue
+					value={{key:clinicalData.deptCode}}
 					onChange={(val: any) => {
-						sumData.deptCode = val.key
-						sumData.deptName = val.label
-						onload()
+						// console.log(val)
+						clinicalData.deptCode = val.key
+						clinicalData.deptName = val.label
 						// clinicalData.onload()
 					}}
 				>
@@ -166,17 +189,17 @@ export default observer(function SumMonthHead(props: Props) {
 					查询
 				</Button>
 				<Button
-					className="span"
 					type="primary"
-					onClick={handelSave}
+					className="span"
+					onClick={handlerSave}
 				>
 					保存
 				</Button>
 				<Button
 					className="span"
-					onClick={() => onPrintHead(true)}
+					onClick={handlerExport}
 				>
-					打印
+					导出
 				</Button>
 			</RightIcon>
 		</Wrapper>
@@ -189,9 +212,6 @@ const Wrapper = styled.div`
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;
-  box-sizing: border-box;
-  /* margin-top: 12px;
-  padding-top: 0; */
   .mr-15{
     margin-right: 15px;
   }

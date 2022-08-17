@@ -37,7 +37,7 @@ export default function SumMonth(props: Props) {
 	// 搬运start
 	const [pageLoading, setPageLoading] = useState(false);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
-	const [surplusHeight, setSurplusHeight]: any = useState(220);
+	const [surplusHeight, setSurplusHeight]: any = useState(265);
 
 	const [total, setTotal] = useState(0);
 	// 搬运end
@@ -139,50 +139,6 @@ export default function SumMonth(props: Props) {
 
 		{ "mainKey": "GLZB12001", "combinedKey": "GLZB12000", "isCombined": "0", weekNum: '一年', answer: '12.护士继续教育达标率', answerSmall: '', tips: '', method: '科教管理平台导出', rowClassName: 'hua-line' },
 
-	]
-	let requestData = [
-		{
-			"id": 46,
-			"masterId": 1,
-			"key": "GLZB01001",
-			"combinedKey": "GLZB01000",
-			"isCombined": "0",
-			"indicatorsDetails": "",
-			"mainlyExplain": "",
-			"firstWeekY": 70,
-			"firstWeekN": 98,
-			"totalY": 70,
-			"totalN": 98,
-			"percentOfPass": 0.4167
-		},
-		{
-			"id": 47,
-			"masterId": 1,
-			"key": "GLZB01002",
-			"combinedKey": "GLZB01000",
-			"isCombined": "0",
-			"indicatorsDetails": "",
-			"mainlyExplain": "",
-			"firstWeekY": 77,
-			"firstWeekN": 98,
-			"totalY": 77,
-			"totalN": 98,
-			"percentOfPass": 0.44
-		},
-		{
-			"id": 48,
-			"masterId": 1,
-			"key": "GLZB02001",
-			"combinedKey": "GLZB02000",
-			"isCombined": "0",
-			"indicatorsDetails": "",
-			"mainlyExplain": "",
-			"firstWeekY": 77,
-			"firstWeekN": 98,
-			"totalY": 77,
-			"totalN": 98,
-			"percentOfPass": 0.44
-		}
 	]
 
 	// console.log(dataSource)
@@ -374,8 +330,10 @@ export default function SumMonth(props: Props) {
 					dataIndex: "firstWeekY",
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'firstWeekY')
-
-
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
 					},
 					width: 40,
 				},
@@ -385,6 +343,10 @@ export default function SumMonth(props: Props) {
 					dataIndex: "firstWeekN",
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'firstWeekN')
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
 					},
 					width: 40
 				},
@@ -400,7 +362,11 @@ export default function SumMonth(props: Props) {
 					dataIndex: "secondWeekY",
 					render: (text: any, record: any, index: number) => {
 						return weekChange(text, record, index, 'secondWeekY')
-					}
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
+					},
 
 				},
 				{
@@ -409,6 +375,10 @@ export default function SumMonth(props: Props) {
 					dataIndex: "secondWeekN",
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'secondWeekN')
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
 					},
 					width: 40
 				},
@@ -424,6 +394,10 @@ export default function SumMonth(props: Props) {
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'thirdWeekY')
 					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
+					},
 					width: 40,
 				},
 				{
@@ -432,6 +406,10 @@ export default function SumMonth(props: Props) {
 					dataIndex: "thirdWeekN",
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'thirdWeekN')
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
 					},
 					width: 40
 				},
@@ -447,6 +425,10 @@ export default function SumMonth(props: Props) {
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'forthWeekY')
 					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
+					},
 					width: 40
 				},
 				{
@@ -455,6 +437,10 @@ export default function SumMonth(props: Props) {
 					dataIndex: 'forthWeekN',
 					render(text: any, record: any, index: number) {
 						return weekChange(text, record, index, 'forthWeekN')
+					},
+					onCell(record: any, rowIndex: any) {
+						return cellFunc(record,rowIndex)
+						
 					},
 					width: 40
 				},
@@ -555,9 +541,17 @@ export default function SumMonth(props: Props) {
 		},
 	]
 
+	const cellFunc = (record: any, rowIndex: any)=>{
+		if (rowIndex>39) {
+			return {
+				className: 'hua-line',
+			}
+		}
+	}
+
 	const weekChange = (text: any, record: any, index: number, key: string) => {
 		if (index > 39) {
-			return <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" stroke="#ccc" strokeWidth="0.5" /></svg>
+			return ''
 		}
 		return (
 			<InputNumber
@@ -635,7 +629,7 @@ export default function SumMonth(props: Props) {
 
 	// 保存数据
 	const saveTableData = () => {
-		console.log('保存数据')
+		// console.log('保存数据')
 		setTableLoading(true)
 		let params = {
 			...sumData.postObj,
@@ -659,6 +653,7 @@ export default function SumMonth(props: Props) {
 		})
 	}
 
+	// 打印的表头
 	const getTableColumns2 = ()=>{
 		const columns2: ColumnProps<any>[] | any = [
 			{
@@ -814,12 +809,20 @@ export default function SumMonth(props: Props) {
 						align: "center",
 						dataIndex: "firstWeekY",
 						width: 40,
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 					},
 					{
 						title: "N",
 						align: "center",
 						dataIndex: "firstWeekN",
-						width: 40
+						width: 40,
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 					},
 				]
 			},
@@ -831,12 +834,20 @@ export default function SumMonth(props: Props) {
 						align: "center",
 						width: 40,
 						dataIndex: "secondWeekY",
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 	
 					},
 					{
 						title: "N",
 						align: "center",
 						dataIndex: "secondWeekN",
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 						width: 40
 					},
 				]
@@ -848,12 +859,20 @@ export default function SumMonth(props: Props) {
 						title: "Y",
 						align: "center",
 						dataIndex: "thirdWeekY",
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 						width: 40,
 					},
 					{
 						title: "N",
 						align: "center",
 						dataIndex: "thirdWeekN",
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 						width: 40
 					},
 				]
@@ -865,12 +884,20 @@ export default function SumMonth(props: Props) {
 						title: "Y",
 						align: "center",
 						dataIndex: 'forthWeekY',
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 						width: 40
 					},
 					{
 						title: "N",
 						align: "center",
 						dataIndex: 'forthWeekN',
+						onCell(record: any, rowIndex: any) {
+							return cellFunc(record,rowIndex)
+							
+						},
 						width: 40
 					},
 				]
@@ -978,6 +1005,8 @@ export default function SumMonth(props: Props) {
 			<SumMonthHead title='科室临床护理质量指标年度汇总' tableLoading={false}
 				setTableLoading={setTableLoading} initTableData={initTableData} 
 				saveTable={saveTableData} onPrint={onPrint}/>
+			
+			<div>
 			<ScrollCon>
 				<BaseTable data-kkey={freshData}
 					className="record-page-table"
@@ -990,15 +1019,16 @@ export default function SumMonth(props: Props) {
 				/>
 
 			</ScrollCon>
+				</div>
 			{isPrint && 
-<Page ref={pageRef} className='print-page'>
+<PagePrint ref={pageRef} className='print-page'>
 <div style={{ fontSize: '24px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>
 	{sumData.deptName+sumData.postObj.year+'年'+Number(sumData.month)+'月份护理工作质量/管理指标月度汇总'}
 	</div>
-	<Table rowClassName={() => 'editable-row'} 
+	<Table className='print-table' 
 	bordered pagination={false} dataSource={data2} 
 	columns={getTableColumns2()} />
-</Page>
+</PagePrint>
 }
 		</Wrapper>
 	);
@@ -1007,18 +1037,27 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  .hua-line {
+		background: linear-gradient(
+		to bottom right,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0) calc(50% - 1px),
+		rgba(230,230,230, 1) 50%,
+		rgba(0, 0, 0, 0) calc(50% + 1px),
+		rgba(0, 0, 0, 0) 100%
+	) !important;
+		/* background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9IiNjY2MiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9zdmc+) no-repeat 100% center;    */
+		box-sizing: border-box;
+	}
   .ant-table-tbody{
         > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
-        background:none !important;
+        background-color:#fff !important;
         //这里是将鼠标移入时的背景色取消掉了
         }
     }
 
   .record-page-table{
-	.hua-line {
-		background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9IiNjY2MiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9zdmc+) no-repeat 100% center;   
-		box-sizing: border-box;
-	}
+	
 	.ml{
 	float: left;
 	padding-left: 10px;
@@ -1093,16 +1132,47 @@ const Wrapper = styled.div`
 	background: transparent;
   }
 
-	.editable-row{
-		width: 700px !important;
-	}
 
 
 `;
-
+const PagePrint = styled.div`
+  width: 780px;
+  margin: 20px auto 20px;
+  padding-bottom: 10px;
+  background: #fff;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  min-height:700px;
+  .print-table.ant-table-wrapper td{
+	box-sizing: border-box;
+    padding: 0 8px;
+    font-size: 13px !important;
+    height: 30px !important;
+    word-break: break-all;
+  }
+  .hua-line {
+		background: linear-gradient(
+		to bottom right,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0) calc(50% - 1px),
+		rgba(230,230,230, 1) 50%,
+		rgba(0, 0, 0, 0) calc(50% + 1px),
+		rgba(0, 0, 0, 0) 100%
+	) !important;
+		/* background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9IiNjY2MiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9zdmc+) no-repeat 100% center;    */
+		box-sizing: border-box;
+	}
+  .ant-table-tbody{
+        > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
+        background-color:#fff !important;
+        //这里是将鼠标移入时的背景色取消掉了
+        }
+    }
+`
 
 const ScrollCon = styled.div`
-  flex: 1;
+  /* flex: 1;
+   */
 `;
 // const Wrapper = styled.div`
 //   overflow: hidden;

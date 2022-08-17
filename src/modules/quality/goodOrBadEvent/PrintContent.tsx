@@ -297,57 +297,7 @@ const PrintContent = (props: Props) => {
 		}
 		return dataSource
 	}
-	const getDeductionData = (data: any) => {
-		let sumList = 0
-		let sumPercen = 0
-		let point = null;
-		data.map((item: any) => {
-			sumList += item.pointFrequency
-			sumPercen += parseFloat(item.percentage.split('%')[0])
-		})
 
-		point = [...data, { pointItem: '总计', pointFrequency: sumList, percentage: sumPercen.toFixed(2) + '%', percentages: '' }]
-		return point
-	}
-	const getDeductionColumns = (data: any) => {
-		let columns: any = [
-			{ title: ' 扣分项 ', key: 'pointItem', dataIndex: 'pointItem', align: 'center' },
-			{ title: '扣分频次', key: 'pointFrequency', dataIndex: 'pointFrequency', align: 'center' },
-			{ title: '百分比（%）', key: 'percentage', dataIndex: 'percentage', align: 'center', },
-			{ title: '累积百分比（%）', key: 'percentages', dataIndex: 'percentages', align: 'center' },
-		];
-
-		return columns
-	}
-	const onhandleBlur = (e: any, data: any) => {
-		getinput(false)
-		data.actualCheckNum = parseInt(e.value);
-		if (parseFloat(data.actualCheckNum) > parseFloat(data.shouldCheckNum)) {
-			data.actualCheckNum = 0;
-			message.warning('实查护士长数比应查护士长数多')
-		} else if (data.actualCheckNum && data.shouldCheckNum) {
-			data.checkRate = ((data.actualCheckNum / data.shouldCheckNum) * 100) == 100 ? (data.actualCheckNum / data.shouldCheckNum) * 100 + '%' : (((data.actualCheckNum / data.shouldCheckNum) * 100).toFixed(2)) + '%'
-			// console.log((data.actualCheckNum / data.shouldCheckNum) * 100); 
-
-
-			let newdata: any = [];
-			pageData.map(item => {
-				newdata.push(item.checkRate)
-			})
-			let strCheckRate: number = 0
-			strCheckRate = newdata.reduce((pre: any, cur: any) => {
-				cur = cur.replace('%', '')
-				return pre + +cur
-			}, 0)
-			getdeduction((strCheckRate / 3).toFixed(2) + '%')
-		} else {
-			data.checkRate = '0%'
-			getdeduction(0 + '%')
-		}
-	}
-	const toggleEdit = () => {
-		getinput(true)
-	}
 	const getTableColumns2 = (data: any) => {
 		let columns: any = [
 			
