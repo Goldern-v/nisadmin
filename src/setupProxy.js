@@ -142,6 +142,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // 烟台玲珑医院
     case 'ytll': 
       return "http://192.168.1.54:9866"
+    // 东莞谢岗
+    case 'dgxg':
+      return "http://183.234.1.124:9093"  //正式
+      // return "http://192.168.1.54:9882"
     default:
       return "http://192.168.1.54:9866";
   }

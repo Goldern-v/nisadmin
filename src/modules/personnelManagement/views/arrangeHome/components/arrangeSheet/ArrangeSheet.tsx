@@ -246,33 +246,33 @@ export default observer(function ArrangeSheet(props: Props) {
         ]
       }
     }),
-    ...appStore.hisMatch({
-      map: {
-        dgxg: [
-          {
-            title: "分管床位",
-            dataIndex: "chargeBed",
-            width: 100,
-            fixed: "left",
-            align: "center",
-            render: (text: string, record: any) => {
-              return isEditable ? (
-                <Input
-                  style={{ background: "#fff" }}
-                  defaultValue={text}
-                  onChange={(e: any) => {
-                    record.chargeBed = e.target.value;
-                  }}
-                />
-              ) : (
-                <span>{text}</span>
-              );
-            },
-          },
-        ],
-        other: [],
-      },
-    }),
+    // ...appStore.hisMatch({
+    //   map: {
+    //     dgxg: [
+    //       {
+    //         title: "分管床位",
+    //         dataIndex: "chargeBed",
+    //         width: 100,
+    //         fixed: "left",
+    //         align: "center",
+    //         render: (text: string, record: any) => {
+    //           return isEditable ? (
+    //             <Input
+    //               style={{ background: "#fff" }}
+    //               defaultValue={text}
+    //               onChange={(e: any) => {
+    //                 record.chargeBed = e.target.value;
+    //               }}
+    //             />
+    //           ) : (
+    //             <span>{text}</span>
+    //           );
+    //         },
+    //       },
+    //     ],
+    //     other: [],
+    //   },
+    // }),
     ...appStore.hisMatch({
       map: {
         fssdy: [
@@ -711,10 +711,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ) {
           let widthNys =
             appStore.HOSPITAL_ID == "nys"
-              ? 210
-              : appStore.HOSPITAL_ID == "dgxg"
-                ? 350
-                : 250;
+              ? 210 : 250;
           if (appStore.HOSPITAL_ID == 'whyx') {
             widthNys += 170
           }

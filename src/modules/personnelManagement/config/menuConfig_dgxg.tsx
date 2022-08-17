@@ -45,13 +45,13 @@ export const meunConfig: meunConfigItem[] = [
       //   component: ExpectedRecordSelf,
       //   iSlimit: false,
       // },
-      {
-        title: "临时人员借调",
-        path: "/personnelManagement/personnelSecondment",
-        component: PersonnelSecondment,
-        style: { background: "#fff" },
-        iSlimit: true,
-      },
+      // {
+      //   title: "临时人员借调",
+      //   path: "/personnelManagement/personnelSecondment",
+      //   component: PersonnelSecondment,
+      //   style: { background: "#fff" },
+      //   iSlimit: true,
+      // },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
@@ -79,12 +79,12 @@ export const meunConfig: meunConfigItem[] = [
         component: MealSettingViewNew,
         iSlimit: false,
       },
-      {
-        title: "结余设置",
-        path: "/personnelManagement/balanceInit",
-        component: BalanceInit,
-        iSlimit: false,
-      },
+      // {
+      //   title: "结余设置",
+      //   path: "/personnelManagement/balanceInit",
+      //   component: BalanceInit,
+      //   iSlimit: false,
+      // },
       {
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
@@ -93,20 +93,20 @@ export const meunConfig: meunConfigItem[] = [
         iSlimit: true,
         special: true
       },
-      {
-        title: "加减班列表查询",
-        path: "/personnelManagement/addSubClass",
-        component: AddSubClass,
-        // hide: !authStore.isRoleManage
-        iSlimit: true,
-      },
-      {
-        title: "节假日查询",
-        path: "/personnelManagement/holidaysList",
-        component: HolidaysList,
-        // hide: !authStore.isRoleManage
-        iSlimit: true,
-      },
+      // {
+      //   title: "加减班列表查询",
+      //   path: "/personnelManagement/addSubClass",
+      //   component: AddSubClass,
+      //   // hide: !authStore.isRoleManage
+      //   iSlimit: true,
+      // },
+      // {
+      //   title: "节假日查询",
+      //   path: "/personnelManagement/holidaysList",
+      //   component: HolidaysList,
+      //   // hide: !authStore.isRoleManage
+      //   iSlimit: true,
+      // },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
@@ -114,13 +114,13 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-      {
-        title: "夜班费统计",
-        path: "/personnelManagement/nightChargingReport",
-        component: StarRatingReportList,
-        // hide: !authStore.isRoleManage
-        iSlimit: true,
-      },
+      // {
+      //   title: "夜班费统计",
+      //   path: "/personnelManagement/nightChargingReport",
+      //   component: StarRatingReportList,
+      //   // hide: !authStore.isRoleManage
+      //   iSlimit: true,
+      // },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",
