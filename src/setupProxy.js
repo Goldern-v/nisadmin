@@ -79,7 +79,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 武警广东省总队医院 */
     case "wjgdszd":
-      return "http://120.24.240.231:8751"; // 武警广东省总队医院正式 crph / crph3675  
+      // return "http://120.24.240.231:8751"; // 武警广东省总队医院正式 crph / crph3675  
+      return "http://192.168.1.54:9869"
     case "gxjb":
       // return "http://58.59.133.37:9091"; // 正式
       return "http://192.168.1.54:9866"; // 测试环境
@@ -101,7 +102,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9885";
     case "sdlj": //顺德龙江
       // return 'http://192.168.20.83:8080'//
-      return "http://192.168.1.54:9874"; //
+      return "http://192.168.1.54:9887"; //
 
     //武汉亚心
     case "whyx":
