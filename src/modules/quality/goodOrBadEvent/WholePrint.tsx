@@ -88,7 +88,7 @@ export default observer(function EventReportDetailView(props: Props) {
 
 		// 卸载函数
 		return ()=>{
-			// sessionStorage.removeItem('myreport')
+			sessionStorage.removeItem('myreport')
 		}
 
 	}, [])
@@ -160,10 +160,11 @@ export default observer(function EventReportDetailView(props: Props) {
 
 	// 删除
 	const turnToDel = () => {
-	  globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-	    clinicalApi.delReportById({
+		let params={
 			masterId:wholePrintData.master.id
-		}).then((res) => {
+		}
+	  globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
+	    clinicalApi.delReportById(params).then((res) => {
 	      message.success('删除成功')
 	      setTimeout(() => {
 				appStore.history.goBack()

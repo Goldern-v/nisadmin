@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef, MutableRefObject, forwardRef, useIm
 import styled from 'styled-components'
 import { Table, Input, Button } from 'antd'
 const { TextArea } = Input
-import { message, } from 'src/vendors/antd'
 import ReactEcharts from 'echarts-for-react';
-import { appStore } from 'src/stores';
 import { wholePrintData } from './tsData/WholePrintData'
 interface Props {
 	// 输入框
@@ -744,56 +742,10 @@ const PrintContent = (props: Props) => {
 			]
 		}
 	}
-
-	const handleNumQuarter = (data: any) => {
-		if (pageData.length == 0) return
-		let month = pageData[0].month
-		let num: any = null;
-		switch (month.split('-')[1]) {
-			case '01':
-				num = '一';
-				break;
-			case '02':
-				num = '一';
-				break;
-			case '03':
-				num = '一';
-				break;
-			case '04':
-				num = '二';
-				break;
-			case '05':
-				num = '二';
-				break;
-			case '06':
-				num = '二';
-				break;
-			case '07':
-				num = '三';
-				break;
-			case '08':
-				num = '三';
-				break;
-			case '09':
-				num = '三';
-				break;
-			case '10':
-				num = '四';
-				break;
-			case '11':
-				num = '四';
-				break;
-			case '12':
-				num = '四';
-				break;
-			default: num;
-		}
-		return num;
-	}
 	return <Wrapper>
 		<div className="first-content-box">
 			<div className='first-title'>{`${propsData.title}`}</div>
-			<div className='title-m'><em></em>一、计划阶段</div>
+			<div className='title-m'>一、计划阶段</div>
 			<div className='title-s'>(一)通过{wholePrintData.master.belongsYear}年及{Number(wholePrintData.master.belongsYear) - 1}年全科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图6），发现主要存在问题：</div>
 			{!isPrint && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea1_1}</p>}
@@ -805,7 +757,7 @@ const PrintContent = (props: Props) => {
 							bordered dataSource={getTableData()}
 							columns={getTableColumns2(pageData)} pagination={false} />
 					</div>
-					<p style={{ textAlign: 'center', fontSize: '12px',marginTop:'10px' }}>全年临床护理及护理工作质量/管理指标数情况汇总表</p>
+					<p style={{ textAlign: 'center', fontSize: '12px',marginTop:'10px' }}>表1 全年临床护理及护理工作质量/管理指标数情况汇总表</p>
 				</div>
 			</div>
 		</div>
@@ -864,21 +816,21 @@ const PrintContent = (props: Props) => {
 		</div>
 
 		<div>
-			<div className='title-m mb-15'><em></em>二、实施阶段（Do）：</div>
+			<div className='title-m mb-15'>二、实施阶段（Do）：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea2_1}</p>}
 
 		</div>
 
 		<div>
-			<div className='title-m mb-15'><em></em>三、检查阶段（Check）：</div>
+			<div className='title-m mb-15'>三、检查阶段（Check）：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea3_1}</p>}
 		
 		</div>
 
 		<div>
-			<div className='title-m mb-15'><em></em>四、处理阶段(Action)：</div>
+			<div className='title-m mb-15'>四、处理阶段(Action)：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea4_1}</p>}
 		
@@ -891,7 +843,7 @@ const Wrapper = styled.div`
     font-size: 14px;
   }
   .first-content-box{
-    margin-bottom:35px;
+    /* margin-bottom:35px; */
   }
   .print-table.ant-table-wrapper td{
 	box-sizing: border-box;
@@ -993,7 +945,9 @@ const Wrapper = styled.div`
   }
   .second-content-bolatu-bolatu{
     border:1px solid #ddd;
-    margin: '0 auto';
+    margin: 0 auto;
+	/* margin-bottom: 20px; */
+    /* border-top: none; */
   }
   .print-page__ipt {
     margin: 0px 60px 15px;
@@ -1007,13 +961,15 @@ const Wrapper = styled.div`
     margin-left: 10px;
     font-weight: bold;
     font-size: 16px;
-    em{
-      display: inline-block;
-      width: 10px;
-      height: 30px;
-      background-color: #60e605;
-      margin-right: 10px;
-    }
+	&::before{
+		content: "";
+		display: inline-block;
+		height: 18px;
+		width: 5px;
+		background: rgb(112, 182, 3);
+		vertical-align: sub;
+		margin-right: 10px;
+	}
   }
   .title-s{
     font-family: STHeiti !important;

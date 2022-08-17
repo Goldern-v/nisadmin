@@ -893,7 +893,7 @@ const routes: RouteItem[] = [
   setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
   setLayout("/goodOrBadRouter", GoodOrBadRouter, layouts.MainLayout),
-  setLayout("/goodOrBadWholePrint", WholePrint),
+  setLayout("/goodOrBadWholePrint", WholePrint,layouts.MainLayout),
   setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout),
   setLayout("/safetyChecklist/qcTwo/checkView", safetyChecklistView, layouts.MainLayout),
   setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),

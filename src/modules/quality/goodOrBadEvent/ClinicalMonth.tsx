@@ -239,6 +239,7 @@ export default function ClinicalMonth(props: Props) {
 			dataIndex: "total",
 			align: "center",
 			width: 50,
+			fixed:'right',
 		},
 	]
 	useEffect(() => {

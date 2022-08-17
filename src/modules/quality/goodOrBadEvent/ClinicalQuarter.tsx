@@ -131,7 +131,7 @@ export default function ClinicalQuarter(props: Props) {
 		}
 		clinicalApi.getQuarterTable(params).then(res => {
 			setPageLoading(false)
-			setTableList(res.data.valueList)
+			setTableList(res.data.valueList.slice(0,31))
 		}).catch(err => {
 			setPageLoading(false)
 		});
@@ -184,6 +184,7 @@ export default function ClinicalQuarter(props: Props) {
 		columnDayObj.push(
 			{
 				title: "",
+				fixed:'right',
 				children: [{ title: '合计', align: "center", width: 50, dataIndex: "total" }]
 			}
 		)
@@ -317,7 +318,7 @@ export default function ClinicalQuarter(props: Props) {
 					dataSource={tableList}
 					columns={column3}
 					// columns={columns.filter((item: any) => item)}
-					surplusHeight={surplusHeight}
+					surplusHeight={255}
 					surplusWidth={300}
 					title={() => {return (<span>{clinicalData.yearQuarter?.year()}年第{quarterNames[Number(selectQuarter)-1]}季度临床护理质量指标季度汇总</span>)}}
 				/>

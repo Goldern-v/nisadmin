@@ -138,7 +138,7 @@ export default class ClinicalApi extends BaseApiService {
   }
 	// 根据MasterId删除汇总报告
 	public async delReportById(obj: any) {
-		return this.post(`/goodEvent/qualityReport/deleteReport`,obj);
+		return this.post(`/goodEvent/qualityReport/deleteReport?${qs.stringify(obj)}`);
 	}
 
 	
