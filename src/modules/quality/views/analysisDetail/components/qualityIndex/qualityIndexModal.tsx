@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { cloneJson } from 'src/utils/json/clone'
@@ -13,10 +13,36 @@ export interface Props {
 }
 export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { value: {},list: [] })
-  cloneData.list = cloneData?.list.map((v: any) => v.averageScore !=null ? {...v, averageScore: Number(v.averageScore).toFixed(2)}:v)
+  const flag = useRef(0)
+
+  const cloneData = cloneJson(data || { value: {},list: [] })
+  // 初始四舍五入保留2位小数
+  if (flag.current == 0 && cloneData.list.length) {
+    cloneData.list = cloneData?.list.map((v: any) => {
+      let copy = { ...v }
+      if (v.averageScore !=null) copy.averageScore = Number(v.averageScore).toFixed(2)
+      if (v.passRate !=null) copy.passRate = Number(v.passRate).toFixed(2)
+      return copy
+    })
+    flag.current += 1
+  }
   let value: any = cloneData && cloneData.value ? cloneData.value : {}
-  useEffect(() => { }, [])
+  
+  /**
+   * 输入框失焦触发
+   * 四舍五入保留2位小数
+   * @param item 
+   * @param key 
+   * @param isSave 
+   */ 
+  const formatVal = (item: Record<string, any>, key: string, isSave = true) => {
+    if (item[key] != null  || item[key] != undefined) {
+      item[key] = Number(item[key]).toFixed(2)
+      if (isSave) {
+        setData(cloneData)
+      }
+    }
+  }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -174,6 +200,9 @@ export default function qualityIndexModal(props: Props) {
                     record.averageScore = e.target.value
                     setData(cloneData)
                   }}
+                  onBlur={(e) => {
+                    formatVal(record, 'averageScore')
+                  }}
                 />
               </div>
             )
@@ -196,6 +225,9 @@ export default function qualityIndexModal(props: Props) {
                     record.passRate = e.target.value
                     record.standardStatus = !record.passRate ? "" : Number(record.passRate) >= 90 ? "达标" : "未达标"
                     setData(cloneData)
+                  }}
+                  onBlur={(e) => {
+                    formatVal(record, 'passRate')
                   }}
                 />
               </div>
@@ -293,5 +325,8 @@ const Wrapper = styled.div`
     padding: 0;
     width: 100%;
     text-align: center;
+  }
+  .cell-textArea[type='number'] {
+    padding-right: 0;
   }
 `

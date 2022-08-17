@@ -155,14 +155,15 @@ const LEFT_MENU_CONFIG = [
                 },
                 ...appStore.hisMatch({
                   map: {
-                    lcey: [
+                    'lcey,hj': [
                       {
                         title: "护士职称分布",
                         path: "/statistic/护士职称分布",
                       },
                     ],
                     other: []
-                  }
+                  },
+                  vague:true
                 })
                 // {
                 //   title: "科室护士结构信息汇总表",

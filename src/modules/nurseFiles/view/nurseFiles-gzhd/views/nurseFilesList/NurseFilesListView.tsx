@@ -26,6 +26,8 @@ const ThemeContext = React.createContext({
 const value = {
   theme: "red"
 };
+
+
 const columns: ColumnProps<any>[] = [
   {
     title: "序号",
@@ -89,9 +91,23 @@ const columns: ColumnProps<any>[] = [
     align: "center"
   },
   {
+    title: "工作年限",
+    dataIndex: "goHospitalWorkYear",
+    key: "goHospitalWorkYear",
+    width: 70,
+    align: "center"
+  },
+  {
     title: "职务",
     dataIndex: "job",
     key: "job",
+    width: 120,
+    align: "center"
+  },
+  {
+    title: "护理岗位",
+    dataIndex: "nursingJob",
+    key: "nursingJob",
     width: 120,
     align: "center"
   },
@@ -197,6 +213,18 @@ const onDoubleClick = (record: any) => {
 };
 
 export default observer(function NurseFilesListView() {
+  useEffect(() => {
+    // 获取护理岗位
+      nurseFilesService.findDitList().then(res=>{
+        let nursePostList = []
+        nursePostList = res.data.map((it:any)=>{return it.name}) 
+        nursePostList.unshift('全部')
+        nurseFilesListViewModel.nursePostList = nursePostList
+      }).catch(err=>{
+
+      })
+  }, [])
+  
   return (
     <Wrapper>
       <SelectCon />

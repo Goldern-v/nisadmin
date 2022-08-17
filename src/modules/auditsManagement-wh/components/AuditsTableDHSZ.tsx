@@ -52,7 +52,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
 
   const toDetails = (row: any) => {
-    console.log("ok");
+    console.log("ok",showType,props.needAudit);
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
@@ -90,6 +90,9 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           row.othersMessage.auditedUrl
         }`
       )
+    }else if(showType === 'nursePromotion'){
+      row.needAudit = props.needAudit;
+      appStore.history.push(`/PromotionAduit?${qs.stringify(row)}`);
     }
   };
 

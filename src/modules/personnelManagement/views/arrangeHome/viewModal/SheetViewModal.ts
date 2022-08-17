@@ -248,6 +248,10 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "1",
+        ytll: () =>
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType) == "1",
       }),
       isReduceWordTime: appStore.hisAdapter({
         hj: () =>
@@ -286,6 +290,10 @@ class SheetViewModal {
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2",
+        ytll: () =>
+        (cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].statusType) == "2",
       }),
       isJiJiaTime: appStore.hisMatch({
         map: {

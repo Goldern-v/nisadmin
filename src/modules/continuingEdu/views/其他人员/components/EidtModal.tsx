@@ -6,6 +6,7 @@ import { rules } from './../data/rules'
 import { userTypeList, educationList, titleList } from './../data/options'
 import { otherEmpService } from './../api/OtherEmpService'
 import { message } from 'antd/es'
+import { appStore } from 'src/stores'
 
 export interface Props {
   visible: boolean,
@@ -606,29 +607,34 @@ export default function EidtModal(props: Props) {
                 {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
               </Select>
             </Col>
-            <Col span={4}>进修科室二：</Col>
-            <Col span={8}>
-              <Select
-                style={{ width: '100%' }}
-                value={editParams.refresherDeptCode02}
-                showSearch
-                filterOption={(input: any, option: any) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                allowClear
-                onChange={(refresherDeptCode02: any) => {
-                  let refresherDeptName02 = ''
-                  let target = deptList.find((item: any) => item.code == refresherDeptCode02)
-                  if (target) refresherDeptName02 = target.name
-                  setEidtParams({
-                    ...editParams,
-                    refresherDeptCode02: refresherDeptCode02 || '',
-                    refresherDeptName02
-                  })
-                }}>
-                {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
-              </Select>
-            </Col>
+            {
+              !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+                (<>
+                  <Col span={4}>进修科室二：</Col>
+                  <Col span={8}>
+                    <Select
+                      style={{ width: '100%' }}
+                      value={editParams.refresherDeptCode02}
+                      showSearch
+                      filterOption={(input: any, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      allowClear
+                      onChange={(refresherDeptCode02: any) => {
+                        let refresherDeptName02 = ''
+                        let target = deptList.find((item: any) => item.code == refresherDeptCode02)
+                        if (target) refresherDeptName02 = target.name
+                        setEidtParams({
+                          ...editParams,
+                          refresherDeptCode02: refresherDeptCode02 || '',
+                          refresherDeptName02
+                        })
+                      }}>
+                      {deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+                    </Select>
+                  </Col>
+                </>)
+            }
           </Row>
           <Row>
             <Col span={4}>是否住宿：</Col>

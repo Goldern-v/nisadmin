@@ -292,6 +292,13 @@ export default class NurseFilesService extends BaseApiService {
       responseType: "blob"
     });
   }
+
+  public exportFile(empNo: any) {
+    return this.post(`/nurseAttachment/exportFile`, this.stringify({empNo}), {
+      responseType: "blob"
+    });
+  }
+
 }
 
 export const nurseFilesService = new NurseFilesService();

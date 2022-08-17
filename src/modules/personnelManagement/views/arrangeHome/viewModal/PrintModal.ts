@@ -1935,7 +1935,7 @@ class PrintModal {
     //页面总宽度
     let pageWidth = 700;
     // //页面高度 超过换页
-    let pageHeight = 1090;
+    let pageHeight = 1010;  //1090
     // //td计算用高度 和打印样式保持一致
     let tdHeight = 24;
 

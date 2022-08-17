@@ -43,6 +43,8 @@ import { navConfig as navConfig_whfk } from './navConfig_whfk'
 import { navConfig as navConfig_lyyz } from './navConfig_lyyz'
 import { navConfig as navConfig_qhwy } from './navConfig_qhwy'
 import { navConfig as navConfig_whsl } from './navConfig_whsl'
+import { navConfig as navConfig_zzwy } from './navConfig_zzwy'
+import { navConfig as navConfig_ytll } from './navConfig_ytll'
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -191,6 +193,10 @@ export default observer(function NavBar(props: any) {
       return navConfig_qhwy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'whsl') {
       return navConfig_whsl(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == 'zzwy') {
+      return navConfig_zzwy(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == 'ytll') {
+      return navConfig_ytll
     }
     return navConfig;
   })();
@@ -294,7 +300,8 @@ export default observer(function NavBar(props: any) {
           view = (
             <React.Fragment>
               <img
-                src={require("../images/lcey_logo.jpg")}
+                // src={require("../images/lcey_logo.jpg")}
+                src={require("../images/liaocheng_logo.png")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}

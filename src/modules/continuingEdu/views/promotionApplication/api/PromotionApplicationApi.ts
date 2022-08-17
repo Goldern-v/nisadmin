@@ -14,6 +14,15 @@ class PromotionApp extends BaseApiService {
       { id }
     )
   } 
+  // 撤销申请表
+  public getcancelById(id:any){
+    let newFormData = new FormData()
+    newFormData.set('id',id)
+    return this.post(
+      `/nurse/promotion/cancelById`,
+      newFormData
+    )
+  } 
 
   // 根据员工号和表格获取信息
   public getByEmpNoAndFormCode(obj:any){
@@ -28,6 +37,13 @@ class PromotionApp extends BaseApiService {
   //检查用户名和密码
   public async checkUser(query: any) {
     return this.post(`/form/checkUser`, query);
+  }
+  //删除附件
+  public async deleteAttachment(query: any) {
+    let newFormData = new FormData()
+    newFormData.set('id', query.id)
+    newFormData.set('masterId', query.masterId)
+    return this.post(`/nurse/promotion/deleteAttachment`, newFormData);
   }
 }
 

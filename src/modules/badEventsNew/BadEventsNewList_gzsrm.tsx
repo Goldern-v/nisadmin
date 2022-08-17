@@ -2,7 +2,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 // import Form from "src/components/Form";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { Button, DatePicker, Select } from "antd";
+import { Button, DatePicker, message, Modal, Select } from "antd";
 import service from 'src/services/api'
 // import { Link } from "react-router-dom";
 import { ColumnProps } from "antd/lib/table";
@@ -64,6 +64,28 @@ export default observer(function BadEventNewList() {
     toAudit: 0,
     audited: 0,
   })
+  const delItem = (row: any) => {
+    console.log('test-row', row)
+    let happenPlace = row.happenPlace
+        ? row.happenPlace.slice(0, 15) + "等场所"
+        : "";
+      Modal.confirm({
+        content: `是否要删除,${row.name || ""}于${row.happenDate ||
+          ""} ${row.happenTime || ""}在${happenPlace}因${row.happenReason ||
+          ""}发生的${row.eventType || ""}不良事件?`,
+        title: "提示",
+        onOk: () => {
+          setDataLoading(true)
+          api.deleteBE(row.id).then((res: any) => {
+            message.success('删除成功')
+            getEventList()
+          }).catch(() => {
+            message.warning('删除失败')
+            setDataLoading(false)
+          })
+        }
+      })
+  }
 
   //列表Table组件columns配置
   const columns: ColumnProps<any>[] = [
@@ -107,6 +129,13 @@ export default observer(function BadEventNewList() {
       width: 150,
     },
     {
+      title: "发生时间",
+      dataIndex: "happenDate",
+      key: "happenDate",
+      align: "center",
+      width: 150,
+    },
+    {
       title: "事件状态",
       dataIndex: "currentNodePendingName",
       key: "currentNodePendingName",
@@ -122,6 +151,7 @@ export default observer(function BadEventNewList() {
         return (
           <DoCon>
             <span onClick={() => appStore.history.push(`/badEventsNewDetail/${item.id}`)}>查看</span>
+            {authStore.isDepartment && <span onClick={() => delItem(item)}>删除</span>}
           </DoCon>
         );
       }

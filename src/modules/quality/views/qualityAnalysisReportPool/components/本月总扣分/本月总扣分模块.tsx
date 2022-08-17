@@ -20,11 +20,12 @@ export default observer(function 本月总扣分模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  let totalSorce = 0
+  let totalScore = 0
   for (let i = 0; i < list.length; i++) {
-    //totalSorce += list[i].deductScore || 0
-    totalSorce = addNum(list[i].deductScore || 0,totalSorce)
+    //totalScore += list[i].deductScore || 0
+    totalScore = addNum(list[i].deductScore || 0,totalScore)
   }
+  totalScore =  Number(totalScore.toFixed(2))
 
 
 
@@ -32,8 +33,8 @@ export default observer(function 本月总扣分模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='sup-title'>(二) 本月总扣分{totalSorce}分，各项质量检查扣分反馈</div>
-      <Table list={list} totalSorce={totalSorce} />
+      <div className='sup-title'>(二) 本月总扣分{totalScore}分，各项质量检查扣分反馈</div>
+      <Table list={list} totalScore={totalScore} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

@@ -15,7 +15,7 @@ import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangS
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
-
+import TubeBed from "../views/arrangeHome/page/tubeBed/tubeBed";
 export interface meunConfigItem {
   title?: string;
   component?: any;
@@ -37,6 +37,12 @@ export const meunConfig: meunConfigItem[] = [
         path: "/personnelManagement/arrangeHome",
         component: ArrangeHome,
         style: { background: "#fff" },
+        iSlimit: false,
+      },
+      {
+        title: "管床设置",
+        path: "/personnelManagement/tubeBed",
+        component: TubeBed,
         iSlimit: false,
       },
       {

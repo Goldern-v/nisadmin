@@ -11,13 +11,13 @@ import {
   Modal as ModalMb,
   TextareaItem
 } from 'antd-mobile'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN'
 import moment from 'moment'
 import { educationList } from './data/education'
 import { titleList } from './data/title'
 import { refresherInfoSubmitService } from './api/RefresherInfoSubmitService'
-import { message } from 'antd'
+import { appStore } from 'src/stores'
 
 export interface Props { }
 
@@ -54,6 +54,14 @@ export default function TraineeInfoSubmit() {
       scrollId: '',
       rules: [
         (val: string) => !!val || '姓名不能为空'
+      ]
+    },
+    age: {
+      error: false,
+      errorText: '',
+      scrollId: '',
+      rules: [
+        (val: string) => !!val || '年龄不能为空'
       ]
     },
     title: {
@@ -109,7 +117,7 @@ export default function TraineeInfoSubmit() {
       errorText: '',
       scrollId: '',
       rules: [
-        (val: string) => !!val || '实习开始时间不能为空'
+        (val: string) => !!val || '进修开始时间不能为空'
       ]
     },
     studyTimeEnd: {
@@ -117,7 +125,7 @@ export default function TraineeInfoSubmit() {
       errorText: '',
       scrollId: '',
       rules: [
-        (val: string) => !!val || '实习结束时间不能为空'
+        (val: string) => !!val || '进修结束时间不能为空'
       ]
     },
     studyDeptCode01: {
@@ -191,10 +199,14 @@ export default function TraineeInfoSubmit() {
 
         if (typeof result !== 'boolean') {
           message.error(result)
+          rulesTotal[key].error = true
+          setRules(rulesTotal)
           return false
         }
+        rulesTotal[key].error = false
       }
     }
+    setRules(rulesTotal)
 
     return true
   }
@@ -227,6 +239,7 @@ export default function TraineeInfoSubmit() {
     <div className="content" style={{ display: finished ? 'none' : 'block' }}>
       <ListMb>
         <InputItem
+          error={rules['name'].error}
           value={params.name}
           placeholder="请输入"
           onChange={(name: string) => setParams({ ...params, name })}>
@@ -247,12 +260,14 @@ export default function TraineeInfoSubmit() {
           <ListMb.Item className="sex-row" arrow="horizontal">性别</ListMb.Item>
         </Picker>
         <InputItem
+          error={rules['age'].error}
           value={params.age}
           placeholder="请输入"
           onChange={(age: string) => setParams({ ...params, age })}>
           年龄
         </InputItem>
         <Picker
+        className='error'
           extra="请选择"
           data={titleList}
           style={{ textAlign: 'center' }}
@@ -261,7 +276,7 @@ export default function TraineeInfoSubmit() {
           onChange={(payload: any) => {
             if (payload[0]) setParams({ ...params, title: payload[0] })
           }}>
-          <ListMb.Item className="title-row" arrow="horizontal">职称</ListMb.Item>
+          <ListMb.Item className="title-row" arrow="horizontal" error={rules['title'].error}>职称</ListMb.Item>
         </Picker>
         <Picker
           extra="请选择"
@@ -272,17 +287,19 @@ export default function TraineeInfoSubmit() {
           onChange={(payload: any) => {
             if (payload[0]) setParams({ ...params, education: payload[0] })
           }}>
-          <ListMb.Item className="education-row" arrow="horizontal">学历</ListMb.Item>
+          <ListMb.Item className="education-row" arrow="horizontal" error={rules['education'].error}>学历</ListMb.Item>
         </Picker>
       </ListMb>
       <ListMb>
         <InputItem
+          error={rules['originalWorkUnit'].error}
           value={params.originalWorkUnit}
           placeholder="请输入"
           onChange={(originalWorkUnit: string) => setParams({ ...params, originalWorkUnit })}>
           原单位名称
         </InputItem>
         <InputItem
+          error={rules['originalDepartment'].error}
           value={params.originalDepartment}
           placeholder="请输入"
           onChange={(originalDepartment: string) => setParams({ ...params, originalDepartment })}>
@@ -291,12 +308,14 @@ export default function TraineeInfoSubmit() {
       </ListMb>
       <ListMb>
         <InputItem
+          error={rules['idCardNo'].error}
           value={params.idCardNo}
           placeholder="请输入"
           onChange={(idCardNo: string) => setParams({ ...params, idCardNo })}>
           身份证号
         </InputItem>
         <InputItem
+          error={rules['phone'].error}
           value={params.phone}
           placeholder="请输入"
           onChange={(phone: string) => setParams({ ...params, phone })}>
@@ -333,7 +352,7 @@ export default function TraineeInfoSubmit() {
             ...params,
             studyTimeBegin: moment(date).format('YYYY-MM-DD')
           })}>
-          <ListMb.Item arrow="horizontal">开始时间</ListMb.Item>
+          <ListMb.Item arrow="horizontal" error={rules['studyTimeBegin'].error}>开始时间</ListMb.Item>
         </DatePickerMb>
         <DatePickerMb
           value={params.studyTimeEnd ? moment(params.studyTimeEnd).toDate() : undefined}
@@ -343,7 +362,7 @@ export default function TraineeInfoSubmit() {
             ...params,
             studyTimeEnd: moment(date).format('YYYY-MM-DD')
           })}>
-          <ListMb.Item arrow="horizontal">结束时间</ListMb.Item>
+          <ListMb.Item arrow="horizontal" error={rules['studyTimeEnd'].error}>结束时间</ListMb.Item>
         </DatePickerMb>
       </ListMb>
       <ListMb>
@@ -362,49 +381,55 @@ export default function TraineeInfoSubmit() {
               })
             }
           }}>
-          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">进修科室1</ListMb.Item>
+          <ListMb.Item className="studyDeptCode-row" arrow="horizontal" error={rules['studyDeptCode01'].error}>进修科室1</ListMb.Item>
         </Picker>
-        <Picker
-          extra="请选择"
-          data={[
-            { label: '无', value: '' },
-            ...deptList
-          ]}
-          value={[params.studyDeptCode02]}
-          cols={1}
-          onChange={(payload: any) => {
-            if (payload[0]) {
-              let target = deptList.find((item: any) => item.value == payload[0])
-              setParams({
-                ...params,
-                studyDeptCode02: target.value || '',
-                studyDeptName02: target.label || ''
-              })
-            } else {
-              setParams({
-                ...params,
-                studyDeptCode02: '',
-                studyDeptName02: ''
-              })
-            }
-          }}>
-          <ListMb.Item className="studyDeptCode-row" arrow="horizontal">进修科室2</ListMb.Item>
-        </Picker>
+        {
+          !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+            <Picker
+              extra="请选择"
+              data={[
+                { label: '无', value: '' },
+                ...deptList
+              ]}
+              value={[params.studyDeptCode02]}
+              cols={1}
+              onChange={(payload: any) => {
+                if (payload[0]) {
+                  let target = deptList.find((item: any) => item.value == payload[0])
+                  setParams({
+                    ...params,
+                    studyDeptCode02: target.value || '',
+                    studyDeptName02: target.label || ''
+                  })
+                } else {
+                  setParams({
+                    ...params,
+                    studyDeptCode02: '',
+                    studyDeptName02: ''
+                  })
+                }
+              }}>
+              <ListMb.Item className="studyDeptCode-row" arrow="horizontal">进修科室2</ListMb.Item>
+            </Picker>
+        }
       </ListMb>
       <ListMb>
         <InputItem
+          error={rules['address'].error}
           value={params.address}
           placeholder="请输入"
           onChange={(address: string) => setParams({ ...params, address })}>
           家庭住址
         </InputItem>
         <InputItem
+          error={rules['emergencyContactPerson'].error}
           value={params.emergencyContactPerson}
           placeholder="请输入"
           onChange={(emergencyContactPerson: string) => setParams({ ...params, emergencyContactPerson })}>
           紧急联系人
         </InputItem>
         <InputItem
+          error={rules['emergencyContactPhone'].error}
           value={params.emergencyContactPhone}
           placeholder="请输入"
           onChange={(emergencyContactPhone: string) => setParams({ ...params, emergencyContactPhone })}>

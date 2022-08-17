@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TabledCon } from "src/components/BaseTable";
 import YearPicker from "src/components/YearPicker";
@@ -16,19 +16,21 @@ import { nursingEduFilesModal } from "./NursingEduFilesModal"; // 仓库数据
 import { nursingEduFilesApi } from "./api/NursingEduFilesApi"; // 接口
 import NursingEditModal from "./modal/NursingEditModal"; // 添加修改弹窗
 import { appStore } from "src/stores";
-import HdNursingEditModal from "./modal/HdNursingEditModal"; // 花都添加修改弹窗
+// import HdNursingEditModal from "./modal/HdNursingEditModal"; // 花都添加修改弹窗
 import createModal from "src/libs/createModal";
-import QrcodeSbmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
+import QrCodeSubmitModal from "./modal/QrcodeSbmitModal"; //二维码扫描弹窗
 import RefresherCheckModal from "./modal/RefresherCheckModal"; //检查进修生填写资料
+import SheetDetailModal from "./modal/SheetDetailModal";
 
 interface Props { }
 export default observer(function NursingEduFiles(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); //弹窗开关
-  const qrcodeSbmitModal = createModal(QrcodeSbmitModal);
-  const refresherCheckModal = createModal(RefresherCheckModal);
+  const qrCodeSubmitModal = createModal(QrCodeSubmitModal);
+  const refresherCheckModal = useMemo(() => createModal(RefresherCheckModal), []);
+  const sheetDetailModal = useMemo(() => createModal(SheetDetailModal), []);
   const [visible, setVisible] = useState(false);
-  const [hdParams, setHdParams] = useState({} as any);
+  // const [hdParams, setHdParams] = useState({} as any);
   const [hdVisible, setHdVisible] = useState(false);
 
   // 初始化数据
@@ -116,7 +118,7 @@ export default observer(function NursingEduFiles(props: Props) {
       align: "center"
     },
     ['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&{
-      title: "学历",
+      title: "在院状态",
       dataIndex: "isOnJob",
       width: 80,
       align: "center",
@@ -199,12 +201,19 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 200,
       align: "center"
     },
-    {
-      title: "进修科室二",
-      dataIndex: "studyDeptName02",
-      width: 200,
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        'qhwy': [],
+        other: [
+          {
+            title: "进修科室二",
+            dataIndex: "studyDeptName02",
+            width: 200,
+            align: "center"
+          },
+        ]
+      }
+    }),
     {
       title: "家庭住址",
       dataIndex: "address",
@@ -284,21 +293,33 @@ export default observer(function NursingEduFiles(props: Props) {
   const saveOrUpload = (record: any) => {
     setEditParams(record);
     setEditVisible(true);
-    setHdParams(record)
-    setVisible(true);
+    // setHdParams(record)
+    // setVisible(true);
   };
 
   // 弹窗
   const handleEditCancel = () => {
     setEditVisible(false);
     setEditParams({});
-    setHdParams({})
-    setVisible(false);
+    // setHdParams({})
+    // setVisible(false);
   };
   const handleEditOk = () => {
     nursingEduFilesModal.onload();
     handleEditCancel();
   };
+  const handleOkByShowDetail = (data: any[]):void => {
+    nursingEduFilesModal.batchSave(data, () => {
+      sheetDetailModal.hide()
+    })
+  }
+  const showDetail = (list: any) => {
+    // console.log('test-list', list)
+    sheetDetailModal.show({
+      handleOk: handleOkByShowDetail,
+      data: list,
+    })
+  }
 
   return (
     <Wrapper>
@@ -399,6 +420,27 @@ export default observer(function NursingEduFiles(props: Props) {
           >
             查询
           </Button>
+          {
+           appStore.hisMatch({
+            map: {
+              'qhwy': <>
+                <Button
+                  onClick={() => {
+                    nursingEduFilesModal.getImportTemplate();
+                  }}>
+                  下载模板
+                </Button>
+                <Button
+                  onClick={() => {
+                    nursingEduFilesModal.import(showDetail);
+                  }}>
+                  导入
+                </Button>
+              </>,
+              'other': ''
+            }
+           })
+          }
           <Button
             onClick={() => {
               nursingEduFilesModal.export();
@@ -409,7 +451,7 @@ export default observer(function NursingEduFiles(props: Props) {
           <Button onClick={() => addNurse()}>添加进修生</Button>
           {['hj','qhwy'].includes(appStore.HOSPITAL_ID) &&
             <span>
-              <Button onClick={() => qrcodeSbmitModal.show()}>填写二维码</Button>
+              <Button onClick={() => qrCodeSubmitModal.show()}>填写二维码</Button>
               <Button
                 onClick={() =>
                   refresherCheckModal.show({
@@ -466,14 +508,15 @@ export default observer(function NursingEduFiles(props: Props) {
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
-      <HdNursingEditModal
+      {/* <HdNursingEditModal
         visible={visible}
         params={hdParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
-      />
-      <qrcodeSbmitModal.Component />
+      /> */}
+      <qrCodeSubmitModal.Component />
       <refresherCheckModal.Component />
+      <sheetDetailModal.Component />
     </Wrapper>
   );
 });

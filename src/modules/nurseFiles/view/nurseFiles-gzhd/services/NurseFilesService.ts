@@ -9,6 +9,8 @@ export interface NurseQuery {
   zybz: string /** 科室属性 */;
   title: string /** 职称 */;
   currentLevel: string /** 能级、层级 */;
+  goHospitalYearType:string;//工作年限
+  nursingJob:string;//护理岗位
   post: string /**  当前页数  */;
   pageIndex: number /**  职务  */;
   pageSize: number /**   每页页数 */;
@@ -28,6 +30,10 @@ export default class NurseFilesService extends BaseApiService {
       }
     });
     return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj));
+  }
+  // 字典
+  public async findDitList() {
+    return this.get(`/dict/common/getDictItemList?dictCode=nursing_job`);
   }
 
   // 查看护士首页信息 个人

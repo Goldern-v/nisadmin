@@ -49,7 +49,7 @@ function ModalAdd(props: Props) {
 
   return (
     <Modal
-      title='添加节目'
+      title='添加假日'
       visible={visible}
       onOk={onSave}
       onCancel={handleCancel}

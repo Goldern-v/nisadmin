@@ -124,7 +124,6 @@ export default observer(function qualityIndexSection(props: Props) {
       <BaseTable  columns={columns}  dataSource={ data&&data.list}
        footer={()=>footer}
        fixedFooter={true}
-       scroll={{x:'max-content',y:500}}
       />
     </Wrapper>
   )

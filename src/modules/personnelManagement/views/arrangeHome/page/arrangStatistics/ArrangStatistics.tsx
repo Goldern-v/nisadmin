@@ -101,7 +101,7 @@ export default observer(function ArrangStatistics() {
           total += record[current];
           return total;
         }, 0);
-        return ['wh', 'lyyz', 'qhwy'].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
+        return ['wh', 'lyyz', 'qhwy', "ytll"].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
           sum + Number(record["加班"]) - Number(record["减班"])
         ).toFixed(2);
       }

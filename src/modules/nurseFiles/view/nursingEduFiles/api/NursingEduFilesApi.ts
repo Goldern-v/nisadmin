@@ -86,5 +86,25 @@ export default class NursingEduFilesApi extends BaseApiService {
     };
     return this.post(`studyAndTrain/basicInformation/user/getPage`, obj);
   }
+  /**
+   * 导入模版
+   */
+   public exportSheetTemplate() {
+    return this.get('/nursefile/otherPersonInfo/refresherStudent/downRefresherStudentTemplate', { responseType: 'blob' })
+  }
+  /**
+   * 批量保存接口
+   */
+   public batchSave(data: any) {
+    return this.post('/nursefile/otherPersonInfo/refresherStudent//batchSave', data)
+  }
+  /**
+   * 进修生导入接口，返回列表
+   */
+   public importExcel(file: any) {
+    let formData = new FormData()
+    formData.set('file', file)
+    return this.post('/nursefile/otherPersonInfo/refresherStudent/importExcel', formData)
+  }
 }
 export const nursingEduFilesApi = new NursingEduFilesApi();

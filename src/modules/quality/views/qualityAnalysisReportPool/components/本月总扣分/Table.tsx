@@ -6,11 +6,11 @@ import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolViewModal'
 export interface Props {
   list: DeptItem[]
-  totalSorce: number
+  totalScore: number
 }
 
 export default function Table(props: Props) {
-  let { list, totalSorce } = props
+  let { list, totalScore } = props
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
 
   return (
@@ -40,7 +40,7 @@ export default function Table(props: Props) {
           ))}
           <tr>
             <td>合计</td>
-            <td style={{ borderRight: 0 }}>{Number(totalSorce).toFixed(2)}</td>
+            <td style={{ borderRight: 0 }}>{totalScore}</td>
             <td style={{ borderLeft: 0 }} />
             <td>100%</td>
           </tr>

@@ -49,6 +49,16 @@ export default observer(function TopCon() {
     })
   }
 
+  const btnTitle = () => {
+    switch (appStore.HOSPITAL_ID) {
+      case "gxjb":
+        return "院内调动"
+      case "wjgdszd":
+        return "科室调动"
+      default:
+        return "片区内调动"
+    }
+  }
   useEffect(() => {
     nurseFileDetailViewModal.init()
   }, [])
@@ -102,15 +112,15 @@ export default observer(function TopCon() {
             {appStore.HOSPITAL_ID === 'gxjb' ? 
               <div>
                 {/* 广西江滨只有护理部才有院内调动权限 */}
-                { authStore.isDepartment &&  <DeptChangeBtn onClick={() => openDeptChangeModal()}>院内调动</DeptChangeBtn>}
+                { authStore.isDepartment &&  <DeptChangeBtn onClick={() => openDeptChangeModal()}>{btnTitle()}</DeptChangeBtn>}
               </div> :
-              <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
+              <DeptChangeBtn onClick={() => openDeptChangeModal()}>{btnTitle()}</DeptChangeBtn>
             }
           </React.Fragment>
         </div>
       )}
 
-      <deptChangeModal.Component title={appStore.HOSPITAL_ID === 'gxjb' ? '院内调动' : '片区内调动'} />
+      <deptChangeModal.Component title={btnTitle()} />
       <leaveModal.Component title='离职/退休' />
       {/* 档案导出 */}
       {exportVisible && (

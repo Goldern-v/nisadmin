@@ -129,59 +129,62 @@ export default function Step4() {
     }
     let hideLoading = message.loading("正在上传，请稍等", 0);
     let list: any = [...fileList];
-    promiseList
-      .reduce((total: any, current, index, arr) => {
-        if (total) {
-          return total.then((res: any) => {
-            let item = {
-              ...res.data,
-              size: getFileSize(res.data.size),
-              fileType: getFileType(res.data.path)
-            };
-            list.push(item);
-            // console.log(list, "list");
-            /** 最后一项 */
-            if (index == arr.length - 1) {
+    if (promiseList && promiseList.length > 0) {
+      promiseList
+        .reduce((total: any, current, index, arr) => {
+          if (total) {
+            return total.then((res: any) => {
+              let item = {
+                ...res.data,
+                size: getFileSize(res.data.size),
+                fileType: getFileType(res.data.path),
+              }
+              list.push(item)
+              // console.log(list, "list");
+              /** 最后一项 */
+              if (index == arr.length - 1) {
+                return current().then((res: any) => {
+                  let item = {
+                    ...res.data,
+                    size: getFileSize(res.data.size),
+                    fileType: getFileType(res.data.path),
+                  }
+                  list.push(item)
+                })
+              } else {
+                return current()
+              }
+            })
+          } else {
+            /** 如果只上传一个 */
+            if (arr.length == 1) {
               return current().then((res: any) => {
                 let item = {
                   ...res.data,
                   size: getFileSize(res.data.size),
-                  fileType: getFileType(res.data.path)
-                };
-                list.push(item);
-              });
-            } else {
-              return current();
+                  fileType: getFileType(res.data.path),
+                }
+                list.push(item)
+              })
             }
-          });
-        } else {
-          /** 如果只上传一个 */
-          if (arr.length == 1) {
-            return current().then((res: any) => {
-              let item = {
-                ...res.data,
-                size: getFileSize(res.data.size),
-                fileType: getFileType(res.data.path)
-              };
-              list.push(item);
-            });
+            return current()
           }
-          return current();
-        }
-      }, 0)
-      .then((res: any) => {
-        setFileList(list);
-        stepViewModal.stepData4.videoList = list.filter(
-          (item: any) => item.type == "video/mp4"
-        );
+        }, 0)
+        .then((res: any) => {
+          setFileList(list)
+          stepViewModal.stepData4.videoList = list.filter(
+            (item: any) => item.type == 'video/mp4',
+          )
 
-        setProgressEventMap({});
-        hideLoading();
-      })
-      .catch((e: any) => {
-        hideLoading();
-      });
-
+          setProgressEventMap({})
+          hideLoading()
+        })
+        .catch((e: any) => {
+          hideLoading()
+        })
+    } else {
+      hideLoading()
+    }
     // Axios.all(promiseList)
     //   .then(res => {
     //     let list: any = [
@@ -263,7 +266,7 @@ export default function Step4() {
                   onClick={() => deleteFile(index)}
                 />
               </div>
-            ))}
+            ))} 
           </FilesBox>
         )}
         {fileList &&

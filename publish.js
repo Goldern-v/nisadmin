@@ -101,12 +101,21 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9879') >= 0) {
     folderSrc = '/crdata/webProject/manage-nanfangzhongxiyi'
   }
+  // 青海
+  if (process.env.npm_lifecycle_event.indexOf('9894') >= 0) {
+    folderSrc = '/crdata/webProject/manage-qinghaiwuyuan'
+  }
 
   //威海市立
   if (process.env.npm_lifecycle_event.indexOf('9896') >= 0) {
     folderSrc = '/crdata/webProject/manage-weihai'
   }
 
+  //漳州五院
+  if (process.env.npm_lifecycle_event.indexOf('9897') >= 0) {
+    folderSrc = '/crdata/webProject/manage-zhangzhou'
+  }
+  
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'

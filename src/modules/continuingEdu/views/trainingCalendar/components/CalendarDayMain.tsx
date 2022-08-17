@@ -53,11 +53,11 @@ export default observer(function CalenderDayMian (){
                   (
                     item.list.map((itemList:any) => {
                       return <div className={item.list.length > 1 ?"border-list" :''} key={itemList.id} onClick={ ()=>{handleMainOpen(itemList)}}>
-                      <div className="theme">{itemList.teachingTypeName}</div>
+                      <div className="theme">{itemList.title}</div>
                       <div>开始时间：{itemList.startTime}</div>
                       <div>结束时间：{itemList.endTime}</div>
                       <div>科室：{itemList.deptName}</div>
-                      <div>培训主题：{itemList.title}</div>
+                      <div>培训类型：{itemList.teachingTypeName}</div>
                       <div>主讲：{itemList.teachers}</div>
                       <div>培训人数：{itemList.personCount}人</div>
                       <div>培训地址：{itemList.address}</div>
@@ -108,9 +108,11 @@ const DayWrapper = styled.div`
   border: 1px solid #ccc;
   height: 141px;
   display: flex;
+  position: relative;
   .left-day{
     height:100%;
-    width: 90%;
+    width: 100%;
+    padding-left: 6px;
     flex:none;
     text-align: left;
     flex-wrap: wrap;
@@ -136,7 +138,8 @@ const DayWrapper = styled.div`
     }
   }
   .right-day{
-    height:100%;
+    position: absolute;
+    right: 0;
     width:9% !important ;
     flex:none;
     font-weight: bold;

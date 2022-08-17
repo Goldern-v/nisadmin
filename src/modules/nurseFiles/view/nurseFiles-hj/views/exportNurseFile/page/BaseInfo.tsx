@@ -33,7 +33,7 @@ export default function BaseInfo(props: Props) {
         </colgroup>
         <tbody><tr>
           <td colSpan={6}>
-            <span className='title'>基本情况</span>
+            <span className='title'>基本信息</span>
           </td>
         </tr>
         <tr>
@@ -76,6 +76,12 @@ export default function BaseInfo(props: Props) {
           <td />
         </tr>
         <tr>
+          <td>层级</td>
+          <td colSpan={2}>{baseInfo.nurseHierarchy}</td>
+          <td colSpan={2}>联系电话</td>
+          <td>{baseInfo.phone}</td>
+        </tr>
+        <tr>
           <td>身份证号码</td>
           <td colSpan={2}>{baseInfo.cardNumber}</td>
           <td>
@@ -87,9 +93,9 @@ export default function BaseInfo(props: Props) {
         </tr>
         <tr>
           <td>家庭住址</td>
-          <td colSpan={3}>{baseInfo.address}</td>
-          <td>联系电话</td>
-          <td>{baseInfo.phone}</td>
+          <td colSpan={5}>{baseInfo.address}</td>
+          {/* <td>联系电话</td>
+          <td>{baseInfo.phone}</td> */}
         </tr></tbody>
         
       </table>
@@ -116,7 +122,8 @@ export default function BaseInfo(props: Props) {
         {experienceList.map((item: any, index: number) => (
           <tr key={index}>
             <td>
-              {item.startTime} - {item.endTime || '至今'}
+              {/* {item.startTime} - {item.endTime || '至今'} */}
+              {item.startTime} - {index==0 ? '当天' : item.endTime}
             </td>
             <td>{item.unit}</td>
             <td>{item.professionalWork}</td>

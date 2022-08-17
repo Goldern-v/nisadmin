@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import OnePage from './page/OnePage'
+import ImgPrint from './page/ImgPrint'
 import TwoPage from './page/TwoPage'
 import PrintPage from './components/PrintPage'
 import BaseInfo from './page/BaseInfo'
@@ -23,6 +24,9 @@ export interface Props {
 export default function ExportNurseFile(props: Props) {
   /** 加载完成 */
   const [inited, setInited]: any = useState(false)
+  /** 页码列表 */
+  const [startPage, setStartPage]: any = useState([])
+  const [startPageKeys, setStartPageKeys]: any = useState([])
 
   /** 基本信息 */
   const [baseInfo, setBaseInfo]: any = useState({})
@@ -44,6 +48,8 @@ export default function ExportNurseFile(props: Props) {
   const [threeBaseList, setThreeBaseList]: any = useState([])
   /** 工作情况登记 */
   const [registrationWorkList, setRegistrationWorkList]: any = useState([])
+  /** 附件 */
+  const [fileImgList, setFileImgList]: any = useState([])
 
   let fileRef: any = React.createRef<HTMLDivElement>()
 
@@ -62,7 +68,206 @@ export default function ExportNurseFile(props: Props) {
       nurseFilesService.nurseYearCheck(props.empNo).then((res) => setYearCheckList(res.data)),
       nurseFilesService.nurseHospitalsThreeBase(props.empNo).then((res) => setThreeBaseList(res.data)),
       nurseFilesService.nurseAwardWinning(props.empNo).then((res) => setAwardWinningList(res.data)),
-      nurseFilesService.nurseRegistrationWork(props.empNo).then((res) => setRegistrationWorkList(res.data))
+      nurseFilesService.nurseRegistrationWork(props.empNo).then((res) => setRegistrationWorkList(res.data)),
+      nurseFilesService.nurseAttachment(props.empNo).then((res) =>{
+        let data: any = [
+          {
+            content: '学历毕业证复印件',
+            number: res.data.filter((item: any) => item.type === '2').length,
+            status: '',
+            filterData: res.data
+              .filter((item: any) => item.type === '2')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '学历毕业证复印件',
+            type: '2'
+          },
+          {
+            content: '执业证复印件',
+            number: res.data.filter((item: any) => item.type === '3').length,
+            status: '',
+            filterData: res.data
+              .filter((item: any) => item.type === '3')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '执业证复印件',
+            type: '3'
+          },
+          {
+            content: '资格证复印件',
+            number: res.data.filter((item: any) => item.type === '4').length,
+            status: '',
+            filterData: res.data
+              .filter((item: any) => item.type === '4')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '资格证复印件',
+            type: '4'
+          },
+          {
+            content: '职称聘用证明',
+            number: res.data.filter((item: any) => item.type === '5').length,
+            status: '',
+            filterData: res.data
+              .filter((item: any) => item.type === '5')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '职称聘用证明',
+            type: '5'
+          },
+          {
+            content: '层级晋级表',
+            number: res.data.filter((item: any) => item.type === '6').length,
+            status: '',
+            filterData: res.data
+              .filter((item: any) => item.type === '6')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '层级晋级表',
+            type: '6'
+          },
+          {
+            content: '护理会诊人员资质认定表',
+            number: res.data.filter((item: any) => item.type === '7').length,
+            status:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].auditedStatusName,
+            filterData: res.data
+              .filter((item: any) => item.type === '7')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '护理会诊人员资质认定表',
+            statusColor:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].statusColor,
+            isShow:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].isShow,
+            path:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].path,
+            id:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].id,
+            empNo:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].empNo,
+            saveStatus:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].saveStatus,
+            empName:
+              res.data.filter((item: any) => item.type === '7')[0] &&
+              res.data.filter((item: any) => item.type === '7')[0].empName,
+            type: '7'
+          },
+          {
+            content: '厚街医院护理人员执业准入资格备案表',
+            number: res.data.filter((item: any) => item.type === '8').length,
+            status:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].auditedStatusName,
+            filterData: res.data
+              .filter((item: any) => item.type === '8')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '厚街医院护理人员执业准入资格备案表',
+            statusColor:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].statusColor,
+            isShow:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].isShow,
+            path:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].path,
+            id:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].id,
+            empNo:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].empNo,
+            saveStatus:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].saveStatus,
+            empName:
+              res.data.filter((item: any) => item.type === '8')[0] &&
+              res.data.filter((item: any) => item.type === '8')[0].empName,
+            type: '8'
+          },
+          {
+            content: '高风险诊疗技术操作人员资质申请表',
+            number: res.data.filter((item: any) => item.type === '9').length,
+            status:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].auditedStatusName,
+            filterData: res.data
+              .filter((item: any) => item.type === '9')
+              .map((item: any) => item.path)
+              .reduce((prev: any, curr: any) => {
+                let arr = curr ? curr.split(',') : []
+                return [...prev, ...arr]
+              }, []),
+            fileName: '高风险诊疗技术操作人员资质申请表',
+            statusColor:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].statusColor,
+            isShow:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].isShow,
+            id:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].id,
+            path:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].path,
+            empNo:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].empNo,
+            saveStatus:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].saveStatus,
+            empName:
+              res.data.filter((item: any) => item.type === '9')[0] &&
+              res.data.filter((item: any) => item.type === '9')[0].empName,
+            type: '9'
+          }
+        ]
+        let dataARR:any = [],pageList:any = [],pageEnd = 9
+        data.map((item:any,i:any)=>{
+          if(item.filterData.length>0){
+            dataARR.push(item)
+            pageEnd += parseInt(item.filterData.length)
+            pageList.push(pageEnd)
+          } 
+        })
+        // const pageKeys = Object.keys(dataARR)
+        pageList[0]=10
+        setFileImgList(dataARR)
+        setStartPage(pageList)
+        console.log("nurseAttachment",res,data,pageList,)
+        // setStartPageKeys(pageKeys)
+      })
     ]).then((res) => {
       setInited(true)
       setTimeout(() => {
@@ -86,9 +291,18 @@ export default function ExportNurseFile(props: Props) {
     })
   }
 
+  let flag = false
+
   useEffect(() => {
     getData()
   }, [])
+
+  const imgPrintObj = fileImgList.map((item:any,index:any)=>{
+    return (
+      item.filterData.length>0 && 
+        <ImgPrint startPage={startPage} startIndex={index} key={index} imgObj={item} />
+    )
+  })
 
   return (
     <Wrapper ref={fileRef}>
@@ -115,18 +329,19 @@ export default function ExportNurseFile(props: Props) {
           <PrintPage pageIndex={7}>
             <Awards awardWinningList={awardWinningList} />
           </PrintPage>
-          <PrintPage pageIndex={8}>
+          {/* <PrintPage pageIndex={8}>
             <BadEvent />
-          </PrintPage>
-          <PrintPage pageIndex={9}>
+          </PrintPage> */}
+          <PrintPage pageIndex={8}>
             <ExaminationResults yearCheckList={yearCheckList} />
           </PrintPage>
-          <PrintPage pageIndex={10}>
+          <PrintPage pageIndex={9}>
             <ThreeBases threeBaseList={threeBaseList} />
           </PrintPage>
-          <PrintPage pageIndex={11}>
+          {imgPrintObj}
+          {/* <PrintPage pageIndex={11}>
             <WorkRegistrationForm registrationWorkList={registrationWorkList} />
-          </PrintPage>
+          </PrintPage> */}
         </React.Fragment>
       )}
     </Wrapper>

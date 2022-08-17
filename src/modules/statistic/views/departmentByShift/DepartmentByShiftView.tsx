@@ -275,7 +275,7 @@ const MidMidCon = styled.div`
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
-  overflow: auto;
+  /* overflow: auto; */
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -300,13 +300,13 @@ const LeftCon = styled.div`
   width: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 `
 const RigthCon = styled.div`
   width: 222px;
 `
 const TableCon = styled.div`
   display: flex;
-  /* position: relative; */
   .NurseByShiftChooseCon {
     height: 300px;
     /* width: 222px; */
