@@ -244,7 +244,7 @@ export default function ClinicalQuarter(props: Props) {
 
 	return (
 		<Wrapper>
-			<div className='clinical-header'>
+			<HeaderTop className='clinical-header'>
 				<LeftIcon className='clinical-title'>
 					<PageTitle>科室临床护理质量指标季度汇总</PageTitle>
 				</LeftIcon>
@@ -308,7 +308,7 @@ export default function ClinicalQuarter(props: Props) {
 						导出
 					</Button>
 				</RightIcon>
-			</div>
+			</HeaderTop>
 
 			<ScrollCon>
 				<BaseTable
@@ -326,21 +326,23 @@ export default function ClinicalQuarter(props: Props) {
 		</Wrapper>
 	);
 }
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  .clinical-header{
+const HeaderTop=styled.div`
 	width: calc(100vw-200px);
 	justify-content: space-between;
 	height: 55px;
 	font-size: 13px;
 	color: #333;
 	padding: 12px 15px 0 15px;
+	box-sizing: border-box;
 	.mr-15{
 		margin-right: 15px;
 	}
-  }
+`
+const Wrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
   .ant-table-tbody{
         > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
         background:none !important;
