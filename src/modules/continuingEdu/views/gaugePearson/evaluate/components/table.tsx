@@ -145,7 +145,7 @@ export default observer(function ApplyTable(props: Props) {
       render(text: any, record: any) {
         let data: any = [
         {
-          text: "删除",
+          text: "清除数据",
           color:'#f44',
           function: handleDelete
         }];
@@ -178,7 +178,7 @@ export default observer(function ApplyTable(props: Props) {
   const handleDelete = (record: any) => {
     let content = (
       <div>
-        <div>您确定要删除选中的记录吗？</div>
+        <div>您确定要清除选中记录的数据吗？</div>
       </div>
     );
     Modal.confirm({
@@ -192,7 +192,7 @@ export default observer(function ApplyTable(props: Props) {
           .deleteQueryPageList(record.id)
           .then(res => {
             if (res.code == 200) {
-              Message.success("文件删除成功");
+              Message.success("数据清除成功");
               evaluateDatas.onload();
             } else {
               Message.error(`${res.dec}`);
