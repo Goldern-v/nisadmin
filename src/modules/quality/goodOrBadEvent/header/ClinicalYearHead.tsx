@@ -3,12 +3,8 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import { Select, Input, Button, DatePicker, Modal, message } from "antd";
 import { PageTitle } from "src/components/common";
-import { appStore, authStore } from 'src/stores'
-import moment, { duration } from 'moment'
 import { clinicalApi } from "../ClinicalApi";
 import { clinicalDataYear } from "../tsData/ClinicalDataYear";
-import { values } from "mobx";
-import { quarterList } from 'src/enums/date'
 import { fileDownload } from "src/utils/file/file";
 const Option = Select.Option;
 
@@ -57,7 +53,6 @@ export default observer(function ClinicalYearHead(props: Props) {
 
 				initTableData(valueList, res.data)
 			}
-			// console.log(res.data)
 			setTableLoading(false)
 
 		}).catch(err => {

@@ -1,11 +1,4 @@
 import { observable, computed } from "mobx";
-// import {PromotionManagementApi} from "./api/PromotionManagement";
-// import { clinicalApi } from "../ClinicalApi";
-// import { crrentMonth } from "src/utils/moment/crrentMonth";
-// import { fileDownload } from "src/utils/file/file";
-// import { appStore } from "src/stores/index";
-// import { T } from "antd/lib/upload/utils";
-// import { message } from "antd";
 import moment from 'moment'
 
 class SumData {

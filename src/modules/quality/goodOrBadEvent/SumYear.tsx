@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import LeftMenu from 'src/components/LeftMenu'
+// import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
-import moment from "moment";
+// import moment from "moment";
 import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { clinicalData } from "./ClinicalData";
 import { PageTitle } from "src/components/common";
-import { quarterList } from 'src/enums/date'
+// import { quarterList } from 'src/enums/date'
 import { clinicalApi } from "./ClinicalApi";
 import { fileDownload } from "src/utils/file/file";
 
 
 import {
 	ColumnProps,
-	message,
-	Input,
 	Select,
 	DatePicker,
-	Popover,
 	Button,
-	InputNumber
 } from "src/vendors/antd";
-import { KeepAlive, Provider } from 'react-keep-alive'
-import { appStore } from 'src/stores'
-import ClinicalHeaderByVicky from './ClinicalHeaderByVicky';
+// import { KeepAlive, Provider } from 'react-keep-alive'
+// import { appStore } from 'src/stores'
+// import ClinicalHeaderByVicky from './ClinicalHeaderByVicky';
 // import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 // pimport { type } from 'os';
 const Option = Select.Option;
@@ -35,20 +31,11 @@ export default function SumYear(props: Props) {
 
 	// 搬运start
 	const [pageLoading, setPageLoading] = useState(false);
-	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(220);
-	const [pageOptions, setPageOptions]: any = useState({
-		pageIndex: 1,
-		pageSize: 20,
-		total: 0
-	});
-	const [total, setTotal] = useState(0);
-	// 搬运end
 
-	const [deptList, setDeptList] = useState(['神经内科1', '神经内科2', '神经内科3', '神经内科4']);
 	const [yearPickShow, setYearPickShow] = useState(false);
-	const [selectQuarter, setSelectQuarter] = useState(moment().quarter() as unknown);
-	const [quartMms, setQuartMms] = useState([] as any);
+	// const [selectQuarter, setSelectQuarter] = useState(moment().quarter() as unknown);
+	// const [quartMms, setQuartMms] = useState([] as any);
 	// end
 
 	const [deucOption, setdeucOption] = useState([]); // 科室信息
@@ -573,12 +560,6 @@ const Wrapper = styled.div`
 const ScrollCon = styled.div`
   flex: 1;
 `;
-// const Wrapper = styled.div`
-//   overflow: hidden;
-//   height: calc(100vh - 50px);
-//   display: flex;
-//   align-items: stretch;
-// `;
 
 const LeftMenuCon = styled.div`
   width: 200px;

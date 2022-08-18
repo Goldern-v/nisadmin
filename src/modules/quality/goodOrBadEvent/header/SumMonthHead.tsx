@@ -3,13 +3,8 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import { Select, Input, Button, DatePicker, Modal, message } from "antd";
 import { PageTitle } from "src/components/common";
-import { appStore, authStore } from 'src/stores'
-import moment, { duration } from 'moment'
 import { clinicalApi } from "../ClinicalApi";
 import { sumData } from "../tsData/SumData";
-import { values } from "mobx";
-import { quarterList } from 'src/enums/date'
-import { fileDownload } from "src/utils/file/file";
 const Option = Select.Option;
 
 interface Props {
@@ -59,16 +54,8 @@ export default observer(function SumMonthHead(props: Props) {
 
 	}, [])
 
-	// 头部数据有变
-	// useEffect(() => {
-	// 	// 查询数据
-	// 	onload()
-	// }, [sumData.postObj])
-
-
 	/** 获取表格数据 */
 	const onload = () => {
-		// initTableData([])
 		setTableLoading(true)
 		clinicalApi.getTableData(sumData.postObj).then(res => {
 			let valueList = res.data.rowList || []
@@ -110,7 +97,6 @@ export default observer(function SumMonthHead(props: Props) {
 							setYearPickShow(status)
 						}}
 						onPanelChange={(value, mode) => {
-							// console.log(value, mode)
 							sumData.year = value
 							onload()
 							setYearPickShow(false)
@@ -120,11 +106,7 @@ export default observer(function SumMonthHead(props: Props) {
 						value={sumData.year}
 						allowClear={true}
 						placeholder='选择年份'
-						format="YYYY"
-					// onChange={date => {
-					// 	clinicalData.year = date
-
-					// }} 
+						format="YYYY" 
 					/>
 				</>
 				<>
@@ -135,8 +117,6 @@ export default observer(function SumMonthHead(props: Props) {
 						onChange={(val: number) => {
 							sumData.month = val
 							onload()
-							// console.log('yuefen', val)
-							// clinicalData.onload()
 						}}
 					>
 						{getMonths()}
@@ -151,7 +131,6 @@ export default observer(function SumMonthHead(props: Props) {
 						sumData.deptCode = val.key
 						sumData.deptName = val.label
 						onload()
-						// clinicalData.onload()
 					}}
 				>
 					{deucOption.map((item: any) => {
@@ -190,8 +169,6 @@ const Wrapper = styled.div`
   color: #333;
   padding: 12px 15px 0 15px;
   box-sizing: border-box;
-  /* margin-top: 12px;
-  padding-top: 0; */
   .mr-15{
     margin-right: 15px;
   }

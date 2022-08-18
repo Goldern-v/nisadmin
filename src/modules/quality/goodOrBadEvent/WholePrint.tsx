@@ -106,6 +106,10 @@ export default observer(function EventReportDetailView(props: Props) {
 				// 指定扫描样式，默认是true（全部）
 				scanStyles: false,
 				css: `
+				@page {
+					size: auto;
+					margin-bottom: 5mm
+				}
 				.print-page__ptext{
 					padding:0 6px;
 				}

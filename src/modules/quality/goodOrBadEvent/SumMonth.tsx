@@ -950,6 +950,10 @@ export default function SumMonth(props: Props) {
 			// 指定扫描样式，默认是true（全部）
 			scanStyles: false,
 			css: `
+				@page {
+					size: auto;
+					margin-bottom: 5mm
+				}
 			   .ant-btn {
 				 display: none;
 			   }

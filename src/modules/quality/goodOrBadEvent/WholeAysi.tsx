@@ -56,7 +56,7 @@ export default function WholeAysi(props: Props) {
 	const [reportTypes, setReportTypes] = useState([
 		{ title: "月度", type: '0' },
 		{ title: "季度", type: '1' },
-		{ title: "年度", type: '3' }
+		{ title: "年度", type: '2' }
 	]);
 
 	const [tableList, setTableList] = useState([]);

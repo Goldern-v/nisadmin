@@ -51,12 +51,10 @@ const PrintContent = (props: Props) => {
 	const [chartsImg4, setChartsImg4]: any = useState('')
 	const [chartsImg5, setChartsImg5]: any = useState('')
 	const [chartsImg6, setChartsImg6]: any = useState('')
-	// const [chartsImg1, setChartsImg1]: any = useState('')
 	const [deduction, getdeduction]: any = useState("")
-	const [isInput, getinput]: any = useState(false)
 	const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
 
-	const [gridLeft, setGridLeft] = useState('26px');
+	const [gridLeft, setGridLeft] = useState('45px');
 	const [gridBottom, setgridBottom] = useState('66px');
 	const dataSource = [
 		{ isCurNum: true, classify: '高危药物外滲的发生例数', code: "gwywwsdfsls", preYearCount: null, currentYearRate: null, currentYearCount: null, preYearRate: null },
@@ -135,15 +133,6 @@ const PrintContent = (props: Props) => {
 
 	}, [deductionData])
 
-	useEffect(() => {
-		let data: any = pageData;
-		data.map((item: any) => {
-			if (item.actualCheckNum == '0') {
-				item.checkRate = "0%"
-				getdeduction('0%')
-			}
-		})
-	}, [pageData])
 
 	const getEchartsTitle = {
 		left: 'center',
@@ -245,7 +234,7 @@ const PrintContent = (props: Props) => {
 
 			grid: {
 				left: gridLeft,
-				bottom: gridBottom
+				bottom: gridBottom,
 			},
 			xAxis: [
 				{
@@ -401,6 +390,7 @@ const PrintContent = (props: Props) => {
 		return columns
 	}
 
+	// 柱状图2
 	const getBolatuOption2 = () => {
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
@@ -427,6 +417,7 @@ const PrintContent = (props: Props) => {
 			},
 			grid: {
 				left: gridLeft,
+				right:'100px'
 			},
 			legend: {
 				data: legendData
@@ -456,7 +447,7 @@ const PrintContent = (props: Props) => {
 			]
 		}
 	}
-
+// 柱状图3
 	const getBolatuOption3 = () => {
 		let currentNum = 0, prevNum = 0
 		if (wholePrintData.rowList.length > 0) {
@@ -498,7 +489,7 @@ const PrintContent = (props: Props) => {
 
 			grid: {
 				left: gridLeft,
-				bottom: gridBottom
+				bottom: gridBottom,
 			},
 			xAxis: [
 				{
@@ -533,7 +524,7 @@ const PrintContent = (props: Props) => {
 			]
 		};
 	}
-
+// 柱状图4
 	const getBolatuOption4 = () => {
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
@@ -564,6 +555,7 @@ const PrintContent = (props: Props) => {
 			},
 			grid: {
 				left:gridLeft,
+				right:'100px'
 			},
 			xAxis: [
 				{
@@ -590,6 +582,7 @@ const PrintContent = (props: Props) => {
 			]
 		}
 	}
+	// 柱状图5
 	const getBolatuOption5 = () => {
 		let currentNum = 0, prevNum = 0
 		if (wholePrintData.rowList.length > 0) {
@@ -664,6 +657,7 @@ const PrintContent = (props: Props) => {
 			]
 		};
 	}
+	// 柱状图6
 	const getBolatuOption6 = () => {
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
@@ -697,6 +691,7 @@ const PrintContent = (props: Props) => {
 				// y2: 65, // 图表右下角到下边界的距离
 				left:gridLeft,
 				bottom:'120px',
+				right:'100px'
 			},
 			xAxis: [
 				{
@@ -748,7 +743,7 @@ const PrintContent = (props: Props) => {
 			<div className='title-m'>一、计划阶段</div>
 			<div className='title-s'>(一)通过{wholePrintData.master.belongsYear}年及{Number(wholePrintData.master.belongsYear) - 1}年全科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图6），发现主要存在问题：</div>
 			{!isPrint && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea1_1}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
 			<div className='second-content-box'>
 				<div className='second-content-table'>
 					{/* <div className='second-content-table-title'>{`第${pageData ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div> */}
@@ -798,41 +793,41 @@ const PrintContent = (props: Props) => {
 				maxLength={2000}
 				rows={3}
 				autosize={{ minRows: 3 }} />}
-				{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea1_2}</p>}
+				{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
 		</div>
 
 		<div>
 			<div className='title-s'>（三）确定2021年护理质量改进目标为：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea1_3}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
 		
 		</div>
 
 		<div>
 			<div className='title-s'>（四）针对各存在问题发生的原因，结合护理质量改进目标，制定详细的质量改进计划：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea1_4}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
 		
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>二、实施阶段（Do）：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea2_1}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea2_1}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>三、检查阶段（Check）：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea3_1}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
 		
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>四、处理阶段(Action)：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre' }}>{textArea4_1}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
 		
 		</div>
 	</Wrapper>
@@ -865,10 +860,13 @@ const Wrapper = styled.div`
 		box-sizing: border-box;
 	}
 	.print-page__ptext{
+		white-space:normal; 
+		word-break:break-all;
 		border: 1px solid #d9d9d9;
 		border-radius: 4px;
 		padding: 2px;
 		min-height: 60px;
+		/* word-wrap: break-word; */
 	}
 	.ant-table-tbody{
         > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
