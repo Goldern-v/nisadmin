@@ -20,7 +20,6 @@
     "less-loader": "4.1.0",
     "npm": "6.10.0",
     "ora": "^4.0.4",
-    "prettier": "1.17.0",
     "react-app-rewired": "2.1.1",
     "react-hot-loader": "4.8.4",
     "tslint": "5.16.0",
@@ -249,7 +248,12 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-undef": "off",
+      "no-restricted-globals": "off",
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [],
   "homepage": "./"
