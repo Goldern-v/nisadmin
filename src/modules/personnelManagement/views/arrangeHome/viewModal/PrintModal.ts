@@ -1870,6 +1870,12 @@ class PrintModal {
           return totalCellContent(record.id)
         }
       },
+      {
+        title: '备注',
+        key: 'empRemark',
+        width: 70,
+        visible: colVisibleList.indexOf('empRemark') >= 0,
+      },
     ] as column[]
     const colsAfterVisible = colsAfter.filter((item) => item.visible)
 

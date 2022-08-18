@@ -141,6 +141,9 @@ export default observer(function SelectCon() {
   // 打印排班Excel
   const printRosterExcel = () => {
     let visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1']
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+      visibleArr.push('empRemark')
+    }
     let newArr: any[] = []
     let noEmpNoArr: any[] = []
     let noGroupArr: any[] = []
@@ -158,6 +161,16 @@ export default observer(function SelectCon() {
           <Checkbox value="newTitle">职称</Checkbox>
           <Checkbox value="year">年限</Checkbox>
           <Checkbox value="total1">工时小计</Checkbox>
+          {
+            appStore.hisMatch({
+              map: {
+                'nfzxy':<React.Fragment>
+                          <Checkbox value="empRemark">备注</Checkbox>
+                        </React.Fragment>              
+              },
+              vague:true
+            })
+          }
         </Checkbox.Group>
       </div>,
       onOk: () => {
