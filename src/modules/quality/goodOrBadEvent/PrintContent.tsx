@@ -54,7 +54,8 @@ const PrintContent = (props: Props) => {
 	const [deduction, getdeduction]: any = useState("")
 	const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
 
-	const [gridLeft, setGridLeft] = useState('45px');
+	const [gridLeft, setGridLeft] = useState('12%');
+	const [gridRight, setGridRight] = useState('12%');
 	const [gridBottom, setgridBottom] = useState('66px');
 	const dataSource = [
 		{ isCurNum: true, classify: '高危药物外滲的发生例数', code: "gwywwsdfsls", preYearCount: null, currentYearRate: null, currentYearCount: null, preYearRate: null },
@@ -91,6 +92,8 @@ const PrintContent = (props: Props) => {
 		// {classify:'',code: "",preYearCount: null,currentYearRate: null,currentYearCount: null,preYearRate: null},
 
 	] as any
+
+	console.log(window.navigator)
 
 	useEffect(() => {
 		//数据改变时将canvas的画面用img保存用于打印
@@ -417,7 +420,8 @@ const PrintContent = (props: Props) => {
 			},
 			grid: {
 				left: gridLeft,
-				right:'100px'
+				right:gridRight,
+				// containLabel: false,
 			},
 			legend: {
 				data: legendData
@@ -488,7 +492,7 @@ const PrintContent = (props: Props) => {
 			},
 
 			grid: {
-				left: gridLeft,
+				// left: gridLeft,
 				bottom: gridBottom,
 			},
 			xAxis: [
@@ -554,8 +558,9 @@ const PrintContent = (props: Props) => {
 				data: legendData
 			},
 			grid: {
-				left:gridLeft,
-				right:'100px'
+				// containLabel: false,
+				// left:gridLeft,
+				right:gridRight,
 			},
 			xAxis: [
 				{
@@ -621,7 +626,7 @@ const PrintContent = (props: Props) => {
 			},
 
 			grid: {
-				left: gridLeft,
+				// left: gridLeft,
 				bottom: gridBottom
 			},
 			xAxis: [
@@ -689,9 +694,10 @@ const PrintContent = (props: Props) => {
 			grid: {
 				// x: 20, //图表左上角到左边界的距离
 				// y2: 65, // 图表右下角到下边界的距离
-				left:gridLeft,
+				// left:gridLeft,
 				bottom:'120px',
-				right:'100px'
+				// containLabel: false,
+				right:gridRight,
 			},
 			xAxis: [
 				{
