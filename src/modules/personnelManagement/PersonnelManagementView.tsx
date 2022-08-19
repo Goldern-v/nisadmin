@@ -17,6 +17,7 @@ import { meunConfig as menuConfig_qhwy } from "./config/menuConfig_qhwy";
 import { meunConfig as menuConfig_lyrm } from "./config/menuConfig_lyrm";
 import { meunConfig as menuConfig_whsl } from "./config/menuConfig_whsl";
 import { meunConfig as menuConfig_wjgdszd } from "./config/menuConfig_wjgdszd";
+import { meunConfig as menuConfig_nfzxy } from "./config/menuConfig_nfzxy";
 
 export interface Props {
 }
@@ -40,8 +41,9 @@ export default function PersonnelManagementView() {
         return menuConfig_gzhd;
       case 'dghl':
       case 'fqfybjy':
-      case 'nfzxy':
         return menuConfig_dghl;
+      case 'nfzxy':
+        return menuConfig_nfzxy;
       case 'lcey':
         return menuConfig_lcey;
       case 'fssdy':

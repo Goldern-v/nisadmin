@@ -4,8 +4,10 @@ import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
 import MealSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView";
-import PersonnelSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
-import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
+import PersonnelSettingViewNew
+  from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
+// import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
+import DeptBorrowNew from "src/modules/personnelManagement/views/arrangeHome/page/deptBorrow/DeptBorrow";
 import AddSubClass from "../views/arrangeHome/page/addSubClass/AddSubClass";
 import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "../views/arrangeHome/page/BalanceInit/BalanceInit";
@@ -15,6 +17,7 @@ import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangS
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
+import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
 
 export interface meunConfigItem {
   title?: string;
@@ -22,9 +25,9 @@ export interface meunConfigItem {
   path?: string;
   children?: meunConfigItem[];
   hide?: boolean | Function;
-  style?: React.CSSProperties;
   iSlimit?: boolean | Function;
   special?: boolean | Function;
+  style?: React.CSSProperties;
 }
 
 export const meunConfig: meunConfigItem[] = [
@@ -36,22 +39,21 @@ export const meunConfig: meunConfigItem[] = [
         title: "护士排班",
         path: "/personnelManagement/arrangeHome",
         component: ArrangeHome,
-        style: { background: "#fff" },
-        iSlimit: false,
+        style: { background: "#fff" }
       },
-      // {
-      //   title: "我的期望排班",
-      //   path: "/personnelManagement/expectedRecordSelf",
-      //   component: ExpectedRecordSelf,
-      //   iSlimit: false,
-      // },
-      // {
-      //   title: "临时人员借调",
-      //   path: "/personnelManagement/personnelSecondment",
-      //   component: PersonnelSecondment,
-      //   style: { background: "#fff" },
-      //   iSlimit: true,
-      // },
+      {
+        title: "我的期望排班",
+        path: "/personnelManagement/expectedRecordSelf",
+        component: ExpectedRecordSelf,
+      },
+      {
+        title: "临时人员借调",
+        path: "/personnelManagement/personnelSecondment",
+        component: PersonnelSecondment,
+        style: { background: "#fff" },
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
@@ -77,14 +79,12 @@ export const meunConfig: meunConfigItem[] = [
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
-        iSlimit: false,
       },
-      // {
-      //   title: "结余设置",
-      //   path: "/personnelManagement/balanceInit",
-      //   component: BalanceInit,
-      //   iSlimit: false,
-      // },
+      {
+        title: "结余设置",
+        path: "/personnelManagement/balanceInit",
+        component: BalanceInit,
+      },
       {
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
@@ -100,13 +100,14 @@ export const meunConfig: meunConfigItem[] = [
       //   // hide: !authStore.isRoleManage
       //   iSlimit: true,
       // },
-      // {
-      //   title: "节假日查询",
-      //   path: "/personnelManagement/holidaysList",
-      //   component: HolidaysList,
-      //   // hide: !authStore.isRoleManage
-      //   iSlimit: true,
-      // },
+      {
+        title: "节假日查询",
+        path: "/personnelManagement/holidaysList",
+        component: HolidaysList,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
@@ -114,13 +115,13 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-      // {
-      //   title: "夜班费统计",
-      //   path: "/personnelManagement/nightChargingReport",
-      //   component: StarRatingReportList,
-      //   // hide: !authStore.isRoleManage
-      //   iSlimit: true,
-      // },
+      {
+        title: "夜班费统计",
+        path: "/personnelManagement/nightChargingReport",
+        component: StarRatingReportList,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",

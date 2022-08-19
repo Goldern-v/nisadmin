@@ -208,7 +208,29 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     if (itemDataMap.B0002061 && itemDataMap.B0002061 == '2') return ''//非护理不良事件不返回
     let btnText = stepNext.nodeName
     if (stepNext?.canHandle) btnDisable = false
-
+    //判断对应审核节点是否该角色
+    let arr = ['病区','科护士长', '片区护士长', '护理部']
+    let flag = false
+    arr.forEach((item:string,index:number) => {
+      if (btnText.indexOf(item) != -1) {
+        switch (index) {
+          case 0:
+            flag = authStore.isRoleManage 
+            break
+          case 1:
+          case 2:
+            flag = authStore.isSupervisorNurse
+            break
+          case 3:
+            flag = authStore.isDepartment
+            break
+          default:
+            break
+        }
+      }
+    })
+    if(!flag) return ''
+    
     return (
       <Button
         className='audit'

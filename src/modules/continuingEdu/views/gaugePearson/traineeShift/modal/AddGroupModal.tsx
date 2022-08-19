@@ -36,23 +36,23 @@ export default observer(function AddGroupModal(props: Props) {
     //     Message.warning("小组名称必须为正整数！");
     //     return;
     //   }
-    //   setEditLoading(true);
-    //   traineeShiftApi
-    //     .createRotateGroup(groupName)
-    //     .then((res: any) => {
-    //       setEditLoading(false);
-    //       if (res.code == 200) {
-    //         Message.success("已成功添加分组！");
-    //         onOk();
-    //         traineeShiftModal.onload();
-    //       } else {
-    //         setEditLoading(false);
-    //         Message.error(`${res.desc}`);
-    //       }
-    //     })
-    //     .catch(() => {
-    //       setEditLoading(false);
-    //     });
+      setEditLoading(true);
+      traineeShiftApi
+        .createRotateGroup(groupName)
+        .then((res: any) => {
+          setEditLoading(false);
+          if (res.code == 200) {
+            Message.success("已成功添加分组！");
+            onOk();
+            traineeShiftModal.onload();
+          } else {
+            setEditLoading(false);
+            Message.error(`${res.desc}`);
+          }
+        })
+        .catch(() => {
+          setEditLoading(false);
+        });
     // } else {
     //   Message.warning("保存前请填写小组名称！");
     // }
@@ -138,7 +138,7 @@ export default observer(function AddGroupModal(props: Props) {
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
-      title="添加实习小组"
+      title="添加规培生"
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>

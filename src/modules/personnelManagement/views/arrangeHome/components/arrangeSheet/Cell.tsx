@@ -578,7 +578,7 @@ export default observer(function Cell(props: Props) {
           ` : '')
         );
       },
-      default:""
+      default: ()=>""
     },
     vague:true,
   })

@@ -236,8 +236,8 @@ function MealCon(props: { dataSource: any[] }) {
         let mealObj = getMealData(weekNum, item);
         console.log(mealObj, weekNum, item)
         list[i]!.rangeName = mealObj.name;
-        list[i]!.settingNightHour = mealObj.NightHour;
-        list[i]!.settingMorningHour = mealObj.MorningHour;
+        list[i]!.settingNightHour = mealObj.nightHour;
+        list[i]!.settingMorningHour = mealObj.morningHour;
         list[i]!.nameColor = mealObj.nameColor;
         list[i]!.effectiveTime = mealObj.effectiveTime;
         list[i]!.effectiveTimeOld = mealObj.effectiveTime;
@@ -262,8 +262,8 @@ function MealCon(props: { dataSource: any[] }) {
       "saturday",
       "sunday"
     ];
-    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", "BackgroundColor", "RangeScore", "Coefficient"];
-    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", "backgroundColor", "rangeScore", "coefficient"];
+    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType", "BackgroundColor", "RangeScore", "Coefficient",'NightHour','MorningHour'];
+    let _keys = ["name", "nameColor", "effectiveTime", "shiftType", "backgroundColor", "rangeScore", "coefficient",'nightHour','morningHour'];
     let obj: any = {};
 
     for (let i = 0; i < keys.length; i++) {

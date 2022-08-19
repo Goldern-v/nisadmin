@@ -33,8 +33,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 花都 */
     case "gzhd":
-      return "https://info.cr-health.com:20206"; // 公司-花都测试-外网
+      // return "https://info.cr-health.com:20206"; // 公司-花都测试-外网
     //return 'http://192.168.1.54:9868' // 公司-花都测试-内网
+      return "http://192.168.2.123:8080"
     /** 江门妇幼 */
     case "jmfy":
       return 'http://218.14.180.38:9094' // 江门妇幼正式
@@ -79,7 +80,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 武警广东省总队医院 */
     case "wjgdszd":
-      return "http://120.24.240.231:8751"; // 武警广东省总队医院正式 crph / crph3675  
+      // return "http://120.24.240.231:8751"; // 武警广东省总队医院正式 crph / crph3675  
+      return "http://192.168.1.54:9869"
     case "gxjb":
       // return "http://58.59.133.37:9091"; // 正式
       return "http://192.168.1.54:9866"; // 测试环境
@@ -101,7 +103,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9885";
     case "sdlj": //顺德龙江
       // return 'http://192.168.20.83:8080'//
-      return "http://192.168.1.54:9874"; //
+      return "http://192.168.1.54:9887"; //
 
     //武汉亚心
     case "whyx":
@@ -142,6 +144,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // 烟台玲珑医院
     case 'ytll': 
       return "http://192.168.1.54:9866"
+    // 东莞谢岗
+    case 'dgxg':
+      return "http://183.234.1.124:9093"  //正式
+      // return "http://192.168.1.54:9882"
     default:
       return "http://192.168.1.54:9866";
   }
