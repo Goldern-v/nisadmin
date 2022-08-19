@@ -224,6 +224,7 @@ export default class AuthStore {
       if (this.user.roleManageCodeList?.find((code: string) => code === "QCR0004")) return true
       if (this.user.roleManage == "1") return true
       if (this.user.post == '护长') return true
+      return false
     } catch (error) {
       return false;
     }

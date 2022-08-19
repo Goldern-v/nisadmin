@@ -382,6 +382,35 @@ export default observer(function ArrangeSheet(props: Props) {
         return <TotalCell id={record.id} />;
       },
     },
+    ...appStore.hisMatch({
+      map: {
+        "nfzxy": [
+          {
+            title: "备注",
+            dataIndex: "empRemark",
+            width: 100,
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.empRemark = e.target.value;
+                  }}
+                />
+              ) : (
+                <Tooltip placement="top" title={text}>
+                  <span>{text}</span>
+                </Tooltip>
+              );
+            },
+          },
+        ],
+        other: [],
+      },
+      vague:true
+    }),
   ];
 
   /** 东莞横沥特殊字段 */
@@ -718,7 +747,7 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
           }
-          if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+          if (['qhwy','nfzxy'].includes(appStore.HOSPITAL_ID)) {
             widthNys += 100
           }
           /** noscorll */
