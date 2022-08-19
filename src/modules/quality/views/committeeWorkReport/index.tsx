@@ -1,12 +1,12 @@
 import qs from 'qs'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import moment, { duration } from 'moment'
-import React, { useCallback, useEffect, useState } from 'react'
+import moment from 'moment'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { Button, DatePicker, Icon, Input, message, Modal, Select } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { currentMonth } from 'src/utils/date/rangeMethod'
@@ -19,6 +19,9 @@ import { getSearchTempName, getTempName } from '../analysisWhyx/utils'
 const api = new AnalysisService();
 const Option = Select.Option;
 
+// 质控等级
+const level = 3.1;
+
 export default observer(function Analysis() {
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [createClear, setCreateClear] = useState(true);
@@ -28,6 +31,15 @@ export default observer(function Analysis() {
   // 默认科室
   const [defDept, setDefDept] = useState('');
   const [createLoading, setCreateLoading] = useState("");
+  const statusList = useMemo(() => {
+    const arr = [
+      {label: '全部', value: ''},
+      {label: '保存', value: '0'},
+      {label: '发布', value: '1'},
+    ]
+    return authStore.level3Check
+      ? arr : arr.filter(v => v.value == '0')
+  }, [authStore.level3Check])
   const defQuery = useCallback(() => {
     const [m1,m2] = currentMonth()
     return {
@@ -36,12 +48,11 @@ export default observer(function Analysis() {
       startDate: m1.format('YYYY-MM-DD'),
       endDate: m2.format('YYYY-MM-DD'),
       reportName: '',
+      status: statusList[0].value,
     }
   }, [])
   const [query, setQuery] = useState<Record<string,any>>(defQuery());
-  // 质控等级
-  const level = 3.1;
-
+  
   useEffect(() => {
     service.commonApiService.getNursingUnitSelf().then((res) => {
       if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
@@ -76,7 +87,7 @@ export default observer(function Analysis() {
       render: (name: string) => <div title={name}>{name}</div>,
     },
     {
-      title: "片区",
+      title: "上报小组",
       key: "wardName",
       dataIndex: 'wardName',
       align: "left",
@@ -148,7 +159,6 @@ export default observer(function Analysis() {
       },
     },
   ];
-
 
   const handleReview = async (record: any) => {
     const obj = {
@@ -331,16 +341,14 @@ export default observer(function Analysis() {
             setQuery({ ...query, status });
           }}
         >
-          <Option value="">全部</Option>
-          <Option value="0">保存</Option>
-          <Option value="1">发布</Option>
+          {statusList.map( v=> <Option value={v.value} key={v.label}>{v.label}</Option>)}
         </Select>
         <Input placeholder='请输入关键字' value={query.reportName}/>
         
         <Button onClick={handleSearch}>查询</Button>
-        <Button onClick={handleCreate} type="primary">
+        {authStore.level3Check && <Button onClick={handleCreate} type="primary">
           创建
-        </Button>
+        </Button>}
         <Button
           disabled={wardList.length <= 0}
           onClick={handleAlert}

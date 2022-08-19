@@ -1,9 +1,9 @@
-import Moment from 'moment'
-import Form from 'src/components/Form'
 import styled from 'styled-components'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { Col, DatePicker, Input, Modal, Radio, Row, Select } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Modal, Row, Col, Select, DatePicker, Input } from 'antd'
+import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
+import Moment from 'moment'
 import { MonthList } from 'src/modules/quality/utils/toolCon'
 
 const Option = Select.Option
@@ -35,12 +35,14 @@ export default function CreateAnalysisModal(props: Props) {
   const [startDate, setStartDate] = useState(null as any | null)
   const [endDate, setEndDate] = useState(null as any | null)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    // if (!visible) setParams(initedParams)
     if (visible && allowClear) {
       setTimeout(_ => {
         if (refForm.current) {
           let nowMoment = Moment();
           let month = nowMoment.format('M');
+
           refForm.current.setFields({
             reportYear: nowMoment,
             startDate: null,
@@ -99,6 +101,7 @@ export default function CreateAnalysisModal(props: Props) {
   const setFormItem = (key: any, value: any) => {
     if (refForm.current) refForm.current.setField(key, value)
   }
+
 
   const moreThanStart = (date: any) => {
     if (!startDate) return false
@@ -160,10 +163,9 @@ export default function CreateAnalysisModal(props: Props) {
     if (current) {
       let { reportYear, reportMonth } = current.getFields()
       if (!reportYear || !reportMonth) return
-
       let yearStr = reportYear.format('YYYY')
       let monthStr = reportMonth
-      let reportName = `${monthStr}月份护理部三级质控问题分析汇总（${yearStr}年）`
+      let reportName = `${monthStr}月份护理部三级质控结果汇总表(${yearStr})`
 
       setFormItem('reportName', reportName)
     }

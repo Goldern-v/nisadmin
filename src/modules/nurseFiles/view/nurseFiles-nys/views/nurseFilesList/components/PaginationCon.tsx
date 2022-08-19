@@ -16,7 +16,6 @@ export default observer(function PaginationCon(props: Props) {
     nurseFilesListViewModel.pageIndex = pageIndex
     nurseFilesListViewModel.pageSize = pageSize != undefined && isNaN(pageSize) ? 10000 : (Number(pageSize) || rowNum * 2)
     nurseFilesListViewModel.loadNursingList()
-    console.log('test-pageSize', pageSize && isNaN(pageSize), nurseFilesListViewModel.pageSize)
   }
   let pageSizeOptions = ['10', '20', '30','100', '全部']
   return (

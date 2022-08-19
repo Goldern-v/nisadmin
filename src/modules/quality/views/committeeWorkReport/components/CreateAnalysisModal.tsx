@@ -33,15 +33,17 @@ export default function CreateAnalysisModal(props: Props) {
 
 
   useLayoutEffect(() => {
-    if (allowClear) {
-      if (refForm.current) {
-        let nowMoment = Moment();
-        refForm.current.setFields({
-          reportYear: nowMoment,
-          dates: currentMonth(),
-          reportName: '',
-        })
-      }
+    if (visible && allowClear) {
+      setTimeout(_ => {
+        if (refForm.current) {
+          let nowMoment = Moment();
+          refForm.current.setFields({
+            reportYear: nowMoment,
+            dates: currentMonth(),
+            reportName: '',
+          })
+        }
+      }, 300)
     }
   }, [visible])
 

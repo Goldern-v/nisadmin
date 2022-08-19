@@ -17,7 +17,6 @@ export const useInstance = () => {
   const [instance,setInstance] = useState<any>(getInstance())
   useEffect(() => {
     if (id && id == appStore.queryObj?.id) return
-    console.log('test-1', appStore.queryObj)
     appStore.queryObj?.id && setId(appStore.queryObj.id)
     setInstance(getInstance())
     return () => {

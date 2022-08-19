@@ -65,7 +65,6 @@ export default observer(function BadEventNewList() {
     audited: 0,
   })
   const delItem = (row: any) => {
-    console.log('test-row', row)
     let happenPlace = row.happenPlace
         ? row.happenPlace.slice(0, 15) + "等场所"
         : "";

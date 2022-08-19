@@ -14,10 +14,10 @@ export const getTempName = (level: number | string, deptCode?: string): string =
       return '二级质控区域月度汇总报告'
     case '3.1':
       return '委员会小组工作报告'
-    case '3.2':
-      return '三级质控问题分析改进报告'
     case '3.3':
       return '三级质控问题分析改进报告'
+    case '3':
+      return '三级质控结果汇总报告'
     default:
       break
   }

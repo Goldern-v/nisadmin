@@ -173,7 +173,6 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     
   }
   const handleUserCheckOk = async(msg: any) => {
-    console.log('test-msg', msg)
     let params: revokeIn = {
       empNo: msg.empNo,
       password: msg.password,
