@@ -109,7 +109,7 @@ const baseConfig: navConfigItem[] = [
     path: "/setting"
   },
   {
-    name: "护理人员管理",
+    name: "排班管理",
     path: "/personnelManagement"
   }
 ];

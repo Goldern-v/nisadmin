@@ -24,7 +24,7 @@ export default function Awards(props: Props) {
         <tbody>
           <tr>
             <td colSpan={5} style={{ height: 40 }}>
-              <span className='title'>护理创新、科研成果、科技进步、工作获奖、新技术新项目推广情况</span>
+              <span className='title'>所获奖励</span>
             </td>
           </tr>
           <tr className='head'>

@@ -12,7 +12,7 @@ export default function ThreeBases(props: Props) {
   const rowNum = 22 - threeBaseList.length
   return (
     <Wrapper>
-      <div className='title title-1'>表七</div>
+      <div className='title title-1'>表六</div>
       <table>
         <colgroup>
           <col width='20%' />
@@ -22,7 +22,7 @@ export default function ThreeBases(props: Props) {
         <tbody>
           <tr>
             <td colSpan={3} style={{ height: 40 }}>
-              <span className='title'>医院三基考核</span>
+              <span className='title'>护理三基考核</span>
             </td>
           </tr>
           <tr className='head'>

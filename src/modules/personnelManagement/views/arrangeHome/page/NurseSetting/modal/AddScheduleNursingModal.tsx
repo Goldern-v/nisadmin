@@ -505,6 +505,63 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               ),
+              nfzxy: () => (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`职称`} name="newTitle">
+                      <Select>
+                        {titleList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`层级`} name="nurseHierarchy">
+                      <Select
+                        showSearch
+                        filterOption={(input: any, option: any) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                        style={{ width: "100%" }}
+                        placeholder="选择层级"
+                      >
+                        {levelList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`职务`} name="job">
+                      <Select>
+                        {postList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`类型`} name="userType" required>
+                      <Select>
+                        {userTypeList.map((item: DictItem) => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              )
             })}
           </Row>
         </Form>

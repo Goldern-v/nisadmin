@@ -12,7 +12,7 @@ export default function ExaminationResults(props: Props) {
   const rowNum = 23 - yearCheckList.length
   return (
     <Wrapper>
-      <div className='title title-1'>表六</div>
+      <div className='title title-1'>表五</div>
       <table>
         <colgroup>
           <col width='20%' />
@@ -24,7 +24,7 @@ export default function ExaminationResults(props: Props) {
         <tbody>
           <tr>
             <td colSpan={5} style={{ height: 40 }}>
-              <span className='title'>年度履职考核结果（打“√”）</span>
+              <span className='title'>年度考核结果</span>
             </td>
           </tr>
           <tr className='head'>

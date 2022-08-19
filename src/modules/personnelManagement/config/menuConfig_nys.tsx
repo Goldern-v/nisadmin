@@ -97,13 +97,14 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-      {
-        title: "科室排班统计",
-        path: "/personnelManagement/departmentByShiftView",
-        component: DepartmentByShiftView,
-        // hide: !authStore.isRoleManage
-        iSlimit: true,
-      }
+      // {
+      //   title: "科室排班统计",
+      //   path: "/personnelManagement/departmentByShiftView",
+      //   name:"科室排班统计（按班次）",
+      //   component: DepartmentByShiftView,
+      //   // hide: !authStore.isRoleManage
+      //   iSlimit: true,
+      // }
     ]
   },
   ...appStore.hisMatch({

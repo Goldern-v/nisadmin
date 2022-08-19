@@ -71,20 +71,15 @@ export default class TrainingSettingApi extends BaseApiService {
   public async countExcel(obj: any) {
     return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj);
   }
-  // 实习生教学计划-删除表单列表
-  public async deleteQueryPageList(id: any) {
-    return this.post(`/studyAndTrain/planTrainStudentInfo/deleteInfoById`, { id });
+  // 规培生出科评价-删除单个
+  public async deleteQueryPageList(obj: any) {
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/deleteGraduateEvaluateOfPlanTrainStu`,obj);
   }
-  // 导入教学计划课件-提交按钮
-  public async saveOrUpdate(obj: any) {
-    return this.post(`/studyAndTrain/courseLibrary/saveOrUpdateYaXin`, obj);
+  // 规培生出科评价-保存列表数据
+  public async saveQueryPageList(obj: any) {
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/saveOrUpdateGraduateEvaluateOfPlanTrainStuList`,obj);
   }
-  // 实习生教学计划-上传附件接口
-  public async uploadPictures(filename:any) {
-    let newFormData = new FormData()
-    newFormData.set('file', filename)
-    return this.post(`/studyAndTrain/courseLibrary/uploadPictures`, newFormData);
-  }
+
 
  
 }

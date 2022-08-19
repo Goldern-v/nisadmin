@@ -2,23 +2,21 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { InputNumber, Modal, message as Message } from "antd";
+import { InputNumber, Modal, message as Message, DatePicker } from "antd";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import {evaluateDatas} from "../data"
 import { appStore } from "src/stores";
+import moment from 'moment';
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import ReactZmage from "react-zmage";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
 import createModal from "src/libs/createModal";
-import qs from "qs";
 
 interface Props {}
 
 export default observer(function ApplyTable(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
-  const [tableLoading, settableLoading] = useState(false); //tabel的loading的控制
-  const [tableData, setTableData] = useState([] as any) //tabel的数据
   const [tablequery, setTableQuery] = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -29,94 +27,113 @@ export default observer(function ApplyTable(props: Props) {
   const columns: any = [
     {
       title: "姓名",
-      dataIndex: "courseName",
+      dataIndex: "empName",
       align: "center",
       width: 120
     },
     {
       title: "科室",
-      dataIndex: "courseName",
+      dataIndex: "deptName",
       align: "center",
       width: 120
     },
     {
-      title: "科室",
-      dataIndex: "courseName",
+      title: "规培时间",
+      dataIndex: "planTrainBeginTime",
       align: "center",
-      width: 120
+      width: 200,
+      render(text: any, record: any) {
+        return (
+          <DatePicker.RangePicker
+              allowClear
+              style={{ width: 250 }}
+              value={record.planTrainBeginTime ? [moment(record.planTrainBeginTime), moment(record.planTrainEndTime)] : []}
+              onChange={(date: any[]) => {
+                record.planTrainBeginTime = moment(date[0]).format("YYYY-MM-DD")
+                record.planTrainEndTime = moment(date[1]).format("YYYY-MM-DD")
+
+                const arrOne = evaluateDatas.tableList.slice();
+                evaluateDatas.tableList = [];
+                evaluateDatas.tableList = arrOne;
+              }}
+            />
+        );
+      }
     },
     {
       title: "护士长",
-      dataIndex: "score1",
+      dataIndex: "headNurseScore",
       align: "center",
       width: 80,
       render(text: any, record: any) {
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
-            // console.log(value, text, record.submitter, 888)
-            // record.submitter = value
+          <InputNumber step="0.1" min={0.0} value={record.headNurseScore} onChange={(value: any) => {
+            editTableList(value,record,'headNurseScore')
           }}/>
         );
       }
     },
     {
       title: "带教",
-      dataIndex: "score2",
+      dataIndex: "teachScore",
       align: "center",
       width: 100,
       render(text: any, record: any) {
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
+          <InputNumber step="0.1" min={0.0}  value={record.teachScore} onChange={(value: any) => {
+            editTableList(value,record,'teachScore')
           }}/>
         );
       }
     },
     {
       title: "床边老师",
-      dataIndex: "score3",
+      dataIndex: "besideTeacherScore",
       align: "center",
       width: 100,
       render(text: any, record: any) {
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
+          <InputNumber step="0.1" min={0.0} value={record.besideTeacherScore} onChange={(value: any) => {
+            editTableList(value,record,'besideTeacherScore')
           }}/>
         );
       }
     },
     {
       title: "护士1",
-      dataIndex: "score4",
+      dataIndex: "nurse1Score",
       align: "center",
       width: 100,
       render(text: any, record: any) {
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
+          <InputNumber step="0.1" min={0.0} value={record.nurse1Score} onChange={(value: any) => {
+            editTableList(value,record,'nurse1Score')
           }}/>
         );
       }
     },
     {
       title: "护士2",
-      dataIndex: "score5",
+      dataIndex: "nurse2Score",
       align: "center",
       width: 100,
       render(text: any, record: any) {
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
+          <InputNumber step="0.1" min={0.0} value={record.nurse2Score} onChange={(value: any) => {
+            editTableList(value,record,'nurse2Score')
           }}/>
         );
       }
     },
     {
       title: "平均分",
-      dataIndex: "modifyDate",
+      dataIndex: "averageScore",
       align: "center",
       width: 100,
       render(text: any, record: any) {
         // console.log(record, text, 888)
         return (
-          <InputNumber step="0.1" min={0.0} onChange={(value: any) => {
-          }}/>
+          <InputNumber step="0.1" min={0.0} value={record.averageScore} disabled style={{color:'#000'}}/>
         );
       }
     },
@@ -128,7 +145,7 @@ export default observer(function ApplyTable(props: Props) {
       render(text: any, record: any) {
         let data: any = [
         {
-          text: "删除",
+          text: "清除数据",
           color:'#f44',
           function: handleDelete
         }];
@@ -149,11 +166,19 @@ export default observer(function ApplyTable(props: Props) {
     }
   ];
 
+  const editTableList =(value:string, list:any, code:string) => {
+    list[code] = value
+    list.averageScore  = Number(list.headNurseScore + list.teachScore + list.besideTeacherScore + list.nurse1Score + list.nurse2Score) / 5
+    const arrOne = evaluateDatas.tableList.slice();
+    evaluateDatas.tableList = [];
+    evaluateDatas.tableList = arrOne;
+  }
+
   //删除
   const handleDelete = (record: any) => {
     let content = (
       <div>
-        <div>您确定要删除选中的记录吗？</div>
+        <div>您确定要清除选中记录的数据吗？</div>
       </div>
     );
     Modal.confirm({
@@ -167,7 +192,7 @@ export default observer(function ApplyTable(props: Props) {
           .deleteQueryPageList(record.id)
           .then(res => {
             if (res.code == 200) {
-              Message.success("文件删除成功");
+              Message.success("数据清除成功");
               evaluateDatas.onload();
             } else {
               Message.error(`${res.dec}`);
