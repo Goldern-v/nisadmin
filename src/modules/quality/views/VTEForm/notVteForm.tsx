@@ -27,11 +27,12 @@ export default observer(function WritingForm(props: any) {
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
 
+  // const [visible, setVisible] = useState(false)
+  // const [wardList, setWardList] = useState('')
   const [date1, setDate1]= useState(moment())
   let checkData: any[] = []
-
   let date = moment()
-  // const [date]
+
   const columns: any[] = [
     {
       title: '序号',
@@ -54,15 +55,6 @@ export default observer(function WritingForm(props: any) {
       dataIndex: 'PATIENT_ID',
       align: 'center',
       fixed: "left",
-      // render(text: any, rocord: any, index: number) {
-      //   return text.map((item: any, index: number) => {
-      //     return (
-      //       <div key={index} className='cell'>
-      //         {item.inpNo}
-      //       </div>
-      //     )
-      //   })
-      // }
     },
     {
       title: '科室名称',
@@ -82,15 +74,6 @@ export default observer(function WritingForm(props: any) {
       dataIndex: 'DISCHARGE_DATE_TIME',
       width: 180,
       align: 'center'
-      // render(text: any, rocord: any, index: number) {
-      //   return text.map((item: any, index: number) => {
-      //     return (
-      //       <div key={index} className='cell'>
-      //         {item.evalDate}
-      //       </div>
-      //     )
-      //   })
-      // }
     },
     {
       title: '评估等级',
@@ -108,77 +91,13 @@ export default observer(function WritingForm(props: any) {
       title: '1分项',
       children: [
         {
-          title: '年龄41-60',
-          dataIndex: 'ITEM_VALUE1',
-          key: 'ITEM_VALUE1',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '下肢肿胀',
-          dataIndex: 'ITEM_VALUE3',
-          key: 'ITEM_VALUE3',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '静脉曲张',
-          dataIndex: 'ITEM_VALUE4',
-          key: 'ITEM_VALUE4',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '肥胖(BMI>25kg/m2)',
-          dataIndex: 'ITEM_VALUE2',
-          key: 'ITEM_VALUE2',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '计划小手术',
-          dataIndex: 'ITEM_VALUE7',
-          key: 'ITEM_VALUE7',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '脓毒血症',
-          dataIndex: 'ITEM_VALUE12',
-          key: 'ITEM_VALUE12',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '急性心肌梗死',
+          title: '年龄≧70岁',
           dataIndex: 'ITEM_VALUE5',
           key: 'ITEM_VALUE5',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
+          width: 100
         },
         {
-          title: '充血性心力衰竭',
+          title: '心脏和/或呼吸衰竭',
           dataIndex: 'ITEM_VALUE6',
           key: 'ITEM_VALUE6',
           width: 100,
@@ -188,9 +107,9 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '卧床休息的内科疾病',
-          dataIndex: 'ITEM_VALUE32',
-          key: 'ITEM_VALUE32',
+          title: '心梗和/或卒中 ',
+          dataIndex: 'ITEM_VALUE7',
+          key: 'ITEM_VALUE7',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -198,18 +117,9 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '炎症性肠病史',
-          dataIndex: 'ITEM_VALUE40',
-          key: 'ITEM_VALUE40',
-          width: 100,
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '大手术史',
-          dataIndex: 'ITEM_VALUE16',
-          key: 'ITEM_VALUE16',
+          title: '感染和/或风湿',
+          dataIndex: 'ITEM_VALUE8',
+          key: 'ITEM_VALUE8',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -217,9 +127,9 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '肺功能异常',
-          dataIndex: 'ITEM_VALUE15',
-          key: 'ITEM_VALUE15',
+          title: '肥胖',
+          dataIndex: 'ITEM_VALUE9',
+          key: 'ITEM_VALUE9',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -227,39 +137,9 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '严重肺病',
-          dataIndex: 'ITEM_VALUE28',
-          key: 'ITEM_VALUE28',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '口服避孕药或激素',
-          dataIndex: 'ITEM_VALUE27',
-          key: 'ITEM_VALUE27',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '妊娠期或产后状态',
-          dataIndex: 'ITEM_VALUE14',
-          key: 'ITEM_VALUE14',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '不明原因死胎、反复流产',
-          dataIndex: 'ITEM_VALUE33',
-          key: 'ITEM_VALUE33',
+          title: '激素治疗',
+          dataIndex: 'ITEM_VALUE10',
+          key: 'ITEM_VALUE10',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -272,9 +152,24 @@ export default observer(function WritingForm(props: any) {
       title: '2分项',
       children: [
         {
-          title: '年龄61-74',
-          dataIndex: 'ITEM_VALUE9',
-          key: 'ITEM_VALUE9',
+          title: '创伤或手术',
+          dataIndex: 'ITEM_VALUE4',
+          key: 'ITEM_VALUE4',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        }  
+      ]
+    },
+    {
+      title: '3分项',
+      children: [
+        {
+          title: '肿瘤、化疗或放疗',
+          dataIndex: 'ITEM_VALUE1',
+          key: 'ITEM_VALUE1',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -282,9 +177,9 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '关节镜手术',
-          dataIndex: 'ITEM_VALUE29',
-          key: 'ITEM_VALUE29',
+          title: 'VTE既往史',
+          dataIndex: 'ITEM_VALUE2',
+          key: 'ITEM_VALUE2',
           width: 100,
           align: 'center',
           render(text: any, record: any) {
@@ -292,7 +187,82 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '恶性肿瘤（既往或现患）',
+          title: '卧床',
+          dataIndex: 'ITEM_VALUE3',
+          key: 'ITEM_VALUE3',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '血栓形成倾向',
+          dataIndex: 'ITEM_VALUE11',
+          key: 'ITEM_VALUE11',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        }
+      ]
+    },
+    {
+      title: '基础预防',
+      children: [
+        {
+          title: '补液或饮水',
+          dataIndex: 'ITEM_VALUE13',
+          key: 'ITEM_VALUE13',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '戒烟戒酒',
+          dataIndex: 'ITEM_VALUE14',
+          key: 'ITEM_VALUE14',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '穿刺',
+          dataIndex: 'ITEM_VALUE15',
+          key: 'ITEM_VALUE15',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '观察皮肤',
+          dataIndex: 'ITEM_VALUE16',
+          key: 'ITEM_VALUE16',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '抬高下肢',
+          dataIndex: 'ITEM_VALUE17',
+          key: 'ITEM_VALUE17',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        },
+        {
+          title: '下床活动',
           dataIndex: 'ITEM_VALUE18',
           key: 'ITEM_VALUE18',
           width: 100,
@@ -302,27 +272,7 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '中心静脉置管',
-          dataIndex: 'ITEM_VALUE34',
-          key: 'ITEM_VALUE34',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '大手术',
-          dataIndex: 'ITEM_VALUE8',
-          key: 'ITEM_VALUE8',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '腹腔镜手术',
+          title: '踝泵运动',
           dataIndex: 'ITEM_VALUE19',
           key: 'ITEM_VALUE19',
           width: 100,
@@ -330,175 +280,6 @@ export default observer(function WritingForm(props: any) {
           render(text: any, record: any) {
             return text ? '√' : '';
           }
-        },
-        {
-          title: '限制性卧床',
-          dataIndex: 'ITEM_VALUE35',
-          key: 'ITEM_VALUE35',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '石膏固定',
-          dataIndex: 'ITEM_VALUE17',
-          key: 'ITEM_VALUE17',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        }
-      ]
-    },
-    {
-      title: '3分项',
-      children: [
-        {
-          title: '年龄≥75',
-          dataIndex: 'ITEM_VALUE20',
-          key: 'ITEM_VALUE20',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '深静脉血栓/肺栓塞栓塞症',
-          dataIndex: 'ITEM_VALUE10',
-          key: 'ITEM_VALUE10',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '凝血酶原/因子Leiden突变',
-          dataIndex: 'ITEM_VALUE30',
-          key: 'ITEM_VALUE30',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '血栓家族史',
-          dataIndex: 'ITEM_VALUE11',
-          key: 'ITEM_VALUE11',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '狼疮抗凝阳性',
-          dataIndex: 'ITEM_VALUE22',
-          key: 'ITEM_VALUE22',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '高半胱氨酸血症',
-          dataIndex: 'ITEM_VALUE36',
-          key: 'ITEM_VALUE36',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '血小板减少',
-          dataIndex: 'ITEM_VALUE41',
-          key: 'ITEM_VALUE41',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '抗心磷脂抗体阳性',
-          dataIndex: 'ITEM_VALUE21',
-          key: 'ITEM_VALUE21',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-        {
-          title: '易栓症',
-          dataIndex: 'ITEM_VALUE13',
-          key: 'ITEM_VALUE13',
-          width: 100,
-          align: 'center',
-          render(text: any, record: any) {
-            return text ? '√' : '';
-          }
-        },
-      ]
-    },
-    {
-      title: '基础预防',
-      children: [
-        {
-          title: '补液或饮水',
-          dataIndex: 'ITEM_VALUE42',
-          key: 'ITEM_VALUE42',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '戒烟戒酒',
-          dataIndex: 'ITEM_VALUE43',
-          key: 'ITEM_VALUE43',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '穿刺',
-          dataIndex: 'ITEM_VALUE44',
-          key: 'ITEM_VALUE44',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '观察皮肤',
-          dataIndex: 'ITEM_VALUE45',
-          key: 'ITEM_VALUE45',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '抬高下肢',
-          dataIndex: 'ITEM_VALUE46',
-          key: 'ITEM_VALUE46',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '下床活动',
-          dataIndex: 'ITEM_VALUE47',
-          key: 'ITEM_VALUE47',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '踝泵运动',
-          dataIndex: 'ITEM_VALUE48',
-          key: 'ITEM_VALUE48',
-          width: 100,
-          align: 'center'
         }
       ]
     },
@@ -507,13 +288,13 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '弹力袜',
-          dataIndex: 'ITEM_VALUE49',
+          dataIndex: 'ITEM_VALUE20',
           width: 80,
-          align: 'center'
+          align: 'ITEM_VALUE20'
         },
         {
           title: '加压装置',
-          dataIndex: 'ITEM_VALUE50',
+          dataIndex: 'ITEM_VALUE21',
           width: 80,
           align: 'center'
         }
@@ -524,7 +305,7 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '正确用药',
-          dataIndex: 'ITEM_VALUE51',
+          dataIndex: 'ITEM_VALUE22',
           width: 80,
           align: 'center'
         }
@@ -580,7 +361,7 @@ export default observer(function WritingForm(props: any) {
     }
     writingFormService.saveNurseVet({
       formName: '广州市花都人民医院术科VTE质量表',
-      wardCode: selectedDept,
+      wardCode: '1_3_12' || selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
       list: [
@@ -595,6 +376,7 @@ export default observer(function WritingForm(props: any) {
     const arrOne = tableData.slice();
     setTableData([])
     setTableData(arrOne)
+
   }
 
   const handleSign = (text: any, record: any) => {
@@ -613,7 +395,7 @@ export default observer(function WritingForm(props: any) {
       onOk() {
         writingFormService.saveNurseVet({
           formName: '广州市花都人民医院术科VTE质量表',
-          wardCode: selectedDept,
+          wardCode: '1_3_12' || selectedDept,
           listMonth: moment(date).format("MM"),
           listYear: moment(date).format("YYYY"),
           list: [
@@ -660,7 +442,7 @@ export default observer(function WritingForm(props: any) {
       queryMonth: moment(date).format("MM"),
       queryYear: moment(date).format("YYYY"),
       jsonMap: {
-        tradeCode: "nurse_VTE",
+        tradeCode: "nurse_FVTE",
         Ward_code: selectedDept,
         Start_time: startDate.format("YYYY-MM-DD"),
         End_time: endDate.format("YYYY-MM-DD"),
@@ -684,13 +466,13 @@ export default observer(function WritingForm(props: any) {
     if (date) {
       writingFormService
         .getNurseVet({
-          formName: '广州市花都人民医院术科VTE质量表',
-          wardCode: selectedDept,
+          formName: '广州市花都人民医院非术科VTE质量表',
+          wardCode: '1_3_12' || selectedDept,
           queryMonth: moment(date).format("MM"),
           queryYear: moment(date).format("YYYY"),
           jsonMap: {
-            tradeCode: "nurse_VTE",
-            Ward_code: selectedDept,
+            tradeCode: "nurse_FVTE",
+            Ward_code: '1_3_12' || selectedDept,
             Start_time: startDate.format("YYYY-MM-DD"),
             End_time: endDate.format("YYYY-MM-DD"),
           }
@@ -731,7 +513,7 @@ export default observer(function WritingForm(props: any) {
     })
     writingFormService.saveNurseVet({
       formName: '广州市花都人民医院术科VTE质量表',
-      wardCode: selectedDept,
+      wardCode: '1_3_12' || selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
       list: listArr
@@ -762,7 +544,7 @@ export default observer(function WritingForm(props: any) {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle>术科VTE质量单统计</PageTitle>
+          <PageTitle>非术科VTE质量单统计</PageTitle>
         </LeftIcon>
         <RightIcon>
           <div className='item'>
@@ -777,19 +559,6 @@ export default observer(function WritingForm(props: any) {
               />
             </div>
           </div>
-          {/* <div className='item'>
-            <div className='label'>科室：</div>
-            <div className='content'>
-              <Select style={{ width: 200 }} value={selectedDept} onChange={(val: any) => setSelectedDept(val)}>
-                <Select.Option value=''>全部</Select.Option>
-                {deptList.map((item: any) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
-          </div> */}
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
@@ -820,7 +589,7 @@ export default observer(function WritingForm(props: any) {
         </RightIcon>
       </HeaderCon>
       <MidCon>
-        <Title>术科VTE质量表</Title>
+        <Title>非术科VTE质量表</Title>
         <div className='batchBtn'>
           <Button onClick={batchSign} className='btn'>批量签名</Button>
         </div>

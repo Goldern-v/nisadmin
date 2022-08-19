@@ -33,8 +33,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
     /** 花都 */
     case "gzhd":
-      return "https://info.cr-health.com:20206"; // 公司-花都测试-外网
+      // return "https://info.cr-health.com:20206"; // 公司-花都测试-外网
     //return 'http://192.168.1.54:9868' // 公司-花都测试-内网
+      return "http://192.168.2.123:8080"
     /** 江门妇幼 */
     case "jmfy":
       return 'http://218.14.180.38:9094' // 江门妇幼正式
