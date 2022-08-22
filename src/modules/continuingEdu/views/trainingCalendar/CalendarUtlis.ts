@@ -11,15 +11,12 @@ class CalendarUtils {
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
-  @observable public deptName:any = authStore.defaultDeptCodeName; //科室名称
+  @observable public deptName:any = authStore.user?.deptName; //科室名称
   @observable public deptCode:any = []; //科室code
   @observable public year = moment() as undefined | moment.Moment; //年份
   @observable public month = moment().format('MM'); //月份
   @observable public loading = false; //月份
   @observable public tebleData = {} //表数据
-
-
-  
 
   @computed
   get postObj() {

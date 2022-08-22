@@ -29,6 +29,8 @@ export default observer(function CalendarHeader() {
     CalendarUtilsData.onload()
   }
   const handleChangeDept = (value:any) => {
+    console.log('dddddddddddddddddddddd');
+    
     CalendarUtilsData.deptName = value;
     CalendarUtilsData.deptCode = [];
     let currdept:any = AllDeptList.find((item:any) => item.name == value)
@@ -45,7 +47,7 @@ export default observer(function CalendarHeader() {
         <Title>培训日历</Title>
         <Place/>
         <span style={{ marginLeft: 15 }}>科室：</span>
-        <Select defaultValue={CalendarUtilsData.deptName} style={{ width: 130 }} onChange={handleChangeDept}>
+        <Select value={CalendarUtilsData.deptName} style={{ width: 130 }} onChange={handleChangeDept}>
           {AllDeptList.map((item:any)=>{
             return  <Select.Option value={item.name} key={item.code}>{item.name}</Select.Option>
           })}

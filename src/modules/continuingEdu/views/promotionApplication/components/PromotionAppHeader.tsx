@@ -6,7 +6,7 @@ import {PromotionAppUtils} from '../PromotionAppUtils'
 import printing from "printing";
 import { useRef } from "src/types/react";
 import { appStore,authStore } from "src/stores/index";
-import { Tabs , Steps, Button,message, Empty, Modal   } from 'antd';
+import { Tabs , Steps, Button,message, Empty, Modal,Icon   } from 'antd';
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
@@ -64,7 +64,7 @@ export default observer(function PromotionAppHeader() {
   }
   // 提交
   const handleSubmit = (value:any) =>{
-    PromotionAppUtils.onSubmit()
+    PromotionAppUtils.onSubmit() 
   }
   // 保存
   const handleSave = (value:any) =>{
@@ -74,6 +74,22 @@ export default observer(function PromotionAppHeader() {
       PromotionAppUtils.onSave()
     }
   }
+
+  // 删除
+  const handleRemove = ()=>{
+    Modal.confirm({
+      title: '是否确认删除晋升表?',
+      onOk() {
+        PromotionAppUtils.onRemove(PromotionAppUtils.master.id).then((res) => {
+          message.success("删除成功！")
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   // 撤销
   const handlerevocation = ()=>{
     
@@ -86,31 +102,6 @@ export default observer(function PromotionAppHeader() {
   }
   // 切换tabs触发切换
   const onTabsChange = (key: any) => {
-    // if(authStore.user?.currentLevel == '' || authStore.user?.currentLevel == 'N0'){
-    //   if(key > 1){
-    //     Message.warning('当前晋升职位和点击晋升表不符合！');
-    //   }else{
-    //     PromotionAppUtils.tabsKey = key;
-    //   }
-    // }else if(authStore.user?.currentLevel == 'N1'){
-    //   if(key > 2){
-    //     Message.warning('当前晋升职位和点击晋升表不符合！');
-    //   }else{
-    //     PromotionAppUtils.tabsKey = key;
-    //   }
-    // }else if(authStore.user?.currentLevel == 'N2'){
-    //   if(key > 3){
-    //     Message.warning('当前晋升职位和点击晋升表不符合！');
-    //   }else{
-    //     PromotionAppUtils.tabsKey = key;
-    //   }
-    // }else if(authStore.user?.currentLevel == 'N3'){
-    //   if(key > 4){
-    //     Message.warning('当前晋升职位和点击晋升表不符合！');
-    //   }else{
-    //     PromotionAppUtils.tabsKey = key;
-    //   }
-    // }
     if(key == 1){
       PromotionAppUtils.master.formCode = "HSJS_0001"
       PromotionAppUtils.master.formName = "N0->N1"
@@ -226,12 +217,16 @@ export default observer(function PromotionAppHeader() {
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}} disabled={!(PromotionAppUtils.master.nextNodeCode.indexOf('commit') != -1) && PromotionAppUtils.editStatus != '创建'}>{PromotionAppUtils.editStatus}</Button>
                   <Button type="primary" onClick={handleSubmit}  disabled={(Number(PromotionAppUtils.flowStatus) == 1 || Number(PromotionAppUtils.flowStatus) == 3 || Number(PromotionAppUtils.flowStatus) == 4)&& PromotionAppUtils.master.noPass== false} >提交申请</Button>
                   <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑'} >保存</Button>
+                  <Button onClick={handleRemove} style={{color:'red'}}>删除</Button>
                   <Button onClick={handlerevocation}>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>
                 </div>
               </StepHeader>
-              {
+              {/* {
                 PromotionAppUtils.editStatus == '编辑' || PromotionAppUtils.editStatus == '取消编辑' ? <PromotionTable printRef={printRef}></PromotionTable>: <Empty style={{height:680,paddingTop: '152px'}}/>
+              } */}
+              {
+                 <PromotionTable printRef={printRef}></PromotionTable>
               }
               
             </TabPane>

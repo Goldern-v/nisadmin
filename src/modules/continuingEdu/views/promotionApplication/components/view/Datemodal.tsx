@@ -26,6 +26,18 @@ export default observer(function DateModal(props:Props){
     }
     setyearPickerIsOpen(false);
   };
+  const handleClearChange = (e: any, value: any) => {
+    if(PromotionAppUtils.master.formCode == 'HSJS_0001'){
+      tableObjN1[value] = undefined;
+    } else if (PromotionAppUtils.master.formCode == 'HSJS_0002') {
+      tableObjN2[value] = undefined;
+    } else if (PromotionAppUtils.master.formCode == 'HSJS_0003') {
+      tableObjN3[value] = undefined;
+    } else if (PromotionAppUtils.master.formCode == 'HSJS_0004') {
+      tableObjN4[value] = undefined;
+    }
+    setyearPickerIsOpen(false);
+  };
 
   return(
     <DatePicker
@@ -40,6 +52,9 @@ export default observer(function DateModal(props:Props){
     }}
     onPanelChange={(e) => {
       handleChange(e, keys);
+    }}
+    onChange={(e) => {
+      handleClearChange(e, keys);
     }}
   />
   )
