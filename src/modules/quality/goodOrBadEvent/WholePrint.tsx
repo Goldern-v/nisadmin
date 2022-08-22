@@ -132,6 +132,10 @@ export default observer(function EventReportDetailView(props: Props) {
            table, img {
              page-break-inside: avoid;
            }
+		   img{
+			height:500px;
+			margin-top:20px;
+		   }
            pre {
             page-break-after: avoid;
            }
