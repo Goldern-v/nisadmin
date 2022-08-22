@@ -11,6 +11,7 @@ import configNys from './config/nys'
 import configDghl from './config/dghl'
 import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
+import configSdlj from './config/sdlj'
 
 const commonApi = service.commonApiService;
 
@@ -42,6 +43,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       fqfybjy: configFqfybjy.getColumns(cloneData, calBack),
       //暂时隐藏20210926
       'gzsrm': configGzsrm.getColumns(cloneData, calBack),
+      sdlj: configSdlj.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
     vague: true,
@@ -53,6 +55,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         nys: configNys.moneyKeyList,
         dghl: configDghl.moneyKeyList,
         fqfybjy: configFqfybjy.moneyKeyList,
+        sdlj: configSdlj.moneyKeyList,
       },
       vague: true,
     })
@@ -68,6 +71,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         dghl: configDghl.item,
         fqfybjy: configFqfybjy.item,
         'gzsrm': configGzsrm.item(),
+        sdlj: configSdlj.item,
         default: configDefault.item
       },
     })
@@ -83,6 +87,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
 
   return (
     <Wrapper>
+      <div className="remark">{configSdlj.remark}</div>
       <div className="button-con">
         <Button icon="plus" size="small" onClick={addItem}>
           添加
@@ -91,7 +96,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
 
       <BaseTable
         surplusHeight={400}
-        surplusWidth={200}
+        // surplusWidth={200}
         columns={columns}
         dataSource={cloneData.list || []}
         wrapperStyle={{
@@ -121,6 +126,11 @@ const Wrapper = styled.div`
   text {
     min-height: 200px !important;
     resize: none;
+  }
+  .remark {
+    position: absolute;
+    top: -13px;
+    left: 0;
   }
   .button-con {
     position: absolute;

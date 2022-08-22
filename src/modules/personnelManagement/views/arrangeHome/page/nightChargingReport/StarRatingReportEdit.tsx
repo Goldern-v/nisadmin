@@ -185,7 +185,7 @@ export default observer(function StarRatingReportEdit() {
       <ScrollCon>
         <Page
           ref={pageRef}
-          className={['nys', 'dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+          className={['nys', 'dghl', 'fqfybjy','sdlj'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
