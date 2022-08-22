@@ -15,6 +15,7 @@ import VTEForm from "./views/VTEForm/vteForm";
 import NotVTEForm from "./views/VTEForm/notVteForm";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
+import { appStore } from "src/stores";
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -29,19 +30,23 @@ const LEFT_MENU_CONFIG: any = [
     icon: <WJSX />,
     component: WritingForm
   },
+  appStore.HOSPITAL_ID === "gzhd" && 
   {
     title: "术科VTE质量单统计",
     path: "/queryStatistics/VTE",
     icon: <WJSX />,
     component: VTEForm
   },
+  appStore.HOSPITAL_ID === "gzhd" && 
   {
     title: "非术科VTE质量单统计",
     path: "/queryStatistics/notVTE",
     icon: <WJSX />,
     component: NotVTEForm
   }
-];
+].filter((item: any) => item)
+
+
 
 export default function QueryStatisticsRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
