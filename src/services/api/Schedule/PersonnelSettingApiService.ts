@@ -59,4 +59,8 @@ export default class PersonnelSettingApiService extends BaseApiService {
   public async getGroupColorList() {
     return this.post(`/dept/multiDictInfo`, ['sch_range_color'])
   }
+  public async schSettingNurseGroup(data:any) {
+    return this.post(`/schSettingNurseGroup/sort`,data)
+  }
+
 }

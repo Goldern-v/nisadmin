@@ -83,7 +83,7 @@ export default function MainBox() {
     const dstTimeStart=moment(`${year}-05-01`)
     const dstTimeEnd=moment(`${year}-09-30`)
     return moment(nowTime).isBetween(dstTimeStart,dstTimeEnd)
-    
+
   }
   const handleSwitchClick = (checked: boolean) => {
     const newArr = shiftList.map((item: any) => {
@@ -94,7 +94,7 @@ export default function MainBox() {
     setSelectAll(checked)
   }
 
-  const columns = appStore.HOSPITAL_ID !== "lcey" ? 
+  const columns = appStore.HOSPITAL_ID !== "lcey" ?
   [
     {
       title: "序号",
