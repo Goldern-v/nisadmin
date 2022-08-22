@@ -1,38 +1,59 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Radio, DatePicker, Button, message } from 'antd'
+import { Modal, DatePicker, Button, Input } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 import { fileDownload } from 'src/utils/file/file'
 import { writingFormService } from './services/queryStatisticsServices'
 import { PageTitle } from 'src/components/common'
 import service from 'src/services/api'
-import { Select } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
-import SignColumnRender from './components/SignColumnRender'
+// import AddModal from './modal/add'
+import moment from 'moment'
+import { authStore } from 'src/stores'
+import { message } from 'antd/es'
+
+const { MonthPicker } = DatePicker
+
+const { confirm } = Modal;
 
 export interface Props extends RouteComponentProps {}
 
 export default observer(function WritingForm(props: any) {
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  const [selectedDept, setSelectedDept] = useState('')
+  const [selectedDept, setSelectedDept] = useState(authStore.defaultDeptCode)
+  const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
+
+  const [date1, setDate1]= useState(moment())
+  let checkData: any[] = []
+
+  let date = moment()
   // const [date]
   const columns: any[] = [
     {
+      title: '序号',
+      dataIndex: '',
+      render: (text: any, record: any, index: number) => index + 1,
+      align: 'center',
+      width: 80,
+      fixed: "left",
+    },
+    {
       title: '姓名',
-      dataIndex: 'wardName',
+      dataIndex: 'PATIENT_NAME',
       width: 100,
-      align: 'left'
+      align: 'center',
+      fixed: "left",
     },
     {
       title: '住院号',
       width: 100,
-      dataIndex: 'detailList',
-
+      dataIndex: 'PATIENT_ID',
+      align: 'center',
+      fixed: "left",
       // render(text: any, rocord: any, index: number) {
       //   return text.map((item: any, index: number) => {
       //     return (
@@ -45,20 +66,22 @@ export default observer(function WritingForm(props: any) {
     },
     {
       title: '科室名称',
-      dataIndex: 'recordSize',
-      width: 140,
-      align: 'center'
+      dataIndex: 'DEPT_NAME',
+      width: 120,
+      align: 'center',
+      fixed: "left",
     },
     {
       title: '病区名称',
-      dataIndex: 'recordSize',
-      width: 140,
+      dataIndex: 'WARD_NAME',
+      width: 160,
       align: 'center'
     },
     {
       title: '出院时间',
-      dataIndex: 'detailList',
-      width: 150,
+      dataIndex: 'DISCHARGE_DATE_TIME',
+      width: 180,
+      align: 'center'
       // render(text: any, rocord: any, index: number) {
       //   return text.map((item: any, index: number) => {
       //     return (
@@ -71,13 +94,13 @@ export default observer(function WritingForm(props: any) {
     },
     {
       title: '评估等级',
-      dataIndex: 'recordSize',
-      width: 80,
+      dataIndex: 'EVAL_DESC',
+      width: 120,
       align: 'center'
     },
     {
       title: '评估得分',
-      dataIndex: 'recordSize',
+      dataIndex: 'EVAL_SCORE',
       width: 80,
       align: 'center'
     },
@@ -86,99 +109,162 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '年龄41-60',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE1',
+          key: 'ITEM_VALUE1',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '下肢肿胀',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE3',
+          key: 'ITEM_VALUE3',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '静脉曲张',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE4',
+          key: 'ITEM_VALUE4',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
-          title: '体重指数',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          title: '肥胖(BMI>25kg/m2)',
+          dataIndex: 'ITEM_VALUE2',
+          key: 'ITEM_VALUE2',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '计划小手术',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE7',
+          key: 'ITEM_VALUE7',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '脓毒血症',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE12',
+          key: 'ITEM_VALUE12',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '急性心肌梗死',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE5',
+          key: 'ITEM_VALUE5',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '充血性心力衰竭',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE6',
+          key: 'ITEM_VALUE6',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '卧床休息的内科疾病',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE32',
+          key: 'ITEM_VALUE32',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
-          title: '炎症性肠病病史',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          title: '炎症性肠病史',
+          dataIndex: 'ITEM_VALUE40',
+          key: 'ITEM_VALUE40',
+          width: 100,
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '大手术史',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE16',
+          key: 'ITEM_VALUE16',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '肺功能异常',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE15',
+          key: 'ITEM_VALUE15',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '严重肺病',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE28',
+          key: 'ITEM_VALUE28',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '口服避孕药或激素',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE27',
+          key: 'ITEM_VALUE27',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '妊娠期或产后状态',
-          dataIndex: 'grade',
-          key: 'grade',
-          width: 100
+          dataIndex: 'ITEM_VALUE14',
+          key: 'ITEM_VALUE14',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '不明原因死胎、反复流产',
-          dataIndex: 'grade1',
-          key: 'grade1',
-          width: 100
+          dataIndex: 'ITEM_VALUE33',
+          key: 'ITEM_VALUE33',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         }
       ]
     },
@@ -187,56 +273,84 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '年龄61-74',
-          dataIndex: 'grade2_1',
-          key: 'grade2_1',
-          width: 100
+          dataIndex: 'ITEM_VALUE9',
+          key: 'ITEM_VALUE9',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '关节镜手术',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE29',
+          key: 'ITEM_VALUE29',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '恶性肿瘤（既往或现患）',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE18',
+          key: 'ITEM_VALUE18',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '中心静脉置管',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE34',
+          key: 'ITEM_VALUE34',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '大手术',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE8',
+          key: 'ITEM_VALUE8',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '腹腔镜手术',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE19',
+          key: 'ITEM_VALUE19',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '限制性卧床',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE35',
+          key: 'ITEM_VALUE35',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '石膏固定',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
-        },
-
-
-
-        
+          dataIndex: 'ITEM_VALUE17',
+          key: 'ITEM_VALUE17',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
+        }
       ]
     },
     {
@@ -244,57 +358,93 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '年龄≥75',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE20',
+          key: 'ITEM_VALUE20',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
-          title: '深静脉血栓、肺栓塞栓塞症',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          title: '深静脉血栓/肺栓塞栓塞症',
+          dataIndex: 'ITEM_VALUE10',
+          key: 'ITEM_VALUE10',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '凝血酶原/因子Leiden突变',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE30',
+          key: 'ITEM_VALUE30',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '血栓家族史',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE11',
+          key: 'ITEM_VALUE11',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '狼疮抗凝阳性',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE22',
+          key: 'ITEM_VALUE22',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '高半胱氨酸血症',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE36',
+          key: 'ITEM_VALUE36',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '血小板减少',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE41',
+          key: 'ITEM_VALUE41',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '抗心磷脂抗体阳性',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE21',
+          key: 'ITEM_VALUE21',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
         {
           title: '易栓症',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE13',
+          key: 'ITEM_VALUE13',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return text ? '√' : '';
+          }
         },
       ]
     },
@@ -303,45 +453,52 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '补液或饮水',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE42',
+          key: 'ITEM_VALUE42',
+          width: 100,
+          align: 'center'
         },
         {
           title: '戒烟戒酒',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE43',
+          key: 'ITEM_VALUE43',
+          width: 100,
+          align: 'center'
         },
         {
           title: '穿刺',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE44',
+          key: 'ITEM_VALUE44',
+          width: 100,
+          align: 'center'
         },
         {
           title: '观察皮肤',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE45',
+          key: 'ITEM_VALUE45',
+          width: 100,
+          align: 'center'
         },
         {
           title: '抬高下肢',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE46',
+          key: 'ITEM_VALUE46',
+          width: 100,
+          align: 'center'
         },
         {
           title: '下床活动',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE47',
+          key: 'ITEM_VALUE47',
+          width: 100,
+          align: 'center'
         },
         {
           title: '踝泵运动',
-          dataIndex: 'grade2_2',
-          key: 'grade2_2',
-          width: 100
+          dataIndex: 'ITEM_VALUE48',
+          key: 'ITEM_VALUE48',
+          width: 100,
+          align: 'center'
         }
       ]
     },
@@ -350,13 +507,13 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '弹力袜',
-          dataIndex: 'recordSize',
+          dataIndex: 'ITEM_VALUE49',
           width: 80,
           align: 'center'
         },
         {
           title: '加压装置',
-          dataIndex: 'recordSize',
+          dataIndex: 'ITEM_VALUE50',
           width: 80,
           align: 'center'
         }
@@ -367,7 +524,7 @@ export default observer(function WritingForm(props: any) {
       children: [
         {
           title: '正确用药',
-          dataIndex: 'recordSize',
+          dataIndex: 'ITEM_VALUE51',
           width: 80,
           align: 'center'
         }
@@ -375,42 +532,36 @@ export default observer(function WritingForm(props: any) {
     },
     {
       title: '是否落实恰当措施',
+      fixed: 'right',
       children: [
         {
           title: '点击一下即√点第二下×',
-          dataIndex: 'recordSize',
-          width: 80,
-          align: 'center'
+          dataIndex: 'isAppropriate',
+          width: 160,
+          align: 'center',
+          render(text: any, record: any) {
+            return (
+            <Signature>
+              <span onClick={() => clickResult(text, record)}>{text}</span>
+            </Signature>
+            )}
         }
       ]
     },
     {
       title: '签名人',
+      fixed: 'right',
       children: [
         {
           title: '点击签名',
-          dataIndex: 'signature',
+          dataIndex: 'autograph',
           width: 80,
           align: 'center',
           render(text: any, record: any) {
-            console.log(text,555, record, 9999 )
             return (
               <Signature>
                 <span onClick={() => handleSign(text, record)}>{text ? text : '签名'}</span>
-                <span>111</span>
               </Signature>
-                // <SignColumnRender {
-                //   ...{
-                //     // cellDisabled,
-                //     record,
-                //     // index,
-                //     // itemCfg: item,
-                //     // updateDataSource,
-                //     // registerCode,
-                //     // selectedBlockId,
-                //     // getPage,
-                //   }
-                // }/>
             )
           }
         }
@@ -418,16 +569,102 @@ export default observer(function WritingForm(props: any) {
     }
   ]
 
+  const clickResult = (text: string, record: any) => {
+    if (text) {
+      if (text === '√'){
+        record.isAppropriate = "×"
+      }
+      else record.isAppropriate = "√"
+    }else {
+      record.isAppropriate = "√"
+    }
+    writingFormService.saveNurseVet({
+      formName: '广州市花都人民医院术科VTE质量表',
+      wardCode: selectedDept,
+      listMonth: moment(date).format("MM"),
+      listYear: moment(date).format("YYYY"),
+      list: [
+        {
+          formId: record.ID,
+          isAppropriate: record.isAppropriate,
+          autograph: record.autograph
+        }
+      ]
+    })
+    setTableList(tableData);
+    const arrOne = tableData.slice();
+    setTableData([])
+    setTableData(arrOne)
+  }
+
   const handleSign = (text: any, record: any) => {
-    console.log(text, record, 888887)
-    
+    if (!text) {
+      saveSign('确认', '签名', record, authStore.user?.empName)
+    } else {
+      // saveSign('取消', '取消签名', record, '')
+      message.warning(`不能取消签名！`)
+    }
+  }
+
+  const saveSign = (text: string, sign: string, record:any, empName: string | undefined = '') => {
+    confirm({
+      title: `${text}签名?`,
+      content: '',
+      onOk() {
+        writingFormService.saveNurseVet({
+          formName: '广州市花都人民医院术科VTE质量表',
+          wardCode: selectedDept,
+          listMonth: moment(date).format("MM"),
+          listYear: moment(date).format("YYYY"),
+          list: [
+            {
+              formId: record.ID,
+              isAppropriate: record.isAppropriate,
+              autograph: empName
+            }
+          ]
+        }).then((res) => {
+          if (res.code === '200') {
+            message.success(`${sign}成功！`)
+            record.autograph = empName
+            setTableList(tableData);
+            const arrOne = tableData.slice();
+            setTableData([])
+            setTableData(arrOne)
+          } else {
+            message.error(`${sign}失败！`)
+          }
+        })
+      },
+      onCancel() {
+      },
+    });
+  }
+  // 获取某一个月的开始时间和结束时间
+  const startEndDate = () => {
+    let startDate = moment(date);
+    let endDate: any = new Date(startDate.format('YYYY/MM/DD'));
+    startDate.date(1);
+
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setDate(0);
+    endDate = moment(endDate);
+    return {startDate, endDate}
   }
 
   const exportExcel = () => {
+    const { startDate, endDate } = startEndDate()
     let data = {
-      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
-      wardCode: selectedDept
+      formName: '广州市花都人民医院术科VTE质量表',
+      wardCode: selectedDept,
+      queryMonth: moment(date).format("MM"),
+      queryYear: moment(date).format("YYYY"),
+      jsonMap: {
+        tradeCode: "nurse_VTE",
+        Ward_code: selectedDept,
+        Start_time: startDate.format("YYYY-MM-DD"),
+        End_time: endDate.format("YYYY-MM-DD"),
+      }
     }
     writingFormService.exportExcel(data).then((res) => {
       fileDownload(res)
@@ -442,32 +679,84 @@ export default observer(function WritingForm(props: any) {
   }, [])
 
   const getTableData = () => {
+    const { startDate, endDate } = startEndDate()
     setLoadingTable(true)
-
-    if (
-      qualityControlRecordVM.filterDate &&
-      qualityControlRecordVM.filterDate[0] &&
-      qualityControlRecordVM.filterDate[1]
-    ) {
+    if (date) {
       writingFormService
         .getNurseVet({
-          Start_time: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-          End_time: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
-          Ward_code: selectedDept
+          formName: '广州市花都人民医院术科VTE质量表',
+          wardCode: selectedDept,
+          queryMonth: moment(date).format("MM"),
+          queryYear: moment(date).format("YYYY"),
+          jsonMap: {
+            tradeCode: "nurse_VTE",
+            Ward_code: selectedDept,
+            Start_time: startDate.format("YYYY-MM-DD"),
+            End_time: endDate.format("YYYY-MM-DD"),
+          }
         })
         .then((res) => {
-          let r: any= [{
-            recordSize: '✔',
-            signature: ''
-          }]
-          console.log(res.data, 8888)
-          setTableData(res.data.data)
+          setTableData(res.data || [])
           setLoadingTable(false)
         })
     } else {
       message.warning('时间不能为空')
     }
   }
+
+  // const addVIE = () => {
+  //   setVisible(true)
+  // }
+
+  // const onOk = (params: any) => {
+  //   console.log(params, 6666)
+  //   writingFormService.getNurseVet(params).then((res) => {
+  //     if (res.code === 200) {
+  //       setLoadingTable(false)
+  //       setVisible(false)
+  //     }
+  //   })
+  // }
+  // const onCancel = () => {
+  //   setVisible(false)
+  // }
+
+  const batchSign = () => {
+    let listArr = checkData.map((row: any) => {
+      return {
+        formId: row.ID,
+        isAppropriate: row.isAppropriate,
+        autograph: authStore.user?.empName
+      }
+    })
+    writingFormService.saveNurseVet({
+      formName: '广州市花都人民医院术科VTE质量表',
+      wardCode: selectedDept,
+      listMonth: moment(date).format("MM"),
+      listYear: moment(date).format("YYYY"),
+      list: listArr
+    }).then((res) => {
+      if (res.code === '200') {
+        message.success(`批量签名成功！`)
+        getTableData()
+      } else {
+        message.error(`批量签名失败！`)
+      }
+    })
+  }
+
+  const rowSelection = {
+    // onChange: (selectedRowKeys: any, selectedRows: any) => {
+    //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    // },
+    onSelect: (record: any, selected: any, selectedRows: any) => {
+      checkData = selectedRows
+      
+    },
+    onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
+      checkData = selectedRows
+    },
+  };
 
   return (
     <Wrapper>
@@ -479,14 +768,12 @@ export default observer(function WritingForm(props: any) {
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
-              <DatePicker.RangePicker
-                allowClear={false}
-                value={qualityControlRecordVM.filterDate}
-                onChange={(value) => {
-                  qualityControlRecordVM.filterDate = value
+              <MonthPicker value={date1}  placeholder="请选择年月"
+                onChange={(value: any) => {
+                  date = value
+                  setDate1(value)
                   getTableData()
                 }}
-                style={{ width: 220 }}
               />
             </div>
           </div>
@@ -504,7 +791,7 @@ export default observer(function WritingForm(props: any) {
             </div>
           </div> */}
           <div className='item'>
-            <div className='label'>质控科室：</div>
+            <div className='label'>科室：</div>
             <div className='content'>
               <DeptSelect onChange={(val: any) => setSelectedDept(val)} style={{ width: 160 }} />
             </div>
@@ -515,6 +802,11 @@ export default observer(function WritingForm(props: any) {
               查询
             </Button>
           </div>
+          {/* <div className='item'>
+            <Button type='primary' className='statistics' onClick={addVIE}>
+              新增
+            </Button>
+          </div> */}
           <div className='item'>
             <Button
               className='excel'
@@ -529,17 +821,27 @@ export default observer(function WritingForm(props: any) {
       </HeaderCon>
       <MidCon>
         <Title>术科VTE质量表</Title>
+        <div className='batchBtn'>
+          <Button onClick={batchSign} className='btn'>批量签名</Button>
+        </div>
         <TableCon>
           <BaseTable
-            type={['index']}
             surplusHeight={300}
             surplusWidth={80}
             loading={loadingTable}
             dataSource={tableData}
             columns={columns}
+            rowSelection={rowSelection}
           />
         </TableCon>
       </MidCon>
+      {/* <AddModal 
+        visible={visible} 
+        onOk={onOk} 
+        onCancel={onCancel} 
+        wardList={wardList}
+        loading={false}
+      /> */}
     </Wrapper>
   )
 })
@@ -581,6 +883,14 @@ const Wrapper = styled.div`
     text-align: center;
     & + .cell {
       border-top: 1px solid rgb(232, 232, 232);
+    }
+  }
+  .batchBtn{
+    display: flex;
+    justify-content: right;
+    margin: 0 20px -6px 0;
+    .btn{
+      width: 85px;
     }
   }
 `
@@ -640,4 +950,13 @@ const TableCon = styled.div`
 `
 const Signature = styled.div`
   cursor: pointer;
+  height: 100%;
+  width: 100%;
+  span{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `

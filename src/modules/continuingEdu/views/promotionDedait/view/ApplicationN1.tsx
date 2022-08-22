@@ -73,9 +73,8 @@ export default observer(function ApplicationN1(props: Props) {
   const handleUserCheckOk = (userAudit: any, value: any) => {
     console.log(userAudit, value);
     PromotionDetaitUtils.tableObjN1.JS0000010 = value.empName;
-    PromotionDetaitUtils.tableObjN1.JS0000011 = moment(value.updateTime).format(
-      "YYYY-MM-DD HH:mm"
-    );
+    PromotionDetaitUtils.tableObjN1.JS0000011 = value.updateTime? moment(value.updateTime).format(
+      "YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
     // auditFormSubmit(userAudit)
     setUserCheckVisible(false);
   };
@@ -1019,9 +1018,11 @@ const Wrapper = styled.div`
       height: 26px;
     }
   }
-  .ant-calendar-picker-icon,
-  .ant-calendar-picker-clear {
+  .ant-calendar-picker-icon{
     display: none;
+  }
+  .ant-calendar-picker-clear, .ant-calendar-picker-icon{
+    right: 1px;
   }
   .ant-input {
     padding: 0;

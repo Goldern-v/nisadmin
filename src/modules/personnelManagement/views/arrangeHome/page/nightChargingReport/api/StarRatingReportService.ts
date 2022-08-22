@@ -66,7 +66,10 @@ export default class StarRatingReportService extends BaseApiService {
   public getReportFQ(query: any) {
     return this.post(`/schNightTotalContentFQ/getList`, query);
   }
-
+  public getReportLJ(query: any) {
+    return this.post(`/schNightTotalContentLJ/getList`, query);
+  }
+  
   /**修改报告 */
   public editReport(query: any) {
     return this.post(`/${hospitalPath}/saveOrUpdate`, query);
@@ -126,6 +129,12 @@ export default class StarRatingReportService extends BaseApiService {
   /**福清妇幼导出 */
   public exportFQ(query: any) {
     return this.post(`/schNightTotalContentFQ/excel`, query, {
+      responseType: "blob"
+    });
+  }
+  /**福清妇幼导出 */
+  public exportLJ(query: any) {
+    return this.post(`/schNightTotalContentLJ/excel`, query, {
       responseType: "blob"
     });
   }

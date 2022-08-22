@@ -72,9 +72,8 @@ export default observer(function ApplicationN1(props: Props) {
   const handleUserCheckOk = (userAudit: any, value: any) => {
     console.log(userAudit, value);
     PromotionDetaitUtils.tableObjN3.JS0000010 = value.empName;
-    PromotionDetaitUtils.tableObjN3.JS0000011 = moment(value.updateTime).format(
-      "YYYY-MM-DD HH:mm"
-    );
+    PromotionDetaitUtils.tableObjN3.JS0000011 = value.updateTime? moment(value.updateTime).format(
+      "YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
     // auditFormSubmit(userAudit)
     setUserCheckVisible(false);
   };
@@ -597,7 +596,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <DateModal 
                       value={tableObjN3.JS0000065}
                       keys={"JS0000065"}
-                    />年-
+                    />-
                     <DateModal 
                     value={tableObjN3.JS0000066}
                     keys={"JS0000066"}
@@ -1473,9 +1472,11 @@ const Wrapper = styled.div`
       }
     }
   }
-  .ant-calendar-picker-icon,
-  .ant-calendar-picker-clear {
+  .ant-calendar-picker-icon{
     display: none;
+  }
+  .ant-calendar-picker-clear, .ant-calendar-picker-icon{
+    right: 1px;
   }
   
   .ant-input {

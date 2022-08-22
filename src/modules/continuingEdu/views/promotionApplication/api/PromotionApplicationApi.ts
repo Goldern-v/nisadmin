@@ -23,6 +23,15 @@ class PromotionApp extends BaseApiService {
       newFormData
     )
   } 
+  // 撤销申请表
+  public removeById(id:any){
+    let newFormData = new FormData()
+    newFormData.set('id',id)
+    return this.post(
+      `/nurse/promotion/deleteById`,
+      newFormData
+    )
+  } 
 
   // 根据员工号和表格获取信息
   public getByEmpNoAndFormCode(obj:any){

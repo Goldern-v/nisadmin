@@ -73,12 +73,28 @@ export default observer(function FollowUpRecord() {
       align: "center",
       width: 100
     },
-    {
-      title: "节休结余（天）",
-      dataIndex: "holidayHourNow",
-      align: "center",
-      width: 100
-    },
+    ...appStore.hisMatch({
+      map: {
+        sdlj: [
+          {
+            title: "例假结余（天）",
+            dataIndex: "periodHourNow",
+            align: "center",
+            width: 100
+          },
+        ],
+        default: [
+          {
+            title: "节休结余（天）",
+            dataIndex: "holidayHourNow",
+            align: "center",
+            width: 100
+          },
+        ]
+      },
+      vague: true
+    }),
+
     {
       title: "工时结余（小时）",
       dataIndex: "balanceHourNow",

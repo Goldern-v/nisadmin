@@ -1,11 +1,15 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 class WritingFormService extends BaseApiService {
-  public getNurseVet(obj: { Start_time: string; End_time: string; Ward_code: string }) {
-    return this.post(`/hisDataAnalysis/getNurseVet`, obj)
+  public getNurseVet(obj: any) {
+    return this.post(`/qualityList/queryList`, obj)
   }
 
-  public exportExcel(obj: { beginDate: string; endDate: string; wardCode: string }) {
-    return this.post(`/qcItem/count/docWriteExport`, obj, { responseType: 'blob' })
+  public exportExcel(obj: any) {
+    return this.post(`/qualityList/exportQualityList`, obj, { responseType: 'blob' })
+  }
+
+  public saveNurseVet(obj: any) {
+    return this.post(`/qualityList/saveList`, obj)
   }
 }
 

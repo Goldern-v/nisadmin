@@ -61,9 +61,8 @@ export default observer(function ApplicationN1(props: Props) {
   };
   const handleUserCheckOk = (userAudit: any, value: any) => {
     PromotionAppUtils.tableObjN4.JS0000010 = value.empName;
-    PromotionAppUtils.tableObjN4.JS0000011 = moment(value.updateTime).format(
-      "YYYY-MM-DD HH:mm"
-    );
+    PromotionAppUtils.tableObjN4.JS0000011 = value.updateTime? moment(value.updateTime).format(
+      "YYYY-MM-DD HH:mm") : moment().format("YYYY-MM-DD HH:mm");
     // auditFormSubmit(userAudit)
     setUserCheckVisible(false);
   };
@@ -148,6 +147,7 @@ export default observer(function ApplicationN1(props: Props) {
             PromotionAppUtils.editStatus == "取消编辑"
               ? "none"
               : "",
+            backgroundColor: PromotionAppUtils.editStatus == "创建" ? "rgba(204, 204, 204, 0.5)" : ""
         }}
         onClick={() => {
           message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
@@ -699,7 +699,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <DateModal 
                       value={tableObjN4.JS0000065}
                       keys={"JS0000065"}
-                    />年-
+                    />-
                   <DateModal 
                       value={tableObjN4.JS0000066}
                       keys={"JS0000066"}
@@ -1632,9 +1632,11 @@ const Wrapper = styled.div`
       }
     }
   }
-  .ant-calendar-picker-icon,
-  .ant-calendar-picker-clear {
+  .ant-calendar-picker-icon{
     display: none;
+  }
+  .ant-calendar-picker-clear, .ant-calendar-picker-icon{
+    right: 1px;
   }
   
   .ant-input {

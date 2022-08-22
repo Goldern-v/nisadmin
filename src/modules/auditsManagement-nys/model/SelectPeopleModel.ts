@@ -167,7 +167,6 @@ class SelectPeopleViewModel {
       this.selectedBigDeptCode = "";
       this.selectedBigDeptName = "";
       this.currentData = {};
-      console.log('test-res', res)
       this.selectTreeDataAll = res.data
     })
   }

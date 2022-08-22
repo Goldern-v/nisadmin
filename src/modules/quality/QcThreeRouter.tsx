@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { KeepAlive, Provider } from 'react-keep-alive'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 
 import AdministrativeWard from './views/administrativeWard'
 import Analysis from './views/analysis/Analysis'
 import RecordView from './views/checkWard/view/record/RecordView'
 import CheckWardReportList from './views/checkWard/view/reportList/CheckWardReportList'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
+import committeeWorkReport from './views/committeeWorkReport'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 import qcNursingAnalysis from './views/qcNursingAnalysis'
 import qcThreeProblem from './views/qcThreeProblem/index'
@@ -172,13 +173,22 @@ export default function QcThreeRouter(props: Props) {
     title: "三级质控结果汇总表",
     icon: <JCTJ/>,
     path: "/qcThree/qcThreeResult",
-    component: qcThreeResult
+    component: qcThreeResult,
+    hide: !authStore.level3publishedWatch,
   }
   const route_qcThreeProblem = {
     title: "三级质控问题分析改进",
     icon: <JCTJ/>,
     path: "/qcThree/qcThreeProblem",
-    component: qcThreeProblem
+    component: qcThreeProblem,
+    hide: !authStore.level3publishedWatch,
+  }
+  const route_committeeWorkReport = {
+    title: "委员会小组工作报告",
+    icon: <JCTJ/>,
+    path: "/qcThree/committeeWorkReport",
+    component: committeeWorkReport,
+    hide: !authStore.level3publishedWatch,
   }
 
   let extra_menu: any = appStore.hisMatch({
@@ -257,7 +267,8 @@ export default function QcThreeRouter(props: Props) {
         // route_三级质控月度报告,
         // route_三级质控汇总报告,
         // route_三级质控问题汇总,
-        route_qcThreeResult,
+        route_committeeWorkReport,
+        // route_qcThreeResult,
         route_qcThreeProblem,
       ],
       other: [

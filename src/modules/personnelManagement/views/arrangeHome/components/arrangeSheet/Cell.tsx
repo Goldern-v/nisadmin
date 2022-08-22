@@ -180,7 +180,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'fssdy,nfzxy,whyx,sdlj': [
+            'fssdy,nfzxy,whyx': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
@@ -195,21 +195,45 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            // 'nfzxy': [
-            //   {
-            //     icon: require("../../images/修改工时.png"),
-            //     label: "添加备注",
-            //     type: "text",
-            //     onClick: () => {
-            //       addRemakeModal.show({
-            //         data: sheetViewModal.selectedCell,
-            //         onOkCallBack(value: any) {
-            //           sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
-            //         }
-            //       });
-            //     }
-            //   }
-            // ],
+            'sdlj': [
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加备注",
+                type: "text",
+                onClick: () => {
+                  addRemakeModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(value: any) {
+                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+                    }
+                  });
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "二值",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 1,typeName:"二值" }]
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "送病人",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 2,typeName:"送病人" }]
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "总值",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 3,typeName:"总值" }]
+                }
+              }
+            ],
             other: []
           },
           vague:true,
@@ -678,6 +702,10 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
         {(cellObj.schRemarks && cellObj.schRemarks.length) ? (
           <span>({cellObj.schRemarks[0].remark})</span>
         ) : ''}
+        {(cellObj.schSpecial && cellObj.schSpecial.length) ? (
+          <span>({cellObj.schSpecial[0].typeName})</span>
+        ) : ''}
+
       </React.Fragment>
     );
   }

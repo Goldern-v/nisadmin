@@ -4,7 +4,7 @@ import { PromotionApplicationApi } from './api/PromotionApplicationApi'
 import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
 import { message } from "antd";
-import {master, tableObjN1, tableObjN2, tableObjN3, tableObjN4 ,AdituCommitOneN1,AdituCommitTwoN1,AdituCommitOneN2,AdituCommitTwoN2,AdituCommitOneN3,AdituCommitTwoN3,AdituCommitOneN4,AdituCommitTwoN4} from './types'
+import { master, tableObjN1, tableObjN2, tableObjN3, tableObjN4, AdituCommitOneN1, AdituCommitTwoN1, AdituCommitOneN2, AdituCommitTwoN2, AdituCommitOneN3, AdituCommitTwoN3, AdituCommitOneN4, AdituCommitTwoN4 } from './types'
 
 
 class PromotionApp {
@@ -29,51 +29,51 @@ class PromotionApp {
   @observable public AdituCommitOneN4 = AdituCommitOneN4;  // 表单的数据 N3 1-4
   @observable public AdituCommitTwoN4 = AdituCommitTwoN4;  // 表单的数据 N3 6-7
 
- 
-  @observable public handlenodeDto:any = [] //审核流程内容
+
+  @observable public handlenodeDto: any = [] //审核流程内容
   @observable public attachmentList = [] //附件内容
   @observable public carePatientList = [
     {
       masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
     {
-      masterId:this.master.id,
+      masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
     {
-      masterId:this.master.id,
+      masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
     {
-      masterId:this.master.id,
+      masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
     {
-      masterId:this.master.id,
+      masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
     {
-      masterId:this.master.id,
+      masterId: this.master.id,
       careTime: undefined,
-      careMessage:"",
-      medicalRecordNo:"",
-      patientName:""
+      careMessage: "",
+      medicalRecordNo: "",
+      patientName: ""
     },
   ]
 
@@ -84,26 +84,76 @@ class PromotionApp {
       commitStep: this.commitStep,
     }
   }
+
+  handleNewSet(arr:string[]):string[]{
+    let a = []
+    for(var i in arr){
+        if(a.indexOf(arr[i])==-1){
+            a.push(arr[i])
+        }
+    }   
+    return a
+  }
+
+  handleEleBorder(ElementArr: string[], result: string) {
+    if(ElementArr.length < 0) return
+    ElementArr.map((item: string) => {
+      let elementId = document.getElementById(item) 
+      if(!elementId)  return
+      elementId.style.border = result;
+    })
+  }
+
+  // 处理不同的表逻辑
+  handleDifferent() {
+      let list = { 'HSJS_0001': this.tableObjN1, 'HSJS_0002': this.tableObjN2, 'HSJS_0003': this.tableObjN3, 'HSJS_0004': this.tableObjN4 }
+      for (let key in list) {
+        if (this.master.formCode == key) {
+          let checkCode = ["JS0000037", "JS0000068", "JS0000071", "JS0000056", "JS0000093", "JS0000109", "JS0000112", "JS0000115", "JS0000118", "JS0000120", "JS0000122", "JS0000125", "JS0000126", "JS0000135", "JS0000139", "JS0000140", "JS0000141", "JS0000151", "JS0000153", "JS0000154", "JS0000155", "JS0000157", "JS0000159"]
+          checkCode.map((item) => {
+            list[key][item] = list[key][item] && list[key][item].toString()
+          })
+          return list[key]
+        }
+      }
+  }
+  // 重新赋值
+  setAssignment(objList: any, keys: any) {
+      return keys.map((item: any) => {
+        objList[item] = objList[item] ? moment(objList[item]) : undefined
+      })
+  }
+  // 重新赋值
+  setAssignmentCheck(objList: any, keys: any) {
+    keys.map((item: any) => {
+      let arrStr: string = objList[item]
+      if (arrStr) {
+        return objList[item] = arrStr.split(',').filter((item: any) => item != '')
+      }
+    })
+  }
+
   // 保存和创建
   onSave() {
     this.loading = true;
     this.commitStep = '';
-    this.carePatientList.map((item:any)=>{
+    this.carePatientList.map((item: any) => {
       item.masterId = this.master.id
     })
     let obj = {
-      master : this.master,
-      itemDataMap:this.handleDifferent(),
-      carePatientList:this.carePatientList,
+      master: this.master,
+      itemDataMap: this.handleDifferent(),
+      carePatientList: this.carePatientList,
       commitStep: this.commitStep,
     }
+   
     PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
-      if(res.code == 200){
+      if (res.code == 200) {
         this.loading = false;
         PromotionAppUtils.editStatus = '编辑'
         PromotionAppUtils.master.status = '0'
         this.createOnload()
-      }else{
+      } else {
         this.editStatus = "创建";
         this.edit = false;
         this.loading = false;
@@ -113,19 +163,26 @@ class PromotionApp {
     })
   }
 
-  handelStep <T>(formList:string[],formListTwo:string[], rawForm:T){
-   
-    if(this.master.nextNodeCode == 'commit'){
-      let isInfo = formList.some((item:string) =>  !rawForm[item])
-      
-      if(isInfo){
-        return message.warning('填写一到四还有信息未填，请确认！')
-      }else{
+ 
+
+  handelStep<T>(formList: any, formListTwo: any, rawForm: T) {
+    if (this.master.nextNodeCode == 'commit') {
+
+      let isInfo = Object.keys(formList).some((item: string) => !rawForm[item])
+      if (isInfo) {
+        Object.keys(formList).forEach((item: string) => {
+          if(!rawForm[item]){
+            return message.warning(`填写一到四中: ${formList[item]} 未填，请确认！`)
+          }
+        })
+        // this.handleEleBorder(errEleData, "2px solid #f00")
+       
+      } else {
         let obj = {
-          master : this.master,
+          master: this.master,
           itemDataMap: this.handleDifferent(),
           commitStep: this.master.nextNodeCode || '',
-          carePatientList:this.carePatientList,
+          carePatientList: this.carePatientList,
         }
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
@@ -134,14 +191,14 @@ class PromotionApp {
         }).catch(() => {
           this.loading = false;
         })
-      } 
-    }else if (this.master.nextNodeCode == 'commit_kh_pj'){
-      let isInfo = formListTwo.some((item:string) =>  !rawForm[item])
-      if(isInfo){
+      }
+    } else if (this.master.nextNodeCode == 'commit_kh_pj') {
+      let isInfo = formListTwo.some((item: string) => !rawForm[item])
+      if (isInfo) {
         return message.warning('填写六、七项还有信息未填，请确认！')
-      }else{
+      } else {
         let obj = {
-          master : this.master,
+          master: this.master,
           itemDataMap: this.handleDifferent(),
           commitStep: this.master.nextNodeCode || '',
         }
@@ -152,23 +209,23 @@ class PromotionApp {
         }).catch(() => {
           this.loading = false;
         })
-      } 
-    }else{
-        message.warning('申请还待审核！')
+      }
+    } else {
+      message.warning('申请还待审核！')
     }
   }
   // 提交
   onSubmit() {
     if (this.master.formCode == 'HSJS_0001') {
-      this.handelStep <object>(this.AdituCommitOneN1,this.AdituCommitTwoN1,this.tableObjN1)
-    }else if(this.master.formCode == 'HSJS_0002'){
-      this.handelStep <object>(this.AdituCommitOneN2,this.AdituCommitTwoN2,this.tableObjN2)
+      this.handelStep<object>(this.AdituCommitOneN1, this.AdituCommitTwoN1, this.tableObjN1)
+    } else if (this.master.formCode == 'HSJS_0002') {
+      this.handelStep<object>(this.AdituCommitOneN2, this.AdituCommitTwoN2, this.tableObjN2)
     }
-    else if(this.master.formCode == 'HSJS_0003'){
-      this.handelStep <object>(this.AdituCommitOneN3,this.AdituCommitTwoN3,this.tableObjN3)
+    else if (this.master.formCode == 'HSJS_0003') {
+      this.handelStep<object>(this.AdituCommitOneN3, this.AdituCommitTwoN3, this.tableObjN3)
     }
-    else if(this.master.formCode == 'HSJS_0004'){
-      this.handelStep <object>(this.AdituCommitOneN4,this.AdituCommitTwoN4,this.tableObjN4)
+    else if (this.master.formCode == 'HSJS_0004') {
+      this.handelStep<object>(this.AdituCommitOneN4, this.AdituCommitTwoN4, this.tableObjN4)
     }
 
   }
@@ -176,34 +233,7 @@ class PromotionApp {
   onCancelForm() {
     return PromotionApplicationApi.getcancelById(this.master.id)
   }
-   // 处理不同的表逻辑
-   handleDifferent(){
-    let list = {'HSJS_0001':this.tableObjN1,'HSJS_0002':this.tableObjN2,'HSJS_0003':this.tableObjN3,'HSJS_0004':this.tableObjN4}
-    for(let key in list){
-      if (this.master.formCode == key) {
-        let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
-        checkCode.map((item)=>{
-          list[key][item] = list[key][item]&& list[key][item].toString()
-        })
-        return  list[key]
-      }
-    } 
-  }
-  // 重新赋值
-  setAssignment(objList:any , keys:any) {
-    return  keys.map((item:any)=> {
-      objList[item]= objList[item] ? moment(objList[item]) : undefined
-    })
-  }
-  // 重新赋值
-  setAssignmentCheck(objList:any , keys:any) {
-    keys.map((item:any)=>{
-      let arrStr: string = objList[item]
-      if (arrStr) {
-        return objList[item] = arrStr.split(',').filter((item: any) => item != '')
-      }
-    })
-  }
+
 
   // 获取当前用户的晋升表数据
   createOnload() {
@@ -215,12 +245,12 @@ class PromotionApp {
     PromotionApplicationApi.getByEmpNoAndFormCode(createObj).then(res => {
       if (res.data) {
         this.master = { ...res.data.master }
-        if(Object.keys(res.data.itemDataMap).length){
-          let dateCode = ["JS0000004","JS0000008","JS0000009","JS0000038","JS0000041","JS0000054","JS0000057","JS0000060","JS0000065","JS0000066","JS0000075","JS0000077","JS0000079","JS0000081","JS0000083","JS0000085","JS0000087","JS0000089","JS0000091","JS0000097","JS0000100","JS0000129","JS0000131","JS0000136","JS0000160","JS0000162","JS0000164","JS0000166","JS0000168","JS0000170"]
-          let checkCode =["JS0000037","JS0000068","JS0000071","JS0000056","JS0000093","JS0000109","JS0000112","JS0000115","JS0000118","JS0000120","JS0000122","JS0000125","JS0000126","JS0000135","JS0000139","JS0000140","JS0000141","JS0000151","JS0000153","JS0000154","JS0000155","JS0000157","JS0000159"]
-          this.setAssignment(res.data.itemDataMap,dateCode)
-          this.setAssignmentCheck(res.data.itemDataMap,checkCode)
-          
+        if (Object.keys(res.data.itemDataMap).length) {
+          let dateCode = ["JS0000004", "JS0000008", "JS0000009", "JS0000038", "JS0000041", "JS0000054", "JS0000057", "JS0000060", "JS0000065", "JS0000066", "JS0000075", "JS0000077", "JS0000079", "JS0000081", "JS0000083", "JS0000085", "JS0000087", "JS0000089", "JS0000091", "JS0000097", "JS0000100", "JS0000129", "JS0000131", "JS0000136", "JS0000160", "JS0000162", "JS0000164", "JS0000166", "JS0000168", "JS0000170"]
+          let checkCode = ["JS0000037", "JS0000068", "JS0000071", "JS0000056", "JS0000093", "JS0000109", "JS0000112", "JS0000115", "JS0000118", "JS0000120", "JS0000122", "JS0000125", "JS0000126", "JS0000135", "JS0000139", "JS0000140", "JS0000141", "JS0000151", "JS0000153", "JS0000154", "JS0000155", "JS0000157", "JS0000159"]
+          this.setAssignment(res.data.itemDataMap, dateCode)
+          this.setAssignmentCheck(res.data.itemDataMap, checkCode)
+
           // 跟据不同表赋值
           if (this.master.formCode == 'HSJS_0001') {
             this.tableObjN1 = { ...res.data.itemDataMap }
@@ -230,44 +260,44 @@ class PromotionApp {
               {
                 masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
             ]
           } else if (this.master.formCode == 'HSJS_0003') {
@@ -276,44 +306,44 @@ class PromotionApp {
               {
                 masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
               {
-                masterId:this.master.id,
+                masterId: this.master.id,
                 careTime: undefined,
-                careMessage:"",
-                medicalRecordNo:"",
-                patientName:""
+                careMessage: "",
+                medicalRecordNo: "",
+                patientName: ""
               },
             ]
           } else if (this.master.formCode == 'HSJS_0004') {
@@ -325,21 +355,21 @@ class PromotionApp {
           item.url = item.path
           return item
         })
-        if(res.data.handlenodeDto.length){
-          
-          let DtoData = res.data.handlenodeDto.some((item:any)=>item.status == '1')
-          if(DtoData){
-            let noZeroData = res.data.handlenodeDto.filter((item:any)=> item.status != '0')
-            let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
-            this.handlenodeDto = lastData? [...noZeroData,lastData] : noZeroData
-          }else{
-            let lastData = res.data.handlenodeDto.find((item:any)=> item.status == '0')
+        if (res.data.handlenodeDto.length) {
+
+          let DtoData = res.data.handlenodeDto.some((item: any) => item.status == '1')
+          if (DtoData) {
+            let noZeroData = res.data.handlenodeDto.filter((item: any) => item.status != '0')
+            let lastData = res.data.handlenodeDto.find((item: any) => item.status == '0')
+            this.handlenodeDto = lastData ? [...noZeroData, lastData] : noZeroData
+          } else {
+            let lastData = res.data.handlenodeDto.find((item: any) => item.status == '0')
             this.handlenodeDto = lastData
           }
-        }else{
+        } else {
           this.handlenodeDto = []
         }
-        
+
         switch (res.data.master.status) {
           case '0':
             this.flowStatus = '0'
@@ -369,8 +399,8 @@ class PromotionApp {
         } else {
           this.editStatus = '创建'
         }
-      }else{
-        this.master = {...this.master, id:'', currentLevel:authStore.user?.nurseHierarchy,}
+      } else {
+        this.master = { ...this.master, id: '', currentLevel: authStore.user?.nurseHierarchy, }
         this.flowStatus = ''
         this.editStatus = '创建'
         this.attachmentList = []
@@ -394,6 +424,11 @@ class PromotionApp {
   // 删除附件
   deleteAttachment(obj: any) {
     return PromotionApplicationApi.deleteAttachment(obj)
+  }
+  
+  // 删除表单
+  onRemove(id:any){
+    return PromotionApplicationApi.removeById(id)
   }
 }
 

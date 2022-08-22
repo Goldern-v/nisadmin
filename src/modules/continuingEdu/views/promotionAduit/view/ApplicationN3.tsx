@@ -583,7 +583,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <DateModal 
                       value={tableObjN3.JS0000065}
                       keys={"JS0000065"}
-                    />年-
+                    />-
                     <DateModal 
                     value={tableObjN3.JS0000066}
                     keys={"JS0000066"}

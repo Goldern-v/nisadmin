@@ -310,7 +310,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>
         刷新
       </GroupPostBtn>
-      {props.needAudit && (
+      {props.needAudit && showType !== 'nursePromotion' && (
         <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
           批量审核
         </GroupPostBtn>
