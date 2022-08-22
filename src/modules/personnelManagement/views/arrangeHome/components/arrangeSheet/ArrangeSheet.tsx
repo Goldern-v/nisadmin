@@ -572,7 +572,7 @@ export default observer(function ArrangeSheet(props: Props) {
       {
         title: (
           <div>
-            <div>公休结余</div>
+            <div>{appStore.HOSPITAL_ID=='sdlj'?'工休结余':'公休结余'}</div>
             <div>（天）</div>
           </div>
         ),

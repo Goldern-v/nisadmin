@@ -116,7 +116,6 @@ export default function SheetDetailModal(props: Props) {
     }
   }, [data])
   const setItem = useCallback((e: any, key:string, index: number) => {
-    console.log('test-value', e)
     let value: string = ''
     if (['string'].includes(typeof e)) {
       value = e

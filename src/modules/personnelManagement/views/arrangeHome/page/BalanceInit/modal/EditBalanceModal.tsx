@@ -94,6 +94,7 @@ export default function EditBalanceModal(props: Props) {
           holidayHourNow: props.oldData.holidayHourNow,
           balanceHourNow: props.oldData.balanceHourNow,
           totalHoliday: props.oldData.totalHoliday,
+          periodHourNow: props.oldData.periodHourNow,
           remark: props.oldData.remark,
           status: "2" || props.oldData.status
         });
@@ -107,6 +108,7 @@ export default function EditBalanceModal(props: Props) {
           holidayHourNow: 0,
           balanceHourNow: 0,
           totalHoliday: 0,
+          periodHourNow: 0,
           remark: "",
           status: status
         });
@@ -181,16 +183,32 @@ export default function EditBalanceModal(props: Props) {
             )
           }
           <Col span={24}>
-            <Form.Field label={`公休结余`} name="publicHourNow">
+            <Form.Field label={appStore.HOSPITAL_ID=='sdlj'?'工休结余':`公休结余`} name="publicHourNow">
               <InputNumber/>
             </Form.Field>
           </Col>
+          {
+            appStore.hisMatch({
+              map: {
+                sdlj: <React.Fragment>
+                        <Col span={24}>
+                          <Form.Field label={`例假结余`} name="periodHourNow">
+                            <InputNumber min={0} step={0.5} precision={1} />
+                          </Form.Field>
+                        </Col>
+                </React.Fragment>,
+                default: <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`节休结余`} name="holidayHourNow">
+                      <InputNumber/>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>, 
+              },
+              vague:true
+            })
+          }
 
-          <Col span={24}>
-            <Form.Field label={`节休结余`} name="holidayHourNow">
-              <InputNumber/>
-            </Form.Field>
-          </Col>
           <Col span={24}>
             <Form.Field label={`结余类型`} name="status">
               <Select disabled={props.oldData}>

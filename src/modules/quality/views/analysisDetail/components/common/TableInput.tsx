@@ -16,7 +16,7 @@ export default observer(function TableInput(props: Props) {
   const Con = !type ? Input : Input[type]
   const item = cloneJson(props.row)
   const onChange= (date:any, dateString:any) => {
-    item[str]=dateString
+    item[str]=dateString.format('YYYY-MM-DD')
     props.setVal((prev: any) => {
       const cloneData = cloneJson(prev)
       cloneData.list[index] = item
@@ -24,7 +24,7 @@ export default observer(function TableInput(props: Props) {
     })
   };
   const onChangeTime= (time:any) => {
-    item[str]=time
+    item[str]=time.format('HH:mm:ss')
     props.setVal((prev: any) => {
       const cloneData = cloneJson(prev)
       cloneData.list[index] = item

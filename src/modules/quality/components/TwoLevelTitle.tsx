@@ -1,10 +1,11 @@
-import styled from 'styled-components'
 import React from 'react'
+import styled from 'styled-components'
+
 export interface Props {
   text: any
 }
 
-export default function OneLevelTitle(props: Props) {
+export default function TwoLevelTitle(props: Props) {
   return <Wrapper>{props.text}</Wrapper>
 }
 const Wrapper = styled.div`

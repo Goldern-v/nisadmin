@@ -156,7 +156,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.schJiJias = cloneJson(copyCell.schJiJias);
     cell.schRemarks = cloneJson(copyCell.schRemarks);
     cell.backgroundColor = copyCell.backgroundColor;
-
+    cell.schSpecial = cloneJson(copyCell.schSpecial);
 
     if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       cell.schAddOrSubs = cell.schAddOrSubs;
@@ -204,6 +204,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.statusType = "0";
   cellObj.schRemarks = [];
   cellObj.schJiJias = [];
+  cellObj.schSpecial = [];
   cellObj.backgroundColor = ""
   if (appStore.HOSPITAL_ID == "wh" || appStore.HOSPITAL_ID == 'gxjb' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
     cellObj.schAddOrSubs = [];

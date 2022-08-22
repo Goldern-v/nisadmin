@@ -1,17 +1,26 @@
-import React, { lazy } from "react";
+import demo from 'src/demo'
+import layouts from 'src/layouts'
+import LoginView from 'src/modules/login/LoginView'
+import ResetPasswordView from 'src/modules/login/ResetPasswordView'
+import FollowUpDetail from 'src/modules/mobilePage/patientFollowUp/FollowUpDetail'
+import FollowUpIndex from 'src/modules/mobilePage/patientFollowUp/FollowUpIndex'
+import RefresherInfoSubmit from 'src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit'
+import SatisfiedPatSubmit from 'src/modules/mobilePage/satisfiedPatSubmit/SatisfiedPatSubmit'
+import TraineeInfoSubmit from 'src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit'
+import AnalysisDetail from 'src/modules/quality/views/analysisDetail/AnalysisDetail'
+import committeeWorkReportDetail from 'src/modules/quality/views/committeeWorkReportDetail'
+import React, { lazy } from 'react'
+import { setLayout } from 'src/utils/route/route-utils'
+import { appStore, authStore } from 'src/stores'
+
+import { RouteItem } from '../components/RouterView'
+import { specialModule } from './routerConfig/specialModule'
+
 // import ViewHome from '../views/ViewHome'
 // import ViewLogin from '../views/ViewLogin'
 // import ViewUsers from '../views/ViewUsers'
-import { RouteItem } from "../components/RouterView";
-import LoginView from "src/modules/login/LoginView";
-import ResetPasswordView from "src/modules/login/ResetPasswordView";
-import { setLayout } from "src/utils/route/route-utils";
-import layouts from "src/layouts";
-import demo from "src/demo";
 import demo1 from "src/demo1";
 
-import { specialModule } from "./routerConfig/specialModule";
-import { appStore, authStore } from "src/stores";
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -529,19 +538,11 @@ const FollowUpDetailView = lazy(() => import("src/modules/nursingFollowUp/views/
 // 护士长满意度调查详情
 const NurseSatisfactionSurveyDetailView = lazy(() => import("src/modules/nurseSatisfactionSurvey/components/NurseSatisfactionSurveyDetailView"))
 //移动端界面
-import TraineeInfoSubmit from "src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit"
-import RefresherInfoSubmit from "src/modules/mobilePage/refresherInfoSubmit/RefresherInfoSubmit"
 //移动端界面-患者满意度调查表提交
-import SatisfiedPatSubmit from "src/modules/mobilePage/satisfiedPatSubmit/SatisfiedPatSubmit"
-
 //单点登录
 const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/SingleSignOnDefault"))
 const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/SingleSignOnGzsrm"))
 // 移动端界面-患者随访问卷首页
-import FollowUpIndex from "src/modules/mobilePage/patientFollowUp/FollowUpIndex"
-import FollowUpDetail from "src/modules/mobilePage/patientFollowUp/FollowUpDetail"
-import AnalysisDetail from "src/modules/quality/views/analysisDetail/AnalysisDetail";
-
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/demo1", demo1),
@@ -821,6 +822,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/analysisDetail",
     AnalysisDetail,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/committeeWorkReportDetail",
+    committeeWorkReportDetail,
     layouts.MainLayout
   ),
   setLayout(

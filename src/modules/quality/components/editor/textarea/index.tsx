@@ -1,9 +1,10 @@
-import { observer } from "mobx-react";
-import React, { useState } from "react";
-import styled from "styled-components";
-import EditButton from "../../EditButton";
-import OneLevelTitle from "../../OneLevelTitle";
-import TextareaModal from "./modal";
+import styled from 'styled-components'
+import React, { useState } from 'react'
+import { observer } from 'mobx-react'
+
+import EditButton from '../../EditButton'
+import OneLevelTitle from '../../OneLevelTitle'
+import TextareaModal from './modal'
 
 export interface Props {
   sectionTitle?: string | undefined;
@@ -41,5 +42,8 @@ margin-top: 15px;
   }
   .context {
     font-size: 16px;
+    min-height: 80px;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 `;

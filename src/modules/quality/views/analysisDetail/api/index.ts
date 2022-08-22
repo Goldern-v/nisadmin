@@ -29,6 +29,11 @@ export default class AnalysisDetailApi extends BaseApiService {
   public deleteReport(reportId: number) {
     return this.get(`/baseReport/delete/${reportId}`);
   }
+  public exportReport(reportId: string) {
+    return this.get(`/baseReport/export/${reportId}`, {
+      responseType: "blob"
+    })
+  }
 }
 
 export const analysisDetailApi = new AnalysisDetailApi();

@@ -59,7 +59,6 @@ export default function NursingConsultationModal(props: Props) {
     });
   };
   const handleMembers = (e: any) => {
-    console.log('test-e', e)
     setMembers(e)
     // selectNurseModal.show({
     //   checkedUserList: members,
@@ -83,7 +82,6 @@ export default function NursingConsultationModal(props: Props) {
   const getMembersList = useCallback(() => {
 
     aMServices.listCanParticipateInMember().then((res: any) => {
-      console.log('test-res', res)
       const list = Object.keys(res.data || []).map((v: any, i: number) => {
         return {title: v, value: v, key: v, children: res.data[v].map((v1: any) => ({title: v1.empName, value: v1.empNo, key: v1.empNo})) }
       })
