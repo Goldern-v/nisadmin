@@ -215,9 +215,9 @@ export default observer(function PromotionAppHeader() {
                 </div>
                 <div className="heigth-right">
                   <Button type="primary" onClick={()=>{handleEdit(PromotionAppUtils.editStatus)}} disabled={!(PromotionAppUtils.master.nextNodeCode.indexOf('commit') != -1) && PromotionAppUtils.editStatus != '创建'}>{PromotionAppUtils.editStatus}</Button>
-                  <Button type="primary" onClick={handleSubmit}  disabled={(Number(PromotionAppUtils.flowStatus) == 1 || Number(PromotionAppUtils.flowStatus) == 3 || Number(PromotionAppUtils.flowStatus) == 4)&& PromotionAppUtils.master.noPass== false} >提交申请</Button>
-                  <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑'} >保存</Button>
-                  <Button onClick={handleRemove} style={{color:'red'}}>删除</Button>
+                  <Button type="primary" onClick={handleSubmit}  disabled={(PromotionAppUtils.editStatus == '创建' || Number(PromotionAppUtils.flowStatus) == 1 || Number(PromotionAppUtils.flowStatus) == 3 || Number(PromotionAppUtils.flowStatus) == 4) && PromotionAppUtils.master.noPass== false } >提交申请</Button>
+                  <Button type="primary" onClick={handleSave} disabled={PromotionAppUtils.editStatus == '编辑' || PromotionAppUtils.editStatus == '创建'} >保存</Button>
+                  <Button onClick={handleRemove} style={{color:'red'}} disabled={PromotionAppUtils.editStatus == '创建'}>删除</Button>
                   <Button onClick={handlerevocation}>撤销申请</Button>
                   <Button onClick={handlePrint}>打印</Button>
                 </div>
