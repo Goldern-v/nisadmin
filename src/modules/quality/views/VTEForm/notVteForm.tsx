@@ -23,7 +23,7 @@ export interface Props extends RouteComponentProps {}
 export default observer(function WritingForm(props: any) {
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  const [selectedDept, setSelectedDept] = useState('')
+  const [selectedDept, setSelectedDept] = useState(authStore.defaultDeptCode)
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
 
@@ -361,7 +361,7 @@ export default observer(function WritingForm(props: any) {
     }
     writingFormService.saveNurseVet({
       formName: '广州市花都人民医院术科VTE质量表',
-      wardCode: '1_3_12' || selectedDept,
+      wardCode: selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
       list: [
@@ -395,7 +395,7 @@ export default observer(function WritingForm(props: any) {
       onOk() {
         writingFormService.saveNurseVet({
           formName: '广州市花都人民医院术科VTE质量表',
-          wardCode: '1_3_12' || selectedDept,
+          wardCode: selectedDept,
           listMonth: moment(date).format("MM"),
           listYear: moment(date).format("YYYY"),
           list: [
@@ -467,12 +467,12 @@ export default observer(function WritingForm(props: any) {
       writingFormService
         .getNurseVet({
           formName: '广州市花都人民医院非术科VTE质量表',
-          wardCode: '1_3_12' || selectedDept,
+          wardCode: selectedDept,
           queryMonth: moment(date).format("MM"),
           queryYear: moment(date).format("YYYY"),
           jsonMap: {
             tradeCode: "nurse_FVTE",
-            Ward_code: '1_3_12' || selectedDept,
+            Ward_code: selectedDept,
             Start_time: startDate.format("YYYY-MM-DD"),
             End_time: endDate.format("YYYY-MM-DD"),
           }
@@ -513,7 +513,7 @@ export default observer(function WritingForm(props: any) {
     })
     writingFormService.saveNurseVet({
       formName: '广州市花都人民医院术科VTE质量表',
-      wardCode: '1_3_12' || selectedDept,
+      wardCode: selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
       list: listArr
