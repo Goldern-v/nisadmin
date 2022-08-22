@@ -591,7 +591,6 @@ const EditClickBtn = styled.span`
   line-height: 28px;
   cursor: pointer;
   text-align: center;
-} 
 `;
 
 const ErrorMessage = styled.div`

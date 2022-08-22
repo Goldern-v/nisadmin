@@ -111,7 +111,7 @@ export default observer(function StarRatingReportEdit() {
     let query = qs.parse(search.replace("?", ""));
     const params = appStore.hisMatch({
       map: {
-        'dghl,fqfybjy': {
+        'dghl,fqfybjy,sdlj': {
           list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
@@ -125,15 +125,35 @@ export default observer(function StarRatingReportEdit() {
       },
       vague: true,
     })
-    if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
-      starRatingReportService.exportFQ(params).then(res => {
-        fileDownload(res);
-      });
-    }else{
-      starRatingReportService.export(params).then(res => {
-        fileDownload(res);
-      });
-    }
+    appStore.hisMatch({
+      map: {
+        'fqfybjy': () => {
+          starRatingReportService.exportFQ(params).then(res => {
+            fileDownload(res);
+          });
+        },
+        'sdlj': () => {
+          starRatingReportService.exportLJ(params).then(res => {
+            fileDownload(res);
+          });
+        },
+        other: () => {
+          starRatingReportService.export(params).then(res => {
+            fileDownload(res);
+          });
+        }
+      },
+      vague:true
+    })()
+    // if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
+    //   starRatingReportService.exportFQ(params).then(res => {
+    //     fileDownload(res);
+    //   });
+    // }else{
+    //   starRatingReportService.export(params).then(res => {
+    //     fileDownload(res);
+    //   });
+    // }
     
   };
   const onPublish = () => {

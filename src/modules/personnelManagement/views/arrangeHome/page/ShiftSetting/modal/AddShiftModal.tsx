@@ -43,7 +43,8 @@ export default function AddShiftModal(props: Props) {
   const [backgroundColorList, setBackgroundColorList] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
   const [tip, setTip] = useState(false);
-  const [holiday,setHoliday] = useState<boolean>(false)
+  const [holiday, setHoliday] = useState<boolean>(false)
+  const [isSpecial, setSpecial] = useState<boolean>(false)
 /** 设置规则 */
 let rules: Rules
 switch (appStore.HOSPITAL_ID) {  
@@ -228,7 +229,8 @@ switch (appStore.HOSPITAL_ID) {
               settingMorningHour: props.editData.settingMorningHour,
               coefficient: props.editData.coefficient,
               backgroundColor: props.editData.backgroundColor,
-              npProportion: props.editData.npProportion == 1 ? '1' : '0'
+              npProportion: props.editData.npProportion == 1 ? '1' : '0',
+              deductionDay: props.editData.deductionDay
             }, appStore.HOSPITAL_ID === 'lcey' ? {
               ...winterTime(props.editData.winWorkTime),
               settingWinNightHour: props.editData.settingWinNightHour,
@@ -252,7 +254,8 @@ switch (appStore.HOSPITAL_ID) {
               settingMorningHour: appStore.HOSPITAL_ID == 'lcey' ? "8" : '0',
               coefficient: "",
               backgroundColor: "#ffffff",
-              npProportion: "0"
+              npProportion: "0",
+              deductionDay: "0",
             }, appStore.HOSPITAL_ID === 'lcey' ? {
               workTime5: moment("8:00", "HH:mm"),
               workTime6: moment("12:00", "HH:mm"),
@@ -291,10 +294,12 @@ switch (appStore.HOSPITAL_ID) {
       
   }
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    if (['nfzxy'].includes(appStore.HOSPITAL_ID) && name == 'shiftType') {
-      setHoliday(value=='休假')
+    if (name == 'shiftType') {
+      setHoliday(['nfzxy'].includes(appStore.HOSPITAL_ID) && value=='休假')
+      setSpecial(value == '例假')
+      let num = form.getField('deductionDay')
+      form.setField('deductionDay',(value == '例假' && num == 0) ? 1.5 : 0)
     }
-    
     if (appStore.HOSPITAL_ID === "lcey") {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
@@ -330,33 +335,6 @@ switch (appStore.HOSPITAL_ID) {
       //   else setTip(true)
       // }
     }
-    // 之前有的标准工时计算 现在有两个时间段不自动计算
-    /*if (name === "workTime") {
-      let hour: any = 0;
-      let min: any = 0;
-      let index: any = value.indexOf("-");
-      let num1: any = value.substring(0, index).trim();
-      let index1: any = num1.indexOf(":");
-      let hour1: any = Number(num1.substring(0, index1).trim());
-      let min1: any = Number(num1.substring(index1 + 1, num1.length)) || 0;
-      let num2: any = value.substring(index + 1, value.length) || 0;
-      let index2: any = num2.indexOf(":");
-      let hour2: any = Number(num2.substring(0, index2)) || 0;
-      let min2: any = Number(num2.substring(index2 + 1, num2.length)) || 0;
-      if (12 <= hour2 && hour2 <= 14) {
-        hour = 12 - hour1;
-      } else {
-        hour = hour2 - hour1;
-      }
-      if (min2 >= min1) {
-        min = min2 - min1;
-      } else if (min2 < min1) {
-        hour = hour - 1;
-        min = 60 + min2 - min1;
-      }
-      form.setField("effectiveTime", min === 0 ? hour : `${hour}.${min}`);
-      // console.log(`${hour}.${min}`, "计算结果");
-    }*/
   };
 
   return (
@@ -597,6 +575,21 @@ switch (appStore.HOSPITAL_ID) {
                     </Select>
                   </Form.Field>
                 </Col>
+              }
+              {
+                appStore.hisMatch({
+                  map: {
+                    sdlj: isSpecial && <React.Fragment>
+                      <Col span={24}>
+                        <Form.Field label={`扣减天数`} name="deductionDay">
+                          <InputNumber min={0.5} step={0.5} precision={1} />
+                        </Form.Field>
+                      </Col>
+
+                    </React.Fragment>
+                  },
+                  vague:true
+                })
               }
               {appStore.HOSPITAL_ID == "nys" && (
                 <Col span={24}>

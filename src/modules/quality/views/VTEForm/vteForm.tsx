@@ -23,7 +23,7 @@ export interface Props extends RouteComponentProps {}
 export default observer(function WritingForm(props: any) {
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
-  const [selectedDept, setSelectedDept] = useState('')
+  const [selectedDept, setSelectedDept] = useState(authStore.defaultDeptCode)
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
 

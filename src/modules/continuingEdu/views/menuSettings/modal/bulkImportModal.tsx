@@ -23,9 +23,11 @@ export default function editModal(props: Props) {
     let fileList = [...info.fileList];
     fileList = fileList.slice(0);
     fileList = fileList.map(file => {
-      if (file.response) {
+      if (file.response && file.response.data) {
         message.success('导入成功')
         onOk && onOk(file.response.data)
+      } else if(file.response) {
+        message.error(file.response.desc)
       }
       return file;
     });
