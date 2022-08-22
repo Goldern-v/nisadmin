@@ -7,6 +7,7 @@ import configNys from './config/nys'
 import configDghl from './config/dghl'
 import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
+import configSdlj from './config/sdlj'
 import { starRatingReportEditModel } from "src/modules/personnelManagement/views/arrangeHome/page/nightChargingReport/model/StarRatingReportEditModel";
 
 export interface Props {
@@ -41,6 +42,7 @@ export default observer(function Table(props: Props) {
           nys: configNys.getTable(list, otherObj),
           dghl: configDghl.getTable(list, otherObj, updateOtherObj),
           fqfybjy: configFqfybjy.getTable(list, otherObj, updateOtherObj),
+          sdlj: configSdlj.getTable(list, otherObj, updateOtherObj),
           //暂时隐藏20210926
           gzsrm: configGzsrm.getTable(list),
           default: configDefault.getTable(list)

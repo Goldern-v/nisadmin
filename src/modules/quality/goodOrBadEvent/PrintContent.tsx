@@ -51,10 +51,9 @@ const PrintContent = (props: Props) => {
 	const [chartsImg4, setChartsImg4]: any = useState('')
 	const [chartsImg5, setChartsImg5]: any = useState('')
 	const [chartsImg6, setChartsImg6]: any = useState('')
-	const [deduction, getdeduction]: any = useState("")
-	const colors = ['#C33531', '#EFE42A', '#64BD3D', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589']
 
-	const [gridLeft, setGridLeft] = useState('45px');
+	const [gridLeft, setGridLeft] = useState('12%');
+	const [gridRight, setGridRight] = useState('12%');
 	const [gridBottom, setgridBottom] = useState('66px');
 	const dataSource = [
 		{ isCurNum: true, classify: '高危药物外滲的发生例数', code: "gwywwsdfsls", preYearCount: null, currentYearRate: null, currentYearCount: null, preYearRate: null },
@@ -287,7 +286,7 @@ const PrintContent = (props: Props) => {
 
 	const getTableColumns2 = (data: any) => {
 		let columns: any = [
-			
+
 			{
 				title: ' 指标分类 ',
 				key: 'code',
@@ -395,10 +394,8 @@ const PrintContent = (props: Props) => {
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
 		if (wholePrintData.rowList.length > 0) {
-			// console.log(wholePrintData.rowList)
 			// 有数据
 			let clinicalData = dataSource.slice(0, 16)
-			// console.log(clinicalData)
 			clinicalData.map((it: any) => {
 				if (it.isCurNum) {
 					xAxisList.push(it.classify)
@@ -408,8 +405,6 @@ const PrintContent = (props: Props) => {
 			})
 		}
 		legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
-
-		// console.log(legendData,xAxisList,currentList,prevList)
 		return {
 			title: {
 				text: '图2 临床护理质量指标对比（发生例数）',
@@ -417,7 +412,7 @@ const PrintContent = (props: Props) => {
 			},
 			grid: {
 				left: gridLeft,
-				right:'100px'
+				right: gridRight,
 			},
 			legend: {
 				data: legendData
@@ -447,7 +442,7 @@ const PrintContent = (props: Props) => {
 			]
 		}
 	}
-// 柱状图3
+	// 柱状图3
 	const getBolatuOption3 = () => {
 		let currentNum = 0, prevNum = 0
 		if (wholePrintData.rowList.length > 0) {
@@ -488,7 +483,7 @@ const PrintContent = (props: Props) => {
 			},
 
 			grid: {
-				left: gridLeft,
+				// left: gridLeft,
 				bottom: gridBottom,
 			},
 			xAxis: [
@@ -524,15 +519,13 @@ const PrintContent = (props: Props) => {
 			]
 		};
 	}
-// 柱状图4
+	// 柱状图4
 	const getBolatuOption4 = () => {
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
 		if (wholePrintData.rowList.length > 0) {
-			// console.log(wholePrintData.rowList)
 			// 有数据
 			let clinicalData = dataSource.slice(0, 16)
-			// console.log(clinicalData)
 			clinicalData.map((it: any) => {
 				if (it.isRate) {
 					xAxisList.push(it.classify)
@@ -543,8 +536,6 @@ const PrintContent = (props: Props) => {
 		}
 		legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
 
-		// console.log(legendData,xAxisList,currentList,prevList)
-
 		return {
 			title: {
 				text: '图4 临床护理质量指标对比（发生率）',
@@ -554,8 +545,8 @@ const PrintContent = (props: Props) => {
 				data: legendData
 			},
 			grid: {
-				left:gridLeft,
-				right:'100px'
+				// left:gridLeft,
+				right: gridRight,
 			},
 			xAxis: [
 				{
@@ -621,7 +612,7 @@ const PrintContent = (props: Props) => {
 			},
 
 			grid: {
-				left: gridLeft,
+				// left: gridLeft,
 				bottom: gridBottom
 			},
 			xAxis: [
@@ -687,11 +678,10 @@ const PrintContent = (props: Props) => {
 				data: legendData
 			},
 			grid: {
-				// x: 20, //图表左上角到左边界的距离
-				// y2: 65, // 图表右下角到下边界的距离
-				left:gridLeft,
-				bottom:'120px',
-				right:'100px'
+				// left:gridLeft,
+				bottom: '120px',
+				// containLabel: false,
+				right: gridRight,
 			},
 			xAxis: [
 				{
@@ -752,7 +742,7 @@ const PrintContent = (props: Props) => {
 							bordered dataSource={getTableData()}
 							columns={getTableColumns2(pageData)} pagination={false} />
 					</div>
-					<p style={{ textAlign: 'center', fontSize: '12px',marginTop:'10px' }}>表1 全年临床护理及护理工作质量/管理指标数情况汇总表</p>
+					<p style={{ textAlign: 'center', fontSize: '12px', marginTop: '10px' }}>表1 全年临床护理及护理工作质量/管理指标数情况汇总表</p>
 				</div>
 			</div>
 		</div>
@@ -793,21 +783,21 @@ const PrintContent = (props: Props) => {
 				maxLength={2000}
 				rows={3}
 				autosize={{ minRows: 3 }} />}
-				{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
+			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
 		</div>
 
 		<div>
 			<div className='title-s'>（三）确定2021年护理质量改进目标为：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
-		
+
 		</div>
 
 		<div>
 			<div className='title-s'>（四）针对各存在问题发生的原因，结合护理质量改进目标，制定详细的质量改进计划：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
-		
+
 		</div>
 
 		<div>
@@ -821,14 +811,14 @@ const PrintContent = (props: Props) => {
 			<div className='title-m mb-15'>三、检查阶段（Check）：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
-		
+
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>四、处理阶段(Action)：</div>
 			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
-		
+
 		</div>
 	</Wrapper>
 }
@@ -887,23 +877,18 @@ const Wrapper = styled.div`
     font-size:16px;
 
   }
-	/* .print-page__ipt{ */
-		textarea {
-    /* outline: 0 none;  //无边框 */
-    /* border:none;  //无边框 */
-    display: block;
-    overflow: hidden;
-    /* width: 100%; */
-    /* min-width: 100%; */
-    /* max-width:100%; */
-    min-height: 73px;  //最小高度，字体设置为了14px，这里是两行左右的高度
-    font-size: 14px;  
-    font: 14px/0.2;  //0.2表示的是行距
-    line-height: 18px;  //行高
-    padding:2px; 
-    resize: vertical;  //表示可以上下拉伸不可左右拉动
-}
-	/* } */
+
+	textarea {
+		display: block;
+		overflow: hidden;
+		min-height: 73px;  //最小高度，字体设置为了14px，这里是两行左右的高度
+		font-size: 14px;  
+		font: 14px/0.2;  //0.2表示的是行距
+		line-height: 18px;  //行高
+		padding:2px; 
+		resize: vertical;  //表示可以上下拉伸不可左右拉动
+	}
+
   .first-title{
     font-size:20px;
     text-align: center;
@@ -942,7 +927,7 @@ const Wrapper = styled.div`
     height:16px;
   }
   .second-content-bolatu-bolatu{
-    border:1px solid #ddd;
+    /* border:1px solid #ddd; */
     margin: 0 auto;
 	/* margin-bottom: 20px; */
     /* border-top: none; */

@@ -35,11 +35,11 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 export default function SumMonth(props: Props) {
 
 	// 搬运start
-	const [pageLoading, setPageLoading] = useState(false);
-	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+	// const [pageLoading, setPageLoading] = useState(false);
+	// const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(265);
 
-	const [total, setTotal] = useState(0);
+	// const [total, setTotal] = useState(0);
 	// 搬运end
 	const [tableLoading, setTableLoading] = useState(false);
 	const [data2, setData2] = useState([] as any);
@@ -49,9 +49,6 @@ export default function SumMonth(props: Props) {
 	const [isPrint, setIsPrint] = useState(false)
 	const pageRef: any = useRef<HTMLElement>()
 
-	let dayList = [], columnDay = {}
-
-	let columnDayObj: ColumnProps<any>[] | any = []
 
 	const [freshData, setFreshData] = useState(Date.now());
 
@@ -952,7 +949,7 @@ export default function SumMonth(props: Props) {
 			css: `
 				@page {
 					size: auto;
-					margin-bottom: 5mm
+					margin: 5mm 0mm;
 				}
 			   .ant-btn {
 				 display: none;

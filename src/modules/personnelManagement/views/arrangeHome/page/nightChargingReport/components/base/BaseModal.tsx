@@ -64,7 +64,7 @@ export default observer(function BaseModal(props: Props) {
     if (sectionData.sectionId == "夜班费上报表") {
       const params = appStore.hisMatch({
         map: {
-          'dghl,fqfybjy': {
+          'dghl,fqfybjy,sdlj': {
             list1: data.list,
             list2: data.list2,
             schNightTotalModel: data.schNightTotalModel

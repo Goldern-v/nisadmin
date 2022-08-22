@@ -136,6 +136,7 @@ export default function ClinicalYear(props: Props) {
 	const initTableData = (itemList: any, body: any) => {
 		// console.log('itemList', itemList)
 		setData2([])
+		itemList.length = 31
 		setData2([...itemList])
 	}
 

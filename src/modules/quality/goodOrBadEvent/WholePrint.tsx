@@ -108,7 +108,7 @@ export default observer(function EventReportDetailView(props: Props) {
 				css: `
 				@page {
 					size: auto;
-					margin-bottom: 5mm
+					margin: 5mm 0mm;
 				}
 				.print-page__ptext{
 					padding:0 6px;
@@ -132,6 +132,10 @@ export default observer(function EventReportDetailView(props: Props) {
            table, img {
              page-break-inside: avoid;
            }
+		   img{
+			height:500px;
+			margin-top:20px;
+		   }
            pre {
             page-break-after: avoid;
            }

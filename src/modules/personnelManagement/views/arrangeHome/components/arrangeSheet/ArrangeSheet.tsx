@@ -29,6 +29,7 @@ import PublicHour from './PublicHour'
 import TotalCell from './TotalCell'
 import TotalHoliday from './TotalHoliday'
 import TotalHolidayHourNys from './TotalHolidayHourNys'
+import PeriodHour from './PeriodHour'
 import { createContextMenu } from './ContextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { ArrangeItem } from '../../types/Sheet'
@@ -582,19 +583,42 @@ export default observer(function ArrangeSheet(props: Props) {
           return <PublicHour id={record.id} />;
         },
       },
-      {
-        title: (
-          <div>
-            <div>节休结余</div>
-            <div>（天）</div>
-          </div>
-        ),
-        width: 70,
-        align: "center",
-        render(text: string, record: any) {
-          return <HolidayHour id={record.id} />;
+      ...appStore.hisMatch({
+        map: {
+          'sdlj': [
+            {
+              title: (
+                <div>
+                  <div>例假结余</div>
+                  <div>（天）</div>
+                </div>
+              ),
+              width: 70,
+              align: "center",
+              render(text: string, record: any) {
+                return <PeriodHour id={record.id} />;
+              },
+            }
+          ],
+          other: [
+            {
+              title: (
+                <div>
+                  <div>节休结余</div>
+                  <div>（天）</div>
+                </div>
+              ),
+              width: 70,
+              align: "center",
+              render(text: string, record: any) {
+                return <HolidayHour id={record.id} />;
+              },
+            }
+        ]
         },
-      }
+        vague:true
+      }),
+
     );
   }
 
