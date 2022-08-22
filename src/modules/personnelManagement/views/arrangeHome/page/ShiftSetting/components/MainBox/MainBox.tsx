@@ -190,6 +190,20 @@ export default function MainBox() {
     },
     ...appStore.hisMatch({
       map: {
+        'sdlj': [
+          {
+            title: "扣减天数",
+            dataIndex: "deductionDay",
+            key: "deductionDay",
+            width: 90
+          },
+        ],
+        default:[]
+      },
+      vague:true
+    }),
+    ...appStore.hisMatch({
+      map: {
         whyx: [
           {
             title: "班次岗位系数",
