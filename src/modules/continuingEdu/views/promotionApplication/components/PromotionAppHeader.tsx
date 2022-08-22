@@ -25,19 +25,19 @@ export default observer(function PromotionAppHeader() {
       title:'N1升N2',
       key:'2',
       code:'HSJS_0002',
-      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 1
+      disabled:(!authStore.user?.nurseHierarchy || Number(authStore.user?.nurseHierarchy.split('N')[1]) < 1)
     },
     {
       title:'N2升N3',
       key:'3',
       code:'HSJS_0003',
-      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 2
+      disabled:!authStore.user?.nurseHierarchy || Number(authStore.user?.nurseHierarchy.split('N')[1]) < 2
     },
     {
       title:'N3升N4',
       key:'4',
       code:'HSJS_0004',
-      disabled:Number(authStore.user?.nurseHierarchy.split('N')[1]) < 3
+      disabled: !authStore.user?.nurseHierarchy || Number(authStore.user?.nurseHierarchy.split('N')[1]) < 3
     },
   ]
   
@@ -82,6 +82,7 @@ export default observer(function PromotionAppHeader() {
       onOk() {
         PromotionAppUtils.onRemove(PromotionAppUtils.master.id).then((res) => {
           message.success("删除成功！")
+          PromotionAppUtils.createOnload()
         })
       },
       onCancel() {

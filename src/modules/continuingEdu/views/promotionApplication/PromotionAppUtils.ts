@@ -407,13 +407,13 @@ class PromotionApp {
         this.handlenodeDto = []
         // 跟据不同表赋值
         if (this.master.formCode == 'HSJS_0001') {
-          this.tableObjN1 = this.tableObjN1
+          this.tableObjN1 = tableObjN1
         } else if (this.master.formCode == 'HSJS_0002') {
-          this.tableObjN2 = this.tableObjN2
+          this.tableObjN2 = tableObjN2
         } else if (this.master.formCode == 'HSJS_0003') {
-          this.tableObjN3 = this.tableObjN3
+          this.tableObjN3 = tableObjN3
         } else if (this.master.formCode == 'HSJS_0004') {
-          this.tableObjN4 = this.tableObjN4
+          this.tableObjN4 = tableObjN4
         }
       }
       this.loading = false;
