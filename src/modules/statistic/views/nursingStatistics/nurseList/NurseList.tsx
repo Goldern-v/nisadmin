@@ -8,6 +8,7 @@ import MidHeader from './MidHeader'
 export default function BedSituation() {
   const [leftList, setLeftList] = useState([])
   const [infoList, setInfoList] = useState([])
+  const [total,setTotal] =useState(0)
   const [midList, setMidList] = useState([])
   const [rightList, setRightList] = useState([])
   const [spinning, setSpinning] = useState(false)
@@ -15,6 +16,7 @@ export default function BedSituation() {
     setSpinning(true)
     statisticsApi.getTotalUser().then((res: any) => {
       let users = res.data[0]!.users
+      setTotal(res.data[0].allTotal)
       // let res = data
       let l: any = []
       let m: any = []
@@ -56,6 +58,11 @@ export default function BedSituation() {
         {
           key: '见习期护士',
           value: res.data[0].probationNurse
+        },
+        //  助理护士 字段先暂写
+        {
+          key: '助理护士',
+          value: res.data[0].nurseInCharge
         }
         // {
         //   key: '培训护师',
@@ -73,9 +80,9 @@ export default function BedSituation() {
           <Title>东莞市厚街医院</Title> */}
           <MidHeader />
           <Info>
-            {infoList.map((item: any) => (
+            {infoList.map((item: any,index:number) => (
               <InfoItem>
-                {item.key}：{item.value}人
+                {item.key}:{item.value}人{index === 0 ? null :`(${(item.value/total).toFixed(3)}%)`}
               </InfoItem>
             ))}
           </Info>
@@ -115,6 +122,8 @@ export default function BedSituation() {
             {/* <span>培训护师：</span>
             <div className='block color-6' /> */}
             <span>见习期护士：</span>
+            <div className='block color-6' />
+           <span>助理护士：</span>
             <div className='block color-6' />
           </Footer>
         </Container>
@@ -208,10 +217,10 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   font-size: 15px;
-  margin: 0 10px;
+  margin: 0 0px 0px 10px;
 `
 const InfoItem = styled.div`
-  margin-right: 30px;
+  margin-right: 10px;
 `
 const SpinCon = styled.div`
   margin-top: -10px;

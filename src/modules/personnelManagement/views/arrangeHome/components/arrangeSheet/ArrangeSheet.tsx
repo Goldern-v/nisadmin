@@ -154,13 +154,16 @@ export default observer(function ArrangeSheet(props: Props) {
         default: [],
       },
     }),
-    {
-      title: "工号",
-      dataIndex: "empNo",
-      width: 50,
-      fixed: "left",
-      align: "center",
-    },
+    ...appStore.hisMatch({map:{
+        'wjgdszd':[],
+        other:[{
+          title: "工号",
+          dataIndex: "empNo",
+          width: 50,
+          fixed: "left",
+          align: "center",
+        }],
+      }}),
     //  分组名称 分组颜色
     ...appStore.hisMatch({
       map: {
@@ -714,6 +717,9 @@ export default observer(function ArrangeSheet(props: Props) {
               ? 210 : 250;
           if (appStore.HOSPITAL_ID == 'whyx') {
             widthNys += 170
+          }
+          if (appStore.HOSPITAL_ID == 'wjgdszd') {
+            widthNys = Number(widthNys- 50)
           }
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200

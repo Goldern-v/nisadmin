@@ -339,7 +339,27 @@ export default observer(function SelectCon() {
   useEffect(() => {
     sheetViewModal.setNurseList()
   }, [selectViewModal.params.group, selectViewModal.params.deptCode])
-
+  /* 判断是否具有排班权限*/
+  const getPushAuth =()=>{
+    //     SYS0001  管理员 QCR0001  护理部
+    let user:any =  JSON.parse(sessionStorage.getItem("user") || "{}");
+    let auth:[string,string] =['SYS0001','QCR0001']
+    let days:number=new Date().getDay() === 0 ? 7:new Date().getDay() + 7  //当前日期+ 上周
+    let startTime:number = new Date(selectViewModal.params.startTime).getTime()
+    let newTime:number =new Date().getTime()
+    if(appStore.HOSPITAL_ID !=='wjgdszd') return  true
+    if(appStore.HOSPITAL_ID==='wjgdszd' && auth.includes(user.roleManageCode)) return  true
+    if(appStore.HOSPITAL_ID==='wjgdszd' && !auth.includes(user.roleManageCode) && ((newTime - startTime) > (days * 60 *60 *24 * 1000))){
+      //  非管理员 护理部 超出日期限制
+      Modal.warn({
+        title: '不能编辑上周以前的数据!',
+        mask: false,
+      })
+      return false
+    }else{
+      return  true
+    }
+  }
   return (
     <Wrapper>
       <LeftIcon>
@@ -444,7 +464,7 @@ export default observer(function SelectCon() {
         {
           ['whyx'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
-            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号" 
+            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
             showSearch
             optionFilterProp="title"
             onChange={(e:any) => sheetViewModal.changeNurseId(e)}
@@ -473,7 +493,9 @@ export default observer(function SelectCon() {
             <Button
               className="statistics"
               onClick={() => {
-                appStore.history.push(`/personnelManagement/EditArrangePage`);
+                if(getPushAuth()){
+                  appStore.history.push(`/personnelManagement/EditArrangePage`);
+                }
               }}
             >
               编辑排班

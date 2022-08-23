@@ -56,12 +56,15 @@ export default observer(function FollowUpRecord() {
       align: "center",
       width: 100
     },
-    {
-      title: "工号",
-      dataIndex: "empNo",
-      align: "center",
-      width: 80
-    },
+    ...appStore.hisMatch({map:{
+        'wjgdszd':[],
+        other:[{
+          title: "工号",
+          dataIndex: "empNo",
+          width: 50,
+          align: "center",
+        }],
+      }}),
     {
       title: "科室",
       dataIndex: "deptName",
