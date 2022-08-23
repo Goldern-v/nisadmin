@@ -161,8 +161,8 @@ export default observer(function ApplyTable(props: Props) {
               updateData(record)
             }}
           >
-            <Select.Option value={1}>{'是'}</Select.Option>
-            <Select.Option value={0}>{'否'}</Select.Option>
+            <Select.Option value={'是'}>{'是'}</Select.Option>
+            <Select.Option value={'否'}>{'否'}</Select.Option>
           </Select>
         )
       }

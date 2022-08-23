@@ -101,7 +101,7 @@ class ClinicalManagModel {
     trainingSettingApi.getFormListYaXin(this.postObj).then(res => {
       this.tableLoading = false;
       // this.tableList = res.data.list;
-      res.data.list.map((item:any)=> Number(item.isGoodIntern) == 1 ? item.isGoodIntern = '是' : item.isGoodIntern = '否')
+      // res.data.list.map((item:any)=> Number(item.isGoodIntern) == 1 ? item.isGoodIntern = '是' : item.isGoodIntern = '否')
       this.tableList = this.mergeRows(res.data.list);
       this.totalCount = res.data.totalCount;
       this.pageIndex = res.data.pageIndex;

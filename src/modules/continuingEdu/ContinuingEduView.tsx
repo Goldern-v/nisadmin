@@ -78,6 +78,7 @@ import TeachingPostgraduate from './views/InternPostgraduate/PostgraduateTeachin
 
 // 实操评分管理
 import PracticalOperationScore from './views/practicalOperationScore/PracticalOperationScore'
+import PracticalOperationScoreFSXT from './views/practicalOperationScore-FSXT/PracticalOperationScore'
 // 培训日历
 import TariningCalendars from './views/trainingCalendar/TariningCalendars'
 
@@ -213,14 +214,14 @@ export default function ContinuingEdu(props: Props) {
             authStore.isOnlyInternsManage,
         },
       ],
-      "whyx":[
-        {
-          title: "晋升管理",
-          icon: <JSGL />,
-          path: "/continuingEdu/PromotionManagement",
-          component: PromotionManagement,
-        }
-      ],
+      // "whyx":[
+      //   {
+      //     title: "晋升管理",
+      //     icon: <JSGL />,
+      //     path: "/continuingEdu/PromotionManagement",
+      //     component: PromotionManagement,
+      //   }
+      // ],
       other: [
         {
           title: "晋升管理",
@@ -735,6 +736,25 @@ export default function ContinuingEdu(props: Props) {
     component: TrainingChartAnalysis,
     hide: () => !["hj", "dgxg,'lyyz','qhwy'"].includes(appStore.HOSPITAL_ID),
   };
+
+  const PracticalOperation = [
+    {
+      title: "实操评分管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/PracticalOperationScore",
+      component: PracticalOperationScore,
+      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    },
+    {
+      title: "实操评分管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/PracticalOperationScore",
+      component: PracticalOperationScoreFSXT,
+      hide: !['fsxt'].includes(appStore.HOSPITAL_ID)
+    },
+  ]
+
+
   
   // 菜单列表
   const LEFT_MENU_CONFIG = [
@@ -1009,14 +1029,20 @@ export default function ContinuingEdu(props: Props) {
         })
       ],
     },
-    {
-      title: "实操评分管理",
-      icon: <TKGL />,
-      path: "/continuingEdu/PracticalOperationScore",
-      component: PracticalOperationScore,
-      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-    },
-
+    // {
+    //   title: "实操评分管理",
+    //   icon: <TKGL />,
+    //   path: "/continuingEdu/PracticalOperationScore",
+    //   component: PracticalOperationScore,
+    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    // },
+    ...appStore.hisMatch({
+      map:{
+        other:[
+          ...PracticalOperation,
+        ]
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         dgxg: [
@@ -1032,13 +1058,13 @@ export default function ContinuingEdu(props: Props) {
         ],
       },
     }),
-    {
-      title: "晋升申请",
-      icon: <JSGL />,
-      path: "/continuingEdu/PromotionApplication",
-      component: PromotionApplication,
-      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-    },
+    // {
+    //   title: "晋升申请",
+    //   icon: <JSGL />,
+    //   path: "/continuingEdu/PromotionApplication",
+    //   component: PromotionApplication,
+    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    // },
     {
       title: "类型管理",
       icon: <TKGL />,
