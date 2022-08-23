@@ -811,15 +811,16 @@ export function getFun(context: any) {
     let newRows = []
     if (data.copy) {
       // 自定义签名不需要复制
-      let customSignObj: Record<string,any> = {}
-      customSign.map((v:any) => {
+      let customSignObj: Record<string, any> = {}
+      !data.sign && customSign.map((v:any) => {
         customSignObj[v.itemCode] = ''
       })
       newRows = selectedRows.map((item: any) => {
         let newItem = JSON.parse(JSON.stringify(item))
         delete newItem.id
         newItem['班次'] = data.type ? data.type : newItem['班次']
-        newItem[data.signName] = data.sign ? authStore.user?.empName : ""
+        // newItem[data.signName] = data.sign ? authStore.user?.empName : ""
+        newItem[data.signName] = data.sign ? item[data.signName] : ""        
         return {
           ...newItem,
           ...customSignObj,
@@ -857,7 +858,7 @@ export function getFun(context: any) {
           return {
             ...v,
           }
-        })
+        }),
       )
       if (res1.code == '200') {
         message.success('修改成功')

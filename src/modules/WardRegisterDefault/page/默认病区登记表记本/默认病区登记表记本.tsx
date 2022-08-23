@@ -967,7 +967,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   }, [authStore.selectedDeptCode]);
 
   useEffect(() => {
-    console.log(dataSource);
+    // console.log(dataSource);
   }, [dataSource]);
 
   useEffect(() => {
