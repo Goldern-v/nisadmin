@@ -89,7 +89,7 @@ class evaluateData {
       title: '是否确认保存?',
       onOk: () => {
         trainingSettingApi.saveQueryPageList(this.tableList).then((res) => {
-          console.log(res);
+          // console.log(res);
          if(res.code == 200){
             message.success('保存成功');
             this.onload()

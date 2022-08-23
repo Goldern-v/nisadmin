@@ -30,47 +30,51 @@ export default observer(function AddDeptModal(props: Props) {
   });
 
   // 表格数据
-  const columns: any = [
-    {
-      title: "序号",
-      dataIndex: "",
-      render: (text: any, record: any, index: number) => index + 1,
-      align: "center",
-      width: 50
-    },
-    {
-      title: "科室",
-      dataIndex: "deptName",
-      width: 300,
-      align: "center"
-    },
-    {
-      title: "操作",
-      dataIndex: "isChecked",
-      width: 80,
-      align: "center",
-      render(text: any, record: any, index: number) {
-        return (
-          <Checkbox
-            key={record.deptCode}
-            checked={!!text}
-            disabled={record.sort}
-            onChange={(e: any) => {
-              record.isChecked = e.target.checked ? 1 : 0;
-              setEditDataList(
-                traineeShiftModal.deptTableCopyList.filter(
-                  (item: any) => item.isChecked && !item.sort
-                )
-              );
-              const arrOne = traineeShiftModal.deptTableCopyList;
-              traineeShiftModal.deptTableCopyList = [];
-              traineeShiftModal.deptTableCopyList = arrOne;
-            }}
-          />
-        );
-      }
-    }
-  ];
+	const columns: any = [
+		{
+			title: "序号",
+			dataIndex: "",
+			render: (text: any, record: any, index: number) => index + 1,
+			align: "center",
+			width: 50
+		},
+		{
+			title: "科室",
+			dataIndex: "deptName",
+			width: 300,
+			align: "center",
+			
+		},
+		{
+			title: "操作",
+			dataIndex: "isChecked",
+			width: 80,
+			align: "center",
+			render(text: any, record: any, index: number) {
+				return (
+					<Checkbox
+						key={record.deptCode}
+						checked={!!text}
+						disabled={record.sort}
+						onChange={(e: any) => {
+							record.isChecked = e.target.checked ? 1 : 0;
+							setEditDataList(
+								traineeShiftModal.deptTableCopyList.filter(
+									(item: any) => item.isChecked && !item.sort
+								)
+							);
+							const arrOne = traineeShiftModal.deptTableCopyList;
+							traineeShiftModal.deptTableCopyList = [];
+							traineeShiftModal.deptTableCopyList = arrOne;
+						}}
+					/>
+				);
+			},
+			// filters:[{ text: '已勾选', value: '1' },{ text: '未勾选', value: '0' }],
+			// onFilter: (value: any, record: any) => record.checked.includes(value),
+
+		}
+	];
 
   //初始化表格数据
   useEffect(() => {
@@ -102,9 +106,16 @@ export default observer(function AddDeptModal(props: Props) {
 
   // 保存
   const checkForm = () => {
-    setEditLoading(true);
+    
+	  let paramter = {
+		  "sheetId": traineeShiftModal.sheetId,
+		  "latPlanRotateDeptsList":editDataList
+	  }
+	//   console.log(paramter)
+	//   return false
+	  setEditLoading(true);
     traineeShiftApi
-      .addRotateDepts(editDataList)
+      .addRotateDeptsForTrain(paramter)
       .then(res => {
         setEditLoading(false);
         if (res.code == 200) {
@@ -133,7 +144,7 @@ export default observer(function AddDeptModal(props: Props) {
       width="800px"
       visible={visible}
       onCancel={handleCancel}
-      title="添加实习科室"
+      title="添加规培科室"
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>

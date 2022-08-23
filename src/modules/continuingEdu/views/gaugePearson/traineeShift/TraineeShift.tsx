@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { TabledCon } from "src/components/BaseTable";
 import {
@@ -21,6 +21,7 @@ import EditGroupModal from "./modal/EditGroupModal"; // 添加修改弹窗
 import AddGroupModal from "./modal/AddGroupModal"; // 添加分组弹窗
 import AddSecondMenuModal from "./modal/AddSecondMenuModal"; // 添加新增轮转信息弹窗
 import { appStore,authStore } from "src/stores";
+import debounce from 'lodash/debounce';
 
 interface Props {
   getTitle: any;
@@ -43,31 +44,35 @@ export default observer(function TraineeShift(props: Props) {
   const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
 
   
-  
-
+/**
+ * 查询轮转表列表
+ */
   const handeldddd = () =>{
+	// return 
     // 查询二级子菜单
-    traineeShiftApi.queryAllRotationScheduleSheets().then((res)=>{
+    traineeShiftApi.getScheduleSheetList().then((res)=>{
       setTitleList(res.data)
-      if(res.data){
-        let list:any[] = res.data
-        list.map((item:any,index:any)=>{
-          if(index == 0){
-          console.log(item);
-          traineeShiftModal.sheetId = item.id
-          settitleCurr(item.title)
-          }
-        })
+      if(res.data && res.data.length>0){
+		traineeShiftModal.sheetId = res.data[0].id
+		settitleCurr(res.data[0].title)
+        // let list:any[] = res.data
+        // list.map((item:any,index:any)=>{
+        //   if(index == 0){
+        //   console.log(item);
+        //   traineeShiftModal.sheetId = item.id
+        //   settitleCurr(item.title)
+        //   }
+        // })
         traineeShiftModal.onload()
-      }
+      }else{
+		Message.info('请先添加规培生轮科')
+	  }
     })
   }
   // 初始化数据
   useEffect(() => {
     handeldddd()
-    // traineeShiftModal.sheetId = getId;
-    traineeShiftModal.initRaunchy();
-    // traineeShiftModal.onload();
+    // traineeShiftModal.initRaunchy();
   }, []);
 
   useEffect(()=>{
@@ -86,8 +91,8 @@ export default observer(function TraineeShift(props: Props) {
       let str2 = "";
       let semicolon = "";
       data.map((item: any, i: any) => {
-        let text = item.empName || "";
-        let text1 = `${item.empName}:${item.remark}` || "";
+        let text = item.deptName || "";
+        let text1 = `${item.deptName}` || "";
         let semicolon1 = text && i !== data.length - 1 ? " 、" : "";
         if (data.length < 4) {
           semicolon = text && i !== data.length - 1 ? " 、" : "";
@@ -122,11 +127,11 @@ export default observer(function TraineeShift(props: Props) {
     tableDeptList.map((item: any, index: number) => {
       rotateList.push({
         title: item.deptName,
-        dataIndex: "rotateGroupsList",
-        width: 320,
+        // dataIndex: "rotateGroupsList",
+        width: 280,
         align: "center",
         render: (text: any, record: any, idx: any) => {
-          const rotateTimesList: any = record.rotateTimesList || [];
+          const rotateTimesList: any = record.timeList || [];
           const dataIndex = rotateTimesList.findIndex(
             (obj: any) => obj.deptCode === item.deptCode
           );
@@ -139,10 +144,10 @@ export default observer(function TraineeShift(props: Props) {
               value={beginTime ? [moment(beginTime), moment(endTime)] : []}
               onChange={(date: any) => {
                 if (dataIndex >= 0) {
-                  record.rotateTimesList[dataIndex].beginTime = date[0]
+                  record.timeList[dataIndex].beginTime = date[0]
                     ? date[0].format("YYYY-MM-DD")
                     : null;
-                  record.rotateTimesList[dataIndex].endTime = date[1]
+                  record.timeList[dataIndex].endTime = date[1]
                     ? date[1].format("YYYY-MM-DD")
                     : null;
                 } else {
@@ -232,50 +237,35 @@ export default observer(function TraineeShift(props: Props) {
   //表格数据
   const columns: any = [
     {
-      title: "组别",
-      dataIndex: "groupNum",
-      width: 80,
+      title: "序号",
+      width: 30,
       align: "center",
       fixed: "left",
-      // render: (text: any, record: any) => {
-      //   return (
-      //     <Input
-      //       value={text ? text : undefined}
-      //       onChange={(e: any) => {
-      //         record.groupNum = Number(e.target.value);
-      //         setTableList(traineeShiftModal.tableList);
-      //         const arrOne = traineeShiftModal.tableList.slice();
-      //         traineeShiftModal.tableList = [];
-      //         traineeShiftModal.tableList = arrOne;
-      //       }}
-      //     />
-      //   );
-      // }
+     	render:(text: any, record: any, index: number) => index + 1,
     },
+	{
+		title: "姓名",
+		dataIndex: "empName",
+		width: 80,
+		align: "center",
+		fixed: "left",
+	  },
     {
-      title: "姓名",
-      dataIndex: "rotatePersonsList",
+      title: "科室",
+      dataIndex: "timeList",
       width: 180,
       align: "center",
-      fixed: "left",
       className: "rotatePersonsList",
       render(text: any) {
         return setTextData(text);
       }
     },
-    {
-      title: "科室",
-      dataIndex: "groupNum",
-      width: 120,
-      align: "center",
-      fixed: "left",
-    },
+    
     {
       title: "SAP代码",
-      dataIndex: "groupNum",
-      width: 100,
+      dataIndex: "sapCode",
+      width: 80,
       align: "center",
-      fixed: "left",
     },
     ...rotateList,
     // {
@@ -308,7 +298,7 @@ export default observer(function TraineeShift(props: Props) {
     {
       title: "操作",
       key: "cz",
-      width: 100,
+      width: 60,
       render(text: any, record: any) {
         return (
           <DoCon>
@@ -334,7 +324,7 @@ export default observer(function TraineeShift(props: Props) {
       cancelText: "取消",
       onOk: () => {
         traineeShiftApi
-          .deleteGroup(record.id)
+          .deletePersonYaXin({personId:record.id})
           .then(res => {
             if (res.code == 200) {
               Message.success("删除成功");
@@ -352,10 +342,10 @@ export default observer(function TraineeShift(props: Props) {
   const saveAllRotateTimes = () => {
     let obj: any = {
       sheetId: traineeShiftModal.sheetId,
-      rotateGroupList: tableList
+      latPlanRotatePersonsList: tableList
     };
     traineeShiftApi
-      .saveAllRotateTimes(obj)
+      .saveAllRotateTimesYaXin(obj)
       .then(res => {
         if (res.code == 200) {
           Message.success("保存成功");
@@ -367,7 +357,10 @@ export default observer(function TraineeShift(props: Props) {
       .catch(e => { });
   };
 
-  // 取消弹窗
+  
+  /**
+   * 取消所有弹窗、添加规培生
+   */
   const handleEditCancel = () => {
     // setRowId("");
     setEditDeptBtn(false);
@@ -375,6 +368,10 @@ export default observer(function TraineeShift(props: Props) {
     setAddGroupBtn(false);
     
   };
+
+  /**
+   * 保存规培生成功后，关闭弹框，获取主table
+   */
   const handleEditOk = () => {
     traineeShiftModal.onload();
     handleEditCancel();
@@ -389,7 +386,7 @@ export default observer(function TraineeShift(props: Props) {
 
   // 选择不同时间的轮班
   const handRoun = (value:any) =>{
-    console.log(value);
+    // console.log(value);
     titleList.map((item:any,index:any)=>{
       if(item.title == value){
         traineeShiftModal.sheetId = item.id;
@@ -398,6 +395,18 @@ export default observer(function TraineeShift(props: Props) {
     })
     
   }
+//   点击添加规培生
+  const clickAddStu = ()=>{
+	setAddGroupBtn(true)
+	traineeShiftModal.getStuByNameOrYear()
+  }
+
+  //   输入名字防抖查询
+const handleOnChangeInpt = () => {
+    // console.log('first',traineeShiftModal.addKeyName)
+	traineeShiftModal.onload()
+  }
+const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
 
   return (
     <Wrapper>
@@ -423,6 +432,7 @@ export default observer(function TraineeShift(props: Props) {
             value={traineeShiftModal.keyWord}
             onChange={e => {
               traineeShiftModal.keyWord = e.target.value;
+			  searchByNameInpt()
             }}
             disabled={isAdd}
           />
@@ -435,7 +445,7 @@ export default observer(function TraineeShift(props: Props) {
           >
             查询
           </Button>
-          <Button disabled={isAdd} onClick={() => setAddGroupBtn(true)}>添加规培生</Button>
+          <Button disabled={isAdd} onClick={() => {clickAddStu()}}>添加规培生</Button>
           <Button disabled={isAdd}  onClick={() => setEditDeptBtn(true)}>编辑规培科室</Button>
           <Button
             disabled={isAdd}
@@ -479,25 +489,27 @@ export default observer(function TraineeShift(props: Props) {
           dataSource={traineeShiftModal.tableList}
           columns={columns}
           surplusWidth={300}
-          surplusHeight={230}
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => {
-                if(isAdd){
-                  Message.warning('只有护理部的成员才可以打开！')
-                  return
-                }
-                setRowId(record.id);
-                handleEdit(record);
-              }
-            };
-          }}
+          surplusHeight={200}
+        //   onRow={(record: any) => {
+        //     return {
+        //       onDoubleClick: () => {
+        //         if(isAdd){
+        //           Message.warning('只有护理部的成员才可以打开！')
+        //           return
+        //         }
+        //         setRowId(record.id);
+        //         handleEdit(record);
+        //       }
+        //     };
+        //   }}
           rowClassName={(record: any, index: any): string => {
             if (record.id == rowId) return "row__bg__color";
             return "";
           }}
         />
       </Content>
+
+	  {/* 规培科室 */}
       <EditDeptModal
         visible={editDeptBtn}
         onCancel={handleEditCancel}
@@ -509,24 +521,30 @@ export default observer(function TraineeShift(props: Props) {
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
+	  
+      {/* 添加规培生 */}
       <AddGroupModal
         visible={addGroupBtn}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
+        currentTrainTitle={titleCurr}
       />
+      {/* 添加规培生轮转计划 */}
       <AddSecondMenuModal
         visible={addTitleBtn}
         onCancel={()=>{
           setAddTitleBtn(false);
         }}
+		setTitleList={setTitleList}
+		titleList={titleList}
         onOk={()=>{
           if(isAdd){
             Message.warning('只有护理部的成员才可以打开！')
             return
           }
-          traineeShiftModal.onload();
+        //   traineeShiftModal.onload();
           setAddTitleBtn(false);
-          handeldddd()
+        //   handeldddd()
         }}
       />
     </Wrapper>
@@ -625,4 +643,5 @@ const Content = styled(TabledCon)`
     background: #fff !important;
     color: rgb(0, 0, 0, 0.65) !important;
   }
+
 `;

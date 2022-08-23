@@ -149,6 +149,8 @@ export default observer(function ApplyTable(props: Props) {
         <div>您确定要删除选中的记录吗？</div>
       </div>
     );
+    // console.log(record)
+    // return
     Modal.confirm({
       title: "提示",
       content,
@@ -156,10 +158,10 @@ export default observer(function ApplyTable(props: Props) {
       cancelText: "取消",
       onOk: () => {
         trainingSettingApi
-          .deleteForm(record.id)
+          .deleteForm(record.sapCode)
           .then(res => {
             if (res.code == 200) {
-              Message.success("文件删除成功");
+              Message.success("删除成功");
               bacisManagData.onload();
             } else {
               Message.error(`${res.dec}`);

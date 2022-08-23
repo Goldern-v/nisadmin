@@ -41,7 +41,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "规培时间",
       dataIndex: "planTrainBeginTime",
       align: "center",
-      width: 200,
+      width: 260,
       render(text: any, record: any) {
         return (
           <DatePicker.RangePicker
@@ -58,7 +58,13 @@ export default observer(function ApplyTable(props: Props) {
               }}
             />
         );
-      }
+      },
+	  onCell(record: any, rowIndex: any) {
+		return {
+			className: 'td-inner-time',
+		}
+		
+	}
     },
     {
       title: "护士长",
@@ -145,7 +151,7 @@ export default observer(function ApplyTable(props: Props) {
       render(text: any, record: any) {
         let data: any = [
         {
-          text: "清除数据",
+          text: "删除",
           color:'#f44',
           function: handleDelete
         }];
@@ -180,7 +186,7 @@ export default observer(function ApplyTable(props: Props) {
       <div>
         <div>您确定要清除选中记录的数据吗？</div>
       </div>
-    );
+    ); 
     Modal.confirm({
       title: "提示",
       content,
@@ -189,7 +195,10 @@ export default observer(function ApplyTable(props: Props) {
       cancelText: "取消",
       onOk: () => {
         trainingSettingApi
-          .deleteQueryPageList(record.id)
+          .deleteQueryPageList({
+            "personId": record.personId,
+    		"deptCode": record.deptCode
+          })
           .then(res => {
             if (res.code == 200) {
               Message.success("数据清除成功");
@@ -265,6 +274,9 @@ const Wrapper = styled.div`
   }
   .ant-input-number-input{
     text-align: center;
+  }
+  .ant-table-wrapper td.td-inner-time{
+	padding: 0 !important;
   }
   .ant-input-number-handler-wrap{
     display: none;

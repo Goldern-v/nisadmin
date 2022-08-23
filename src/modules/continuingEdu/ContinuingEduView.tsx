@@ -981,29 +981,29 @@ export default function ContinuingEdu(props: Props) {
         })
       ],
     },
-    // {
-    //   title: "规培生管理",
-    //   path: "/continuingEdu",
-    //   icon: <JXJH />,
-    //   hide:!["whyx"].includes(appStore.HOSPITAL_ID),
-    //   children: [
-    //     {
-    //       title: "规培生基本信息汇总表",
-    //       path: "/continuingEdu/规培生基本信息汇总表",
-    //       component: gaugePearson_BacisManagement,
-    //     },
-    //     {
-    //       title: "规培生轮转计划",
-    //       path: "/continuingEdu/规培生轮转计划",
-    //       component: gaugePearson_TraineeShift,
-    //     },
-    //     {
-    //       title: "规培生出科评价",
-    //       path: "/continuingEdu/规培生出科评价",
-    //       component: gaugePearson_evaluate,
-    //     },
-    //   ],
-    // },
+    {
+      title: "规培生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
+      children: [
+        {
+          title: "规培生基本信息汇总表",
+          path: "/continuingEdu/规培生基本信息汇总表",
+          component: gaugePearson_BacisManagement,
+        },
+        {
+          title: "规培生轮转计划",
+          path: "/continuingEdu/规培生轮转计划",
+          component: gaugePearson_TraineeShift,
+        },
+        {
+          title: "规培生出科评价",
+          path: "/continuingEdu/规培生出科评价",
+          component: gaugePearson_evaluate,
+        },
+      ],
+    },
     {
       title: "进修生管理",
       path: "/continuingEdu",

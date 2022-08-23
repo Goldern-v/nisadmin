@@ -4,16 +4,19 @@ import { Modal, message as Message } from "antd";
 import YearPicker from "src/components/YearPicker";
 import moment from "moment";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
+import { traineeShiftModal } from './../TraineeShiftModal';
 
 export interface Props {
   visible: boolean;
   onCancel: any;
   onOk: any;
   onOkCallBack?: any;
+  setTitleList:Function;
+  titleList?:any
 }
 
 export default function AddSecondMenuModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk,setTitleList,titleList } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [beginYear, setBeginYear]: any = useState(moment().format("YYYY")); // 创建开始年份
 
@@ -21,14 +24,21 @@ export default function AddSecondMenuModal(props: Props) {
   const checkForm = () => {
     let obj = {
       beginYear,
-      endYear: moment(beginYear).add(1, "y")
+      endYear: moment(beginYear).add(1, "y").format("YYYY")+'-01-01'
     };
+    // Message.success("创建成功");
+    //     onOk();
+    //     return false
     setEditLoading(true);
     traineeShiftApi
-      .createRotationScheduleSheet(obj)
+      .createScheduleSheet(obj)
       .then(res => {
         setEditLoading(false);
         Message.success("创建成功");
+        traineeShiftModal.sheetId = res.data.id
+        titleList.unshift(res.data)
+        setTitleList(titleList)
+		      // settitleCurr(res.data.title)
         onOk();
       })
       .catch((e: any) => {
@@ -51,7 +61,7 @@ export default function AddSecondMenuModal(props: Props) {
       forceRender={true}
       onOk={checkForm}
       confirmLoading={editLoading}
-      title="创建实习生轮科"
+      title="创建规培生轮科"
     >
       <Wrapper>
         <div className="tips">确定是否创建，创建后无法删除</div>

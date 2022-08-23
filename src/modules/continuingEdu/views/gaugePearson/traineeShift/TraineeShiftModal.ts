@@ -22,7 +22,7 @@ class TraineeShiftModal {
   @observable public deptTableLoading = false; //表格loading
 
   // 实习生全部信息初始化
-  @observable public allGroupKeyWord: any = undefined; //关键字
+  @observable public allGroupKeyWord: any = ''; //关键字undefined
   @observable public selectedYear: any = moment(); //选中年份
   @observable public allGroupTableList: any = []; //表格数据
   @observable public allGroupTableLoading = false; //表格loading
@@ -36,10 +36,19 @@ class TraineeShiftModal {
   @observable public existingDeptTableList: any = []; //表格数据
   @observable public existingDeptTableLoading = false; //表格loading
 
+  // 添加规培生
+  @observable public addStuList: any = []; //表格数据
+  @observable public addKeyName=''; //名字关键字
+  @observable public addKeyYear = moment() as undefined | moment.Moment; //年份
+  @observable public addStuTableLoading = false; //表格loading
+  @observable public addStuPageIndex: any = 1; //页码
+  @observable public addStuPageSize: any = 10; //每页大小
+  @observable public addStuTotal: any = 0; //总条数
+
   @computed
   get postObj() {
     return {
-      keyWord: this.keyWord,
+      keyWord: this.keyWord || '',
       sheetId: this.sheetId
     };
   }
@@ -53,19 +62,43 @@ class TraineeShiftModal {
       groupId: this.groupId
     };
   }
+
+  @computed get getStuByKey(){
+    return {
+      keyWord:this.addKeyName,
+      year:this.addKeyYear
+    }
+  }
   
 
   //主列表
   onload() {
     this.tableLoading = true;
-    traineeShiftApi.querySheetCompleteInfo(this.postObj).then(res => {
+    traineeShiftApi.getSheetCompleteInfo(this.postObj).then(res => {
       this.tableLoading = false;
-      console.log(res);
+    //   console.log(res);
       
-      // this.tableDeptList = res.data.rotateDeptList;
-      // this.tableList = res.data.rotateGroupsList;
+      this.tableDeptList = res.data.latPlanRotateDeptsList;
+      this.tableList = res.data.latPlanRotatePersonList;
+    }).catch(err=>{
+      this.tableLoading = false;
     });
   }
+
+	// 获取所有规培生  添加规培生
+	getStuByNameOrYear() {
+		this.addStuTableLoading = true
+		traineeShiftApi.queryStudentInfoListWithoutCheck({
+			keyWord: this.addKeyName,
+			year: this.addKeyYear?.year(),
+			sheetId:this.sheetId
+		}).then(res => {
+			this.addStuTableLoading = false;
+			this.addStuList = res.data || []
+		}).catch(err => {
+			this.addStuTableLoading = false
+		});
+	}
 
   //所有实习生
   allGroupOnload() {
@@ -92,36 +125,43 @@ class TraineeShiftModal {
   //全部科室
   deptOnload() {
     this.deptTableLoading = true;
-    traineeShiftApi.queryAllDeptsAndRotateDepts(this.sheetId).then(res => {
+    traineeShiftApi.queryAllDeptsAndRotateDeptsForTrain({sheetId:this.sheetId}).then(res => {
       this.deptTableLoading = false;
       this.deptTableList = res.data;
       this.deptTableCopyList = res.data;
-    });
+    }).catch(err=>{
+		this.deptTableLoading = false;
+	});
   }
 
   // 已有科室
   queryAllRorateDepts() {
     this.existingDeptTableLoading = true;
-    traineeShiftApi.queryAllRorateDepts().then(res => {
+    traineeShiftApi.queryAllRorateDeptsForTrain({sheetId:this.sheetId}).then(res => {
       this.existingDeptTableLoading = false;
-      this.existingDeptTableList = res.data;
-    });
+      this.existingDeptTableList = res.data || [];
+    }).catch(err=>{
+		this.existingDeptTableLoading = false;
+	});
   }
 
   //导出Excel
   export() {
-    traineeShiftApi.exportSheetCompleteInfo(this.postObj).then(res => {
+    traineeShiftApi.exportSheetCompleteInfo({
+		sheetId:this.sheetId
+	}).then(res => {
       fileDownload(res);
     });
   }
 
   /** 获取导入模板 */
   getImportTemplate() {
-    if (this.tableList.length <= 0) {
-      message.warning('请先设置分组')
+    if (this.tableList.length<1) {
+      message.warning('请先添加规培生')
     } else {
-      traineeShiftApi.exportSheetTemplate(this.sheetId)
-        .then(res => fileDownload(res))
+      traineeShiftApi.exportSheetTemplateYaXin({
+		sheetId:this.sheetId
+	}).then(res => fileDownload(res))
     }
   }
 
@@ -159,7 +199,7 @@ class TraineeShiftModal {
       console.log(file)
       this.tableLoading = true;
 
-      traineeShiftApi.importSheetFromFile(file, this.sheetId)
+      traineeShiftApi.importSheetTemplateYaXin(file, this.sheetId)
         .then(res => {
           message.success('导入成功')
           this.onload()
