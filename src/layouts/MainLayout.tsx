@@ -8,6 +8,7 @@ import service from "src/services/api";
 import { observer } from "mobx-react-lite";
 import AduitModal from "../global/modal/AduitModal";
 import AduitModalWh from "../global/modal/AduitModal-wh";
+import AduitModalHJ from "../global/modal/AduitModal-hj";
 import createModal from "src/libs/createModal";
 import { globalModal } from "src/global/globalModal";
 import GroupsAduitModal from "src/global/modal/GroupsAduitModal";
@@ -30,6 +31,7 @@ export default observer(function MainLayout(props: Props) {
   let aduitModal = appStore.hisMatch({
     map: {
       "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj, lyrm,gdtj,qhwy,lyyz,wjgdszd": createModal(AduitModalWh),
+      "hj": createModal(AduitModalHJ),
       other: createModal(AduitModal),
     },
     vague: true,

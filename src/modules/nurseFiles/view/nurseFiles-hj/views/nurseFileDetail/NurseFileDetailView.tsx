@@ -91,7 +91,7 @@ const ROUTE_LIST = [
   {
     type: 'fileList',
     component: FileList,
-    name: '附件'
+    name: '职称证书'
   }
 ]
 
