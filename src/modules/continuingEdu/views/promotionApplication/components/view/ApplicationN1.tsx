@@ -176,13 +176,13 @@ export default observer(function ApplicationN1(props: Props) {
         {isAduit.nodeCode != "withdraw" &&
           isAduit.noPass != true &&
           DotPass &&
-          Number(PromotionAppUtils.flowStatus) > 0 &&
+          Number(PromotionAppUtils.flowStatus) >= 1 &&
           PromotionAppUtils.master.status != "" && (
             <img
               src={require("../image/待审批.png")}
               className="form-status-img"
             />
-          )}
+        )}
       </div>
       <div
         className="first-form"
@@ -964,9 +964,6 @@ const Wrapper = styled.div`
         width: 10px;
         background-color: #27ba8b;
       }
-    }
-    .border{
-      border:1px solid #f00;
     }
     .add-accessory {
       color: #27ba8b;

@@ -66,7 +66,7 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/${urlName}/saveOrUpdate`, obj);
   }
 
-  /** 获取排班班次 */ 
+  /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {
     obj = {
       deptCode: selectViewModal.params.deptCode,
@@ -250,12 +250,13 @@ export default class ArrangeService extends BaseApiService {
   }
 
   //同步排班人员
-  public findSysnNurse() {
+  public findSysnNurse(sync:boolean) {
     const postData = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
       nurseGroup: selectViewModal.params.group,
+      ...sync ? {sync:true} : null,
       startTimeWeek: moment(selectViewModal.params.startTime)
         .weekday(0)
         .format("YYYY-MM-DD"),

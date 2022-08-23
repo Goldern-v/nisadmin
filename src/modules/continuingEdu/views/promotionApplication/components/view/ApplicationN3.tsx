@@ -1500,9 +1500,6 @@ const Wrapper = styled.div`
       }
     }
   }
-  .border{
-      border:1px solid #f00;
-    }
   .ant-calendar-picker-icon{
     display: none;
   }
