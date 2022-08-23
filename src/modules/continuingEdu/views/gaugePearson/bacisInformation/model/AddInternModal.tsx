@@ -117,7 +117,7 @@ export default observer(function AddInternModal(props: Props){
         })
       }
       trainingSettingApi.getnursingDeptRole().then(res=>{
-        console.log(res);
+        // console.log(res);
         if(res.data?.deptList.length){
           let data:dept[] = res.data.deptList
           setDeptList(data)
@@ -139,7 +139,7 @@ export default observer(function AddInternModal(props: Props){
             let newParams = current.getFields();
             let id = params ? params.id : null;
             let addParams = {...newParams,year:moment(newParams.year).format("YYYY"),id,teachEmpNo: newParams.teachEmpNos.split(',')[1], teachEmpName: newParams.teachEmpNos.split(',')[0]}
-            console.log(addParams);
+            // console.log(addParams);
             
             trainingSettingApi.saveOrUpdateInfo(addParams).then((res)=>{
               if(res.code == '200'){

@@ -144,15 +144,15 @@ export default class TraineeShiftApi extends BaseApiService {
   }
 
   // 导出
-  public exportSheetCompleteInfo(obj?: any) {
-    return this.post(
-      `/studyAndTrain/intern/deptRotationSchedule/exportSheetCompleteInfo`,
-      obj,
-      {
-        responseType: "blob"
-      }
-    );
-  }
+  // public exportSheetCompleteInfo(obj?: any) {
+  //   return this.post(
+  //     `/studyAndTrain/intern/deptRotationSchedule/exportSheetCompleteInfo`,
+  //     obj,
+  //     {
+  //       responseType: "blob"
+  //     }
+  //   );
+  // }
 
   // 删除某个轮科小组的实习生
   public async deleteRotatePersonsFromRotateGroup(empNoList: any) {
@@ -173,6 +173,95 @@ export default class TraineeShiftApi extends BaseApiService {
   public exportSheetTemplate(sheetId: string | number) {
     return this.post('/studyAndTrain/intern/deptRotationSchedule/exportSheetTemplate', { sheetId }, { responseType: 'blob' })
   }
+
+
+  // 规培生管理  start
+  // 规培生轮转计划 查询计划
+  public getSheetCompleteInfo(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/querySheetCompleteInfo', obj)
+  }
+  // 创建规培轮转计划
+  public createScheduleSheet(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/createRotationScheduleSheet', obj)
+  }
+  // 获取规培计划列表
+  public getScheduleSheetList(obj?: any) {
+    return this.get('/studyAndTrain/planTrain/deptRotationSchedule/queryAllRotationScheduleSheets')
+  }
+  // 添加规培生
+  public addRotatePersonsToRotate(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/addRotatePersonsToRotate', obj)
+  }
+   // 添加科室
+   public addRotateDeptsForTrain(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/addRotateDepts', obj)
+  }
+   // 获取可添加的规培生
+   public queryStudentInfoListWithoutCheck(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/queryStudentInfoListWithoutCheck', obj)
+  }
+   // 科室排序
+   public saveRotateDeptSortsForTrain(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/saveRotateDeptSorts', obj)
+  }
+  // 查询所有已添加科室
+  public queryAllRorateDeptsForTrain(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/queryAllRorateDepts', qs.stringify(obj))
+  }
+  // 查询所有备选科室
+  public queryAllDeptsAndRotateDeptsForTrain(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/queryAllDeptsAndRotateDepts', qs.stringify(obj))
+  }
+  
+  // 删除轮转科室
+  public deleteRotateDeptsYaXin(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/deleteRotateDeptsYaXin', obj)
+  }
+  // 保存轮转生计划信息
+  public saveAllRotateTimesYaXin(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/saveAllRotateTimesYaXin', obj)
+  }
+   // 查询所有备选科室
+   public deletePersonYaXin(obj: any) {
+    return this.post('/studyAndTrain/planTrain/deptRotationSchedule/deletePersonYaXin', qs.stringify(obj))
+  }
+  // 导出规培生计划
+  public exportSheetCompleteInfo(obj?: any) {
+    return this.post(
+      `studyAndTrain/planTrain/deptRotationSchedule/exportSheetCompleteInfo`,
+      obj,
+      {
+        responseType: "blob"
+      }
+    );
+  }
+  // 下载导入模板模板
+  public exportSheetTemplateYaXin(obj?: any) {
+    return this.post(
+      `studyAndTrain/planTrain/deptRotationSchedule/exportSheetTemplateYaXin`,
+      obj,
+      {
+        responseType: "blob"
+      }
+    );
+  }
+   /**
+   * 导入规培生轮科表
+   * @param filename 文件
+   * @param sheetId 论课表id
+   */
+    public importSheetTemplateYaXin(filename: any, sheetId: any) {
+      let newFormData = new FormData()
+      newFormData.set('filename', filename)
+      newFormData.set('sheetId', sheetId)
+  
+      return this.post('/studyAndTrain/planTrain/deptRotationSchedule/importSheetTemplateYaXin', newFormData)
+    }
+  
+
+  // 规培生管理  end
+
+
 
   /**
    * 导入实习生轮科表

@@ -1,62 +1,73 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState,useRef,useMemo,useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Modal, message as Message, Input, Button, DatePicker } from "antd";
+import { Modal, message as Message, Input, Button, DatePicker,Tag } from "antd";
 import { traineeShiftApi } from "../api/TraineeShiftApi"; // 接口
 import { traineeShiftModal } from "../TraineeShiftModal";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { bacisManagData } from "../../bacisInformation/bacisPostgraduate";
+import debounce from 'lodash/debounce';
 
 export interface Props {
   visible: boolean;
   onCancel: any;
   onOk: any;
   onOkCallBack?: any;
+  currentTrainTitle:string;
 }
 
 export default observer(function AddGroupModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk,currentTrainTitle } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
 
+  const [tabList, setTabList] = useState(['和规范的','rtyu','rtyu90','tyu','fvb','asd']);
+//   选中的规培生对象
+  const [selectStu, setSelectStu] = useState([]); 
+
   // 保存
-  const checkForm = async () => {
-    // let isOk: any = /^[1-9]\d*$/.test(groupName.replace(/(^\s+)|(\s+$)/g, ""));
-    // let isHavedGroupName: any = traineeShiftModal.tableList.find(
-    //   (item: any) => item.groupNum == groupName
-    // );
-    // if (groupName) {
-    //   if (isHavedGroupName) {
-    //     Message.warning("该小组名称已存在，请重新命名！");
-    //     return;
-    //   }
-    //   if (!isOk) {
-    //     Message.warning("小组名称必须为正整数！");
-    //     return;
-    //   }
-      setEditLoading(true);
-      traineeShiftApi
-        .createRotateGroup(groupName)
-        .then((res: any) => {
-          setEditLoading(false);
-          if (res.code == 200) {
-            Message.success("已成功添加分组！");
-            onOk();
-            traineeShiftModal.onload();
-          } else {
-            setEditLoading(false);
-            Message.error(`${res.desc}`);
-          }
-        })
-        .catch(() => {
-          setEditLoading(false);
-        });
-    // } else {
-    //   Message.warning("保存前请填写小组名称！");
-    // }
-  };
+	const checkForm = async () => {
+		setEditLoading(true);
+		if (selectStu.length < 1) {
+			Message.warning('请先选择规培生')
+			return false
+		}
+		let latPlanRotatePersonsList = [] as any
+		selectStu.map((item:any)=>{
+			latPlanRotatePersonsList.push({
+				"sex": item.sex,
+				"empName": item.name,
+				"sapCode": item.sapCode
+			})
+		})
+		traineeShiftApi
+			.addRotatePersonsToRotate({
+				sheetId: traineeShiftModal.sheetId,
+				latPlanRotatePersonsList: latPlanRotatePersonsList
+			})
+			.then((res: any) => {
+				setEditLoading(false);
+				if (res.code == 200) {
+					Message.success("成功添加规培生！");
+					onOk();
+					traineeShiftModal.onload();
+					// 清空数据
+					setSelectStu([])
+					setSelectedRowKeys([])
+				} else {
+					setEditLoading(false);
+					Message.error(`${res.desc}`);
+				}
+			})
+			.catch(() => {
+				setEditLoading(false);
+			});
+		// } else {
+		//   Message.warning("保存前请填写小组名称！");
+		// }
+	};
 
   // 关闭取消
   const handleCancel = async () => {
@@ -74,27 +85,38 @@ export default observer(function AddGroupModal(props: Props) {
 
   const handlePanelChange = (value: any) => {
     setyearPickerIsOpen(false)
-    bacisManagData.year = value
-    bacisManagData.onload()
+    traineeShiftModal.addKeyYear = value
+    traineeShiftModal.getStuByNameOrYear()
   }
 
   // 查询
   const handelInquire = ()=>{
-    bacisManagData.onload()
+    // bacisManagData.onload()
+	traineeShiftModal.getStuByNameOrYear()
   }
 
   // 表格选中操作
   const rowSelection: any = {
+	columnWidth:30,
     selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(selectedRowKeys, selectedRows, 888)
+    //   console.log(selectedRowKeys, selectedRows, 888)
+	// selectedRows的值是这次查询表格选中值，上次查询表格选中的值不在这里
       setSelectedRowKeys(selectedRowKeys);
+	  let newSelectAll = [...selectStu,...selectedRows] // 原有的和现在新表格的拼接
+		let newSelect = [] as any
+		let selectItem = {}
+		// 根据selectedRowKeys筛选对象
+	  selectedRowKeys.map((key:string)=>{
+		// selectItem=
+		newSelect.push(newSelectAll.find(it=>it.id==key))
+	  })
+	  setSelectStu(newSelect)
+	//   console.log(newSelect)
       let arr: any = [];
       selectedRows.map((item: any) => {
         arr.push(item.deptCode);
       });
-      // console.log(arr, 7776)
-      // setIdArr(arr);
     }
   };
 
@@ -114,23 +136,41 @@ export default observer(function AddGroupModal(props: Props) {
     },
     {
       title: "SAP代码",
-      dataIndex: "name",
+      dataIndex: "sapCode",
       align: "center",
       width: 80
-    },
-    {
-      title: "科室",
-      dataIndex: "sex",
-      align: "center",
-      width: 100
     },
     {
       title: "性别",
       dataIndex: "sex",
       align: "center",
-      width: 50
+      width: 50,
+	  render:(text:any,record:any,index:number)=>{
+		if(text=='0'){
+			return <span>男</span>
+		}
+		return <span>女</span>
+	  }
     },
   ];
+
+//   取消选中的规培生
+  const handleCloseTab = (id:any)=>{
+	// console.log(id)
+	let newKeys = []
+	let newSelectItem = []
+	newKeys=selectedRowKeys.filter(it => it !==id );
+	setSelectedRowKeys(newKeys)
+	newSelectItem=selectStu.filter((item:any) => item.id !==id );
+	setSelectStu(newSelectItem)
+  }
+
+//   输入名字防抖查询
+const handleOnChange = () => {
+    // console.log('first',traineeShiftModal.addKeyName)
+	traineeShiftModal.getStuByNameOrYear()
+  }
+const searchByName = useRef(debounce(() => handleOnChange(), 1000)).current
 
   return (
     <Modal
@@ -138,7 +178,7 @@ export default observer(function AddGroupModal(props: Props) {
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
-      title="添加规培生"
+      title={"添加规培生("+currentTrainTitle+")"}
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>
@@ -175,23 +215,25 @@ export default observer(function AddGroupModal(props: Props) {
           <span>年份：</span>
           <DatePicker
             style={{ width: 100 }}
-            value={bacisManagData.year}
+            value={traineeShiftModal.addKeyYear}
             open={yearPickerIsOpen}
             mode='year'
             className='year-picker'
             placeholder='全部'
             format='YYYY'
-            onChange={handleYearClear}
+            // onChange={handleYearClear}
             onOpenChange={handleOpenChange}
             onPanelChange={handlePanelChange}
           />
           <Input
             style={{ width: 200, marginLeft: 15, marginRight: 5 }}
             placeholder="请输入要搜索的姓名"
-            value={bacisManagData.keyWord}
+            value={traineeShiftModal.addKeyName}
             onChange={e => {
-              bacisManagData.keyWord = e.target.value
-              bacisManagData.onload()
+				traineeShiftModal.addKeyName = e.target.value
+				searchByName()
+				
+              
             }}
           />
           <Button
@@ -201,24 +243,39 @@ export default observer(function AddGroupModal(props: Props) {
             >查询</Button>
         </div>
         <BaseTable
-          loading={bacisManagData.tableLoading}
-          dataSource={bacisManagData.tableList}
+          loading={traineeShiftModal.addStuTableLoading}
+          dataSource={traineeShiftModal.addStuList}
           columns={columns}
           rowSelection={rowSelection}
+		  rowKey={record =>record.id}
           // surplusHeight={100}
           // surplusWidth={100}
           pagination={{
-            current: bacisManagData.pageIndex,
-            total: bacisManagData.total,
-            pageSize: bacisManagData.pageSize,
+            current: traineeShiftModal.addStuPageIndex,
+            total: traineeShiftModal.addStuTotal,
+            pageSize: traineeShiftModal.addStuPageSize,
           }}
           onChange={(pagination) => {
-            bacisManagData.pageIndex = pagination.current;
-            bacisManagData.total = pagination.total;
-            bacisManagData.pageSize = pagination.pageSize;
-            bacisManagData.onload();
+            traineeShiftModal.addStuPageIndex = pagination.current;
+            traineeShiftModal.addStuTotal = pagination.total;
+            traineeShiftModal.addStuPageSize = pagination.pageSize;
+            // bacisManagData.onload();
+			traineeShiftModal.getStuByNameOrYear()
           }}
         />
+        <SelectTab>
+			<div className="flex-ml">已选：</div>
+			<div className="flex-mr">
+				{selectStu.map((iy:any)=>{
+					return <Tag className="select-tab" key={iy.id} closable onClose={() => handleCloseTab(iy.id)}>
+					{iy.name}
+				</Tag>
+				})}
+				
+			</div>
+			
+			
+		</SelectTab>
       </Wrapper>
     </Modal>
   );
@@ -229,5 +286,27 @@ const Wrapper = styled.div`
   .label {
     margin-top: 5px;
   } */
+`;
+const SelectTab=styled.div`
+display: flex;
+.flex-ml{
+	width: 44px;
+    font-weight: bold;
+    line-height: 30px;
+    font-size: 14px;
+}
+.flex-mr{
+	flex: 1;
+}
+.select-tab.ant-tag, .select-tab.ant-tag a, .select-tab.ant-tag a:hover{
+	color: #fff;
+    padding: 0 10px 0 15px;
+    font-size: 13px;
+    line-height: 30px;
+	background-color: #00A680;
+}
+.select-tab.ant-tag .anticon-close{
+	color: #fff;
+}
 `;
 const Header = styled.div``

@@ -105,7 +105,7 @@ class BacisManagModel {
 
 
   /** 获取表格数据 */
-  onload() {
+  onload():void {
     this.tableLoading = true;
     trainingSettingApi.getFormList(this.postObj).then(res => {
       this.tableLoading = false;
@@ -115,7 +115,7 @@ class BacisManagModel {
         item.education = edouct[item.education]
       })
       this.tableList = res.data.list;
-      console.log(this.tableList);
+      // console.log(this.tableList);
       
       this.total = res.data.totalCount;
       this.pageIndex = res.data.pageIndex;

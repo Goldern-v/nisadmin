@@ -112,7 +112,10 @@ export default observer(function EditDeptModal(props: Props) {
       cancelText: "取消",
       onOk: () => {
         traineeShiftApi
-          .deleteRotateDepts(empNoList)
+          .deleteRotateDeptsYaXin({
+            "sheetId": traineeShiftModal.sheetId,
+            "deptCodeList": empNoList
+          })
           .then((res: any) => {
             if (res.code == 200) {
               Message.success("删除成功！");
@@ -133,7 +136,10 @@ export default observer(function EditDeptModal(props: Props) {
     deptSortList.map((item: any, idx: any) => (item.sort = idx + 1));
     setEditLoading(true);
     traineeShiftApi
-      .saveRotateDeptSorts(deptSortList)
+      .saveRotateDeptSortsForTrain({
+        sheetId:traineeShiftModal.sheetId,
+        deptSortList:deptSortList
+      })
       .then(res => {
         setEditLoading(false);
         if (res.code == 200) {
@@ -168,7 +174,7 @@ export default observer(function EditDeptModal(props: Props) {
       width="800px"
       visible={visible}
       onCancel={handleCancel}
-      title="编辑实习科室"
+      title="编辑规培科室"
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>
@@ -188,7 +194,7 @@ export default observer(function EditDeptModal(props: Props) {
             style={{ marginLeft: "15px", float: "left" }}
             onClick={() => setEditDeptBtn(true)}
           >
-            + 添加科室
+            + 添加规培科室
           </Button>
           <Button
             className="checkButton"

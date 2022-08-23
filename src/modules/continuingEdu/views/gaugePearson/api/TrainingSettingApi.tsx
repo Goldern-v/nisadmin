@@ -19,10 +19,10 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.post(`/studyAndTrain/planTrainStudentInfo/saveOrUpdateInfo`, obj);
   }
   // 表单删除
-  public async deleteForm(id: any) {
+  public async deleteForm(sapCode: any) {
     return this.post(
-      `/studyAndTrain/planTrainStudentInfo/deleteInfoById`,
-      { id }
+      `/studyAndTrain/planTrainStudentInfo/deleteInfoBySapCode`,
+      { sapCode }
     );
   }
   // 规培生基本信息汇总表-导出列表
@@ -69,7 +69,7 @@ export default class TrainingSettingApi extends BaseApiService {
   }
   // 规培生出科评价-导出列表
   public async countExcel(obj: any) {
-    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj);
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj,{responseType: "blob"});
   }
   // 规培生出科评价-删除单个
   public async deleteQueryPageList(obj: any) {

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import React, { useState, useLayoutEffect,ChangeEvent } from "react";
+import React, { useState, useLayoutEffect,ChangeEvent,useRef } from "react";
 import { Select, Input, Button, DatePicker, Modal, message} from "antd";
 import moment, { duration } from 'moment'
 import {evaluateDatas} from "../data"
 import {trainingSettingApi} from "../../api/TrainingSettingApi";
+import debounce from 'lodash/debounce';
 
 const Option = Select.Option;
 
@@ -31,6 +32,13 @@ export default observer(function ApplyHeader(props: Props) {
   const handelInquire = ()=>{
     evaluateDatas.onload()
   }
+
+    //   输入名字防抖查询
+const handleOnChangeInpt = () => {
+  evaluateDatas.onload()
+}
+const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
+
  
 
   return (
@@ -66,7 +74,8 @@ export default observer(function ApplyHeader(props: Props) {
           value={evaluateDatas.keyWord}
           onChange={e => {
             evaluateDatas.keyWord = e.target.value 
-            evaluateDatas.onload()
+            searchByNameInpt()
+            // evaluateDatas.onload()
           }}
         />
         <Button
