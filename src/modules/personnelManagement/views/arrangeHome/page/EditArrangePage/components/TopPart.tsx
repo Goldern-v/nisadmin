@@ -118,7 +118,8 @@ export default observer(function TopPart() {
       cancelText: "取消",
       centered: true,
       onOk: () => {
-        sheetViewModal.findSysnNurse().then(res => {
+        //字段可选sync:true
+        sheetViewModal.findSysnNurse(true).then(res => {
           message.success("操作成功");
         });
       }
@@ -318,7 +319,7 @@ export default observer(function TopPart() {
         {
           ['whyx'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
-            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号" 
+            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
             showSearch
             optionFilterProp="title"
             onChange={(e:any) => sheetViewModal.changeNurseId(e)}
@@ -383,7 +384,7 @@ export default observer(function TopPart() {
             统计
           </Button>
         </div>}
-        {['hj', 'dgxg'].includes(appStore.HOSPITAL_ID) && (
+        {['hj', 'dgxg','nfzxy'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={findSysnNurse}>同步排班人员</Button>
           </div>
