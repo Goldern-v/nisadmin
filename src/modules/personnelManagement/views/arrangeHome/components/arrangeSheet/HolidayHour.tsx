@@ -11,21 +11,26 @@ export interface Props {
 }
 
 export default observer(function HolidayHour(props: Props) {
-  let user =
-    sheetViewModal.sheetTableData.find((item: any) => {
-      return item.id == props.id
-    }) || {}
-  /** 计算总节修 */
-  let real_holidayHour = 0
-  for (let j = 0; j < (user.settingDtos || []).length; j++) {
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
-      real_holidayHour += user.settingDtos[j].shiftType == '节休' ? 1 : 0
-    } else {
-      real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0
-    }
-  }
-  return <Wrapper>{user.holidayHour - real_holidayHour + user.current_holidayHour}</Wrapper>
+  let total = holidayHour(props.id)
+  return <Wrapper>{total}</Wrapper>
 })
+export const holidayHour = (id: any) => {
+  let user =
+  sheetViewModal.sheetTableData.find((item: any) => {
+    return item.id == id
+  }) || {}
+/** 计算总节修 */
+let real_holidayHour = 0
+for (let j = 0; j < (user.settingDtos || []).length; j++) {
+  if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    real_holidayHour += user.settingDtos[j].shiftType == '节休' ? 1 : 0
+  } else {
+    real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0
+  }
+  }
+  let total = user.holidayHour - real_holidayHour + user.current_holidayHour
+  return total
+}
 const Wrapper = styled.div`
   margin: 0 -2px;
   input {

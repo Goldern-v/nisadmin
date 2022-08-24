@@ -83,7 +83,6 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "优良事件",
-        // hidden:!authStore.isNotANormalNurse,
         path: "/goodOrBadRouter",
         icon: require("../images/menu-icon/病区登记本@2x.png")
       }

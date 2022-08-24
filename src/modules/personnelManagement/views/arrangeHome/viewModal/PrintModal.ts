@@ -8,6 +8,7 @@ import { nightHourCellContent } from './../components/arrangeSheet/NightHourCell
 import { weekBalanceHour } from './../components/arrangeSheet/WeekBalanceHour'
 import { balanceHour } from "./../components/arrangeSheet/BalanceHour";
 import { publicHour } from "./../components/arrangeSheet/PublicHour";
+import { holidayHour } from "./../components/arrangeSheet/HolidayHour";
 
 import printing from "printing";
 import { connect } from "http2";
@@ -1868,6 +1869,35 @@ class PrintModal {
             return ''
 
           return totalCellContent(record.id)
+        }
+      },
+      {
+        title: '夜小时数（小时）',
+        key: 'total2',
+        width: 60,
+        visible: colVisibleList.indexOf('total2') >= 0,
+        render: (record: any) => {
+          return nightHourCellContent(record.id)
+        }
+      },
+      {
+        title: '公休结余（天）',
+        key: 'publicHour',
+        width: 60,
+        visible: colVisibleList.indexOf('publicHour') >= 0,
+        render: (record: any) => {
+          if (!record.empName) return ''
+          return publicHour(record.id) || '0'
+        }
+      },
+      {
+        title: '节休结余（天）',
+        key: 'holidayHour',
+        width: 60,
+        visible: colVisibleList.indexOf('holidayHour') >= 0,
+        render: (record: any) => {
+          if (!record.empName) return ''
+          return holidayHour(record.id) || '0'
         }
       },
       {

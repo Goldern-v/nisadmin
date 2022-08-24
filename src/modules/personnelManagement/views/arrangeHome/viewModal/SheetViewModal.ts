@@ -539,6 +539,9 @@ class SheetViewModal {
         if (document.querySelector(".public-hour-warning")) {
             return message.warning("存在公休天数小于0的护士，请修正");
         }
+        if (document.querySelector(".period-hour-warning")) {
+            return message.warning("存在例假天数小于0的护士，请修正");
+        }
         let urlName = appStore.HOSPITAL_ID == 'nys' ? 'schedulingNys' : 'scheduling'
         this.tableLoading = true;
         return arrangeService.saveOrUpdate(status, urlName).then(res => {
@@ -559,6 +562,7 @@ class SheetViewModal {
             let current_holidayHourNys = 0;
             let current_holidayHour = 0;
             let current_publicHour = 0;
+            let current_periodHour = 0;
             current_holidayHourNys +=
                 Number(_sheetTableData[i].thisWeekHoliday) || 0;
 
@@ -573,7 +577,7 @@ class SheetViewModal {
                     _sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
                 current_publicHour +=
                     _sheetTableData[i].settingDtos[j].rangeName == "公休" ? 1 : 0;
-
+                current_periodHour += _sheetTableData[i].settingDtos[j].shiftType == "例假" ? _sheetTableData[i].settingDtos[j].schSpecial : 0;
                 /** 假如是跨年，公休基数设置为1 */
 
                 if (
@@ -616,7 +620,8 @@ class SheetViewModal {
             _sheetTableData[i].current_holidayHourNys = current_holidayHourNys;
             _sheetTableData[i].current_holidayHour = current_holidayHour;
             _sheetTableData[i].current_publicHour = current_publicHour;
-
+            _sheetTableData[i].current_periodHour = current_periodHour;
+            
             /** 计数班次的基础次数 */
             let countArrangeBaseIndexObj: any = {};
             for (let key of this.countArrangeNameList) {

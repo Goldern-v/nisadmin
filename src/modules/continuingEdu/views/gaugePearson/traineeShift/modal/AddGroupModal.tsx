@@ -178,7 +178,7 @@ const searchByName = useRef(debounce(() => handleOnChange(), 1000)).current
       visible={visible}
       onCancel={handleCancel}
       forceRender={true}
-      title={"添加规培生("+currentTrainTitle+")"}
+      title={"添加规培生("+traineeShiftModal.sheetName+")"}
       footer={
         <div style={{ textAlign: "center" }}>
           <Button onClick={() => handleCancel()}>取消</Button>

@@ -51,6 +51,7 @@ class TobeBed {
       for (let j = 0; j < this.AllCell[i]!.bedList.length; j++) {
         if (row == i && col == j) {
           this.AllCell[i].bedList[j] = { ...selectedCell }
+          this.tobeBedTableData[i].bedList[j] = { ...selectedCell }
         }
       }
     }

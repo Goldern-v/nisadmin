@@ -6,6 +6,7 @@ import { message } from "antd";
 
 class TraineeShiftModal {
   @observable public sheetId: any = undefined; //轮科表id
+  @observable public sheetName= '规培生轮科表'; //轮科表名称
   @observable public groupId: any = undefined; //轮科表id
   @observable public titleCurr: any = undefined; //轮科表默认值
 

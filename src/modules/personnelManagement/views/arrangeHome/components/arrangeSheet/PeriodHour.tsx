@@ -31,8 +31,8 @@ export const periodHour = (id: any) => {
   }  
   let total =
     Number(user.periodHour) -
-    Number(real_periodHour)
-    //+ Number(user.current_periodHour);
+    Number(real_periodHour) +
+    Number(user.current_periodHour);
   if (total < 0) {
     message.warning(`${user.empName}的例假天数小于0，请修正`);
   }  
