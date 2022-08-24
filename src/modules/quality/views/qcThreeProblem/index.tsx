@@ -101,9 +101,13 @@ export default observer(function QcThreeProblem(props) {
     analysisService
       .getOneReport(reqQuery)
       .then((res: any) => {
-        console.log("test-res", res);
-        setData(res.data || {});
-        setList({ ...initList(), ...(res?.data?.fieldDataMap || {}) })
+        if (authStore.level3Check || (res.data && res.data.status === 1)) {
+          setData(res.data || {});
+          setList({ ...initList(), ...(res?.data?.fieldDataMap || {}) })
+        } else {
+          setData({});
+          setList(initList)
+        }
         setLoading(false);
       })
       .catch((e) => setLoading(false));
@@ -221,14 +225,7 @@ export default observer(function QcThreeProblem(props) {
             创建
           </Button>}
           {btnRules && data.status == 0 && <Button onClick={handleSave}>保存</Button>}
-          <Button disabled={!data.id} onClick={handleExport}>导出</Button>
-          <Button
-            disabled={groupRoleListSelf.length <= 0}
-            title="推送科室未审核记录"
-            type="primary"
-          >
-            <Icon type="bell" style={{ fontSize: "16px" }} />
-          </Button>
+          <Button disabled={!data.id} onClick={handleExport}>导出</Button> 
         </PageHeader>
         {!data.id && (
           <div className="contain--empty">

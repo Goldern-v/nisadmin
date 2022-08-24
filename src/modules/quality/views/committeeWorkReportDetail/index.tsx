@@ -33,37 +33,39 @@ export default observer(function AnalysisDetail() {
       injectGlobalCss: true,
       scanStyles: false,
       css: `
-         .ant-btn {
-           display: none;
-         }
-         .print-page {
-           box-shadow: none;
-           -webkit-print-color-adjust: exact;
-           margin: 0 auto;
-         }
-         .page-title {
-           min-height: 20px;
-           padding: 0px 30px 20px;
-         }
-         .page-title .title {
-           text-align: center;
-           margin-right: 0;
-         }
-         table, img {
-           page-break-inside: avoid;
-         }
-         pre {
-          page-break-after: avoid;
-         }
-         * {
-           color: #000 !important;
-         }
-         .footer-title {
-           min-height: 0;
-           margin-bottom: 0;
-         }
-         table { page-break-inside:auto }
-         tr{ page-break-inside:avoid; page-break-after:auto }
+        @page {
+          margin: 0mm;
+        }
+        .ant-btn {
+          display: none;
+        }
+        .print-page {
+          box-shadow: none;
+          -webkit-print-color-adjust: exact;
+          margin: 0 auto;
+        }
+        .page-title {
+          min-height: 20px;
+          padding: 0px 30px 20px;
+        }
+        .page-title .title {
+          text-align: center;
+          margin-right: 0;
+        }
+        table, img {
+          page-break-inside: avoid;
+        }
+        pre {
+        page-break-after: avoid;
+        }
+        * {
+          color: #000 !important;
+        }
+        .footer-title {
+          min-height: 0;
+          margin-bottom: 0;
+        }
+        tr{ page-break-inside:avoid; page-break-after:auto }
       `
     })
   }

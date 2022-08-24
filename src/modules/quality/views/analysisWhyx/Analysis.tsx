@@ -293,78 +293,6 @@ export default observer(function Analysis() {
         setTableLoading(false);
       });
   };
-  /**推送 */
-  const handleAlert = () => {
-    let month = query.reportMonth;
-    let year = query.reportYear.format("YYYY");
-    if (month.length == 1) month = "0" + month;
-    let dateStr = `${year}-${month}-01`;
-    let beginDate = moment(dateStr);
-    let endDate = moment(dateStr)
-      .add(1, "M")
-      .subtract(1, "d");
-    let wardCode = "";
-
-    const content = (
-      <ModalCon>
-        <div>
-          <span>开始时间: </span>
-          <DatePicker
-            allowClear={false}
-            value={beginDate}
-            onChange={(_moment) => (beginDate = _moment)}
-          />
-        </div>
-        <div>
-          <span>结束时间: </span>
-          <DatePicker
-            value={endDate}
-            allowClear={false}
-            onChange={(_moment) => (endDate = _moment)}
-          />
-        </div>
-        <div>
-          <span>科 室: </span>
-          <Select
-            style={{ width: "171px" }}
-            onChange={(code: any) => (wardCode = code)}
-
-          >
-            {wardList.map((item: any, idx: number) => (
-              <Option value={item.code} key={idx}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </ModalCon>
-    );
-
-    Modal.confirm({
-      title: "推送科室未审核记录",
-      content: content,
-      onOk: () => {
-        if (wardCode == "") {
-          message.warning("未选择科室");
-          return;
-        }
-        setTableLoading(true);
-        api
-          .push({
-            beginDate: beginDate.format("YYYY-MM-DD"),
-            endDate: endDate.format("YYYY-MM-DD"),
-            wardCode,
-          })
-          .then(
-            (res) => {
-              setTableLoading(false);
-              message.success("推送成功");
-            },
-            () => setTableLoading(false)
-          );
-      },
-    });
-  };
 
   return (
     <Wrapper>
@@ -421,14 +349,6 @@ export default observer(function Analysis() {
         <Button onClick={handleSearch}>查询</Button>
         <Button onClick={handleCreate} type="primary">
           创建
-        </Button>
-        <Button
-          disabled={wardList.length <= 0}
-          onClick={handleAlert}
-          title="推送科室未审核记录"
-          type="primary"
-        >
-          <Icon type="bell" style={{ fontSize: "16px" }} />
         </Button>
       </PageHeader>
       <div className="main-contain">
