@@ -144,6 +144,9 @@ export default observer(function SelectCon() {
     if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
       visibleArr.push('empRemark')
     }
+    if (['wjgdszd'].includes(appStore.HOSPITAL_ID)) {
+      visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1','total2','balanceHour','publicHour','holidayHour']
+    }
     let newArr: any[] = []
     let noEmpNoArr: any[] = []
     let noGroupArr: any[] = []
@@ -166,7 +169,13 @@ export default observer(function SelectCon() {
               map: {
                 'nfzxy':<React.Fragment>
                           <Checkbox value="empRemark">备注</Checkbox>
-                        </React.Fragment>              
+                        </React.Fragment>,         
+              'wjgdszd': <React.Fragment>
+                 <Checkbox value="total2">夜小时数</Checkbox>
+                 <Checkbox value="balanceHour">累计结余</Checkbox>
+                 <Checkbox value="publicHour">公休结余</Checkbox>
+                 <Checkbox value="holidayHour">节休结余</Checkbox>
+              </React.Fragment>
               },
               vague:true
             })
@@ -175,7 +184,7 @@ export default observer(function SelectCon() {
       </div>,
       onOk: () => {
         settingLength += visibleArr.length + 1
-        if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+        if (['nfzxy','wjgdszd'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
             let arr = sheetViewModal.sheetTableData.filter((item:any) => {
               return group.groupName == item.groupName
@@ -549,6 +558,18 @@ export default observer(function SelectCon() {
               <div className="item">
                 <Button className="statistics getExcel" onClick={exportExcel}>
                   导出科室
+                </Button>
+              </div>
+            </React.Fragment>,
+            wjgdszd: <React.Fragment>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={printRosterExcel}>
+                  打印排班
                 </Button>
               </div>
             </React.Fragment>,
