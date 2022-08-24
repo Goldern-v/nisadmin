@@ -50,6 +50,7 @@ const baseConfig: navConfigItem[] = [
   // },
   {
     name: "质量管理",
+    // hidden:authStore.isOnlyInternsManage,
     children: [
       {
         name: "三级质量",
