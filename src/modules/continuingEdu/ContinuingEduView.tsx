@@ -748,7 +748,7 @@ export default function ContinuingEdu(props: Props) {
     {
       title: "实操评分管理",
       icon: <TKGL />,
-      path: "/continuingEdu/PracticalOperationScore",
+      path: "/continuingEdu/PracticalOperationScorFSXT",
       component: PracticalOperationScoreFSXT,
       hide: !['fsxt'].includes(appStore.HOSPITAL_ID)
     },

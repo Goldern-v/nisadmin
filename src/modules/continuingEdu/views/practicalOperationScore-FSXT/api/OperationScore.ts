@@ -5,7 +5,7 @@ export default class OperationScoreApi extends BaseApiService {
   // 获取数据
   public async praticalGradeManage(pamars:any) {
     return this.post(
-      `/studyAndTrain/praticalGradeManage/getPage`,
+      `/studyAndTrain/praticalGradeManageForFSXT/getPage`,
         pamars
     );
   }
@@ -31,7 +31,7 @@ export default class OperationScoreApi extends BaseApiService {
   // 下载当前模板
   public async severalDownloadTemplate(paperId:any) {
     return this.get(
-      `/studyAndTrain/praticalGradeManage/export?paperId=${paperId}`,
+      `/studyAndTrain/praticalGradeManageForFSXT/export?paperId=${paperId}`,
       {
         responseType: "blob"
       }
@@ -40,13 +40,13 @@ export default class OperationScoreApi extends BaseApiService {
   // 编辑接口
   public async getDetailByPaperId(paperId:any,) {
     return this.post(
-      `/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({ paperId })
+      `/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,qs.stringify({ paperId })
     )
   }
   // 删除
   public async getDeleteByPaperId(paperId:any) {
     return this.post(
-      `/studyAndTrain/praticalGradeManage/deleteByPaperId`,
+      `/studyAndTrain/praticalGradeManageForFSXT/deleteByPaperId`,
       qs.stringify({ paperId })
     )
   }
@@ -54,7 +54,7 @@ export default class OperationScoreApi extends BaseApiService {
   /* 保存修改接口 */
   public async getsaveOrUpdate(data:any){
     return this.post(
-      `/studyAndTrain/praticalGradeManage/saveOrUpdate`,
+      `/studyAndTrain/praticalGradeManageForFSXT/saveOrUpdate`,
       data
     )
   }

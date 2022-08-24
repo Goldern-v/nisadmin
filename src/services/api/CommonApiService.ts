@@ -268,11 +268,20 @@ export default class CommonApiService extends BaseApiService {
   }
   // 武汉亚心获取实操评分表下拉内容
   public getPraticalGradeManage(){
-    return this.post(`/studyAndTrain/praticalGradeManage/getPage`,{})
+    if(appStore.HOSPITAL_ID == 'whyx'){
+      return this.post(`/studyAndTrain/praticalGradeManage/getPage`,{})
+    }else{
+      return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getPage`,{})
+    }
   }
   // 武汉亚心获取实操评分表下拉内容
   public getDetailByPaperId(paperId:any){
-    return this.post(`/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({paperId}))
+    if(appStore.HOSPITAL_ID == 'whyx'){
+      return this.post(`/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({paperId}))
+    }else{
+      return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,qs.stringify({paperId}))
+    }
+   
   }
 
   /**
