@@ -129,6 +129,14 @@ export default function EditBalanceModal(props: Props) {
 
   const onBlurSelect = () => {
   };
+  const onFormChange = (name: string, value: any, form: Form<any>) => { 
+    if (name == 'periodHourNow') {
+      let num = (value || 0) / 0.5
+      if (num.toString().indexOf('.') != -1) {
+        form.setField('periodHourNow',Math.floor(num)*0.5)
+      }
+    }
+  }
   return (
     <Modal
       title={title}
@@ -139,7 +147,7 @@ export default function EditBalanceModal(props: Props) {
       forceRender
       centered
     >
-      <Form ref={refForm} rules={rules} labelWidth={80}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`护士姓名`} name="empName" required>

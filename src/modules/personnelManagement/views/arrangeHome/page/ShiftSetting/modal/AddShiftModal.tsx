@@ -300,6 +300,12 @@ switch (appStore.HOSPITAL_ID) {
       let num = form.getField('deductionDay')
       form.setField('deductionDay',(value == '例假' && num == 0) ? 1.5 : 0)
     }
+    if (name == 'deductionDay') {
+      let num = (value || 0) / 0.5
+      if (num.toString().indexOf('.') != -1) {
+        form.setField('deductionDay',Math.floor(num)*0.5)
+      }
+    }
     if (appStore.HOSPITAL_ID === "lcey") {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
