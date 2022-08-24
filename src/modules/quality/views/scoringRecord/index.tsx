@@ -150,6 +150,12 @@ export default observer((props: Props) => {
       width: 80,
       align: "center"
     },
+    {
+      title: "查房问题",
+      dataIndex: 'SR0004022',
+      width: 80,
+      align: "center"
+    },
     // {
     //   title: `检查人员`,
     //   dataIndex: `creatorName`,
