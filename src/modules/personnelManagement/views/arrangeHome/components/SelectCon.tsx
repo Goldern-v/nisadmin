@@ -144,6 +144,9 @@ export default observer(function SelectCon() {
     if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
       visibleArr.push('empRemark')
     }
+    if (['wjgdszd'].includes(appStore.HOSPITAL_ID)) {
+      visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1','total2','balanceHour','publicHour','holidayHour']
+    }
     let newArr: any[] = []
     let noEmpNoArr: any[] = []
     let noGroupArr: any[] = []
@@ -166,7 +169,13 @@ export default observer(function SelectCon() {
               map: {
                 'nfzxy':<React.Fragment>
                           <Checkbox value="empRemark">备注</Checkbox>
-                        </React.Fragment>              
+                        </React.Fragment>,         
+              'wjgdszd': <React.Fragment>
+                 <Checkbox value="total2">夜小时数</Checkbox>
+                 <Checkbox value="balanceHour">累计结余</Checkbox>
+                 <Checkbox value="publicHour">公休结余</Checkbox>
+                 <Checkbox value="holidayHour">节休结余</Checkbox>
+              </React.Fragment>
               },
               vague:true
             })
@@ -175,7 +184,7 @@ export default observer(function SelectCon() {
       </div>,
       onOk: () => {
         settingLength += visibleArr.length + 1
-        if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+        if (['nfzxy','wjgdszd'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
             let arr = sheetViewModal.sheetTableData.filter((item:any) => {
               return group.groupName == item.groupName
@@ -352,7 +361,27 @@ export default observer(function SelectCon() {
   useEffect(() => {
     sheetViewModal.setNurseList()
   }, [selectViewModal.params.group, selectViewModal.params.deptCode])
-
+  /* 判断是否具有排班权限*/
+  const getPushAuth =()=>{
+    //     SYS0001  管理员 QCR0001  护理部
+    let user:any =  JSON.parse(sessionStorage.getItem("user") || "{}");
+    let auth:[string,string] =['SYS0001','QCR0001']
+    let days:number=new Date().getDay() === 0 ? 7:new Date().getDay() + 7  //当前日期+ 上周
+    let startTime:number = new Date(selectViewModal.params.startTime).getTime()
+    let newTime:number =new Date().getTime()
+    if(appStore.HOSPITAL_ID !=='wjgdszd') return  true
+    if(appStore.HOSPITAL_ID==='wjgdszd' && auth.includes(user.roleManageCode)) return  true
+    if(appStore.HOSPITAL_ID==='wjgdszd' && !auth.includes(user.roleManageCode) && ((newTime - startTime) > (days * 60 *60 *24 * 1000))){
+      //  非管理员 护理部 超出日期限制
+      Modal.warn({
+        title: '不能编辑上周以前的数据!',
+        mask: false,
+      })
+      return false
+    }else{
+      return  true
+    }
+  }
   return (
     <Wrapper>
       <LeftIcon>
@@ -457,7 +486,7 @@ export default observer(function SelectCon() {
         {
           ['whyx'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
-            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号" 
+            <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
             showSearch
             optionFilterProp="title"
             onChange={(e:any) => sheetViewModal.changeNurseId(e)}
@@ -486,7 +515,9 @@ export default observer(function SelectCon() {
             <Button
               className="statistics"
               onClick={() => {
-                appStore.history.push(`/personnelManagement/EditArrangePage`);
+                if(getPushAuth()){
+                  appStore.history.push(`/personnelManagement/EditArrangePage`);
+                }
               }}
             >
               编辑排班
@@ -549,6 +580,18 @@ export default observer(function SelectCon() {
               <div className="item">
                 <Button className="statistics getExcel" onClick={exportExcel}>
                   导出科室
+                </Button>
+              </div>
+            </React.Fragment>,
+            wjgdszd: <React.Fragment>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={printRosterExcel}>
+                  打印排班
                 </Button>
               </div>
             </React.Fragment>,

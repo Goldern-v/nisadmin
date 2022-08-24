@@ -41,22 +41,23 @@ export default observer(function ApplyTable(props: Props) {
       title: "规培时间",
       dataIndex: "planTrainBeginTime",
       align: "center",
-      width: 260,
+      width: 180,
       render(text: any, record: any) {
         return (
-          <DatePicker.RangePicker
-              allowClear
-              style={{ width: 250 }}
-              value={record.planTrainBeginTime ? [moment(record.planTrainBeginTime), moment(record.planTrainEndTime)] : []}
-              onChange={(date: any[]) => {
-                record.planTrainBeginTime = moment(date[0]).format("YYYY-MM-DD")
-                record.planTrainEndTime = moment(date[1]).format("YYYY-MM-DD")
+          <span>{record.planTrainBeginTime}~{record.planTrainEndTime}</span>
+          // <DatePicker.RangePicker
+          //     allowClear
+          //     style={{ width: 250 }}
+          //     value={record.planTrainBeginTime ? [moment(record.planTrainBeginTime), moment(record.planTrainEndTime)] : []}
+          //     onChange={(date: any[]) => {
+          //       record.planTrainBeginTime = moment(date[0]).format("YYYY-MM-DD")
+          //       record.planTrainEndTime = moment(date[1]).format("YYYY-MM-DD")
 
-                const arrOne = evaluateDatas.tableList.slice();
-                evaluateDatas.tableList = [];
-                evaluateDatas.tableList = arrOne;
-              }}
-            />
+          //       const arrOne = evaluateDatas.tableList.slice();
+          //       evaluateDatas.tableList = [];
+          //       evaluateDatas.tableList = arrOne;
+          //     }}
+          //   />
         );
       },
 	  onCell(record: any, rowIndex: any) {
