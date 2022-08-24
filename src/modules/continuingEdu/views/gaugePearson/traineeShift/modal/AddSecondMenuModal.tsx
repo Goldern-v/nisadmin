@@ -36,6 +36,7 @@ export default function AddSecondMenuModal(props: Props) {
         setEditLoading(false);
         Message.success("创建成功");
         traineeShiftModal.sheetId = res.data.id
+        traineeShiftModal.sheetName = res.data.title
         titleList.unshift(res.data)
         setTitleList(titleList)
 		      // settitleCurr(res.data.title)

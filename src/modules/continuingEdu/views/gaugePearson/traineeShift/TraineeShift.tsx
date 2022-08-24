@@ -42,6 +42,7 @@ export default observer(function TraineeShift(props: Props) {
   const [titleList, setTitleList] = useState([] as any) //选择不同时段的值
   const [titleCurr, settitleCurr] = useState("" as any) //选择不同时段的值
   const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
+  const [clientWidth, setClientWidth] = useState(document.documentElement.clientWidth);
 
   
 /**
@@ -55,6 +56,7 @@ export default observer(function TraineeShift(props: Props) {
       if(res.data && res.data.length>0){
 		traineeShiftModal.sheetId = res.data[0].id
 		settitleCurr(res.data[0].title)
+    traineeShiftModal.sheetName = res.data[0].title
         // let list:any[] = res.data
         // list.map((item:any,index:any)=>{
         //   if(index == 0){
@@ -72,8 +74,8 @@ export default observer(function TraineeShift(props: Props) {
   // 初始化数据
   useEffect(() => {
     handeldddd()
-    // traineeShiftModal.initRaunchy();
   }, []);
+  
 
   useEffect(()=>{
     if(!authStore.isDepartment){
@@ -119,11 +121,30 @@ export default observer(function TraineeShift(props: Props) {
       return "";
     }
   };
-
+  const fixedColumn = [{
+    title: "序号",
+    width: 30,
+    align: "center",
+    // fixed: "left",
+     render:(text: any, record: any, index: number) => index + 1,
+  },
+{
+  title: "姓名",
+  dataIndex: "empName",
+  width: 80,
+  align: "center",
+  // fixed: "left",
+  }] as any
   // 动态科室对应的列
   const rotateList = [] as any;
   if (traineeShiftModal.tableDeptList.length) {
     let tableDeptList = traineeShiftModal.tableDeptList;
+    // 30+80+180+80+60  是各列的固定宽度，如果有变化，这里也要改
+    // 动态设置左边2列是否固定，为了解决固定列情况下列数不够，出现空白列的问题
+    if((30+80+180+80+60+tableDeptList.length*280)>clientWidth){
+      fixedColumn[0].fixed="left"
+      fixedColumn[1].fixed="left"
+    }
     tableDeptList.map((item: any, index: number) => {
       rotateList.push({
         title: item.deptName,
@@ -236,20 +257,7 @@ export default observer(function TraineeShift(props: Props) {
 
   //表格数据
   const columns: any = [
-    {
-      title: "序号",
-      width: 30,
-      align: "center",
-      fixed: "left",
-     	render:(text: any, record: any, index: number) => index + 1,
-    },
-	{
-		title: "姓名",
-		dataIndex: "empName",
-		width: 80,
-		align: "center",
-		fixed: "left",
-	  },
+    ...fixedColumn,
     {
       title: "科室",
       dataIndex: "timeList",
@@ -386,13 +394,17 @@ export default observer(function TraineeShift(props: Props) {
 
   // 选择不同时间的轮班
   const handRoun = (value:any) =>{
+    traineeShiftModal.sheetId = value.key
+    traineeShiftModal.sheetName = value.label
+    settitleCurr(value.label)
+    traineeShiftModal.onload()
     // console.log(value);
-    titleList.map((item:any,index:any)=>{
-      if(item.title == value){
-        traineeShiftModal.sheetId = item.id;
-        traineeShiftModal.onload()
-      }
-    })
+    // titleList.map((item:any,index:any)=>{
+    //   if(item.title == value){
+    //     traineeShiftModal.sheetId = item.id;
+    //     traineeShiftModal.onload()
+    //   }
+    // })
     
   }
 //   点击添加规培生
@@ -403,19 +415,23 @@ export default observer(function TraineeShift(props: Props) {
 
   //   输入名字防抖查询
 const handleOnChangeInpt = () => {
-    // console.log('first',traineeShiftModal.addKeyName)
 	traineeShiftModal.onload()
   }
 const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
+
 
   return (
     <Wrapper>
       <PageHeader>
         <LeftIcon>
           <PageTitle>
-            <Select defaultValue={getTitle} style={{ width: 200 }} allowClear onChange={handRoun} disabled={isAdd}>
+            <Select 
+            // defaultValue={getTitle} 
+              value={{key:traineeShiftModal.sheetId}}
+              labelInValue
+              style={{ width: 200 }} allowClear onChange={handRoun} disabled={isAdd}>
               {titleList.map((item:any)=>{
-              return <Option value={item.title} key={item.id}>{item.title}</Option>
+              return <Option value={item.id} key={item.id}>{item.title}</Option>
               })}
             </Select>
             <Button disabled={isAdd} type="primary" shape="circle" size="small" className="butAddlistYear" onClick={()=>{
@@ -542,7 +558,7 @@ const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).curr
             Message.warning('只有护理部的成员才可以打开！')
             return
           }
-        //   traineeShiftModal.onload();
+          traineeShiftModal.onload();
           setAddTitleBtn(false);
         //   handeldddd()
         }}
@@ -618,6 +634,9 @@ const Content = styled(TabledCon)`
     > td {
       background: #d4e5dd !important;
     }
+  }
+  .min-wid{
+    min-width: 60px !important;
   }
 
   .row__bg__color {
