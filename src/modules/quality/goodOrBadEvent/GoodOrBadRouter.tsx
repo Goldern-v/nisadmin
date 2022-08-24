@@ -16,13 +16,6 @@ import WholeAysi from './WholeAysi'
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 	map: {
 		fsxt: [
-			// {
-			//   title: '护理工作计划',
-			//   path: '/qcOneDghl/nursingWorkPlainList',
-			//   component: NursingWorkPlainList,
-			//   keepAlive: true,
-			//   disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
-			// },
 			// 科室临床护理质量指标
 			{
 				title: '临床护理质量指标',
@@ -32,8 +25,6 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 						path: "/goodOrBadRouter",
 						redirect:'/goodOrBadRouter/clinicalMonth',
 						component: ClinicalMonth,
-						// keepAlive: true,
-                		// disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
 					},
 					{
 						title: '科室质量指标年度汇总',
@@ -51,14 +42,11 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 			},
 			{
 				title: '护理工作质量/管理指标',
-				hide: !appStore.isDev,
 				children: [
 					{
 						title: "月度汇总",
 						path: "/goodOrBadRouter/sumMonth",
 						component: SumMonth,
-						keepAlive: true,
-                		disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
 					},
 					{
 						title: '年度汇总',
@@ -73,8 +61,6 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 				hide:!authStore.isDepartment,
 				path: "/goodOrBadRouter/wholeAysi",
 				component: WholeAysi,
-				keepAlive: true,
-				disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
 			},
 		],
 		default: [
