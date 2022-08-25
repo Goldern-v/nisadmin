@@ -282,13 +282,16 @@ export default function MainBox() {
                 item.sortValue = index
                 return item
             })).then(() => {
-                /* 同步更新右侧科室人员数据*/
-                selectRow(tableData[0])
                 getMealList()
             })
         })
     };
-
+    /* 同步更新右侧科室人员数据*/
+    useEffect(()=>{
+        if(tableData.length > 0){
+            selectRow(tableData[0])
+        }
+    },[tableData])
     return (
         <Wrapper>
             <BaseTableBox>
