@@ -54,25 +54,13 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 		},
 		{
 			title: "事件发生对象的姓名",
-			dataIndex: "relevantPeopleName",
+			dataIndex: "patientName",
 			align: "center",
 			width: 100
 		},
 		{
 			title: "病案号",
 			dataIndex: "inHospitalNo",
-			align: "center",
-			width: 80
-		},
-		{
-			title: "住院流水号",
-			dataIndex: "post",
-			align: "center",
-			width: 80
-		},
-		{
-			title: "入院日期",
-			dataIndex: "title",
 			align: "center",
 			width: 80
 		},
@@ -84,13 +72,13 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 		},
 		{
 			title: "诊断",
-			dataIndex: "briefDesciption",
+			dataIndex: "diagnosis",
 			align: "center",
 			width: 100
 		},
 		{
-			title: badEventData_gxjb.eventType.label + "风险评估结果",
-			dataIndex: "jiter",
+			title: "风跌倒/坠床风险评估结果",
+			dataIndex: "ddzcfxpgjg",
 			align: "center",
 			width: 100
 		},
@@ -162,8 +150,8 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 			width: 80
 		},
 		{
-			title: badEventData_gxjb.eventType.label + "时状态",
-			dataIndex: "jiterd",
+			title: "跌倒/坠床时状态",
+			dataIndex: "ddzcszt",
 			align: "center",
 			width: 100
 		},
@@ -173,33 +161,22 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 			align: "center",
 			width: 100
 		},
+		
 		{
-			title: "事件处理结果",
-			dataIndex: "teachingTeacherff",
+			title: "跌倒/坠床造成的伤害",
+			dataIndex: "ddzczcdsh",
 			align: "center",
 			width: 100
 		},
 		{
-			title: badEventData_gxjb.eventType.label + "造成的伤害",
-			dataIndex: "jiterd",
-			align: "center",
-			width: 100
-		},
-		{
-			title: badEventData_gxjb.eventType.label + "伤害级别",
-			dataIndex: "jiterd",
-			align: "center",
-			width: 100
-		},
-		{
-			title: "护理部讨论不良事件定性",
-			dataIndex: "operationScore",
+			title: "跌倒/坠床伤害级别",
+			dataIndex: "ddzcshjb",
 			align: "center",
 			width: 100
 		},
 		{
 			title: "护理部讨论不良事件级别",
-			dataIndex: "theoryScore",
+			dataIndex: "eventLevel",
 			align: "center",
 			width: 100
 		},
