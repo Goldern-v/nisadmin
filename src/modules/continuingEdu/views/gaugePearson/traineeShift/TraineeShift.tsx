@@ -11,6 +11,7 @@ import {
   DatePicker,
   Select
 } from "src/vendors/antd";
+import { Upload } from "antd";
 import moment from "moment";
 import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -419,7 +420,16 @@ const handleOnChangeInpt = () => {
   }
 const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
 
-
+const customRequest = (file:any)=>{
+  traineeShiftApi.importSheetTemplateYaXin(file, traineeShiftModal.sheetId)
+        .then(res => {
+          Message.success('导入成功')
+        }, err => console.log(err))
+}
+const uploadProps={
+  name: 'file',
+  customRequest:customRequest,
+}
   return (
     <Wrapper>
       <PageHeader>
@@ -470,13 +480,16 @@ const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).curr
             }}>
             下载模板
           </Button>
-          <Button
-            disabled={isAdd}
-            onClick={() => {
-              traineeShiftModal.import();
-            }}>
-            导入
-          </Button>
+          {/* <Upload {...uploadProps}> */}
+            <Button
+              disabled={isAdd}
+              onClick={() => {
+                traineeShiftModal.import();
+              }}
+              >
+              导入
+            </Button>
+          {/* </Upload> */}
           <Button
             disabled={isAdd}
             onClick={() => {
