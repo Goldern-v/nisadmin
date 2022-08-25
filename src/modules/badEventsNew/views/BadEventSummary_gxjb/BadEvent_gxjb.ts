@@ -14,14 +14,11 @@ class BadEvent_gxjb {
   @observable public education =""; //学历
   @observable public year = moment() as undefined | moment.Moment; //年份
   @observable public sex =""; //性别
-  @observable public deucValue ="全部"; //进修科室
-  @observable public deptCodes=''; //进修科室 以数组的形式
+
   @observable public selectTypeList: any = []; //类型
   @observable public selectedState = ""; //状态
   @observable public key: string = "0"; //状态
-  @observable public pageIndex: any = 1; //页码
-  @observable public pageSize: any = 20; //每页大小
-  @observable public total: any = 0; //总条数
+
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
@@ -34,25 +31,34 @@ class BadEvent_gxjb {
   @observable public knowledgePointDivisionTree: any = []; // 知识点划分
   @observable public learningFormTree: any = []; // 教学方式
 
-  @observable public eventType={key: '', label: '全部'} //选中的汇总类型
+
+  // 不良事件分类汇总表
+  @observable public eventTypeList = []//类型列表
+  @observable public eventType={key: 'B0032', label: '跌倒/坠床'} //选中的汇总类型
   @observable public currentQuarter = moment().quarter() //当前季度
   @observable public deptList = []//科室列表
   @observable public selectDept=''
+  @observable public pageIndex: any = 1; //页码
+  @observable public pageSize: any = 20; //每页大小
+  @observable public total: any = 0; //总条数
+  @observable public deucValue ="全部"; //科室
+  @observable public deptCode=''; //
 
-
-
-  @computed
-  get postObj() {
+  @computed get searchByTypeParams(){
     return {
-      year:moment(this.year).format("YYYY"), //年份
-      studyDeptName01: this.deucValue == '全部'? '' :this.deucValue, //进修科室
-      studyDeptCode01Multiple: this.deptCodes!=''?[this.deptCodes]:[],
-      pageIndex: this.pageIndex, //页码
-      pageSize: this.pageSize, //每页大小
-      total: this.total, //每页大小
-      keyWord:this.keyWord, //关键字
-    };
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      formCode: this.eventType.key,
+      badEventType: this.eventType.label=='全部'?'':this.eventType.label,
+      deptCode: this.deptCode,
+      startDateStr: moment().quarter(this.currentQuarter).startOf('quarter').format('YYYY-MM-DD'),
+      endDateStr: moment().quarter(this.currentQuarter).endOf('quarter').format('YYYY-MM-DD')
   }
+}
+
+
+
+
   get formContent(){
     return{
       eventType:this.eventType,
@@ -64,16 +70,16 @@ class BadEvent_gxjb {
   /** 获取表格数据 */
   onload() {
     console.log('获取数据')
-    console.log(this.formContent)
+    console.log(this.searchByTypeParams)
     // alert('获取数据')
-    // this.tableLoading = true;
-    // internPostgraduateApi.getFormList(this.postObj).then(res => {
-    //   this.tableLoading = false;
-    //   this.tableList = res.data.list;
-    //   this.total = res.data.totalCount;
-    //   this.pageIndex = res.data.pageIndex;
-    //   this.pageSize = res.data.pageSize;
-    // });
+    this.tableLoading = true;
+    badEventApi_gxjb.getTableList(this.searchByTypeParams).then(res => {
+      this.tableLoading = false;
+      this.tableList = res.data.list;
+      this.total = res.data.totalCount;
+      this.pageIndex = res.data.pageIndex;
+      this.pageSize = res.data.pageSize;
+    });
   }
 
   /** 导出Excel */
@@ -104,13 +110,26 @@ class BadEvent_gxjb {
 
 		})
   }
+  /**类型字典 */
+  getDictList(){
+    if(this.eventTypeList.length>0){
+      return false
+    }
+    badEventApi_gxjb.getDictItemList().then(res =>{
+      this.eventType = {key:res.data[0].code,label:res.data[0].name}
+      this.eventTypeList = res.data
+    }).catch(err =>{
+
+    })
+  }
 
   init() {
     // 初始化数据
-    this.eventType = {key: '', label: '全部'}
+    this.eventType = {key: 'B0032', label: '全部'}
     this.currentQuarter = moment().quarter()
     this.selectDept=''
     this.getnursingDept()
+    this.getDictList()
     this.onload();
   }
 }

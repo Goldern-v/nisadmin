@@ -29,176 +29,203 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 				align: "center",
 				width: 50
 			},
-			{
-				title: "事件发生科室",
-				dataIndex: "natureOfLearning",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "不良事件类型",
-				dataIndex: "name",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "事件发生对象的姓名",
-				dataIndex: "sex",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "病案号",
-				dataIndex: "age",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "住院流水号",
-				dataIndex: "post",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "入院日期",
-				dataIndex: "title",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "年龄",
-				dataIndex: "jit",
-				align: "center",
-				width: 40
-			},
-			{
-				title: "诊断",
-				dataIndex: "jite",
-				align: "center",
-				width: 100
-			},
-			{
-				title: badEventData_gxjb.eventType.label + "风险评估结果",
-				dataIndex: "jiter",
-				align: "center",
-				width: 100
-			},
-
-			{
-				title: "Barthel指数评定结果",
-				dataIndex: "jiterk",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "事件发生时间",
-				dataIndex: "education",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "事件发生班次",
-				dataIndex: "originalWorkUnit",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "事件发生地点",
-				dataIndex: "studyDeptName01",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "事件发生相关人员",
-				dataIndex: "studyTimeBegin",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "事件发生相关人员/责任人姓名",
-				dataIndex: "studyTimeEnd",
-				align: "center",
-				width: 60
-			},
-			{
-				title: "发生时当事人层级",
-				dataIndex: "duration",
-				align: "center",
-				width: 80
-			},
-			{
-				title: "报告人",
-				dataIndex: "mattersForStudy",
-				align: "center",
-				width: 60
-			},
-			{
-				title: "上报护理部时间",
-				dataIndex: "phone",
-				align: "center",
-				width: 80
-			},
-			{
-				title: badEventData_gxjb.eventType.label + "时患者状态",
-				dataIndex: "jiterd",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "事件发生的简要描述",
-				dataIndex: "teachingTeacher",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "事件处理结果",
-				dataIndex: "teachingTeacherff",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "事件发生造成的后果",
-				dataIndex: "teachingTeachefr",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "护理部讨论不良事件定性",
-				dataIndex: "operationScore",
-				align: "center",
-				width: 100
-			},
-			{
-				title: "护理部讨论不良事件级别",
-				dataIndex: "theoryScore",
-				align: "center",
-				width: 100
-			},
+			
 		])
 	}, [badEventData_gxjb.eventType])
+	const columnList = [
+		{
+			title: "序号",
+			dataIndex: "",
+			render: (text: any, record: any, index: number) => index + 1,
+			align: "center",
+			width: 30
+		},
+		{
+			title: "事件发生科室",
+			dataIndex: "deptName",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "不良事件类型",
+			dataIndex: "badEventType",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "事件发生对象的姓名",
+			dataIndex: "relevantPeopleName",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "病案号",
+			dataIndex: "inHospitalNo",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "住院流水号",
+			dataIndex: "post",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "入院日期",
+			dataIndex: "title",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "年龄",
+			dataIndex: "age",
+			align: "center",
+			width: 40
+		},
+		{
+			title: "诊断",
+			dataIndex: "briefDesciption",
+			align: "center",
+			width: 100
+		},
+		{
+			title: badEventData_gxjb.eventType.label + "风险评估结果",
+			dataIndex: "jiter",
+			align: "center",
+			width: 100
+		},
 
+		{
+			title: "Barthel指数评定结果",
+			dataIndex: "barthelAssess",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "事件发生日期",
+			dataIndex: "happenDay",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "事件发生时间",
+			dataIndex: "happenTime",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "事件发生班次",
+			dataIndex: "happenShift",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "事件发生地点",
+			dataIndex: "happenPlace",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "事件发生相关人员",
+			dataIndex: "relevantPeople",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "事件发生相关人员/责任人姓名",
+			dataIndex: "relevantPeopleName",
+			align: "center",
+			width: 60
+		},
+		{
+			title: "发生时当事人层级",
+			dataIndex: "relevantHierarchy",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "报告人",
+			dataIndex: "reportPeople",
+			align: "center",
+			width: 60
+		},
+		{
+			title: "上报护理部日期",
+			dataIndex: "reportDay",
+			align: "center",
+			width: 80
+		},
+		{
+			title: "上报护理部时间",
+			dataIndex: "reportTime",
+			align: "center",
+			width: 80
+		},
+		{
+			title: badEventData_gxjb.eventType.label + "时状态",
+			dataIndex: "jiterd",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "事件发生的简要描述",
+			dataIndex: "briefDesciption",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "事件处理结果",
+			dataIndex: "teachingTeacherff",
+			align: "center",
+			width: 100
+		},
+		{
+			title: badEventData_gxjb.eventType.label + "造成的伤害",
+			dataIndex: "jiterd",
+			align: "center",
+			width: 100
+		},
+		{
+			title: badEventData_gxjb.eventType.label + "伤害级别",
+			dataIndex: "jiterd",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "护理部讨论不良事件定性",
+			dataIndex: "operationScore",
+			align: "center",
+			width: 100
+		},
+		{
+			title: "护理部讨论不良事件级别",
+			dataIndex: "theoryScore",
+			align: "center",
+			width: 100
+		},
+	]
 	return (
 		<Wrapper>
 			<BadEventHeader />
 			<ScrollCon>
 				{/* <BadEventTable /> */}
 				<BaseTable
-					// loading={bacisPostgraduateData.tableLoading}
-					// dataSource={bacisPostgraduateData.tableList}
+					loading={badEventData_gxjb.tableLoading}
+					dataSource={badEventData_gxjb.tableList}
 					columns={columnClass as any}
 					surplusHeight={230}
 					surplusWidth={100}
-				// pagination={{
-				//   current: bacisPostgraduateData.pageIndex,
-				//   total: bacisPostgraduateData.total,
-				//   pageSize: bacisPostgraduateData.pageSize,
-				// }}
-				// onChange={(pagination) => {
-				//   bacisPostgraduateData.pageIndex = pagination.current;
-				//   bacisPostgraduateData.total = pagination.total;
-				//   bacisPostgraduateData.pageSize = pagination.pageSize;
-				//   bacisPostgraduateData.onload();
-				// }}
+					pagination={{
+						current: badEventData_gxjb.pageIndex,
+						total: badEventData_gxjb.total,
+						pageSize: badEventData_gxjb.pageSize,
+					}}
+					onChange={(pagination) => {
+						badEventData_gxjb.pageIndex = pagination.current;
+						badEventData_gxjb.total = pagination.total;
+						badEventData_gxjb.pageSize = pagination.pageSize;
+						badEventData_gxjb.onload();
+					}}
 				/>
 			</ScrollCon>
 		</Wrapper>

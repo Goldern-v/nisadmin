@@ -80,11 +80,11 @@ export default observer(function BadEventHeader(props: Props) {
 								}}
 								labelInValue
 								value={badEventData_gxjb.eventType}
-								style={{ minWidth: 80 }}
+								style={{ width: 140 }}
 							>
 								{
-									eventList.map((v: any, i: number) => (
-										<Option value={v.id} key={v.id}>{v.name}</Option>
+									badEventData_gxjb.eventTypeList.map((v: any, i: number) => (
+										<Option value={v.code} key={v.code}>{v.name}</Option>
 									))
 								}
 							</Select></>) : (<>
@@ -165,8 +165,11 @@ export default observer(function BadEventHeader(props: Props) {
 })
 
 const Wrapper = styled.div`
+.page-title{
+	font-size: 17px !important;
+}
 .page-title div{
-  font-size:14px;
+  font-size:13px;
 }
   width: calc(100vw-200px);
   justify-content: space-between;
