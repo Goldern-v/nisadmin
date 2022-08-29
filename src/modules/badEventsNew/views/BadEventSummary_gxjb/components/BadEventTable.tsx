@@ -4,12 +4,9 @@ import styled from 'styled-components'
 import {authStore} from 'src/stores'
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message,Table } from "antd";
-
+import { badEventQuarterData_gxjb } from '../BadEventQuarter_gxjb';
 
 export default observer(function BadEventTable(props) {
-  const [tableData, setTableData] = useState([]);
-  const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
-
 
   const columns: any = [
     {
@@ -17,109 +14,98 @@ export default observer(function BadEventTable(props) {
       dataIndex: "",
       render: (text: any, record: any, index: number) => index + 1,
       align: "center",
-      width: 50
+      width: 30
     },
     {
       title: "事件发生科室",
-      dataIndex: "natureOfLearning",
+      dataIndex: "deptName",
       align: "center",
       width: 100
     },
     {
       title: "不良事件类型",
-      dataIndex: "name",
+      dataIndex: "badEventType",
       align: "center",
       width: 100
     },
     {
       title: "事件发生对象的姓名",
-      dataIndex: "sex",
+      dataIndex: "patientName",
       align: "center",
-      width: 100
+      width: 130
     },
+    
     {
-      title: "病案号",
-      dataIndex: "age",
+      title: "事件发生日期",
+      dataIndex: "happenDay",
       align: "center",
-      width: 80
-    },
-    {
-      title: "住院流水号",
-      dataIndex: "post",
-      align: "center",
-      width: 80
-    },
-    {
-      title: "入院日期",
-      dataIndex: "title",
-      align: "center",
-      width: 80
+      width: 90
     },
     {
       title: "事件发生时间",
-      dataIndex: "education",
+      dataIndex: "happenTime",
       align: "center",
-      width: 80
+      width: 90
     },
     {
       title: "事件发生班次",
-      dataIndex: "originalWorkUnit",
+      dataIndex: "happenShift",
       align: "center",
-      width: 80
+      width: 90
     },
     {
       title: "事件发生地点",
-      dataIndex: "studyDeptName01",
+      dataIndex: "happenPlace",
       align: "center",
-      width: 180
+      width: 90
     },
     {
       title: "事件发生相关人员",
-      dataIndex: "studyTimeBegin",
+      dataIndex: "relevantPeople",
       align: "center",
-      width: 150
+      width: 120
     },
     {
       title: "事件发生相关人员/责任人姓名",
-      dataIndex: "studyTimeEnd",
+      dataIndex: "relevantPeopleName",
       align: "center",
-      width: 150
+      width: 190
     },
     {
       title: "发生时当事人层级",
-      dataIndex: "duration",
+      dataIndex: "relevantHierarchy",
+      align: "center",
+      width: 120
+    },
+    {
+      title: "报告人",
+      dataIndex: "reportPeople",
       align: "center",
       width: 80
     },
     {
-      title: "报告人",
-      dataIndex: "mattersForStudy",
+      title: "上报护理部日期",
+      dataIndex: "reportDay",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "上报护理部时间",
+      dataIndex: "reportTime",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "事件发生的简要描述",
+      dataIndex: "briefDescription",
       align: "center",
       width: 150
     },
     {
-      title: "上报护理部时间",
-      dataIndex: "phone",
-      align: "center",
-      width: 120
-    },
-    {
-      title: "事件发生的简要描述",
-      dataIndex: "teachingTeacher",
-      align: "center",
-      width: 120
-    },
-    {
-      title: "护理部讨论不良事件定性",
-      dataIndex: "operationScore",
-      align: "center",
-      width: 100
-    },
-    {
       title: "护理部讨论不良事件级别",
-      dataIndex: "theoryScore",
+      dataIndex: "eventLevel",
       align: "center",
-      width: 100
+      width: 160
     },
   ];
 
@@ -127,22 +113,22 @@ return (
   <Wrapper>
     
     <BaseTable
-        // loading={bacisPostgraduateData.tableLoading}
-        // dataSource={bacisPostgraduateData.tableList}
+        loading={badEventQuarterData_gxjb.tableLoading}
+        dataSource={badEventQuarterData_gxjb.tableList}
         columns={columns}
         surplusHeight={230}
         surplusWidth={100}
-        // pagination={{
-        //   current: bacisPostgraduateData.pageIndex,
-        //   total: bacisPostgraduateData.total,
-        //   pageSize: bacisPostgraduateData.pageSize,
-        // }}
-        // onChange={(pagination) => {
-        //   bacisPostgraduateData.pageIndex = pagination.current;
-        //   bacisPostgraduateData.total = pagination.total;
-        //   bacisPostgraduateData.pageSize = pagination.pageSize;
-        //   bacisPostgraduateData.onload();
-        // }}
+        pagination={{
+          current: badEventQuarterData_gxjb.pageIndex,
+          total: badEventQuarterData_gxjb.total,
+          pageSize: badEventQuarterData_gxjb.pageSize,
+        }}
+        onChange={(pagination) => {
+          badEventQuarterData_gxjb.pageIndex = pagination.current;
+          badEventQuarterData_gxjb.total = pagination.total;
+          badEventQuarterData_gxjb.pageSize = pagination.pageSize;
+          badEventQuarterData_gxjb.onload();
+        }}
       />
   </Wrapper>
 )

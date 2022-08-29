@@ -1,30 +1,21 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-
-import BadEventHeader from './components/BadEventHeader'
 import BadEventTable from './components/BadEventTable';
-import { badEventData_gxjb } from './BadEvent_gxjb';
-
+import { badEventQuarterData_gxjb } from './BadEventQuarter_gxjb';
+import BadEventHeaderQuarter from './components/BadEventHeaderQuarter';
 
 export default observer(function BadEventSummaryQuarterGxjb(props) {
 	useEffect(() => {
-		badEventData_gxjb.init()
+		badEventQuarterData_gxjb.init()
 	
 	}, [])
 	
 	return (
 		<Wrapper>
-			<BadEventHeader />
+			<BadEventHeaderQuarter />
 			<ScrollCon>
 				<BadEventTable />
-				{/* <BaseTable
-					surplusWidth={1000}
-					surplusHeight={205}
-					loading={loading}
-					dataSource={data}
-					columns={columns}
-				/> */}
 			</ScrollCon>
 		</Wrapper>
 	)
