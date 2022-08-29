@@ -189,42 +189,7 @@ class StepViewModal {
       ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
       category: this.stepData2.category,
       noticeContent: this.stepData2.noticeContent,
-      detailInfo: appStore.HOSPITAL_ID == 'whyx' ?  {
-        hasStudentCredit: this.stepData2.hasStudentCredit,
-        hasStudentClassHours: this.stepData2.hasStudentClassHours,
-        hasScorePersonClassHours: this.stepData2.hasScorePersonClassHours,
-        scorePersonClassHours: this.stepData2.scorePersonClassHours,
-        studentCreditType: this.stepData2.studentCreditType,
-        studentCredit: this.stepData2.studentCredit,
-        studentClassHours: this.stepData2.studentClassHours,
-        scoreItems: this.stepData2.scoreItems,
-        paperId: this.stepData2.adminTable,
-        totalScores: this.stepData2.totalScores,
-        passScores: this.stepData2.passScores,
-        scoreInApp: this.stepData2.scoreInApp,
-        scorePersonList: this.stepData2.scorePersonList.reduce(
-          (total: any[], item: any) => {
-            return [
-              ...total,
-              {
-                empNo: item.key
-              }
-            ];
-          },
-          []
-        ),
-        sicPersonList: this.stepData2.sicPersonList.reduce(
-          (total: any[], item: any) => {
-            return [
-              ...total,
-              {
-                empNo: item.key
-              }
-            ];
-          },
-          []
-        )
-      } : {
+      detailInfo: {
         hasStudentCredit: this.stepData2.hasStudentCredit,
         hasStudentClassHours: this.stepData2.hasStudentClassHours,
         hasScorePersonClassHours: this.stepData2.hasScorePersonClassHours,
@@ -259,8 +224,10 @@ class StepViewModal {
           []
         )
       }
-     
     };
+    if(['whyx', 'fsxt'].includes(appStore.HOSPITAL_ID)){
+      result.detailInfo.paperId = this.stepData2.adminTable
+    }
     return result;
   };
 

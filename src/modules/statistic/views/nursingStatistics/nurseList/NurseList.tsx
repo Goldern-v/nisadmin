@@ -59,10 +59,9 @@ export default function BedSituation() {
           key: '见习期护士',
           value: res.data[0].probationNurse
         },
-        //  助理护士 字段先暂写
         {
           key: '助理护士',
-          value: res.data[0].nurseInCharge
+          value: res.data[0].assistantNurse
         }
         // {
         //   key: '培训护师',

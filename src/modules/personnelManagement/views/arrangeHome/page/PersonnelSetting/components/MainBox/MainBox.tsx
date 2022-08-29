@@ -200,7 +200,7 @@ export default function MainBox() {
         setId(record.id)
     }
 
-    useEffect(() => {
+    useEffect( ()=> {
         setEffect(true)
         getMealList()
     }, [])
@@ -286,7 +286,12 @@ export default function MainBox() {
             })
         })
     };
-
+    /* 同步更新右侧科室人员数据*/
+    useEffect(()=>{
+        if(tableData.length > 0){
+            selectRow(tableData[0])
+        }
+    },[tableData])
     return (
         <Wrapper>
             <BaseTableBox>
@@ -301,13 +306,13 @@ export default function MainBox() {
                     }}
                     moveRow={moveRow}
                     footer={() => (<span><Icon type="info-circle" style={{color: "#fa8c16", marginRight: "5px"}}/>可以通过拖拽排序,修改数据后需保存</span>)}
-                    onRow={(record) => {
-                        return {
-                            onClick: (event: any) => {
-                                selectRow(record)
-                            }
-                        }
-                    }}
+                    // onRow={(record) => {
+                    //     return {
+                    //         onClick: (event: any) => {
+                    //             selectRow(record)
+                    //         }
+                    //     }
+                    // }}
                 />
             </BaseTableBox>
             <TransferBox>

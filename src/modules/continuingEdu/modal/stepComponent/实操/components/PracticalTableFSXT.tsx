@@ -1,115 +1,70 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import { practicalOperationScore } from "../PracticalOperationScoreModal";
-import { Button, Modal, Input, } from "antd";
-import Form from "src/components/Form";
-import autoUpdate from "src/utils/autoUpdate";
+import { Button, Modal, Input } from "antd";
 const { TextArea } = Input;
+
 interface props {
-  modalVisible: boolean | undefined;
   params: any;
   modalTitle: string;
-  onCancel: Function;
-  onOk: Function;
 }
-export default observer(function PracticalImportModal(props: props) {
-  const { modalVisible, modalTitle, params, onCancel, onOk } = props;
-  let refForm = React.createRef<Input>();
-  useEffect(()=>{
-    if(params.latPraticalGradeSubjectDtoList){
-      params.latPraticalGradeSubjectDtoList = params.latPraticalGradeSubjectDtoList.sort((a:any,b:any)=> a.sort - b.sort)
-    }
-  },[params])
 
-  
-  const handleOk = () => {
-    onOk && onOk(params);
-    params.value=null;
-  };
+export default observer(function PracticalTablefsxt(props: props) {
+  const { modalTitle, params } = props;
 
-  const handleCancel = () => {
-    onCancel && onCancel();
-    params.value=null;
-  };
   const handleInput = (e: any, currentObj: any, data: any) => {
     currentObj[data] = e.target.value;
-    let list:any[] = [];
-    params.latPraticalGradeSubjectDtoList && 
-    params.latPraticalGradeSubjectDtoList.map((item:any)=>{
-      item.latPraticalGradeOperationDtoList.map((liItem:any)=>{
-        list.push(liItem)
-      })
-    })
-    let scoreParams = list.reduce((per,curr)=>{
-      return parseFloat(per) + parseFloat(curr.score)
-    },0)
-    if(refForm.current && refForm.current.input && refForm.current.input.value){
-      refForm.current.input.value = scoreParams;
-      params.totalScore = scoreParams;
-    }
+    let list: any[] = [];
+    params.latPraticalGradeSubjectDtoList &&
+      params.latPraticalGradeSubjectDtoList.map((item: any) => {
+        item.latPraticalGradeOperationDtoList.map((liItem: any) => {
+          list.push(liItem);
+        });
+      });
+    let scoreParams = list.reduce((per, curr) => {
+      return parseInt(per) + parseInt(curr.score);
+    }, 0);
   };
- 
 
   return (
-    <Modal
-      title={modalTitle}
-      visible={modalVisible}
-      onCancel={handleCancel}
-      destroyOnClose={true}
-      width={1000}
-      bodyStyle={{height:'600px',overflow:'auto'}}
-      footer={[
-        <Footer key={15}>
-          {modalTitle != "预览" ? (
-            <div>
-             <Button type="primary" onClick={handleOk}>
-              确认
-             </Button>
-             <Button onClick={handleCancel}>取消</Button>
-            </div>
-          ): <Button type="primary" onClick={handleCancel}>关闭</Button>
-        }
-        </Footer>,
-      ]}
-    >
-      {params && (
-        <Wrapper>
-          <table className="modal-table">
-            <tbody>
-              <tr>
-                <td colSpan={2} className="td-center">
-                  {modalTitle == "预览" ? (
-                    params.paperName
-                  ) : (
-                    <Input
-                      defaultValue={params.paperName}
-                      className="td-center border-none"
-                      onChange={(e) => {
-                        handleInput(e, params, "paperName");
-                      }}
-                    />
-                  )}
-                </td>
-              </tr>
-              <tr className="td-bold">
-                <td colSpan={2} className="td-center">
-                 得分：
-                  {modalTitle == "预览" ? (
-                    params.totalScore
-                  ) : (
-                    <Input
-                      ref={refForm}
-                      className="td-center border-none"
-                      style={{ width: 60 }}
-                      value={params.totalScore}
-                    />
-                  )}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table className="modal-table">
+    <Wrapper>
+      <table className="modal-table">
+        <tbody>
+          <tr>
+            <td colSpan={2} className="td-center">
+              {modalTitle == "预览" ? (
+                params.paperName
+              ) : (
+                <Input
+                  defaultValue={params.paperName}
+                  className="td-center"
+                  onChange={(e) => {
+                    handleInput(e, params, "paperName");
+                  }}
+                />
+              )}
+            </td>
+          </tr>
+          <tr className="td-bold td-center">
+            <td colSpan={2}>
+              得分：
+              {modalTitle == "预览" ? (
+                params.totalScore
+              ) : (
+                <Input
+                  defaultValue={params.totalScore}
+                  className="td-center"
+                  style={{ width: 60 }}
+                  onChange={(e) => {
+                    handleInput(e, params, "totalScore");
+                  }}
+                />
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table className="modal-table">
             <colgroup>
               <col width={180} />
               <col />
@@ -241,8 +196,8 @@ export default observer(function PracticalImportModal(props: props) {
                             </td>
                             <td className="td-center">
                             {modalTitle == "预览" ? (
-                                    itemDto.score
-                                    ) : (
+                              itemDto.score
+                              ) : (
                                 <Input
                                   defaultValue={itemDeuct.deductionScore}
                                   className="td-center border-none"
@@ -255,8 +210,8 @@ export default observer(function PracticalImportModal(props: props) {
                                     );
                                   }}
                                 />
-                                )}
-                            </td>   
+                              )}
+                            </td>
                           </tr>
                           )
                         )
@@ -266,11 +221,10 @@ export default observer(function PracticalImportModal(props: props) {
                 )}
             </tbody>
           </table>
-        </Wrapper>
-      )}
-    </Modal>
+    </Wrapper>
   );
 });
+
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -303,12 +257,6 @@ const Wrapper = styled.div`
     .td-center {
       text-align: center;
     }
-    .border-none{
-      border: none;
-      &:focus {
-        background: ${(p) => p.theme.$mlc};
-      }
-    }
     .inp_textArea {
       width: 100%;
       height: 100%;
@@ -325,7 +273,4 @@ const Wrapper = styled.div`
       }
     }
   }
-`;
-const Footer = styled.div`
-  text-align: center;
 `;

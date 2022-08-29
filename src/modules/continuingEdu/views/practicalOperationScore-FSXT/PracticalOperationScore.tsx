@@ -44,20 +44,20 @@ export default observer(function Notification() {
       align: "center",
       width: 120
     },
+    // {
+    //   title: "章节",
+    //   dataIndex: "chapter",
+    //   align: "center",
+    //   width: 60
+    // },
+    // {
+    //   title: "技术名称",
+    //   dataIndex: "technology",
+    //   align: "center",
+    //   width: 120
+    // },
     {
-      title: "章节",
-      dataIndex: "chapter",
-      align: "center",
-      width: 60
-    },
-    {
-      title: "技术名称",
-      dataIndex: "technology",
-      align: "center",
-      width: 120
-    },
-    {
-      title: "分数",
+      title: "分值",
       dataIndex: "totalScore",
       align: "center",
       width: 100

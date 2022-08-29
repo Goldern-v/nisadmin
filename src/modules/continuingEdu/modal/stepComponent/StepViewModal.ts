@@ -110,9 +110,8 @@ class StepViewModal {
         const stepData2 = this.getCurrentStepViewModal
         ? this.getCurrentStepViewModal.stepData2
         : {};    
-        console.log(stepData2.prcaticalData.code);
             
-        if(!stepData2.prcaticalData.code && appStore.HOSPITAL_ID == 'whyx'){// 实操评分表
+        if(!stepData2.prcaticalData.code && ["whyx", "fsxt"].includes(appStore.HOSPITAL_ID)){// 实操评分表
           return false
         }else{
           return true

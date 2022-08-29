@@ -1,13 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useLayoutEffect } from "react";
-import {
-  Row,
-  Col,
-  Input,
-  Checkbox,
-  InputNumber,
-  Select,
-} from "antd";
+import { Row, Col, Input, Checkbox, InputNumber, Select } from "antd";
 import Form from "src/components/Form";
 import { scStepViewModal as stepViewModal } from "./SCStepViewModal";
 import createModal from "src/libs/createModal";
@@ -18,21 +11,19 @@ import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/co
 import { appStore } from "src/stores";
 import service from "src/services/api";
 
-
-
-export interface Props { }
+export interface Props {}
 
 export default observer(function Step4() {
   const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
-  const [pratical,setPratical] = useState([])
-  const [selectLoading,setSelectLoading] = useState(false)
+  const [pratical, setPratical] = useState([]);
+  const [selectLoading, setSelectLoading] = useState(false);
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    if (['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID)) {
+    if (["wh", "gxjb", "ytll"].includes(appStore.HOSPITAL_ID)) {
       if (data.scoreItems && data.scoreItems.length > 4) {
         setIsOk(true);
         Object.assign(stepViewModal.stepData2, data);
@@ -43,52 +34,56 @@ export default observer(function Step4() {
       }
     }
     Object.assign(stepViewModal.stepData2, data);
-  };  
-  const handleonvaluechange = () =>{
-    if(appStore.HOSPITAL_ID == "whyx"){
-      let list = pratical.find((item:any)=>{
-        return stepViewModal.stepData2.adminTable == item.code
-      }) 
-      if(refForm.current){
-        refForm.current.setField("prcaticalData",list)
-        refForm.current.setField("selectPrcaticalOperation",stepViewModal.stepData2.prcaticalData.value)
-        refForm.current.setField("totalScores",stepViewModal.stepData2.prcaticalData.totalScore)
+  };
+  const handleonvaluechange = () => {
+    if (["whyx","fsxt"].includes(appStore.HOSPITAL_ID)) {
+      let list = pratical.find((item: any) => {
+        return stepViewModal.stepData2.adminTable == item.code;
+      });
+      if (refForm.current) {
+        refForm.current.setField("prcaticalData", list);
+        refForm.current.setField(
+          "selectPrcaticalOperation",
+          stepViewModal.stepData2.prcaticalData.value
+        );
+        refForm.current.setField(
+          "totalScores",
+          stepViewModal.stepData2.prcaticalData.totalScore
+        );
       }
     }
-  }
+  };
 
   useLayoutEffect(() => {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
-    service.commonApiService.getPraticalGradeManage().then(res =>{
-      let praticalList:any= []
-      res.data.list.map((item:any) =>{
+    service.commonApiService.getPraticalGradeManage().then((res) => {
+      let praticalList: any = [];
+      res.data.list.map((item: any) => {
         let operObj = {
-          value:`${item.paperName}/${item.chapter}`,
+          value: appStore.HOSPITAL_ID == "whyx" ? `${item.paperName}/${item.chapter}` : `${item.paperName}`,
           code: item.id,
-          paperName:item.paperName,
-          chapter:item.chapter,
-          totalScore:item.totalScore,
-        }
-        praticalList.push(operObj)
-      })
-      if(praticalList.length){
+          paperName: item.paperName,
+          chapter: item.chapter,
+          totalScore: item.totalScore,
+        };
+        praticalList.push(operObj);
+      });
+      if (praticalList.length) {
         setPratical(praticalList);
       }
-    })
+    });
   }, []);
 
-//   选择实操评分管理表 下拉选框模糊查询
-  const fetchOptions = (inputValue:any,option:any) => {
-	return option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
+  //   选择实操评分管理表 下拉选框模糊查询
+  const fetchOptions = (inputValue: any, option: any) => {
+    return (
+      option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0
+    );
   };
 
   return (
     <Wrapper>
-      <Form
-        ref={refForm}
-        labelWidth={100}
-        onChange={onFormChange}
-      >
+      <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`总成绩`} name="totalScores">
@@ -104,7 +99,7 @@ export default observer(function Step4() {
           </Col>
         </Row>
         <Row style={{ marginTop: 20 }}>
-          {['wh', 'gxjb', 'ytll'].includes(appStore.HOSPITAL_ID) ? (
+          {["wh","gxjb","ytll"].includes(appStore.HOSPITAL_ID) ? (
             <Col span={24} style={{ height: "28px" }}>
               <span className="labelSpan">上传题库</span>
               <Checkbox
@@ -128,22 +123,27 @@ export default observer(function Step4() {
               </Form.Field>
             </Col>
           ) : (
-            <Col span={24}>
-              {appStore.HOSPITAL_ID !== "whyx" ?
+            <Col span={24} >
+              {["whyx","fsxt"].includes(appStore.HOSPITAL_ID)?
+              <Form.Field
+                label={`选择实操评分管理表`}
+                name="adminTable"
+                onValueChange={handleonvaluechange}
+              >
+                <Select showSearch filterOption={fetchOptions}>
+                  {pratical.length &&
+                    pratical.map((item: any, index: any) => (
+                      <Select.Option key={item.code} value={item.code}>
+                        {item.value}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+              :
               <Form.Field label={`上传题库`} name="scoreItems">
                 <UpdateTable type="sc" />
               </Form.Field>
-              :<Form.Field label={`选择实操评分管理表`} name="adminTable" onValueChange={handleonvaluechange}>
-                <Select
-                  showSearch
-				  filterOption={fetchOptions}
-                >
-                  {pratical.length && pratical.map((item:any,index:any) => (
-                    <Select.Option key={item.code} value={item.code} >{item.value}</Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-              }       
+              }     
             </Col>
           )}
         </Row>

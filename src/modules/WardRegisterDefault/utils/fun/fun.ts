@@ -819,8 +819,8 @@ export function getFun(context: any) {
         let newItem = JSON.parse(JSON.stringify(item))
         delete newItem.id
         newItem['班次'] = data.type ? data.type : newItem['班次']
-        // newItem[data.signName] = data.sign ? authStore.user?.empName : ""
-        newItem[data.signName] = data.sign ? item[data.signName] : ""        
+        newItem[data.signName] = data.sign ? authStore.user?.empName : ""
+        // newItem[data.signName] = data.sign ? item[data.signName] : ""        
         return {
           ...newItem,
           ...customSignObj,

@@ -50,6 +50,7 @@ const baseConfig: navConfigItem[] = [
   // },
   {
     name: "质量管理",
+    // hidden:authStore.isOnlyInternsManage,
     children: [
       {
         name: "三级质量",
@@ -83,7 +84,6 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "优良事件",
-        // hidden:!authStore.isNotANormalNurse,
         path: "/goodOrBadRouter",
         icon: require("../images/menu-icon/病区登记本@2x.png")
       }

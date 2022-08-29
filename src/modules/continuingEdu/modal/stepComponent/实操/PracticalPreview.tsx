@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { Button, Modal, Input } from "antd";
 // import { scStepViewModal as stepViewModal } from "./SCStepViewModal";
+import PracticalTablewhyx from './components/PracticalTableWHYX'
+import PracticalTablefsxt from './components/PracticalTableFSXT'
+import { appStore } from "src/stores";
+
 
 const { TextArea } = Input;
 
@@ -25,20 +29,6 @@ export default observer(function PracticalImportModal(props: props) {
     onCancel && onCancel();
     params.value=null;
   };
-  const handleInput = (e: any, currentObj: any, data: any) => {
-    currentObj[data] = e.target.value;
-    let list:any[] = [];
-    params.latPraticalGradeSubjectDtoList && 
-    params.latPraticalGradeSubjectDtoList.map((item:any)=>{
-      item.latPraticalGradeOperationDtoList.map((liItem:any)=>{
-        list.push(liItem)
-      })
-    })
-    let scoreParams = list.reduce((per,curr)=>{
-      return parseInt(per) + parseInt(curr.score)
-    },0)
-  };
-
   return (
     <Modal
       title={modalTitle}
@@ -63,190 +53,11 @@ export default observer(function PracticalImportModal(props: props) {
       ]}
     >
       {params && (
-        <Wrapper>
-          <table className="modal-table">
-            <tbody>
-              <tr>
-                <td colSpan={2} className="td-center">
-                  {modalTitle == "预览" ? (
-                    params.paperName
-                  ) : (
-                    <Input
-                      defaultValue={params.paperName}
-                      className="td-center"
-                      onChange={(e) => {
-                        handleInput(e, params, "paperName");
-                      }}
-                    />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={2} className="td-bold td-center">
-                  {modalTitle == "预览" ? (
-                    params.chapter
-                  ) : (
-                    <Input
-                      defaultValue={params.chapter}
-                      className="td-center"
-                      onChange={(e) => {
-                        handleInput(e, params, "chapter");
-                      }}
-                    />
-                  )}
-                </td>
-              </tr>
-              <tr className="td-bold">
-                <td>
-                  {modalTitle == "预览" ? (
-                    params.technology
-                  ) : (
-                    <Input
-                      defaultValue={params.technology}
-                      className="td-center"
-                      onChange={(e) => {
-                        handleInput(e, params, "technology");
-                      }}
-                    />
-                  )}
-                </td>
-                <td>
-                  操作规范（共
-                  {modalTitle == "预览" ? (
-                    params.totalScore
-                  ) : (
-                    <Input
-                      defaultValue={params.totalScore}
-                      className="td-center"
-                      style={{ width: 60 }}
-                      onChange={(e) => {
-                        handleInput(e, params, "totalScore");
-                      }}
-                    />
-                  )}
-                  分）
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table className="modal-table">
-            <colgroup>
-              <col width={180} />
-              <col />
-              <col width={100} />
-              <col width={180} />
-            </colgroup>
-            <thead>
-              <tr className="td-center">
-                <td>项目</td>
-                <td>操作内容</td>
-                <td>评分标准</td>
-                <td>重要与说明</td>
-              </tr>
-            </thead>
-            <tbody>
-              {params.latPraticalGradeSubjectDtoList &&
-                params.latPraticalGradeSubjectDtoList.map(
-                  (item: any, index: any) =>
-                    item.latPraticalGradeOperationDtoList.map(
-                      (itemDto: any, indexDot: any) => (
-                        <tr key={indexDot + 'fds'}>
-                          {indexDot == 0 && (
-                            <td
-                              className="td-center"
-                              rowSpan={
-                                item.latPraticalGradeOperationDtoList &&
-                                item.latPraticalGradeOperationDtoList.length
-                              }
-                            >
-                              {modalTitle == "预览" ? (
-                                item.name
-                              ) : (
-                                <Input
-                                  defaultValue={item.name}
-                                  className="td-center"
-                                  onChange={(e) => {
-                                    handleInput(
-                                      e,
-                                      params.latPraticalGradeSubjectDtoList[
-                                        index
-                                      ],
-                                      "name"
-                                    );
-                                  }}
-                                />
-                              )}
-                            </td>
-                          )}
-                          <td className="td-center">
-                            {modalTitle == "预览" ? (
-                              itemDto.content
-                            ) : (
-                              <TextArea
-                                defaultValue={itemDto.content}
-                                className="td-center inp_textArea"
-                                onChange={(e) => {
-                                  handleInput(
-                                    e,
-                                    params.latPraticalGradeSubjectDtoList[index]
-                                      .latPraticalGradeOperationDtoList[
-                                      indexDot
-                                    ],
-                                    "content"
-                                  );
-                                }}
-                                autosize={{ minRows: 3 }}
-                              />
-                            )}
-                          </td>
-                          <td className="td-center">
-                            {modalTitle == "预览" ? (
-                              itemDto.score
-                            ) : (
-                              <Input
-                                defaultValue={itemDto.score}
-                                className="td-center"
-                                onChange={(e) => {
-                                  handleInput(
-                                    e,
-                                    params.latPraticalGradeSubjectDtoList[index]
-                                      .latPraticalGradeOperationDtoList[
-                                      indexDot
-                                    ],
-                                    "score"
-                                  );
-                                }}
-                              />
-                            )}
-                          </td>
-                          <td className="td-center">
-                            {modalTitle == "预览" ? (
-                              itemDto.description
-                            ) : (
-                              <TextArea
-                                defaultValue={itemDto.description}
-                                className="td-center inp_textArea"
-                                onChange={(e) => {
-                                  handleInput(
-                                    e,
-                                    params.latPraticalGradeSubjectDtoList[index]
-                                      .latPraticalGradeOperationDtoList[
-                                      indexDot
-                                    ],
-                                    "description"
-                                  );
-                                }}
-                                autosize={{ minRows: 3 }}
-                              />
-                            )}
-                          </td>
-                        </tr>
-                      )
-                    )
-                )}
-            </tbody>
-          </table>
-        </Wrapper>
+        appStore.HOSPITAL_ID == 'whyx'?(
+          <PracticalTablewhyx params={params} modalTitle={modalTitle}></PracticalTablewhyx>
+        ):(
+          <PracticalTablefsxt params={params} modalTitle={modalTitle}></PracticalTablefsxt>
+        )
       )}
     </Modal>
   );

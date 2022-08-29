@@ -73,6 +73,11 @@ const baseConfig: navConfigItem[] = [
         name: "护理查房",
         path: "/checkWard",
         icon: require("../images/menu-icon/护理查房@2x.png")
+      },
+      {
+        name: "优良事件",
+        path: "/goodOrBadRouter",
+        icon: require("../images/menu-icon/病区登记本@2x.png")
       }
     ]
   },

@@ -264,7 +264,10 @@ export default class ArrangeService extends BaseApiService {
         .weekday(6)
         .format("YYYY-MM-DD")
     };
-    return this.post(`/scheduling/findSysnNurse`, postData);
+    if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
+      return this.post(`/scheduling/findSyncNurse`, postData);
+    }
+    return this.post(`/scheduling/findSysnNurse`, postData)
   }
 
   //加减班查询

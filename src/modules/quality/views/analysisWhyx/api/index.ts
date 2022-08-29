@@ -24,6 +24,8 @@ export interface getPageIn extends Record<string, any> {
   reportYear?: string
   // 报告年份
   reportMonth?: string
+  // 汇总表单编码（多个以逗号分隔）
+  summaryFormCode?: string
   // 报告月份
   [p: string]: any
 }
