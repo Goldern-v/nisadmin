@@ -79,11 +79,11 @@ export default observer(function BadEventSummaryGxjb(props) {
     <Wrapper>
       <PageHeader>
         <PageTitle className='page-title'>
-          {`${params.year}年`}
-          <div>不良事件上报汇总表</div>
+          {`${params.year}年`}第一季度广西壮族自治区江滨医院
+          <div>跌倒/坠床不良事件上报汇总表</div>
         </PageTitle>
         <Place/>
-        类型：
+        汇总类型：
         <Select value={params.type}>
           {
             SUMMARY_TYPES.map((v:any, i: number) => (
@@ -92,6 +92,14 @@ export default observer(function BadEventSummaryGxjb(props) {
           }
         </Select>
         季度：
+        <Select value={params.quarter}>
+          {
+            quarterList.map((v, i)=> (
+              <Option key={i} value={i + 1}>{v}</Option>
+            ))
+          }
+        </Select>
+        事件类型：
         <Select value={params.quarter}>
           {
             quarterList.map((v, i)=> (
