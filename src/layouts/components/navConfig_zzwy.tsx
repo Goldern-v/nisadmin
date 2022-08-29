@@ -28,7 +28,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "档案管理",
       path: "/nurseFile",
-      // hidden: !authStore.isRoleManage
+      hidden: !authStore.isNotANormalNurse
+    },
+    {
+      name: "我的档案",
+      path: "/selfNurseFile",
     },
     // 不良事件功能暂时屏蔽
     // {

@@ -1,5 +1,4 @@
 import qs from 'qs'
-import service from 'src/services/api'
 import styled from 'styled-components'
 import moment from 'moment'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -21,15 +20,12 @@ const Option = Select.Option;
 
 // 质控等级
 const level = 3.1;
-
+const dateFormat = 'YYYY-MM-DD'
 export default observer(function Analysis() {
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [createClear, setCreateClear] = useState(true);
   const { history } = appStore;
-  // 科室列表、2级质控是片区列表
-  const [wardList, setWardList] = useState([]);
-  // 默认科室
-  const [defDept, setDefDept] = useState('');
+
   const [createLoading, setCreateLoading] = useState("");
   const statusList = useMemo(() => {
     const arr = [
@@ -38,27 +34,20 @@ export default observer(function Analysis() {
       {label: '发布', value: '1'},
     ]
     return authStore.level3Check
-      ? arr : arr.filter(v => v.value == '0')
+      ? arr : arr.filter(v => v.value == '1')
   }, [authStore.level3Check])
   const defQuery = useCallback(() => {
     const [m1,m2] = currentMonth()
     return {
       pageIndex: 1,
       pageSize: 20,
-      startDate: m1.format('YYYY-MM-DD'),
-      endDate: m2.format('YYYY-MM-DD'),
+      startDate: m1.format(dateFormat),
+      endDate: m2.format(dateFormat),
       reportName: '',
       status: statusList[0].value,
     }
   }, [])
   const [query, setQuery] = useState<Record<string,any>>(defQuery());
-  
-  useEffect(() => {
-    service.commonApiService.getNursingUnitSelf().then((res) => {
-      if (res.data.deptList instanceof Array) setWardList(res.data.deptList);
-      setDefDept(res.data.defaultDept)
-    });
-  }, []);
 
   useEffect(() => {
     getTableData();
@@ -139,7 +128,7 @@ export default observer(function Analysis() {
           case 0:
             return <span style={{ color: "red" }}>保存</span>;
           case 1:
-            return "发布";
+            return <span style={{ color: "rgb(74,164,234)" }}>发布</span>;
           default:
             return "-";
         }
@@ -252,78 +241,13 @@ export default observer(function Analysis() {
         setTableLoading(false);
       });
   };
-  /**推送 */
-  const handleAlert = () => {
-    let month = '6';
-    let year = 2022;
-    if (month.length == 1) month = "0" + month;
-    let dateStr = `${year}-${month}-01`;
-    let beginDate = moment(dateStr);
-    let endDate = moment(dateStr)
-      .add(1, "M")
-      .subtract(1, "d");
-    let wardCode = "";
-
-    const content = (
-      <ModalCon>
-        <div>
-          <span>开始时间: </span>
-          <DatePicker
-            allowClear={false}
-            value={beginDate}
-            onChange={(_moment) => (beginDate = _moment)}
-          />
-        </div>
-        <div>
-          <span>结束时间: </span>
-          <DatePicker
-            value={endDate}
-            allowClear={false}
-            onChange={(_moment) => (endDate = _moment)}
-          />
-        </div>
-        <div>
-          <span>科 室: </span>
-          <Select
-            style={{ width: "171px" }}
-            onChange={(code: any) => (wardCode = code)}
-
-          >
-            {wardList.map((item: any, idx: number) => (
-              <Option value={item.code} key={idx}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </ModalCon>
-    );
-
-    Modal.confirm({
-      title: "推送科室未审核记录",
-      content: content,
-      onOk: () => {
-        if (wardCode == "") {
-          message.warning("未选择科室");
-          return;
-        }
-        setTableLoading(true);
-        api
-          .push({
-            beginDate: beginDate.format("YYYY-MM-DD"),
-            endDate: endDate.format("YYYY-MM-DD"),
-            wardCode,
-          })
-          .then(
-            (res) => {
-              setTableLoading(false);
-              message.success("推送成功");
-            },
-            () => setTableLoading(false)
-          );
-      },
-    });
-  };
+  const handleChangeDate = (e: any[]) => {
+    console.log('test-e', e)
+    let [startDate = '', endDate = ''] = e
+    startDate && (startDate = startDate.format(dateFormat))
+    endDate && (endDate = endDate.format(dateFormat))
+    setQuery({ ...query, endDate, startDate }) 
+  }
 
   return (
     <Wrapper>
@@ -332,7 +256,9 @@ export default observer(function Analysis() {
         <Place />
         
         <div className="label">日期：</div>
-        <DatePicker.RangePicker value={[moment(query.startDate), moment(query.endDate)]} />
+        <DatePicker.RangePicker value={query.endDate ? [moment(query.startDate), moment(query.endDate)] : []} onChange={(e: any[]) => {
+          handleChangeDate(e)
+        }} />
         <div className="label">状态：</div>
         <Select
           style={{ width: 100 }}
@@ -343,20 +269,14 @@ export default observer(function Analysis() {
         >
           {statusList.map( v=> <Option value={v.value} key={v.label}>{v.label}</Option>)}
         </Select>
-        <Input placeholder='请输入关键字' value={query.reportName}/>
+        <Input placeholder='请输入关键字' value={query.reportName} onChange={(e: any) =>
+          setQuery({ ...query, reportName: e.target.value})
+        } />
         
         <Button onClick={handleSearch}>查询</Button>
         {authStore.level3Check && <Button onClick={handleCreate} type="primary">
           创建
         </Button>}
-        <Button
-          disabled={wardList.length <= 0}
-          onClick={handleAlert}
-          title="推送科室未审核记录"
-          type="primary"
-        >
-          <Icon type="bell" style={{ fontSize: "16px" }} />
-        </Button>
       </PageHeader>
       <div className="main-contain">
         <BaseTable
@@ -373,7 +293,8 @@ export default observer(function Analysis() {
           pagination={{
             pageSizeOptions: ["10", "20", "30", "40", "50"],
             onShowSizeChange: (pageIndex, pageSize) =>
-              setQuery({ ...query, pageSize }),
+            
+              setQuery({ ...query, pageSize, pageIndex: 1 }),
             onChange: (pageIndex, pageSize) =>
               setQuery({ ...query, pageIndex }),
             total: dataTotal,

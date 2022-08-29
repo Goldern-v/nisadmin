@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,ChangeEvent } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Modal, Form, Input, Button, Radio, DatePicker, Select, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
@@ -70,7 +70,10 @@ function AddNursingModal(props: Props) {
       })
     })
   }
-
+/* 失去焦点获取数据重新赋值 */
+const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
+    console.log("eeee",e.target.value)
+}
   useEffect(() => {
     if (visible) {
       resetFields()
@@ -117,7 +120,7 @@ function AddNursingModal(props: Props) {
           })(
             ['sdlj'].includes(appStore.HOSPITAL_ID)
             ? <TreeSelectCom
-            list={authStore.treeDeptList} 
+            list={authStore.treeDeptList}
             placeholder='选择所属科室'
             treeCheckable={false}
           />
@@ -143,7 +146,7 @@ function AddNursingModal(props: Props) {
         <Form.Item {...formItemLayout} label='工号'>
           {getFieldDecorator('empNo', {
             rules: [{ required: true, message: '工号不能为空' }]
-          })(<Input />)}
+          })(<Input onBlur={(e)=>blurSetForm(e)}/>)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='学历'>
