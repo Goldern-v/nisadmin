@@ -152,6 +152,11 @@ export default class NurseFilesService extends BaseApiService {
   public nurseNativePlaceFindByName(nativePlaceName: any) {
     return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
   }
+
+  /* nfzxy 护理管理添加人员时获取信息 */
+  public getSyncDateInfo(empId:string){
+    return this.post(`/manageSyncDate/getUserInfos?emplId=${empId}`,)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()
