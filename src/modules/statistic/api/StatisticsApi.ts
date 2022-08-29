@@ -142,7 +142,8 @@ class StatisticsApi extends BaseApiService {
     if (classShow === '白班') {
       classShow = ['whyx'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
     } else if (classShow === '夜班') {
-      classShow = 'P班'
+      /*不太清楚逻辑，whyx夜班改为N班，其他不动*/
+      classShow = appStore.HOSPITAL_ID ==='whyx' ? 'N班':'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     } else {
