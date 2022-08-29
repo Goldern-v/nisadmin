@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-import React, { useState, useEffect,ChangeEvent } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Modal, Form, Input, Button, Radio, DatePicker, Select, message } from 'antd'
+import React, {  useEffect,ChangeEvent } from 'react'
+import { Modal, Form, Input,  Radio, DatePicker, Select, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -9,6 +7,7 @@ import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 import TreeSelectCom from 'src/components/TreeSelectCom'
+import  moment from  'moment'
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
@@ -55,7 +54,7 @@ function AddNursingModal(props: Props) {
   //   })
   // }
 
-  const onSave = (e: any) => {
+  const onSave = () => {
     validateFields((err, value) => {
       if (err) {
         return
@@ -63,7 +62,7 @@ function AddNursingModal(props: Props) {
       if (value.birthday) value.birthday = value.birthday.format('YYYY-MM-DD')
       if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
 
-      nurseFilesService.addNewNurse(value).then((res) => {
+      nurseFilesService.addNewNurse(value).then(() => {
         message.success('操作成功')
         nurseFilesListViewModel.loadNursingList()
         handleOk()
@@ -72,7 +71,22 @@ function AddNursingModal(props: Props) {
   }
 /* 失去焦点获取数据重新赋值 */
 const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
-    console.log("eeee",e.target.value)
+  if(appStore.HOSPITAL_ID === 'nfzxy'){
+    nurseFilesService.getSyncDateInfo(e.target.value).then(res=>{
+      setFieldsValue({
+        birthday:moment(res?.data?.birthday),
+        empName:res?.data?.emplName,
+        sex:res?.data?.sexCode ==='F' ? '男':'女',
+        cardNumber:res?.data?.idenno,
+        deptCode:res?.data?.deptCode,
+        isNurse:res?.data?.emplType ==='N'? false : true,
+        empNo:res?.data?.emplCode,
+        // posiCode:res?.data?.job,
+        // nurseHierarchy:res?.data?.levlCode,
+        // highestEducation:res?.data?.educationCode,
+      })
+    })
+  }
 }
   useEffect(() => {
     if (visible) {
