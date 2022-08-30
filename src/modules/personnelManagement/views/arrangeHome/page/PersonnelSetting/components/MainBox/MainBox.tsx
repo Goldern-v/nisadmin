@@ -94,10 +94,11 @@ export default function MainBox() {
             service.personnelSettingApiService.getByDeptCode(deptCode).then((res) => {
                 setLoadingTable(false)
                 //需要根据sortValue进行排序
-                let sortData: [] = res.data.sort((a: any, b: any) => {
-                    return a.sortValue - b.sortValue
-                })
-                setTableData([...sortData])
+                // let sortData: [] = res.data.sort((a: any, b: any) => {
+                //     return a.sortValue - b.sortValue
+                // })
+                setTableData(res.data)
+                if(res.data.length > 0)selectRow(res.data[0])
             })
         }
     }
@@ -264,34 +265,34 @@ export default function MainBox() {
         setTargetKeys([])
     })
     //拖拽后更新数据
-    emitter.removeAllListeners('saveDragData')
-    emitter.addListener('saveDragData', (callback) => {
-        if (callback) {
-            callback(tableData)
-        }
-    })
-    const moveRow = (dragIndex: number, hoverIndex: number) => {
-        const dragRow = tableData[dragIndex];
-        if (!dragRow) return;
-        setTableData(
-            update(tableData, {$splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]})
-        );
-        //更新后跑保存接口
-        emitter.emit('saveDragData', (tableData: any) => {
-            service.personnelSettingApiService.schSettingNurseGroup(tableData.map((item: any, index: number) => {
-                item.sortValue = index
-                return item
-            })).then(() => {
-                getMealList()
-            })
-        })
-    };
+    // emitter.removeAllListeners('saveDragData')
+    // emitter.addListener('saveDragData', (callback) => {
+    //     if (callback) {
+    //         callback(tableData)
+    //     }
+    // })
+    // const moveRow = (dragIndex: number, hoverIndex: number) => {
+    //     const dragRow = tableData[dragIndex];
+    //     if (!dragRow) return;
+    //     setTableData(
+    //         update(tableData, {$splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]})
+    //     );
+    //     //更新后跑保存接口
+    //     emitter.emit('saveDragData', (tableData: any) => {
+    //         service.personnelSettingApiService.schSettingNurseGroup(tableData.map((item: any, index: number) => {
+    //             item.sortValue = index
+    //             return item
+    //         })).then(() => {
+    //             getMealList()
+    //         })
+    //     })
+    // };
     /* 同步更新右侧科室人员数据*/
-    useEffect(()=>{
-        if(tableData.length > 0){
-            selectRow(tableData[0])
-        }
-    },[tableData])
+    // useEffect(()=>{
+    //     if(tableData.length > 0){
+    //         selectRow(tableData[0])
+    //     }
+    // },[])
     return (
         <Wrapper>
             <BaseTableBox>
@@ -300,19 +301,16 @@ export default function MainBox() {
                     surplusHeight={190}
                     dataSource={tableData}
                     loading={loadingTable}
-                    type={["diagRow", "spaceRow"]}
                     rowClassName={(record) => {
                         return record.id === id ? 'background' : 'cursorPointer'
                     }}
-                    moveRow={moveRow}
-                    footer={() => (<span><Icon type="info-circle" style={{color: "#fa8c16", marginRight: "5px"}}/>可以通过拖拽排序,修改数据后需保存</span>)}
-                    // onRow={(record) => {
-                    //     return {
-                    //         onClick: (event: any) => {
-                    //             selectRow(record)
-                    //         }
-                    //     }
-                    // }}
+                    onRow={(record) => {
+                        return {
+                            onClick: (event: any) => {
+                                selectRow(record)
+                            }
+                        }
+                    }}
                 />
             </BaseTableBox>
             <TransferBox>

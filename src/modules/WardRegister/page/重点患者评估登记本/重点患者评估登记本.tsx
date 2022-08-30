@@ -46,7 +46,7 @@ const throttler = throttle();
 const throttler2 = throttle();
 
 export default observer(function 重点患者评估登记本(props: Props) {
-  
+
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
@@ -737,7 +737,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             // QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
-         
+
           if (item.itemType == 'date' || item.itemType == 'date_time' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
             let format = 'YYYY-MM-DD'
             if (item.itemType == 'date_time') format = 'YYYY-MM-DD HH:mm'
@@ -790,7 +790,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
               return false
             })()
- 
+
             children = <InputColumnRender
               {...{
                 cellDisabled,
@@ -818,7 +818,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           }
 
           //特殊处理
-          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '导管相关感染') {
+          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '导管相关感染'&&appStore.HOSPITAL_ID !=='wh') {
             if (item.itemCode == '培养结果' || item.itemCode == '检验结果粘贴处') {
               children = <DisableSpan />
             }
@@ -854,7 +854,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         }
       };
     }),
-    
+
     //不同登记本固定的项目
     ...codeAdapter(
       {
