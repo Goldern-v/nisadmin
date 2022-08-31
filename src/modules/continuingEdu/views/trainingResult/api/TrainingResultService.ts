@@ -111,6 +111,13 @@ export default class TrainingResultService extends BaseApiService {
       qs.stringify(params)
     );
   }
+  /**实操-获取佛山杏坛指定考生的评分信息 */
+  // public reviewPaperScoreItemsByCetpId(params: any) {
+  //   return this.post(
+  //     `/studyAndTrain/practiseManage/reviewPaperScoreItemsByCetpId`,
+  //     qs.stringify(params)
+  //   );
+  // }
 
   /**实操-上传成绩 */
   public uploadScores(params: any) {

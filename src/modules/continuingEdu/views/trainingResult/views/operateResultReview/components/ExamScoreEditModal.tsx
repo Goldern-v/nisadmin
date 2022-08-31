@@ -66,7 +66,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
 
   const getOperateScoreList = () => {
     setLoading(true)
-    if(['whyx'].includes(appStore.HOSPITAL_ID)){
+    if(['whyx','fsxt'].includes(appStore.HOSPITAL_ID)){
       trainingResultService.reviewPaperScoreItemsByCetpId({
         cetpId,
         empNo
@@ -80,7 +80,8 @@ export default observer(function ExamScoreEditModal(props: Props) {
           // setItemList(res.data.sort((a: any, b: any) => a.sort - b.sort))
         }
       })
-    }else{
+    } 
+    else{
       trainingResultService.reviewScoreItemsByCetpId({
         cetpId,
         empNo
@@ -95,7 +96,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
     if (visible) getOperateScoreList()
   }, [visible])
 
-  return (!['whyx'].includes(appStore.HOSPITAL_ID) ? <Modal
+  return (!['whyx','fsxt'].includes(appStore.HOSPITAL_ID) ? <Modal
     width={500}
     confirmLoading={loading}
     visible={visible}
@@ -146,8 +147,9 @@ export default observer(function ExamScoreEditModal(props: Props) {
     onCancel={onCancel}
     centered
     title={`${empName}的成绩`}>
+      {
+        ['whyx'].includes(appStore.HOSPITAL_ID) ?
       <Wrapper>
-
       <div className='total-points'><span>总得分：</span>{parcalList && parcalList.studentTotalScore} <span>成绩：</span><span style={{color:isValidResult == 1?'#04a580':'#a50804'}}>{isValidResult == 1 ? '有效':'无效'}</span></div>
       <table className="modal-table">
             <tbody>
@@ -230,6 +232,133 @@ export default observer(function ExamScoreEditModal(props: Props) {
             </tbody>
           </table>
       </Wrapper>
+      :
+      <Wrapper>
+      <div className='total-points'><span>总得分：</span>{parcalList && parcalList.studentTotalScore} <span>成绩：</span><span style={{color:isValidResult == 1?'#04a580':'#a50804'}}>{isValidResult == 1 ? '有效':'无效'}</span></div>
+      <table className="modal-table">
+            <tbody>
+              <tr>
+                <td colSpan={3} className="td-center" style={{fontSize:14}}>
+                  {parcalList.paperName}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2} className="td-bold td-center">
+                  {parcalList.chapter}
+                </td>
+              </tr>
+              <tr className="td-bold td-center">
+                <td colSpan={2}>
+                  得分：{parcalList.technology}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table className="modal-table">
+            <colgroup>
+              <col width={120} />
+              <col width={60} />
+              <col width={100} />
+              <col />
+              <col width={60} />
+              <col width={200} />
+              <col width={60} />
+            </colgroup>
+            <thead>
+              <tr className="td-center">
+                <td>考核阶段</td>
+                <td>当前得分</td>
+                <td>扣分原因</td>
+                <td>项目</td>
+                <td>项目得分</td>
+                <td>扣分细则</td>
+                <td>应扣分</td>
+              </tr>
+            </thead>
+            <tbody>
+              {parcalList.latPraticalGradeSubjectResultDtoList &&
+                parcalList.latPraticalGradeSubjectResultDtoList.map(
+                  (item: any, index: any) =>{
+                    const length = item.latPraticalGradeOperationResultDtoList.reduce((pre: number, cur: any) => {
+                      return pre + cur.latPraticalGradeDeductPointsResultDtoList.length
+                    }, 0)
+                    console.log(length);
+                    return item.latPraticalGradeOperationResultDtoList.map(
+                      (itemDto: any, indexDot: any) => (
+                        itemDto.latPraticalGradeDeductPointsResultDtoList.map(
+                          (itemtd:any , indextd:any)=>{
+                            return <tr key={indextd + 'fds'}>
+                              {indexDot == 0 && indextd == 0 && (
+                                <td
+                                  className="td-center"
+                                  rowSpan={length}
+                                >
+                                  {item.name}
+                                </td>
+                              )}
+                              {indextd == 0 && (
+                                <td
+                                  className="td-center"
+                                  rowSpan={
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList &&
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList.length
+                                  }
+                                >
+                                  {itemDto.studentScore}
+                                </td>
+                              )}
+                              {indextd == 0 && (
+                                <td
+                                  className="td-center"
+                                  rowSpan={
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList &&
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList.length
+                                  }
+                                >
+                                  {itemDto.remark}
+                                </td>
+                              )}
+                              {indextd == 0 && (
+                                <td
+                                  className="td-center"
+                                  rowSpan={
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList &&
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList.length
+                                  }
+                                >
+                                  {itemDto.content}
+                                </td>
+                              )}
+                              {indextd == 0 && (
+                                <td
+                                  className="td-center"
+                                  rowSpan={
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList &&
+                                    itemDto.latPraticalGradeDeductPointsResultDtoList.length
+                                  }
+                                >
+                                  {itemDto.score}
+                                </td>
+                              )}
+                              <td className="td-center">
+                                {itemtd.deductionRules}
+                              </td>
+                              <td className="td-center">
+                                {itemtd.deductionScore}
+                              </td>
+                              
+                            </tr>
+                          }
+                        )
+                      )
+                    )
+                  }
+                  
+                )}
+            </tbody>
+          </table>
+      </Wrapper>
+      }
   </Modal>)
 })
 
@@ -288,6 +417,7 @@ const Wrapper = styled.div`
         td {
           border: 1px solid #000;
           line-height: 30px;
+          min-height:30px;
           font-size: 14px;
           padding: 0 5px;
         }
@@ -297,6 +427,7 @@ const Wrapper = styled.div`
       font-weight: bold;
     }
     .td-center {
+      line-height: 25px;
       text-align: center;
     }
     .td-color{
