@@ -76,10 +76,10 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
       setFieldsValue({
         birthday:moment(res?.data?.birthday),
         empName:res?.data?.emplName,
-        sex:res?.data?.sexCode ==='F' ? '男':'女',
+        sex:res?.data?.sexCode ==='F' ? '女':'男',
         cardNumber:res?.data?.idenno,
         deptCode:res?.data?.deptCode,
-        isNurse:res?.data?.emplType ==='N'? false : true,
+        isNurse:res?.data?.emplType ==='N'? true : false,
         empNo:res?.data?.emplCode,
         // posiCode:res?.data?.job,
         // nurseHierarchy:res?.data?.levlCode,
