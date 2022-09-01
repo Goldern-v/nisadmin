@@ -58,6 +58,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "wh":
       case 'lyyz':
       case 'qhwy':
+      case 'zhzxy':
         return NurseFilesListView_wh;
       case "hj":
         return NurseFilesListView_hj;
