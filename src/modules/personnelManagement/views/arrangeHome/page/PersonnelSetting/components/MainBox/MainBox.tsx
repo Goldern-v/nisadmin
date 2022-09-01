@@ -3,17 +3,17 @@ import React, {useState, useEffect, useLayoutEffect} from 'react'
 import {RouteComponentProps} from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
-import {Transfer, Modal, Input, message, Spin, Select, Tooltip} from 'antd'
+import {Transfer, Modal, Input, message, Spin, Select, Tooltip,InputNumber} from 'antd'
 import service from 'src/services/api'
 import {appStore, scheduleStore} from 'src/stores'
-import {PageHeader} from "src/components/common";
-import {find} from "tslint/lib/utils";
-import {Icon} from "src/vendors/antd";
-import update from "immutability-helper";
-
 export interface Props extends RouteComponentProps {
 }
 
+interface sortParams {
+    visible : boolean
+    sortNumber :any
+    currentId: any
+}
 export default function MainBox() {
     const [loadingTable, setLoadingTable] = useState(false)
     const [tableData, setTableData] = useState([] as any[])
@@ -28,7 +28,7 @@ export default function MainBox() {
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [effect, setEffect] = useState(true)
     const [loadingTransfer, setLoadingTransfer] = useState(false)
-
+    const [sortObj,setSortVisible]=useState<sortParams>({visible:false,sortNumber:0,currentId:''})
     // 表格
     const columns: any = [
         {
@@ -80,6 +80,9 @@ export default function MainBox() {
                            style={{marginLeft: '15px', fontSize: '13px', margin: 'auto'}}>
                             删除
                         </a>
+                        {appStore.HOSPITAL_ID ==='nfzxy'&&
+                            <a onClick={() => changeSort(record)} style={{marginLeft: '15px', fontSize: '13px', margin: 'auto'}}>排序</a>}
+
                     </Wrapper>
                 )
             }
@@ -94,10 +97,10 @@ export default function MainBox() {
             service.personnelSettingApiService.getByDeptCode(deptCode).then((res) => {
                 setLoadingTable(false)
                 //需要根据sortValue进行排序
-                // let sortData: [] = res.data.sort((a: any, b: any) => {
-                //     return a.sortValue - b.sortValue
-                // })
-                setTableData(res.data)
+                let sortData: [] = res.data.sort((a: any, b: any) => {
+                    return b.sortValue-a.sortValue
+                })
+                setTableData(sortData)
                 if(res.data.length > 0)selectRow(res.data[0])
             })
         }
@@ -265,12 +268,12 @@ export default function MainBox() {
         setTargetKeys([])
     })
     //拖拽后更新数据
-    // emitter.removeAllListeners('saveDragData')
-    // emitter.addListener('saveDragData', (callback) => {
-    //     if (callback) {
-    //         callback(tableData)
-    //     }
-    // })
+    emitter.removeAllListeners('saveDragData')
+    emitter.addListener('saveDragData', (callback) => {
+        if (callback) {
+            callback(tableData)
+        }
+    })
     // const moveRow = (dragIndex: number, hoverIndex: number) => {
     //     const dragRow = tableData[dragIndex];
     //     if (!dragRow) return;
@@ -293,6 +296,34 @@ export default function MainBox() {
     //         selectRow(tableData[0])
     //     }
     // },[])
+    const changeSort = (item:any)=>{
+        sortObj.visible =true
+        sortObj.currentId =item.id
+        setSortVisible({...sortObj})
+    }
+    /*排序弹窗确定*/
+    const handleSort =()=>{
+        let currentItem = tableData.find((item:any)=>item.id === sortObj.currentId)
+        if(currentItem.sortValue === sortObj.sortNumber){
+            return message.info('保存失败,序号信息不应与自己一致')
+        }
+        currentItem.sortValue=sortObj.sortNumber
+        setTableData([...tableData])
+            emitter.emit('saveDragData', (tableData: any) => {
+                // let list =tableData.sort((a:any,b:any)=>b.sortValue-a.sortValue)
+                service.personnelSettingApiService.schSettingNurseGroup(tableData).then(() => {
+                    handleSortCancel()
+                    getMealList()
+                })
+            })
+    }
+    /*排序弹窗取消*/
+    const handleSortCancel =()=>{
+        sortObj.visible =false
+        sortObj.sortNumber=0
+        sortObj.currentId=''
+        setSortVisible({...sortObj})
+    }
     return (
         <Wrapper>
             <BaseTableBox>
@@ -389,6 +420,27 @@ export default function MainBox() {
                         })
                     }
                 </Modal>
+            {/*   nfzxy 排序弹窗 */}
+                <Modal
+                    className='modal'
+                    centered={true}
+                    title='排序'
+                    width='600px'
+                    okText='确定'
+                    cancelText='取消'
+                    visible={sortObj.visible}
+                    onCancel={handleSortCancel}
+                    onOk={handleSort}>
+                    <div className='category'>
+                        <SpanOne>设置序号：</SpanOne>
+                        <InputNumber min={0} max={9999}
+                                     style={{width:'72%'}} value={sortObj.sortNumber} onChange={(e:any)=>{
+                            sortObj.sortNumber =e
+                            setSortVisible({...sortObj})
+                        }}/>
+                    </div>
+                    <Remarks>仅支持设置小雨当前所有序号的任何序号，设置后与设置的序号对调</Remarks>
+                </Modal>
             </TransferBox>
         </Wrapper>
     )
@@ -454,4 +506,9 @@ const SpanOne = styled.span`
   width: 75px;
   text-align: justify;
   margin-left: 35px;
+`
+const Remarks = styled.div`
+margin-top: 20px;
+  color: #999;
+  text-align: center;
 `
