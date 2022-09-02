@@ -204,97 +204,19 @@ class SheetViewModal {
             /** 不可编辑 */
             isTwoDaysAgo: cellObj.status == "1",
             isExpectedScheduling: cellObj.statusType == "1",
-            isAddWordTime: appStore.hisAdapter({
-                hj: () =>
-                    cellObj.effectiveTimeOld &&
-                    cellObj.effectiveTime &&
-                    cellObj.effectiveTimeOld < cellObj.effectiveTime,
-                dghl: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                fqfybjy: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                wh: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                gxjb: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                fssdy: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                fsxt: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                whyx: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                lyyz: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                qhwy: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                whsl: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
-                ytll: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "1",
+            isAddWordTime: appStore.hisMatch({
+                map: {
+                    'dghl,fqfybjy,wh,gxjb,fssdy,fsxt,whyx,lyyz,qhwy,whsl,ytll': (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length && cellObj.schAddOrSubs[0].statusType) == "1",
+                    default:  cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
+                },
+                vague:true
             }),
-            isReduceWordTime: appStore.hisAdapter({
-                hj: () =>
-                    cellObj.effectiveTimeOld &&
-                    cellObj.effectiveTime &&
-                    cellObj.effectiveTimeOld > cellObj.effectiveTime,
-                wh: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                gxjb: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                fssdy: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                fsxt: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                whyx: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                lyyz: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                qhwy: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                whsl: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
-                ytll: () =>
-                    (cellObj.schAddOrSubs &&
-                        cellObj.schAddOrSubs.length &&
-                        cellObj.schAddOrSubs[0].statusType) == "2",
+            isReduceWordTime: appStore.hisMatch({
+                map: {
+                    'wh,gxjb,fssdy,fsxt,whyx,lyyz,whsl,qhwy,ytll': (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length && cellObj.schAddOrSubs[0].statusType) == "2",
+                    default:  cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
+                },
+                vague:true
             }),
             isJiJiaTime: appStore.hisMatch({
                 map: {
@@ -366,7 +288,7 @@ class SheetViewModal {
             }
             // 休假天数是否按已休天数来显示
             // 医院初始化时可能会报错 建议不开启
-            if (['wh', 'fqfybjy', 'gxjb', 'nys', "lyyz", "qhwy", "whsl"].includes(appStore.HOSPITAL_ID)) {
+            if (['wh', 'fqfybjy', 'gxjb', 'nys', "lyyz", "qhwy", "whsl",'zhzxy'].includes(appStore.HOSPITAL_ID)) {
                 let {data: countObj} = await arrangeService.listRangeNameCode(
                     res.data.setting
                 );

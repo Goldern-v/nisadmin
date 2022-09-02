@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll";
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -140,6 +140,8 @@ export default class AppStore {
       case "zzwy":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.jpg`);
         break;
+      case "zhzxy":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
       default:
         break;
     }
