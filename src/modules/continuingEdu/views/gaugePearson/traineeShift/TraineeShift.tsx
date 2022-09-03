@@ -417,18 +417,22 @@ export default observer(function TraineeShift(props: Props) {
   //   输入名字防抖查询
 const handleOnChangeInpt = () => {
 	traineeShiftModal.onload()
-  }
+}
 const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
 
-const customRequest = (file:any)=>{
-  traineeShiftApi.importSheetTemplateYaXin(file, traineeShiftModal.sheetId)
-        .then(res => {
-          Message.success('导入成功')
-        }, err => console.log(err))
+// 导入文件
+const customFileRequest=(fileINfo: any)=> {
+  traineeShiftApi.importSheetTemplateYaXin(fileINfo.file, traineeShiftModal.sheetId)
+    .then(res => {
+      Message.success('导入成功')
+      traineeShiftModal.onload()
+    }, err => {})
 }
+// 导入文件 APi
 const uploadProps={
-  name: 'file',
-  customRequest:customRequest,
+  accept:'.xlsx,.xls',
+  showUploadList:false,
+  customRequest:customFileRequest,
 }
   return (
     <Wrapper>
@@ -480,16 +484,16 @@ const uploadProps={
             }}>
             下载模板
           </Button>
-          {/* <Upload {...uploadProps}> */}
+          <Upload {...uploadProps} disabled={isAdd}>
             <Button
-              disabled={isAdd}
-              onClick={() => {
-                traineeShiftModal.import();
-              }}
+              // disabled={isAdd}
+              // onClick={() => {
+              //   traineeShiftModal.import();
+              // }}
               >
               导入
             </Button>
-          {/* </Upload> */}
+          </Upload>
           <Button
             disabled={isAdd}
             onClick={() => {
