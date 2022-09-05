@@ -10,6 +10,7 @@ import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import {appStore} from "src/stores";
 
 export interface Props extends ModalComponentProps {
   data?: any
@@ -21,7 +22,11 @@ let rules: Rules = {
   standardInfo: (val) => !!val || '请选择达标情况',
   theoryAssess: (val) => !!val || '请填选择理论考核',
   operateAssess: (val) => !!val || '请选择操作考核',
-  urlImageOne: (val) => !!val || '请上传图片',
+  urlImageOne: (val) =>{
+    if(appStore.HOSPITAL_ID !=='sdlj'){
+      return !!val || '请上传图片'
+    }
+  },
   // theoryAssessMakeup: (val) => !!val || '请选择理论补考',
   // operateAssessMakeup: (val) => !!val || '请选择操作补考'
 }
@@ -96,9 +101,9 @@ export default function EditPersonWinningModal(props: Props) {
       rules = {...rules, theoryAssessMakeup: (val) => !!val || '请选择理论补考',}
     } else {
       delete rules.theoryAssessMakeup
-      
+
     }
-     
+
   }
   const [operateAssess, setOperateAssess] = useState('')
   const onOperateAssessChange = (val: string) => {
@@ -147,7 +152,7 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
   }, [visible])
-  
+
 
   return (
     <Modal
@@ -188,7 +193,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne' required>
+            <Form.Field label={`附件`} name='urlImageOne' >
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

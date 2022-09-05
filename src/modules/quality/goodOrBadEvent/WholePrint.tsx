@@ -25,6 +25,7 @@ export default observer(function EventReportDetailView(props: Props) {
 	const [textArea2_1, setTextArea2_1] = useState('');
 	const [textArea3_1, setTextArea3_1] = useState('');
 	const [textArea4_1, setTextArea4_1] = useState('');
+	const [textArea5_1, setTextArea5_1] = useState('');
 	// const textArea1_1: MutableRefObject<any> = useRef('');
 	// const textArea1_2: MutableRefObject<any> = useRef(null);
 
@@ -43,7 +44,7 @@ export default observer(function EventReportDetailView(props: Props) {
 	const [propsData, setPropsData] = useState({} as any);
 	// console.log(sessionStorage.getItem('myreport'))
 	useEffect(() => {
-		console.log(appStore.location)
+		// console.log(appStore.location)
 		let propsData = qs.parse(sessionStorage.getItem('myreport') as string)
 		setPropsData(propsData)
 		setSpinning(true)
@@ -75,6 +76,9 @@ export default observer(function EventReportDetailView(props: Props) {
 						case 'Action':
 							setTextArea4_1(it.content)
 							break;
+						case 'Comment':
+							setTextArea5_1(it.content)
+							break;
 						default:
 							break;
 					}
@@ -88,7 +92,7 @@ export default observer(function EventReportDetailView(props: Props) {
 
 		// 卸载函数
 		return ()=>{
-			sessionStorage.removeItem('myreport')
+			// sessionStorage.removeItem('myreport')
 		}
 
 	}, [])
@@ -221,41 +225,48 @@ export default observer(function EventReportDetailView(props: Props) {
 					"evaluationCode": "Action",
 					"content": textArea4_1
 				},
+				{
+					"masterId": propsData.id,
+					"evaluationCode": "Comment",
+					"content": textArea5_1
+				},
 			],
 		}
 		// 本来已有报告
-		if(wholePrintData.evaluationList.length>0){
-			params.evaluationList = wholePrintData.evaluationList
-			params.evaluationList.map((it:any)=>{
-				switch (it.evaluationCode) {
-					case 'Problem':
-						it.content = textArea1_1
-						
-						break;
-					case 'Analysis':
-						it.content = textArea1_2
-						break;
-					case 'Target':
-						it.content = textArea1_3
-						break;
-					case 'Plan':
-						it.content = textArea1_4
-						break;
-					case 'Do':
-						it.content = textArea2_1
-						break;
-					case 'Check':
-						it.content = textArea3_1
-						break;
-					case 'Action':
-						it.content = textArea4_1
-						break;
-					default:
-						break;
-				}
-			})
+		// if(wholePrintData.evaluationList.length>0){
+		// 	params.evaluationList = wholePrintData.evaluationList
+		// 	params.evaluationList.map((it:any)=>{
+		// 		switch (it.evaluationCode) {
+		// 			case 'Problem':
+		// 				it.content = textArea1_1
+		// 				break;
+		// 			case 'Analysis':
+		// 				it.content = textArea1_2
+		// 				break;
+		// 			case 'Target':
+		// 				it.content = textArea1_3
+		// 				break;
+		// 			case 'Plan':
+		// 				it.content = textArea1_4
+		// 				break;
+		// 			case 'Do':
+		// 				it.content = textArea2_1
+		// 				break;
+		// 			case 'Check':
+		// 				it.content = textArea3_1
+		// 				break;
+		// 			case 'Action':
+		// 				it.content = textArea4_1
+		// 				break;
+		// 			case 'Comment':
+		// 				it.content = textArea5_1
+		// 				break;
+		// 			default:
+		// 				break;
+		// 		}
+		// 	})
 			
-		}
+		// }
 		
 		// console.log(params)
 		// return false
@@ -290,8 +301,13 @@ export default observer(function EventReportDetailView(props: Props) {
 					</span>
 				</div>
 				<div className='tool-con'>
-					<Button onClick={() => turnToDel()}>删除</Button>
-					<Button onClick={() => onSave()} loading={spinning}>保存</Button>
+					{authStore.isDepartment &&
+						<>
+							<Button onClick={() => turnToDel()}>删除</Button>
+							<Button onClick={() => onSave()} loading={spinning}>保存</Button>
+						</>
+					}
+					
 					<Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>
 				</div>
@@ -317,6 +333,7 @@ export default observer(function EventReportDetailView(props: Props) {
 							textArea2_1={textArea2_1}
 							textArea3_1={textArea3_1}
 							textArea4_1={textArea4_1}
+							textArea5_1={textArea5_1}
 							setTextArea1_1={setTextArea1_1}
 							setTextArea1_2={setTextArea1_2}
 							setTextArea1_3={setTextArea1_3}
@@ -324,6 +341,7 @@ export default observer(function EventReportDetailView(props: Props) {
 							setTextArea2_1={setTextArea2_1}
 							setTextArea3_1={setTextArea3_1}
 							setTextArea4_1={setTextArea4_1}
+							setTextArea5_1={setTextArea5_1}
 						></PrintContent>
 					</Page>
 				</Spin>

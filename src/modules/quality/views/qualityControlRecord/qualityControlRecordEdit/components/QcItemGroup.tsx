@@ -398,7 +398,7 @@ export default observer(function QcItemGroup(props: Props) {
     ))}
     {appStore.hisMatch({
       map: {
-        'nys,whyx': '',
+        'nys,whyx,gxjb': '',
         // lcey: '',
         other: <div className='notesCon'>
           <div className='notesLeftCon'>备注</div>

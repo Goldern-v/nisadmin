@@ -11,6 +11,7 @@ import {
   DatePicker,
   Select
 } from "src/vendors/antd";
+import { Upload } from "antd";
 import moment from "moment";
 import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -416,10 +417,23 @@ export default observer(function TraineeShift(props: Props) {
   //   输入名字防抖查询
 const handleOnChangeInpt = () => {
 	traineeShiftModal.onload()
-  }
+}
 const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).current
 
-
+// 导入文件
+const customFileRequest=(fileINfo: any)=> {
+  traineeShiftApi.importSheetTemplateYaXin(fileINfo.file, traineeShiftModal.sheetId)
+    .then(res => {
+      Message.success('导入成功')
+      traineeShiftModal.onload()
+    }, err => {})
+}
+// 导入文件 APi
+const uploadProps={
+  accept:'.xlsx,.xls',
+  showUploadList:false,
+  customRequest:customFileRequest,
+}
   return (
     <Wrapper>
       <PageHeader>
@@ -470,13 +484,16 @@ const searchByNameInpt = useRef(debounce(() => handleOnChangeInpt(), 1000)).curr
             }}>
             下载模板
           </Button>
-          <Button
-            disabled={isAdd}
-            onClick={() => {
-              traineeShiftModal.import();
-            }}>
-            导入
-          </Button>
+          <Upload {...uploadProps} disabled={isAdd}>
+            <Button
+              // disabled={isAdd}
+              // onClick={() => {
+              //   traineeShiftModal.import();
+              // }}
+              >
+              导入
+            </Button>
+          </Upload>
           <Button
             disabled={isAdd}
             onClick={() => {

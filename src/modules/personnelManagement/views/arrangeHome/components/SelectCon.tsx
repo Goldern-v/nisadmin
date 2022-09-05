@@ -642,7 +642,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy","whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", "whyx","lyyz","qhwy","whsl", 'ytll','nfzxy'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"
