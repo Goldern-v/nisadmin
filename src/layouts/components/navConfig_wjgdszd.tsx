@@ -38,11 +38,11 @@ export const navConfig: (AppStore: any, authStore: any) => navConfigItem[] = (ap
       name: "我的档案",
       path: "/selfNurseFile"
     },
-    // {
-    //   name: "病区登记本",
-    //   path: "/wardRegister",
-    //   hidden: !appStore.isDev
-    // },
+    {
+      name: "病区登记本",
+      path: "/wardRegister",
+      hidden: !appStore.isDev
+    },
     // {
     //   name: '不良事件',
     //   path: '/badEventsNew',

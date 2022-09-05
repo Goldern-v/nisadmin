@@ -98,7 +98,7 @@ export default function MainBox() {
                 setLoadingTable(false)
                 //需要根据sortValue进行排序
                 let sortData: [] = res.data.sort((a: any, b: any) => {
-                    return b.sortValue-a.sortValue
+                    return a.sortValue-b.sortValue
                 })
                 setTableData(sortData)
                 if(res.data.length > 0)selectRow(res.data[0])
@@ -433,7 +433,7 @@ export default function MainBox() {
                     onOk={handleSort}>
                     <div className='category'>
                         <SpanOne>设置序号：</SpanOne>
-                        <InputNumber min={0} max={9999}
+                        <InputNumber min={1} max={tableData.length}
                                      style={{width:'72%'}} value={sortObj.sortNumber} onChange={(e:any)=>{
                             sortObj.sortNumber =e
                             setSortVisible({...sortObj})

@@ -63,7 +63,7 @@ export default function EditPersonWinningModal(props: Props) {
     console.log(value.startDate, 7777777777)
     obj = {...obj, endDate: value.startDate[1] || '' }
     value.startDate && (value.startDate = value.startDate[0])
-    
+
     // value.endDate && (value.endDate =  value.startDate[1])
     // console.log(value, 6666666666)
     // value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
@@ -144,8 +144,8 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目效益`} name='projectBenefit' required>
-              <Input placeholder="请输入" maxLength={10} />
+            <Form.Field label={`项目效益`} name='projectBenefit'  required>
+              <Input placeholder="请输入" maxLength={50} />
             </Form.Field>
           </Col>
         </Row>

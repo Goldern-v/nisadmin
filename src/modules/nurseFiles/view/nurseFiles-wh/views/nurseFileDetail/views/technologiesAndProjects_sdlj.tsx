@@ -11,6 +11,7 @@ import technologiesAndProjectsModal from '../modal/technologiesAndProjectsModal_
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
+import { Table, Pagination ,Tooltip} from "antd";
 import { render } from 'react-dom'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
@@ -73,8 +74,21 @@ export default observer(function PersonWinning() {
       dataIndex: 'projectBenefit',
       key: 'projectBenefit',
       width: 100,
-      align: 'center'
-    },
+      align: 'center',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: (text:any) =>{
+        return text&&text.length > 8 ?<Tooltip  placement='topLeft' title={text}>{text}</Tooltip>:<div>{text}</div>
+      }},
     Do('nurseWHCarryOut', EdittechnologiesModal, getTableData)
   ]
 
@@ -84,6 +98,7 @@ export default observer(function PersonWinning() {
 
   return (
     <BaseLayout title='新技术、新项目开展情况' btnList={isSelf() || editFlag()? btnList : []}>
+      {/*<Table dataSource={tableData} columns={columns}/>*/}
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <EdittechnologiesModal.Component getTableData={getTableData} />
     </BaseLayout>

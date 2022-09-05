@@ -28,6 +28,8 @@ export default observer(function BadEventHeader(props: Props) {
 						onChange={(val: any) => {
 							badEventData_gxjb.eventType = val
 							badEventData_gxjb.chageColumn(val.key)
+							// 不初始化，badEventType会继续提交上一次选中的二级类型
+							badEventData_gxjb.typeListByEventTypeSelect = {key:'',label:'全部'}
 							badEventData_gxjb.onload()
 						}}
 						labelInValue
