@@ -16,6 +16,7 @@ import TTextArea from "./components/TTextArea";
 import { authStore } from "src/stores";
 import { fileDownload } from "src/utils/file/file";
 import { PUBLISH_STATUS_ARR } from "../../utils/enums";
+import { globalModal } from "src/global/globalModal";
 
 const columns = [
   "A级质量问题及科室",
@@ -192,6 +193,16 @@ export default observer(function QcThreeProblem(props) {
         setLoading(false);
       });
   };
+  const handleDel = () => {
+    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
+      analysisDetailApi.deleteReport(data.id).then((res) => {
+        message.success('删除成功')
+        setTimeout(() => {
+          getData()
+        }, 500)
+      })
+    })
+  }
 
   return (
     <Wrapper>
@@ -225,6 +236,7 @@ export default observer(function QcThreeProblem(props) {
             创建
           </Button>}
           {btnRules && data.status == 0 && <Button onClick={handleSave}>保存</Button>}
+          {authStore.level3Check && data.id && <Button onClick={handleDel}>删除</Button>}
           <Button disabled={!data.id} onClick={handleExport}>导出</Button> 
         </PageHeader>
         {!data.id && (
