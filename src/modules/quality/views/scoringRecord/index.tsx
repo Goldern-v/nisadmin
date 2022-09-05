@@ -146,26 +146,36 @@ export default observer((props: Props) => {
       width: 80,
       align: "center"
     },
-    {
-      title: "查房问题",
-      dataIndex: 'problems',
-      width: 80,
-      align: "center",
-      onCell: () => {
-        return {
-          style: {
-            maxWidth: 80,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            cursor: 'pointer'
-          }
-        };
-      },
-      render: (problems:any) =>{
-        return problems&&problems.length > 8 ?<Tooltip  placement='topLeft' title={problems}>{problems}</Tooltip>:<div>{problems}</div>
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [    {
+          title: "查房问题",
+          dataIndex: 'problems',
+          width: 80,
+          align: "center",
+          onCell: () => {
+            return {
+              style: {
+                maxWidth: 80,
+                overflow: 'hidden',
+                whiteSpace: 'pre-line',
+                textOverflow: 'ellipsis',
+                cursor: 'pointer'
+              }
+            };
+          },
+          // render: (problems:any) =>{
+          //   return problems&&problems.length > 8 ?<Tooltip
+          //       overlayStyle={{
+          //         whiteSpace:'pre-line'
+          //       }}
+          //       placement='topLeft' title={problems}>{problems}</Tooltip>:<div>{problems}</div>
+          // }
+        },
+        ],
+        other: []
       }
-    },
+    }),
     // {
     //   title: `检查人员`,
     //   dataIndex: `creatorName`,
@@ -363,7 +373,7 @@ const SearchBar = styled.div`
 
 const MainWrapper = styled.div`
   background: #fff;
-  height: calc(100% - 50px);
+  //height: calc(100% - 50px);
   padding: 0 20px;
   .itemHide{
     display: none
