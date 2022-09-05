@@ -70,7 +70,7 @@ export default observer(function TopCon(props: any) {
       <Button
         onClick={handleCreate}
         style={{ marginLeft: 10 }}
-        disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}
+        disabled={!(authStore.isDepartment || authStore.isSupervisorNurse||authStore.isRoleManage)}
       >
         新建
       </Button>
