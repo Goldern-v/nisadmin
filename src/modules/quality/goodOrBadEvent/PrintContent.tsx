@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Table, Input, Button } from 'antd'
 const { TextArea } = Input
 import ReactEcharts from 'echarts-for-react';
+import { authStore } from 'src/stores'
 import { wholePrintData } from './tsData/WholePrintData'
 interface Props {
 	// 输入框
@@ -13,6 +14,7 @@ interface Props {
 	textArea2_1: string,
 	textArea3_1: string,
 	textArea4_1: string,
+	textArea5_1: string,
 	setTextArea1_1: Function,
 	setTextArea1_2: Function,
 	setTextArea1_3: Function,
@@ -20,6 +22,7 @@ interface Props {
 	setTextArea2_1: Function,
 	setTextArea3_1: Function,
 	setTextArea4_1: Function,
+	setTextArea5_1: Function,
 
 	propsData: any,
 
@@ -39,11 +42,13 @@ const PrintContent = (props: Props) => {
 		textArea1_4,
 		textArea2_1,
 		textArea3_1,
-		textArea4_1, } = props
+		textArea4_1,
+		textArea5_1, } = props
 	const { setTextArea1_1, setTextArea1_2, setTextArea1_3, setTextArea1_4,
 		setTextArea2_1,
 		setTextArea3_1,
-		setTextArea4_1, } = props
+		setTextArea4_1,
+		setTextArea5_1, } = props
 	const { pageData, isPrint, quarterRate, deductionData, text, setText, propsData } = props
 	const [chartsImg1, setChartsImg1]: any = useState('')
 	const [chartsImg2, setChartsImg2]: any = useState('')
@@ -51,7 +56,7 @@ const PrintContent = (props: Props) => {
 	const [chartsImg4, setChartsImg4]: any = useState('')
 	const [chartsImg5, setChartsImg5]: any = useState('')
 	const [chartsImg6, setChartsImg6]: any = useState('')
-
+	
 	const [gridLeft, setGridLeft] = useState('12%');
 	const [gridRight, setGridRight] = useState('12%');
 	const [gridBottom, setgridBottom] = useState('66px');
@@ -732,8 +737,8 @@ const PrintContent = (props: Props) => {
 			<div className='first-title'>{`${propsData.title}`}</div>
 			<div className='title-m'>一、计划阶段</div>
 			<div className='title-s'>(一)通过{wholePrintData.master.belongsYear}年及{Number(wholePrintData.master.belongsYear) - 1}年全科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图6），发现主要存在问题：</div>
-			{!isPrint && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
+			{(!isPrint && authStore.isDepartment) && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} disabled={!authStore.isDepartment} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
 			<div className='second-content-box'>
 				<div className='second-content-table'>
 					{/* <div className='second-content-table-title'>{`第${pageData ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div> */}
@@ -778,48 +783,55 @@ const PrintContent = (props: Props) => {
 
 		<div>
 			<div className='title-s'>（二）针对存在的护理质量问题进行原因分析：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字'
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字'
 				value={textArea1_2} onChange={(e: any) => setTextArea1_2(e.target.value)}
 				maxLength={2000}
 				rows={3}
 				autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
 		</div>
 
 		<div>
 			<div className='title-s'>（三）确定2021年护理质量改进目标为：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
+			{(!isPrint && authStore.isDepartment) && <TextArea  className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-s'>（四）针对各存在问题发生的原因，结合护理质量改进目标，制定详细的质量改进计划：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>二、实施阶段（Do）：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea2_1}</p>}
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea2_1}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>三、检查阶段（Check）：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>四、处理阶段(Action)：</div>
-			{!isPrint && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{isPrint && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
 
 		</div>
+		<div>
+			<div className='title-m mb-15'>五、护理部审核意见(Comment)：</div>
+			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea5_1} onChange={(e: any) => setTextArea5_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea5_1}</p>}
+
+		</div>
+		
 	</Wrapper>
 }
 export default PrintContent
@@ -936,6 +948,7 @@ const Wrapper = styled.div`
     margin: 0px 60px 15px;
     resize: none;
     width: calc(100% - 120px);
+		line-height: 1.5;
   }
 
   /* 标题 */
@@ -957,6 +970,7 @@ const Wrapper = styled.div`
   .title-s{
     font-family: STHeiti !important;
     margin-left: 57px;
+
 
 	box-sizing: border-box;
     padding-right: 50px;

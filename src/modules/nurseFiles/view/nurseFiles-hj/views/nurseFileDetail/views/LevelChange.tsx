@@ -44,12 +44,12 @@ export default observer(function LevelChange() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '层级',
-      dataIndex: 'hierarchy',
-      width: 100,
-      align: 'center'
-    },
+    // {
+    //   title: '层级',
+    //   dataIndex: 'hierarchy',
+    //   width: 100,
+    //   align: 'center'
+    // },
     {
       title: '附件',
       dataIndex: 'fj',
@@ -129,7 +129,7 @@ export default observer(function LevelChange() {
     getTableData()
   }, [])
   return (
-    <BaseLayout title='职称及层级变动' btnList={btnList}>
+    <BaseLayout title='职称变动' btnList={btnList}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

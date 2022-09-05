@@ -14,7 +14,6 @@ export default observer(function BadEventSummaryClassfiyGxjb(props) {
 	// const [columnClass, setColumnClass] = useState<Array<{title?:any;dataIndex?:string;render?:any;align?:string;width?:number}>>([]);
 	// const [columnClass, setColumnClass] = useState<Array<{}>>([]);
 
-	// const [deptList, setDeptList] = useState([]);
 	const columnList = [...badEventData_gxjb.columnFixedList,...badEventData_gxjb.columnLast] as any
 
 	useEffect(() => {

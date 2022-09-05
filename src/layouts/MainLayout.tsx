@@ -8,6 +8,7 @@ import service from "src/services/api";
 import { observer } from "mobx-react-lite";
 import AduitModal from "../global/modal/AduitModal";
 import AduitModalWh from "../global/modal/AduitModal-wh";
+import AduitModalHJ from "../global/modal/AduitModal-hj";
 import createModal from "src/libs/createModal";
 import { globalModal } from "src/global/globalModal";
 import GroupsAduitModal from "src/global/modal/GroupsAduitModal";

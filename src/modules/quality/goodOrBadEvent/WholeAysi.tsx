@@ -38,17 +38,7 @@ export default function WholeAysi(props: Props) {
 
 	// 搬运start
 	const [pageLoading, setPageLoading] = useState(false);
-	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 	const [surplusHeight, setSurplusHeight]: any = useState(220);
-	const [pageOptions, setPageOptions]: any = useState({
-		pageIndex: 1,
-		pageSize: 20,
-		total: 0
-	});
-	const [total, setTotal] = useState(0);
-	// 搬运end
-
-	const [deptList, setDeptList] = useState(['神经内科1', '神经内科2', '神经内科3', '神经内科4']);
 
 	const [yearPickShow, setYearPickShow] = useState(false);
 
@@ -323,13 +313,13 @@ export default function WholeAysi(props: Props) {
 					>
 						查询
 					</Button>
-					<Button
+					{authStore.isDepartment && <Button
 						type="primary"
 						className="span"
 						onClick={handelNewModal}
 					>
 						新建
-					</Button>
+					</Button>}
 				</RightIcon>
 			</div>
 

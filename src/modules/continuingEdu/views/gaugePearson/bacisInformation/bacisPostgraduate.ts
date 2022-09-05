@@ -120,7 +120,7 @@ class BacisManagModel {
       this.total = res.data.totalCount;
       this.pageIndex = res.data.pageIndex;
       this.pageSize = res.data.pageSize;
-    });
+    }).catch(err=>{this.tableLoading = false;});
   }
 
    /** 获取下载摸板 */

@@ -107,7 +107,7 @@ class BadEvent_gxjb {
 			case 'B0032':
 				this.columnLast=this.columnChangeB0032
 				this.typeListByEventType=[{code:'',name:'全部'},{code:'跌倒',name:'跌倒'},{code:'坠床',name:'坠床'}]
-				this.typeListByEventTypeSelect = {key:'',label:'全部'}
+				// this.typeListByEventTypeSelect = {key:'',label:'全部'}
 				break;
 			case 'B0033':
 				this.columnLast=this.columnChangeB0033
@@ -124,7 +124,7 @@ class BadEvent_gxjb {
 			case 'B0037':
 				this.columnLast=this.columnChangeB0037
 				this.typeListByEventType=this.otherTypeList
-				this.typeListByEventTypeSelect = {key:'',label:'全部'}
+				// this.typeListByEventTypeSelect = {key:'',label:'全部'}
 				break;
 			default:
 				break;
@@ -263,7 +263,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
@@ -382,7 +382,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
@@ -476,7 +476,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
@@ -575,7 +575,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
@@ -687,7 +687,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
@@ -763,7 +763,7 @@ class BadEvent_gxjb {
 		},
 		{
 			title: "事件发生的简要描述",
-			dataIndex: "briefDesciption",
+			dataIndex: "briefDescription",
 			align: "center",
 			width: 100
 		},
