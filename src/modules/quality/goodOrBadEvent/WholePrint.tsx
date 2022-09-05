@@ -233,40 +233,48 @@ export default observer(function EventReportDetailView(props: Props) {
 			],
 		}
 		// 本来已有报告
-		// if(wholePrintData.evaluationList.length>0){
-		// 	params.evaluationList = wholePrintData.evaluationList
-		// 	params.evaluationList.map((it:any)=>{
-		// 		switch (it.evaluationCode) {
-		// 			case 'Problem':
-		// 				it.content = textArea1_1
-		// 				break;
-		// 			case 'Analysis':
-		// 				it.content = textArea1_2
-		// 				break;
-		// 			case 'Target':
-		// 				it.content = textArea1_3
-		// 				break;
-		// 			case 'Plan':
-		// 				it.content = textArea1_4
-		// 				break;
-		// 			case 'Do':
-		// 				it.content = textArea2_1
-		// 				break;
-		// 			case 'Check':
-		// 				it.content = textArea3_1
-		// 				break;
-		// 			case 'Action':
-		// 				it.content = textArea4_1
-		// 				break;
-		// 			case 'Comment':
-		// 				it.content = textArea5_1
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-			
-		// }
+		if(wholePrintData.evaluationList.length>0){
+			params.evaluationList = wholePrintData.evaluationList
+			let isCommentFlag = false//后来新增了Comment，如果没有comment，要另外加一段
+			params.evaluationList.map((it:any)=>{
+				switch (it.evaluationCode) {
+					case 'Problem':
+						it.content = textArea1_1
+						break;
+					case 'Analysis':
+						it.content = textArea1_2
+						break;
+					case 'Target':
+						it.content = textArea1_3
+						break;
+					case 'Plan':
+						it.content = textArea1_4
+						break;
+					case 'Do':
+						it.content = textArea2_1
+						break;
+					case 'Check':
+						it.content = textArea3_1
+						break;
+					case 'Action':
+						it.content = textArea4_1
+						break;
+					case 'Comment':
+						it.content = textArea5_1
+						isCommentFlag = true
+						break;
+					default:
+						break;
+				}
+			})
+			if(!isCommentFlag){
+				params.evaluationList.push({
+					"masterId": propsData.id,
+					"evaluationCode": "Comment",
+					"content": textArea5_1
+				})
+			}
+		}
 		
 		// console.log(params)
 		// return false
