@@ -29,9 +29,8 @@ export default observer(function WritingForm(props: any) {
 
   // const [visible, setVisible] = useState(false)
   // const [wardList, setWardList] = useState('')
-  const [date1, setDate1]= useState(moment())
+  const [date, setDate]= useState(moment())
   let checkData: any[] = []
-  let date = moment()
 
   const columns: any[] = [
     {
@@ -424,6 +423,7 @@ export default observer(function WritingForm(props: any) {
   }
   // 获取某一个月的开始时间和结束时间
   const startEndDate = () => {
+    console.log('1111111', date, moment(date))
     let startDate = moment(date);
     let endDate: any = new Date(startDate.format('YYYY/MM/DD'));
     startDate.date(1);
@@ -457,8 +457,12 @@ export default observer(function WritingForm(props: any) {
     service.commonApiService.getNursingUnitAll().then((res) => {
       setDeptList(res.data.deptList)
     })
-    getTableData()
+    // getTableData()
   }, [])
+
+  useEffect(() => {
+    getTableData()
+  }, [date])
 
   const getTableData = () => {
     const { startDate, endDate } = startEndDate()
@@ -550,11 +554,9 @@ export default observer(function WritingForm(props: any) {
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
-              <MonthPicker value={date1}  placeholder="请选择年月"
+              <MonthPicker value={date}  placeholder="请选择年月"
                 onChange={(value: any) => {
-                  date = value
-                  setDate1(value)
-                  getTableData()
+                  setDate(value)
                 }}
               />
             </div>

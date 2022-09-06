@@ -27,10 +27,10 @@ export default observer(function WritingForm(props: any) {
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
 
-  const [date1, setDate1]= useState(moment())
+  const [date, setDate]= useState(moment())
   let checkData: any[] = []
 
-  let date = moment()
+  // let date = moment()
   // const [date]
   const columns: any[] = [
     {
@@ -642,9 +642,11 @@ export default observer(function WritingForm(props: any) {
   }
   // 获取某一个月的开始时间和结束时间
   const startEndDate = () => {
+    
     let startDate = moment(date);
     let endDate: any = new Date(startDate.format('YYYY/MM/DD'));
     startDate.date(1);
+    console.log('start', date, startDate.format('YYYY/MM/DD'))
 
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(0);
@@ -675,11 +677,16 @@ export default observer(function WritingForm(props: any) {
     service.commonApiService.getNursingUnitAll().then((res) => {
       setDeptList(res.data.deptList)
     })
-    getTableData()
+    // getTableData()
   }, [])
+
+  useEffect(() => {
+    getTableData()
+  }, [date])
 
   const getTableData = () => {
     const { startDate, endDate } = startEndDate()
+    console.log(startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD"), moment(date).format("MM"), 6666)
     setLoadingTable(true)
     if (date) {
       writingFormService
@@ -768,11 +775,9 @@ export default observer(function WritingForm(props: any) {
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
-              <MonthPicker value={date1}  placeholder="请选择年月"
+              <MonthPicker value={date}  placeholder="请选择年月"
                 onChange={(value: any) => {
-                  date = value
-                  setDate1(value)
-                  getTableData()
+                  setDate(value)
                 }}
               />
             </div>
