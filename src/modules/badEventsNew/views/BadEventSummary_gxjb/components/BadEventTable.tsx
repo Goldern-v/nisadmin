@@ -34,7 +34,24 @@ export default observer(function BadEventTable(props) {
       align: "center",
       width: 130
     },
-    
+    // {
+		// 	title: "病案号",
+		// 	dataIndex: "inHospitalNo",
+		// 	align: "center",
+		// 	width: 60
+		// },
+    // {
+		// 	title: "住院流水号",
+		// 	dataIndex: "inHospitalNo",
+		// 	align: "center",
+		// 	width: 60
+		// },
+    // {
+		// 	title: "入院日期",
+		// 	dataIndex: "inHospitalNo",
+		// 	align: "center",
+		// 	width: 60
+		// },
     {
       title: "事件发生日期",
       dataIndex: "happenDay",
