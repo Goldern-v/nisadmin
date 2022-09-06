@@ -23,21 +23,30 @@ export default observer(function BadEventHeaderQuarter(props: Props) {
 				</PageTitle>
 				<Place />
 				<RightIcon>
-					<span className="span">汇总类型：</span>
+					<span className="span" style={{float: 'left',lineHeight:'34px'}}>不良事件分类：</span>
 					<Select
+					className='espacial-select'
+
 						showSearch
+						mode="multiple"
 						filterOption={(input: any, option: any) =>
 							option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 						}
 						onChange={(val: any) => {
-							badEventQuarterData_gxjb.eventType = val
-							// badEventQuarterData_gxjb.chageColumn(val.key)
+							if(val[0]!='全部' && val.includes('全部') && val.length>1){
+								badEventQuarterData_gxjb.eventType = ['全部']
+							}else if(val[0]=='全部' && val.length>1){
+								badEventQuarterData_gxjb.eventType=val.filter((it:string)=>it!='全部')
+							}else{
+								badEventQuarterData_gxjb.eventType = val
+							}
+							// console.log(badEventQuarterData_gxjb.eventType)
 							badEventQuarterData_gxjb.onload()
 						}}
-						labelInValue
 						value={badEventQuarterData_gxjb.eventType}
-						style={{ width: 140 }}
+						style={{ width: 200,float:'left' }}
 					>
+						<Option value={'全部'}>全部</Option>
 						{
 							badEventQuarterData_gxjb.eventTypeList.map((v: any, i: number) => (
 								<Option value={v.code} key={v.code}>{v.name}</Option>
@@ -110,7 +119,9 @@ const Wrapper = styled.div`
   font-size: 13px;
   color: #333;
   padding: 0 15px 0 15px;
+
 `;
+
 
 const RightIcon = styled.div`
   padding: 0 0 0 15px;
@@ -118,4 +129,11 @@ const RightIcon = styled.div`
   .span {
     margin-left: 15px;
   }
+	.espacial-select .ant-select-selection--multiple .ant-select-selection__rendered{
+		overflow: hidden;
+    height: 30px;
+	}
+	.espacial-select .ant-select-selection--multiple .ant-select-selection__rendered ul{
+		display: flex;
+	}
 `;

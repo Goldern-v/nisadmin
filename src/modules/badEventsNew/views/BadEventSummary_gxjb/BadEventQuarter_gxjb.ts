@@ -6,7 +6,7 @@ import { badEventApi_gxjb } from "./api";
 class BadEventQuarter_gxjb {
 	// 不良事件例数统计表
 	@observable public eventTypeList = []//类型列表
-	@observable public eventType = { key: 'B0032', label: '跌倒/坠床' } //选中的汇总类型
+	@observable public eventType = ['全部'] //选中的汇总类型
 	@observable public pageIndex: any = 1; //页码
 	@observable public pageSize: any = 20; //每页大小
 	@observable public total: any = 0; //总条数
@@ -36,7 +36,7 @@ class BadEventQuarter_gxjb {
 		return {
 			"pageIndex": this.pageIndex,
     		"pageSize": this.pageSize,
-    		"formCode": this.eventType.key,
+    		"formCodeList": this.eventType[0]=='全部'?[]:this.eventType,
             "deptCode": this.selectDept.key,
             "startDateStr": moment().quarter(this.currentQuarter).startOf('quarter').format('YYYY-MM-DD'),
             "endDateStr": moment().quarter(this.currentQuarter).endOf('quarter').format('YYYY-MM-DD'),
@@ -61,7 +61,7 @@ class BadEventQuarter_gxjb {
 	/** 导出Excel */
 	export() {
 		badEventApi_gxjb.exportReportSummary({
-    		"formCode": this.eventType.key,
+    		"formCodeList": this.eventType[0]=='全部'?[]:this.eventType,
             "deptCode": this.selectDept.key,
             "startDateStr": moment().quarter(this.currentQuarter).startOf('quarter').format('YYYY-MM-DD'),
             "endDateStr": moment().quarter(this.currentQuarter).endOf('quarter').format('YYYY-MM-DD'),
@@ -90,7 +90,8 @@ class BadEventQuarter_gxjb {
 			return false
 		}
 		badEventApi_gxjb.getDictItemList().then(res => {
-			this.eventType = { key: res.data[0].code, label: res.data[0].name }
+			this.eventType = ['全部']
+			// res.data.unshift({code:'',name:'全部'})
 			this.eventTypeList = res.data
 		}).catch(err => {
 
