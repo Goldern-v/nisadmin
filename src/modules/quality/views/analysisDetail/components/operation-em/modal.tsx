@@ -110,7 +110,7 @@ export default function OperationEmModal(props: Props) {
           人。
         </div>
         <div className="context">
-          （2）<div className="month-context">{pageInfo.reportMonth}</div>
+        （2）<div className="month-context">{!isNaN(pageInfo.reportMonth) && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>
           （月）上月急诊护理工作量得分： 
           <Input
           type="number"

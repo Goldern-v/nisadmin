@@ -54,7 +54,7 @@ export default observer(function Operation2Section(props: Props) {
         平均护患比：<div>{value.avgNursePatientRatio}</div> 白班护患比：<div>{value.dayNursePatientRatio}</div> 夜班护患比：<div>{value.nightNursePatientRatio}</div>
       </div>
       <div className="context context-title">
-        （3）（<div>{pageInfo&&pageInfo.reportMonth}</div>
+        （3）（<div>{pageInfo&&!isNaN(pageInfo.reportMonth) && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>
         月）上月科室住院病人动态：（新QA“病案数据集结地—医院运营”中查询）
       </div>
       <div className="context">
