@@ -9,7 +9,6 @@ import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 const Option = Select.Option
-const { RangePicker } = DatePicker;
 export interface Props extends ModalComponentProps {
   data?: any
   signShow?: string
@@ -60,17 +59,11 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    console.log(value.startDate, 7777777777)
-    obj = {...obj, endDate: value.startDate[1] || '' }
-    value.startDate && (value.startDate = value.startDate[0])
-
-    // value.endDate && (value.endDate =  value.startDate[1])
-    // console.log(value, 6666666666)
-    // value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.commonSaveOrUpdate('nurseWHCarryOut', { ...obj, ...value, sign }).then((res: any) => {
+    obj = {...obj, endDate: value.startDate[1].format('YYYY-MM-DD') || '' }
+    value.startDate && (value.startDate = value.startDate[0].format('YYYY-MM-DD')||'')
+    nurseFilesService.commonSaveOrUpdate('nurseWHCarryOut', { ...value,  ...obj,sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
-      // emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
   }
@@ -78,7 +71,6 @@ export default function EditPersonWinningModal(props: Props) {
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    console.log('data', data)
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         projectName: data.projectName,
@@ -128,7 +120,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`起止时间`} name='startDate' required>
-              <RangePicker />
+              <DatePicker.RangePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
