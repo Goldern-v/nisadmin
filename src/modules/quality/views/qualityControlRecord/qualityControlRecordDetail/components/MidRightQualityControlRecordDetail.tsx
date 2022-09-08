@@ -91,13 +91,7 @@ const Con = styled.div`
   padding: 20px;
 
   .ant-steps-item-icon {
-    /* width: 20px;
-    height: 20px;
-    border-radius: 20px; */
     margin-right: 8px;
-    /* svg {
-      font-size: 18px;
-    } */
   }
   .ant-steps-item-title {
     font-size: 14px;

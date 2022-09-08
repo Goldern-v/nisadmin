@@ -384,7 +384,7 @@ export default function TraineeInfoSubmit() {
           <ListMb.Item className="studyDeptCode-row" arrow="horizontal" error={rules['studyDeptCode01'].error}>进修科室1</ListMb.Item>
         </Picker>
         {
-          !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+          !['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) &&
             <Picker
               extra="请选择"
               data={[

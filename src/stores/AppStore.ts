@@ -17,8 +17,9 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy";
-type HisAdapterMap = { [p in hisIds]?: any };
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk';
+// type HisAdapterMap = { [p in hisIds]?: any };
+type HisAdapterMap = Record<string, any>;
 
 export default class AppStore {
   public constructor() {
@@ -228,7 +229,15 @@ export default class AppStore {
   }
 
   /** 医院适配器 用于区分医院适配不同的操作 */
-  hisAdapter(hisAdapterMap: HisAdapterMap) {
+  hisAdapter(hisAdapterMap: HisAdapterMap, vague = false) {
+    if (vague) {
+      for (let hospitalId in hisAdapterMap) {
+        if (hospitalId.split(',').indexOf(this.HOSPITAL_ID) >= 0)
+          return hisAdapterMap[hospitalId]()
+      }
+      if (hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds])
+        return hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds]();
+    }
     if (hisAdapterMap[this.HOSPITAL_ID] !== undefined)
       return hisAdapterMap[this.HOSPITAL_ID]();
     if (hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds])

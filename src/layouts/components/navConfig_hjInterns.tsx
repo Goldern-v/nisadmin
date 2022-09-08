@@ -18,14 +18,15 @@ const baseConfig:ConfigType = (app, auth) => ([
   },
   ...appStore.hisMatch({
     map: {
-      'qhwy': [
+      'qhwy,whhk': [
         {
           name: "排班管理",
           path: "/personnelManagement"
         },
       ],
       other: []
-    }
+    },
+    vague: true
   })
 ]);
 

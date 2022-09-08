@@ -203,7 +203,7 @@ export default function ContinuingEdu(props: Props) {
   //晋升管理 根据医院切换
   const PromotionSettingCons = appStore.hisMatch({
     map: {
-      "hj,dgxg,lyyz,qhwy": [
+      "hj,dgxg,lyyz,qhwy,whhk": [
         {
           title: "晋升管理",
           icon: <JSGL />,
@@ -239,7 +239,7 @@ export default function ContinuingEdu(props: Props) {
   //题库管理 根据医院切换
   const QuestionBankManagementCon = appStore.hisMatch({
     map: {
-      'hj,lyyz,qhwy': [
+      'hj,lyyz,qhwy,whhk': [
         {
           title: "学习资源",
           icon: <TKGL />,
@@ -670,7 +670,7 @@ export default function ContinuingEdu(props: Props) {
     title: "教学质量管理",
     icon: <JXJH />,
     hide:
-      !["hj",'lyyz','qhwy'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
+      !["hj",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
     children: [
       {
         title: "教学质量评价详情",
@@ -726,7 +726,7 @@ export default function ContinuingEdu(props: Props) {
     component: 培训统计分析,
     // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
     hide: () =>
-      !["hj", "gxjb", "dgxg,'lyyz','qhwy'"].includes(appStore.HOSPITAL_ID) ||
+      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
       authStore.isOnlyInternsManage,
   };
   const TrainingChartAnalysisCon = {
@@ -734,7 +734,7 @@ export default function ContinuingEdu(props: Props) {
     icon: <JSGL />,
     path: "/continuingEdu/trainingChartAnalysis",
     component: TrainingChartAnalysis,
-    hide: () => !["hj", "dgxg,'lyyz','qhwy'"].includes(appStore.HOSPITAL_ID),
+    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID),
   };
 
   const PracticalOperation = [
@@ -767,7 +767,7 @@ export default function ContinuingEdu(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        "hj,dgxg,lyyz,qhwy": [
+        "hj,dgxg,lyyz,qhwy,whhk": [
           {
             title: "人员管理",
             icon: <RYGL />,
@@ -844,7 +844,7 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/评分管理",
       component: 评分管理,
       hide: () =>
-        !["hj",'lyyz','qhwy'].includes(appStore.HOSPITAL_ID)
+        !["hj",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)
           ? queyMenuAuthInfo("nm_lat_scoremanage") ||
             authStore.isOnlyInternsManage
           : true,
@@ -875,7 +875,7 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu",
       icon: <JXJH />,
       hide:
-        !["hj", "dgxg",'lyyz','qhwy'].includes(appStore.HOSPITAL_ID) ||
+        !["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
       children: [
         ...appStore.hisMatch({
@@ -1072,7 +1072,7 @@ export default function ContinuingEdu(props: Props) {
       component: 类型管理,
       hide: () =>
         queyMenuAuthInfo("nm_lat_typemanage") ||
-        ["hj", "dgxg",'lyyz','qhwy'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
     
@@ -1083,9 +1083,25 @@ export default function ContinuingEdu(props: Props) {
       component: 菜单设置,
       hide: () =>
         queyMenuAuthInfo("nm_lat_menusetting") ||
-        ["hj", "dgxg",'lyyz','qhwy'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
+    // ...appStore.hisMatch({
+    //   map: {
+    //     'gxjb': [
+    //       {
+    //         title: "审核设置",
+    //         icon: <KSGL />,
+    //         path: "/continuingEdu/auditSettings",
+    //         component: lazy(() =>
+    //           import('./views/auditSettings/index')
+    //         ),
+    //       }
+    //     ],
+    //     other: []
+    //   },
+    //   vague: true
+    // })
   ];
 
   // 查询获取动态菜单列表
@@ -1162,7 +1178,7 @@ export default function ContinuingEdu(props: Props) {
     //初始化的方法
     let initMethods = appStore.hisMatch({
       map: {
-        "hj,dgxg,'lyyz','qhwy'": () => {
+        "hj,dgxg,lyyz,qhwy,whhk": () => {
           baseInitMethods();
           //初始化学习培训权限
           continuningEduAuth.initAuth();

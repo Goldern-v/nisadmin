@@ -144,11 +144,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   })(),
                   ...appStore.hisMatch({
                     map: {
-                      'qhwy': [{
+                      'qhwy,whhk': [{
                         护理学会会员证号: 'membershipCardNumber',
                       }],
                       other: []
                     },
+                    vague: true
                   }),
                   ...appStore.hisMatch({
                     map: {

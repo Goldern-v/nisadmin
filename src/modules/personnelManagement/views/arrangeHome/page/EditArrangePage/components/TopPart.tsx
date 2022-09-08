@@ -342,7 +342,7 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll"].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               onClick={exchange}
@@ -355,15 +355,15 @@ export default observer(function TopPart() {
 
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
-          {['whyx','qhwy'].includes(appStore.HOSPITAL_ID) && <div className="number">
+          {['whyx','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && <div className="number">
             <img src={require('./images/yuan.png')} alt='' className='yuan' />
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
-            {['whyx','qhwy'].includes(appStore.HOSPITAL_ID) && <div className="number">
+            {['whyx','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && <div className="number">
               <img src={require('./images/yuan.png')} alt='' className='yuan' />
               <span>{sheetViewModal.ExpectAsNumber}</span>
             </div>}
@@ -428,7 +428,7 @@ export default observer(function TopPart() {
             {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               className="statistics"

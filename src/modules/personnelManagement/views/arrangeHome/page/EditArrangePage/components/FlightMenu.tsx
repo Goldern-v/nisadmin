@@ -161,7 +161,7 @@ function MenuCon(props: { dataSource: any[] }) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
       // 添加班次时间段
-      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
         cell!.workTime = item.workTime
       }
       // if (
@@ -176,7 +176,7 @@ function MenuCon(props: { dataSource: any[] }) {
   }
 
   const onClick = async (item: any) => {
-    if (appStore.HOSPITAL_ID == 'wh' || ["lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {

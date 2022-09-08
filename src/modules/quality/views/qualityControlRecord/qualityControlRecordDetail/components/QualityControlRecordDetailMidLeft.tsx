@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import React from 'react'
 import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from "antd";
 import React, { useState, useEffect } from "react";
 import Zimage from "src/components/Zimage";
@@ -11,7 +10,7 @@ const { TextArea } = Input;
 import printing from "printing";
 import { appStore } from "src/stores";
 import { INodeAppoint } from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
-import { qualityControlRecordApi } from "../../api/QualityControlRecordApi";
+// import { qualityControlRecordApi } from "../../api/QualityControlRecordApi";
 export interface Props {
   detailData: any;
 }
@@ -27,7 +26,6 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
-  //
   const { detailData } = props;
   let deductMarksType = detailData.master?.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
   const qcCode = detailData?.master?.qcCode || ''
@@ -107,9 +105,6 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     if (detailData.causeList) {
       setCauseList(detailData.causeList);
     }
-    //接口没有数据？？？？
-    // const apiData: any = []
-    // setItemConData(apiData)
   }, [props]);
 
   const titleBoxChange = (e: CheckboxChangeEvent) => {
@@ -167,10 +162,6 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       </div>
     }
   }
-
-  const itemRadioChange = (e: any) => { };
-  // 附件
-  const itemAttachmentCheck = () => { };
 
   // 当前医院是否为亚心
   const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
@@ -309,6 +300,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
       </OnlyReadError>
       <QuestionCon>
+        {/* 表单介绍 */}
+        {['gzsrm'].includes(appStore.HOSPITAL_ID) && detailData?.master?.intro && <span className='question-intro'>{detailData.master.intro}</span>}
         {detailData.fillItemList && (
           <div style={{ margin: "15px 0 0", fontSize: 14, fontWeight: "bold" }}>
             {detailData.fillItemList.map((item: any) => {
@@ -539,10 +532,12 @@ const MessageBox = styled.div`
 `;
 const QuestionCon = styled.div`
   margin-top: 10px;
-  /* flex: 1;
-  height: 0; */
   font-size: 12px;
   padding-bottom: 20px;
+  .question-intro {
+    font-size: 14px;
+    font-weight: bold;
+  }
 `;
 const QuestionItem = styled.div`
   .titleCon {

@@ -66,7 +66,7 @@ export default function InputColumnRender(props: Props) {
   }, [editVisible])
 
   const handleSearch = (val: string) => {
-    if (_options && _options.length > 0 && ['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
+    if (_options && _options.length > 0 && ['whyx','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
       
       if (multiple) {
         val = val.slice(val.lastIndexOf(';') + 1)
