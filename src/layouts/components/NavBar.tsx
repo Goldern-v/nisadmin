@@ -7,7 +7,6 @@ import { Place } from 'src/components/common'
 import { appStore, authStore } from 'src/stores'
 import { Dropdown, Menu, Tooltip } from 'src/vendors/antd'
 import { ReactComponent as SYSC } from 'src/modules/UserManual/images/SYSC.svg'
-import { ReactComponent as SYSCSZ } from 'src/modules/UserManual/images/SYSCSZ.svg'
 
 import { navConfig, navConfigItem } from './navConfig_hj'
 import { navConfig as navConfig_hjInterns } from './navConfig_hjInterns'
@@ -36,7 +35,6 @@ import { navConfig as navConfig_whyx } from './navConfig_whyx'
 import { navConfig as navConfig_fsxt } from './navConfig_fsxt'
 import { navConfig as navConfig_fsxtSelf } from './navConfig_fsxtSelf'
 import { navConfig as navConfig_sdlj } from './navConfig_sdlj'
-import { navConfig as navConfig_sdljSelf } from './navConfig_sdljSelf'
 import { navConfig as navConfig_lyrm } from './navConfig_lyrm'
 import { navConfig as navConfig_gdtj } from './navConfig_gdtj'
 import { navConfig as navConfig_whfk } from './navConfig_whfk'
@@ -45,6 +43,8 @@ import { navConfig as navConfig_qhwy } from './navConfig_qhwy'
 import { navConfig as navConfig_whsl } from './navConfig_whsl'
 import { navConfig as navConfig_zzwy } from './navConfig_zzwy'
 import { navConfig as navConfig_ytll } from './navConfig_ytll'
+import { navConfig as navConfig_zhzxy } from './navConfig_zhzxy'
+import { navConfig as navConfig_whhk } from './navConfig_whhk'
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -197,6 +197,10 @@ export default observer(function NavBar(props: any) {
       return navConfig_zzwy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'ytll') {
       return navConfig_ytll
+    } else if (appStore.HOSPITAL_ID == 'zhzxy') {
+      return navConfig_zhzxy(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == 'whhk') {
+      return navConfig_whhk(appStore, authStore)
     }
     return navConfig;
   })();

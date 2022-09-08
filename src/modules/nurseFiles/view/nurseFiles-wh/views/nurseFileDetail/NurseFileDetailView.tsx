@@ -75,7 +75,7 @@ const ROUTE_LIST = [
   },
   ...appStore.HOSPITAL_ID === 'sdlj' ? [
     {
-      type: 'continuingEducation',
+      type: 'continuingEducation_sdlj',
       component: continuingEducation_sdlj,
       name: '继续教育及三基考试'
     },
@@ -196,10 +196,8 @@ const ROUTE_LIST = [
 
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
-  // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
-
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
       service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {

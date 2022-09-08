@@ -73,7 +73,7 @@ export default function ToolBar() {
           {
             appStore.hisMatch({
               map: {
-                'wh,gzsrm,lyyz,qhwy,whsl,ytll': '添加',
+                'wh,gzsrm,lyyz,qhwy,whsl,ytll,whhk': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
                 whyx: "添加实习/进修生护士",

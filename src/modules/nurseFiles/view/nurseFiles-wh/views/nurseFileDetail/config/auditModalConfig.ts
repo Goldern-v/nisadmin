@@ -11,9 +11,9 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHInformation',
           getTableData: callBack,
           title: '审核基础信息',
-          tableFormat: (() => { 
+          tableFormat: (() => {
             switch(appStore.HOSPITAL_ID) {
-              case 'fsxt': 
+              case 'fsxt':
                 return [
                   {
                     民族: 'nation',
@@ -43,14 +43,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
                     最高学历: 'highestEducation',
                   },
-                  { 
+                  {
                     职务: 'job',
                     现职务任职起始时间: 'jobStartDate',
                   },
                   {
                     工作护理单元: 'deptName',
                     鞋码: 'shoeSize',
-                    
+
                   },
                   {
                     "鞋款式": "nurse_shoes_style",
@@ -94,7 +94,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     参加工作时间:  'goWorkTime',
                     护士执业证书编号: 'zyzsNumber'
                   },
-      
+
                   {
                     取得护士执业证书时间: 'zyzsDate',
                     ...appStore.HOSPITAL_ID === 'sdlj' ? {参加护理工作时间: 'zyzsNursingPostDate'} : {取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'},
@@ -126,12 +126,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   }),
                   (() => {
                     switch (appStore.HOSPITAL_ID) {
-                      case 'gxjb': 
+                      case 'gxjb':
                         return {
                           工作护理单元: 'deptName',
                           家庭住址: 'address'
                         }
-                      case 'sdlj': 
+                      case 'sdlj':
                         return {
                           冬季鞋码大小: 'winter_shoe_size',
                         }
@@ -144,11 +144,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   })(),
                   ...appStore.hisMatch({
                     map: {
-                      'qhwy': [{
+                      'qhwy,whhk': [{
                         护理学会会员证号: 'membershipCardNumber',
                       }],
                       other: []
                     },
+                    vague: true
                   }),
                   ...appStore.hisMatch({
                     map: {
@@ -289,7 +290,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             {
               年份: `year`,
               项目名称: `projectName`,
-              
+
             },
             {
               项目号: `projectNumber`,
@@ -411,7 +412,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核参与信息',
           tableFormat: (() => {
             switch (appStore.HOSPITAL_ID) {
-              case 'sdlj': 
+              case 'sdlj':
                 return [{
                   参于课题名称: `goName`,
                   课题主持人姓名: `hostName`
@@ -436,7 +437,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   开始时间: `startDate`,
                   截止时间: `endDate`,
                 }]
-              default: 
+              default:
                 return [
                   {
                     参于课题名称: `goName`,
@@ -763,7 +764,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           allData: row
         })
       }
-      break  
+      break
     case '岗位变动':
       {
         globalModal.auditModal.show({
@@ -783,12 +784,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             appStore.HOSPITAL_ID === 'sdlj' ? {
               科室: `newDeptCode`,
               考核成绩: `deptBeDepartment`
-            } : 
+            } :
             {
               现科室隶属部门: `deptBeDepartment`,
               转岗时间: `transferDate`
             },
-              
+
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -998,13 +999,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             {
               三基考核情况理论考核: `theoryAssess`,
               三基考核情况理论补考: `theoryAssessMakeup`,
-              
+
             },
             {
               三基考核情况操作考核: `operateAssess`,
               三基考核情况操作补考: `operateAssessMakeup`
             },
-            { 
+            {
               年度: `year`,
               继续教育是否达标: `standardInfo`
             }
@@ -1020,7 +1021,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '新技术、新项目开展情况': 
+    case '新技术、新项目开展情况':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
@@ -1032,7 +1033,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             {
               开展项目名称: `projectName`,
               技术等级: `technologyLevel`,
-              
+
             },
             {
               开始时间: `startDate`,
@@ -1059,7 +1060,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             {
               时间: `startDate`,
               内容: `content`,
-              
+
             },
             {
               备注: `remark`,
@@ -1068,6 +1069,37 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           allData: row
         })
       }
+      break
+    case '在院工作情况':
+    {
+      globalModal.auditModal.show({
+        getTableData: callBack,
+        id: row.id,
+        empNo: row.empNo || row.commiterNo,
+        type: 'nurseWHRegistrationWork',
+        title: '审核在院工作情况',
+        tableFormat: [
+          appStore.HOSPITAL_ID !== 'sdlj' ? {
+            原职称名称: `titleOld`,
+            现职称名称: `titleNew`
+          } : {
+            职称名称: `titleNew`
+          },
+          {
+            考取专业资格证书时间: `winNewTiTleDate`,
+            聘用专业技术资格时间: `employNewTiTleDate`
+          }
+        ],
+        fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+        allData: row
+      })
+    }
       break
   }
 }

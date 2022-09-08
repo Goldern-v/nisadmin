@@ -34,7 +34,7 @@ export default observer(function OperationSection(props: Props) {
       <div className='context'>
       截止本月底实际在岗护士:<div>{value.actualDutyNursesCount}</div>人;在岗助理护士:<div>{value.actualDutyInternNurseCount}</div>人;
       </div>
-      <div className='context context-title'>(2) (<div>{pageInfo&&pageInfo.reportMonth}</div>月)上月科室住院病人动态:</div>
+      <div className='context context-title'>(2) (<div>{pageInfo&&!isNaN(pageInfo.reportMonth) && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>月)上月科室住院病人动态:</div>
       <div className='context'>
       平均床位使用率%:<div>{value.averageBedOccupancy}</div>;病床周转次数:<div>{value.bedTurnovers}</div>;科室平均住院日:<div>{value.deptAverageInDepartment}</div>;
       </div>

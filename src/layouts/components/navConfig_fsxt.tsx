@@ -94,10 +94,10 @@ const baseConfig: navConfigItem[] = [
     path: "/continuingEdu",
     // hidden: !appStore.isDev
   },
-  {
-    name: "敏感指标",
-    path: "/indicator",
-  },
+  // {
+  //   name: "敏感指标",
+  //   path: "/indicator",
+  // },
   {
     name: "病区登记本",
     path: "/wardRegister",

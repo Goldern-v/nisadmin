@@ -67,10 +67,16 @@ class Api extends BaseApiService {
    * itemCode,
    * itemValue
    * }
-   * @returns 
+   * @returns
    */
   saveOpinion(params: Record<string, any>) {
     return this.post(`/form/searchRoom/master/saveOpinion`, params)
+  }
+/*查房记录列表导出*/
+  getPageByUserDeptExport(params:any) {
+    return this.post(`/form/searchRoom/master/getPageByUserDeptExport`, params,{
+      responseType: "blob"
+    })
   }
 }
 

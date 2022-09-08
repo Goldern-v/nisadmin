@@ -46,3 +46,7 @@
 ## 配置新医院， /home路由白屏
 
 需要在src/configs/routerConfig/specialModule.ts 页面进行新医院的配置
+
+## 审核模块档案
+
+需要在src\layouts\MainLayout.tsx页面进行新医院的配置

@@ -51,7 +51,7 @@ export default function OperationMoadl(props: Props) {
             setData(cloneData)
           }} /></div>人;
         </div>
-        <div className='context context-title'>(2) (<div style={{width:'30px',color:'blue',textAlign:'center'}}>{pageInfo&&pageInfo.reportMonth}</div>月)上月科室住院病人动态:</div>
+        <div className='context context-title'>(2) (<div style={{width:'30px',color:'blue',textAlign:'center'}}>{!isNaN(pageInfo.reportMonth) && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>月)上月科室住院病人动态:</div>
         <div className='context'>
           平均床位使用率%:<div><Input type='number' value={value && value.averageBedOccupancy} onChange={(e) => {
             value.averageBedOccupancy = e.target.value;

@@ -7,7 +7,8 @@ import { bacisManagData } from "../bacisPostgraduate";
 // import { formApplyModal } from "../FormApplyModal"; // 仓库数据
 import AddInternModal from "../model/AddInternModal"; // 新建弹窗
 import { appStore,authStore } from "src/stores";
-
+import { Upload } from "antd";
+import {trainingSettingApi} from "../../api/TrainingSettingApi";
 const Option = Select.Option;
 
 interface Props {}
@@ -73,6 +74,21 @@ export default observer(function ApplyHeader(props: Props) {
   // 导入
   const handelImprot = ()=>{
     bacisManagData.import()
+  }
+// 导入文件
+const customFileRequest=(fileINfo: any)=> {
+	trainingSettingApi.importSheetTemplate(fileINfo.file)
+        .then(res => {
+          message.success('导入成功')
+          bacisManagData.onload()
+        }, err => {})
+	
+  }
+  // 导入文件 APi
+const uploadProps={
+	accept:'.xlsx,.xls',
+	showUploadList:false,
+	customRequest:customFileRequest,
   }
 
   return (
@@ -151,12 +167,12 @@ export default observer(function ApplyHeader(props: Props) {
           }}>
           下载模板
         </Button>
-        <Button
-          className="span"
-          onClick={handelImprot}
-        >
-          导入
-        </Button>
+        <Upload className="span" {...uploadProps}>
+          <Button
+          >
+            导入
+          </Button>
+        </Upload>
         <Button
           className="span"
           disabled={isAdd}

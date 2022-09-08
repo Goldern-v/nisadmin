@@ -58,7 +58,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 			},
 			{
 				title: "全院护理质量分析",
-				hide:!authStore.isDepartment,
+				hide:!authStore.level3publishedWatch,
 				path: "/goodOrBadRouter/wholeAysi",
 				component: WholeAysi,
 			},

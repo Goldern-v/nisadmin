@@ -47,7 +47,7 @@ export default observer(function OperationEmSection(props: Props) {
         人；截止本月底实际在岗<div>{value.actualEmergencyDutyCount}</div>人。
       </div>
       <div className="context">
-        （2）(<div>{pageInfo&&pageInfo.reportMonth}</div>月）上月急诊护理工作量得分： <div>{value.nursingWorkloadScore}</div>
+        （2）(<div>{pageInfo&&!isNaN(pageInfo.reportMonth) && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>月）上月急诊护理工作量得分： <div>{value.nursingWorkloadScore}</div>
       </div>
     </Wrapper>
   );

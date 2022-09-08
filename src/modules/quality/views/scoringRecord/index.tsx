@@ -4,14 +4,10 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { Button, Checkbox, DatePicker, Select } from 'antd'
+import {Button, Checkbox, DatePicker, Select, Tooltip} from 'antd'
 import { appStore, authStore } from 'src/stores'
-
+import { fileDownload } from "src/utils/file/file";
 import api from './api'
-
-// import AuthStore from "src/stores/AuthStore";
-// import AddModal from './wardsView/components/addModal'
-
 interface Props {
 
 }
@@ -150,12 +146,36 @@ export default observer((props: Props) => {
       width: 80,
       align: "center"
     },
-    {
-      title: "查房问题",
-      dataIndex: 'SR0004022',
-      width: 80,
-      align: "center"
-    },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [    {
+          title: "查房问题",
+          dataIndex: 'problems',
+          width: 80,
+          align: "center",
+          onCell: () => {
+            return {
+              style: {
+                maxWidth: 80,
+                overflow: 'hidden',
+                whiteSpace: 'pre-line',
+                textOverflow: 'ellipsis',
+                cursor: 'pointer'
+              }
+            };
+          },
+          // render: (problems:any) =>{
+          //   return problems&&problems.length > 8 ?<Tooltip
+          //       overlayStyle={{
+          //         whiteSpace:'pre-line'
+          //       }}
+          //       placement='topLeft' title={problems}>{problems}</Tooltip>:<div>{problems}</div>
+          // }
+        },
+        ],
+        other: []
+      }
+    }),
     // {
     //   title: `检查人员`,
     //   dataIndex: `creatorName`,
@@ -256,7 +276,12 @@ export default observer((props: Props) => {
   useEffect(() => {
     getList().then()
   }, [form])
-
+/*导出*/
+  const exportFiles=()=>{
+    api.getPageByUserDeptExport({...form}).then(res=>{
+      fileDownload(res)
+    })
+  }
   return (
     <Wrapper>
       <SearchBar>
@@ -288,8 +313,9 @@ export default observer((props: Props) => {
           </Select>
           <Button onClick={() => getList()}> 查询</Button>
           {(appStore.HOSPITAL_ID === 'gzsrm' && authStore.isRoleManage) && <Button onClick={() => addTable()}> 新增</Button>}
-          <Button type='primary' onClick={() => {
-          }}>导出</Button>
+
+          {/* 需要重新写接口联调 */}
+          <Button type='primary' onClick={exportFiles}>导出</Button>
         </div>
       </SearchBar>
       <MainWrapper>
@@ -347,7 +373,7 @@ const SearchBar = styled.div`
 
 const MainWrapper = styled.div`
   background: #fff;
-  height: calc(100% - 50px);
+  //height: calc(100% - 50px);
   padding: 0 20px;
   .itemHide{
     display: none

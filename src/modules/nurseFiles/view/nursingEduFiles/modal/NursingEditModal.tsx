@@ -400,7 +400,7 @@ export default function NursingEditModal(props: Props) {
             </Col>
           </Row>
           {
-            !['qhwy'].includes(appStore.HOSPITAL_ID) &&
+            !['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) &&
               <Row>
                 <Col span={6} className="label">
                   进修科室二:

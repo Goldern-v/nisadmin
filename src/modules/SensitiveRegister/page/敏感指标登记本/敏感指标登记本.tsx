@@ -906,11 +906,20 @@ export default observer(function 敏感指标登记本(props: Props) {
   return (
     <Container>
       <PageHeader>
-        {authStore.isAdmin && (
-          <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-            修订
-          </Button>
-        )}
+        {appStore.hisMatch({
+            map: {
+              nys : (
+                authStore.isRoleManage&&(<Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+                  修订
+                </Button>)
+              ),
+              other: (
+                authStore.isAdmin&&<Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+                  修订
+              </Button>
+              )
+            }
+        })}
         <span className="label">记录</span>
         <Select
           value={selectedBlockId}

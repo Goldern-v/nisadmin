@@ -26,7 +26,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   let [causeList, setCauseList]: any = useState([]);
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
-  
+
   //
   const { detailData } = props;
   let deductMarksType = detailData.master?.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
@@ -152,7 +152,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     }
 
     return <div>
-      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0}) 
+      质控结果：是({itemCount.yesSize || 0}) 否({itemCount.noSize || 0})
       {!['gzsrm'].includes(appStore.HOSPITAL_ID) && `不适用(
       ${itemCount.inapplicableSize || 0})`}
     </div>
@@ -187,20 +187,20 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>质控病区：{messageBoxData.wardName}</div>
           {appStore.hisMatch({
             map: {
-              whyx: detailData?.master?.isBedNumber === '是' 
+              whyx: detailData?.master?.isBedNumber === '是'
                 ? <div>
                     病人姓名：{messageBoxData && messageBoxData.patientName}
-                  </div> 
+                  </div>
                 : <span></span>
             },
             currentHospitalId: qcMatchCode
           })}
           {appStore.hisMatch({
             map: {
-              whyx: detailData?.master?.isBedNumber === '是' 
+              whyx: detailData?.master?.isBedNumber === '是'
                 ? <div>
                     床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
-                  </div> 
+                  </div>
                 : <span></span>,
               other: <div>
                 床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
@@ -298,12 +298,12 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     通过率：
                     {messageBoxData.evalRate &&
                       messageBoxData.evalRate.toFixed(2) + "%"}
-                  </div> 
+                  </div>
                   },
                 })}
               </div>
         }
-        
+
       </MessageBox>
       <OnlyReadError>
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
@@ -462,7 +462,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             ))}
             {appStore.hisMatch({
               map: {
-                'nys,whyx': '',
+                'nys,whyx,gxjb': '',
                 other: ((onlyReadError && itemGroup.remark) || !onlyReadError) && (
                   <div className="notesCon">
                     <div className="notesLeftCon">备注</div>

@@ -113,7 +113,7 @@ export default observer(function AduitModal(props: Props) {
         saveParams['B0032043'] = auditInfo.handleContent
         saveParams['B0032040'] = auditInfo.auditDate
         saveParams['B0032044'] = userInfo.empName
-        saveParams['B0032041'] = auditInfo.eventQualitative
+        saveParams['B0032041'] = auditInfo.eventLevel
         break
       case 'gxjb_ward_handle': //病区护士长填写病区整改
         // 意见和日期
@@ -369,26 +369,45 @@ export default observer(function AduitModal(props: Props) {
                     <Radio value={"否，请务必做好相关护理措施。"} >否，请务必做好相关护理措施。</Radio>
                   </Radio.Group>
                 </Col>
-              </Row> : <Row>
-                <Col span={6} className="row-title">不良事件定性:</Col>
-                <Col span={18}>
-                  <Radio.Group
-                    className='radio-group'
-                    value={auditInfo.eventQualitative}
-                    onChange={(e) =>
-                      setAuditInfo({
-                        ...auditInfo,
-                        eventQualitative: e.target.value,
-                      })
-                    }>
-                    <Radio value={"事故"} >事故</Radio>
-                    <Radio value={"严重差错"} >严重差错</Radio>
-                    <Radio value={"一般差错"} >一般差错</Radio>
-                    <Radio value={"缺点"} >缺点</Radio>
-                    {/* <Radio value={"意外事件"} >意外事件</Radio> */}
-                  </Radio.Group>
+              </Row> :
+              // <Row>
+              //   <Col span={6} className="row-title">不良事件定性:</Col>
+              //   <Col span={18}>
+              //     <Radio.Group
+              //       className='radio-group'
+              //       value={auditInfo.eventQualitative}
+              //       onChange={(e) =>
+              //         setAuditInfo({
+              //           ...auditInfo,
+              //           eventQualitative: e.target.value,
+              //         })
+              //       }>
+              //       <Radio value={"事故"} >事故</Radio>
+              //       <Radio value={"严重差错"} >严重差错</Radio>
+              //       <Radio value={"一般差错"} >一般差错</Radio>
+              //       <Radio value={"缺点"} >缺点</Radio>
+              //     </Radio.Group>
+              //   </Col>
+              // </Row>
+              <Row>
+              <Col span={6} className="row-title">谈论事件级别:</Col>
+              <Col span={18}>
+                <Radio.Group
+                  className='radio-group'
+                  value={auditInfo.eventLevel}
+                  onChange={(e) =>
+                    setAuditInfo({
+                      ...auditInfo,
+                      eventLevel: e.target.value,
+                    })
+                  }>
+                  <Radio value={"Ⅰ级事件"} >Ⅰ级事件</Radio>
+                  <Radio value={"Ⅱ级事件"} >Ⅱ级事件</Radio>
+                  <Radio value={"Ⅲ级事件"} >Ⅲ级事件</Radio>
+                  <Radio value={"Ⅳ级事件"} >Ⅳ级事件</Radio>
+                </Radio.Group>
                 </Col>
-              </Row>
+                </Row>
             }
             <Row>
               <Col span={6} className="row-title">

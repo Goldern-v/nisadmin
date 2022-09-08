@@ -450,7 +450,7 @@ export default function ImportEditModal(props: Props) {
           },
           ...appStore.hisMatch({
             map: {
-              'qhwy': [],
+              'qhwy,whhk': [],
               other: [
                 {
                   title: '进修科室二',

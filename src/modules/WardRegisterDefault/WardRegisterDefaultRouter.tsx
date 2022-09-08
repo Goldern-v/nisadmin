@@ -60,14 +60,14 @@ function WardRegisterDefaultRouter() {
       title: item.registerName,
       path: `/wardRegister/${item.registerCode}`,
       component: { ...默认病区登记表记本 },
-      hide: ['whyx', 'fsxt','lyyz','qhwy'].includes(appStore.HOSPITAL_ID) ? false : !item.menu,
+      hide: ['whyx', 'fsxt','lyyz','qhwy','wjgdszd', 'whhk'].includes(appStore.HOSPITAL_ID) ? false : !item.menu,
       icon: <ZDHZ />,
       payload: {
         registerCode: item.registerCode,
         registerName: item.registerName
       },
       custom: {
-        textColor: ['whyx', 'fsxt','lyyz','qhwy'].includes(appStore.HOSPITAL_ID) ? item.color : ''
+        textColor: ['whyx', 'fsxt','lyyz','qhwy','wjgdszd', 'whhk'].includes(appStore.HOSPITAL_ID) ? item.color : ''
       }
     }))
   ]
@@ -81,7 +81,7 @@ function WardRegisterDefaultRouter() {
   ]
   const initNavList = () => {
     setLoading(true)
-    if (['whyx', 'fsxt','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
+    if (['wjgdszd','whyx', 'fsxt','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
       wardRegisterDefaultService.getMenuByDeptCode()
         .then(res => {
           if (res.data) setRegisterList(res.data.map((item: any) => ({
@@ -97,7 +97,7 @@ function WardRegisterDefaultRouter() {
           if (res.data) setRegisterList(res.data.map((menuItem: any) => {
             let pathArr = menuItem.url.split('/')
             let registerCode = pathArr[pathArr.length - 1]
-  
+
             return {
               ...menuItem,
               registerName: menuItem.name,
